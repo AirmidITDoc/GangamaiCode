@@ -139,7 +139,9 @@ export class EditAdmissionComponent implements OnInit {
   vRelativeAddress:any;
   vRelatvieMobileNo:any;
   vRelationshipId:any;
-  // PatientName:any;
+  vadmittedDoctor1:any=0;
+  vadmittedDoctor2:any=0;
+  vrefDoctorId:any=0;
   // RegId:any;
   // RegNo:any;
   AdmissionID:any;
@@ -876,6 +878,22 @@ getTariffCombo(){
         });
         return;
       }
+    }debugger
+    if (this.otherFormGroup.get('RelationshipId').value) {
+      this.vRelationshipId = this.otherFormGroup.get('RelationshipId').value.RelationshipId;
+      
+    }
+    if (this.hospitalFormGroup.get('admittedDoctor1').value) {
+      this.vadmittedDoctor1 = this.hospitalFormGroup.get('admittedDoctor1').value.DoctorID;
+      console.log(this.vadmittedDoctor1)
+      
+    }
+    if (this.hospitalFormGroup.get('admittedDoctor2').value) {
+      this.vadmittedDoctor2 = this.hospitalFormGroup.get('admittedDoctor2').value.DoctorID;
+      console.log(this.vadmittedDoctor2)
+    }if (this.hospitalFormGroup.get('refDoctorId').value) {
+      this.vrefDoctorId = this.hospitalFormGroup.get('refDoctorId').value.DocNameID;
+      console.log(this.vrefDoctorId)
     }
 
     if (this.patienttype != 2) {
@@ -893,7 +911,7 @@ getTariffCombo(){
         return;
       }
     }
-
+debugger
     var m_data = {
       "admissionNewUpdate": {
         "AdmissionId": this.AdmissionID,// this.hospitalFormGroup.get('AdmissionId').value || 0,
@@ -908,11 +926,11 @@ getTariffCombo(){
         "RelativeName": this.otherFormGroup.get('RelativeName').value || "",
         "RelativeAddress": this.otherFormGroup.get('RelativeAddress').value || "",
         "RelativePhoneNo": this.otherFormGroup.get('RelatvieMobileNo').value || "",
-        "RelationshipId": this.otherFormGroup.get('RelationshipId').value.RelationshipId || 0,
+        "RelationshipId": this.vRelationshipId,// this.otherFormGroup.get('RelationshipId').value.RelationshipId || 0,
         "IsMLC" : this.otherFormGroup.get('IsMLC').value || 0,
         "MotherName" :'',// this.hospitalFormGroup.get('SubCompanyId').value.SubCompanyId || 0,
-        "AdmittedDoctor1": this.hospitalFormGroup.get('admittedDoctor1').value.DoctorID || 0,
-        "AdmittedDoctor2": this.hospitalFormGroup.get('admittedDoctor2').value.DoctorID || 0,
+        "AdmittedDoctor1":  this.vadmittedDoctor1,//this.hospitalFormGroup.get('admittedDoctor1').value.DoctorID || 0,
+        "AdmittedDoctor2": this.vadmittedDoctor2,// this.hospitalFormGroup.get('admittedDoctor2').value.DoctorID || 0,
         "RefByTypeId" :0,// this.hospitalFormGroup.get('SubCompanyId').value.SubCompanyId || 0,
         "RefByName" :0,// this.hospitalFormGroup.get('SubCompanyId').value.SubCompanyId || 0,
         "isUpdatedBy" :  this.accountService.currentUserValue.user.id,

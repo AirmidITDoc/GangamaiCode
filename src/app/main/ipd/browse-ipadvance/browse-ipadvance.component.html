@@ -336,10 +336,11 @@
                                                 <mat-icon>print</mat-icon>
                                             </button>
             
-                                            <button mat-icon-button matTooltip="Send message On WhatsApp">
+                                        
+                                            <button mat-icon-button matTooltip="Send Advance On WhatsApp" (click)="getWhatsappsAdvance(contact.AdvanceNo,contact.MobileNo)">
                                                 <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
                                             </button>
-            
+
                                         </mat-cell>
                                     </ng-container>
             
@@ -641,6 +642,10 @@
                                                         <button mat-icon-button (click)="viewgetRefundofadvanceReportPdf(contact)" matTooltip="Print">
                                                             <mat-icon>print</mat-icon>
                                                         </button>
+                                                        <button mat-icon-button matTooltip="Send Refund Of Advance On WhatsApp" (click)="getWhatsappsRefundAdvance(contact.AdvanceNo,contact.MobileNo)">
+                                                            <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
+                                                        </button>
+            
                                                         <!-- <button mat-icon-button class="material-icons"
                                                         (click)="getRecord(contact,'EMAIL')" matTooltip="Email">
                                                         <mat-icon>email</mat-icon>
@@ -665,9 +670,9 @@
                                                     </mat-footer-cell>
                                                 </ng-container>
             
-                                                <mat-header-row class="accent" *matHeaderRowDef="displayedColumns1; sticky: true">
+                                                <mat-header-row  class="accent min-width-3000" *matHeaderRowDef="displayedColumns1; sticky: true">
                                                 </mat-header-row>
-                                                <mat-row *matRowDef="let contact; columns: displayedColumns1;" class="contact"
+                                                <mat-row *matRowDef="let contact; columns: displayedColumns1;" class="contact" class="min-width-3000"
                                                     [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                                 <mat-footer-row *matFooterRowDef="['loading']"
                                                     [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">

@@ -1815,7 +1815,7 @@ export class AdmissionComponent implements OnInit {
         admissionNewInsert['relativeName'] = this.otherFormGroup.get('RelativeName').value ? this.otherFormGroup.get('RelativeName').value : '';
         admissionNewInsert['relativeAddress'] = this.otherFormGroup.get('RelativeAddress').value ? this.otherFormGroup.get('RelativeAddress').value : '';
 
-        admissionNewInsert['phoneNo'] = this.personalFormGroup.get('PhoneNo').value ? this.personalFormGroup.get('PhoneNo').value : '';
+        admissionNewInsert['phoneNo'] = this.personalFormGroup.get('MobileNo').value ? this.personalFormGroup.get('MobileNo').value : '';
         admissionNewInsert['mobileNo'] = this.otherFormGroup.get('RelatvieMobileNo').value ? this.otherFormGroup.get('RelatvieMobileNo').value : '';
         admissionNewInsert['relationshipId'] = this.otherFormGroup.get('RelationshipId').value.RelationshipId || 0;
         admissionNewInsert['addedBy'] = this.accountService.currentUserValue.user.id;
@@ -1895,7 +1895,7 @@ export class AdmissionComponent implements OnInit {
         admissionInsert['relativeName'] = this.otherFormGroup.get('RelativeName').value ? this.otherFormGroup.get('RelativeName').value : '';
         admissionInsert['relativeAddress'] = this.otherFormGroup.get('RelativeAddress').value ? this.otherFormGroup.get('RelativeAddress').value : '';
 
-        admissionInsert['phoneNo'] = this.personalFormGroup.get('PhoneNo').value ? this.personalFormGroup.get('PhoneNo').value : '';
+        admissionInsert['phoneNo'] = this.personalFormGroup.get('MobileNo').value ? this.personalFormGroup.get('MobileNo').value : '';
         admissionInsert['mobileNo'] = this.otherFormGroup.get('RelatvieMobileNo').value ? this.otherFormGroup.get('RelatvieMobileNo').value : '';
         admissionInsert['relationshipId'] = this.otherFormGroup.get('RelationshipId').value.RelationshipId || 0;
         admissionInsert['addedBy'] = this.accountService.currentUserValue.user.id;
@@ -3185,7 +3185,6 @@ export class AdmissionPersonlModel {
   RefDocNameId:any;
   RefDocNameID:any;
   DocNameID:any;
-  
 RelativeAddress:any;
 IsSeniorCitizen:any;
 RegID:any;

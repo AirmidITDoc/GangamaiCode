@@ -1542,7 +1542,7 @@ export class AppointmentComponent implements OnInit {
   }
 
 
-  getWhatsappshareSales(el, vmono) {
+  WhatsAppAppointmentSend(el, vmono) {
     var m_data = {
       "insertWhatsappsmsInfo": {
         "mobileNumber": vmono || 0,

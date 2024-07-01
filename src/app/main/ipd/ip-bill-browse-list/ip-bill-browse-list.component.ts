@@ -29,6 +29,7 @@ import { BrowseIpdPaymentReceipt } from '../browse-ipdpayment-receipt/ipd-paymen
 import { RefundMaster } from '../Refund/ip-refund/ip-browse-refundof-bill/ip-browse-refundof-bill.component';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 import { DiscountAfterFinalBillComponent } from '../ip-search-list/discount-after-final-bill/discount-after-final-bill.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-ip-bill-browse-list',
@@ -75,7 +76,7 @@ export class IPBillBrowseListComponent implements OnInit {
   Groupname: any;
   SpinLoading: boolean = false;
   AdList: boolean = false;
-
+  vMobileNo:any;
 
   displayedColumns = [
     // 'SelfOrCompany',
@@ -166,6 +167,7 @@ export class IPBillBrowseListComponent implements OnInit {
     private accountService: AuthenticationService,
     private advanceDataStored: AdvanceDataStored,
     private reportDownloadService: ExcelDownloadService,
+    public toastr: ToastrService,
     public _WhatsAppEmailService:WhatsAppEmailService
   ) {
 
@@ -386,6 +388,7 @@ console.log(PatientHeaderObj)
               this.viewgetBillReportPdf(response)
               this._matDialog.closeAll();
               this.onShow_IpdBrowse();
+              this.getWhatsappshareIPPaymentRec(response,this.vMobileNo)
             }
           });
         } else {
@@ -397,42 +400,100 @@ console.log(PatientHeaderObj)
 
   }
 
-  // onClearbill() {
-  // getWhatsappshareSales(Param) {
-  //   console.log(Param)
-  //   var m_data = {
-  //     "insertWhatsappsmsInfo": {
-  //       "mobileNumber": Param.MobileNo,
-  //       "smsString": '',
-  //       "isSent": 0,
-  //       "smsType": 'IPBill',
-  //       "smsFlag": 0,
-  //       "smsDate": this.currentDate,
-  //       "tranNo": Param.BillNo,
-  //       "PatientType": 0,//el.PatientType,
-  //       "templateId": 0,
-  //       "smSurl": '',
-  //       "filePath": '',
-  //       "smsOutGoingID": 0
-  //     }
-  //   }
-  //   console.log(m_data);
-  //   this._WhatsAppEmailService.InsertWhatsappSales(m_data).subscribe(response => {
-  //     if (response) {
-  //       Swal.fire('Congratulations !', 'WhatsApp Sms  Data  save Successfully !', 'success').then((result) => {
-  //         if (result.isConfirmed) {
-  //           this._matDialog.closeAll();
-  //         }
-  //       });
-  //     } else {
-  //       Swal.fire('Error !', 'Whatsapp Sms Data  not saved', 'error');
-  //     }
+// onwhatsappbill() {
+  getWhatsappshareIPFinalBill(el, vmono) {
+    debugger
+    var m_data = {
+      "insertWhatsappsmsInfo": {
+        "mobileNumber": vmono || 0,
+        "smsString": '',
+        "isSent": 0,
+        "smsType": 'IPBill',
+        "smsFlag": 0,
+        "smsDate": this.currentDate,
+        "tranNo": el,
+        "PatientType": 2,//el.PatientType,
+        "templateId": 0,
+        "smSurl": "info@gmail.com",
+        "filePath": '',
+        "smsOutGoingID": 0
+      }
+    }
+    this._WhatsAppEmailService.InsertWhatsappSales(m_data).subscribe(response => {
+      if (response) {
+        this.toastr.success('IP Final Bill Receipt Sent on WhatsApp Successfully.', 'Save !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        });
+      } else {
+        this.toastr.error('API Error!', 'Error WhatsApp!', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
+      }
+    });
+  }
 
-  //   });
-  //   // this.IsLoading = false;
-  //   // el.button.disbled = false;
-  // }
+  getWhatsappshareIPPaymentRec(el, vmono) {
+    debugger
+    var m_data = {
+      "insertWhatsappsmsInfo": {
+        "mobileNumber": vmono || 0,
+        "smsString": '',
+        "isSent": 0,
+        "smsType": 'IPRECEIPT',
+        "smsFlag": 0,
+        "smsDate": this.currentDate,
+        "tranNo": el,
+        "PatientType": 2,//el.PatientType,
+        "templateId": 0,
+        "smSurl": "info@gmail.com",
+        "filePath": '',
+        "smsOutGoingID": 0
+      }
+    }
+    this._WhatsAppEmailService.InsertWhatsappSales(m_data).subscribe(response => {
+      if (response) {
+        this.toastr.success('IP Payment Receipt Sent on WhatsApp Successfully.', 'Save !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        });
+      } else {
+        this.toastr.error('API Error!', 'Error WhatsApp!', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
+      }
+    });
+  }
 
+
+  getWhatsappshareIPrefundBill(el, vmono) {
+    debugger
+    var m_data = {
+      "insertWhatsappsmsInfo": {
+        "mobileNumber": vmono || 0,
+        "smsString": '',
+        "isSent": 0,
+        "smsType": 'IPREFBILL',
+        "smsFlag": 0,
+        "smsDate": this.currentDate,
+        "tranNo": el,
+        "PatientType": 2,//el.PatientType,
+        "templateId": 0,
+        "smSurl": "info@gmail.com",
+        "filePath": '',
+        "smsOutGoingID": 0
+      }
+    }
+    this._WhatsAppEmailService.InsertWhatsappSales(m_data).subscribe(response => {
+      if (response) {
+        this.toastr.success('IP Refund Of Bill Receipt Sent on WhatsApp Successfully.', 'Save !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        });
+      } else {
+        this.toastr.error('API Error!', 'Error WhatsApp!', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
+      }
+    });
+  }
   onClearbill() {
 
     this._IpBillBrowseListService.myFilterIpbillbrowseform.get('FirstName').reset();

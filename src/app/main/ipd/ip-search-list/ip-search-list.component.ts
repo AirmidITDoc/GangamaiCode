@@ -803,7 +803,7 @@ export class AdvanceDetailObj {
   H_NetAmt: any;
   H_PaidAmt: any;
   H_BalAmt: any;
-  
+  MobileNo:any;
   /**
   * Constructor
   *
@@ -853,7 +853,7 @@ export class AdvanceDetailObj {
       this.RefDocName=AdvanceDetailObj.RefDocName || ''
       this.GenderName =AdvanceDetailObj.GenderName ||''
       this.DocNameID=AdvanceDetailObj.DocNameID | 0
-
+      this.MobileNo=AdvanceDetailObj.MobileNo || ''
     }
   }
 }

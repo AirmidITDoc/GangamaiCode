@@ -18,6 +18,7 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { OPAdvancePaymentComponent } from 'app/main/opd/op-search-list/op-advance-payment/op-advance-payment.component';
 import { Cal_DiscAmount } from '../ip-billing/ip-billing.component';
 import { ToastrService } from 'ngx-toastr';
+import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 
 @Component({
   selector: 'app-interim-bill',
@@ -72,7 +73,7 @@ export class InterimBillComponent implements OnInit {
   percentag: boolean = true;
   ConShow: boolean = false;
   onlineflag: boolean = false;
-
+  vMobileNo:any;
 
   CashCounterList: any = [];
   ConcessionReasonList: any = [];
@@ -105,6 +106,7 @@ export class InterimBillComponent implements OnInit {
     private accountService: AuthenticationService,
     public dialogRef: MatDialogRef<InterimBillComponent>,
     private formBuilder: FormBuilder,
+    public _WhatsAppEmailService:WhatsAppEmailService,
     @Inject(MAT_DIALOG_DATA) public data: any) {
 
     this.InterimFormGroup = this.InterimForm();
@@ -120,6 +122,7 @@ export class InterimBillComponent implements OnInit {
       if (this.advanceDataStored.storage) {
         this.selectedAdvanceObj = this.advanceDataStored.storage;
         console.log(this.selectedAdvanceObj)
+
         // this.PatientHeaderObj = this.advanceDataStored.storage;
       }
     }
@@ -134,6 +137,7 @@ export class InterimBillComponent implements OnInit {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       // this.vPatientHeaderObj =this.advanceDataStored.storage;
       // this.ConcessionId=this.selectedAdvanceObj.concessionReasonId
+      this.vMobileNo=this.selectedAdvanceObj.MobileNo
        console.log(this.selectedAdvanceObj);
     }
 
@@ -462,6 +466,8 @@ export class InterimBillComponent implements OnInit {
           Swal.fire('Congratulations !', 'Cash Pay Interim data saved Successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
               this.viewgetInterimBillReportPdf(response);
+
+              this.getWhatsappshareIPInterimBill(response,this.vMobileNo);
               this._matDialog.closeAll();
             }
           });
@@ -581,6 +587,36 @@ export class InterimBillComponent implements OnInit {
     }
   }
 
+  getWhatsappshareIPInterimBill(el, vmono) {
+    debugger
+    var m_data = {
+      "insertWhatsappsmsInfo": {
+        "mobileNumber": vmono || 0,
+        "smsString": '',
+        "isSent": 0,
+        "smsType": 'IPInterim',
+        "smsFlag": 0,
+        "smsDate": this.currentDate,
+        "tranNo": el,
+        "PatientType": 2,//el.PatientType,
+        "templateId": 0,
+        "smSurl": "info@gmail.com",
+        "filePath": '',
+        "smsOutGoingID": 0
+      }
+    }
+    this._WhatsAppEmailService.InsertWhatsappSales(m_data).subscribe(response => {
+      if (response) {
+        this.toastr.success('IP Interim Bill Sent on WhatsApp Successfully.', 'Save !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        });
+      } else {
+        this.toastr.error('API Error!', 'Error WhatsApp!', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
+      }
+    });
+  }
 
  ////////////////// paymentoption
   // onSavepay() {

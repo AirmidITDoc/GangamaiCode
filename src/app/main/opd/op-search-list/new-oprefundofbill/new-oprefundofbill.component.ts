@@ -24,6 +24,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { OPAdvancePaymentComponent } from '../op-advance-payment/op-advance-payment.component';
 import { element } from 'protractor';
 import { ToastrService } from 'ngx-toastr';
+import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 type NewType = Observable<any[]>;
 
 
@@ -112,6 +113,10 @@ export class NewOPRefundofbillComponent implements OnInit {
   vBillBalanceAmt = 0;
   vFinalrefundbamt=0;
 
+  vMobileNo: any;
+
+
+
   @ViewChild('picker') datePickerElement = MatDatepicker;
   displayedColumns1 = [
     // 'ChargesId',
@@ -163,7 +168,7 @@ export class NewOPRefundofbillComponent implements OnInit {
     private accountService: AuthenticationService,
     private formBuilder: FormBuilder,
     public toastr: ToastrService,
-
+    public _WhatsAppEmailService: WhatsAppEmailService,
     private changeDetectorRefs: ChangeDetectorRef,
     // private dialogRef: MatDialogRef<NewOPRefundofbillComponent>,
     private _formBuilder: FormBuilder
@@ -252,7 +257,7 @@ export class NewOPRefundofbillComponent implements OnInit {
     this.vTariffId = obj.TariffId;
     this.vClassId = obj.classId
     this.AgeYear = obj.AgeYear;
-
+    this.vMobileNo = obj.MobileNo;
     this.getRefundofBillOPDListByReg();
   }
 
@@ -656,6 +661,7 @@ onSave() {
               Swal.fire('Congratulations !', 'OP Refund Bill data saved Successfully !', 'success').then((result) => {
                 if (result.isConfirmed) {
                   this.viewgetOPRefundofbillPdf(response);
+                  this.getWhatsappshareRefundbill(response,this.vMobileNo);
                 }
               });
             } else {
@@ -716,6 +722,39 @@ onSave() {
 
     }, 100);
   }
+
+  getWhatsappshareRefundbill(el, vmono) {
+    debugger
+    var m_data = {
+      "insertWhatsappsmsInfo": {
+        "mobileNumber": vmono || 0,
+        "smsString": '',
+        "isSent": 0,
+        "smsType": 'OPREFBILL',
+        "smsFlag": 0,
+        "smsDate": this.currentDate,
+        "tranNo": el,
+        "PatientType": 2,//el.PatientType,
+        "templateId": 0,
+        "smSurl": "info@gmail.com",
+        "filePath": '',
+        "smsOutGoingID": 0
+      }
+    }
+    this._WhatsAppEmailService.InsertWhatsappSales(m_data).subscribe(response => {
+      if (response) {
+        this.toastr.success('Refund Of Bill Sent on WhatsApp Successfully.', 'Save !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        });
+      } else {
+        this.toastr.error('API Error!', 'Error WhatsApp!', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
+      }
+    });
+  }
+
+
 
   onClose() {
 

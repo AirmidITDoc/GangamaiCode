@@ -23,6 +23,7 @@ import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.s
 import { BrowseOpdPaymentReceipt } from '../browse-payment-list/browse-payment-list.component';
 import { RefundMaster } from '../browse-refund-list/browse-refund-list.component';
 import { OpPaymentVimalComponent } from '../op-search-list/op-payment-new-vimal/op-payment-vimal.component';
+import { ToastrService } from 'ngx-toastr';
 
 
 
@@ -58,7 +59,7 @@ export class BrowseOPBillComponent implements OnInit {
   msg: any;
   SpinLoading: boolean = false;
   AdList: boolean = false;
-
+  vMobileNo:any;
 
   isLoading = true;
   sIsLoading: string = '';
@@ -149,8 +150,8 @@ dataSource2 = new MatTableDataSource<RefundMaster>();
     private injector: Injector,
     private componentFactoryResolver: ComponentFactoryResolver,
     private applicationRef: ApplicationRef,
-    public _WhatsAppEmailService:WhatsAppEmailService
-
+    public _WhatsAppEmailService:WhatsAppEmailService,
+    public toastr: ToastrService,
   ) { }
 
   ngOnInit(): void {
@@ -180,7 +181,7 @@ dataSource2 = new MatTableDataSource<RefundMaster>();
     PatientHeaderObj['TariffName'] = contact.TariffName;
     PatientHeaderObj['CompanyName'] = contact.CompanyName;
     PatientHeaderObj['NetPayAmount'] = contact.NetPayableAmt;
-    
+    this.vMobileNo = contact.MobileNo;
     
     const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
       {
@@ -216,6 +217,7 @@ dataSource2 = new MatTableDataSource<RefundMaster>();
                   this.viewgetOPPayemntPdf(response,true)
                   this._matDialog.closeAll();
                   this.getBrowseOPDBillsList();
+                  this.getWhatsappshareOPPaymentReceipt(response,this.vMobileNo);
                 }
               });
             }
@@ -273,6 +275,7 @@ dataSource2 = new MatTableDataSource<RefundMaster>();
                 this.viewgetOPPayemntPdf(response,true)
                 this._matDialog.closeAll();
                 this.getBrowseOPDBillsList();
+                this.getWhatsappshareOPPaymentReceipt(response,this.vMobileNo);
               }
             });
           }
@@ -285,7 +288,69 @@ dataSource2 = new MatTableDataSource<RefundMaster>();
 
   }
 
-  
+  getWhatsappshareOPPaymentReceipt(el, vmono) {
+    debugger
+    var m_data = {
+      "insertWhatsappsmsInfo": {
+        "mobileNumber": vmono || 0,
+        "smsString": '',
+        "isSent": 0,
+        "smsType": 'OPREFBILL',
+        "smsFlag": 0,
+        "smsDate": this.currentDate,
+        "tranNo": el,
+        "PatientType": 2,//el.PatientType,
+        "templateId": 0,
+        "smSurl": "info@gmail.com",
+        "filePath": '',
+        "smsOutGoingID": 0
+      }
+    }
+    this._WhatsAppEmailService.InsertWhatsappSales(m_data).subscribe(response => {
+      if (response) {
+        this.toastr.success('OP Settlement Receipt Sent on WhatsApp Successfully.', 'Save !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        });
+      } else {
+        this.toastr.error('API Error!', 'Error WhatsApp!', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
+      }
+    });
+  }
+
+
+  getWhatsappshareRefundbill(el, vmono) {
+    debugger
+    var m_data = {
+      "insertWhatsappsmsInfo": {
+        "mobileNumber": vmono || 0,
+        "smsString": '',
+        "isSent": 0,
+        "smsType": 'OPREFBILL',
+        "smsFlag": 0,
+        "smsDate": this.currentDate,
+        "tranNo": el,
+        "PatientType": 2,//el.PatientType,
+        "templateId": 0,
+        "smSurl": "info@gmail.com",
+        "filePath": '',
+        "smsOutGoingID": 0
+      }
+    }
+    this._WhatsAppEmailService.InsertWhatsappSales(m_data).subscribe(response => {
+      if (response) {
+        this.toastr.success('Refund Of Bill Sent on WhatsApp Successfully.', 'Save !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        });
+      } else {
+        this.toastr.error('API Error!', 'Error WhatsApp!', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
+      }
+    });
+  }
+
 
   onShow(event: MouseEvent) {
     this.click = !this.click;

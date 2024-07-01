@@ -420,7 +420,7 @@
                                                             <mat-icon [disabled]="contact.IsCancelled">print</mat-icon>
                                                         </button>
                                                         <button mat-icon-button matTooltip="Send message On WhatsApp"
-                                                            *ngIf="contact.IsCancelled==0">
+                                                            *ngIf="contact.IsCancelled==0" (click)="WhatsAppAppointmentSend(contact)">
                                                             <img width="100" height="20px"
                                                                 src="assets/images/logos/WhatsApp.png">
                                                         </button>

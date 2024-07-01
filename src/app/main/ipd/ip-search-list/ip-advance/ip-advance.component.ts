@@ -23,6 +23,8 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { debug } from 'console';
 import { OPAdvancePaymentComponent } from 'app/main/opd/op-search-list/op-advance-payment/op-advance-payment.component';
 import { AdmissionPersonlModel } from '../../Admission/admission/admission.component';
+import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -79,14 +81,19 @@ export class IPAdvanceComponent implements OnInit {
   printTemplate: any;
   CashCounterList: any = [];
   PatientHeaderObj: any;
+  vMobileNo:any;
+
+
   constructor(public _IpSearchListService: IPSearchListService,
     public _opappointmentService: OPSearhlistService,
     public _matDialog: MatDialog,
     private _ActRoute: Router,
     public datePipe: DatePipe,
     private advanceDataStored: AdvanceDataStored,
+    public _WhatsAppEmailService:WhatsAppEmailService,
     private dialogRef: MatDialogRef<IPAdvanceComponent>,
     private accountService: AuthenticationService,
+    public toastr: ToastrService,
     private formBuilder: FormBuilder) {
     dialogRef.disableClose = true;
   }
@@ -102,7 +109,7 @@ export class IPAdvanceComponent implements OnInit {
     if (this.advanceDataStored.storage) {
      debugger
       this.selectedAdvanceObj = this.advanceDataStored.storage;
-      // this.PatientHeaderObj = this.advanceDataStored.storage;
+      this.vMobileNo= this.selectedAdvanceObj.MobileNo
       console.log( this.selectedAdvanceObj)
     }
 
@@ -259,7 +266,7 @@ export class IPAdvanceComponent implements OnInit {
               Swal.fire('Congratulations !', 'IP Advance data saved Successfully !', 'success').then((result) => {
                 if (result.isConfirmed) {
                   this.viewgetAdvanceReceiptReportPdf(response,true);
-
+                  this.getWhatsappsAdvance(response,this.vMobileNo);
                   this._matDialog.closeAll();
                 }
               });
@@ -400,7 +407,7 @@ export class IPAdvanceComponent implements OnInit {
                   this.getAdvanceList();
                   this._matDialog.closeAll();
                   this.viewgetAdvanceReceiptReportPdf(response,true);
-                  // this.getPrint(response);
+                  this.getWhatsappsAdvance(response,this.vMobileNo);
                 }
               });
             } else {
@@ -519,38 +526,35 @@ export class IPAdvanceComponent implements OnInit {
     });
   }
 
-  getWhatsappshare(el) {
+  getWhatsappsAdvance(el, vmono) {
+    debugger
     var m_data = {
       "insertWhatsappsmsInfo": {
-        "mobileNumber": 22,//el.RegNo,
-        "smsString": "Dear" + el.PatientName + ",Your Advance has been successfully Added. UHID is " + el.AdvanceDetailID + " For, more deatils, call 08352249399. Thank You, JSS Super Speciality Hospitals, Near S-Hyper Mart, Vijayapur " || '',
+        "mobileNumber": vmono || 0,
+        "smsString": '',
         "isSent": 0,
-        "smsType": 'GRN',
+        "smsType": 'IPAdvance',
         "smsFlag": 0,
         "smsDate": this.currentDate,
-        "tranNo": el.AdvanceDetailID,
+        "tranNo": el,
         "PatientType": 2,//el.PatientType,
         "templateId": 0,
         "smSurl": "info@gmail.com",
-        "filePath": this.Filepath || '',
+        "filePath": '',
         "smsOutGoingID": 0
-
       }
     }
-    this._IpSearchListService.InsertWhatsappAdvance(m_data).subscribe(response => {
+    this._WhatsAppEmailService.InsertWhatsappSales(m_data).subscribe(response => {
       if (response) {
-        Swal.fire('Congratulations !', 'WhatsApp Sms  Data  save Successfully !', 'success').then((result) => {
-          if (result.isConfirmed) {
-            this._matDialog.closeAll();
-          }
+        this.toastr.success('IP Advance Receipt Sent on WhatsApp Successfully.', 'Save !', {
+          toastClass: 'tostr-tost custom-toast-success',
         });
       } else {
-        Swal.fire('Error !', 'Whatsapp Sms Data  not saved', 'error');
+        this.toastr.error('API Error!', 'Error WhatsApp!', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
       }
-
     });
-    // this.IsLoading = false;
-    el.button.disable = false;
   }
 
 

@@ -18,6 +18,8 @@ import { fuseAnimations } from '@fuse/animations';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { RegInsert } from '../../Admission/admission/admission.component';
 import { OPAdvancePaymentComponent } from 'app/main/opd/op-search-list/op-advance-payment/op-advance-payment.component';
+import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
+import { ToastrService } from 'ngx-toastr';
 
 type NewType = Observable<any[]>;
 @Component({
@@ -98,7 +100,7 @@ export class IPRefundofBillComponent implements OnInit {
   Age: any = 0;
   RegNo: any = 0;
   VisitId: any = 0;
-
+  vMobileNo: any = 0;
   noOptionFound: boolean = false;
   PatientListfilteredOptions: any;
   isRegIdSelected: boolean = false;
@@ -162,7 +164,8 @@ export class IPRefundofBillComponent implements OnInit {
     public datePipe: DatePipe,
     private accountService: AuthenticationService,
     private formBuilder: FormBuilder,
-
+    public _WhatsAppEmailService:WhatsAppEmailService,
+    public toastr: ToastrService,
     private changeDetectorRefs: ChangeDetectorRef,
     private dialogRef: MatDialogRef<IPRefundofBillComponent>,
     private _formBuilder: FormBuilder
@@ -187,6 +190,7 @@ export class IPRefundofBillComponent implements OnInit {
       this.Tarrifname= this.selectedAdvanceObj.TariffName
       this.Age= this.selectedAdvanceObj.AgeYear
       this.CompanyName= this.selectedAdvanceObj.CompanyName
+      this.vMobileNo= this.selectedAdvanceObj.MobileNo
     }
     // this.myControl = new FormControl();
     // this.filteredOptions = this.myControl.valueChanges.pipe(
@@ -645,7 +649,7 @@ createSearchForm() {
               
             let m=response
               this.viewgetRefundofbillReportPdf(response);
-            
+              this.getWhatsappshareIPrefundBill(response,this.vMobileNo)
               this.dialogRef.close();
             }
           });
@@ -661,6 +665,38 @@ createSearchForm() {
 Swal.fire("Refund Amount is More than RefundBalance")
     }
   }
+
+  getWhatsappshareIPrefundBill(el, vmono) {
+    debugger
+    var m_data = {
+      "insertWhatsappsmsInfo": {
+        "mobileNumber": vmono || 0,
+        "smsString": '',
+        "isSent": 0,
+        "smsType": 'IPREFBILL',
+        "smsFlag": 0,
+        "smsDate": this.currentDate,
+        "tranNo": el,
+        "PatientType": 2,//el.PatientType,
+        "templateId": 0,
+        "smSurl": "info@gmail.com",
+        "filePath": '',
+        "smsOutGoingID": 0
+      }
+    }
+    this._WhatsAppEmailService.InsertWhatsappSales(m_data).subscribe(response => {
+      if (response) {
+        this.toastr.success('IP Refund Of Bill Receipt Sent on WhatsApp Successfully.', 'Save !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        });
+      } else {
+        this.toastr.error('API Error!', 'Error WhatsApp!', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
+      }
+    });
+  }
+
 
 onClose() {
  

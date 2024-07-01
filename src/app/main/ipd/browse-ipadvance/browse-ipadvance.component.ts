@@ -15,6 +15,8 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
 import { BrowseIpdreturnadvanceReceipt } from '../ip-search-list/ip-refundof-advance/ip-refundof-advance.component';
 import { Xliff } from '@angular/compiler';
+import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-browse-ipadvance',
   templateUrl: './browse-ipadvance.component.html',
@@ -35,6 +37,8 @@ export class BrowseIPAdvanceComponent implements OnInit {
   // @Input() dataArray: any; 
   SpinLoading:boolean=false;
   AdList:boolean=false;
+  currentDate = new Date();
+  vMobileNo:any;
 
   displayedColumns = [
     'useraction',
@@ -95,6 +99,8 @@ export class BrowseIPAdvanceComponent implements OnInit {
     private _fuseSidebarService: FuseSidebarService,
     private reportDownloadService: ExcelDownloadService,
     public datePipe: DatePipe,public _matDialog: MatDialog,
+    public _WhatsAppEmailService:WhatsAppEmailService,
+    public toastr: ToastrService,
     private advanceDataStored: AdvanceDataStored,) { }
 
   ngOnInit(): void {
@@ -171,6 +177,68 @@ viewgetIPAdvanceReportPdf(contact) {
   this.chkprint=false;
 }
 
+getWhatsappsAdvance(el, vmono) {
+  debugger
+  var m_data = {
+    "insertWhatsappsmsInfo": {
+      "mobileNumber": vmono || 0,
+      "smsString": '',
+      "isSent": 0,
+      "smsType": 'IPAdvance',
+      "smsFlag": 0,
+      "smsDate": this.currentDate,
+      "tranNo": el,
+      "PatientType": 2,//el.PatientType,
+      "templateId": 0,
+      "smSurl": "info@gmail.com",
+      "filePath": '',
+      "smsOutGoingID": 0
+    }
+  }
+  this._WhatsAppEmailService.InsertWhatsappSales(m_data).subscribe(response => {
+    if (response) {
+      this.toastr.success('IP Advance Receipt Sent on WhatsApp Successfully.', 'Save !', {
+        toastClass: 'tostr-tost custom-toast-success',
+      });
+    } else {
+      this.toastr.error('API Error!', 'Error WhatsApp!', {
+        toastClass: 'tostr-tost custom-toast-error',
+      });
+    }
+  });
+}
+
+
+getWhatsappsRefundAdvance(el, vmono) {
+  debugger
+  var m_data = {
+    "insertWhatsappsmsInfo": {
+      "mobileNumber": vmono || 0,
+      "smsString": '',
+      "isSent": 0,
+      "smsType": 'IPREFADVANCE',
+      "smsFlag": 0,
+      "smsDate": this.currentDate,
+      "tranNo": el,
+      "PatientType": 2,//el.PatientType,
+      "templateId": 0,
+      "smSurl": "info@gmail.com",
+      "filePath": '',
+      "smsOutGoingID": 0
+    }
+  }
+  this._WhatsAppEmailService.InsertWhatsappSales(m_data).subscribe(response => {
+    if (response) {
+      this.toastr.success('IP Refund Of Advance Receipt Sent on WhatsApp Successfully.', 'Save !', {
+        toastClass: 'tostr-tost custom-toast-success',
+      });
+    } else {
+      this.toastr.error('API Error!', 'Error WhatsApp!', {
+        toastClass: 'tostr-tost custom-toast-error',
+      });
+    }
+  });
+}
   getViewAdvance(contact)
 {
     let xx = {

@@ -19,6 +19,7 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { OPAdvancePaymentComponent } from 'app/main/opd/op-search-list/op-advance-payment/op-advance-payment.component';
 import { IpAdvancePaymentInsert } from '../ip-paymentwith-advance/ip-paymentwith-advance.component';
 import { ToastrService } from 'ngx-toastr';
+import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 
 @Component({
   selector: 'app-ip-refundof-advance',
@@ -59,6 +60,8 @@ export class IPRefundofAdvanceComponent implements OnInit {
   vOPIPId: any;
   vRegId: any;
   Age:any;
+  vMobileNo:any;
+
 
   printTemplate: any;
   reportPrintObj: BrowseIpdreturnadvanceReceipt;
@@ -119,6 +122,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
     private accountService: AuthenticationService,
     private advanceDataStored: AdvanceDataStored,
     public toastr: ToastrService,
+    public _WhatsAppEmailService:WhatsAppEmailService,
     private dialogRef: MatDialogRef<IPRefundofAdvanceComponent>,
     private formBuilder: FormBuilder) {
     dialogRef.disableClose = true;
@@ -151,6 +155,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
       this.Age= this.selectedAdvanceObj.AgeYear
       this.CompanyName= this.selectedAdvanceObj.CompanyName
       this.RegNo= this.selectedAdvanceObj.RegNo
+      this.vMobileNo=this.selectedAdvanceObj.MobileNo
       this.getRefundofAdvanceListRegIdwise();
     }
    
@@ -431,8 +436,8 @@ export class IPRefundofAdvanceComponent implements OnInit {
                 this.getRefundofAdvanceListRegIdwise();
                 this.getReturndetails();
                 this.viewgetRefundofAdvanceReportPdf(response);
-
-                this.dialogRef.close();
+                this.getWhatsappsRefundAdvance(response,this.vMobileNo)
+                this.dialogRef.close();   
               }
             });
           } else {
@@ -475,6 +480,36 @@ export class IPRefundofAdvanceComponent implements OnInit {
     }, 100);
   }
 
+  getWhatsappsRefundAdvance(el, vmono) {
+    debugger
+    var m_data = {
+      "insertWhatsappsmsInfo": {
+        "mobileNumber": vmono || 0,
+        "smsString": '',
+        "isSent": 0,
+        "smsType": 'IPREFADVANCE',
+        "smsFlag": 0,
+        "smsDate": this.currentDate,
+        "tranNo": el,
+        "PatientType": 2,//el.PatientType,
+        "templateId": 0,
+        "smSurl": "info@gmail.com",
+        "filePath": '',
+        "smsOutGoingID": 0
+      }
+    }
+    this._WhatsAppEmailService.InsertWhatsappSales(m_data).subscribe(response => {
+      if (response) {
+        this.toastr.success('IP Refund Of Advance Receipt Sent on WhatsApp Successfully.', 'Save !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        });
+      } else {
+        this.toastr.error('API Error!', 'Error WhatsApp!', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
+      }
+    });
+  }
   onClose() {
     this._IpSearchListService.myRefundAdvanceForm.reset();
 

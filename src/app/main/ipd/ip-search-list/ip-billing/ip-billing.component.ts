@@ -32,6 +32,7 @@ import { MatTabChangeEvent } from '@angular/material/tabs';
 import { IpPaymentwithAdvanceComponent } from '../ip-paymentwith-advance/ip-paymentwith-advance.component';
 import { IPpaymentWithadvanceComponent } from '../../ip-settlement/ippayment-withadvance/ippayment-withadvance.component';
 import { PrebillDetailsComponent } from './prebill-details/prebill-details.component';
+import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 
 
 @Component({
@@ -234,6 +235,7 @@ export class IPBillingComponent implements OnInit {
   ClassList: any = [];
   optionsclass: any[] = [];
 
+  vMobileNo:any;
 
   filteredOptionssearchDoctor: Observable<string[]>;
   optionsSearchDoc: any[] = [];
@@ -256,6 +258,7 @@ export class IPBillingComponent implements OnInit {
     public datePipe: DatePipe,
     private dialogRef: MatDialogRef<IPBillingComponent>,
     private accountService: AuthenticationService,
+    public _WhatsAppEmailService:WhatsAppEmailService,
     public toastr: ToastrService,
     private formBuilder: FormBuilder) {
     this.showTable = false;
@@ -273,6 +276,7 @@ export class IPBillingComponent implements OnInit {
       console.log(this.selectedAdvanceObj)
       this.vClassId = this.selectedAdvanceObj.ClassId
       this.ClassName = this.selectedAdvanceObj.ClassName 
+      this.vMobileNo=this.selectedAdvanceObj.MobileNo; 
     }
 
     this.myControl = new FormControl();
@@ -1227,7 +1231,8 @@ ServiceList:any=[];
         BedName: this.selectedAdvanceObj.BedName,
         CompanyId: this.selectedAdvanceObj.CompanyId,
         IsBillGenerated: this.selectedAdvanceObj.IsBillGenerated,
-        UnitId: this.selectedAdvanceObj.UnitId
+        UnitId: this.selectedAdvanceObj.UnitId,
+        MobileNo: this.selectedAdvanceObj.MobileNo
       };
       // console.log(xx)
       this.advanceDataStored.storage = new AdvanceDetailObj(m_data);
@@ -1408,12 +1413,12 @@ debugger
           this._IpSearchListService.InsertIPBilling(submitData).subscribe(response => {
             if (response) {
 
-              Swal.fire('Bill successfully !', 'IP final bill generated successfully !', 'success').then((result) => {
+              Swal.fire('Bill successfully !', 'IP final Bill generated successfully !', 'success').then((result) => {
                 if (result.isConfirmed) {
 
                   this._matDialog.closeAll();
                   this.viewgetBillReportPdf(response);
-                  // this.getPrint(response);
+                  this.getWhatsappshareIPFinalBill(response,this.vMobileNo)
                 }
               });
             } else {
@@ -2350,6 +2355,38 @@ debugger
    
     },100)
     this.chkprint=false;
+  }
+
+// onwhatsappbill() {
+  getWhatsappshareIPFinalBill(el, vmono) {
+    debugger
+    var m_data = {
+      "insertWhatsappsmsInfo": {
+        "mobileNumber": vmono || 0,
+        "smsString": '',
+        "isSent": 0,
+        "smsType": 'IPBill',
+        "smsFlag": 0,
+        "smsDate": this.currentDate,
+        "tranNo": el,
+        "PatientType": 2,//el.PatientType,
+        "templateId": 0,
+        "smSurl": "info@gmail.com",
+        "filePath": '',
+        "smsOutGoingID": 0
+      }
+    }
+    this._WhatsAppEmailService.InsertWhatsappSales(m_data).subscribe(response => {
+      if (response) {
+        this.toastr.success('IP Final Bill Sent on WhatsApp Successfully.', 'Save !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        });
+      } else {
+        this.toastr.error('API Error!', 'Error WhatsApp!', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
+      }
+    });
   }
 
 }
