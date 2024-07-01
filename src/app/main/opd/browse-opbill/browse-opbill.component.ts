@@ -102,6 +102,14 @@ displayedColumns1 = [
   'ReceiptNo',
   'RegNo',
   'PatientName',
+  'MobileNo',
+  'VisitDate',
+  'DoctorName',
+  'RefDoctorName',
+  'HospitalName',
+  // 'PatientType',
+  // 'TariffName',
+  'CompanyName',
   'TotalAmt',
   'BalanceAmt',
   'PaidAmount',
@@ -109,8 +117,9 @@ displayedColumns1 = [
   'ChequePayAmount',
   'CardPayAmount',
   'AdvanceUsedAmount',
-  'NEFTPayAmount',
-  'PayTMAmount',
+  'OnlinePay',
+  // 'NEFTPayAmount',
+  // 'PayTMAmount',
   'UserName',
   'buttons'
 ];
@@ -123,6 +132,9 @@ displayedColumns2 = [
   'RegNo',
   'PatientName',
   'MobileNo',
+  'DoctorName',
+  'RefDoctorName',
+  'HospitalName',
   'PatientType',
   'TariffName',
   'CompanyName',
@@ -434,7 +446,6 @@ dataSource2 = new MatTableDataSource<RefundMaster>();
         "smsOutGoingID": 0
       }
     }
-    console.log(m_data);
     this._WhatsAppEmailService.InsertWhatsappSales(m_data).subscribe(response => {
       if (response) {
         Swal.fire('Congratulations !', 'WhatsApp Sms  Data  save Successfully !', 'success').then((result) => {
@@ -464,13 +475,9 @@ dataSource2 = new MatTableDataSource<RefundMaster>();
       "Start":(this.paginator?.pageIndex??0),
       "Length":(this.paginator?.pageSize??35)
     }
-    
-    console.log(D_data)
-    debugger
       this._BrowseOPDBillsService.getBrowseOPDBillsList(D_data).subscribe(Visit => {
       this.dsOPBrowseList.data = Visit as BrowseOPDBill[];
       this.dsOPBrowseList.data = Visit["Table1"] ?? [] as BrowseOPDBill[];
-      console.log(this.dsOPBrowseList.data)
       this.resultsLength= Visit["Table"][0]["total_row"];
       this.sIsLoading = this.dsOPBrowseList.data.length == 0 ? 'no-data' : '';
       this.click = false;
@@ -742,18 +749,6 @@ PaymentId=Id.PaymentId
     this.dataSource2.data.forEach(e => {
       var tempObj = [];
       tempObj.push(e.RefundDate);
-      // tempObj.push(e.RefundNo);
-      // tempObj.push(e.RegNo);
-      // tempObj.push(e.PatientName);
-      // tempObj.push(e.MobileNo);
-      // tempObj.push(e.PatientType);
-      // tempObj.push(e.TariffName);
-      // tempObj.push(e.CompanyName);
-      // tempObj.push(e.PaymentDate);
-      // tempObj.push(e.RefundAmount);
-      // tempObj.push(e.TotalAmt);
-      // tempObj.push(e.PBillNo);
-   
       actualData.push(tempObj);
     });
     let headers = [['RefundDate', 'RefundNo', 'RegNo','PatientName', 'MobileNo', 'PatientType', 'TariffName', 'CompanyName', 'PaymentDate','RefundAmount', 'TotalAmt','PBillNo']];
@@ -768,8 +763,9 @@ PaymentId=Id.PaymentId
       "L_Name": this._BrowseOPDBillsService.myFilterrefundform.get("LastName").value + '%' || '%',
       "From_Dt": this.datePipe.transform(this._BrowseOPDBillsService.myFilterrefundform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
       "To_Dt": this.datePipe.transform(this._BrowseOPDBillsService.myFilterrefundform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
-      "Reg_No": this._BrowseOPDBillsService.myFilterrefundform.get("RegNo").value || 0
-
+      "Reg_No": this._BrowseOPDBillsService.myFilterrefundform.get("RegNo").value || 0,
+      Start: (this.paginator?.pageIndex ?? 0),
+      Length: (this.paginator?.pageSize ?? 35),
     }
     console.log(D_data)
     setTimeout(() => {
@@ -777,11 +773,17 @@ PaymentId=Id.PaymentId
       console.log(D_data);
       this._BrowseOPDBillsService.getBrowseOPDReturnReceiptList(D_data).subscribe(Visit => {
         this.dataSource2.data = Visit as RefundMaster[];
-        console.log(this.dataSource2.data);
-        this.dataSource2.sort = this.sort;
-        this.dataSource2.paginator = this.paginator;
-        this.sIsLoading = '';
-        this.click = false;
+        this.dataSource2.data = Visit["Table1"] ?? [] as RefundMaster[];
+        console.log(this.dataSource2.data)
+        this.resultsLength = Visit["Table"][0]["total_row"];
+        this.sIsLoading = this.dataSource2.data.length == 0 ? 'no-data' : '';
+
+        // this.dataSource2.data = Visit as RefundMaster[];
+        // console.log(this.dataSource2.data);
+        // this.dataSource2.sort = this.sort;
+        // this.dataSource2.paginator = this.paginator;
+        // this.sIsLoading = '';
+        // this.click = false;
       },
         error => {
           this.sIsLoading = '';

@@ -139,19 +139,6 @@
                                         </mat-card>
                                     </mat-tab>
     
-                                    <!-- <mat-tab label="CLINICAL CONDITION ON ADMISSION">
-                                        <mat-card class="mat-tab-card-container">
-                                            <div class="form-title mb-2 pb-2 border-bottom">
-                                                <span class="h2 font-weight-600">CLINICAL CONDITION ON ADMISSION</span>
-                                            </div>
-                                            <div class="form-input">
-                                                <mat-form-field appearance="outline" fxFlex>
-                                                    <mat-label>Clinical Condition OnAdmisssion</mat-label>
-                                                    <textarea matInput name="ClinicalConditionOnAdmisssion" formControlName="ClinicalConditionOnAdmisssion" [(ngModel)]="DischargeSList.ClinicalConditionOnAdmisssion" cols="300" rows="15"></textarea>
-                                                </mat-form-field>
-                                            </div>
-                                        </mat-card>
-                                    </mat-tab> -->
                                     <mat-tab label="SURGERY / PROCEDURE DONE">
                                         <mat-card class="mat-tab-card-container" fxLayoutGap="6px">
                                             <div>
@@ -180,9 +167,7 @@
                                             </div>
                                         </mat-card>
                                     
-                                    </mat-tab>
-    
-    
+                                    </mat-tab> 
     
                                     <mat-tab label="PATHOLOGY / RADIOLOGY ">
                                         <mat-card class="mat-tab-card-container">
@@ -278,34 +263,6 @@
                                         </mat-card>
                                     </mat-tab>
     
-                                    <!-- <mat-tab label="CONDITION AT THE TIME OF DISCHARGE">
-                                        <mat-card class="mat-tab-card-container">
-                                            <div class="form-title mb-2 pb-2 border-bottom">
-                                                <span class="h2 font-weight-600">CONDITION AT THE TIME OF DISCHARGE</span>
-                                            </div>
-                                            <div class="form-input">
-                                                <mat-form-field appearance="outline" fxFlex>
-                                                    <mat-label>CONDITION AT THE TIME OF DISCHARGE</mat-label>
-                                                    <textarea matInput name="ConditionAtTheTimeOfDischarge" formControlName="ConditionAtTheTimeOfDischarge" [(ngModel)]="DischargeSList.ConditionAtTheTimeOfDischarge" cols="300" rows="15"></textarea>
-                                                </mat-form-field>
-                                            </div>
-                                        </mat-card>
-                                    </mat-tab> -->
-    
-                                    <!-- <mat-tab label="PAIN MANAGMENT TECHNIQUE">
-                                        <mat-card class="mat-tab-card-container">
-                                            <div class="form-title mb-2 pb-2 border-bottom">
-                                                <span class="h2 font-weight-600">PAIN MANAGMENT TECHNIQUE</span>
-                                            </div>
-                                            <div class="form-input">
-                                                <mat-form-field appearance="outline" fxFlex>
-                                                    <mat-label>OTHER CON DR.OPINION</mat-label>
-                                                    <textarea matInput name="PainManagementTechnique" formControlName="PainManagementTechnique" [(ngModel)]="DischargeSList.PainManagementTechnique" cols="300" rows="15"></textarea>
-                                                </mat-form-field>
-                                            </div>
-                                        </mat-card>
-                                    </mat-tab> -->
-    
                                     <mat-tab label="LIFE STYLE / FOLLOW UP">
                                         <mat-card class="mat-tab-card-container">
                                             <div fxLayout="column" class="gap-8">
@@ -326,7 +283,7 @@
                                                             <mat-label>CONDITION AT THE TIME OF DISCHARGE</mat-label>
                                                             <textarea matInput name="ConditionAtTheTimeOfDischarge"
                                                                 formControlName="ConditionAtTheTimeOfDischarge"
-                                                                [(ngModel)]="vConditionofDischarge"
+                                                                [(ngModel)]="vConditionofTimeDischarge"
                                                                 cols="300" rows="6"></textarea>
                                                         </mat-form-field>
                                                     </div>
@@ -374,7 +331,7 @@
                                                                 <mat-form-field appearance="outline" fxFlex>
                                                                     <mat-label>Claim Number</mat-label>
                                                                     <input name="ClaimNumber" formControlName="ClaimNumber"
-                                                                        [(ngModel)]="DischargeSList.ClaimNumber" matInput>
+                                                                        [(ngModel)]="vClaimNumber" matInput>
                                                                 </mat-form-field>
                                                             </div>
     
@@ -407,7 +364,7 @@
                                                                     <mat-label>Pre OTH Number</mat-label>
                                                                     <input name="PreOthNumber"
                                                                         formControlName="PreOthNumber"
-                                                                        [(ngModel)]="DischargeSList.PreOthNumber" matInput>
+                                                                        [(ngModel)]="vPreOthNumber" matInput>
                                                                 </mat-form-field>
                                                             </div>
     
@@ -440,7 +397,7 @@
                                                                     <mat-label>Doctor Assistant Name</mat-label>
                                                                     <input name="DoctorAssistantName"
                                                                         formControlName="DoctorAssistantName"
-                                                                        [(ngModel)]="DischargeSList.DoctorAssistantName"
+                                                                        [(ngModel)]="vDoctorAssistantName"
                                                                         matInput>
                                                                 </mat-form-field>
                                                             </div>
@@ -613,14 +570,8 @@
                                             
                                            
                                         </mat-card>
-                                    </mat-tab>
-    
-                                    <!-- <mat-tab label="OTHER CON DR.OPINION">
-    
-                                    </mat-tab>
-                                    <mat-tab label="CONDITION AT THE TIME OF DISCHARGE">
-    
-                                    </mat-tab> -->
+                                    </mat-tab> 
+                                   
                                 </mat-tab-group>
                             </div>
                         </div>
@@ -629,7 +580,7 @@
                                 <div fxLayout="row" fxLayoutAlign="end center">
                                     <mat-radio-group name="IsNormalOrDeath" formcontrolName="IsNormalOrDeath"
                                         aria-label="Select an option">
-                                        <mat-radio-button value="1" checked="true">Normal </mat-radio-button>
+                                        <mat-radio-button value="1" >Normal </mat-radio-button>
                                         <mat-radio-button value="2">Death Summary</mat-radio-button>
                                     </mat-radio-group>
                                 </div>
@@ -644,7 +595,7 @@
         <div class="footer-navigation-container">
             <div class="modal-footer-buttons">
                 <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                <button type="button" class="btn btn-primary" (click)="OnSave()" [disabled]="DischargesumForm.invalid"> Save </button>
+                <button type="button" class="btn btn-primary" (click)="OnSave()" > Save </button>
             </div>
         </div>
     </div>

@@ -534,6 +534,8 @@ ServiceList:any=[];
   }
   getSelectedObjClass(obj){
     this.Serviceform.get('SrvcName').setValue('');
+    this.Serviceform.get('price').setValue('');
+    this.filteredOptions = [];
   }
 
   private _filterclass(value: any): string[] {
@@ -1845,9 +1847,7 @@ debugger
         if (response) {
           Swal.fire('Draft Bill successfully!', 'IP Draft bill generated successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
-              this._matDialog.closeAll();
-              this.viewgetDraftBillReportPdf(this.selectedAdvanceObj.AdmissionID);
-
+              this.viewgetDraftBillReportPdf(response);
             }
           });
         } else {
@@ -1859,7 +1859,7 @@ debugger
     }else{
       Swal.fire('error !', 'Please select check box ', 'error');
     }
-
+    this._matDialog.closeAll();
   }
   vselect:any;
   vService:any;

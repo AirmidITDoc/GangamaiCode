@@ -118,7 +118,7 @@ public getBrowseOpdPaymentReceiptList(employee) {
 
 public getBrowseOPDReturnReceiptList(employee) {
       
-  return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_BrowseOPDRefundBillList",employee)
+  return this._httpClient.post("Generic/GetDataSetByProc?procName=m_Rtrv_BrowseOPDRefundBillList",employee)
 }
 
 }

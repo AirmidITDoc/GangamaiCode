@@ -433,7 +433,7 @@ constructor(public _httpClient:HttpClient,
   {    
     return this._httpClient.post("InPatient/IPDBedTransfer",employee);
   }
-
+ 
   // Dashboard
 
   public getAccountDashboard()
@@ -710,6 +710,10 @@ public updateIPDDischargSummary(employee)
   public InsertInterim (employee)
   {
     return this._httpClient.post("InPatient/IPInterimBillInsert",employee)
+  }
+  public BillDiscountAfter(employee)
+  {    
+    return this._httpClient.post("InPatient/BillDiscountAfter",employee);
   }
   public getClassList(employee){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ClassName_Conditional",employee)
