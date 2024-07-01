@@ -123,13 +123,13 @@
                                         <div class="export-buttons">
                                             <div fxLayout="row" fxLayoutAlign="center center" class="gap-8">
                                                 <button type="button" mat-icon-button (click)="exportReportPdf()"
-                                                    [disabled]="dataSource.data.length ==0">
+                                                    [disabled]="dsOPBrowseList.data.length ==0">
                                                     <img width="32" height="10px" src="assets/images/svg/pdf-svg.svg">
                                                 </button>
 
                                                 <button type="button" mat-icon-button
                                                     (click)="exportOPBillReportExcel()"
-                                                    [disabled]="dataSource.data.length == 0">
+                                                    [disabled]="dsOPBrowseList.data.length == 0">
                                                     <img width="32" height="10px" src="assets/images/svg/xls-svg.svg">
                                                 </button>
                                             </div>

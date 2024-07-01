@@ -14,6 +14,7 @@ import { takeUntil } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
+import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
 
 @Component({
   selector: 'app-doctornote',
@@ -54,7 +55,7 @@ export class DoctornoteComponent implements OnInit {
   DoctorNoteList:any=[];
   vRegNo:any;
   vDescription:any;
-
+  selectedAdvanceObj: AdmissionPersonlModel;
   dsPatientList = new MatTableDataSource;
   dsDoctorNoteList = new MatTableDataSource;
   dsHandOverNoteList = new MatTableDataSource;
@@ -69,7 +70,12 @@ export class DoctornoteComponent implements OnInit {
     private formBuilder: FormBuilder, 
     public datePipe: DatePipe, 
     public toastr: ToastrService,
-  ) { }
+  ) {  if (this.advanceDataStored.storage) {
+    debugger
+     this.selectedAdvanceObj = this.advanceDataStored.storage;
+     // this.PatientHeaderObj = this.advanceDataStored.storage;
+     console.log( this.selectedAdvanceObj)
+   } }
 
   
  

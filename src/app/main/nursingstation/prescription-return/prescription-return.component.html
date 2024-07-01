@@ -48,7 +48,7 @@
 
                                 <mat-form-field appearance="outline">
                                     <mat-label>Search RegNo</mat-label>
-                                    <input name="RegNo" formControlName="RegNo" matInput>
+                                    <input name="RegNo" formControlName="RegNo" matInput (keypress)="keyPressCharater($event)">
                                 </mat-form-field>
 
                                 <mat-radio-group aria-label="Select an option" formControlName="PrescriptionStatus" name="PrescriptionStatus" (change)="onChangePrescriptionType($event)" (blur)="onChangePrescriptionType($event)">
@@ -72,7 +72,24 @@
         </fuse-sidebar>
 
         <div class="center p-12" fxFlexAlign="start center">
+            <div class="table-header">
+                <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+                 
+                    <div class="table-header-right">
+                        <div class="export-buttons">
+                            <div fxLayout="row" fxLayoutAlign="center center" class="gap-8">
+                                <button type="button" mat-icon-button (click)="exportReportPdf()" [disabled]="dsprescritionretList.data.length ==0">
+                                    <img width="32" height="10px" src="assets/images/svg/pdf-svg.svg">
+                                </button>
 
+                                <button type="button" mat-icon-button (click)="exportIpprescriptionReturnReportExcel()" [disabled]="dsprescritionretList.data.length == 0">
+                                    <img width="32" height="10px" src="assets/images/svg/xls-svg.svg">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="content-card">
                 <div fxFlexFill fxLayout="column">
                     <div fxFlex.gt-sm="100%" fxFlex>
