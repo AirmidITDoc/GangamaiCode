@@ -93,7 +93,7 @@ export class NewOPBillingComponent implements OnInit {
   isDoctorSelected: boolean = false;
   optionsDoctor: any[] = [];
   b_price = '0';
-  b_qty = '1';
+  b_qty:any;
   b_totalAmount: any = 0;
   // tettotalAmount: any =0;
   b_netAmount: any = 0;
@@ -362,6 +362,7 @@ debugger
 
       this.SrvcName = obj.ServiceName;
       this.b_price = obj.Price;
+      this.b_qty = 1;
       this.b_totalAmount = obj.Price;
       this.b_netAmount = obj.Price;
       this.serviceId = obj.ServiceId;
@@ -386,6 +387,7 @@ debugger
 
       this.SrvcName = obj.ServiceName;
       this.b_price = obj.Price;
+      this.b_qty = 1;
       this.b_totalAmount = obj.Price;
       this.b_netAmount = obj.Price;
       this.serviceId = obj.ServiceId;
@@ -1060,6 +1062,7 @@ finaldiscAmt(){
       this.b_netAmount = (parseFloat(this.b_totalAmount) - parseFloat(this.b_ChargeDisAmount)).toFixed(2);
       this.registeredForm.get('ChargeDiscAmount').setValue(this.b_ChargeDisAmount);
       this.registeredForm.get('netAmount').setValue(this.b_netAmount);
+     // this.BillingForm.get('concessionAmt').readonly();
       this.Consessionres = true;
     }
     else if ((this.v_ChargeDiscPer > 100) || (this.v_ChargeDiscPer < 0)) {

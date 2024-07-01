@@ -565,7 +565,7 @@
                                             <mat-label>Disc Amt</mat-label>
                                             <input matInput  name="concessionAmt"
                                                 formControlName="concessionAmt"  type="text" onlyNumber  autocomplete="off" 
-                                                (keypress)="keyPressCharater($event)"   (keyup)="calcDiscAmtTotal()">
+                                                (keypress)="keyPressCharater($event)"   (keyup)="calcDiscAmtTotal()" [readonly]="v_ChargeDiscPer > 0">
                                         </mat-form-field> 
 
                                         <mat-form-field appearance="outline" fxFlex *ngIf="Consessionres">

@@ -5,6 +5,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ToastrService } from 'ngx-toastr';
+import { IPSearchListService } from '../ip-search-list.service';
 
 @Component({
   selector: 'app-discount-after-final-bill',
@@ -20,9 +21,11 @@ export class DiscountAfterFinalBillComponent implements OnInit {
   vNetamount:any;
   vTotalAmount:any;
   vDiscAmount:any;
-  vFinalDiscPer:any;
+  vDiscountPer2:any;
+  vDiscAmount2:any;
   vFinalDiscAmt:any;
   vFinalNetAmt:any;
+  ConcessionReasonList:any=[];
 
   constructor(
     public _matDialog: MatDialog,
@@ -31,13 +34,17 @@ export class DiscountAfterFinalBillComponent implements OnInit {
     public dialogRef: MatDialogRef<DiscountAfterFinalBillComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private accountService: AuthenticationService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    public _IpSearchListService: IPSearchListService,
   ) { }
 
   ngOnInit(): void {
     if(this.data){
       this.selectedAdvanceObj = this.data
       console.log(this.selectedAdvanceObj)
+      this.vDiscAmount = this.selectedAdvanceObj.ConcessionAmt;
+      this.vTotalAmount = this.selectedAdvanceObj.TotalAmt;
+      this.vNetamount = this.selectedAdvanceObj.NetPayableAmt
     }
     this.CreateMyForm();
 
@@ -47,28 +54,35 @@ export class DiscountAfterFinalBillComponent implements OnInit {
       NetAmount:[''],
       TotalAmount:[''],
       DiscAmount:[''],
-      FinalDiscPer:[''],
+      DiscountPer2:[''],
+      DiscAmount2:[''],
       FinalDiscAmt:[''],
-      FinalNetAmt:['']
+      FinalNetAmt:[''],
+      ConcessionId:['']
     });
   }
   CalcDiscPer(){
-    if(this.vFinalDiscPer){
-      if(this.vFinalDiscPer > 100){
+    if(this.vDiscountPer2){
+      if(this.vDiscountPer2 > 100){
         this.toastr.warning('Please enter discount % less than 100 and greater than 0', 'warning !', {
           toastClass: 'tostr-tost custom-toast-error',
         });
-        return  this.vFinalDiscPer = '';
+        return  this.vDiscountPer2 = '';
       }
-      else if(this.vFinalDiscPer > 0){
-        this.vFinalDiscAmt = ((parseFloat(this.vNetamount) * parseFloat(this.vFinalDiscPer)) / 100);
-        this.vFinalNetAmt = (parseFloat(this.vNetamount) - parseFloat(this.vFinalDiscAmt)).toFixed(2);
+      else if(this.vDiscountPer2 > 0){
+        this.vDiscAmount2 = ((parseFloat(this.vNetamount) * parseFloat(this.vDiscountPer2)) / 100);
+        this.vFinalNetAmt = (parseFloat(this.vNetamount) - parseFloat(this.vDiscAmount2)).toFixed(2);
       }
-      else if(this.vFinalDiscPer == 0 || this.vFinalDiscPer == '' || this.vFinalDiscPer == null || this.vFinalDiscPer == undefined){
+      else if(this.vDiscountPer2 == 0 || this.vDiscountPer2 == '' || this.vDiscountPer2 == null || this.vDiscountPer2 == undefined){
         this.vFinalNetAmt = this.vNetamount ;
-        this.vFinalDiscAmt = '';
+        this.vDiscAmount2 = '';
       }
     }
+  }
+  getConcessionReasonList() { 
+    this._IpSearchListService.getConcessionCombo().subscribe(data => {
+      this.ConcessionReasonList = data;
+    })
   }
   OnSave(){
     if(this.vFinalNetAmt == 0 || this.vFinalNetAmt == '' || this.vFinalNetAmt == undefined || this.vFinalNetAmt == null){
