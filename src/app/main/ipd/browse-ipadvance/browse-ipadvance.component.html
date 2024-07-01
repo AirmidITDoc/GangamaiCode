@@ -64,7 +64,7 @@
             
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Bill No</mat-label>
-                                                <input name="PBillNo" formControlName="PBillNo" matInput
+                                                <input name="PBillNo" formControlName="PBillNo" matInput (keypress)="keyPressCharater($event)"
                                                     (keyup)="onShow_IpdAdvance()">
                                             </mat-form-field>
             

@@ -64,7 +64,24 @@
         <div class="center p-12 pb-56" fxFlexAlign="start center">
 
             <div class="content-card" style="border-radius:4px; ">
+                <div class="table-header">
+                    <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+                     
+                        <div class="table-header-right">
+                            <div class="export-buttons">
+                                <div fxLayout="row" fxLayoutAlign="center center" class="gap-8">
+                                    <button type="button" mat-icon-button (click)="exportReportPdf()" [disabled]="dsrequestList.data.length ==0">
+                                        <img width="32" height="10px" src="assets/images/svg/pdf-svg.svg">
+                                    </button>
 
+                                    <button type="button" mat-icon-button (click)="exportIpLabrequestReportExcel()" [disabled]="dsrequestList.data.length == 0">
+                                        <img width="32" height="10px" src="assets/images/svg/xls-svg.svg">
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
                     <div fxFlex.gt-sm="100%" fxFlex>

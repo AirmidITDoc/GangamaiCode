@@ -120,7 +120,7 @@
                                     </mat-form-field>
                         
                                     <mat-form-field appearance="outline" fxFlex>
-                                        <mat-label>Disc Amount</mat-label>
+                                        <mat-label>Disc Amount1</mat-label>
                                         <input matInput name="DiscAmount" formControlName="DiscAmount" type="text" OnlyNumber
                                             [(ngModel)]="vDiscAmount" required readonly>
                                     </mat-form-field>
@@ -133,10 +133,26 @@
                                 </div>
                                 <div fxLayout="row" fxLayoutGap="4px">
                                     <mat-form-field appearance="outline" fxFlex>
-                                        <mat-label>Final Discount%</mat-label>
-                                        <input matInput name="FinalDiscPer" formControlName="FinalDiscPer" type="text" OnlyNumber
-                                            [(ngModel)]="vFinalDiscPer" required (keypress)="keyPressCharater($event)" 
+                                        <mat-label>DiscountPer2</mat-label>
+                                        <input matInput name="DiscountPer2" formControlName="DiscountPer2" type="text" OnlyNumber
+                                            [(ngModel)]="vDiscountPer2" required (keypress)="keyPressCharater($event)" 
                                             (keydown)="onEnterFinalDisc($event)" #FinalDiscPer (keyup)="CalcDiscPer()">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Disc Amount2</mat-label>
+                                        <input matInput name="DiscAmount2" formControlName="DiscAmount2" type="text" OnlyNumber
+                                            [(ngModel)]="vDiscAmount2" required (keypress)="keyPressCharater($event)" 
+                                            (keydown)="onEnterFinalDisc($event)" #FinalDiscPer >
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Concession Reason Type</mat-label>
+                                        <mat-select formControlName="ConcessionId">
+                                            <mat-option *ngFor="let Doc of ConcessionReasonList" [value]="Doc">
+                                                {{Doc.ConcessionReason}}
+                                            </mat-option>
+                                        </mat-select>
                                     </mat-form-field>
                         
                                     <mat-form-field appearance="outline" fxFlex>
