@@ -530,6 +530,8 @@ ServiceList:any=[];
   }
   getSelectedObjClass(obj){
     this.Serviceform.get('SrvcName').setValue('');
+    this.Serviceform.get('price').setValue('');
+    this.filteredOptions = [];
   }
 
   private _filterclass(value: any): string[] {

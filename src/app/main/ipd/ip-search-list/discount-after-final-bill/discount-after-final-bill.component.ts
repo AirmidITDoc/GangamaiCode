@@ -6,6 +6,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ToastrService } from 'ngx-toastr';
 import { IPSearchListService } from '../ip-search-list.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-discount-after-final-bill',
@@ -25,6 +26,8 @@ export class DiscountAfterFinalBillComponent implements OnInit {
   vDiscAmount2:any;
   vFinalDiscAmt:any;
   vFinalNetAmt:any;
+  vCompanyDiscAmt:any;
+  vCompanyDiscper:any;
   ConcessionReasonList:any=[];
 
   constructor(
@@ -47,6 +50,7 @@ export class DiscountAfterFinalBillComponent implements OnInit {
       this.vNetamount = this.selectedAdvanceObj.NetPayableAmt
     }
     this.CreateMyForm();
+    this.getConcessionReasonList();
 
   }
   CreateMyForm(){
@@ -58,33 +62,84 @@ export class DiscountAfterFinalBillComponent implements OnInit {
       DiscAmount2:[''],
       FinalDiscAmt:[''],
       FinalNetAmt:[''],
+      CompanyDiscper:[''],
+      CompanyDiscAmt:[''],
       ConcessionId:['']
     });
   }
+
   CalcDiscPer(){
-    if(this.vDiscountPer2){
-      if(this.vDiscountPer2 > 100){
+    //debugger
+    let DiscAmt2;
+    let CompanyDiscAmt ;
+    let DiscPer2 = this.MyFrom.get('DiscountPer2').value || 0;
+    let CompanyDiscPer = this.MyFrom.get('CompanyDiscper').value || 0;
+
+    if(DiscPer2){
+      if(DiscPer2 > 100){
         this.toastr.warning('Please enter discount % less than 100 and greater than 0', 'warning !', {
           toastClass: 'tostr-tost custom-toast-error',
         });
         return  this.vDiscountPer2 = '';
       }
-      else if(this.vDiscountPer2 > 0){
-        this.vDiscAmount2 = ((parseFloat(this.vNetamount) * parseFloat(this.vDiscountPer2)) / 100);
-        this.vFinalNetAmt = (parseFloat(this.vNetamount) - parseFloat(this.vDiscAmount2)).toFixed(2);
-      }
-      else if(this.vDiscountPer2 == 0 || this.vDiscountPer2 == '' || this.vDiscountPer2 == null || this.vDiscountPer2 == undefined){
+      else{
+        this.vDiscAmount2 = ((parseFloat(this.vNetamount) * parseFloat(this.vDiscountPer2)) / 100).toFixed(2) || 0;
+        DiscAmt2 = this.vDiscAmount2;
+       // this.vFinalNetAmt = (parseFloat(this.vNetamount) - parseFloat(this.vDiscAmount2)).toFixed(2);
+      } 
+    }else{
+      if(DiscPer2 == 0 || DiscPer2 == '' || DiscPer2 == null || DiscPer2 == undefined){
         this.vFinalNetAmt = this.vNetamount ;
-        this.vDiscAmount2 = '';
+        this.vDiscAmount2 = ''; 
+        DiscAmt2 = 0;
       }
     }
+
+    if(CompanyDiscPer){
+      if(CompanyDiscPer > 100){
+        this.toastr.warning('Please enter discount % less than 100 and greater than 0', 'warning !', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
+        return  this.vCompanyDiscper = '';
+      }
+      else{
+        this.vCompanyDiscAmt = ((parseFloat(this.vNetamount) * parseFloat(this.vCompanyDiscper)) / 100).toFixed(2) || 0;
+        CompanyDiscAmt =   this.vCompanyDiscAmt;
+        //this.vFinalNetAmt = (parseFloat(this.vNetamount) - parseFloat(this.vCompanyDiscAmt)).toFixed(2);
+      } 
+    }
+    else{
+       if(CompanyDiscPer == 0 || CompanyDiscPer == '' || CompanyDiscPer == null || CompanyDiscPer == undefined){
+        this.vFinalNetAmt = this.vNetamount ;
+        this.vCompanyDiscAmt = '';
+        CompanyDiscAmt = 0;
+      }
+    }
+    this.vFinalDiscAmt = (parseFloat(DiscAmt2) + parseFloat(CompanyDiscAmt));
+    this.vFinalNetAmt = (parseFloat(this.vNetamount) - (parseFloat( this.vFinalDiscAmt))).toFixed(2);
   }
+ 
   getConcessionReasonList() { 
     this._IpSearchListService.getConcessionCombo().subscribe(data => {
       this.ConcessionReasonList = data;
     })
   }
   OnSave(){
+    debugger
+    if(this.vDiscAmount2 > 0 || this.vCompanyDiscAmt > 0){
+      if(!this.MyFrom.get('ConcessionId').value){
+        this.toastr.warning('Please select Concession Reason is zero', 'warning !', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
+        return
+      }
+    }
+    if(this.vFinalDiscAmt == 0 || this.vFinalDiscAmt == '' || this.vFinalDiscAmt == undefined || this.vFinalDiscAmt == null){
+      this.toastr.warning('Please check final DiscAmount is zero', 'warning !', {
+        toastClass: 'tostr-tost custom-toast-error',
+      });
+      return
+    }
     if(this.vFinalNetAmt == 0 || this.vFinalNetAmt == '' || this.vFinalNetAmt == undefined || this.vFinalNetAmt == null){
       this.toastr.warning('Please check final netamount is zero', 'warning !', {
         toastClass: 'tostr-tost custom-toast-error',
@@ -92,6 +147,63 @@ export class DiscountAfterFinalBillComponent implements OnInit {
       return
     }
 
+    // let billDiscountAfterUpdateObj = {};
+
+    // billDiscountAfterUpdateObj['billNo'] =  this.selectedAdvanceObj.BillNo || 0;
+    // billDiscountAfterUpdateObj['netPayableAmt'] = this.MyFrom.get('FinalNetAmt').value || 0;
+    // billDiscountAfterUpdateObj['concessionAmt'] = this.MyFrom.get('DiscAmount2').value || 0;
+    // billDiscountAfterUpdateObj['compDiscAmt'] =this.MyFrom.get('CompanyDiscAmt').value || 0;
+    // billDiscountAfterUpdateObj['balanceAmt'] =this.selectedAdvanceObj.BalanceAmt || 0;
+    // billDiscountAfterUpdateObj['concessionReasonId'] = this.MyFrom.get('ConcessionId').value.ConcessionId || 0;
+
+    // let submitData={
+    //   'billDiscountAfterUpdate': billDiscountAfterUpdateObj
+    // }
+
+    var m_data1 = {
+      "billDiscountAfterUpdate": {
+        "billNo": this.selectedAdvanceObj.BillNo || 0,
+        "netPayableAmt": this.MyFrom.get('FinalNetAmt').value || 0,
+        "concessionAmt":this.MyFrom.get('DiscAmount2').value || 0,
+        "compDiscAmt": this.MyFrom.get('CompanyDiscAmt').value || 0,
+        "balanceAmt": this.selectedAdvanceObj.BalanceAmt || 0,
+        "concessionReasonId": this.MyFrom.get('ConcessionId').value.ConcessionId || 0
+      }
+    }
+    console.log(m_data1)
+    this._IpSearchListService.BillDiscountAfter(m_data1).subscribe(response => {
+      if (response) {
+        Swal.fire('Congratulations !', 'Discount After Final Bill data saved Successfully !', 'success').then((result) => {
+          if (result.isConfirmed) {
+            this._matDialog.closeAll();
+            this.onClose(); 
+          
+          }
+        });
+      }
+      else {
+        Swal.fire('Error !', 'Discount After Final Bill data not saved', 'error');
+      }
+      
+    });
+    // this._IpSearchListService.BillDiscountAfter(submitData).subscribe(response =>{
+    //   if (response) {
+    //     this.toastr.success('Record  Saved Successfully.', 'Saved !', {
+    //       toastClass: 'tostr-tost custom-toast-success',
+    //     }); 
+    //     this._matDialog.closeAll();
+    //     this.onClose(); 
+      
+    //   } else {
+    //     this.toastr.error(' Data not saved !, Please check API error..', 'Error !', {
+    //       toastClass: 'tostr-tost custom-toast-error',
+    //     });
+    //   } 
+    // }, error => {
+    //   this.toastr.error('Discount After Bill Data not saved !, Please check API error..', 'Error !', {
+    //     toastClass: 'tostr-tost custom-toast-error',
+    //   });
+    // }); 
   }
   onClose(){
     this.dialogRef.close();
