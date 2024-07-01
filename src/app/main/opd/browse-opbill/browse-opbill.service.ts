@@ -78,7 +78,7 @@ export class BrowseOPBillService {
   }
 
   public getBrowseOPDBillsList(param) {
-    return this._httpClient.post("Generic/GetDataSetByProc?procName=m_Rtrv_BrowseOPDBill", param) 
+    return this._httpClient.post("Generic/GetDataSetByProc?procName=m_Rtrv_BrowseOPDBill_Pagi", param) 
   }  
   public getBillPrint(BillNo) {
     return this._httpClient.post("Generic/GetByProc?procName=rptBillPrint", BillNo)
@@ -118,7 +118,7 @@ public getBrowseOpdPaymentReceiptList(employee) {
 
 public getBrowseOPDReturnReceiptList(employee) {
       
-  return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_BrowseOPDRefundBillList",employee)
+  return this._httpClient.post("Generic/GetDataSetByProc?procName=m_Rtrv_BrowseOPDRefundBillList",employee)
 }
 
 }

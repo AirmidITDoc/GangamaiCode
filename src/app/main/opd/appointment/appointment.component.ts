@@ -279,23 +279,18 @@ export class AppointmentComponent implements OnInit {
 
   displayedColumns = [
     "PatientOldNew",
-    // "CrossConsulFlag",
-    // "CrossConsultation",
-    // "Edit",
-    // "Bill",
     "RegNoWithPrefix",
     "PatientName",
     "DVisitDate",
-    "VisitTime",
     "OPDNo",
+    'DepartmentName',
     "Doctorname",
     "RefDocName",
     "PatientType",
-    "CompanyName",
     'TariffName',
+    "CompanyName",
     'MobileNo',
     "action",
-    // "action1"
   ];
 
   dataSource = new MatTableDataSource<VisitMaster>();
@@ -346,11 +341,7 @@ export class AppointmentComponent implements OnInit {
     private changeDetectorRefs: ChangeDetectorRef,
     public _WhatsAppEmailService:WhatsAppEmailService
   ) {
-    // this.getVisitList();
     this.getVisitList1();
-    //this.configService.configParams.DepartmentId;
-    // console.log(  this.configService.configParams.DepartmentId)
-
   }
 
 
@@ -368,10 +359,6 @@ export class AppointmentComponent implements OnInit {
       // this.menuActions.push("Update Registration");
       this.menuActions.push("Update Consultant Doctor");
       this.menuActions.push("Update Referred Doctor");
-      // this.menuActions.push("Cancle Appointment");
-      // this.menuActions.push("Capture Photo");
-      // this.menuActions.push("Generate Patient Barcode");
-
     }
 
     // this.getVisitList();
@@ -394,8 +381,6 @@ export class AppointmentComponent implements OnInit {
     this.getDoctor1List();
     this.getDoctor2List();
     this.getPurposeList();
-
-    // console.log(  this.configService.configParams.DepartmentId)
 
     // this.OnChangeDoctorList1(this.configService.configParams.DepartmentId);
 
