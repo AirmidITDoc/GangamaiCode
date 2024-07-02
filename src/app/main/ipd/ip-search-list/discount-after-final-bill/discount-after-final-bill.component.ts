@@ -45,9 +45,11 @@ export class DiscountAfterFinalBillComponent implements OnInit {
     if(this.data){
       this.selectedAdvanceObj = this.data
       console.log(this.selectedAdvanceObj)
-      this.vDiscAmount = this.selectedAdvanceObj.ConcessionAmt;
-      this.vTotalAmount = this.selectedAdvanceObj.TotalAmt;
-      this.vNetamount = this.selectedAdvanceObj.NetPayableAmt
+      this.vDiscAmount = Math.round(this.selectedAdvanceObj.ConcessionAmt);
+      this.vTotalAmount =  Math.round(this.selectedAdvanceObj.TotalAmt);
+      this.vFinalNetAmt =  Math.round(this.selectedAdvanceObj.NetPayableAmt)
+      this.vNetamount =  Math.round(this.selectedAdvanceObj.NetPayableAmt)
+      this.vFinalDiscAmt =  Math.round(this.selectedAdvanceObj.ConcessionAmt);
     }
     this.CreateMyForm();
     this.getConcessionReasonList();
@@ -83,13 +85,11 @@ export class DiscountAfterFinalBillComponent implements OnInit {
         return  this.vDiscountPer2 = '';
       }
       else{
-        this.vDiscAmount2 = ((parseFloat(this.vNetamount) * parseFloat(this.vDiscountPer2)) / 100).toFixed(2) || 0;
+        this.vDiscAmount2 = ((parseFloat(this.vFinalNetAmt) * parseFloat(this.vDiscountPer2)) / 100).toFixed(2) || 0;
         DiscAmt2 = this.vDiscAmount2;
-       // this.vFinalNetAmt = (parseFloat(this.vNetamount) - parseFloat(this.vDiscAmount2)).toFixed(2);
       } 
     }else{
-      if(DiscPer2 == 0 || DiscPer2 == '' || DiscPer2 == null || DiscPer2 == undefined){
-        this.vFinalNetAmt = this.vNetamount ;
+      if(DiscPer2 == 0 || DiscPer2 == '' || DiscPer2 == null || DiscPer2 == undefined){ 
         this.vDiscAmount2 = ''; 
         DiscAmt2 = 0;
       }
@@ -103,20 +103,18 @@ export class DiscountAfterFinalBillComponent implements OnInit {
         return  this.vCompanyDiscper = '';
       }
       else{
-        this.vCompanyDiscAmt = ((parseFloat(this.vNetamount) * parseFloat(this.vCompanyDiscper)) / 100).toFixed(2) || 0;
+        this.vCompanyDiscAmt = ((parseFloat(this.vFinalNetAmt) * parseFloat(this.vCompanyDiscper)) / 100).toFixed(2) || 0;
         CompanyDiscAmt =   this.vCompanyDiscAmt;
-        //this.vFinalNetAmt = (parseFloat(this.vNetamount) - parseFloat(this.vCompanyDiscAmt)).toFixed(2);
       } 
     }
     else{
-       if(CompanyDiscPer == 0 || CompanyDiscPer == '' || CompanyDiscPer == null || CompanyDiscPer == undefined){
-        this.vFinalNetAmt = this.vNetamount ;
+       if(CompanyDiscPer == 0 || CompanyDiscPer == '' || CompanyDiscPer == null || CompanyDiscPer == undefined){ 
         this.vCompanyDiscAmt = '';
         CompanyDiscAmt = 0;
       }
     }
-    this.vFinalDiscAmt = (parseFloat(DiscAmt2) + parseFloat(CompanyDiscAmt));
-    this.vFinalNetAmt = (parseFloat(this.vNetamount) - (parseFloat( this.vFinalDiscAmt))).toFixed(2);
+    this.vFinalDiscAmt = Math.round(parseFloat(DiscAmt2) + parseFloat(CompanyDiscAmt) + parseFloat(this.vDiscAmount));
+    this.vNetamount = Math.round(parseFloat(this.vTotalAmount) - (parseFloat( this.vFinalDiscAmt))).toFixed(2);
   }
  
   getConcessionReasonList() { 
@@ -128,7 +126,7 @@ export class DiscountAfterFinalBillComponent implements OnInit {
     debugger
     if(this.vDiscAmount2 > 0 || this.vCompanyDiscAmt > 0){
       if(!this.MyFrom.get('ConcessionId').value){
-        this.toastr.warning('Please select Concession Reason is zero', 'warning !', {
+        this.toastr.warning('Please select Concession Reason ', 'warning !', {
           toastClass: 'tostr-tost custom-toast-error',
         });
         return
@@ -171,39 +169,40 @@ export class DiscountAfterFinalBillComponent implements OnInit {
       }
     }
     console.log(m_data1)
-    this._IpSearchListService.BillDiscountAfter(m_data1).subscribe(response => {
+     this._IpSearchListService.BillDiscountAfter(m_data1).subscribe(response =>{
       if (response) {
-        Swal.fire('Congratulations !', 'Discount After Final Bill data saved Successfully !', 'success').then((result) => {
-          if (result.isConfirmed) {
-            this._matDialog.closeAll();
-            this.onClose(); 
-          
-          }
+        this.toastr.success('Record  Saved Successfully.', 'Saved !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        }); 
+        this._matDialog.closeAll();
+        this.onClose(); 
+      
+      } else {
+        this.toastr.error(' Data not saved !, Please check API error..', 'Error !', {
+          toastClass: 'tostr-tost custom-toast-error',
         });
-      }
-      else {
-        Swal.fire('Error !', 'Discount After Final Bill data not saved', 'error');
-      }
-      
-    });
-    // this._IpSearchListService.BillDiscountAfter(submitData).subscribe(response =>{
-    //   if (response) {
-    //     this.toastr.success('Record  Saved Successfully.', 'Saved !', {
-    //       toastClass: 'tostr-tost custom-toast-success',
-    //     }); 
-    //     this._matDialog.closeAll();
-    //     this.onClose(); 
-      
-    //   } else {
-    //     this.toastr.error(' Data not saved !, Please check API error..', 'Error !', {
-    //       toastClass: 'tostr-tost custom-toast-error',
+      } 
+    }, error => {
+      this.toastr.error('Discount After Bill Data not saved !, Please check API error..', 'Error !', {
+        toastClass: 'tostr-tost custom-toast-error',
+      });
+    }); 
+
+    // this._IpSearchListService.BillDiscountAfter(m_data1).subscribe(response => {
+    //   if (response == 'true') {
+    //     Swal.fire('Congratulations !', 'Discount After Final Bill data saved Successfully !', 'success').then((result) => {
+    //       if (result.isConfirmed) {
+    //         this._matDialog.closeAll();
+    //         this.onClose(); 
+    //       }
     //     });
-    //   } 
-    // }, error => {
-    //   this.toastr.error('Discount After Bill Data not saved !, Please check API error..', 'Error !', {
-    //     toastClass: 'tostr-tost custom-toast-error',
-    //   });
-    // }); 
+    //   }
+    //   else {
+    //     Swal.fire('Error !', 'Discount After Final Bill data not saved', 'error');
+    //   }
+      
+    // });
+   
   }
   onClose(){
     this.dialogRef.close();

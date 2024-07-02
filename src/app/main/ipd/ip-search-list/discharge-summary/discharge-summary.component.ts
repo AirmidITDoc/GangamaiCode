@@ -132,6 +132,7 @@ export class DischargeSummaryComponent implements OnInit {
       this.registerObj = this.advanceDataStored.storage;
       this.vAdmissionId = this.selectedAdvanceObj.AdmissionID;
      this.getDischargeSummaryData(this.registerObj)
+     this.getPrescriptionList(this.registerObj)
       
     }
     
@@ -446,24 +447,25 @@ export class DischargeSummaryComponent implements OnInit {
     //   (error) => {
     //     this.isLoading = 'list-loaded';
     //   });
-  }
+  } 
 
-  getdischargeIdbyadmission(){
-    let Query = "Select DischargeId from Discharge where  AdmissionID=" + this.selectedAdvanceObj.AdmissionID + " ";
-    console.log(Query)
-    this._IpSearchListService.getDischargeId(Query).subscribe(data => {
-      this.registerObj = data[0];
-     // console.log(this.registerObj);
-      this.vDischargeId=this.registerObj.DischargeId
-    });
-  }
-
-  getDischargeSummaryData(el) {
+  getPrescriptionList(el) {
     // debugger
     var m_data2 = {
       "AdmissionId": el.AdmissionID 
     }
     console.log(m_data2)
+    this._IpSearchListService.getPrescriptionList(m_data2).subscribe((data) => {
+      this.dsItemList.data = data as MedicineItemList[];
+      console.log(this.dsItemList.data);     
+    }); 
+  }
+  getDischargeSummaryData(el) {
+    // debugger
+    var m_data2 = {
+      "AdmissionId": el.AdmissionID 
+    }
+    //console.log(m_data2)
     this._IpSearchListService.getDischargeSummary(m_data2).subscribe((data) => {
       this.RetrDischargeSumryList = data as DischargeSummary;
       console.log(this.RetrDischargeSumryList);
@@ -486,11 +488,19 @@ export class DischargeSummaryComponent implements OnInit {
       this.DocName1 = this.RetrDischargeSumryList[0].DischargeDoctor1
       this.DocName2 = this.RetrDischargeSumryList[0].DischargeDoctor2
       this.DocName3 = this.RetrDischargeSumryList[0].DischargeDoctor3
-       this.getRetevDropdownvalue();
+       this.getRetevDropdownvalue(); 
       this.DischargesumForm.get('IsNormalOrDeath').setValue(this.RetrDischargeSumryList[0].IsNormalOrDeath)  
      
+    }); 
+  }
+  getdischargeIdbyadmission(){
+    let Query = "Select DischargeId from Discharge where  AdmissionID=" + this.selectedAdvanceObj.AdmissionID + " ";
+    //console.log(Query)
+    this._IpSearchListService.getDischargeId(Query).subscribe(data => {
+      this.registerObj = data[0];
+     // console.log(this.registerObj);
+      this.vDischargeId=this.registerObj.DischargeId
     });
-  
   }
   DocName1:any;
   DocName2:any;
@@ -524,11 +534,11 @@ OnSave(){
     DoctorName1 = this.DischargesumForm.get("DischargeDoctor1").value.DoctorID;
 
   let DoctorName2 = 0;
-  if(this.DischargesumForm.get("DischargeDoctor1").value)
+  if(this.DischargesumForm.get("DischargeDoctor2").value)
     DoctorName2 = this.DischargesumForm.get("DischargeDoctor2").value.DoctorID;
 
   let DoctorName3 = 0;
-  if(this.DischargesumForm.get("DischargeDoctor1").value)
+  if(this.DischargesumForm.get("DischargeDoctor3").value)
     DoctorName3 =this.DischargesumForm.get("DischargeDoctor3").value.DoctorID;
 
   if(!this.DischargeSummaryId){

@@ -765,6 +765,9 @@ public updateIPDDischargSummary(employee)
   public getchargesList(data) {
     return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
   }
+  public getBillheaderList(data) {
+    return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
+  }
 
   public getchargesList1(data) {
     // return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
@@ -800,6 +803,9 @@ public updateIPDDischargSummary(employee)
   
   public getDischargeSummary(employee) {
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_T_DischargeSummary",employee)
+  }
+  public getPrescriptionList(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IP_Prescription_Discharge",employee)
   }
   
   public getDepartmentCombo() {
