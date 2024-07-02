@@ -45,6 +45,8 @@ export class UpdatePurchaseorderComponent implements OnInit {
     'CGSTAmount',
     'SGST',
     'SGSTAmount',
+    'IGST',
+    'IGSTAmount',
     'GST',
     'GSTAmount',
     'NetAmount',
@@ -367,11 +369,13 @@ export class UpdatePurchaseorderComponent implements OnInit {
           TotalAmount: this.vTotalAmount || 0,
           DiscPer: this.vDis || 0,
           DiscAmount: this.vDiscAmt || 0,
-          CGSTPer: ((this.vGSTPer) / 2) || 0,
-          CGSTAmt: ((this.vGSTAmt) / 2) || 0,
-          SGSTPer: ((this.vGSTPer) / 2) || 0,
-          SGSTAmt: ((this.vGSTAmt) / 2) || 0,
-          VatAmount: (this.vGSTAmt) || 0,
+          CGSTPer: this.vCGSTPer || 0,
+          CGSTAmt: this.vCGSTAmt || 0,
+          SGSTPer: this.vSGSTPer || 0,
+          SGSTAmt: this.vSGSTAmt || 0,
+          IGSTPer: this.vIGSTPer || 0,
+          IGSTAmt:  this.vIGSTAmt || 0,
+          VatAmount: this.vGSTAmt || 0,
           VatPer: this.vGSTPer || 0,
           GSTAmount:this.vGSTAmt || 0,
           GrandTotalAmount:this.vNetAmount || 0,
@@ -437,7 +441,14 @@ export class UpdatePurchaseorderComponent implements OnInit {
     });
 
   }
+  vCGSTPer:any;
+  vSGSTPer:any;
+  vIGSTPer:any;
+  vCGSTAmt:any; 
+  vSGSTAmt:any;
+  vIGSTAmt:any;
   getSelectedObj(obj) {
+    console.log(obj)
     this.ItemId = obj.ItemId;
     this.ItemName = obj.ItemName;
     this.vUOM = obj.UnitofMeasurementId;
@@ -447,6 +458,10 @@ export class UpdatePurchaseorderComponent implements OnInit {
     this.vMRP = 0;
     this.vRate = '';
     this.vDis = '';
+    this.vCGSTPer = obj.CGSTPer
+    this.vSGSTPer = obj.SGSTPer
+    this.vIGSTPer = 0;
+    this.vIGSTAmt = 0;
     this.vTotalAmount = (parseInt(this.vQty) * parseFloat(this.vRate)).toFixed(2);
     this.vNetAmount = this.vTotalAmount;
     //this.VatPercentage = obj.VatPercentage;
@@ -553,9 +568,9 @@ export class UpdatePurchaseorderComponent implements OnInit {
     updatePurchaseOrderHeaderObj['modeofPayment'] = this._PurchaseOrder.FinalPurchaseform.get('PaymentMode').value.Id || 0;
     updatePurchaseOrderHeaderObj['worrenty'] = this._PurchaseOrder.FinalPurchaseform.get('Worrenty').value || 0;
     updatePurchaseOrderHeaderObj['roundVal'] = 0;
-    updatePurchaseOrderHeaderObj['totCGSTAmt'] = (parseFloat(this.GSTAmount) / 2).toFixed(2);
-    updatePurchaseOrderHeaderObj['totSGSTAmt'] = (parseFloat(this.GSTAmount) / 2).toFixed(2);
-    updatePurchaseOrderHeaderObj['totIGSTAmt'] = 0;
+    updatePurchaseOrderHeaderObj['totCGSTAmt'] = (parseFloat(this.vCGSTAmt)).toFixed(2);
+    updatePurchaseOrderHeaderObj['totSGSTAmt'] = (parseFloat(this.vSGSTAmt)).toFixed(2);
+    updatePurchaseOrderHeaderObj['totIGSTAmt'] =(parseFloat(this.vIGSTAmt)).toFixed(2);
     updatePurchaseOrderHeaderObj['transportChanges'] = this._PurchaseOrder.FinalPurchaseform.get('TransportCharges').value || 0;
     updatePurchaseOrderHeaderObj['handlingCharges'] = this._PurchaseOrder.FinalPurchaseform.get('HandlingCharges').value || 0;
     updatePurchaseOrderHeaderObj['freightCharges'] = this._PurchaseOrder.FinalPurchaseform.get('Freight').value || 0;
@@ -582,8 +597,8 @@ export class UpdatePurchaseorderComponent implements OnInit {
       purchaseDetailInsertObj['cgstAmt'] = element.CGSTAmt;
       purchaseDetailInsertObj['sgstPer'] = element.SGSTPer;
       purchaseDetailInsertObj['sgstAmt'] = element.SGSTAmt;
-      purchaseDetailInsertObj['igstPer'] = 0;
-      purchaseDetailInsertObj['igstAmt'] = 0;
+      purchaseDetailInsertObj['igstPer'] = element.IGSTPer;
+      purchaseDetailInsertObj['igstAmt'] = element.IGSTAmt;
       purchaseDetailInsertObj['DefRate'] = element.DefRate;
       purchaseDetailInsertObj['VendDisPer'] = 0;
       purchaseDetailInsertObj['VendDiscAmt'] = 0;
@@ -655,9 +670,9 @@ export class UpdatePurchaseorderComponent implements OnInit {
     purchaseHeaderInsertObj['modeofPayment'] = this._PurchaseOrder.FinalPurchaseform.get('PaymentMode').value.Id || 0;
     purchaseHeaderInsertObj['worrenty'] = this._PurchaseOrder.FinalPurchaseform.get('Worrenty').value || 0;
     purchaseHeaderInsertObj['roundVal'] = 0;
-    purchaseHeaderInsertObj['totCGSTAmt'] = (parseInt(this.GSTAmount) / 2).toFixed(2);;
-    purchaseHeaderInsertObj['totSGSTAmt'] = (parseInt(this.GSTAmount) / 2).toFixed(2);;
-    purchaseHeaderInsertObj['totIGSTAmt'] = 0;
+    purchaseHeaderInsertObj['totCGSTAmt'] = (parseFloat(this.vCGSTAmt)).toFixed(2);
+    purchaseHeaderInsertObj['totSGSTAmt'] = (parseFloat(this.vSGSTAmt)).toFixed(2);
+    purchaseHeaderInsertObj['totIGSTAmt'] =(parseFloat(this.vIGSTAmt)).toFixed(2);
     purchaseHeaderInsertObj['transportChanges'] = this._PurchaseOrder.FinalPurchaseform.get('TransportCharges').value || 0;
     purchaseHeaderInsertObj['handlingCharges'] = this._PurchaseOrder.FinalPurchaseform.get('HandlingCharges').value || 0;
     purchaseHeaderInsertObj['freightCharges'] = this._PurchaseOrder.FinalPurchaseform.get('Freight').value || 0;
@@ -684,8 +699,8 @@ export class UpdatePurchaseorderComponent implements OnInit {
       purchaseDetailInsertObj['cgstAmt'] = element.CGSTAmt;
       purchaseDetailInsertObj['sgstPer'] = element.SGSTPer;
       purchaseDetailInsertObj['sgstAmt'] = element.SGSTAmt;
-      purchaseDetailInsertObj['igstPer'] = 0;
-      purchaseDetailInsertObj['igstAmt'] = 0;
+      purchaseDetailInsertObj['igstPer'] =element.IGSTPer;
+      purchaseDetailInsertObj['igstAmt'] = element.IGSTAmt;
       purchaseDetailInsertObj['DefRate'] = element.DefRate;
       purchaseDetailInsertObj['VendDisPer'] = 0;
       purchaseDetailInsertObj['VendDiscAmt'] = 0;
@@ -717,17 +732,34 @@ export class UpdatePurchaseorderComponent implements OnInit {
       });
     });
   }
-
+  IgstPercentage:any = 0;
+  CgstPercentage:any = 0;
+  SgstPercentage:any = 0;
   getCellCalculation(contact, Qty) {
-
+debugger
     if(contact.DefRate > 0){
       if (contact.Rate > contact.DefRate) {
         Swal.fire("Please Check defined Supplier Rate for product ...!!!");
       }   
     }
+    if(contact.SGSTPer == "" || contact.SGSTPer == null || contact.SGSTPer == undefined){
+      contact.SGSTAmt = 0;
+      //contact.SGSTPer = this.SgstPercentage 
+    }
+    if(contact.CGSTPer == "" || contact.CGSTPer == null || contact.CGSTPer == undefined){
+      contact.CGSTAmt = 0;
+      //contact.CGSTPer = this.CgstPercentage 
+    }
+    if(contact.IGSTPer == "" || contact.IGSTPer == null || contact.IGSTPer == undefined){
+      contact.IGSTAmt = 0;
+      //contact.IGSTPer = this.IgstPercentage 
+    }
    
     if (contact.Qty > 0 && contact.Rate > 0) {
-      contact.IGSTPer = 0;
+     
+      this.IgstPercentage =  contact.IGSTPer;
+      this.CgstPercentage = contact.CGSTPer;
+      this.SgstPercentage = contact.SGSTPer;
       if (this._PurchaseOrder.userFormGroup.get('Status3').value.Name == 'GST After Disc') {
         //total amt
         contact.TotalAmount = (contact.Qty * contact.Rate);
@@ -736,10 +768,10 @@ export class UpdatePurchaseorderComponent implements OnInit {
         let TotalAmt: any=0;
         TotalAmt = (parseFloat(contact.TotalAmount) - parseFloat(contact.DiscAmount)).toFixed(2);
         //Gst
-        contact.VatPer = (parseFloat(contact.CGSTPer) + parseFloat(contact.SGSTPer) + parseFloat(contact.IGSTPer)).toFixed(2);
-        contact.CGSTAmt = ((parseFloat(TotalAmt) * parseFloat(contact.CGSTPer)) / 100).toFixed(2);
-        contact.SGSTAmt = ((parseFloat(TotalAmt) * parseFloat(contact.SGSTPer)) / 100).toFixed(2);
-        contact.IGSTAmt = ((parseFloat(TotalAmt) * parseFloat(contact.IGSTPer)) / 100).toFixed(2);
+        contact.VatPer = (parseFloat(this.CgstPercentage ) + parseFloat(this.SgstPercentage) + parseFloat(this.IgstPercentage)).toFixed(2);
+        contact.CGSTAmt = ((parseFloat(TotalAmt) * parseFloat(this.CgstPercentage)) / 100).toFixed(2);
+        contact.SGSTAmt = ((parseFloat(TotalAmt) * parseFloat(this.SgstPercentage)) / 100).toFixed(2);
+        contact.IGSTAmt = ((parseFloat(TotalAmt) * parseFloat(this.IgstPercentage)) / 100).toFixed(2);
         contact.VatAmount = ((parseFloat(TotalAmt) * parseFloat(contact.VatPer)) / 100).toFixed(2);
         contact.GrandTotalAmount = ((TotalAmt) + (contact.VatAmount)).toFixed(2);
       }
@@ -747,10 +779,10 @@ export class UpdatePurchaseorderComponent implements OnInit {
         //total amt
         contact.TotalAmount = (contact.Qty * contact.Rate);
         //Gst
-        contact.VatPer = (parseFloat(contact.CGSTPer) + parseFloat(contact.SGSTPer) + parseFloat(contact.IGSTPer)).toFixed(2);
-        contact.CGSTAmt = ((parseFloat(contact.TotalAmount) * parseFloat(contact.CGSTPer)) / 100).toFixed(2);
-        contact.SGSTAmt = ((parseFloat(contact.TotalAmount) * parseFloat(contact.SGSTPer)) / 100).toFixed(2);
-        contact.IGSTAmt = ((parseFloat(contact.TotalAmount) * parseFloat(contact.IGSTPer)) / 100).toFixed(2);
+        contact.VatPer = (parseFloat(this.CgstPercentage ) + parseFloat(this.SgstPercentage) + parseFloat(this.IgstPercentage)).toFixed(2);
+        contact.CGSTAmt = ((parseFloat(contact.TotalAmount) * parseFloat(this.CgstPercentage)) / 100).toFixed(2);
+        contact.SGSTAmt = ((parseFloat(contact.TotalAmount) * parseFloat(this.SgstPercentage)) / 100).toFixed(2);
+        contact.IGSTAmt = ((parseFloat(contact.TotalAmount) * parseFloat(this.IgstPercentage)) / 100).toFixed(2);
         contact.VatAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.VatPer)) / 100).toFixed(2);
         let totalAmt:any=0
         totalAmt = (parseFloat(contact.TotalAmount) + parseFloat(contact.VatAmount)).toFixed(2);
@@ -758,6 +790,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
         contact.DiscAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.DiscPer)) / 100).toFixed(2);
         contact.GrandTotalAmount = (parseFloat(totalAmt) - parseFloat(contact.DiscAmount)).toFixed(2);
       }
+      
     }
     else {
       contact.TotalAmount = 0;
@@ -768,6 +801,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
       contact.VatAmount = 0;
       contact.GrandTotalAmount = 0;
     }
+  
   }
   OnchekPurchaserateValidation() {
     if (this.vRate) {
@@ -835,12 +869,20 @@ export class UpdatePurchaseorderComponent implements OnInit {
         this.vDiscAmt = ((parseFloat(this.vTotalAmount) * parseFloat(disc)) / 100).toFixed(2);
         let totalamt = (parseFloat(this.vTotalAmount) - parseFloat(this.vDiscAmt)).toFixed(2);
 
+        this.vSGSTAmt = ((parseFloat(totalamt) * parseFloat(this.vSGSTPer)) / 100).toFixed(2);
+        this.vCGSTAmt = ((parseFloat(totalamt) * parseFloat(this.vCGSTPer)) / 100).toFixed(2);
+        this.vIGSTAmt = ((parseFloat(totalamt) * parseFloat(this.vIGSTPer)) / 100).toFixed(2);
+
+
         this.vGSTAmt = ((parseFloat(totalamt) * parseFloat(this.vGSTPer)) / 100).toFixed(2);
 
         this.vNetAmount = (parseFloat(totalamt) + parseFloat(this.vGSTAmt)).toFixed(2);
 
       } else {
         this.vDiscAmt = ((parseFloat(this.vTotalAmount) * parseFloat(disc)) / 100).toFixed(2);
+        this.vSGSTAmt = ((parseFloat(this.vTotalAmount) * parseFloat(this.vSGSTPer)) / 100).toFixed(2);
+        this.vCGSTAmt = ((parseFloat(this.vTotalAmount) * parseFloat(this.vCGSTPer)) / 100).toFixed(2);
+        this.vIGSTAmt = ((parseFloat(this.vTotalAmount) * parseFloat(this.vIGSTPer)) / 100).toFixed(2);
         this.vGSTAmt = ((parseFloat(this.vTotalAmount) * parseFloat(this.vGSTPer)) / 100).toFixed(2);
         let totalamt = (parseFloat(this.vTotalAmount) + (parseFloat(this.vGSTAmt))).toFixed(2);
 
@@ -853,10 +895,19 @@ export class UpdatePurchaseorderComponent implements OnInit {
     if (this.vGSTPer) {
       if (this._PurchaseOrder.userFormGroup.get('Status3').value.Name == "GST After Disc") {
         let totalamt = this.vTotalAmount - this._PurchaseOrder.userFormGroup.get('DiscAmount').value
+
+        this.vSGSTAmt = ((totalamt * parseFloat(this.vSGSTPer)) / 100).toFixed(2);
+        this.vCGSTAmt = ((totalamt * parseFloat(this.vCGSTPer)) / 100).toFixed(2);
+        this.vIGSTAmt = ((totalamt * parseFloat(this.vIGSTPer)) / 100).toFixed(2);
+
         this.vGSTAmt = ((totalamt * parseFloat(this.vGSTPer)) / 100).toFixed(2);
         this.vNetAmount = (parseFloat(this.vTotalAmount) - parseFloat(this._PurchaseOrder.userFormGroup.get('DiscAmount').value) + parseFloat(this.vGSTAmt)).toFixed(2);
         this._PurchaseOrder.userFormGroup.get('NetAmount').setValue(this.vNetAmount);
       } else {
+        this.vSGSTAmt = ((this.vTotalAmount * parseFloat(this.vSGSTPer)) / 100).toFixed(2);
+        this.vCGSTAmt = ((this.vTotalAmount * parseFloat(this.vCGSTPer)) / 100).toFixed(2);
+        this.vIGSTAmt = ((this.vTotalAmount * parseFloat(this.vIGSTPer)) / 100).toFixed(2);
+
         this.vGSTAmt = ((this.vTotalAmount * parseFloat(this.vGSTPer)) / 100).toFixed(2);
         this.vNetAmount = (parseFloat(this.vTotalAmount) - parseFloat(this._PurchaseOrder.userFormGroup.get('DiscAmount').value) + parseFloat(this.vGSTAmt)).toFixed(2);
         this._PurchaseOrder.userFormGroup.get('NetAmount').setValue(this.vNetAmount);
@@ -925,6 +976,12 @@ export class UpdatePurchaseorderComponent implements OnInit {
     this.vDiscAmt = 0;
     this.vGSTPer = 0;
     this.vGSTAmt = 0;
+    this.vCGSTPer = 0;
+    this.vCGSTAmt = 0;
+    this.vSGSTPer = 0;
+    this.vSGSTAmt = 0;
+    this.vIGSTPer = 0;
+    this.vIGSTAmt = 0;
     this.vNetAmount = 0;
     this.vMRP = 0;
     this.vConversionFactor = 0;

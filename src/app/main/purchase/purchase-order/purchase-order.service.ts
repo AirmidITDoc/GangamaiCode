@@ -84,6 +84,12 @@ export class PurchaseOrderService {
       Email:'',
       PurchaseDate: [new Date()],
       DefRate:'',
+      CGSTPer: [''],
+      CGSTAmount: [''],
+      SGSTPer: [''],
+      SGSTAmount: [''],
+      IGSTPer: [''],
+      IGSTAmount: [''],
     });
 
   }

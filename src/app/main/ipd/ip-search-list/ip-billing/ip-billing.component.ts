@@ -751,6 +751,7 @@ ServiceList:any=[];
     // console.log(Query);
     this._IpSearchListService.getchargesList(Query).subscribe(data => {
       this.chargeslist = data as ChargesList[];
+      console.log(this.chargeslist)
       this.dataSource.data = this.chargeslist;
 
       this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';

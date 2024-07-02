@@ -181,7 +181,7 @@
     
                                 </div>
                                 <div fxLayout="row" class="gap-4">
-                                    <mat-form-field appearance="outline" fxFlex="8%">
+                                    <mat-form-field appearance="outline" fxFlex="5%">
                                         <mat-label>Dis %</mat-label>
                                         <input matInput [(ngModel)]="vDis" name="Dis" #dis required
                                             (keydown)="onEnterDis($event)" type="text" OnlyNumber
@@ -189,45 +189,84 @@
                                             (keypress)="keyPressCharater($event)">
                                     </mat-form-field>
     
-                                    <mat-form-field appearance="outline" fxFlex="10%">
+                                    <mat-form-field appearance="outline" fxFlex="7%">
                                         <mat-label>Disc Amt</mat-label>
                                         <input matInput [(ngModel)]="vDiscAmt" name="DiscAmount" type="text" OnlyNumber
                                             formControlName="DiscAmount" readonly>
                                     </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex="5%">
+                                        <mat-label>CGST %</mat-label>
+                                        <input matInput [(ngModel)]="vCGSTPer" name="CGST" #cgst required readonly
+                                           type="text" OnlyNumber
+                                            formControlName="CGSTPer">
+                                    </mat-form-field>
     
-                                    <mat-form-field appearance="outline" fxFlex="8%">
+                                    <mat-form-field appearance="outline" fxFlex="7%">
+                                        <mat-label>CGST Amt</mat-label>
+                                        <input matInput [(ngModel)]="vCGSTAmt" name="CGSTAmount" type="text" OnlyNumber
+                                            formControlName="CGSTAmount" readonly>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex="5%">
+                                        <mat-label>SGST %</mat-label>
+                                        <input matInput [(ngModel)]="vSGSTPer" name="SGST" #sgst required readonly
+                                              type="text" OnlyNumber
+                                            formControlName="SGSTPer">
+                                    </mat-form-field>
+    
+                                    <mat-form-field appearance="outline" fxFlex="7%">
+                                        <mat-label>SGST Amt</mat-label>
+                                        <input matInput [(ngModel)]="vSGSTAmt" name="SGSTAmount" type="text" OnlyNumber
+                                            formControlName="SGSTAmount" readonly>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex="5%">
+                                        <mat-label>IGST %</mat-label>
+                                        <input matInput [(ngModel)]="vIGSTPer" name="IGST" #igst required readonly
+                                            type="text" OnlyNumber
+                                             formControlName="IGSTPer">
+                                    </mat-form-field>
+    
+                                    <mat-form-field appearance="outline" fxFlex="7%">
+                                        <mat-label>IGST Amt</mat-label>
+                                        <input matInput [(ngModel)]="vIGSTAmt" name="IGSTAmount" type="text" OnlyNumber
+                                            formControlName="IGSTAmount" readonly>
+                                    </mat-form-field>
+    
+                                    <mat-form-field appearance="outline" fxFlex="5%">
                                         <mat-label>GST %</mat-label>
                                         <input matInput [(ngModel)]="vGSTPer" name="GST" #gst required readonly
                                             (keydown)="onEnterGST($event)" type="text" OnlyNumber
                                             (keyup)="calculateDiscperAmount()" formControlName="GSTPer">
                                     </mat-form-field>
     
-                                    <mat-form-field appearance="outline" fxFlex="10%">
+                                    <mat-form-field appearance="outline" fxFlex="7%">
                                         <mat-label>GST Amt</mat-label>
                                         <input matInput [(ngModel)]="vGSTAmt" name="GSTAmount" type="text" OnlyNumber
                                             formControlName="GSTAmount" readonly>
                                     </mat-form-field>
     
-                                    <mat-form-field appearance="outline" fxFlex="12%">
+                                    <mat-form-field appearance="outline" fxFlex="10%">
                                         <mat-label>Net Amount</mat-label>
                                         <input name="NetAmount" formControlName="NetAmount" matInput type="text" OnlyNumber
                                             formControlName="NetAmount" [(ngModel)]="vNetAmount" readonly required>
                                     </mat-form-field>
     
-                                    <mat-form-field appearance="outline" fxFlex="28%">
+                                    <mat-form-field appearance="outline" fxFlex="20%">
                                         <mat-label>Specification</mat-label>
                                         <input matInput placeholder="Specification" #specification
                                             [(ngModel)]="vSpecification" type="text" formControlName="Specification"
                                             (keydown)="onEnterSpecification($event)">
                                     </mat-form-field>
     
-                                    <mat-form-field appearance="outline" fxFlex="8%">
+                                    <mat-form-field appearance="outline" fxFlex="6%">
                                         <mat-label>Def Rate</mat-label>
                                         <input matInput [(ngModel)]="vDefRate" name="DefRate" #DefRate readonly type="text"
                                             OnlyNumber formControlName="DefRate">
                                     </mat-form-field>
     
-                                    <div matTooltip="Select All Value to enable this button!!" style="padding: 5px 10px 0 60px;">
+                                    <div matTooltip="Select All Value to enable this button!!" style="padding: 5px 10px 0 10px;">
                                         <button class="btn btn-primary btn-with-icon py-8" (click)="onAdd()">
                                             <mat-icon>add</mat-icon>
                                         </button>
@@ -380,6 +419,27 @@
                                                 SGST Amt</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                 {{contact.SGSTAmt | number:'1.2-2'}}
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="IGST">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                IGST(%)</mat-header-cell>
+                                            <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
+                                                <mat-form-field appearance="legacy">
+                                                    <input matInput [(ngModel)]="contact.IGSTPer" step="0.1"
+                                                        type="text" OnlyNumber autocomplete="off"
+                                                        (keyup)="getCellCalculation(contact,contact.IGSTPer)"
+                                                        (keypress)="keyPressCharater($event)">
+                                                </mat-form-field>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="IGSTAmount">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                IGST Amt</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.IGSTAmt | number:'1.2-2'}}
                                             </mat-cell>
                                         </ng-container>
 

@@ -117,7 +117,12 @@ export class IPAdvanceComponent implements OnInit {
     this.getAdvanceList();
     this.getCashCounterComboList();
   }
-
+getAdvanceDetaId(){
+  let Query ;
+  Query = "select * from AdvanceDetail where RefId=" + this.selectedAdvanceObj.RegID 
+  console.log(Query)
+ // this.AdvanceDetailList = 
+}
   getAdvanceList() {
     this.isLoadingStr = 'loading';
     var m_data = {
@@ -345,7 +350,7 @@ export class IPAdvanceComponent implements OnInit {
       this.isLoading = 'submit';
 
       let AdvanceDetObj = {};
-      AdvanceDetObj['AdvanceDetailID'] = '0';
+      AdvanceDetObj['AdvanceDetailID'] = this.selectedAdvanceObj ;
       AdvanceDetObj['Date'] = this.dateTimeObj.date || '01/01/1900'
       AdvanceDetObj['Time'] = this.dateTimeObj.time || '01/01/1900'
       AdvanceDetObj['AdvanceId'] = this.vAdvanceId || 0;

@@ -285,19 +285,21 @@ export class IPRefundofAdvanceComponent implements OnInit {
 
   RefundAmt: any;
   getCellCalculation(element, RefundAmt) {
-      if (RefundAmt > 0) {
-        if (parseFloat(RefundAmt) > parseFloat(element.BalanceAmount)) {
-          element.RefundAmt = ''; 
-          this.toastr.warning('Enter Refund Amount Less than Balance Amount ', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          element.RefundAmt = ''; 
-          return
-        }
+     
+
+      if(RefundAmt > 0 && RefundAmt <= element.NetBallAmt){
         element.BalanceAmount = ((element.NetBallAmt) - (RefundAmt));
-      } else {
-        element.BalanceAmount =  ((element.NetBallAmt) + (RefundAmt));
-        RefundAmt = '';
+      }
+      else if (parseInt(RefundAmt) > parseInt(element.NetBallAmt)){
+        this.toastr.warning('Enter Refund Amount Less than Balance Amount ', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        element.RefundAmt = ''
+        element.BalanceAmount = element.NetBallAmt ;
+      }
+      else if(RefundAmt == 0 || RefundAmt == '' || RefundAmt == undefined || RefundAmt == null){
+        element.RefundAmt = ''
+        element.BalanceAmount = element.NetBallAmt ;
       }
   }
 
