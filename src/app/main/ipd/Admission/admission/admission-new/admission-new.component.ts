@@ -1277,7 +1277,7 @@ export class AdmissionNewComponent implements OnInit {
 
       // submissionObj['bedUpdate'] = { bedId: this.bedObj.BedId ? this.bedObj.BedId : 0 };
       // console.log(submissionObj);
-      this._AdmissionService.AdmissionInsert(submissionObj).subscribe(response => {
+      this._AdmissionService.AdmissionNewInsert(submissionObj).subscribe(response => {
         console.log(response);
         if (response) {
           Swal.fire('Congratulations !', 'Admission save Successfully !', 'success').then((result) => {
@@ -1353,7 +1353,7 @@ export class AdmissionNewComponent implements OnInit {
       submissionObj['admissionInsert'] = admissionInsert;
       submissionObj['bedUpdate'] = { bedId: this.bedObj.BedId ? this.bedObj.BedId : 0 };
       console.log(submissionObj);
-      this._AdmissionService.RegisteredAdmissionInsert(submissionObj).subscribe(response => {
+      this._AdmissionService.AdmissionRegisteredInsert(submissionObj).subscribe(response => {
         console.log(submissionObj);
         if (response) {
           this.toastr.success('Congratulations !', 'Admission save Successfully !');
