@@ -297,6 +297,7 @@ export class IPBillingComponent implements OnInit {
     this.getPrevBillList();
     this.getAdvanceDetList();
     this.calBalanceAmt();
+    this.getBillheaderList();
 
 
     this.filteredOptionsBillingClassName = this.Serviceform.get('ChargeClass').valueChanges.pipe(
@@ -335,6 +336,7 @@ export class IPBillingComponent implements OnInit {
 
     // }
     this.setClassdata();
+
 
   }
 
@@ -392,7 +394,26 @@ export class IPBillingComponent implements OnInit {
       Admincheck:['']
     });
   }
-
+  billheaderlist:any;
+  getBillheaderList() {
+    this.isLoadingStr = 'loading';
+    let Query = "select Isnull(AdminPer,0) as AdminPer from Admission where AdmissionId="+  this.selectedAdvanceObj.AdmissionID
+     console.log(Query);
+     debugger
+    this._IpSearchListService.getBillheaderList(Query).subscribe(data => {
+      this.billheaderlist = data[0].AdminPer ;
+      console.log(this.billheaderlist)
+        if(this.billheaderlist > 0){
+          this.isAdminDisabled = true;
+          this.Ipbillform.get('Admincheck').setValue(true)
+          this.vAdminPer =this.billheaderlist
+          console.log(this.vAdminPer)
+        }else{
+          this.isAdminDisabled = false;
+          this.Ipbillform.get('Admincheck').setValue(false)
+        }
+    });
+  }
 
   //  ===================================================================================
   filterStates(name: string) {
