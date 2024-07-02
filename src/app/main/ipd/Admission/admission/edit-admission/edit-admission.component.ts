@@ -36,37 +36,35 @@ export class EditAdmissionComponent implements OnInit {
   currentDate = new Date();
   
   searchFormGroup: FormGroup;
-  isLoadings = false;
-  SpinLoading: boolean = false;
+  hospitalFormGroup: FormGroup;
+ otherFormGroup: FormGroup;
 
   subscriptionArr: Subscription[] = [];
- 
-  msg: any;
-  sIsLoading: string = '';
   screenFromString = 'admission-form';
-  doctorNameCmbList: any = [];
+
   hasSelectedContacts: boolean;
   disabled = false;
   isAlive = false;
-  savedValue: number = null;
   isOpen = false;
-  loadID = 0;
+  isLoadings = false;
+  SpinLoading: boolean = false;
 
+ 
   isCompanySelected: boolean = false;
   isCompanyselected: boolean = false;
   isSubCompanySelected: boolean = false;
   isDepartmentSelected: boolean = false;
-
   isAdmittedDoctor1Selected: boolean = false;
   isAdmittedDoctor2Selected: boolean = false;
   isRefDoctorSelected: boolean = false;
-
   isDoctorSelected: boolean = false;
-
   isRelationshipSelected: boolean = false;
   isSearchdoctorSelected: boolean = false;
 
   selectedAdvanceObj: AdmissionPersonlModel;
+  registerObj = new AdmissionPersonlModel({});
+  registerObj1= new AdmissionPersonlModel({});
+
   submitted = false;
   HospitalList: any = [];
   PatientTypeList: any = [];
@@ -81,19 +79,20 @@ export class EditAdmissionComponent implements OnInit {
   RefDoctorList: any = [];
   Todate: any;
   searchDoctorList: any = [];
-
-  hospitalFormGroup: FormGroup;
- 
-  otherFormGroup: FormGroup;
-  registration: any;
-  isRegSearchDisabled: boolean = true;
-  newRegSelected: any = 'registration';
-  DoctorId: any = 0;
-  AdList: boolean = false;
-
+  doctorNameCmbList: any = [];
   RefoptionsDoc: any[] = [];
   optionsAdDoc1: any[] = [];
   optionsAdDoc2: any[] = [];
+  optionsPatientType: any[] = [];
+  optionsTariff: any[] = [];
+   optionsRefDoc: any[] = [];
+
+
+  newRegSelected: any = 'registration';
+  DoctorId: any = 0;
+  registration: any;
+
+
 
   // optionsDep: any[] = [];
   // options = [];
@@ -106,21 +105,23 @@ export class EditAdmissionComponent implements OnInit {
   // optionsSearchDoc: any[] = [];
   // optionRegSearch: any[] = [];
   // optionsubCompany: any[] = [];
-
+  isRegSearchDisabled: boolean = true;
+  AdList: boolean = false;
   filteredOptions: any;
   showtable: boolean = false;
   noOptionFound: boolean = false;
   Regdisplay: boolean = false;
-  registerObj = new AdmissionPersonlModel({});
-  registerObj1= new AdmissionPersonlModel({});
+  ispatienttypeSelected: boolean = false;
+  isTariffIdSelected: boolean = false;
+  IsMLC:boolean=false;
+  Regflag: boolean = false;
+
   filteredOptionsDep: any;
-  
   filteredOptionsDoc: any;
   filteredOptionsDoc1:any;
   filteredOptionsRefDoc: any;
   filteredOptionsDoc2: any;
-    filteredOptionsRelation: any;
-
+  filteredOptionsRelation: any;
   filteredOptionsCompany: any;
   filteredOptionsSubCompany: any;
   filteredOptionssearchDoctor: any;
@@ -129,11 +130,7 @@ export class EditAdmissionComponent implements OnInit {
   filteredOptionsTarrif: any;
   filteredOptionsRefrenceDoc: any;
 
-  ispatienttypeSelected: boolean = false;
-  isTariffIdSelected: boolean = false;
-  optionsPatientType: any[] = [];
-  optionsTariff: any[] = [];
-   optionsRefDoc: any[] = [];
+
 
   vRelativeName:any;
   vRelativeAddress:any;
@@ -142,10 +139,13 @@ export class EditAdmissionComponent implements OnInit {
   vadmittedDoctor1:any=0;
   vadmittedDoctor2:any=0;
   vrefDoctorId:any=0;
-  // RegId:any;
-  // RegNo:any;
+  msg: any;
+  sIsLoading: string = '';
+  loadID = 0;
+  savedValue: number = null;
   AdmissionID:any;
-  IsMLC:boolean=false;
+  filteredDoctor: any;
+  isLoading: string;
   
   @Output() sentCountsToParent = new EventEmitter<any>();
 
@@ -158,10 +158,8 @@ export class EditAdmissionComponent implements OnInit {
 
 
 
-  filteredDoctor: any;
+ 
   
-  isLoading: string;
-  Regflag: boolean = false;
 
 
   constructor(public _AdmissionService: AdmissionService,
