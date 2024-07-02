@@ -40,7 +40,7 @@ export class CasepaperService {
   }
 
   public onSaveCasepaper(param) {
-    return this._httpClient.post("OutPatient/CasePaperPrescriptionSave", param);
+    return this._httpClient.post("OutPatient/PrescriptionInsert", param);
   }
   public getTemplate(query) {
     return this._httpClient.post("Generic/GetBySelectQuery?query=" + query, {})
@@ -65,5 +65,9 @@ export class CasepaperService {
   }
   public getPatientVisitedListSearch(employee) {
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientVisitedListSearch", employee)
+  }
+
+  public getIpPrescriptionview(OP_IP_ID,PatientType){
+    return this._httpClient.get("InPatient/view-IP_Prescription?OP_IP_ID=" + OP_IP_ID+"&PatientType="+PatientType);
   }
 }

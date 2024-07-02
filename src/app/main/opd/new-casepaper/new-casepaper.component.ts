@@ -15,11 +15,12 @@ import { DatePipe } from '@angular/common';
 import { debounceTime, exhaustMap, filter, map, scan, startWith, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
 import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { PrescriptionList } from 'app/main/nursingstation/prescription/prescription.component';
 import { PrecriptionItemList } from 'app/main/nursingstation/prescription/new-prescription/new-prescription.component';
 import { ToastrService } from 'ngx-toastr';
 import { MedicineItemList } from 'app/main/ipd/ip-search-list/discharge-summary/discharge-summary.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 export interface PrescriptionTable {
   drugName: ILookup;
@@ -43,7 +44,11 @@ export class ILookup {
   UnitofMeasurementId: number;
 }
 
-
+interface dosedetail{
+  DoseId: any;
+  DoseName: any;
+ 
+}
 @Component({
   selector: 'app-new-casepaper',
   templateUrl: './new-casepaper.component.html',
@@ -105,7 +110,7 @@ export class NewCasepaperComponent implements OnInit {
   vDay: any;
   vInstruction: any;
   Chargelist: any = [];
-  PatientType:any;
+  PatientType: any;
   // public filteredDiagnosis: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   public filteredDose: ReplaySubject<any> = new ReplaySubject<any>(1);
@@ -192,7 +197,14 @@ export class NewCasepaperComponent implements OnInit {
   registerObj = new AdmissionPersonlModel({});
   PatientName: any;
   MobileNo: any;
-
+  VisitDate:any;
+  DepartmentName:any;
+  AgeMonth:any;
+  AgeDay:any;
+  GenderName:any;
+  RefDocName:any;
+  BedName:any;
+  vClassName:any;
   add: boolean = false;
   ItemName: any;
   BalanceQty: any;
@@ -201,7 +213,13 @@ export class NewCasepaperComponent implements OnInit {
   PresItemlist: any = [];
   vRemark: any;
   dsPresList = new MatTableDataSource<PrecriptionItemList>();
-  dsPrePresList = new MatTableDataSource<PrescriptionList>();
+  dsafterPresList = new MatTableDataSource<PrecriptionItemList>();
+
+
+  doseresults: dosedetail[] = [
+    // { BillId: 1, PBillNo: '1', Amount:0},
+    // { BillId: 2, PBillNo: '2',Amount:100 },
+  ];
 
 
   filteredOptionsDosename: Observable<string[]>;
@@ -214,6 +232,10 @@ export class NewCasepaperComponent implements OnInit {
     'DoseName',
     'Day',
     'Remark',
+    'DoseName1',
+    'Day1',
+    'DoseName2',
+    'Day2',
     'Action'
   ]
 
@@ -251,13 +273,15 @@ export class NewCasepaperComponent implements OnInit {
   constructor(
     private _FormBuilder: FormBuilder,
     private formBuilder: FormBuilder,
-    private _opSearchListService: CasepaperService,
+    private _CasepaperService: CasepaperService,
     private accountService: AuthenticationService,
     private _snackBar: MatSnackBar,
     private _formBuilder: FormBuilder,
     private advanceDataStored: AdvanceDataStored,
     private cdr: ChangeDetectorRef,
+    public _matDialog: MatDialog,
     public toastr: ToastrService,
+    public datePipe: DatePipe,
   ) {
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
@@ -364,7 +388,7 @@ export class NewCasepaperComponent implements OnInit {
       regRadio: ['registration'],
       regRadio1: ['registration1'],
       RegId: [''],
-      Lhaed:['true'],
+      Lhaed: ['true'],
       LangaugeRadio: ['Marathi'],
     });
   }
@@ -374,7 +398,7 @@ export class NewCasepaperComponent implements OnInit {
     var m_data = {
       "Keyword": `${this.searchFormGroup.get('RegId').value}%`
     }
-    this._opSearchListService.getPatientVisitedListSearch(m_data).subscribe(data => {
+    this._CasepaperService.getPatientVisitedListSearch(m_data).subscribe(data => {
       this.PatientListfilteredOptions = data;
       if (this.PatientListfilteredOptions.length == 0) {
         this.noOptionFound = true;
@@ -391,7 +415,7 @@ export class NewCasepaperComponent implements OnInit {
       "StoreId": this.accountService.currentUserValue.user.storeId
     }
     console.log(m_data);
-    this._opSearchListService.getItemlist(m_data).subscribe(data => {
+    this._CasepaperService.getItemlist(m_data).subscribe(data => {
       this.filteredOptionsItem = data;
       // console.log(this.data);
       this.filteredOptionsItem = data;
@@ -423,10 +447,21 @@ export class NewCasepaperComponent implements OnInit {
   }
 
   getDoseList() {
-    this._opSearchListService.getDoseList().subscribe((data) => {
+    this._CasepaperService.getDoseList().subscribe((data) => {
       this.doseList = data;
       console.log(this.doseList)
     });
+    debugger
+  }
+  getdosedetail() {
+
+    debugger
+    if (this.doseList.length > 0) {
+      this.doseList.forEach(element => {
+        this.doseresults.push(element)
+      });
+      console.log(this.doseresults)
+    }
   }
 
   getOptionTextDose(option) {
@@ -441,25 +476,32 @@ export class NewCasepaperComponent implements OnInit {
   }
 
   getSelectedObj1(obj) {
-    this.selectedAdvanceObj=obj;
+    debugger
+    console.log(obj)
+    this.selectedAdvanceObj = obj;
     console.log(this.selectedAdvanceObj)
     this.dataSource.data = [];
     this.registerObj = obj;
     this.PatientName = obj.FirstName + " " + obj.LastName;
-    this.RegNo= obj.RegNo;
-    this.City = obj.City;
-    // this.RegDate = this.datePipe.transform(obj.RegTime, 'dd/MM/yyyy hh:mm a');
+    this.RegId = obj.RegId;
+    this.Doctorname = obj.Doctorname;
+    this.VisitDate = this.datePipe.transform(obj.VisitDate, 'dd/MM/yyyy hh:mm a');
     this.CompanyName = obj.CompanyName;
     this.Tarrifname = obj.TariffName;
-    this.Doctorname = obj.DoctorName;
-    this.RegId = obj.RegId;
+    this.DepartmentName = obj.DepartmentName;
+    this.RegNo = obj.RegNo;
     this.vOPIPId = obj.VisitId;
     this.vOPDNo = obj.OPDNo;
     this.vTariffId = obj.TariffId;
     this.vClassId = obj.ClassId;
     this.AgeYear = obj.AgeYear;
-    this.vMobileNo = obj.MobileNo;
-    this.PatientType=obj.PatientType
+    this.AgeMonth = obj.AgeMonth;
+    this.vClassName = obj.ClassName;
+    this.AgeDay = obj.AgeDay;
+    this.GenderName = obj.GenderName;
+    this.RefDocName = obj.RefDocName
+    this.BedName = obj.BedName;
+    this.PatientType = obj.PatientType;
   }
 
 
@@ -583,6 +625,36 @@ export class NewCasepaperComponent implements OnInit {
   //   return this.allComplaint.filter(ele => ele.ComplaintName.toLowerCase().includes(filterValue));
   // }
 
+  SpinLoading:any=""
+  viewgetIpprescriptionReportPdf(OP_IP_ID) {
+    setTimeout(() => {
+      this.SpinLoading = true;
+      //  this.AdList=true;
+      this._CasepaperService.getIpPrescriptionview(
+        OP_IP_ID, 1
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "IP Prescription Viewer"
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+      });
+
+    }, 100);
+  }
 
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
@@ -612,7 +684,7 @@ export class NewCasepaperComponent implements OnInit {
       Examination: '',
 
       BP: '',
-      SpO2:'',
+      SpO2: '',
       ConsultantDocName: '',
       BSL: '',
       BMI: '',
@@ -774,13 +846,13 @@ export class NewCasepaperComponent implements OnInit {
   casePaperData: CasepaperVisitDetails = new CasepaperVisitDetails({});
 
   casepaperVisitDetails() {
-    // this._opSearchListService.getcasepaperVisitDetails(this.selectedAdvanceObj.AdmissionID).subscribe((data: CasepaperVisitDetails) => {
+    // this._CasepaperService.getcasepaperVisitDetails(this.selectedAdvanceObj.AdmissionID).subscribe((data: CasepaperVisitDetails) => {
     //   this.casePaperData = data[0];
     // });
   }
 
   //   prescriptionDetails() {
-  //     this._opSearchListService.prescriptionDetails(this.selectedAdvanceObj.AdmissionID).subscribe((data: any) => {
+  //     this._CasepaperService.prescriptionDetails(this.selectedAdvanceObj.AdmissionID).subscribe((data: any) => {
   //       // this.allHistory = data;
   //     });
   //   }
@@ -788,7 +860,7 @@ export class NewCasepaperComponent implements OnInit {
 
 
   getHistoryList() {
-    this._opSearchListService.getHistoryList().subscribe((data: any) => {
+    this._CasepaperService.getHistoryList().subscribe((data: any) => {
       this.allHistory = data;
       console.log(this.allHistory);
       // this.casePaperData.PastHistory = 'M AS AMSAS, cc';
@@ -806,7 +878,7 @@ export class NewCasepaperComponent implements OnInit {
 
   // getHistoryList1() {
   //   debugger;
-  //   this._opSearchListService.getHistoryList().subscribe((data: any) => {
+  //   this._CasepaperService.getHistoryList().subscribe((data: any) => {
   //     this.HistoryList = data;
   //     console.log(data);
   //     console.log(this.HistoryList);
@@ -816,7 +888,7 @@ export class NewCasepaperComponent implements OnInit {
 
   getDiagnosisList() {
     // debugger;
-    this._opSearchListService.getDiagnosisList().subscribe((data: any) => {
+    this._CasepaperService.getDiagnosisList().subscribe((data: any) => {
       this.allDiagnosis = data;
       console.log(data);
 
@@ -833,7 +905,7 @@ export class NewCasepaperComponent implements OnInit {
 
   getDrugList() {
     debugger
-    this._opSearchListService.getDrugList('%').subscribe((data: ILookup[]) => {
+    this._CasepaperService.getDrugList('%').subscribe((data: ILookup[]) => {
       this.lookups = data;
       this.drugList1 = data;
       this.filteredDrug.next(this.drugList1.slice());
@@ -841,14 +913,14 @@ export class NewCasepaperComponent implements OnInit {
   }
 
   // getDoseList() {
-  //   this._opSearchListService.getDoseList().subscribe((data) => {
+  //   this._CasepaperService.getDoseList().subscribe((data) => {
   //     this.doseList = data;
   //     this.filteredDose.next(this.doseList.slice());
   //   });
   // }
 
   getComplaintList() {
-    this._opSearchListService.getComplaintList().subscribe((data) => {
+    this._CasepaperService.getComplaintList().subscribe((data) => {
       this.complaintList = data;
       this.filteredComplaint.next(this.complaintList.slice());
     });
@@ -856,7 +928,7 @@ export class NewCasepaperComponent implements OnInit {
   }
 
   getExaminationList() {
-    this._opSearchListService.getExaminationList().subscribe((data) => {
+    this._CasepaperService.getExaminationList().subscribe((data) => {
       this.examinationList = data;
       // this.filteredExamination.next(this.examinationList.slice());
     });
@@ -866,7 +938,7 @@ export class NewCasepaperComponent implements OnInit {
   //   casePaperData: CasepaperVisitDetails = new CasepaperVisitDetails({});
 
   //   casepaperVisitDetails() {
-  //     this._opSearchListService.casepaperVisitDetails(this.selectedAdvanceObj.AdmissionID).subscribe((data: CasepaperVisitDetails) => {
+  //     this._CasepaperService.casepaperVisitDetails(this.selectedAdvanceObj.AdmissionID).subscribe((data: CasepaperVisitDetails) => {
   //       this.casePaperData = data[0];
   //     });
   //   }
@@ -875,7 +947,7 @@ export class NewCasepaperComponent implements OnInit {
 
 
   //   getVisitList(){
-  //     this._opSearchListService.getVisitedList().subscribe((data) => {
+  //     this._CasepaperService.getVisitedList().subscribe((data) => {
   //       this.examinationList = data;
   //       // this.filteredExamination.next(this.examinationList.slice());
   //     });
@@ -991,13 +1063,16 @@ export class NewCasepaperComponent implements OnInit {
   }
 
   onSave() {
-
+    this.dsItemList.data.forEach(element => {
+      console.log(element)
+    });
+    
     if (this.prescriptionData.length == 0) {
       Swal.fire('Error !', 'Please add before save', 'error');
     }
     // debugger;
     let insertOpCasePaper = {};
-    insertOpCasePaper['visitId'] = this.vOPIPId  || 0;
+    insertOpCasePaper['visitId'] = this.vOPIPId || 0;
     insertOpCasePaper['height'] = this.caseFormGroup.get("Height").value || 0;
     insertOpCasePaper['weight'] = this.caseFormGroup.get("Weight").value || 0;
     insertOpCasePaper['pluse'] = this.caseFormGroup.get("Pluse").value || 0;
@@ -1058,7 +1133,7 @@ export class NewCasepaperComponent implements OnInit {
 
     console.log(casePaperSaveObj);
 
-    this._opSearchListService.onSaveCasepaper(casePaperSaveObj).subscribe(response => {
+    this._CasepaperService.onSaveCasepaper(casePaperSaveObj).subscribe(response => {
 
       if (response) {
         Swal.fire('Congratulations !', 'Casepaper save Successfully !', 'success').then((result) => {
@@ -1066,7 +1141,7 @@ export class NewCasepaperComponent implements OnInit {
 
             //  this.getChargesList();
             //  let m=response;
-            this.getPrint();
+            this.viewgetIpprescriptionReportPdf(this.vOPIPId);
             // this._matDialog.closeAll();
             //  this.addEmptyRow();
             //  console.log(this.getPrint(m));
@@ -1107,7 +1182,7 @@ export class NewCasepaperComponent implements OnInit {
 
     let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=12';
     console.log(query);
-    this._opSearchListService.getTemplate(query).subscribe((resData: any) => {
+    this._CasepaperService.getTemplate(query).subscribe((resData: any) => {
       console.log(resData);
       this.printTemplate = resData[0].TempDesign;
       console.log(this.printTemplate);
@@ -1185,7 +1260,7 @@ export class NewCasepaperComponent implements OnInit {
     console.log(D_data);
     let printContents; //`<div style="padding:20px;height:550px"><div><div style="display:flex"><img src="http://localhost:4200/assets/images/logos/Airmid_NewLogo.jpeg" width="90"><div><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="color:#464343">6158, Siddheshwar peth, near zilla parishad, solapur-3 phone no.: (0217) 2323001 / 02</div><div style="color:#464343">www.yashodharahospital.org</div></div></div><div style="border:1px solid grey;border-radius:16px;text-align:center;padding:8px;margin-top:5px"><span style="font-weight:700">IP ADVANCE RECEIPT</span></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex;justify-content:space-between"><div style="display:flex"><div style="width:100px;font-weight:700">Advance No</div><div style="width:10px;font-weight:700">:</div><div>6817</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Reg. No</div><div style="width:10px;font-weight:700">:</div><div>117399</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Date</div><div style="width:10px;font-weight:700">:</div><div>26/06/2019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3:15:49PM</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex;width:477px"><div style="width:100px;font-weight:700">Patient Name</div><div style="width:10px;font-weight:700">:</div><div>Mrs. Suglabai Dhulappa Waghmare</div></div><div style="display:flex"><div style="width:60px;font-weight:700">IPD No</div><div style="width:10px;font-weight:700">:</div><div>IP/53757/2019</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:100px;font-weight:700">DOA</div><div style="width:10px;font-weight:700">:</div><div>30/10/2019</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:100px;font-weight:700">Patient Type</div><div style="width:10px;font-weight:700">:</div><div>Self</div></div></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Advacne Amount</div><div style="width:10px;font-weight:700">:</div><div>4,000.00</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:150px;font-weight:700">Amount in Words</div><div style="width:10px;font-weight:700">:</div><div>FOUR THOUSANDS RUPPEE ONLY</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Reason of Advance</div><div style="width:10px;font-weight:700">:</div><div></div></div></div></div><div style="position:relative;top:100px;text-align:right"><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="font-weight:700;font-size:16px">Cashier</div><div>Paresh Manlor</div></div></div>`;
     this.subscriptionArr.push(
-      this._opSearchListService.getOPDPrecriptionPrint(D_data).subscribe(res => {
+      this._CasepaperService.getOPDPrecriptionPrint(D_data).subscribe(res => {
         console.log(res);
         this.reportPrintObjList = res as CasepaperVisitDetails[];
         console.log(this.reportPrintObjList);
@@ -1266,7 +1341,7 @@ export class NewCasepaperComponent implements OnInit {
 
   getPrescriptionListFill(visitId) {
     debugger;
-    this._opSearchListService.prescriptionDetails(visitId).subscribe(Visit => {
+    this._CasepaperService.prescriptionDetails(visitId).subscribe(Visit => {
       this.dataSource3.data = Visit as OPDPrescription[];
 
       console.log(this.dataSource3.data);
@@ -1282,11 +1357,11 @@ export class NewCasepaperComponent implements OnInit {
     this.sIsLoading = 'loading';
     var D_data = {
       // "VisitId": 70765,//this.selectedAdvanceObj.VisitId,
-      "VisitId": this.selectedAdvanceObj.VisitId,
+      "VisitId": 1// this.selectedAdvanceObj.VisitId,
     }
     console.log(D_data);
     this.sIsLoading = 'loading-data';
-    this._opSearchListService.getVisitedList(D_data).subscribe(Visit => {
+    this._CasepaperService.getVisitedList(D_data).subscribe(Visit => {
       this.dataSource1.data = Visit as CasepaperVisitDetails[];
 
       console.log(this.dataSource1.data);
@@ -1331,6 +1406,10 @@ export class NewCasepaperComponent implements OnInit {
       return false;
     }
   }
+
+  Day1:any=0;
+  Day2:any=0;
+
   onAdd() {
     if ((this.MedicineItemForm.get('ItemId').value == '' || this.MedicineItemForm.get('ItemId').value == null || this.MedicineItemForm.get('ItemId').value == undefined)) {
       this.toastr.warning('Please select Item', 'Warning !', {
@@ -1372,6 +1451,10 @@ export class NewCasepaperComponent implements OnInit {
           ItemName: this.MedicineItemForm.get('ItemId').value.ItemName || '',
           DoseName: this.MedicineItemForm.get('DoseId').value.DoseName || '',
           Day: this.vDay,
+          DoseName1: this.MedicineItemForm.get('DoseId').value.DoseName || '',
+          Day1:this.Day1,
+          DoseName2: this.MedicineItemForm.get('DoseId').value.DoseName || '',
+          Day2:this.Day1,
           Instruction: this.vInstruction || ''
         });
       this.dsItemList.data = this.Chargelist
@@ -1387,6 +1470,18 @@ export class NewCasepaperComponent implements OnInit {
     this.MedicineItemForm.get('Day').reset('');
     this.MedicineItemForm.get('Instruction').reset('');
     this.itemid.nativeElement.focus();
+
+    this.getdosedetail();
+  }
+
+  getdoseDetailValue1(element,event){
+    element.DoseName1=event
+    console.log(event,element)
+  }
+
+  getdoseDetailValue2(element,event){
+    element.DoseName2=event
+    console.log(event,element)
   }
 
   deleteTableRow(event, element) {
@@ -1486,16 +1581,16 @@ export class NewCasepaperComponent implements OnInit {
       // if(this.mstatus) this.mstatus.focus();
     }
   }
-  PrintMarathi(){
+  PrintMarathi() {
 
   }
-  PrintEnglsih(){
+  PrintEnglsih() {
 
   }
-  onChangeLangaugeRadio(event){
+  onChangeLangaugeRadio(event) {
 
   }
-  LetterheadFilter(event){
+  LetterheadFilter(event) {
 
   }
   onClear() { }

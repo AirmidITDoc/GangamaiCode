@@ -792,6 +792,10 @@ export class MedicineItemList {
   ItemName: string;
   DoseName:any;
   Day: number;
+  DoseName1:any;
+  Day1: number;
+  DoseName2:any;
+  Day2: number;
   Instruction: any;
   DoseId:any;
   /**
@@ -804,9 +808,14 @@ export class MedicineItemList {
       this.ItemId = MedicineItemList.ItemId || 0;
       this.ItemID = MedicineItemList.ItemID || 0;
       this.ItemName = MedicineItemList.ItemName || "";
-      this.Day = MedicineItemList.Day || 0;
+   
       this.Instruction = MedicineItemList.Instruction || '';
       this.DoseName = MedicineItemList.DoseName || '';
+      this.Day = MedicineItemList.Day || 0;
+      this.DoseName1 = MedicineItemList.DoseName1 || '';
+      this.Day1 = MedicineItemList.Day1 || 0;
+      this.DoseName2 = MedicineItemList.DoseName2 || '';
+      this.Day2 = MedicineItemList.Day2 || 0;
     }
   }
 }

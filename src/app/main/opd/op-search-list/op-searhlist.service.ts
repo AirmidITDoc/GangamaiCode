@@ -490,7 +490,8 @@ public prescriptionDetails(visistId) {
     return this._httpClient.get("OutPatient/view-OPRefundofBill?RefundId="+RefundId)
   }
 
-  
+
+
   public getOpPaymentview(PaymentId){
     return this._httpClient.get("OutPatient/view-OP-PaymentReceipt?PaymentId=" + PaymentId);
   }
