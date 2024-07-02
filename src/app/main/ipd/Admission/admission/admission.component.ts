@@ -47,49 +47,50 @@ export class AdmissionComponent implements OnInit {
 
 
   currentDate = new Date();
-  reportPrintObj: Admission;
+  // reportPrintObj: Admission;
   searchFormGroup: FormGroup;
-  isLoadings = false;
-  SpinLoading: boolean = false;
-
-  subscriptionArr: Subscription[] = [];
-  printTemplate: any;
-  reportPrintObjList: Admission[] = [];
-  AdmittedPatientList: any;
-  msg: any;
-  sIsLoading: string = '';
+  personalFormGroup: FormGroup;
+  hospitalFormGroup: FormGroup;
+  wardFormGroup: FormGroup;
+  otherFormGroup: FormGroup;
+  
   screenFromString = 'admission-form';
-  doctorNameCmbList: any = [];
+  selectedAdvanceObj: AdmissionPersonlModel;
+  newRegSelected: any = 'registration';
+
   hasSelectedContacts: boolean;
+  SpinLoading: boolean = false;
+  isLoadings = false;
   disabled = false;
   isAlive = false;
-  savedValue: number = null;
   isOpen = false;
-  loadID = 0;
-
   isRegIdSelected: boolean = false;
   isWardSelected: boolean = false;
   isPrefixSelected: boolean = false;
   isCitySelected: boolean = false;
   isCompanySelected: boolean = false;
-  // isCompanyselected: boolean = false;
   isSubCompanySelected: boolean = false;
   isDepartmentSelected: boolean = false;
-
   isAdmittedDoctor1Selected: boolean = false;
   isAdmittedDoctor2Selected: boolean = false;
   isRefDoctorSelected: boolean = false;
-
   isDoctorSelected: boolean = false;
-
   isAreaSelected: boolean = false;
   isReligionSelected: boolean = false;
   isMaritalSelected: boolean = false;
   isRelationshipSelected: boolean = false;
   isSearchdoctorSelected: boolean = false;
-
-  selectedAdvanceObj: AdmissionPersonlModel;
+  isRegSearchDisabled: boolean = true;
+  filteredOptions: any;
+  showtable: boolean = false;
+  noOptionFound: boolean = false;
+  Regdisplay: boolean = false;
+  ispatienttypeSelected: boolean = false;
+  isTariffIdSelected: boolean = false;
+  isLinear = true;
   submitted = false;
+  AdList: boolean = false;
+ 
   HospitalList: any = [];
   PatientTypeList: any = [];
   TariffList: any = [];
@@ -109,8 +110,7 @@ export class AdmissionComponent implements OnInit {
   WardList: any = [];
   BedList: any = [];
   BedClassList: any = [];
-  Todate: any;
-  ConfigCityId = 2;
+  doctorNameCmbList: any = [];
   ConfigcityList: any = [];
   _cityList: any = [];
   cityList: any = [];
@@ -124,21 +124,36 @@ export class AdmissionComponent implements OnInit {
   selectedCountryID: any;
   selectedHName: any;
   seelctedHospID: any;
-
+  selectedPrefixId: any;
   selectedGender = "";
   selectedGenderID: any;
   capturedImage: any;
-  isLinear = true;
-  personalFormGroup: FormGroup;
-  hospitalFormGroup: FormGroup;
-  wardFormGroup: FormGroup;
-  otherFormGroup: FormGroup;
   registration: any;
-  isRegSearchDisabled: boolean = true;
-  newRegSelected: any = 'registration';
-  DoctorId: any = 0;
-  AdList: boolean = false;
+
+ 
+ Vtotalcount = 0;
+ VNewcount = 0;
+ VFollowupcount = 0;
+ VBillcount = 0;
+ VOPtoIPcount = 0;
+ vIsDischarg = 0;
+ VAdmissioncount = 0;
+ PatientName:any;
+ RegId:any;
+ RegNo:any;
+ DoctorId: any = 0;
+ AdmittedPatientList: any;
+ msg: any;
+ sIsLoading: string = '';
+ savedValue: number = null;
+ loadID = 0;
+ Todate: any;
+ ConfigCityId = 2;
+
+ 
+  
   options = [];
+  V_SearchRegList: any = [];
   optionsPrefix: any[] = [];
   optionsDep: any[] = [];
   optionsCity: any[] = [];
@@ -156,17 +171,16 @@ export class AdmissionComponent implements OnInit {
   optionsSearchDoc: any[] = [];
   optionRegSearch: any[] = [];
   optionsubCompany: any[] = [];
+  optionsPatientType: any[] = [];
+  optionsTariff: any[] = [];
+  RefoptionsDoc: any[] = [];
+  optionsAdDoc1: any[] = [];
+  optionsAdDoc2: any[] = [];
 
-  filteredOptions: any;
-  showtable: boolean = false;
-  noOptionFound: boolean = false;
-  Regdisplay: boolean = false;
   registerObj = new AdmissionPersonlModel({});
   MlcObj=new MlcDetail({})
   bedObj = new Bed({});
-  selectedPrefixId: any;
 
-  V_SearchRegList: any = [];
 
   filteredOptionsPrefix: Observable<string[]>;
   filteredOptionsDep: Observable<string[]>;
@@ -186,29 +200,11 @@ export class AdmissionComponent implements OnInit {
   filteredOptionsSubCompany: Observable<string[]>;
   filteredOptionssearchDoctor: Observable<string[]>;
   filteredOptionsRegSearch: Observable<string[]>;
-  // filteredOptionsPatientType: Observable<string[]>;'
   filteredOptionsPatientType:any;
   filteredOptionsTarrif: Observable<string[]>;
   filteredOptionsRefrenceDoc: Observable<string[]>;
 
-  ispatienttypeSelected: boolean = false;
-  isTariffIdSelected: boolean = false;
-  optionsPatientType: any[] = [];
-  optionsTariff: any[] = [];
-  RefoptionsDoc: any[] = [];
-  optionsAdDoc1: any[] = [];
-  optionsAdDoc2: any[] = [];
 
-  Vtotalcount = 0;
-  VNewcount = 0;
-  VFollowupcount = 0;
-  VBillcount = 0;
-  VOPtoIPcount = 0;
-  vIsDischarg = 0;
-  VAdmissioncount = 0;
-  PatientName:any;
-  RegId:any;
-  RegNo:any;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -345,12 +341,10 @@ export class AdmissionComponent implements OnInit {
 
       });
 
-    // this.getAdmittedPatientList();
+    
     this.getPrefixList();
     this.getHospitalList();
     this.getPrefixList();
-    // this.getPatientTypeList();
-    // this.getTariffList();
     this.getAreaList();
     this.getMaritalStatusList();
     this.getReligionList();
@@ -375,13 +369,6 @@ export class AdmissionComponent implements OnInit {
       this.menuActions.push("Update Consultant Doctor");
       this.menuActions.push("Update Referred Doctor");
      
-     
-     
-     
-      // this.menuActions.push('Print Patient Card');
-      // this.menuActions.push('Print Patient Sticker');
-      // this.menuActions.push('Prefix Demo');
-      // this.menuActions.push('Emergency');
     }
 
 
@@ -1748,7 +1735,7 @@ export class AdmissionComponent implements OnInit {
         return;
       }
     }
-
+debugger
     if (!this.personalFormGroup.invalid && !this.hospitalFormGroup.invalid && !this.wardFormGroup.invalid && !this.otherFormGroup.invalid) {
       if (this.searchFormGroup.get('regRadio').value == "registration") {
         //Api
@@ -1843,7 +1830,7 @@ export class AdmissionComponent implements OnInit {
         submissionObj['bedStatusUpdate'] = BedStatusUpdate;
 
         console.log(submissionObj);
-        this._AdmissionService.AdmissionInsert(submissionObj).subscribe(response => {
+        this._AdmissionService.AdmissionNewInsert(submissionObj).subscribe(response => {
 
           if (response) {
 
@@ -1924,7 +1911,7 @@ export class AdmissionComponent implements OnInit {
 
 
         console.log(submissionObj);
-        this._AdmissionService.RegisteredAdmissionInsert(submissionObj).subscribe(response => {
+        this._AdmissionService.AdmissionRegisteredInsert(submissionObj).subscribe(response => {
 
           if (response) {
             Swal.fire('Congratulations !', 'Admission Of Registered Patient Successfully !', 'success').then((result) => {

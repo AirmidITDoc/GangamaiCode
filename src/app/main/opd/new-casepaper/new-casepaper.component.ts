@@ -363,7 +363,9 @@ export class NewCasepaperComponent implements OnInit {
     return this.formBuilder.group({
       regRadio: ['registration'],
       regRadio1: ['registration1'],
-      RegId: ['']
+      RegId: [''],
+      Lhaed:['true'],
+      LangaugeRadio: ['Marathi'],
     });
   }
   PatientListfilteredOptions: any;
@@ -1280,7 +1282,7 @@ export class NewCasepaperComponent implements OnInit {
     this.sIsLoading = 'loading';
     var D_data = {
       // "VisitId": 70765,//this.selectedAdvanceObj.VisitId,
-      "VisitId": 70765,//this.selectedAdvanceObj.VisitId,
+      "VisitId": this.selectedAdvanceObj.VisitId,
     }
     console.log(D_data);
     this.sIsLoading = 'loading-data';
@@ -1484,7 +1486,18 @@ export class NewCasepaperComponent implements OnInit {
       // if(this.mstatus) this.mstatus.focus();
     }
   }
+  PrintMarathi(){
 
+  }
+  PrintEnglsih(){
+
+  }
+  onChangeLangaugeRadio(event){
+
+  }
+  LetterheadFilter(event){
+
+  }
   onClear() { }
 }
 

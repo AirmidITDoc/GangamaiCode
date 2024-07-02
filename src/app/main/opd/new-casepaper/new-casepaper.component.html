@@ -479,10 +479,23 @@
                                 </div>
                             </div>
                         </div>
+                        <form [formGroup]="caseFormGroup">
+                        <mat-checkbox (change)="LetterheadFilter($event)" aria-label="Letter Head" style="margin-left: 20px;margin-right: 20px;font-weight: bold;"
+                        formControlName="Lhaed">
+                            Letter Head
+                        </mat-checkbox>
+                        <mat-radio-group aria-label="Select an option" formControlName="LangaugeRadio"
+                        name="LangaugeRadio" (change)="onChangeLangaugeRadio($event)" style="font-weight: bold;">
+                        <mat-radio-button value="Marathi">print In Marathi</mat-radio-button>
+                        <mat-radio-button value="English">print In English</mat-radio-button>
+                        </mat-radio-group>
+                        </form>
                         <div fxLayout="row">
-                            <div class="action-btns gap-8" fxLayout="row" style="margin-left: 1300px;">
-                                <button class="btn btn-danger-outline" (click)="onClear()">Close</button>
+                            <div class="action-btns gap-8" fxLayout="row" style="margin-left: 1000px;">
+                                <button class="btn btn-danger-outline" (click)="onClear()">Reset</button>
                                 <button class="btn btn-primary" (click)="onSave()">Save</button>
+                                <button class="btn btn-primary" (click)="PrintMarathi()">Print Marathi </button>
+                                <button class="btn btn-primary" (click)="PrintEnglsih()">Print English </button>
                             </div>
                         </div>
                     </mat-card>
