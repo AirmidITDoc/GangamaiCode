@@ -86,7 +86,7 @@ FlagBillNoSelected: boolean = false;
     
     if (this._ActRoute.url == "/reports/opreports") 
       this.Reportsection='OP Reports'
-    if (this._ActRoute.url == "/reports/opreports") 
+    if (this._ActRoute.url == "/reports/opmisreports") 
     this.Reportsection='OP MIS Reports'
    
     // if (this._ActRoute.url == "/reports/ipreport") 
@@ -584,6 +584,7 @@ var data={
 
   
   viewgetRegistrationlistReportPdf() {
+    debugger
     this.sIsLoading = 'loading-data';
    
      setTimeout(() => {
@@ -1602,7 +1603,7 @@ getDocwiseopdcollsummaryview() {
         width: '100%',
         data: {
           base64: res["base64"] as string,
-          title: "Doctor Wise New Old Patient Viewer"
+          title: "Doctor Wise OPD Collection Summary Viewer"
         }
       });
 

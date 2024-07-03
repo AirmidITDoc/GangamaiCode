@@ -46,6 +46,13 @@ const appRoutes: Routes = [
                 (m) => m.OPReportsModule
             ),
     },
+    {
+        path: "opmisreports",
+        loadChildren: () =>
+            import("./op-reports/opreports.module").then(
+                (m) => m.OPReportsModule
+            ),
+    },
    {
         path: "commanreport",
         loadChildren: () =>
