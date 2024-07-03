@@ -460,12 +460,12 @@ export class UpdatePurchaseorderComponent implements OnInit {
     this.vDis = '';
     this.vCGSTPer = obj.CGSTPer
     this.vSGSTPer = obj.SGSTPer
-    this.vIGSTPer = 0;
-    this.vIGSTAmt = 0;
+    this.vIGSTPer = obj.IGSTPer
+    // this.vIGSTAmt = obj.CGSTPer
     this.vTotalAmount = (parseInt(this.vQty) * parseFloat(this.vRate)).toFixed(2);
     this.vNetAmount = this.vTotalAmount;
     //this.VatPercentage = obj.VatPercentage;
-    this.vGSTPer = (obj.SGSTPer + obj.CGSTPer);
+    this.vGSTPer = (obj.SGSTPer + obj.CGSTPer + obj.IGSTPer);
     // this.GSTAmount = 0;
     this.vSpecification = obj.Specification || '';
     this.getLastThreeItemInfo();

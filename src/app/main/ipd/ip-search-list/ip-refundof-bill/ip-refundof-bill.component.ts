@@ -119,10 +119,6 @@ export class IPRefundofBillComponent implements OnInit {
   ];
   
   displayedColumns1 = [
-    // 'ChargesId',
-    // 'ChargesDate',
-    // "checkbox",
-    'ServiceId',
     'ServiceName',
     'Qty',
     'Price',
@@ -132,8 +128,8 @@ export class IPRefundofBillComponent implements OnInit {
   ];
 
   displayedColumns = [
-    'BillNo',
     'BillDate',
+    'BillNo',
     'NetPayableAmt',
     'RefundAmt'
     // 'action'
@@ -586,15 +582,15 @@ createSearchForm() {
     let InsertRefundDetailObj = {};
     console.log(this.dataSource.data);
     
-    this.dataSource.data.forEach((element) => {
+    this.dataSource2.data.forEach((element) => {
       InsertRefundDetailObj['RefundID'] = 0;
-      InsertRefundDetailObj['ServiceId'] = this.serviceId || 0;
-      InsertRefundDetailObj['ServiceAmount'] = this.ServiceAmount || 0;
-      InsertRefundDetailObj['RefundAmount'] = parseInt(this.RefundOfBillFormGroup.get('TotalRefundAmount').value) || 0;
-      InsertRefundDetailObj['DoctorId'] =1;// this.myRefundBillForm.get('DoctorId').value;// this.selectedAdvanceObj.Doctorname;
+      InsertRefundDetailObj['ServiceId'] = element.ServiceId || 0;
+      InsertRefundDetailObj['ServiceAmount'] = element.NetAmount || 0;
+      InsertRefundDetailObj['RefundAmount'] =element.RefundAmount || 0;
+      InsertRefundDetailObj['DoctorId'] = element.DoctorId || 0; 
       InsertRefundDetailObj['Remark'] = this.RefundOfBillFormGroup.get('Remark').value || '';
       InsertRefundDetailObj['AddBy'] = this.accountService.currentUserValue.user.id,
-      InsertRefundDetailObj['ChargesId'] = this.ChargeId;
+      InsertRefundDetailObj['ChargesId'] = element.ChargesId || 0;
 
       RefundDetailarr.push(InsertRefundDetailObj);
       console.log(RefundDetailarr);

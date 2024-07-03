@@ -175,7 +175,7 @@
                                             </mat-form-field>
 
                                             <div style="margin-right: 10px; width:200px;" *ngIf="isDoctor">
-                                                <mat-form-field appearance="outline" fxFlex id="DoctorID">
+                                                <!-- <mat-form-field appearance="outline" fxFlex>
                                                     <mat-label>Doctor Name</mat-label>
                                                     <mat-select formControlName="DoctorID" placeholder="Doctor" #Doctor
                                                         #singleSelect (keydown)="onEnterdoctor($event)">
@@ -185,7 +185,7 @@
                                                                 [noEntriesFoundLabel]="'No matching found'">
                                                             </ngx-mat-select-search>
                                                         </mat-option>
-                                                        <mat-option *ngFor="let element of filteredDoctor | async"
+                                                        <mat-option *ngFor="let element of filteredOptionDoctor | async"
                                                             [value]="element">
                                                             {{element.DoctorName}}
                                                         </mat-option>
@@ -195,6 +195,31 @@
                                                             Required field cannot be left blank
                                                         </mat-error>
                                                     </mat-select>
+                                                </mat-form-field> -->
+
+                                                <mat-form-field appearance="outline" fxFlex>
+                                                    <mat-label>Doctor Name</mat-label>
+                                                    <input matAutocompletePosition="below" type="text"
+                                                        placeholder="Select Doctor Name" matInput formControlName="DoctorID"
+                                                        [matAutocomplete]="autoDoctor" required  #Doctor (keydown)="onEnterdoctor($event)">
+                                                    <span matSuffix style="display: flex;">
+                                                        <mat-icon class="mat-icon-close"
+                                                            (click)="registeredForm.get('DoctorID').setValue(''); isDoctorSelected = false;">close</mat-icon>
+                                                        <mat-icon class="mat-icon-close"
+                                                            (click)="registeredForm.get('DoctorID').setValue(''); isDoctorSelected = false;">search</mat-icon>
+                                                    </span>
+                                                    <mat-autocomplete #autoDoctor="matAutocomplete"
+                                                        [displayWith]="getOptionTextDoctor">
+                                                        <mat-option *ngFor="let option of filteredOptionDoctor | async"
+                                                            [value]="option">
+                                                            {{option.DoctorName}}
+                                                        </mat-option>
+                                                    </mat-autocomplete>
+                                                    <mat-hint>Plz Select Doctor Name</mat-hint>
+                                                    <mat-error
+                                                        *ngIf="registeredForm.get('DoctorID').hasError('required')">
+                                                        Required field cannot be left blank
+                                                    </mat-error>
                                                 </mat-form-field>
                                             </div>
 

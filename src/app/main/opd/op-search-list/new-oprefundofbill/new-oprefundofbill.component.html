@@ -163,7 +163,7 @@
                                                 BillNo
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let element">
-                                                <span> {{element.BillNo}}</span>
+                                                <span> {{element.PBillNo}}</span>
                                             </mat-cell>
                                         </ng-container>
 
@@ -304,13 +304,6 @@
                                 <div class="table-wrapper">
                                     <mat-table class="h-200" matSort [dataSource]="dataSource2" [@animateStagger]="{value:'50'}">
 
-                                        <ng-container matColumnDef="ServiceId">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                                ServiceId </mat-header-cell>
-                                            <mat-cell *matCellDef="let element">
-                                                <span> {{element.ServiceId}}</span>
-                                            </mat-cell>
-                                        </ng-container>
 
                                         <ng-container matColumnDef="ServiceName">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header>

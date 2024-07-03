@@ -119,10 +119,6 @@ export class NewOPRefundofbillComponent implements OnInit {
 
   @ViewChild('picker') datePickerElement = MatDatepicker;
   displayedColumns1 = [
-    // 'ChargesId',
-    // 'ChargesDate',
-    // "checkbox",
-    'ServiceId',
     'ServiceName',
     'Qty',
     'Price',
@@ -134,8 +130,8 @@ export class NewOPRefundofbillComponent implements OnInit {
   ];
 
   displayedColumns = [
-    'BillNo',
     'BillDate',
+    'BillNo',
     'NetPayableAmt',
     'RefundAmount'
     // 'action'
@@ -599,22 +595,22 @@ onSave() {
 
 
         let RefundDetailarr = [];
-        let InsertRefundDetailObj = {};
+        this.dataSource2.data.forEach((element) =>{
+          
+          let InsertRefundDetailObj = {};
 
-        InsertRefundDetailObj['RefundID'] = 0;
-        InsertRefundDetailObj['ServiceId'] = this.serviceId || 0;
-        InsertRefundDetailObj['ServiceAmount'] = this.ServiceAmount || 0;
-        InsertRefundDetailObj['RefundAmount'] = parseInt(this.RefundOfBillFormGroup.get('TotalRefundAmount').value) || 0;
-        InsertRefundDetailObj['DoctorId'] = 1;// this.myRefundBillForm.get('DoctorId').value;// this.selectedAdvanceObj.Doctorname;
-        InsertRefundDetailObj['Remark'] = this.RefundOfBillFormGroup.get('Remark').value || '';
-        InsertRefundDetailObj['AddBy'] = this.accountService.currentUserValue.user.id,
-          InsertRefundDetailObj['ChargesId'] = this.serviceId || this.ChargeId;
+          InsertRefundDetailObj['RefundID'] = 0;
+          InsertRefundDetailObj['ServiceId'] = element.ServiceId || 0;
+          InsertRefundDetailObj['ServiceAmount'] = element.NetAmount || 0;
+          InsertRefundDetailObj['RefundAmount'] =  element.RefundAmt || 0;
+          InsertRefundDetailObj['DoctorId'] =  element.DoctorId
+          InsertRefundDetailObj['Remark'] = this.RefundOfBillFormGroup.get('Remark').value || '';
+          InsertRefundDetailObj['AddBy'] = this.accountService.currentUserValue.user.id,
+          InsertRefundDetailObj['ChargesId'] =element.ChargesId
+          RefundDetailarr.push(InsertRefundDetailObj); 
+        })  
 
-        RefundDetailarr.push(InsertRefundDetailObj);
-        // });
-        let AddchargesRefundAmountarr = [];
-       
-
+        let AddchargesRefundAmountarr = []; 
         this.dataSource2.data.forEach((element) => {
           debugger
           let AddchargesRefundAmountObj = {};
@@ -843,7 +839,7 @@ onSave() {
     this.RefundAmount = row.RefundAmount;
     this.RefundBalAmount = (parseInt(this.NetBillAmount.toString()) - parseInt(this.RefundAmount.toString()));
     this.vFinalrefundbamt = this.RefundBalAmount
-    this.vOPIPId = row.VisitId;
+    this.vOPIPId = row.VisitId; 
     //Testing
     if (row.RefundAmount < row.NetPayableAmt) {
       var m_data1 = {

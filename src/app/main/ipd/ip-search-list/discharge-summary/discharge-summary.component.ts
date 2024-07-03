@@ -96,7 +96,7 @@ export class DischargeSummaryComponent implements OnInit {
   vDoctorAssistantName: any;
   vClaimNumber: any;
   vPreOthNumber: any;
-
+  IsNormalDeath:any;
   dsItemList = new MatTableDataSource<MedicineItemList>();
 
   constructor(public _IpSearchListService: IPSearchListService,
@@ -211,7 +211,7 @@ export class DischargeSummaryComponent implements OnInit {
  WarningSymptoms:'',
  Pathology:'',
  Radiology:'',
- IsNormalOrDeath:'1',  
+ IsNormalOrDeath:'True',  
  DischargesummaryId:'',  
  SurgicalFinding:''
     });
@@ -263,19 +263,19 @@ export class DischargeSummaryComponent implements OnInit {
   private _filterdoc1(value: any): string[] {
     if (value) {
       const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
-      return this.optionsDoc1.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
+      return this.Doctor1List.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
     }
   }
   private _filterdoc2(value: any): string[] {
     if (value) {
       const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
-      return this.optionsDoc2.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
+      return this.Doctor2List.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
     }
   }
   private _filterdoc3(value: any): string[] {
     if (value) {
       const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
-      return this.optionsDoc3.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
+      return this.Doctor3List.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
     }
   }
 
@@ -391,6 +391,7 @@ export class DischargeSummaryComponent implements OnInit {
     }
   
     deleteTableRow(event, element) { 
+      debugger
       let index = this.Chargelist.indexOf(element);
       if (index >= 0) {
         this.Chargelist.splice(index, 1);
@@ -454,10 +455,11 @@ export class DischargeSummaryComponent implements OnInit {
     var m_data2 = {
       "AdmissionId": el.AdmissionID 
     }
-    console.log(m_data2)
+    //console.log(m_data2)
     this._IpSearchListService.getPrescriptionList(m_data2).subscribe((data) => {
       this.dsItemList.data = data as MedicineItemList[];
-      console.log(this.dsItemList.data);     
+      this.Chargelist = data as MedicineItemList[];
+     // console.log(this.dsItemList.data);     
     }); 
   }
   getDischargeSummaryData(el) {
@@ -488,8 +490,16 @@ export class DischargeSummaryComponent implements OnInit {
       this.DocName1 = this.RetrDischargeSumryList[0].DischargeDoctor1
       this.DocName2 = this.RetrDischargeSumryList[0].DischargeDoctor2
       this.DocName3 = this.RetrDischargeSumryList[0].DischargeDoctor3
+      this.IsNormalDeath = this.RetrDischargeSumryList[0].IsNormalOrDeath
        this.getRetevDropdownvalue(); 
-      this.DischargesumForm.get('IsNormalOrDeath').setValue(this.RetrDischargeSumryList[0].IsNormalOrDeath)  
+       debugger
+       if(this.IsNormalDeath == 1){
+        this.DischargesumForm.get('IsNormalOrDeath').setValue(true) 
+       }
+       else{
+        this.DischargesumForm.get('IsNormalOrDeath').setValue('false') 
+       }
+       
      
     }); 
   }
@@ -576,7 +586,7 @@ OnSave(){
   insertIPDDischargSummaryObj['lifeStyle'] = this.DischargesumForm.get("LifeStyle").value || '',
   insertIPDDischargSummaryObj['warningSymptoms'] = this.DischargesumForm.get("SurgicalFinding").value || '',
   insertIPDDischargSummaryObj['radiology'] = this.DischargesumForm.get("Radiology").value || '',
-  insertIPDDischargSummaryObj['isNormalOrDeath'] = this.DischargesumForm.get("IsNormalOrDeath").value || 0
+  insertIPDDischargSummaryObj['isNormalOrDeath'] = this.DischargesumForm.get("IsNormalOrDeath").value
 
   let insertIPPrescriptionDischarge =[];
   this.dsItemList.data.forEach(element =>{
@@ -607,7 +617,7 @@ OnSave(){
   console.log(SubmitData);
   setTimeout(() => {
     this._IpSearchListService.insertIPDDischargSummary(SubmitData).subscribe(response => {
-      console.log(response);
+      //console.log(response);
       if (response) {
         Swal.fire('Congratulations !', 'Discharge Summary Saved Successfully !', 'success').then((result) => {
           if (result.isConfirmed) {
@@ -653,7 +663,7 @@ OnSave(){
   updateIPDDischargSummaryObj['lifeStyle'] = this.DischargesumForm.get("LifeStyle").value || '',
   updateIPDDischargSummaryObj['warningSymptoms'] = this.DischargesumForm.get("SurgicalFinding").value || '',
   updateIPDDischargSummaryObj['radiology'] = this.DischargesumForm.get("Radiology").value || '',
-  updateIPDDischargSummaryObj['isNormalOrDeath'] = this.DischargesumForm.get("IsNormalOrDeath").value || 0
+  updateIPDDischargSummaryObj['isNormalOrDeath'] = this.DischargesumForm.get("IsNormalOrDeath").value 
 
 
 
@@ -692,7 +702,7 @@ OnSave(){
   console.log(SubmitData);
   setTimeout(() => {
     this._IpSearchListService.updateIPDDischargSummary(SubmitData).subscribe(response => {
-      console.log(response);
+     // console.log(response);
       if (response) {
         Swal.fire('Congratulations !', 'Discharge Summary Updated Successfully !', 'success').then((result) => {
           if (result.isConfirmed) {

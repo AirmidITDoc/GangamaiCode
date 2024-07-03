@@ -13,7 +13,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { debounceTime, exhaustMap, filter, scan, startWith, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { debounceTime, exhaustMap, filter, map, scan, startWith, switchMap, takeUntil, tap } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
 import { BrowseOPDBill } from '../../browse-opbill/browse-opbill.component';
@@ -171,6 +171,8 @@ export class OPBillingComponent implements OnInit {
   vOPDNo: any = 0;
   vTariffId: any = 0;
   vClassId: any = 0;
+  filteredOptionDoctor:any;
+  isDoctorSelected:boolean=false;
   //doctorone filter
   public doctorFilterCtrl: FormControl = new FormControl();
   public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
@@ -215,11 +217,11 @@ export class OPBillingComponent implements OnInit {
     this.getCashCounterComboList();
     this.getConcessionReasonList();
 
-    this.doctorFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterDoctor();
-      });
+
+    this.filteredOptionDoctor = this.registeredForm.get('DoctorID').valueChanges.pipe(
+      startWith(''),
+      map(value => value ? this._filterdoc3(value) : this.doctorNameCmbList.slice()),
+    );
 
       if (this.data) {
         this.PatientHeaderObj = this.data.registerObj;
@@ -232,6 +234,7 @@ export class OPBillingComponent implements OnInit {
         this.Tarrifname= this.PatientHeaderObj.TariffName;
        
         }
+
   }
 
   createSearchForm() {
@@ -242,25 +245,25 @@ export class OPBillingComponent implements OnInit {
 
 
   // doctorone filter code  
-  private filterDoctor() {
+  // private filterDoctor() {
 
-    if (!this.doctorNameCmbList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.doctorFilterCtrl.value;
-    if (!search) {
-      this.filteredDoctor.next(this.doctorNameCmbList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredDoctor.next(
-      this.doctorNameCmbList.filter(bank => bank.DoctorName.toLowerCase().indexOf(search) > -1)
-    );
-  }
+  //   if (!this.doctorNameCmbList) {
+  //     return;
+  //   }
+  //   // get the search keyword
+  //   let search = this.doctorFilterCtrl.value;
+  //   if (!search) {
+  //     this.filteredDoctor.next(this.doctorNameCmbList.slice());
+  //     return;
+  //   }
+  //   else {
+  //     search = search.toLowerCase();
+  //   }
+  //   // filter
+  //   this.filteredDoctor.next(
+  //     this.doctorNameCmbList.filter(bank => bank.DoctorName.toLowerCase().indexOf(search) > -1)
+  //   );
+  // }
 
   // Create registered form group
   createForm() {
@@ -336,7 +339,9 @@ export class OPBillingComponent implements OnInit {
 
   }
 
-
+  getOptionTextDoctor(option) {
+    return option && option.DoctorName ? option.DoctorName : '';
+  }
   getOptionText(option) {
     if (!option)
       return '';
@@ -1011,7 +1016,12 @@ debugger
       this.filteredDoctor.next(this.doctorNameCmbList.slice());
     })
   }
-
+  private _filterdoc3(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
+      return this.doctorNameCmbList.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
+    }
+  }
   getCashCounterComboList() {
     this._oPSearhlistService.getCashcounterList().subscribe(data => {
       this.CashCounterList = data

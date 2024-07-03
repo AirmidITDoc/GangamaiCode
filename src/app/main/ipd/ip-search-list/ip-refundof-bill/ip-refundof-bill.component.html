@@ -55,10 +55,10 @@
                         </mat-error> -->
                             </mat-form-field>
 
-                            <span style="margin-right: 40px;">
+                            <!-- <span style="margin-right: 40px;">
                                 <app-common-date [screenFrom]="screenFromString"
                                     (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
-                            </span>
+                            </span> -->
                         </div>
                       
                     </form>
@@ -214,7 +214,7 @@
                         <div fxFlex.gt-md="70%" fxFlex.md="50%" fxFlex.lt-md="100%">
                             <mat-card>
                                 <mat-table matSort [dataSource]="dataSource3" [@animateStagger]="{value:'50'}"
-                                    class="h-240">
+                                    class="h-200">
 
                                     <ng-container matColumnDef="BillNo">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
@@ -288,8 +288,8 @@
                                     </mat-footer-row>
                                 </mat-table>
 
-                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="5"
-                                    showFirstLastButtons></mat-paginator>
+                                <!-- <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="5"
+                                    showFirstLastButtons></mat-paginator> -->
                                 <div class="net-amt">
                                     <span class="net-amt-label" style="font-weight:bold;">Total Refund
                                         :</span>&nbsp;
@@ -304,7 +304,7 @@
                         <div fxFlex.gt-md="30%" fxFlex.md="50%" fxFlex.lt-md="100%">
                             <mat-card fxLayout="column" fxLayoutAlign="space-between">
                                 <mat-table class="table1" matSort [dataSource]="dataSource1"
-                                    [@animateStagger]="{value:'50'}" class="h-235">
+                                    [@animateStagger]="{value:'50'}" class="h-200">
 
                                     <ng-container matColumnDef="RefundDate">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
@@ -350,8 +350,8 @@
                                     </mat-footer-row>
                                 </mat-table>
 
-                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="6"
-                                    showFirstLastButtons></mat-paginator>
+                                <!-- <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="6"
+                                    showFirstLastButtons></mat-paginator> -->
 
                                 <div class="net-amt">
                                     <span class="net-amt-label" style="font-weight:bold;">Already Refund Amount
@@ -367,8 +367,8 @@
                     </div>
 
                     <div fxlayout="row">
-                        <mat-tab-group class="mat-tab-header-small">
-                            <mat-tab>
+                        <!-- <mat-tab-group class="mat-tab-header-small"> -->
+                            <!-- <mat-tab>
                                 <ng-template mat-tab-label>
                                     Bill
                                 </ng-template>
@@ -436,25 +436,18 @@
                                         </div>
                                     </div>
                                 </div>
-                            </mat-tab>
+                            </mat-tab> -->
 
-                            <mat-tab>
+                            <!-- <mat-tab>
 
                                 <ng-template mat-tab-label>
                                     Services
-                                </ng-template>
+                                </ng-template> -->
                                 <div style="width: 100%;">
                                     <mat-table class="services-table mt-8 h-220" matSort [dataSource]="dataSource2"
                                         [@animateStagger]="{value:'50'}">
 
-                                        <ng-container matColumnDef="ServiceId">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                ServiceId </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                <span> {{element.ServiceId}}</span>
-                                            </mat-cell>
-                                        </ng-container>
-
+                                       
                                         <ng-container matColumnDef="ServiceName">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                                 ServiceName </mat-header-cell>
@@ -554,8 +547,8 @@
                                         </div>
                                     </div>
                                 </div>
-                            </mat-tab>
-                        </mat-tab-group>
+                            <!-- </mat-tab>
+                        </mat-tab-group> -->
 
                         <hr>
                         <form [formGroup]="RefundOfBillFormGroup" style="font-weight: bold;">
