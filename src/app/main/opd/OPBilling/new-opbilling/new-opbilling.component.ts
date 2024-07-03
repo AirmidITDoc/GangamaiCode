@@ -774,7 +774,7 @@ TotalDiscAmt:any;
     InsertBillUpdateBillNoObj['OPD_IPD_Type'] = 0;
     InsertBillUpdateBillNoObj['AddedBy'] = this.accountService.currentUserValue.user.id,
     InsertBillUpdateBillNoObj['TotalAdvanceAmount'] = 0,
-    InsertBillUpdateBillNoObj['BillTime'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+    InsertBillUpdateBillNoObj['BillTime'] =this.dateTimeObj.time,// this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy hh:mm tt') || '01/01/1900',
     InsertBillUpdateBillNoObj['ConcessionReasonId'] = this.BillingForm.get('ConcessionId').value.ConcessionId;
     InsertBillUpdateBillNoObj['IsSettled'] = 0;
     InsertBillUpdateBillNoObj['IsPrinted'] = 0;
@@ -978,7 +978,7 @@ finaldiscAmt(){
    this.calcDiscPersonTotal();
 }
   getWhatsappshareSales(el, vmono) {
-    
+    if(vmono !=''){
     var m_data = {
       "insertWhatsappsmsInfo": {
         "mobileNumber": vmono || 0,
@@ -1007,6 +1007,7 @@ finaldiscAmt(){
       }
     });
   }
+}
   onScroll() {
     //Note: This is called multiple times after the scroll has reached the 80% threshold position.
     this.nextPage$.next();

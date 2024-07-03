@@ -179,6 +179,7 @@ viewgetIPAdvanceReportPdf(contact) {
 
 getWhatsappsAdvance(el, vmono) {
   debugger
+  if(vmono !=''){
   var m_data = {
     "insertWhatsappsmsInfo": {
       "mobileNumber": vmono || 0,
@@ -207,10 +208,11 @@ getWhatsappsAdvance(el, vmono) {
     }
   });
 }
-
+}
 
 getWhatsappsRefundAdvance(el, vmono) {
   debugger
+  if(vmono !=''){
   var m_data = {
     "insertWhatsappsmsInfo": {
       "mobileNumber": vmono || 0,
@@ -238,7 +240,7 @@ getWhatsappsRefundAdvance(el, vmono) {
       });
     }
   });
-}
+}}
   getViewAdvance(contact)
 {
     let xx = {

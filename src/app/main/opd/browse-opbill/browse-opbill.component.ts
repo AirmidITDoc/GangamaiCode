@@ -302,6 +302,7 @@ dataSource2 = new MatTableDataSource<RefundMaster>();
 
   getWhatsappshareOPPaymentReceipt(el, vmono) {
     debugger
+    if(vmono !='' && vmono !=''){
     var m_data = {
       "insertWhatsappsmsInfo": {
         "mobileNumber": vmono || 0,
@@ -330,10 +331,11 @@ dataSource2 = new MatTableDataSource<RefundMaster>();
       }
     });
   }
-
+  }
 
   getWhatsappshareRefundbill(el, vmono) {
     debugger
+    if(vmono !='' && vmono !=''){
     var m_data = {
       "insertWhatsappsmsInfo": {
         "mobileNumber": vmono || 0,
@@ -361,6 +363,7 @@ dataSource2 = new MatTableDataSource<RefundMaster>();
         });
       }
     });
+  }
   }
 
 
@@ -429,6 +432,8 @@ dataSource2 = new MatTableDataSource<RefundMaster>();
 
   // sIsLoading: any = '';
   getWhatsappshareSales(Param) {
+    debugger
+    if(Param.MobileNo !='' && Param.MobileNo !=0 ){
     console.log(Param)
     var m_data = {
       "insertWhatsappsmsInfo": {
@@ -458,6 +463,7 @@ dataSource2 = new MatTableDataSource<RefundMaster>();
       }
 
     });
+  }
     // this.IsLoading = false;
     // el.button.disbled = false;
   }

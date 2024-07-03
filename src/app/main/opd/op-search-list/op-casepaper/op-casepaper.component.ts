@@ -20,11 +20,11 @@ import { fuseAnimations } from '@fuse/animations';
 
 export interface PrescriptionTable {
   drugName: ILookup;
-    
+
   doseName: any;
   days1: string;
   instruction: string;
-  
+
   isLocallyAdded: boolean;
 }
 
@@ -62,33 +62,33 @@ export class OPCasepaperComponent implements OnInit {
     { value: 'covid', viewValue: 'Covid' },
     { value: 'fracture', viewValue: 'Fracture' }
   ];
-  currentDate=new Date();
+  currentDate = new Date();
   caseFormGroup: FormGroup;
   drugList: any = [];
-  complaintList :any=[];
-  examinationList :any=[];
+  complaintList: any = [];
+  examinationList: any = [];
   // historyList: any = [];
   diagnosisList: any = [];
   HistoryList: any = [];
-  
-  Height:any;
-  Weight:any;
-  BSL:any;
-  BMI:any;
-  BP:any;
-  VisitId:any;
-  Temp:any;
-  SpO2:any;
-  Pluse:any;
+
+  Height: any;
+  Weight: any;
+  BSL: any;
+  BMI: any;
+  BP: any;
+  VisitId: any;
+  Temp: any;
+  SpO2: any;
+  Pluse: any;
   doseList: any = [];
   drugList1: any = [];
   filteredDrugs$: Observable<ILookup[]>;
   filteredDrugs1$: Observable<ILookup[]>;
-  
+
 
   public filteredDose: ReplaySubject<any> = new ReplaySubject<any>(1);
   public filteredDrug: ReplaySubject<any> = new ReplaySubject<any>(1);
-  
+
   public filteredComplaint: ReplaySubject<any> = new ReplaySubject<any>(1);
   public filteredExamination: ReplaySubject<any> = new ReplaySubject<any>(1);
 
@@ -98,17 +98,17 @@ export class OPCasepaperComponent implements OnInit {
   public historyFilterCtrl: FormControl = new FormControl();
   public dignosFilterCtrl: FormControl = new FormControl();
   public complaintFilterCtrl: FormControl = new FormControl();
- public examinationFilterCtrl: FormControl = new FormControl();
+  public examinationFilterCtrl: FormControl = new FormControl();
 
   private lookups: ILookup[] = [];
   private nextPage$ = new Subject();
   private _onDestroy = new Subject();
 
   tbDays: any;
-Historyflist:any=[];
-Dignosflist:any=[];
+  Historyflist: any = [];
+  Dignosflist: any = [];
 
-  
+
 
   prescriptionData: PrescriptionTable[] = [];
   lookupsObj: ILookup = new ILookup();
@@ -120,7 +120,7 @@ Dignosflist:any=[];
 
   filteredHistory: Observable<HistoryClass[]>;
   filteredDiagnosis: Observable<DiagnosisClass[]>;
-  
+
   historySelected: any[] = [];
   diagnosisSelected: any[] = [];
   allHistory: HistoryClass[] = [];
@@ -157,32 +157,32 @@ Dignosflist:any=[];
   ];
 
   displayedVisitColumns = [
-    
+
     'VisitId',
     'VisitDate',
     'DocName'
-    
+
   ];
   dataSource1 = new MatTableDataSource<CasepaperVisitDetails>();
 
   displayClinicalColumns = [
-    
-        'VisitId',
-        'VisitDate',
-        'DocName'
-        
-      ];
-      dataSource2 = new MatTableDataSource<any>();
 
-      displayClinicalColumns1 = [
-    
-        'DrugName',
-        'DoseName',
-        'QtyPerDay',
-        'TotalQty'
-        
-      ];
-      dataSource3= new MatTableDataSource<OPDPrescription>();
+    'VisitId',
+    'VisitDate',
+    'DocName'
+
+  ];
+  dataSource2 = new MatTableDataSource<any>();
+
+  displayClinicalColumns1 = [
+
+    'DrugName',
+    'DoseName',
+    'QtyPerDay',
+    'TotalQty'
+
+  ];
+  dataSource3 = new MatTableDataSource<OPDPrescription>();
 
   patientInfo: any;
   isRowAdded: boolean = false;
@@ -191,22 +191,22 @@ Dignosflist:any=[];
     private dialogRef: MatDialogRef<OPCasepaperComponent>,
     private formBuilder: FormBuilder,
     private _matDialog: MatDialog,
-    private _opSearchListService : OPSearhlistService,
+    private _opSearchListService: OPSearhlistService,
     private accountService: AuthenticationService,
     private _snackBar: MatSnackBar,
     private advanceDataStored: AdvanceDataStored,
     private cdr: ChangeDetectorRef,
-   
+
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     dialogRef.disableClose = true;
     this.patientInfo = data;
-    console.log( this.patientInfo);
+    console.log(this.patientInfo);
   }
 
   ngOnInit(): void {
 
-    
+
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       console.log(this.selectedAdvanceObj);
@@ -214,7 +214,7 @@ Dignosflist:any=[];
 
     this.caseFormGroup = this.createForm();
     this.casepaperVisitDetails();
-   // this.prescriptionDetails();
+    // this.prescriptionDetails();
 
     this.getregisterList();
 
@@ -249,24 +249,24 @@ Dignosflist:any=[];
       });
 
 
-      this.complaintFilterCtrl.valueChanges
+    this.complaintFilterCtrl.valueChanges
       .pipe(takeUntil(this._onDestroy))
       .subscribe(() => {
         this.filterComplaint();
       });
 
-      
-      this.examinationFilterCtrl.valueChanges
+
+    this.examinationFilterCtrl.valueChanges
       .pipe(takeUntil(this._onDestroy))
       .subscribe(() => {
         this.filterExamination();
       });
 
-      this.getPrescriptionListFill(70765);
+    this.getPrescriptionListFill(70765);
   }
 
   drugChange(event, index) {
-    
+
     const filter$ = this.caseFormGroup.get(`drugController${index}`).valueChanges.pipe(
       startWith(''),
       debounceTime(200),
@@ -274,7 +274,7 @@ Dignosflist:any=[];
 
     this.filteredDrugs$ = filter$.pipe(
       switchMap(filter => {
-        
+
         let currentPage = 1;
         return this.nextPage$.pipe(
           startWith(currentPage),
@@ -308,20 +308,20 @@ Dignosflist:any=[];
   }
 
   selected(event: MatAutocompleteSelectedEvent, itemList, controller, inputItem): void {
-  
+
     if (itemList.length == 0) {
       itemList.push(event.option.value);
     } else {
       itemList.forEach(element => {
         if (element != event.option.value) {
           itemList.push(event.option.value);
-         
-          this.Historyflist=itemList;
-          console.log( this.Historyflist);
+
+          this.Historyflist = itemList;
+          console.log(this.Historyflist);
         }
       });
     }
-   
+
     this.caseFormGroup.get(controller).setValue(null);
   }
 
@@ -332,8 +332,8 @@ Dignosflist:any=[];
       itemList.forEach(element => {
         if (element != event.option.value) {
           itemList.push(event.option.value);
-         
-          this.Dignosflist=itemList;
+
+          this.Dignosflist = itemList;
           console.log(this.Dignosflist);
         }
       });
@@ -341,7 +341,7 @@ Dignosflist:any=[];
     if (inputItem == 'diagnosisInput') {
       this.diagnosisInput.nativeElement.value = '';
     }
-  
+
     this.caseFormGroup.get(controller).setValue(null);
   }
 
@@ -374,15 +374,15 @@ Dignosflist:any=[];
 
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
-     this.dateTimeObj = dateTimeObj;
+    this.dateTimeObj = dateTimeObj;
   }
 
   createForm() {
     return this.formBuilder.group({
       historyContoller: '',
-      PastHistoryId:'',
-      ChiefComplaint:'',
-      DiagnosisId:'',
+      PastHistoryId: '',
+      ChiefComplaint: '',
+      DiagnosisId: '',
       regNoController: '',
       patientController: '',
       doctorController: '',
@@ -395,50 +395,50 @@ Dignosflist:any=[];
       daysController: '',
       instructionController: '',
       remarkController: '',
-      PastHistoryDescr:'',
-      ComplaintName:'',
-      Examination:'',
-      
-        BP:'',
-        ConsultantDocName: '',
-        BSL: '',
-        BMI:'',
-        CasePaperID: '0',
-        Complaint: '',
-        Diagnosis: '',
-        DocName: '',
-        Finding: '',
-        Height: '',
-        Investigations: '',
-        PastHistory: '',
-        PatientName: '',
-        PersonalDetails: '',
-        Pluse: '',
-        PresentHistory: '',
-        RegID: '0',
-        SecondDocRef: '0',
-        SPO2: '',
-        Temp:'',
-        VisitDate: '',
-        VisitId: '0',
-        VisitTime: '',
-        Weight: '',
-        DrugName:'',
-        TotalQty:'',
-        HospitalName:'',
-        HospitalAddress:'',
-        Phone:'',
-        IPPreId:'',
-        DoseName:'',
-        GenderName:'',
-        PrecriptionId:'',
-        Days:'0',
-        Instruction:'',
-        TotalDayes:'0',
-        AgeYear:'0',
-        OPDNo:'',
-        _matDialog: '',
-        RegNo: '0',
+      PastHistoryDescr: '',
+      ComplaintName: '',
+      Examination: '',
+
+      BP: '',
+      ConsultantDocName: '',
+      BSL: '',
+      BMI: '',
+      CasePaperID: '0',
+      Complaint: '',
+      Diagnosis: '',
+      DocName: '',
+      Finding: '',
+      Height: '',
+      Investigations: '',
+      PastHistory: '',
+      PatientName: '',
+      PersonalDetails: '',
+      Pluse: '',
+      PresentHistory: '',
+      RegID: '0',
+      SecondDocRef: '0',
+      SPO2: '',
+      Temp: '',
+      VisitDate: '',
+      VisitId: '0',
+      VisitTime: '',
+      Weight: '',
+      DrugName: '',
+      TotalQty: '',
+      HospitalName: '',
+      HospitalAddress: '',
+      Phone: '',
+      IPPreId: '',
+      DoseName: '',
+      GenderName: '',
+      PrecriptionId: '',
+      Days: '0',
+      Instruction: '',
+      TotalDayes: '0',
+      AgeYear: '0',
+      OPDNo: '',
+      _matDialog: '',
+      RegNo: '0',
     });
   }
 
@@ -486,41 +486,41 @@ Dignosflist:any=[];
   //     this.diagnosisList.filter(diagnosisEl => diagnosisEl.ComplaintName.toLowerCase().indexOf(search) > -1)
   //   );
   // } 
-private filterComplaint(){
-  if (!this.complaintList) {
-    return;
+  private filterComplaint() {
+    if (!this.complaintList) {
+      return;
+    }
+    // get the search keyword
+    let search = this.complaintFilterCtrl.value;
+    if (!search) {
+      this.filteredComplaint.next(this.complaintList.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    // filter the diagnosis
+    this.filteredComplaint.next(
+      this.complaintList.filter(El => El.ComplaintName.toLowerCase().indexOf(search) > -1)
+    );
   }
-  // get the search keyword
-  let search = this.complaintFilterCtrl.value;
-  if (!search) {
-    this.filteredComplaint.next(this.complaintList.slice());
-    return;
-  } else {
-    search = search.toLowerCase();
-  }
-  // filter the diagnosis
-  this.filteredComplaint.next(
-    this.complaintList.filter(El => El.ComplaintName.toLowerCase().indexOf(search) > -1)
-  );
-}
 
-private filterExamination(){
-  if (!this.examinationList) {
-    return;
+  private filterExamination() {
+    if (!this.examinationList) {
+      return;
+    }
+    // get the search keyword
+    let search = this.examinationFilterCtrl.value;
+    if (!search) {
+      this.filteredExamination.next(this.examinationList.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    // filter the diagnosis
+    this.filteredExamination.next(
+      this.examinationList.filter(El => El.ExaminationDescr.toLowerCase().indexOf(search) > -1)
+    );
   }
-  // get the search keyword
-  let search = this.examinationFilterCtrl.value;
-  if (!search) {
-    this.filteredExamination.next(this.examinationList.slice());
-    return;
-  } else {
-    search = search.toLowerCase();
-  }
-  // filter the diagnosis
-  this.filteredExamination.next(
-    this.examinationList.filter(El => El.ExaminationDescr.toLowerCase().indexOf(search) > -1)
-  );
-}
   private filterDose() {
 
     if (!this.doseList) {
@@ -567,13 +567,13 @@ private filterExamination(){
     });
   }
 
-//   prescriptionDetails() {
-//     this._opSearchListService.prescriptionDetails(this.selectedAdvanceObj.AdmissionID).subscribe((data: any) => {
-//       // this.allHistory = data;
-//     });
-//   }
+  //   prescriptionDetails() {
+  //     this._opSearchListService.prescriptionDetails(this.selectedAdvanceObj.AdmissionID).subscribe((data: any) => {
+  //       // this.allHistory = data;
+  //     });
+  //   }
 
-  
+
 
   getHistoryList() {
     this._opSearchListService.getHistoryList().subscribe((data: any) => {
@@ -635,15 +635,15 @@ private filterExamination(){
     });
   }
 
-  getComplaintList(){
+  getComplaintList() {
     this._opSearchListService.getComplaintList().subscribe((data) => {
       this.complaintList = data;
       this.filteredComplaint.next(this.complaintList.slice());
     });
 
   }
-  
-  getExaminationList(){
+
+  getExaminationList() {
     this._opSearchListService.getExaminationList().subscribe((data) => {
       this.examinationList = data;
       // this.filteredExamination.next(this.examinationList.slice());
@@ -651,24 +651,24 @@ private filterExamination(){
 
   }
 
-//   casePaperData: CasepaperVisitDetails = new CasepaperVisitDetails({});
+  //   casePaperData: CasepaperVisitDetails = new CasepaperVisitDetails({});
 
-//   casepaperVisitDetails() {
-//     this._opSearchListService.casepaperVisitDetails(this.selectedAdvanceObj.AdmissionID).subscribe((data: CasepaperVisitDetails) => {
-//       this.casePaperData = data[0];
-//     });
-//   }
-
- 
+  //   casepaperVisitDetails() {
+  //     this._opSearchListService.casepaperVisitDetails(this.selectedAdvanceObj.AdmissionID).subscribe((data: CasepaperVisitDetails) => {
+  //       this.casePaperData = data[0];
+  //     });
+  //   }
 
 
-//   getVisitList(){
-//     this._opSearchListService.getVisitedList().subscribe((data) => {
-//       this.examinationList = data;
-//       // this.filteredExamination.next(this.examinationList.slice());
-//     });
 
-//   }
+
+  //   getVisitList(){
+  //     this._opSearchListService.getVisitedList().subscribe((data) => {
+  //       this.examinationList = data;
+  //       // this.filteredExamination.next(this.examinationList.slice());
+  //     });
+
+  //   }
 
   addSelectedOption(selectedElements, keyName) {
     let addedElement = '';
@@ -733,7 +733,7 @@ private filterExamination(){
   //   // this.addEmptyRow();
   // }
 
-  
+
   addRow() {
     // debugger;
     let addingRow = {
@@ -792,7 +792,7 @@ private filterExamination(){
   // }
   addEmptyRow(element?: PrescriptionTable) {
     // debugger;
-    if(this.caseFormGroup.invalid) {
+    if (this.caseFormGroup.invalid) {
       this.caseFormGroup.markAllAsTouched();
       this._snackBar.open('Please fill mandetory fields', 'Ok', {
         horizontalPosition: 'end',
@@ -804,7 +804,7 @@ private filterExamination(){
     if (element) {
       this.isRowAdded = true;
       this.prescriptionData && this.prescriptionData.length > 0 ? this.prescriptionData.splice(this.prescriptionData.indexOf(element), 1) : '';
-      console.log( this.prescriptionData);
+      console.log(this.prescriptionData);
     }
     let addingRow = {
       drugName: element && element.drugName ? element.drugName : this.lookupsObj,
@@ -834,132 +834,73 @@ private filterExamination(){
   }
 
   onSave() {
-    // debugger;
-    // console.log(this.prescriptionData);
-    // console.log(this.diagnosisSelected);
-    // if (!this.isRowAdded) {
-    //   Swal.fire('Error !', 'Please add before save', 'error');
-    //   return;
-    // }
-if(this.prescriptionData.length == 0){
-  Swal.fire('Error !', 'Please add before save', 'error');
-}
-// debugger;
-    let insertOpCasePaper = {};
-    insertOpCasePaper['visitId'] =this.selectedAdvanceObj.AdmissionID || 0;
-    insertOpCasePaper['height'] = this.caseFormGroup.get("Height").value || 0;
-    insertOpCasePaper['weight'] = this.caseFormGroup.get("Weight").value || 0;
-    insertOpCasePaper['pluse'] =this.caseFormGroup.get("Pluse").value || 0;
-    insertOpCasePaper['bp'] = this.caseFormGroup.get("BP").value || 0;
-    // insertOpCasePaper['pastHistory'] = this.historySelected.join(',');
-    insertOpCasePaper['pastHistory'] = this.historySelected.join(',');
-    insertOpCasePaper['presentHistory'] = '';
-    insertOpCasePaper['complaint'] = this.diagnosisSelected.join(',');
-    insertOpCasePaper['finding'] = '';
-    // insertOpCasePaper['diagnosis'] = this.diagnosisSelected.join(',');
-    insertOpCasePaper['diagnosis'] = this.diagnosisSelected.join(',');
-    insertOpCasePaper['investigations'] = this.caseFormGroup.get('Examination').value.ExaminationDescr || '',
-    insertOpCasePaper['bsl'] =this.caseFormGroup.get("BSL").value || 0;
-    insertOpCasePaper['spO2'] = this.caseFormGroup.get("SPO2").value || 0;
-    insertOpCasePaper['personalDetails'] = '';
-    insertOpCasePaper['casePaperID'] = 0;
 
-    let insertOPPrescription = [];
-    // this.prescriptionData.length > 1 ? 
-    debugger;
-    this.prescriptionData.splice(this.prescriptionData.length - 1, 0);
-    this.prescriptionData.forEach((element: any, index) => {
-      let obj = {};
-      obj['opD_IPD_IP'] = this.selectedAdvanceObj.AdmissionID,
-      obj['opD_IPD_Type'] = this.selectedAdvanceObj.opD_IPD_Type,
-      obj['date'] = this.dateTimeObj.date;
-      obj['pTime'] = this.dateTimeObj.date;//this.dateTimeObj.times;
-      obj['classID'] = this.selectedAdvanceObj.ClassId || 0,
-      obj['genericId'] = 0;
-      obj['drugId'] = 12,//this.caseFormGroup.get(`drugController${index}`).value || 0; //element.drugName.ItemID;
-      obj['doseId'] =element && element.doseName ? element.doseName.DoseId : 0;
-      obj['days'] =parseInt(element.days1) || 0;
-      obj['instructionId'] = 0;
-      obj['qtyPerDay'] = 0;
-      obj['totalQty'] = 0;
-      obj['instruction'] =element.instruction;
-      obj['remark'] = this.caseFormGroup.get('remarkController').value || '';
-      obj['isEnglishOrIsMarathi'] = true;
-      obj['pWeight'] = this.caseFormGroup.get("Weight").value || 0;
-      obj['pulse'] = this.caseFormGroup.get("Pluse").value || 0;
-      obj['bp'] =this.caseFormGroup.get("BP").value || 0;
-      obj['bsl'] =this.caseFormGroup.get("BSL").value || 0;
-      obj['chiefComplaint'] = this.caseFormGroup.get('ChiefComplaint').value || '';
-      obj['isAddBy'] = this.accountService.currentUserValue.user.id,
-      obj['spO2'] = this.caseFormGroup.get("SPO2").value || 0;
-      obj['storeId'] = 0;
-      obj['doseOption2'] = element.doseName ? element.doseName.DoseId : 0;
-      obj['daysOption2'] = element.days1 ? element.days1 : 0;
-      obj['doseOption3'] = 0,//element.doseNameOptional3 ? element.doseNameOptional3.DoseId : 0;
-      obj['daysOption3'] =0,// element.days3 ? element.days3 : 0;
-      insertOPPrescription.push(obj);
-    });
+    if (this.prescriptionData.length != 0) {
 
-    console.log(insertOPPrescription);
-    let casePaperSaveObj = {};
-    casePaperSaveObj['insertOpCasePaper'] = insertOpCasePaper;
-    casePaperSaveObj['insertOPPrescription'] = insertOPPrescription;
+      let insertOPPrescription = [];
 
-    console.log(casePaperSaveObj);
-
-    this._opSearchListService.onSaveCasepaper(casePaperSaveObj).subscribe(response => {
-   
-    if (response) {
-      Swal.fire('Congratulations !', 'Casepaper save Successfully !', 'success').then((result) => {
-        if (result.isConfirmed) {
-       
-        //  this.getChargesList();
-            //  let m=response;
-             this.getPrint();
-            this._matDialog.closeAll();
-           //  this.addEmptyRow();
-            //  console.log(this.getPrint(m));
-        }
+      debugger;
+      this.prescriptionData.splice(this.prescriptionData.length - 1, 0);
+      this.prescriptionData.forEach((element: any, index) => {
+        console.log(element)
+        let obj = {};
+        obj['opD_IPD_IP'] = this.selectedAdvanceObj.AdmissionID,
+          obj['opD_IPD_Type'] = this.selectedAdvanceObj.opD_IPD_Type,
+          obj['date'] = this.dateTimeObj.date;
+        obj['pTime'] = this.dateTimeObj.date;//this.dateTimeObj.times;
+        obj['classID'] = this.selectedAdvanceObj.ClassId || 0,
+          obj['genericId'] = 0;
+        obj['drugId'] = 12,//this.caseFormGroup.get(`drugController${index}`).value || 0; //element.drugName.ItemID;
+          obj['doseId'] = element && element.doseName ? element.doseName.DoseId : 0;
+        obj['days'] = parseInt(element.days1) || 0;
+        obj['instructionId'] = 0;
+        obj['qtyPerDay'] = 0;
+        obj['totalQty'] = 0;
+        obj['instruction'] = element.instruction;
+        obj['remark'] = this.caseFormGroup.get('remarkController').value || '';
+        obj['isEnglishOrIsMarathi'] = true;
+        obj['pWeight'] = this.caseFormGroup.get("Weight").value || 0;
+        obj['pulse'] = this.caseFormGroup.get("Pluse").value || 0;
+        obj['bp'] = this.caseFormGroup.get("BP").value || 0;
+        obj['bsl'] = this.caseFormGroup.get("BSL").value || 0;
+        obj['chiefComplaint'] = this.caseFormGroup.get('ChiefComplaint').value || '';
+        obj['isAddBy'] = this.accountService.currentUserValue.user.id,
+        obj['spO2'] = this.caseFormGroup.get("SPO2").value || 0;
+        obj['storeId'] = 0;
+        obj['doseOption2'] = element.doseName ? element.doseName.DoseId : 0;
+        obj['daysOption2'] = element.days1 ? element.days1 : 0;
+        obj['doseOption3'] = element.doseNameOptional3 ? element.doseNameOptional3.DoseId : 0;
+        obj['daysOption3'] = element.days3 ? element.days3 : 0;
+          insertOPPrescription.push(obj);
       });
-    } else {
-      Swal.fire('Error !', 'Casepaper not saved', 'error');
-    }
-   
-    //this.isLoading = '';
-  });
 
+      console.log(insertOPPrescription);
+      let casePaperSaveObj = {};
+    //  casePaperSaveObj['insertOpCasePaper'] = insertOpCasePaper;
+      casePaperSaveObj['insertOPPrescription'] = insertOPPrescription;
 
+      console.log(casePaperSaveObj);
+      this._opSearchListService.onSaveCasepaper(casePaperSaveObj).subscribe(response => {
 
-    // this._opSearchListService.onSaveCasepaper(casePaperSaveObj).subscribe((data) => {
-    //   console.log(data);
-    //   this.isRowAdded = false;
-    
-    //   if (data) {
-    //     Swal.fire('Congratulations !', 'Casepaper save Successfully !', 'success').then((result) => {
+        if (response) {
+          Swal.fire('Congratulations !', 'Casepaper save Successfully !', 'success').then((result) => {
+            if (result.isConfirmed) {
 
-    //       if (result.isConfirmed) {
-    //         //  console.log(result);
-    //         //  this.getChargesList();
-            
-    //            let m=response;
-    //            this.getPrint(m);
-    //            this._matDialog.closeAll();
-    //            this.addEmptyRow();
-    //         }
-    //       });
+              this.getPrint();
+              this._matDialog.closeAll();
+            }
+          });
+        } else {
+          Swal.fire('Error !', 'Casepaper not saved', 'error');
+        }
 
-
-
-
-    //   } else {
-    //     Swal.fire('Error !', 'Casepaper not saved', 'error');
-    //   }
-    //   // this.isLoading = '';
-    // });
-
-
-
+      });
+    } else
+      Swal.fire('Error !', 'Please add before save', 'error');
   }
+
+
+
 
   onClose() {
     this.caseFormGroup.reset();
@@ -980,15 +921,15 @@ if(this.prescriptionData.length == 0){
   getTemplate() {
     debugger;
 
-    
-    
+
+
     let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=12';
-   console.log(query);
+    console.log(query);
     this._opSearchListService.getTemplate(query).subscribe((resData: any) => {
       console.log(resData);
       this.printTemplate = resData[0].TempDesign;
       console.log(this.printTemplate);
-      let keysArray = ['RegNo','PrecriptionId','PatientName','OPDNo','Diagnosis','PatientName','Weight' ,'Pluse','BP','BSL','DoseName','Days','GenderName','AgeYear','DrugName','ConsultantDocName','SecondRefDoctorName','MobileNo' ,'Address','VisitDate']; // resData[0].TempKeys;
+      let keysArray = ['RegNo', 'PrecriptionId', 'PatientName', 'OPDNo', 'Diagnosis', 'PatientName', 'Weight', 'Pluse', 'BP', 'BSL', 'DoseName', 'Days', 'GenderName', 'AgeYear', 'DrugName', 'ConsultantDocName', 'SecondRefDoctorName', 'MobileNo', 'Address', 'VisitDate']; // resData[0].TempKeys;
 
       for (let i = 0; i < keysArray.length; i++) {
         let reString = "{{" + keysArray[i] + "}}";
@@ -996,41 +937,41 @@ if(this.prescriptionData.length == 0){
         this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
       }
 
-      
+
       this.printTemplate = this.printTemplate.replace('StrVisitDate', this.transform2(this.reportPrintObj.VisitDate));
       this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
       //  this.printTemplate =  this.printTemplate.replace('StrConsultantDr', (this.reportPrintObj.ConsultantDocName));
       //  this.printTemplate =  this.printTemplate.replace('StrOPDDate', this.transform1(this.reportPrintObj.VisitDate));
-    //   var strrowslist = "";
-    //   for (let i = 1; i <= this.reportPrintObjList.length; i++) {
-    //     var objreportPrint = this.reportPrintObjList[i - 1];
-    //     var strabc = `
-    // <div style="display:flex;margin:8px 0">
-    // <div style="display:flex;width:100px;margin-left:30px;">
-    //     <div>`+ i + `</div> 
-    // </div>
-    // <div style="display:flex;width:100px;margin-left:10px;">
-    // <span >TAB</span>
-    // </div>
+      //   var strrowslist = "";
+      //   for (let i = 1; i <= this.reportPrintObjList.length; i++) {
+      //     var objreportPrint = this.reportPrintObjList[i - 1];
+      //     var strabc = `
+      // <div style="display:flex;margin:8px 0">
+      // <div style="display:flex;width:100px;margin-left:30px;">
+      //     <div>`+ i + `</div> 
+      // </div>
+      // <div style="display:flex;width:100px;margin-left:10px;">
+      // <span >TAB</span>
+      // </div>
 
-    // <div style="display:flex;width:200px;margin-left:15px;">
-    // <div style="font-weight:700;">`+ objreportPrint.  DrugName + `</div> <!-- <div>BLOOD UREA</div> -->
-    // </div>
-    // <div style="display:flex;width:150px;margin-left:15px;">
-    //     <div>`+ objreportPrint.DoseName + `</div> <!-- <div>BLOOD UREA</div> -->
-    // </div>
+      // <div style="display:flex;width:200px;margin-left:15px;">
+      // <div style="font-weight:700;">`+ objreportPrint.  DrugName + `</div> <!-- <div>BLOOD UREA</div> -->
+      // </div>
+      // <div style="display:flex;width:150px;margin-left:15px;">
+      //     <div>`+ objreportPrint.DoseName + `</div> <!-- <div>BLOOD UREA</div> -->
+      // </div>
 
-    // <div style="display:flex;width:100px;margin-left:30px;">
-    //     <div>`+ objreportPrint.TotalDayes + `</div> <!-- <div>450</div> -->
-    // </div>
-  
-    // </div>`;
-    //     strrowslist += strabc;
-    //   }
-     
-    //   //console.log(this.printTemplate);
-    //   this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
-     
+      // <div style="display:flex;width:100px;margin-left:30px;">
+      //     <div>`+ objreportPrint.TotalDayes + `</div> <!-- <div>450</div> -->
+      // </div>
+
+      // </div>`;
+      //     strrowslist += strabc;
+      //   }
+
+      //   //console.log(this.printTemplate);
+      //   this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
+
       //console.log(this.printTemplate);
       this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
       setTimeout(() => {
@@ -1041,36 +982,36 @@ if(this.prescriptionData.length == 0){
   transform1(value: string) {
     var datePipe = new DatePipe("en-US");
     value = datePipe.transform(value, 'dd/MM/yyyy hh:mm a');
-     return value;
+    return value;
   }
-  
+
   transform2(value: string) {
     var datePipe = new DatePipe("en-US");
     value = datePipe.transform((new Date), 'dd/MM/yyyy h:mm a');
     return value;
   }
-  
- 
+
+
   getPrint() {
-// debugger;
+    // debugger;
     var D_data = {
       "VisitId": 82973,//this.selectedAdvanceObj.AdmissionID || 0,
       "PatientType": 0,//this.selectedAdvanceObj.PatientType || 0
-     
+
     }
-   // el.bgColor = 'red';
+    // el.bgColor = 'red';
     console.log(D_data);
     let printContents; //`<div style="padding:20px;height:550px"><div><div style="display:flex"><img src="http://localhost:4200/assets/images/logos/Airmid_NewLogo.jpeg" width="90"><div><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="color:#464343">6158, Siddheshwar peth, near zilla parishad, solapur-3 phone no.: (0217) 2323001 / 02</div><div style="color:#464343">www.yashodharahospital.org</div></div></div><div style="border:1px solid grey;border-radius:16px;text-align:center;padding:8px;margin-top:5px"><span style="font-weight:700">IP ADVANCE RECEIPT</span></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex;justify-content:space-between"><div style="display:flex"><div style="width:100px;font-weight:700">Advance No</div><div style="width:10px;font-weight:700">:</div><div>6817</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Reg. No</div><div style="width:10px;font-weight:700">:</div><div>117399</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Date</div><div style="width:10px;font-weight:700">:</div><div>26/06/2019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3:15:49PM</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex;width:477px"><div style="width:100px;font-weight:700">Patient Name</div><div style="width:10px;font-weight:700">:</div><div>Mrs. Suglabai Dhulappa Waghmare</div></div><div style="display:flex"><div style="width:60px;font-weight:700">IPD No</div><div style="width:10px;font-weight:700">:</div><div>IP/53757/2019</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:100px;font-weight:700">DOA</div><div style="width:10px;font-weight:700">:</div><div>30/10/2019</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:100px;font-weight:700">Patient Type</div><div style="width:10px;font-weight:700">:</div><div>Self</div></div></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Advacne Amount</div><div style="width:10px;font-weight:700">:</div><div>4,000.00</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:150px;font-weight:700">Amount in Words</div><div style="width:10px;font-weight:700">:</div><div>FOUR THOUSANDS RUPPEE ONLY</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Reason of Advance</div><div style="width:10px;font-weight:700">:</div><div></div></div></div></div><div style="position:relative;top:100px;text-align:right"><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="font-weight:700;font-size:16px">Cashier</div><div>Paresh Manlor</div></div></div>`;
     this.subscriptionArr.push(
       this._opSearchListService.getOPDPrecriptionPrint(D_data).subscribe(res => {
-       console.log(res);
+        console.log(res);
         this.reportPrintObjList = res as CasepaperVisitDetails[];
-        console.log( this.reportPrintObjList);
+        console.log(this.reportPrintObjList);
         this.reportPrintObj = res[0] as CasepaperVisitDetails;
-        
+
         this.getTemplate();
-        
-console.log(D_data);
+
+        console.log(D_data);
       })
     );
   }
@@ -1095,68 +1036,68 @@ console.log(D_data);
     popupWin.document.close();
   }
 
-  onEditVisitTable(row){
+  onEditVisitTable(row) {
     debugger;
 
     console.log(row);
-  //   var m_data = {
-  // "BP": row.BP,
-  // "ConsultantDocName": row.ConsultantDocName,
-  // "BSL": row.BSL,
-  // "CasePaperID": row.CasePaperID,
-  // "Complaint": row.Complaint,
-  // "Diagnosis": row.Diagnosis,
-  // "DocName": row.DocName,
-  // "Finding": row.Finding,
-  // "Height": row.Height,
-  // "Investigations": row.Investigations,
-  // "PastHistory": row.Investigations,
-  // "PatientName": row.PatientName,
-  // "PersonalDetails": row.PersonalDetails,
-  // "Pluse": row.Pluse,
-  // "PresentHistory": row.PresentHistory,
-  // "RegID": row.RegID,
-  // "SecondDocRef": row.SecondDocRef,
-  // "SpO2": row.SpO2,
-  // "VisitDate": row.VisitDate,
-  // "VisitId": row.VisitId,
-  // "VisitTime": row.VisitTime,
-  // "Weight": row.Weight,
-  // "DrugName":row.DrugName,
-  // "TotalQty":row.TotalQty,
-  // "HospitalName":row.HospitalName,
-  // "HospitalAddress":row.HospitalAddress,
-  // "Phone":row.Phone,
-  // "IPPreId":row.IPPreId,
-  // "DoseName":row.DoseName,
-  // "GenderName":row.GenderName,
-  // "PrecriptionId":row.PrecriptionId,
-  // "Days":row.Days,
-  // "Instruction":row.Instruction,
-  // "TotalDayes":row.TotalDayes,
-  // "AgeYear":row.AgeYear,
-  // "OPDNo":row.OPDNo,
-  //   "_matDialog": row._matDialog,
-  //   "RegNo": row.RegNo
+    //   var m_data = {
+    // "BP": row.BP,
+    // "ConsultantDocName": row.ConsultantDocName,
+    // "BSL": row.BSL,
+    // "CasePaperID": row.CasePaperID,
+    // "Complaint": row.Complaint,
+    // "Diagnosis": row.Diagnosis,
+    // "DocName": row.DocName,
+    // "Finding": row.Finding,
+    // "Height": row.Height,
+    // "Investigations": row.Investigations,
+    // "PastHistory": row.Investigations,
+    // "PatientName": row.PatientName,
+    // "PersonalDetails": row.PersonalDetails,
+    // "Pluse": row.Pluse,
+    // "PresentHistory": row.PresentHistory,
+    // "RegID": row.RegID,
+    // "SecondDocRef": row.SecondDocRef,
+    // "SpO2": row.SpO2,
+    // "VisitDate": row.VisitDate,
+    // "VisitId": row.VisitId,
+    // "VisitTime": row.VisitTime,
+    // "Weight": row.Weight,
+    // "DrugName":row.DrugName,
+    // "TotalQty":row.TotalQty,
+    // "HospitalName":row.HospitalName,
+    // "HospitalAddress":row.HospitalAddress,
+    // "Phone":row.Phone,
+    // "IPPreId":row.IPPreId,
+    // "DoseName":row.DoseName,
+    // "GenderName":row.GenderName,
+    // "PrecriptionId":row.PrecriptionId,
+    // "Days":row.Days,
+    // "Instruction":row.Instruction,
+    // "TotalDayes":row.TotalDayes,
+    // "AgeYear":row.AgeYear,
+    // "OPDNo":row.OPDNo,
+    //   "_matDialog": row._matDialog,
+    //   "RegNo": row.RegNo
 
-       
-  //     }
-  //     console.log("EditVisitTable..:==");
-      // console.log(m_data);
+
+    //     }
+    //     console.log("EditVisitTable..:==");
+    // console.log(m_data);
     //   this.getMeasures(m_data);
-    
-      this.BP=row.BP;
-      this.BSL=row.BSL;
-      this.Height=row.Height;
-      this.Weight=row.Weight;
-      this.SpO2=row.SpO2;
-      this.Pluse=row.Pluse;
-      this.VisitId=row.VisitId;
-      // this.getPrescriptionListFill(70765);
-      
+
+    this.BP = row.BP;
+    this.BSL = row.BSL;
+    this.Height = row.Height;
+    this.Weight = row.Weight;
+    this.SpO2 = row.SpO2;
+    this.Pluse = row.Pluse;
+    this.VisitId = row.VisitId;
+    // this.getPrescriptionListFill(70765);
+
   }
 
-  getMeasures(m_data){
+  getMeasures(m_data) {
     debugger;
     const BP = this.data.CasepaperVisitDetails.BP;
     this.caseFormGroup.get('BP').setValue(BP);
@@ -1183,10 +1124,10 @@ console.log(D_data);
     this.caseFormGroup.get('Temp').setValue(Temp);
   }
 
-  
+
   prescriptionList: OPDPrescription = new OPDPrescription({});
 
-  getPrescriptionListFill(visitId){
+  getPrescriptionListFill(visitId) {
     debugger;
     // this._opSearchListService.prescriptionDetails(visitId).subscribe((data =>{
     //     // this.prescriptionList = data ;
@@ -1209,15 +1150,15 @@ console.log(D_data);
       // this.dataSource.sort = this.sort;
       // this.dataSource.paginator = this.paginator;
       this.sIsLoading = '';
-    
-    })
-}
 
-  getregisterList(){
+    })
+  }
+
+  getregisterList() {
     debugger;
     this.sIsLoading = 'loading';
     var D_data = {
-     // "VisitId": 70765,//this.selectedAdvanceObj.VisitId,
+      // "VisitId": 70765,//this.selectedAdvanceObj.VisitId,
       "VisitId": this.selectedAdvanceObj.VisitId,
     }
     console.log(D_data);
@@ -1229,56 +1170,56 @@ console.log(D_data);
       // this.dataSource.sort = this.sort;
       // this.dataSource.paginator = this.paginator;
       this.sIsLoading = '';
-    // setTimeout(() => {
-    
-          
-    //   },
-    //     error => {
-    //       this.sIsLoading = '';
-    //     });
-    // }, 5);
+      // setTimeout(() => {
+
+
+      //   },
+      //     error => {
+      //       this.sIsLoading = '';
+      //     });
+      // }, 5);
     })
-    
+
   }
 
 
 
-  getView(){
+  getView() {
 
     var D_data = {
       // "VisitId": 70765,//this.selectedAdvanceObj.VisitId,
-       "VisitId": 10003,//this.selectedAdvanceObj.VisitId,
-     }
-     this.advanceDataStored.storage = new SearchInforObj(D_data);
+      "VisitId": 10003,//this.selectedAdvanceObj.VisitId,
+    }
+    this.advanceDataStored.storage = new SearchInforObj(D_data);
     const dialogRef = this._matDialog.open(ViewCasepaperComponent,
       {
         maxWidth: "80vw",
         maxHeight: "100vh", width: '100%', height: "100%"
-        
+
       }
     );
     this.dialogRef.afterClosed().subscribe(result => {
-      console.log("Close All",result);
+      console.log("Close All", result);
     }
     );
   }
 
-  openCreatePrescriptionTemplate(){
-debugger;
+  openCreatePrescriptionTemplate() {
+    debugger;
     let xx = {
       RegNo: this.selectedAdvanceObj.RegNo,
       AdmissionID: this.selectedAdvanceObj.VisitId,
-      IPDNo:this.selectedAdvanceObj.IPDNo,
+      IPDNo: this.selectedAdvanceObj.IPDNo,
       PatientName: this.selectedAdvanceObj.PatientName,
       Doctorname: this.selectedAdvanceObj.Doctorname,
       AdmDateTime: this.selectedAdvanceObj.AdmDateTime,
       AgeYear: this.selectedAdvanceObj.AgeYear,
       ClassId: this.selectedAdvanceObj.ClassId,
       TariffName: this.selectedAdvanceObj.TariffName,
-      WardName:this.selectedAdvanceObj.WardName,
-      BedName:this.selectedAdvanceObj.BedName,
+      WardName: this.selectedAdvanceObj.WardName,
+      BedName: this.selectedAdvanceObj.BedName,
       TariffId: this.selectedAdvanceObj.TariffId,
-      opD_IPD_Type :this.selectedAdvanceObj.opD_IPD_Type,
+      opD_IPD_Type: this.selectedAdvanceObj.opD_IPD_Type,
     };
     this.advanceDataStored.storage = new SearchInforObj(xx);
     // const dialogRef = this._matDialog.open(PrescriptionComponent,
@@ -1293,7 +1234,7 @@ debugger;
     // );
   }
 
-  copy(){}
+  copy() { }
 }
 
 
@@ -1319,72 +1260,72 @@ export class ExaminationClass {
   ExaminationId: number;
 }
 
-export class OPDPrescription{
-    PrecriptionId:number;
-    OPD_IPD_IP:number;   
-    OPD_IPD_Type:number;
-    DateTime: Date;
-   // DateTime:Time;
-    ClassID:number;
-    ClassName:string;
-    GenericId :number;
-    GenericName:string;
-    DrugId:number;
-    DoseId:number;
-    DoseName:string;
-    Days:number;
-    InstructionId:number;
-    DrugName:string;
-    QtyPerDay:number;
-    TotalQty:number;
-    Instruction:string;
-    InstructionDescription:string;
-    Remark:string;
-    IsEnglishOrIsMarathi:boolean;
-    PWeight:string;
-    Pulse:string;
-    BP:string; 
-    BSL:string;
-    ChiefComplaint:string;
-    IsAddBy:number;
-    SpO2:string;
-    StoreId:number; 
-    RefDoctorId:number;
+export class OPDPrescription {
+  PrecriptionId: number;
+  OPD_IPD_IP: number;
+  OPD_IPD_Type: number;
+  DateTime: Date;
+  // DateTime:Time;
+  ClassID: number;
+  ClassName: string;
+  GenericId: number;
+  GenericName: string;
+  DrugId: number;
+  DoseId: number;
+  DoseName: string;
+  Days: number;
+  InstructionId: number;
+  DrugName: string;
+  QtyPerDay: number;
+  TotalQty: number;
+  Instruction: string;
+  InstructionDescription: string;
+  Remark: string;
+  IsEnglishOrIsMarathi: boolean;
+  PWeight: string;
+  Pulse: string;
+  BP: string;
+  BSL: string;
+  ChiefComplaint: string;
+  IsAddBy: number;
+  SpO2: string;
+  StoreId: number;
+  RefDoctorId: number;
 
-    constructor(opdPrescriptionDetails) {
-        this.PrecriptionId = opdPrescriptionDetails.PrecriptionId || '';
-        this.OPD_IPD_IP = opdPrescriptionDetails.OPD_IPD_IP || '';
-        this.OPD_IPD_Type = opdPrescriptionDetails.OPD_IPD_Type || '';
-        this.DateTime = opdPrescriptionDetails.DateTime || '';
-        this.ClassID = opdPrescriptionDetails.ClassID || 0;
-        this.ClassName = opdPrescriptionDetails.ClassName || '';
-        this.GenericId = opdPrescriptionDetails.GenericId || '';
-        this.GenericName = opdPrescriptionDetails.GenericName || '';
-        this.DrugId = opdPrescriptionDetails.DrugId || '';
-        this.DoseId = opdPrescriptionDetails.DoseId || '';
-        this.DoseName = opdPrescriptionDetails.DoseName || '';
-        this.Days = opdPrescriptionDetails.Days || '';
-        this.InstructionId = opdPrescriptionDetails.InstructionId || '';
-        this.DrugName = opdPrescriptionDetails.DrugName || '';
-        this.QtyPerDay = opdPrescriptionDetails.QtyPerDay || '';
-        this.TotalQty = opdPrescriptionDetails.TotalQty || '';
-        this.Instruction = opdPrescriptionDetails.Instruction || 0;
-        this.InstructionDescription = opdPrescriptionDetails.InstructionDescription || 0;
-        this.SpO2 = opdPrescriptionDetails.SpO2 || '';
-        this.Remark = opdPrescriptionDetails.Remark || '';
-        this.IsEnglishOrIsMarathi = opdPrescriptionDetails.IsEnglishOrIsMarathi || 0;
-        this.PWeight = opdPrescriptionDetails.PWeight || '';
-        
-        this.Pulse = opdPrescriptionDetails.Pulse || '';
-        this.BP = opdPrescriptionDetails.BP || '';
-        this.BSL = opdPrescriptionDetails.BSL || '';
-        this.ChiefComplaint = opdPrescriptionDetails.ChiefComplaint || '';
-         this.IsAddBy = opdPrescriptionDetails.IsAddBy || '';
-         this.SpO2 = opdPrescriptionDetails.SpO2 || '';
-         this.StoreId = opdPrescriptionDetails.StoreId || '';
-         this.RefDoctorId = opdPrescriptionDetails.RefDoctorId || 0;
-     
-      }
+  constructor(opdPrescriptionDetails) {
+    this.PrecriptionId = opdPrescriptionDetails.PrecriptionId || '';
+    this.OPD_IPD_IP = opdPrescriptionDetails.OPD_IPD_IP || '';
+    this.OPD_IPD_Type = opdPrescriptionDetails.OPD_IPD_Type || '';
+    this.DateTime = opdPrescriptionDetails.DateTime || '';
+    this.ClassID = opdPrescriptionDetails.ClassID || 0;
+    this.ClassName = opdPrescriptionDetails.ClassName || '';
+    this.GenericId = opdPrescriptionDetails.GenericId || '';
+    this.GenericName = opdPrescriptionDetails.GenericName || '';
+    this.DrugId = opdPrescriptionDetails.DrugId || '';
+    this.DoseId = opdPrescriptionDetails.DoseId || '';
+    this.DoseName = opdPrescriptionDetails.DoseName || '';
+    this.Days = opdPrescriptionDetails.Days || '';
+    this.InstructionId = opdPrescriptionDetails.InstructionId || '';
+    this.DrugName = opdPrescriptionDetails.DrugName || '';
+    this.QtyPerDay = opdPrescriptionDetails.QtyPerDay || '';
+    this.TotalQty = opdPrescriptionDetails.TotalQty || '';
+    this.Instruction = opdPrescriptionDetails.Instruction || 0;
+    this.InstructionDescription = opdPrescriptionDetails.InstructionDescription || 0;
+    this.SpO2 = opdPrescriptionDetails.SpO2 || '';
+    this.Remark = opdPrescriptionDetails.Remark || '';
+    this.IsEnglishOrIsMarathi = opdPrescriptionDetails.IsEnglishOrIsMarathi || 0;
+    this.PWeight = opdPrescriptionDetails.PWeight || '';
+
+    this.Pulse = opdPrescriptionDetails.Pulse || '';
+    this.BP = opdPrescriptionDetails.BP || '';
+    this.BSL = opdPrescriptionDetails.BSL || '';
+    this.ChiefComplaint = opdPrescriptionDetails.ChiefComplaint || '';
+    this.IsAddBy = opdPrescriptionDetails.IsAddBy || '';
+    this.SpO2 = opdPrescriptionDetails.SpO2 || '';
+    this.StoreId = opdPrescriptionDetails.StoreId || '';
+    this.RefDoctorId = opdPrescriptionDetails.RefDoctorId || 0;
+
+  }
 
 }
 
@@ -1403,38 +1344,38 @@ export class CasepaperVisitDetails {
   PatientName: string;
   PersonalDetails: string;
   Pluse: string;
-  BMI : any;
+  BMI: any;
   PresentHistory: string;
   RegID: number;
   SecondDocRef: number;
   SpO2: string;
   VisitDate: any;
-  PreviousVisitDate:any;
+  PreviousVisitDate: any;
   VisitId: any;
   VisitTime: any;
   Weight: string;
-  DrugName:string;
-  TotalQty:number;
-  HospitalName:string;
-  HospitalAddress:string;
-  Phone:number;
-  IPPreId:number;
-  DoseName:string;
-  GenderName:string;
-  PrecriptionId:number;
-  Days:number;
-  Instruction:String;
-  TotalDayes:number;
-  AgeYear:number;
-  OPDNo:any;
+  DrugName: string;
+  TotalQty: number;
+  HospitalName: string;
+  HospitalAddress: string;
+  Phone: number;
+  IPPreId: number;
+  DoseName: string;
+  GenderName: string;
+  PrecriptionId: number;
+  Days: number;
+  Instruction: String;
+  TotalDayes: number;
+  AgeYear: number;
+  OPDNo: any;
   _matDialog: any;
-    RegNo: any;
-  Temp:any;
-  DepartmentName:any;
-  Address:any;
-  SecondRefDoctorName:any;
-  VistDateTime:any;
- 
+  RegNo: any;
+  Temp: any;
+  DepartmentName: any;
+  Address: any;
+  SecondRefDoctorName: any;
+  VistDateTime: any;
+
 
   constructor(casePaperDetails) {
     this.BP = casePaperDetails.BP || '';
@@ -1464,21 +1405,21 @@ export class CasepaperVisitDetails {
     this.TotalQty = casePaperDetails.TotalQty || '';
     this.HospitalName = casePaperDetails.HospitalName || '';
     this.HospitalAddress = casePaperDetails.HospitalAddress || '';
-     this.Phone = casePaperDetails.Phone || '';
-     this.IPPreId = casePaperDetails.IPPreId || '';
-     this.DoseName = casePaperDetails.DoseName || '';
-     this.Days = casePaperDetails.Days || 0;
-     this.TotalDayes=casePaperDetails.TotalDayes || 0;
-    this.GenderName =casePaperDetails.GenderName || '';
-    this.OPDNo =casePaperDetails.OPDNo || ''; 
-    this.AgeYear=casePaperDetails.AgeYear || 0;
-    this.RegNo=casePaperDetails.RegNo || 0;
+    this.Phone = casePaperDetails.Phone || '';
+    this.IPPreId = casePaperDetails.IPPreId || '';
+    this.DoseName = casePaperDetails.DoseName || '';
+    this.Days = casePaperDetails.Days || 0;
+    this.TotalDayes = casePaperDetails.TotalDayes || 0;
+    this.GenderName = casePaperDetails.GenderName || '';
+    this.OPDNo = casePaperDetails.OPDNo || '';
+    this.AgeYear = casePaperDetails.AgeYear || 0;
+    this.RegNo = casePaperDetails.RegNo || 0;
     this.Temp = casePaperDetails.Temp || 0;
-    this.DepartmentName =casePaperDetails.DepartmentName ||'';
-    this.Address =casePaperDetails.Address ||'';
-    this.SecondRefDoctorName=casePaperDetails.SecondRefDoctorName||'';
-    this.VistDateTime=casePaperDetails.VistDateTime ||'' ;
-    this.PreviousVisitDate=casePaperDetails.PreviousVisitDate ||'' ;
+    this.DepartmentName = casePaperDetails.DepartmentName || '';
+    this.Address = casePaperDetails.Address || '';
+    this.SecondRefDoctorName = casePaperDetails.SecondRefDoctorName || '';
+    this.VistDateTime = casePaperDetails.VistDateTime || '';
+    this.PreviousVisitDate = casePaperDetails.PreviousVisitDate || '';
   }
 
 
