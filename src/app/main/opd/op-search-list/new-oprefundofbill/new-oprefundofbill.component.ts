@@ -356,47 +356,32 @@ export class NewOPRefundofbillComponent implements OnInit {
       return false;
     }
   }
+
   gettablecalculation(element, RefundAmt) {
-    if (this.RefundAmount < this.NetBillAmount) {
-      console.log(element)
-      this.serviceId = element.ServiceId;
-      this.ServiceAmount = element.TotalAmt;
-
-      if (RefundAmt > 0) {
-        if (parseFloat(RefundAmt) > parseFloat(element.NetAmount)) {
-          this.toastr.warning('Enter Refund Amount Less than Price Amount ', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          RefundAmt = '';
-          // Swal.fire('Enter Refund Amount Less than Price Amount ', 'warning!').then((result) => {
-          //   if (result.isConfirmed) {
-          //    RefundAmt = '';
-          //   }
-          // });
-        }
-
-        element.BalanceAmount = (parseFloat(element.NetAmount) - parseFloat(RefundAmt)).toFixed(2);
-        element.PrevRefAmount = RefundAmt;
-        // this.TotalRefundAmount =(parseFloat(this.TotalRefundAmount) + parseFloat(RefundAmt)).toFixed(2) ;
-
-      } else {
-        element.BalanceAmount = 0;
-        RefundAmt = '';
-        // this.TotalRefundAmount = (parseFloat(this.TotalRefundAmount) - parseFloat(RefundAmt)).toFixed(2) ;
-      }
-    } else {
+    debugger 
+    if(RefundAmt > 0 && RefundAmt <= element.BalAmt){
+      element.BalanceAmount= ((element.BalAmt) - (RefundAmt));   
+      element.PrevRefAmount = RefundAmt;
+    } 
+    else if (RefundAmt > element.BalAmt) {
+      this.toastr.warning('Enter Refund Amount Less than Balance Amount ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      element.RefundAmt = '';  
+      element.BalanceAmount =element.BalAmt;
+    }
+    else if(RefundAmt == 0 || RefundAmt == '' || RefundAmt == null || RefundAmt == undefined){
+      element.RefundAmt = '';  
+      element.BalanceAmount =element.BalAmt;
+    }
+    else if(this.RefundAmount < this.NetBillAmount){
       this.toastr.warning('Bill Amount Already Refund .', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
-      RefundAmt= '';
-      // Swal.fire('Bill Amount', 'Already Refund').then((result) => {
-      //   if (result.isConfirmed) {
-      //     RefundAmt = '';
-      //   }
-      // });
-    }
+      element.RefundAmt = '';  
+      element.BalanceAmount =element.BalAmt;
+    } 
   }
-
   RefundAmt: any;
   //   getCellCalculation(element, RefundAmt) {
   //     debugger
@@ -596,7 +581,7 @@ onSave() {
 
         let RefundDetailarr = [];
         this.dataSource2.data.forEach((element) =>{
-          
+
           let InsertRefundDetailObj = {};
 
           InsertRefundDetailObj['RefundID'] = 0;

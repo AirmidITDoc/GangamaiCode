@@ -221,7 +221,7 @@
                                             BillNo
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            {{element.BillNo}}
+                                            {{element.PBillNo}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -239,27 +239,12 @@
                                             {{element.NetPayableAmt | currency:'INR'}} </mat-cell>
                                     </ng-container>
 
-                                    <!-- <ng-container matColumnDef="RefundAmount">
+                                    <ng-container matColumnDef="RefundAmt">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                            RefundAmount </mat-header-cell>
+                                            RefundAmt </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                             {{element.RefundAmount | currency:'INR'}} </mat-cell>
-                                    </ng-container> -->
-
-                                    <ng-container matColumnDef="RefundAmt">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                            class="w-80">RefundAmt
-                                        </mat-header-cell>
-                                        <mat-cell class="w-80" *matCellDef="let element" fxShow.gt-sm>
-                                            <mat-form-field appearance="legacy">
-                                                <input matInput [(ngModel)]="element.RefundAmt"  onlyNumber
-                                                    (keyup)="getCellCalculation(element,element.RefundAmt)"
-                                                    (keypress)="keyPressAlphanumeric($event)">
-                                            </mat-form-field>
-                                        </mat-cell>
-                                    </ng-container>
-
-
+                                    </ng-container> 
 
                                     <ng-container matColumnDef="loading">
                                         <mat-footer-cell *matFooterCellDef colspan="6">
@@ -274,12 +259,12 @@
                                             </mat-spinner>
                                             <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
                                         </mat-footer-cell>
-                                    </ng-container>
-                                    <!-- (click)="onEdit(row)" -->
+                                    </ng-container> 
+
                                     <mat-header-row class="accent min-width-600" *matHeaderRowDef="displayedColumns; sticky: true">
                                     </mat-header-row>
                                     <mat-row *matRowDef="let row; columns: displayedColumns;" class="element min-width-600"
-                                        [@animate]="{value:'*',params:{y:'100%'}}" >
+                                     (click)="getServiceList(element)"   [@animate]="{value:'*',params:{y:'100%'}}" >
                                     </mat-row>
                                     <mat-footer-row *matFooterRowDef="['loading']"
                                         [ngClass]="{'hide':dataSource3!=null}"></mat-footer-row>
@@ -287,15 +272,13 @@
                                         [ngClass]="{'hide':!(dataSource3!=null && dataSource3.data.length==0)}">
                                     </mat-footer-row>
                                 </mat-table>
-
-                                <!-- <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="5"
-                                    showFirstLastButtons></mat-paginator> -->
+ 
                                 <div class="net-amt">
                                     <span class="net-amt-label" style="font-weight:bold;">Total Refund
                                         :</span>&nbsp;
                                     <!-- <span class="net-amt-label">Net Amount:</span>&nbsp; -->
                                     <span class="net-amt-value"
-                                        style="font-weight:bold;">{{getRefundtotSum1(dataSource3.data) |
+                                        style="font-weight:bold;color: blue;">{{getRefundtotSum1(dataSource3.data) |
                                         currency:'INR' }}</span>
                                 </div>
                             </mat-card>
@@ -320,9 +303,7 @@
                                             RefundAmount </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                             {{element.RefundAmount | currency:'INR'}} </mat-cell>
-                                    </ng-container>
-
-
+                                    </ng-container> 
 
                                     <ng-container matColumnDef="loading">
                                         <mat-footer-cell *matFooterCellDef colspan="6">
@@ -358,7 +339,7 @@
                                         :</span>&nbsp;
                                     <!-- <span class="net-amt-label">Net Amount:</span>&nbsp; -->
                                     <span class="net-amt-value"
-                                        style="font-weight:bold;">{{getRefundtotSum(dataSource1.data) |
+                                        style="font-weight:bold;color: blue;">{{getRefundtotSum(dataSource1.data) |
                                         currency:'INR' }}</span>
                                 </div>
                             </mat-card>
@@ -444,7 +425,7 @@
                                     Services
                                 </ng-template> -->
                                 <div style="width: 100%;">
-                                    <mat-table class="services-table mt-8 h-220" matSort [dataSource]="dataSource2"
+                                    <mat-table class="table h-220" matSort [dataSource]="dataSource2"
                                         [@animateStagger]="{value:'50'}">
 
                                        
@@ -497,11 +478,31 @@
                                             </mat-cell>
                                         </ng-container>
 
-                                        <ng-container matColumnDef="RefundAmount">
+                                        <!-- <ng-container matColumnDef="RefundAmount">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                                 RefundAmount </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                 <span> {{element.RefundAmount | currency:'INR'}} </span>
+                                            </mat-cell>
+                                        </ng-container>  -->
+
+                                         <ng-container matColumnDef="RefundAmount">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>RefundAmt
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                                <mat-form-field appearance="legacy">
+                                                    <input matInput [(ngModel)]="element.RefundAmount" type="text" OnlyNumber 
+                                                    (keyup)="gettablecalculation(element,element.RefundAmount)" 
+                                                    (keypress)="keyPressCharater($event)" >
+                                                </mat-form-field>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="BalanceAmount">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                BalanceAmount </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <span> {{element.BalanceAmount}} </span>
                                             </mat-cell>
                                         </ng-container>
 
@@ -519,13 +520,13 @@
                                                 <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
                                             </mat-footer-cell>
                                         </ng-container>
-
+                                        <!-- (click)="Serviceselect(row,$event)" -->
                                         <mat-header-row class="accent min-width-900"
                                             *matHeaderRowDef="displayedColumns1; sticky: true">
                                         </mat-header-row>
                                         <mat-row *matRowDef="let row; columns: displayedColumns1;" class="element min-width-900"
                                             [@animate]="{value:'*',params:{y:'100%'}}"
-                                            (click)="Serviceselect(row,$event)">
+                                            >
                                         </mat-row>
                                         <mat-footer-row *matFooterRowDef="['loading']"
                                             [ngClass]="{'hide':dataSource2!=null}">
@@ -541,7 +542,7 @@
                                     <div class="table-footer mt-8">
                                         <div class="net-amt">
                                             <span class="net-amt-label font-weight-600">Total of Items : </span>
-                                            <span class="net-amt-value">
+                                            <span class="net-amt-value" style="color: blue;">
                                                 {{getServicetotSum(dataSource2.data) | currency:'INR' }}
                                             </span>
                                         </div>
@@ -555,7 +556,7 @@
                             <div fxLayout="row" class="gap-8">
                                 <mat-form-field appearance="outline" fxFlex="15%">
                                     <mat-label>Total Refund Amount</mat-label>
-                                    <input matInput [(ngModel)]="TotalRefundAmount" (keyup)="calculateTotalRefund()"
+                                    <input matInput [(ngModel)]="TotalRefundAmount"  
                                         formControlName="TotalRefundAmount" name="TotalRefundAmount">
                                 </mat-form-field>
 

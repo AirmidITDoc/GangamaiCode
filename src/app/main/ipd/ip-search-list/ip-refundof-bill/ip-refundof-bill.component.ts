@@ -95,6 +95,7 @@ export class IPRefundofBillComponent implements OnInit {
   vTariffId: any = 0;
   vClassId: any = 0;
   vRegId: any = 0;
+  vAdmissionId:any;
   PatientName: any = "";
   RegId: any = 0;
   Age: any = 0;
@@ -106,25 +107,14 @@ export class IPRefundofBillComponent implements OnInit {
   isRegIdSelected: boolean = false;
   registerObj = new RegInsert({});
 
-
-  things=[
-        {"label":"Bill No" , "id":1, "name":"BillNo"},
-        {"label":"Bill Date" , "id":2, "name":"BillDate"},
-        {"label":"Net Bill Amount " , "id":3, "name":"NetBillAmount"},
-        // {"label":"Total Refund Amount" , "id":4, "name":"TotalRefundAmount"},
-        // {"label":"Refund Bal Amount" , "id":5, "name":"RefundBalAmount"},
-        // {"label":"Remarks" , "id":6, "name":"Remark"},
-
-    
-  ];
-  
   displayedColumns1 = [
     'ServiceName',
     'Qty',
     'Price',
     'NetAmount',
     'ChargesDocName',
-    'RefundAmount'
+    'RefundAmount',
+    'BalanceAmount'
   ];
 
   displayedColumns = [
@@ -140,9 +130,7 @@ export class IPRefundofBillComponent implements OnInit {
     'RefundAmount'
   ];
 
-
-  // Billdetail
-
+  
   dataSource = new MatTableDataSource<InsertRefundDetail>();
   dataSource3 = new MatTableDataSource<RegRefundBillMaster>();
   dataSource1 = new MatTableDataSource<BillRefundMaster>();
@@ -153,36 +141,30 @@ export class IPRefundofBillComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   
-  constructor(public _IpSearchListService: IPSearchListService,
-      private _ActRoute: Router,
+  constructor(public _IpSearchListService: IPSearchListService, 
     public _matDialog: MatDialog,
     private advanceDataStored: AdvanceDataStored,
     public datePipe: DatePipe,
     private accountService: AuthenticationService,
     private formBuilder: FormBuilder,
     public _WhatsAppEmailService:WhatsAppEmailService,
-    public toastr: ToastrService,
-    private changeDetectorRefs: ChangeDetectorRef,
+    public toastr: ToastrService, 
     private dialogRef: MatDialogRef<IPRefundofBillComponent>,
     private _formBuilder: FormBuilder
-    ) {
-    }
-    
-   
+    ) { } 
 
-  ngOnInit(): void {
-
+  ngOnInit(): void { 
     this.RefundOfBillFormGroup = this.refundForm();
     this.searchFormGroup = this.createSearchForm();
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
-      console.log(this.selectedAdvanceObj.RegNo);
+      //console.log(this.selectedAdvanceObj.RegNo);
       this.vOPIPId=this.selectedAdvanceObj.AdmissionID
       this.vRegId=this.selectedAdvanceObj.RegId
       this.PatientName=this.selectedAdvanceObj.PatientName;
       this.Doctorname=this.selectedAdvanceObj.Doctorname
       this.RegNo=this.selectedAdvanceObj.RegNo
-      
+      this.vAdmissionId =this.selectedAdvanceObj.AdmissionID
       this.Tarrifname= this.selectedAdvanceObj.TariffName
       this.Age= this.selectedAdvanceObj.AgeYear
       this.CompanyName= this.selectedAdvanceObj.CompanyName
@@ -202,29 +184,56 @@ export class IPRefundofBillComponent implements OnInit {
     // this.getBilldetailList();
     
     // this.serviceDetailForm();
-  }
-
-//   ngAfterViewInit() {
-//     this.renderer.invokeElementMethod(
-//     this.infocus.nativeElement, 'focus');                     
-// }
-
-// onKeypressEvent(event:any){      
-//     console.log("pressed key is:");
-//     console.log(event, event.keyCode, event.keyIdentifier,event.target);
-//     let thing1=event.target.name;
-//     console.log("thing name:");
-//     console.log(thing1);
-
-        
-// }
-
+  } 
 createSearchForm() {
   return this.formBuilder.group({
   RegId: ['']
   });
 }
-
+refundForm(): FormGroup {
+  return this._formBuilder.group({
+    advanceAmt: [Validators.pattern("^[0-9]*$")],
+    BillNo: [''],
+    NetBillAmount: [Validators.pattern("^[0-9]*$")],
+    TotalRefundAmount: [Validators.pattern("^[0-9]*$")],
+    RefundBalAmount: [Validators.pattern("^[0-9]*$")],
+    BillDate: [''],
+    RefundAmount: [Validators.pattern("^[0-9]*$")],
+    Remark: [''],
+    // AdmissionId: '',
+    RegNo: [''],
+    PatientName: [''],
+    // BillAmount: [''],
+    serviceName: [''],
+    serviceId: [''],
+    Price: [Validators.pattern("^[0-9]*$")],
+    Qty: [Validators.pattern("^[0-9]*$")],
+    totalAmount: [Validators.pattern("^[0-9]*$")],
+    // BillingClassId: [''],
+    // price: [Validators.pattern("^[0-9]*$")],
+    // qty: [Validators.pattern("^[0-9]*$")],
+    // DoctorName: [''],
+  });
+}
+refundBillForm() {
+  this.myRefundBillForm = this.formBuilder.group({
+    BillId: [''],
+    billId: [''], 
+    ServiceId: [''],
+    serviceId: [''],
+    serviceName: [''],
+    ServiceName: [''],
+    Price: [Validators.pattern("^[0-9]*$")],
+    Qty: [Validators.pattern("^[0-9]*$")],
+    totalAmount: [Validators.pattern("^[0-9]*$")],
+    advanceAmt: [Validators.pattern("^[0-9]*$")],
+    BillingClassId: [''],
+    price: [Validators.pattern("^[0-9]*$")],
+    qty: [Validators.pattern("^[0-9]*$")],
+    DoctorId: [''],
+    DoctorName: [''],
+  });
+}
 
 
   filterStates(name: string) {
@@ -236,43 +245,12 @@ createSearchForm() {
       }
     });
     return tempArr;
-  }
-
-
-  refundForm(): FormGroup {
-    return this._formBuilder.group({
-      advanceAmt: [Validators.pattern("^[0-9]*$")],
-      BillNo: [''],
-      NetBillAmount: [Validators.pattern("^[0-9]*$")],
-      TotalRefundAmount: [Validators.pattern("^[0-9]*$")],
-      RefundBalAmount: [Validators.pattern("^[0-9]*$")],
-      BillDate: [''],
-      RefundAmount: [Validators.pattern("^[0-9]*$")],
-      Remark: [''],
-      // AdmissionId: '',
-      RegNo: [''],
-      PatientName: [''],
-      // BillAmount: [''],
-      serviceName: [''],
-      serviceId: [''],
-      Price: [Validators.pattern("^[0-9]*$")],
-      Qty: [Validators.pattern("^[0-9]*$")],
-      totalAmount: [Validators.pattern("^[0-9]*$")],
-      // BillingClassId: [''],
-      // price: [Validators.pattern("^[0-9]*$")],
-      // qty: [Validators.pattern("^[0-9]*$")],
-      // DoctorName: [''],
-    });
-  }
-
-
+  } 
   // Patient Search;
-  getSearchList() {
-    
+  getSearchList() { 
     var m_data = {
       "Keyword": `${this.searchFormGroup.get('RegId').value}%`
-    }
-    
+    } 
     this._IpSearchListService.getPatientVisitedListSearch(m_data).subscribe(data => {
       this.PatientListfilteredOptions = data;
       console.log(this.PatientListfilteredOptions )
@@ -281,14 +259,12 @@ createSearchForm() {
       } else {
         this.noOptionFound = false;
       }
-    });
-
+    }); 
   }
 
   getSelectedObj1(obj) {
     console.log(obj)
-    this.dataSource.data = [];
-    
+    this.dataSource.data = []; 
     this.registerObj = obj;
     this.PatientName = obj.FirstName + " " + obj.LastName;
     this.RegId = obj.RegId;
@@ -304,77 +280,25 @@ createSearchForm() {
     this.vClassId = obj.classId
     this.RegNo=obj.RegNo
     this.Age=obj.Age;
-    this.VisitId=obj.VisitId
-    
-    
-    
+    this.VisitId=obj.VisitId 
     this. getRefundofBillIPDList();
   }
 
   getOptionText1(option) {
     if (!option)
       return '';
-      return option.FirstName + ' ' + option.MiddleName  + ' ' + option.LastName ;
-
+      return option.FirstName + ' ' + option.MiddleName  + ' ' + option.LastName ; 
   }
 
-  keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
-    if (/[a-zA-Z0-9]/.test(inp)) {
-      return true;
-    } else {
-      event.preventDefault();
-      return false;
-    }
-  }
 
-  RefundAmt:any;
-  getCellCalculation(contact,RefundAmt) {
-   debugger
-    console.log(RefundAmt)
-    console.log(contact);
-    var datePipe = new DatePipe("en-US");
-    this.BillNo=contact.BillNo;
-    this.BillDate =  datePipe.transform(contact.BillDate, 'dd/MM/yyyy hh:mm a'); 
-    this.NetBillAmount=contact.NetPayableAmt;
-    this.RefundAmount=RefundAmt;
-    this.RefundBalAmount = (parseInt(this.NetBillAmount.toString()) - parseInt(this.RefundAmount.toString()));
-  
-    this.getserviceetailList();
-  
-    var m_data1 = {
-      "BillId": contact.BillNo
-    }
-    this.isLoadingStr = 'loading';
-    this._IpSearchListService.getRefundofBillDetailList(m_data1).subscribe(Visit => {
-      this.dataSource1.data = Visit as BillRefundMaster[];
-      
-      this.dataSource1.sort = this.sort;
-      this.dataSource1.paginator = this.paginator;
-      this.isLoadingStr = this.dataSource1.data.length == 0 ? 'no-data' : '';
-    });
-  
-    this.RefAmt1=this.RefundBalAmount;
-    
-    if(RefundAmt > contact.BalanceAmount){
-      Swal.fire("Enter Refund Amount Less than Balance Amount ");
-    }else{
-      this.TotalRefundAmount=RefundAmt;
-      contact.BalanceAmount=contact.BalanceAmount-RefundAmt
-      // this.NewRefundAmount=RefundAmt;
-      // this.BalanceAdvance= contact.BalanceAmount;
-    }
 
-  }
-
+  RefundAmt:any; 
   
-  getRefundofBillIPDList() {
-    debugger
-        var m_data = {
-      "RegId ": this.vRegId
-      
+  getRefundofBillIPDList() { 
+    var m_data = {
+      "AdmissionId ": this.vAdmissionId 
     }
-    // this.isLoadingStr = 'loading';
+    //console.log(m_data)
     this._IpSearchListService.getRefundofBillIPDList(m_data).subscribe(Visit => {
       this.dataSource3.data = Visit as RegRefundBillMaster[];
       this.dataSource3.sort = this.sort;
@@ -383,361 +307,68 @@ createSearchForm() {
       
     });
   }
-
-
-// //Give BillNumber For List
-//   getBilldetailList() {
-//     // debugger;
-//     var m_data = {
-//       "BillNo": 1212,//this._IpSearchListService.myRefundAdvanceForm.get("BillNo").value || 0,
-//     }
-//     // this.isLoadingStr = 'loading';
-//     this._IpSearchListService.getRefundofBillList(m_data).subscribe(Visit => {
-//       this.dataSource.data = Visit as InsertRefundDetail[];
-//       this.dataSource.sort = this.sort;
-//       this.dataSource.paginator = this.paginator;
-//       // this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
-//     });
-//   }
-
-  getserviceetailList() {
-    var m_data = {
-      "BillNo": this.BillNo
-    }
-    console.log(this.BillNo);
-    this.isLoadingStr = 'loading';
-    this._IpSearchListService.getRefundofBillServiceList(m_data).subscribe(Visit => {
-      this.dataSource2.data = Visit as InsertRefundDetail[];
-      this.dataSource2.sort = this.sort;
-      this.dataSource2.paginator = this.paginator;
-      
-      this.isLoadingStr = this.dataSource2.data.length == 0 ? 'no-data' : '';
-    });
-  }
-
-  refundBillForm() {
-    this.myRefundBillForm = this.formBuilder.group({
-      BillId: [''],
-      billId: [''], 
-      ServiceId: [''],
-      serviceId: [''],
-      serviceName: [''],
-      ServiceName: [''],
-      Price: [Validators.pattern("^[0-9]*$")],
-      Qty: [Validators.pattern("^[0-9]*$")],
-      totalAmount: [Validators.pattern("^[0-9]*$")],
-      advanceAmt: [Validators.pattern("^[0-9]*$")],
-      BillingClassId: [''],
-      price: [Validators.pattern("^[0-9]*$")],
-      qty: [Validators.pattern("^[0-9]*$")],
-      DoctorId: [''],
-      DoctorName: [''],
-    });
-  }
-
-  // serviceDetailForm() {
-  //   this.myserviceForm = this.formBuilder.group({
-  //     BillingClassId:[''],
-  //     ServiceId:[''],
-  //     ServiceName:[''],
-  //     price:[''],
-  //     qty:[''],
-
-  //     totalAmount:[''],
-  //     DoctorId:[''],
-  //     DoctorName:[''],
-  //   });
+ 
+getServiceList(param){
+  console.log(param)
+  // var m_data1 = {
+  //   "BillId": param.BillNo
   // }
-  getDateTime(dateTimeObj) {
-    this.dateTimeObj = dateTimeObj;
+  // this.isLoadingStr = 'loading';
+  // this._IpSearchListService.getRefundofBillDetailList(m_data1).subscribe(Visit => { 
+  //   this.dataSource2.data = Visit as InsertRefundDetail[];
+  //   console.log(this.dataSource2.data)
+  //   this.dataSource1.sort = this.sort;
+  //   this.dataSource1.paginator = this.paginator;
+  //   this.isLoadingStr = this.dataSource2.data.length == 0 ? 'no-data' : '';
+  // });
+}  
+
+gettablecalculation(element, RefundAmt) {
+  debugger 
+  if(RefundAmt > 0 && RefundAmt <= element.BalAmt){
+    element.BalanceAmount= ((element.BalAmt) - (RefundAmt));   
+    element.PrevRefAmount = RefundAmt;
+  } 
+  else if (RefundAmt > element.BalAmt) {
+    this.toastr.warning('Enter Refund Amount Less than Balance Amount ', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    element.RefundAmount = '';  
+    element.BalanceAmount =element.BalAmt;
   }
-
-  //  ===================================================================================
-
-
-  onOptionSelected(selectedItem) {
-    this.b_price = selectedItem.Price
-    this.b_totalAmount = selectedItem.Price  //* parseInt(this.b_qty)
-    this.b_disAmount = '0';
-    this.b_netAmount = selectedItem.Price
-    this.b_IsEditable = selectedItem.IsEditable
-    this.b_IsDocEditable = selectedItem.IsDocEditable
-    this.b_isPath = selectedItem.IsPathology
-    this.b_isRad = selectedItem.IsRadiology
-    this.serviceId = selectedItem.ServiceId;
-    this.serviceName = selectedItem.ServiceName;
-    this.calculateTotalAmt();
+  else if(RefundAmt == 0 || RefundAmt == '' || RefundAmt == null || RefundAmt == undefined){
+    element.RefundAmount = '';  
+    element.BalanceAmount =element.BalAmt;
   }
-
-  calculateTotalAmt() {
-    if (this.b_price && this.b_qty) {
-      this.b_totalAmount = (parseInt(this.b_price) * parseInt(this.b_qty)).toString();
-      this.b_netAmount = this.b_totalAmount;
-      // this.calculatePersc();
-    }
-  }
-
-
-  getSelectedServicetotSum(element) {
-    
-    let netAmt1;
-    netAmt1 = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
-    this.totalAmtOfNetAmt1 = netAmt1;
-    this.netPaybleAmt1 = netAmt1;
-    return netAmt1;
-    
-  }
-
+  else if(this.RefundAmount < this.NetBillAmount){
+    this.toastr.warning('Bill Amount Already Refund .', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    element.RefundAmount = '';  
+    element.BalanceAmount =element.BalAmt;
+  } 
+}
+ 
   getRefundtotSum(element){
     let netAmt1;
     netAmt1 = element.reduce((sum, { RefundAmount }) => sum += +(RefundAmount || 0), 0);
     return netAmt1;
     console.log(netAmt1);
-  }
-
-
+  } 
   getRefundtotSum1(element){
     let netAmt1;
     netAmt1 = element.reduce((sum, { RefundAmount }) => sum += +(RefundAmount || 0), 0);
     return netAmt1;
     console.log(netAmt1);
-  }
-
-  viewgetRefundofbillReportPdf(RefundId) {
-    setTimeout(() => {
-      // this.SpinLoading =true;
-      this.sIsLoading = 'loading-data';
-    //  this.AdList=true;
-    this._IpSearchListService.getRefundofbillview(
-      RefundId
-    ).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "Refund Of Bill  Viewer"
-          }
-        });
-        dialogRef.afterClosed().subscribe(result => {
-          // this.AdList=false;
-          this.sIsLoading = '';
-          // this.SpinLoading = false;
-        });
-      
-    });
-   
-    },100);
-  }
-  
-
-  getServicetotSum(element) {
-    
+  } 
+  getServicetotSum(element) { 
     let netAmt;
+    this.TotalRefundAmount =  element.reduce((sum, { RefundAmount }) => sum += +(RefundAmount || 0), 0);
     netAmt = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
     this.totalAmtOfNetAmt = netAmt;
     this.netPaybleAmt = netAmt;
-    return netAmt;
-    
-  }
-
-  tableElementChecked(event, element) {
-    // if (event.checked) {
-    //   this.interimArray.push(element);
-    // } else if (this.interimArray.length > 0) {
-    //   let index = this.interimArray.indexOf(element);
-    //   if (index !== -1) {
-    //     this.interimArray.splice(index, 1);
-    //   }
-    // }
-  }
-
-  onSave() {
- 
-    this.isLoading = 'submit';
-
-    if(this.TotalRefundAmount <= this.RefundBalAmount){
-    let InsertRefundObj = {};
-
-    InsertRefundObj['RefundId'] = 0;
-    InsertRefundObj['RefundDate'] =this.dateTimeObj.date;
-    InsertRefundObj['RefundTime'] = this.dateTimeObj.time;
-    InsertRefundObj['BillId'] = parseInt(this.RefundOfBillFormGroup.get('BillNo').value);
-    InsertRefundObj['AdvanceId'] = 0;
-    InsertRefundObj['OPD_IPD_Type'] = 1;
-    InsertRefundObj['OPD_IPD_ID'] = this.vOPIPId,
-    InsertRefundObj['RefundAmount'] = parseInt(this.RefundOfBillFormGroup.get('TotalRefundAmount').value);
-    InsertRefundObj['Remark'] = this.RefundOfBillFormGroup.get('Remark').value;
-    InsertRefundObj['TransactionId'] = 1;
-    InsertRefundObj['AddedBy'] = this.accountService.currentUserValue.user.id,
-    InsertRefundObj['IsCancelled'] = 0;
-    InsertRefundObj['IsCancelledBy'] = 0;
-    InsertRefundObj['IsCancelledDate'] = this.dateTimeObj.date;
-    InsertRefundObj['RefundNo'] = this.RefundOfBillFormGroup.get('BillNo').value;
-    
-
-    let RefundDetailarr = [];
-    let InsertRefundDetailObj = {};
-    console.log(this.dataSource.data);
-    
-    this.dataSource2.data.forEach((element) => {
-      InsertRefundDetailObj['RefundID'] = 0;
-      InsertRefundDetailObj['ServiceId'] = element.ServiceId || 0;
-      InsertRefundDetailObj['ServiceAmount'] = element.NetAmount || 0;
-      InsertRefundDetailObj['RefundAmount'] =element.RefundAmount || 0;
-      InsertRefundDetailObj['DoctorId'] = element.DoctorId || 0; 
-      InsertRefundDetailObj['Remark'] = this.RefundOfBillFormGroup.get('Remark').value || '';
-      InsertRefundDetailObj['AddBy'] = this.accountService.currentUserValue.user.id,
-      InsertRefundDetailObj['ChargesId'] = element.ChargesId || 0;
-
-      RefundDetailarr.push(InsertRefundDetailObj);
-      console.log(RefundDetailarr);
-    });
-
-    let AddchargesRefundAmountarr = [];
-    let AddchargesRefundAmountObj = {};
-    console.log(this.dataSource.data);
-    this.dataSource.data.forEach((element) => {
-      AddchargesRefundAmountObj['ChargesId'] = 1;
-      AddchargesRefundAmountObj['RefundAmount'] =  parseInt(this.RefundOfBillFormGroup.get('TotalRefundAmount').value);
-      AddchargesRefundAmountarr.push(AddchargesRefundAmountObj);
-    });
-
-
-    let PatientHeaderObj = {};
-
-    PatientHeaderObj['Date'] = this.dateTimeObj.date;
-    PatientHeaderObj['OPD_IPD_Id'] =this.vOPIPId;
-    PatientHeaderObj['NetPayAmount'] =   this.TotalRefundAmount;
-    PatientHeaderObj['PatientName'] =   this.PatientName
-      debugger;
-    const insertRefund = new InsertRefund(InsertRefundObj);
-   
-    const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
-      {
-        maxWidth: "75vw",
-        maxHeight: "93vh", width: '100%', height: "100%",
-        data: {
-         
-          advanceObj: PatientHeaderObj, 
-          FromName: "Advance-Refund",
-        }
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      if(result.IsSubmitFlag){
-      // console.log('============================== Return Adv ===========');
-      let submitData = {
-        "insertIPRefundofNew": insertRefund,
-        "insertRefundDetails": RefundDetailarr,
-        "updateAddChargesDetails": AddchargesRefundAmountarr,
-        // "ipDocShareGroupAdmRefundofBillDoc": oP_DoctorShare_GroupWise_RefundOfBill,
-        // "ipdInsertPayment": insertOPPayment,
-        "ipdInsertPayment": result.submitDataPay.ipPaymentInsert
-      };
-
-      console.log(submitData);
-      this._IpSearchListService.InsertIPRefundBilling(submitData).subscribe(response => {
-        if (response) {
-          Swal.fire('Congratulations !', 'IP Refund Bill data saved Successfully !', 'success').then((result) => {
-            if (result.isConfirmed) {
-              
-            let m=response
-              this.viewgetRefundofbillReportPdf(response);
-              this.getWhatsappshareIPrefundBill(response,this.vMobileNo)
-              this.dialogRef.close();
-            }
-          });
-        } else {
-          Swal.fire('Error !', 'IP Refund Bill data not saved', 'error');
-        }
-        this.isLoading = '';
-      });
-    }
-    });
-    }
-    else{
-Swal.fire("Refund Amount is More than RefundBalance")
-    }
-  }
-
-  getWhatsappshareIPrefundBill(el, vmono) {
-    debugger
-    var m_data = {
-      "insertWhatsappsmsInfo": {
-        "mobileNumber": vmono || 0,
-        "smsString": '',
-        "isSent": 0,
-        "smsType": 'IPREFBILL',
-        "smsFlag": 0,
-        "smsDate": this.currentDate,
-        "tranNo": el,
-        "PatientType": 2,//el.PatientType,
-        "templateId": 0,
-        "smSurl": "info@gmail.com",
-        "filePath": '',
-        "smsOutGoingID": 0
-      }
-    }
-    this._WhatsAppEmailService.InsertWhatsappSales(m_data).subscribe(response => {
-      if (response) {
-        this.toastr.success('IP Refund Of Bill Receipt Sent on WhatsApp Successfully.', 'Save !', {
-          toastClass: 'tostr-tost custom-toast-success',
-        });
-      } else {
-        this.toastr.error('API Error!', 'Error WhatsApp!', {
-          toastClass: 'tostr-tost custom-toast-error',
-        });
-      }
-    });
-  }
-
-
-onClose() {
- 
-  this.dialogRef.close();
-}
-
-getBillingClassCombo(){
-  this._IpSearchListService.getClassList({ "Id": this.selectedAdvanceObj.ClassId }).subscribe(data => {
-    this.BillingClassCmbList = data;
-    this.myserviceForm.get('BillingClassId').setValue(this.BillingClassCmbList[0]);
-  });
-}
-getAdmittedDoctorCombo(){
-  this._IpSearchListService.getAdmittedDoctorCombo().subscribe(data => {
-    this.doctorNameCmbList = data
-  });
-}
-updatedVal(e) {
-  if (e && e.length >= 2) {
-    this.showAutocomplete = true;
-  } else {
-    this.showAutocomplete = false;
-  }
-  if (e.length == 0) { this.b_price = ''; this.b_totalAmount = '0'; this.b_netAmount = '0'; this.b_disAmount = '0'; this.b_isPath = ''; this.b_isRad = ''; this.b_IsEditable = '0'; }
-}
-getServiceListCombo(){
-  this._IpSearchListService.getserviceCombo().subscribe(data => {
-    this.serviceNameCmbList = data
-  });
-}
-
-getServiceListCombobox() {
-  let tempObj;
-  var m_data = {
-    SrvcName: "%",
-    TariffId: this.selectedAdvanceObj.TariffId,
-    ClassId: this.selectedAdvanceObj.ClassId
-  };
-  this._IpSearchListService.getBillingServiceList(m_data).subscribe(data => {
-    this.dataSource2.data = data as InsertRefundDetail[];
-    console.log(data);
-    this.billingServiceList = tempObj;
-   
-  });
-}
+    return netAmt; 
+  } 
 
 Serviceselect(row,event){
 
@@ -768,17 +399,16 @@ this.RefundBalAmount=this.RefAmt1;
 }
 }
 
-onEdit(row) {
-
+OnEdit(row) { 
   console.log(row);
-  var datePipe = new DatePipe("en-US");
-  this.BillNo=row.BillNo;
-  this.BillDate =  datePipe.transform(row.BillDate, 'dd/MM/yyyy hh:mm a'); 
+  // var datePipe = new DatePipe("en-US");
+  // this.BillNo=row.BillNo;
+  // this.BillDate =  datePipe.transform(row.BillDate, 'dd/MM/yyyy hh:mm a'); 
   this.NetBillAmount=row.NetPayableAmt;
   this.RefundAmount=row.RefundAmount;
   this.RefundBalAmount = (parseInt(this.NetBillAmount.toString()) - parseInt(this.RefundAmount.toString()));
 
-  this.getserviceetailList();
+  this.getServiceList(row);
 
   var m_data1 = {
     "BillId": row.BillNo
@@ -790,27 +420,204 @@ onEdit(row) {
     this.dataSource1.sort = this.sort;
     this.dataSource1.paginator = this.paginator;
     this.isLoadingStr = this.dataSource1.data.length == 0 ? 'no-data' : '';
-  });
-
+  }); 
   this.RefAmt1=this.RefundBalAmount;
 } 
+onSave() {
+ 
+  this.isLoading = 'submit';
 
+  if(this.TotalRefundAmount <= this.RefundBalAmount){
+  let InsertRefundObj = {};
+
+  InsertRefundObj['RefundId'] = 0;
+  InsertRefundObj['RefundDate'] =this.dateTimeObj.date;
+  InsertRefundObj['RefundTime'] = this.dateTimeObj.time;
+  InsertRefundObj['BillId'] = parseInt(this.RefundOfBillFormGroup.get('BillNo').value);
+  InsertRefundObj['AdvanceId'] = 0;
+  InsertRefundObj['OPD_IPD_Type'] = 1;
+  InsertRefundObj['OPD_IPD_ID'] = this.vOPIPId,
+  InsertRefundObj['RefundAmount'] = parseInt(this.RefundOfBillFormGroup.get('TotalRefundAmount').value);
+  InsertRefundObj['Remark'] = this.RefundOfBillFormGroup.get('Remark').value;
+  InsertRefundObj['TransactionId'] = 1;
+  InsertRefundObj['AddedBy'] = this.accountService.currentUserValue.user.id,
+  InsertRefundObj['IsCancelled'] = 0;
+  InsertRefundObj['IsCancelledBy'] = 0;
+  InsertRefundObj['IsCancelledDate'] = this.dateTimeObj.date;
+  InsertRefundObj['RefundNo'] = this.RefundOfBillFormGroup.get('BillNo').value;
+  
+
+  let RefundDetailarr = [];
+  let InsertRefundDetailObj = {};
+  console.log(this.dataSource.data);
+  
+  this.dataSource2.data.forEach((element) => {
+    InsertRefundDetailObj['RefundID'] = 0;
+    InsertRefundDetailObj['ServiceId'] = element.ServiceId || 0;
+    InsertRefundDetailObj['ServiceAmount'] = element.NetAmount || 0;
+    InsertRefundDetailObj['RefundAmount'] =element.RefundAmount || 0;
+    InsertRefundDetailObj['DoctorId'] = element.DoctorId || 0; 
+    InsertRefundDetailObj['Remark'] = this.RefundOfBillFormGroup.get('Remark').value || '';
+    InsertRefundDetailObj['AddBy'] = this.accountService.currentUserValue.user.id,
+    InsertRefundDetailObj['ChargesId'] = element.ChargesId || 0;
+
+    RefundDetailarr.push(InsertRefundDetailObj);
+    console.log(RefundDetailarr);
+  });
+
+  let AddchargesRefundAmountarr = [];
+  let AddchargesRefundAmountObj = {};
+  console.log(this.dataSource.data);
+  this.dataSource.data.forEach((element) => {
+    AddchargesRefundAmountObj['ChargesId'] = 1;
+    AddchargesRefundAmountObj['RefundAmount'] =  parseInt(this.RefundOfBillFormGroup.get('TotalRefundAmount').value);
+    AddchargesRefundAmountarr.push(AddchargesRefundAmountObj);
+  });
+
+
+  let PatientHeaderObj = {};
+
+  PatientHeaderObj['Date'] = this.dateTimeObj.date;
+  PatientHeaderObj['OPD_IPD_Id'] =this.vOPIPId;
+  PatientHeaderObj['NetPayAmount'] =   this.TotalRefundAmount;
+  PatientHeaderObj['PatientName'] =   this.PatientName
+    debugger;
+  const insertRefund = new InsertRefund(InsertRefundObj);
+ 
+  const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
+    {
+      maxWidth: "75vw",
+      maxHeight: "93vh", width: '100%', height: "100%",
+      data: {
+       
+        advanceObj: PatientHeaderObj, 
+        FromName: "Advance-Refund",
+      }
+    });
+  dialogRef.afterClosed().subscribe(result => {
+    if(result.IsSubmitFlag){
+    // console.log('============================== Return Adv ===========');
+    let submitData = {
+      "insertIPRefundofNew": insertRefund,
+      "insertRefundDetails": RefundDetailarr,
+      "updateAddChargesDetails": AddchargesRefundAmountarr,
+      // "ipDocShareGroupAdmRefundofBillDoc": oP_DoctorShare_GroupWise_RefundOfBill,
+      // "ipdInsertPayment": insertOPPayment,
+      "ipdInsertPayment": result.submitDataPay.ipPaymentInsert
+    };
+
+    console.log(submitData);
+    this._IpSearchListService.InsertIPRefundBilling(submitData).subscribe(response => {
+      if (response) {
+        Swal.fire('Congratulations !', 'IP Refund Bill data saved Successfully !', 'success').then((result) => {
+          if (result.isConfirmed) {
+            
+          let m=response
+            this.viewgetRefundofbillReportPdf(response);
+            this.getWhatsappshareIPrefundBill(response,this.vMobileNo)
+            this.dialogRef.close();
+          }
+        });
+      } else {
+        Swal.fire('Error !', 'IP Refund Bill data not saved', 'error');
+      }
+      this.isLoading = '';
+    });
+  }
+  });
+  }
+  else{
+Swal.fire("Refund Amount is More than RefundBalance")
+  }
+}
+
+onClose() { 
+this.dialogRef.close();
+} 
 
 populateiprefund(employee) {
   this.RefundOfBillFormGroup.patchValue(employee);
       
+} 
+getDateTime(dateTimeObj) {
+  this.dateTimeObj = dateTimeObj;
 }
-
-calculateTotalRefund() {
+viewgetRefundofbillReportPdf(RefundId) {
+  setTimeout(() => {
+    // this.SpinLoading =true;
+    this.sIsLoading = 'loading-data';
+  //  this.AdList=true;
+  this._IpSearchListService.getRefundofbillview(
+    RefundId
+  ).subscribe(res => {
+    const dialogRef = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Refund Of Bill  Viewer"
+        }
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        // this.AdList=false;
+        this.sIsLoading = '';
+        // this.SpinLoading = false;
+      });
     
-  this.RefundBalAmount = this.RefundBalAmount- this.TotalRefundAmount;
+  });
  
-  // this.RefundBalAmount = (parseInt(this.NetBillAmount.toString()) - parseInt(this.RefundAmount.toString()));
-  // console.log( this.RefundBalAmount);
-
+  },100);
 }
-
-
+getWhatsappshareIPrefundBill(el, vmono) {
+  debugger
+  var m_data = {
+    "insertWhatsappsmsInfo": {
+      "mobileNumber": vmono || 0,
+      "smsString": '',
+      "isSent": 0,
+      "smsType": 'IPREFBILL',
+      "smsFlag": 0,
+      "smsDate": this.currentDate,
+      "tranNo": el,
+      "PatientType": 2,//el.PatientType,
+      "templateId": 0,
+      "smSurl": "info@gmail.com",
+      "filePath": '',
+      "smsOutGoingID": 0
+    }
+  }
+  this._WhatsAppEmailService.InsertWhatsappSales(m_data).subscribe(response => {
+    if (response) {
+      this.toastr.success('IP Refund Of Bill Receipt Sent on WhatsApp Successfully.', 'Save !', {
+        toastClass: 'tostr-tost custom-toast-success',
+      });
+    } else {
+      this.toastr.error('API Error!', 'Error WhatsApp!', {
+        toastClass: 'tostr-tost custom-toast-error',
+      });
+    }
+  });
+}
+keyPressAlphanumeric(event) {
+  var inp = String.fromCharCode(event.keyCode);
+  if (/[a-zA-Z0-9]/.test(inp)) {
+    return true;
+  } else {
+    event.preventDefault();
+    return false;
+  }
+}
+keyPressCharater(event){
+  var inp = String.fromCharCode(event.keyCode);
+  if (/^\d*\.?\d*$/.test(inp)) {
+    return true;
+  } else {
+    event.preventDefault();
+    return false;
+  }
+}
 }
 
 
