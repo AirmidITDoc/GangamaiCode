@@ -81,8 +81,10 @@ export class BedTransferComponent implements OnInit {
       debugger
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       console.log(this.selectedAdvanceObj)
+      this._IpSearchListService.getWardCombo().subscribe(data => {
+        this.WardList = data;});
     }
-    this.getWardList();
+  
   }
 
   ngOnInit(): void {
@@ -93,13 +95,12 @@ export class BedTransferComponent implements OnInit {
     // this.getBedList();
     this.getDoctorList();
     this.getWardList();
-    // this.getClassList();
+   
 
-    // if (this.advanceDataStored.storage) {
-    //   debugger
-    //    this.selectedAdvanceObj = this.advanceDataStored.storage;
-    //    console.log( this.selectedAdvanceObj)
-    //  }
+    if (this.advanceDataStored.storage) {
+    
+     this.OnChangeBedList(this.selectedAdvanceObj);
+     }
 
     this.filteredOptionsWard = this.Bedtransfer.get('RoomId').valueChanges.pipe(
       startWith(''),

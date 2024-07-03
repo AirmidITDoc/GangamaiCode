@@ -58,6 +58,7 @@ import { PrebillDetailsComponent } from './ip-billing/prebill-details/prebill-de
 import { DiscountAfterFinalBillComponent } from './discount-after-final-bill/discount-after-final-bill.component';
 
 
+
 const routes: Routes = [
     {
         path: 'new-appointment',
