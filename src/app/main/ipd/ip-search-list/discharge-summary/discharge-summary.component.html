@@ -535,7 +535,7 @@
                                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                                                         Day</mat-header-cell>
                                                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                        <span> {{element.Day}}</span>
+                                                                        <span> {{element.Days}}</span>
                                                                     </mat-cell>
                                                                 </ng-container>
                         
@@ -581,7 +581,7 @@
                             <mat-card>
                                 <div fxLayout="row" fxLayoutAlign="end center">
                                     <mat-radio-group name="IsNormalOrDeath" formcontrolName="IsNormalOrDeath"
-                                        aria-label="Select an option">
+                                        aria-label="Select an option" [(ngModel)]="vIsNormalDeath">
                                         <mat-radio-button value="True" >Normal </mat-radio-button>
                                         <mat-radio-button value="false">Death Summary</mat-radio-button>
                                     </mat-radio-group>

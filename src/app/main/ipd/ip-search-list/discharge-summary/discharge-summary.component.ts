@@ -372,7 +372,7 @@ export class DischargeSummaryComponent implements OnInit {
           ItemName: this.MedicineItemForm.get('ItemId').value.ItemName || '',
           DoseName: this.MedicineItemForm.get('DoseId').value.DoseName || '',
           DoseId: this.MedicineItemForm.get('DoseId').value.DoseId || '',
-          Day: this.vDay,
+          Days: this.vDay,
           Instruction: this.vInstruction || '' 
         });
       this.dsItemList.data = this.Chargelist
@@ -459,9 +459,10 @@ export class DischargeSummaryComponent implements OnInit {
     this._IpSearchListService.getPrescriptionList(m_data2).subscribe((data) => {
       this.dsItemList.data = data as MedicineItemList[];
       this.Chargelist = data as MedicineItemList[];
-     // console.log(this.dsItemList.data);     
+      console.log(this.dsItemList.data);     
     }); 
   }
+  vIsNormalDeath:any;
   getDischargeSummaryData(el) {
     // debugger
     var m_data2 = {
@@ -494,10 +495,10 @@ export class DischargeSummaryComponent implements OnInit {
        this.getRetevDropdownvalue(); 
        debugger
        if(this.IsNormalDeath == 1){
-        this.DischargesumForm.get('IsNormalOrDeath').setValue(true) 
+        this.vIsNormalDeath = true;
        }
        else{
-        this.DischargesumForm.get('IsNormalOrDeath').setValue('false') 
+        this.vIsNormalDeath = false;
        }
        
      
@@ -599,7 +600,7 @@ OnSave(){
     insertIPPrescriptionDischargeObj['genericId'] = 0;
     insertIPPrescriptionDischargeObj['drugId'] = element.ItemID || 0;
     insertIPPrescriptionDischargeObj['doseId'] = element.DoseId || 0;
-    insertIPPrescriptionDischargeObj['days'] = element.Day || 0;
+    insertIPPrescriptionDischargeObj['days'] = element.Days || 0;
     insertIPPrescriptionDischargeObj['instructionId'] = 0;
     insertIPPrescriptionDischargeObj['qtyPerDay'] = 0;
     insertIPPrescriptionDischargeObj['totalQty'] = 0;
@@ -678,7 +679,7 @@ OnSave(){
     insertIPPrescriptionDischargeObj['genericId'] = 0;
     insertIPPrescriptionDischargeObj['drugId'] = element.ItemID || 0;
     insertIPPrescriptionDischargeObj['doseId'] = element.DoseId || 0;
-    insertIPPrescriptionDischargeObj['days'] = element.Day || 0;
+    insertIPPrescriptionDischargeObj['days'] = element.Days || 0;
     insertIPPrescriptionDischargeObj['instructionId'] = 0;
     insertIPPrescriptionDischargeObj['qtyPerDay'] = 0;
     insertIPPrescriptionDischargeObj['totalQty'] = 0;
@@ -811,7 +812,7 @@ export class MedicineItemList {
   ItemId: any;
   ItemName: string;
   DoseName:any;
-  Day: number;
+  Days: number;
   DoseName1:any;
   Day1: number;
   DoseName2:any;
@@ -831,7 +832,7 @@ export class MedicineItemList {
    
       this.Instruction = MedicineItemList.Instruction || '';
       this.DoseName = MedicineItemList.DoseName || '';
-      this.Day = MedicineItemList.Day || 0;
+      this.Days = MedicineItemList.Days || 0;
       this.DoseName1 = MedicineItemList.DoseName1 || '';
       this.Day1 = MedicineItemList.Day1 || 0;
       this.DoseName2 = MedicineItemList.DoseName2 || '';

@@ -138,7 +138,7 @@ export class DiscountAfterFinalBillComponent implements OnInit {
       });
       return
     }
-    if(this.vFinalNetAmt == 0 || this.vFinalNetAmt == '' || this.vFinalNetAmt == undefined || this.vFinalNetAmt == null){
+    if(this.vNetamount == 0 || this.vNetamount == '' || this.vNetamount == undefined || this.vNetamount == null){
       this.toastr.warning('Please check final netamount is zero', 'warning !', {
         toastClass: 'tostr-tost custom-toast-error',
       });
@@ -161,7 +161,7 @@ export class DiscountAfterFinalBillComponent implements OnInit {
     var m_data1 = {
       "billDiscountAfterUpdate": {
         "billNo": this.selectedAdvanceObj.BillNo || 0,
-        "netPayableAmt": this.MyFrom.get('FinalNetAmt').value || 0,
+        "netPayableAmt": this.MyFrom.get('NetAmount').value || 0,
         "concessionAmt":this.MyFrom.get('DiscAmount2').value || 0,
         "compDiscAmt": this.MyFrom.get('CompanyDiscAmt').value || 0,
         "balanceAmt": this.selectedAdvanceObj.BalanceAmt || 0,

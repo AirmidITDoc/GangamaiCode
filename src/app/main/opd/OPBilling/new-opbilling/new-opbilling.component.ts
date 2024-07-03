@@ -1189,11 +1189,11 @@ finaldisc=0;
   // }
   getAdmittedDoctorCombo() {
     this._oPSearhlistService.getAdmittedDoctorCombo().subscribe(data => {
-      this.doctorNameCmbList = data;
-      this.optionsDoctor = this.doctorNameCmbList.slice();
-      this.filteredOptionsDoctor = this._oPSearhlistService.myFilterform.get('DoctorId').valueChanges.pipe(
+      this.doctorNameCmbList = data; 
+
+      this.filteredOptionsDoctor = this.registeredForm.get('DoctorID').valueChanges.pipe(
         startWith(''),
-        map(value => value ? this._filterDoctor(value) : this.doctorNameCmbList.slice()),
+        map(value => this._filterDoctor(value)),
       );
 
     });
@@ -1201,7 +1201,7 @@ finaldisc=0;
   private _filterDoctor(value: any): string[] {
     if (value) {
       const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
-      return this.optionsDoctor.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
+      return this.doctorNameCmbList.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
     }
 
   }
