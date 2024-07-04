@@ -1428,8 +1428,7 @@ console.log(obj)
     this.RefDocName = obj.RefDoctorName
     this.BedName = obj.BedName;
     this.PatientType = obj.PatientType;
-  }
-
+  } 
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {

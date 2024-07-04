@@ -1,7 +1,7 @@
 <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="10px" class="page-layout" fusePerfectScrollbar>
     <div class="container" style="width: 100%;">
         <div style="width: 100%;">
-            <!-- <div fxFlex> -->
+            
             <div fxLayout="row" fxLayoutAlign="start center" class="accent top-header">
 
                 <div class="logo" fxLayout="row" fxLayoutAlign="start center" style="width: 100%;"
@@ -217,8 +217,8 @@
                     </div> 
                 </div>
 
-            </div>
-            <!-- </div> -->
+            </div> 
+
             <div fxLayout="column">
 
                 <div class="content-card" style="width:100%;" class="my-12">
@@ -233,22 +233,18 @@
                                     <div fxLayout="row" fxLayoutGap="5px">
 
                                         <mat-form-field appearance="outline" style="width:500px;" #myInput>
-                                            <input type="text" name="SrvcName" formControlName="SrvcName" #Servicename
-                                                placeholder="Service Name" matInput [matAutocomplete]="auto"
-                                                (keydown)="onEnterservice($event)" (input)="getServiceListCombobox()"
-                                                required id="myInput">
+                                            <input type="text" name="SrvcName" formControlName="SrvcName" #Servicename placeholder="Service Name" matInput
+                                                [matAutocomplete]="auto" (keydown)="onEnterservice($event)" (input)="getServiceListCombobox()" required
+                                                id="myInput">
                                             <span matSuffix style="display: flex;">
                                                 <mat-icon class="mat-icon-close"
                                                     (click)="registeredForm.get('SrvcName').setValue(''); isServiceSelected = false;">close</mat-icon>
                                                 <mat-icon class="mat-icon-close"
                                                     (click)="registeredForm.get('SrvcName').setValue(''); isServiceSelected = false;">search</mat-icon>
                                             </span>
-                                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
-                                                showPanel="true" (optionsScroll)="onScroll()"
-                                                (optionSelected)='getSelectedObj($event.option.value)'
-                                                style="width: 500px;">
-                                                <mat-option *ngFor="let option of filteredOptions" [value]="option"
-                                                    style="width: 500px;">
+                                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText" showPanel="true"
+                                                (optionsScroll)="onScroll()" (optionSelected)='getSelectedObj($event.option.value)' style="width: 500px;">
+                                                
                                                     <mat-option *ngFor="let option of filteredOptions" [value]="option" style="width: 500px;">
                                                         {{option.ServiceName}} | Price {{option.Price}} |
                                                         <span fxLayoutGap="4px">
@@ -263,11 +259,11 @@
                                                             </mat-icon>
                                                         </span>
                                                     </mat-option>
-                                                </mat-autocomplete> 
-                                                <mat-error *ngIf="registeredForm.get('SrvcName').hasError('required')">
-                                                    Required field cannot be left blank
-                                                </mat-error>
-                                            </mat-form-field>
+                                            </mat-autocomplete>
+                                            <mat-error *ngIf="registeredForm.get('SrvcName').hasError('required')">
+                                                Required field cannot be left blank
+                                            </mat-error>
+                                        </mat-form-field>
                                 
                                             <mat-form-field appearance="outline" #Price fxFlex="10%">
                                                 <mat-label>Price</mat-label>
@@ -641,5 +637,4 @@
         </div>
         <!-- Final bill calculation -->
     </div>
-</div>
-<!-- </div> -->
+</div> 
