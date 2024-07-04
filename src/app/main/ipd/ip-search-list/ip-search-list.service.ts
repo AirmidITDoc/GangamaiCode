@@ -833,6 +833,12 @@ public updateIPDDischargSummary(employee)
   public getAdvcanceDetails(query) {
     return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
   }
+  public getPreRefundofBill(query) {
+    return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
+  }
+  public getPreRefundofAdvance(query) {
+    return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
+  }
 
   // public xyz()
   // {

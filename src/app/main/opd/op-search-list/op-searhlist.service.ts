@@ -502,8 +502,7 @@ public prescriptionDetails(visistId) {
       {value: 'cheque', viewValue: 'Cheque'},
       {value: 'upi', viewValue: 'UPI'},
       {value: 'net banking', viewValue: 'Net Banking'},
-      {value: 'card', viewValue: 'Card'}
-     // {value: 'TDS', viewValue: 'TDS'},
+      {value: 'card', viewValue: 'Card'} 
     ];
   }
 }

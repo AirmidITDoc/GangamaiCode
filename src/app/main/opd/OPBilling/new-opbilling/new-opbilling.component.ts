@@ -104,7 +104,7 @@ export class NewOPBillingComponent implements OnInit {
   b_isRad = '';
   b_IsEditable = '';
   b_IsDocEditable = '';
-  b_CreditedtoDoctor = 0;
+  b_CreditedtoDoctor :any;
   v_ChargeDiscPer: any = 0;
   b_ChargeDisAmount: any = 0;
 
@@ -347,8 +347,7 @@ export class NewOPBillingComponent implements OnInit {
   }
 
   getSelectedObj(obj) {
-console.log(obj)
-debugger
+console.log(obj)  
     if (this.dataSource.data.length > 0) {
       this.dataSource.data.forEach((element) => {
         if (obj.ServiceId == element.ServiceId) {
@@ -368,8 +367,8 @@ debugger
       this.serviceId = obj.ServiceId;
       this.b_isPath = obj.IsPathology;
       this.b_isRad = obj.IsRadiology;
-      this.b_CreditedtoDoctor = obj.IsDocEditable;
-      if (this.b_CreditedtoDoctor) {
+      this.b_CreditedtoDoctor = obj.CreditedtoDoctor;
+      if (this.b_CreditedtoDoctor == true) {
         this.isDoctor = true;
         this.registeredForm.get('DoctorID').reset();
         this.registeredForm.get('DoctorID').setValidators([Validators.required]);
@@ -393,8 +392,8 @@ debugger
       this.serviceId = obj.ServiceId;
       this.b_isPath = obj.IsPathology;
       this.b_isRad = obj.IsRadiology;
-      this.b_CreditedtoDoctor = obj.IsDocEditable;
-      if (this.b_CreditedtoDoctor) {
+      this.b_CreditedtoDoctor = obj.CreditedtoDoctor;
+      if (this.b_CreditedtoDoctor == true) {
         this.isDoctor = true;
         this.registeredForm.get('DoctorID').reset();
         this.registeredForm.get('DoctorID').setValidators([Validators.required]);
@@ -461,6 +460,14 @@ TotalDiscAmt:any;
       });
       return;
     }
+    if ((this.BillingForm.get('concessionAmt').value > 0)) {
+      if(!this.BillingForm.get('ConcessionId').value){
+        this.toastr.warning('Please select Concession Reason', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      } 
+    }
     
     if ((this.dataSource.data.length < 0)) {
       this.toastr.warning('Please add service in table', 'Warning !', {
@@ -485,6 +492,14 @@ TotalDiscAmt:any;
         this.netPaybleAmt1 = this.TotalnetPaybleAmt;
       }
 
+      let ConcessionId = 0; 
+      if(this.BillingForm.get('ConcessionId').value)
+      ConcessionId = this.BillingForm.get('ConcessionId').value.ConcessionId; 
+
+      let ConcessionReason = '';
+      if(this.BillingForm.get('ConcessionId').value)
+      ConcessionReason = this.BillingForm.get('ConcessionId').value.ConcessionReason;
+
       this.isLoading = 'submit';
 
       let InsertBillUpdateBillNoObj = {};
@@ -500,7 +515,7 @@ TotalDiscAmt:any;
       InsertBillUpdateBillNoObj['AddedBy'] = this.accountService.currentUserValue.user.id,
       InsertBillUpdateBillNoObj['TotalAdvanceAmount'] = 0,
       InsertBillUpdateBillNoObj['BillTime'] =this.dateTimeObj.time,// this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-      InsertBillUpdateBillNoObj['ConcessionReasonId'] = this.BillingForm.get('ConcessionId').value.ConcessionId || 0;
+      InsertBillUpdateBillNoObj['ConcessionReasonId'] = ConcessionId || 0;
       InsertBillUpdateBillNoObj['IsSettled'] = 0;
       InsertBillUpdateBillNoObj['IsPrinted'] = 0;
       InsertBillUpdateBillNoObj['IsFree'] = 0;
@@ -513,7 +528,7 @@ TotalDiscAmt:any;
       InsertBillUpdateBillNoObj['TaxPer'] = 0;
       InsertBillUpdateBillNoObj['TaxAmount'] = 0;
       InsertBillUpdateBillNoObj['compDiscAmt'] = this.BillingForm.get('concessionAmt').value || 0;
-      InsertBillUpdateBillNoObj['discComments'] = this.BillingForm.get('ConcessionId').value.ConcessionReason || '';
+      InsertBillUpdateBillNoObj['discComments'] = ConcessionReason;
 
       let Billdetsarr = [];
       this.dataSource.data.forEach((element) => {
@@ -568,9 +583,10 @@ TotalDiscAmt:any;
 
       PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
       PatientHeaderObj['PatientName'] = this.PatientName;
-      PatientHeaderObj['UHIDNO'] = this.RegNo;
+      PatientHeaderObj['RegNo'] = this.RegNo;
       PatientHeaderObj['Doctorname'] = this.Doctorname;
-      PatientHeaderObj['PatientName'] = this.PatientName;
+      PatientHeaderObj['CompanyName'] = this.CompanyName;
+      PatientHeaderObj['DepartmentName'] = this.DepartmentName;
       PatientHeaderObj['OPD_IPD_Id'] = this.vOPDNo;
       PatientHeaderObj['NetPayAmount'] = this.BillingForm.get('FinalAmt').value;
 
@@ -1402,7 +1418,7 @@ finaldisc=0;
     this.registerObj = obj;
     this.PatientName = obj.FirstName + " " + obj.LastName;
     this.RegId = obj.RegId;
-    this.Doctorname = obj.Doctorname;
+    this.Doctorname = obj.DoctorName;
     this.VisitDate = this.datePipe.transform(obj.VisitDate, 'dd/MM/yyyy hh:mm a');
     this.CompanyName = obj.CompanyName;
     this.Tarrifname = obj.TariffName;
@@ -1417,7 +1433,7 @@ finaldisc=0;
     this.vClassName = obj.ClassName;
     this.AgeDay = obj.AgeDay;
     this.GenderName = obj.GenderName;
-    this.RefDocName = obj.RefDocName
+    this.RefDocName = obj.RefDoctorName
     this.BedName = obj.BedName;
     this.PatientType = obj.PatientType;
   }
