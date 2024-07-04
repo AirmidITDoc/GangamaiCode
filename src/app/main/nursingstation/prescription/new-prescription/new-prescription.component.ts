@@ -448,7 +448,7 @@ export class NewPrescriptionComponent implements OnInit {
         ItemName: this.ItemForm.get('ItemId').value.ItemName || '',
         DoseName: this.ItemForm.get('DoseId').value.DoseName || '',
         DoseId: this.ItemForm.get('DoseId').value.DoseId || '',
-        Day: this.vDay,
+        Days: this.vDay,
         Instruction: this.vInstruction || '' 
       });
     this.dsItemList.data = this.Chargelist

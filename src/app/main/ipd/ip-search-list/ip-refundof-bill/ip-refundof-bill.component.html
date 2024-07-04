@@ -142,68 +142,7 @@
                                                     <span class="patient-col-value" style="color: orange;">{{selectedAdvanceObj.CompanyName}}</span>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <!-- <div class="patient-info-box my-8">
-                                                                    <div class="patient-info-row row-gap-4" fxLayout="row wrap">
-                                                                       
-                                                                        <div class="patient-col gap-1" fxFlex="30%">
-                                                                            <span class="patient-col-key " >UHID </span>
-                                                                            <span>:</span>
-                                                                            <span class="patient-col-value">{{selectedAdvanceObj.RegNo}}</span>
-                                                                        </div>
-                                                                        <div class="patient-col gap-1" fxFlex="30%">
-                                                                            <span class="patient-col-key" >DOA /Time</span>
-                                                                            <span>:</span>
-                                                                            <span class="patient-col-value">{{selectedAdvanceObj.DOA}}</span>
-                                                                        </div>
-                                                                        <div class="patient-col gap-1" fxFlex="30%">
-                                                                            <span class="patient-col-key" >IPDNo</span>
-                                                                            <span>:</span>
-                                                                            <span class="patient-col-value">{{selectedAdvanceObj.IPDNo}}</span>
-                                                                        </div>
-                                                                        <div class="patient-col gap-1" fxFlex="30%">
-                                                                            <span class="patient-col-key" >Patient Name</span>
-                                                                            <span>:</span>
-                                                                            <span class="patient-col-value">{{selectedAdvanceObj.PatientName}}</span>
-                                                                        </div>
-                                                                        <div class="patient-col gap-1" fxFlex="30%">
-                                                                            <span class="patient-col-key " >Age /Sex</span>
-                                                                            <span>:</span>
-                                                                            <span class="patient-col-value">{{selectedAdvanceObj.AgeYear}}Y|{{selectedAdvanceObj.AgeMonth}}M|{{selectedAdvanceObj.AgeDay}} D | {{selectedAdvanceObj.GenderName}}</span>
-                                                                        </div>
-                                                                        <div class="patient-col gap-1" fxFlex="30%">
-                                                                            <span class="patient-col-key" >Doctor Name</span>
-                                                                            <span>:</span>
-                                                                            <span class="patient-col-value">{{selectedAdvanceObj.Doctorname}}</span>
-                                                                        </div>
-                                                                        <div class="patient-col gap-1" fxFlex="30%">
-                                                                            <span class="patient-col-key"  >Ward Name | Bed</span>
-                                                                            <span>:</span>
-                                                                            <span class="patient-col-value">{{selectedAdvanceObj.RoomName}} | {{selectedAdvanceObj.BedName}}</span>
-                                                                        </div>
-                                                                        <div class="patient-col gap-1" fxFlex="30%">
-                                                                            <span class="patient-col-key"  > Department Name</span>
-                                                                            <span>:</span>
-                                                                            <span class="patient-col-value">{{selectedAdvanceObj.DepartmentName}}</span>
-                                                                        </div>
-                                                                       
-                                                                        <div class="patient-col gap-1" fxFlex="30%">
-                                                                            <span class="patient-col-key">Patient Type</span>
-                                                                            <span>:</span>
-                                                                            <span class="patient-col-value">{{selectedAdvanceObj.PatientType}}-{{selectedAdvanceObj.TariffName}}</span>
-                                                                        </div>
-                                                                        <div class="patient-col gap-1" fxFlex="30%">
-                                                                            <span class="patient-col-key">Ref Dr.Name</span>
-                                                                            <span>:</span>
-                                                                            <span class="patient-col-value">{{selectedAdvanceObj.RefDocName}}</span>
-                                                                        </div>
-                                                                        <div class="patient-col gap-1" fxFlex="30%">
-                                                                            <span class="patient-col-key">Company</span>
-                                                                            <span>:</span>
-                                                                            <span class="patient-col-value" style="color: orange;">{{selectedAdvanceObj.CompanyName}}</span>
-                                                                        </div>
-                                                                    </div>
-                                                                </div> -->
+                                        </div> 
                                     </div>
                                 </div>
                             </mat-card>
@@ -214,7 +153,7 @@
                         <div fxFlex.gt-md="70%" fxFlex.md="50%" fxFlex.lt-md="100%">
                             <mat-card>
                                 <mat-table matSort [dataSource]="dataSource3" [@animateStagger]="{value:'50'}"
-                                    class="h-200">
+                                    class="h-180">
 
                                     <ng-container matColumnDef="BillNo">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
@@ -264,7 +203,7 @@
                                     <mat-header-row class="accent min-width-600" *matHeaderRowDef="displayedColumns; sticky: true">
                                     </mat-header-row>
                                     <mat-row *matRowDef="let row; columns: displayedColumns;" class="element min-width-600"
-                                     (click)="getServiceList(element)"   [@animate]="{value:'*',params:{y:'100%'}}" >
+                                     (click)="OnEdit(row)"   [@animate]="{value:'*',params:{y:'100%'}}" >
                                     </mat-row>
                                     <mat-footer-row *matFooterRowDef="['loading']"
                                         [ngClass]="{'hide':dataSource3!=null}"></mat-footer-row>
@@ -287,7 +226,7 @@
                         <div fxFlex.gt-md="30%" fxFlex.md="50%" fxFlex.lt-md="100%">
                             <mat-card fxLayout="column" fxLayoutAlign="space-between">
                                 <mat-table class="table1" matSort [dataSource]="dataSource1"
-                                    [@animateStagger]="{value:'50'}" class="h-200">
+                                    [@animateStagger]="{value:'50'}" class="h-180">
 
                                     <ng-container matColumnDef="RefundDate">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
@@ -425,7 +364,7 @@
                                     Services
                                 </ng-template> -->
                                 <div style="width: 100%;">
-                                    <mat-table class="table h-220" matSort [dataSource]="dataSource2"
+                                    <mat-table class="table h-200" matSort [dataSource]="dataSource2"
                                         [@animateStagger]="{value:'50'}">
 
                                        
@@ -476,15 +415,7 @@
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                 <span> {{element.ChargesDocName}} </span>
                                             </mat-cell>
-                                        </ng-container>
-
-                                        <!-- <ng-container matColumnDef="RefundAmount">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                RefundAmount </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                <span> {{element.RefundAmount | currency:'INR'}} </span>
-                                            </mat-cell>
-                                        </ng-container>  -->
+                                        </ng-container> 
 
                                          <ng-container matColumnDef="RefundAmount">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>RefundAmt
@@ -503,6 +434,14 @@
                                                 BalanceAmount </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                 <span> {{element.BalanceAmount}} </span>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="PreviousRefundAmt">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                PreviousRefundAmt </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <span> {{element.PreviousRefundAmt}} </span>
                                             </mat-cell>
                                         </ng-container>
 
@@ -532,7 +471,7 @@
                                             [ngClass]="{'hide':dataSource2!=null}">
                                         </mat-footer-row>
                                         <mat-footer-row *matFooterRowDef="['noData']"
-                                            [ngClass]="{'hide':!(dataSource2!=null && dataSource.data.length==0)}">
+                                            [ngClass]="{'hide':!(dataSource2!=null && dataSource2.data.length==0)}">
                                         </mat-footer-row>
 
                                     </mat-table>

@@ -233,7 +233,7 @@ export class OPSearhlistService {
 
   // Get billing Service List 
   public getBillingServiceList(employee) {
-    return this._httpClient.post("Generic/GetByProc?procName=RetrieveServices", employee)
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ServicesList]", employee)
   }
 
    // Get CashCounter List 
@@ -502,8 +502,7 @@ public prescriptionDetails(visistId) {
       {value: 'cheque', viewValue: 'Cheque'},
       {value: 'upi', viewValue: 'UPI'},
       {value: 'net banking', viewValue: 'Net Banking'},
-      {value: 'card', viewValue: 'Card'}
-     // {value: 'TDS', viewValue: 'TDS'},
+      {value: 'card', viewValue: 'Card'} 
     ];
   }
 }

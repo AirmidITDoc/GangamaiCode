@@ -217,7 +217,7 @@
                         <div fxFlex.gt-md="70%" fxFlex.md="50%" fxFlex.lt-md="100%">
                             <mat-card class="h-100-p">
                                 <mat-table matSort class="table1" [dataSource]="dsrefundlist"
-                                    [@animateStagger]="{value:'50'}" class="h-230">
+                                    [@animateStagger]="{value:'50'}" class="h-200">
 
                                     <ng-container matColumnDef="Date">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Date
@@ -270,8 +270,7 @@
                                                     (keypress)="keyPressCharater($event)">
                                             </mat-form-field>
                                         </mat-cell>
-                                    </ng-container>
-
+                                    </ng-container> 
 
                                     <ng-container matColumnDef="AdvanceId">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
@@ -279,9 +278,7 @@
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                             <span> {{element.AdvanceId}}</span>
                                         </mat-cell>
-                                    </ng-container>
-
-
+                                    </ng-container> 
 
                                     <ng-container matColumnDef="loading">
                                         <mat-footer-cell *matFooterCellDef colspan="6">
@@ -310,22 +307,21 @@
                                         [ngClass]="{'hide':!(dsrefundlist!=null && dsrefundlist.data.length==0)}">
                                     </mat-footer-row>
                                 </mat-table>
-
-                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
-                                    showFirstLastButtons></mat-paginator>
-                                    <span class="net-amt-label" style="font-weight:bold;">Total Refund Amt:
-                                        :
-                                        <span class="net-amt-value" style="font-weight:bold;margin-left: 600px;color: blue;">{{getRefundSum(dsrefundlist.data) |
-                                            currency:'INR' }}</span></span>&nbsp;
-                               
-
+                                <div class="net-amt">
+                                    <!-- <span class="net-amt-label" style="font-weight:bold;">Total Refund Amt
+                                        :</span>&nbsp; -->
+                                    <span class="net-amt-label">Total Advance Amt:</span>&nbsp;
+                                    <span class="net-amt-value"
+                                        style="font-weight:bold;color: blue;">{{getRefundSum(dsrefundlist.data) |
+                                        currency:'INR' }}</span> 
+                                </div> 
                             </mat-card>
                         </div>
 
                         <div fxFlex.gt-md="30%" fxFlex.md="50%" fxFlex.lt-md="100%">
                             <mat-card class="h-100-p" fxLayout="column" fxLayoutAlign="space-between">
                                 <mat-table matSort [dataSource]="dataSource1" [@animateStagger]="{value:'50'}"
-                                    class="h-230">
+                                    class="h-200">
 
                                     <ng-container matColumnDef="RefundDate">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Date
@@ -373,14 +369,12 @@
                                     </mat-footer-row>
                                 </mat-table>
                                 <div class="net-amt">
-                                    <span class="net-amt-label" style="font-weight:bold;">Total Refund Amt:
-                                        :</span>&nbsp;
-                                    <!-- <span class="net-amt-label">Total Refund Amt:</span>&nbsp; -->
+                                    <!-- <span class="net-amt-label" style="font-weight:bold;">Total Refund Amt
+                                        :</span>&nbsp; -->
+                                    <span class="net-amt-label">Total Refund Amt:</span>&nbsp;
                                     <span class="net-amt-value"
                                         style="font-weight:bold;color: blue;">{{getRefundtotSum1(dataSource1.data) |
-                                        currency:'INR' }}</span>
-
-
+                                        currency:'INR' }}</span> 
                                 </div>
                             </mat-card>
                         </div>

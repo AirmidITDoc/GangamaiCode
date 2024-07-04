@@ -173,20 +173,18 @@ export class IPRefundofAdvanceComponent implements OnInit {
   getRefundtotSum1(element) {
     let netAmt1;
     netAmt1 = element.reduce((sum, { RefundAmount }) => sum += +(RefundAmount || 0), 0);
-    return netAmt1;
     this.TotRefundAmount = netAmt1;
-    console.log(this.TotRefundAmount);
+    return netAmt1; 
   }
 
   getRefundSum(element) {
     let netAmt1;
-    netAmt1 = element.reduce((sum, { RefundAmt }) => sum += +(RefundAmt || 0), 0);
+    netAmt1 = element.reduce((sum, { AdvanceAmount }) => sum += +(AdvanceAmount || 0), 0);
+    let netAmt2 = element.reduce((sum, { RefundAmt }) => sum += +(RefundAmt || 0), 0);
     let balAmt = element.reduce((sum, { BalanceAmount }) => sum += +(BalanceAmount || 0), 0);
-    this.NewRefundAmount = netAmt1;
+    this.NewRefundAmount = netAmt2;
     this.BalanceAdvance = balAmt ;
-    return netAmt1;
-    this.NewRefundAmount = netAmt1;
-    console.log(this.NewRefundAmount);
+    return netAmt1; 
   }
 
 
@@ -263,7 +261,6 @@ export class IPRefundofAdvanceComponent implements OnInit {
       this.isLoadingStr = this.dsrefundlist.data.length == 0 ? 'no-data' : '';
     });
   }
-
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp)) {
@@ -284,8 +281,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
   }
 
   RefundAmt: any;
-  getCellCalculation(element, RefundAmt) {
-     
+  getCellCalculation(element, RefundAmt) { 
 
       if(RefundAmt > 0 && RefundAmt <= element.NetBallAmt){
         element.BalanceAmount = ((element.NetBallAmt) - (RefundAmt));
@@ -318,7 +314,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
     this.BalanceAdvance = this.BalanceAmount - this.NewRefundAmount;
 
   }
-
+ 
   onEdit(row) {
 
     console.log(row);
@@ -326,30 +322,35 @@ export class IPRefundofAdvanceComponent implements OnInit {
     this.BalanceAdvance = 0;
     this.RefundAmount = 0;
     this.UsedAmount = row.UsedAmount;
-    this.NewRefundAmount = 0;
+    //this.NewRefundAmount = 0;
     console.log(row);
+    let Query = "select Date,RefundAmount from AdvanceDetail where AdvanceDetailID=" + row.AdvanceDetailID
+    
+    this._IpSearchListService.getPreRefundofAdvance(Query).subscribe(Visit => {
+      this.dataSource1.data =  Visit as IPRefundofAdvance[]; 
+    }); 
+   
+    // if (row.BalanceAmount == 0) {
+    //   this.icon_disable = true;
+    // }
+    // else {
+    //   this.icon_disable = false;
+    //   var m_data = { "AdvanceDetailID": row.AdvanceDetailID, "BalanceAmount": row.BalanceAmount, "AdvanceId": row.AdvanceId }
+      
 
-    if (row.BalanceAmount == 0) {
-      this.icon_disable = true;
-    }
-    else {
-      this.icon_disable = false;
-      var m_data = { "AdvanceDetailID": row.AdvanceDetailID, "BalanceAmount": row.BalanceAmount, "AdvanceId": row.AdvanceId }
+    //   console.log(m_data);
+    //   this.advId = row.AdvanceId;
+    //   this.advDetailId = row.AdvanceDetailID;
+    // }
+
+    // this.BalanceAmount = row.BalanceAmount;
+    // this.BalanceAdvance = parseInt(row.BalanceAmount) - parseInt(row.RefundAmount);
+    // this.RefundAmount = row.RefundAmount;
 
 
-      console.log(m_data);
-      this.advId = row.AdvanceId;
-      this.advDetailId = row.AdvanceDetailID;
-    }
-
-    this.BalanceAmount = row.BalanceAmount;
-    this.BalanceAdvance = parseInt(row.BalanceAmount) - parseInt(row.RefundAmount);
-    this.RefundAmount = row.RefundAmount;
-
-
-    if (this.UsedAmount != 0) {
-      this.BalanceAdvance = parseInt(row.RefundAmount) - parseInt(row.UsedAmount);
-    }
+    // if (this.UsedAmount != 0) {
+    //   this.BalanceAdvance = parseInt(row.RefundAmount) - parseInt(row.UsedAmount);
+    // }
 
   }
   onSave() {

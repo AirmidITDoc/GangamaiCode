@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { OPSearhlistService } from '../op-searhlist.service';
@@ -10,11 +10,14 @@ import { map, startWith } from 'rxjs/operators';
 import { SnackBarService } from 'app/main/shared/services/snack-bar.service';
 import { DatePipe } from '@angular/common';
 import { MatTableDataSource } from '@angular/material/table';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
   selector: 'app-op-payment-vimal',
   templateUrl: './op-payment-vimal.component.html',
-  styleUrls: ['./op-payment-vimal.component.scss']
+  styleUrls: ['./op-payment-vimal.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations
 })
 export class OpPaymentVimalComponent implements OnInit {
 
@@ -41,14 +44,6 @@ export class OpPaymentVimalComponent implements OnInit {
       this.patientDetailsFormGrp.get('bankName1').clearValidators();
       this.patientDetailsFormGrp.get('bankName1').updateValueAndValidity();
     }
-    // else if(this.selectedPaymnet1 == 'TDS'){
-    //   this.patientDetailsFormGrp.get('referenceNo1').clearValidators();
-    //   this.patientDetailsFormGrp.get('referenceNo1').updateValueAndValidity();
-    //   this.patientDetailsFormGrp.get('regDate1').clearValidators();
-    //   this.patientDetailsFormGrp.get('regDate1').updateValueAndValidity();
-    //   this.patientDetailsFormGrp.get('bankName1').clearValidators();
-    //   this.patientDetailsFormGrp.get('bankName1').updateValueAndValidity();
-    // }
     else {
       this.patientDetailsFormGrp.get('referenceNo1').setValidators([Validators.required]);
       this.patientDetailsFormGrp.get('regDate1').setValidators([Validators.required]);
@@ -89,7 +84,7 @@ export class OpPaymentVimalComponent implements OnInit {
   IsAllowAdd() {
     return this.netPayAmt > ((this.paidAmt || 0) + Number(this.amount1));
   }
-  GetBalanceAmt() {
+  GetBalanceAmt() { 
     this.balanceAmt = Number(this.netPayAmt || 0) - (Number(this.paidAmt || 0) + Number(this.amount1 || 0));
   }
   onAddPayment() {
@@ -109,13 +104,13 @@ export class OpPaymentVimalComponent implements OnInit {
     });
     this.Payments.data = tmp;
     this.paidAmt = this.Payments.data.reduce(function (a, b) { return a + Number(b['Amount']); }, 0);
-    this.balanceAmt = this.netPayAmt - this.paidAmt;
+    this.balanceAmt = this.netPayAmt - this.paidAmt; 
     // this.patientDetailsFormGrp.reset();
     // this.patientDetailsFormGrp.get('paidAmountController').setValue(this.paidAmt);
-    // this.patientDetailsFormGrp.get('balanceAmountController').setValue(this.balanceAmt);
+    this.patientDetailsFormGrp.get('balanceAmountController').setValue(this.balanceAmt);
     this.patientDetailsFormGrp.get("referenceNo1").setValue('');
     this.patientDetailsFormGrp.get("bankName1").setValue(null);
-    this.patientDetailsFormGrp.get("regDate1").setValue(null);
+    //this.patientDetailsFormGrp.get("regDate1").setValue(null);
     this.patientDetailsFormGrp.get("amount1").setValue(this.balanceAmt);
     this.patientDetailsFormGrp.get("paymentType1").setValue(null);
     this.BindPaymentTypes();
@@ -165,6 +160,7 @@ export class OpPaymentVimalComponent implements OnInit {
 
     if (data) {
       this.advanceData = this.data.vPatientHeaderObj;
+      console.log(this.advanceData)
     }
     if (this.data.FromName == "Advance") {
 
@@ -183,8 +179,9 @@ export class OpPaymentVimalComponent implements OnInit {
       this.Date = this.advanceData.Date;
       this.Age = this.advanceData.Age;
       this.OPD_IPD_Id = this.advanceData.OPD_IPD_Id;
-      this.TariffName = this.advanceData.TariffName;
+      this.DepartmentName = this.advanceData.DepartmentName;
       this.Paymentobj['TransactionType'] = 0;
+      this.selectedPaymnet1 = 'cash';
     }
 
     if (this.data.FromName == "OP_SETTLEMENT") {
@@ -310,7 +307,15 @@ export class OpPaymentVimalComponent implements OnInit {
     // this.Paymentobj["CardPayAmount"] = this.Payments.data.find(x => x.PaymentType == "card")?.Amount ?? 0;
     // console.log(JSON.stringify(this.Paymentobj));
 
-
+if(this.balanceAmt !=0 ){
+  Swal.fire('Please select payment mode, Balance Amount is'+ this.balanceAmt)
+  return
+}
+if(this.amount1 !=0 ){
+  let balamt = this.netPayAmt - this.paidAmt
+  Swal.fire('Please pay remaing amount, Balance Amount is' + balamt)
+  return
+}
 
 
     this.Paymentobj['BillNo'] = this.data.billNo;

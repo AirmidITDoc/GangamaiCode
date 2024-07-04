@@ -213,11 +213,12 @@
                                                     <button class="btn btn-primary"
                                                         [ngClass]="{'btn-disabled': ((netPayAmt-paidAmt) < amount1)}"
                                                         (click)="onAddPayment()">
-                                                        <!-- <mat-icon > add </mat-icon> -->
+                                                        <!-- <mat-icon > add </mat-icon> --> 
                                                         +
                                                     </button>
                                                 </div>
                                             </div>
+                                            
                                         </div>
                                         <mat-table class="sales-table" #table matSort *ngIf="Payments.data.length>0"
                                             [dataSource]="Payments" [@animateStagger]="{value:'50'}"
@@ -242,7 +243,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Bank
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.BankName}}
+                                                    {{contact.BankName ? contact.BankName:'--' }}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -251,7 +252,7 @@
                                                     class="w-200">Ref
                                                 </mat-header-cell>
                                                 <mat-cell class="w-200" *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.RefNo}}
+                                                    {{contact.RefNo ? contact.RefNo:'--' }}
                                                 </mat-cell>
                                             </ng-container>
 
