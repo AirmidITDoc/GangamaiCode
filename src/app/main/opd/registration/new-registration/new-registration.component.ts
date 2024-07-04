@@ -147,7 +147,7 @@ export class NewRegistrationComponent implements OnInit {
       debugger
         console.log(this.data.registerObj)
         this.registerObj = this.data.registerObj;
-        this.registerObj.PrefixID=this.registerObj.PrefixId;
+        this.registerObj.PrefixID=this.registerObj.PrefixID;
       
         this.RegID=this.registerObj.RegID;
         this.AdmissionID=this.registerObj.AdmissionID;

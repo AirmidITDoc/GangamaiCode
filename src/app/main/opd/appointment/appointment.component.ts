@@ -357,8 +357,8 @@ export class AppointmentComponent implements OnInit {
     if (this._ActRoute.url == "/opd/appointment") {
 
       // this.menuActions.push("Update Registration");
-      this.menuActions.push("Update Consultant Doctor");
-      this.menuActions.push("Update Referred Doctor");
+      // this.menuActions.push("Update Consultant Doctor");
+      // this.menuActions.push("Update Referred Doctor");
     }
 
     // this.getVisitList();
@@ -429,8 +429,9 @@ export class AppointmentComponent implements OnInit {
 
       });
     dialogRef.afterClosed().subscribe(result => {
-      this.getVisitList();
+      this.getVisitList1();
     });
+   
   }
 
 
@@ -1800,8 +1801,6 @@ export class AppointmentComponent implements OnInit {
 
   onSave() {
     
-   
-
     let DoctorID = this.VisitFormGroup.get('DoctorID').value.DoctorId
 
     if (DoctorID == undefined) {

@@ -281,6 +281,7 @@ export class NewCasepaperComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     public _matDialog: MatDialog,
     public toastr: ToastrService,
+    private _loggedService: AuthenticationService,
     public datePipe: DatePipe,
   ) {
     if (this.advanceDataStored.storage) {
@@ -566,13 +567,7 @@ export class NewCasepaperComponent implements OnInit {
         }
       });
     }
-    // if (inputItem == 'historyInput') {
-    //   this.historyInput.nativeElement.value = '';
-    // }
-    //  else if (inputItem == 'diagnosisInput') {
-    //   this.diagnosisInput.nativeElement.value = '';
-    // }
-    // inputItem.nativeElement.value = '';
+  
     this.caseFormGroup.get(controller).setValue(null);
   }
 
@@ -682,7 +677,6 @@ export class NewCasepaperComponent implements OnInit {
       PastHistoryDescr: '',
       ComplaintName: '',
       Examination: '',
-
       BP: '',
       SpO2: '',
       ConsultantDocName: '',
@@ -698,7 +692,7 @@ export class NewCasepaperComponent implements OnInit {
       PastHistory: '',
       PatientName: '',
       PersonalDetails: '',
-      Pluse: '',
+      Pulse: '',
       PresentHistory: '',
       RegID: '0',
       SecondDocRef: '0',
@@ -1070,67 +1064,47 @@ export class NewCasepaperComponent implements OnInit {
     if (this.prescriptionData.length == 0) {
       Swal.fire('Error !', 'Please add before save', 'error');
     }
-    // debugger;
-    let insertOpCasePaper = {};
-    insertOpCasePaper['visitId'] = this.vOPIPId || 0;
-    insertOpCasePaper['height'] = this.caseFormGroup.get("Height").value || 0;
-    insertOpCasePaper['weight'] = this.caseFormGroup.get("Weight").value || 0;
-    insertOpCasePaper['pluse'] = this.caseFormGroup.get("Pluse").value || 0;
-    insertOpCasePaper['bp'] = this.caseFormGroup.get("BP").value || 0;
-    // insertOpCasePaper['pastHistory'] = this.historySelected.join(',');
-    insertOpCasePaper['pastHistory'] = '',// this.historySelected.join(',');
-      insertOpCasePaper['presentHistory'] = '';
-    insertOpCasePaper['complaint'] = '',//this.diagnosisSelected.join(',');
-      insertOpCasePaper['finding'] = '';
-    // insertOpCasePaper['diagnosis'] = this.diagnosisSelected.join(',');
-    insertOpCasePaper['diagnosis'] = '',//this.diagnosisSelected.join(',');
-      insertOpCasePaper['investigations'] = '',// this.caseFormGroup.get('Examination').value.ExaminationDescr || '',
-      insertOpCasePaper['bsl'] = this.caseFormGroup.get("BSL").value || 0;
-    insertOpCasePaper['spO2'] = this.caseFormGroup.get("SpO2").value || 0;
-    insertOpCasePaper['personalDetails'] = '';
-    insertOpCasePaper['casePaperID'] = 0;
-
-    // let insertOPPrescription = [];
-    // // this.prescriptionData.length > 1 ? 
-    // debugger;
-    // this.prescriptionData.splice(this.prescriptionData.length - 1, 0);
-    // this.prescriptionData.forEach((element: any, index) => {
-    //   let obj = {};
-    //   obj['opD_IPD_IP'] = this.selectedAdvanceObj.AdmissionID,
-    //   obj['opD_IPD_Type'] = this.selectedAdvanceObj.opD_IPD_Type,
-    //   obj['date'] = this.dateTimeObj.date;
-    //   obj['pTime'] = this.dateTimeObj.date;//this.dateTimeObj.times;
-    //   obj['classID'] = this.selectedAdvanceObj.ClassId || 0,
-    //   obj['genericId'] = 0;
-    //   obj['drugId'] = 12,//this.caseFormGroup.get(`drugController${index}`).value || 0; //element.drugName.ItemID;
-    //   obj['doseId'] = element && element.doseName ? element.doseName.DoseId : 0;
-    //   obj['days'] = parseInt(element.days1) || 0;
-    //   obj['instructionId'] = 0;
-    //   obj['qtyPerDay'] = 0;
-    //   obj['totalQty'] = 0;
-    //   obj['instruction'] = element.instruction;
-    //   obj['remark'] = this.caseFormGroup.get('remarkController').value || '';
-    //   obj['isEnglishOrIsMarathi'] = true;
-    //   obj['pWeight'] = this.caseFormGroup.get("Weight").value || 0;
-    //   obj['pulse'] = this.caseFormGroup.get("Pluse").value || 0;
-    //   obj['bp'] = this.caseFormGroup.get("BP").value || 0;
-    //   obj['bsl'] = this.caseFormGroup.get("BSL").value || 0;
-    //   obj['chiefComplaint'] ='',// this.caseFormGroup.get('ChiefComplaint').value || '';
-    //   obj['isAddBy'] = this.accountService.currentUserValue.user.id,
-    //     obj['spO2'] = this.caseFormGroup.get("SPO2").value || 0;
-    //   obj['storeId'] = 0;
-    //   obj['doseOption2'] = element.doseName ? element.doseName.DoseId : 0;
-    //   obj['daysOption2'] = element.days1 ? element.days1 : 0;
-    //   obj['doseOption3'] = 0,//element.doseNameOptional3 ? element.doseNameOptional3.DoseId : 0;
-    //     obj['daysOption3'] = 0,// element.days3 ? element.days3 : 0;
-    //     insertOPPrescription.push(obj);
-    // });
-
-    // console.log(insertOPPrescription);
+    debugger;
+   let insertOPDPrescriptionarray=[];
+    this.dsItemList.data.forEach(element => {
+      let insertOPDPrescription = {};
+    insertOPDPrescription['ipMedID'] = 0;
+    insertOPDPrescription['opD_IPD_IP'] = this.vOPIPId;
+    insertOPDPrescription['opD_IPD_Type'] = 1;
+    insertOPDPrescription['date'] ="2024-07-04T07:22:26.673Z";// this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+    insertOPDPrescription['pTime'] = "2024-07-04T07:22:26.673Z";//this.dateTimeObj.time;
+    insertOPDPrescription['classID'] = this.vClassId;
+    insertOPDPrescription['genericId'] = 1;
+    insertOPDPrescription['drugId'] = element.ItemID;
+    insertOPDPrescription['doseId'] =  element.DoseId || 0;
+    insertOPDPrescription['days'] = element.Days || 0;
+    insertOPDPrescription['qtyPerDay'] =0,// element.Qty || 0
+    insertOPDPrescription['totalQty'] = 0,//element.Qty || 0;
+    insertOPDPrescription['instructionId'] =1,// element.Instruction || '';
+    insertOPDPrescription['qtyPerDay'] = 0;
+    insertOPDPrescription['totalQty'] = 0;
+    insertOPDPrescription['instruction'] =  element.Instruction || 1;
+    insertOPDPrescription['remark'] = element.Instruction ;// this.myForm.get('WardName').value.RoomId || 0;
+    insertOPDPrescription['isEnglishOrIsMarathi'] = 1 || '';
+    insertOPDPrescription['pWeight'] =  this.caseFormGroup.get('Weight').value || 0;
+    insertOPDPrescription['pulse'] = this.caseFormGroup.get('Pulse').value || 0;
+    insertOPDPrescription['bp'] =  this.caseFormGroup.get('BP').value || 0;
+    insertOPDPrescription['bsl'] = this.caseFormGroup.get('BSL').value || 0;
+    insertOPDPrescription['chiefComplaint'] = '',//this.myForm.get('WardName').value.RoomId || 0;
+    insertOPDPrescription['isAddBy'] = this._loggedService.currentUserValue.user.id;
+    insertOPDPrescription['spO2'] =this.caseFormGroup.get('SpO2').value || 0;
+    insertOPDPrescription['storeId'] = 1;
+    insertOPDPrescription['doseOption2'] = element.DoseId1;
+    insertOPDPrescription['daysOption2'] = parseInt(element.Day1.toString());
+    insertOPDPrescription['doseOption3'] =  element.DoseId2;
+    insertOPDPrescription['daysOption3'] =  parseInt(element.Day2.toString());
+   
+    insertOPDPrescriptionarray.push(insertOPDPrescription);
+   
+    });
+    
     let casePaperSaveObj = {};
-    casePaperSaveObj['insertOpCasePaper'] = insertOpCasePaper;
-    // casePaperSaveObj['insertOPPrescription'] = insertOPPrescription;
-
+    casePaperSaveObj['insertOPDPrescription'] = insertOPDPrescriptionarray;
     console.log(casePaperSaveObj);
 
     this._CasepaperService.onSaveCasepaper(casePaperSaveObj).subscribe(response => {
@@ -1139,19 +1113,15 @@ export class NewCasepaperComponent implements OnInit {
         Swal.fire('Congratulations !', 'Casepaper save Successfully !', 'success').then((result) => {
           if (result.isConfirmed) {
 
-            //  this.getChargesList();
-            //  let m=response;
             this.viewgetIpprescriptionReportPdf(this.vOPIPId);
-            // this._matDialog.closeAll();
-            //  this.addEmptyRow();
-            //  console.log(this.getPrint(m));
+           
           }
         });
       } else {
         Swal.fire('Error !', 'Casepaper not saved', 'error');
       }
 
-      //this.isLoading = '';
+      
     });
 
 
@@ -1449,10 +1419,13 @@ export class NewCasepaperComponent implements OnInit {
         {
           ItemID: this.MedicineItemForm.get('ItemId').value.ItemId || 0,
           ItemName: this.MedicineItemForm.get('ItemId').value.ItemName || '',
+          DoseId:this.MedicineItemForm.get('DoseId').value.DoseId || 0,
           DoseName: this.MedicineItemForm.get('DoseId').value.DoseName || '',
           Day: this.vDay,
+          DoseId1:this.MedicineItemForm.get('DoseId').value.DoseId || 0,
           DoseName1: this.MedicineItemForm.get('DoseId').value.DoseName || '',
           Day1:this.Day1,
+          DoseId2:this.MedicineItemForm.get('DoseId').value.DoseId || 0,
           DoseName2: this.MedicineItemForm.get('DoseId').value.DoseName || '',
           Day2:this.Day1,
           Instruction: this.vInstruction || ''

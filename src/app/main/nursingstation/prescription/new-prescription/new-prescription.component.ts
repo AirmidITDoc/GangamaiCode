@@ -582,7 +582,7 @@ export class NewPrescriptionComponent implements OnInit {
       insertIP_Prescription['genericId'] = 1;
       insertIP_Prescription['drugId'] = element.ItemID;
       insertIP_Prescription['doseId'] =  element.DoseId || 0;
-      insertIP_Prescription['days'] = element.Day || 0;
+      insertIP_Prescription['days'] = element.Days || 0;
       insertIP_Prescription['qtyPerDay'] =0,// element.Qty || 0
       insertIP_Prescription['totalQty'] = 0,//element.Qty || 0;
       insertIP_Prescription['remark'] = element.Instruction || '';

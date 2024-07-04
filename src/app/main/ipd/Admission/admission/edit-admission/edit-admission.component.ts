@@ -156,12 +156,6 @@ export class EditAdmissionComponent implements OnInit {
   
   @Inject(MAT_DIALOG_DATA) public data: any;
 
-
-
- 
-  
-
-
   constructor(public _AdmissionService: AdmissionService,
     public _registrationService: RegistrationService,
     public _matDialog: MatDialog,
@@ -435,8 +429,8 @@ debugger
 
 
      
-    const toSelect8 = this.DoctorList.find(c => c.DoctorId == this.registerObj1.DocNameID);
-    this.hospitalFormGroup.get('DoctorId').setValue(toSelect8);
+    // const toSelect8 = this.DoctorList.find(c => c.DoctorId == this.registerObj1.DocNameID);
+    // this.hospitalFormGroup.get('DoctorId').setValue(toSelect8);
 
     
     this.OnChangeDoctorList(this.registerObj1)
@@ -518,9 +512,7 @@ debugger
   
 
   getDepartmentList() {
-
-    
-    this._AdmissionService.getDepartmentCombo().subscribe(data => {
+  this._AdmissionService.getDepartmentCombo().subscribe(data => {
       this.DepartmentList = data;
       if (this.registerObj1) {
         const ddValue = this.DepartmentList.filter(c => c.Departmentid == this.registerObj1.DepartmentId);
@@ -724,13 +716,7 @@ getTariffCombo(){
 
   OnChangeDoctorList(departmentObj) {
     debugger
-    // if(this.registerObj1.DepartmentId){
-    //   departmentObj.Departmentid=this.registerObj1.DepartmentId
- 
-    //   const toSelect8 = this.DoctorList.find(c => c.DoctorId == this.registerObj1.DocNameID);
-    //   this.hospitalFormGroup.get('DoctorId').setValue(toSelect8);
-  
-    // }
+   
     this.hospitalFormGroup.get('DoctorId').reset();
 
     this.isDepartmentSelected = true;

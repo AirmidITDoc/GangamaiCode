@@ -589,6 +589,7 @@ export class InterimBillComponent implements OnInit {
 
   getWhatsappshareIPInterimBill(el, vmono) {
     debugger
+    if(vmono !='' && vmono !="0"){
     var m_data = {
       "insertWhatsappsmsInfo": {
         "mobileNumber": vmono || 0,
@@ -617,7 +618,7 @@ export class InterimBillComponent implements OnInit {
       }
     });
   }
-
+  }
  ////////////////// paymentoption
   // onSavepay() {
 

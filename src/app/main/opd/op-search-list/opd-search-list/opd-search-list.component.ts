@@ -81,14 +81,14 @@ export class OpdSearchListComponent implements OnInit {
 
     
     if (this._ActRoute.url == '/opd/appointment') {
-      // this.menuActions.push('One');
+      
       this.menuActions.push('New Appointment');
       this.menuActions.push('New Appointment with Bill');
       this.menuActions.push('Vital Inforamtion');
       this.menuActions.push('Case Paper');
       this.menuActions.push('Bill');
       this.menuActions.push('Refund of Bill');
-      // this.menuActions.push('OP_REPORTS');
+      
 
     }
     else if (this._ActRoute.url == '/opd/bill') {
@@ -300,6 +300,7 @@ export class SearchInforObj
     ClassId: number;
     ClassName:String;
     TariffName: String;
+    Tariffname: String;
     TariffId : number;
     IsDischarged:boolean;
     opD_IPD_Type:number;
@@ -324,6 +325,11 @@ export class SearchInforObj
      NetPayableAmt:any;
      CompanyName:any;
      MobileNo:any;
+     AgeDay:any;
+     AgeMonth:any;
+     DepartmentName:any;
+     GenderName:any;
+     DepartmentId:any;
      /**
      * Constructor
      *
@@ -341,6 +347,7 @@ export class SearchInforObj
            this.ClassId = SearchInforObj.ClassId || '';
            this.ClassName = SearchInforObj.ClassName || '';
            this.TariffName = SearchInforObj.TariffName || '';
+           this.Tariffname = SearchInforObj.Tariffname || '';
            this.TariffId = SearchInforObj.TariffId || '';
            this.IsDischarged =SearchInforObj.IsDischarged || 0 ;
            this.opD_IPD_Type = SearchInforObj.opD_IPD_Type | 0;
@@ -362,7 +369,12 @@ export class SearchInforObj
             this.PatientTypeID =SearchInforObj.PatientTypeID || 0;
            this.NetPayableAmt =SearchInforObj.NetPayableAmt || 0;
            this.CompanyName=SearchInforObj.CompanyName || '',
-           this.MobileNo=SearchInforObj.MobileNo||0
+           this.MobileNo=SearchInforObj.MobileNo ||''
+           this.AgeDay=SearchInforObj.AgeDay || '',
+           this.AgeMonth=SearchInforObj.AgeMonth||0
+           this.DepartmentName=SearchInforObj.DepartmentName || '',
+           this.DepartmentId=SearchInforObj.DepartmentId ||0
+           this.GenderName=SearchInforObj.GenderName||0
         }
     }
 }

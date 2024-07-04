@@ -781,7 +781,7 @@ export class DischargeSummary{
   DischargesummaryId:any;  
   Pathology:any;
   DocNameID:any;
-  
+ 
   
   constructor(DischargeSummary){
     this.DischargesummaryId=DischargeSummary.DischargesummaryId || 0,
@@ -819,6 +819,10 @@ export class MedicineItemList {
   Day2: number;
   Instruction: any;
   DoseId:any;
+  DoseId1:any;
+  DoseId2:any;
+  Day:any;
+  
   /**
   * Constructor
   *
@@ -837,6 +841,8 @@ export class MedicineItemList {
       this.Day1 = MedicineItemList.Day1 || 0;
       this.DoseName2 = MedicineItemList.DoseName2 || '';
       this.Day2 = MedicineItemList.Day2 || 0;
+      this.DoseId1 = MedicineItemList.DoseId1 || '';
+      this.DoseId2 = MedicineItemList.DoseId2 || 0;
     }
   }
 }

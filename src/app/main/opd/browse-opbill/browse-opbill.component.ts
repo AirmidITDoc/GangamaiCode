@@ -302,7 +302,7 @@ dataSource2 = new MatTableDataSource<RefundMaster>();
 
   getWhatsappshareOPPaymentReceipt(el, vmono) {
     debugger
-    if(vmono !='' && vmono !=''){
+    if(vmono !='' && vmono !="0"){
     var m_data = {
       "insertWhatsappsmsInfo": {
         "mobileNumber": vmono || 0,
@@ -335,7 +335,7 @@ dataSource2 = new MatTableDataSource<RefundMaster>();
 
   getWhatsappshareRefundbill(el, vmono) {
     debugger
-    if(vmono !='' && vmono !=''){
+    if(vmono !='' && vmono !="0"){
     var m_data = {
       "insertWhatsappsmsInfo": {
         "mobileNumber": vmono || 0,

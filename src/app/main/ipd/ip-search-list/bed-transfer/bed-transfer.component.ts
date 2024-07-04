@@ -40,9 +40,9 @@ export class BedTransferComponent implements OnInit {
   ClassId: any;
   BedId: any;
   RoomId: any;
-  vWardId:any;
-  vBedId:any;
-  vClassId:any;
+  vWardId: any;
+  vBedId: any;
+  vClassId: any;
 
   selectedAdvanceObj: AdmissionPersonlModel;
 
@@ -81,10 +81,9 @@ export class BedTransferComponent implements OnInit {
       debugger
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       console.log(this.selectedAdvanceObj)
-      this._IpSearchListService.getWardCombo().subscribe(data => {
-        this.WardList = data;});
+      this.getWardList();
     }
-  
+
   }
 
   ngOnInit(): void {
@@ -94,35 +93,50 @@ export class BedTransferComponent implements OnInit {
 
     // this.getBedList();
     this.getDoctorList();
-    this.getWardList();
-   
+    // this.getWardList();
 
-    if (this.advanceDataStored.storage) {
-    
-     this.OnChangeBedList(this.selectedAdvanceObj);
-     }
-
+    if (this.selectedAdvanceObj) {
+      this.setDropdownObjs();
+    }
     this.filteredOptionsWard = this.Bedtransfer.get('RoomId').valueChanges.pipe(
       startWith(''),
       map(value => this._filterWard(value)),
 
     );
 
+
     this.filteredOptionsBed = this.Bedtransfer.get('BedId').valueChanges.pipe(
       startWith(''),
       map(value => this._filterBed(value)),
 
     );
-    this.filteredClass = this.Bedtransfer.get('ClassId').valueChanges.pipe(
-      startWith(''),
-      map(value => this._filterClass(value)),
+    // this.filteredClass = this.Bedtransfer.get('ClassId').valueChanges.pipe(
+    //   startWith(''),
+    //   map(value => this._filterClass(value)),
 
-    );
+    // );
   }
 
   get f() { return this._IpSearchListService.mySaveForm.controls; }
 
+  setDropdownObjs() {
+    debugger
+    const toSelect = this.WardList.find(c => c.RoomId == this.selectedAdvanceObj.RoomId);
+    this.Bedtransfer.get('RoomId').setValue(toSelect);
 
+
+    this._IpSearchListService.getBedCombo(toSelect).subscribe(data => {
+      this.BedList = data;
+      const ddValue = this.BedList.filter(c => c.BedId == this.selectedAdvanceObj.BedId);
+      this.Bedtransfer.get('BedId').setValue(ddValue[0]);
+      this.Bedtransfer.updateValueAndValidity();
+      return;
+    });
+    this.filteredOptionsBed = this.Bedtransfer.get('BedId').valueChanges.pipe(
+      startWith(''),
+      map(value => value ? this._filterBed(value) : this.BedList.slice()),
+    );
+  }
 
   bedsaveForm(): FormGroup {
     return this._formBuilder.group({
@@ -150,34 +164,6 @@ export class BedTransferComponent implements OnInit {
   }
 
 
-  //  getWardList() {
-  //     this._IpSearchListService.getWardCombo().subscribe(data => { this.WardList = data; 
-  //       this.filteredWard.next(this.WardList.slice());
-  //     })
-  //   }
-
-
-
-  // getWardList() {
-  //   this._IpSearchListService.getWardCombo().subscribe(data => {
-  //     this.WardList = data;
-  //     this.Bedtransfer.get('RoomId').setValue(this.WardList[0]);
-  //   });
-  // }
-
-
-  // getWardList() {
-  //   this._IpSearchListService.getWardCombo().subscribe(data => {
-  //     this.WardList = data;
-  //     this.optionsWard = this.WardList.slice();
-  //     this.filteredOptionsWard = this.Bedtransfer.get('RoomId').valueChanges.pipe(
-  //       startWith(''),
-  //       map(value => value ? this._filterWard(value) : this.WardList.slice()),
-  //     );
-
-  //   });
-  // }
-
   getWardList() {
     this._IpSearchListService.getWardCombo().subscribe(data => {
       this.WardList = data;
@@ -192,13 +178,6 @@ export class BedTransferComponent implements OnInit {
   }
 
 
-  // private _filterWard(value: any): string[] {
-  //   if (value) {
-  //     const filterValue = value && value.RoomName ? value.RoomName.toLowerCase() : value.toLowerCase();
-  //     return this.optionsRoomId.filter(option => option.RoomName.toLowerCase().includes(filterValue));
-  //   }
-
-  // }
 
   private _filterWard(value: any): string[] {
     if (value) {
@@ -206,7 +185,6 @@ export class BedTransferComponent implements OnInit {
       return this.WardList.filter(option => option.RoomName.toLowerCase().includes(filterValue));
     }
   }
-
 
 
   OnChangeBedList(wardObj) {
@@ -224,10 +202,11 @@ export class BedTransferComponent implements OnInit {
       this.BedClassList = data;
       this.Bedtransfer.get('ClassId').setValue(this.BedClassList[0]);
     })
-  } 
 
 
-  
+  }
+
+
   onBedChange(value) {
     this.bedObj = value;
   }
@@ -239,7 +218,7 @@ export class BedTransferComponent implements OnInit {
 
   }
 
- 
+
 
   private _filterClass(value: any): string[] {
     if (value) {
@@ -289,7 +268,7 @@ export class BedTransferComponent implements OnInit {
     console.log(m_data);
     this._IpSearchListService.populateForm(m_data);
   }
- 
+
   onBedtransfer() {
     debugger;
     if ((this.vWardId == '' || this.vWardId == null || this.vWardId == undefined)) {
@@ -331,8 +310,8 @@ export class BedTransferComponent implements OnInit {
         "fromDate": this.dateTimeObj.date,
         "fromTime": this.dateTimeObj.time,
         "fromWardID": this.selectedAdvanceObj.WardId,
-        "fromBedId":this.selectedAdvanceObj.BedId,
-        "fromClassId":this.selectedAdvanceObj.ClassId,
+        "fromBedId": this.selectedAdvanceObj.BedId,
+        "fromClassId": this.selectedAdvanceObj.ClassId,
         "toDate": this.dateTimeObj.date,
         "toTime": this.dateTimeObj.time,
         "toWardID": this.Bedtransfer.get("RoomId").value.RoomId,

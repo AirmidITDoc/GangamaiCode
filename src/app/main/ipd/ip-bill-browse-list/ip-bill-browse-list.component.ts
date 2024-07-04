@@ -403,7 +403,7 @@ console.log(PatientHeaderObj)
 // onwhatsappbill() {
   getWhatsappshareIPFinalBill(el, vmono) {
     debugger
-    if(vmono !=''){
+    if(vmono !='' && vmono !="0"){
     var m_data = {
       "insertWhatsappsmsInfo": {
         "mobileNumber": vmono || 0,
@@ -435,7 +435,7 @@ console.log(PatientHeaderObj)
   }
   getWhatsappshareIPPaymentRec(el, vmono) {
     debugger
-    if(vmono !=''){
+    if(vmono !='' && vmono !="0"){
     var m_data = {
       "insertWhatsappsmsInfo": {
         "mobileNumber": vmono || 0,
@@ -468,7 +468,7 @@ console.log(PatientHeaderObj)
 
   getWhatsappshareIPrefundBill(el, vmono) {
     debugger
-    if(vmono !=''){
+    if(vmono !='' && vmono !="0"){
     var m_data = {
       "insertWhatsappsmsInfo": {
         "mobileNumber": vmono || 0,

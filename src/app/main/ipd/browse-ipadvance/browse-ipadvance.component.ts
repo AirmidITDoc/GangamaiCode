@@ -179,7 +179,7 @@ viewgetIPAdvanceReportPdf(contact) {
 
 getWhatsappsAdvance(el, vmono) {
   debugger
-  if(vmono !=''){
+  if(vmono !='' && vmono !="0"){
   var m_data = {
     "insertWhatsappsmsInfo": {
       "mobileNumber": vmono || 0,
@@ -212,7 +212,7 @@ getWhatsappsAdvance(el, vmono) {
 
 getWhatsappsRefundAdvance(el, vmono) {
   debugger
-  if(vmono !=''){
+  if(vmono !='' && vmono !="0"){
   var m_data = {
     "insertWhatsappsmsInfo": {
       "mobileNumber": vmono || 0,

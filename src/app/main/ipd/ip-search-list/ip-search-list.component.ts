@@ -513,24 +513,7 @@ export class IPSearchListComponent implements OnInit {
     }
     else if (m == "Bed Transfer") {
       console.log(" This is for BedTransfer pop : " + m);
-      // let m_data = {
-      //   "RegNo": contact.RegNo,
-      //   "PatientName": contact.PatientName,
-      //   "AdmissionID": contact.AdmissionID,
-      //   "AdmDateTime": contact.AdmDateTime,
-      //   "DOA": contact.DOA,
-      //    "DocNameID": contact.DocNameID,
-      //   "RoomId": contact.WardId,
-      //   "WardId": contact.WardId,
-      //   "RoomName": contact.RoomName,
-      //   "BedId": contact.BedId,
-      //   "BedName": contact.BedName,
-      //   "TariffId": contact.TariffId,
-      //   "TariffName": contact.TariffName,
-      //   "ClassId": contact.ClassId,
-      //   "ClassName": contact.ClassName,
-      //   IsDischarged:contact.IsDischarged,
-      // }
+     
       this.advanceDataStored.storage = new AdmissionPersonlModel(contact);
       this._IpSearchListService.populateForm(contact);
      console.log(contact)
@@ -541,31 +524,13 @@ export class IPSearchListComponent implements OnInit {
         });
       dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed - Insert Action', result);
-        this.getAdmittedPatientList();
+        // this.getAdmittedPatientList();
       });
     } else if (m == "Medical CasePaper") {
       console.log(" This is for Case Paper pop : " + m);
-      // let m_data = {
-      //   "RegNo": contact.RegNo,
-      //   "PatientName": contact.PatientName,
-      //   "AdmissionID": contact.AdmissionID,
-      //   "AdmDateTime": contact.AdmDateTime,
-      //   "DOA": contact.DOA,
-      //    "DocNameID": contact.DocNameID,
-      //   "RoomId": contact.WardId,
-      //   "WardId": contact.WardId,
-      //   "RoomName": contact.RoomName,
-      //   "BedId": contact.BedId,
-      //   "BedName": contact.BedName,
-      //   "TariffId": contact.TariffId,
-      //   "TariffName": contact.TariffName,
-      //   "ClassId": contact.ClassId,
-      //   "ClassName": contact.ClassName,
-      //   IsDischarged:contact.IsDischarged,
-      // }
       this.advanceDataStored.storage = new AdvanceDetailObj(contact);
       this._IpSearchListService.populateForm(contact);
-      //      this.getAdvanceList();
+     
       const dialogRef = this._matDialog.open(NewCasepaperComponent,
         {
           maxWidth: "95vw",

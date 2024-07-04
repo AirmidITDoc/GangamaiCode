@@ -978,7 +978,7 @@ finaldiscAmt(){
    this.calcDiscPersonTotal();
 }
   getWhatsappshareSales(el, vmono) {
-    if(vmono !=''){
+    if(vmono !='' && vmono !="0"){
     var m_data = {
       "insertWhatsappsmsInfo": {
         "mobileNumber": vmono || 0,
