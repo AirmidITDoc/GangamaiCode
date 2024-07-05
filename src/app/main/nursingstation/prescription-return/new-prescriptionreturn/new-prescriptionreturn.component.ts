@@ -159,8 +159,8 @@ export class NewPrescriptionreturnComponent implements OnInit {
         disableClose: true,
         data: {
           "ItemId": this.ItemId,// this._PrescriptionReturnService.PrecReturnSearchGroup.get('ItemId').value.ItemId,
-          "StoreId": 10016,// this._PrescriptionReturnService.PrecReturnSearchGroup.get('StoreId').value.storeid,
-          "OP_IP_Id": 32549,//this.OP_IP_Id
+          "StoreId": this._PrescriptionReturnService.PrecReturnSearchGroup.get('StoreId').value.storeid,
+          "OP_IP_Id": this.OP_IP_Id
         }
       });
     dialogRef.afterClosed().subscribe(result => {

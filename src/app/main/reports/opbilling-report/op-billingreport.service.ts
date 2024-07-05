@@ -40,8 +40,8 @@ export class OpBillingreportService {
     return this._httpClient.get("OPReport/view-OPDailyCollectionReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&AddedById="+AddedById+"&DoctorId="+DoctorId);
   }
 
-  public getOpDailyCollectionsummary(FromDate,ToDate,AddedById){
-    return this._httpClient.get("OPReport/view-OPDailyCollectionReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&AddedById="+AddedById);
+  public getOpDailyCollectionsummary(FromDate,ToDate){
+    return this._httpClient.get("OPReport/view-OPCollectionSummary?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
   
   public getOpBillReceipt(BillNo){
@@ -50,7 +50,7 @@ export class OpBillingreportService {
 
   ///change
   public getOPBillSummary(FromDate,ToDate,AddedById){
-    return this._httpClient.get("OPReport/view-OpBillReportSummary?FromDate="+FromDate+"&ToDate="+ToDate+"&AddedById="+AddedById);
+    return this._httpClient.get("OPReport/view-BillReportSummary?FromDate="+FromDate+"&ToDate="+ToDate+"&AddedById="+AddedById);
   }
 
   public getOpRefundofbillview(FromDate,ToDate){

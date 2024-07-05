@@ -20,11 +20,7 @@
                         close
                     </span> -->
                 </div>
-                <div class="close-icon">
-                    <span class="material-icons" style="cursor: pointer;margin-left: 950px;" (click)="onClose()">
-                        close
-                    </span>
-                </div>
+              
             </div>
 
             <div style="width: 100%;" class="opd-billing-body p-16">
@@ -32,8 +28,8 @@
                     <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 1px;">
                         <div class="patient-search-container">
                             <form [formGroup]="searchFormGroup">
-                                <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="5px">
-
+                                <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="5px" style="padding-left: 10px;">
+                                    <!-- <span>Patient Search-</span> -->
                                     <mat-form-field class=searchRegId appearance="outline"
                                         style="width:600px !important;margin-left:20px;">
                                         <input type="text" name="RegId" formControlName="RegId"
@@ -557,7 +553,7 @@
                         <div fxLayout="row">
                             <div class="action-btns gap-8" fxLayout="row" style="margin-left: 1200px;">
                                 <button class="btn btn-danger-outline" (click)="onClear()">Reset</button>
-                                <button class="btn btn-primary" (click)="onSave()">Save</button>
+                                <button class="btn btn-primary" (click)="onSave()"  [disabled]="caseFormGroup.invalid && dsItemList.data.length==0">Save</button>
 
                             </div>
                         </div>

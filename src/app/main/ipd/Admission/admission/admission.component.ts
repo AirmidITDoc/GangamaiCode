@@ -362,16 +362,20 @@ export class AdmissionComponent implements OnInit {
       this.getTariffCombo()
 
 
-    if (this._ActRoute.url == '/ipd/admission') {
-
+  //   if (this._ActRoute.url == '/ipd/admission') {
+  //     debugger
+  //   if(this.accountService.currentUserValue.user.id==1)
+  //   {
+  //     this.menuActions.push("Update Consultant Doctor");
+  //     this.menuActions.push("Update Referred Doctor");
      
-      this.menuActions.push('Update TPA Company Information');
-      this.menuActions.push("Update Consultant Doctor");
-      this.menuActions.push("Update Referred Doctor");
-     
-    }
+  //   }else if(this.accountService.currentUserValue.user.id !=1){
+  //     this.menuActions.push("Update Consultant Doctor");
+  //     this.menuActions.push("Update Referred Doctor");
+  //     this.menuActions.push('Update TPA Company Information');
+  //   }
 
-
+  // }
     
     this.filteredOptionsPatientType = this.hospitalFormGroup.get('PatientTypeID').valueChanges.pipe(
       startWith(''),

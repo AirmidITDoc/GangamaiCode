@@ -110,47 +110,60 @@ var data={
     this.ReportID = el.ReportId;
 
     if (this.ReportName == 'OP Daily Collection') {
-      this.FlagBillNoSelected = false;
       this.FlagUserSelected = true;
-      this.FlagDoctorSelected = false;
+      this.FlagPaymentIdSelected = false;
+    this.FlagBillNoSelected = false;
+    this.FlagDoctorSelected = false;
+    this.FlagRefundIdSelected = false;
 
-    }else if (this.ReportName == 'OP Bill Receipt') {
+    }else if (this.ReportName == 'OP Bill Report') {
       this.FlagBillNoSelected = true;
       this.FlagUserSelected = false;
+      this.FlagPaymentIdSelected = false;
       this.FlagDoctorSelected = false;
-
+       this.FlagRefundIdSelected = false;
     }
     else if (this.ReportName == 'Bill Summary Report') {
-      this.FlagUserSelected = false;
-    //  this.FlagPaymentSelected = false;
-    this.FlagBillNoSelected = false;
-
+      this.FlagUserSelected = true;
+      this.FlagPaymentIdSelected = false;
+       this.FlagBillNoSelected = false;
+     this.FlagDoctorSelected = false;
+      this.FlagRefundIdSelected = false;
     } 
     else if (this.ReportName == 'Credit Reports') {
       this.FlagBillNoSelected = false;
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
+      this.FlagRefundIdSelected = false;
+      this.FlagPaymentIdSelected = false;
     } 
      
     else if (this.ReportName == 'Refund of Bill Reports') {
       this.FlagUserSelected = false;
+      this.FlagBillNoSelected = false;
       this.FlagPaymentIdSelected=false
       this.FlagRefundIdSelected = false;
-
+      this.FlagDoctorSelected = false;
     } 
     else if (this.ReportName == 'OP DAILY COLLECTION') {
       this.FlagUserSelected = true;
-      this.FlagDoctorSelected = true;
-      this.FlagBillNoSelected=false;
+      this.FlagBillNoSelected = false;
+      this.FlagPaymentIdSelected=false
+      this.FlagRefundIdSelected = false;
+      this.FlagDoctorSelected = false;
     }
     else if (this.ReportName == 'OP Daily Collection Summary Reports') {
-      this.FlagUserSelected = true;
+      this.FlagUserSelected = false;
+      this.FlagBillNoSelected = false;
+      this.FlagPaymentIdSelected=false
+      this.FlagRefundIdSelected = false;
       this.FlagDoctorSelected = false;
-      this.FlagBillNoSelected=false;
     }
      else if (this.ReportName == 'OP DAILY COLLECTION USERWISE') {
-      this.FlagBillNoSelected = true;
       this.FlagUserSelected = false;
+      this.FlagBillNoSelected = true;
+      this.FlagPaymentIdSelected=false
+      this.FlagRefundIdSelected = false;
       this.FlagDoctorSelected = false;
 
     }
@@ -240,7 +253,7 @@ var data={
       this.viewOpDailyCollectionSummaryPdf();
       
     }
-    else if (this.ReportName == 'OP Bill Receipt') {
+    else if (this.ReportName == 'OP Bill Report') {
       this.viewgetOPBillReportPdf();
       
     }
@@ -321,8 +334,7 @@ var data={
       
       this._OPReportsService.getOpDailyCollectionsummary(
         this.datePipe.transform(this._OPReportsService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-        this.datePipe.transform(this._OPReportsService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-        AddUserId
+        this.datePipe.transform(this._OPReportsService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'        
        
       ).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,
