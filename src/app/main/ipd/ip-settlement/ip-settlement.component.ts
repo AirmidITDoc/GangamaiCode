@@ -64,39 +64,38 @@ export class IPSettlementComponent implements OnInit {
   vAdmissionID: any;
   vCompanyName: any;
   vTariif: any;
-  RegID: any;
+  RegNo: any;
   PatientHeaderObj: AdvanceDetailObj;
 
-  dataSource = new MatTableDataSource<PaidBilldetail>();
-  displayedColumns: string[] = [
+ 
+  displayedColumns: string[] = [ 
+    'BillDate',
     'BillNo',
     'TotalAmt',
     'ConcessionAmt',
     'NetPayableAmt',
     'PaidAmount',
     'BalanceAmt',
-    'BillDate',
-    'action',
-
+    'action', 
   ];
-
+  displayedColumns1: string[] = [ 
+    'BillDate',
+    'BillNo',
+    'TotalAmt',
+    'ConcessionAmt',
+    'NetPayableAmt',
+    'PaidAmount',
+    'BalanceAmt',
+    'action' 
+  ];
+  dataSource = new MatTableDataSource<PaidBilldetail>();
   dataSource1 = new MatTableDataSource<CreditBilldetail>();
   @ViewChild(MatPaginator) PathTestpaginator: MatPaginator;
-  paymentFormGroup: FormGroup;
-  displayedColumns1: string[] = [
-    'BillNo',
-    'TotalAmt',
-    'ConcessionAmt',
-    'NetPayableAmt',
-    'PaidAmount',
-    'BalanceAmt',
-    'BillDate',
-    'action',
-
-  ];
-
+  paymentFormGroup: FormGroup; 
   hasSelectedContacts: boolean;
-  constructor(public _IpSearchListService: IPSettlementService,
+
+  constructor(
+    public _IpSearchListService: IPSettlementService,
     private accountService: AuthenticationService,
     public _matDialog: MatDialog,
     // @Inject(MAT_DIALOG_DATA) public data: any,
@@ -106,26 +105,6 @@ export class IPSettlementComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit(): void {
-    this.searchFormGroup = this.createSearchForm();
-    this.Regdisplay = true;
-
-    this.searchFormGroup.get('RegId').enable();
-    this.isRegSearchDisabled = false;
-
-    // if (this.data) {
-    // //  need to chk
-
-    //   this.PatientHeaderObj = this.advanceDataStored;
-    //   console.log(this.PatientHeaderObj);
-    //   this.vAdmissionID = this.PatientHeaderObj.OPD_IPD_Id;
-    //   this.RegId = this.PatientHeaderObj.RegID;
-    //   this.PatientName = this.PatientHeaderObj.PatientName;
-    //   //  this.Doctorname= this.PatientHeaderObj.Doctorname;
-    //   this.vCompanyName= this.PatientHeaderObj.CompanyName;
-    //   this.vTariif= this.PatientHeaderObj.TariffName;
-
-    //   }
-
     if (this.advanceDataStored.storage) {
 
       this.selectedAdvanceObj = this.advanceDataStored.storage;
@@ -135,53 +114,59 @@ export class IPSettlementComponent implements OnInit {
       console.log(this.PatientHeaderObj);
       this.vAdmissionID = this.PatientHeaderObj.OPD_IPD_Id;
       this.RegId = this.PatientHeaderObj.RegId;
-      this.RegID = this.PatientHeaderObj.RegID;
+      this.RegNo = this.PatientHeaderObj.RegNo;
       this.PatientName = this.PatientHeaderObj.PatientName;
-      //  this.Doctorname= this.PatientHeaderObj.Doctorname;
+      this.AgeYear= this.PatientHeaderObj.PatientAge;
+      this.MobileNo= this.PatientHeaderObj.MobileNo;
       this.vCompanyName = this.PatientHeaderObj.CompanyName;
       this.vTariif = this.PatientHeaderObj.TariffName;
+      this.getPaidBillDetails();
+      this.getCreditBillDetails(); 
     } 
-    // this.getPaidBillDetails();
-    // this.getCreditBillDetails();
+    else{
+      this.clearpatientinfo();
+    } 
+    this.searchFormGroup = this.createSearchForm();
+    this.Regdisplay = true; 
 
+    this.searchFormGroup.get('RegId').enable();
+    this.isRegSearchDisabled = false; 
   }
 
   createSearchForm() {
     return this.formBuilder.group({
       regRadio: ['registration'],
-      RegId: [{ value: '', disabled: this.isRegSearchDisabled }],
-
+      RegId: [{ value: '', disabled: this.isRegSearchDisabled }], 
     });
-  }
-
-
+  } 
   createForm() {
-    this.paymentFormGroup = this.formBuilder.group({
-
-      IsCompany: [0]
-
+    this.paymentFormGroup = this.formBuilder.group({ 
+      IsCompany: [0] 
     });
   }
 
-
-  // 9902666262
+  AgeYear:any;
+  AgeDay:any;
+  GenderName:any;
+  AgeMonth:any;
+  MobileNo:any; 
   getSelectedObj(obj) {
     console.log(obj)
-    this.registerObj = obj;
-    // this.PatientName = obj.FirstName + '' + obj.LastName;
-    this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.PatientName;
-    this.RegId = obj.RegID; //81985//
-    this.vAdmissionID = obj.AdmissionID
-
-    console.log(obj);
+    this.registerObj = obj; 
+    this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
+    this.RegId = obj.RegId;  
+    this.vAdmissionID = obj.AdmissionID;
+    this.RegNo = obj.RegNo;
+    this.AgeYear = obj.AgeYear; 
+    this.AgeDay = obj.AgeDay;
+    this.AgeMonth = obj.AgeMonth;
+   this.GenderName = obj.GenderName;
+   this.MobileNo = obj.MobileNo; 
     this.getPaidBillDetails();
-    this.getCreditBillDetails();
-
+    this.getCreditBillDetails(); 
   }
-
-
-  getSearchList() {
-
+ 
+  getSearchList() { 
     var m_data = {
       "Keyword": `${this.searchFormGroup.get('RegId').value}%`
     }
@@ -194,102 +179,59 @@ export class IPSettlementComponent implements OnInit {
           this.noOptionFound = false;
         }
       });
-    }
-
-  }
-
-
+    } 
+  } 
   getOptionText(option) {
     if (!option) return '';
-    return option.FirstName + ' ' + option.LastName + ' (' + option.RegID + ')';
-
+    return option.FirstName + ' ' + option.LastName + ' ' + option.LastName ; 
   }
-
+  clearpatientinfo(){
+    this.PatientName = '';
+    this.RegId =  '';
+    this.vAdmissionID = '';
+    this.RegNo = '';
+    this.AgeYear = '' ;
+    this.AgeDay = '';
+    this.AgeMonth = '';
+   this.GenderName = '';
+   this.MobileNo = ''; 
+  }
+  
 
   onChangeReg(event) {
     if (event.value == 'registration') {
       //   this.personalFormGroup.get('RegId').reset();
       //   this.personalFormGroup.get('RegId').disable();
       this.isRegSearchDisabled = true;
-      this.registerObj = new AdmissionPersonlModel({});
-
-
+      this.registerObj = new AdmissionPersonlModel({});  
     } else {
       this.Regdisplay = true;
 
       this.searchFormGroup.get('RegId').enable();
-      this.isRegSearchDisabled = false;
-
-
+      this.isRegSearchDisabled = false;  
     }
-
-
+ 
   }
 
-  SpinLoading: boolean = false;
-
-  viewgetSettlementReportPdf(contact, flag) {
-    console.log(contact)
-    let PaymentId
-    if (flag) {
-      PaymentId = contact
-    } else {
-      PaymentId = contact.PaymentId
-    }
-    setTimeout(() => {
-      this.SpinLoading = true;
-      //  this.AdList=true;
-      this._IpSearchListService.getSettlementview(
-        PaymentId
-      ).subscribe(res => {
-        const dialogRef = this._matDialog.open(PdfviewerComponent,
-          {
-            maxWidth: "85vw",
-            height: '750px',
-            width: '100%',
-            data: {
-              base64: res["base64"] as string,
-              title: "Settlement Viewer"
-            }
-          });
-        dialogRef.afterClosed().subscribe(result => {
-          // this.AdList=false;
-          this.SpinLoading = false;
-        });
-        dialogRef.afterClosed().subscribe(result => {
-          // this.AdList=false;
-          this.SpinLoading = false;
-        });
-      });
-
-    }, 100);
-  }
-
-  getPaidBillDetails() {
-
-    this.sIsLoading = 'loading-data';
-
-    this.regId = this.RegId;
-
-    let query = "Select * from lvwBillIPD  where RegID=" + this.regId + " and BalanceAmt=0";
+  SpinLoading: boolean = false; 
+  getPaidBillDetails() { 
+    this.sIsLoading = 'loading-data'; 
+    this.regId = this.RegId; 
+    let query = "Select * from lvwBillIPD  where RegID=" + this.regId + " and BalanceAmt=0"; 
 
     this._IpSearchListService.getPaidBillList(query).subscribe(Visit => {
       this.dataSource.data = Visit as PaidBilldetail[];
       this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
-
-      this.sIsLoading = '';
-
+      this.dataSource.paginator = this.paginator;  
+      this.sIsLoading = ''; 
     },
       error => {
         this.sIsLoading = '';
-      });
-
+      }); 
   }
 
   // 106549
-  getCreditBillDetails() {
-debugger
+  getCreditBillDetails() { 
     this.sIsLoading = 'loading-data';
     this.regId = this.RegId;
 
@@ -298,18 +240,15 @@ debugger
     this._IpSearchListService.getCreditBillList(query).subscribe(Visit => {
       this.dataSource1.data = Visit as CreditBilldetail[];
       this.dataSource1.sort = this.sort;
-      this.dataSource1.paginator = this.paginator;
-
-      this.sIsLoading = '';
-
+      this.dataSource1.paginator = this.paginator; 
+      this.sIsLoading = ''; 
     },
       error => {
         this.sIsLoading = '';
       });
   }
 
-  getCompanyCreditBillDetails(event) {
-
+  getCompanyCreditBillDetails(event) { 
     this.dataSource1.data = [];
     this.sIsLoading = 'loading-data';
     if (event == true) {
@@ -320,8 +259,7 @@ debugger
         this.dataSource1.sort = this.sort;
         this.dataSource1.paginator = this.paginator;
         //  console.log(this.dataSource.data);
-        this.sIsLoading = '';
-
+        this.sIsLoading = ''; 
       },
         error => {
           this.sIsLoading = '';
@@ -330,23 +268,17 @@ debugger
   }
 
   addpayment(contact) {
-console.log(contact)
-    this.FinalAmt = contact.NetPayableAmt;
-
-    let PatientHeaderObj = {};
-
+   console.log(contact)
+    this.FinalAmt = contact.NetPayableAmt; 
+    let PatientHeaderObj = {}; 
     PatientHeaderObj['Date'] = this.dateTimeObj.date;
     PatientHeaderObj['PatientName'] = this.PatientName;
-    PatientHeaderObj['OPD_IPD_Id'] = this.RegId;
-    PatientHeaderObj['AdvanceAmount'] = contact.NetPayableAmt;
-
+    PatientHeaderObj['OPD_IPD_Id'] =this.vAdmissionID;
+    PatientHeaderObj['AdvanceAmount'] = contact.NetPayableAmt; 
     PatientHeaderObj['NetPayAmount'] = contact.NetPayableAmt;
     PatientHeaderObj['PBillNo'] = contact.PBillNo;
     PatientHeaderObj['BillTime'] = contact.BillTime;
-    PatientHeaderObj['RegID'] = contact.RegID;
-
-    
-    
+    PatientHeaderObj['RegID'] = contact.RegID; 
     
     const dialogRef = this._matDialog.open(IPpaymentWithadvanceComponent,
       {
@@ -360,7 +292,7 @@ console.log(contact)
       });
 
     dialogRef.afterClosed().subscribe(result => {
-console.log(result)
+      console.log(result)
       let BillUpdateObj = {};
 
       BillUpdateObj['BillNo'] = contact.BillNo;
@@ -375,8 +307,7 @@ console.log(result)
         result.submitDataPay.ipPaymentInsert.TransactionType = 0;
         UpdateAdvanceDetailarr1 = result.submitDataAdvancePay;
         console.log(UpdateAdvanceDetailarr1);
-
-debugger
+ 
         let UpdateAdvanceDetailarr = [];
         if (result.submitDataAdvancePay.length > 0) {
           result.submitDataAdvancePay.forEach((element) => {
@@ -433,7 +364,42 @@ debugger
       }
     });
   }
+  viewgetSettlementReportPdf(contact, flag) {
+    console.log(contact)
+    let PaymentId
+    if (flag) {
+      PaymentId = contact
+    } else {
+      PaymentId = contact.PaymentId
+    }
+    setTimeout(() => {
+      this.SpinLoading = true;
+      //  this.AdList=true;
+      this._IpSearchListService.getSettlementview(
+        PaymentId
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Settlement Viewer"
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+      });
 
+    }, 100);
+  }
 
   getViewbill(contact) {
     console.log(contact);

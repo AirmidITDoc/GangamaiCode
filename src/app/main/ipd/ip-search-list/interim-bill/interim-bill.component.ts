@@ -469,6 +469,7 @@ export class InterimBillComponent implements OnInit {
 
               this.getWhatsappshareIPInterimBill(response,this.vMobileNo);
               this._matDialog.closeAll();
+              this.onClose();
             }
           });
         }
@@ -529,6 +530,7 @@ export class InterimBillComponent implements OnInit {
             if (result.isConfirmed) {
               this.viewgetInterimBillReportPdf(response);
               this._matDialog.closeAll();
+              this.onClose();
             }
           });
         }
@@ -878,7 +880,7 @@ debugger
 
 
   onClose() {
-    this.dialogRef.close();
+    this.dialogRef.close(); 
   }
 }
 

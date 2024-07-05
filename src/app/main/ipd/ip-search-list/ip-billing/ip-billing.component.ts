@@ -326,7 +326,7 @@ export class IPBillingComponent implements OnInit {
       this.Ipbillform.get('CreditBill').setValue(true);
     }
     else { 
-      this.Ipbillform.get('CreditBill').disable();
+      //this.Ipbillform.get('CreditBill').disable();
       this.Ipbillform.get('CreditBill').setValue(false);
     }
 
@@ -711,17 +711,7 @@ ServiceList:any=[];
 
 
   getSelectedObj(obj) {
-    if (this.dataSource.data.length > 0) {
-      this.dataSource.data.forEach((element) => {
-        if (obj.ServiceId == element.ServiceId) {
-
-          Swal.fire('Selected Item already added in the list ');
-
-          this.onClearServiceAddList();
-          return;
-        }
-      });
-    }
+  
     console.log(obj)
     this.SrvcName = obj.ServiceName;
     this.b_price = obj.Price;
@@ -732,7 +722,7 @@ ServiceList:any=[];
     this.b_isRad = obj.IsRadiology;
 
 
-    if (obj.IsDocEditable) {
+    if (obj.CreditedtoDoctor == true) {
       this.Serviceform.get('DoctorID').reset();
       this.Serviceform.get('DoctorID').setValidators([Validators.required]);
       this.Serviceform.get('DoctorID').enable();
@@ -1224,6 +1214,7 @@ ServiceList:any=[];
   tableElementChecked(event, element) {
     if (event.checked) {
       this.interimArray.push(element);
+      console.log(this.interimArray)
     } else if (this.interimArray.length > 0) {
       let index = this.interimArray.indexOf(element);
       if (index !== -1) {
@@ -1274,6 +1265,7 @@ ServiceList:any=[];
       Swal.fire('Warring !', 'Please select check box ', 'warning');
     }
     this.getChargesList();
+    this.interimArray = [];
   }
   // }
   onOk() {
@@ -1282,6 +1274,7 @@ ServiceList:any=[];
   onClose() {
     this.dialogRef.close({ result: "cancel" });
   }
+  TotalAdvanceamt:any=0;
   SaveBill1() {
 
 debugger
@@ -1310,7 +1303,7 @@ debugger
       const dialogRef = this._matDialog.open(IPpaymentWithadvanceComponent,
         {
           maxWidth: "85vw",
-          height: '840px',
+          height: '750px',
           width: '100%',
           data: {
             vPatientHeaderObj: PatientHeaderObj,
@@ -1327,8 +1320,13 @@ debugger
         this.flagSubmit = result.IsSubmitFlag
 
         if (this.flagSubmit) {
-          this.paidamt = result.submitDataPay.ipPaymentInsert.PaidAmt;
-          this.balanceamt = result.submitDataPay.ipPaymentInsert.BalanceAmt;
+          // this.paidamt = result.submitDataPay.ipPaymentInsert.PaidAmt;
+          // this.balanceamt = result.submitDataPay.ipPaymentInsert.AdvanceUsedAmount;
+
+          this.paidamt = result.PaidAmt;
+          this.balanceamt = result.BalAmt;
+          //this.TotalAdvanceamt = result.submitDataAdvancePay[0].AdvanceAmount;
+          //this.TotalAdvanceamt = result.submitDataPay.ipPaymentInsert.AdvanceUsedAmount;
         }
 
         else {
@@ -1346,7 +1344,7 @@ debugger
         InsertBillUpdateBillNoObj['BillDate'] = this.dateTimeObj.date;
         InsertBillUpdateBillNoObj['OPD_IPD_Type'] = 1;
         InsertBillUpdateBillNoObj['AddedBy'] = this.accountService.currentUserValue.user.id,
-        InsertBillUpdateBillNoObj['TotalAdvanceAmount'] = 0;//this.totalAdvanceAmt;
+        InsertBillUpdateBillNoObj['TotalAdvanceAmount'] = 0;
         InsertBillUpdateBillNoObj['BillTime'] = this.dateTimeObj.date;
         InsertBillUpdateBillNoObj['ConcessionReasonId'] = this.Ipbillform.get('ConcessionId').value.ConcessionId || 0
         InsertBillUpdateBillNoObj['IsSettled'] = 0;

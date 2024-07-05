@@ -26,16 +26,20 @@
 
 
 
-    <div class="header-container" style="display: flex; padding: 5px;">
+    <div class="header-container" style="display: flex;padding: 10px 12px 5px 12px;">
         <div fxFlex.gt-sm="100%" fxFlex>
             <div fxlayout="row" style="background-color: white; ">
                 <!-- ================================ LABEL HEADER  -->
                 <mat-card fxFlex.gt-sm="100%" fxFlex
-                    style="padding: 0 9px; height: fit-content;height: 50px;width: 100%;">
+                    style="padding: 0 9px; height: fit-content;height: 80px;width: 100%;">
 
 
                     <div fxlayout="row">
-                        <div class="patient-info-box my-8">
+                        <div class="patient-info-box">
+                            <div class="patient-info-title border-bottom pb-2">
+                                <span class="h1">Patient Information</span>
+                            </div>
+                         <div class="patient-info-box my-8">
                             <div class="patient-info-row row-gap-4" fxLayout="row wrap">
                                 <div class="patient-col gap-3" fxFlex="35%" fxFlex.gt-sm="35%">
                                     <span class="patient-col-key ">Patient Name</span>
@@ -75,6 +79,7 @@
                                 </div>
                             </div>
                         </div>
+                        </div>
                         <!-- ================================ LABEL HEADER  -->
                     
 
@@ -86,8 +91,9 @@
         </div>
 
     </div>
-    <div class="table-container" style="height: 250px !important; padding: 0 20px;overflow: auto;margin-top: 10px;">
-        <mat-table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
+    <!-- style="height: 250px !important; padding: 0 20px;overflow: auto;margin-top: 10px;" -->
+    <div class="table-container" style="padding: 5px 12px 5px 12px;">
+        <mat-table matSort class="h-120" [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
 
             <ng-container matColumnDef="Date">
                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Date
@@ -159,6 +165,10 @@
 
         <!-- <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" showFirstLastButtons></mat-paginator> -->
     </div>
+
+
+
+
     <div class="payment-container">
         <form [formGroup]="paymentForm">
             <div class="chips-container">
