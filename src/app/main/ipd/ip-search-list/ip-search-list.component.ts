@@ -775,6 +775,7 @@ export class AdvanceDetailObj {
   H_PaidAmt: any;
   H_BalAmt: any;
   MobileNo:any;
+  PatientAge: any;
   /**
   * Constructor
   *

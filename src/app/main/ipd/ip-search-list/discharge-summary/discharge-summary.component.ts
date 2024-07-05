@@ -143,22 +143,10 @@ export class DischargeSummaryComponent implements OnInit {
     this.getdischargeIdbyadmission();
     this.getDoseList();
 
-      this.filteredOptionsDosename = this.MedicineItemForm.get('DoseId').valueChanges.pipe(
-      startWith(''),
-      map(value => this._filterDosename(value)),
-    );
-    this.filteredOptionDoctor1 = this.DischargesumForm.get('DischargeDoctor1').valueChanges.pipe(
-      startWith(''),
-      map(value => value ? this._filterdoc1(value) : this.Doctor1List.slice()),
-    );
-    this.filteredOptionDoctor2 = this.DischargesumForm.get('DischargeDoctor2').valueChanges.pipe(
-      startWith(''),
-      map(value => value ? this._filterdoc2(value) : this.Doctor2List.slice()),
-    );
-    this.filteredOptionDoctor3 = this.DischargesumForm.get('DischargeDoctor3').valueChanges.pipe(
-      startWith(''),
-      map(value => value ? this._filterdoc3(value) : this.Doctor3List.slice()),
-    );
+   
+   
+  
+ 
   }
 
   getDateTime(dateTimeObj) {
@@ -229,6 +217,10 @@ export class DischargeSummaryComponent implements OnInit {
   getDoctorList1() {
     this._IpSearchListService.getDischaregDoctor1Combo().subscribe(data => {
       this.Doctor1List = data; 
+      this.filteredOptionDoctor1 = this.DischargesumForm.get('DischargeDoctor1').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterdoc1(value) : this.Doctor1List.slice()),
+      );
       if (this.registerObj) {
         const ddValue= this.Doctor1List.filter(item => item.DoctorId ==  this.registerObj.DocNameID);
         //console.log(ddValue)
@@ -240,24 +232,19 @@ export class DischargeSummaryComponent implements OnInit {
   getDoctorList2() {
     this._IpSearchListService.getDoctorMaster1Combo().subscribe(data => {
       this.Doctor2List = data;
-      // if (this.registerObj) {
-      //   const ddValue= this.Doctor2List.filter(item => item.DoctorId ==  this.registerObj.DocNameID);
-      //   //console.log(ddValue)
-      //   this.DischargesumForm.get('DischargeDoctor2').setValue(ddValue[0]);
-      //   this.DischargesumForm.updateValueAndValidity();
-      // }
+      this.filteredOptionDoctor2 = this.DischargesumForm.get('DischargeDoctor2').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterdoc2(value) : this.Doctor2List.slice()),
+      ); 
     });
   }
   getDoctorList3() {
     this._IpSearchListService.getDoctorMaster2Combo().subscribe(data => {
       this.Doctor3List = data;
-     // console.log( this.Doctor3List )
-    //  if (this.registerObj) {
-    //   const ddValue= this.Doctor3List.filter(item => item.DoctorId ==  this.registerObj.DocNameID);
-    //   //console.log(ddValue)
-    //   this.DischargesumForm.get('DischargeDoctor3').setValue(ddValue[0]);
-    //   this.DischargesumForm.updateValueAndValidity();
-    // }
+      this.filteredOptionDoctor3 = this.DischargesumForm.get('DischargeDoctor3').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterdoc3(value) : this.Doctor3List.slice()),
+      ); 
     });
   }
   private _filterdoc1(value: any): string[] {
@@ -323,6 +310,10 @@ export class DischargeSummaryComponent implements OnInit {
     getDoseList() {
       this._IpSearchListService.getDoseList().subscribe((data) => {
         this.doseList = data; 
+        this.filteredOptionsDosename = this.MedicineItemForm.get('DoseId').valueChanges.pipe(
+          startWith(''),
+          map(value => value ? this._filterDosename(value) : this.doseList.slice()),
+        );
       });
     }
     private _filterDosename(value: any): string[] {

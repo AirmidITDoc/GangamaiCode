@@ -278,8 +278,8 @@ export class IPBillBrowseListComponent implements OnInit {
     PatientHeaderObj['Date'] = contact.BillDate;
     PatientHeaderObj['PatientName'] = contact.PatientName;
     PatientHeaderObj['OPD_IPD_Id'] = contact.OPD_IPD_ID;
-    // PatientHeaderObj['RegID'] = contact.RegID;
-    PatientHeaderObj['RegID'] = contact.RegId;
+    PatientHeaderObj['MobileNo'] = contact.MobileNo;
+    PatientHeaderObj['PatientAge'] = contact.PatientAge;
     PatientHeaderObj['NetPayAmount'] = contact.NetPayableAmt;
     PatientHeaderObj['BillId'] = contact.BillNo;
     PatientHeaderObj['CompanyName'] = contact.CompanyName;
