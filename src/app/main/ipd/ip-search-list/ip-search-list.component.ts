@@ -100,8 +100,8 @@ export class IPSearchListComponent implements OnInit {
     private advanceDataStored: AdvanceDataStored) { }
 
   ngOnInit(): void {
-    this.getAdmittedPatientList();
-  
+    //this.onClear();
+    this.getAdmittedPatientList(); 
     if (this._ActRoute.url == '/ipd/ipadvance') {
       this.menuActions.push('Advance');
       this.menuActions.push('Bed Transfer');
@@ -141,7 +141,7 @@ export class IPSearchListComponent implements OnInit {
       this.menuActions.push('Doctor Note');
       this.menuActions.push('Nursing Note');
 
-    }
+    } 
    
   }
   get f() { return this._IpSearchListService.myFilterform.controls; }
@@ -167,7 +167,7 @@ export class IPSearchListComponent implements OnInit {
 
   resultsLength = 0;
   getAdmittedPatientList() {
-    
+  
     if (this._IpSearchListService.myFilterform.get("IsDischarge").value == "0" || this._IpSearchListService.myFilterform.get("IsDischarge").value == false) {
       this.isLoadingStr = 'loading';
       var D_data = {
@@ -180,15 +180,15 @@ export class IPSearchListComponent implements OnInit {
         "Admtd_Dschrgd_All": this._IpSearchListService.myFilterform.get('IsDischarge').value || 0,
         "M_Name": this._IpSearchListService.myFilterform.get("MiddleName").value + '%' || "%",
         "IPNo": this._IpSearchListService.myFilterform.get("IPDNo").value || 0,
-        Start:(this.paginator?.pageIndex??1),
+        Start:(this.paginator?.pageIndex??0),
         Length:(this.paginator?.pageSize??35),
       }
-      console.log(D_data);
+      
       setTimeout(() => {
           this.isLoadingStr = 'loading';
           this._IpSearchListService.getAdmittedPatientList_1(D_data).subscribe(data => {
           this.dataSource.data = data["Table1"]??[] as Admission[];
-          console.log(this.dataSource.data)
+         // console.log(this.dataSource.data)
           this.dataSource.sort = this.sort;
           this.resultsLength= data["Table"][0]["total_row"];
           this.sIsLoading = '';
@@ -210,9 +210,9 @@ export class IPSearchListComponent implements OnInit {
         "To_Dt": this.datePipe.transform(this._IpSearchListService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
         "Admtd_Dschrgd_All": this._IpSearchListService.myFilterform.get('IsDischarge').value,
         "IPNo": this._IpSearchListService.myFilterform.get("IPDNo").value || 0,
-        Start:(this.paginator?.pageIndex??1),
-        Length:(this.paginator?.pageSize??20),
-      }
+        Start:(this.paginator?.pageIndex??0),
+        Length:(this.paginator?.pageSize??35),
+      } 
       setTimeout(() => {
         this.isLoadingStr = 'loading';
         this._IpSearchListService.getDischargedPatientList_1(Params).subscribe(data => {
@@ -222,7 +222,7 @@ export class IPSearchListComponent implements OnInit {
           this.resultsLength= data["Table"][0]["total_row"];
           // this.dataSource.paginator = this.paginator;
           this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
-          // this.sIsLoading = '';
+           this.sIsLoading = '';
           // this.click = false;
         },
           error => {
@@ -547,12 +547,18 @@ export class IPSearchListComponent implements OnInit {
 
 
   onClear() {
-    this._IpSearchListService.myFilterform.reset(
-      {
-        start: [],
-        end: []
-      }
-    );
+    // this._IpSearchListService.myFilterform.reset(
+    //   {
+    //     start: [],
+    //     end: []
+    //   }
+    // );
+    this._IpSearchListService.myFilterform.reset();
+    this._IpSearchListService.myFilterform.get("IsDischarge").setValue(0);
+    this._IpSearchListService.myFilterform.get("FirstName").setValue('');
+    this._IpSearchListService.myFilterform.get("MiddleName").setValue('');
+    this._IpSearchListService.myFilterform.get("LastName").setValue('');
+    this.getAdmittedPatientList();
   }
 
 

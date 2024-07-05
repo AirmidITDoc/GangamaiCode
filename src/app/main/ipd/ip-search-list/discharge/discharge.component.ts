@@ -76,18 +76,12 @@ export class DischargeComponent implements OnInit {
       this.getRtrvDischargelist()
     }
 
-    this.filteredOptionsDisctype = this._IpSearchListService.mySaveForm.get('DischargeTypeId').valueChanges.pipe(
-      startWith(''),
-      map(value => this._filterDischargeType(value)),
-    ); 
-    this.filteredOptionsDoctorname = this._IpSearchListService.mySaveForm.get('DoctorID').valueChanges.pipe(
-      startWith(''),
-      map(value => this._filterDoctorname(value)),
-    ); 
-    this.filteredOptionsModename = this._IpSearchListService.mySaveForm.get('ModeId').valueChanges.pipe(
-      startWith(''),
-      map(value => this._filterModeName(value)),
-    );
+    // this.filteredOptionsDisctype = this._IpSearchListService.mySaveForm.get('DischargeTypeId').valueChanges.pipe(
+    //   startWith(''),
+    //   map(value => this._filterDischargeType(value)),
+    // ); 
+ 
+   
     
   }
 
@@ -123,10 +117,15 @@ Rtevdropdownvalue(){
     this._IpSearchListService.mySaveForm.get('ModeId').setValue(toSelect);
  }
 }
+optionsDoctor:any[]=[];
   getDoctorNameList() {
     this._IpSearchListService.getDoctorMaster1Combo().subscribe(data => {
       this.DoctorNameList = data;
-      //console.log(this.DoctorNameList)
+      this.optionsDoctor = this.DoctorNameList.slice();
+      this.filteredOptionsDoctorname = this._IpSearchListService.mySaveForm.get('DoctorID').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterDoctorname(value) : this.DoctorNameList.slice()),
+      ); 
       
       if (this.registerObj) {
         const ddValue= this.DoctorNameList.filter(item => item.DoctorID ==  this.registerObj.DocNameID);
@@ -143,11 +142,15 @@ Rtevdropdownvalue(){
       return this.DoctorNameList.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
     }
   }
-
+  optionsModeofDischarge:any[]=[];
   getModeNameList() {
     this._IpSearchListService.getModenameListCombo().subscribe(data => {
       this.ModeNameList = data;
-      console.log(this.ModeNameList)
+      this.optionsModeofDischarge = this.ModeNameList.slice();
+      this.filteredOptionsModename = this._IpSearchListService.mySaveForm.get('ModeId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterModeName(value) : this.ModeNameList.slice()),
+      );
     });
   }
   private _filterModeName(value: any): string[] {
@@ -156,11 +159,21 @@ Rtevdropdownvalue(){
       return this.ModeNameList.filter(option => option.ModeOfDischargeName.toLowerCase().includes(filterValue));
     }
   }
+  
+  optionsDischargeType: any[] = [];
   getDischargetypeCombo() {
     this._IpSearchListService.getDischargetypeCombo().subscribe(data => {
       this.DischargeTypeList = data;
+      this.optionsDischargeType = this.DischargeTypeList.slice();
+      this.filteredOptionsDisctype = this._IpSearchListService.mySaveForm.get('DischargeTypeId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterDischargeType(value) : this.DischargeTypeList.slice()),
+      );
+
     });
   }
+
+
   private _filterDischargeType(value: any): string[] {
     if (value) {
       const filterValue = value && value.DischargeTypeName ? value.DischargeTypeName.toLowerCase() : value.toLowerCase();

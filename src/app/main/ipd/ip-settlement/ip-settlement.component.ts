@@ -140,10 +140,9 @@ export class IPSettlementComponent implements OnInit {
       //  this.Doctorname= this.PatientHeaderObj.Doctorname;
       this.vCompanyName = this.PatientHeaderObj.CompanyName;
       this.vTariif = this.PatientHeaderObj.TariffName;
-    }
-debugger
-    this.getPaidBillDetails();
-    this.getCreditBillDetails();
+    } 
+    // this.getPaidBillDetails();
+    // this.getCreditBillDetails();
 
   }
 
