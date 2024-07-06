@@ -980,7 +980,7 @@ ServiceList:any=[];
   }
   getAdvAmtSum(element) {
     let netAmt;
-    netAmt = element.reduce((sum, { AdvanceAmount }) => sum += +(AdvanceAmount || 0), 0);
+    netAmt = element.reduce((sum, { BalanceAmount }) => sum += +(BalanceAmount || 0), 0);
     this.vAdvTotalAmount = netAmt;
     // this.vNetBillAmount = this.vTotalBillAmount;
 
@@ -1993,6 +1993,7 @@ debugger
       this.onClearServiceAddList()
       this.isLoading = '';
       this.b_disAmount = 0;
+      this.interimArray = [];
     }
     else {
       Swal.fire("Enter Proper Values !")

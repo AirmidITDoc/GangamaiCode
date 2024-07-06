@@ -249,8 +249,10 @@ dataSource2 = new MatTableDataSource<RefundMaster>();
     PatientHeaderObj['Date'] = this.datePipe.transform(contact.BillDate, 'MM/dd/yyyy') || '01/01/1900',
     PatientHeaderObj['PatientName'] = contact.PatientName;
     PatientHeaderObj['OPD_IPD_Id'] = contact.VisitId;
+    PatientHeaderObj['Doctorname'] = contact.DoctorName;
     PatientHeaderObj['NetPayAmount'] = contact.NetPayableAmt;
     PatientHeaderObj['BillId'] = contact.BillNo
+    PatientHeaderObj['UHIDNO'] = contact.RegNo
     ;
 
     const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,

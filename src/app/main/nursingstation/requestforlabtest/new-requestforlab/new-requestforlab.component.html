@@ -72,7 +72,7 @@
                                                 <div class="patient-sub">
                                                     <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
                                                         fxLayoutAlign="space-between">
-                                                        <div fxLayout="column" fxLayoutGap="10px">
+                                                        <div fxLayout="column" fxLayoutGap="6px">
                                                             <div class="patient-col">
                                                                 <span class="patient-col-key">UHID No
                                                                 </span>
@@ -91,7 +91,7 @@
                                                                 <span class="patient-col-key">Doctor Name</span>
                                                                 <span>:</span>
                                                                 <span
-                                                                    class="patient-col-value">{{selectedAdvanceObj.Doctorname}}</span>
+                                                                    class="patient-col-value">{{selectedAdvanceObj.DoctorName}}</span>
                                                             </div>
                                                             <div class="patient-col">
                                                                 <span class="patient-col-key">Department</span>
@@ -100,13 +100,13 @@
                                                                     class="patient-col-value">{{selectedAdvanceObj.DepartmentName}}</span>
                                                             </div>
                                                         </div>
-                                                        <div fxLayout="column" fxLayoutGap="10px">
+                                                        <div fxLayout="column" fxLayoutGap="6px">
 
                                                             <div class="patient-col">
                                                                 <span class="patient-col-key">DOA | Time</span>
                                                                 <span>:</span>
                                                                 <span
-                                                                    class="patient-col-value">{{selectedAdvanceObj.AdmDateTime}}</span>
+                                                                    class="patient-col-value">{{selectedAdvanceObj.AdmissionTime | date:'dd/MM/YYYY'}}</span>
                                                             </div>
                                                             <div class="patient-col">
                                                                 <span class="patient-col-key">IPD No</span>
@@ -119,7 +119,7 @@
                                                                 </span>
                                                                 <span>:</span>
                                                                 <span
-                                                                    class="patient-col-value">{{selectedAdvanceObj.AgeYear}}Y|{{selectedAdvanceObj.AgeMonth}}M|{{selectedAdvanceObj.AgeDay}}
+                                                                    class="patient-col-value">{{selectedAdvanceObj.Age}}Y|{{selectedAdvanceObj.AgeMonth}}M|{{selectedAdvanceObj.AgeDay}}
                                                                     D | {{selectedAdvanceObj.GenderName}}</span>
                                                             </div>
                                                             <div class="patient-col">
@@ -131,7 +131,7 @@
                                                             </div>
 
                                                         </div>
-                                                        <div fxLayout="column" fxLayoutGap="10px">
+                                                        <div fxLayout="column" fxLayoutGap="6px">
                                                             <div class="patient-col">
                                                                 <span class="patient-col-key">Ward | Bed Name
                                                                 </span>
@@ -165,14 +165,14 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </mat-card>
-
+                                    </mat-card> 
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="modal-card-container">
+                
+                <div class="modal-card-container table-container">
                     <mat-card>
                         <form [formGroup]="myFormGroup">
                             <div fxLayout="column">
@@ -205,9 +205,6 @@
                                 </div>
                             </div>
                         </form>
-                    </mat-card>
-                </div>
-                <div class="modal-card-container table-container">
                     <div class="table-row gap-12" fxLayout="column" fxLayout.gt-sm="row">
                         <!-- Table 1 -->
                         <div class="table-left" fxFlex="100%" fxFlex.sm="100%" fxFlex.gt-sm="40%">
@@ -308,6 +305,7 @@
                             </mat-card>
                         </div>
                     </div>
+                </mat-card>
                 </div>
             </div>
         </div>

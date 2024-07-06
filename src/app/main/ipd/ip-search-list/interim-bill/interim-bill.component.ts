@@ -222,7 +222,15 @@ export class InterimBillComponent implements OnInit {
       return false;
     }
   } 
-
+  keyPressCharater(event){
+    var inp = String.fromCharCode(event.keyCode);
+    if (/^\d*\.?\d*$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
 
   onChangeReg(event) {
     debugger

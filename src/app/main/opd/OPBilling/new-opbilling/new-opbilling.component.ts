@@ -423,7 +423,7 @@ console.log(obj)
   TotalDiscAmt: any;
   getDiscAmtSum(element) {
     let netAmt;
-    netAmt = element.reduce((sum, { DiscAmt }) => sum += +(DiscAmt || 0), 0);
+    netAmt = element.reduce((sum, { DiscAmt }) => sum += +(DiscAmt || 0), 0); 
     this.b_concessionamt = netAmt
     this.vConcessionAmt = netAmt;
     this.TotalDiscAmt = netAmt;
@@ -460,14 +460,26 @@ console.log(obj)
       });
       return;
     }
-    
+    if (this.BillingForm.get('concesDiscPer').value > 0 || this.BillingForm.get('concessionAmt').value > 0) {
+      if(!this.BillingForm.get('ConcessionId').value){
+        this.toastr.warning('Please select ConcessionReason.', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+      }
     if ((this.dataSource.data.length < 0)) {
       this.toastr.warning('Please add service in table', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-
+    if ((this.dataSource.data.length < 0)) {
+      this.toastr.warning('Please add service in table', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
     if (this.CompanyId !== 0 && this.CompanyId !== "") {
       this.saveCreditbill();
     }
@@ -507,7 +519,7 @@ console.log(obj)
       InsertBillUpdateBillNoObj['AddedBy'] = this.accountService.currentUserValue.user.id,
       InsertBillUpdateBillNoObj['TotalAdvanceAmount'] = 0,
       InsertBillUpdateBillNoObj['BillTime'] =this.dateTimeObj.time,// this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-      InsertBillUpdateBillNoObj['ConcessionReasonId'] = this.BillingForm.get('ConcessionId').value.ConcessionId || 0;
+      InsertBillUpdateBillNoObj['ConcessionReasonId'] = ConcessionId;
       InsertBillUpdateBillNoObj['IsSettled'] = 0;
       InsertBillUpdateBillNoObj['IsPrinted'] = 0;
       InsertBillUpdateBillNoObj['IsFree'] = 0;
@@ -689,7 +701,7 @@ console.log(obj)
 
         let Paymentobj = {};
         Paymentobj['BillNo'] = 0;
-        Paymentobj['ReceiptNo'] = "";
+        Paymentobj['ReceiptNo'] = 0;
         Paymentobj['PaymentDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
           Paymentobj['PaymentTime'] = this.dateTimeObj.time || '01/01/1900',
           Paymentobj['CashPayAmount'] = parseFloat(this.BillingForm.get('FinalAmt').value) || 0;
@@ -1198,13 +1210,11 @@ console.log(obj)
   // }
   getAdmittedDoctorCombo() {
     this._oPSearhlistService.getAdmittedDoctorCombo().subscribe(data => {
-      this.doctorNameCmbList = data;
-
+      this.doctorNameCmbList = data; 
       this.filteredOptionsDoctor = this.registeredForm.get('DoctorID').valueChanges.pipe(
         startWith(''),
-        map(value => this._filterDoctor(value)),
-      );
-
+        map(value => value ? this._filterDoctor(value) : this.doctorNameCmbList.slice()),
+      ); 
     });
   }
   private _filterDoctor(value: any): string[] {

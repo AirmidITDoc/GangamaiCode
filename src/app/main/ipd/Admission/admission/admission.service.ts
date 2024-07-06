@@ -40,8 +40,8 @@ export class AdmissionService {
       RoomName: '',
       PatientType: '',
       patientstatus: '',
-      start: [(new Date()).toISOString()],
-      end: [(new Date()).toISOString()],
+      start: [ ],
+      end: [ ],
 
     });
   }

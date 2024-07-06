@@ -19,15 +19,15 @@
             </div>
         </div>
     </div>
-    <mat-card style="padding: 1px;">
+     
         <div class="modal-body" fusePerfectScrollbar>
             <div class="modal-body-container">
 
                 <div fxLayout="column" class="gap-12">
-                    <form [formGroup]="myForm">
+                    <form [formGroup]="myForm"  >
                         <div class="modal-card-container">
-                            <mat-card style="padding: 1px;">
-                                <div fxLayout="row" fxLayout.sm="column" class="gap-16" fxLayoutAlign="center center">
+                         
+                                <div fxLayout="row" fxLayout.sm="column" class="gap-16" fxLayoutAlign="start center">
                                     <div class="radio-container">
                                         <mat-radio-group formControlName="Op_ip_id" fxFlex="5%">
                                             <mat-radio-button value="1">IP</mat-radio-button>
@@ -58,14 +58,13 @@
                                             </mat-error>
                                         </mat-form-field>
                                     </div>
-                                </div>
-                            </mat-card>
+                                </div> 
                         </div>
-                        <div class="modal-card-container">
+                        <div class="modal-card-container" style="padding: 5px 2px 5px 0px ;">
                             <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
                                 <div class="patient-info-container">
                                     <div class="patient-info-box">
-                                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 1px;">
+                                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 5px ;">
                                             <div class="patient-info-sales my-8">
                                                 <div class="patient-info-title border-bottom pb-2">
                                                     <span class="h1">Patient Information</span>
@@ -75,7 +74,7 @@
                                                     <div class="patient-sub">
                                                         <div class="patient-info-row patient-info-1-111 pt-8"
                                                             fxLayout="row" fxLayoutAlign="space-between">
-                                                            <div fxLayout="column" fxLayoutGap="10px">
+                                                            <div fxLayout="column" fxLayoutGap="6px">
                                                                 <div class="patient-col">
                                                                     <span class="patient-col-key">UHID No
                                                                     </span>
@@ -94,7 +93,7 @@
                                                                     <span class="patient-col-key">Doctor Name</span>
                                                                     <span>:</span>
                                                                     <span
-                                                                        class="patient-col-value">{{selectedAdvanceObj.Doctorname}}</span>
+                                                                        class="patient-col-value">{{selectedAdvanceObj.DoctorName}}</span>
                                                                 </div>
                                                                 <div class="patient-col">
                                                                     <span class="patient-col-key">Department</span>
@@ -103,13 +102,13 @@
                                                                         class="patient-col-value">{{selectedAdvanceObj.DepartmentName}}</span>
                                                                 </div>
                                                             </div>
-                                                            <div fxLayout="column" fxLayoutGap="10px">
+                                                            <div fxLayout="column" fxLayoutGap="6px">
 
                                                                 <div class="patient-col">
                                                                     <span class="patient-col-key">DOA | Time</span>
                                                                     <span>:</span>
                                                                     <span
-                                                                        class="patient-col-value">{{selectedAdvanceObj.AdmDateTime}}</span>
+                                                                        class="patient-col-value">{{selectedAdvanceObj.AdmissionDate | date:'dd/MM/YYYY'}}</span>
                                                                 </div>
                                                                 <div class="patient-col">
                                                                     <span class="patient-col-key">IPD No</span>
@@ -122,7 +121,7 @@
                                                                     </span>
                                                                     <span>:</span>
                                                                     <span
-                                                                        class="patient-col-value">{{selectedAdvanceObj.AgeYear}}Y|{{selectedAdvanceObj.AgeMonth}}M|{{selectedAdvanceObj.AgeDay}}
+                                                                        class="patient-col-value">{{selectedAdvanceObj.Age}}Y|{{selectedAdvanceObj.AgeMonth}}M|{{selectedAdvanceObj.AgeDay}}
                                                                         D | {{selectedAdvanceObj.GenderName}}</span>
                                                                 </div>
                                                                 <div class="patient-col">
@@ -134,7 +133,7 @@
                                                                 </div>
 
                                                             </div>
-                                                            <div fxLayout="column" fxLayoutGap="10px">
+                                                            <div fxLayout="column" fxLayoutGap="6px">
                                                                 <div class="patient-col">
                                                                     <span class="patient-col-key">Ward | Bed Name
                                                                     </span>
@@ -175,7 +174,7 @@
                             </div>
                         </div>
                         <div class="modal-card-container">
-                            <mat-card style="padding: 1px;">
+                            <mat-card style="padding: 5px;">
                                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
                                     <mat-form-field appearance="outline" fxFlex="100%">
                                         <mat-label>From Store Name</mat-label>
@@ -218,18 +217,18 @@
                             </mat-card>
                         </div>
                     </form>
-
-
+                    
                     <div class="modal-card-container">
-                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 1px;">
+                        
+                        <mat-card>
                             <form [formGroup]="ItemForm">
                                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
-
-                                    <mat-form-field appearance="outline" fxFlex="15%">
+                    
+                                    <mat-form-field appearance="outline" fxFlex="30%">
                                         <mat-label>ItemName</mat-label>
-                                        <input type="text" name="ItemId" formControlName="ItemId" #itemid
-                                            (keydown)="onEnterItem($event)" placeholder="Item Name " matInput
-                                            [matAutocomplete]="auto" (input)="getSearchItemList()" required>
+                                        <input type="text" name="ItemId" formControlName="ItemId" #itemid (keydown)="onEnterItem($event)"
+                                            placeholder="Item Name " matInput [matAutocomplete]="auto" (input)="getSearchItemList()"
+                                            required>
                                         <span matSuffix style="display: flex;">
                                             <mat-icon class="mat-icon-close"
                                                 (click)="ItemForm.get('ItemId').setValue(''); isItemIdSelected = false;">
@@ -243,17 +242,15 @@
                                                 {{option.ItemId}} | {{option.ItemName}} |{{option.BalanceQty}}
                                             </mat-option>
                                         </mat-autocomplete>
-                                        <mat-error class="error"
-                                            *ngIf="ItemForm.get('ItemId').invalid && ItemForm.get('ItemId').touched">
+                                        <mat-error class="error" *ngIf="ItemForm.get('ItemId').invalid && ItemForm.get('ItemId').touched">
                                             Select ItemName
                                         </mat-error>
                                     </mat-form-field>
-
-                                    <mat-form-field appearance="outline" fxFlex="15%">
+                    
+                                    <mat-form-field appearance="outline" fxFlex="20%">
                                         <mat-label>Dose Name</mat-label>
-                                        <input matAutocompletePosition="below" type="text"
-                                            placeholder="Select Dose Name" matInput formControlName="DoseId"
-                                            [matAutocomplete]="autoMode" required #dosename
+                                        <input matAutocompletePosition="below" type="text" placeholder="Select Dose Name" matInput
+                                            formControlName="DoseId" [matAutocomplete]="autoMode" required #dosename
                                             (keydown)="onEnterDose($event)">
                                         <span matSuffix style="display: flex;">
                                             <mat-icon class="mat-icon-close"
@@ -262,33 +259,29 @@
                                                 (click)="ItemForm.get('DoseId').setValue(''); isDoseSelected = false;">search</mat-icon>
                                         </span>
                                         <mat-autocomplete #autoMode="matAutocomplete" [displayWith]="getOptionTextDose">
-                                            <mat-option *ngFor="let option of filteredOptionsDosename | async"
-                                                [value]="option">
+                                            <mat-option *ngFor="let option of filteredOptionsDosename | async" [value]="option">
                                                 {{option.DoseName}}
                                             </mat-option>
                                         </mat-autocomplete>
                                     </mat-form-field>
-                                    <mat-form-field appearance="outline" fxFlex="1 1 auto">
+                                    <mat-form-field appearance="outline" fxFlex="8%">
                                         <mat-label>Day</mat-label>
-                                        <input type="text" OnlyNumber [(ngModel)]="vDay" name="Day"
-                                            (keydown)="onEnterqty($event)" formControlName="Day" matInput required #qty
-                                            (keypress)="keyPressAlphanumeric($event)">
+                                        <input type="text" OnlyNumber [(ngModel)]="vDay" name="Day" (keydown)="onEnterqty($event)"
+                                            formControlName="Day" matInput required #qty (keypress)="keyPressAlphanumeric($event)">
                                     </mat-form-field>
-
-
+                    
+                    
                                     <!-- (keydown)="onEnterremark($event)" -->
-                                    <mat-form-field appearance="outline" fxFlex="10 1 auto">
+                                    <mat-form-field appearance="outline" fxFlex="35%">
                                         <mat-label>Instruction</mat-label>
-                                        <input type="text" name="Instruction" [(ngModel)]="vInstruction"
-                                            formControlName="Instruction" matInput #remark
-                                            (keydown)="onEnterremark($event)">
+                                        <input type="text" name="Instruction" [(ngModel)]="vInstruction" formControlName="Instruction"
+                                            matInput #remark (keydown)="onEnterremark($event)">
                                     </mat-form-field>
-
+                    
                                     <div class="input-add-button">
-                                        <div matTooltip="Select  name to enable this button!!"
-                                            [matTooltipDisabled]="!ItemForm.invalid" [matTooltipPosition]="'above'">
-                                            <button #addbutton class="btn btn-primary btn-with-icon" [disabled]="!add"
-                                                (click)="onAdd()">
+                                        <div matTooltip="Select  name to enable this button!!" [matTooltipDisabled]="!ItemForm.invalid"
+                                            [matTooltipPosition]="'above'">
+                                            <button #addbutton class="btn btn-primary btn-with-icon" [disabled]="!add" (click)="onAdd()">
                                                 <span class="btn-icon">
                                                     <mat-icon> add </mat-icon>
                                                 </span>
@@ -299,6 +292,7 @@
                                     </div>
                                 </div>
                             </form>
+
                             <div class="modal-card-container table-container">
                                 <div class="table-row gap-12" fxLayout="column" fxLayout.gt-md="row">
                                     <!-- Table 1 -->
@@ -400,21 +394,23 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="modal-footer" style="margin-top: 10px;">
-                                <div class="footer-navigation-container">
-                                    <div class="modal-footer-buttons">
-                                        <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                                        <button class="btn btn-primary" (click)="OnSavePrescription()"
-                                            [disabled]="myForm.invalid || dsItemList.data.length == 0">Save</button>
-                                    </div>
-                                </div>
-                            </div>
+                           
                         </mat-card>
+
+                       
                     </div>
 
                 </div>
 
             </div>
         </div>
-    </mat-card>
+        <div class="modal-footer" style="margin-top: 10px;">
+            <div class="footer-navigation-container">
+                <div class="modal-footer-buttons">
+                    <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                    <button class="btn btn-primary" (click)="OnSavePrescription()"
+                        [disabled]="myForm.invalid || dsItemList.data.length == 0">Save</button>
+                </div>
+            </div>
+        </div>
 </div>

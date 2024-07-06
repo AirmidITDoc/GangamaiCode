@@ -3217,6 +3217,7 @@ H_DiscAmt: any;
 H_NetAmt: any;
 H_PaidAmt: any;
 H_BalAmt: any;
+DoctorName:any;
 
   /**
 * Constructor
@@ -3305,6 +3306,7 @@ H_BalAmt: any;
       this.IsBillGenerated=AdmissionPersonl.IsBillGenerated || 0
       this.RoomName=AdmissionPersonl.RoomName || ''
       this.Doctorname=AdmissionPersonl.Doctorname || ''
+      this.DoctorName=AdmissionPersonl.DoctorName || ''
       this.AdmDateTime=AdmissionPersonl.AdmDateTime || ''
       this.TariffId=AdmissionPersonl.TariffId || 0;
       this.RefDocNameId=AdmissionPersonl.RefDocNameId || 0

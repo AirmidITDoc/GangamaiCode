@@ -776,7 +776,7 @@ public updateIPDDischargSummary(employee)
 
   // Get billing Service List 
   public getBillingServiceList(employee) {
-    return this._httpClient.post("Generic/GetByProc?procName=RetrieveServices",employee)
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ServicesList",employee)
     // ps_Rtrv_BillingServicesList Rtrv_ServList
   }
 

@@ -158,10 +158,7 @@ export class NewPrescriptionComponent implements OnInit {
     this.getWardList(); 
     this.getDoseList();
 
-    this.filteredOptionsDosename = this.ItemForm.get('DoseId').valueChanges.pipe(
-    startWith(''),
-    map(value => this._filterDosename(value)),
-  );
+   
   }
   dateTimeObj: any;
   WardName:any;
@@ -191,7 +188,7 @@ export class NewPrescriptionComponent implements OnInit {
  
   getOptionText(option) {
     if (!option) return '';
-    return option.FirstName + ' '+ option.MiddleName + ' ' + option.LastName + ' (' + option.RegID + ')';
+    return option.FirstName + ' '+ option.MiddleName + ' ' + option.LastName + ' (' + option.RegNo + ')';
   }
   getSelectedObj(obj) {
     debugger
@@ -246,7 +243,7 @@ export class NewPrescriptionComponent implements OnInit {
         }
       });
     }else{
-      this.toastr.warning('Please enter a Store', 'Warning !', {
+      this.toastr.warning('Please select  Store', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       }); 
     }
@@ -317,6 +314,10 @@ export class NewPrescriptionComponent implements OnInit {
   getDoseList() {
     this._PrescriptionService.getDoseList().subscribe((data) => {
       this.doseList = data; 
+      this.filteredOptionsDosename = this.ItemForm.get('DoseId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterDosename(value) : this.doseList.slice()),
+      );
     });
   }
   private _filterDosename(value: any): string[] {
@@ -583,7 +584,7 @@ export class NewPrescriptionComponent implements OnInit {
       insertIP_Prescription['drugId'] = element.ItemID;
       insertIP_Prescription['doseId'] =  element.DoseId || 0;
       insertIP_Prescription['days'] = element.Days || 0;
-      insertIP_Prescription['qtyPerDay'] =0,// element.Qty || 0
+      insertIP_Prescription['qtyPerDay'] =element.Days || 0;
       insertIP_Prescription['totalQty'] = 0,//element.Qty || 0;
       insertIP_Prescription['remark'] = element.Instruction || '';
       insertIP_Prescription['isClosed'] = false;

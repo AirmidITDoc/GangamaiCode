@@ -297,6 +297,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
         element.RefundAmt = ''
         element.BalanceAmount = element.NetBallAmt ;
       }
+
   }
 
 
@@ -322,14 +323,18 @@ export class IPRefundofAdvanceComponent implements OnInit {
     this.BalanceAdvance = 0;
     this.RefundAmount = 0;
     this.UsedAmount = row.UsedAmount;
+    this.advId = row.AdvanceId;
+    this.advDetailId = row.AdvanceDetailID;
+    this.BalanceAmount = row.BalanceAmount;
+    
     //this.NewRefundAmount = 0;
     console.log(row);
-    let Query = "select Date,RefundAmount from AdvanceDetail where AdvanceDetailID=" + row.AdvanceDetailID
+    let Query = "select RefundDate,RefundAmount from refund where AdvanceId=" + row.AdvanceId
     
     this._IpSearchListService.getPreRefundofAdvance(Query).subscribe(Visit => {
       this.dataSource1.data =  Visit as IPRefundofAdvance[]; 
     }); 
-   
+    this.TotRefundAmount
     // if (row.BalanceAmount == 0) {
     //   this.icon_disable = true;
     // }
@@ -354,15 +359,13 @@ export class IPRefundofAdvanceComponent implements OnInit {
 
   }
   onSave() {
-
-    // for chk?
-          this.vOPIPId=this.vRegId 
+ 
     this.isLoading = 'submit';
 
     let IPRefundofAdvanceObj = {};
     IPRefundofAdvanceObj['RefundDate'] = this.dateTimeObj.date;
     IPRefundofAdvanceObj['RefundTime'] = this.dateTimeObj.time;
-    IPRefundofAdvanceObj['BillId'] = 0;
+    IPRefundofAdvanceObj['BillId'] = this.BillNo || 0;
     IPRefundofAdvanceObj['AdvanceId'] = this.advId;
     IPRefundofAdvanceObj['OPD_IPD_Type'] = 1;
     IPRefundofAdvanceObj['OPD_IPD_ID'] = this.vOPIPId,
@@ -384,13 +387,14 @@ export class IPRefundofAdvanceComponent implements OnInit {
     UpdateAdvanceHeaderObj['BalanceAmount'] = this.BalanceAdvance;
 
     let InsertIPRefundofAdvanceDetailObj = {};
-    //InsertIPRefundofAdvanceDetailObj['AdvRefId'] = '0';
+    //InsertIPRefundofAdvanceDetailObj['AdvRefId'] = '0'; 
     InsertIPRefundofAdvanceDetailObj['AdvDetailId'] = this.advDetailId;
     InsertIPRefundofAdvanceDetailObj['RefundDate'] = this.dateTimeObj.date;
     InsertIPRefundofAdvanceDetailObj['RefundTime'] = this.dateTimeObj.time;
-    InsertIPRefundofAdvanceDetailObj['AdvRefundAmt'] = this.NewRefundAmount;
+    InsertIPRefundofAdvanceDetailObj['AdvRefundAmt'] =this.NewRefundAmount;
 
     let UpdateAdvanceDetailBalAmountObj = {};
+  
     UpdateAdvanceDetailBalAmountObj['AdvanceDetailID'] = this.advDetailId;
     UpdateAdvanceDetailBalAmountObj['RefundAmount'] = this.NewRefundAmount;
     UpdateAdvanceDetailBalAmountObj['BalanceAmount'] = this.BalanceAdvance;
@@ -402,11 +406,13 @@ export class IPRefundofAdvanceComponent implements OnInit {
 
     let PatientHeaderObj = {};
 
-    PatientHeaderObj['Date'] = this.dateTimeObj.date;
-    PatientHeaderObj['OPD_IPD_Id'] = this.vOPIPId,
-      PatientHeaderObj['NetPayAmount'] = this.NewRefundAmount;
+    PatientHeaderObj['Date'] = this.dateTimeObj.date; 
+    PatientHeaderObj['NetPayAmount'] = this.NewRefundAmount;
     PatientHeaderObj['PatientName'] = this.PatientName;
-    PatientHeaderObj['BillId'] = 0;
+    PatientHeaderObj['BillId'] = 0; 
+    PatientHeaderObj['IPDNo'] = this.vOPIPId
+    PatientHeaderObj['Doctorname'] = this.Doctorname;  
+    PatientHeaderObj['UHIDNO'] =  this.RegNo
 
     const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
       {

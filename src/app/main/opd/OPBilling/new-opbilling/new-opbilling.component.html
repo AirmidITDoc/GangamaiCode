@@ -79,8 +79,7 @@
                     </div>
 
                     <div fxlayout="row">
-                        <div class="modal-card-container">
-
+                        <div class="modal-card-container"> 
                             <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 6px;">
                                 <div class="patient-info-sales my-8">
                                     <div class="sales-patient-info-title">
@@ -163,74 +162,19 @@
                                     </div>
                                 </div>
                             </mat-card>
-                        </div>
-
-                        <div class="patient-info-container">
-                            <div class="patient-info-box">
-                                <div class="patient-info-title border-bottom pb-2">
-                                    <span class="h1">Patient Information</span>
-                                </div>
-
-                                <div class="patient-info-box my-8">
-                                    <div class="patient-info-row row-gap-4" fxLayout="row wrap">
-                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="10%">
-                                            <span class="patient-col-key ">RegNo</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{RegNo}}</span>
-                                        </div>
-
-                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
-                                            <span class="patient-col-key ">Patient Name</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{PatientName}}</span>
-                                        </div>
-                                        <div class="patient-col gap-3" fxFlex="15%" fxFlex.gt-sm="10%">
-                                            <span class="patient-col-key">OPDNo</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{vOPIPId}}</span>
-                                        </div>
-                                        <div class="patient-col gap-3" fxFlex="15%" fxFlex.gt-sm="10%">
-                                            <span class="patient-col-key">Tariff</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{Tarrifname}}</span>
-                                        </div>
-                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
-                                            <span class="patient-col-key ">Class</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{vClassName}}</span>
-                                        </div>
-                                        <div class="patient-col gap-3" fxFlex="25%" fxFlex.gt-sm="20%">
-                                            <span class="patient-col-key">Company</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{CompanyName}}</span>
-                                        </div>
-
-                                        <div class="patient-col gap-3" fxFlex="25%" fxFlex.gt-sm="20%">
-                                            <span class="patient-col-key">Doctor</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{Doctorname}}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        </div>  
                     </div> 
-                </div>
-
+                </div> 
             </div> 
 
-            <div fxLayout="column">
-
+            <div fxLayout="column" style="padding: 0px 12px 0px 12px;"> 
                 <div class="content-card" style="width:100%;" class="my-12">
                     <div fxLayout="column" fxLayout.gt-xs="column" fxLayoutGap="3px">
-                        <div fxlayout="row">
-                            <!-- ================================ LABEL HEADER  -->
-
+                        <div fxlayout="row">  
                             <div fxFlex.gt-sm="100%" fxFlex>
                                 <form [formGroup]="registeredForm" style="display: flex;" #f="ngForm" #aForm
-                                    class="mat-form-field-auto">
-
-                                    <div fxLayout="row" fxLayoutGap="5px">
+                                    class="mat-form-field-auto"> 
+                                    <div fxLayout="row" fxLayoutGap="5px">  
 
                                         <mat-form-field appearance="outline" style="width:500px;" #myInput>
                                             <input type="text" name="SrvcName" formControlName="SrvcName" #Servicename placeholder="Service Name" matInput
@@ -575,7 +519,7 @@
                                         <mat-label>Disc Amt</mat-label>
                                         <input matInput name="concessionAmt" formControlName="concessionAmt" type="text"
                                             onlyNumber autocomplete="off" (keypress)="keyPressCharater($event)"
-                                            (keyup)="calcDiscAmtTotal()" [readonly]="v_ChargeDiscPer > 0">
+                                            (keyup)="calcDiscAmtTotal()" [readonly]="TotalDiscAmt > 0">
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex *ngIf="Consessionres">

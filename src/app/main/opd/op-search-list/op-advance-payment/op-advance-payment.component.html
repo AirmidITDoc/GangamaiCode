@@ -59,12 +59,12 @@
                                 <span>:</span>
                                 <span class="patient-col-value">{{RegNo}}</span>
                             </div>
-                            <div class="patient-col" *ngIf="OPD_IPD_Id">
+                            <div class="patient-col" *ngIf="OPD_IPD_Id > 0">
                                 <span class="patient-col-key">OPD No</span>
                                 <span>:</span>
                                 <span class="patient-col-value">{{OPD_IPD_Id}}</span>
                             </div>
-                            <div class="patient-col" *ngIf="!OPD_IPD_Id">
+                            <div class="patient-col" *ngIf="IPDNo">
                                 <span class="patient-col-key">IPD No</span>
                                 <span>:</span>
                                 <span class="patient-col-value">{{IPDNo}}</span>

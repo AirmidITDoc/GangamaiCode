@@ -233,7 +233,7 @@ export class OPSearhlistService {
 
   // Get billing Service List 
   public getBillingServiceList(employee) {
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ServicesList]", employee)
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ServicesList", employee)
   }
 
    // Get CashCounter List 

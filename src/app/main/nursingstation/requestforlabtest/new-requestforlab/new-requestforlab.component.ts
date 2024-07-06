@@ -96,8 +96,7 @@ export class NewRequestforlabComponent implements OnInit {
 
   ngOnInit(): void {
     this.searchFormGroup = this.createSearchForm();
-    this.myFormGroup = this.createMyForm();
-    // this.getServiceListdata();
+    this.myFormGroup = this.createMyForm(); 
   }
 
   createMyForm():FormGroup {
@@ -118,8 +117,7 @@ export class NewRequestforlabComponent implements OnInit {
   createSearchForm():FormGroup{
     return this._FormBuilder.group({
       RegID:[''],
-      radioIp:['1']
-
+      radioIp:['1'] 
     });
   }
   dateTimeObj: any;
@@ -196,7 +194,8 @@ export class NewRequestforlabComponent implements OnInit {
 
   getServiceListdata() {
     // debugger
-    if(this.RegNo > 0 ){
+    if(this.RegNo){
+      this.sIsLoading = ''
       var Param = {
         "ServiceName":`${this.myFormGroup.get('ServiceId').value}%` ||'%',
         "IsPathRad":parseInt(this.myFormGroup.get('IsPathRad').value) || 0,

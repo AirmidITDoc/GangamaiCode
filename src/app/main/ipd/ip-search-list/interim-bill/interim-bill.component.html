@@ -257,14 +257,15 @@
                                         <input name="formDiscPer" formControlName="discPer"
                                             (keyup.enter)="setFocus('discAmount')" id="discPer" placeholder="Disc (%)"
                                             (keyup)="calculatePersc()" matInput [(ngModel)]="formDiscPersc" type="text" OnlyNumber
-                                            maxlength="2"  (keypress)="keyPressAlphanumeric($event)"  >
+                                            maxlength="2"  (keypress)="keyPressCharater($event)"  >
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex="10%">
                                         <mat-label>Disc Amt</mat-label>
                                         <input matInput [(ngModel)]="b_disAmount" name="bDisAmount"  
                                             formControlName="concessionAmt" type="text" OnlyNumber id="discAmount"
-                                            (keyup.enter)="setFocus('ConId')" (keyup)="calculatechargesDiscamt()">
+                                            (keyup.enter)="setFocus('ConId')" (keyup)="calculatechargesDiscamt()"
+                                            (keypress)="keyPressCharater($event)">
                                     </mat-form-field>
 
                                     <mat-form-field *ngIf="ConShow" appearance="outline" fxFlex="15%">
