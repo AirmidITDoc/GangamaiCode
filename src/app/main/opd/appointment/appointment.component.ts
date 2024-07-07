@@ -1622,11 +1622,11 @@ export class AppointmentComponent implements OnInit {
   }
 
   getSelectedObj(obj) {
-
+console.log(obj)
     this.RegOrPhoneflag = 'Entry from Registration';
-    obj.AgeDay = obj.AgeDay.trim();
-    obj.AgeMonth = obj.AgeMonth.trim();
-    obj.AgeYear = obj.AgeYear.trim();
+    obj.AgeDay = obj.AgeDay1.trim();
+    obj.AgeMonth = obj.AgeMonth1.trim();
+    obj.AgeYear = obj.AgeYear1.trim();
     this.registerObj = obj;
     this.PatientName = obj.PatientName;
     this.RegId = obj.RegId;

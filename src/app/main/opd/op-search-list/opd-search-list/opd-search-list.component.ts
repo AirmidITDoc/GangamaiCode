@@ -330,6 +330,9 @@ export class SearchInforObj
      DepartmentName:any;
      GenderName:any;
      DepartmentId:any;
+     Tarrifname:any;
+     RefDocName:any;
+     
      /**
      * Constructor
      *
@@ -374,7 +377,9 @@ export class SearchInforObj
            this.AgeMonth=SearchInforObj.AgeMonth||0
            this.DepartmentName=SearchInforObj.DepartmentName || '',
            this.DepartmentId=SearchInforObj.DepartmentId ||0
-           this.GenderName=SearchInforObj.GenderName||0
+           this.GenderName=SearchInforObj.GenderName|| ""
+           this.Tarrifname=SearchInforObj.Tarrifname || ""
+           this.RefDocName=SearchInforObj.RefDocName|| ""
         }
     }
 }

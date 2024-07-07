@@ -29,7 +29,7 @@ export class CrossConsultationComponent implements OnInit {
   InfoFormGroup: FormGroup;
   dateTimeObj: any;
   screenFromString = 'advance';
-  selectedAdvanceObj: SearchInforObj;
+  selectedAdvanceObj: AdmissionPersonlModel;
   submitted: any;
   isLoading: any;
   AdmissionId: any;
@@ -74,24 +74,47 @@ export class CrossConsultationComponent implements OnInit {
     if (this.data) {
       this.selectedAdvanceObj = data;
       console.log(this.selectedAdvanceObj);
+      this.PatientHeaderObj = this.data;
+
+      this.VisitId = this.selectedAdvanceObj.VisitId;
+      this.PatientName = this.PatientHeaderObj.PatientName;
+      this.vOPIPNo=this.PatientHeaderObj.RegId;
+      this.VisitDate=this.PatientHeaderObj.VistDateTime;
+      this.selectedAdvanceObj.AgeDay= this.selectedAdvanceObj.AgeDay.trim();
+      this.selectedAdvanceObj.AgeMonth= this.selectedAdvanceObj.AgeMonth.trim();
+      this.selectedAdvanceObj.AgeYear= this.selectedAdvanceObj.AgeYear.trim();
       this.getDepartmentList();
      
-
     }
   }
 
   ngOnInit(): void {
 
     this.InfoFormGroup = this.createCrossConForm();
-    if (this.data) {
-      this.PatientHeaderObj = this.data;
-      this.VisitId = this.PatientHeaderObj.VisitId;
-      this.PatientName = this.PatientHeaderObj.PatientName;
-      this.vOPIPNo=this.PatientHeaderObj.RegId;
-      this.VisitDate=this.PatientHeaderObj.VistDateTime;
-      // this.OnChangeDoctorList(this.selectedAdvanceObj,true)
-      console.log(this.PatientHeaderObj);
-    }
+  
+
+    // if (this.advanceDataStored.storage) {
+    //   this.selectedAdvanceObj = this.advanceDataStored.storage;
+    //   this.PatientHeaderObj = this.data;
+    //   console.log(this.selectedAdvanceObj);
+    //   this.VisitId = this.selectedAdvanceObj.VisitId;
+    //   this.PatientName = this.PatientHeaderObj.PatientName;
+    //   this.vOPIPNo=this.PatientHeaderObj.RegId;
+    //   this.VisitDate=this.PatientHeaderObj.VistDateTime;
+    //   // this.RegId = this.selectedAdvanceObj.RegId;
+    //   // this.RegNo = this.selectedAdvanceObj.RegNo;
+    //   // this.AgeYear = this.selectedAdvanceObj.AgeYear;
+    //   // this.vOPIPId = this.selectedAdvanceObj.VisitId;
+    //   // this.PatientName = this.selectedAdvanceObj.PatientName;
+    //   // this.Doctorname = this.selectedAdvanceObj.Doctorname;
+    //   // this.CompanyId = this.selectedAdvanceObj.CompanyId;
+    //   // this.CompanyName = this.selectedAdvanceObj.CompanyName;
+    //   // this.Tarrifname = this.selectedAdvanceObj.TariffName;
+    //   // this.vTariffId = this.selectedAdvanceObj.TariffId;
+    //   // this.vClassId = this.selectedAdvanceObj.ClassId;
+    //   // this.vClassName = this.selectedAdvanceObj.ClassName;
+    //   // this.vMobileNo = this.selectedAdvanceObj.MobileNo;
+    // }
 
     this.filteredOptionsDep = this.InfoFormGroup.get('Departmentid').valueChanges.pipe(
       startWith(''),

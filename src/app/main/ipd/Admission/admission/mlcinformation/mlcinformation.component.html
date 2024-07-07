@@ -184,16 +184,13 @@
         </mat-form-field>
           </div>
 
-
-          <div class="modal-footer" style="margin-top: 10px;margin-left:1150px;">
-            <div class="footer-navigation-container">
-              <div class="modal-footer-buttons">
-                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                <button class="btn btn-primary" (click)="onSubmit()" [disabled]="MlcInfoFormGroup.invalid">Save</button>
-              </div>
-            </div>
-
-          </div>
+          <div class="next-div button-row-group" style="margin-left: 1000px;">
+            <button class="btn btn-primary" color="accent" (click)="onSubmit()"
+                [disabled]="MlcInfoFormGroup.invalid">
+                <span>Save</span>
+            </button>
+            <button class="btn btn-danger-outline" (click)="onClose()">Reset</button>
+        </div>
         </form>
       </div>
     </mat-card>

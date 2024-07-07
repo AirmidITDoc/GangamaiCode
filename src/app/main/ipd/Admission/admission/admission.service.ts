@@ -283,6 +283,9 @@ export class AdmissionService {
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
   }
 
+  public getDoctorMaster1() {
+    return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
+  }
   public getDoctorMaster() {
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
   }
@@ -454,6 +457,15 @@ export class AdmissionService {
   public getMLCDetail(data) {
     return this._httpClient.post("Generic/GetBySelectQuery?query=" + data, {})
   }
+
+
+  public getMLCDetailView(AdmissionId) {
+
+    return this._httpClient.get("InPatient/view-IP_MLCReport?AdmissionId=" + AdmissionId);
+  }
+
+
+  
 
 
   public CompanyUpdate(param) {

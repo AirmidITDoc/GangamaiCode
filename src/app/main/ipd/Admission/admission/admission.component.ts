@@ -673,8 +673,8 @@ export class AdmissionComponent implements OnInit {
   
   private _filterSearchdoc(value: any): string[] {
     if (value) {
-      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
-      return this.optionsSearchDoc.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
+      const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
+      return this.optionsSearchDoc.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
     }
 
   }
@@ -1164,7 +1164,7 @@ export class AdmissionComponent implements OnInit {
   }
 
   getOptionTextsearchDoctor(option) {
-    return option && option.DoctorName ? option.DoctorName : '';
+    return option && option.Doctorname ? option.Doctorname : '';
   }
 
   getDoctorList() {
@@ -2035,7 +2035,7 @@ this.getAdmittedPatientList_1()
       "F_Name": this._AdmissionService.myFilterform.get("FirstName").value + '%' || "%",
       "L_Name": this._AdmissionService.myFilterform.get("LastName").value + '%' || "%",
       "Reg_No": this._AdmissionService.myFilterform.get("RegNo").value || "0",
-      "Doctor_Id": this._AdmissionService.myFilterform.get("searchDoctorId").value.DoctorID || "0",
+      "Doctor_Id": this._AdmissionService.myFilterform.get("searchDoctorId").value.DoctorId || "0",
       "From_Dt": this.datePipe.transform(this._AdmissionService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
       "To_Dt": this.datePipe.transform(this._AdmissionService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
       "Admtd_Dschrgd_All": 0,
@@ -2780,6 +2780,8 @@ this.getAdmittedPatientList_1()
     this._registrationService.populateFormpersonal(row);
     this.registerObj["RegId"]=row.RegID;
     this.registerObj["RegID"]=row.RegID;
+    this.registerObj["PrefixID"]=row.PrefixId;
+    
     const dialogRef = this._matDialog.open(NewRegistrationComponent,
       {
         maxWidth: "90vw",
@@ -2790,7 +2792,12 @@ this.getAdmittedPatientList_1()
           Submitflag: true
         }
       });
-      this.getAdmittedPatientList_1()
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed - Insert Action', result);
+        this.getAdmittedPatientList_1();
+       
+      });
+     
   }
   getEditAdmission(row) {
     
@@ -2808,7 +2815,12 @@ this.getAdmittedPatientList_1()
           registerObj: row,
          }
       });
-      this.getAdmittedPatientList_1()
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed - Insert Action', result);
+        this. getAdmittedPatientList_1();
+       
+      });
+     
   }
 
   getEditCompany(row) {
@@ -2828,7 +2840,11 @@ this.getAdmittedPatientList_1()
           Submitflag: true
         }
       });
-      
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed - Insert Action', result);
+        // this. getAdmittedPatientList_1();
+       
+      });
   }
 }
 
@@ -3218,7 +3234,8 @@ H_NetAmt: any;
 H_PaidAmt: any;
 H_BalAmt: any;
 DoctorName:any;
-
+vOPDNo:any;
+TarrifName:any
   /**
 * Constructor
 *
@@ -3354,6 +3371,8 @@ DoctorName:any;
       this.H_NetAmt = AdmissionPersonl.H_NetAmt || '';
       this.H_PaidAmt = AdmissionPersonl.H_PaidAmt || '';
       this.H_BalAmt = AdmissionPersonl.H_BalAmt || '';
+      this.vOPDNo=AdmissionPersonl.vOPDNo || ''
+      this.TarrifName=AdmissionPersonl.TarrifName || ''
       
     }
   }

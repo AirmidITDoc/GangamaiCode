@@ -98,7 +98,7 @@
                                                             <mat-option
                                                                 *ngFor="let option of filteredOptionssearchDoctor | async"
                                                                 [value]="option">
-                                                                {{option.DoctorName}}
+                                                                {{option.Doctorname}}
                                                             </mat-option>
                                                         </mat-autocomplete>
                                                     </mat-form-field>
@@ -431,12 +431,12 @@
                                                                         <mat-icon style="color: black;">print</mat-icon>
                                                                     </button>
 
-                                                                    <button mat-icon-button
+                                                                    <!-- <button mat-icon-button
                                                                         [matMenuTriggerFor]="moreMenu" aria-label="More"
                                                                         (click)="$event.stopPropagation();">
                                                                         <mat-icon
                                                                             class="secondary-text">more_vert</mat-icon>
-                                                                    </button>
+                                                                    </button> -->
 
 
                                                                     <button mat-icon-button
@@ -454,7 +454,7 @@
                                                                     </button> -->
 
                                                                     
-                                                                    <mat-menu #moreMenu="matMenu">
+                                                                    <!-- <mat-menu #moreMenu="matMenu">
                                                                         <ng-container
                                                                             *ngFor="let m of menuActions, let i=index">
                                                                             <button mat-menu-item aria-label="remove"
@@ -462,7 +462,7 @@
                                                                                 <span>{{m}}</span>
                                                                             </button>
                                                                         </ng-container>
-                                                                    </mat-menu>
+                                                                    </mat-menu> -->
                                                                 </div>
                                                             </mat-cell>
                                                         </ng-container>

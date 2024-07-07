@@ -20,6 +20,8 @@ import { CertificateComponent } from 'app/main/Mrd/certificate/certificate.compo
 import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
 import { PrescriptionretList, PrescriptionretdetList } from '../prescription-return/prescription-return.component';
 import { NewPrescriptionreturnComponent } from '../prescription-return/new-prescriptionreturn/new-prescriptionreturn.component';
+import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-prescription',
@@ -33,6 +35,8 @@ export class PrescriptionComponent implements OnInit {
   hasSelectedContacts: boolean;
   SpinLoading:boolean=false;
   PType:any;
+  currentDate = new Date();
+
   displayedColumns: string[] = [ 
     'RegNo',
     'PatientName',
@@ -81,7 +85,9 @@ export class PrescriptionComponent implements OnInit {
     public _PrescriptionService:PrescriptionService,
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
+    public _WhatsAppEmailService: WhatsAppEmailService,
     public _matDialog: MatDialog,
+    public toastr: ToastrService,
     private reportDownloadService: ExcelDownloadService,
     private dialog:MatDialog
   ) { }
@@ -425,7 +431,37 @@ export class PrescriptionComponent implements OnInit {
     },100);
   }
 
-
+  getWhatsappshareSales(el, vmono) {
+    if (vmono != '' && vmono != '0') {
+      var m_data = {
+        "insertWhatsappsmsInfo": {
+          "mobileNumber": vmono || 0,
+          "smsString": '',
+          "isSent": 0,
+          "smsType": 'IPPrescription',
+          "smsFlag": 0,
+          "smsDate": this.currentDate,
+          "tranNo": el,
+          "PatientType": 2,//el.PatientType,
+          "templateId": 0,
+          "smSurl": "info@gmail.com",
+          "filePath": '',
+          "smsOutGoingID": 0
+        }
+      }
+      this._WhatsAppEmailService.InsertWhatsappSales(m_data).subscribe(response => {
+        if (response) {
+          this.toastr.success('Prescription Sent on WhatsApp Successfully.', 'Save !', {
+            toastClass: 'tostr-tost custom-toast-success',
+          });
+        } else {
+          this.toastr.error('API Error!', 'Error WhatsApp!', {
+            toastClass: 'tostr-tost custom-toast-error',
+          });
+        }
+      });
+    }
+  }
     deleteTablePreturnRow(element) {
     if(!element.IsClosed){
     // if (this.key == "Delete") {

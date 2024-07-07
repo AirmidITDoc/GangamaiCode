@@ -148,7 +148,7 @@ export class NewRegistrationComponent implements OnInit {
         console.log(this.data.registerObj)
         this.registerObj = this.data.registerObj;
         this.registerObj.PrefixID=this.registerObj.PrefixID;
-      
+        this.registerObj.PrefixID=this.registerObj.PrefixId;
         this.RegID=this.registerObj.RegID;
         this.AdmissionID=this.registerObj.AdmissionID;
         this.isDisabled = true
@@ -573,7 +573,7 @@ debugger
           "MobileNo": this.registerObj.MobileNo || "",// this._registerService.mySaveForm.get("MobileNo").value || "0",
           "AddedBy": this.accountService.currentUserValue.user.id,
           "UpdatedBy": this.accountService.currentUserValue.user.id,
-          "AgeYear": this.registerObj.AgeYear || "0",// this._registerService.mySaveForm.get("AgeYear").value.trim() || "%",
+          "AgeYear": this.personalFormGroup.get("AgeYear").value || "0",// this._registerService.mySaveForm.get("AgeYear").value.trim() || "%",
           "AgeMonth": this.registerObj.AgeMonth || "0",// this._registerService.mySaveForm.get("AgeMonth").value.trim() || "%",
           "AgeDay": this.registerObj.AgeDay || "0",// this._registerService.mySaveForm.get("AgeDay").value.trim() || "%",
           "CountryId": this.personalFormGroup.get('CountryId').value.CountryId,
@@ -596,7 +596,7 @@ debugger
           Swal.fire('Congratulations !', 'Register Data save Successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
               this._matDialog.closeAll();
-              this.getRegistredPatientCasepaperview(response);
+              // this.getRegistredPatientCasepaperview(response);
             }
           });
         } else {

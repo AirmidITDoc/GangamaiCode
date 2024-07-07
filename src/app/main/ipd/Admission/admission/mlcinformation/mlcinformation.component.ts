@@ -12,6 +12,7 @@ import { Admission, AdmissionPersonlModel } from '../admission.component';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 
 @Component({
@@ -208,6 +209,7 @@ public onEnterpolic(event): void {
         if (result.isConfirmed) {
           let m = response;
           this._matDialog.closeAll();
+          this.getMLCdetailview(response);
         }
       });
     } else {
@@ -240,6 +242,7 @@ else{
         if (result.isConfirmed) {
           let m = response;
           this._matDialog.closeAll();
+          this.getMLCdetailview(this.MLCId );
         }
       });
     } else {
@@ -252,6 +255,37 @@ else{
 }
 
 
+
+
+getMLCdetailview(Id) {
+  // this.sIsLoading = 'loading-data';
+
+  setTimeout(() => {
+
+    this._AdmissionService.getMLCDetailView(Id
+    ).subscribe(res => {
+      const matDialog = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "MLC Detail Viewer"
+          }
+        });
+
+      matDialog.afterClosed().subscribe(result => {
+        // this.AdList = false;
+        // this.sIsLoading = ' ';
+      });
+    });
+
+  }, 100);
+
+
+
+}
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }

@@ -348,6 +348,7 @@ getAdvanceDetaId(){
     }
     else {
       this.isLoading = 'submit';
+      let AdvanceDetObjarry = [];
 
       let AdvanceDetObj = {};
       AdvanceDetObj['AdvanceDetailID'] = this.selectedAdvanceObj ;
@@ -368,6 +369,8 @@ getAdvanceDetaId(){
       AdvanceDetObj['IsCancelledBy'] = 0;
       AdvanceDetObj['IsCancelledDate'] = '01/01/1900';
       AdvanceDetObj['Reason'] = this.AdvFormGroup.get("comment").value;
+    
+      AdvanceDetObjarry.push(AdvanceDetObj);
       // AdvanceDetObj['CashCounterId'] = 2;//this.AdvFormGroup.get('CashCounterId').value.CashCounterId;
 
       let advanceHeaderObj = {};
@@ -381,8 +384,8 @@ getAdvanceDetaId(){
       PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName;
       PatientHeaderObj['NetPayAmount'] = this.advanceAmount;
 
-      const advanceHeaderUpdate = new AdvanceHeaderUpdate(advanceHeaderObj);
-      const advanceDetailInsert = new AdvanceDetails(AdvanceDetObj);
+      // const advanceHeaderUpdate = new AdvanceHeaderUpdate(advanceHeaderObj);
+      // const advanceDetailInsert = new AdvanceDetails(AdvanceDetObj);
       
         const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
           {
@@ -400,8 +403,8 @@ getAdvanceDetaId(){
           console.log('==============================  Advance Amount ===========');
 
           let submitData = {
-            "advanceHeaderUpdate": advanceHeaderUpdate,
-            "advanceDetailInsert1": advanceDetailInsert,
+            "advanceHeaderUpdate": advanceHeaderObj,
+            "advanceDetailInsert1": AdvanceDetObj,
             "ipPaymentInsert1": result.submitDataPay.ipPaymentInsert
           };
           console.log(submitData);

@@ -753,11 +753,11 @@
                                                             <mat-label>Age (Y)</mat-label>
                                                             <input name="AgeYear" formControlName="AgeYear"
                                                                 placeholder="Age (Y)" matInput
-                                                                [ngModel]="registerObj.AgeYear"
-                                                                (ngModelChange)="registerObj.AgeYear = $event" required
+                                                                [ngModel]="registerObj.Age"
+                                                                (ngModelChange)="registerObj.Age = $event" required
                                                                 maxlength="3" #agey
-                                                                (keyup)="ageyearcheck(registerObj.AgeYear)"
-                                                                (keydown)="onEnteragey($event,registerObj.AgeYear)"
+                                                                (keyup)="ageyearcheck(registerObj.Age)"
+                                                                (keydown)="onEnteragey($event,registerObj.Age)"
                                                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
                                                             <mat-error
                                                                 *ngIf="personalFormGroup.get('AgeYear').invalid && personalFormGroup.get('AgeYear').touched">Please

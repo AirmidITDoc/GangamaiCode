@@ -21,6 +21,7 @@ import { PrecriptionItemList } from 'app/main/nursingstation/prescription/new-pr
 import { ToastrService } from 'ngx-toastr';
 import { MedicineItemList } from 'app/main/ipd/ip-search-list/discharge-summary/discharge-summary.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 
 export interface PrescriptionTable {
   drugName: ILookup;
@@ -283,6 +284,7 @@ export class NewCasepaperComponent implements OnInit {
     public toastr: ToastrService,
     private _loggedService: AuthenticationService,
     public datePipe: DatePipe,
+    public _WhatsAppEmailService: WhatsAppEmailService
   ) {
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
@@ -631,7 +633,7 @@ export class NewCasepaperComponent implements OnInit {
     setTimeout(() => {
       this.SpinLoading = true;
       //  this.AdList=true;
-      this._CasepaperService.getIpPrescriptionview(
+      this._CasepaperService.getOpPrescriptionview(
         OP_IP_ID, 1
       ).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,
@@ -655,6 +657,38 @@ export class NewCasepaperComponent implements OnInit {
       });
 
     }, 100);
+  }
+
+  getWhatsappshareSales(el, vmono) {
+    if (vmono != '' && vmono != '0') {
+      var m_data = {
+        "insertWhatsappsmsInfo": {
+          "mobileNumber": vmono || 0,
+          "smsString": '',
+          "isSent": 0,
+          "smsType": 'OPPRESCRIPTIONT',
+          "smsFlag": 0,
+          "smsDate": this.currentDate,
+          "tranNo": el,
+          "PatientType": 1,//el.PatientType,
+          "templateId": 0,
+          "smSurl": "info@gmail.com",
+          "filePath": '',
+          "smsOutGoingID": 0
+        }
+      }
+      this._WhatsAppEmailService.InsertWhatsappSales(m_data).subscribe(response => {
+        if (response) {
+          this.toastr.success('Prescription Sent on WhatsApp Successfully.', 'Save !', {
+            toastClass: 'tostr-tost custom-toast-success',
+          });
+        } else {
+          this.toastr.error('API Error!', 'Error WhatsApp!', {
+            toastClass: 'tostr-tost custom-toast-error',
+          });
+        }
+      });
+    }
   }
 
   dateTimeObj: any;
@@ -1127,7 +1161,7 @@ export class NewCasepaperComponent implements OnInit {
           if (result.isConfirmed) {
 
             this.viewgetIpprescriptionReportPdf(this.vOPIPId);
-           
+            this.getWhatsappshareSales(this.vOPIPId,this.vMobileNo)
           }
         });
       } else {
