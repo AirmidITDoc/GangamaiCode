@@ -7,8 +7,7 @@ import { DatePipe } from '@angular/common';
 import { BrowseRefundlistService } from '../browse-refundlist.service';
 import { RefundMaster } from '../browse-refund-list.component';
 import { fuseAnimations } from '@fuse/animations';
-import { AdvanceDataStored } from 'app/main/ipd/advance';
-import { BrowseIpdreturnadvanceReceipt } from 'app/main/ipd/ip-search-list/ip-refundof-advance/ip-refundof-advance.component';
+import { AdvanceDataStored } from 'app/main/ipd/advance'; 
 import * as converter from 'number-to-words';
 
 @Component({

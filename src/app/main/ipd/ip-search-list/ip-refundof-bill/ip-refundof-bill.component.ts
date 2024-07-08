@@ -1,7 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { AdvanceDetailObj } from '../ip-search-list.component';
-import { BrowseIpdreturnadvanceReceipt } from '../ip-refundof-advance/ip-refundof-advance.component';
+import { AdvanceDetailObj } from '../ip-search-list.component'; 
 import { Observable, Subscription } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -21,6 +20,7 @@ import { OPAdvancePaymentComponent } from 'app/main/opd/op-search-list/op-advanc
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 import { ToastrService } from 'ngx-toastr';
 import { element } from 'protractor';
+import { BrowseIpdreturnadvanceReceipt } from '../../ip-refundof-advance/ip-refundof-advance.component';
 
 type NewType = Observable<any[]>;
 @Component({

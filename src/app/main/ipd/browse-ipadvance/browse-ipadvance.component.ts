@@ -12,11 +12,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { AdvanceDataStored } from '../advance';
 import * as converter from 'number-to-words';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
-import { BrowseIpdreturnadvanceReceipt } from '../ip-search-list/ip-refundof-advance/ip-refundof-advance.component';
+import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service'; 
 import { Xliff } from '@angular/compiler';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 import { ToastrService } from 'ngx-toastr';
+import { BrowseIpdreturnadvanceReceipt } from '../ip-refundof-advance/ip-refundof-advance.component';
 @Component({
   selector: 'app-browse-ipadvance',
   templateUrl: './browse-ipadvance.component.html',

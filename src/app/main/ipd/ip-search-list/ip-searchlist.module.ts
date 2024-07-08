@@ -48,7 +48,7 @@ import { IPSearchListComponent } from './ip-search-list.component';
 import { IPSearchListService } from './ip-search-list.service';
 import { IPAdvanceComponent } from './ip-advance/ip-advance.component';
 import { IPAdvancePaymentComponent } from './ip-advance-payment/ip-advance-payment.component';
-import { IPRefundofAdvanceComponent } from './ip-refundof-advance/ip-refundof-advance.component';
+// import { IPRefundofAdvanceComponent } from './ip-refundof-advance/ip-refundof-advance.component';
 import { IPRefundofBillComponent } from './ip-refundof-bill/ip-refundof-bill.component';
 import { IPBillingComponent } from './ip-billing/ip-billing.component';
 import { InterimBillComponent } from './interim-bill/interim-bill.component';
@@ -76,7 +76,7 @@ const routes: Routes = [
       DischargeComponent,
       IPAdvanceComponent,
       IPAdvancePaymentComponent,
-      IPRefundofAdvanceComponent,
+      //IPRefundofAdvanceComponent,
       IPRefundofBillComponent,
       IPBillingComponent,
       InterimBillComponent,

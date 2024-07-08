@@ -123,6 +123,7 @@ getAdvanceDetaId(){
   console.log(Query)
  // this.AdvanceDetailList = 
 }
+vAdvanceDetId:any;
   getAdvanceList() {
     this.isLoadingStr = 'loading';
     var m_data = {
@@ -134,6 +135,8 @@ getAdvanceDetaId(){
         this.dataSource.data = Visit as AdvanceDetail[];
         if (this.dataSource.data.length > 0) {
           this.vAdvanceId = this.dataSource.data[0]['AdvanceId'];
+          this.vAdvanceDetId = this.dataSource.data[0].AdvanceDetailID;
+          console.log(this.dataSource.data)
           this.dataSource.sort = this.sort;
           this.dataSource.paginator = this.paginator;
           this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
@@ -351,11 +354,11 @@ getAdvanceDetaId(){
       let AdvanceDetObjarry = [];
 
       let AdvanceDetObj = {};
-      AdvanceDetObj['AdvanceDetailID'] = this.selectedAdvanceObj ;
+      AdvanceDetObj['AdvanceDetailID'] = this.vAdvanceDetId ;
       AdvanceDetObj['Date'] = this.dateTimeObj.date || '01/01/1900'
       AdvanceDetObj['Time'] = this.dateTimeObj.time || '01/01/1900'
       AdvanceDetObj['AdvanceId'] = this.vAdvanceId || 0;
-      AdvanceDetObj['RefId'] =0,// this.selectedAdvanceObj.RegId;
+      AdvanceDetObj['RefId'] =this.selectedAdvanceObj.RegID || 0;
       AdvanceDetObj['transactionID'] = 2;
       AdvanceDetObj['OPD_IPD_Type'] = 1;
       AdvanceDetObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;

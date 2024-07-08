@@ -107,8 +107,16 @@ export class NewCanteenRequestComponent implements OnInit {
     if (!option) return '';
     return option.FirstName + ' '+ option.MiddleName + ' ' + option.LastName + ' (' + option.RegID + ')';
   }
-  getSelectedObj(obj) {
-    debugger
+  PatientType:any;
+  RefDocName:any;
+  DepartmentName:any;
+  Ageyear:any;
+  AgeMonth:any;
+  AgeDay:any;
+  AdmissionDate:any;
+  GenderName:any;
+  
+  getSelectedObj(obj) { 
     if(obj.IsDischarged == 1){
       Swal.fire('Selected Patient is already discharged');
       this.PatientName = ''  
@@ -121,9 +129,9 @@ export class NewCanteenRequestComponent implements OnInit {
       this.WardName =''
       this.BedNo = ''
     }
-    else{
-      debugger
+    else{ 
       this.registerObj = obj;
+      console.log(obj)
       // this.PatientName = obj.FirstName + '' + obj.LastName;
       this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
       this.RegNo = obj.RegNo;
@@ -135,6 +143,14 @@ export class NewCanteenRequestComponent implements OnInit {
       this.vOPDNo = obj.IPDNo;
       this.WardName = obj.RoomName;
       this.BedNo = obj.BedName;
+      this.PatientType = obj.PatientType
+      this.RefDocName = obj.RefDocName
+      this.DepartmentName = obj.DepartmentName
+      this.Ageyear = obj.Ageyear
+      this.AgeMonth = obj.AgeMonth
+      this.AgeDay = obj.AgeDay 
+      this.GenderName = obj.GenderName
+      this.AdmissionDate = obj.AdmissionDate
       console.log(obj);
     } 
   } 

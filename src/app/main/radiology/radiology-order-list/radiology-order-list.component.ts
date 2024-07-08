@@ -60,18 +60,16 @@ export class RadiologyOrderListComponent implements OnInit {
 
   dataSource = new MatTableDataSource<RadioPatientList>();
   displayedColumns: string[] = [
-    'RegNo',
-    'PatientName',
     'RadDate',
     'RadTime',
-    'PatientType',
-    // 'TestName',
-    'ConsultantDoctor',
-    // 'CategoryName',
-    'AgeDay',
-    'AgeMonth',
-    'AgeYear',
-    'GenderName',
+    'RegNo',
+    'PatientName',
+    'PatientType', 
+    'ConsultantDoctor', 
+    'AgeGender',
+    'ServiceName',
+    'IsCompleted',
+    'IsPrinted',
     'PBillNo',
     'action'
 

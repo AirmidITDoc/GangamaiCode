@@ -16,7 +16,7 @@ import { BedTransferComponent } from './bed-transfer/bed-transfer.component';
 import { fuseAnimations } from '@fuse/animations';
 import { ReplaySubject, Subject } from 'rxjs';
 import { FormControl } from '@angular/forms';
-import { IPRefundofAdvanceComponent } from './ip-refundof-advance/ip-refundof-advance.component';
+// import { IPRefundofAdvanceComponent } from './ip-refundof-advance/ip-refundof-advance.component';
 import { IPRefundofBillComponent } from './ip-refundof-bill/ip-refundof-bill.component';
 import { Admission, AdmissionPersonlModel } from '../Admission/admission/admission.component';
 import { IPBillingComponent } from './ip-billing/ip-billing.component';
@@ -25,6 +25,7 @@ import { DischargeSummaryComponent } from './discharge-summary/discharge-summary
 import { ToastrService } from 'ngx-toastr';
 import { CompanyInformationComponent } from '../company-information/company-information.component';
 import { NewCasepaperComponent } from 'app/main/opd/new-casepaper/new-casepaper.component';
+import { IPRefundofAdvanceComponent } from '../ip-refundof-advance/ip-refundof-advance.component';
 
 
 

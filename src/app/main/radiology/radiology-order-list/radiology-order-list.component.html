@@ -224,15 +224,7 @@
                                                 {{contact.ConsultantDoctor}}
                                             </mat-cell>
                                         </ng-container>
-
-                                        <!-- <ng-container matColumnDef="CategoryName">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Category
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                        {{contact.CategoryName}}
-                                    </mat-cell>
-                                </ng-container> -->
-
+ 
                                         <ng-container matColumnDef="AgeDay">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>AgeDay
                                             </mat-header-cell>
@@ -583,34 +575,12 @@
                     <div class="layout-card-container">
                         <mat-card>
                             <div fxLayout="column" class="gap-8">
-                                <div class="table-header">
-                                    <div fxLayout="row wrap" fxLayoutAlign="space-between center">
-                                        <div class="table-header-title">
-                                            <span class="h3 font-weight-600">Lab Or Rad Details</span>
-                                        </div>
-                                    </div>
-                                </div>
+                                
                                 <div class="table-wrapper">
                                     <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur">
                                         <div class="spinner-border"></div>
                                     </div>
                                     <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
-
-                                        <ng-container matColumnDef="RegNo">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>RegNo
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.RegNo}}
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="PatientName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>PatientName
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm [matTooltip]="contact.PatientName">
-                                                <span> {{contact.PatientName}}</span>
-                                            </mat-cell>
-                                        </ng-container>
 
                                         <ng-container matColumnDef="RadDate">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>RadDate
@@ -628,9 +598,25 @@
                                             </mat-cell>
                                         </ng-container>
 
+                                        <ng-container matColumnDef="RegNo">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>UHID No
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.RegNo}}
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="PatientName">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Patient Name
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm [matTooltip]="contact.PatientName">
+                                                <span> {{contact.PatientName}}</span>
+                                            </mat-cell>
+                                        </ng-container>  
+
                                         <ng-container matColumnDef="PatientType">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
-                                                PatientType
+                                                Patient Type
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                                 <span> {{contact.PatientType}}</span>
@@ -639,51 +625,46 @@
 
                                         <ng-container matColumnDef="ConsultantDoctor">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
-                                                ConsultantDoctor
+                                                Consultant Doctor
                                             </mat-header-cell>
 
                                             <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                                 <span> {{contact.ConsultantDoctor}}</span>
                                             </mat-cell>
-                                        </ng-container>
+                                        </ng-container> 
 
-                                        <!-- <ng-container matColumnDef="CategoryName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Category
+                                        <ng-container matColumnDef="AgeGender">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Age|Gender
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                                <span> {{contact.CategoryName}}</span>
+                                                {{contact.AgeYear}}Y|{{contact.AgeMonth}}M|{{contact.AgeDay}}D | {{contact.GenderName}}
                                             </mat-cell>
-                                        </ng-container> -->
+                                        </ng-container> 
 
-                                        <ng-container matColumnDef="AgeDay">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>AgeDay
+                                        <ng-container matColumnDef="ServiceName">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                                Service Name
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                                <span> {{contact.AgeDay}}</span>
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="AgeMonth">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>AgeMonth
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                                <span> {{contact.AgeMonth}}</span>
+                                                {{contact.ServiceName}}
                                             </mat-cell>
                                         </ng-container>
 
-                                        <ng-container matColumnDef="AgeYear">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>AgeYear
+                                        <ng-container matColumnDef="IsCompleted">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                                IsCompleted
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                                <span> {{contact.AgeYear}}</span>
+                                                {{contact.IsCompleted}}
                                             </mat-cell>
                                         </ng-container>
 
-                                        <ng-container matColumnDef="GenderName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Gender
+                                        <ng-container matColumnDef="IsPrinted">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                                IsPrinted
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                                <span> {{contact.GenderName}}</span>
+                                                {{contact.IsPrinted}}
                                             </mat-cell>
                                         </ng-container>
 
@@ -701,11 +682,11 @@
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact">
                                                 <button mat-icon-button (click)="getRecord(contact)" matTooltip="how_to_edit">
-                                                    <mat-icon title="Edit Menu">launch</mat-icon>
+                                                    <mat-icon title="Edit Menu">edit</mat-icon>
                                                 </button>
-                                                <button mat-icon-button (click)="getView(contact)" matTooltip="how_to_reg">
+                                                <!-- <button mat-icon-button (click)="getView(contact)" matTooltip="how_to_reg">
                                                     <mat-icon>how_to_reg</mat-icon>
-                                                </button>
+                                                </button> -->
                                                 <button mat-icon-button (click)="viewgetPathologyTemplateReportPdf(contact)" matTooltip="print">
                                                     <mat-icon>print</mat-icon>
                                                 </button>
