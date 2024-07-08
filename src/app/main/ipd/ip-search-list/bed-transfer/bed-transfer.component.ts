@@ -91,13 +91,16 @@ export class BedTransferComponent implements OnInit {
     this.selectedAdvanceObj = this.advanceDataStored.storage;
     this.getDischargePatientList();
 
-    // this.getBedList();
+    
     this.getDoctorList();
+  
     // this.getWardList();
 
     if (this.selectedAdvanceObj) {
       this.setDropdownObjs();
+      this.getBedList(this.selectedAdvanceObj);
     }
+
     this.filteredOptionsWard = this.Bedtransfer.get('RoomId').valueChanges.pipe(
       startWith(''),
       map(value => this._filterWard(value)),
@@ -185,6 +188,12 @@ export class BedTransferComponent implements OnInit {
       return this.WardList.filter(option => option.RoomName.toLowerCase().includes(filterValue));
     }
   }
+
+  getBedList(wardObj){
+  this._IpSearchListService.getBedCombo(wardObj.RoomId).subscribe(data => {
+    this.BedList = data;
+  });
+}
 
 
   OnChangeBedList(wardObj) {

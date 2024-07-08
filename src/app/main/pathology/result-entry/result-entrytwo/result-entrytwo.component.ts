@@ -10,6 +10,7 @@ import { DatePipe } from '@angular/common';
 import { MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
 
 @Component({
   selector: 'app-result-entrytwo',
@@ -36,6 +37,7 @@ export class ResultEntrytwoComponent implements OnInit {
   isLoading: string = '';
   msg: any;
   selectedAdvanceObj: SampleDetailObj;
+  selectedAdvanceObj1: AdmissionPersonlModel;
   screenFromString = 'opd-casepaper';
   printTemplate:any;
   PathReportID: any;
@@ -73,6 +75,8 @@ TemplateDesc:any;
 
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
+      this.selectedAdvanceObj1 = this.advanceDataStored.storage;
+      
       this.vTemplateDesc= this.selectedAdvanceObj.TemplateDesc;
     }
   }

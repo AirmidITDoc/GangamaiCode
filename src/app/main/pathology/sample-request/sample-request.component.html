@@ -49,10 +49,10 @@
 
                                 <mat-form-field appearance="outline">
                                     <mat-label>RegNo</mat-label>
-                                    <input name="Reg_No" formControlName="Reg_No" matInput placeholder="RegNo" (keyup)="onShow($event)">
+                                    <input name="Reg_No" formControlName="Reg_No" matInput placeholder="RegNo" (keyup)="onShow($event)" (keypress)="keyPressAlphanumeric($event)">
                                 </mat-form-field>
 
-                                <mat-form-field appearance="outline">
+                                <!-- <mat-form-field appearance="outline">
                                     <mat-label>Search First Name</mat-label>
                                     <input name="FirstNameSearch" formControlName="FirstNameSearch" matInput (keyup)="onShow($event)">
                                     <span class="error" *ngIf="f.FirstNameSearch.invalid && f.FirstNameSearch.touched">FirstName is required Enter only Alphabets</span>
@@ -63,12 +63,12 @@
                                     <input name="LastNameSearch" formControlName="LastNameSearch" matInput (keyup)="onShow($event)">
                                     <span class="error" *ngIf="f.LastNameSearch.invalid && f.LastNameSearch.touched">LastName is
                                         required Enter only Alphabets</span>
-                                </mat-form-field>
-
+                                </mat-form-field> -->
+<!-- 
                                 <mat-form-field appearance="outline">
                                     <mat-label>Search RegNo</mat-label>
                                     <input name="RegNoSearch" formControlName="Reg_No" matInput (keyup)="onShow($event)">
-                                </mat-form-field>
+                                </mat-form-field> -->
 
                                 <div class="radio-container">
                                     <div fxLayout="column" fxLayoutAlign="start start" class="gap-4">
@@ -81,7 +81,7 @@
                                         </div>
                                         <div class="radio-content" fxLayout="row" class="gap-4">
                                             <mat-label> Status : </mat-label>
-                                            <mat-radio-group name="StatusSearch" formControlName="StatusSearch" value='2' (change)="onShow($event)">
+                                            <mat-radio-group name="StatusSearch" formControlName="StatusSearch" value='0' (change)="onShow($event)">
                                                 <mat-radio-button value='0'>Pending</mat-radio-button>
                                                 <mat-radio-button value='1'>Completed</mat-radio-button>
                                             </mat-radio-group>
@@ -89,9 +89,13 @@
                                     </div>
                                 </div>
 
-                                <div class="action-buttons mt-12">
-                                    <button mat-raised-button class="searchButton" (click)="onShow($event)" [disabled]="click" matTooltip="search">
-                                        <mat-icon>search</mat-icon>
+                        
+                                <div class="action-buttons" style="margin-top: 10px;">
+                                    <button mat-raised-button (click)="onClear()" matTooltip="close">
+                                        <mat-icon class="cleariconbutton">close</mat-icon>
+                                    </button>
+                                    <button mat-raised-button (click)="onShow($event)" matTooltip="search" [disabled]="click">
+                                        <mat-icon class="searchiconbutton">search</mat-icon>
                                     </button>
                                 </div>
                             </div>
@@ -128,9 +132,9 @@
                                     </div>
                                 </div>
                                 <div class="table-wrapper">
-                                    <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur">
+                                    <!-- <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur">
                                         <div class="spinner-border text-danger"></div>
-                                    </div>
+                                    </div> -->
 
                                     <mat-table class="h-260" #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
                                         <ng-container matColumnDef="RegNo" sticky>
@@ -256,9 +260,9 @@
                                     </div>
                                 </div>
                                 <div class="table-wrapper">
-                                    <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur">
+                                    <!-- <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur">
                                         <div class="spinner-border"></div>
-                                    </div>
+                                    </div> -->
                                     <!-- mat table -->
                                     <mat-table class="h-260" #table matSort [dataSource]="dataSource1" [@animateStagger]="{value:'50'}">
                                         <ng-container matColumnDef="ReqDate">

@@ -97,7 +97,7 @@ export class NewCasepaperComponent implements OnInit {
   VisitId: any;
   Temp: any;
   SpO2: any;
-  Pluse: any;
+  Pulse: any;
   doseList: any = [];
   drugList1: any = [];
   filteredDrugs$: Observable<ILookup[]>;
@@ -258,14 +258,14 @@ export class NewCasepaperComponent implements OnInit {
   // ];
   dataSource2 = new MatTableDataSource<any>();
 
-  // displayClinicalColumns1 = [
+  displayClinicalColumns1 = [
 
-  //   'DrugName',
-  //   'DoseName',
-  //   'QtyPerDay',
-  //   'TotalQty'
+    'DrugName',
+    'DoseName',
+    'QtyPerDay',
+    'TotalQty'
 
-  // ];
+  ];
   dataSource3 = new MatTableDataSource<OPDPrescription>();
 
   patientInfo: any;
@@ -289,6 +289,7 @@ export class NewCasepaperComponent implements OnInit {
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       console.log(this.selectedAdvanceObj);
+    this.VisitId=this.selectedAdvanceObj.VisitId
     }
   }
 
@@ -297,14 +298,15 @@ export class NewCasepaperComponent implements OnInit {
     this.MedicineItemForm = this.MedicineItemform();
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
+
       console.log(this.selectedAdvanceObj);
     } else
       // this.selectedAdvanceObj =AdmissionPersonlModel;
 
       this.caseFormGroup = this.createForm();
     this.searchFormGroup = this.createSearchForm();
-    this.casepaperVisitDetails();
-    // this.prescriptionDetails();
+    // this.casepaperVisitDetails();
+    // this.prescriptionDetails(this.VisitId);
 
     // this.getregisterList();
     this.getVisistList();
@@ -312,10 +314,8 @@ export class NewCasepaperComponent implements OnInit {
 
     // this.getHistoryList1();
     this.getDiagnosisList();
-
     this.getExaminationList();
     this.getComplaintList();
-
     this.getDrugList();
     this.getDoseList();
     this.dataSource.data = this.prescriptionData;
@@ -373,7 +373,7 @@ export class NewCasepaperComponent implements OnInit {
         this.filterExamination();
       });
 
-    this.getPrescriptionListFill(70765);
+    this.getPrescriptionListFill(this.VisitId);
   }
 
 
@@ -500,6 +500,7 @@ export class NewCasepaperComponent implements OnInit {
     this.DepartmentName = obj.DepartmentName;
     this.RegNo = obj.RegNo;
     this.vOPIPId = obj.VisitId;
+    this.VisitId = obj.VisitId;
     this.vOPDNo = obj.OPDNo;
     this.vTariffId = obj.TariffId;
     this.vClassId = obj.ClassId;
@@ -511,6 +512,7 @@ export class NewCasepaperComponent implements OnInit {
     this.RefDocName = obj.RefDocName
     this.BedName = obj.BedName;
     this.PatientType = obj.PatientType;
+    this.prescriptionDetails(this.VisitId);
   }
 
 
@@ -886,17 +888,29 @@ export class NewCasepaperComponent implements OnInit {
 
   casePaperData: CasepaperVisitDetails = new CasepaperVisitDetails({});
 
-  casepaperVisitDetails() {
-    // this._CasepaperService.getcasepaperVisitDetails(this.selectedAdvanceObj.AdmissionID).subscribe((data: CasepaperVisitDetails) => {
-    //   this.casePaperData = data[0];
-    // });
-  }
+  // casepaperVisitDetails() {
+  //   this._CasepaperService.getcasepaperVisitDetails(this.selectedAdvanceObj.AdmissionID).subscribe((data: CasepaperVisitDetails) => {
+  //     this.casePaperData = data[0];
+  //   });
+  // }
 
-  //   prescriptionDetails() {
-  //     this._CasepaperService.prescriptionDetails(this.selectedAdvanceObj.AdmissionID).subscribe((data: any) => {
-  //       // this.allHistory = data;
-  //     });
-  //   }
+    prescriptionDetails(VisitId) {
+      debugger
+      this._CasepaperService.prescriptionDetails(VisitId).subscribe((data: any) => {
+        this.dataSource3 = data;
+        this.dsItemList.data=data;
+        console.log(this.dsItemList.data)
+        this.Height=this.dsItemList.data[0]["Height"]
+        this.Weight=this.dsItemList.data[0]["Weight"]
+        this.BSL=this.dsItemList.data[0]["BSL"]
+        this.BMI=this.dsItemList.data[0]["BSA"]
+        this.BP=this.dsItemList.data[0]["BP"]
+        this.Temp=this.dsItemList.data[0]["Temp"]
+        this.SpO2=this.dsItemList.data[0]["SpO2"]
+        this.Pulse=this.dsItemList.data[0]["Pluse"]
+        console.log(this.dataSource3.data )
+      });
+    }
 
 
 
@@ -1117,14 +1131,14 @@ export class NewCasepaperComponent implements OnInit {
       let insertOPDPrescription = {};
     insertOPDPrescription['ipMedID'] = 0;
     insertOPDPrescription['opD_IPD_IP'] = this.vOPIPId;
-    insertOPDPrescription['opD_IPD_Type'] = 1;
-    insertOPDPrescription['date'] ="2024-07-04T07:22:26.673Z";// this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-    insertOPDPrescription['pTime'] = "2024-07-04T07:22:26.673Z";//this.dateTimeObj.time;
+    insertOPDPrescription['opD_IPD_Type'] = 0;
+    insertOPDPrescription['date'] =this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+    insertOPDPrescription['pTime'] = this.dateTimeObj.time;
     insertOPDPrescription['classID'] = this.vClassId;
     insertOPDPrescription['genericId'] = 1;
     insertOPDPrescription['drugId'] = element.ItemID;
     insertOPDPrescription['doseId'] =  element.DoseId || 0;
-    insertOPDPrescription['days'] = element.Days || 0;
+    insertOPDPrescription['days'] = element.Day || 0;
     insertOPDPrescription['qtyPerDay'] =0,// element.Qty || 0
     insertOPDPrescription['totalQty'] = 0,//element.Qty || 0;
     insertOPDPrescription['instructionId'] =1,// element.Instruction || '';
@@ -1313,7 +1327,7 @@ export class NewCasepaperComponent implements OnInit {
     this.Height = row.Height;
     this.Weight = row.Weight;
     this.SpO2 = row.SpO2;
-    this.Pluse = row.Pluse;
+    this.Pulse = row.Pluse;
     this.VisitId = row.VisitId;
     // this.getPrescriptionListFill(70765);
 
@@ -1352,11 +1366,10 @@ export class NewCasepaperComponent implements OnInit {
   getPrescriptionListFill(visitId) {
     debugger;
     this._CasepaperService.prescriptionDetails(visitId).subscribe(Visit => {
-      this.dataSource3.data = Visit as OPDPrescription[];
+      this.dsItemList.data = Visit as MedicineItemList[];
 
-      console.log(this.dataSource3.data);
-      // this.dataSource.sort = this.sort;
-      // this.dataSource.paginator = this.paginator;
+      console.log(this.dsItemList.data);
+    
       this.sIsLoading = '';
 
     })
@@ -1367,7 +1380,7 @@ export class NewCasepaperComponent implements OnInit {
     this.sIsLoading = 'loading';
     var D_data = {
       // "VisitId": 70765,//this.selectedAdvanceObj.VisitId,
-      "VisitId": 1// this.selectedAdvanceObj.VisitId,
+      "VisitId":  this.VisitId,
     }
     console.log(D_data);
     this.sIsLoading = 'loading-data';

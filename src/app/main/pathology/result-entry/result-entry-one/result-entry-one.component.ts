@@ -14,6 +14,9 @@ import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
 import Swal from 'sweetalert2';
+import { AdministrationModule } from 'app/main/administration/administration.module';
+import { AdmissionModule } from 'app/main/ipd/Admission/admission/admission.module';
+import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
 
 @Component({
   selector: 'app-result-entry-one',
@@ -44,6 +47,7 @@ export class ResultEntryOneComponent implements OnInit {
   msg: any;
   PatientHeaderObj: any;
   selectedAdvanceObj: SampleDetailObj;
+  selectedAdvanceObj1:AdmissionPersonlModel;
   screenFromString = 'opd-casepaper';
   hasSelectedContacts: boolean;
   s
@@ -125,6 +129,8 @@ debugger;
 
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
+      this.selectedAdvanceObj1 = this.advanceDataStored.storage;
+      
       console.log(this.selectedAdvanceObj);
       this.PatientHeaderObj = this.advanceDataStored.storage;
     }
@@ -202,10 +208,10 @@ debugger;
     return option && option.Doctorname ? option.Doctorname : '';
   }
   getOptionTextpath(option) {
-    return option && option.DoctorName ? option.DoctorName : '';
+    return option && option.Doctorname ? option.Doctorname : '';
   }
   getOptionTextRefdr(option) {
-    return option && option.DoctorName ? option.DoctorName : '';
+    return option && option.Doctorname ? option.Doctorname : '';
   }
 
   onEnterresultdr($event){
@@ -425,7 +431,7 @@ debugger;
   }
 
   onClose() {
-    // this.dialogRef.close();
+    this.dialogRef.close();
   }
 
 

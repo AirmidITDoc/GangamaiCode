@@ -52,7 +52,7 @@ export class PathologyService {
       // BillNo:[''],
       // BillDate:[''],
       PatientTypeSearch: ['1'],
-      StatusSearch: ['0'],
+      StatusSearch: ['1'],
       CategoryId: [''],
       start: [new Date().toISOString()],
       end: [new Date().toISOString()],

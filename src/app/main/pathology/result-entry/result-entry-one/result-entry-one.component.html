@@ -19,34 +19,107 @@
                     <div fxlayout="row" style="background-color: white; padding: 5px 5px 5px 5px;">
                         <!-- ================================ LABEL HEADER  -->
                         <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 9px; height: fit-content;">
-                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between">
-                                <h3 style="font-weight: bold; font-size: 13px; margin: 0 0 0px;">Patient Information
-                                </h3>
-                            </div>
-                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between"
-                                style="align-items: baseline;">
+                            <div class="patient-info-sales my-8">
+                                <div class="patient-info-title border-bottom pb-2">
+                                    <span class="h1">Patient Information</span>
+                                </div>
+                                <div class="Ipd-patient-info" fxFlexFill fxLayout="row"
+                                    fxLayoutAlign="space-between center" class="patient-info">
+                                    <div class="patient-sub">
+                                        <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
+                                            fxLayoutAlign="space-between">
+                                            <div fxLayout="column" fxLayoutGap="10px">
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">UHID No
+                                                    </span>
+                                                    <span>:</span>
+                                                    <span
+                                                        class="patient-col-value">{{selectedAdvanceObj1.RegNo}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Patient Name
+                                                    </span>
+                                                    <span>:</span>
+                                                    <span
+                                                        class="patient-col-value">{{selectedAdvanceObj1.PatientName}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Doctor Name</span>
+                                                    <span>:</span>
+                                                    <span
+                                                        class="patient-col-value">{{selectedAdvanceObj1.Doctorname}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Department</span>
+                                                    <span>:</span>
+                                                    <span
+                                                        class="patient-col-value">{{selectedAdvanceObj1.DepartmentName}}</span>
+                                                </div>
+                                            </div>
+                                            <div fxLayout="column" fxLayoutGap="10px">
 
-                                <span class="label">Reg No :</span>
-                                <span class="data_input">{{selectedAdvanceObj.RegNo}}</span>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">DOA | Time</span>
+                                                    <span>:</span>
+                                                    <span
+                                                        class="patient-col-value">{{selectedAdvanceObj1.AdmDateTime}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">IPD No</span>
+                                                    <span>:</span>
+                                                    <span
+                                                        class="patient-col-value">{{selectedAdvanceObj1.IPDNo}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Age | Sex
+                                                    </span>
+                                                    <span>:</span>
+                                                    <span
+                                                        class="patient-col-value">{{selectedAdvanceObj1.AgeYear}}Y|{{selectedAdvanceObj1.AgeMonth}}M|{{selectedAdvanceObj1.AgeDay}}
+                                                        D | {{selectedAdvanceObj1.GenderName}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Ref-Doctor Name
+                                                    </span>
+                                                    <span>:</span>
+                                                    <span
+                                                        class="patient-col-value">{{selectedAdvanceObj1.RefDocName}}</span>
+                                                </div>
 
-                                <span class="label"> Patient Name : </span>
-                                <span class="data_input">{{selectedAdvanceObj.PatientName}}</span>
-
-                                <span class="label">Doctor Name : </span>
-                                <span class="data_input">{{selectedAdvanceObj.Doctorname}}</span>
-
-                                <!-- <span class="label">Age(Y) :</span>
-                            <span class="data_input">{{selectedAdvanceObj.AgeYear}}
-                            </span>
-    
-                            <span class="label">Room Name : </span>
-                            <span class="data_input">{{selectedAdvanceObj.WardName}} 
-                             
-                            </span>-->
-
-                                <!-- <app-common-date [screenFrom]="screenFromString"
-                                    (dateTimeEventEmitter)="getDateTime($event)">
-                                </app-common-date> -->
+                                            </div>
+                                            <div fxLayout="column" fxLayoutGap="10px">
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Ward | Bed Name
+                                                    </span>
+                                                    <span>:</span>
+                                                    <span
+                                                        class="patient-col-value">{{selectedAdvanceObj1.RoomName}}
+                                                        | {{selectedAdvanceObj1.BedName}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Patient Type
+                                                    </span>
+                                                    <span>:</span>
+                                                    <span
+                                                        class="patient-col-value">{{selectedAdvanceObj1.PatientType}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Tarrif Name
+                                                    </span>
+                                                    <span>:</span>
+                                                    <span
+                                                        class="patient-col-value">{{selectedAdvanceObj1.TariffName}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Company Name</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value"
+                                                        style="color: orange;">{{selectedAdvanceObj1.CompanyName}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </mat-card>
                         <!-- ================================ LABEL HEADER  -->
@@ -255,7 +328,7 @@
                                                 <mat-autocomplete #autoDoctor="matAutocomplete" [displayWith]="getOptionTextpath">
                                                   <mat-option *ngFor="let option of filteredpathdr | async" [value]="option"
                                                    >
-                                                    {{option.DoctorName}}
+                                                    {{option.Doctorname}}
                                                   </mat-option>
                                                 </mat-autocomplete>
                                               </mat-form-field>
@@ -310,7 +383,7 @@
                                                 <mat-autocomplete #autoRefdr="matAutocomplete" [displayWith]="getOptionTextRefdr">
                                                   <mat-option *ngFor="let option of filteredrefdr | async" [value]="option"
                                                    >
-                                                    {{option.DoctorName}}
+                                                    {{option.Doctorname}}
                                                   </mat-option>
                                                 </mat-autocomplete>
                                               </mat-form-field>

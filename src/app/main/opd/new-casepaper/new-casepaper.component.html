@@ -1,3 +1,4 @@
+
 <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="10px" class="page-layout" fusePerfectScrollbar>
     <div class="container" style="width: 100%;">
         <div style="width: 100%;">
@@ -152,7 +153,7 @@
                     <!-- <div fxFlexFill fxLayout="column" fxLayoutGap="5px"> -->
                     <mat-card>
                         <div fxLayout="row" style="height:100px !important;">
-                            <div fxFlex.gt-sm="70%" fxFlex fxLayoutGap="5px">
+                            <div fxFlex.gt-sm="70%"  fxLayoutGap="5px">
 
                                 <div fxFlex.gt-sm="99%">
                                     <form [formGroup]="caseFormGroup">
@@ -160,21 +161,21 @@
                                             <div fxLayout="row" class="gap-8">
                                                 <mat-form-field appearance="outline" fxFlex="10%;">
                                                     <mat-label>Height</mat-label>
-                                                    <input name="Height" formControlName="Height" placeholder="Height"
+                                                    <input name="Height" formControlName="Height" placeholder="Height" [(ngModel)]="Height"
                                                         matInput #EHeight (keydown)="onEnterHeight($event)"
                                                         oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 3);">
 
                                                 </mat-form-field>
                                                 <mat-form-field appearance="outline" fxFlex="10%;">
                                                     <mat-label>BSL</mat-label>
-                                                    <input name="BSL" formControlName="BSL" placeholder="BSL" matInput
+                                                    <input name="BSL" formControlName="BSL" placeholder="BSL" matInput [(ngModel)]="BSL"
                                                         #EBSL (keydown)="onEnterBSL($event)"
                                                         oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 3);">
 
                                                 </mat-form-field>
                                                 <mat-form-field appearance="outline" fxFlex="10%;">
                                                     <mat-label>Weight</mat-label>
-                                                    <input name="Weight" formControlName="Weight" placeholder="Weight"
+                                                    <input name="Weight" formControlName="Weight" placeholder="Weight" [(ngModel)]="Weight"
                                                         matInput #EWeight (keydown)="onEnterWeight($event)"
                                                         oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 3);">
 
@@ -182,34 +183,34 @@
                                                 <!-- display:inline-flexbox; -->
                                                 <mat-form-field appearance="outline" fxFlex="10%;">
                                                     <mat-label>SpO2</mat-label>
-                                                    <input name="SpO2" formControlName="SpO2" placeholder="SpO2"
+                                                    <input name="SpO2" formControlName="SpO2" placeholder="SpO2" [(ngModel)]="SpO2"
                                                         matInput #ESpO2 (keydown)="onEnterSpO2($event)"
                                                         oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 3);">
                                                 </mat-form-field>
                                                 <mat-form-field appearance="outline" fxFlex="10%;">
                                                     <mat-label>Pulse</mat-label>
-                                                    <input name="Pulse" formControlName="Pulse" placeholder="Pulse"
+                                                    <input name="Pulse" formControlName="Pulse" placeholder="Pulse" [(ngModel)]="Pulse"
                                                         matInput #EPulse (keydown)="onEnterPulse($event)"
                                                         oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 3);">
 
                                                 </mat-form-field>
                                                 <mat-form-field appearance="outline" fxFlex="10%;">
                                                     <mat-label>BMI</mat-label>
-                                                    <input name="BMI" formControlName="BMI" placeholder="BMI" matInput
+                                                    <input name="BMI" formControlName="BMI" placeholder="BMI" matInput [(ngModel)]="BMI"
                                                         #EBMI (keydown)="onEnterBMI($event)"
                                                         oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 3);">
 
                                                 </mat-form-field>
                                                 <mat-form-field appearance="outline" fxFlex="10%;">
                                                     <mat-label>BP</mat-label>
-                                                    <input name="BP" formControlName="BP" placeholder="BP" matInput #EBP
+                                                    <input name="BP" formControlName="BP" placeholder="BP" matInput #EBP [(ngModel)]="BP"
                                                         (keydown)="onEnterBP($event)"
                                                         oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 3);">
 
                                                 </mat-form-field>
                                                 <mat-form-field appearance="outline" fxFlex="10%;">
                                                     <mat-label>Temp</mat-label>
-                                                    <input name="Temp" formControlName="Temp" placeholder="Temp"
+                                                    <input name="Temp" formControlName="Temp" placeholder="Temp" [(ngModel)]="Temp"
                                                         matInput #ETemp (keydown)="onEnterTemp($event)"
                                                         oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 3);">
 
@@ -220,89 +221,90 @@
                                     </form>
                                 </div>
 
-                                <!-- <div fxFlex.gt-sm="30%" fxFlex>
+                             
 
-                                    <div fxlayout="row">
-                                        <div fxFlex.gt-sm="99%" fxFlex fxLayoutGap="5px"
-                                            style="height:100px !important;">
-                                            <mat-card>
-                                                <mat-table class="table1" matSort [dataSource]="dataSource1"
-                                                    [@animateStagger]="{value:'50'}"
-                                                    style="height: 100px !important;overflow: auto;">
+                            </div>
+                            <div fxFlex.gt-sm="30%">
 
-                                                    <ng-container matColumnDef="VisitId"
+                                <div fxlayout="row">
+                                    <div fxFlex.gt-sm="99%" fxLayoutGap="5px"
+                                        style="height:100px !important;">
+                                        <mat-card>
+                                            <mat-table class="table1" matSort [dataSource]="dataSource1"
+                                                [@animateStagger]="{value:'50'}"
+                                                style="height: 100px !important;overflow: auto;">
+
+                                                <ng-container matColumnDef="VisitId"
+                                                    style="width:80px;max-width:80px;min-width:80px;">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                        fxShow.gt-sm
                                                         style="width:80px;max-width:80px;min-width:80px;">
-                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                            fxShow.gt-sm
-                                                            style="width:80px;max-width:80px;min-width:80px;">
-                                                            VisitID </mat-header-cell>
-                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm
-                                                            style="width:80px;max-width:80px;min-width:80px;">
-                                                            {{element.VisitId}} </mat-cell>
-                                                    </ng-container>
-                                                    <ng-container matColumnDef="VisitDate"
-                                                        style="background-color: rgb(157, 164, 164);"
+                                                        VisitID </mat-header-cell>
+                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm
                                                         style="width:80px;max-width:80px;min-width:80px;">
-                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                            fxShow.gt-sm
-                                                            style="width:80px;max-width:80px;min-width:80px;">
-                                                            VisitDate
-                                                        </mat-header-cell>
-                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm
-                                                            style="width:80px;max-width:80px;min-width:80px;">
-                                                            {{element.VisitDate | date:'shortDate'}}
-                                                        </mat-cell>
-                                                    </ng-container>
+                                                        {{element.VisitId}} </mat-cell>
+                                                </ng-container>
+                                                <ng-container matColumnDef="VisitDate"
+                                                    style="background-color: rgb(157, 164, 164);"
+                                                    style="width:80px;max-width:80px;min-width:80px;">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                        fxShow.gt-sm
+                                                        style="width:80px;max-width:80px;min-width:80px;">
+                                                        VisitDate
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm
+                                                        style="width:80px;max-width:80px;min-width:80px;">
+                                                        {{element.VisitDate | date:'shortDate'}}
+                                                    </mat-cell>
+                                                </ng-container>
 
-                                                    <ng-container matColumnDef="DocName"
+                                                <ng-container matColumnDef="DocName"
+                                                    style="width:200px;max-width:200px;min-width:200px;">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                        fxShow.gt-sm
+                                                        style="width:150px;max-width:150px;min-width:150px;">
+                                                        DoctorName </mat-header-cell>
+                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm
                                                         style="width:200px;max-width:200px;min-width:200px;">
-                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                            fxShow.gt-sm
-                                                            style="width:150px;max-width:150px;min-width:150px;">
-                                                            DoctorName </mat-header-cell>
-                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm
-                                                            style="width:200px;max-width:200px;min-width:200px;">
-                                                            {{element.DocName }} </mat-cell>
-                                                    </ng-container>
+                                                        {{element.DocName }} </mat-cell>
+                                                </ng-container>
 
-                                                    
-                                                    <ng-container matColumnDef="loading">
-                                                        <mat-footer-cell *matFooterCellDef colspan="6">
-                                                            loading data...
-                                                        </mat-footer-cell>
-                                                    </ng-container>
+                                                
+                                                <ng-container matColumnDef="loading">
+                                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                                        loading data...
+                                                    </mat-footer-cell>
+                                                </ng-container>
 
-                                                    <ng-container matColumnDef="noData">
-                                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                                <ng-container matColumnDef="noData">
+                                                    <mat-footer-cell *matFooterCellDef colspan="6">
 
-                                                            <mat-spinner *ngIf="isLoadingStr=='loading'"
-                                                                [diameter]='30'>
-                                                            </mat-spinner>
-                                                            <span *ngIf="isLoadingStr=='no-data'">No data
-                                                                found...</span>
-                                                        </mat-footer-cell>
-                                                    </ng-container>
+                                                        <mat-spinner *ngIf="isLoadingStr=='loading'"
+                                                            [diameter]='30'>
+                                                        </mat-spinner>
+                                                        <span *ngIf="isLoadingStr=='no-data'">No data
+                                                            found...</span>
+                                                    </mat-footer-cell>
+                                                </ng-container>
 
-                                                    <mat-header-row class="accent"
-                                                        *matHeaderRowDef="displayedVisitColumns; sticky: true">
-                                                    </mat-header-row>
-                                                    <mat-row *matRowDef="let row; columns: displayedVisitColumns;"
-                                                        class="element" [@animate]="{value:'*',params:{y:'100%'}}"
-                                                        (click)="drawer1.toggle()"></mat-row>
-                                                    <mat-footer-row *matFooterRowDef="['loading']"
-                                                        [ngClass]="{'hide':dataSource1!=null}"></mat-footer-row>
-                                                    <mat-footer-row *matFooterRowDef="['noData']"
-                                                        [ngClass]="{'hide':!(dataSource1!=null && dataSource1.data.length==0)}">
-                                                    </mat-footer-row>
-                                                </mat-table>
+                                                <mat-header-row class="accent"
+                                                    *matHeaderRowDef="displayedVisitColumns; sticky: true">
+                                                </mat-header-row>
+                                                <mat-row *matRowDef="let row; columns: displayedVisitColumns;"
+                                                    class="element" [@animate]="{value:'*',params:{y:'100%'}}"
+                                                    (click)="drawer1.toggle()"></mat-row>
+                                                <mat-footer-row *matFooterRowDef="['loading']"
+                                                    [ngClass]="{'hide':dataSource1!=null}"></mat-footer-row>
+                                                <mat-footer-row *matFooterRowDef="['noData']"
+                                                    [ngClass]="{'hide':!(dataSource1!=null && dataSource1.data.length==0)}">
+                                                </mat-footer-row>
+                                            </mat-table>
 
 
-                                            </mat-card>
-                                        </div>
-
+                                        </mat-card>
                                     </div>
-                                </div> -->
 
+                                </div>
                             </div>
                         </div>
                         <div fxlayout="row">
@@ -339,7 +341,7 @@
                                                 </mat-error>
                                             </mat-form-field>
 
-                                            <mat-form-field appearance="outline" fxFlex="15%">
+                                            <mat-form-field appearance="outline" fxFlex="10%">
                                                 <mat-label>Dose Name</mat-label>
                                                 <input matAutocompletePosition="below" type="text"
                                                     placeholder="Select Dose Name" matInput formControlName="DoseId"
@@ -361,7 +363,7 @@
                                             </mat-form-field>
 
 
-                                            <mat-form-field appearance="outline" fxFlex="10%">
+                                            <mat-form-field appearance="outline" fxFlex="5%">
                                                 <mat-label>Day</mat-label>
                                                 <input type="text" OnlyNumber [(ngModel)]="vDay" name="Day" required
                                                     (keydown)="onEnterqty($event)" formControlName="Day" matInput
@@ -369,7 +371,7 @@
                                             </mat-form-field>
 
                                             <!-- (keydown)="onEnterremark($event)" -->
-                                            <mat-form-field appearance="outline" fxFlex="30%">
+                                            <mat-form-field appearance="outline" fxFlex="20%">
                                                 <mat-label>Instruction</mat-label>
                                                 <input type="text" name="Instruction" [(ngModel)]="vInstruction"
                                                     formControlName="Instruction" matInput #Instruction
@@ -377,7 +379,7 @@
                                             </mat-form-field>
 
                                             <div class="input-add-button">
-                                                <div matTooltip="Select Itemname to enable this button!!"
+                                                <div matTooltip="Select Drug to enable this button!!"
                                                     [matTooltipPosition]="'above'">
                                                     <button #addbutton class="btn btn-primary btn-with-icon"
                                                         (click)="onAdd()">

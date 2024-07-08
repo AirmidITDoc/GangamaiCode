@@ -10,6 +10,7 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { DatePipe } from '@angular/common';
 import { fuseAnimations } from '@fuse/animations';
+import { AdmissionModule } from 'app/main/ipd/Admission/admission/admission.module';
 
 @Component({
   selector: 'app-sample-detail',
@@ -32,6 +33,7 @@ export class SampleDetailComponent implements OnInit {
   ];
 
   selectedAdvanceObj: AdvanceDetailObj;
+  selectedAdvanceObj1:AdmissionModule
   hasSelectedContacts: boolean;
   screenFromString = 'OP-billing';
   advanceData: any;
@@ -69,7 +71,7 @@ export class SampleDetailComponent implements OnInit {
 
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
-
+      this.selectedAdvanceObj1=this.advanceDataStored.storage;
     }
 
     this.getSampledetailList();

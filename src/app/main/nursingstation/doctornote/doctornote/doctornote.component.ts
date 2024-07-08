@@ -55,6 +55,17 @@ export class DoctornoteComponent implements OnInit {
   DoctorNoteList:any=[];
   vRegNo:any;
   vDescription:any;
+  vPatienName:any;
+  vGender:any;
+  vAdmissionDate:any;
+  vAdmissionID:any;
+  vIPDNo:any;
+  vAge:any;
+  vWardName:any;
+  vBedName:any;
+  NoteList:any=[];
+  
+
   selectedAdvanceObj: AdmissionPersonlModel;
   dsPatientList = new MatTableDataSource;
   dsDoctorNoteList = new MatTableDataSource;

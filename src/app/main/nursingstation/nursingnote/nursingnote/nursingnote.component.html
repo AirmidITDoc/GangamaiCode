@@ -62,36 +62,104 @@
                         <mat-card *ngIf="vRegNo>0">
                             <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
                                 <div class="patient-info-container">
-                                    <div class="patient-info-box">
+                                    <div class="patient-info-sales my-8">
                                         <div class="patient-info-title border-bottom pb-2">
                                             <span class="h1">Patient Information</span>
                                         </div>
-                                        <div class="patient-info-box my-8">
-                                            <div class="patient-info-row ">
-                                                <!-- <div class="patient-col">
-                                                    <span class="patient-col-key">RegNo</span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{vRegNo}}</span>
-                                                </div> -->
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key ">Patient Name(RegNo)</span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{vPatienName}}({{vRegNo}})</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Gender/Age</span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{vGender}}/{{vAge}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">IPDNo</span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{vIPDNo}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">WardName/BedNo</span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{vWardName}}/{{vBedName}}</span>
+                                        <div class="Ipd-patient-info" fxFlexFill fxLayout="row"
+                                            fxLayoutAlign="space-between center" class="patient-info">
+                                            <div class="patient-sub">
+                                                <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
+                                                    fxLayoutAlign="space-between">
+                                                    <div fxLayout="column" fxLayoutGap="10px">
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">UHID No
+                                                            </span>
+                                                            <span>:</span>
+                                                            <!-- <span
+                                                                class="patient-col-value">{{selectedAdvanceObj.RegNo}}</span> -->
+                                                        </div>
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">Patient Name
+                                                            </span>
+                                                            <span>:</span>
+                                                            <!-- <span
+                                                                class="patient-col-value">{{selectedAdvanceObj.PatientName}}</span> -->
+                                                        </div>
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">Doctor Name</span>
+                                                            <span>:</span>
+                                                            <!-- <span
+                                                                class="patient-col-value">{{selectedAdvanceObj.Doctorname}}</span> -->
+                                                        </div>
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">Department</span>
+                                                            <span>:</span>
+                                                            <!-- <span
+                                                                class="patient-col-value">{{selectedAdvanceObj.DepartmentName}}</span> -->
+                                                        </div>
+                                                    </div>
+                                                    <div fxLayout="column" fxLayoutGap="10px">
+
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">DOA | Time</span>
+                                                            <span>:</span>
+                                                            <!-- <span
+                                                                class="patient-col-value">{{selectedAdvanceObj.AdmDateTime}}</span> -->
+                                                        </div>
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">IPD No</span>
+                                                            <span>:</span>
+                                                            <!-- <span
+                                                                class="patient-col-value">{{selectedAdvanceObj.IPDNo}}</span> -->
+                                                        </div>
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">Age | Sex
+                                                            </span>
+                                                            <span>:</span>
+                                                            <!-- <span
+                                                                class="patient-col-value">{{selectedAdvanceObj.AgeYear}}Y|{{selectedAdvanceObj.AgeMonth}}M|{{selectedAdvanceObj.AgeDay}}
+                                                                D | {{selectedAdvanceObj.GenderName}}</span> -->
+                                                        </div>
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">Ref-Doctor Name
+                                                            </span>
+                                                            <span>:</span>
+                                                            <!-- <span
+                                                                class="patient-col-value">{{selectedAdvanceObj.RefDocName}}</span> -->
+                                                        </div>
+
+                                                    </div>
+                                                    <div fxLayout="column" fxLayoutGap="10px">
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">Ward | Bed Name
+                                                            </span>
+                                                            <span>:</span>
+                                                            <span
+                                                                class="patient-col-value">{{selectedAdvanceObj.RoomName}}
+                                                                | {{selectedAdvanceObj.BedName}}</span>
+                                                        </div>
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">Patient Type
+                                                            </span>
+                                                            <span>:</span>
+                                                            <!-- <span
+                                                                class="patient-col-value">{{selectedAdvanceObj.PatientType}}</span> -->
+                                                        </div>
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">Tarrif Name
+                                                            </span>
+                                                            <span>:</span>
+                                                            <!-- <span
+                                                                class="patient-col-value">{{selectedAdvanceObj.TariffName}}</span> -->
+                                                        </div>
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">Company Name</span>
+                                                            <span>:</span>
+                                                            <!-- <span class="patient-col-value"
+                                                                style="color: orange;">{{selectedAdvanceObj.CompanyName}}</span> -->
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

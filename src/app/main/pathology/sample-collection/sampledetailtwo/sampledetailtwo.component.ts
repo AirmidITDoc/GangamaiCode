@@ -11,6 +11,7 @@ import { AdvanceDetailObj } from 'app/main/opd/appointment/appointment.component
 import { SampleCollectionService } from '../sample-collection.service';
 import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
+import { AdmissionModule } from 'app/main/ipd/Admission/admission/admission.module';
 
 @Component({
   selector: 'app-sampledetailtwo',
@@ -46,7 +47,7 @@ export class SampledetailtwoComponent implements OnInit {
   IsSampleCollection: boolean;
   SampleCollectionTime: Date;
   PathReportID: any;
-
+  selectedAdvanceObj1:AdmissionModule;
   dateValue: any = new Date().toISOString();
 
 
@@ -77,7 +78,7 @@ export class SampledetailtwoComponent implements OnInit {
 
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
-
+      this.selectedAdvanceObj1= this.advanceDataStored.storage;
     }
 
     this.getSampledetailList();
@@ -197,6 +198,7 @@ export class SampledetailtwoComponent implements OnInit {
     //  console.log(m_data);
     this._SampleService.getSampleDetailsList(m_data).subscribe(Visit => {
       this.dataSource.data = Visit as SampleList[];
+      console.log( this.dataSource.data )
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
       this.sIsLoading = '';

@@ -108,14 +108,15 @@ export class SampleRequestComponent implements OnInit {
 
   getSampleLabOrRadRequestLists() {
     // debugger
-    this.sIsLoading = 'loading-data';
+    console.log(this._PathologyService.myformSearch.get("StatusSearch").value)
+    // this.sIsLoading = 'loading-data';
     var m_data = {
 
       "FromDate": this.datePipe.transform(this._PathologyService.myformSearch.get("start").value, "MM-dd-yyyy"),
       "ToDate": this.datePipe.transform(this._PathologyService.myformSearch.get("end").value, "MM-dd-yyyy"),
       "Reg_No": this._PathologyService.myformSearch.get("Reg_No").value || 0,
       "Istype": parseInt(this._PathologyService.myformSearch.get("Istype").value) || 1,
-      "IsCompleted":1
+      "IsCompleted": parseInt(this._PathologyService.myformSearch.get("StatusSearch").value) || 0,
 
     }
     console.log(m_data);
@@ -123,12 +124,22 @@ export class SampleRequestComponent implements OnInit {
       this.dataSource.data = Visit as LabOrRadRequestList[];
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
-      this.sIsLoading = '';
+      // this.sIsLoading = '';
       this.click = false;
     },
       error => {
-        this.sIsLoading = '';
+        // this.sIsLoading = '';
       });
+  }
+
+  keyPressAlphanumeric(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
   }
 
   onShow(event: MouseEvent) {

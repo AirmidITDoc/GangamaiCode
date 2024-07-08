@@ -64,7 +64,7 @@
 
                                 <mat-form-field appearance="outline">
                                     <mat-label>Search RegNo</mat-label>
-                                    <input name="RegNoSearch" formControlName="RegNoSearch" matInput (keyup)="onShow($event)">
+                                    <input name="RegNoSearch" formControlName="RegNoSearch" matInput (keyup)="onShow($event)"  (keypress)="keyPressAlphanumeric($event)">
                                 </mat-form-field>
 
                                 <div class="radio-container">

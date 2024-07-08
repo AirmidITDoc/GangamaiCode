@@ -14,6 +14,7 @@ import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
+import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
 
 @Component({
   selector: 'app-nursingnote',
@@ -50,7 +51,7 @@ export class NursingnoteComponent implements OnInit {
   vBedName:any;
   NoteList:any=[];
   vDescription:any;
-
+   selectedAdvanceObj: AdmissionPersonlModel;
   dsNursingNoteList = new MatTableDataSource<DocNote>();
  
   @ViewChild(MatSort) sort: MatSort;
@@ -74,6 +75,7 @@ export class NursingnoteComponent implements OnInit {
   private _onDestroy = new Subject<void>();
   ngOnInit(): void { 
     this.getNoteList();
+  
     // this.pathodoctorFilterCtrl.valueChanges
     //   .pipe(takeUntil(this._onDestroy))
     //   .subscribe(() => {
