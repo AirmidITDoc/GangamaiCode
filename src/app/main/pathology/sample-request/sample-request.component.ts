@@ -141,6 +141,7 @@ export class SampleRequestComponent implements OnInit {
       return false;
     }
   }
+  onClear(){}
 
   onShow(event: MouseEvent) {
     
