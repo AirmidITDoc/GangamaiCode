@@ -12,6 +12,7 @@ import { SampleCollectionService } from '../sample-collection.service';
 import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
 import { AdmissionModule } from 'app/main/ipd/Admission/admission/admission.module';
+import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
 
 @Component({
   selector: 'app-sampledetailtwo',
@@ -47,7 +48,7 @@ export class SampledetailtwoComponent implements OnInit {
   IsSampleCollection: boolean;
   SampleCollectionTime: Date;
   PathReportID: any;
-  selectedAdvanceObj1:AdmissionModule;
+  selectedAdvanceObj1:AdmissionPersonlModel;
   dateValue: any = new Date().toISOString();
 
 
