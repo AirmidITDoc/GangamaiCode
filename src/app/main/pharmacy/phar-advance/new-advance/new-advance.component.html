@@ -9,13 +9,16 @@
                 <mat-icon>account_box</mat-icon>
             </button>
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
-                IP Advance
-            </span>
-            <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog" style="color: white;"
-                style="margin-left: 1150px;">
-                <mat-icon style="color: white;">close</mat-icon>
-            </button>
+              Pharmacy Advance
+            </span> 
         </div>
+        <div fxLayout="row" fxLayoutALign="end start">
+            <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
+            </app-common-date>
+            <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div> 
     </mat-toolbar>
 
 
@@ -33,11 +36,11 @@
                                 <div fxLayout="row" fxLayoutAlign="start center">
                                     <div class="radio-container">
                                         <mat-radio-group formControlName="Op_ip_id" fxFlex="5%">
-                                            <mat-radio-button value="1">IP</mat-radio-button>
+                                            <mat-radio-button value="1" [checked]="true">IP</mat-radio-button>
                                         </mat-radio-group>
                                     </div>
 
-                                    <mat-form-field appearance="outline" fxFlex="50%">
+                                    <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>PatientName</mat-label>
                                         <input type="text" name="RegID" formControlName="RegID" matInput required
                                             placeholder="RegNo / First Name / Last Name / Mobile No"
@@ -64,57 +67,103 @@
                                     </mat-form-field>
                                 </div>
 
-                                <div>
+                                <mat-card style="padding: 5px;">
                                     <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
                                         <div class="patient-info-container">
                                             <div class="patient-info-box">
-                                                <div class="patient-info-title border-bottom pb-2">
+                                                <div class="patient-info-title">
                                                     <span class="h1">Patient Information</span>
                                                 </div>
-                                                <div class="patient-info-box my-8">
-                                                    <div class="patient-info-row ">
-                                                        <div class="patient-col">
-                                                            <span class="patient-col-key">RegNo</span>
-                                                            <span>:</span>
-                                                            <span class="patient-col-value">{{vRegNo}}</span>
-                                                        </div>
-                                                        <div class="patient-col">
-                                                            <span class="patient-col-key ">Patient Name</span>
-                                                            <span>:</span>
-                                                            <span class="patient-col-value">{{vPatienName}}</span>
-                                                        </div>
-                                                        <div class="patient-col">
-                                                            <span class="patient-col-key">Mobile No</span>
-                                                            <span>:</span>
-                                                            <span class="patient-col-value">{{vMobileNo}}</span>
-                                                        </div>
-                                                        <div class="patient-col">
-                                                            <span class="patient-col-key">Patient Source</span>
-                                                            <span>:</span>
-                                                            <span class="patient-col-value">{{vPatientType}}</span>
-                                                        </div>
-
-                                                        <div class="patient-col">
-                                                            <span class="patient-col-key">AdmissionID</span>
-                                                            <span>:</span>
-                                                            <span class="patient-col-value">{{vAdmissionID}}</span>
-                                                        </div>
-                                                        <div class="patient-col">
-                                                            <span class="patient-col-key ">AdmissionDate</span>
-                                                            <span>:</span>
-                                                            <span class="patient-col-value">{{vAdmissionDate}}</span>
-                                                        </div>
-                                                        <div class="patient-col">
-                                                            <span class="patient-col-key">IPDNo</span>
-                                                            <span>:</span>
-                                                            <span class="patient-col-value">{{vIPDNo}}</span>
+                                                <hr>
+                                                <div class="Ipd-patient-info" fxFlexFill fxLayout="row" fxLayoutAlign="space-between center"
+                                                    class="patient-info">
+                                                    <div class="patient-sub">
+                                                        <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
+                                                            fxLayoutAlign="space-between">
+                                                            <div fxLayout="column" fxLayoutGap="6px">
+                                                                <div class="patient-col">
+                                                                    <span class="patient-col-key">UHID No
+                                                                    </span>
+                                                                    <span>:</span>
+                                                                    <span
+                                                                        class="patient-col-value">{{vRegNo}}</span>
+                                                                </div>
+                                                                <div class="patient-col">
+                                                                    <span class="patient-col-key">Patient Name
+                                                                    </span>
+                                                                    <span>:</span>
+                                                                    <span
+                                                                        class="patient-col-value">{{vPatienName}}</span>
+                                                                </div>
+                                                                <div class="patient-col">
+                                                                    <span class="patient-col-key">Doctor Name</span>
+                                                                    <span>:</span>
+                                                                    <span class="patient-col-value">{{vDoctorName}}</span>
+                                                                </div>
+                                                                <div class="patient-col">
+                                                                    <span class="patient-col-key">Department</span>
+                                                                    <span>:</span>
+                                                                    <span class="patient-col-value">{{vDepartment}}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div fxLayout="column" fxLayoutGap="6px">
+                                                                
+                                                                <div class="patient-col">
+                                                                    <span class="patient-col-key">DOA | Time</span>
+                                                                    <span>:</span>
+                                                                    <span class="patient-col-value">{{vAdmissionDate | date:'dd/MM/YYYY'}}</span>
+                                                                </div>
+                                                                <div class="patient-col">
+                                                                    <span class="patient-col-key">IPD No</span>
+                                                                    <span>:</span>
+                                                                    <span class="patient-col-value">{{vIPDNo}}</span>
+                                                                </div>
+                                                                <div class="patient-col">
+                                                                    <span class="patient-col-key">Age | Sex
+                                                                    </span>
+                                                                    <span>:</span>
+                                                                    <span class="patient-col-value">{{vAge}}Y|{{vAgeMonth}}M|{{vAgeDay}} D | {{vGenderName}}</span>
+                                                                </div>
+                                                                <div class="patient-col">
+                                                                    <span class="patient-col-key">Ref-Doctor Name
+                                                                    </span>
+                                                                    <span>:</span>
+                                                                    <span class="patient-col-value">{{vRefDocName}}</span>
+                                                                </div>
+                                                               
+                                                            </div>
+                                                            <div fxLayout="column" fxLayoutGap="6px">
+                                                                <div class="patient-col">
+                                                                    <span class="patient-col-key">Ward | Bed Name
+                                                                    </span>
+                                                                    <span>:</span>
+                                                                    <span class="patient-col-value">{{vRoomName}} | {{vBedName}}</span>
+                                                                </div>
+                                                                <div class="patient-col">
+                                                                    <span class="patient-col-key">Patient Type
+                                                                    </span>
+                                                                    <span>:</span>
+                                                                    <span class="patient-col-value">{{vPatientType}}</span>
+                                                                </div>
+                                                                <div class="patient-col">
+                                                                    <span class="patient-col-key">Tarrif Name
+                                                                    </span>
+                                                                    <span>:</span>
+                                                                    <span class="patient-col-value">{{vTariffName}}</span>
+                                                                </div>
+                                                                <div class="patient-col" >
+                                                                    <span class="patient-col-key">Company Name</span>
+                                                                    <span>:</span>
+                                                                    <span class="patient-col-value" style="color: orange;">{{vCompanyName}}</span>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> 
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </mat-card>
                             </div>
                         </form>
 
@@ -127,18 +176,34 @@
                                 </div>
                                 <mat-table matSort [dataSource]="dsIpItemList" [@animateStagger]="{value:'50'}">
 
-                                    <ng-container matColumnDef="Date">
+                                    <ng-container matColumnDef="Date" sticky>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Date
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.Date | date}}
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="AdvanceNo">
+                                    <ng-container matColumnDef="AdvanceNo" sticky>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                             Advance No </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                             <span> {{element.AdvanceNo}}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="UHIDNo" sticky>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                            UHID No </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            <span> {{element.RegNo}}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="PatientName" sticky>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                            Patient Name </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            <span> {{element.PatientName}}</span>
                                         </mat-cell>
                                     </ng-container>
 
@@ -228,21 +293,17 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="loading">
-                                        <mat-footer-cell *matFooterCellDef colspan="6">
-                                            no data found...
-                                        </mat-footer-cell>
+                                        <mat-header-cell *matFooterCellDef colspan="6"
+                                            style="display: none;">
+                                        </mat-header-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="noData">
                                         <mat-footer-cell *matFooterCellDef colspan="6">
-                                            <mat-spinner style="float:left;" *ngIf="isLoadingStr=='loading'"
-                                                [diameter]='30'>
-                                            </mat-spinner>
-                                            <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
+                                            no data found...
                                         </mat-footer-cell>
-                                    </ng-container>
-
-
+                                    </ng-container> 
+                                
                                     <mat-header-row class="accent min-width-1350"
                                         *matHeaderRowDef="displayedColumns; sticky: true">
                                     </mat-header-row>
@@ -259,23 +320,7 @@
                                 </mat-paginator>
                             </div>
                         </div>
-                        <div>
-                            <div fxLayout="row" class="gap-4" style="padding-top: 15px;">
-                                <span class="net-amt-mat-label" style="font-weight:bold;padding-bottom: 8px;">Total
-                                    Advance Amount :
-                                </span>&nbsp;
-                                <span class="net-amt-value"
-                                    style="margin-left:10px;font-weight:bolder;color: blue;margin-right: 100px;">{{getAdvancetotal(dsIpItemList.data)
-                                    | currency:'INR'}}</span>&nbsp;&nbsp;&nbsp;
 
-                                <span class="net-amt-mat-label" style="font-weight:bold;margin-left:20px;">Total
-                                    Available amount :
-                                </span>&nbsp;
-                                <span class="net-amt-value text-primary"
-                                    style="margin-left:10px;font-weight:bolder;color: blue;margin-right: 100px;">{{getAdvavilable(dsIpItemList.data)
-                                    | currency:'INR'}}</span>
-                            </div>
-                        </div>
                         <div class="table-footer mt-8">
 
                             <form [formGroup]="_PharAdvanceService.NewAdvanceForm" style="padding: 10px 10px 5px 10px;">

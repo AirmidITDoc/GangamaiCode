@@ -79,4 +79,10 @@ export class PharAdvanceService {
   public getAdvanceOldList(data) {
     return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
   }
+  public InsertIpPharmaAdvance(data) {
+    return this._httpClient.post("Pharmacy/Insert_PhAdvance",data)
+  }
+  public UpdateIpPharmaAdvance(data) {
+    return this._httpClient.post("Pharmacy/Update_PhAdvance",data)
+  }
 }

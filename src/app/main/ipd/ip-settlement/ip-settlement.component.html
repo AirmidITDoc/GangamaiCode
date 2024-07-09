@@ -16,10 +16,13 @@
                 <mat-icon>close</mat-icon>
             </button> -->
         </div>
-        <span style="float: right;">
+        <div fxLayout="row" fxLayoutALign="end start">
             <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
             </app-common-date>
-        </span>
+            <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div> 
 
     </mat-toolbar>
 
@@ -122,7 +125,7 @@
                                                 <!-- (change)='Adminchargeselect($event)' -->
                                         
                                                 <mat-table class="table2 h-150" #table matSort [dataSource]="dataSource1" [@animateStagger]="{value:'50'}"
-                                                    style="overflow: auto;">
+                                                    style="overflow: auto;width: 100%;">
                                         
                                                     <ng-container matColumnDef="BillNo">
                                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>

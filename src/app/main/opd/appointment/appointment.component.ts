@@ -2806,15 +2806,23 @@ console.log(obj)
       Doctorname: contact.Doctorname,
       AdmDateTime: contact.AdmDateTime,
       AgeYear: contact.AgeYear,
+      AgeMonth: contact.AgeMonth,
+      AgeDay: contact.AgeDay, 
+      DepartmentName: contact.DepartmentName,
       ClassId: contact.ClassId,
+      OPDNo: contact.OPDNo,
+      PatientType: contact.PatientType,
       ClassName: contact.ClassName,
       TariffName: contact.TariffName,
       TariffId: contact.TariffId,
       CompanyId: contact.CompanyId,
+      CompanyName: contact.CompanyName,
+      RefDocName: contact.RefDocName,
       MobileNo: contact.MobileNo,
       Lbl: "AppointmentBill"
     };
     console.log(xx)
+    //console.log(contact)
     this.advanceDataStored.storage = new SearchInforObj(xx);
     const dialogRef = this._matDialog.open(NewOPBillingComponent,
       {

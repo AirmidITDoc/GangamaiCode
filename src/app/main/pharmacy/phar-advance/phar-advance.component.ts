@@ -132,7 +132,7 @@ export class PharAdvanceComponent implements OnInit {
       {
         maxWidth: "100%",
         height: '95%',
-        width: '90%' 
+        width: '70%' 
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
