@@ -11,6 +11,7 @@ import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { DatePipe } from '@angular/common';
 import { fuseAnimations } from '@fuse/animations';
 import { AdmissionModule } from 'app/main/ipd/Admission/admission/admission.module';
+import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
 
 @Component({
   selector: 'app-sample-detail',
@@ -33,7 +34,7 @@ export class SampleDetailComponent implements OnInit {
   ];
 
   selectedAdvanceObj: AdvanceDetailObj;
-  selectedAdvanceObj1:AdmissionModule
+  selectedAdvanceObj1:AdmissionPersonlModel
   hasSelectedContacts: boolean;
   screenFromString = 'OP-billing';
   advanceData: any;
