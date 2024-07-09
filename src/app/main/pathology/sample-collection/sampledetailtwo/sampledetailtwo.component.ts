@@ -26,8 +26,9 @@ export class SampledetailtwoComponent implements OnInit {
   interimArray: any = [];
   samplelist: any = [];
   msg: any;
+  date: string;
   isLoading: String = '';
-
+Currentdate:any;
   displayedColumns: string[] = [
     'checkbox',
     // 'VADate',
@@ -72,7 +73,10 @@ export class SampledetailtwoComponent implements OnInit {
     dialogRef.disableClose = true;
     this.advanceData = data;
     console.log(this.advanceData);
+    this.date = new Date().toISOString().slice(0, 16);
+    // this.date= this.datePipe.transform( new Date(),"MM-dd-YYYY hh:mm tt") || '01/01/1900',
 
+    console.log( this.date )
   }
 
   ngOnInit(): void {
@@ -80,6 +84,7 @@ export class SampledetailtwoComponent implements OnInit {
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       this.selectedAdvanceObj1= this.advanceDataStored.storage;
+      console.log(this.selectedAdvanceObj1);
     }
 
     this.getSampledetailList();
@@ -190,7 +195,7 @@ export class SampledetailtwoComponent implements OnInit {
       OPIP = 0;
     }
 
-    this.sIsLoading = 'loading-data';
+    // this.sIsLoading = 'loading-data';
     var m_data = {
       "BillNo": this.advanceData.BillNo,
       "BillDate": this.datePipe.transform(this.advanceData.From_dt, "yyyy-MM-dd"),
@@ -206,7 +211,7 @@ export class SampledetailtwoComponent implements OnInit {
 
     },
       error => {
-        this.sIsLoading = '';
+        // this.sIsLoading = '';
       });
     console.log(this.dataSource.data);
   }
@@ -214,10 +219,7 @@ export class SampledetailtwoComponent implements OnInit {
 
   
   onLABSave() {
-
-
     this.sIsLoading = 'submit';
-   
 
     let BillDetail = {};
     BillDetail['emergencyFlag'] = "0",

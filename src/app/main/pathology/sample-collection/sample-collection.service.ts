@@ -42,11 +42,7 @@ export class SampleCollectionService {
 
   createSampledetailForm(): FormGroup {
     return this._formBuilder.group({
-
-
-
-      SampleDateTime: [new Date().toISOString()],
-
+  SampleDateTime: [''],
 
     });
   }

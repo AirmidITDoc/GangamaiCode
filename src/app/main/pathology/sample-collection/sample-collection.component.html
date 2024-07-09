@@ -131,7 +131,7 @@
                                     <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur">
                                         <div class="spinner-border"></div>
                                     </div>
-                                    <mat-table #table matSort class="mat-table-1 h-300" [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
+                                    <mat-table #table matSort class="mat-table-1 h-260" [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
 
                                         <ng-container matColumnDef="DOA">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Date
@@ -205,7 +205,7 @@
                                             </mat-header-cell>
 
                                             <mat-cell *matCellDef="let contact">
-                                                <button mat-icon-button (click)="getRecord(contact)" style="color: brown;"><mat-icon title="Edit Menu">add</mat-icon></button>
+                                                <!-- <button mat-icon-button (click)="getRecord(contact)" style="color: brown;"><mat-icon title="Edit Menu">add</mat-icon></button> -->
                                                 <button mat-icon-button matTooltip="Print" (click)="getSampleRecords(contact)" style="color: brown;">
                                                     <mat-icon title="New form">launch</mat-icon>
                                                 </button>
@@ -254,9 +254,9 @@
                                     </div>
                                 </div>
                                 <div class="table-wrapper">
-                                    <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur">
+                                    <!-- <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur">
                                         <div class="spinner-border"></div>
-                                    </div>
+                                    </div> -->
                                     <mat-table class="mat-table-2 h-300" #table matSort [dataSource]="dataSource1" [@animateStagger]="{value:'50'}">
 
                                         <ng-container matColumnDef="VADate">

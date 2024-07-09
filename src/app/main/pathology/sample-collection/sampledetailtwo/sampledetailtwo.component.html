@@ -54,7 +54,7 @@
                                                 <span class="patient-col-key">Doctor Name</span>
                                                 <span>:</span>
                                                 <span
-                                                    class="patient-col-value">{{selectedAdvanceObj1.Doctorname}}</span>
+                                                    class="patient-col-value">{{selectedAdvanceObj1.DoctorName}}</span>
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Department</span>
@@ -100,7 +100,7 @@
                                                 </span>
                                                 <span>:</span>
                                                 <span
-                                                    class="patient-col-value">{{selectedAdvanceObj1.RoomName}}
+                                                    class="patient-col-value">{{selectedAdvanceObj1.WardName}}
                                                     | {{selectedAdvanceObj1.BedName}}</span>
                                             </div>
                                             <div class="patient-col">
@@ -131,16 +131,18 @@
                     </mat-card>
                 </div>
                 <div class="modal-card-container">
-                    <mat-card>
+                    <mat-card style="height:100px;">
                         <div class="date-container">
                             <form [formGroup]="_SampleService.sampldetailform">
                                 <div class="form-title border-bottom pb-2 mb-3">
-                                    <span class="h3">Sample Collection..</span>
-                                </div>
+                                    <span class="h3" style="margin-right: 10px;">Sample Collection : -</span>
+                              
                                 <mat-form-field appearance="outline">
-                                    <mat-label>Date / Time : </mat-label>
-                                    <input matInput type="datetime-local" placeholder="Sample date" formControlName="SampleDateTime">
-                                </mat-form-field>
+                                    <mat-label>Collection Date / Time</mat-label>
+                                    <input matInput type="datetime-local" placeholder=" date" [value]="date" [(ngModel)]="date"
+                                      (change)="date=$event.target.value" formControlName="SampleDateTime">
+                                  </mat-form-field>
+                                </div>
                             </form>
                         </div>
                     </mat-card>

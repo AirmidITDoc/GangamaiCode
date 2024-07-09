@@ -122,7 +122,7 @@ public getDoctwisecountsummaryView(FromDate,ToDate){
   return this._httpClient.get("IPReport/view-DoctorWiseCountSummary?FromDate="+FromDate+"&ToDate="+ToDate);
 }
 public getViewAdvanceReceipt(AdvanceDetailID){
- return this._httpClient.get("InPatient/view-IP-AdvanceReceipt?AdvanceDetailID=" + AdvanceDetailID);
+ return this._httpClient.get("InPatient/view-IP-AdvanceSummaryReceipt?AdvanceDetailID=" + AdvanceDetailID);
 }
 
 public getLabrequestview(RequestId){

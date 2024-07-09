@@ -225,7 +225,7 @@ var data={
       this.FlagPaymentIdSelected=false
       
     } 
-    else if (this.ReportName == 'Department wise OPD Count') {
+    else if (this.ReportName == 'Department wise OPD Count ') {
       this.FlagVisitSelected=false
       this.FlagPaymentIdSelected=false
       // this.viewgetOPPayemntPdf();
@@ -551,7 +551,7 @@ var data={
     else   if (this.ReportName == 'Day wise OPD Count Summary') {
       this.viewgetDaywiseopdcountsummaryReportPdf();
      
-    }   else if (this.ReportName == 'Department wise OPD Count') {
+    }   else if (this.ReportName == 'Department wise OPD Count ') {
       this.viewgetDeptwiseopdcountPdf();
      
     } 
@@ -1439,7 +1439,7 @@ viewgetOPBillReportPdf() {
 
 
 viewgetDeptwiseopdcountPdf() {
-  
+  debugger
   this.sIsLoading = 'loading-data';
   setTimeout(() => {
  
@@ -1547,7 +1547,7 @@ viewgetDocwiseopdcountsummaryReportPdf() {
         width: '100%',
         data: {
           base64: res["base64"] as string,
-          title: "Doctor Wise Vissit count Summary Viewer"
+          title: "Doctor Wise OPD count Summary Viewer"
         }
       });
 
@@ -1564,7 +1564,7 @@ viewgetDoctorwiseopdcolledetailReportPdf() {
   this.sIsLoading = 'loading-data';
   setTimeout(() => {
   
-  this._OPReportsService.getDocwisenopdcollsummarytView(
+  this._OPReportsService.getDocwisenopdcolldetailtView(
     this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
     this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
     ).subscribe(res => {
@@ -1575,7 +1575,7 @@ viewgetDoctorwiseopdcolledetailReportPdf() {
         width: '100%',
         data: {
           base64: res["base64"] as string,
-          title: "Appointment list With Service Availed Viewer"
+          title: "Doctor Wise OPD Collection  Viewer"
         }
       });
 
@@ -1621,7 +1621,7 @@ viewgetDeptwiseopdcolldetailReportPdf(){
   this.sIsLoading = 'loading-data';
   setTimeout(() => {
  
-  this._OPReportsService.getDeptwiseopdcollsummaryView(
+  this._OPReportsService.getDeptwiseopdcolldetailView(
     this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
     this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
     ).subscribe(res => {
@@ -1632,7 +1632,7 @@ viewgetDeptwiseopdcolldetailReportPdf(){
         width: '100%',
         data: {
           base64: res["base64"] as string,
-          title: "Department Wise OPD Collection Summary  Viewer"
+          title: "Department Wise OPD Collection Detail  Viewer"
         }
       });
 
@@ -1677,7 +1677,7 @@ getDeptservicegroupwisecolldetailview(){
   this.sIsLoading = 'loading-data';
   setTimeout(() => {
  
-  this._OPReportsService.getDeptservicegroupcollsummaryView(
+  this._OPReportsService.getDeptservicegroupcolldetailView(
     this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
     this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
     ).subscribe(res => {
@@ -1688,7 +1688,7 @@ getDeptservicegroupwisecolldetailview(){
         width: '100%',
         data: {
           base64: res["base64"] as string,
-          title: "Department wise Group wise Collection  Viewer"
+          title: "Department wise Service Group wise Collection  Viewer"
         }
       });
 

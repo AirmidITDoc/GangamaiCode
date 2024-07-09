@@ -190,7 +190,7 @@
                             </mat-autocomplete>
                         </mat-form-field>
 
-                        <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <!-- <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <mat-label>Doctor Name</mat-label>
                             <input matAutocompletePosition="below" type="text" placeholder="Select Doctor Name" matInput
                                 #deptdoc (keydown)="onEnterdeptdoc($event)" formControlName="DoctorId"
@@ -207,6 +207,20 @@
                                     (onSelectionChange)="isDoctorSelected = true;">
                                     {{option.Doctorname }} <b>|</b> {{option.DepartmentName }} <b>|</b>
                                     {{option.DoctorId}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field> -->
+
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Doc Name</mat-label>
+                            <input matAutocompletePosition="below" type="text" placeholder="Select Religion" matInput #religion (keydown)="onEnterdeptdoc($event)" formControlName="DoctorId" [matAutocomplete]="autoReligion">
+                            <span matSuffix style="display: flex;">
+                                <mat-icon class="mat-icon-close" (click)="hospitalFormGroup.get('DoctorId').setValue(''); isDoctorSelected = false;">close</mat-icon>
+                                <mat-icon class="mat-icon-close" (click)="hospitalFormGroup.get('DoctorId').setValue(''); isDoctorSelected = false;">search</mat-icon>
+                            </span>
+                            <mat-autocomplete #autoReligion="matAutocomplete" [displayWith]="getOptionTextDoc">
+                                <mat-option *ngFor="let option of filteredOptionsDoctorname | async" [value]="option">
+                                    {{option.Doctorname}}
                                 </mat-option>
                             </mat-autocomplete>
                         </mat-form-field>

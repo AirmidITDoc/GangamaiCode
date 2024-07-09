@@ -208,7 +208,7 @@ export class SampleCollectionComponent implements OnInit {
       console.log(this.dataSource1.data);
       this.dataSource1.sort = this.sort;
       this.dataSource1.paginator = this.paginator;
-      this.sIsLoading = '';
+      // this.sIsLoading = '';
 
     },
       error => {
@@ -437,7 +437,7 @@ export class SampleCollectionComponent implements OnInit {
       WardName: contact.WardName,
 
     };
-    this.advanceDataStored.storage = new AdvanceDetailObj(xx);
+    this.advanceDataStored.storage = new AdvanceDetailObj(contact);
 
     const dialogRef1 = this._matDialog1.open(SampledetailtwoComponent,
       {
@@ -447,8 +447,8 @@ export class SampleCollectionComponent implements OnInit {
         data: {
           BillNo: contact.BillNo,
           OP_IP_Type: contact.PatientType,
-          From_dt: contact.PathDate
-
+          From_dt: contact.PathDate,
+          regobj:contact
         }
 
       });
