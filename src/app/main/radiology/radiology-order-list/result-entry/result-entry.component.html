@@ -1,7 +1,8 @@
+
 <div class="dialog-content-wrapper">
 
     <div class="header accent p-5 p-sm-20" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-        fxLayoutAlign.gt-xs="space-between center " style="height:35px;">
+        fxLayoutAlign.gt-xs="space-between center " style="height:40px;">
 
         <!-- APP TITLE -->
         <div fxLayout="row" fxLayoutAlign="space-between center " style="width: 100%;">
@@ -23,139 +24,206 @@
         </div>
 
     </div>
-
-
-
-    <!-- <mat-toolbar matDialogTitle class="mat-accent m-0" >
-        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center" >
-            <h3>{{_radiologytemplateService.myform.controls.TemplateId.value?"Modify Radiology Template Master":"New
-                Radiology Template Master"}}</h3>
-            <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog">
-                <mat-icon>close</mat-icon>
-            </button>
-        </mat-toolbar-row>
-    </mat-toolbar>  -->
 </div>
-<div class="content-card">
+<div class="content-card " style="padding: 10px 10px 8px 10px;">
     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
-        <form style="width: 100%;">
+        
             <div fxFlex.gt-sm="100%" fxFlex>
-                <div fxlayout="row" style="background-color: white; padding: 5px 5px 5px 5px;">
-                    <!-- ================================ LABEL HEADER  -->
-                    <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 9px; height: fit-content;">
-                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between">
-                            <h3 style="font-weight: bold; font-size: 13px; margin: 0 0 0px;">Patient Information
-                            </h3>
+                <div fxlayout="row" style="padding: 5px 5px 5px 5px;"> 
+                 
+                    <mat-card  fxFlex style="padding: 6px;">
+                        <div class="patient-info-sales my-8">
+                            <div class="sales-patient-info-title">
+                                <span style="font-weight: 700;">
+                                    Patient Information
+                                </span>
+                            </div>
+                            <hr>
+                            <div class="Ipd-patient-info" fxFlexFill fxLayout="row" fxLayoutAlign="space-between center"
+                                class="patient-info">
+                                <div class="patient-sub">
+                                    <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
+                                        fxLayoutAlign="space-between">
+                                        <div fxLayout="column" fxLayoutGap="6px">
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">UHID No
+                                                </span>
+                                                <span>:</span>
+                                                <span
+                                                    class="patient-col-value">{{selectedAdvanceObj.RegNo}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Patient Name
+                                                </span>
+                                                <span>:</span>
+                                                <span
+                                                    class="patient-col-value">{{selectedAdvanceObj.PatientName}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Doctor Name</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{selectedAdvanceObj.Doctorname}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Department</span>
+                                                <span>:</span>
+                                                <!-- <span class="patient-col-value">{{selectedAdvanceObj.DepartmentName}}</span> -->
+                                            </div>
+                                        </div>
+                                        <div fxLayout="column" fxLayoutGap="6px">
+                                            
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">DOA | Time</span>
+                                                <span>:</span>
+                                                <!-- <span class="patient-col-value">{{selectedAdvanceObj.AdmDateTime}}</span> -->
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">OPD/IPD No</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{selectedAdvanceObj.OPDNo}} | {{selectedAdvanceObj.IPDNo}} </span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Age | Sex
+                                                </span>
+                                                <span>:</span>
+                                                <!-- {{selectedAdvanceObj.AgeMonth}}M|{{selectedAdvanceObj.AgeDay}} -->
+                                                <span class="patient-col-value">{{selectedAdvanceObj.AgeYear}}Y| D | {{selectedAdvanceObj.GenderName}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Ref-Doctor Name
+                                                </span>
+                                                <span>:</span>
+                                                <!-- <span class="patient-col-value">{{selectedAdvanceObj.RefDocName}}</span> -->
+                                            </div>
+                                           
+                                        </div>
+                                        <div fxLayout="column" fxLayoutGap="6px">
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Ward | Bed Name
+                                                </span>
+                                                <span>:</span>
+                                                <!-- <span class="patient-col-value">{{selectedAdvanceObj.RoomName}} | {{selectedAdvanceObj.BedName}}</span> -->
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Patient Type
+                                                </span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{selectedAdvanceObj.PatientType}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Tarrif Name
+                                                </span>
+                                                <span>:</span>
+                                                <!-- <span class="patient-col-value">{{selectedAdvanceObj.TariffName}}</span> -->
+                                            </div>
+                                            <div class="patient-col" >
+                                                <span class="patient-col-key">Company Name</span>
+                                                <span>:</span>
+                                                <!-- <span class="patient-col-value" style="color: orange;">{{selectedAdvanceObj.CompanyName}}</span> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between"
-                            style="align-items: baseline;">
-
-                            <span class="label">Reg No :</span>
-                            <span class="data_input">{{selectedAdvanceObj.RegNo}}</span>
-
-                            <span class="label"> Patient Name : </span>
-                            <span class="data_input">{{selectedAdvanceObj.PatientName}}</span>
-
-                            <span class="label">Doctor Name : </span>
-                            <span class="data_input">{{selectedAdvanceObj.Doctorname}}</span>
-
-                            <!-- <span class="label">Age(Y) :</span>
-                        <span class="data_input">{{selectedAdvanceObj.AgeYear}}
-                        </span> -->
-
-                            <!-- <span class="label">Room Name : </span>
-                        <span class="data_input">{{selectedAdvanceObj.WardName}} 
-                         
-                        </span>-->
-
-                           
-                        </div>
+                    </mat-card> 
+                </div> 
+            </div> 
+    </div>
+</div>
+<div class="content-card " fusePerfectScrollbar style="padding: 0px 10px 6px 10px;">
+    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
+        
+            <div fxFlex.gt-sm="100%" fxFlex>
+                <div fxlayout="row" style="padding: 5px 5px 5px 5px;"> 
+                 
+                    <mat-card fxFlex style="padding: 6px;">
+                        <form [formGroup]="_radiologytemplateService.myform">
+                            <input type="hidden" name="TemplateId" formControlName="TemplateId">
+                            <div fxFlex style="height:300px !important; overflow: scroll;"> 
+                                <mat-label>Template Details</mat-label>
+                                <angular-editor (blur)="onBlur($event)" [config]="editorConfig" style="height:300px !important;"
+                                    [(ngModel)]="vTemplateDesc" required formControlName="ResultEntry"></angular-editor>  
+                            </div>
+                        </form> 
                     </mat-card>
-                    <!-- ================================ LABEL HEADER  -->
-                </div>
+                </div> 
+            </div> 
+    </div>
+</div>
+<div class="content-card "   style="padding: 0px 10px 6px 10px;">
+    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">  
+            <div fxFlex.gt-sm="100%" fxFlex>
+                <div fxlayout="row" > 
+                 
+                    <!-- <mat-card fxFlex style="padding: 5px;"> -->
+                        <form [formGroup]="_radiologytemplateService.myform">
+                            <div fxLayout.gt-xs="row" fxLayoutGap="10px">
 
-            </div>
-        </form>
+                                <mat-form-field appearance="outline" fxFlex="70%">
+                                    <mat-label>Suggatation Note </mat-label>
+                                    <input name="Suggatationnote" formControlName="SuggestionNotes" placeholder="Suggatation Note"
+                                        [(ngModel)]="SuggestionNotes" matInput>
+                                </mat-form-field> 
+                    
+                                <mat-form-field appearance="outline" fxFlex="29%">
+                                    <mat-label>Doctor Name</mat-label>
+                                    <input matAutocompletePosition="below" type="text" placeholder="Select DoctorId" matInput #dept
+                                       formControlName="DoctorId" [matAutocomplete]="autoRefdr"
+                                      required>
+                                    <span matSuffix style="display: flex;">
+                                      <mat-icon class="mat-icon-close"
+                                        (click)="_radiologytemplateService.myform.get('DoctorId').setValue(''); isresultdrSelected = false;">close</mat-icon>
+                                      <mat-icon class="mat-icon-close"
+                                        (click)="_radiologytemplateService.myform.get('DoctorId').setValue(''); isresultdrSelected = false;">search</mat-icon>
+                                    </span>
+                                    <mat-autocomplete #autoRefdr="matAutocomplete" [displayWith]="getOptionTextRefdr">
+                                      <mat-option *ngFor="let option of filteredrefdr | async" [value]="option"
+                                       >
+                                        {{option.Doctorname}}
+                                      </mat-option>
+                                    </mat-autocomplete>
+                                  </mat-form-field> 
+                            </div> 
+                        </form> 
+                    <!-- </mat-card> -->
+                </div> 
+            </div> 
+           
     </div>
 </div>
 
-<mat-card style="width:100%;height: 100%;">
-    <form [formGroup]="_radiologytemplateService.myform">
-        <input type="hidden" name="TemplateId" formControlName="TemplateId">
-
-        <!-- <div fxLayout="column" fxLayout.gt-xs="row">
-            <mat-form-field appearance="outline" fxFlex="40%" style="align-items: flex-end;">
-                <mat-label>Template Name</mat-label>
-                <mat-select formControlName="TemplateId" name="TemplateId">
-                  <mat-option></mat-option>
-                  <mat-option *ngFor="let m of templatelist" [value]="m">
-                    {{m.TemplateName}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-              &nbsp;&nbsp;&nbsp;
-              <button mat-raised-button color="accent" (click)="onAdd()">Add</button>
-        </div> -->
-
-        <!-- <div fxLayout="column" fxLayout.gt-xs="row">
-             <div class="editor"> 
-                <ejs-richtexteditor id='defaultRTE' [toolbarSettings]='tools' formControlName="TemplateDesc">
-                </ejs-richtexteditor> 
-             </div> 
-         </div> -->
-        <!-- TemplateDesc -->
-        <!-- 
-        <div fxFlexFill  fxLayout.gt-xs="row" >
-            <div class="editor">
-                <angular-editor  name="editor" placeholder="'Enter text here...'" formControlName="ResultEntry" [(ngModel)]="ResultEntry"></angular-editor>
-                <ngx-editor-menu [editor]="editor" [toolbar]="toolbar"> </ngx-editor-menu>
-                <ngx-editor height="320px" minHeight="150px" [editor]="editor" formControlName="TemplateDesc"></ngx-editor> -->
-        <!-- </div> -->
-        <!-- </div> -->
-
-
-        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-            <div class="editor" style="overflow: auto;height:450px !important;">
-               
-                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                        <div class="editor">
-                          
-                            <div>
-                                <mat-label>Template Details</mat-label>
-                                <angular-editor (blur)="onBlur($event)" [config]="editorConfig" style="height:300px;" [(ngModel)]="vTemplateDesc" required
-                                formControlName="ResultEntry"></angular-editor>
-                                  
-                            </div>
-                        </div>
-                    </div>
-    
-                
-            </div>
+<div class="content-card "   style="padding: 0px 10px 6px 10px;"> 
+    <div class="footer-navigation-container">  
+        <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px">  
+            <button class="btn btn-danger-outline" (click)="onClose()">Clear</button>
+            <button class="btn btn-primary" (click)="onSubmit()" [disabled]="_radiologytemplateService.myform.invalid">Save</button>
         </div>
-        <div fxLayout.gt-xs="row" fxLayoutGap="5px">
+    </div>
+</div>
 
-            <mat-form-field appearance="outline" style="width:70%;">
+
+<!-- <mat-card>
+    <form [formGroup]="_radiologytemplateService.myform">
+        <input type="hidden" name="TemplateId" formControlName="TemplateId"> 
+ 
+            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                <div fxFlex>  
+                        <mat-label>Template Details</mat-label>
+                        <angular-editor (blur)="onBlur($event)" [config]="editorConfig" style="height:300px;"
+                            [(ngModel)]="vTemplateDesc" required formControlName="ResultEntry"></angular-editor> 
+                     
+                </div>
+            </div> 
+        <div fxLayout.gt-xs="row" fxLayoutGap="10px">
+
+            <mat-form-field appearance="outline" fxFlex="70%">
                 <mat-label>Suggatation Note </mat-label>
                 <input name="Suggatationnote" formControlName="SuggestionNotes" placeholder="Suggatation Note"
                     [(ngModel)]="SuggestionNotes" matInput>
-            </mat-form-field>
+            </mat-form-field> 
 
-
-            <!-- <mat-form-field appearance="outline" style="width:25%;margin-left:20px;">
-                <mat-label>Doctor Name</mat-label>
-                <mat-select formControlName="DoctorId" placeholder="Bank" #singleSelect>
-                    <mat-option>
-                        <ngx-mat-select-search [formControl]="DoctorFilterCtrl" [placeholderLabel]="'Search'"
-                            [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                    </mat-option>
-                    <mat-option *ngFor="let element of filtereddoctor | async" [value]="element">
-                        {{element.Doctorname}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field> -->
-
-
-            <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+            <mat-form-field appearance="outline" fxFlex="25%">
                 <mat-label>Doctor Name</mat-label>
                 <input matAutocompletePosition="below" type="text" placeholder="Select DoctorId" matInput #dept
                    formControlName="DoctorId" [matAutocomplete]="autoRefdr"
@@ -172,28 +240,17 @@
                     {{option.Doctorname}}
                   </mat-option>
                 </mat-autocomplete>
-              </mat-form-field>
-
+              </mat-form-field> 
         </div>
 
-        <div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-between center">
-            <!-- <div fxLayout="column" fxLayout.gt-xs="row">
-                <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
-                    <mat-radio-button value='false'fxFlex>IsActive</mat-radio-button>
-                    <mat-radio-button value='true'fxFlex>IsDeactive</mat-radio-button>
-                </mat-radio-group>
-            </div> -->
-           
-
-            <div class="footer-navigation-container">
-           
-                <div class="modal-footer-buttons">
-                    
+        <div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-between center"> 
+            <div class="footer-navigation-container"> 
+                <div fxFlex="row" fxLayoutAlign="end start" fxLayoutGap="6px"> 
                     <button class="btn btn-danger-outline" (click)="onClose()">Clear</button>
                     <button class="btn btn-primary" (click)="onSubmit()" [disabled]="_radiologytemplateService.myform.invalid">Save</button>
                 </div>
             </div>
         </div>
     </form>
-</mat-card>
+</mat-card> -->
 

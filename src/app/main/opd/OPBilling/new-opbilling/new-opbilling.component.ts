@@ -217,7 +217,10 @@ export class NewOPBillingComponent implements OnInit {
       this.RegId = this.selectedAdvanceObj.RegId;
       this.RegNo = this.selectedAdvanceObj.RegNo;
       this.AgeYear = this.selectedAdvanceObj.AgeYear;
+      this.AgeDay = this.selectedAdvanceObj.AgeDay;
+      this.AgeMonth = this.selectedAdvanceObj.AgeMonth;
       this.vOPIPId = this.selectedAdvanceObj.VisitId;
+      this.vOPDNo = this.selectedAdvanceObj.OPDNo
       this.PatientName = this.selectedAdvanceObj.PatientName;
       this.Doctorname = this.selectedAdvanceObj.Doctorname;
       this.CompanyId = this.selectedAdvanceObj.CompanyId;
@@ -227,6 +230,9 @@ export class NewOPBillingComponent implements OnInit {
       this.vClassId = this.selectedAdvanceObj.ClassId;
       this.vClassName = this.selectedAdvanceObj.ClassName;
       this.vMobileNo = this.selectedAdvanceObj.MobileNo;
+      this.DepartmentName = this.selectedAdvanceObj.DepartmentName;
+      this.RefDocName = this.selectedAdvanceObj.RefDocName;
+      this.PatientType = this.selectedAdvanceObj.PatientType;
     }
 
     //this.getServiceListCombobox();

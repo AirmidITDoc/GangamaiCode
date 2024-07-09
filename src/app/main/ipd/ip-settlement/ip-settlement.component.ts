@@ -41,7 +41,7 @@ export class IPSettlementComponent implements OnInit {
   sIsLoading: string = '';
   selectedAdvanceObj: AdvanceDetailObj;
   regId: any;
-  screenFromString = 'OP-billing';
+  screenFromString = 'Ip-Settelment';
   reportPrintObj: ReportPrintObj;
   subscriptionArr: Subscription[] = [];
   printTemplate: any;
@@ -97,14 +97,15 @@ export class IPSettlementComponent implements OnInit {
   constructor(
     public _IpSearchListService: IPSettlementService,
     private accountService: AuthenticationService,
-    public _matDialog: MatDialog,
-    // @Inject(MAT_DIALOG_DATA) public data: any,
+    public _matDialog: MatDialog, 
     public datePipe: DatePipe,
     private advanceDataStored: AdvanceDataStored,
-    private formBuilder: FormBuilder,
+    private formBuilder: FormBuilder, 
     private router: Router) { }
 
   ngOnInit(): void {
+    debugger
+    this.clearpatientinfo();
     if (this.advanceDataStored.storage) {
 
       this.selectedAdvanceObj = this.advanceDataStored.storage;
@@ -488,7 +489,11 @@ export class IPSettlementComponent implements OnInit {
     this.dateTimeObj = dateTimeObj;
   }
   onClose() {
-    // this.dialogRef.close();
+     this._matDialog.closeAll();
+     this.searchFormGroup.reset();
+     this.dataSource1.data =[];
+     this.dataSource.data =[];
+     this.clearpatientinfo();
   }
 
 }

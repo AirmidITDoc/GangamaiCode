@@ -165,22 +165,17 @@ export class RadiologyOrderListComponent implements OnInit {
 
 
 
-  onShow(event: MouseEvent) {
-    // this.click = false;// !this.click;
-    this.click = !this.click;
-    // this. showSpinner = true;
-
+  onShow(event: MouseEvent) { 
+    this.click = !this.click;  
     setTimeout(() => {
       {
-        this.sIsLoading = 'loading-data';
-
+        this.sIsLoading = 'loading-data'; 
         this.getRadiologyPatientsList();
       }
 
     }, 500);
     this.MouseEvent = true;
-    this.click = true;
-
+    this.click = true; 
   }
 
 
@@ -238,16 +233,15 @@ export class RadiologyOrderListComponent implements OnInit {
       AdmDateTime: contact.AdmissionTime,
       AgeYear: contact.AgeYear,
       RadReportId: contact.RadReportId,
-      RadTestID: contact.RadTestID,
-
+      RadTestID: contact.RadTestID, 
       PatientType: contact.PatientType,
       GenderName: contact.GenderName,
       AdmissionDate: contact.AdmissionDate,
       CategoryName: contact.CategoryName,
       ChargeId: contact.ChargeId,
       ConsultantDoctor: contact.ConsultantDoctor,
-      OPDNo: contact.OPD_IPD_ID,
-      OP_IP_Number: contact.OP_IP_Number,
+      OPD_IPD_ID: contact.OPD_IPD_ID,
+      OPDNo: contact.OP_IP_Number,
       PBillNo: contact.PBillNo,
       RadDate: contact.RadDate,
       ServiceName: contact.ServiceName,
@@ -263,6 +257,7 @@ export class RadiologyOrderListComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
+      this.getRadiologyPatientsList();
     });
   }
 
@@ -611,16 +606,13 @@ export class RadiologyPrint {
   AdmDateTime: string;
   AgeYear: number;
   RadReportId: number;
-  RadTestID: String;
-
+  RadTestID: String; 
   RadDate: Date;
-  RadTime: Date;
-
+  RadTime: Date; 
   PatientType: number;
   TestName: String;
   ConsultantDoctor: any;
-  CategoryName: String;
-
+  CategoryName: String; 
   GenderName: String;
   PBillNo: number;
   AdmissionDate: Date;

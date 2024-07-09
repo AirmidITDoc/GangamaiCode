@@ -473,7 +473,7 @@
     <!-- HEADER -->
     <div class="top-header">
         <div class="top-header-info">
-            <button mat-icon-button class="sidebar-toggle" fxHide.gt-sm (click)="toggleSidebar('app-main')">
+            <button mat-icon-button class="sidebar-toggle" fxHide.gt-sm >
                 <mat-icon>menu</mat-icon>
             </button>
             <div class="top-header-title" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
@@ -582,7 +582,7 @@
                                     </div>
                                     <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
 
-                                        <ng-container matColumnDef="RadDate">
+                                        <ng-container matColumnDef="RadDate" sticky>
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>RadDate
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
@@ -590,7 +590,7 @@
                                             </mat-cell>
                                         </ng-container>
 
-                                        <ng-container matColumnDef="RadTime">
+                                        <ng-container matColumnDef="RadTime" sticky>
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>RadTime
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
@@ -598,7 +598,7 @@
                                             </mat-cell>
                                         </ng-container>
 
-                                        <ng-container matColumnDef="RegNo">
+                                        <ng-container matColumnDef="RegNo" sticky>
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>UHID No
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
@@ -606,7 +606,7 @@
                                             </mat-cell>
                                         </ng-container>
 
-                                        <ng-container matColumnDef="PatientName">
+                                        <ng-container matColumnDef="PatientName" sticky>
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Patient Name
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm [matTooltip]="contact.PatientName">
@@ -654,8 +654,12 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                                 IsCompleted
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                                {{contact.IsCompleted}}
+                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md> 
+                                                <mat-icon matTooltip="IsCompleted" *ngIf="contact.IsCompleted==true"
+                                                class="pill green-700 s-18" >check_circle</mat-icon>
+                                                <mat-icon matTooltip="Not Completed" *ngIf="contact.IsCompleted==false"
+                                                class="pill red-700 s-18" >cancel</mat-icon> 
+                                                 
                                             </mat-cell>
                                         </ng-container>
 
@@ -664,7 +668,11 @@
                                                 IsPrinted
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                                {{contact.IsPrinted}}
+                                                <mat-icon matTooltip="IsPrinted" *ngIf="contact.IsPrinted==true"
+                                                class="pill green-700 s-18" >check_circle</mat-icon>
+                                                <mat-icon matTooltip="Not Printed" *ngIf="contact.IsPrinted==false"
+                                                class="pill red-700 s-18" >cancel</mat-icon> 
+                                                
                                             </mat-cell>
                                         </ng-container>
 
@@ -689,6 +697,13 @@
                                                 </button> -->
                                                 <button mat-icon-button (click)="viewgetPathologyTemplateReportPdf(contact)" matTooltip="print">
                                                     <mat-icon>print</mat-icon>
+                                                </button>
+                                                <button mat-icon-button>
+                                                    <mat-icon matTooltip="Email">mail</mat-icon> 
+                                                </button>
+                                                <button mat-icon-button class="p-4" matTooltip="Send Bill On WhatsApp">
+                                                    <img width="100" height="20px"
+                                                        src="assets/images/logos/WhatsApp.png">
                                                 </button>
                                             </mat-cell>
                                         </ng-container>
@@ -719,15 +734,15 @@
                         </mat-card>
                     </div>
                     <div class="layout-card-container">
-                        <mat-card>
+                        <!-- <mat-card> -->
                             <div fxLayout="column" class="gap-8">
-                                <div class="table-header">
+                                <!-- <div class="table-header">
                                     <div fxLayout="row wrap" fxLayoutAlign="space-between center">
                                         <div class="table-header-title">
                                             <span class="h3 font-weight-600">Pathology Radiology Details</span>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="table-wrapper">
                                     <!-- <mat-table  #table matSort [dataSource]="dataSource1" [@animateStagger]="{value:'50'}">
 
@@ -799,7 +814,7 @@
                                     <!-- <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" showFirstLastButtons> </mat-paginator> -->
                                 </div>
                             </div>
-                        </mat-card>
+                        <!-- </mat-card> -->
                     </div>
                 </div>
             </div>

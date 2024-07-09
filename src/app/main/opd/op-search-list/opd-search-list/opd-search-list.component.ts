@@ -319,6 +319,7 @@ export class SearchInforObj
     UnitId:any;
     RegId:number;
     RefId:number;
+    OPDNo:any;
      OPD_IPD_ID:any;
      storage: any;
      IsMLC:any;
@@ -342,6 +343,7 @@ export class SearchInforObj
         {
            this.RegNo = SearchInforObj.RegNo || '';
            this.RegId = SearchInforObj.RegId || '';
+           this.OPDNo = SearchInforObj.OPDNo || '';
            this.AdmissionID = SearchInforObj.AdmissionID || '';
            this.PatientName = SearchInforObj.PatientName || '';
            this.Doctorname = SearchInforObj.Doctorname || '';
