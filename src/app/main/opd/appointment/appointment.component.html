@@ -82,9 +82,9 @@
                                         </span>
                                         <mat-autocomplete #autoSearchDoctor1="matAutocomplete"
                                             [displayWith]="getOptionTextDoctor">
-                                            <mat-option *ngFor="let option of filteredOptionsDoctor| async"
+                                            <mat-option *ngFor="let option of filteredOptionsDoctor | async"
                                                 [value]="option" (onSelectionChange)="getVisitList1()">
-                                                {{option.DoctorName}}
+                                                {{option.Doctorname}}
                                             </mat-option>
                                         </mat-autocomplete>
                                     </mat-form-field>
@@ -204,6 +204,9 @@
                                                                         class=" cyan-600 s-16">
                                                                         settings_phone
                                                                     </mat-icon>
+                                                                    <mat-icon *ngIf="contact.CrossConsulFlag==1; else noMLC "
+                                                                    matTooltip="CrossConsulFlag" class="pill green-600 s-16">cached icon
+                                                                    </mat-icon> 
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -367,7 +370,7 @@
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" class="w-260 gap-4">
                                                         <button mat-icon-button matTooltip="Edit" 
-                                                            *ngIf="contact.IsCancelled==0" (click)="onEdit(contact)">
+                                                            *ngIf="contact.IsCancelled==0" (click)="EditRegistration(contact)">
                                                             <mat-icon>edit</mat-icon>
                                                         </button>
                                                         <!-- <button mat-icon-button *ngIf="contact.IsCancelled=='0' " matTooltip="Appointment Cancle" (click)="AppointmentCancle()">

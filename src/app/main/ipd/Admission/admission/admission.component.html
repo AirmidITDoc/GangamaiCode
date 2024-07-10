@@ -239,11 +239,8 @@
                                                                 <!-- <mat-icon *ngIf="contact.IsMLC==1; else noMLC "
                                                                     matTooltip="IsNotMLC" class="pill green-600 s-16"
                                                                     (click)="NewMLc(contact)">edit
-                                                                </mat-icon>
-                                                                <mat-icon *ngIf="contact.IsMLC==1; else noMLC "
-                                                                matTooltip="IsNotMLC" class="pill green-600 s-16"
-                                                                (click)="NewMLc(contact)">print
-                                                                </mat-icon> -->
+                                                                </mat-icon>-->
+                                                               
 
                                                                 <button mat-icon-button
                                                                     *ngIf="contact.IsMLC==1; else noMLC "
@@ -996,7 +993,7 @@
                                     <mat-autocomplete #autoRefdoc="matAutocomplete" [displayWith]="getOptionTextAdDoc1">
                                         <mat-option *ngFor="let option of filteredOptionsDoc1 | async"
                                             [value]="option">
-                                            {{option.DoctorName}}
+                                            {{option.Doctorname}}
                                         </mat-option>
                                     </mat-autocomplete>
                                 </mat-form-field>
@@ -1015,7 +1012,7 @@
                                     </span>
                                     <mat-autocomplete #autodoc2="matAutocomplete" [displayWith]="getOptionTextDoc2">
                                         <mat-option *ngFor="let option of filteredOptionsDoc2 | async" [value]="option">
-                                            {{option.DoctorName}}
+                                            {{option.Doctorname}}
                                         </mat-option>
                                     </mat-autocomplete>
                                 </mat-form-field>

@@ -289,6 +289,12 @@ export class AdmissionService {
   public getDoctorMaster() {
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
   }
+
+  public getDoctorMasterNew() {
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_DoctorWithDepartCombo_Conditional", {})
+  }
+
+  
   //Doctor 2 Combobox List
   public getDoctorMaster2Combo() {
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})

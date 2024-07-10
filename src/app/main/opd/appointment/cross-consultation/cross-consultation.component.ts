@@ -71,54 +71,41 @@ export class CrossConsultationComponent implements OnInit {
   ) {
     
     this.date = new Date();
+
     if (this.data) {
       this.selectedAdvanceObj = data;
       console.log(this.selectedAdvanceObj);
       this.PatientHeaderObj = this.data;
-
+      this.registerObj1 = this.data;;
+      console.log(this.registerObj1);
       this.VisitId = this.selectedAdvanceObj.VisitId;
       this.PatientName = this.PatientHeaderObj.PatientName;
       this.vOPIPNo=this.PatientHeaderObj.RegId;
+      this.vOPIPNo=this.selectedAdvanceObj.OPDNo;
       this.VisitDate=this.PatientHeaderObj.VistDateTime;
       this.selectedAdvanceObj.AgeDay= this.selectedAdvanceObj.AgeDay.trim();
       this.selectedAdvanceObj.AgeMonth= this.selectedAdvanceObj.AgeMonth.trim();
       this.selectedAdvanceObj.AgeYear= this.selectedAdvanceObj.AgeYear.trim();
       this.getDepartmentList();
-     
+      this.getDoctorList();
     }
   }
 
   ngOnInit(): void {
 
     this.InfoFormGroup = this.createCrossConForm();
-  
+    this.setDropdownObjs();
 
-    // if (this.advanceDataStored.storage) {
-    //   this.selectedAdvanceObj = this.advanceDataStored.storage;
-    //   this.PatientHeaderObj = this.data;
-    //   console.log(this.selectedAdvanceObj);
-    //   this.VisitId = this.selectedAdvanceObj.VisitId;
-    //   this.PatientName = this.PatientHeaderObj.PatientName;
-    //   this.vOPIPNo=this.PatientHeaderObj.RegId;
-    //   this.VisitDate=this.PatientHeaderObj.VistDateTime;
-    //   // this.RegId = this.selectedAdvanceObj.RegId;
-    //   // this.RegNo = this.selectedAdvanceObj.RegNo;
-    //   // this.AgeYear = this.selectedAdvanceObj.AgeYear;
-    //   // this.vOPIPId = this.selectedAdvanceObj.VisitId;
-    //   // this.PatientName = this.selectedAdvanceObj.PatientName;
-    //   // this.Doctorname = this.selectedAdvanceObj.Doctorname;
-    //   // this.CompanyId = this.selectedAdvanceObj.CompanyId;
-    //   // this.CompanyName = this.selectedAdvanceObj.CompanyName;
-    //   // this.Tarrifname = this.selectedAdvanceObj.TariffName;
-    //   // this.vTariffId = this.selectedAdvanceObj.TariffId;
-    //   // this.vClassId = this.selectedAdvanceObj.ClassId;
-    //   // this.vClassName = this.selectedAdvanceObj.ClassName;
-    //   // this.vMobileNo = this.selectedAdvanceObj.MobileNo;
-    // }
-
+   
     this.filteredOptionsDep = this.InfoFormGroup.get('Departmentid').valueChanges.pipe(
       startWith(''),
       map(value => this._filterdept(value)),
+
+    );
+
+    this.filteredOptionsDoc = this.InfoFormGroup.get('DoctorID').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filteradmittedDoctor1(value)),
 
     );
   }
@@ -140,49 +127,50 @@ export class CrossConsultationComponent implements OnInit {
     });
   }
 
+  setDropdownObjs() {
+    debugger
+    const toSelect = this.DepartmentList.find(c => c.Departmentid == this.registerObj1.DepartmentId);
+    this.InfoFormGroup.get('Departmentid').setValue(toSelect);
 
-  // getDepartmentList() {
+    const toSelect1 = this.DoctorList.find(c => c.DoctorId == this.registerObj1.DoctorId);
+    this.InfoFormGroup.get('DoctorID').setValue(toSelect1);
+    
+    this.InfoFormGroup.updateValueAndValidity();
+  }
+ 
+  
 
-  //   this._opappointmentService.getDepartmentCombo().subscribe(data => {
-  //     this.DepartmentList = data;
-  //     this.optionsDep = this.DepartmentList.slice();
-  //     this.filteredOptionsDep = this.InfoFormGroup.get('Departmentid').valueChanges.pipe(
-  //       startWith(''),
-  //       map(value => value ? this._filterdept(value) : this.DepartmentList.slice()),
-  //     );
-     
-  //   });
-
-  // }
+  registerObj1 = new AdmissionPersonlModel({});
+  
   getDepartmentList() {
     debugger
-    this._opappointmentService.getDepartmentCombo().subscribe(data => {
+    this._AdmissionService.getDepartmentCombo().subscribe(data => {
       this.DepartmentList = data;
-      if (this.selectedAdvanceObj) {
-        const ddValue = this.DepartmentList.filter(c => c.Departmentid == this.selectedAdvanceObj.DepartmentId);
+      if (this.registerObj1) {
+        const ddValue = this.DepartmentList.filter(c => c.Departmentid == this.registerObj1.DepartmentId);
         this.InfoFormGroup.get('Departmentid').setValue(ddValue[0]);
+        //  this.OnChangeDoctorList(this.registerObj1);
         this.InfoFormGroup.updateValueAndValidity();
         return;
       }
     });
-    this.OnChangeDoctorList(this.selectedAdvanceObj,true);
-  }
-  
-  // getDepartmentList() {
-  //   this._AdmissionService.getDepartmentCombo().subscribe(data => {
-  //       this.DepartmentList = data;
-  //       if (this.PatientHeaderObj) {
-  //         const ddValue = this.DepartmentList.filter(c => c.Departmentid == this.PatientHeaderObj.DepartmentId);
-  //         this.InfoFormGroup.get('Departmentid').setValue(ddValue[0]);
-        
-  //         this.InfoFormGroup.updateValueAndValidity();
-  //         return;
-  //       }
-  //       });
-  //       this.OnChangeDoctorList(this.PatientHeaderObj)
-  // }
 
-  
+  }
+
+  getDoctorList() {
+    debugger
+
+    this._AdmissionService.getDoctorMasterNew().subscribe(data => {
+      this.DoctorList = data;
+      if (this.data) {
+        const ddValue = this.DoctorList.filter(c => c.DoctorId == this.registerObj1.DoctorId);
+        this.InfoFormGroup.get('DoctorID').setValue(ddValue[0]);
+        this.InfoFormGroup.updateValueAndValidity();
+        return;
+      }
+    });
+  }
+
 
   private _filterdept(value: any): string[] {
     if (value) {
@@ -190,70 +178,47 @@ export class CrossConsultationComponent implements OnInit {
       return this.DepartmentList.filter(option => option.departmentName.toLowerCase().includes(filterValue));
     }
   }
-  
+
+  private _filteradmittedDoctor1(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
+      return this.DoctorList.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
+    }
+  }
+ 
 
   getOptionTextDep(option) {
-
     return option && option.departmentName ? option.departmentName : '';
   }
 
-  getOptionTextDoc(option) {
-
-    return option && option.Doctorname ? option.Doctorname : '';
-
-  }
-  // OnChangeDoctorList(departmentObj) {
-  //   debugger
-  //   this.isDepartmentSelected = true;
-  //   this._opappointmentService.getDoctorMasterCombo(departmentObj.DepartmentId
-  //     ).subscribe(
-  //     data => {
-  //       this.DoctorList = data;
-  //       console.log(this.DoctorList )
-  //       this.optionsDoc = this.DoctorList.slice();
-  //       this.filteredOptionsDoc = this.InfoFormGroup.get('DoctorID').valueChanges.pipe(
-  //         startWith(''),
-  //         map(value => value ? this._filterDoc(value) : this.DoctorList.slice()),
-  //       );
-  //     })
-
-  //   }
-
-
-    
-  OnChangeDoctorList(departmentObj,flag) {
+  OnChangeDoctorList(departmentObj) {
     debugger
-    if(flag)
-      departmentObj.DepartmentId= departmentObj.DepartmentId
-    else
-    departmentObj.DepartmentId=departmentObj.Departmentid
+  //   if(flag)
+  //   departmentObj.DepartmentId=departmentObj.DepartmentId
+  // else
+  // departmentObj.DepartmentId=departmentObj.Departmentid
 
-    if (departmentObj) {
-      this._opappointmentService.getDoctorMasterCombo(departmentObj.DepartmentId).subscribe(data => {
+    this.InfoFormGroup.get('DoctorID').reset();
+    this.isDepartmentSelected = true;
+    this._AdmissionService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(
+      data => {
         this.DoctorList = data;
-        console.log( this.DoctorList)
-        // const ddValue = this.DoctorList.filter(c => c.DoctorID == this.selectedAdvanceObj.DoctorId);
-        //  this.InfoFormGroup.get('DoctorID').setValue(ddValue[0]);
-       
+        // this.InfoFormGroup.get('DoctorId').setValue(this.DoctorList[0]);      
+        return;
       });
-    }
-    if(this.selectedAdvanceObj){
-      if(this.DoctorList.length > 0){
-      const ddValue = this.DoctorList.filter(c => c.DoctorID == this.selectedAdvanceObj.DoctorId);
-       this.InfoFormGroup.get('DoctorID').setValue(ddValue[0]);
-       this.InfoFormGroup.updateValueAndValidity();      
-    }
-  }}
-
-
-  private _filterDoc(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
-      this.isDoctorSelected = false;
-      return this.optionsDoc.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
-    }
-
+      this.filteredOptionsDoc = this.InfoFormGroup.get('DoctorID').valueChanges.pipe(
+        startWith(''),
+        map(value => this._filteradmittedDoctor1(value)),
+  
+      );
+  
   }
+
+  
+  getOptionTextDoc(option) {
+    return option && option.Doctorname ? option.Doctorname : '';
+  }
+ 
 
   onClose() {
     this.dialogRef.close();

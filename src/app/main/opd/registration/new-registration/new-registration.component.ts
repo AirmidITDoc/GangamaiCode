@@ -150,6 +150,7 @@ export class NewRegistrationComponent implements OnInit {
         this.registerObj.PrefixID=this.registerObj.PrefixID;
         this.registerObj.PrefixID=this.registerObj.PrefixId;
         this.RegID=this.registerObj.RegID;
+        this.RegID=this.registerObj.RegId;
         this.AdmissionID=this.registerObj.AdmissionID;
         this.isDisabled = true
         this.Submitflag=this.data.Submitflag;
@@ -614,7 +615,7 @@ debugger
 debugger
       var m_data1 = {
         "opdRegistrationUpdate": {
-          "RegID": this.registerObj.RegID,
+          "RegID": this.RegID,
           "PrefixId": this.personalFormGroup.get('PrefixID').value.PrefixID,
           "FirstName": this.registerObj.FirstName || "",
           "MiddleName": this.registerObj.MiddleName || "",

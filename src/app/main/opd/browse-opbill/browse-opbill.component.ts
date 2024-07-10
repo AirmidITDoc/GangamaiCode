@@ -105,12 +105,13 @@ displayedColumns1 = [
   'MobileNo',
   'VisitDate',
   'DoctorName',
+  'TotalAmt',
   'RefDoctorName',
   'HospitalName',
   // 'PatientType',
   // 'TariffName',
   'CompanyName',
-  'TotalAmt',
+  
   'BalanceAmt',
   'PaidAmount',
   'CashPayAmount',
@@ -714,6 +715,7 @@ dataSource2 = new MatTableDataSource<RefundMaster>();
 
 
   viewgetOPPayemntPdf(Id,value) {
+    debugger
     let PaymentId=0;
 if(value)
  PaymentId=Id
