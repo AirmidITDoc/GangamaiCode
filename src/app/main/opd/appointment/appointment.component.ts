@@ -214,7 +214,7 @@ export class AppointmentComponent implements OnInit {
   filteredOptionsReligion: Observable<string[]>;
   filteredOptionsMstatus: Observable<string[]>;
   // filteredOptionsPatientType: Observable<string[]>;
-  filteredOptionsPatientType:any;
+  filteredOptionsPatientType: any;
   filteredOptionsTarrif: Observable<string[]>;
   isDoctorSelected: boolean = false;
   isCompanySelected: boolean = false;
@@ -339,7 +339,7 @@ export class AppointmentComponent implements OnInit {
     private reportDownloadService: ExcelDownloadService,
     private _Activatedroute: ActivatedRoute,
     private changeDetectorRefs: ChangeDetectorRef,
-    public _WhatsAppEmailService:WhatsAppEmailService
+    public _WhatsAppEmailService: WhatsAppEmailService
   ) {
     this.getVisitList1();
   }
@@ -405,7 +405,7 @@ export class AppointmentComponent implements OnInit {
     );
 
 
-       
+
     this.filteredOptionsPatientType = this.VisitFormGroup.get('PatientTypeID').valueChanges.pipe(
       startWith(''),
       map(value => this._filterPtype(value)),
@@ -431,7 +431,7 @@ export class AppointmentComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       this.getVisitList1();
     });
-   
+
   }
 
 
@@ -879,8 +879,8 @@ export class AppointmentComponent implements OnInit {
     });
   }
 
- 
-// reg fetch issue 
+
+  // reg fetch issue 
   // getPatientTypeList() {
   //   this._opappointmentService.getPatientTypeCombo().subscribe(data => {
   //     this.PatientTypeList = data;
@@ -895,7 +895,7 @@ export class AppointmentComponent implements OnInit {
   // }
 
 
-  
+
   private _filterPtype(value: any): string[] {
     if (value) {
       const filterValue = value && value.PatientType ? value.PatientType.toLowerCase() : value.toLowerCase();
@@ -910,7 +910,7 @@ export class AppointmentComponent implements OnInit {
     });
   }
 
-  
+
   private _filterTariffId(value: any): string[] {
     if (value) {
       const filterValue = value && value.TariffName ? value.TariffName.toLowerCase() : value.toLowerCase();
@@ -918,7 +918,7 @@ export class AppointmentComponent implements OnInit {
     }
   }
 
-  getTariffCombo(){
+  getTariffCombo() {
     this._opappointmentService.getTariffCombo().subscribe(data => {
       this.TariffList = data;
       this.VisitFormGroup.get('TariffId').setValue(this.TariffList[0]);
@@ -964,9 +964,9 @@ export class AppointmentComponent implements OnInit {
     // this.registerObj["RegID"]=row.RegId;
     // 
     console.log(row)
-    this.registerObj =row;
-    this.registerObj["RegId"]=row.RegId;
-    this.registerObj["RegID"]=row.RegId;
+    this.registerObj = row;
+    this.registerObj["RegId"] = row.RegId;
+    this.registerObj["RegID"] = row.RegId;
     this.EditRegistration();
   }
 
@@ -975,7 +975,7 @@ export class AppointmentComponent implements OnInit {
     this.advanceDataStored.storage = new AdvanceDetailObj(this.registerObj);
     console.log(this.registerObj)
     this._registrationService.populateFormpersonal(this.registerObj);
-   
+
     const dialogRef = this._matDialog.open(NewRegistrationComponent,
       {
         maxWidth: "85vw",
@@ -987,7 +987,7 @@ export class AppointmentComponent implements OnInit {
         },
       }
     );
-      
+
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
       this.getVisitList1();
@@ -1032,8 +1032,8 @@ export class AppointmentComponent implements OnInit {
     this._opappointmentService.getClassMasterCombo().subscribe(data => { this.ClassList = data; })
   }
 
-  
-  
+
+
 
   // getTariffList() {
   //   this._opappointmentService.getTariffCombo().subscribe(data => {
@@ -1060,7 +1060,7 @@ export class AppointmentComponent implements OnInit {
     });
   }
 
- 
+
   getMaritalStatusList() {
     this._opappointmentService.getMaritalStatusCombo().subscribe(data => {
       this.MaritalStatusList = data;
@@ -1171,7 +1171,7 @@ export class AppointmentComponent implements OnInit {
   }
 
   onChangeDateofBirth(DateOfBirth) {
-    
+
     // console.log(DateOfBirth)
     if (DateOfBirth) {
       const todayDate = new Date();
@@ -1217,7 +1217,7 @@ export class AppointmentComponent implements OnInit {
   isRowDisabled: boolean = false
 
   chkdisabled(contact) {
-    
+
     if (contact.IsCancelled)
       this.isRowDisabled = true
     else
@@ -1227,7 +1227,7 @@ export class AppointmentComponent implements OnInit {
 
 
   getVisitList1() {
-    
+
     this.sIsLoading = "loading-data";
     var D_data = {
       F_Name: this._AppointmentSreviceService.myFilterform.get("FirstName").value.trim() + "%" || "%",
@@ -1277,7 +1277,7 @@ export class AppointmentComponent implements OnInit {
     this.VNewcount = 0;
     this.VFollowupcount = 0;
     this.VBillcount = 0;
-    this.VCrossConscount=0;
+    this.VCrossConscount = 0;
     // console.log(data)
     this.Vtotalcount;
 
@@ -1460,16 +1460,11 @@ export class AppointmentComponent implements OnInit {
 
 
   getSearchList() {
-
     var m_data = {
-      "Keyword": `${this.searchFormGroup.get('RegId').value}%`
+      "Keyword": `${this.searchFormGroup.get('RegId').value}`
     }
-
     this._opappointmentService.getRegistrationList(m_data).subscribe(data => {
       this.PatientListfilteredOptions = data;
-      
-      
-      console.log(data)
       if (this.PatientListfilteredOptions.length == 0) {
         this.noOptionFound = true;
       } else {
@@ -1610,11 +1605,11 @@ export class AppointmentComponent implements OnInit {
     this.RegId = obj.RegId;
     this.RegNo = obj.RegNo;
     this.vPhoneAppId = obj.PhoneAppId;
-    this.vReligionId=obj.ReligionId;
-    this.vAreaId=obj.AreaId
-    this.vMaritalStatusId=obj.MaritalStatusId;
+    this.vReligionId = obj.ReligionId;
+    this.vAreaId = obj.AreaId
+    this.vMaritalStatusId = obj.MaritalStatusId;
 
-    
+
 
     this.setDropdownObjs();
 
@@ -1622,7 +1617,7 @@ export class AppointmentComponent implements OnInit {
   }
 
   getSelectedObj(obj) {
-console.log(obj)
+    console.log(obj)
     this.RegOrPhoneflag = 'Entry from Registration';
     obj.AgeDay = obj.AgeDay1.trim();
     obj.AgeMonth = obj.AgeMonth1.trim();
@@ -1668,7 +1663,7 @@ console.log(obj)
     }
   }
 
-  onNewSave(){
+  onNewSave() {
     if ((this.vPrefixID == '' || this.vPrefixID == null || this.vPrefixID == undefined)) {
       this.toastr.warning('Please select valid Prefix ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -1705,87 +1700,87 @@ console.log(obj)
       });
       return;
     }
-    const ischeckprefix = this.PrefixList.some(item => item.PrefixName ===this.personalFormGroup.get('PrefixID').value.PrefixName)
-    if(!ischeckprefix){
+    const ischeckprefix = this.PrefixList.some(item => item.PrefixName === this.personalFormGroup.get('PrefixID').value.PrefixName)
+    if (!ischeckprefix) {
       this.toastr.warning('Please Select valid Prefix', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    if(this.personalFormGroup.get('AreaId').value){
-      if(!this.AreaList.some(item => item.AreaName ===this.personalFormGroup.get('AreaId').value.AreaName)){
+    if (this.personalFormGroup.get('AreaId').value) {
+      if (!this.AreaList.some(item => item.AreaName === this.personalFormGroup.get('AreaId').value.AreaName)) {
         this.toastr.warning('Please Select valid AreaName', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
         return;
       }
     }
-    if(!this.cityList.some(item => item.CityName ===this.personalFormGroup.get('CityId').value.CityName)){
+    if (!this.cityList.some(item => item.CityName === this.personalFormGroup.get('CityId').value.CityName)) {
       this.toastr.warning('Please Select valid City', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    if(this.personalFormGroup.get('MaritalStatusId').value){
-      if(!this.MaritalStatusList.some(item => item.MaritalStatusName ===this.personalFormGroup.get('MaritalStatusId').value.MaritalStatusName)){
+    if (this.personalFormGroup.get('MaritalStatusId').value) {
+      if (!this.MaritalStatusList.some(item => item.MaritalStatusName === this.personalFormGroup.get('MaritalStatusId').value.MaritalStatusName)) {
         this.toastr.warning('Please Select valid MaritalStatus', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
         return;
       }
     }
-    if(this.personalFormGroup.get('ReligionId').value){
-      if(!this.ReligionList.some(item => item.ReligionName ===this.personalFormGroup.get('ReligionId').value.ReligionName)){
+    if (this.personalFormGroup.get('ReligionId').value) {
+      if (!this.ReligionList.some(item => item.ReligionName === this.personalFormGroup.get('ReligionId').value.ReligionName)) {
         this.toastr.warning('Please Select valid ReligionName', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
         return;
       }
     }
-    if(!this.PatientTypeList.some(item => item.PatientType ===this.VisitFormGroup.get('PatientTypeID').value.PatientType)){
+    if (!this.PatientTypeList.some(item => item.PatientType === this.VisitFormGroup.get('PatientTypeID').value.PatientType)) {
       this.toastr.warning('Please Select valid PatientType', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    if(!this.TariffList.some(item => item.TariffName ===this.VisitFormGroup.get('TariffId').value.TariffName)){
+    if (!this.TariffList.some(item => item.TariffName === this.VisitFormGroup.get('TariffId').value.TariffName)) {
       this.toastr.warning('Please Select valid TariffName', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-   
-    if(!this.DepartmentList.some(item => item.departmentName ===this.VisitFormGroup.get('Departmentid').value.departmentName)){
+
+    if (!this.DepartmentList.some(item => item.departmentName === this.VisitFormGroup.get('Departmentid').value.departmentName)) {
       this.toastr.warning('Please Select valid departmentName', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    if(!this.DoctorList.some(item => item.Doctorname ===this.VisitFormGroup.get('DoctorID').value.Doctorname)){
+    if (!this.DoctorList.some(item => item.Doctorname === this.VisitFormGroup.get('DoctorID').value.Doctorname)) {
       this.toastr.warning('Please Select valid Doctorname', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    if(this.VisitFormGroup.get('RefDocId').value){
-      if(!this.Doctor1List.some(item => item.DoctorName ===this.VisitFormGroup.get('RefDocId').value.DoctorName)){
+    if (this.VisitFormGroup.get('RefDocId').value) {
+      if (!this.Doctor1List.some(item => item.DoctorName === this.VisitFormGroup.get('RefDocId').value.DoctorName)) {
         this.toastr.warning('Please Select valid RefDoctorName', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
         return;
       }
     }
-    if(this.VisitFormGroup.get('PurposeId').value){
-      if(!this.PurposeList.some(item => item.PurposeName ===this.VisitFormGroup.get('PurposeId').value.PurposeName)){
+    if (this.VisitFormGroup.get('PurposeId').value) {
+      if (!this.PurposeList.some(item => item.PurposeName === this.VisitFormGroup.get('PurposeId').value.PurposeName)) {
         this.toastr.warning('Please Select valid PurposeName', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
         return;
       }
     }
-  
+
     if ((!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid)) {
-       
+
       if (this.searchFormGroup.get('regRadio').value == "registration") {
         //if (this.vPhoneAppId == 0 && this.Regflag == false) {
         this.OnsaveNewRegister();
@@ -1800,7 +1795,7 @@ console.log(obj)
   }
 
   onSave() {
-    
+
     let DoctorID = this.VisitFormGroup.get('DoctorID').value.DoctorId
 
     if (DoctorID == undefined) {
@@ -1811,7 +1806,7 @@ console.log(obj)
     }
     else {
       if ((!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid)) {
-       
+
         if (this.searchFormGroup.get('regRadio').value == "registration") {
           //if (this.vPhoneAppId == 0 && this.Regflag == false) {
           this.OnsaveNewRegister();
@@ -1823,15 +1818,15 @@ console.log(obj)
         }
 
       }
-    
-  }
-  this.getVisitList1();
+
+    }
+    this.getVisitList1();
   }
 
 
 
   OnsaveNewRegister() {
-    
+
     let Areaid = 0;
     if (this.personalFormGroup.get('AreaId').value)
       Areaid = this.personalFormGroup.get('AreaId').value.AreaId;
@@ -1852,7 +1847,7 @@ console.log(obj)
     if (this.VisitFormGroup.get('PurposeId').value)
       PurposeId = this.VisitFormGroup.get('PurposeId').value.PurposeId;
 
-    
+
     if (this.patienttype != 2) {
       this.CompanyId = 0;
     } else if (this.patienttype == 2) {
@@ -1908,7 +1903,7 @@ console.log(obj)
         visitSave['UnitId'] = this.VisitFormGroup.get('HospitalId').value.HospitalId ? this.VisitFormGroup.get('HospitalId').value.HospitalId : 0;
       visitSave['PatientTypeId'] = this.VisitFormGroup.get('PatientTypeID').value.PatientTypeId || 0;
       visitSave['ConsultantDocId'] = this.VisitFormGroup.get('DoctorID').value.DoctorId || 0;
-      visitSave['RefDocId'] = RefDocId ; // this.VisitFormGroup.get('RefDocId').value.DoctorId || 0;
+      visitSave['RefDocId'] = RefDocId; // this.VisitFormGroup.get('RefDocId').value.DoctorId || 0;
       visitSave['TariffId'] = this.VisitFormGroup.get('TariffId').value.TariffId ? this.VisitFormGroup.get('TariffId').value.TariffId : 0;
       visitSave['CompanyId'] = this.CompanyId;
       visitSave['AddedBy'] = this.accountService.currentUserValue.user.id;
@@ -1920,7 +1915,7 @@ console.log(obj)
       visitSave['DepartmentId'] = this.VisitFormGroup.get('Departmentid').value.Departmentid;
       visitSave['PatientOldNew'] = this.Patientnewold;
       visitSave['FirstFollowupVisit'] = 0,
-        visitSave['appPurposeId'] =PurposeId ; // this.VisitFormGroup.get('PurposeId').value.PurposeId || 0;
+        visitSave['appPurposeId'] = PurposeId; // this.VisitFormGroup.get('PurposeId').value.PurposeId || 0;
       visitSave['FollowupDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
         visitSave['crossConsulFlag'] = 0,
         visitSave['phoneAppId'] = this.vPhoneAppId || 0;
@@ -1958,7 +1953,7 @@ console.log(obj)
   }
 
   onSaveRegistered() {
-    
+
     let Areaid = 0;
     if (this.personalFormGroup.get('AreaId').value)
       Areaid = this.personalFormGroup.get('AreaId').value.AreaId;
@@ -2015,10 +2010,10 @@ console.log(obj)
     registrationUpdate['countryId'] = this.personalFormGroup.get('CountryId').value.CountryId;
     registrationUpdate['stateId'] = this.personalFormGroup.get('StateId').value.StateId;
     registrationUpdate['cityId'] = this.personalFormGroup.get('CityId').value.CityId;
-    registrationUpdate['maritalStatusId'] = MaritalStatusId ;// this.personalFormGroup.get('MaritalStatusId').value ? this.personalFormGroup.get('MaritalStatusId').value.MaritalStatusId : 0;
+    registrationUpdate['maritalStatusId'] = MaritalStatusId;// this.personalFormGroup.get('MaritalStatusId').value ? this.personalFormGroup.get('MaritalStatusId').value.MaritalStatusId : 0;
     registrationUpdate['isCharity'] = false;
-    registrationUpdate['religionId'] = ReligionId ;//this.personalFormGroup.get('ReligionId').value ? this.personalFormGroup.get('ReligionId').value.ReligionId : 0;
-    registrationUpdate['areaId'] =  Areaid ;//this.personalFormGroup.get('AreaId').value ? this.personalFormGroup.get('AreaId').value.AreaId : 0;
+    registrationUpdate['religionId'] = ReligionId;//this.personalFormGroup.get('ReligionId').value ? this.personalFormGroup.get('ReligionId').value.ReligionId : 0;
+    registrationUpdate['areaId'] = Areaid;//this.personalFormGroup.get('AreaId').value ? this.personalFormGroup.get('AreaId').value.AreaId : 0;
     registrationUpdate['Aadharcardno'] = this.personalFormGroup.get('AadharCardNo').value || '';
     registrationUpdate['Pancardno'] = this.personalFormGroup.get('PanCardNo').value || '';
     registrationUpdate['isSeniorCitizen'] = true; //this.personalFormGroup.get('isSeniorCitizen').value ? this.personalFormGroup.get('VillageId').value.VillageId : 0; //this.registerObj.VillageId;
@@ -2046,7 +2041,7 @@ console.log(obj)
     visitUpdate['DepartmentId'] = this.VisitFormGroup.get('Departmentid').value.Departmentid; //? this.VisitFormGroup.get('DepartmentId').value.DepartmentId : 0;
     visitUpdate['PatientOldNew'] = this.Patientnewold;
     visitUpdate['FirstFollowupVisit'] = 0, // this.VisitFormGroup.get('RelativeAddress').value ? this.VisitFormGroup.get('RelativeAddress').value : '';
-      visitUpdate['appPurposeId'] = PurposeId ; //this.VisitFormGroup.get('PurposeId').value.PurposeId || 0; // ? this.VisitFormGroup.get('RelativeAddress').value : '';
+      visitUpdate['appPurposeId'] = PurposeId; //this.VisitFormGroup.get('PurposeId').value.PurposeId || 0; // ? this.VisitFormGroup.get('RelativeAddress').value : '';
     visitUpdate['FollowupDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900', // this.personalFormGroup.get('PhoneNo').value ? this.personalFormGroup.get('PhoneNo').value : '';
       visitUpdate['crossConsulFlag'] = 0,
       visitUpdate['phoneAppId'] = this.vPhoneAppId || 0;
@@ -2374,7 +2369,7 @@ console.log(obj)
 
 
   viewgetPatientAppointmentReportPdf(obj, Pflag) {
-    
+
     this.chkprint = true;
     let VisitId;
     if (Pflag) {
@@ -2532,7 +2527,7 @@ console.log(obj)
   }
 
   ageyearcheck(event) {
-    
+
     if (parseInt(event) > 100) {
       this.toastr.warning('Please Enter Valid Age.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -2807,7 +2802,7 @@ console.log(obj)
       AdmDateTime: contact.AdmDateTime,
       AgeYear: contact.AgeYear,
       AgeMonth: contact.AgeMonth,
-      AgeDay: contact.AgeDay, 
+      AgeDay: contact.AgeDay,
       DepartmentName: contact.DepartmentName,
       ClassId: contact.ClassId,
       OPDNo: contact.OPDNo,
@@ -2899,7 +2894,7 @@ console.log(obj)
 
 
   public onEnterprefix(event, value): void {
-    
+
     if (event.which === 13) {
 
       console.log(value)
@@ -2932,15 +2927,15 @@ console.log(obj)
     }
   }
 
- 
+
   public onEntermstatus(event): void {
-  
+
     // let MaritalStatusId=this.personalFormGroup.get('MaritalStatusId').value.MaritalStatusId
     if (event.which === 13) {
-    //   console.log(MaritalStatusId)
-    //   if(MaritalStatusId==undefined || event.value== '%'){
+      //   console.log(MaritalStatusId)
+      //   if(MaritalStatusId==undefined || event.value== '%'){
 
-    //   }else if(MaritalStatusId==undefined || MaritalStatusId>0)
+      //   }else if(MaritalStatusId==undefined || MaritalStatusId>0)
       this.mobile.nativeElement.focus();
     }
     // this.mobile.nativeElement.focus();
@@ -2948,17 +2943,17 @@ console.log(obj)
   }
 
   public onEnterreligion(event): void {
-  
+
     // let ReligionId=this.personalFormGroup.get('ReligionId').value.ReligionId
     if (event.which === 13) {
-    //   console.log(ReligionId)
-    //   if(ReligionId==undefined || event.value== '%'){
+      //   console.log(ReligionId)
+      //   if(ReligionId==undefined || event.value== '%'){
 
-    //   }else if(ReligionId==undefined || ReligionId>0)
-    //   this.ptype.nativeElement.focus();
-    this.ptype.nativeElement.focus();
+      //   }else if(ReligionId==undefined || ReligionId>0)
+      //   this.ptype.nativeElement.focus();
+      this.ptype.nativeElement.focus();
     }
-    
+
   }
   public onEnterbday(event): void {
     if (event.which === 13) {
@@ -2971,7 +2966,7 @@ console.log(obj)
   public onEnteragey(event, value): void {
     if (event.which === 13) {
       this.agem.nativeElement.focus();
-      
+
       this.ageyearcheck(value);
     }
   }
@@ -3017,12 +3012,12 @@ console.log(obj)
   }
 
   public onEnterarea(event): void {
-   
+
 
     if (event.which === 13) {
       this.city.nativeElement.focus();
     }
-}
+  }
 
 
 
@@ -3404,8 +3399,8 @@ export class AdvanceDetailObj {
   HospitalId: any;
   VistDateTime: any;
   AadharCardNo: any;
-  DepartmentId:any;
-  Departmentid:any;
+  DepartmentId: any;
+  Departmentid: any;
   /**
    * Constructor
    *

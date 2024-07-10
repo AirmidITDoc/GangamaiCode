@@ -30,6 +30,7 @@ export class UnitmasterComponent implements OnInit {
     msg: any;
 
     DSUnitmasterList = new MatTableDataSource<PathunitMaster>();
+    tempList = new MatTableDataSource<PathunitMaster>();
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
@@ -61,6 +62,7 @@ export class UnitmasterComponent implements OnInit {
         };
         this._unitmasterService.getUnitMasterList(param).subscribe((Menu) => {
             this.DSUnitmasterList.data = Menu as PathunitMaster[];
+            this.tempList.data = this.DSUnitmasterList.data;
             console.log( this.DSUnitmasterList)
             this.DSUnitmasterList.sort = this.sort;
             this.DSUnitmasterList.paginator = this.paginator;
@@ -151,31 +153,68 @@ export class UnitmasterComponent implements OnInit {
             this.onClear();
         }
     }
-    onDeactive(UnitId) {
-        this.confirmDialogRef = this._matDialog.open(
-            FuseConfirmDialogComponent,
-            {
-                disableClose: false,
+        toggle(val: any) {
+        if (val == "2") {
+            this._unitmasterService.currentStatus = 2;
+        } else if(val=="1") {
+            this._unitmasterService.currentStatus = 1;
+        }
+        else{
+            this._unitmasterService.currentStatus = 0;
+
+        }
+    }
+    onFilterChange(){
+        debugger;
+        if(this._unitmasterService.currentStatus==1){
+            this.tempList.data = []
+            for (let item of this.DSUnitmasterList.data) {
+                if(!item.IsDeleted)this.tempList.data.push(item)
+                    
+                }
             }
-        );
-        this.confirmDialogRef.componentInstance.confirmMessage =
-            "Are you sure you want to deactive?";
-        this.confirmDialogRef.afterClosed().subscribe((result) => {
-            if (result) {
-                let Query =
+        else if(this._unitmasterService.currentStatus==2){
+
+            this.tempList.data = []
+            for (let item of this.DSUnitmasterList.data) {
+                if(item.IsDeleted)this.tempList.data.push(item)
+                
+            }
+        }
+        else{
+            this.tempList.data = this.DSUnitmasterList.data;
+        }
+
+
+    }
+    onDeactive(UnitId) {
+        if (this.DSUnitmasterList.data.find(item => item.UnitId === UnitId).IsDeleted) {
+            Swal.fire({
+              title: 'Already Deactivated',
+              text: 'This item is already deactivated.',
+              icon: 'info'
+            });
+            return 
+        }
+        Swal.fire({
+          title: 'Confirm Deactivation',
+          text: 'Are you sure you want to deactivate?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, deactivate!'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            let Query =
                 "Update M_PathUnitMaster set Isdeleted=1 where UnitId=" +
                 UnitId;
-                    
-                console.log(Query);
                 this._unitmasterService.deactivateTheStatus(Query)
-                    .subscribe((data) => (this.msg = data));
-                this.getUnitMasterList();
-            }
-            this.confirmDialogRef = null;
-            
+                .subscribe((data) => (this.msg = data));
+            this.getUnitMasterList();
+          }
         });
-        this.getUnitMasterList();
-    }
+      }
     onEdit(row) {
         var m_data = {
             UnitId: row.UnitId,

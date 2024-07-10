@@ -36,12 +36,13 @@ dynamicTableHeight>
                                         </button>
                                     </mat-form-field>
 
-                                    <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch" value="2"
-                                        fxLayoutAlign="center center">
-                                        <mat-radio-button value="2">All</mat-radio-button>
-                                        <mat-radio-button mat-fab value="0">IsActive</mat-radio-button>
-                                        <mat-radio-button mat-fab value="1">IsDeactive</mat-radio-button>
+                                    <mat-radio-group name="IsDeletedSearch"  formControlName="IsDeletedSearch" (change) ="onFilterChange()" >
+                                        <mat-radio-button (click)="toggle(0)" [checked]="true" value="0" >All</mat-radio-button>
+                                        <mat-radio-button mat-fab value="1" (click)="toggle(1)"  >IsActive</mat-radio-button>
+                                        <mat-radio-button (click)="toggle(2)"   value="2">IsDeactive</mat-radio-button>
                                     </mat-radio-group>
+                                    
+                                    
 
                                     <button mat-raised-button (click)="onSearch()" fxLayoutAlign="center center">
                                         <mat-icon>search</mat-icon>
@@ -53,7 +54,7 @@ dynamicTableHeight>
 
                         <div fxlayout="row">
                             <div style="width: 100%;">
-                                <mat-table #table class="table1" matSort [dataSource]="DSCategoryMasterList"
+                                <mat-table #table class="table1" matSort [dataSource]="tempList.data"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto">
                                     <ng-container matColumnDef="CategoryId">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code

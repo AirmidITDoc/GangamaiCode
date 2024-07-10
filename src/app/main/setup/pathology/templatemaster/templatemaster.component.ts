@@ -158,12 +158,12 @@ export class TemplatemasterComponent implements OnInit {
     //         this.getTemplateMasterList();
     //     });
     // }
-    onAdd(tabName: string, tabGroup: MatTabGroup) {
-        const tabIndex = tabName === 'tab1' ? 0 : 1;  
-        tabGroup.selectedIndex = tabIndex;
+    // onAdd(tabName: string, tabGroup: MatTabGroup) {
+    //     const tabIndex = tabName === 'tab1' ? 0 : 1;  
+    //     tabGroup.selectedIndex = tabIndex;
        // console.log(row)
-        this.getTemplateMasterList();
-        this.onClear();
+        // this.getTemplateMasterList();
+        // this.onClear();
         // const dialogRef = this._matDialog.open(PathologyTemplateFormComponent, {
         //     maxWidth: "80%", 
         //     width: "80%",
@@ -173,7 +173,20 @@ export class TemplatemasterComponent implements OnInit {
         //     console.log("The dialog was closed - Insert Action", result);
         //     this.getTemplateMasterList();
         // });
-    }
+    // }
+    
+    onAdd() {
+      const dialogRef = this._matDialog.open(PathologyTemplateFormComponent, {
+          maxWidth: "70vw",
+          maxHeight: "90vh",
+          width: "100%",
+          height: "100%",
+      });
+      dialogRef.afterClosed().subscribe((result) => {
+          console.log("The dialog was closed - Insert Action", result);
+           this.getTemplateMasterList();
+      });
+  }
     onSubmit( ) {
       debugger
         
