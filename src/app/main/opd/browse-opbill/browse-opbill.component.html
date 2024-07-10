@@ -183,10 +183,10 @@
 
                                                     </div>
                                                 </div>
-                                                <button mat-icon-button matTooltip="Settlement">
+                                                <!-- <button mat-icon-button matTooltip="Settlement">
                                                     <mat-icon *ngIf="contact.BalanceAmt !=0 " matTooltip="Settlement"
                                                         (click)="NewBillpayment(contact)">payment</mat-icon>
-                                                </button>
+                                                </button> -->
                                                 <button mat-icon-button   matTooltip="Settlement">
                                                     <mat-icon *ngIf="contact.BalanceAmt !=0 " matTooltip="Settlement"
                                                         (click)="openPaymentpopup(contact)">receipt</mat-icon>
@@ -666,23 +666,47 @@
                                             </div>
                                             <mat-table matSort [dataSource]="dataSource1"
                                                 [@animateStagger]="{value:'50'}">
+                                                <ng-container matColumnDef="PaymentDate" sticky>
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md  class="w-160">Date
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md  class="w-160">
+                                                        {{contact.PaymentDate | date:'shortDate'}}
+                                                    </mat-cell>
+                                                </ng-container>
+            
+                                                <ng-container matColumnDef="PBillNo" sticky>
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>PBillNo
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                        {{contact.PBillNo}}
+                                                    </mat-cell>
+                                                </ng-container>
+            
+                                                <ng-container matColumnDef="ReceiptNo" sticky>
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ReceiptNo
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                        {{contact.ReceiptNo}}
+                                                    </mat-cell>
+                                                </ng-container>
 
-                                                <ng-container matColumnDef="RegNo">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                        UHID</mat-header-cell>
+                                                <ng-container matColumnDef="RegNo" sticky>
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>RegNo
+                                                    </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                         {{contact.RegNo}}
                                                     </mat-cell>
                                                 </ng-container>
-
-                                                <ng-container matColumnDef="PatientName">
+            
+                                                <ng-container matColumnDef="PatientName" sticky>
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                        class="w-220">
-                                                        Patient Name</mat-header-cell>
+                                                        class="w-220">Patient
+                                                        Name
+                                                    </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-220">
                                                         {{contact.PatientName}}
                                                     </mat-cell>
-                                                </ng-container>
+                                                </ng-container>  
 
                                                 <ng-container matColumnDef="MobileNo">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>MobileNo
@@ -770,14 +794,7 @@
                                                     </mat-cell>
                                                 </ng-container>
 
-                                                <ng-container matColumnDef="PaymentDate">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                        fxShow.gt-sm>Date
-                                                    </mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-sm>
-                                                        {{contact.PaymentDate | date:'shortDate'}}
-                                                    </mat-cell>
-                                                </ng-container>
+                                               
 
                                                 <ng-container matColumnDef="CashPayAmount">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
@@ -823,23 +840,7 @@
                                                     </mat-cell>
                                                 </ng-container>
 
-                                                <ng-container matColumnDef="PBillNo">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                        fxShow.gt-sm>PBillNo
-                                                    </mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.PBillNo}}
-                                                    </mat-cell>
-                                                </ng-container>
-
-                                                <ng-container matColumnDef="ReceiptNo">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                        fxShow.gt-sm>ReceiptNo
-                                                    </mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.ReceiptNo}}
-                                                    </mat-cell>
-                                                </ng-container>
+                                                
 
                                                 <!-- <ng-container matColumnDef="PayDate">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>PayDate
@@ -875,7 +876,7 @@
                                                     </mat-cell>
                                                 </ng-container> -->
                                                 <!-- stickyEnd -->
-                                                <ng-container matColumnDef="buttons" stickyEnd>
+                                                <ng-container matColumnDef="buttons"  End>
                                                     <mat-header-cell *matHeaderCellDef style="color: white;">Action
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact">
@@ -1066,30 +1067,30 @@
                                                 [@animateStagger]="{value:'50'}" style="overflow: auto;width: 100%;">
 
 
-                                                <ng-container matColumnDef="RefundDate">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                <ng-container matColumnDef="RefundDate" sticky>
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm  class="w-160">
                                                         RefundDate </mat-header-cell>
-                                                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                                    <mat-cell *matCellDef="let element" fxShow.gt-sm  class="w-160">
                                                         {{element.RefundDate | date:'shortDate'}}
                                                     </mat-cell>
                                                 </ng-container>
                                                 RefundNo
 
-                                                <ng-container matColumnDef="RefundNo">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                <ng-container matColumnDef="RefundNo" sticky>
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm  >
                                                         RefundNo </mat-header-cell>
-                                                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                                    <mat-cell *matCellDef="let element" fxShow.gt-sm >
                                                         {{element.RefundNo || '--' }} </mat-cell>
                                                 </ng-container>
 
-                                                <ng-container matColumnDef="RegNo">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                <ng-container matColumnDef="RegNo" sticky>
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm >
                                                         UHID </mat-header-cell>
-                                                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                                    <mat-cell *matCellDef="let element" fxShow.gt-sm >
                                                         {{element.RegNo}} </mat-cell>
                                                 </ng-container>
 
-                                                <ng-container matColumnDef="PatientName">
+                                                <ng-container matColumnDef="PatientName" sticky>
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
                                                         class="w-220">
                                                         PatientName </mat-header-cell>

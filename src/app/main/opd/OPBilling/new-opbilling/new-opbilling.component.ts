@@ -422,7 +422,7 @@ console.log(obj)
     let netAmt1;
     netAmt = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
     this.b_TotalChargesAmount = element.reduce((sum, { TotalAmt }) => sum += +(TotalAmt || 0), 0).toFixed(2);
-    // this.calcDiscPersonTotal();
+    this.calcDiscPersonTotal();
     this.TotalnetPaybleAmt = netAmt;
     return netAmt
   }
@@ -1173,7 +1173,7 @@ console.log(obj)
       this.BillingForm.get('ConcessionId').reset();
       this.BillingForm.get('ConcessionId').clearValidators();
 
-    } else if (finaldiscAmt == 0 || finaldiscAmt == null || finaldiscAmt == '') {
+    } else if (finaldiscAmt == 0 || finaldiscAmt == null || finaldiscAmt == ''  || this.b_TotalChargesAmount == 0) {
       this.Consessionres = false;
       this.b_concessionDiscPer = '';
       this.BillingForm.get('concesDiscPer').setValue(this.b_concessionDiscPer)
@@ -1183,6 +1183,7 @@ console.log(obj)
       this.BillingForm.get('ConcessionId').updateValueAndValidity();
 
     }
+    
 
   }
 
@@ -1194,17 +1195,17 @@ console.log(obj)
       this.dataSource.data = [];
       this.dataSource.data = this.chargeslist;
     }
-    Swal.fire('Success !', 'ChargeList Row Deleted Successfully', 'success');
-    this.chkdelte = 1;
-    this.vConcessionAmt -= element.DiscAmt
-    this.BillingForm.get('concessionAmt').setValue(this.vConcessionAmt);
-    this.calcDiscPersonTotal();
-    if (this.chkdelte == 1) {
-      if (this.b_concessionDiscPer > 0) {
-        let discamt = ((parseFloat(element.NetAmount) * parseFloat(this.b_concessionDiscPer)) / 100)
-        this.BillingForm.get('concessionAmt').setValue(discamt);
-      }
-    }
+    Swal.fire('Success !', 'ChargeList Row Deleted Successfully', 'success'); 
+    // this.chkdelte = 1;
+    // this.vConcessionAmt -= element.DiscAmt
+    // this.BillingForm.get('concessionAmt').setValue(this.vConcessionAmt);
+    // this.calcDiscPersonTotal();
+    // if (this.chkdelte == 1) {
+    //   if (this.b_concessionDiscPer > 0) { 
+    //     let discamt = ((parseFloat(element.NetAmount) * parseFloat(this.b_concessionDiscPer)) / 100)
+    //     this.BillingForm.get('concessionAmt').setValue(discamt);
+    //   } 
+    // } 
   }
 
 
@@ -1225,8 +1226,8 @@ console.log(obj)
   }
   private _filterDoctor(value: any): string[] {
     if (value) {
-      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
-      return this.doctorNameCmbList.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
+      const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
+      return this.doctorNameCmbList.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
     }
 
   }
@@ -1364,7 +1365,7 @@ console.log(obj)
 
 
   getOptionTextDoctor(option) {
-    return option && option.DoctorName ? option.DoctorName : '';
+    return option && option.Doctorname ? option.Doctorname : '';
   }
   addData() {
     this.add = true;

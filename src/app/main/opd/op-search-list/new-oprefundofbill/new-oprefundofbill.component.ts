@@ -25,6 +25,7 @@ import { OPAdvancePaymentComponent } from '../op-advance-payment/op-advance-paym
 import { element } from 'protractor';
 import { ToastrService } from 'ngx-toastr';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
+import { OpPaymentVimalComponent } from '../op-payment-new-vimal/op-payment-vimal.component';
 type NewType = Observable<any[]>;
 
 
@@ -112,7 +113,7 @@ export class NewOPRefundofbillComponent implements OnInit {
   noOptionFound: boolean = false;
   vBillBalanceAmt = 0;
   vFinalrefundbamt=0;
-
+  RegNo:any;
   vMobileNo: any;
 
 
@@ -237,14 +238,21 @@ export class NewOPRefundofbillComponent implements OnInit {
     });
 
   }
-
+  AgeMonth:any;
+  AgeDay:any;
+  GenderName:any;
   getSelectedObj1(obj) {
     this.dataSource.data = [];
     console.log(obj)
     this.registerObj = obj;
     this.PatientName = obj.FirstName + " " + obj.LastName;
-    this.RegId = obj.RegId;
+    this.RegId = obj.RegId; 
+    this.RegNo = obj.RegNo;
     this.City = obj.City;
+    this.AgeMonth = obj.AgeMonth;
+    this.GenderName = obj.GenderName;
+    this.AgeDay = obj.AgeDay;
+    this.AgeYear = obj.AgeYear;
     this.RegDate = this.datePipe.transform(obj.RegTime, 'dd/MM/yyyy hh:mm a');
     this.CompanyName = obj.CompanyName;
     this.Tarrifname = obj.TariffName;
@@ -607,11 +615,11 @@ onSave() {
 
         let PatientHeaderObj = {};
 
-        PatientHeaderObj['Date'] = this.dateTimeObj.date;
-        PatientHeaderObj['OPD_IPD_Id'] = this.vOPIPId;
+        PatientHeaderObj['Date'] = this.dateTimeObj.date; 
         PatientHeaderObj['NetPayAmount'] = this.TotalRefundAmount;
         PatientHeaderObj['PatientName'] = this.PatientName;
-        PatientHeaderObj['BillId'] = this.BillNo;
+        PatientHeaderObj['Age'] = this.AgeYear; 
+        PatientHeaderObj['UHIDNO'] = this.RegNo;
 
         const insertRefund = new InsertRefund(InsertRefundObj);
 
@@ -626,6 +634,25 @@ onSave() {
               advanceObj: PatientHeaderObj
             }
           });
+        // let PatientHeaderObj = {};
+
+        // PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+        // PatientHeaderObj['PatientName'] = this.PatientName;
+        // PatientHeaderObj['UHIDNO'] = this.RegNo;   
+        // PatientHeaderObj['Age'] = this.AgeYear;  
+        // PatientHeaderObj['NetPayAmount'] = this.TotalRefundAmount; 
+        
+        //   const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
+        //     {
+        //       maxWidth: "80vw",
+        //       height: '650px',
+        //       width: '80%',
+        //       data: {
+        //         vPatientHeaderObj: PatientHeaderObj,
+        //         FromName: "OP-Refund",
+        //         advanceObj: PatientHeaderObj,
+        //       }
+        //     });
 
         dialogRef.afterClosed().subscribe(result => {
           // console.log('============================== Return Adv ===========');

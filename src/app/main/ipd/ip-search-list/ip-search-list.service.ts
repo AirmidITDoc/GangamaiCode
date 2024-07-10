@@ -559,7 +559,7 @@ public getDischaregDoctor3Combo() {
    
   //Bed Combobox List
   public getBedCombo(Id) {
-    return this._httpClient.post("Generic/GetByProc?procName=RetrieveBedMasterForCombo_Conditional", {"Id":Id})
+    return this._httpClient.post("Generic/GetByProc?procName=RetrieveBedMasterForCombo_Conditional",Id)
    }
 
  //Class Combobox List

@@ -61,7 +61,15 @@
                                 <div class="patient-sub">
                                     <div class="patient-info-row patient-info-1-111 pt-8"
                                         fxLayout="row"
-                                        fxLayoutAlign="space-between center">
+                                        fxLayoutGap="200px">
+                                        <div class="patient-col">
+                                            <span
+                                                class="patient-col-key">UHID No
+                                                </span>
+                                            <span>:</span>
+                                            <span
+                                                class="patient-col-value">{{RegNo}}</span>
+                                        </div>
                                         <div class="patient-col">
                                             <span
                                                 class="patient-col-key">Patient Name
@@ -72,35 +80,12 @@
                                         </div>
                                         <div class="patient-col">
                                             <span
-                                                class="patient-col-key">OPD No</span>
+                                                class="patient-col-key">Age | Gender</span>
                                             <span>:</span>
                                             <span
-                                                class="patient-col-value">{{vOPDNo}}</span>
+                                                class="patient-col-value">{{AgeYear}}Y|{{AgeMonth}}M|{{AgeDay}}D | {{GenderName}}</span>
                                         </div>
-                                        <div class="patient-col">
-                                            <span
-                                                class="patient-col-key">Doctor Name</span>
-                                            <span>:</span>
-                                            <span
-                                                class="patient-col-value">{{Doctorname}}</span>
-                                        </div>
-                                        <div class="patient-col">
-                                            <span
-                                                class="patient-col-key">Company Name
-                                                </span>
-                                            <span>:</span>
-                                            <span
-                                                class="patient-col-value">{{CompanyName}}</span>
-                                        </div>
-                                        <div class="patient-col">
-                                            <span
-                                                class="patient-col-key">Tarrif Name
-                                              </span>
-                                            <span>:</span>
-                                            <span
-                                                class="patient-col-value">{{Tarrifname}}</span>
-                                        </div>
-                                       
+                                        
                                     </div>
                                 </div>
                             </div>

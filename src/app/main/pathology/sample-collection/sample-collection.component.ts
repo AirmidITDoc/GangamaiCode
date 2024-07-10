@@ -75,6 +75,7 @@ export class SampleCollectionComponent implements OnInit {
     'VATime',
     'ServiceName',
     'IsSampleCollection',
+    'IsPrinted',
     'SampleCollectionTime',
     // 'IsCompleted',
     // 'action'
@@ -155,15 +156,15 @@ export class SampleCollectionComponent implements OnInit {
       "F_Name": (this._SampleService.myformSearch.get("FirstNameSearch").value).trim() + '%' || '%',
       "L_Name": (this._SampleService.myformSearch.get("LastNameSearch").value).trim() + '%' || '%',
       "Reg_No": (this._SampleService.myformSearch.get("RegNoSearch").value) || 0,
-      "From_Dt": "2023-06-19 00:00:00.000",//this.datePipe.transform(this._SampleService.myformSearch.get("start").value, "MM-dd-yyyy") || "01/01/1900",
-      "To_Dt":"2023-10-19 00:00:00.000",// this.datePipe.transform(this._SampleService.myformSearch.get("end").value, "MM-dd-yyyy") || "01/01/1900",
-      "IsCompleted": parseInt(this._SampleService.myformSearch.get("StatusSearch").value) || 0,
-      "OP_IP_Type": parseInt(this._SampleService.myformSearch.get("PatientTypeSearch").value) || 1,
-
+      "From_Dt":  this.datePipe.transform(this._SampleService.myformSearch.get("start").value, "MM-dd-yyyy") || "01/01/1900",
+      "To_Dt": this.datePipe.transform(this._SampleService.myformSearch.get("end").value, "MM-dd-yyyy") || "01/01/1900",
+      "IsCompleted":this._SampleService.myformSearch.get("StatusSearch").value || 0,
+      "OP_IP_Type": this._SampleService.myformSearch.get("PatientTypeSearch").value || 0, 
     }
     console.log(m_data);
     this._SampleService.getPatientSamplesList(m_data).subscribe(Visit => {
       this.dataSource.data = Visit as PatientList[];
+      console.log(this.dataSource.data);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
       this.sIsLoading = '';
@@ -182,8 +183,7 @@ export class SampleCollectionComponent implements OnInit {
     this._SampleService.myformSearch.reset({ RegNoSearch: '', FirstNameSearch: '', LastNameSearch: '', PatientTypeSearch: '', StatusSearch: '' });
   }
 
-  onEdit(row): void {
-    ;
+  onEdit(row) { 
     console.log(row)
     
 

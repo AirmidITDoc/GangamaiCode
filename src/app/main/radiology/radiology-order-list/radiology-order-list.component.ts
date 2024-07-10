@@ -60,6 +60,7 @@ export class RadiologyOrderListComponent implements OnInit {
 
   dataSource = new MatTableDataSource<RadioPatientList>();
   displayedColumns: string[] = [
+    'IsCompleted',
     'RadDate',
     'RadTime',
     'RegNo',
@@ -68,8 +69,7 @@ export class RadiologyOrderListComponent implements OnInit {
     'ConsultantDoctor', 
     'AgeGender',
     'ServiceName',
-    'IsCompleted',
-    'IsPrinted',
+    ///'IsPrinted',
     'PBillNo',
     'action'
 
@@ -609,7 +609,7 @@ export class RadiologyPrint {
   RadTestID: String; 
   RadDate: Date;
   RadTime: Date; 
-  PatientType: number;
+  PatientType: any;
   TestName: String;
   ConsultantDoctor: any;
   CategoryName: String; 
