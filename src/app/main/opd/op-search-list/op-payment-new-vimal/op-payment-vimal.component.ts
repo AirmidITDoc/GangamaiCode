@@ -192,7 +192,17 @@ export class OpPaymentVimalComponent implements OnInit {
       this.selectedPaymnet1 = 'cash';
       this.Paymentobj['TransactionType'] = 2;
     }
-
+    if (this.data.FromName == "OP-Refund") {
+      this.netPayAmt = this.advanceData.NetPayAmount;  
+      this.amount1 = this.advanceData.NetPayAmount;  
+      this.paidAmt = this.advanceData.NetPayAmount;  
+      this.PatientName = this.advanceData.PatientName;
+      this.Date = this.advanceData.Date;
+      this.Age = this.advanceData.Age;
+      this.RegNo = this.advanceData.UHIDNO;
+      this.selectedPaymnet1 = 'cash';
+      this.Paymentobj['TransactionType'] = 2;
+    }
     if (this.data.FromName == "SETTLEMENT") {
       this.netPayAmt = parseInt(this.advanceData.NetPayableAmt) || this.advanceData.NetPayAmount;
       this.amount1 = parseInt(this.advanceData.NetPayableAmt) || this.advanceData.NetPayAmount;

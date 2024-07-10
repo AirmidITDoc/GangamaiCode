@@ -248,7 +248,7 @@
                                                 </span>
                                                 <mat-autocomplete #autoSearchDoctor1="matAutocomplete" [displayWith]="getOptionTextDoctor">
                                                     <mat-option *ngFor="let option of filteredOptionsDoctor| async" [value]="option">
-                                                        {{option.DoctorName}}
+                                                        {{option.Doctorname}}
                                                     </mat-option>
                                                 </mat-autocomplete>
                                             </mat-form-field>

@@ -71,14 +71,14 @@
                                     <div fxLayout="column" fxLayoutAlign="start start" class="gap-4">
                                         <div class="radio-content" fxLayout="row" class="gap-4">
                                             <mat-label fxFlex>Patient Type : </mat-label>
-                                            <mat-radio-group name="PatientTypeSearch" formControlName="PatientTypeSearch" value='2' (change)="onShow($event)">
-                                                <mat-radio-button value='1' checked=true>IP</mat-radio-button>
+                                            <mat-radio-group name="PatientTypeSearch" formControlName="PatientTypeSearch" value='0' (change)="onShow($event)">
+                                                <mat-radio-button value='1'>IP</mat-radio-button>
                                                 <mat-radio-button value='0'>OP</mat-radio-button>
                                             </mat-radio-group>
                                         </div>
                                         <div class="radio-content" fxLayout="row" class="gap-4">
                                             <mat-label> Status : </mat-label>
-                                            <mat-radio-group name="StatusSearch" formControlName="StatusSearch" value='2' fxLayoutAlign="center center" (change)="onShow($event)">
+                                            <mat-radio-group name="StatusSearch" formControlName="StatusSearch" value='0' fxLayoutAlign="center center" (change)="onShow($event)">
                                                 <mat-radio-button value='0'>Pending</mat-radio-button>
                                                 <mat-radio-button value='1'>Completed</mat-radio-button>
                                             </mat-radio-group>
@@ -131,7 +131,7 @@
                                     <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur">
                                         <div class="spinner-border"></div>
                                     </div>
-                                    <mat-table #table matSort class="mat-table-1 h-260" [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
+                                    <mat-table #table matSort class="mat-table-1 h-230" [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
 
                                         <ng-container matColumnDef="DOA">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Date
@@ -257,21 +257,21 @@
                                     <!-- <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur">
                                         <div class="spinner-border"></div>
                                     </div> -->
-                                    <mat-table class="mat-table-2 h-300" #table matSort [dataSource]="dataSource1" [@animateStagger]="{value:'50'}">
+                                    <mat-table class="mat-table-2 h-230" #table matSort [dataSource]="dataSource1" [@animateStagger]="{value:'50'}">
 
                                         <ng-container matColumnDef="VADate">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Adm.Date
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                                <span> {{contact.VADate | date:'shortDate'}}</span>
+                                                <span> {{contact.DOA }}</span>
                                             </mat-cell>
                                         </ng-container>
-
+                                        <!--  | date:'hh:mm:ss' -->
                                         <ng-container matColumnDef="VATime">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Adm.time
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                                <span> {{contact.VATime | date:'hh:mm:ss'}}</span>
+                                                <span> {{contact.DOT}}</span>
                                             </mat-cell>
                                         </ng-container>
 
@@ -289,6 +289,15 @@
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                                 <span> {{contact.IsSampleCollection}}</span>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="IsPrinted">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                                IsPrinted
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                                <span> {{contact.IsPrinted}}</span>
                                             </mat-cell>
                                         </ng-container>
 

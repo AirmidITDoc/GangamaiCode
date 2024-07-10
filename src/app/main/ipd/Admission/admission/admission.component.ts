@@ -3199,7 +3199,7 @@ ClassId:any;
 WardId:any;
 PolicyNo: any;
 MemberNo: any;
-
+WardName:any;
 AprovAmount
 CompDOD
 IsPharClearance
@@ -3325,6 +3325,7 @@ OPDNo:any;
       this.ClassName=AdmissionPersonl.ClassName || ''
       this.IsBillGenerated=AdmissionPersonl.IsBillGenerated || 0
       this.RoomName=AdmissionPersonl.RoomName || ''
+      this.WardName=AdmissionPersonl.WardName || ''
       this.Doctorname=AdmissionPersonl.Doctorname || ''
       this.DoctorName=AdmissionPersonl.DoctorName || ''
       this.AdmDateTime=AdmissionPersonl.AdmDateTime || ''

@@ -31,7 +31,7 @@ export class SampleCollectionService {
       ]],
       // BillNo:[''],
       // BillDate:[''],
-      PatientTypeSearch: ['1'],
+      PatientTypeSearch: ['0'],
       StatusSearch: ['0'],
       CategoryId: [''],
       start: [new Date().toISOString()],

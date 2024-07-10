@@ -100,6 +100,7 @@ export class ResultEntryComponent implements OnInit {
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       console.log(this.selectedAdvanceObj)
+      
     } 
     if (this.selectedAdvanceObj.RadReportId) { 
       this.getUpdatetemplate();
