@@ -8,6 +8,10 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 export class ParametermasterService {
     myform: FormGroup;
     myformSearch: FormGroup;
+    is_numeric : Boolean = true;
+    descriptiveList = [];
+    numericList = [];
+
 
     constructor(
         private _httpClient: HttpClient,
@@ -22,18 +26,18 @@ export class ParametermasterService {
             ParameterID: [""],
             ParameterName: [
                 "",
-                [
-                    Validators.required,
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
-                ],
+                [Validators.pattern("^[A-Za-z ]*$")],
             ],
             ParameterShortName: [
                 "",
-                [Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")],
+                [Validators.pattern("^[A-Za-z ]*$")],
             ],
             PrintParameterName: [
                 "",
-                [Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")],
+                [Validators.pattern("^[A-Za-z ]*$")],
+            ],
+            MethodName: ["",
+             [Validators.pattern("^[A-Za-z ]*$")],
             ],
             UnitId: [""],
             UnitName: [""],
@@ -41,8 +45,7 @@ export class ParametermasterService {
             IsDeleted: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
-            IsPrintDisSummary: ["false"],
-            MethodName: ["", Validators.pattern("[a-zA-Z]+$")],
+            IsPrintDisSummary: [],
             ParaMultipleRange: [""],
             PathparaRangeId: [""],
             ParaId: [""],
@@ -55,7 +58,8 @@ export class ParametermasterService {
             MinAge:[""],
             MaxAge: [""],
             MinValue: [""],
-            Maxvalue: [""],
+            MaxValue: [""],
+            AgeType: [""]
         });
     }
 
@@ -92,16 +96,12 @@ export class ParametermasterService {
             "Generic/ExecByQueryStatement?query=" + m_data, {});
     }
 
-
-
-   
-
     public insertParameterMaster(param) {
-        return this._httpClient.post("PathologyMaster/ParameterSave", param);
+        return this._httpClient.post("PathologyMaster/ParameterAgeWiseMasterSave", param);
     }
 
     public updateParameterMaster(param) {
-        return this._httpClient.post("PathologyMaster/ParameterUpdate", param);
+        return this._httpClient.post("PathologyMaster/ParameterAgeWiseMasterUpdate", param);
     }
 
     //detail of Range Master
@@ -125,6 +125,27 @@ export class ParametermasterService {
 
     public deleteAssignParameterToRange(param) {
         return this._httpClient.post("Pathology/ParameterUpdate", param);
+    }
+
+    // public getNumericMasterItem(param){
+    //     return this._httpClient.post(
+    //         "Generic/GetByProc?procName=Rtrv_PathParameterRangeWithAge",
+    //         { ParameterId: param }
+    //     ); 
+    // }
+    public getTableData(param){
+        if(this.is_numeric) {
+            return this._httpClient.post(
+                "Generic/GetByProc?procName=Rtrv_PathParameterRangeWithAge",
+                { ParameterId: param }
+            ); 
+        }
+        else{
+        return this._httpClient.post(
+            "Generic/GetByProc?procName=Rtrv_PathDescriptiveValues_1",
+            { ParameterId: param }
+        ); 
+    }
     }
 
     //Descriptive
@@ -156,6 +177,14 @@ export class ParametermasterService {
     }
 
     populateForm(param) {
+        debugger;
         this.myform.patchValue(param);
-    }
+        this.myform.get("IsPrintDisSummary").setValue(param.IsPrintDisSummary == "false" ? false : true);
+        this.myform.get("IsNumeric").setValue(param.IsNumeric == 1? 1: 2);
+        this.is_numeric = param.IsNumeric == 1? true : false;
+        this.numericList = param.numericList;
+        this.descriptiveList = param.descriptiveList;
+        if (this.descriptiveList[0]?.DefaultValue) this.myform.get("DefaultValue").setValue(this.descriptiveList[0]?.DefaultValue);
+        
+}
 }

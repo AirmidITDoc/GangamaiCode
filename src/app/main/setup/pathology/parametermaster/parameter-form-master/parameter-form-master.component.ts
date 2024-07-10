@@ -12,6 +12,7 @@ import { takeUntil } from "rxjs/operators";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
 import { ParametermasterComponent } from "../parametermaster.component";
+import { AuthenticationService } from "app/core/services/authentication.service";
 
 @Component({
     selector: "app-parameter-form-master",
@@ -20,13 +21,20 @@ import { ParametermasterComponent } from "../parametermaster.component";
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations,
 })
+
 export class ParameterFormMasterComponent implements OnInit {
+    isPrintDisSummaryChecked: boolean = false;
+
+    ageType: string[] = ["Days", "Months", "Years"];
+
     displayedColumns: string[] = [
         "GenderName",
         "MinAge",
         "MaxAge",
         "MinValue",
-        "Maxvalue",
+        "MaxValue",
+        "AgeType",
+        "Action"
     ];
     submitted = false;
     isLoading = true;
@@ -38,7 +46,7 @@ export class ParameterFormMasterComponent implements OnInit {
     vMinAge: any;
     vMaxAge: any;
     vMinValue: any;
-    vMaxvalue: any;
+    vMaxValue: any;
     msg: any;
 
     @ViewChild(MatSort) sort: MatSort;
@@ -59,10 +67,9 @@ export class ParameterFormMasterComponent implements OnInit {
     dataSource = new MatTableDataSource<PathDescriptiveMaster>();
     dsParameterAgeList = new MatTableDataSource<PathParaRangeAgeMaster>();
 
-
     constructor(
         public _ParameterService: ParametermasterService,
-
+        private accountService: AuthenticationService,
         public dialogRef: MatDialogRef<ParametermasterComponent>,
         public _matDialog: MatDialog,
         private formBuilder: FormBuilder,
@@ -70,20 +77,22 @@ export class ParameterFormMasterComponent implements OnInit {
         private router: Router
     ) { }
 
-    ngOnInit(): void {
-        // debugger;
-        // this.getParameterNameCombobox();
+    ngOnInit(): void {  
+        debugger;
+        this.selectedItems = [];
+        this.dsParameterAgeList.data = [];
         this.getUnitNameCombobox();
         this.getGenderNameCombobox();
         this.getDscriptiveMasterList();
-        //this.getParameterNameCombobox();
-
-        // this.unitnameFilterCtrl.valueChanges
-        //     .pipe(takeUntil(this._onDestroy))
-        //     .subscribe(() => {
-        //         this.filterUnitname();
-        //     });
-    }
+        if (this._ParameterService.myform.get("ParameterID").value) {
+       
+            this.dsParameterAgeList.data =        this._ParameterService.numericList;
+                 this.selectedItems = this._ParameterService.descriptiveList;
+        }
+             
+          
+     }
+    
     getGenderNameCombobox() {
         this._ParameterService.getGenderMasterCombo().subscribe(data => {
             this.GendercmbList = data;
@@ -117,39 +126,71 @@ export class ParameterFormMasterComponent implements OnInit {
         this._ParameterService.myform.reset();
         this.dialogRef.close();
     }
-
-    public show: boolean = false; //numeric
-    public show1: boolean = false; ///descriptive
-
-    toggle() {
-        if (this.show = true) {
-            this.show = true;
+    checkFields(event){
+        
+       const formValues = this._ParameterService.myform.value
+       const fieldsTobeChecked = formValues.SexID
+       && formValues.MinAge
+       && formValues.MaxAge
+       && formValues.AgeType
+       && formValues.MinValue
+       && formValues.MaxValue;
+       if(!fieldsTobeChecked){
+            event.preventDefault;
+            this.toastr.warning('Please fill in all the fields in this row to add', 'Warning');
         }
-        this.show1 = false;
+        else this.onAdd(event);
+     
+ 
     }
 
-    toggle1() {
-        if (this.show1 = true) {
-            this.show1 = true;
+
+    toggle(val: any) {
+        if (val == 1) {
+            this._ParameterService.is_numeric = true;
+            this.dsParameterAgeList.data = []
+        } else {
+            this._ParameterService.is_numeric = false;
+            this.selectedItems = []
         }
-        this.show = false;
     }
 
     onAdd(event) {
-        this.dsParameterAgeList.data = [];
-        this.chargeslist = this.dsParameterAgeList.data;
-        this.chargeslist.push(
-            {
-                GenderName: this._ParameterService.myform.get('SexID').value.GenderName || "",
-                MinAge: this.vMinAge || 0,
-                MaxAge: this.vMaxAge || 0,
-                MinValue: this.vMinValue || 0,
-                Maxvalue: this.vMaxvalue || 0,
 
+        let isNewRowUnique = true;
+  
+        const newRow: any = {
+            GenderName: this._ParameterService.myform.get('SexID').value.GenderName || "",
+            MinAge: this.vMinAge || 0,
+            MaxAge: this.vMaxAge || 0,
+            MinValue: this.vMinValue || 0,
+            MaxValue: this.vMaxValue || 0,
+            AgeType: this._ParameterService.myform.value.AgeType,
+        };
+
+        for (const row of this.dsParameterAgeList.data) {
+            if (JSON.stringify(row) === JSON.stringify(newRow)) {
+                isNewRowUnique = false;
+                break;
+            }
+        }
+
+        if (isNewRowUnique) {
+            this.dsParameterAgeList.data.push(newRow);
+            this.dsParameterAgeList.data = [...this.dsParameterAgeList.data];
+            console.log(this.dsParameterAgeList.data);
+        }
+        else {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Duplicate Row',
+                text: 'You are adding a duplicate row.',
+                confirmButtonText: 'OK'
             });
-        this.dsParameterAgeList.data = this.chargeslist
-        console.log(this.chargeslist);
+        }
+       
     }
+
 
     // unitname filter
     // private filterUnitname() {
@@ -194,219 +235,150 @@ export class ParameterFormMasterComponent implements OnInit {
 
     //Descriptive master
 
+    
 
-
-    onSubmit() {
-        debugger;
-        if (this._ParameterService.myform.valid) {
-            if (!this._ParameterService.myform.get("ParameterID").value) {
-                if (this._ParameterService.myform.get("IsNumeric").value == 2) {
-                    var data2 = [];
-                    for (var val of this._ParameterService.myform.get(
-                        "parameterValues"
-                    ).value) {
-                        var data = {
-                            parameterId: 0,
-                            parameterValues: val,
-                            isDefaultValue: 0,
-                            addedBy: 1,
-                            defaultValue:
-                                this._ParameterService.myform
-                                    .get("DefaultValue")
-                                    .value.trim() || "%",
-                        };
-                        data2.push(data);
-                    }
-
-                    console.log(data2);
-                }
-
-                var m_data = {
-                    insertParameterMaster: {
-                        parameterShortName:
-                            this._ParameterService.myform
-                                .get("ParameterShortName")
-                                .value.trim() || "%",
-                        parameterName:
-                            this._ParameterService.myform
-                                .get("ParameterName")
-                                .value.trim() || "%",
-                        printParameterName:
-                            this._ParameterService.myform
-                                .get("PrintParameterName")
-                                .value.trim() || "%",
-                        unitId:
-                            this._ParameterService.myform.get("UnitId").value ||
-                            1,
-                        isNumeric:
-                            this._ParameterService.myform.get("IsNumeric")
-                                .value,
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._ParameterService.myform.get("IsDeleted")
-                                    .value
-                            )
-                        ),
-                        addedBy: 1,
-                        isPrintDisSummary: Boolean(
-                            JSON.parse(
-                                this._ParameterService.myform.get(
-                                    "IsPrintDisSummary"
-                                ).value
-                            )
-                        ),
-                        // methodName: " ", // (this._ParameterService.myform.get("MethodName").value).trim(),
-                        // paraMultipleRange: " ", // this._ParameterService.myform.get("ParaMultipleRange").value,
-                        parameterID: 0, // this._ParameterService.myform.get("ParameterID").value,
-                    },
-                    insertParameterMasterRangeWise: {
-                        paraId:
-                            "0" ||
-                            this._ParameterService.myform.get("ParameterID")
-                                .value,
-                        sexId: 1, // this._ParameterService.myform.get("SexId").value,
-                        minValue:
-                            this._ParameterService.myform
-                                .get("MinValue")
-                                .value.trim() || "%",
-                        maxvalue:
-                            this._ParameterService.myform
-                                .get("Maxvalue")
-                                .value.trim() || "%",
-                        // isDeleted: 0, // Boolean(JSON.parse(this._ParameterService.myform.get("IsDeleted").value)),
-                        addedby: 218, // this.accountService.currentUserValue.user.id ,
-                    },
-                    insertAssignParameterToDescriptives: data2,
-                };
-
-                this._ParameterService
-                    .insertParameterMaster(m_data)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                            });
-                        } else {
-                            this.toastr.error('Parameter-Form Master Data not saved !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                            });
-                        }
-                    }, error => {
-                        this.toastr.error('Parameter-Form not saved !, Please check API error..', 'Error !', {
-                            toastClass: 'tostr-tost custom-toast-error',
-                        });
-                    });
-            } else {
-                if (this._ParameterService.myform.get("IsNumeric").value == 2) {
-                    var data3 = [];
-                    for (var val of this._ParameterService.myform.get(
-                        "ParameterValues"
-                    ).value) {
-                        var data4 = {
-                            parameterId:
-                                this._ParameterService.myform.get("ParameterID")
-                                    .value,
-                            parameterValues: val,
-                            isDefaultValue: 0,
-                            addedBy: 1,
-                            defaultValue:
-                                this._ParameterService.myform
-                                    .get("DefaultValue")
-                                    .value.trim() || "%",
-                        };
-                        data3.push(data4);
-                    }
-                }
-                var m_dataUpdate = {
-                    updateParameterMaster: {
-                        parameterId:
-                            this._ParameterService.myform.get("ParameterID")
-                                .value,
-                        parameterShortName:
-                            this._ParameterService.myform
-                                .get("ParameterShortName")
-                                .value.trim() || "%",
-                        parameterName:
-                            this._ParameterService.myform
-                                .get("ParameterName")
-                                .value.trim() || "%",
-                        printParameterName:
-                            this._ParameterService.myform
-                                .get("PrintParameterName")
-                                .value.trim() || "%",
-                        unitId: this._ParameterService.myform.get("UnitId")
-                            .value,
-                        isNumeric:
-                            this._ParameterService.myform.get("IsNumeric")
-                                .value,
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._ParameterService.myform.get("IsDeleted")
-                                    .value
-                            )
-                        ),
-                        updatedBy: 1,
-                        isPrintDisSummary: Boolean(
-                            JSON.parse(
-                                this._ParameterService.myform.get(
-                                    "IsPrintDisSummary"
-                                ).value
-                            )
-                        ),
-                        // paraMultipleRange: "", // this._ParameterService.myform.get("ParaMultipleRange").value || "0",
-                        // methodName: " ", // (this._ParameterService.myform.get("MethodName").value).trim() || "%",
-                    },
-                    deleteAssignParameterToRange: {
-                        paraId: this._ParameterService.myform.get("ParameterID")
-                            .value,
-                    },
-                    insertParameterMasterRangeWise: {
-                        // "PathparaRangeId":"0",//this._ParameterService.myform.get("PathparaRangeId").value,
-                        paraId: this._ParameterService.myform.get("ParameterID")
-                            .value,
-                        sexId: 1, // this._ParameterService.myform.get("SexId").value,
-                        minValue:
-                            this._ParameterService.myform
-                                .get("MinValue")
-                                .value.trim() || "%",
-                        maxvalue:
-                            this._ParameterService.myform
-                                .get("Maxvalue")
-                                .value.trim() || "%",
-                        isDeleted: 0, // Boolean(JSON.parse(this._ParameterService.myform.get("IsDeleted").value)),
-                        addedby: 218, // this.accountService.currentUserValue.user.id ,
-                    },
-                    deleteAssignParameterToDescriptive: {
-                        parameterId:
-                            this._ParameterService.myform.get("ParameterID")
-                                .value,
-                    },
-                    insertAssignParameterToDescriptives: data3,
-                };
-
-                this._ParameterService
-                    .updateParameterMaster(m_dataUpdate)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record updated Successfully.', 'updated !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                            });
-                        } else {
-                            this.toastr.error('Parameter-Form Master Data not updated !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                            });
-                        }
-                    }, error => {
-                        this.toastr.error('Parameter-Form not updated !, Please check API error..', 'Error !', {
-                            toastClass: 'tostr-tost custom-toast-error',
-                        });
-                    });
+    onSubmit() {    
+        const invalid = [];
+        const controls = this._ParameterService.myform.controls;
+        for (const name in controls) {
+            if (controls[name].invalid) {
+                invalid.push(name);
             }
+        }
+        console.log(invalid);
+
+        if (this._ParameterService.myform.valid) {                                       
+            var numeric_info = [];
+            var data2 = [];
+            if (!this._ParameterService.is_numeric) {
+                
+                for (var val of this.selectedItems) {
+                    var data = {
+                        parameterID: +this._ParameterService.myform.get("ParameterID").value || 0,
+                        parameterValues: val,
+                        isDefaultValue: this._ParameterService.myform.get("DefaultValue").value?true:false,
+                        addedby: this.accountService.currentUserValue.user.id,
+                        defaultValue:
+                        this._ParameterService.myform.get("DefaultValue").value ? this._ParameterService.myform.get("DefaultValue").value.trim() : "%",
+                    };
+                    data2.push(data);
+                }
+            }
+            else{
+                var info: any = {
+                    paraId: 0 || +this._ParameterService.myform.get("ParameterID").value,
+                    sexId: 0,
+                    minValue: "%",
+                    MaxValue: "%",
+                    addedby: this.accountService.currentUserValue.user.id ||1,
+                    ageType: "%",
+                    minAge: 0,
+                    maxAge: 0
+                };
+                this.dsParameterAgeList.data.forEach(element => {
+                    let c = JSON.parse(JSON.stringify(info));
+                    c['sexId'] = element.GenderName == 'Male' ? 0 : element.GenderName == 'Female' ? 1 : 2;
+                    c['minValue'] = element.MinValue;
+                    c['minAge'] = +element.MinAge;
+                    c['maxAge'] = +element.MaxAge;
+                    c['maxvalue'] = element.MaxValue;
+                    c['ageType'] = element.AgeType;
+                    numeric_info.push(c)
+                });
+            }   
+
+
+            var PathParameterMasterInsert = {
+                parameterShortName: this._ParameterService.myform.get("ParameterShortName").value.trim() || "%",
+                parameterName: this._ParameterService.myform.get("ParameterName").value.trim() || "%",
+                printParameterName: this._ParameterService.myform.get("PrintParameterName").value.trim() || "%",
+                methodName: this._ParameterService.myform.get("MethodName").value.trim() || "%",
+                unitId: this._ParameterService.myform.get("UnitId").value ||  1,
+                isNumeric: this._ParameterService.is_numeric,
+                isDeleted: Boolean(JSON.parse(this._ParameterService.myform.get("IsDeleted").value)),
+                parameterID: this._ParameterService.myform.get("ParameterID").value || 0,
+                isPrintDisSummary: Boolean(JSON.parse(this._ParameterService.myform.get("IsPrintDisSummary").value))
+            }           
+            
+            var m_data ={}
+
+            if(this._ParameterService.is_numeric){
+                m_data['parameterRangeWithAgeMasterInsert']= numeric_info;
+                m_data['parameterRangeWithAgeMasterDelete']= {parameterId: this._ParameterService.myform.get("ParameterID").value || 0,};
+            }else{
+                m_data['parameterDescriptiveMasterInsert']= data2;   
+                m_data['descriptiveParameterMasterDelete']= {parameterId: this._ParameterService.myform.get("ParameterID").value || 0,}                           
+            }   
+            
+            if (!this._ParameterService.myform.get("ParameterID").value) {
+                PathParameterMasterInsert['addedby'] = this.accountService.currentUserValue.user.id || 1;
+               m_data['pathParameterMasterInsert'] = PathParameterMasterInsert;
+         
+                
+            this._ParameterService
+            .insertParameterMaster(m_data)
+            .subscribe((data) => {
+                this.msg = data;
+                if (data) {                       
+                    this._ParameterService.myform.reset();
+                    this._ParameterService.myform.get("IsDeleted").setValue(true);
+                    this.selectedItems = [];
+                    this.dsParameterAgeList.data = [];
+
+                    this.toastr.success('Record Saved Successfully.', 'Saved !', {
+                        toastClass: 'tostr-tost custom-toast-success',
+                    });
+                } else {
+                    this.toastr.error('Parameter-Form Master Data not saved !, Please check API error..', 'Error !', {
+                        toastClass: 'tostr-tost custom-toast-error',
+                    });
+                }
+            }, error => {
+                this.toastr.error('Parameter-Form not saved !, Please check API error..', 'Error !', {
+                    toastClass: 'tostr-tost custom-toast-error',
+                });
+            });    
+            }else{
+                PathParameterMasterInsert['updatedby'] = this.accountService.currentUserValue.user.id || 1;
+                m_data['pathParameterMasterUpdate'] = PathParameterMasterInsert;
+
+                
+            this._ParameterService
+            .updateParameterMaster(m_data)
+            .subscribe((data) => {
+                this.msg = data;
+                if (data) {                       
+                    this._ParameterService.myform.reset();
+                    this._ParameterService.myform.get("IsDeleted").setValue(true);
+      
+
+                    this.toastr.success('Record updated Successfully.', 'Updated !', {
+                        toastClass: 'tostr-tost custom-toast-success',
+                    });   
+                } else {
+                    this.toastr.error('Parameter-Form Master Data not saved !, Please check API error..', 'Error !', {
+                        toastClass: 'tostr-tost custom-toast-error',
+                    });
+                }
+            }, error => {
+                this.toastr.error('Parameter-Form not saved !, Please check API error..', 'Error !', {
+                    toastClass: 'tostr-tost custom-toast-error',
+                });
+            });              
+
+            }
+            
+                         
+
+        
             this.onClear();
         }
+    
+    this.onClose()
     }
+
+
+
 
     onEdit(row) {
         var m_data = {
@@ -423,6 +395,18 @@ export class ParameterFormMasterComponent implements OnInit {
             ParaMultipleRange: row.ParaMultipleRange,
         };
     }
+    onDeleteRow(row: PathParaRangeAgeMaster) {
+        const index = this.dsParameterAgeList.data.indexOf(row);
+        if (index > -1) {
+            this.dsParameterAgeList.data.splice(index, 1);
+            this.dsParameterAgeList.data = [...this.dsParameterAgeList.data];
+
+        }
+    }
+    removeItem(index: number) {
+        this.selectedItems.splice(index, 1);
+    }
+
 
 
 
@@ -435,20 +419,36 @@ export class ParameterFormMasterComponent implements OnInit {
     selectedToAdd: any;
     groupsArray: any = [];
     selectedItems: any = [];
+    isTxtUnique = true;
 
     AddData(txt) {
-        debugger
-        console.log(txt);
-        this.selectedItems = this.selectedItems.concat(txt);
-        this.selectedToAdd = [];
+        if (txt.replace(/\s/g, '').length !== 0) {
+
+            if (!this.selectedItems.includes(txt)) {
+                this.selectedItems = this.selectedItems.concat(txt);
+                this.selectedToAdd = [];
+                
+            }
+            else {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Duplicate Row',
+                    text: 'You are adding a duplicate row.',
+                    confirmButtonText: 'OK'
+                });
+            }
+        }
     }
 }
+
 export class PathParaRangeAgeMaster {
     PathparaRangeId: any;
     ParaId: any;
     GenderName: any;
+    GenderId: any;
     MinValue: any;
-    Maxvalue: any;
+    MaxValue: any;
+    AgeType: any;
     MinAge: any;
     MaxAge: any;
     /**
@@ -461,10 +461,12 @@ export class PathParaRangeAgeMaster {
             this.PathparaRangeId = PathParaRangeAgeMaster.PathparaRangeId || 0;
             this.ParaId = PathParaRangeAgeMaster.ParaId || 0;
             this.GenderName = PathParaRangeAgeMaster.GenderName || "";
+            this.AgeType = PathParaRangeAgeMaster.AgeType || "";
             this.MinValue = PathParaRangeAgeMaster.MinValue || 0;
-            this.Maxvalue = PathParaRangeAgeMaster.Maxvalue || 0;
+            this.MaxValue = PathParaRangeAgeMaster.MaxValue || 0;
             this.MinAge = PathParaRangeAgeMaster.MinAge || 0;
             this.MaxAge = PathParaRangeAgeMaster.MaxAge || 0;
+
         }
     }
 }

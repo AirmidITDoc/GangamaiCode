@@ -1,8 +1,8 @@
-import { Component, Inject, OnInit, ViewEncapsulation } from "@angular/core";
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { fuseAnimations } from "@fuse/animations";
 import { takeUntil } from "rxjs/operators";
-import { TestmasterComponent } from "../testmaster.component";
+import { TestMaster, TestmasterComponent } from "../testmaster.component";
 import { TestmasterService } from "../testmaster.service";
 import { ReplaySubject, Subject } from "rxjs";
 import { FormControl } from "@angular/forms";
@@ -10,6 +10,12 @@ import Swal from "sweetalert2";
 import { MatTableDataSource } from "@angular/material/table";
 import { element } from "protractor";
 import { ToastrService } from "ngx-toastr";
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { PainAssesList } from "app/main/nursingstation/clinical-care-chart/clinical-care-chart.component";
+import { MatSort } from "@angular/material/sort";
+import { MatPaginator } from "@angular/material/paginator";
+import { MatAutocomplete } from "@angular/material/autocomplete";
+
 
 @Component({
     selector: "app-test-form-master",
@@ -19,9 +25,10 @@ import { ToastrService } from "ngx-toastr";
     animations: fuseAnimations,
 })
 export class TestFormMasterComponent implements OnInit {
-    displayedColumns: string[] = [
-        "ParameterName"
-    ];
+    displayedColumns: string[] = ['ParameterName','Add'];
+    displayedColumns2: string[] = ['Reorder','ParameterName','UnitName','Range', 'Action'];
+    displayedColumns3: string[] = ['Template Name','Add'];
+    displayedColumns4: string[] = ['ParameterName'];
     Parametercmb: any = [];
     paraselect: any = ["new"];
     CategorycmbList: any = [];
@@ -31,8 +38,15 @@ export class TestFormMasterComponent implements OnInit {
     ChargeList: any = [];
     registerObj: any;
     DSTestList = new MatTableDataSource<TestList>();
+    subTestList = new MatTableDataSource<TestList>();
     dsTemparoryList = new MatTableDataSource<TestList>();
+    DSTestMasterList = new MatTableDataSource<TestMaster>();
+
+
+    paramterList:any = new MatTableDataSource<TestList>();
+
     vCategoryId: any;
+
     //parametername filter
     public parameternameFilterCtrl: FormControl = new FormControl();
     public filteredParametername: ReplaySubject<any> = new ReplaySubject<any>(1);
@@ -43,6 +57,8 @@ export class TestFormMasterComponent implements OnInit {
 
     //service filter
     public serviceFilterCtrl: FormControl = new FormControl();
+    public filterServiceCtrl: FormControl = new FormControl();
+
     public filteredService: ReplaySubject<any> = new ReplaySubject<any>(1);
 
     // Template filter
@@ -50,6 +66,14 @@ export class TestFormMasterComponent implements OnInit {
     public filteredTemplate: ReplaySubject<any> = new ReplaySubject<any>(1);
 
     private _onDestroy = new Subject<void>();
+    sIsLoading: string;
+    isChecked = false;
+    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild('auto1') auto1: MatAutocomplete;
+    @ViewChild('auto2') auto2: MatAutocomplete;  
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  
 
     constructor(
         public _TestService: TestmasterService,
@@ -83,11 +107,11 @@ export class TestFormMasterComponent implements OnInit {
                 this.filterCategoryname();
             });
 
-        this.serviceFilterCtrl.valueChanges
-            .pipe(takeUntil(this._onDestroy))
-            .subscribe(() => {
-                this.filterServicename();
-            });
+        // this.serviceFilterCtrl.valueChanges
+        //     .pipe(takeUntil(this._onDestroy))
+        //     .subscribe(() => {
+        //         this.filterServicename();
+        //     });
 
         this.templateFilterCtrl.valueChanges
             .pipe(takeUntil(this._onDestroy))
@@ -95,7 +119,29 @@ export class TestFormMasterComponent implements OnInit {
                 this.filterTemplate();
             });
     }
-
+    drop(event: CdkDragDrop<string[]>) {
+        this.DSTestList.data = [];
+        this.ChargeList = this.dsTemparoryList.data;
+        moveItemInArray(this.ChargeList, event.previousIndex, event.currentIndex);     
+        this.DSTestList.data = this.ChargeList;
+    }
+    toggle(val: any) {
+        if (val == "1") {
+            this._TestService.is_subtest = true;
+        } else {
+            this._TestService.is_subtest = false;
+        }
+    }
+    onSearchClear() {
+        this._TestService.myformSearch.reset({
+            TestNameSearch: "",
+            IsDeletedSearch: "2",
+        });
+        this.getParameterNameCombobox();
+    }
+    onSearch() {
+        this.getParameterNameCombobox();
+    }
     // parameter filter
     private filterParametername() {
         if (!this.Parametercmb) {
@@ -116,9 +162,14 @@ export class TestFormMasterComponent implements OnInit {
             )
         );
     }
+
     getParameterNameCombobox() {
         this._TestService.getParameterMasterCombo()
-            .subscribe((data) => (this.Parametercmb = data));
+        .subscribe((data) => {
+            this.paramterList.data = data;
+            debugger;
+            this.Parametercmb = data;                
+        });
         // console.log(this.Parametercmb);
     }
 
@@ -152,6 +203,7 @@ export class TestFormMasterComponent implements OnInit {
                 const selectedCategory = this.CategorycmbList.filter(c => c.CategoryName == this.registerObj.CategoryName);
                 this._TestService.myform.get('CategoryId').setValue(selectedCategory);
                 console.log(selectedCategory)
+                
                 console.log(this.registerObj.CategoryName)
             }
         });
@@ -159,6 +211,7 @@ export class TestFormMasterComponent implements OnInit {
 
     // Service name filter
     private filterServicename() {
+        debugger;
         if (!this.ServicecmbList) {
             return;
         }
@@ -182,13 +235,32 @@ export class TestFormMasterComponent implements OnInit {
             this.ServicecmbList = data;
             this._TestService.myform.get("ServiceID").setValue(this.ServicecmbList[0]);
             if (this.data) {
-                const selectedService = this.ServicecmbList.filter(c => c.ServiceID == this.registerObj.TestName);
+                const selectedService = this.ServicecmbList.filter(c => c.ServiceName == this.registerObj.ServiceName);
                 this._TestService.myform.get('ServiceID').setValue(selectedService);
                 console.log(selectedService)
                 console.log(this.registerObj.TestName)
             }
         });
     }
+    
+  filterStates(name: string): string[] {
+            //  return this.ServicecmbList.filter(state =>
+            //     state.toLowerCase().indexOf(name.toLowerCase()) === 0);
+            return this.ServicecmbList.filter(
+                (bank) => bank.ServiceName.toLowerCase().indexOf(name) > -1
+            )
+        
+  }
+  filterStates2(name: string): string[] {
+           return this.CategorycmbList.filter(
+            (bank) => bank.CategoryName.toLowerCase().indexOf(name) > -1
+        )
+  }
+  
+
+    chooseFirstOption(auto: MatAutocomplete): void {
+            auto.options.first.select();
+      }
 
     // Service name filter
     private filterTemplate() {
@@ -216,22 +288,43 @@ export class TestFormMasterComponent implements OnInit {
     // }
 
     getSubTestMasterList() {
-        this._TestService.getNewSubTestMasterList().subscribe((Menu) => {
-            this.DSTestList.data = Menu as TestList[];
-            console.log(this.DSTestList)
-        });
+        this._TestService.getNewSubTestList().subscribe((Menu) => {
+            this.subTestList.data = Menu as TestList[];
+            });
     }
-    OnAdd(event) {
+    
+        onDeleteRow(event) {
+            let temp = this.paramterList.data;
+        temp.push( {
+            ParameterName: event.ParameterName || "",
+        })
+        this.paramterList.data = temp;
+
+
+        temp = this.DSTestList.data;
+        this.DSTestList.data = []
+        temp.splice(temp.findIndex(item => item.ParameterName === event.ParameterName), 1);
+        this.DSTestList.data = temp;
+    }
+
+    onAdd(event) {
+        console.log("event is :" + event)
+        // for parameters
         this.DSTestList.data = [];
         this.ChargeList = this.dsTemparoryList.data;
         this.ChargeList.push(
             {
-                ParameterName: this._TestService.AddParameterFrom.get('ParameterName').value.ParameterName || "",
+                ParameterName: event.ParameterName || "",
             });
-        this.DSTestList.data = this.ChargeList
-        // console.log(this.ChargeList);
-        // this._TestService.AddParameterFrom.get('ParameterName').setValue("");
-        this._TestService.AddParameterFrom.reset();
+        this.DSTestList.data = this.ChargeList;
+
+        let temp = this.paramterList.data;
+        this.paramterList.data = []
+        temp.splice(temp.findIndex(item => item.ParameterName === event.ParameterName), 1);
+        this.paramterList.data = temp;
+
+        
+        
     }
 
     onSubmit() {
@@ -243,7 +336,7 @@ export class TestFormMasterComponent implements OnInit {
             insertPathologyTestMaster['testName'] = this._TestService.myform.get('TestName').value || "";
             insertPathologyTestMaster['printTestName'] = this._TestService.myform.get('PrintTestName').value || "";
             insertPathologyTestMaster['categoryId'] = this._TestService.myform.get('CategoryId').value.CategoryId || 0;
-            insertPathologyTestMaster['isSubTest'] = this._TestService.myform.get('IsSubTest').value ||1;
+            insertPathologyTestMaster['isSubTest'] = this._TestService.myform.get('IsSubTest').value ;
             insertPathologyTestMaster['techniqueName'] = this._TestService.myform.get('TechniqueName').value || "";
             insertPathologyTestMaster['machineName'] = this._TestService.myform.get('MachineName').value || "";
             insertPathologyTestMaster['suggestionNote'] = this._TestService.myform.get('SuggestionNote').value || "";
@@ -275,7 +368,6 @@ export class TestFormMasterComponent implements OnInit {
                
             };
 
-            console.log(submitData);
 
             this._TestService.insertPathologyTestMaster(submitData).subscribe(response => {
                 if (response) {
