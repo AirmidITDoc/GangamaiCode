@@ -876,7 +876,7 @@ export class AdmissionComponent implements OnInit {
 
 
   getOptionTextAdDoc1(option) {
-    return option && option.DoctorName ? option.DoctorName : '';
+    return option && option.Doctorname ? option.Doctorname : '';
   }
 
 
@@ -890,7 +890,7 @@ export class AdmissionComponent implements OnInit {
   }
 
   getOptionTextDoc2(option) {
-    return option && option.DoctorName ? option.DoctorName : '';
+    return option && option.Doctorname ? option.Doctorname : '';
   }
 
   getOptionTextArea(option) {
@@ -3236,6 +3236,9 @@ H_BalAmt: any;
 DoctorName:any;
 vOPDNo:any;
 TarrifName:any
+WardName:any;
+OPDNo:any;
+
   /**
 * Constructor
 *
@@ -3374,7 +3377,8 @@ TarrifName:any
       this.H_BalAmt = AdmissionPersonl.H_BalAmt || '';
       this.vOPDNo=AdmissionPersonl.vOPDNo || ''
       this.TarrifName=AdmissionPersonl.TarrifName || ''
-      
+      this.WardName =AdmissionPersonl.WardName || ''
+      this.OPDNo=AdmissionPersonl.OPDNo || ''
     }
   }
 }

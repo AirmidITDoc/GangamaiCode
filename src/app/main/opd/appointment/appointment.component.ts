@@ -967,14 +967,16 @@ export class AppointmentComponent implements OnInit {
     this.registerObj = row;
     this.registerObj["RegId"] = row.RegId;
     this.registerObj["RegID"] = row.RegId;
-    this.EditRegistration();
+    this.registerObj["PrefixId"]=row.PrefixID;
+    // this.EditRegistration();
   }
 
-  EditRegistration() {
+  EditRegistration(row) {
 
-    this.advanceDataStored.storage = new AdvanceDetailObj(this.registerObj);
-    console.log(this.registerObj)
-    this._registrationService.populateFormpersonal(this.registerObj);
+    this.advanceDataStored.storage = new AdvanceDetailObj(row);
+    console.log(row)
+    
+    this._registrationService.populateFormpersonal(row);
 
     const dialogRef = this._matDialog.open(NewRegistrationComponent,
       {
@@ -982,7 +984,7 @@ export class AppointmentComponent implements OnInit {
         height: "450px",
         width: "100%",
         data: {
-          registerObj: this.registerObj,
+          registerObj: row,
           Submitflag: false
         },
       }
@@ -1227,13 +1229,15 @@ export class AppointmentComponent implements OnInit {
 
 
   getVisitList1() {
+debugger
 
+console.log(this._AppointmentSreviceService.myFilterform.get("DoctorId").value)
     this.sIsLoading = "loading-data";
     var D_data = {
       F_Name: this._AppointmentSreviceService.myFilterform.get("FirstName").value.trim() + "%" || "%",
       L_Name: this._AppointmentSreviceService.myFilterform.get("LastName").value.trim() + "%" || "%",
       Reg_No: this._AppointmentSreviceService.myFilterform.get("RegNo").value || 0,
-      Doctor_Id: this._AppointmentSreviceService.myFilterform.get("DoctorId").value.DoctorID || 0,
+      Doctor_Id: this._AppointmentSreviceService.myFilterform.get("DoctorId").value.DoctorId || 0,
       From_Dt: this.datePipe.transform(this._AppointmentSreviceService.myFilterform.get("startdate").value, "yyyy-MM-dd 00:00:00.000") || "01/01/1900",
       To_Dt: this.datePipe.transform(this._AppointmentSreviceService.myFilterform.get("enddate").value, "yyyy-MM-dd 00:00:00.000") || "01/01/1900",
       IsMark: this._AppointmentSreviceService.myFilterform.get("IsMark").value || 0,
@@ -1363,8 +1367,8 @@ export class AppointmentComponent implements OnInit {
 
   private _filterDoctor(value: any): string[] {
     if (value) {
-      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
-      return this.optionsDoctor.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
+      const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
+      return this.optionsDoctor.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
     }
 
   }
@@ -1430,7 +1434,7 @@ export class AppointmentComponent implements OnInit {
 
 
   getOptionTextDoctor(option) {
-    return option && option.DoctorName ? option.DoctorName : '';
+    return option && option.Doctorname ? option.Doctorname : '';
   }
 
   getOptionTextCompany(option) {

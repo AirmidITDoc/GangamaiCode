@@ -714,6 +714,7 @@ dataSource2 = new MatTableDataSource<RefundMaster>();
 
 
   viewgetOPPayemntPdf(Id,value) {
+    debugger
     let PaymentId=0;
 if(value)
  PaymentId=Id

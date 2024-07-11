@@ -733,6 +733,15 @@
                                                     </mat-cell>
                                                 </ng-container>
             
+                                                <ng-container matColumnDef="TotalAmt">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                        fxShow.gt-md>Bill Amount
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                                        {{contact.BillAmount | currency:"INR":"symbol"}}
+                                                    </mat-cell>
+                                                </ng-container>
+                                                
                                                 <ng-container matColumnDef="RefDoctorName">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
                                                         class="w-220">RefDoctorName
@@ -776,14 +785,7 @@
                                                     </mat-cell>
                                                 </ng-container>
             
-                                                <ng-container matColumnDef="TotalAmt">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                        fxShow.gt-md>Bill Amount
-                                                    </mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                                        {{contact.BillAmount | currency:"INR":"symbol"}}
-                                                    </mat-cell>
-                                                </ng-container>
+                                               
 
                                                 <ng-container matColumnDef="BalanceAmt">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide

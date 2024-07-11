@@ -190,18 +190,17 @@
                             </mat-autocomplete>
                         </mat-form-field>
 
-                        <!-- <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <mat-label>Doctor Name</mat-label>
-                            <input matAutocompletePosition="below" type="text" placeholder="Select Doctor Name" matInput
-                                #deptdoc (keydown)="onEnterdeptdoc($event)" formControlName="DoctorId"
-                                [matAutocomplete]="autoDoctor" required>
+                            <input matAutocompletePosition="below" type="text" placeholder="Select Doctor Name" matInput #deptdoc
+                                formControlName="DoctorId" [matAutocomplete]="autoDoctor" required>
                             <span matSuffix style="display: flex;">
                                 <mat-icon class="mat-icon-close"
                                     (click)="hospitalFormGroup.get('DoctorId').setValue(''); isDoctorSelected = false;">close</mat-icon>
                                 <mat-icon class="mat-icon-close"
                                     (click)="hospitalFormGroup.get('DoctorId').setValue(''); isDoctorSelected = false;">search</mat-icon>
                             </span>
-
+                    
                             <mat-autocomplete #autoDoctor="matAutocomplete" [displayWith]="getOptionTextDoc">
                                 <mat-option *ngFor="let option of filteredOptionsDoc | async" [value]="option"
                                     (onSelectionChange)="isDoctorSelected = true;">
@@ -209,7 +208,7 @@
                                     {{option.DoctorId}}
                                 </mat-option>
                             </mat-autocomplete>
-                        </mat-form-field> -->
+                        </mat-form-field>
 
                         <!-- <mat-form-field appearance="outline" fxFlex>
                             <mat-label>Doc Name</mat-label>

@@ -100,7 +100,7 @@ export class RegistrationComponent implements OnInit {
       this.sIsLoading = 'loading-data';
       this._registrationService.getRegistrationList(D_data).subscribe(data => {
         this.dataSource.data = data as RegInsert[];
-        // console.log( this.dataSource.data )
+        console.log( this.dataSource.data )
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
         this.sIsLoading = '';
@@ -129,6 +129,7 @@ onEdit(row){
   this.registerObj=row;
   this.registerObj["RegId"]=row.RegId;
   this.registerObj["RegID"]=row.RegId;
+  this.registerObj["PrefixId"]=row.PrefixID;
     this._registrationService.populateFormpersonal(row);
     
     const dialogRef = this._matDialog.open(NewRegistrationComponent, 

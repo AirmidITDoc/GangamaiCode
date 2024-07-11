@@ -36,7 +36,7 @@
                                                 <span class="patient-col-key">UHID No
                                                 </span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{selectedAdvanceObj.RegNo}}</span>
+                                                <span class="patient-col-value">{{selectedAdvanceObj.RegId}}</span>
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Patient Name
@@ -55,7 +55,7 @@
                                             <div class="patient-col">
                                                 <span class="patient-col-key">OPD No</span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{selectedAdvanceObj.vOPDNo}}</span>
+                                                <span class="patient-col-value">{{selectedAdvanceObj.OPDNo}}</span>
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Age | Sex
@@ -144,8 +144,6 @@
                                         </mat-form-field>
 
 
-
-
                                         <!-- <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Doctor Name</mat-label>
                                             <input matAutocompletePosition="below" type="text" placeholder="Pick one" matInput #deptdoc (keydown)="onEnterdeptdoc($event)" formControlName="DoctorID" [matAutocomplete]="autoDoctor1" required>
@@ -160,21 +158,27 @@
                                                     {{option.DoctorId }}
                                                 </mat-option>
                                             </mat-autocomplete>
-                                        </mat-form-field> -->
+                                        </mat-form-field>  -->
 
 
-                                        <mat-form-field appearance="outline" fxFlex>
+                                        <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <mat-label>Doctor Name</mat-label>
-                                            <mat-select formControlName="DoctorID">
-                                                <mat-option></mat-option>
-                                                <mat-option *ngFor="let m of DoctorList" [value]="m">
-                                                    {{m.Doctorname}}
+                                            <input matAutocompletePosition="below" type="text" placeholder="Select Doctor Name" matInput #deptdoc
+                                                formControlName="DoctorID" [matAutocomplete]="autoDoctor" required>
+                                            <span matSuffix style="display: flex;">
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="InfoFormGroup.get('DoctorID').setValue(''); isDoctorSelected = false;">close</mat-icon>
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="InfoFormGroup.get('DoctorID').setValue(''); isDoctorSelected = false;">search</mat-icon>
+                                            </span>
+                                    
+                                            <mat-autocomplete #autoDoctor="matAutocomplete" [displayWith]="getOptionTextDoc">
+                                                <mat-option *ngFor="let option of filteredOptionsDoc | async" [value]="option"
+                                                    (onSelectionChange)="isDoctorSelected = true;">
+                                                    {{option.Doctorname }} <b>|</b> {{option.DepartmentName }} <b>|</b>
+                                                    {{option.DoctorId}}
                                                 </mat-option>
-                                            </mat-select>
-                                            <mat-error *ngIf="InfoFormGroup.get('DoctorID').invalid && InfoFormGroup.get('DoctorID').touched">
-                                                <span *ngIf="InfoFormGroup.get('DoctorID').hasError('required')">
-                                                    Doctorname is required</span>
-                                            </mat-error>
+                                            </mat-autocomplete>
                                         </mat-form-field>
                                     </div>
                                 </div>
