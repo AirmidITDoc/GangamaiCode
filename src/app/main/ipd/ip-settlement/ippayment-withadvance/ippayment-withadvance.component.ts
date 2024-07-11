@@ -30,12 +30,14 @@ export class IPpaymentWithadvanceComponent implements OnInit {
     { name: 'Cheque', state: false },
     { name: 'NEFT', state: false },
     { name: 'PayTM', state: false },
-    { name: 'Wrf Option', state: false }
+    { name: 'Wrf Option', state: false },
+    { name: 'TDS', state: false }
   ];
 
   BillDate: any;
   PatientName: any;
   RegID: any;
+  RegNo:any;
   OPD_IPD_Id: any;
   PBillNo: any;
   BillTime: any;
@@ -62,6 +64,7 @@ export class IPpaymentWithadvanceComponent implements OnInit {
   paytmTransNo: any;
   paytmDate: Date;
   wrfAmt: number = 0;
+  tdsAmt:number = 0;
   paidAmt: number = 0;
   balanceAmt: number = 0;
   paidAmtPrev: number = 0;
@@ -125,8 +128,26 @@ private _onDestroy = new Subject<void>();
       this.paidAmt = parseInt(this.advanceData.advanceObj.AdvanceAmount);
       this.PatientName = this.advanceData.advanceObj.PatientName;
       this.getBalanceAmt();
-    }
-    debugger;
+    } 
+    if (this.advanceData.FromName == "IP-SETTLEMENT") {
+      this.netPayAmt = parseInt(this.advanceData.advanceObj.AdvanceAmount);
+      // this.cashAmt = parseInt(this.advanceData.advanceObj.AdvanceAmount);
+      this.paidAmt = parseInt(this.advanceData.advanceObj.AdvanceAmount);
+      this.PatientName = this.advanceData.advanceObj.PatientName; 
+      this.RegNo = this.advanceData.advanceObj.RegNo;
+      this.getBalanceAmt();
+    } 
+    if (this.advanceData.FromName == "IP-IntrimBIll") {
+      this.netPayAmt = parseInt(this.advanceData.advanceObj.AdvanceAmount);
+       //this.cashAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
+      this.paidAmt = parseInt(this.advanceData.advanceObj.AdvanceAmount);
+      this.PatientName = this.advanceData.advanceObj.PatientName; 
+      this.RegNo = this.advanceData.advanceObj.UHIDNO;
+      this.OPD_IPD_Id = this.advanceData.advanceObj.IPDNo;
+      this.BillTime = this.advanceData.advanceObj.Date;
+      this.PBillNo = this.advanceData.advanceObj.PBillNo || 0; 
+      this.getBalanceAmt();
+    } 
     if (this.advanceData.FromName == "IP-Payment") {
       this.netPayAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
       this.cashAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
@@ -181,23 +202,23 @@ private _onDestroy = new Subject<void>();
       cardAmountController: [''],
       cardNumberController: ['', Validators.required],
       cardBankNameController: ['', Validators.required],
-      cardDateController: [(new Date()), Validators.required],
+      cardDateController: [(new Date()).toISOString(), Validators.required],
       chequeAmountController: ['', Validators.required],
       chequeNumberController: ['', Validators.required],
       chequeBankNameController: ['', Validators.required],
-      chequeDateController: ['', Validators.required],
+      chequeDateController: [(new Date()).toISOString(), Validators.required],
 
       neftAmountController: ['', Validators.required],
       neftNumberController: ['', Validators.required],
       neftBankNameController: ['', Validators.required],
-      neftDateController: ['', Validators.required],
+      neftDateController: [(new Date()).toISOString(), Validators.required],
 
       paytmAmountController: ['', Validators.required],
       paytmMobileNoController: ['', Validators.required],
-      paytmDateController: ['', Validators.required],
+      paytmDateController: [(new Date()).toISOString(), Validators.required],
 
       wrfAmountController: ['', Validators.required],
-
+      tdsAmountController: ['', Validators.required],
       paidAmountController: ['', Validators.required],
       balanceAmountController: ['', Validators.required],
       commentsController: ['', Validators.required],
@@ -276,28 +297,21 @@ private _onDestroy = new Subject<void>();
   getBankNameList() {
     this.ipSearchService.getBankMasterCombo().subscribe(data => {
       this.BankNameList = data;
-      this.filteredBank.next(this.BankNameList.slice());
-
-
+      this.filteredBank.next(this.BankNameList.slice()); 
     });
-  }
-
+  } 
   getBankNameList1() {
     this.ipSearchService.getBankMasterCombo().subscribe(data => {
       this.BankNameList1 = data;
       this.filteredCardbank.next(this.BankNameList1.slice());
     });
-  }
-
-
+  } 
   getBankNameList2() {
     this.ipSearchService.getBankMasterCombo().subscribe(data => {
       this.BankNameList2 = data;
       this.filteredChequebank.next(this.BankNameList2.slice());
     });
-  }
-
-
+  } 
   getAdvcanceDetails(isReset?: any) {
     debugger
     // checking 
@@ -313,7 +327,7 @@ private _onDestroy = new Subject<void>();
         this.calculateBalance();
       }
       this.isLoading = '';
-      if (this.dataSource.data.length == 0) {
+      if (this.dataSource.data.length == 0 || this.advanceData.FromName == "IP-IntrimBIll") {
         this.isLoading = 'no-data';
         this.chipsElements[0].state = false;
         this.chipsElements[1].state = true;
@@ -386,6 +400,10 @@ private _onDestroy = new Subject<void>();
           this.wrfAmt = 0;
           break;
 
+        case 'TDS':
+          this.tdsAmt = 0;
+          break;  
+
         default:
           break;
       }
@@ -420,6 +438,7 @@ private _onDestroy = new Subject<void>();
     let neftAmtLocal = '0';
     let paytmAmtLocal = '0';
     let wrfAmtLocal = '0';
+    let tdsAmtLocal = '0';
     let paidAmtLocal;
     // if (this.cashAmt) {
     this.paidAmt = null;
@@ -430,7 +449,8 @@ private _onDestroy = new Subject<void>();
       + parseInt(this.chequeAmt.toString() ? this.chequeAmt.toString() : chequeAmtLocal)
       + parseInt(this.neftAmt.toString() ? this.neftAmt.toString() : neftAmtLocal)
       + parseInt(this.paytmAmt.toString() ? this.paytmAmt.toString() : paytmAmtLocal)
-      + parseInt(this.wrfAmt.toString() ? this.wrfAmt.toString() : wrfAmtLocal);
+      + parseInt(this.wrfAmt.toString() ? this.wrfAmt.toString() : wrfAmtLocal)
+      + parseInt(this.tdsAmt.toString() ? this.tdsAmt.toString() : tdsAmtLocal);
     if (paidAmtLocal > this.netPayAmt) {
       const controllers = this.paymentForm.controls;
       Object.keys(controllers).forEach(controlName => {
@@ -687,7 +707,15 @@ private _onDestroy = new Subject<void>();
   //   const y = new AdvanceDetails(x);
   //   return y;
   // }
-
+  keyPressCharater(event){
+    var inp = String.fromCharCode(event.keyCode);
+    if (/^\d*\.?\d*$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
 }
 
 export class IpPaymentInsert {

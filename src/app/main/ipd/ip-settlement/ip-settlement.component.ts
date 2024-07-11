@@ -69,6 +69,7 @@ export class IPSettlementComponent implements OnInit {
 
  
   displayedColumns: string[] = [ 
+    'button',
     'BillDate',
     'BillNo',
     'TotalAmt',
@@ -79,6 +80,7 @@ export class IPSettlementComponent implements OnInit {
     'action', 
   ];
   displayedColumns1: string[] = [ 
+    'button',
     'BillDate',
     'BillNo',
     'TotalAmt',
@@ -222,6 +224,7 @@ export class IPSettlementComponent implements OnInit {
 
     this._IpSearchListService.getPaidBillList(query).subscribe(Visit => {
       this.dataSource.data = Visit as PaidBilldetail[];
+      console.log(this.dataSource.data);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;  
       this.sIsLoading = ''; 
@@ -236,10 +239,11 @@ export class IPSettlementComponent implements OnInit {
     this.sIsLoading = 'loading-data';
     this.regId = this.RegId;
 
-    let query = "Select * from lvwBillIPD  where TransactionType =0 and companyId = 0 and RegID= " + this.regId + " and BalanceAmt>0";
-    console.log(query);
+    let query = "Select * from lvwBillIPD  where RegID= " + this.regId + " and BalanceAmt>0";
+   // console.log(query);
     this._IpSearchListService.getCreditBillList(query).subscribe(Visit => {
       this.dataSource1.data = Visit as CreditBilldetail[];
+      console.log(this.dataSource1.data);
       this.dataSource1.sort = this.sort;
       this.dataSource1.paginator = this.paginator; 
       this.sIsLoading = ''; 
@@ -279,16 +283,16 @@ export class IPSettlementComponent implements OnInit {
     PatientHeaderObj['NetPayAmount'] = contact.NetPayableAmt;
     PatientHeaderObj['PBillNo'] = contact.PBillNo;
     PatientHeaderObj['BillTime'] = contact.BillTime;
-    PatientHeaderObj['RegID'] = contact.RegID; 
+    PatientHeaderObj['RegNo'] = contact.RegNo; 
     
     const dialogRef = this._matDialog.open(IPpaymentWithadvanceComponent,
       {
         maxWidth: "95vw",
-        height: '640px',
-        width: '100%',
+        height: '650px',
+        width: '85%',
         data: {
           advanceObj: PatientHeaderObj,
-          FromName: "IP-Bill"
+          FromName: "IP-SETTLEMENT"
         }
       });
 

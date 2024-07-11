@@ -126,6 +126,19 @@
                                         
                                                 <mat-table class="table2 h-150" #table matSort [dataSource]="dataSource1" [@animateStagger]="{value:'50'}"
                                                     style="overflow: auto;width: 100%;">
+
+                                                    <ng-container matColumnDef="button" sticky>
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                                             
+                                                        </mat-header-cell>
+                                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                                            <mat-icon *ngIf="contact.CompanyId =='0'" matTooltip="Patient Category Self">account_box
+                                                            </mat-icon>
+                                                            
+                                                            <mat-icon *ngIf="contact.CompanyId !='0'" matTooltip="Patient Category Company">business
+                                                            </mat-icon>
+                                                        </mat-cell>
+                                                    </ng-container>
                                         
                                                     <ng-container matColumnDef="BillNo">
                                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
@@ -255,6 +268,18 @@
                                             </h3> 
                                             <mat-table class="table1 h-150" #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
                                                 style="overflow: auto;">
+                                                <ng-container matColumnDef="button" sticky>
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                                         
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                                        <mat-icon *ngIf="contact.CompanyId =='0'" matTooltip="Patient Category Self">account_box
+                                                        </mat-icon>
+                                                        
+                                                        <mat-icon *ngIf="contact.CompanyId !='0'" matTooltip="Patient Category Company">business
+                                                        </mat-icon>
+                                                    </mat-cell>
+                                                </ng-container>
                             
                                                 <ng-container matColumnDef="BillNo">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>

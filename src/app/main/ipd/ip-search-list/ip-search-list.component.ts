@@ -71,13 +71,12 @@ export class IPSearchListComponent implements OnInit {
   sIsLoading: string = '';
 
   displayedColumns = [
-     'IsBillGenerated',
-     //'FinalDiscount',
+    'button',
+    'IsBillGenerated',
     'IsMLC',
     'RegNo',
     'PatientName',
     'DOA',
-    'DOT',
     'IPDNo',
     'Doctorname',
     'RefDocName',
@@ -219,6 +218,7 @@ export class IPSearchListComponent implements OnInit {
         this._IpSearchListService.getDischargedPatientList_1(Params).subscribe(data => {
           // this.dataSource.data = data as Admission[];
           this.dataSource.data = data["Table1"]??[] as Admission[];
+          console.log(this.dataSource.data)
           this.dataSource.sort = this.sort;
           this.resultsLength= data["Table"][0]["total_row"];
           // this.dataSource.paginator = this.paginator;

@@ -19,6 +19,7 @@ import { OPAdvancePaymentComponent } from 'app/main/opd/op-search-list/op-advanc
 import { Cal_DiscAmount } from '../ip-billing/ip-billing.component';
 import { ToastrService } from 'ngx-toastr';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
+import { IPpaymentWithadvanceComponent } from '../../ip-settlement/ippayment-withadvance/ippayment-withadvance.component';
 
 @Component({
   selector: 'app-interim-bill',
@@ -556,16 +557,29 @@ export class InterimBillComponent implements OnInit {
       PatientHeaderObj['DoctorName'] = this.selectedAdvanceObj.Doctorname;
       PatientHeaderObj['IPDNo'] = this.selectedAdvanceObj.IPDNo ; // this._IpSearchListService.myShowAdvanceForm.get("AdmissionID").value;
       PatientHeaderObj['NetPayAmount'] = this.netAmount;
+      PatientHeaderObj['AdvanceAmount'] =  this.netAmount; 
+      PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
 
-      const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
+      // const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
+      //   {
+      //     maxWidth: "80vw",
+      //     height: '600px',
+      //     width: '80%',
+      //     data: {
+      //       vPatientHeaderObj: PatientHeaderObj,
+      //       FromName: "IP-Bill",
+      //       advanceObj: PatientHeaderObj
+      //     }
+      //   }); 
+      
+      const dialogRef = this._matDialog.open(IPpaymentWithadvanceComponent,
         {
-          maxWidth: "80vw",
-          height: '600px',
-          width: '80%',
+          maxWidth: "95vw",
+          height: '650px',
+          width: '85%',
           data: {
-            vPatientHeaderObj: PatientHeaderObj,
-            FromName: "IP-Bill",
-            advanceObj: PatientHeaderObj
+            advanceObj: PatientHeaderObj,
+            FromName: "IP-IntrimBIll"
           }
         });
       dialogRef.afterClosed().subscribe(result => {

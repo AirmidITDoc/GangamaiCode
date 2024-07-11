@@ -228,7 +228,7 @@
                                         <mat-label>ItemName</mat-label>
                                         <input type="text" name="ItemId" formControlName="ItemId" #itemid (keydown)="onEnterItem($event)"
                                             placeholder="Item Name " matInput [matAutocomplete]="auto" (input)="getSearchItemList()"
-                                            required>
+                                            required matAutocompletePosition="below">
                                         <span matSuffix style="display: flex;">
                                             <mat-icon class="mat-icon-close"
                                                 (click)="ItemForm.get('ItemId').setValue(''); isItemIdSelected = false;">
@@ -247,7 +247,7 @@
                                         </mat-error>
                                     </mat-form-field>
                     
-                                    <mat-form-field appearance="outline" fxFlex="20%">
+                                    <!-- <mat-form-field appearance="outline" fxFlex="20%">
                                         <mat-label>Dose Name</mat-label>
                                         <input matAutocompletePosition="below" type="text" placeholder="Select Dose Name" matInput
                                             formControlName="DoseId" [matAutocomplete]="autoMode" required #dosename
@@ -263,11 +263,18 @@
                                                 {{option.DoseName}}
                                             </mat-option>
                                         </mat-autocomplete>
-                                    </mat-form-field>
-                                    <mat-form-field appearance="outline" fxFlex="8%">
+                                    </mat-form-field> -->
+
+                                    <!-- <mat-form-field appearance="outline" fxFlex="8%">
                                         <mat-label>Day</mat-label>
                                         <input type="text" OnlyNumber [(ngModel)]="vDay" name="Day" (keydown)="onEnterqty($event)"
                                             formControlName="Day" matInput required #qty (keypress)="keyPressAlphanumeric($event)">
+                                    </mat-form-field> -->
+
+                                    <mat-form-field appearance="outline" fxFlex="8%">
+                                        <mat-label>Qty</mat-label>
+                                        <input type="text" OnlyNumber [(ngModel)]="vQty" name="Qty" (keydown)="onEnterqty($event)"
+                                            formControlName="Qty" matInput required #qty (keypress)="keyPressAlphanumeric($event)">
                                     </mat-form-field>
                     
                     
@@ -310,21 +317,21 @@
                                                     </mat-cell>
                                                 </ng-container>
 
-                                                <ng-container matColumnDef="DoseName">
+                                                <!-- <ng-container matColumnDef="DoseName">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                                         fxShow.gt-sm>
                                                         Dose Name</mat-header-cell>
                                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                         <span> {{element.DoseName}}</span>
                                                     </mat-cell>
-                                                </ng-container>
+                                                </ng-container> -->
 
-                                                <ng-container matColumnDef="Day">
+                                                <ng-container matColumnDef="Qty">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                                         fxShow.gt-sm>
-                                                        Day</mat-header-cell>
+                                                        Qty</mat-header-cell>
                                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                        <span> {{element.Days}}</span>
+                                                        <span> {{element.Qty}}</span>
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -333,7 +340,7 @@
                                                         fxShow.gt-sm>
                                                         Instruction</mat-header-cell>
                                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                        <span> {{element.Instruction}}</span>
+                                                        <span> {{element.Remark}}</span>
                                                     </mat-cell>
                                                 </ng-container>
 
