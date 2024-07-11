@@ -151,6 +151,20 @@
                                         </mat-cell>
                                     </ng-container> -->
 
+                                    <ng-container matColumnDef="button" sticky>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                             
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                            <mat-icon *ngIf="contact.PatientType =='Self'" matTooltip="Patient Category Self">account_box
+                                            </mat-icon>
+                                            
+                                            <mat-icon *ngIf="contact.PatientType !== 'Self'" matTooltip="Patient Category Company">business
+                                            </mat-icon>
+
+                                        </mat-cell>
+                                    </ng-container>
+
 
                             <ng-container matColumnDef="IsBillGenerated" sticky>
                                 <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-80" style="color: white;">Bill

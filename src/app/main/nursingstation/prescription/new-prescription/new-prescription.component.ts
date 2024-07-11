@@ -44,8 +44,8 @@ export class NewPrescriptionComponent implements OnInit {
   ]
   displayedColumns: string[] = [
     'ItemName',
-    'DoseName',
-    'Day',
+    //'DoseName',
+    'Qty',
     'Remark',
     'Action'
   ]
@@ -102,7 +102,7 @@ export class NewPrescriptionComponent implements OnInit {
 
   dsPresList = new MatTableDataSource<MedicineItemList>();
   dsiVisitList = new MatTableDataSource<MedicineItemList>();
-  dsItemList = new MatTableDataSource<MedicineItemList>();
+  dsItemList = new MatTableDataSource<PrecriptionItemList>();
  
   constructor(private _FormBuilder: FormBuilder,
     private ref: MatDialogRef<NewPrescriptionComponent>,
@@ -145,8 +145,8 @@ export class NewPrescriptionComponent implements OnInit {
         Validators.pattern("^[0-9]*$")]],
         Instruction: ['', [
         Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
-      ]]
-
+      ]],
+      Qty:['']
     })
   }
 
@@ -422,24 +422,30 @@ export class NewPrescriptionComponent implements OnInit {
       });
       return;
     }
-    if ((this.ItemForm.get('DoseId').value == '' || this.ItemForm.get('DoseId').value == null || this.ItemForm.get('DoseId').value == undefined)) {
-      this.toastr.warning('Please select Dose', 'Warning !', {
+    if ((this.vQty == '' || this.vQty == null || this.vQty == undefined)) {
+      this.toastr.warning('Please enter a qty', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    if(!this.doseList.find(item => item.DoseName ==  this.ItemForm.get('DoseId').value.DoseName)){
-      this.toastr.warning('Please select valid Dose Name', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    if ((this.vDay == '' || this.vDay == null || this.vDay == undefined)) {
-      this.toastr.warning('Please enter a Day', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
+    // if ((this.ItemForm.get('DoseId').value == '' || this.ItemForm.get('DoseId').value == null || this.ItemForm.get('DoseId').value == undefined)) {
+    //   this.toastr.warning('Please select Dose', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
+    // if(!this.doseList.find(item => item.DoseName ==  this.ItemForm.get('DoseId').value.DoseName)){
+    //   this.toastr.warning('Please select valid Dose Name', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
+    // if ((this.vDay == '' || this.vDay == null || this.vDay == undefined)) {
+    //   this.toastr.warning('Please enter a Day', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
     const iscekDuplicate = this.dsItemList.data.some(item => item.ItemID == this.ItemId)
     if(!iscekDuplicate){
     this.dsItemList.data = [];
@@ -447,10 +453,10 @@ export class NewPrescriptionComponent implements OnInit {
       {
         ItemID:  this.ItemForm.get('ItemId').value.ItemId || 0,
         ItemName: this.ItemForm.get('ItemId').value.ItemName || '',
-        DoseName: this.ItemForm.get('DoseId').value.DoseName || '',
-        DoseId: this.ItemForm.get('DoseId').value.DoseId || '',
-        Days: this.vDay,
-        Instruction: this.vInstruction || '' 
+        // DoseName: this.ItemForm.get('DoseId').value.DoseName || '',
+        // DoseId: this.ItemForm.get('DoseId').value.DoseId || '',
+        Qty:  this.vQty,
+        Remark: this.vInstruction || '' 
       });
     this.dsItemList.data = this.Chargelist
     //console.log(this.dsItemList.data); 
@@ -461,8 +467,8 @@ export class NewPrescriptionComponent implements OnInit {
       return;
     }
     this.ItemForm.get('ItemId').reset('');
-    this.ItemForm.get('DoseId').reset('');
-    this.ItemForm.get('Day').reset('');
+    // this.ItemForm.get('DoseId').reset('');
+    this.ItemForm.get('Qty').reset('');
     this.ItemForm.get('Instruction').reset('');
     this.itemid.nativeElement.focus(); 
   }
@@ -495,7 +501,8 @@ export class NewPrescriptionComponent implements OnInit {
 
   onEnterItem(event): void {
     if (event.which === 13) {
-      this.dosename.nativeElement.focus(); 
+     // this.dosename.nativeElement.focus(); 
+      this.qty.nativeElement.focus(); 
     }
   }
   public onEnterDose(event): void { 
@@ -582,11 +589,11 @@ export class NewPrescriptionComponent implements OnInit {
       insertIP_Prescription['classID'] = this.vClassId;
       insertIP_Prescription['genericId'] = 1;
       insertIP_Prescription['drugId'] = element.ItemID;
-      insertIP_Prescription['doseId'] =  element.DoseId || 0;
-      insertIP_Prescription['days'] = element.Days || 0;
-      insertIP_Prescription['qtyPerDay'] =element.Days || 0;
-      insertIP_Prescription['totalQty'] = 0,//element.Qty || 0;
-      insertIP_Prescription['remark'] = element.Instruction || '';
+      insertIP_Prescription['doseId'] = 0;
+      insertIP_Prescription['days'] =  0;
+      insertIP_Prescription['qtyPerDay'] =element.Qty || 0;
+      insertIP_Prescription['totalQty'] =element.Qty || 0;
+      insertIP_Prescription['remark'] = element.Remark || '';
       insertIP_Prescription['isClosed'] = false;
       insertIP_Prescription['isAddBy'] = this._loggedService.currentUserValue.user.id;
       insertIP_Prescription['storeId'] =  this.myForm.get('StoreId').value.StoreId || 0;

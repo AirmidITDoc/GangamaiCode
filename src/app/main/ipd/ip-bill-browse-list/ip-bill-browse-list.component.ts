@@ -115,10 +115,10 @@ export class IPBillBrowseListComponent implements OnInit {
   ];
 
   displayedColumns2 = [
-    // 'checkbox',
+    // 'checkbox', 
+    'PBillNo',
     'RegNo',
     'PatientName',
-    'PBillNo',
     // 'ReceiptNo',
     // 'PayDate',
     'TotalAmt',
@@ -137,10 +137,10 @@ export class IPBillBrowseListComponent implements OnInit {
   ];
   dataSource2 = new MatTableDataSource<BrowseIpdPaymentReceipt>();
   
-  displayedColumns3 = [
+  displayedColumns3 = [ 
+    'RefundDate',
     'RegNo',
     // 'RefundId',
-    'RefundDate',
     // 'BillId',
     'PatientName',
     // 'PaymentDate',

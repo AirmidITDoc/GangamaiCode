@@ -26,89 +26,76 @@
 
 
 
-    <div class="header-container" style="display: flex;padding: 10px 12px 5px 12px;">
+    <div class="header-container" style="display: flex;padding: 10px 15px 5px 15px;">
         <div fxFlex.gt-sm="100%" fxFlex>
             <div fxlayout="row" style="background-color: white; ">
-                <!-- ================================ LABEL HEADER  -->
-                <mat-card fxFlex.gt-sm="100%" fxFlex
-                    style="padding: 0 9px; height: fit-content;height: 80px;width: 100%;">
-
-
+                <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 9px; height: fit-content;height: 80px;width: 100%;">
+    
                     <div fxlayout="row">
                         <div class="patient-info-box">
                             <div class="patient-info-title border-bottom pb-2">
                                 <span class="h1">Patient Information</span>
                             </div>
-                         <div class="patient-info-box my-8">
-                            <div class="patient-info-row row-gap-4" fxLayout="row wrap">
-                                <div class="patient-col gap-3" fxFlex="35%" fxFlex.gt-sm="35%">
-                                    <span class="patient-col-key ">Patient Name</span>
-                                    <span>:</span>
-                                    <span class="patient-col-value">{{PatientName}}</span>
-                                </div>
-                                <div class="patient-col gap-3" fxFlex="10%" fxFlex.gt-sm="10%">
-                                    <span class="patient-col-key">RegID</span>
-                                    <span>:</span>
-                                    <span class="patient-col-value">{{RegID}}</span>
-                                </div>
-                                <div class="patient-col gap-3" fxFlex="10%" fxFlex.gt-sm="10%">
-                                    <span class="patient-col-key">IPDNo</span>
-                                    <span>:</span>
-                                    <span class="patient-col-value">{{OPD_IPD_Id}}</span>
-                                </div>
-                              
-                                <div class="patient-col gap-3" fxFlex="10%" fxFlex.gt-sm="10%">
-                                    <span class="patient-col-key ">PBillNo </span>
-                                    <span>:</span>
-                                    <span class="patient-col-value">{{PBillNo}}</span>
-                                </div>
-                                <div class="patient-col gap-3" fxFlex="20%" fxFlex.gt-sm="20%">
-                                    <span class="patient-col-key">BillTime </span>
-                                    <span>:</span>
-                                    <span class="patient-col-value">{{BillTime}}</span>
-                                </div>
-                                <!-- <div class="patient-col gap-3" fxFlex="25%" fxFlex.gt-sm="25%">
-                                    <span class="patient-col-key">Patient Source</span>
-                                    <span>:</span>
-                                    <span class="patient-col-value">{{advanceData.advanceObj..PatientType}}</span>
-                                </div> -->
-                                <div class="patient-col gap-3" fxFlex="210%" fxFlex.gt-sm="10%" style="color: blue;font-weight: bold;">
-                                    <span class="patient-col-key">NetPay Amount</span>
-                                    <span>:</span>
-                                    <span class="patient-col-value">{{netPayAmt}}</span>
+                            <div class="patient-info-box my-8">
+                                <div class="patient-info-row row-gap-4" fxLayoutAlign="space-between">
+                                    <div class="patient-col gap-3" fxFlex="30%" fxFlex.gt-sm="30%">
+                                        <span class="patient-col-key ">Patient Name</span>
+                                        <span>:</span>
+                                        <span class="patient-col-value">{{RegNo}}-{{PatientName}}</span>
+                                    </div>
+                                    <!-- <div class="patient-col gap-3" fxFlex="10%" fxFlex.gt-sm="10%">
+                                        <span class="patient-col-key">RegID</span>
+                                        <span>:</span>
+                                        <span class="patient-col-value">{{RegID}}</span>
+                                    </div> -->
+                                    <div class="patient-col gap-3" fxFlex="30%" fxFlex.gt-sm="30%">
+                                        <span class="patient-col-key">IPDNo</span>
+                                        <span>:</span>
+                                        <span class="patient-col-value">{{OPD_IPD_Id}}</span>
+                                    </div>
+    
+                                    <div class="patient-col gap-3" fxFlex="30%" fxFlex.gt-sm="30%">
+                                        <span class="patient-col-key ">PBillNo </span>
+                                        <span>:</span>
+                                        <span class="patient-col-value">{{PBillNo}}</span>
+                                    </div>
+                                    <div class="patient-col gap-3" fxFlex="30%" fxFlex.gt-sm="30%">
+                                        <span class="patient-col-key">BillDate </span>
+                                        <span>:</span>
+                                        <span class="patient-col-value">{{BillTime | date:'dd/MM/YYYY'}}</span>
+                                    </div>
+                                    <div class="patient-col gap-3" fxFlex="30%" fxFlex.gt-sm="30%"
+                                        style="color: blue;font-weight: bold;">
+                                        <span class="patient-col-key">Net Amount</span>
+                                        <span>:</span>
+                                        <span class="patient-col-value">{{netPayAmt | currency:"INR":"symbol"}}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        </div>
-                        <!-- ================================ LABEL HEADER  -->
-                    
-
-                        <!-- ================================ LABEL HEADER  -->
                     </div>
                 </mat-card>
-                <!-- ================================ LABEL HEADER  -->
             </div>
         </div>
+    </div> 
 
-    </div>
-    <!-- style="height: 250px !important; padding: 0 20px;overflow: auto;margin-top: 10px;" -->
-    <div class="table-container" style="padding: 5px 12px 5px 12px;">
+    <div class="table-container" style="padding: 5px 15px 5px 15px;">
         <mat-table matSort class="h-120" [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
-
+    
             <ng-container matColumnDef="Date">
                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Date
                 </mat-header-cell>
                 <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.Date}}
                 </mat-cell>
             </ng-container>
-
+    
             <ng-container matColumnDef="AdvanceNo">
                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                     Advance No </mat-header-cell>
                 <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                     {{element.AdvanceId}} </mat-cell>
             </ng-container>
-
+    
             <ng-container matColumnDef="AdvanceAmount">
                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                     Advance Amount </mat-header-cell>
@@ -122,9 +109,9 @@
                     <!-- {{element.UsedAmount | currency:'INR'}} -->
                     <!-- [readonly]="element.BalanceAmount == 0" -->
                     <mat-form-field appearance="legacy">
-                        <input matInput [(ngModel)]="element.UsedAmount" (keyup)="getAdvanceAmt(element, i)" 
-                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 15);"
-                        required="required" value="9876658688">
+                        <input matInput [(ngModel)]="element.UsedAmount" (keyup)="getAdvanceAmt(element, i)"
+                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 15);"
+                            required="required" value="9876658688">
                     </mat-form-field>
                 </mat-cell>
             </ng-container>
@@ -140,19 +127,19 @@
                 <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                     {{element.RefundAmount | currency:'INR'}} </mat-cell>
             </ng-container>
-
+    
             <ng-container matColumnDef="loading">
                 <mat-footer-cell *matFooterCellDef colspan="6">
                     <mat-spinner [diameter]='30'></mat-spinner>
                 </mat-footer-cell>
             </ng-container>
-
+    
             <ng-container matColumnDef="noData">
                 <mat-footer-cell *matFooterCellDef colspan="6">
                     No data found...
                 </mat-footer-cell>
             </ng-container>
-
+    
             <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
             </mat-header-row>
             <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
@@ -161,15 +148,11 @@
             </mat-footer-row>
             <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(isLoading=='no-data')}">
             </mat-footer-row>
-        </mat-table>
-
+        </mat-table> 
         <!-- <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" showFirstLastButtons></mat-paginator> -->
-    </div>
+    </div> 
 
-
-
-
-    <div class="payment-container">
+    <div class="payment-container" style="padding: 10px 15px 5px 15px;" fusePerfectScrollbar>
         <form [formGroup]="paymentForm">
             <div class="chips-container">
                 <mat-chip-list aria-label="Fish selection" selectable multiple>
@@ -179,9 +162,10 @@
                     </mat-chip>
                 </mat-chip-list>
             </div>
-            <div style="padding: 20px 20px 100px 20px;
-            height: 400px !important;
-            overflow: auto !important;">
+
+            <div style="padding: 20px 0px 100px 0px;
+                height: 400px !important;
+                overflow: auto !important;">
                 <div *ngIf="chipsElements[0].state">
                     <div>
                         <span>Advance Amount</span>
@@ -209,7 +193,7 @@
                     <mat-form-field appearance="outline" style="width: 180px;">
                         <mat-label>Enter Cash</mat-label>
                         <input matInput formControlName="cashAmountController" [(ngModel)]="cashAmt"
-                            (keyup)="calculatePaidAmt('cashAmountController')">
+                            (keyup)="calculatePaidAmt('cashAmountController')" (keypress)="keyPressCharater($event)">
                         <mat-error
                             *ngIf="paymentForm.controls.cashAmountController.touched && paymentForm.controls.cashAmountController.invalid">
                             <span *ngIf="paymentForm.controls.cashAmountController.errors.required">This field is
@@ -231,26 +215,41 @@
                             <mat-form-field appearance="outline" style="width: 180px;">
                                 <mat-label>Enter Amount</mat-label>
                                 <input matInput formControlName="cardAmountController" [(ngModel)]="cardAmt"
-                                    (keyup)="calculatePaidAmt('cardAmountController')">
+                                    (keyup)="calculatePaidAmt('cardAmountController')"
+                                    (keypress)="keyPressCharater($event)">
                                 <mat-error *ngIf="paymentForm.get('cardAmountController').hasError('invalidRange')">
                                     Entered Amount must not be greater than Net Amount
                                 </mat-error>
                             </mat-form-field>
                         </div>
                         <div style="margin-right: 10px;">
-                            <mat-form-field appearance="outline">
+                            <!-- <mat-form-field appearance="outline">
                                 <mat-label>Enter Card No</mat-label>
                                 <input matInput [(ngModel)]="cardNo" formControlName="cardNumberController">
+                            </mat-form-field> -->
+
+
+                            <mat-form-field appearance="outline" >
+                                <mat-label>Enter Card No</mat-label>
+                                <input name="cardNumberController" formControlName="cardNumberController" #cardNumberController
+                                    placeholder="Card Number" matInput required [(ngModel)]="cardNo" max="999999999999"
+                                    min="100000000000" autocomplete="off" maxlength="12"  minlength="4"
+                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);"
+                                    required="required" value="987665868888">
+                                <mat-error class="error"
+                                    *ngIf="paymentForm.get('cardNumberController').invalid && paymentForm.get('cardNumberController').touched">10
+                                    digits Card number is
+                                    required</mat-error>
                             </mat-form-field>
                         </div>
                         <div style="margin-right: 10px;">
                             <!-- <mat-form-field appearance="outline">
-                                <mat-label>Enter Bank Name</mat-label>
-                                <input matInput [(ngModel)]="cardBankName" formControlName="cardBankNameController">
-                            </mat-form-field> -->
-
-
-                            <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Enter Bank Name</mat-label>
+                                    <input matInput [(ngModel)]="cardBankName" formControlName="cardBankNameController">
+                                </mat-form-field> -->
+    
+    
+                            <mat-form-field appearance="outline" style="width: 180px;">
                                 <mat-label>Select Bank Name</mat-label>
                                 <mat-select formControlName="cardBankNameController" placeholder="Bank" #singleSelect
                                     [(ngModel)]="cardBankName">
@@ -263,7 +262,7 @@
                                         {{element.BankName}}
                                     </mat-option>
                                 </mat-select>
-
+    
                             </mat-form-field>
                         </div>
                         <div style="margin-right: 10px;">
@@ -287,25 +286,39 @@
                             <mat-form-field appearance="outline" style="width: 180px;">
                                 <mat-label>Enter Amount</mat-label>
                                 <input matInput formControlName="chequeAmountController" [(ngModel)]="chequeAmt"
-                                    (keyup)="calculatePaidAmt('chequeAmountController')">
+                                    (keyup)="calculatePaidAmt('chequeAmountController')"
+                                    (keypress)="keyPressCharater($event)">
                                 <mat-error *ngIf="paymentForm.get('chequeAmountController').hasError('invalidRange')">
                                     Entered Amount must not be greater than Net Amount
                                 </mat-error>
                             </mat-form-field>
                         </div>
                         <div style="margin-right: 10px;">
-                            <mat-form-field appearance="outline">
+                            <!-- <mat-form-field appearance="outline">
                                 <mat-label>Enter Cheque No</mat-label>
                                 <input matInput [(ngModel)]="chequeNo" formControlName="chequeNumberController">
+                            </mat-form-field> -->
+
+                            <mat-form-field appearance="outline" >
+                                <mat-label>Enter Cheque No</mat-label>
+                                <input name="chequeNumberController" formControlName="chequeNumberController" #chequeNumberController
+                                    placeholder="Cheque Number" matInput required [(ngModel)]="chequeNo" max="999999999999"
+                                    min="100000000000" autocomplete="off" maxlength="10"  minlength="4"
+                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);"
+                                    required="required" value="987665868888">
+                                <mat-error class="error"
+                                    *ngIf="paymentForm.get('chequeNumberController').invalid && paymentForm.get('chequeNumberController').touched">10
+                                    digits Cheque number is
+                                    required</mat-error>
                             </mat-form-field>
                         </div>
                         <div style="margin-right: 10px;">
                             <!-- <mat-form-field appearance="outline">
-                                <mat-label>Enter Bank Name</mat-label>
-                                <input matInput [(ngModel)]="chequeBankName" formControlName="chequeBankNameController">
-                            </mat-form-field> -->
-
-                            <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Enter Bank Name</mat-label>
+                                    <input matInput [(ngModel)]="chequeBankName" formControlName="chequeBankNameController">
+                                </mat-form-field> -->
+    
+                            <mat-form-field appearance="outline" style="width: 180px;">
                                 <mat-label>Select Bank Name</mat-label>
                                 <mat-select formControlName="chequeBankNameController" placeholder="Bank" #singleSelect
                                     [(ngModel)]="chequeBankName">
@@ -318,7 +331,7 @@
                                         {{element.BankName}}
                                     </mat-option>
                                 </mat-select>
-
+    
                             </mat-form-field>
                         </div>
                         <div style="margin-right: 10px;">
@@ -341,44 +354,58 @@
                             <mat-form-field appearance="outline" style="width: 180px;">
                                 <mat-label>Enter Amount</mat-label>
                                 <input matInput formControlName="neftAmountController" [(ngModel)]="neftAmt"
-                                    (keyup)="calculatePaidAmt('neftAmountController')">
+                                    (keyup)="calculatePaidAmt('neftAmountController')"
+                                    (keypress)="keyPressCharater($event)">
                                 <mat-error *ngIf="paymentForm.get('neftAmountController').hasError('invalidRange')">
                                     Entered Amount must not be greater than Net Amount
                                 </mat-error>
                             </mat-form-field>
                         </div>
                         <div style="margin-right: 10px;">
-                            <mat-form-field appearance="outline">
+                            <!-- <mat-form-field appearance="outline">
                                 <mat-label>Enter NEFT No</mat-label>
                                 <input matInput [(ngModel)]="neftNo" formControlName="neftNumberController">
+                            </mat-form-field> -->
+
+                            <mat-form-field appearance="outline" >
+                                <mat-label>Enter NEFT No</mat-label>
+                                <input name="neftNumberController" formControlName="neftNumberController" #neftNumberController
+                                    placeholder="NEFT Number" matInput required [(ngModel)]="neftNo" max="999999999999"
+                                    min="100000000000" autocomplete="off" maxlength="12" minlength="4"
+                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);"
+                                    required="required" value="987665868888">
+                                <mat-error class="error"
+                                    *ngIf="paymentForm.get('neftNumberController').invalid && paymentForm.get('neftNumberController').touched">10
+                                    digits NEFT number is
+                                    required</mat-error>
                             </mat-form-field>
                         </div>
                         <div style="margin-right: 10px;">
                             <!-- <mat-form-field appearance="outline">
-                                <mat-label>Enter Bank Name</mat-label>
-                                <input matInput [(ngModel)]="neftBankName" formControlName="neftBankNameController">
-                            </mat-form-field> -->
-
-                            <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Enter Bank Name</mat-label>
+                                    <input matInput [(ngModel)]="neftBankName" formControlName="neftBankNameController">
+                                </mat-form-field> -->
+    
+                            <mat-form-field appearance="outline" style="width: 180px;">
                                 <mat-label>Select Bank Name</mat-label>
                                 <mat-select formControlName="neftBankNameController" placeholder="Bank" #singleSelect
                                     [(ngModel)]="neftBankName">
                                     <mat-option>
-                                        <ngx-mat-select-search [formControl]="bankFilterCtrl"
-                                            [placeholderLabel]="'Search'" [noEntriesFoundLabel]="'No matching found'">
+                                        <ngx-mat-select-search [formControl]="bankFilterCtrl" [placeholderLabel]="'Search'"
+                                            [noEntriesFoundLabel]="'No matching found'">
                                         </ngx-mat-select-search>
                                     </mat-option>
                                     <mat-option *ngFor="let element of filteredCardbank | async" [value]="element">
                                         {{element.BankName}}
                                     </mat-option>
                                 </mat-select>
-
+    
                             </mat-form-field>
                         </div>
                         <div style="margin-right: 10px;">
                             <mat-form-field appearance="outline">
                                 <mat-label>Enter Date</mat-label>
-
+    
                                 <input name="NEFTDate" matInput [(ngModel)]="neftDate" [matDatepicker]="picker"
                                     formControllName="neftDateController" [readonly]="true" required>
                                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -396,21 +423,22 @@
                             <mat-form-field appearance="outline" style="width: 180px;">
                                 <mat-label>Enter Amount</mat-label>
                                 <input matInput formControlName="paytmAmountController" [(ngModel)]="paytmAmt"
-                                    (keyup)="calculatePaidAmt('paytmAmountController')">
+                                    (keyup)="calculatePaidAmt('paytmAmountController')"
+                                    (keypress)="keyPressCharater($event)">
                                 <mat-error *ngIf="paymentForm.get('paytmAmountController').hasError('invalidRange')">
                                     Entered Amount must not be greater than Net Amount
                                 </mat-error>
                             </mat-form-field>
                         </div>
                         <div style="margin-right: 10px;">
-
+    
                             <mat-form-field appearance="outline">
                                 <mat-label>Trans ID/Mobile No</mat-label>
                                 <input name="UPI No" formControlName="paytmMobileNoController" #mobile
-                                    placeholder="UPI Number" matInput required [(ngModel)]="paytmTransNo"
-                                    max="9999999999" min="1000000000" autocomplete="off" maxlength="10"
-                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
-                                    required="required" value="9876658688">
+                                    placeholder="UPI Number" matInput required [(ngModel)]="paytmTransNo" max="999999999999"
+                                    min="100000000000" autocomplete="off" maxlength="12" minlength="4"
+                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);"
+                                    required="required" value="987665868888">
                                 <mat-error class="error"
                                     *ngIf="paymentForm.get('paytmMobileNoController').invalid && paymentForm.get('paytmMobileNoController').touched">10
                                     digits Mobile number is
@@ -420,7 +448,7 @@
                         <div style="margin-right: 10px;">
                             <mat-form-field appearance="outline">
                                 <mat-label>Enter Date</mat-label>
-
+    
                                 <input name="PayTMDate" matInput [matDatepicker]="picker" [(ngModel)]="paytmDate"
                                     formControllName="paytmDateController" [readonly]="true" required>
                                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -438,7 +466,7 @@
                             <mat-form-field appearance="outline" style="width: 180px;">
                                 <mat-label>Enter Amount</mat-label>
                                 <input matInput formControlName="wrfAmountController" [(ngModel)]="wrfAmt"
-                                    (keyup)="calculatePaidAmt('wrfAmountController')">
+                                    (keyup)="calculatePaidAmt('wrfAmountController')" (keypress)="keyPressCharater($event)">
                                 <mat-error *ngIf="paymentForm.get('wrfAmountController').hasError('invalidRange')">
                                     Entered Amount must not be greater than Net Amount
                                 </mat-error>
@@ -446,54 +474,80 @@
                         </div>
                     </div>
                 </div>
-                <hr size="20">
-                <div>
+                <div *ngIf="chipsElements[7].state">
                     <div>
-                        <span>Paid Amount</span>
+                        <span>TDS</span>
                     </div>
-                    <div class="cards-div" fxLayout.gt-xs="row">
+                    <div class="cards-div" fxLayout.gt-xs="row" fxLayoutAlign="start">
                         <div style="margin-right: 10px;">
-                            <mat-form-field appearance="outline">
-                                <mat-label>Paid Amount</mat-label>
-                                <input matInput formControlName="paidAmountController" [(ngModel)]="paidAmt" readonly>
+                            <mat-form-field appearance="outline" style="width: 180px;">
+                                <mat-label>Enter Amount</mat-label>
+                                <input matInput formControlName="tdsAmountController" [(ngModel)]="tdsAmt"
+                                    (keyup)="calculatePaidAmt('tdsAmountController')" (keypress)="keyPressCharater($event)">
+                                <mat-error *ngIf="paymentForm.get('tdsAmountController').hasError('invalidRange')">
+                                    Entered Amount must not be greater than Net Amount
+                                </mat-error>
                             </mat-form-field>
-                        </div>
-                        <div style="margin-right: 10px;">
-                            <mat-form-field appearance="outline">
-                                <mat-label>Balance Amount</mat-label>
-                                <input matInput formControlName="balanceAmountController" [(ngModel)]="balanceAmt"
-                                    readonly>
-                            </mat-form-field>
-                        </div>
-                        <div style="margin-right: 10px;">
-                            <mat-form-field appearance="outline">
-                                <mat-label>Comments</mat-label>
-                                <input matInput formControlName="commentsController">
-                            </mat-form-field>
-                        </div>
-                        <div class="save-payment">
-                            <!-- <div class="admini-checkbox" style="margin-top: 10px;">
-                                <mat-checkbox class="labels-style" formControlName="Iscredited"
-                                     aria-label="Administrative Charges"
-                                    style="font-weight: bold;font-size:xx-large;font-weight: 600;">
-                                    Iscredited
-                                </mat-checkbox>
-                            </div>&nbsp; -->
-                            <button class="next-btn" (click)="saveClicked()" [disabled]="isLoading=='submit'"
-                                style="border-radius: 16px;">
-                                <span style="display: flex;justify-content: center;">
-                                    <mat-spinner *ngIf="isLoading=='submit'" [color]="white" [diameter]="20">
-                                    </mat-spinner>
-                                    <span style="margin-left: 5px;">Save</span>
-                                </span>
-                            </button>
-                            &nbsp;
-                            <button class="footer-btn" (click)="onClose()" style="border-radius: 16px;">Close</button>
-
                         </div>
                     </div>
                 </div>
+              
             </div>
         </form>
     </div>
+   
+<div style="padding: 10px 15px 10px 15px;">
+    <form [formGroup]="paymentForm">
+    <hr size="20">
+    <div>
+        <span>Paid Amount</span>
+    </div>
+    <div class="cards-div" fxLayout.gt-xs="row">
+        <div style="margin-right: 10px;">
+            <mat-form-field appearance="outline">
+                <mat-label>Paid Amount</mat-label>
+                <input matInput formControlName="paidAmountController" [(ngModel)]="paidAmt" readonly>
+            </mat-form-field>
+        </div>
+        <div style="margin-right: 10px;">
+            <mat-form-field appearance="outline">
+                <mat-label>Balance Amount</mat-label>
+                <input matInput formControlName="balanceAmountController" [(ngModel)]="balanceAmt" readonly>
+            </mat-form-field>
+        </div>
+        <div style="margin-right: 10px;">
+            <mat-form-field appearance="outline">
+                <mat-label>Comments</mat-label>
+                <input matInput formControlName="commentsController">
+            </mat-form-field>
+        </div>
+        <div class="save-payment">
+
+            <!-- <button class="next-btn" (click)="saveClicked()" [disabled]="isLoading=='submit'"
+                    style="border-radius: 16px;">
+                    <span style="display: flex;justify-content: center;">
+                        <mat-spinner *ngIf="isLoading=='submit'" [color]="white" [diameter]="20">
+                        </mat-spinner>
+                        <span style="margin-left: 5px;">Save</span>
+                    </span>
+                </button>
+                &nbsp;
+                <button class="footer-btn" (click)="onClose()" style="border-radius: 16px;">Close</button> -->
+            <div class="action-content-right modal-footer" fxLayout="row" fxLayoutAlign="end center">
+                <div class="button-row-group">
+                    <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                    <button class="btn btn-primary" (click)="saveClicked()"
+                        [disabled]="isLoading=='submit'">
+                        <span style="display: flex;justify-content: center;">
+                            <mat-spinner *ngIf="isLoading=='submit'" [color]="white" [diameter]="20">
+                            </mat-spinner>
+                            <span style="margin-left: 5px;">Save</span>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </form>
+</div>
 </div>

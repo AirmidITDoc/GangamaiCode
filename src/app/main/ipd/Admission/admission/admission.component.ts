@@ -3199,7 +3199,7 @@ ClassId:any;
 WardId:any;
 PolicyNo: any;
 MemberNo: any;
-WardName:any;
+// WardName:any;
 AprovAmount
 CompDOD
 IsPharClearance
