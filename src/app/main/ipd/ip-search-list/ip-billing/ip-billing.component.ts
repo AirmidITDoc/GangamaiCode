@@ -2186,9 +2186,9 @@ debugger
         });
     });
   }
-
+  // exec rptIPDInterimBill 193667 9507 
   viewgetInterimBillReportPdf(contact) {
-
+debugger
     this._IpSearchListService.getIpInterimBillReceipt(
       contact.PBillNo
     ).subscribe(res => {

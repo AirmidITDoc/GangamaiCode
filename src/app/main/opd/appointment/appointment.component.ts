@@ -357,8 +357,8 @@ export class AppointmentComponent implements OnInit {
     if (this._ActRoute.url == "/opd/appointment") {
 
       // this.menuActions.push("Update Registration");
-      // this.menuActions.push("Update Consultant Doctor");
-      // this.menuActions.push("Update Referred Doctor");
+      this.menuActions.push("Update Consultant Doctor");
+      this.menuActions.push("Update Referred Doctor");
     }
 
     // this.getVisitList();

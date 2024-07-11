@@ -1,10 +1,10 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AdmissionService } from '../Admission/admission/admission.service';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AdvanceDataStored } from '../advance';
 import { AdvanceDetailObj } from '../ip-search-list/ip-search-list.component';
@@ -23,14 +23,16 @@ export class CompanyInformationComponent implements OnInit {
   dateTimeObj: any;
   screenFromString = 'discharge';
   selectedAdvanceObj: AdmissionPersonlModel;
-  registerObj1: AdmissionPersonlModel;
+  registerObj: AdmissionPersonlModel;
   AdmissionID: any;
+ 
   constructor(
     public _AdmissionService: AdmissionService,
     public datePipe: DatePipe,
     private router: Router,
     private dialogRef: MatDialogRef<CompanyInformationComponent>,
     private formBuilder: FormBuilder,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private accountService: AuthenticationService,
 
     public _matDialog: MatDialog,
@@ -41,22 +43,26 @@ export class CompanyInformationComponent implements OnInit {
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       console.log(this.selectedAdvanceObj);
-      this.registerObj1 = this.selectedAdvanceObj;
+     
       this.AdmissionID = this.selectedAdvanceObj.AdmissionID
       
     } }
 
+    registerObj1 =new CompanyDetails({});
 
   ngOnInit(): void {
     this.companyFormGroup = this.createCompanyForm();
 
-    // if (this.advanceDataStored.storage) {
-    //   this.selectedAdvanceObj = this.advanceDataStored.storage;
-    //   console.log(this.selectedAdvanceObj);
-    //   // this.registerObj1 = this.selectedAdvanceObj;
-    //   this.AdmissionID = this.selectedAdvanceObj.AdmissionID
-    //   console.log(this.registerObj1);
-    // }
+    if (this.data) {
+      this.registerObj1 = this.data.registerObj;
+    let Query = "Select * from Admission where  AdmissionID=" + this.AdmissionID + " ";
+    this._AdmissionService.getCompanyIdDetail(Query).subscribe(data => {
+      this.registerObj1 = data[0];
+      console.log(this.registerObj1);
+    });
+
+    
+    }
     this.companyFormGroup = this.createCompanyForm();
   }
 

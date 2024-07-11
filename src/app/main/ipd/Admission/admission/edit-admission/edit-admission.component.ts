@@ -147,7 +147,7 @@ export class EditAdmissionComponent implements OnInit {
   @ViewChild('multiUserSearch') multiUserSearchInput: ElementRef;
 
 
-  @Inject(MAT_DIALOG_DATA) public data: any;
+  
 
   constructor(public _AdmissionService: AdmissionService,
     public _registrationService: RegistrationService,
@@ -158,6 +158,7 @@ export class EditAdmissionComponent implements OnInit {
     private accountService: AuthenticationService,
     public datePipe: DatePipe,
     private router: Router,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private reportDownloadService: ExcelDownloadService,
     private formBuilder: FormBuilder,
     public toastr: ToastrService,
@@ -269,9 +270,6 @@ export class EditAdmissionComponent implements OnInit {
 
     );
 
-
-   
-    
   }
 
 
@@ -538,6 +536,7 @@ export class EditAdmissionComponent implements OnInit {
 
     this._AdmissionService.getDoctorMasterNew().subscribe(data => {
       this.DoctorList = data;
+      console.log(this.DoctorList)
       if (this.data) {
         const ddValue = this.DoctorList.filter(c => c.DoctorId == this.registerObj1.DocNameID);
         this.hospitalFormGroup.get('DoctorId').setValue(ddValue[0]);

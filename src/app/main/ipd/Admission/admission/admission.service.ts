@@ -470,7 +470,9 @@ export class AdmissionService {
     return this._httpClient.get("InPatient/view-IP_MLCReport?AdmissionId=" + AdmissionId);
   }
 
-
+  public getCompanyIdDetail(data){
+    return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
+  }
   
 
 

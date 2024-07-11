@@ -97,7 +97,7 @@
                                                             [displayWith]="getOptionTextsearchDoctor">
                                                             <mat-option
                                                                 *ngFor="let option of filteredOptionssearchDoctor | async"
-                                                                [value]="option">
+                                                                [value]="option" (onSelectionChange)="getAdmittedPatientList_1()">
                                                                 {{option.Doctorname}}
                                                             </mat-option>
                                                         </mat-autocomplete>
@@ -1031,7 +1031,7 @@
                                     <mat-autocomplete #autorefdoc="matAutocomplete" [displayWith]="getOptionTextRefDoc">
                                         <mat-option *ngFor="let option of filteredOptionsRefrenceDoc | async"
                                             [value]="option">
-                                            {{option.DoctorName}}
+                                            {{option.Doctorname}}
                                         </mat-option>
                                     </mat-autocomplete>
                                 </mat-form-field>
@@ -1206,8 +1206,8 @@
 
                                 <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>Relationship Name</mat-label>
-                                    <input matAutocompletePosition="below" type="text" placeholder="Select Relationship"
-                                        matInput #relation formControlName="RelationshipId"
+                                    <input matAutocompletePosition="below" type="text" placeholder="Select Relationship" 
+                                        matInput #relation formControlName="RelationshipId"  (keydown)="onEnterrelation($event)"
                                         [(ngModel)]="vRelationshipId" [matAutocomplete]="autoRelation">
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
@@ -1253,9 +1253,10 @@
 
 
                             </div>
+                            <!-- [disabled]="personalFormGroup.invalid || hospitalFormGroup.invalid || wardFormGroup.invalid || otherFormGroup.invalid" -->
                             <div class="next-div button-row-group">
                                 <button class="btn btn-primary" color="accent" (click)="onNewSave()"
-                                    [disabled]="personalFormGroup.invalid || hospitalFormGroup.invalid || wardFormGroup.invalid || otherFormGroup.invalid">
+                                [disabled]="!saveflag" >
                                     <span>Save</span>
                                 </button>
                                 <button class="btn btn-danger-outline" (click)="onReset()">Reset</button>
