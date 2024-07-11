@@ -72,13 +72,11 @@ export class IPSearchListComponent implements OnInit {
 
   displayedColumns = [
     'button',
-     'IsBillGenerated',
-     //'FinalDiscount',
+    'IsBillGenerated',
     'IsMLC',
     'RegNo',
     'PatientName',
     'DOA',
-    'DOT',
     'IPDNo',
     'Doctorname',
     'RefDocName',

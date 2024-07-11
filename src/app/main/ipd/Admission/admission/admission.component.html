@@ -173,13 +173,19 @@
                                                                     {{VOPtoIPcount}}</span>
                                                             </div>
                                                             <div style="margin-left: 600px;">
-                                                                <button type="button" mat-icon-button (click)="getAdmittedPatientListview()" [disabled]="dataSource.data.length ==0">
-                                                                    <img width="32" height="10px" src="assets/images/svg/pdf-svg.svg">
+                                                                <button type="button" mat-icon-button
+                                                                    (click)="getAdmittedPatientListview()"
+                                                                    [disabled]="dataSource.data.length ==0">
+                                                                    <img width="32" height="10px"
+                                                                        src="assets/images/svg/pdf-svg.svg">
                                                                 </button>
                                                             </div>
                                                             <div>
-                                                                <button type="button" mat-icon-button (click)="getAdmittedPatientListExcelview()" [disabled]="dataSource.data.length == 0">
-                                                                    <img width="32" height="10px" src="assets/images/svg/xls-svg.svg">
+                                                                <button type="button" mat-icon-button
+                                                                    (click)="getAdmittedPatientListExcelview()"
+                                                                    [disabled]="dataSource.data.length == 0">
+                                                                    <img width="32" height="10px"
+                                                                        src="assets/images/svg/xls-svg.svg">
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -205,20 +211,17 @@
                                                                         fxLayoutAlign="center">
                                                                         <div class="pill-icon" fxLayout="row"
                                                                             fxLayoutAlign="center">
-                                                                            <mat-icon *ngIf="contact.PatientTypeId=='1'"
+
+                                                                            <mat-icon
+                                                                                *ngIf="contact.PatientType =='Self'"
                                                                                 matTooltip="Patient Category Self">account_box
                                                                             </mat-icon>
 
                                                                             <mat-icon
-                                                                                *ngIf="!contact.PatientTypeId=='1'"
-                                                                                matTooltip="Patient Category other">business
+                                                                                *ngIf="contact.PatientType !== 'Self'"
+                                                                                matTooltip="Patient Category Company">business
                                                                             </mat-icon>
 
-                                                                            <mat-icon title="Company"
-                                                                                *ngIf="contact.CompanyId !=0"
-                                                                                [disabled]="contact.disabled"
-                                                                                class="disabled-icon">
-                                                                                book</mat-icon>
 
                                                                             <mat-icon title="OPTOIPConvert"
                                                                                 *ngIf="contact.IsOpToIPconv==1"
@@ -236,12 +239,6 @@
                                                                 style="color: white;">IsMLC
                                                             </mat-header-cell>
                                                             <mat-cell *matCellDef="let contact" class="w-80">
-                                                                <!-- <mat-icon *ngIf="contact.IsMLC==1; else noMLC "
-                                                                    matTooltip="IsNotMLC" class="pill green-600 s-16"
-                                                                    (click)="NewMLc(contact)">edit
-                                                                </mat-icon>-->
-                                                               
-
                                                                 <button mat-icon-button
                                                                     *ngIf="contact.IsMLC==1; else noMLC "
                                                                     matTooltip="IsMLC" (click)="NewMLc(contact)">
@@ -450,7 +447,7 @@
                                                                         <mat-icon style="color: black;">card_membership</mat-icon>
                                                                     </button> -->
 
-                                                                    
+
                                                                     <!-- <mat-menu #moreMenu="matMenu">
                                                                         <ng-container
                                                                             *ngFor="let m of menuActions, let i=index">
@@ -891,7 +888,7 @@
                         </div>
                         <mat-card>
                             <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="12px grid" style="padding: 10px 0;">
-                              
+
                                 <mat-form-field appearance="outline">
                                     <mat-label>Patient Type</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select Patient Type"
@@ -913,7 +910,7 @@
                                     </mat-autocomplete>
                                 </mat-form-field>
 
-                            
+
 
                                 <mat-form-field appearance="outline">
                                     <mat-label>Tariff Name</mat-label>
@@ -959,9 +956,8 @@
                                 <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>Doctor Name</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select Doctor Name"
-                                        matInput #deptdoc (keydown)="onEnterdeptdoc($event)"
-                                        formControlName="DoctorId" [(ngModel)]="vDoctorId"
-                                        [matAutocomplete]="autoDoctor" required>
+                                        matInput #deptdoc (keydown)="onEnterdeptdoc($event)" formControlName="DoctorId"
+                                        [(ngModel)]="vDoctorId" [matAutocomplete]="autoDoctor" required>
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
                                             (click)="hospitalFormGroup.get('DoctorId').setValue(''); isDoctorSelected = false;">close</mat-icon>
@@ -991,8 +987,7 @@
                                             (click)="hospitalFormGroup.get('admittedDoctor1').setValue(''); isAdmittedDoctor1Selected = false;">search</mat-icon>
                                     </span>
                                     <mat-autocomplete #autoRefdoc="matAutocomplete" [displayWith]="getOptionTextAdDoc1">
-                                        <mat-option *ngFor="let option of filteredOptionsDoc1 | async"
-                                            [value]="option">
+                                        <mat-option *ngFor="let option of filteredOptionsDoc1 | async" [value]="option">
                                             {{option.Doctorname}}
                                         </mat-option>
                                     </mat-autocomplete>
