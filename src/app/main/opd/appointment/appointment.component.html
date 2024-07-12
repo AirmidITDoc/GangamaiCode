@@ -141,6 +141,7 @@
                                                 class="gap-4">
                                                 <mat-icon class="pill red-600 s-16">circle</mat-icon>
                                                 <span class="blue-600-fg">Cross Consultant Count : {{VCrossConscount}}</span>
+                                                
                                             </div>
                                                 
                                             </div>
@@ -204,9 +205,11 @@
                                                                         class=" cyan-600 s-16">
                                                                         settings_phone
                                                                     </mat-icon>
-                                                                    <mat-icon *ngIf="contact.CrossConsulFlag==1; else noMLC "
+                                                                    <!-- <mat-icon *ngIf="contact.CrossConsulFlag==1; else noMLC "
                                                                     matTooltip="CrossConsulFlag" class="pill green-600 s-16">cached icon
-                                                                    </mat-icon> 
+                                                                    </mat-icon>  -->
+                                                                    <mat-icon title="CrossConsulFlag" *ngIf="contact.CrossConsulFlag==1"
+                                                                    class="active-icon green-600 s-16">cached icon</mat-icon>
                                                                 </div>
                                                             </div>
                                                         </div>

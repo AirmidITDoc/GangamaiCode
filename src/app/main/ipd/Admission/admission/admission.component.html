@@ -834,7 +834,7 @@
                                 <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>City</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select City"
-                                        matInput #city (keydown)="onEntercity($event,vCityId.CityId)"
+                                        matInput #city (keydown)="onEntercity($event)"
                                         formControlName="CityId" [(ngModel)]="vCityId" [matAutocomplete]="autoCity"
                                         required>
                                     <span matSuffix style="display: flex;">
@@ -1213,7 +1213,7 @@
                                     <mat-autocomplete #autoRelation="matAutocomplete"
                                         [displayWith]="getOptionTextRelationship">
                                         <mat-option *ngFor="let option of filteredOptionsRelation | async"
-                                            [value]="option">
+                                            [value]="option" (onSelectionChange)="setSaveflag()">
                                             {{option.RelationshipName}}
                                         </mat-option>
                                     </mat-autocomplete>
@@ -1251,7 +1251,7 @@
                             <!-- [disabled]="personalFormGroup.invalid || hospitalFormGroup.invalid || wardFormGroup.invalid || otherFormGroup.invalid" -->
                             <div class="next-div button-row-group">
                                 <button class="btn btn-primary" color="accent" (click)="onNewSave()"
-                                [disabled]="!saveflag" >
+                                [disabled]="!saveflag" #savebutton>
                                     <span>Save</span>
                                 </button>
                                 <button class="btn btn-danger-outline" (click)="onReset()">Reset</button>

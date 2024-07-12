@@ -209,7 +209,7 @@ public onEnterpolic(event): void {
         if (result.isConfirmed) {
           let m = response;
           this._matDialog.closeAll();
-          this.getMLCdetailview(response);
+          this.getMLCdetailview(this.AdmissionId,);
         }
       });
     } else {
@@ -242,7 +242,7 @@ else{
         if (result.isConfirmed) {
           let m = response;
           this._matDialog.closeAll();
-          this.getMLCdetailview(this.MLCId );
+          this.getMLCdetailview(this.selectedAdvanceObj.AdmissionID);
         }
       });
     } else {
@@ -259,7 +259,7 @@ else{
 
 getMLCdetailview(Id) {
   // this.sIsLoading = 'loading-data';
-
+debugger
   setTimeout(() => {
 
     this._AdmissionService.getMLCDetailView(Id

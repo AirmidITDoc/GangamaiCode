@@ -776,6 +776,7 @@ ServiceList:any=[];
   }
 
   getPrevBillList() {
+    debugger
     var D_data = {
       "IP_Id": this.selectedAdvanceObj.AdmissionID
     }
@@ -2190,7 +2191,7 @@ debugger
   viewgetInterimBillReportPdf(contact) {
 debugger
     this._IpSearchListService.getIpInterimBillReceipt(
-      contact.PBillNo
+      contact.BillNo
     ).subscribe(res => {
       const dialogRef = this._matDialog.open(PdfviewerComponent,
         {

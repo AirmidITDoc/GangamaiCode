@@ -2213,7 +2213,7 @@ console.log(this._AppointmentSreviceService.myFilterform.get("DoctorId").value)
         DoctorId: contact.DoctorId,
         DoctorName: contact.Doctorname,
       };
-      this._registrationService.populateFormpersonal(m_data2);
+      this._registrationService.populateFormpersonal(contact);
       const dialogRef = this._matDialog.open(
         EditConsultantDoctorComponent,
         {
@@ -2221,7 +2221,7 @@ console.log(this._AppointmentSreviceService.myFilterform.get("DoctorId").value)
           height: "410px",
           width: "70%",
           data: {
-            registerObj: m_data2,
+            registerObj: contact,
             FormName: "Appointment"
           },
         }
@@ -2238,19 +2238,19 @@ console.log(this._AppointmentSreviceService.myFilterform.get("DoctorId").value)
         RefDoctorId: contact.RefDocId,
         RefDocName: contact.RefDocName,
       };
-      this._registrationService.populateFormpersonal(m_data3);
+      this._registrationService.populateFormpersonal(contact);
       const dialogRef = this._matDialog.open(EditRefraneDoctorComponent, {
         maxWidth: "70vw",
         height: "410px",
         width: "70%",
         data: {
-          registerObj: m_data3,
+          registerObj: contact,
           FormName: "Appointment"
         },
       });
       dialogRef.afterClosed().subscribe((result) => {
         console.log("The dialog was closed - Insert Action", result);
-        this.getVisitList();
+        this.getVisitList1();
       });
     } else if (m == "Cancle Appointment") {
       // console.log(contact)

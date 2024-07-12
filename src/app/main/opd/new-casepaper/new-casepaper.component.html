@@ -1,4 +1,3 @@
-
 <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="10px" class="page-layout" fusePerfectScrollbar>
     <div class="container" style="width: 100%;">
         <div style="width: 100%;">
@@ -15,13 +14,14 @@
                         Medical Record
                     </span>
 
-                    <span  style="margin-left:400px;" hidden><app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date></span>  
+                    <span style="margin-left:400px;" hidden><app-common-date [screenFrom]="screenFromString"
+                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date></span>
                     <!-- <span class="material-icons" style="cursor: pointer; margin-left: 1100px; color: #fff;"
                         (click)="onClose()">
                         close
                     </span> -->
                 </div>
-              
+
             </div>
 
             <div style="width: 100%;" class="opd-billing-body p-16">
@@ -29,7 +29,8 @@
                     <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 1px;">
                         <div class="patient-search-container">
                             <form [formGroup]="searchFormGroup">
-                                <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="5px" style="padding-left: 10px;">
+                                <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="5px"
+                                    style="padding-left: 10px;">
                                     <!-- <span>Patient Search-</span> -->
                                     <mat-form-field class=searchRegId appearance="outline"
                                         style="width:600px !important;margin-left:20px;">
@@ -79,15 +80,13 @@
                                                         <span class="patient-col-key">UHID No
                                                         </span>
                                                         <span>:</span>
-                                                        <span
-                                                            class="patient-col-value">{{RegNo}}</span>
+                                                        <span class="patient-col-value">{{RegNo}}</span>
                                                     </div>
                                                     <div class="patient-col">
                                                         <span class="patient-col-key">Patient Name
                                                         </span>
                                                         <span>:</span>
-                                                        <span
-                                                            class="patient-col-value">{{PatientName}}</span>
+                                                        <span class="patient-col-value">{{PatientName}}</span>
                                                     </div>
                                                     <div class="patient-col">
                                                         <span class="patient-col-key">Doctor Name</span>
@@ -95,8 +94,8 @@
                                                         <span class="patient-col-value">{{Doctorname}}</span>
                                                     </div>
                                                 </div>
-                                                <div fxLayout="column" fxLayoutGap="10px"> 
-                                                     
+                                                <div fxLayout="column" fxLayoutGap="10px">
+
                                                     <div class="patient-col">
                                                         <span class="patient-col-key">OPD No</span>
                                                         <span>:</span>
@@ -106,28 +105,32 @@
                                                         <span class="patient-col-key">Age | Sex
                                                         </span>
                                                         <span>:</span>
-                                                        <span class="patient-col-value">{{AgeYear}}Y|{{AgeMonth}}M|{{AgeDay}} D | {{GenderName}}</span>
+                                                        <span
+                                                            class="patient-col-value">{{AgeYear}}Y|{{AgeMonth}}M|{{AgeDay}}
+                                                            D | {{GenderName}}</span>
                                                     </div>
                                                     <div class="patient-col">
                                                         <span class="patient-col-key">Department</span>
                                                         <span>:</span>
                                                         <span class="patient-col-value">{{DepartmentName}}</span>
                                                     </div>
-                                                  
-                                                   
+
+
                                                 </div>
                                                 <div fxLayout="column" fxLayoutGap="10px" style="margin-right: 100px;">
-                                                  
+
                                                     <div class="patient-col">
                                                         <span class="patient-col-key">Patient Type | Tarrif
                                                         </span>
                                                         <span>:</span>
-                                                        <span class="patient-col-value">{{PatientType}} | {{Tarrifname}}</span>
-                                                    </div> 
-                                                    <div class="patient-col" >
+                                                        <span class="patient-col-value">{{PatientType}} |
+                                                            {{Tarrifname}}</span>
+                                                    </div>
+                                                    <div class="patient-col">
                                                         <span class="patient-col-key">Company Name</span>
                                                         <span>:</span>
-                                                        <span class="patient-col-value" style="color: orange;">{{CompanyName}}</span>
+                                                        <span class="patient-col-value"
+                                                            style="color: orange;">{{CompanyName}}</span>
                                                     </div>
                                                     <div class="patient-col">
                                                         <span class="patient-col-key">Ref-Doctor Name
@@ -153,82 +156,86 @@
                     <!-- <div fxFlexFill fxLayout="column" fxLayoutGap="5px"> -->
                     <mat-card>
                         <div fxLayout="row" style="height:100px !important;">
-                            <div fxFlex.gt-sm="70%"  fxLayoutGap="5px">
+                            <div fxFlex.gt-sm="70%" fxLayoutGap="5px">
 
                                 <div fxFlex.gt-sm="99%">
                                     <form [formGroup]="caseFormGroup">
-                                        <mat-card >
+                                        <mat-card>
                                             <div fxLayout="row" class="gap-8">
                                                 <mat-form-field appearance="outline" fxFlex="10%;">
                                                     <mat-label>Height</mat-label>
-                                                    <input name="Height" formControlName="Height" placeholder="Height" [(ngModel)]="Height"
-                                                        matInput #EHeight (keydown)="onEnterHeight($event)"
+                                                    <input name="Height" formControlName="Height" placeholder="Height"
+                                                        [(ngModel)]="Height" matInput #EHeight
+                                                        (keydown)="onEnterHeight($event)"
                                                         oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 3);">
 
                                                 </mat-form-field>
                                                 <mat-form-field appearance="outline" fxFlex="10%;">
                                                     <mat-label>BSL</mat-label>
-                                                    <input name="BSL" formControlName="BSL" placeholder="BSL" matInput [(ngModel)]="BSL"
-                                                        #EBSL (keydown)="onEnterBSL($event)"
+                                                    <input name="BSL" formControlName="BSL" placeholder="BSL" matInput
+                                                        [(ngModel)]="BSL" #EBSL (keydown)="onEnterBSL($event)"
                                                         oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 3);">
 
                                                 </mat-form-field>
                                                 <mat-form-field appearance="outline" fxFlex="10%;">
                                                     <mat-label>Weight</mat-label>
-                                                    <input name="Weight" formControlName="Weight" placeholder="Weight" [(ngModel)]="Weight"
-                                                        matInput #EWeight (keydown)="onEnterWeight($event)"
+                                                    <input name="Weight" formControlName="Weight" placeholder="Weight"
+                                                        [(ngModel)]="Weight" matInput #EWeight
+                                                        (keydown)="onEnterWeight($event)"
                                                         oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 3);">
 
                                                 </mat-form-field>
                                                 <!-- display:inline-flexbox; -->
                                                 <mat-form-field appearance="outline" fxFlex="10%;">
                                                     <mat-label>SpO2</mat-label>
-                                                    <input name="SpO2" formControlName="SpO2" placeholder="SpO2" [(ngModel)]="SpO2"
-                                                        matInput #ESpO2 (keydown)="onEnterSpO2($event)"
+                                                    <input name="SpO2" formControlName="SpO2" placeholder="SpO2"
+                                                        [(ngModel)]="SpO2" matInput #ESpO2
+                                                        (keydown)="onEnterSpO2($event)"
                                                         oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 3);">
                                                 </mat-form-field>
                                                 <mat-form-field appearance="outline" fxFlex="10%;">
                                                     <mat-label>Pulse</mat-label>
-                                                    <input name="Pulse" formControlName="Pulse" placeholder="Pulse" [(ngModel)]="Pulse"
-                                                        matInput #EPulse (keydown)="onEnterPulse($event)"
+                                                    <input name="Pulse" formControlName="Pulse" placeholder="Pulse"
+                                                        [(ngModel)]="Pulse" matInput #EPulse
+                                                        (keydown)="onEnterPulse($event)"
                                                         oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 3);">
 
                                                 </mat-form-field>
                                                 <mat-form-field appearance="outline" fxFlex="10%;">
                                                     <mat-label>BMI</mat-label>
-                                                    <input name="BMI" formControlName="BMI" placeholder="BMI" matInput [(ngModel)]="BMI"
-                                                        #EBMI (keydown)="onEnterBMI($event)"
+                                                    <input name="BMI" formControlName="BMI" placeholder="BMI" matInput
+                                                        [(ngModel)]="BMI" #EBMI (keydown)="onEnterBMI($event)"
                                                         oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 3);">
 
                                                 </mat-form-field>
                                                 <mat-form-field appearance="outline" fxFlex="10%;">
                                                     <mat-label>BP</mat-label>
-                                                    <input name="BP" formControlName="BP" placeholder="BP" matInput #EBP [(ngModel)]="BP"
-                                                        (keydown)="onEnterBP($event)"
+                                                    <input name="BP" formControlName="BP" placeholder="BP" matInput #EBP
+                                                        [(ngModel)]="BP" (keydown)="onEnterBP($event)"
                                                         oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 3);">
 
                                                 </mat-form-field>
                                                 <mat-form-field appearance="outline" fxFlex="10%;">
                                                     <mat-label>Temp</mat-label>
-                                                    <input name="Temp" formControlName="Temp" placeholder="Temp" [(ngModel)]="Temp"
-                                                        matInput #ETemp (keydown)="onEnterTemp($event)"
+                                                    <input name="Temp" formControlName="Temp" placeholder="Temp"
+                                                        [(ngModel)]="Temp" matInput #ETemp
+                                                        (keydown)="onEnterTemp($event)"
                                                         oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 3);">
 
                                                 </mat-form-field>
                                             </div>
-                                          
+
                                         </mat-card>
                                     </form>
                                 </div>
 
-                             
+
 
                             </div>
                             <div fxFlex.gt-sm="30%">
 
                                 <div fxlayout="row">
-                                    <div fxFlex.gt-sm="99%" fxLayoutGap="5px"
-                                        style="height:100px !important;">
+                                    <div fxFlex.gt-sm="99%" fxLayoutGap="5px" style="height:100px !important;">
                                         <mat-card>
                                             <mat-table class="table1" matSort [dataSource]="dataSource1"
                                                 [@animateStagger]="{value:'50'}"
@@ -237,8 +244,7 @@
                                                 <ng-container matColumnDef="VisitId"
                                                     style="width:80px;max-width:80px;min-width:80px;">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                        fxShow.gt-sm
-                                                        style="width:80px;max-width:80px;min-width:80px;">
+                                                        fxShow.gt-sm style="width:80px;max-width:80px;min-width:80px;">
                                                         VisitID </mat-header-cell>
                                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm
                                                         style="width:80px;max-width:80px;min-width:80px;">
@@ -248,8 +254,7 @@
                                                     style="background-color: rgb(157, 164, 164);"
                                                     style="width:80px;max-width:80px;min-width:80px;">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                        fxShow.gt-sm
-                                                        style="width:80px;max-width:80px;min-width:80px;">
+                                                        fxShow.gt-sm style="width:80px;max-width:80px;min-width:80px;">
                                                         VisitDate
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm
@@ -269,7 +274,7 @@
                                                         {{element.DocName }} </mat-cell>
                                                 </ng-container>
 
-                                                
+
                                                 <ng-container matColumnDef="loading">
                                                     <mat-footer-cell *matFooterCellDef colspan="6">
                                                         loading data...
@@ -279,8 +284,7 @@
                                                 <ng-container matColumnDef="noData">
                                                     <mat-footer-cell *matFooterCellDef colspan="6">
 
-                                                        <mat-spinner *ngIf="isLoadingStr=='loading'"
-                                                            [diameter]='30'>
+                                                        <mat-spinner *ngIf="isLoadingStr=='loading'" [diameter]='30'>
                                                         </mat-spinner>
                                                         <span *ngIf="isLoadingStr=='no-data'">No data
                                                             found...</span>
@@ -454,8 +458,10 @@
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let element" fxShow.gt-sm>
 
-                                                        <mat-select placeholder="DoseName1" (selectionChange)="getdoseDetailValue1(element,$event.value)">
-                                                            <mat-option *ngFor="let Result of doseresults" [(ngModel)]="element.DoseName1" 
+                                                        <mat-select placeholder="DoseName1"
+                                                            (selectionChange)="getdoseDetailValue1(element,$event.value)">
+                                                            <mat-option *ngFor="let Result of doseresults"
+                                                                [(ngModel)]="element.DoseName1"
                                                                 [value]="Result.DoseName">
                                                                 {{ Result.DoseName }}
                                                             </mat-option>
@@ -477,7 +483,7 @@
                                                     </mat-cell>
                                                 </ng-container>
 
-                                               
+
 
                                                 <ng-container matColumnDef="DoseName2">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
@@ -486,8 +492,10 @@
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let element" fxShow.gt-sm>
 
-                                                        <mat-select placeholder="DoseName1" (selectionChange)="getdoseDetailValue2(element,$event.value)">
-                                                            <mat-option *ngFor="let Result of doseresults" [(ngModel)]="element.DoseName2" 
+                                                        <mat-select placeholder="DoseName1"
+                                                            (selectionChange)="getdoseDetailValue2(element,$event.value)">
+                                                            <mat-option *ngFor="let Result of doseresults"
+                                                                [(ngModel)]="element.DoseName2"
                                                                 [value]="Result.DoseName">
                                                                 {{ Result.DoseName }}
                                                             </mat-option>
@@ -509,8 +517,8 @@
                                                     </mat-cell>
                                                 </ng-container>
 
-                                               
-                                              
+
+
 
                                                 <ng-container matColumnDef="Action" stickyEnd>
                                                     <mat-header-cell *matHeaderCellDef class="table-actions">Action
@@ -555,7 +563,8 @@
                         <div fxLayout="row">
                             <div class="action-btns gap-8" fxLayout="row" style="margin-left: 1200px;">
                                 <button class="btn btn-danger-outline" (click)="onClear()">Reset</button>
-                                <button class="btn btn-primary" (click)="onSave()"  [disabled]="caseFormGroup.invalid && dsItemList.data.length==0">Save</button>
+                                <button class="btn btn-primary" (click)="onSave()"
+                                    [disabled]="caseFormGroup.invalid && dsItemList.data.length==0">Save</button>
 
                             </div>
                         </div>

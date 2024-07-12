@@ -282,6 +282,11 @@ public documentdownloadInsert(employee){
   public getDoctorMaster2Combo() {
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
   }
+
+  public getRefDoctorMasterCombo() {
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_DoctorListForCombo", {})
+  }
+
   //Ward Combobox List
   public getWardCombo() {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RoomMasterForCombo", {})

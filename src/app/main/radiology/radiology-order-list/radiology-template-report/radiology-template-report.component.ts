@@ -60,7 +60,7 @@ export class RadiologyTemplateReportComponent implements OnInit {
 
  
  viewgetPathologyTemplateReportPdf(obj) {
-    
+    debugger
   this._radiologyorderListService.getRadiologyTempReport(
     1,1
     ).subscribe(res => {
@@ -71,7 +71,7 @@ export class RadiologyTemplateReportComponent implements OnInit {
         width: '100%',
         data: {
           base64: res["base64"] as string,
-          title: "Radiology Template  Viewer"
+          title: "Radiology Template Report Viewer"
         }
       });
   });

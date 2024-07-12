@@ -404,13 +404,13 @@ export class EditAdmissionComponent implements OnInit {
     const toSelect11 = this.DoctorList.find(c => c.DoctorId == this.registerObj1.DocNameID);
     this.hospitalFormGroup.get('DoctorId').setValue(toSelect11);
     
-    const toSelect1 = this.Doctor1List.find(c => c.DoctorID == this.registerObj1.AdmittedDoctor1ID);
+    const toSelect1 = this.Doctor1List.find(c => c.DoctorId == this.registerObj1.AdmittedDoctor1ID);
     this.hospitalFormGroup.get('admittedDoctor1').setValue(toSelect1);
 
-    const toSelect2 = this.Doctor2List.find(c => c.DoctorID == this.registerObj1.AdmittedDoctor2ID);
+    const toSelect2 = this.Doctor2List.find(c => c.DoctorId == this.registerObj1.AdmittedDoctor2ID);
     this.hospitalFormGroup.get('admittedDoctor2').setValue(toSelect2);
 
-    const toSelect3 = this.RefDoctorList.find(c => c.DoctorID == this.registerObj1.RefDoctorId);
+    const toSelect3 = this.RefDoctorList.find(c => c.DoctorId == this.registerObj1.RefDoctorId);
     this.hospitalFormGroup.get('refDoctorId').setValue(toSelect3);
 
     const toSelect4 = this.CompanyList.find(c => c.CompanyId == this.registerObj1.CompanyId);
@@ -436,10 +436,10 @@ export class EditAdmissionComponent implements OnInit {
   }
 
   getOptionTextRefDoc(option) {
-    return option && option.DoctorName ? option.DoctorName : '';
+    return option && option.Doctorname ? option.Doctorname : '';
   }
   getOptionTextAdDoc1(option) {
-    return option && option.DoctorName ? option.DoctorName : '';
+    return option && option.Doctorname ? option.Doctorname : '';
   }
 
 
@@ -450,7 +450,7 @@ export class EditAdmissionComponent implements OnInit {
 
 
   getOptionTextDoc2(option) {
-    return option && option.DoctorName ? option.DoctorName : '';
+    return option && option.Doctorname ? option.Doctorname : '';
   }
 
 
@@ -551,7 +551,7 @@ export class EditAdmissionComponent implements OnInit {
     this._AdmissionService.getDoctorMaster1Combo().subscribe(data => {
       this.Doctor1List = data;
       if (this.registerObj1) {
-        const ddValue = this.Doctor1List.filter(c => c.DoctorID == this.registerObj1.AdmittedDoctor1ID);
+        const ddValue = this.Doctor1List.filter(c => c.DoctorId == this.registerObj1.AdmittedDoctor1ID);
         this.hospitalFormGroup.get('admittedDoctor1').setValue(ddValue[0]);
         this.hospitalFormGroup.updateValueAndValidity();
         return;
@@ -565,7 +565,7 @@ export class EditAdmissionComponent implements OnInit {
     this._AdmissionService.getDoctorMaster2Combo().subscribe(data => {
       this.Doctor2List = data;
       if (this.registerObj1) {
-        const ddValue = this.Doctor2List.filter(c => c.DoctorID == this.registerObj1.AdmittedDoctor2ID);
+        const ddValue = this.Doctor2List.filter(c => c.DoctorId == this.registerObj1.AdmittedDoctor2ID);
         this.hospitalFormGroup.get('admittedDoctor2').setValue(ddValue[0]);
         this.hospitalFormGroup.updateValueAndValidity();
         return;
@@ -577,7 +577,7 @@ export class EditAdmissionComponent implements OnInit {
     this._AdmissionService.getDoctorMaster2Combo().subscribe(data => {
       this.RefDoctorList = data;
       if (this.registerObj1) {
-        const ddValue = this.RefDoctorList.filter(c => c.DoctorID == this.registerObj1.RefDocNameId);
+        const ddValue = this.RefDoctorList.filter(c => c.DoctorId == this.registerObj1.RefDocNameId);
         this.hospitalFormGroup.get('refDoctorId').setValue(ddValue[0]);
         this.hospitalFormGroup.updateValueAndValidity();
         return;
@@ -597,8 +597,8 @@ export class EditAdmissionComponent implements OnInit {
 
   private _filteradmittedDoctor2(value: any): string[] {
     if (value) {
-      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
-      return this.Doctor2List.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
+      const filterValue = value && value.DoctorName ? value.Doctorname.toLowerCase() : value.toLowerCase();
+      return this.Doctor2List.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
     }
   }
 
@@ -606,8 +606,8 @@ export class EditAdmissionComponent implements OnInit {
 
   private _filterRefdoc(value: any): string[] {
     if (value) {
-      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
-      return this.RefDoctorList.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
+      const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
+      return this.RefDoctorList.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
     }
   }
   //new code
@@ -764,7 +764,7 @@ export class EditAdmissionComponent implements OnInit {
       return;
     }
     if (this.hospitalFormGroup.get('admittedDoctor1').value) {
-      if (!this.Doctor1List.some(item => item.DoctorName === this.hospitalFormGroup.get('admittedDoctor1').value.DoctorName)) {
+      if (!this.Doctor1List.some(item => item.Doctorname === this.hospitalFormGroup.get('admittedDoctor1').value.Doctorname)) {
         this.toastr.warning('Please Select valid AdmitDoctorName11', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
@@ -772,7 +772,7 @@ export class EditAdmissionComponent implements OnInit {
       }
     }
     if (this.hospitalFormGroup.get('admittedDoctor2').value) {
-      if (!this.Doctor2List.some(item => item.DoctorName === this.hospitalFormGroup.get('admittedDoctor2').value.DoctorName)) {
+      if (!this.Doctor2List.some(item => item.Doctorname === this.hospitalFormGroup.get('admittedDoctor2').value.Doctorname)) {
         this.toastr.warning('Please Select valid AdmitDoctorName2', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
@@ -780,7 +780,7 @@ export class EditAdmissionComponent implements OnInit {
       }
     }
     if (this.hospitalFormGroup.get('refDoctorId').value) {
-      if (!this.Doctor1List.some(item => item.DoctorName === this.hospitalFormGroup.get('refDoctorId').value.DoctorName)) {
+      if (!this.Doctor1List.some(item => item.Doctorname === this.hospitalFormGroup.get('refDoctorId').value.Doctorname)) {
         this.toastr.warning('Please Select valid RefDoctor', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
@@ -816,15 +816,15 @@ export class EditAdmissionComponent implements OnInit {
 
     }
     if (this.hospitalFormGroup.get('admittedDoctor1').value) {
-      this.vadmittedDoctor1 = this.hospitalFormGroup.get('admittedDoctor1').value.DoctorID;
+      this.vadmittedDoctor1 = this.hospitalFormGroup.get('admittedDoctor1').value.DoctorId;
       console.log(this.vadmittedDoctor1)
 
     }
     if (this.hospitalFormGroup.get('admittedDoctor2').value) {
-      this.vadmittedDoctor2 = this.hospitalFormGroup.get('admittedDoctor2').value.DoctorID;
+      this.vadmittedDoctor2 = this.hospitalFormGroup.get('admittedDoctor2').value.DoctorId;
       console.log(this.vadmittedDoctor2)
     } if (this.hospitalFormGroup.get('refDoctorId').value) {
-      this.vrefDoctorId = this.hospitalFormGroup.get('refDoctorId').value.DocNameID;
+      this.vrefDoctorId = this.hospitalFormGroup.get('refDoctorId').value.DocNameId;
       console.log(this.vrefDoctorId)
     }
 

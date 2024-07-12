@@ -479,6 +479,11 @@ export class AdmissionService {
   public CompanyUpdate(param) {
     return this._httpClient.post("InPatient/CompanyInformationUpdate", param);
   }
+  public getCompanyDetailsView(AdmissionId) {
+
+    return this._httpClient.get("InPatient/view-CompanyInformation?AdmissionId=" + AdmissionId);
+  }
+  
 }
 
 

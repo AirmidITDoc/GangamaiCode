@@ -408,10 +408,10 @@ export class RadiologyOrderListComponent implements OnInit {
   }
 
 
-  viewgetPathologyTemplateReportPdf(obj) {
-    
+  viewgetRadioloyTemplateReportPdf(obj) {
+    debugger
     this._RadiologyOrderListService.getRadiologyTempReport(
-      1,1
+      94377,1
       ).subscribe(res => {
       const dialogRef = this._matDialog.open(PdfviewerComponent,
         {

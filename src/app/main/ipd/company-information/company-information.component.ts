@@ -10,6 +10,7 @@ import { AdvanceDataStored } from '../advance';
 import { AdvanceDetailObj } from '../ip-search-list/ip-search-list.component';
 import Swal from 'sweetalert2';
 import { AdmissionPersonlModel } from '../Admission/admission/admission.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-company-information',
@@ -137,7 +138,7 @@ export class CompanyInformationComponent implements OnInit {
         Swal.fire('Congratulations !', 'Company Data Updated Successfully !', 'success').then((result) => {
           if (result.isConfirmed) {
             this._matDialog.closeAll();
-
+            this.getCompanydetailview(this.AdmissionID);
           }
         });
       } else {
@@ -146,6 +147,36 @@ export class CompanyInformationComponent implements OnInit {
       // this.isLoading = '';
 
     });
+  }
+
+
+  getCompanydetailview(AdmissionId) {
+    // this.sIsLoading = 'loading-data';
+
+    setTimeout(() => {
+
+      this._AdmissionService.getCompanyDetailsView(
+        AdmissionId
+      ).subscribe(res => {
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Company Detail Viewer"
+            }
+          });
+
+        matDialog.afterClosed().subscribe(result => {
+          // this.AdList = false;
+          // this.sIsLoading = ' ';
+        });
+      });
+
+    }, 100);
+
   }
 
 

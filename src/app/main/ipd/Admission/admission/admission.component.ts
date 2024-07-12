@@ -1196,8 +1196,8 @@ export class AdmissionComponent implements OnInit {
 
     private _filteradmittedDoctor1(value: any): string[] {
       if (value) {
-        const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
-        return this.optionsAdDoc1.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
+        const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
+        return this.optionsAdDoc1.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
       }
   
     }
@@ -1218,8 +1218,8 @@ export class AdmissionComponent implements OnInit {
   
   private _filteradmittedDoctor2(value: any): string[] {
     if (value) {
-      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
-      return this.optionsAdDoc2.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
+      const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
+      return this.optionsAdDoc2.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
     }
 
   }
@@ -1791,7 +1791,7 @@ debugger
           admissionNewInsert['patientTypeId'] = this.hospitalFormGroup.get('PatientTypeID').value.PatientTypeId || 0;//tTypeId ? this.hospitalFormGroup.get('PatientTypeID').value.PatientTypeID : 0;
         admissionNewInsert['hospitalID'] = this.searchFormGroup.get('HospitalId').value.HospitalId || 1;  //? this.hospitalFormGroup.get('HospitalId').value.HospitalId : 0;
         admissionNewInsert['docNameId'] = this.hospitalFormGroup.get('DoctorId').value.DoctorId || 0;//? this.hospitalFormGroup.get('DoctorId').value.DoctorId : 0;
-        admissionNewInsert['refDocNameId'] = this.hospitalFormGroup.get('refDoctorId').value.DoctorID || 0;//? this.hospitalFormGroup.get('DoctorIdOne').value.DoctorIdOne : 0;
+        admissionNewInsert['refDocNameId'] = this.hospitalFormGroup.get('refDoctorId').value.DoctorId || 0;//? this.hospitalFormGroup.get('DoctorIdOne').value.DoctorIdOne : 0;
 
         admissionNewInsert['wardID'] = this.wardFormGroup.get('RoomId').value.RoomId ? this.wardFormGroup.get('RoomId').value.RoomId : 0;
         admissionNewInsert['bedid'] = this.wardFormGroup.get('BedId').value.BedId ? this.wardFormGroup.get('BedId').value.BedId : 0;
@@ -1815,8 +1815,8 @@ debugger
 
         admissionNewInsert['isMLC'] = this.otherFormGroup.get('IsMLC').value || false;
         admissionNewInsert['motherName'] = '';
-        admissionNewInsert['admittedDoctor1'] = this.hospitalFormGroup.get('admittedDoctor1').value.DoctorID ? this.hospitalFormGroup.get('admittedDoctor1').value.DoctorID : 0;
-        admissionNewInsert['admittedDoctor2'] = this.hospitalFormGroup.get('admittedDoctor2').value.DoctorID ? this.hospitalFormGroup.get('admittedDoctor2').value.DoctorID : 0;
+        admissionNewInsert['admittedDoctor1'] = this.hospitalFormGroup.get('admittedDoctor1').value.DoctorId ? this.hospitalFormGroup.get('admittedDoctor1').value.DoctorId : 0;
+        admissionNewInsert['admittedDoctor2'] = this.hospitalFormGroup.get('admittedDoctor2').value.DoctorId ? this.hospitalFormGroup.get('admittedDoctor2').value.DoctorId : 0;
         admissionNewInsert['RefByTypeId'] = 0;
         admissionNewInsert['RefByName'] = 0;
         admissionNewInsert['SubTpaComId'] = this.SubCompanyId;//this.hospitalFormGroup.get('SubCompanyId').value.SubCompanyId ? this.hospitalFormGroup.get('SubCompanyId').value.SubCompanyId : 0;
@@ -1871,7 +1871,7 @@ debugger
           admissionInsert['patientTypeId'] = this.hospitalFormGroup.get('PatientTypeID').value.PatientTypeId || 0;//tTypeId ? this.hospitalFormGroup.get('PatientTypeID').value.PatientTypeID : 0;
         admissionInsert['hospitalID'] = this.searchFormGroup.get('HospitalId').value.HospitalId || 1;  //? this.hospitalFormGroup.get('HospitalId').value.HospitalId : 0;
         admissionInsert['docNameId'] = this.hospitalFormGroup.get('DoctorId').value.DoctorId || 0;//? this.hospitalFormGroup.get('DoctorId').value.DoctorId : 0;
-        admissionInsert['refDocNameId'] = this.hospitalFormGroup.get('refDoctorId').value.DoctorID || 0;//? this.hospitalFormGroup.get('DoctorIdOne').value.DoctorIdOne : 0;
+        admissionInsert['refDocNameId'] = this.hospitalFormGroup.get('refDoctorId').value.DoctorId || 0;//? this.hospitalFormGroup.get('DoctorIdOne').value.DoctorIdOne : 0;
 
         admissionInsert['wardID'] = this.wardFormGroup.get('RoomId').value.RoomId ? this.wardFormGroup.get('RoomId').value.RoomId : 0;
         admissionInsert['bedid'] = this.wardFormGroup.get('BedId').value.BedId ? this.wardFormGroup.get('BedId').value.BedId : 0;
@@ -1895,8 +1895,8 @@ debugger
 
         admissionInsert['isMLC'] = this.otherFormGroup.get('IsMLC').value || false;
         admissionInsert['motherName'] = '';
-        admissionInsert['admittedDoctor1'] = this.hospitalFormGroup.get('admittedDoctor1').value.DoctorID ? this.hospitalFormGroup.get('admittedDoctor1').value.DoctorID : 0;
-        admissionInsert['admittedDoctor2'] = this.hospitalFormGroup.get('admittedDoctor2').value.DoctorID ? this.hospitalFormGroup.get('admittedDoctor2').value.DoctorID : 0;
+        admissionInsert['admittedDoctor1'] = this.hospitalFormGroup.get('admittedDoctor1').value.DoctorId ? this.hospitalFormGroup.get('admittedDoctor1').value.DoctorId : 0;
+        admissionInsert['admittedDoctor2'] = this.hospitalFormGroup.get('admittedDoctor2').value.DoctorId ? this.hospitalFormGroup.get('admittedDoctor2').value.DoctorId : 0;
         admissionInsert['RefByTypeId'] = 0;
         admissionInsert['RefByName'] = 0;
         admissionInsert['SubTpaComId'] = this.SubCompanyId;//this.hospitalFormGroup.get('SubCompanyId').value.SubCompanyId ? this.hospitalFormGroup.get('SubCompanyId').value.SubCompanyId : 0;
@@ -2095,8 +2095,6 @@ this.getAdmittedPatientList_1()
       });
 
     }, 100);
-
-
 
   }
 
@@ -2414,8 +2412,8 @@ this.getAdmittedPatientList_1()
 
   add: boolean = false;
   @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
-
-
+  @ViewChild('savebutton', { static: true }) savebutton: HTMLButtonElement;
+  
   // isNaN(value
   public onEnterprefix(event, value): void {
     
@@ -2453,14 +2451,7 @@ this.getAdmittedPatientList_1()
 
   public onEntermstatus(event): void {
     if (event.which === 13) {
-      //     
-      // console.log(value)
-      // if (value ==undefined || isNaN(value)) {
-      //   this.toastr.warning('Please Enter Valid MStatus.', 'Warning !', {
-      //     toastClass: 'tostr-tost custom-toast-warning',
-      //   });
-      //   return;
-      // } else if(value.MaritalStatusId > 0 || value==""){
+     
       this.religion.nativeElement.focus();
     }
   }
@@ -2468,18 +2459,12 @@ this.getAdmittedPatientList_1()
 
   public onEnterreligion(event): void {
     if (event.which === 13) {
-      //   console.log(value)
-      // if (value ==undefined) {
-      //   this.toastr.warning('Please Enter Valid Religion.', 'Warning !', {
-      //     toastClass: 'tostr-tost custom-toast-warning',
-      //   });
-      //   return;
-      // } else{
+     
       this.bday.nativeElement.focus();
 
     }
   }
-  // }
+  
 
   public onEnterbday(event): void {
     if (event.which === 13) {
@@ -2549,30 +2534,16 @@ this.getAdmittedPatientList_1()
   public onEnterarea(event): void {
     if (event.which === 13) {
 
-      //  if (value ==undefined) {
-      //   this.toastr.warning('Please Enter Valid Area.', 'Warning !', {
-      //     toastClass: 'tostr-tost custom-toast-warning',
-      //   });
-      //   return;
-      // } else{
       this.city.nativeElement.focus();
 
-      // }
+
     }
   }
 
-  public onEntercity(event, value): void {
+  public onEntercity(event): void {
     if (event.which === 13) {
 
-      if (value == undefined) {
-        this.toastr.warning('Please Enter Valid City.', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-      } else {
         this.ptype.nativeElement.focus();
-
-      }
     }
   }
 
@@ -2626,14 +2597,9 @@ this.getAdmittedPatientList_1()
 
   public onEnterdeptdoc(event): void {
     if (event.which === 13) {
-      // if (value == undefined) {
-      //   this.toastr.warning('Please Enter Valid Doctor.', 'Warning !', {
-      //     toastClass: 'tostr-tost custom-toast-warning',
-      //   });
-      //   return;
-      // } else {
+      
         this.admitdoc1.nativeElement.focus();
-      // }
+      
     }
 
   }
@@ -2642,40 +2608,22 @@ this.getAdmittedPatientList_1()
   public onEnteradmitdoc1(event): void {
     if (event.which === 13) {
 
-      // if (value ==undefined) {
-      //   this.toastr.warning('Please Enter Valid Admitted Doctor 1.', 'Warning !', {
-      //     toastClass: 'tostr-tost custom-toast-warning',
-      //   });
-      //   return;
-      // } else{
       this.admitdoc2.nativeElement.focus();
-      // }
+      
     }
   }
   public onEnteradmitdoc2(event): void {
     if (event.which === 13) {
 
-      // if (value ==undefined) {
-      //   this.toastr.warning('Please Enter Valid Admitted Doctor 2.', 'Warning !', {
-      //     toastClass: 'tostr-tost custom-toast-warning',
-      //   });
-      //   return;
-      // } else{
       this.refdoc.nativeElement.focus();
-      // }
+      
     }
   }
   public onEnterrefdoc(event): void {
     if (event.which === 13) {
 
-      // if (value ==undefined) {
-      //   this.toastr.warning('Please Enter Valid Refrence Doctor.', 'Warning !', {
-      //     toastClass: 'tostr-tost custom-toast-warning',
-      //   });
-      //   return;
-      // } else{
       this.ward.nativeElement.focus();
-      // }
+      
     }
   }
 
@@ -2725,15 +2673,33 @@ this.getAdmittedPatientList_1()
 
       // this.registration.nativeElement.focus();
     }
+    // this.saveflag=true;
   }
 
   public onEnterrelation(event): void {
-    debugger
-    if (event.which === 13) {
+    
+    if (event.which === 13 || this.otherFormGroup.get('RelationshipId').value) {
       if(!this.personalFormGroup.invalid && !this.hospitalFormGroup.invalid && !this.wardFormGroup.invalid && !this.otherFormGroup.invalid)
      this.saveflag=true;
     }
+    
+    if(this.savebutton) this.savebutton.focus();
   }
+  setSaveflag(){
+    debugger
+    if(this.otherFormGroup.get('RelationshipId').value){
+      if(!this.RelationshipList.some(item => item.RelationshipName ===this.otherFormGroup.get('RelationshipId').value.RelationshipName)){
+        this.toastr.warning('Please Select valid RelationshipName', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+      
+    }
+    this.saveflag=true;
+  }
+
+
 
   // ageyearcheck(event) {
 

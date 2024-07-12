@@ -273,7 +273,7 @@
                             </span>
                             <mat-autocomplete #autorefdoc="matAutocomplete" [displayWith]="getOptionTextRefDoc">
                                 <mat-option *ngFor="let option of filteredOptionsRefrenceDoc | async" [value]="option">
-                                    {{option.DoctorName}}
+                                    {{option.Doctorname}}
                                 </mat-option>
                             </mat-autocomplete>
                         </mat-form-field>

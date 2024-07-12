@@ -309,7 +309,7 @@ export class NewCasepaperComponent implements OnInit {
     // this.prescriptionDetails(this.VisitId);
 
     // this.getregisterList();
-    this.getVisistList();
+    // this.getVisistList();
     this.getHistoryList();
 
     // this.getHistoryList1();
