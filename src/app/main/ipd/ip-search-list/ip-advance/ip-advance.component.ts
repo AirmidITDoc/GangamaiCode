@@ -25,6 +25,7 @@ import { OPAdvancePaymentComponent } from 'app/main/opd/op-search-list/op-advanc
 import { AdmissionPersonlModel } from '../../Admission/admission/admission.component';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 import { ToastrService } from 'ngx-toastr';
+import { OpPaymentVimalComponent } from 'app/main/opd/op-search-list/op-payment-new-vimal/op-payment-vimal.component';
 
 
 @Component({
@@ -237,31 +238,46 @@ vAdvanceDetId:any;
       // AdvanceDetObj['CashCounterId'] = 2;//this.AdvFormGroup.get('CashCounterId').value.CashCounterId;
       debugger
       let PatientHeaderObj = {};
-      PatientHeaderObj['Date'] = this.dateTimeObj.date || '01/01/1900'
-      PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
+      // PatientHeaderObj['Date'] = this.dateTimeObj.date || '01/01/1900'
+      // PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
+      // PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName;
+      // PatientHeaderObj['NetPayAmount'] = this.advanceAmount;
+      // PatientHeaderObj['BillId'] = 0;
+
+      PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
       PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName;
-      PatientHeaderObj['NetPayAmount'] = this.advanceAmount;
-      PatientHeaderObj['BillId'] = 0;
+      PatientHeaderObj['RegNo'] =this.selectedAdvanceObj.RegNo,
+      PatientHeaderObj['DoctorName'] = this.selectedAdvanceObj.Doctorname;
+      PatientHeaderObj['CompanyName'] = this.selectedAdvanceObj.CompanyName;
+      PatientHeaderObj['DepartmentName'] = this.selectedAdvanceObj.DepartmentName;
+      PatientHeaderObj['OPD_IPD_Id'] =  this.selectedAdvanceObj.IPDNo;
+      PatientHeaderObj['Age'] =  this.selectedAdvanceObj.AgeYear;
+      PatientHeaderObj['NetPayAmount'] =  this.advanceAmount;
+        // const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
+        //   {
+        //     maxWidth: "90vw",
+        //     height: '640px',
+        //     width: '100%',
 
-      // const advanceHeaderInsert = new AdvanceHeader(advanceHeaderObj);
-      // const advanceDetailInsert = new AdvanceDetails(AdvanceDetObj);
-
-      // console.log(this.AdvFormGroup.get('cashpay').value)
-      // if (this.AdvFormGroup.get('cashpay').value != 1) {
-        const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
+        //     data: {
+        //       vPatientHeaderObj: PatientHeaderObj,
+        //       FromName: "Advance",
+        //       advanceObj: PatientHeaderObj,
+        //     }
+        //   });
+        const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
           {
-            maxWidth: "90vw",
-            height: '640px',
-            width: '100%',
-
+            maxWidth: "80vw",
+            height: '650px',
+            width: '80%',
             data: {
               vPatientHeaderObj: PatientHeaderObj,
-              FromName: "Advance",
+              FromName: "IP-Advance",
               advanceObj: PatientHeaderObj,
             }
           });
         dialogRef.afterClosed().subscribe(result => {
-          console.log('==============================  Advance Amount ===========');
+          console.log('==============================  Advance Amount ===========',result);
           let submitData = {
             "advanceHeaderInsert": advanceHeaderObj,
             "advanceDetailInsert": AdvanceDetObj,
@@ -344,9 +360,7 @@ vAdvanceDetId:any;
       //     this.isLoading = '';
       //   });
 
-      // }
-
-
+      // } 
 
     }
     else {
@@ -382,23 +396,40 @@ vAdvanceDetId:any;
 
       let PatientHeaderObj = {};
 
-      PatientHeaderObj['Date'] = this.dateTimeObj.date || '01/01/1900'
-      PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
+      // PatientHeaderObj['Date'] = this.dateTimeObj.date || '01/01/1900'
+      // PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
+      // PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName;
+      // PatientHeaderObj['NetPayAmount'] = this.advanceAmount;
+
+      PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
       PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName;
-      PatientHeaderObj['NetPayAmount'] = this.advanceAmount;
+      PatientHeaderObj['RegNo'] =this.selectedAdvanceObj.RegNo,
+      PatientHeaderObj['DoctorName'] = this.selectedAdvanceObj.Doctorname;
+      PatientHeaderObj['CompanyName'] = this.selectedAdvanceObj.CompanyName;
+      PatientHeaderObj['DepartmentName'] = this.selectedAdvanceObj.DepartmentName;
+      PatientHeaderObj['OPD_IPD_Id'] =  this.selectedAdvanceObj.IPDNo;
+      PatientHeaderObj['Age'] =  this.selectedAdvanceObj.AgeYear;
+      PatientHeaderObj['NetPayAmount'] =  this.advanceAmount;
+        // const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
+        //   {
+        //     maxWidth: "75vw",
+        //     height: '75vh',
+        //     width: '100%',
 
-      // const advanceHeaderUpdate = new AdvanceHeaderUpdate(advanceHeaderObj);
-      // const advanceDetailInsert = new AdvanceDetails(AdvanceDetObj);
-      
-        const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
+        //     data: {
+        //       vPatientHeaderObj: PatientHeaderObj,
+        //       FromName: "Advance",
+        //       advanceObj: PatientHeaderObj,
+        //     }
+        //   });
+        const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
           {
-            maxWidth: "75vw",
-            height: '75vh',
-            width: '100%',
-
+            maxWidth: "80vw",
+            height: '650px',
+            width: '80%',
             data: {
               vPatientHeaderObj: PatientHeaderObj,
-              FromName: "Advance",
+              FromName: "IP-Advance",
               advanceObj: PatientHeaderObj,
             }
           });

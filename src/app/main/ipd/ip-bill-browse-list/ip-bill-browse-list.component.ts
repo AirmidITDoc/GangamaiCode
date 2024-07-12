@@ -613,7 +613,7 @@ console.log(PatientHeaderObj)
     const dialogRef = this._matDialog.open(DiscountAfterFinalBillComponent,
       {
         maxWidth: "100%",
-        height: '70%',
+        height: '76%',
         width: '60%',
         data: contact
       });

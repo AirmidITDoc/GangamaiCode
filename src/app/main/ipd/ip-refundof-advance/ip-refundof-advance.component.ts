@@ -25,6 +25,7 @@ import { IPSearchListService } from '../ip-search-list/ip-search-list.service';
 import { AdvanceDataStored } from '../advance';
 import { AdvanceDetailObj } from '../ip-search-list/ip-search-list.component';
 import { element } from 'protractor';
+import { OpPaymentVimalComponent } from 'app/main/opd/op-search-list/op-payment-new-vimal/op-payment-vimal.component';
 
 @Component({
   selector: 'app-ip-refundof-advance',
@@ -258,7 +259,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
     this.PatientType = obj.PatientType
     this.DOA = obj.DOA 
     this.IPDNo = obj.IPDNo 
-    this.getReturndetails();
+    this.onEdit(obj);
     this.getRefundofAdvanceListRegIdwise();
   }
 
@@ -442,22 +443,43 @@ export class IPRefundofAdvanceComponent implements OnInit {
 
     let PatientHeaderObj = {};
 
-    PatientHeaderObj['Date'] = this.dateTimeObj.date; 
-    PatientHeaderObj['NetPayAmount'] = this.NewRefundAmount;
+    // PatientHeaderObj['Date'] = this.dateTimeObj.date; 
+    // PatientHeaderObj['NetPayAmount'] = this.NewRefundAmount;
+    // PatientHeaderObj['PatientName'] = this.PatientName;
+    // PatientHeaderObj['BillId'] = 0; 
+    // PatientHeaderObj['IPDNo'] = this.vOPIPId
+    // PatientHeaderObj['Doctorname'] = this.Doctorname;  
+    // PatientHeaderObj['UHIDNO'] =  this.RegNo
+
+    PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
     PatientHeaderObj['PatientName'] = this.PatientName;
-    PatientHeaderObj['BillId'] = 0; 
-    PatientHeaderObj['IPDNo'] = this.vOPIPId
-    PatientHeaderObj['Doctorname'] = this.Doctorname;  
-    PatientHeaderObj['UHIDNO'] =  this.RegNo
+    PatientHeaderObj['RegNo'] = this.RegNo;
+    PatientHeaderObj['DoctorName'] = this.Doctorname;
+    PatientHeaderObj['CompanyName'] = this.CompanyName;
+    PatientHeaderObj['DepartmentName'] = this.DepartmentName;
+    PatientHeaderObj['OPD_IPD_Id'] =  this.IPDNo;
+    PatientHeaderObj['Age'] =  this.Age;
+    PatientHeaderObj['NetPayAmount'] =  this.NewRefundAmount;
 
-    const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
+    // const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
+    //   {
+    //     maxWidth: "75vw",
+    //     maxHeight: "93vh", width: '100%', height: "100%",
+    //     data: {
+
+    //       advanceObj: PatientHeaderObj,
+    //       FromName: "Advance-Refund"
+    //     }
+    //   });
+    const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
       {
-        maxWidth: "75vw",
-        maxHeight: "93vh", width: '100%', height: "100%",
+        maxWidth: "80vw",
+        height: '650px',
+        width: '80%',
         data: {
-
+          vPatientHeaderObj: PatientHeaderObj,
+          FromName: "IP-RefundOfAdvance",
           advanceObj: PatientHeaderObj,
-          FromName: "Advance-Refund"
         }
       });
 
@@ -478,8 +500,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
           if (response) {
             Swal.fire('Congratulations !', 'Refund Of Advance data saved Successfully !', 'success').then((result) => {
               if (result.isConfirmed) {
-                this.getRefundofAdvanceListRegIdwise();
-                this.getReturndetails();
+                this.getRefundofAdvanceListRegIdwise(); 
                 this.viewgetRefundofAdvanceReportPdf(response);
                 this.getWhatsappsRefundAdvance(response,this.vMobileNo)
                 this._matDialog.closeAll();   

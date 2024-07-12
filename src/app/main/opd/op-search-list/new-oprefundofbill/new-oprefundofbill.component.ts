@@ -310,21 +310,7 @@ export class NewOPRefundofbillComponent implements OnInit {
       });
       this.dataSource2.data["BalanceAmount"] = 0;
   }
-
-
-  calBalamt() {
-
-    this.dataSource.data.forEach((element) => {
-
-      console.log(element)
-      this.TServiceamt += element.NetAmount;
-      this.TRefundamt += element.RefundAmount;
-
-    });
-
-    this.vBillBalanceAmt = this.TServiceamt - this.TRefundamt;
-
-  }
+ 
   refundBillForm() {
     this.myRefundBillForm = this.formBuilder.group({
       BillId: [''],
@@ -390,99 +376,10 @@ export class NewOPRefundofbillComponent implements OnInit {
       element.BalanceAmount =element.BalAmt;
     } 
   }
-  RefundAmt: any;
-  //   getCellCalculation(element, RefundAmt) {
-  //     debugger
-  //     this.serviceId = element.ServiceId;
-  //     this.ServiceAmount = element.TotalAmt;
-
-  // if ((parseFloat(RefundAmt) <   this.RefundBalAmount)) {
-
-  //   this.TotalRefundAmount = RefundAmt;
-  //   element.BalanceAmount = element.NetAmount - RefundAmt
-  //   element.PrevRefAmount = element.RefundAmount;
-  //   // this.BalanceAmount = element.BalanceAmount;
-  //   // this.RefundBalAmount = element.BalanceAmount;
-
-
-  //   if(RefundAmt==0 || RefundAmt==null){
-  //     {
-  //       element.BalanceAmount =   this.vBillBalanceAmt ;
-  //       this.BalanceAmount = element.BalanceAmount;
-  //       this.RefundBalAmount = this.vBillBalanceAmt ;
-
-  //     }
-  //   }
-
-  // } else {
-  //   Swal.fire("Enter Refund Amount Less than Balance Amount ");
-  // }
-  // this.RefundBalAmount =  this.vBillBalanceAmt ;
-  //   }
-  // vRefundBalAmount=0
-  // getCellCalculation(element, RefundAmt) {
-    
-
-   
-  //   this.serviceId = element.ServiceId;
-  //   this.ServiceAmount = element.TotalAmt;
-  //   debugger
-  //   if (element.BalanceAmount == undefined) {
-  //     element.BalanceAmount = 0
-  //     this.vRefundBalAmount = element.NetAmount;
-  //   } else if (element.BalanceAmount > 0) {
-  //     this.vRefundBalAmount = element.BalanceAmount;
-  //     element.BalanceAmount = element.NetAmount - RefundAmt
-  //   }
-    
-  //   this.vRefundBalAmount =  element.NetAmount - RefundAmt;
-  //   if ( (parseFloat(RefundAmt) > this.vRefundBalAmount)) {
-  //     Swal.fire("Enter Refund Amount Less than Balance Amount ");
-  //     element.BalanceAmount=element.NetAmount;
-  //     element.RefundAmt=0;
-  //     this.TotalRefundAmount=0;
-    
-  //   } else {
-  //     // this.dataSource2.data.forEach((element) => {
-  //       debugger
-  //     //   if(element.RefundAmt==undefined)
-  //     //     element.RefAmount=0;
-  //     //   this.TotalRefundAmount =this.TotalRefundAmount  + element.RefAmount
-  //     // });
-
-  //     this.TotalRefundAmount=RefundAmt;
-  //               // this.TotalRefundAmount=parseFloat(this.TotalRefundAmount.toString()) + (RefundAmt.toString())
-  //     element.BalanceAmount = element.NetAmount - RefundAmt
-  //     // this.vRefundBalAmount =   this.vBillBalanceAmt  - RefundAmt;
-  //     this.RefundBalAmount = this.RefundBalAmount - RefundAmt + parseFloat(this.TotalRefundAmount.toString()) 
-  //     // this.RefundBalAmount =  this.RefundBalAmount + this.TotalRefundAmount;
-
-  //     if (RefundAmt == 0 || RefundAmt == null || RefundAmt == undefined) {
-  //       {
-  //         if (element.PrevRefAmount == undefined) {
-  //           element.PrevRefAmount = 0
-  //           element.BalanceAmount = element.NetAmount;
-  //           this.RefundBalAmount = this.vFinalrefundbamt;
-  //         } else if (element.PrevRefAmount != undefined || element.PrevRefAmount > 0) {
-
-  //           this.BalanceAmount = element.NetAmount - element.PrevRefAmount;
-  //            this.RefundBalAmount = this.vBillBalanceAmt ;
-  //         }
-  //       }
-  //     }
-  //   }
-  //   // this.RefundBalAmount = this.this.vFinalrefundbamt;
-  //   // this.RefundBalAmount = this.RefundBalAmount - this.TotalRefundAmount;
-   
-  // }
-
+  RefundAmt: any; 
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
-  }
-
-  //  ===================================================================================
-
-
+  } 
   onOptionSelected(selectedItem) {
     this.b_price = selectedItem.Price
     this.b_totalAmount = selectedItem.Price  //* parseInt(this.b_qty)
@@ -504,57 +401,35 @@ export class NewOPRefundofbillComponent implements OnInit {
       // this.calculatePersc();
     }
   }
-
-
-  getSelectedServicetotSum(element) {
-
+ 
+  getSelectedServicetotSum(element) { 
     let netAmt1;
     netAmt1 = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
     this.totalAmtOfNetAmt1 = netAmt1;
     this.netPaybleAmt1 = netAmt1;
-    return netAmt1;
-
+    return netAmt1; 
   }
 
   getRefundtotSum(element) {
     let netAmt1;
     netAmt1 = element.reduce((sum, { RefundAmount }) => sum += +(RefundAmount || 0), 0);
-    return netAmt1;
-
+    return netAmt1; 
   }
-
-
+ 
   getRefundtotSum1(element) {
     let netAmt1;
     netAmt1 = element.reduce((sum, { RefundAmount }) => sum += +(RefundAmount || 0), 0);
-    return netAmt1;
-
-  }
-
-
-
+    return netAmt1; 
+  } 
 getServicetotSum(element) {
   this.TotalRefundAmount = element.reduce((sum, { RefundAmt }) => sum += +(RefundAmt || 0), 0).toFixed(2);
   let netAmt;
   netAmt = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0).toFixed(2);
   this.totalAmtOfNetAmt = netAmt;
   this.netPaybleAmt = netAmt;
-  return netAmt;
-
+  return netAmt; 
   }
-
-  tableElementChecked(event, element) {
-    // if (event.checked) {
-    //   this.interimArray.push(element);
-    // } else if (this.interimArray.length > 0) {
-    //   let index = this.interimArray.indexOf(element);
-    //   if (index !== -1) {
-    //     this.interimArray.splice(index, 1);
-    //   }
-    // }
-  }
-  chkform: boolean = true;
-
+ 
 onSave() {
 
   if(this.TotalRefundAmount == ' ' || this.TotalRefundAmount == null || this.TotalRefundAmount == undefined){
@@ -564,7 +439,7 @@ onSave() {
     return
   }
   if (!this.RefundOfBillFormGroup.invalid && this.vOPIPId !== 0) {
-    // this.chkform=false;
+    
     this.isLoading = 'submit';
 
       if (this.TotalRefundAmount <= this.RefundBalAmount) {
@@ -615,44 +490,47 @@ onSave() {
 
         let PatientHeaderObj = {};
 
-        PatientHeaderObj['Date'] = this.dateTimeObj.date; 
-        PatientHeaderObj['NetPayAmount'] = this.TotalRefundAmount;
-        PatientHeaderObj['PatientName'] = this.PatientName;
-        PatientHeaderObj['Age'] = this.AgeYear; 
-        PatientHeaderObj['UHIDNO'] = this.RegNo;
+        // PatientHeaderObj['Date'] = this.dateTimeObj.date; 
+        // PatientHeaderObj['NetPayAmount'] = this.TotalRefundAmount;
+        // PatientHeaderObj['PatientName'] = this.PatientName;
+        // PatientHeaderObj['Age'] = this.AgeYear; 
+        // PatientHeaderObj['UHIDNO'] = this.RegNo;
 
         const insertRefund = new InsertRefund(InsertRefundObj);
 
-        const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
+        // const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
+        //   {
+        //     maxWidth: "80vw",
+        //     height: '600px',
+        //     width: '80%',
+        //     data: {
+        //       vPatientHeaderObj: PatientHeaderObj,
+        //       FromName: "Advance-Refund",
+        //       advanceObj: PatientHeaderObj
+        //     }
+        //   });
+        // let PatientHeaderObj = {};
+
+        PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+        PatientHeaderObj['PatientName'] = this.PatientName ;
+        PatientHeaderObj['RegNo'] =this.RegNo,
+        PatientHeaderObj['DoctorName'] = this.Doctorname;
+        PatientHeaderObj['CompanyName'] = this.CompanyName;
+        // PatientHeaderObj['DepartmentName'] = this.Departmen;
+        // PatientHeaderObj['OPD_IPD_Id'] =  this.IPDNo;
+        PatientHeaderObj['Age'] =  this.AgeYear;
+        PatientHeaderObj['NetPayAmount'] = this.TotalRefundAmount; 
+        const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
           {
             maxWidth: "80vw",
-            height: '600px',
+            height: '650px',
             width: '80%',
             data: {
               vPatientHeaderObj: PatientHeaderObj,
-              FromName: "Advance-Refund",
-              advanceObj: PatientHeaderObj
+              FromName: "OP-RefundOfBill",
+              advanceObj: PatientHeaderObj,
             }
           });
-        // let PatientHeaderObj = {};
-
-        // PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-        // PatientHeaderObj['PatientName'] = this.PatientName;
-        // PatientHeaderObj['UHIDNO'] = this.RegNo;   
-        // PatientHeaderObj['Age'] = this.AgeYear;  
-        // PatientHeaderObj['NetPayAmount'] = this.TotalRefundAmount; 
-        
-        //   const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
-        //     {
-        //       maxWidth: "80vw",
-        //       height: '650px',
-        //       width: '80%',
-        //       data: {
-        //         vPatientHeaderObj: PatientHeaderObj,
-        //         FromName: "OP-Refund",
-        //         advanceObj: PatientHeaderObj,
-        //       }
-        //     });
 
         dialogRef.afterClosed().subscribe(result => {
           // console.log('============================== Return Adv ===========');
@@ -691,9 +569,10 @@ onSave() {
       this.RefundOfBillFormGroup.reset();
       this.searchFormGroup.get('RegId').reset();
       this.PatientName = '';
-      this.CompanyName = '';
-      this.vOPDNo = '';
-      this.Doctorname = ''
+      this.AgeYear = '';
+      this.AgeMonth = '';
+      this.GenderName = '';
+      this.AgeDay = ''
       this.TotalRefundAmount=0;
       this.RefundBalAmount=0;
     }

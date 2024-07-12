@@ -594,9 +594,9 @@ OnSave(){
     insertIPPrescriptionDischargeObj['days'] = element.Days || 0;
     insertIPPrescriptionDischargeObj['instructionId'] = 0;
     insertIPPrescriptionDischargeObj['qtyPerDay'] = 0;
-    insertIPPrescriptionDischargeObj['totalQty'] = 0;
-    insertIPPrescriptionDischargeObj['instruction'] = element.Instruction || 0;
-    insertIPPrescriptionDischargeObj['remark'] =  0;
+    insertIPPrescriptionDischargeObj['totalQty'] = 0; 
+    insertIPPrescriptionDischargeObj['instruction'] = '';
+    insertIPPrescriptionDischargeObj['remark'] = 0;
     insertIPPrescriptionDischargeObj['isEnglishOrIsMarathi'] = 0;
     insertIPPrescriptionDischargeObj['storeId'] = this.accountService.currentUserValue.user.storeId || 0;
     insertIPPrescriptionDischargeObj['createdBy'] = this.accountService.currentUserValue.user.id,
@@ -673,9 +673,9 @@ OnSave(){
     insertIPPrescriptionDischargeObj['days'] = element.Days || 0;
     insertIPPrescriptionDischargeObj['instructionId'] = 0;
     insertIPPrescriptionDischargeObj['qtyPerDay'] = 0;
-    insertIPPrescriptionDischargeObj['totalQty'] = 0;
-    insertIPPrescriptionDischargeObj['instruction'] = element.Instruction || 0;
-    insertIPPrescriptionDischargeObj['remark'] =  0;
+    insertIPPrescriptionDischargeObj['totalQty'] = 0; 
+    insertIPPrescriptionDischargeObj['instruction'] =  ''  ;
+    insertIPPrescriptionDischargeObj['remark'] =0;
     insertIPPrescriptionDischargeObj['isEnglishOrIsMarathi'] = 0;
     insertIPPrescriptionDischargeObj['storeId'] = this.accountService.currentUserValue.user.storeId || 0;
     insertIPPrescriptionDischargeObj['createdBy'] = this.accountService.currentUserValue.user.id,

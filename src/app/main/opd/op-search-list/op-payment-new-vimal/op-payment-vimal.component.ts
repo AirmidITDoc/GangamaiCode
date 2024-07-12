@@ -183,7 +183,37 @@ export class OpPaymentVimalComponent implements OnInit {
       this.Paymentobj['TransactionType'] = 0;
       this.selectedPaymnet1 = 'cash';
     }
+    if (this.data.FromName == "IP-RefundOfAdvance" || this.data.FromName == "IP-Advance" || this.data.FromName == "IP-RefundOfBill") {
 
+      this.netPayAmt = parseInt(this.advanceData.NetPayAmount);
+      this.amount1 = parseInt(this.advanceData.NetPayAmount) ;
+      this.PatientName = this.advanceData.PatientName;
+      this.RegNo = this.advanceData.RegNo;
+      this.DoctorName = this.advanceData.Doctorname;
+      this.CompanyName = this.advanceData.CompanyName;
+      this.Date = this.advanceData.Date;
+      this.Age = this.advanceData.Age;
+      this.OPD_IPD_Id = this.advanceData.OPD_IPD_Id;
+      this.DepartmentName = this.advanceData.DepartmentName;
+      this.Paymentobj['TransactionType'] = 0;
+      this.selectedPaymnet1 = 'cash';
+    }
+
+    if (this.data.FromName == "OP-RefundOfBill") {
+      this.netPayAmt = parseInt(this.advanceData.NetPayAmount);
+      this.amount1 = parseInt(this.advanceData.NetPayAmount) ;
+      this.PatientName = this.advanceData.PatientName;
+      this.RegNo = this.advanceData.RegNo;
+      this.DoctorName = this.advanceData.Doctorname;
+      this.CompanyName = this.advanceData.CompanyName;
+      this.Date = this.advanceData.Date;
+      this.Age = this.advanceData.Age;
+      this.OPD_IPD_Id = this.advanceData.OPD_IPD_Id;
+      this.DepartmentName = this.advanceData.DepartmentName;
+      this.Paymentobj['TransactionType'] = 0;
+      this.selectedPaymnet1 = 'cash';
+    }
+    
     if (this.data.FromName == "OP_SETTLEMENT") {
       this.netPayAmt = this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);
       this.amount1 = this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);
@@ -192,17 +222,7 @@ export class OpPaymentVimalComponent implements OnInit {
       this.selectedPaymnet1 = 'cash';
       this.Paymentobj['TransactionType'] = 2;
     }
-    if (this.data.FromName == "OP-Refund") {
-      this.netPayAmt = this.advanceData.NetPayAmount;  
-      this.amount1 = this.advanceData.NetPayAmount;  
-      this.paidAmt = this.advanceData.NetPayAmount;  
-      this.PatientName = this.advanceData.PatientName;
-      this.Date = this.advanceData.Date;
-      this.Age = this.advanceData.Age;
-      this.RegNo = this.advanceData.UHIDNO;
-      this.selectedPaymnet1 = 'cash';
-      this.Paymentobj['TransactionType'] = 2;
-    }
+    
     if (this.data.FromName == "SETTLEMENT") {
       this.netPayAmt = parseInt(this.advanceData.NetPayableAmt) || this.advanceData.NetPayAmount;
       this.amount1 = parseInt(this.advanceData.NetPayableAmt) || this.advanceData.NetPayAmount;

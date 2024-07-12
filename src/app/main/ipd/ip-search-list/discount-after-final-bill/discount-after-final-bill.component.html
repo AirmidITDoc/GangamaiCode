@@ -34,7 +34,7 @@
                                             </div>
                                             <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
                                                 fxLayoutAlign="space-between">
-                                                <div fxLayout="column" fxLayoutGap="10px">
+                                                <div fxLayout="column" fxLayoutGap="6px">
                                                     <div class="patient-col gap-1" fxFlex="30%">
                                                         <span class="patient-col-key ">UHID No</span>
                                                         <span>:</span>
@@ -60,7 +60,7 @@
                                                             class="patient-col-value">{{selectedAdvanceObj.DepartmentName}}</span>
                                                     </div>
                                                 </div>
-                                                <div fxLayout="column" fxLayoutGap="10px">
+                                                <div fxLayout="column" fxLayoutGap="6px">
                                                     <div class="patient-col gap-1" fxFlex="30%">
                                                         <span class="patient-col-key">DOA | Time</span>
                                                         <span>:</span>
@@ -87,7 +87,7 @@
                                                             class="patient-col-value">{{selectedAdvanceObj.RefDocName}}</span>
                                                     </div>
                                                 </div>
-                                                <div fxLayout="column" fxLayoutGap="10px">
+                                                <div fxLayout="column" fxLayoutGap="6px">
                                                     <div class="patient-col gap-1" fxFlex="30%">
                                                         <span class="patient-col-key">Ward | Bed Name</span>
                                                         <span>:</span>
@@ -120,21 +120,29 @@
                                 </mat-card>
                             </div>
                         </div>
-                        <div fxLayout="row" style="padding: 12px 0px 12px 0px;">
+                        <div fxLayout="row" style="padding: 12px 10px 12px 0px;">
                             <mat-card style="padding:5px;">
                                 <div fxLayout="row" fxLayoutGap="10px">  
-                                    <div fxLayout="column" fxLayoutGap="4px" fxFlex="20%">
+                                    <div fxLayout="column" fxLayoutGap="4px" fxFlex="30%">
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Total Amount</mat-label>
                                             <input matInput name="TotalAmount" formControlName="TotalAmount" type="text" OnlyNumber
                                                 [(ngModel)]="vTotalAmount" required readonly>
                                         </mat-form-field> 
+
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Final Disc Amount</mat-label>
                                             <input matInput name="FinalDiscAmt" formControlName="FinalDiscAmt" type="text" OnlyNumber
                                                 [(ngModel)]="vFinalDiscAmt" required  (keypress)="keyPressCharater($event)"
                                                 (keydown)="onEnterFinalDiscAmt($event)" #FinalDiscAmt readonly>
                                         </mat-form-field>
+
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Company DiscAmt</mat-label>
+                                            <input matInput name="FinalCompanyDiscAmt" formControlName="FinalCompanyDiscAmt" type="text" OnlyNumber
+                                                [(ngModel)]="vFinalCompanyDiscAmt" (keypress)="keyPressCharater($event)"
+                                                 #FinalCompanyDiscAmt readonly>
+                                        </mat-form-field> 
                                 
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Net Amount</mat-label>
@@ -144,43 +152,44 @@
                                     </div> 
                                     <div fxLayout="column" fxLayoutGap="4px" fxFlex="50%">
                                         <div fxLayout="row" fxLayoutGap="4px">
-                                           
-                                            <mat-form-field appearance="outline" fxFlex="23%">
+                                        <mat-form-field appearance="outline" fxFlex="60%">
+                                            <mat-label>Previous DiscAmt</mat-label>
+                                            <input matInput name="DiscAmount" formControlName="DiscAmount" type="text" OnlyNumber
+                                                [(ngModel)]="vDiscAmount" required readonly>
+                                        </mat-form-field>
+                                        </div>
+                                        <div fxLayout="row" fxLayoutGap="4px">  
+                                            <mat-form-field appearance="outline" fxFlex="30%">
                                                 <mat-label>Discount Per</mat-label>
                                                 <input matInput name="DiscountPer2" formControlName="DiscountPer2" type="text" OnlyNumber
                                                     [(ngModel)]="vDiscountPer2" (keypress)="keyPressCharater($event)"
                                                     (keydown)="onEnterFinalDisc($event)" #DiscountPer2 (keyup)="CalcDiscPer()">
                                             </mat-form-field>
                                 
-                                            <mat-form-field appearance="outline" fxFlex="23%">
+                                            <mat-form-field appearance="outline" fxFlex="30%">
                                                 <mat-label>Discount Amount</mat-label>
                                                 <input matInput name="DiscAmount2" formControlName="DiscAmount2" type="text" OnlyNumber
                                                     [(ngModel)]="vDiscAmount2" (keypress)="keyPressCharater($event)"
-                                                    (keydown)="onEnterFinalDisc($event)" #DiscAmount2 readonly>
-                                            </mat-form-field>
-                                            <mat-form-field appearance="outline" fxFlex="23%">
-                                                <mat-label>Previous DiscAmt</mat-label>
-                                                <input matInput name="DiscAmount" formControlName="DiscAmount" type="text" OnlyNumber
-                                                    [(ngModel)]="vDiscAmount" required readonly>
-                                            </mat-form-field>
+                                                    (keydown)="onEnterFinalDisc($event)" #DiscAmount2   (keyup)="CalcDiscAmt()">
+                                            </mat-form-field>  
                                         </div>
                                         <div fxLayout="row" fxLayoutGap="4px">
-                                            <mat-form-field appearance="outline" fxFlex="23%">
+                                            <mat-form-field appearance="outline" fxFlex="30%">
                                                 <mat-label>Company DiscPer</mat-label>
                                                 <input matInput name="CompanyDiscper" formControlName="CompanyDiscper" type="text" OnlyNumber
                                                     [(ngModel)]="vCompanyDiscper" (keypress)="keyPressCharater($event)"
                                                     (keydown)="onEnterFinalDisc($event)" #CompanyDiscper (keyup)="CalcDiscPer()">
                                             </mat-form-field>
                                 
-                                            <mat-form-field appearance="outline" fxFlex="23%">
+                                            <mat-form-field appearance="outline" fxFlex="30%">
                                                 <mat-label>Company DiscAmt</mat-label>
                                                 <input matInput name="CompanyDiscAmt" formControlName="CompanyDiscAmt" type="text" OnlyNumber
                                                     [(ngModel)]="vCompanyDiscAmt" (keypress)="keyPressCharater($event)"
-                                                    (keydown)="onEnterFinalDisc($event)" #CompanyDiscAmt readonly>
+                                                    (keydown)="onEnterFinalDisc($event)" #CompanyDiscAmt (keyup)="CalcDiscAmt()" >
                                             </mat-form-field>
                                         </div>
                                         <div fxLayout="row" fxLayoutGap="4px">
-                                            <mat-form-field appearance="outline" fxFlex="69.5%">
+                                            <mat-form-field appearance="outline" fxFlex="60%">
                                                 <mat-label>Concession Reason Type</mat-label>
                                                 <mat-select formControlName="ConcessionId">
                                                     <mat-option *ngFor="let Doc of ConcessionReasonList" [value]="Doc">
@@ -188,77 +197,13 @@
                                                     </mat-option>
                                                 </mat-select>
                                             </mat-form-field>
-                                        </div>
-                                      
-                                    </div>
-                                    
-                                </div>
-                                <!-- <div fxLayout="row" fxLayoutGap="4px">
-                                    <mat-form-field appearance="outline" fxFlex="16%">
-                                        <mat-label>DiscountPer2</mat-label>
-                                        <input matInput name="DiscountPer2" formControlName="DiscountPer2" type="text" OnlyNumber
-                                            [(ngModel)]="vDiscountPer2"   (keypress)="keyPressCharater($event)" 
-                                            (keydown)="onEnterFinalDisc($event)" #DiscountPer2 (keyup)="CalcDiscPer()">
-                                    </mat-form-field>
-
-                                    <mat-form-field appearance="outline" fxFlex="16%">
-                                        <mat-label>Disc Amount2</mat-label>
-                                        <input matInput name="DiscAmount2" formControlName="DiscAmount2" type="text" OnlyNumber
-                                            [(ngModel)]="vDiscAmount2"   (keypress)="keyPressCharater($event)" 
-                                            (keydown)="onEnterFinalDisc($event)" #DiscAmount2 readonly>
-                                    </mat-form-field>
-
-                                    <mat-form-field appearance="outline" fxFlex="16%">
-                                        <mat-label>Company DiscPer</mat-label>
-                                        <input matInput name="CompanyDiscper" formControlName="CompanyDiscper" type="text" OnlyNumber
-                                            [(ngModel)]="vCompanyDiscper"   (keypress)="keyPressCharater($event)" 
-                                            (keydown)="onEnterFinalDisc($event)" #CompanyDiscper (keyup)="CalcDiscPer()">
-                                    </mat-form-field>
-
-                                    <mat-form-field appearance="outline" fxFlex="16%">
-                                        <mat-label>Company DiscAmt</mat-label>
-                                        <input matInput name="CompanyDiscAmt" formControlName="CompanyDiscAmt" type="text" OnlyNumber
-                                            [(ngModel)]="vCompanyDiscAmt"   (keypress)="keyPressCharater($event)" 
-                                            (keydown)="onEnterFinalDisc($event)" #CompanyDiscAmt readonly>
-                                    </mat-form-field>
-
-                                    <mat-form-field appearance="outline" fxFlex>
-                                        <mat-label>Concession Reason Type</mat-label>
-                                        <mat-select formControlName="ConcessionId">
-                                            <mat-option *ngFor="let Doc of ConcessionReasonList" [value]="Doc">
-                                                {{Doc.ConcessionReason}}
-                                            </mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
-                                    </div> -->
-
+                                        </div> 
+                                    </div> 
+                                </div> 
                             </mat-card>
-                        </div>
-                        <!-- <div fxLayout="row" style="padding: 1px 0px 5px 0px;">
-                            <mat-card style="padding:5px;">
-                                <div fxLayout="row" fxLayoutGap="4px">  
-                                    <mat-form-field appearance="outline" fxFlex="35%">
-                                        <mat-label>Final Disc Amount</mat-label>
-                                        <input matInput name="FinalDiscAmt" formControlName="FinalDiscAmt" type="text" OnlyNumber
-                                            [(ngModel)]="vFinalDiscAmt" required  (keypress)="keyPressCharater($event)"
-                                            (keydown)="onEnterFinalDiscAmt($event)" #FinalDiscAmt readonly>
-                                    </mat-form-field>
-                        
-                                    <mat-form-field appearance="outline" fxFlex="35%">
-                                        <mat-label>Final Net Amount</mat-label>
-                                        <input matInput name="FinalNetAmt" formControlName="FinalNetAmt" type="text" OnlyNumber
-                                            [(ngModel)]="vFinalNetAmt" required readonly>
-                                    </mat-form-field>
-
-                                    <div class="modal-footer-buttons gap-8" fxLayoutAlign="end" style="padding-left: 50px;">
-                                        <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                                        <button class="btn btn-primary " (click)="OnSave()" #save>Save</button>
-                                    </div>
-                                </div>
-                            </mat-card>
-                        </div> -->
+                        </div> 
                     </form>
-                    <div  fxLayoutAlign="end" style="margin-top: 20px;">
+                    <div  fxLayoutAlign="end" style="margin-top: 20px;margin-right: 10px;">
                         <button class="btn btn-danger-outline" (click)="onClose()">Close</button>&nbsp;
                         <button class="btn btn-primary " (click)="OnSave()" #save>Save</button>
                     </div>

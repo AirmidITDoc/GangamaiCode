@@ -21,6 +21,7 @@ import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.s
 import { ToastrService } from 'ngx-toastr';
 import { element } from 'protractor';
 import { BrowseIpdreturnadvanceReceipt } from '../../ip-refundof-advance/ip-refundof-advance.component';
+import { OpPaymentVimalComponent } from 'app/main/opd/op-search-list/op-payment-new-vimal/op-payment-vimal.component';
 
 type NewType = Observable<any[]>;
 @Component({
@@ -165,11 +166,20 @@ export class IPRefundofBillComponent implements OnInit {
       this.PatientName=this.selectedAdvanceObj.PatientName;
       this.Doctorname=this.selectedAdvanceObj.Doctorname
       this.RegNo=this.selectedAdvanceObj.RegNo
+      this.Department = this.selectedAdvanceObj.DepartmentName;
+      this.DOA = this.selectedAdvanceObj.DOA;
+      this.IPDNo = this.selectedAdvanceObj.IPDNo;
+      this.Age = this.selectedAdvanceObj.AgeYear
+      this.AgeMonth = this.selectedAdvanceObj.AgeMonth;
+      this.AgeDay = this.selectedAdvanceObj.AgeDay;
+      this.GenderName = this.selectedAdvanceObj.GenderName;
       this.vAdmissionId =this.selectedAdvanceObj.AdmissionID
-      this.Tarrifname= this.selectedAdvanceObj.TariffName
-      this.Age= this.selectedAdvanceObj.AgeYear
-      this.CompanyName= this.selectedAdvanceObj.CompanyName
-      this.vMobileNo= this.selectedAdvanceObj.MobileNo
+      this.Tarrifname= this.selectedAdvanceObj.TariffName;
+      this.WardName= this.selectedAdvanceObj.RoomName;
+      this.CompanyName= this.selectedAdvanceObj.CompanyName;
+      this.RefDoctorName= this.selectedAdvanceObj.RefDocName;
+      this.BedName = this.selectedAdvanceObj.BedName;
+      this.PatientType = this.selectedAdvanceObj.PatientType;
     }
     // this.myControl = new FormControl();
     // this.filteredOptions = this.myControl.valueChanges.pipe(
@@ -216,25 +226,42 @@ refundForm(): FormGroup {
       }
     }); 
   }
-
+  AgeMonth:any;
+  AgeDay:any;
+  GenderName:any;
+  Department:any;
+  DOA:any;
+  IPDNo:any;
+  RefDoctorName:any;
+  WardName:any;
+  BedName:any;
+  PatientType:any;
   getSelectedObj1(obj) {
     console.log(obj)
      this.dataSource3.data = []; 
     this.registerObj = obj;
-    this.PatientName = obj.FirstName + " " + obj.LastName;
-    this.RegId = obj.RegId;
-    this.City = obj.City;
-    // this.RegDate = this.datePipe.transform(obj.RegTime, 'dd/MM/yyyy hh:mm a');
-    this.CompanyName = obj.CompanyName;
-    this.Tarrifname = obj.TariffName;
+    this.RegNo=obj.RegNo
+    this.PatientName = obj.FirstName + " " + obj.LastName; 
     this.Doctorname = obj.DoctorName;
+    this.Department = obj.Department
+    this.RegId = obj.RegId;
+    this.DOA = obj.DOA;
+    this.IPDNo = obj.IPDNo
+    this.RefDoctorName = obj.RefDoctorName;
+    this.Age=obj.AgeYear;
+    this.AgeMonth = obj.AgeMonth;
+    this.AgeDay = obj.AgeDay;
+    this.GenderName = obj.GenderName;
+    this.WardName = obj.RoomName;
+    this.BedName = obj.BedName;
+    this.PatientType = obj.PatientType;
+    this.Tarrifname = obj.TariffName;
+    this.CompanyName = obj.CompanyName; 
     this.vOPIPId = obj.RegId;
     this.vRegId = obj.RegId;
     this.vOPDNo = obj.OPDNo;
     this.vTariffId = obj.TariffId;
     this.vClassId = obj.classId
-    this.RegNo=obj.RegNo
-    this.Age=obj.Age;
     this.VisitId=obj.VisitId 
     this. getRefundofBillIPDList();
   }
@@ -431,21 +458,41 @@ onSave() {
 
   let PatientHeaderObj = {};
 
-  PatientHeaderObj['Date'] = this.dateTimeObj.date;
-  PatientHeaderObj['UHIDNO'] =this.RegNo
-  // PatientHeaderObj['OPD_IPD_Id'] =this.vOPIPId || 0
+  // PatientHeaderObj['Date'] = this.dateTimeObj.date;
+  // PatientHeaderObj['UHIDNO'] =this.RegNo
+  // // PatientHeaderObj['OPD_IPD_Id'] =this.vOPIPId || 0
+  // PatientHeaderObj['NetPayAmount'] = this.TotalRefundAmount;
+  // PatientHeaderObj['IPDNo'] = this.selectedAdvanceObj.IPDNo ;
+  // PatientHeaderObj['PatientName'] =  this.PatientName 
+  // PatientHeaderObj['Doctorname'] = this.Doctorname
+  PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+  PatientHeaderObj['PatientName'] = this.PatientName ;
+  PatientHeaderObj['RegNo'] =this.RegNo,
+  PatientHeaderObj['DoctorName'] = this.Doctorname;
+  PatientHeaderObj['CompanyName'] = this.CompanyName;
+  PatientHeaderObj['DepartmentName'] = this.Department;
+  PatientHeaderObj['OPD_IPD_Id'] =  this.IPDNo;
+  PatientHeaderObj['Age'] =  this.Age;
   PatientHeaderObj['NetPayAmount'] = this.TotalRefundAmount;
-  PatientHeaderObj['IPDNo'] = this.selectedAdvanceObj.IPDNo ;
-  PatientHeaderObj['PatientName'] =  this.PatientName 
-  PatientHeaderObj['Doctorname'] = this.Doctorname
  
-  const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
+  // const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
+  //   {
+  //     maxWidth: "75vw",
+  //     maxHeight: "93vh", width: '100%', height: "100%",
+  //     data: { 
+  //       advanceObj: PatientHeaderObj, 
+  //       FromName: "Advance-Refund",
+  //     }
+  //   });
+  const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
     {
-      maxWidth: "75vw",
-      maxHeight: "93vh", width: '100%', height: "100%",
-      data: { 
-        advanceObj: PatientHeaderObj, 
-        FromName: "Advance-Refund",
+      maxWidth: "80vw",
+      height: '650px',
+      width: '80%',
+      data: {
+        vPatientHeaderObj: PatientHeaderObj,
+        FromName: "IP-RefundOfBill",
+        advanceObj: PatientHeaderObj,
       }
     });
   dialogRef.afterClosed().subscribe(result => {

@@ -29,6 +29,7 @@ export class DiscountAfterFinalBillComponent implements OnInit {
   vCompanyDiscAmt:any;
   vCompanyDiscper:any;
   ConcessionReasonList:any=[];
+  vFinalCompanyDiscAmt:any;
 
   constructor(
     public _matDialog: MatDialog,
@@ -66,12 +67,13 @@ export class DiscountAfterFinalBillComponent implements OnInit {
       FinalNetAmt:[''],
       CompanyDiscper:[''],
       CompanyDiscAmt:[''],
-      ConcessionId:['']
+      ConcessionId:[''],
+      FinalCompanyDiscAmt:['']
     });
   }
 
   CalcDiscPer(){
-    //debugger
+    debugger
     let DiscAmt2;
     let CompanyDiscAmt ;
     let DiscPer2 = this.MyFrom.get('DiscountPer2').value || 0;
@@ -105,18 +107,66 @@ export class DiscountAfterFinalBillComponent implements OnInit {
       else{
         this.vCompanyDiscAmt = ((parseFloat(this.vFinalNetAmt) * parseFloat(this.vCompanyDiscper)) / 100).toFixed(2) || 0;
         CompanyDiscAmt =   this.vCompanyDiscAmt;
+        this.vFinalCompanyDiscAmt = this.vCompanyDiscAmt
       } 
     }
     else{
        if(CompanyDiscPer == 0 || CompanyDiscPer == '' || CompanyDiscPer == null || CompanyDiscPer == undefined){ 
         this.vCompanyDiscAmt = '';
         CompanyDiscAmt = 0;
+        this.vFinalCompanyDiscAmt = 0;
       }
     }
-    this.vFinalDiscAmt = Math.round(parseFloat(DiscAmt2) + parseFloat(CompanyDiscAmt) + parseFloat(this.vDiscAmount));
-    this.vNetamount = Math.round(parseFloat(this.vTotalAmount) - (parseFloat( this.vFinalDiscAmt))).toFixed(2);
+    this.vFinalDiscAmt = Math.round(parseFloat(DiscAmt2)  + parseFloat(this.vDiscAmount));
+    this.vNetamount = Math.round((parseFloat(this.vTotalAmount) - parseFloat( this.vFinalDiscAmt)) -  parseFloat(CompanyDiscAmt)).toFixed(2);
   }
- 
+  CalcDiscAmt() {
+    let DiscAmt2 = this.MyFrom.get('DiscAmount2').value || 0;
+    let CompanyDiscAmt = this.MyFrom.get('CompanyDiscAmt').value || 0;
+    let DiscPer2;
+    let CompanyDiscPer;
+
+    if (DiscAmt2) {
+      if (DiscAmt2 > this.vFinalNetAmt) {
+        this.toastr.warning('Please enter discount amount less than netanoubt and greater than 0', 'warning !', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
+        return this.vDiscAmount2 = '';
+      }
+      else {
+        this.vDiscountPer2 = ((parseFloat(this.vDiscAmount2) / parseFloat(this.vFinalNetAmt)) * 100).toFixed(2) || 0;
+        DiscPer2 = this.vDiscountPer2;
+      }
+    } else {
+      if (DiscAmt2 == 0 || DiscAmt2 == '' || DiscAmt2 == null || DiscAmt2 == undefined) {
+        this.vDiscountPer2 = '';
+        DiscPer2 = 0;
+      }
+    }
+
+    if (CompanyDiscAmt) {
+      if (CompanyDiscAmt > this.vFinalNetAmt) {
+        this.toastr.warning('Please enter company discount amt less than netamount and greater than 0', 'warning !', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
+        return this.vCompanyDiscAmt = '';
+      }
+      else {
+        this.vCompanyDiscper = ((parseFloat(this.vCompanyDiscAmt) / parseFloat(this.vFinalNetAmt)) * 100).toFixed(2) || 0;
+        CompanyDiscPer = this.vCompanyDiscper;
+        this.vFinalCompanyDiscAmt = CompanyDiscAmt
+      }
+    }
+    else {
+      if (CompanyDiscAmt == 0 || CompanyDiscAmt == '' || CompanyDiscAmt == null || CompanyDiscAmt == undefined) {
+        this.vCompanyDiscper = '';
+        CompanyDiscPer = 0;
+        this.vFinalCompanyDiscAmt = 0;
+      }
+    }
+    this.vFinalDiscAmt = Math.round(parseFloat(DiscAmt2) + parseFloat(this.vDiscAmount));
+    this.vNetamount = Math.round((parseFloat(this.vTotalAmount) - parseFloat(this.vFinalDiscAmt)) - parseFloat(CompanyDiscAmt)).toFixed(2);
+  }
   getConcessionReasonList() { 
     this._IpSearchListService.getConcessionCombo().subscribe(data => {
       this.ConcessionReasonList = data;

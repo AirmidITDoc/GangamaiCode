@@ -384,24 +384,24 @@ export class InterimBillComponent implements OnInit {
     let insertBillUpdateBillNo1obj = {};
     insertBillUpdateBillNo1obj['billNo'] = 0;
     insertBillUpdateBillNo1obj['OPD_IPD_ID'] = this.selectedAdvanceObj.AdmissionID;
-    insertBillUpdateBillNo1obj['totalAmt'] = this.InterimFormGroup.get('TotalAmt').value //this.netAmount;
-    insertBillUpdateBillNo1obj['concessionAmt'] = this.InterimFormGroup.get('concessionAmt').value || 0
+    insertBillUpdateBillNo1obj['totalAmt'] = this.InterimFormGroup.get('TotalAmt').value;//this.netAmount;
+    insertBillUpdateBillNo1obj['concessionAmt'] = this.InterimFormGroup.get('concessionAmt').value || 0;
       insertBillUpdateBillNo1obj['netPayableAmt'] = this.InterimFormGroup.get('NetpayAmount').value, // this.netAmount;
       insertBillUpdateBillNo1obj['paidAmt'] = this.InterimFormGroup.get('NetpayAmount').value || 0,//this.advanceAmount;
       insertBillUpdateBillNo1obj['balanceAmt'] = 0;
     insertBillUpdateBillNo1obj['billDate'] = this.dateTimeObj.date;
-    insertBillUpdateBillNo1obj['opD_IPD_Type'] = 1,
-      insertBillUpdateBillNo1obj['AddedBy'] = this.accountService.currentUserValue.user.id;
+    insertBillUpdateBillNo1obj['opD_IPD_Type'] = 1;
+      insertBillUpdateBillNo1obj['AddedBy'] = this.accountService.currentUserValue.user.id || 0;
     insertBillUpdateBillNo1obj['totalAdvanceAmount'] = 0;
     insertBillUpdateBillNo1obj['billTime'] = this.dateTimeObj.date;
     insertBillUpdateBillNo1obj['concessionReasonId'] = this.InterimFormGroup.get('ConcessionId').value.ConcessionId || 0,
-      insertBillUpdateBillNo1obj['isSettled'] = 0,
-      insertBillUpdateBillNo1obj['isPrinted'] = 1,
-      insertBillUpdateBillNo1obj['isFree'] = 0,//this.advanceAmount;
+      insertBillUpdateBillNo1obj['isSettled'] = false;
+      insertBillUpdateBillNo1obj['isPrinted'] = true;
+      insertBillUpdateBillNo1obj['isFree'] = false;
       insertBillUpdateBillNo1obj['companyId'] = this.selectedAdvanceObj.CompanyId || 0,
       insertBillUpdateBillNo1obj['tariffId'] = this.selectedAdvanceObj.TariffId || 0,
       insertBillUpdateBillNo1obj['unitId'] = this.selectedAdvanceObj.UnitId || 0;
-    insertBillUpdateBillNo1obj['interimOrFinal'] = 1,
+    insertBillUpdateBillNo1obj['interimOrFinal'] = 1;
       insertBillUpdateBillNo1obj['companyRefNo'] = 0;
     insertBillUpdateBillNo1obj['concessionAuthorizationName'] = 0;
     insertBillUpdateBillNo1obj['taxPer'] = this.InterimFormGroup.get('Percentage').value || 0,
@@ -420,8 +420,8 @@ export class InterimBillComponent implements OnInit {
       billDetailsInsert.push(billDetailsInsert1Obj);
     });
 
-    const interimBillCharge = new interimBill(interimBillChargesobj);
-    const insertBillUpdateBillNo1 = new Bill(insertBillUpdateBillNo1obj);
+   // const interimBillCharge = new interimBill(interimBillChargesobj);
+   // const insertBillUpdateBillNo1 = new Bill(insertBillUpdateBillNo1obj);
 
     if (this.InterimFormGroup.get('paymode').value == 'cashpay') {
       // let cashPayAmt = 0;
@@ -461,13 +461,13 @@ export class InterimBillComponent implements OnInit {
       Paymentobj['BalanceAmt'] = 0;
 
 
-      const ipPaymentInsert = new IpPaymentInsert(Paymentobj);
+     // const ipPaymentInsert = new IpPaymentInsert(Paymentobj);
 
       let submitData = {
-        "interimBillChargesUpdate": interimBillCharge,
-        "insertBillUpdateBillNo1": insertBillUpdateBillNo1,
+        "interimBillChargesUpdate": interimBillChargesobj,
+        "insertBillUpdateBillNo1": insertBillUpdateBillNo1obj,
         "billDetailsInsert1": billDetailsInsert,
-        "ipIntremPaymentInsert": ipPaymentInsert,
+        "ipIntremPaymentInsert": Paymentobj,
       };
       console.log(submitData);
       this._IpSearchListService.InsertInterim(submitData).subscribe(response => {
@@ -524,12 +524,12 @@ export class InterimBillComponent implements OnInit {
       Paymentobj['BalanceAmt'] = 0;
 
 
-      const ipPaymentInsert = new IpPaymentInsert(Paymentobj);
+     // const ipPaymentInsert = new IpPaymentInsert(Paymentobj);
       let submitData = {
-        "interimBillChargesUpdate": interimBillCharge,
-        "insertBillUpdateBillNo1": insertBillUpdateBillNo1,
+        "interimBillChargesUpdate": interimBillChargesobj,
+        "insertBillUpdateBillNo1": insertBillUpdateBillNo1obj,
         "billDetailsInsert1": billDetailsInsert,
-        "ipIntremPaymentInsert": ipPaymentInsert,
+        "ipIntremPaymentInsert": Paymentobj,
 
       };
       console.log(submitData);
@@ -585,8 +585,8 @@ export class InterimBillComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
         console.log(result)
         let submitData = {
-          "interimBillChargesUpdate": interimBillCharge,
-          "insertBillUpdateBillNo1": insertBillUpdateBillNo1,
+          "interimBillChargesUpdate": interimBillChargesobj,
+          "insertBillUpdateBillNo1": insertBillUpdateBillNo1obj,
           "billDetailsInsert1": billDetailsInsert,
           "ipIntremPaymentInsert": result.submitDataPay.ipPaymentInsert,
         };
