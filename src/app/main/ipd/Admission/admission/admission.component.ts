@@ -3233,7 +3233,7 @@ DoctorName:any;
 vOPDNo:any;
 TarrifName:any
 OPDNo:any;
-
+WardName:any;
   /**
 * Constructor
 *
@@ -3320,7 +3320,6 @@ OPDNo:any;
       this.ClassName=AdmissionPersonl.ClassName || ''
       this.IsBillGenerated=AdmissionPersonl.IsBillGenerated || 0
       this.RoomName=AdmissionPersonl.RoomName || ''
-      this.WardName=AdmissionPersonl.WardName || ''
       this.Doctorname=AdmissionPersonl.Doctorname || ''
       this.DoctorName=AdmissionPersonl.DoctorName || ''
       this.AdmDateTime=AdmissionPersonl.AdmDateTime || ''
