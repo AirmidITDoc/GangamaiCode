@@ -80,8 +80,8 @@ export class RadioloyOrderlistService {
     public getTemplate(query) {
       return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
     }
-    public getRadiologyPrint(RefundId) {
-      return this._httpClient.post("Generic/GetByProc?procName=rptRadiologyReportPrint", RefundId)
+    public getRadiologyPrint(RadReportId) {
+      return this._httpClient.post("Generic/GetByProc?procName=rptRadiologyReportPrint", RadReportId)
     }    
     populatePrintForm(employee) {
       this.myform.patchValue(employee);

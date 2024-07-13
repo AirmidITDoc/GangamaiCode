@@ -213,6 +213,9 @@ export class NewCasepaperComponent implements OnInit {
   ItemId: any;
   PresItemlist: any = [];
   vRemark: any;
+  
+
+
   dsPresList = new MatTableDataSource<PrecriptionItemList>();
   dsafterPresList = new MatTableDataSource<PrecriptionItemList>();
 
@@ -411,7 +414,6 @@ export class NewCasepaperComponent implements OnInit {
     });
 
   }
-
   getSearchItemList() {
     if ((this.vOPIPId == '' || this.vOPIPId == '0')) {
       this.toastr.warning('Please select Patient', 'Warning !', {
@@ -896,7 +898,7 @@ export class NewCasepaperComponent implements OnInit {
 
     prescriptionDetails(VisitId) {
       debugger
-      this._CasepaperService.prescriptionDetails(VisitId).subscribe((data: any) => {
+      this._CasepaperService.RtrvPreviousprescriptionDetails(VisitId).subscribe((data: any) => {
         this.dataSource3 = data;
         this.dsItemList.data=data;
         console.log(this.dsItemList.data)
@@ -1129,6 +1131,7 @@ export class NewCasepaperComponent implements OnInit {
    let insertOPDPrescriptionarray=[];
     this.dsItemList.data.forEach(element => {
       let insertOPDPrescription = {};
+      insertOPDPrescription['daysOption3'] =  parseInt(element.Day2.toString());
     insertOPDPrescription['ipMedID'] = 0;
     insertOPDPrescription['opD_IPD_IP'] = this.vOPIPId;
     insertOPDPrescription['opD_IPD_Type'] = 0;
@@ -1138,6 +1141,7 @@ export class NewCasepaperComponent implements OnInit {
     insertOPDPrescription['genericId'] = 1;
     insertOPDPrescription['drugId'] = element.ItemID;
     insertOPDPrescription['doseId'] =  element.DoseId || 0;
+   
     insertOPDPrescription['days'] = element.Day || 0;
     insertOPDPrescription['qtyPerDay'] =0,// element.Qty || 0
     insertOPDPrescription['totalQty'] = 0,//element.Qty || 0;
@@ -1158,7 +1162,6 @@ export class NewCasepaperComponent implements OnInit {
     insertOPDPrescription['doseOption2'] = element.DoseId1;
     insertOPDPrescription['daysOption2'] = parseInt(element.Day1.toString());
     insertOPDPrescription['doseOption3'] =  element.DoseId2;
-    insertOPDPrescription['daysOption3'] =  parseInt(element.Day2.toString());
    
     insertOPDPrescriptionarray.push(insertOPDPrescription);
    
@@ -1169,7 +1172,6 @@ export class NewCasepaperComponent implements OnInit {
     console.log(casePaperSaveObj);
 
     this._CasepaperService.onSaveCasepaper(casePaperSaveObj).subscribe(response => {
-
       if (response) {
         Swal.fire('Congratulations !', 'Casepaper save Successfully !', 'success').then((result) => {
           if (result.isConfirmed) {
@@ -1199,124 +1201,6 @@ export class NewCasepaperComponent implements OnInit {
   }
 
 
-  // getTemplate() {
-  //   debugger;
-
-
-
-  //   let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=12';
-  //   console.log(query);
-  //   this._CasepaperService.getTemplate(query).subscribe((resData: any) => {
-  //     console.log(resData);
-  //     this.printTemplate = resData[0].TempDesign;
-  //     console.log(this.printTemplate);
-  //     let keysArray = ['RegNo', 'PrecriptionId', 'PatientName', 'OPDNo', 'Diagnosis', 'PatientName', 'Weight', 'Pluse', 'BP', 'BSL', 'DoseName', 'Days', 'GenderName', 'AgeYear', 'DrugName', 'ConsultantDocName', 'SecondRefDoctorName', 'MobileNo', 'Address', 'VisitDate']; // resData[0].TempKeys;
-
-  //     for (let i = 0; i < keysArray.length; i++) {
-  //       let reString = "{{" + keysArray[i] + "}}";
-  //       let re = new RegExp(reString, "g");
-  //       this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
-  //     }
-
-
-  //     this.printTemplate = this.printTemplate.replace('StrVisitDate', this.transform2(this.reportPrintObj.VisitDate));
-  //     this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
-  //     //  this.printTemplate =  this.printTemplate.replace('StrConsultantDr', (this.reportPrintObj.ConsultantDocName));
-  //     //  this.printTemplate =  this.printTemplate.replace('StrOPDDate', this.transform1(this.reportPrintObj.VisitDate));
-  //     //   var strrowslist = "";
-  //     //   for (let i = 1; i <= this.reportPrintObjList.length; i++) {
-  //     //     var objreportPrint = this.reportPrintObjList[i - 1];
-  //     //     var strabc = `
-  //     // <div style="display:flex;margin:8px 0">
-  //     // <div style="display:flex;width:100px;margin-left:30px;">
-  //     //     <div>`+ i + `</div> 
-  //     // </div>
-  //     // <div style="display:flex;width:100px;margin-left:10px;">
-  //     // <span >TAB</span>
-  //     // </div>
-
-  //     // <div style="display:flex;width:200px;margin-left:15px;">
-  //     // <div style="font-weight:700;">`+ objreportPrint.  DrugName + `</div> <!-- <div>BLOOD UREA</div> -->
-  //     // </div>
-  //     // <div style="display:flex;width:150px;margin-left:15px;">
-  //     //     <div>`+ objreportPrint.DoseName + `</div> <!-- <div>BLOOD UREA</div> -->
-  //     // </div>
-
-  //     // <div style="display:flex;width:100px;margin-left:30px;">
-  //     //     <div>`+ objreportPrint.TotalDayes + `</div> <!-- <div>450</div> -->
-  //     // </div>
-
-  //     // </div>`;
-  //     //     strrowslist += strabc;
-  //     //   }
-
-  //     //   //console.log(this.printTemplate);
-  //     //   this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
-
-  //     //console.log(this.printTemplate);
-  //     this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
-  //     setTimeout(() => {
-  //       this.print();
-  //     }, 1000);
-  //   });
-  // }
-  // transform1(value: string) {
-  //   var datePipe = new DatePipe("en-US");
-  //   value = datePipe.transform(value, 'dd/MM/yyyy hh:mm a');
-  //   return value;
-  // }
-
-  // transform2(value: string) {
-  //   var datePipe = new DatePipe("en-US");
-  //   value = datePipe.transform((new Date), 'dd/MM/yyyy h:mm a');
-  //   return value;
-  // }
-
-
-  // getPrint() {
-  //   // debugger;
-  //   var D_data = {
-  //     "VisitId": this.selectedAdvanceObj.VisitId || 0,
-  //     "PatientType": this.selectedAdvanceObj.PatientType || 0
-
-  //   }
-  //   // el.bgColor = 'red';
-  //   console.log(D_data);
-  //   let printContents; //`<div style="padding:20px;height:550px"><div><div style="display:flex"><img src="http://localhost:4200/assets/images/logos/Airmid_NewLogo.jpeg" width="90"><div><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="color:#464343">6158, Siddheshwar peth, near zilla parishad, solapur-3 phone no.: (0217) 2323001 / 02</div><div style="color:#464343">www.yashodharahospital.org</div></div></div><div style="border:1px solid grey;border-radius:16px;text-align:center;padding:8px;margin-top:5px"><span style="font-weight:700">IP ADVANCE RECEIPT</span></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex;justify-content:space-between"><div style="display:flex"><div style="width:100px;font-weight:700">Advance No</div><div style="width:10px;font-weight:700">:</div><div>6817</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Reg. No</div><div style="width:10px;font-weight:700">:</div><div>117399</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Date</div><div style="width:10px;font-weight:700">:</div><div>26/06/2019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3:15:49PM</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex;width:477px"><div style="width:100px;font-weight:700">Patient Name</div><div style="width:10px;font-weight:700">:</div><div>Mrs. Suglabai Dhulappa Waghmare</div></div><div style="display:flex"><div style="width:60px;font-weight:700">IPD No</div><div style="width:10px;font-weight:700">:</div><div>IP/53757/2019</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:100px;font-weight:700">DOA</div><div style="width:10px;font-weight:700">:</div><div>30/10/2019</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:100px;font-weight:700">Patient Type</div><div style="width:10px;font-weight:700">:</div><div>Self</div></div></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Advacne Amount</div><div style="width:10px;font-weight:700">:</div><div>4,000.00</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:150px;font-weight:700">Amount in Words</div><div style="width:10px;font-weight:700">:</div><div>FOUR THOUSANDS RUPPEE ONLY</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Reason of Advance</div><div style="width:10px;font-weight:700">:</div><div></div></div></div></div><div style="position:relative;top:100px;text-align:right"><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="font-weight:700;font-size:16px">Cashier</div><div>Paresh Manlor</div></div></div>`;
-  //   this.subscriptionArr.push(
-  //     this._CasepaperService.getOPDPrecriptionPrint(D_data).subscribe(res => {
-  //       console.log(res);
-  //       this.reportPrintObjList = res as CasepaperVisitDetails[];
-  //       console.log(this.reportPrintObjList);
-  //       this.reportPrintObj = res[0] as CasepaperVisitDetails;
-
-  //       this.getTemplate();
-
-  //       console.log(D_data);
-  //     })
-  //   );
-  // }
-
-  // // PRINT 
-  // print() {
-  //   // HospitalName, HospitalAddress, AdvanceNo, PatientName
-  //   let popupWin, printContents;
-  //   // printContents =this.printTemplate; // document.getElementById('print-section').innerHTML;
-
-  //   popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
-  //   // popupWin.document.open();
-  //   popupWin.document.write(` <html>
-  //   <head><style type="text/css">`);
-  //   popupWin.document.write(`
-  //     </style>
-  //         <title></title>
-  //     </head>
-  //   `);
-  //   popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
-  //   </html>`);
-  //   popupWin.document.close();
-  // }
-
   onEditVisitTable(row) {
     debugger;
 
@@ -1333,31 +1217,22 @@ export class NewCasepaperComponent implements OnInit {
 
   }
 
-  getMeasures(m_data) {
+  BMIstatus='';
+  getMeasures() {
     debugger;
-    // const BP = this.data.CasepaperVisitDetails.BP;
-    // this.caseFormGroup.get('BP').setValue(BP);
+ let height2= (this.caseFormGroup.get('Height').value * this.caseFormGroup.get('Height').value);
+    const BMI = (this.caseFormGroup.get('Weight').value  / height2 )
+    
+    this.caseFormGroup.get('BMI').setValue(BMI.toFixed(2));
 
-    // const BSL = this.data.CasepaperVisitDetails.BSL;
-    // this.caseFormGroup.get('BSL').setValue(BSL);
-
-    // const Height = this.data.CasepaperVisitDetails.Height;
-    // this.caseFormGroup.get('Height').setValue(Height);
-
-    // const Weight = this.data.CasepaperVisitDetails.Weight;
-    // this.caseFormGroup.get('Weight').setValue(Weight);
-
-    // const SpO2 = this.data.CasepaperVisitDetails.SpO2;
-    // this.caseFormGroup.get('SpO2').setValue(SpO2);
-
-    // const Pluse = this.data.CasepaperVisitDetails.Pluse;
-    // this.caseFormGroup.get('Pluse').setValue(Pluse);
-
-    // const BMI = this.data.CasepaperVisitDetails.BMI;
-    // this.caseFormGroup.get('BMI').setValue(BMI);
-
-    // const Temp = this.data.CasepaperVisitDetails.Temp;
-    // this.caseFormGroup.get('Temp').setValue(Temp);
+    if(BMI < 18.4)
+      this.BMIstatus='Underweight'
+    if(BMI > 18.5 && BMI< 24.9)
+      this.BMIstatus='Normal'
+    if(BMI > 25 && BMI< 39.9)
+      this.BMIstatus='Overweight'
+    if(BMI => 40)
+      this.BMIstatus='Obese'
   }
 
 
@@ -1365,7 +1240,7 @@ export class NewCasepaperComponent implements OnInit {
 
   getPrescriptionListFill(visitId) {
     debugger;
-    this._CasepaperService.prescriptionDetails(visitId).subscribe(Visit => {
+    this._CasepaperService.RtrvPreviousprescriptionDetails(visitId).subscribe(Visit => {
       this.dsItemList.data = Visit as MedicineItemList[];
 
       console.log(this.dsItemList.data);
@@ -1548,8 +1423,13 @@ export class NewCasepaperComponent implements OnInit {
       this.add = true;
     }
   }
-
-
+  public onEnterChiefComplaint(event): void {
+    // if (event.which === 13) {
+    //   this.addbutton.focus;
+    //   this.add = true;
+    // }
+  }
+  
 
 
   @ViewChild('EHeight') EHeight: ElementRef;
@@ -1564,25 +1444,29 @@ export class NewCasepaperComponent implements OnInit {
 
   public onEnterHeight(event): void {
     if (event.which === 13) {
-      this.EBSL.nativeElement.focus();
-    }
-  }
-  public onEnterBSL(event): void {
-    if (event.which === 13) {
       this.EWeight.nativeElement.focus();
     }
   }
+ 
   public onEnterWeight(event): void {
     if (event.which === 13) {
       this.ESpO2.nativeElement.focus();
       // if(this.mstatus) this.mstatus.focus();
     }
   }
+
+  public onEnterBSL(event): void {
+    if (event.which === 13) {
+      this.ESpO2.nativeElement.focus();
+    }
+  } 
   public onEnterSpO2(event): void {
     if (event.which === 13) {
       this.EPulse.nativeElement.focus();
     }
   }
+
+ 
   public onEnterPulse(event): void {
     if (event.which === 13) {
       this.EBMI.nativeElement.focus();

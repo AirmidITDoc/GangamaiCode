@@ -9,6 +9,8 @@ import Swal from 'sweetalert2';
 import { AdvanceDetailObj } from '../appointment.component';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
+import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
+import { SearchInforObj } from '../../op-search-list/opd-search-list/opd-search-list.component';
 
 @Component({
   selector: 'app-edit-consultant-doctor',
@@ -20,22 +22,21 @@ import { fuseAnimations } from '@fuse/animations';
 export class EditConsultantDoctorComponent implements OnInit {
 
 
-
   dateTimeObj: any;
   DoctorList: any = [];
   DepartmentList: any = [];
   DoctorId: any;
-
+  DepartmentId: any;
   AdmissionID: any;
   screenFromString = 'admission-form';
-  PatientHeaderObj: AdvanceDetailObj;
+  PatientHeaderObj: SearchInforObj;
   AdmittedDoc1: any;
   PatientName: any;
   searchFormGroup: FormGroup;
   VisitId: any;
   VisitDate: any;
   RegID: any = 0;
-
+  vDepartmentid:any=0;
   RefoptionsDoc: any[] = [];
   isRefDoctorSelected: boolean = false;
   vrefDoctorId:any;
@@ -44,9 +45,11 @@ export class EditConsultantDoctorComponent implements OnInit {
   isDeptSelected: boolean = false;
   vDeptId:any;
 
+  isDepartmentSelected: boolean = false;
+  isDoctorSelected: boolean = false;
 
-  filteredDoctor: Observable<string[]>;
-filteredDepartment: Observable<string[]>;
+filteredOptionsDep: any;
+filteredOptionsDoc: any;
   constructor(
 
     public _OpAppointmentService: AppointmentSreviceService,
@@ -64,23 +67,31 @@ filteredDepartment: Observable<string[]>;
 
     if (this.data) {
       console.log(this.data)
+      this.registerObj1 = this.data.registerObj;
       this.PatientHeaderObj = this.data.registerObj;
       this.VisitId = this.PatientHeaderObj.VisitId;
       this.PatientName = this.PatientHeaderObj.PatientName;
       this.DoctorId = this.PatientHeaderObj.DoctorId;
-      this.VisitDate = this.PatientHeaderObj.VistDateTime;
+      // this.VisitDate = this.PatientHeaderObj.VistDateTime;
       this.RegID = this.PatientHeaderObj.RegId;
       this.AdmissionID = this.PatientHeaderObj.AdmissionID;
       console.log(this.PatientHeaderObj);
-      debugger
-      // if (this.data.FormName == "Admission")
-      //   this.RegID = this.PatientHeaderObj.AdmissionID;
+      this.getDepartmentList();
+      this.getDoctorList();
     }
 
 
-    this.getDoctorList();
-    this.getDepartmentList();
+    this.filteredOptionsDep = this.searchFormGroup.get('Departmentid').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterdept(value)),
 
+    );
+
+    this.filteredOptionsDoc = this.searchFormGroup.get('DoctorID').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filteradmittedDoctor1(value)),
+
+    );
    
     setTimeout(function () {
       let element: HTMLElement = document.getElementById('auto_trigger') as HTMLElement;
@@ -91,120 +102,112 @@ filteredDepartment: Observable<string[]>;
 
   createSearchForm() {
     return this.formBuilder.group({
-      DoctorId: '',
+      DoctorID: '',
       Departmentid: ''
     });
   }
 
   setDropdownObjs() {
-    const toSelectDoc1 = this.DoctorList.find(c => c.DoctorID == this.DoctorId);
-    this.searchFormGroup.get('DoctorId').setValue(toSelectDoc1);
+    debugger
+    const toSelect = this.DepartmentList.find(c => c.Departmentid == this.registerObj1.DepartmentId);
+    this.searchFormGroup.get('Departmentid').setValue(toSelect);
+
+    const toSelect1 = this.DoctorList.find(c => c.DoctorId == this.registerObj1.DoctorId);
+    this.searchFormGroup.get('DoctorID').setValue(toSelect1);
+    
     this.searchFormGroup.updateValueAndValidity();
   }
-
-  // getDoctorList() {
-  //   this._OpAppointmentService.getDeptwiseDoctorMaster().subscribe(
-  //     data => {
-  //       this.DoctorList = data;
-  //       console.log(data)
-
-  //       this.filteredDoctor.next(this.DoctorList.slice());
-  //     })
-  // }
-
-  getDoctorList() {
-    this._OpAppointmentService.getDeptwiseDoctorMaster().subscribe(data => {
-      this.DoctorList = data;
-      this.RefoptionsDoc = this.DoctorList.slice();
-      this.filteredDoctor = this.searchFormGroup.get('DoctorId').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterdoc(value) : this.DoctorList.slice()),
-      );
-
-    });
-  }
-  private _filterdoc(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
-      return this.RefoptionsDoc.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
-    }
-
-  }
-
-  getOptionTextRefDoc(option) {
-    return option && option.Doctorname ? option.Doctorname : '';
-  }
-
-  // OnChangeDoctorList(departmentObj) {
-  //   console.log("departmentObj", departmentObj)
-  //   this._OpAppointmentService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(
-  //     data => {
-  //       this.DoctorList = data;
-  //       console.log(this.DoctorList);
-  //       // this.filteredDoctor.next(this.DoctorList.slice());
-  //     })
-  // }
-
+ 
   
-  OnChangeDoctorList(departmentObj) {
-    debugger
-    this.isDeptSelected = true;
-    this._OpAppointmentService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(
-      data => {
-        this.DoctorList = data;
-        this.RefoptionsDoc = this.DoctorList.slice();
-        this.filteredDoctor = this.searchFormGroup.get('DoctorId').valueChanges.pipe(
-          startWith(''),
-          map(value => value ? this._filterdoc(value) : this.DoctorList.slice()),
-        );
-      })
-  }
 
-
-  // getDepartmentList() {
-  //   this._OpAppointmentService.getDepartmentCombo().subscribe(data => {
-  //     this.DepartmentList = data;
-  //     this.filteredDepartment.next(this.DepartmentList.slice());
-  //   });
-  // }
-
-
+  registerObj1 = new AdmissionPersonlModel({});
+  
   getDepartmentList() {
+    debugger
     this._OpAppointmentService.getDepartmentCombo().subscribe(data => {
       this.DepartmentList = data;
-      this.optionsDept = this.DepartmentList.slice();
-      this.filteredDepartment = this.searchFormGroup.get('Departmentid').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterdept(value) : this.DepartmentList.slice()),
-      );
+      if (this.registerObj1) {
+        const ddValue = this.DepartmentList.filter(c => c.Departmentid == this.registerObj1.DepartmentId);
+        this.searchFormGroup.get('Departmentid').setValue(ddValue[0]);
+        //  this.OnChangeDoctorList(this.registerObj1);
+        this.searchFormGroup.updateValueAndValidity();
+        return;
+      }
+    });
 
+  }
+
+  getDoctorList() {
+    debugger
+
+    this._OpAppointmentService.getDoctorMasterNew().subscribe(data => {
+      this.DoctorList = data;
+      if (this.data) {
+        const ddValue = this.DoctorList.filter(c => c.DoctorId == this.registerObj1.DoctorId);
+        this.searchFormGroup.get('DoctorID').setValue(ddValue[0]);
+        this.searchFormGroup.updateValueAndValidity();
+        return;
+      }
     });
   }
+
+
   private _filterdept(value: any): string[] {
     if (value) {
       const filterValue = value && value.departmentName ? value.departmentName.toLowerCase() : value.toLowerCase();
-      return this.optionsDept.filter(option => option.departmentName.toLowerCase().includes(filterValue));
+      return this.DepartmentList.filter(option => option.departmentName.toLowerCase().includes(filterValue));
     }
-
   }
 
-  getOptionTextDept(option) {
+  private _filteradmittedDoctor1(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
+      return this.DoctorList.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
+    }
+  }
+ 
+
+  getOptionTextDep(option) {
     return option && option.departmentName ? option.departmentName : '';
   }
 
-  @ViewChild('refdoc') refdoc: ElementRef;
+  OnChangeDoctorList(departmentObj) {
+    debugger
+  //   if(flag)
+  //   departmentObj.DepartmentId=departmentObj.DepartmentId
+  // else
+  // departmentObj.DepartmentId=departmentObj.Departmentid
 
-  public onEnterrefdoc(event): void {
-    if (event.which === 13) {
-
-      this.refdoc.nativeElement.focus();
-
-    }
+    this.searchFormGroup.get('DoctorID').reset();
+    this.isDepartmentSelected = true;
+    this._OpAppointmentService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(
+      data => {
+        this.DoctorList = data;
+        // this.searchFormGroup.get('DoctorId').setValue(this.DoctorList[0]);      
+        return;
+      });
+      this.filteredOptionsDoc = this.searchFormGroup.get('DoctorID').valueChanges.pipe(
+        startWith(''),
+        map(value => this._filteradmittedDoctor1(value)),
+  
+      );
+  
   }
 
+  
+  getOptionTextDoc(option) {
+    return option && option.Doctorname ? option.Doctorname : '';
+  }
+ 
+  @ViewChild('dept') dept: ElementRef;
+  @ViewChild('deptdoc') deptdoc: ElementRef;
 
-
-
+  public onEnterdept(event): void {
+    if (event.which === 13) {
+      this.deptdoc.nativeElement.focus();
+    }
+  }
+  
 
   onClose() {
     this.dialogRef.close();
@@ -212,14 +215,14 @@ filteredDepartment: Observable<string[]>;
 
   onSubmit() {
     debugger
-    this.DoctorId = this.searchFormGroup.get('DoctorId').value.DoctorId;
+
+    this.DepartmentId=this.searchFormGroup.get('Departmentid').value.Departmentid;
+    this.DoctorId = this.searchFormGroup.get('DoctorID').value.DoctorId;
     let query = '';
     if (this.data.FormName == "Appointment") {
-       query = "Update VisitDetails set ConsultantDocId= " + this.DoctorId + " where Visitid=" + this.VisitId + " ";
+       query = "Update VisitDetails set ConsultantDocId= " + this.DoctorId + " , " + "DepartmentId="+this.DepartmentId + " where Visitid=" + this.VisitId + " ";
     }
-    if (this.data.FormName == "Admission") {
-       query = "Update VisitDetails set ConsultantDocId= " + this.DoctorId + " where RegID=" + this.RegID + " ";
-    }
+    
     console.log(query);
     this._OpAppointmentService.UpdateQueryByStatement(query).subscribe(response => {
 

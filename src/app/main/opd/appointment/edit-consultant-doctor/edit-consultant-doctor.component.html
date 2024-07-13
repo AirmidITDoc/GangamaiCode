@@ -1,186 +1,219 @@
-<div class="page-layout modal-wrapper grid-container">
-    <!-- HEADER -->
+<div class="modal-wrapper grid-container">
+    <!-- Modal header -->
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Consultant Doctor Update </span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Consultation Doctor Update </span>
             </div>
             <div class="modal-header-right">
-                <div class="comman-date-container">
-                    <!-- <div class="comman-date">
-                        <app-common-date [screenFrom]="screenFromString"
-                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
-                    </div> -->
-                    <div class="close-icon">
-                        <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </div>
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                        matTooltip="Close">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+                <div fxLayout="row" fxLayoutGap="5px">
+                    <app-common-date [screenFrom]="screenFromString" style="float:right"
+                        (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Modal body -->
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <form [formGroup]="searchFormGroup">
+                <div fxLayout="column" class="gap-12">
+                    <div class="modal-card-container">
+                        <mat-card>
+                            <div class="patient-info-container">
+                                <div class="patient-sub">
+                                    <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
+                                        fxLayoutAlign="space-between">
+                                        <div fxLayout="column" fxLayoutGap="10px">
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">UHID No
+                                                </span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{PatientHeaderObj.RegId}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Patient Name
+                                                </span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{PatientHeaderObj.PatientName}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Doctor Name</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{PatientHeaderObj.Doctorname}}</span>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="column" fxLayoutGap="10px">
 
-    <div style="padding:3px;">
-        <div fxlayout="row">
-         
-                <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
-                    <div class="patient-info-container">
-                        <div class="patient-info-box">
-                            <div class="patient-info-title border-bottom pb-2">
-                                <span class="h1">Patient Information</span>
-                            </div>
-                            <div class="patient-info-box my-8">
-                                <div class="patient-info-row row-gap-4" fxLayout="row wrap">
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">OPD No</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{PatientHeaderObj.OPDNo}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Age | Sex
+                                                </span>
+                                                <span>:</span>
+                                                <span
+                                                    class="patient-col-value">{{PatientHeaderObj.AgeYear}}Y|{{PatientHeaderObj.AgeMonth}}M|{{PatientHeaderObj.AgeDay}}
+                                                    D | {{PatientHeaderObj.GenderName}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Department</span>
+                                                <span>:</span>
+                                                <span
+                                                    class="patient-col-value">{{PatientHeaderObj.DepartmentName}}</span>
+                                            </div>
 
-                                    <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
-                                        <span class="patient-col-key ">Visist Id</span>
-                                        <span>:</span>
-                                        <span
-                                            class="patient-col-value">{{PatientHeaderObj.VisitId}}</span>
+
+                                        </div>
+                                        <div fxLayout="column" fxLayoutGap="10px" style="margin-right: 100px;">
+
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Patient Type | Tarrif
+                                                </span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{PatientHeaderObj.PatientType}} |
+                                                    {{PatientHeaderObj.TarrifName}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Company Name</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value"
+                                                    style="color: orange;">{{PatientHeaderObj.CompanyName}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Ref-Doctor Name
+                                                </span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{PatientHeaderObj.RefDocName}}</span>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
-                                        <span class="patient-col-key ">Patient Name</span>
-                                        <span>:</span>
-                                        <span
-                                            class="patient-col-value">{{PatientName}}</span>
-                                    </div>
-                                    <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
-                                        <span class="patient-col-key">OPIPNo</span>
-                                        <span>:</span>
-                                        <span class="patient-col-value">{{RegID}}</span>
-                                    </div>
-                                    <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
-                                        <span class="patient-col-key">Visit Date</span>
-                                        <span>:</span>
-                                        <span class="patient-col-value">{{VisitDate}}</span>
-                                    </div>
-                                    <!-- <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
-                                        <span class="patient-col-key">CompanyName</span>
-                                        <span>:</span>
-                                        <span class="patient-col-value">{{CompanyName}}</span>
-                                    </div>
-                                    <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
-                                        <span class="patient-col-key ">{{Tarrifname}}</span>
-                                        <span>:</span>
-                                        <span class="patient-col-value"></span>
-                                    </div> -->
-                                   
                                 </div>
                             </div>
-                        </div>
+                        </mat-card>
+                    </div>
+                    <div class="modal-card-container">
+                        <mat-card>
+                            <div fxLayout="column" class="gap-8">
+                                <div class="form-title mb-2 border-bottom pb-2">
+                                    <span class="h3 font-weight-600"> Consultation Doctor Information</span>
+                                </div>
+                                <div class="form-body">
+                                    <div fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
+
+                                        <!--                                     
+                                        <mat-form-field appearance="outline" fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="40%">
+                                            <mat-label>Department</mat-label>
+                                            <input matAutocompletePosition="below" type="text" placeholder="Select Department" matInput
+                                                #dept (keydown)="onEnterdept($event)" formControlName="Departmentid"
+                                                [matAutocomplete]="autoDep1" required>
+                                            <span matSuffix style="display: flex;">
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="searchFormGroup.get('Departmentid').setValue(''); isDepartmentSelected = false;">close</mat-icon>
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="searchFormGroup.get('Departmentid').setValue(''); isDepartmentSelected = false;">search</mat-icon>
+                                            </span>
+                                            <mat-autocomplete #autoDep1="matAutocomplete" [displayWith]="getOptionTextDep">
+                                                <mat-option *ngFor="let option of filteredOptionsDep | async" [value]="option"
+                                                    (onSelectionChange)="OnChangeDoctorList(option,false)">
+                                                    {{option.departmentName}}
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field> -->
+
+                                        <mat-form-field appearance="outline" fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="40%">
+                                            <mat-label>Department</mat-label>
+                                            <input matAutocompletePosition="below" type="text"
+                                                placeholder="Select Department" matInput #dept
+                                                [(ngModel)]="vDepartmentid" (keydown)="onEnterdept($event)"
+                                                formControlName="Departmentid" [matAutocomplete]="autoDep1" required>
+                                            <span matSuffix style="display: flex;">
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="searchFormGroup.get('Departmentid').setValue(''); isDepartmentSelected = false;">close</mat-icon>
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="searchFormGroup.get('Departmentid').setValue(''); isDepartmentSelected = false;">search</mat-icon>
+                                            </span>
+
+                                            <mat-autocomplete #autoDep1="matAutocomplete"
+                                                [displayWith]="getOptionTextDep">
+                                                <mat-option *ngFor="let option of filteredOptionsDep | async"
+                                                    [value]="option" (onSelectionChange)="OnChangeDoctorList(option)">
+                                                    {{option.departmentName}}
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
+
+                                        <!--         
+                                        <mat-form-field appearance="outline" fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="40%">
+                                            <mat-label>Doctor Name</mat-label>
+                                            <input matAutocompletePosition="below" type="text" placeholder="Select Doctor Name" matInput #deptdoc
+                                                formControlName="DoctorID" [matAutocomplete]="autoDoctor" required>
+                                            <span matSuffix style="display: flex;">
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="searchFormGroup.get('DoctorID').setValue(''); isDoctorSelected = false;">close</mat-icon>
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="searchFormGroup.get('DoctorID').setValue(''); isDoctorSelected = false;">search</mat-icon>
+                                            </span>
+                                    
+                                            <mat-autocomplete #autoDoctor="matAutocomplete" [displayWith]="getOptionTextDoc">
+                                                <mat-option *ngFor="let option of filteredOptionsDoc | async" [value]="option"
+                                                    (onSelectionChange)="isDoctorSelected = true;">
+                                                    {{option.Doctorname }} <b>|</b> {{option.DepartmentName }} <b>|</b>
+                                                    {{option.DoctorId}}
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field> -->
+
+
+                                        <mat-form-field appearance="outline" fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="40%">
+                                            <mat-label>Doctor Name</mat-label>
+                                            <input matAutocompletePosition="below" type="text"
+                                                placeholder="Select Doctor" matInput required formControlName="DoctorID"
+                                                [matAutocomplete]="autoDoctor" required>
+                                            <span matSuffix style="display: flex;">
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="searchFormGroup.get('DoctorID').setValue(''); isDoctorSelected = false;">close</mat-icon>
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="searchFormGroup.get('DoctorID').setValue(''); isDoctorSelected = false;">search</mat-icon>
+                                            </span>
+
+                                            <mat-autocomplete #autoDoctor="matAutocomplete"
+                                                [displayWith]="getOptionTextDoc">
+                                                <mat-option *ngFor="let option of filteredOptionsDoc | async"
+                                                    [value]="option">
+                                                    {{option.Doctorname }} <b>|</b> {{option.DepartmentName }} <b>|</b>
+                                                    {{option.DoctorId}}
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" style="margin-left:800px;">
+
+                                <button class="btn btn-danger-outline" (click)="onClose()">Cancle</button>
+                                <button class="btn btn-primary " color="accent" (click)="onSubmit()"
+                                    [disabled]="searchFormGroup.invalid">
+                                    <span>Save</span>
+                                </button>
+                            </div>
+                        </mat-card>
                     </div>
                 </div>
-            
-            <!-- ================================ LABEL HEADER  -->
+            </form>
         </div>
-        <mat-card class="example-card" name="m1">
-            <div fxFlexFill fxLayout="column">
-                <form [formGroup]="searchFormGroup" style="border: blue;" aria-disabled="true">
-                    <h3 style="font-weight:bold ;">Consultant Doctor Detail</h3>
-                    <div>
-                        <div>
-                            <span class="label" style="font-weight:bold;"> Present Consultant Dr.Name : </span>
-                            <span class="data_input" style="font-weight:bold;font-size:x-large;">{{PatientHeaderObj.DoctorName}}</span>
-
-                        </div>
-                    <br>
-                        <div>
-                            <!-- <mat-form-field appearance="outline" fxFlex style="margin-right: 5px;">
-                                <mat-label>Department</mat-label>
-                                <mat-select formControlName="Departmentid" placeholder="Bank" #singleSelect required
-                                  (selectionChange)="OnChangeDoctorList($event.value)">
-                                  <mat-option>
-                                    <ngx-mat-select-search [formControl]="departmentFilterCtrl"  [placeholderLabel]="'Search'"
-                                    [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                                  </mat-option>
-                                  <mat-option *ngFor="let element of filteredDepartment | async" [value]="element">
-                                    {{element.departmentName}}
-                                  </mat-option>
-                                </mat-select>
-                              </mat-form-field>
-                              <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Doctor Name</mat-label>
-                                <mat-select formControlName="DoctorId" placeholder="Bank" #singleSelect>
-                                  <mat-option>
-                                    <ngx-mat-select-search [formControl]="doctorFilterCtrl" [placeholderLabel]="'Search'"
-                                      [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                                  </mat-option>
-                                  <mat-option *ngFor="let element of filteredDoctor | async" [value]="element">
-                                    {{element.Doctorname }}  <b>|</b> {{element.DepartmentName }} <b>|</b> {{element.DoctorId }}
-                                  </mat-option>
-            
-                                </mat-select>
-                                </mat-form-field> -->
-                                <!-- <mat-form-field appearance="outline" fxFlex style="margin-right: 5px;">
-                                    <mat-label>Department</mat-label>
-                                    <mat-select formControlName="Departmentid" placeholder="Bank" #singleSelect required
-                                      (selectionChange)="OnChangeDoctorList($event.value)">
-                                      <mat-option>
-                                        <ngx-mat-select-search [formControl]="departmentFilterCtrl"  [placeholderLabel]="'Search'"
-                                        [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                                      </mat-option>
-                                      <mat-option *ngFor="let element of filteredDepartment | async" [value]="element">
-                                        {{element.departmentName}}
-                                      </mat-option>
-                                    </mat-select>
-                                  </mat-form-field> -->
-
-
-                                  <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Department Name</mat-label>
-                                    <input matAutocompletePosition="below" type="text" placeholder="Select Ref Doctor "
-                                        matInput #refdoc (keydown)="onEnterrefdoc($event)" formControlName="Departmentid" [(ngModel)]="vDeptId"
-                                        [matAutocomplete]="autodept1">
-                                    <span matSuffix style="display: flex;">
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="searchFormGroup.get('Departmentid').setValue(''); isDeptSelected = false;">close</mat-icon>
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="searchFormGroup.get('Departmentid').setValue(''); isDeptSelected = false;">search</mat-icon>
-                                    </span>
-                                    <mat-autocomplete #autodept1="matAutocomplete" [displayWith]="getOptionTextDept">
-                                        <mat-option *ngFor="let option of filteredDepartment | async" [value]="option"   (onSelectionChange)="OnChangeDoctorList(option)">
-                                            {{option.departmentName }}
-                                        </mat-option>
-                                    </mat-autocomplete>
-                                </mat-form-field>
-
-
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Doctor Name</mat-label>
-                                    <input matAutocompletePosition="below" type="text" placeholder="Select  Doctor "
-                                        matInput #refdoc  formControlName="DoctorId" [(ngModel)]="vrefDoctorId"
-                                        [matAutocomplete]="autorefdoc2">
-                                    <span matSuffix style="display: flex;">
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="searchFormGroup.get('DoctorId').setValue(''); isRefDoctorSelected = false;">close</mat-icon>
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="searchFormGroup.get('DoctorId').setValue(''); isRefDoctorSelected = false;">search</mat-icon>
-                                    </span>
-                                    <mat-autocomplete #autorefdoc2="matAutocomplete" [displayWith]="getOptionTextRefDoc">
-                                        <mat-option *ngFor="let option of filteredDoctor | async" [value]="option">
-                                            {{option.Doctorname }}  <b>|</b> {{option.DepartmentName }} <b>|</b> {{option.DoctorId }}
-                                        </mat-option>
-                                    </mat-autocomplete>
-                                </mat-form-field>
-
-                        </div>
-
-                       
-
-                        
-                    <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
-                         
-                        <button class="btn btn-danger-outline" (click)="onClose()">Cancle</button>
-                        <button class="btn btn-primary " color="accent" (click)="onSubmit()"  [disabled]="searchFormGroup.invalid">
-                            <span>Save</span>
-                        </button>
-                    </div>
-                    </div>
-                </form>
-            </div>
-        </mat-card>
-
     </div>
+
+    <!-- Modal footer -->
+
 </div>

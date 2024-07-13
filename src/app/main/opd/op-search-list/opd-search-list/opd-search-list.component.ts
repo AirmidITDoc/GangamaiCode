@@ -355,6 +355,7 @@ export class SearchInforObj
      Tarrifname:any;
      RefDocName:any;
      RefDocId:any;
+     TarrifName:any;
      /**
      * Constructor
      *
@@ -402,8 +403,10 @@ export class SearchInforObj
            this.DepartmentId=SearchInforObj.DepartmentId ||0
            this.GenderName=SearchInforObj.GenderName|| ""
            this.Tarrifname=SearchInforObj.Tarrifname || ""
+             this.TarrifName=SearchInforObj.TarrifName || ""
            this.RefDocName=SearchInforObj.RefDocName|| ""
            this.RefDocId=SearchInforObj.RefDocId || 0;
+
         }
     }
 }

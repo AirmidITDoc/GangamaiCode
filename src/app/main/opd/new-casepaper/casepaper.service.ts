@@ -48,7 +48,7 @@ export class CasepaperService {
   public getOPDPrecriptionPrint(PrecriptionId) {
     return this._httpClient.post("Generic/GetByProc?procName=rptOPDPrecriptionPrint ", PrecriptionId)
   }
-  public prescriptionDetails(visistId) {
+  public RtrvPreviousprescriptionDetails(visistId) {
     return this._httpClient.post("Generic/GetByProc?procName=Get_PrescriptionDetailsVisitWise", { "VisitId": visistId });
   }
   public getVisitedList(employee) {

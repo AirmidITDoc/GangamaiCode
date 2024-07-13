@@ -380,5 +380,7 @@ public documentdownloadInsert(employee){
     public getAppointmentReport(VisitId){
       return this._httpClient.get("OutPatient/view-PatientAppointment?VisitId=" + VisitId);
     }
-    
+    public getDoctorMasterNew() {
+      return this._httpClient.post("Generic/GetByProc?procName=Retrieve_DoctorWithDepartCombo_Conditional", {})
+    }
 }
