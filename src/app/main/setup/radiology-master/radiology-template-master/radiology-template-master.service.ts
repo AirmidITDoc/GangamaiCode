@@ -58,7 +58,7 @@ export class RadiologyTemplateMasterService {
     return this._httpClient.post("Generic/ExecByQueryStatement?query=" + m_data,{});
 }
   public getRadiologytemplateMasterList1(employee) {
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Radiology_TemplateMaster_by_Name", employee)
+    return this._httpClient.post("Generic/GetDataSetByProc?procName=m_Rtrv_Radiology_TemplateMaster_by_Name", employee)
   }
   public gettemplateCombo(Id)
   {

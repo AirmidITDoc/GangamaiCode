@@ -66,8 +66,8 @@ export class RadiologyTemplateMasterComponent implements OnInit {
 
     'TemplateId',
     'TemplateName',
-    'TemplateDesc',
-    'IsDeleted',
+    // 'TemplateDesc',
+    'IsActive',
     'action'
   ];
 
@@ -103,21 +103,20 @@ export class RadiologyTemplateMasterComponent implements OnInit {
     this.getRadiologytemplateMasterList();
   }
 
+  resultsLength = 0;
   getRadiologytemplateMasterList() {
-
     this.sIsLoading = 'loading-data';
     var m_data = {
       "TemplateName": this._radiologytemplateService.myformSearch.get("TemplateNameSearch").value + '%' || '%',
-
+      "Start":(this.paginator?.pageIndex??0),
+      "Length":(this.paginator?.pageSize??35)
     }
-    //console.log(m_data);
-    this._radiologytemplateService.getRadiologytemplateMasterList1(m_data).subscribe(Menu => {
-      this.dataSource.data = Menu as RadioPatientList[];
-      //console.log(this.dataSource)
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
-      this.sIsLoading = '';
-
+    this._radiologytemplateService.getRadiologytemplateMasterList1(m_data).subscribe(data => {
+      this.dataSource.data = data as RadioPatientList[];
+      this.dataSource.data = data["Table1"] ?? [] as RadioPatientList[];
+      console.log(this.dataSource.data)
+      this.resultsLength = data["Table"][0]["total_row"];
+      this.sIsLoading = this.dataSource.data.length == 0 ? 'no-data' : '';
     }, error => this.isLoading = false)
   }
 

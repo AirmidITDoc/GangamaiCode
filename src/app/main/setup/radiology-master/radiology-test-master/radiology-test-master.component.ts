@@ -40,7 +40,7 @@ export class RadiologyTestMasterComponent implements OnInit {
     'CategoryName',
     'ServiceId',
     'AddedByName',
-    'IsDeleted',
+    'IsActive',
     'action'
   ];
   displayedColumns1: string[] = [
@@ -105,19 +105,21 @@ export class RadiologyTestMasterComponent implements OnInit {
       IsDeletedSearch: "2",
     }); this.getRadiologyTestList();
   }
-
-  
+  sIsLoading: string = '';
+  resultsLength = 0;
   getRadiologyTestList() {
-    //debugger
     var vdata = {
-      "ServiceName": this._radiologytestService.myformSearch.get("TestNameSearch").value + '%' || '%'
+      "ServiceName": this._radiologytestService.myformSearch.get("TestNameSearch").value + '%' || '%',
+      "Start":(this.paginator?.pageIndex??0),
+      "Length":(this.paginator?.pageSize??35)
     }
     console.log(vdata);
     this._radiologytestService.getRadiologyList(vdata).subscribe(data => {
       this.dataSource.data = data as RadiologytestMaster[];
-      console.log(this.dataSource);
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
+      this.dataSource.data = data["Table1"] ?? [] as RadiologytestMaster[];
+      console.log(this.dataSource.data)
+      this.resultsLength = data["Table"][0]["total_row"];
+      this.sIsLoading = this.dataSource.data.length == 0 ? 'no-data' : '';
     });
   }
 
