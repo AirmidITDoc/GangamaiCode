@@ -2227,7 +2227,7 @@ console.log(this._AppointmentSreviceService.myFilterform.get("DoctorId").value)
         }
       );
       dialogRef.afterClosed().subscribe((result) => {
-        this.getVisitList();
+        this.getVisitList1();
       });
     } else if (m == "Update Referred Doctor") {
       var m_data3 = {
@@ -2241,7 +2241,7 @@ console.log(this._AppointmentSreviceService.myFilterform.get("DoctorId").value)
       this._registrationService.populateFormpersonal(contact);
       const dialogRef = this._matDialog.open(EditRefraneDoctorComponent, {
         maxWidth: "70vw",
-        height: "410px",
+        height: "380px",
         width: "70%",
         data: {
           registerObj: contact,

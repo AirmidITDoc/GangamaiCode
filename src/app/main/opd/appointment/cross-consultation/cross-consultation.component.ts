@@ -76,7 +76,7 @@ export class CrossConsultationComponent implements OnInit {
       this.selectedAdvanceObj = data;
       console.log(this.selectedAdvanceObj);
       this.PatientHeaderObj = this.data;
-      this.registerObj1 = this.data;;
+      this.registerObj1 = this.data;
       console.log(this.registerObj1);
       this.VisitId = this.selectedAdvanceObj.VisitId;
       this.PatientName = this.PatientHeaderObj.PatientName;

@@ -198,6 +198,8 @@ public onEnterpolic(event): void {
       "AuthorityName": this.MlcInfoFormGroup.get("AuthorityName").value || '',
       "BuckleNo": this.MlcInfoFormGroup.get("ABuckleNo").value || '',
       "PoliceStation": this.MlcInfoFormGroup.get("PoliceStation").value || '',
+      "Remark": this.MlcInfoFormGroup.get("Remark").value || '',
+      "DetailGiven": this.MlcInfoFormGroup.get("Given").value || '',
       "MLCId": 0,
     }
 
@@ -233,6 +235,8 @@ else{
       "AuthorityName": this.MlcInfoFormGroup.get("AuthorityName").value || '',
       "BuckleNo": this.MlcInfoFormGroup.get("ABuckleNo").value || '',
       "PoliceStation": this.MlcInfoFormGroup.get("PoliceStation").value || '',
+      "Remark": this.MlcInfoFormGroup.get("Remark").value || '',
+      "DetailGiven": this.MlcInfoFormGroup.get("Given").value || '',
     }
   }
     console.log(m_data1);
