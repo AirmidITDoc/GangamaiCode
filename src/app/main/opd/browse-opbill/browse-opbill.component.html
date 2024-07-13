@@ -356,7 +356,7 @@
                                             BalanceAmt
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md
-                                            style="background-color: lightcoral;">
+                                            [ngClass]="{'positive-balance': contact.BalanceAmt > 0 }">
                                             {{contact.BalanceAmt | currency:'INR'}}
 
                                         </mat-cell>
@@ -421,7 +421,7 @@
                                             RefundAmount
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md
-                                            style="background-color: aquamarine;">
+                                            [ngClass]="{'positive-Refund': contact.RefundAmount > 0 }" >
                                             {{contact.RefundAmount | currency:'INR'}}
                                             <button mat-icon-button matTooltip="View Refund">
                                                 <mat-icon *ngIf="!contact.RefundAmount==0">visibility</mat-icon>
@@ -874,7 +874,7 @@
                                                     </mat-cell>
                                                 </ng-container> -->
                                                 <!-- stickyEnd -->
-                                                <ng-container matColumnDef="buttons"  End>
+                                                <ng-container matColumnDef="buttons"  stickyEnd>
                                                     <mat-header-cell *matHeaderCellDef style="color: white;">Action
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact">

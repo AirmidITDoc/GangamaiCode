@@ -163,6 +163,15 @@
                                                 <button type="button" mat-icon-button (click)="exportBillDatewiseReportExcel()" [disabled]="dataSource.data.length == 0">
                                                     <img width="32" height="10px" src="assets/images/svg/xls-svg.svg">
                                                 </button>
+
+                                                <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                                    <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                                                    <span >: Intrim Bills </span>
+                                                </div>
+                                                <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                                    <mat-icon class="pill green s-16">circle</mat-icon>
+                                                    <span >: Final Bills </span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -186,6 +195,10 @@
                                             
                                             <mat-icon *ngIf="contact.PatientTypeId !='1'" matTooltip="Patient Category Company">business
                                             </mat-icon>
+                                            <mat-icon title="Intrim Bill" *ngIf="contact.InterimOrFinal=='1'" class="pill orange-600 s-16"
+                                                matTooltip="Intrim Bill">circle</mat-icon>
+                                            <mat-icon title="Final Bill" *ngIf="contact.InterimOrFinal=='0'" class="pill green s-16"
+                                                matTooltip="Final Bill">circle</mat-icon>
 
                                             <mat-icon *ngIf="contact.BalanceAmt !=0 " matTooltip="Final Discount" (click)="getFinalDisc(contact)">money
                                             </mat-icon>
@@ -199,16 +212,15 @@
                                                 <mat-icon *ngIf="contact.CompanyName=='0' " matTooltip="CompanyName" class="pill orange-600 s-16">circle</mat-icon>
                                             </button> -->
 
-                                            <button mat-icon-button matTooltip="Settlement">
-                                                <mat-icon *ngIf="contact.BalanceAmt !=0 " matTooltip="Settlement"
-                                                    (click)="Billpayment(contact)">payment</mat-icon>
-                                            </button>
+                                            <mat-icon *ngIf="contact.BalanceAmt !=0 " matTooltip="Settlement" (click)="Billpayment(contact)">
+                                                payment</mat-icon>
 
                                             <mat-icon title="Clse Menu" *ngIf="contact.IsCancelled==1" [disabled]="contact.disabled" class="disabled-icon">
                                                 close</mat-icon>
 
                                             <mat-icon title="Refund" *ngIf="!contact.RefundAmount==0" [disabled]="contact.disabled" class="disabled-icon">
                                                 redo</mat-icon>
+                                          
 
                                         </mat-cell>
                                     </ng-container>
@@ -259,8 +271,8 @@
 
                                     <ng-container matColumnDef="MobileNo">
                                         <mat-header-cell *matHeaderCellDef fxShow.gt-sm
-                                            class="w-80">MobileNo</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" class="w-80">
+                                            class="w-150">MobileNo</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" class="w-150">
                                             <span> {{contact.MobileNo}}</span>
                                         </mat-cell>
                                     </ng-container>
@@ -283,8 +295,8 @@
 
                                     <ng-container matColumnDef="IPDNo">
                                         <mat-header-cell *matHeaderCellDef fxShow.gt-sm
-                                            class="w-80">IPDNo</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" class="w-80">
+                                            class="w-150">IPDNo</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" class="w-150">
                                             <span> {{contact.IPDNo}}</span>
                                         </mat-cell>
                                     </ng-container>

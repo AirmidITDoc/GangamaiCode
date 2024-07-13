@@ -35,29 +35,17 @@ import { IpPaymentwithAdvanceComponent } from '../ip-search-list/ip-paymentwith-
   animations: fuseAnimations
 })
 export class IPSettlementComponent implements OnInit {
-  flagSubmit: boolean;
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  flagSubmit: boolean; 
   sIsLoading: string = '';
-  selectedAdvanceObj: AdvanceDetailObj;
-  regId: any;
-  screenFromString = 'Ip-Settelment';
-  reportPrintObj: ReportPrintObj;
-  subscriptionArr: Subscription[] = [];
-  printTemplate: any;
-  reportPrintObjList: IpBillBrowseList[] = [];
+  selectedAdvanceObj: AdvanceDetailObj; 
+  screenFromString = 'Ip-Settelment';   
   currentDate = new Date();
   FinalAmt: any;
-  balanceamt: any;
-  reportPrintbillObj: ReportPrintObj;
-  reportPrintbillObjList: ReportPrintObj[] = [];
-
+  balanceamt: any;  
   searchFormGroup: FormGroup;
-  registerObj = new AdmissionPersonlModel({});
+  registerObj:any;
   filteredOptions: any;
-  noOptionFound: boolean = false;
-  isRegSearchDisabled: boolean = true;
-  Regdisplay: boolean = false;
+  noOptionFound: boolean = false;  
   PatientName: any;
   RegId: any;
   isRegIdSelected: boolean = false;
@@ -66,21 +54,17 @@ export class IPSettlementComponent implements OnInit {
   vTariif: any;
   RegNo: any;
   PatientHeaderObj: AdvanceDetailObj;
+  AgeYear:any;
+  AgeDay:any;
+  GenderName:any;
+  AgeMonth:any;
+  MobileNo:any; 
+  SpinLoading: boolean = false; 
 
- 
-  displayedColumns: string[] = [ 
-    'button',
-    'BillDate',
-    'BillNo',
-    'TotalAmt',
-    'ConcessionAmt',
-    'NetPayableAmt',
-    'PaidAmount',
-    'BalanceAmt',
-    'action', 
-  ];
   displayedColumns1: string[] = [ 
     'button',
+    'CompanyName',
+    'PatientType',
     'BillDate',
     'BillNo',
     'TotalAmt',
@@ -90,11 +74,9 @@ export class IPSettlementComponent implements OnInit {
     'BalanceAmt',
     'action' 
   ];
-  dataSource = new MatTableDataSource<PaidBilldetail>();
   dataSource1 = new MatTableDataSource<CreditBilldetail>();
-  @ViewChild(MatPaginator) PathTestpaginator: MatPaginator;
-  paymentFormGroup: FormGroup; 
-  hasSelectedContacts: boolean;
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;  
 
   constructor(
     public _IpSearchListService: IPSettlementService,
@@ -103,10 +85,9 @@ export class IPSettlementComponent implements OnInit {
     public datePipe: DatePipe,
     private advanceDataStored: AdvanceDataStored,
     private formBuilder: FormBuilder, 
-    private router: Router) { }
+   ) { }
 
-  ngOnInit(): void {
-    debugger
+  ngOnInit(): void { 
     this.clearpatientinfo();
     if (this.advanceDataStored.storage) {
 
@@ -122,53 +103,21 @@ export class IPSettlementComponent implements OnInit {
       this.AgeYear= this.PatientHeaderObj.PatientAge;
       this.MobileNo= this.PatientHeaderObj.MobileNo;
       this.vCompanyName = this.PatientHeaderObj.CompanyName;
-      this.vTariif = this.PatientHeaderObj.TariffName;
-      this.getPaidBillDetails();
+      this.vTariif = this.PatientHeaderObj.TariffName; 
       this.getCreditBillDetails(); 
     } 
     else{
       this.clearpatientinfo();
     } 
-    this.searchFormGroup = this.createSearchForm();
-    this.Regdisplay = true; 
-
-    this.searchFormGroup.get('RegId').enable();
-    this.isRegSearchDisabled = false; 
+    this.searchFormGroup = this.createSearchForm(); 
   }
 
   createSearchForm() {
-    return this.formBuilder.group({
-      regRadio: ['registration'],
-      RegId: [{ value: '', disabled: this.isRegSearchDisabled }], 
+    return this.formBuilder.group({ 
+      RegId: [''], 
     });
-  } 
-  createForm() {
-    this.paymentFormGroup = this.formBuilder.group({ 
-      IsCompany: [0] 
-    });
-  }
+  }  
 
-  AgeYear:any;
-  AgeDay:any;
-  GenderName:any;
-  AgeMonth:any;
-  MobileNo:any; 
-  getSelectedObj(obj) {
-    console.log(obj)
-    this.registerObj = obj; 
-    this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
-    this.RegId = obj.RegId;  
-    this.vAdmissionID = obj.AdmissionID;
-    this.RegNo = obj.RegNo;
-    this.AgeYear = obj.AgeYear; 
-    this.AgeDay = obj.AgeDay;
-    this.AgeMonth = obj.AgeMonth;
-   this.GenderName = obj.GenderName;
-   this.MobileNo = obj.MobileNo; 
-    this.getPaidBillDetails();
-    this.getCreditBillDetails(); 
-  }
- 
   getSearchList() { 
     var m_data = {
       "Keyword": `${this.searchFormGroup.get('RegId').value}%`
@@ -184,6 +133,21 @@ export class IPSettlementComponent implements OnInit {
       });
     } 
   } 
+  getSelectedObj(obj) {
+    console.log(obj)
+    this.registerObj = obj; 
+    this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
+    this.RegId = obj.RegId;  
+    this.vAdmissionID = obj.AdmissionID;
+    this.RegNo = obj.RegNo;
+    this.AgeYear = obj.AgeYear; 
+    this.AgeDay = obj.AgeDay;
+    this.AgeMonth = obj.AgeMonth;
+   this.GenderName = obj.GenderName;
+   this.MobileNo = obj.MobileNo;  
+    this.getCreditBillDetails(); 
+  }
+ 
   getOptionText(option) {
     if (!option) return '';
     return option.FirstName + ' ' + option.LastName + ' ' + option.LastName ; 
@@ -198,50 +162,14 @@ export class IPSettlementComponent implements OnInit {
     this.AgeMonth = '';
    this.GenderName = '';
    this.MobileNo = ''; 
-  }
-  
-
-  onChangeReg(event) {
-    if (event.value == 'registration') {
-      //   this.personalFormGroup.get('RegId').reset();
-      //   this.personalFormGroup.get('RegId').disable();
-      this.isRegSearchDisabled = true;
-      this.registerObj = new AdmissionPersonlModel({});  
-    } else {
-      this.Regdisplay = true;
-
-      this.searchFormGroup.get('RegId').enable();
-      this.isRegSearchDisabled = false;  
-    }
- 
-  }
-
-  SpinLoading: boolean = false; 
-  getPaidBillDetails() { 
-    this.sIsLoading = 'loading-data'; 
-    this.regId = this.RegId; 
-    let query = "Select * from lvwBillIPD  where RegID=" + this.regId + " and BalanceAmt=0"; 
-
-    this._IpSearchListService.getPaidBillList(query).subscribe(Visit => {
-      this.dataSource.data = Visit as PaidBilldetail[];
-      console.log(this.dataSource.data);
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;  
-      this.sIsLoading = ''; 
-    },
-      error => {
-        this.sIsLoading = '';
-      }); 
-  }
-
-  // 106549
+  } 
   getCreditBillDetails() { 
-    this.sIsLoading = 'loading-data';
-    this.regId = this.RegId;
-
-    let query = "Select * from lvwBillIPD  where RegID= " + this.regId + " and BalanceAmt>0";
-   // console.log(query);
-    this._IpSearchListService.getCreditBillList(query).subscribe(Visit => {
+    this.sIsLoading = 'loading-data'; 
+    var Vdata={
+      'RegId':this.RegId
+    } 
+    console.log(Vdata)
+    this._IpSearchListService.getCreditBillList(Vdata).subscribe(Visit => {
       this.dataSource1.data = Visit as CreditBilldetail[];
       console.log(this.dataSource1.data);
       this.dataSource1.sort = this.sort;
@@ -252,31 +180,17 @@ export class IPSettlementComponent implements OnInit {
         this.sIsLoading = '';
       });
   }
-
-  getCompanyCreditBillDetails(event) { 
-    this.dataSource1.data = [];
-    this.sIsLoading = 'loading-data';
-    if (event == true) {
-      let query = "Select * from lvwBill where companyId != 0  and BalanceAmt>0";
-      console.log(query);
-      this._IpSearchListService.getCreditBillList(query).subscribe(Visit => {
-        this.dataSource1.data = Visit as CreditBilldetail[];
-        this.dataSource1.sort = this.sort;
-        this.dataSource1.paginator = this.paginator;
-        //  console.log(this.dataSource.data);
-        this.sIsLoading = ''; 
-      },
-        error => {
-          this.sIsLoading = '';
-        });
-    }
-  }
-
+ 
   addpayment(contact) {
    console.log(contact)
+   const currentDate = new Date();
+   const datePipe = new DatePipe('en-US');
+   const formattedTime = datePipe.transform(currentDate, 'shortTime');
+   const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
     this.FinalAmt = contact.NetPayableAmt; 
+
     let PatientHeaderObj = {}; 
-    PatientHeaderObj['Date'] = this.dateTimeObj.date;
+    PatientHeaderObj['Date'] = formattedDate;
     PatientHeaderObj['PatientName'] = this.PatientName;
     PatientHeaderObj['OPD_IPD_Id'] =this.vAdmissionID;
     PatientHeaderObj['AdvanceAmount'] = contact.NetPayableAmt; 
@@ -404,49 +318,7 @@ export class IPSettlementComponent implements OnInit {
       });
 
     }, 100);
-  }
-
-  getViewbill(contact) {
-    console.log(contact);
-    let xx = {
-      AddedBy: 1,
-      AdvBalanceAmount: contact.AdvBalanceAmount,
-      AdvanceAmount: contact.AdvanceAmount,
-      AdvanceUsedAmount: contact.AdvanceUsedAmount,
-      BalanceAmt: contact.BalanceAmt,
-      BillDate: contact.BillDate,
-      BillNo: contact.BillNo,
-      BillTime: contact.BillTime,
-      CashCounterId: contact.CashCounterId,
-      CompanyId: contact.CompanyId,
-      ConcessionAmt: contact.ConcessionAmt,
-      IsCancelled: contact.IsCancelled,
-      NetPayableAmt: contact.NetPayableAmt,
-      OPD_IPD_ID: contact.OPD_IPD_ID,
-      OPD_IPD_Type: contact.OPD_IPD_Type,
-      PBillNo: contact.PBillNo,
-      PaidAmount: contact.PaidAmount,
-      PaymentBillNo: contact.PaymentBillNo,
-      RegID: contact.RegID,
-      RegNo: contact.RegNo,
-      TotalAmt: contact.TotalAmt,
-      TransactionType: contact.TransactionType,
-
-
-    };
-
-    this.advanceDataStored.storage = new BrowseOpdPaymentReceipt(xx);
-
-    //   const dialogRef = this._matDialog.open(PaymentViewComponent, 
-    //    {  maxWidth: "95vw",
-    //       maxHeight: "130vh", width: '100%', height: "100%"
-    //  });
-    //  dialogRef.afterClosed().subscribe(result => {
-    //   //  console.log('The dialog was closed - Insert Action', result);
-    //   //  this.getRadiologytemplateMasterList();
-    //  });
-  }
-
+  } 
   getViewbill1(contact) {
     console.log(contact);
     let xx = {
@@ -495,40 +367,15 @@ export class IPSettlementComponent implements OnInit {
   onClose() {
      this._matDialog.closeAll();
      this.searchFormGroup.reset();
-     this.dataSource1.data =[];
-     this.dataSource.data =[];
+     this.dataSource1.data =[]; 
      this.clearpatientinfo();
   }
-
 }
-
-
-
-export class PaidBilldetail {
-
-  BillNo: any;
-  TotalAmt: number;
-  ConcessionAmt: number;
-  NetPayableAmt: number;
-  PaidAmount: number;
-  BalanceAmt: number;
-  BillDate: Date;
-
-  constructor(PaidBilldetail) {
-    this.BillDate = PaidBilldetail.BillDate || '';
-    this.BillNo = PaidBilldetail.BillNo || '';
-    this.TotalAmt = PaidBilldetail.TotalAmt || 0;
-    this.ConcessionAmt = PaidBilldetail.ConcessionAmt || '';
-    this.NetPayableAmt = PaidBilldetail.NetPayableAmt || 0;
-    this.PaidAmount = PaidBilldetail.PaidAmount || 0;
-    this.BalanceAmt = PaidBilldetail.BalanceAmt || '';
-
-  }
-}
-
 export class CreditBilldetail {
 
   BillNo: any;
+  CompanyName: any;
+  PatientType: any;
   TotalAmt: number;
   ConcessionAmt: number;
   NetPayableAmt: number;
@@ -544,7 +391,8 @@ export class CreditBilldetail {
     this.NetPayableAmt = CreditBilldetail.NetPayableAmt || 0;
     this.PaidAmount = CreditBilldetail.PaidAmount || 0;
     this.BalanceAmt = CreditBilldetail.BalanceAmt || '';
-
+    this.CompanyName = CreditBilldetail.CompanyName || '';
+    this.PatientType = CreditBilldetail.PatientType || '';
   }
 
 }

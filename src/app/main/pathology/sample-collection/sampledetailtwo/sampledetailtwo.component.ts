@@ -26,7 +26,7 @@ export class SampledetailtwoComponent implements OnInit {
   interimArray: any = [];
   samplelist: any = [];
   msg: any;
-  date: string;
+  date: any;
   isLoading: String = '';
 Currentdate:any;
   displayedColumns: string[] = [
@@ -49,15 +49,14 @@ Currentdate:any;
   IsSampleCollection: boolean;
   SampleCollectionTime: Date;
   PathReportID: any;
-  selectedAdvanceObj1:AdmissionPersonlModel;
-  dateValue: any = new Date().toISOString();
-
+  dateTimeObj: any;
+  // selectedAdvanceObj1:AdmissionPersonlModel;
+  selectedAdvanceObj1:any; 
 
   dataSource = new MatTableDataSource<SampleList>();
   sIsLoading: string = '';
   @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-
+  @ViewChild(MatPaginator) paginator: MatPaginator; 
   constructor(private formBuilder: FormBuilder,
     public _SampleService: SampleCollectionService,
     public datePipe: DatePipe,
@@ -74,16 +73,16 @@ Currentdate:any;
     this.advanceData = data;
     console.log(this.advanceData);
     this.date = new Date().toISOString().slice(0, 16);
-    // this.date= this.datePipe.transform( new Date(),"MM-dd-YYYY hh:mm tt") || '01/01/1900',
-
+     //this.date= (this.datePipe.transform(new Date(),"MM-dd-YYYY hh:mm")).toString().slice(0, 16) || '01/01/1900',
+    //this.date = new Date();
     console.log( this.date )
   }
 
   ngOnInit(): void {
 
-    if (this.advanceDataStored.storage) {
-      this.selectedAdvanceObj = this.advanceDataStored.storage;
-      this.selectedAdvanceObj1= this.advanceDataStored.storage;
+    if (this.advanceData) {
+      this.selectedAdvanceObj = this.advanceData.regobj;
+      this.selectedAdvanceObj1= this.advanceData.regobj;
       console.log(this.selectedAdvanceObj1);
     }
 
@@ -92,12 +91,55 @@ Currentdate:any;
 
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
-  }
-
-  dateTimeObj: any;
+  } 
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
+
+  tableElementChecked(event, element) {
+
+    if (event) {
+      //  this.samplelist =[];
+      if (event.checked) {
+        this.interimArray.push(element);
+      } else if (this.interimArray.length > 0) {
+        let index = this.interimArray.indexOf(element);
+        if (index !== -1) {
+          this.interimArray.splice(index, 1);
+        }
+      }
+      this.samplelist.push(element);
+    }
+    // console.log(this.samplelist);
+  }
+  getSampledetailList() { 
+    let OPIP
+    if (this.selectedAdvanceObj1.PatientType == "IP") {
+      OPIP = 1;
+    }
+    else {
+      OPIP = 0;
+    } 
+     
+    var m_data = {
+      "BillNo": this.selectedAdvanceObj1.BillNo,
+      "BillDate": this.datePipe.transform(this.selectedAdvanceObj1.PathDate, "yyyy-MM-dd"),
+      "OP_IP_Type": OPIP,
+    }
+     console.log(m_data);
+    this._SampleService.getSampleDetailsList(m_data).subscribe(Visit => {
+      this.dataSource.data = Visit as SampleList[];
+      console.log( this.dataSource.data )
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+      this.sIsLoading = ''; 
+    },
+      error => {
+        // this.sIsLoading = '';
+      }); 
+  }
+
+
   onSave() {
     // debugger;
     this.isLoading = 'save';
@@ -130,94 +172,8 @@ Currentdate:any;
       }
     });
     // this.onClearServiceAddList();
-    this.isLoading = '';
-
-  }
-  // tableElementChecked(event, element) {
-  //   this.samplelist =[];
-  //   if (event.checked) {
-  //     this.interimArray.push(element);
-  //   } else if (this.interimArray.length > 0) {
-  //     let index = this.interimArray.indexOf(element);
-  //     if (index !== -1) {
-  //       this.interimArray.splice(index, 1);
-  //       this.dataSource.data.push(this.interimArray);
-
-  //     }
-
-  //   this.samplelist.push(element);
-  // }
-  // console.log(this.samplelist);
-  // }
-  // tableElementChecked(event, element) {
-  //   debugger;
-  //   if(event){
-  //  this.samplelist =[];
-  //   if (event.checked) {
-  //     this.interimArray.push(element);
-  //   } else if (this.interimArray.length > 0) {
-  //     let index = this.interimArray.indexOf(element);
-  //     if (index !== -1) {
-  //       this.interimArray.splice(index, 1);
-
-
-  //     }
-  //   }
-  //   this.samplelist.push(element);
-  //   }
-  //   console.log(this.samplelist);
-  // }
-
-  tableElementChecked(event, element) {
-
-    if (event) {
-      //  this.samplelist =[];
-      if (event.checked) {
-        this.interimArray.push(element);
-      } else if (this.interimArray.length > 0) {
-        let index = this.interimArray.indexOf(element);
-        if (index !== -1) {
-          this.interimArray.splice(index, 1);
-        }
-      }
-      this.samplelist.push(element);
-    }
-    // console.log(this.samplelist);
-  }
-  getSampledetailList() {
-    //  debugger;
-    let OPIP
-    if (this.advanceData.OP_IP_Type == "IP") {  console.log(m_data);
-        // debugger
-      OPIP = 1;
-    }
-    else {
-      OPIP = 0;
-    }
-
-    // this.sIsLoading = 'loading-data';
-    var m_data = {
-      "BillNo": this.advanceData.BillNo,
-      "BillDate": this.datePipe.transform(this.advanceData.From_dt, "yyyy-MM-dd"),
-      "OP_IP_Type": OPIP,//this.advanceData.OP_IP_Type,
-    }
-    //  console.log(m_data);
-    this._SampleService.getSampleDetailsList(m_data).subscribe(Visit => {
-      this.dataSource.data = Visit as SampleList[];
-      console.log( this.dataSource.data )
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
-      this.sIsLoading = '';
-
-    },
-      error => {
-        // this.sIsLoading = '';
-      });
-    console.log(this.dataSource.data);
-  }
-
-
-  
+    this.isLoading = ''; 
+  } 
   onLABSave() {
     this.sIsLoading = 'submit';
 
@@ -300,16 +256,8 @@ Currentdate:any;
 
   onClose() {
     this.dialogRef.close();
-  }
-
- 
-
-}
-
-
-
-
-
+  } 
+} 
 export class SampleList {
   VADate: Date;
   VATime:Date;
@@ -317,8 +265,7 @@ export class SampleList {
   ServiceName: String;
   IsSampleCollection: boolean;
   SampleCollectionTime: Date;
-  PathReportID: any;
-
+  PathReportID: any; 
 
   constructor(SampleList) {
     this.VADate = SampleList.VADate || '';
@@ -327,9 +274,6 @@ export class SampleList {
     this.ServiceName = SampleList.ServiceName || '';
     this.IsSampleCollection = SampleList.IsSampleCollection || 0;
     this.SampleCollectionTime = SampleList.SampleCollectionTime || '';
-    this.PathReportID = SampleList.PathReportID || 0;
-
-
-  }
-
+    this.PathReportID = SampleList.PathReportID || 0; 
+  } 
 }

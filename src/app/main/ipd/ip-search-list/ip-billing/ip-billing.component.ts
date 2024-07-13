@@ -1276,10 +1276,7 @@ ServiceList:any=[];
     this.dialogRef.close({ result: "cancel" });
   }
   TotalAdvanceamt:any=0;
-  SaveBill1() {
-
-debugger
-    let InterimOrFinal = 1;
+  SaveBill1() { 
     if (this.dataSource.data.length > 0 && (this.vNetBillAmount > 0)) {
       this.isLoading = 'submit';
       if(this.Ipbillform.get('CreditBill').value || this.selectedAdvanceObj.CompanyId){
@@ -1287,15 +1284,14 @@ debugger
       }
       else{
       let PatientHeaderObj = {};
-      PatientHeaderObj['Date'] = this.dateTimeObj.date;
       PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName;
-      PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID; 
-      PatientHeaderObj['AdvanceAmount'] = this.Ipbillform.get('FinalAmount').value;
-      PatientHeaderObj['NetPayAmount'] = this.Ipbillform.get('FinalAmount').value;
       PatientHeaderObj['Date'] = this.dateTimeObj.date;
-      PatientHeaderObj['PBillNo'] = 0;
-      PatientHeaderObj['BillTime'] = this.dateTimeObj.date;
-      PatientHeaderObj['RegID'] = this.selectedAdvanceObj.RegID, 
+      PatientHeaderObj['UHIDNO'] =this.selectedAdvanceObj.RegNo;
+      PatientHeaderObj['DoctorName'] = this.selectedAdvanceObj.Doctorname;
+      PatientHeaderObj['IPDNo'] = this.selectedAdvanceObj.IPDNo ; // this._IpSearchListService.myShowAdvanceForm.get("AdmissionID").value;
+      PatientHeaderObj['NetPayAmount'] = this.Ipbillform.get('FinalAmount').value;
+      PatientHeaderObj['AdvanceAmount'] = this.Ipbillform.get('FinalAmount').value;
+      PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
 
         console.log('============================== Save IP Billing ===========');
       //==============-======--==============Payment======================
@@ -1457,9 +1453,8 @@ debugger
 
   IPCreditBill(){
     debugger
-    if(this.Ipbillform.get('CreditBill').value){ 
+    if(this.Ipbillform.get('CreditBill').value){  
  
-    let InterimOrFinal = 1;
     let InsertBillUpdateBillNoObj = {};
     InsertBillUpdateBillNoObj['BillNo'] = 0;
     InsertBillUpdateBillNoObj['OPD_IPD_ID'] = this.selectedAdvanceObj.AdmissionID,
@@ -1480,7 +1475,7 @@ debugger
     InsertBillUpdateBillNoObj['CompanyId'] = this.selectedAdvanceObj.CompanyId || 0,
     InsertBillUpdateBillNoObj['TariffId'] = this.selectedAdvanceObj.TariffId || 0,
     InsertBillUpdateBillNoObj['UnitId'] = this.selectedAdvanceObj.UnitId || 0;
-    InsertBillUpdateBillNoObj['InterimOrFinal'] = InterimOrFinal;
+    InsertBillUpdateBillNoObj['InterimOrFinal'] = 0;
     InsertBillUpdateBillNoObj['CompanyRefNo'] = 0;
     InsertBillUpdateBillNoObj['ConcessionAuthorizationName'] = 0;
     InsertBillUpdateBillNoObj['TaxPer'] = this.Ipbillform.get('AdminPer').value || 0;
@@ -2171,7 +2166,6 @@ debugger
 
   //For testing 
   viewgetDraftBillReportPdf(AdmissionID) {
-debugger
     this._IpSearchListService.getIpDraftBillReceipt(
       AdmissionID
     ).subscribe(res => {
@@ -2189,7 +2183,6 @@ debugger
   }
   // exec rptIPDInterimBill 193667 9507 
   viewgetInterimBillReportPdf(contact) {
-debugger
     this._IpSearchListService.getIpInterimBillReceipt(
       contact.BillNo
     ).subscribe(res => {

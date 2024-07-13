@@ -404,19 +404,17 @@ export class InterimBillComponent implements OnInit {
     insertBillUpdateBillNo1obj['interimOrFinal'] = 1;
       insertBillUpdateBillNo1obj['companyRefNo'] = 0;
     insertBillUpdateBillNo1obj['concessionAuthorizationName'] = 0;
-    insertBillUpdateBillNo1obj['taxPer'] = this.InterimFormGroup.get('Percentage').value || 0,
-      insertBillUpdateBillNo1obj['taxAmount'] = this.InterimFormGroup.get('Amount').value || 0,
-      insertBillUpdateBillNo1obj['DiscComments'] = this.InterimFormGroup.get('Remark').value || ''
-    insertBillUpdateBillNo1obj['CashCounterId'] = this.InterimFormGroup.get('CashCounterId').value.CashCounterId || 0
-    // insertBillUpdateBillNo1obj['CompDiscAmt'] = 0//this.InterimFormGroup.get('Remark').value || ''
-    let billDetailsInsert = [];
+    insertBillUpdateBillNo1obj['taxPer'] =   0,
+      insertBillUpdateBillNo1obj['taxAmount'] =   0,
+      insertBillUpdateBillNo1obj['DiscComments'] = this.InterimFormGroup.get('Remark').value || '' 
+    insertBillUpdateBillNo1obj['CompDiscAmt'] = 0//this.InterimFormGroup.get('Remark').value || ''
 
+
+    let billDetailsInsert = []; 
     this.dataSource.data.forEach((element) => {
-      let billDetailsInsert1Obj = {};
-
+      let billDetailsInsert1Obj = {}; 
       billDetailsInsert1Obj['billNo'] = 0;
-      billDetailsInsert1Obj['chargesId'] = element.ChargesId;
-
+      billDetailsInsert1Obj['chargesId'] = element.ChargesId; 
       billDetailsInsert.push(billDetailsInsert1Obj);
     });
 
@@ -457,6 +455,7 @@ export class InterimBillComponent implements OnInit {
       Paymentobj['PayTMAmount'] = 0;
       Paymentobj['PayTMTranNo'] = 0;
       Paymentobj['PayTMDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+      Paymentobj['TDSAmount'] = 0;
       Paymentobj['PaidAmt'] = this.InterimFormGroup.get('NetpayAmount').value || 0;
       Paymentobj['BalanceAmt'] = 0;
 

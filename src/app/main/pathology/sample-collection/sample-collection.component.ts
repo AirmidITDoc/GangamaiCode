@@ -58,27 +58,21 @@ export class SampleCollectionComponent implements OnInit {
   displayedColumns: string[] = [
     //'checkbox',
     'DOA',
-    'DOT',
+    // 'DOT',
     'RegNo',
     'PatientName',
     'DoctorName',
     'PBillNo',
     'PatientType',
     'WardName',
-    'buttons'
-
+    'buttons' 
   ];
 
-  displayedColumns1: string[] = [
-    // 'checkbox',
-    'VADate',
-    'VATime',
-    'ServiceName',
+  displayedColumns1: string[] = [  
     'IsSampleCollection',
-    'IsPrinted',
-    'SampleCollectionTime',
-    // 'IsCompleted',
-    // 'action'
+    'ServiceName',
+    //'IsPrinted',
+    'SampleCollectionTime', 
   ];
 
 
@@ -426,7 +420,7 @@ export class SampleCollectionComponent implements OnInit {
   }
 
   getSampleRecords(contact) {
-
+    console.log(contact)
     let xx = {
       RegNo: contact.RegNo,
       AdmissionID: contact.VisitId,
@@ -445,17 +439,16 @@ export class SampleCollectionComponent implements OnInit {
         height: '80vh',
         width: '100%',
         data: {
-          BillNo: contact.BillNo,
-          OP_IP_Type: contact.PatientType,
-          From_dt: contact.PathDate,
+          // BillNo: contact.BillNo,
+          // OP_IP_Type: contact.PatientType,
+          // From_dt: contact.PathDate,
           regobj:contact
-        }
-
+        } 
       });
 
     dialogRef1.afterClosed().subscribe(result => {
       // console.log('The dialog was closed - Insert Action', result);
-
+      this.getPatientsList();
     });
   }
  
