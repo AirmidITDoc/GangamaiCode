@@ -20,7 +20,7 @@ public getPaidBillList(data) {
 }
 
 public getCreditBillList(data) {
-  return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
+  return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IP_Bill_List_Settlement" ,data)
 }
 public InsertIPSettlementPayment (employee){
   // return this._httpClient.post("InPatient/IPBillingCreditInsert", employee)

@@ -600,7 +600,7 @@ console.log(obj)
       PatientHeaderObj['OPD_IPD_Id'] = this.vOPDNo;
       PatientHeaderObj['NetPayAmount'] = this.BillingForm.get('FinalAmt').value;
 
-      if (this.BillingForm.get('PaymentType').value == 'PayOption') {
+      if (this.BillingForm.get('PaymentType').value == 'PayOption') { 
         const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
           {
             maxWidth: "80vw",
@@ -738,6 +738,7 @@ console.log(obj)
         Paymentobj['PayTMDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
           Paymentobj['PaidAmt'] = this.BillingForm.get('FinalAmt').value || 0;
         Paymentobj['BalanceAmt'] = 0;
+        Paymentobj['tdsAmount'] = 0;
 
         const ipPaymentInsert = new IpPaymentInsert(Paymentobj);
         let submitDataPay = {
@@ -777,6 +778,15 @@ console.log(obj)
     this.saveclick = true;
     let disamt = this.BillingForm.get('concessionAmt').value;
 
+    
+    let ConcessionId = 0; 
+    if(this.BillingForm.get('ConcessionId').value)
+    ConcessionId = this.BillingForm.get('ConcessionId').value.ConcessionId; 
+
+    let ConcessionReason = '';
+    if(this.BillingForm.get('ConcessionId').value)
+    ConcessionReason = this.BillingForm.get('ConcessionId').value.ConcessionReason;
+
     if (this.b_concessionDiscPer > 0 || disamt > 0) {
       this.FinalAmt = this.TotalnetPaybleAmt;
       this.netPaybleAmt1 = this.TotalnetPaybleAmt;
@@ -801,7 +811,7 @@ console.log(obj)
     InsertBillUpdateBillNoObj['AddedBy'] = this.accountService.currentUserValue.user.id,
       InsertBillUpdateBillNoObj['TotalAdvanceAmount'] = 0,
       InsertBillUpdateBillNoObj['BillTime'] = this.dateTimeObj.time,// this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy hh:mm tt') || '01/01/1900',
-      InsertBillUpdateBillNoObj['ConcessionReasonId'] = this.BillingForm.get('ConcessionId').value.ConcessionId;
+      InsertBillUpdateBillNoObj['ConcessionReasonId'] =ConcessionId;
     InsertBillUpdateBillNoObj['IsSettled'] = 0;
     InsertBillUpdateBillNoObj['IsPrinted'] = 0;
     InsertBillUpdateBillNoObj['IsFree'] = 0;
@@ -813,7 +823,7 @@ console.log(obj)
     InsertBillUpdateBillNoObj['concessionAuthorizationName'] = 0;
     InsertBillUpdateBillNoObj['TaxPer'] = 0;
     InsertBillUpdateBillNoObj['TaxAmount'] = 0;
-    InsertBillUpdateBillNoObj['DiscComments'] = this.BillingForm.get('ConcessionId').value.ConcessionReason || '';
+    InsertBillUpdateBillNoObj['DiscComments'] =ConcessionReason;
 
     let Billdetsarr = [];
     this.dataSource.data.forEach((element) => {

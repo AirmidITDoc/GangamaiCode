@@ -377,13 +377,7 @@ public getConcessionCombo()
   public getPaymentPrint (paymentid){
     return this._httpClient.post("Generic/GetByProc?procName=rptIPDPaymentReceiptPrint", paymentid)
   }
-
-  public InsertSettlementPayment (employee){
-    // return this._httpClient.post("InPatient/IPBillingCreditInsert", employee)
-     return this._httpClient.post("OutPatient/OpSettlement", employee)
-  }
-
-  public getTemplate(query) {
+ public getTemplate(query) {
     return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
   } 
   public getPaidBillList(data) {
@@ -391,8 +385,11 @@ public getConcessionCombo()
   }
 
   public getCreditBillList(data) {
-    return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_OP_Bill_List_Settlement", data)
   }
+  public InsertOPBillingsettlement(emp){
+    return this._httpClient.post("OutPatient/OpSettlement", emp);
+   }
   public getPaymentBillPrint(BillNo){
     return this._httpClient.post("Generic/GetByProc?procName=rptBillPrint", BillNo)
   }

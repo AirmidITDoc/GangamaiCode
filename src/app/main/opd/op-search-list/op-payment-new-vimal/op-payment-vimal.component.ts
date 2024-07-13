@@ -378,8 +378,9 @@ if(this.amount1 !=0 ){
     this.Paymentobj['PayTMAmount'] =this.Payments.data.find(x => x.PaymentType == "upi")?.Amount ?? 0;
     this.Paymentobj['PayTMTranNo'] = 0;
     this.Paymentobj['PayTMDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
-    this.Paymentobj['PaidAmt'] = this.patientDetailsFormGrp.get('paidAmountController').value+Number(this.amount1);
+    this.Paymentobj['PaidAmt'] = (this.patientDetailsFormGrp.get('paidAmountController').value + (this.amount1));
     this.Paymentobj['BalanceAmt'] = this.patientDetailsFormGrp.get('balanceAmountController').value;
+    this.Paymentobj['tdsAmount'] = 0;
 
     console.log(JSON.stringify(this.Paymentobj));
 

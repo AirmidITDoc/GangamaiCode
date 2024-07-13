@@ -7,9 +7,7 @@
             </div>
             <div class="modal-header-right">
                 <div class="comman-date-container">
-                    <div class="comman-date">
-                        <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
-                    </div>
+                    
                     <div class="close-icon">
                         <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
                             <mat-icon>close</mat-icon>
@@ -25,7 +23,7 @@
         <div class="modal-body-container">
             <div fxLayout="column" class="gap-12">
                 <div class="modal-card-container">
-                    <mat-card>
+                    <mat-card style="padding: 6px;">
                         <div class="patient-info-sales my-8">
                             <div class="patient-info-title border-bottom pb-2">
                                 <span class="h1">Patient Information</span>
@@ -35,7 +33,7 @@
                                 <div class="patient-sub">
                                     <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
                                         fxLayoutAlign="space-between">
-                                        <div fxLayout="column" fxLayoutGap="10px">
+                                        <div fxLayout="column" fxLayoutGap="6px">
                                             <div class="patient-col">
                                                 <span class="patient-col-key">UHID No
                                                 </span>
@@ -63,19 +61,19 @@
                                                     class="patient-col-value">{{selectedAdvanceObj1.DepartmentName}}</span>
                                             </div>
                                         </div>
-                                        <div fxLayout="column" fxLayoutGap="10px">
+                                        <div fxLayout="column" fxLayoutGap="6px">
 
                                             <div class="patient-col">
                                                 <span class="patient-col-key">DOA | Time</span>
                                                 <span>:</span>
                                                 <span
-                                                    class="patient-col-value">{{selectedAdvanceObj1.AdmDateTime}}</span>
+                                                    class="patient-col-value">{{selectedAdvanceObj1.DOA}} | {{selectedAdvanceObj1.DOT}}</span>
                                             </div>
                                             <div class="patient-col">
-                                                <span class="patient-col-key">IPD No</span>
+                                                <span class="patient-col-key">OPD/IPD No</span>
                                                 <span>:</span>
                                                 <span
-                                                    class="patient-col-value">{{selectedAdvanceObj1.IPDNo}}</span>
+                                                    class="patient-col-value">{{selectedAdvanceObj1.OP_IP_No}}</span>
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Age | Sex
@@ -94,15 +92,15 @@
                                             </div>
 
                                         </div>
-                                        <div fxLayout="column" fxLayoutGap="10px">
-                                            <!-- <div class="patient-col">
+                                        <div fxLayout="column" fxLayoutGap="6px">
+                                            <div class="patient-col">
                                                 <span class="patient-col-key">Ward | Bed Name
                                                 </span>
                                                 <span>:</span>
                                                 <span
                                                     class="patient-col-value">{{selectedAdvanceObj1.WardName}}
                                                     | {{selectedAdvanceObj1.BedName}}</span>
-                                            </div> -->
+                                            </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Patient Type
                                                 </span>
@@ -130,23 +128,7 @@
                         </div>
                     </mat-card>
                 </div>
-                <div class="modal-card-container">
-                    <mat-card style="height:100px;">
-                        <div class="date-container">
-                            <form [formGroup]="_SampleService.sampldetailform">
-                                <div class="form-title border-bottom pb-2 mb-3">
-                                    <span class="h3" style="margin-right: 10px;">Sample Collection : -</span>
-                              
-                                <mat-form-field appearance="outline">
-                                    <mat-label>Collection Date / Time</mat-label>
-                                    <input matInput type="datetime-local" placeholder=" date" [value]="date" [(ngModel)]="date"
-                                      (change)="date=$event.target.value" formControlName="SampleDateTime">
-                                  </mat-form-field>
-                                </div>
-                            </form>
-                        </div>
-                    </mat-card>
-                </div>
+              
                 <div class="modal-card-container table-container">
                     <mat-card>
                         <div class="table-wrapper">
@@ -248,14 +230,28 @@
                         </div>
                     </mat-card>
                 </div>
+
             </div>
         </div>
     </div>
 
     <!-- Modal footer -->
-    <div class="modal-footer">
-        <div class="footer-navigation-container">
-            <div class="modal-footer-buttons">
+    <div class="modal-footer" style="padding: 10px 0px 10px 0px;">
+        <div class="footer-navigation-container" fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="50px">
+            <div class="date-container">
+                <form [formGroup]="_SampleService.sampldetailform">
+                    <div class="form-title border-bottom pb-2 mb-3">
+                        <span class="h3" style="margin-right: 10px;">Sample Collection : -</span>
+        
+                        <mat-form-field appearance="outline">
+                            <mat-label>Collection Date / Time</mat-label>
+                            <input matInput type="datetime-local" placeholder=" date" [value]="date" [(ngModel)]="date"
+                                (change)="date=$event.target.value" formControlName="SampleDateTime">
+                        </mat-form-field>
+                    </div>
+                </form>
+            </div>
+            <div fxLayout="row" fxLayoutGap="5px" style="padding: 5px 15px 0px 0px;">
                 <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
                 <button type="button" class="btn btn-primary" (click)="onSave()">Save</button>
             </div>

@@ -724,6 +724,7 @@ export class OPAdvancePaymentComponent implements OnInit {
         Paymentobj['PayTMDate'] = this.dateTimeObj.date;
         Paymentobj['PaidAmt'] = this.paymentForm.get('paidAmountController').value;
         Paymentobj['BalanceAmt'] = this.paymentForm.get('balanceAmountController').value;
+        Paymentobj['tdsAmount'] = 0;
       }
       else if (this.advanceData.FromName == "OP-Bill") {
         // Paymentobj['PaymentId'] = 0;
@@ -761,6 +762,7 @@ export class OPAdvancePaymentComponent implements OnInit {
         Paymentobj['PayTMDate'] = this.dateTimeObj.date;
         Paymentobj['PaidAmt'] = this.paymentForm.get('paidAmountController').value;
         Paymentobj['BalanceAmt'] = this.paymentForm.get('balanceAmountController').value;
+        Paymentobj['tdsAmount'] = 0;
       }
       else if (this.advanceData.FromName == "Advance") {
         // Paymentobj['PaymentId'] = 0;
@@ -798,6 +800,7 @@ export class OPAdvancePaymentComponent implements OnInit {
         Paymentobj['PayTMDate'] = this.dateTimeObj.date;
         Paymentobj['PaidAmt'] = this.paymentForm.get('paidAmountController').value;
         Paymentobj['BalanceAmt'] = this.paymentForm.get('balanceAmountController').value;
+        Paymentobj['tdsAmount'] = 0;
       }
       else if (this.advanceData.FromName == "Advance-Refund") {
         // Paymentobj['PaymentId'] = 0;
@@ -835,6 +838,7 @@ export class OPAdvancePaymentComponent implements OnInit {
         Paymentobj['PayTMDate'] = this.dateTimeObj.date;
         Paymentobj['PaidAmt'] = this.paymentForm.get('paidAmountController').value;
         Paymentobj['BalanceAmt'] = this.paymentForm.get('balanceAmountController').value;
+        Paymentobj['tdsAmount'] = 0;
       }
       else if (this.advanceData.FromName == "IP-Bill") {
         // Paymentobj['PaymentId'] = 0;
@@ -872,6 +876,7 @@ export class OPAdvancePaymentComponent implements OnInit {
         Paymentobj['PayTMDate'] = this.dateTimeObj.date;
         Paymentobj['PaidAmt'] = this.paymentForm.get('paidAmountController').value;
         Paymentobj['BalanceAmt'] = this.paymentForm.get('balanceAmountController').value;
+        Paymentobj['tdsAmount'] = 0;
       }
       else if (this.advanceData.FromName == "IP-Pharma-Advance") {
         // Paymentobj['PaymentId'] = 0;
@@ -909,6 +914,7 @@ export class OPAdvancePaymentComponent implements OnInit {
         Paymentobj['PayTMDate'] = this.dateTimeObj.date;
         Paymentobj['PaidAmt'] = this.paymentForm.get('paidAmountController').value;
         Paymentobj['BalanceAmt'] = this.paymentForm.get('balanceAmountController').value;
+        Paymentobj['tdsAmount'] = 0;
       }
       const ipPaymentInsert = new IpPaymentInsert(Paymentobj);
       let submitDataPay = {
@@ -967,6 +973,7 @@ export class OPAdvancePaymentComponent implements OnInit {
       Paymentobj['PayTMDate'] = '',// this.dateTimeObj.date;
       Paymentobj['PaidAmt'] = 0,//this.paymentForm.get('paidAmountController').value;
       Paymentobj['BalanceAmt'] = this.paymentForm.get('balanceAmountController').value;
+      Paymentobj['tdsAmount'] = 0;
 
     const ipPaymentInsert = new IpPaymentInsert(Paymentobj);
     let submitDataPay1 = {

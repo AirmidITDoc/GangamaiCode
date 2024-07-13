@@ -127,13 +127,18 @@ private _onDestroy = new Subject<void>();
       // this.cashAmt = parseInt(this.advanceData.advanceObj.AdvanceAmount);
       this.paidAmt = parseInt(this.advanceData.advanceObj.AdvanceAmount);
       this.PatientName = this.advanceData.advanceObj.PatientName;
+      this.RegNo = this.advanceData.advanceObj.UHIDNO;
+      this.OPD_IPD_Id = this.advanceData.advanceObj.IPDNo;
+      this.BillTime = this.advanceData.advanceObj.Date;
+      this.PBillNo = this.advanceData.advanceObj.PBillNo || 0; 
       this.getBalanceAmt();
     } 
-    if (this.advanceData.FromName == "IP-SETTLEMENT") {
+    if (this.advanceData.FromName == "IP-SETTLEMENT" || this.advanceData.FromName == "OP-SETTLEMENT") {
       this.netPayAmt = parseInt(this.advanceData.advanceObj.AdvanceAmount);
       // this.cashAmt = parseInt(this.advanceData.advanceObj.AdvanceAmount);
       this.paidAmt = parseInt(this.advanceData.advanceObj.AdvanceAmount);
       this.PatientName = this.advanceData.advanceObj.PatientName; 
+      this.OPD_IPD_Id = this.advanceData.advanceObj.OPD_IPD_Id;
       this.RegNo = this.advanceData.advanceObj.RegNo;
       this.getBalanceAmt();
     } 
@@ -151,8 +156,7 @@ private _onDestroy = new Subject<void>();
     if (this.advanceData.FromName == "IP-Payment") {
       this.netPayAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
       this.cashAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
-      this.paidAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
-    
+      this.paidAmt = parseInt(this.advanceData.advanceObj.NetPayAmount); 
     }
     if (this.advanceData.FromName ==  "SETTLEMENT") {
       this.netPayAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
@@ -566,8 +570,7 @@ private _onDestroy = new Subject<void>();
     Paymentobj['Remark'] = '';
     Paymentobj['AddBy'] = '1';
     Paymentobj['IsCancelled'] = 'false';
-    Paymentobj['IsCancelledBy'] = '0';
-
+    Paymentobj['IsCancelledBy'] = '0'; 
     Paymentobj['IsCancelledDate'] = this.dateTimeObj.date;
     Paymentobj['CashCounterId'] = '0';
     Paymentobj['IsSelfORCompany'] = '0';
@@ -579,6 +582,7 @@ private _onDestroy = new Subject<void>();
     Paymentobj['PayTMAmount'] = this.paytmAmt;
     Paymentobj['PayTMTranNo'] = this.paytmTransNo;
     Paymentobj['PayTMDate'] = this.dateTimeObj.date;
+    Paymentobj['tdsAmount'] = this.tdsAmt; 
 
     const ipPaymentInsert = new IpPaymentInsert(Paymentobj);
     let submitDataPay = {

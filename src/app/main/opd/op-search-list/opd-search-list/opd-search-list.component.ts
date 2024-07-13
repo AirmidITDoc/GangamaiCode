@@ -11,12 +11,17 @@ import { OPBillingComponent } from '../op-billing/op-billing.component';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { fuseAnimations } from '@fuse/animations';
 import { map, startWith, takeUntil } from 'rxjs/operators';
-import { FormControl } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { OPCasepaperComponent } from '../op-casepaper/op-casepaper.component';
 import { OPRefundofBillComponent } from '../op-refundof-bill/op-refundof-bill.component';
 import { NewOPRefundofbillComponent } from '../new-oprefundofbill/new-oprefundofbill.component';
+import Swal from 'sweetalert2';
+import { IPpaymentWithadvanceComponent } from 'app/main/ipd/ip-settlement/ippayment-withadvance/ippayment-withadvance.component';
+import { IpPaymentInsert } from '../op-advance-payment/op-advance-payment.component';
+import { OpPaymentVimalComponent } from '../op-payment-new-vimal/op-payment-vimal.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 
 
@@ -29,266 +34,282 @@ import { NewOPRefundofbillComponent } from '../new-oprefundofbill/new-oprefundof
 
 })
 export class OpdSearchListComponent implements OnInit {
-  isLoadingStr: string = '';
-  isLoading = true;
-  hasSelectedContacts: boolean;
-  VisitList: any;
-  msg: any;
-  selectedID: any;
-  response: any = [];
+
+  flagSubmit: boolean; 
   sIsLoading: string = '';
-  doctorNameCmbList:any=[];
+  selectedAdvanceObj: AdvanceDetailObj; 
+  screenFromString = 'Ip-Settelment';   
+  currentDate = new Date();
+  FinalAmt: any;
+  balanceamt: any;  
+  searchFormGroup: FormGroup;
+  registerObj:any;
+  filteredOptions: any;
+  noOptionFound: boolean = false;  
+  PatientName: any;
+  RegId: any;
+  isRegIdSelected: boolean = false;
+  vAdmissionID: any;
+  vCompanyName: any;
+  vTariif: any;
+  RegNo: any;
+  PatientHeaderObj: AdvanceDetailObj;
+  AgeYear:any;
+  AgeDay:any;
+  GenderName:any;
+  AgeMonth:any;
+  MobileNo:any; 
+  SpinLoading: boolean = false; 
 
-  optionsDoctor: any[] = [];
-
-  filteredOptionsDoctor: Observable<string[]>;
-  isDoctorSelected:boolean = false;
-
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @Input() dataArray: any;
-
-  displayedColumns = [
-    // 'checkbox',
-    'PatientOldNew',
-    'MPbillNo',
-    'RegNoWithPrefix',
-    'PatientName',
-    'DVisitDate',
-    'VisitTime',
-    'OPDNo',
-    'Doctorname',
-    'RefDocName',
+  displayedColumns1: string[] = [ 
+    'button',
+    'CompanyName',
     'PatientType',
-    'HospitalName',
-    'buttons'
+    'BillDate',
+    'BillNo',
+    'TotalAmt',
+    'ConcessionAmt',
+    'NetPayableAmt',
+    'PaidAmount',
+    'BalanceAmt',
+    'action' 
   ];
-  dataSource = new MatTableDataSource<VisitMaster>();
-  menuActions: Array<string> = [];
+  dataSource1 = new MatTableDataSource<CreditBilldetail>();
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;  
+  private _BrowseOPDBillsService: any;
 
-  constructor(public _opSearchListService: OPSearhlistService,
-    private _ActRoute: Router,
+  constructor(
+    public _opSearchListService: OPSearhlistService, 
     public _matDialog: MatDialog,
     private advanceDataStored: AdvanceDataStored,
     public datePipe: DatePipe,
-    private _fuseSidebarService: FuseSidebarService,
-  
+    private _fuseSidebarService: FuseSidebarService, 
+    private formBuilder: FormBuilder, 
   ) { }
 
   ngOnInit(): void {
-
-    this.getDoctorNameCombobox();
-
-    
-    if (this._ActRoute.url == '/opd/appointment') {
-      
-      this.menuActions.push('New Appointment');
-      this.menuActions.push('New Appointment with Bill');
-      this.menuActions.push('Vital Inforamtion');
-      this.menuActions.push('Case Paper');
-      this.menuActions.push('Bill');
-      this.menuActions.push('Refund of Bill');
-      
-
-    }
-    else if (this._ActRoute.url == '/opd/bill') {
-      this.menuActions.push('Bill');
-      this.menuActions.push('Payment');
-      this.menuActions.push('Case Paper');
-    }
-    else if (this._ActRoute.url == '/opd/medicalrecords') {
-      this.menuActions.push('Case Paper');
-      this.menuActions.push('Company Settlement');
-      this.menuActions.push('Upload Documents');
-      this.menuActions.push('Camera Capture');
-    }
-    else if (this._ActRoute.url == '/opd/refund') {
-      this.menuActions.push('Refund Of Bill');
-    }
-    else if (this._ActRoute.url == '/opd/payment') {
-      this.menuActions.push('Payment');
-    }
-    this.getVisitList();
+    this.clearpatientinfo();
+    this.searchFormGroup = this.createSearchForm(); 
   }
-
-  private _filterDoctor(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
-       return this.optionsDoctor.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
-    }
-
-  }
-
-
-  getDoctorNameCombobox() {
-    this._opSearchListService.getDoctorMasterCombo().subscribe(data => {
-      this.doctorNameCmbList = data;
-      this.optionsDoctor = this.doctorNameCmbList.slice();
-      this.filteredOptionsDoctor = this._opSearchListService.myFilterform.get('DoctorId').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterDoctor(value) : this.doctorNameCmbList.slice()),
-      );
-      
+ createSearchForm() {
+    return this.formBuilder.group({ 
+      RegId: [''], 
     });
-  }
-
-  
-  getOptionTextDoctor(option) {
-    return option && option.DoctorName ? option.DoctorName : '';
-  }
-  
-// validation
-get f() { return this._opSearchListService.myFilterform.controls; }
-
-
-  getVisitList() {
-    this.isLoadingStr = 'loading';
-    var D_data = {
-      "F_Name": (this._opSearchListService.myFilterform.get("FirstName").value).trim() + '%' || "%",
-      "L_Name": (this._opSearchListService.myFilterform.get("LastName").value).trim() + '%' || "%",
-      "Reg_No": this._opSearchListService.myFilterform.get("RegNo").value || 0,
-      "Doctor_Id": this._opSearchListService.myFilterform.get("DoctorId").value.DoctorID || 0,
-      "From_Dt": this.datePipe.transform(this._opSearchListService.myFilterform.get("start").value, "MM-dd-yyyy") || '01/01/1900',
-      "To_Dt": this.datePipe.transform(this._opSearchListService.myFilterform.get("end").value, "MM-dd-yyyy") || '01/01/1900',
-      "IsMark": this._opSearchListService.myFilterform.get("IsMark").value.selected || 0,
+  }  
+  getSearchList() { 
+    var m_data = {
+      "Keyword": `${this.searchFormGroup.get('RegId').value}%`
     }
-     
-     this.isLoadingStr = 'loading';
-    this._opSearchListService.getAppointmentList(D_data).subscribe(Visit => {
-      this.dataSource.data = Visit as VisitMaster[];
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
-      this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
+    if (this.searchFormGroup.get('RegId').value.length >= 1) {
+      this._opSearchListService.getRegisteredList(m_data).subscribe(resData => {
+        this.filteredOptions = resData;
+        if (this.filteredOptions.length == 0) {
+          this.noOptionFound = true;
+        } else {
+          this.noOptionFound = false;
+        }
+      });
+    } 
+  } 
+  getSelectedObj(obj) {
+    console.log(obj)
+    this.registerObj = obj; 
+    this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
+    this.RegId = obj.RegID;  
+    this.RegId = obj.RegId;  
+    this.vAdmissionID = obj.AdmissionID;
+    this.RegNo = obj.RegNo;
+    this.AgeYear = obj.AgeYear; 
+    this.AgeDay = obj.AgeDay;
+    this.AgeMonth = obj.AgeMonth;
+   this.GenderName = obj.GenderName;
+   this.MobileNo = obj.MobileNo;  
+    this.getCreditBillDetails(); 
+  }
+ 
+  getOptionText(option) {
+    if (!option) return '';
+    return option.FirstName + ' ' + option.LastName + ' ' + option.LastName ; 
+  }
+  clearpatientinfo(){
+    this.PatientName = '';
+    this.RegId =  '';
+    this.vAdmissionID = '';
+    this.RegNo = '';
+    this.AgeYear = '' ;
+    this.AgeDay = '';
+    this.AgeMonth = '';
+   this.GenderName = '';
+   this.MobileNo = ''; 
+  } 
+  getCreditBillDetails() { 
+    this.sIsLoading = 'loading-data'; 
+    var Vdata={
+      'RegId':this.RegId
+    } 
+    console.log(Vdata)
+    this._opSearchListService.getCreditBillList(Vdata).subscribe(Visit => {
+      this.dataSource1.data = Visit as CreditBilldetail[];
+      console.log(this.dataSource1.data);
+      this.dataSource1.sort = this.sort;
+      this.dataSource1.paginator = this.paginator; 
+      this.sIsLoading = ''; 
     },
       error => {
-        this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
+        this.sIsLoading = '';
       });
-    
   }
+  vpaidamt:any;
+  vbalanceamt:any;
+  openPaymentpopup(contact){
+    const currentDate = new Date();
+    const datePipe = new DatePipe('en-US');
+    const formattedTime = datePipe.transform(currentDate, 'shortTime');
+    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+    console.log(contact)
+    let PatientHeaderObj = {};
+    PatientHeaderObj['Date'] = this.datePipe.transform(contact.BillDate, 'MM/dd/yyyy') || '01/01/1900',
+    PatientHeaderObj['RegNo'] = contact.RegNo;
+    PatientHeaderObj['PatientName'] = contact.PatientName;
+    PatientHeaderObj['OPD_IPD_Id'] = contact.OPD_IPD_ID;
+    PatientHeaderObj['Age'] = contact.PatientAge;
+    PatientHeaderObj['DepartmentName'] = contact.DepartmentName;
+    PatientHeaderObj['DoctorName'] = contact.DoctorName;
+    PatientHeaderObj['TariffName'] = contact.TariffName;
+    PatientHeaderObj['CompanyName'] = contact.CompanyName;
+    PatientHeaderObj['NetPayAmount'] = contact.NetPayableAmt; 
+    
+    const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
+      { 
+        maxWidth: "80vw",
+       // height: '600px',
+        width: '70%',
+        data: {
+          vPatientHeaderObj: PatientHeaderObj,
+          FromName: "OP-Bill"
+        }
+      });
+    // PatientHeaderObj['Date'] = formattedDate;
+    // PatientHeaderObj['PatientName'] = this.PatientName;
+    // PatientHeaderObj['OPD_IPD_Id'] =this.vAdmissionID;
+    // PatientHeaderObj['AdvanceAmount'] = contact.NetPayableAmt; 
+    // PatientHeaderObj['NetPayAmount'] = contact.NetPayableAmt;
+    // PatientHeaderObj['PBillNo'] = contact.PBillNo;
+    // PatientHeaderObj['BillTime'] = contact.BillTime;
+    // PatientHeaderObj['RegNo'] = contact.RegNo; 
+    // const dialogRef = this._matDialog.open(IPpaymentWithadvanceComponent,
+    //   {
+    //     maxWidth: "95vw",
+    //     height: '650px',
+    //     width: '85%',
+    //     data: {
+    //       advanceObj: PatientHeaderObj,
+    //       FromName: "OP-SETTLEMENT"
+    //     }
+    //   });
 
+      dialogRef.afterClosed().subscribe(result => {
+        console.log(result)
+        if (result.IsSubmitFlag == true) {
 
+          this.vpaidamt = result.submitDataPay.ipPaymentInsert.PaidAmt;
+          this.vbalanceamt = result.submitDataPay.ipPaymentInsert.BalanceAmt;
 
-  ngOnChanges(changes: SimpleChanges) {
+          let updateBillobj = {};
+          updateBillobj['BillNo'] = contact.BillNo;
+          updateBillobj['BillBalAmount'] = result.submitDataPay.ipPaymentInsert.balanceAmountController || result.submitDataPay.ipPaymentInsert.BalanceAmt;//result.BalAmt;
+       
+          let Data = {
+            "updateBill": updateBillobj,
+            "paymentCreditUpdate": result.submitDataPay.ipPaymentInsert
+          };
+          console.log(Data)
+          this._opSearchListService.InsertOPBillingsettlement(Data).subscribe(response => {
+            if (response) {
+              Swal.fire('OP Credit Bill With Payment!', 'Credit Bill Payment Successfully !', 'success').then((result) => {
+                if (result.isConfirmed) {
+                  
+                  this.viewgetOPPayemntPdf(response,true)
+                  this._matDialog.closeAll();
+                  this.getCreditBillDetails(); 
+                }
+              });
+            }
+            else {
+              Swal.fire('Error !', 'OP Billing Payment not saved', 'error');
+            }
+          });
+        }
+      });
+  } 
+  viewgetOPPayemntPdf(Id,value) {
+    debugger
+    let PaymentId=0;
+if(value)
+ PaymentId=Id
+else
+PaymentId=Id.PaymentId
+    setTimeout(() => {
+
+      this._BrowseOPDBillsService.getOpPaymentview(
+        PaymentId
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Op Payment Receipt Viewer"
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.sIsLoading = '';
+        });
+
+      });
+
+    }, 100);
+  }
+  dateTimeObj: any;
+  getDateTime(dateTimeObj) {
+    this.dateTimeObj = dateTimeObj;
+  }
+  onClose() {
+     this._matDialog.closeAll();
+     this.searchFormGroup.reset();
+     this.dataSource1.data =[]; 
+     this.clearpatientinfo();
+  }
    
-    this.dataSource.data = changes.dataArray.currentValue as VisitMaster[];
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
-    
-  }
+} 
+export class CreditBilldetail { 
+  BillNo: any;
+  CompanyName: any;
+  PatientType: any;
+  TotalAmt: number;
+  ConcessionAmt: number;
+  NetPayableAmt: number;
+  PaidAmount: number;
+  BalanceAmt: number;
+  BillDate: Date;
 
-  getRecord(contact, m): void {
-    if (m == "Bill") {
-      let xx = {
-        RegNo: contact.RegId,
-        AdmissionID: contact.VisitId,
-        PatientName: contact.PatientName,
-        Doctorname: contact.Doctorname,
-        AdmDateTime: contact.AdmDateTime,
-        AgeYear: contact.AgeYear,
-        ClassId: contact.ClassId,
-        ClassName: contact.ClassName,
-        TariffName: contact.TariffName,
-        TariffId: contact.TariffId
-      };
-      this.advanceDataStored.storage = new SearchInforObj(xx);
-      // this._ActRoute.navigate(['opd/new-OpdBilling']);
-        const dialogRef = this._matDialog.open(OPBillingComponent, 
-         {  maxWidth: "90%",
-        
-
-        height: '695px !important',
-        
-       });
-       dialogRef.afterClosed().subscribe(result => {
-         console.log('The dialog was closed - Insert Action', result);
-        
-      });
-    }
-    
-    else if(m == "Payment") {
-    
-      }
-  
-    if (m == "Case Paper") {
-      var m_data = {
-        RegNo: contact.RegId,
-        AdmissionID: contact.VisitId,
-        PatientName: contact.PatientName,
-        Doctorname: contact.Doctorname,
-        AdmDateTime: contact.AdmDateTime,
-        AgeYear: contact.AgeYear,
-        ClassId: contact.ClassId,
-        TariffName: contact.TariffName,
-        TariffId: contact.TariffId
-      }
-      this._opSearchListService.populateForm(m_data);
-      this.advanceDataStored.storage = new AdvanceDetailObj(m_data);
-      const dialogRef = this._matDialog.open(OPCasepaperComponent,
-        {
-          maxWidth: "95vw",
-          height: '900px',
-          width: '100%',
-        });
-      dialogRef.afterClosed().subscribe(result => {
-        console.log('The dialog was closed - Insert Action', result);
-
-      });
-    }
-
-    if (m == "Refund Of Bill") {
-      
-      let xx = {
-        RegNo: contact.RegNo,
-        RegId: contact.RegId,
-        AdmissionID: contact.VisitId,
-        PatientName: contact.PatientName,
-        Doctorname: contact.Doctorname,
-        AdmDateTime: contact.AdmDateTime,
-        AgeYear: contact.AgeYear,
-        ClassId: contact.ClassId,
-        TariffName: contact.TariffName,
-        TariffId: contact.TariffId,
-        DoctorId: contact.DoctorId,
-
-      };
-      this.advanceDataStored.storage = new SearchInforObj(xx);
-
-      // this._ActRoute.navigate(['opd/new-OpdBilling']);
-      const dialogRef = this._matDialog.open(NewOPRefundofbillComponent,
-        {
-          maxWidth: "85%",
-          height: '900px',
-          width: '100%',
-        });
-      dialogRef.afterClosed().subscribe(result => {
-        console.log('The dialog was closed - Insert Action', result);
-        
-      });
-    }
-
-    this.getVisitList();
-  }
-
-   // toggle sidebar
- toggleSidebar(name): void {
-  this._fuseSidebarService.getSidebar(name).toggleOpen();
-}
-
-  onClear() {
-  
-    this._opSearchListService.myFilterform.get('FirstName').reset();
-    this._opSearchListService.myFilterform.get('LastName').reset();
-    this._opSearchListService.myFilterform.get('RegNo').reset();
-    this._opSearchListService.myFilterform.get('DoctorId').reset();
+  constructor(CreditBilldetail) {
+    this.BillDate = CreditBilldetail.BillDate || '';
+    this.BillNo = CreditBilldetail.BillNo || '';
+    this.TotalAmt = CreditBilldetail.TotalAmt || 0;
+    this.ConcessionAmt = CreditBilldetail.ConcessionAmt || '';
+    this.NetPayableAmt = CreditBilldetail.NetPayableAmt || 0;
+    this.PaidAmount = CreditBilldetail.PaidAmount || 0;
+    this.BalanceAmt = CreditBilldetail.BalanceAmt || '';
+    this.CompanyName = CreditBilldetail.CompanyName || '';
+    this.PatientType = CreditBilldetail.PatientType || '';
   }
 
 }
-
-function PrescriptionTable(PrescriptionTable: any, arg1: { maxWidth: string; maxHeight: string; width: string; height: string; }) {
-  throw new Error('Function not implemented.');
-}
-
-
 export class SearchInforObj
 {
     RegNo : Number;
@@ -386,8 +407,6 @@ export class SearchInforObj
         }
     }
 }
-
-
 export class ChargesList{
   ChargesId: number;
   ServiceId: number;
