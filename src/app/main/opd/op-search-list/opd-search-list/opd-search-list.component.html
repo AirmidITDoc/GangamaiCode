@@ -191,7 +191,6 @@
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md
                                                     [ngClass]="{'positive-balance': contact.BalanceAmt > 0 }" >
-                                                        
                                                         {{contact.BalanceAmt | currency:"INR":"symbol"}}
                                                     </mat-cell>
                                                 </ng-container>

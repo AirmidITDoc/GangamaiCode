@@ -310,7 +310,7 @@ dataSource2 = new MatTableDataSource<RefundMaster>();
         "mobileNumber": vmono || 0,
         "smsString": '',
         "isSent": 0,
-        "smsType": 'OPREFBILL',
+        "smsType": 'OPRECEIPT',
         "smsFlag": 0,
         "smsDate": this.currentDate,
         "tranNo": el,

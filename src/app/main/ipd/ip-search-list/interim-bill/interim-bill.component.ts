@@ -455,6 +455,7 @@ export class InterimBillComponent implements OnInit {
       Paymentobj['PayTMAmount'] = 0;
       Paymentobj['PayTMTranNo'] = 0;
       Paymentobj['PayTMDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+      Paymentobj['TDSAmount'] = 0;
       Paymentobj['PaidAmt'] = this.InterimFormGroup.get('NetpayAmount').value || 0;
       Paymentobj['BalanceAmt'] = 0;
 

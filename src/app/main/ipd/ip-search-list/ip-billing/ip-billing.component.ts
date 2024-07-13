@@ -2166,7 +2166,6 @@ ServiceList:any=[];
 
   //For testing 
   viewgetDraftBillReportPdf(AdmissionID) {
-debugger
     this._IpSearchListService.getIpDraftBillReceipt(
       AdmissionID
     ).subscribe(res => {
@@ -2184,7 +2183,6 @@ debugger
   }
   // exec rptIPDInterimBill 193667 9507 
   viewgetInterimBillReportPdf(contact) {
-debugger
     this._IpSearchListService.getIpInterimBillReceipt(
       contact.BillNo
     ).subscribe(res => {
