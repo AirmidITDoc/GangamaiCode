@@ -3,7 +3,7 @@
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Consultation Doctor Update </span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Doctor Name Update </span>
             </div>
             <div class="modal-header-right">
                 <div class="close-icon">
@@ -11,11 +11,6 @@
                         matTooltip="Close">
                         <mat-icon>close</mat-icon>
                     </button>
-                </div>
-                <div fxLayout="row" fxLayoutGap="5px">
-                    <app-common-date [screenFrom]="screenFromString" style="float:right"
-                        (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
-
                 </div>
             </div>
         </div>
@@ -201,7 +196,7 @@
                             </div>
                             <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" style="margin-left:800px;">
 
-                                <button class="btn btn-danger-outline" (click)="onClose()">Cancle</button>
+                                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
                                 <button class="btn btn-primary " color="accent" (click)="onSubmit()"
                                     [disabled]="searchFormGroup.invalid">
                                     <span>Save</span>

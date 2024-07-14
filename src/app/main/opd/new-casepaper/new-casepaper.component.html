@@ -14,13 +14,14 @@
                         Medical Record
                     </span>
 
-                    <span  style="margin-left:400px;" hidden><app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date></span>  
+                    <span style="margin-left:400px;" hidden><app-common-date [screenFrom]="screenFromString"
+                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date></span>
                     <!-- <span class="material-icons" style="cursor: pointer; margin-left: 1100px; color: #fff;"
                         (click)="onClose()">
                         close
                     </span> -->
                 </div>
-              
+
             </div>
 
             <div style="width: 100%;" class="opd-billing-body p-16">
@@ -73,7 +74,7 @@
                     </div>
 
                     <div fxlayout="row">
-                        <div class="modal-card-container"> 
+                        <div class="modal-card-container">
                             <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 6px;">
                                 <div class="patient-info-sales my-8">
                                     <div class="sales-patient-info-title">
@@ -156,13 +157,13 @@
                                     </div>
                                 </div>
                             </mat-card>
-                            
-                        </div>  
-                    </div> 
-                </div> 
-            </div> 
+
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div>
-                <mat-tab-group >
+                <mat-tab-group>
                     <mat-tab label="Prescription">
                         <ng-template mat-tab-label>
                             Prescription
@@ -171,8 +172,8 @@
                             <!-- <div fxFlexFill fxLayout="column" fxLayoutGap="5px"> -->
                             <mat-card>
                                 <div fxLayout="row" style="height:100px !important;">
-                                    <div fxFlex.gt-sm="99%"  fxLayoutGap="5px">
-                    
+                                    <div fxFlex.gt-sm="99%" fxLayoutGap="5px">
+
                                         <div fxFlex.gt-sm="99%">
                                             <form [formGroup]="caseFormGroup">
                                                 <div fxLayout="row" class="gap-8">
@@ -184,99 +185,111 @@
                 
                                                     </mat-form-field> -->
                                                 </div>
-                                                <mat-card >
+                                                <mat-card>
                                                     <div fxLayout="row" class="gap-8">
                                                         <mat-form-field appearance="outline" fxFlex="40%;">
                                                             <mat-label>ChiefComplaint</mat-label>
-                                                            <input name="ChiefComplaint" formControlName="ChiefComplaint" placeholder="ChiefComplaint" [(ngModel)]="ChiefComplaint"
-                                                                matInput #EHeight (keydown)="onEnterChiefComplaint($event)"
-                                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 3);">
-                    
+                                                            <input name="ChiefComplaint"
+                                                                formControlName="ChiefComplaint"
+                                                                placeholder="ChiefComplaint"
+                                                                [(ngModel)]="ChiefComplaint" matInput #EHeight
+                                                                (keydown)="onEnterChiefComplaint($event)">
+
                                                         </mat-form-field>
                                                         <span style="font-weight: bold;">{{BMIstatus}}</span>
                                                         <mat-form-field appearance="outline" fxFlex="7%;">
                                                             <mat-label>Height</mat-label>
-                                                            <input name="Height" formControlName="Height" placeholder="Height in m" [(ngModel)]="Height" 
-                                                                matInput #EHeight (keydown)="onEnterHeight($event)"
+                                                            <input name="Height" formControlName="Height"
+                                                                placeholder="Height in m" [(ngModel)]="Height" matInput
+                                                                #EHeight (keydown)="onEnterHeight($event)"
                                                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 3);">
-                    
+
                                                         </mat-form-field>
 
                                                         <mat-form-field appearance="outline" fxFlex="7%;">
                                                             <mat-label>Weight</mat-label>
-                                                            <input name="Weight" formControlName="Weight" placeholder="Weight in Kg" [(ngModel)]="Weight" (keyup)="getMeasures()"
-                                                                matInput #EWeight (keydown)="onEnterWeight($event)"
+                                                            <input name="Weight" formControlName="Weight"
+                                                                placeholder="Weight in Kg" [(ngModel)]="Weight"
+                                                                (keyup)="getMeasures()" matInput #EWeight
+                                                                (keydown)="onEnterWeight($event)"
                                                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 3);">
-                    
+
                                                         </mat-form-field>
 
                                                         <mat-form-field appearance="outline" fxFlex="7%;">
                                                             <mat-label>BMI</mat-label>
-                                                            <input name="BMI" formControlName="BMI" placeholder="BMI" matInput [(ngModel)]="BMI"
-                                                                #EBMI (keydown)="onEnterBMI($event)"
+                                                            <input name="BMI" formControlName="BMI" placeholder="BMI"
+                                                                matInput [(ngModel)]="BMI" #EBMI
+                                                                (keydown)="onEnterBMI($event)"
                                                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 3);">
-                    
+
                                                         </mat-form-field>
                                                         <mat-form-field appearance="outline" fxFlex="7%;">
                                                             <mat-label>BSL</mat-label>
-                                                            <input name="BSL" formControlName="BSL" placeholder="BSL" matInput [(ngModel)]="BSL"
-                                                                #EBSL (keydown)="onEnterBSL($event)"
+                                                            <input name="BSL" formControlName="BSL" placeholder="BSL"
+                                                                matInput [(ngModel)]="BSL" #EBSL
+                                                                (keydown)="onEnterBSL($event)"
                                                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 3);">
-                    
+
                                                         </mat-form-field>
-                                                      
+
                                                         <!-- display:inline-flexbox; -->
                                                         <mat-form-field appearance="outline" fxFlex="7%;">
                                                             <mat-label>SpO2</mat-label>
-                                                            <input name="SpO2" formControlName="SpO2" placeholder="SpO2" [(ngModel)]="SpO2"
-                                                                matInput #ESpO2 (keydown)="onEnterSpO2($event)"
+                                                            <input name="SpO2" formControlName="SpO2" placeholder="SpO2"
+                                                                [(ngModel)]="SpO2" matInput #ESpO2
+                                                                (keydown)="onEnterSpO2($event)"
                                                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 3);">
                                                         </mat-form-field>
                                                         <mat-form-field appearance="outline" fxFlex="7%;">
                                                             <mat-label>Pulse</mat-label>
-                                                            <input name="Pulse" formControlName="Pulse" placeholder="Pulse" [(ngModel)]="Pulse"
-                                                                matInput #EPulse (keydown)="onEnterPulse($event)"
+                                                            <input name="Pulse" formControlName="Pulse"
+                                                                placeholder="Pulse" [(ngModel)]="Pulse" matInput #EPulse
+                                                                (keydown)="onEnterPulse($event)"
                                                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 3);">
-                    
+
                                                         </mat-form-field>
-                                                       
+
                                                         <mat-form-field appearance="outline" fxFlex="7%;">
                                                             <mat-label>BP</mat-label>
-                                                            <input name="BP" formControlName="BP" placeholder="BP" matInput #EBP [(ngModel)]="BP"
+                                                            <input name="BP" formControlName="BP" placeholder="BP"
+                                                                matInput #EBP [(ngModel)]="BP"
                                                                 (keydown)="onEnterBP($event)"
                                                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 3);">
-                    
+
                                                         </mat-form-field>
                                                         <mat-form-field appearance="outline" fxFlex="7%;">
                                                             <mat-label>Temp</mat-label>
-                                                            <input name="Temp" formControlName="Temp" placeholder="Temp" [(ngModel)]="Temp"
-                                                                matInput #ETemp (keydown)="onEnterTemp($event)"
+                                                            <input name="Temp" formControlName="Temp" placeholder="Temp"
+                                                                [(ngModel)]="Temp" matInput #ETemp
+                                                                (keydown)="onEnterTemp($event)"
                                                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 3);">
-                    
+
                                                         </mat-form-field>
                                                     </div>
-                                                  
+
                                                 </mat-card>
                                             </form>
                                         </div>
-                    
-                                     
-                    
+
+
+
                                     </div>
-                                  
+
                                 </div>
                                 <div fxlayout="row">
                                     <div fxLayout="column" style="margin-left: 10px;">
                                         <span>Prescription Details</span>
                                         <div fxFlex.gt-sm="100%" fxFlex>
-                    
+
                                             <form [formGroup]="MedicineItemForm">
                                                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
                                                     <mat-form-field appearance="outline" fxFlex="35%">
                                                         <mat-label>Drug Name</mat-label>
-                                                        <input type="text" name="ItemId" formControlName="ItemId" #itemid
-                                                            (keydown)="onEnterItem($event)" placeholder="Item Name " matInput
-                                                            [matAutocomplete]="auto" (input)="getSearchItemList()" required>
+                                                        <input type="text" name="ItemId" formControlName="ItemId"
+                                                            #itemid (keydown)="onEnterItem($event)"
+                                                            placeholder="Item Name " matInput [matAutocomplete]="auto"
+                                                            (input)="getSearchItemList()" required>
                                                         <span matSuffix style="display: flex;">
                                                             <mat-icon class="mat-icon-close"
                                                                 (click)="MedicineItemForm.get('ItemId').setValue(''); isItemIdSelected = false;">
@@ -298,13 +311,13 @@
                                                             Select ItemName
                                                         </mat-error>
                                                     </mat-form-field>
-                    
+
                                                     <mat-form-field appearance="outline" fxFlex="20%">
                                                         <mat-label>Dose Name</mat-label>
                                                         <input matAutocompletePosition="below" type="text"
-                                                            placeholder="Select Dose Name" matInput formControlName="DoseId"
-                                                            [matAutocomplete]="autodose" required #dosename
-                                                            (keydown)="onEnterDose($event)">
+                                                            placeholder="Select Dose Name" matInput
+                                                            formControlName="DoseId" [matAutocomplete]="autodose"
+                                                            required #dosename (keydown)="onEnterDose($event)">
                                                         <span matSuffix style="display: flex;">
                                                             <mat-icon class="mat-icon-close"
                                                                 (click)="MedicineItemForm.get('DoseId').setValue(''); isDoseSelected = false;">close</mat-icon>
@@ -313,21 +326,23 @@
                                                         </span>
                                                         <mat-autocomplete #autodose="matAutocomplete"
                                                             [displayWith]="getOptionTextDose">
-                                                            <mat-option *ngFor="let option of filteredOptionsDosename | async"
+                                                            <mat-option
+                                                                *ngFor="let option of filteredOptionsDosename | async"
                                                                 [value]="option">
                                                                 {{option.DoseName}}
                                                             </mat-option>
                                                         </mat-autocomplete>
                                                     </mat-form-field>
-                    
-                    
+
+
                                                     <mat-form-field appearance="outline" fxFlex="20%">
                                                         <mat-label>Day</mat-label>
-                                                        <input type="text" OnlyNumber [(ngModel)]="vDay" name="Day" required
-                                                            (keydown)="onEnterqty($event)" formControlName="Day" matInput
-                                                            required #Day (keypress)="keyPressAlphanumeric($event)">
+                                                        <input type="text" OnlyNumber [(ngModel)]="vDay" name="Day"
+                                                            required (keydown)="onEnterqty($event)"
+                                                            formControlName="Day" matInput required #Day
+                                                            (keypress)="keyPressAlphanumeric($event)">
                                                     </mat-form-field>
-                    
+
                                                     <!-- (keydown)="onEnterremark($event)" -->
                                                     <mat-form-field appearance="outline" fxFlex="20%">
                                                         <mat-label>Instruction</mat-label>
@@ -335,7 +350,7 @@
                                                             formControlName="Instruction" matInput #Instruction
                                                             (keydown)="onEnterremark($event)">
                                                     </mat-form-field>
-                    
+
                                                     <div class="input-add-button">
                                                         <div matTooltip="Select Drug to enable this button!!"
                                                             [matTooltipPosition]="'above'">
@@ -346,7 +361,7 @@
                                                                 </span>
                                                                 <span>Add</span>
                                                             </button>
-                    
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -358,9 +373,9 @@
                                             <!-- Table 1 -->
                                             <div class="table" fxFlex="100%">
                                                 <mat-card>
-                                                    <mat-table class="mat-table-1 h-280" matSort [dataSource]="dsItemList"
-                                                        [@animateStagger]="{value:'50'}">
-                    
+                                                    <mat-table class="mat-table-1 h-280" matSort
+                                                        [dataSource]="dsItemList" [@animateStagger]="{value:'50'}">
+
                                                         <ng-container matColumnDef="ItemName">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                                                 fxShow.gt-sm>
@@ -369,7 +384,7 @@
                                                                 <span> {{element.ItemName}}</span>
                                                             </mat-cell>
                                                         </ng-container>
-                    
+
                                                         <ng-container matColumnDef="DoseName">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                                                 fxShow.gt-sm>
@@ -378,7 +393,7 @@
                                                                 <span> {{element.DoseName}}</span>
                                                             </mat-cell>
                                                         </ng-container>
-                    
+
                                                         <ng-container matColumnDef="Day">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                                                 fxShow.gt-sm>
@@ -387,7 +402,7 @@
                                                                 <span> {{element.Day}}</span>
                                                             </mat-cell>
                                                         </ng-container>
-                    
+
                                                         <ng-container matColumnDef="Remark">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                                                 fxShow.gt-sm>
@@ -411,67 +426,74 @@
                                                                 DoseName1
                                                             </mat-header-cell>
                                                             <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                    
-                                                                <mat-select placeholder="DoseName1" (selectionChange)="getdoseDetailValue1(element,$event.value)">
-                                                                    <mat-option *ngFor="let Result of doseresults" [(ngModel)]="element.DoseName1" 
+
+                                                                <mat-select placeholder="DoseName1"
+                                                                    (selectionChange)="getdoseDetailValue1(element,$event.value)">
+                                                                    <mat-option *ngFor="let Result of doseresults"
+                                                                        [(ngModel)]="element.DoseName1"
                                                                         [value]="Result.DoseName">
                                                                         {{ Result.DoseName }}
                                                                     </mat-option>
                                                                 </mat-select>
                                                             </mat-cell>
-                    
+
                                                         </ng-container>
-                    
-                    
+
+
                                                         <ng-container matColumnDef="Day1">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                                class="w-80">Days
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                fxShow.gt-sm class="w-80">Days
                                                             </mat-header-cell>
-                                                            <mat-cell class="w-80" *matCellDef="let element" fxShow.gt-sm>
+                                                            <mat-cell class="w-80" *matCellDef="let element"
+                                                                fxShow.gt-sm>
                                                                 <mat-form-field appearance="legacy">
                                                                     <input matInput [(ngModel)]="element.Day1"
                                                                         (keypress)="keyPressAlphanumeric($event)">
                                                                 </mat-form-field>
                                                             </mat-cell>
                                                         </ng-container>
-                    
-                                                       
-                    
+
+
+
                                                         <ng-container matColumnDef="DoseName2">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                                                 fxShow.gt-md>
                                                                 DoseName2
                                                             </mat-header-cell>
                                                             <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                    
-                                                                <mat-select placeholder="DoseName1" (selectionChange)="getdoseDetailValue2(element,$event.value)">
-                                                                    <mat-option *ngFor="let Result of doseresults" [(ngModel)]="element.DoseName2" 
+
+                                                                <mat-select placeholder="DoseName1"
+                                                                    (selectionChange)="getdoseDetailValue2(element,$event.value)">
+                                                                    <mat-option *ngFor="let Result of doseresults"
+                                                                        [(ngModel)]="element.DoseName2"
                                                                         [value]="Result.DoseName">
                                                                         {{ Result.DoseName }}
                                                                     </mat-option>
                                                                 </mat-select>
                                                             </mat-cell>
-                    
+
                                                         </ng-container>
-                    
-                    
+
+
                                                         <ng-container matColumnDef="Day2">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                                class="w-80">Days
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                fxShow.gt-sm class="w-80">Days
                                                             </mat-header-cell>
-                                                            <mat-cell class="w-80" *matCellDef="let element" fxShow.gt-sm>
+                                                            <mat-cell class="w-80" *matCellDef="let element"
+                                                                fxShow.gt-sm>
                                                                 <mat-form-field appearance="legacy">
                                                                     <input matInput [(ngModel)]="element.Day2"
                                                                         (keypress)="keyPressAlphanumeric($event)">
                                                                 </mat-form-field>
                                                             </mat-cell>
                                                         </ng-container>
-                    
-                                                       
-                                                      
-                    
+
+
+
+
                                                         <ng-container matColumnDef="Action" stickyEnd>
-                                                            <mat-header-cell *matHeaderCellDef class="table-actions">Action
+                                                            <mat-header-cell *matHeaderCellDef
+                                                                class="table-actions">Action
                                                             </mat-header-cell>
                                                             <mat-cell *matCellDef="let contact">
                                                                 <ng-container class="actions">
@@ -482,7 +504,7 @@
                                                                 </ng-container>
                                                             </mat-cell>
                                                         </ng-container>
-                    
+
                                                         <mat-header-row class="accent"
                                                             *matHeaderRowDef="displayedColumns; sticky: true">
                                                         </mat-header-row>
@@ -500,27 +522,47 @@
                                             formControlName="Lhaed">
                                             Letter Head
                                         </mat-checkbox>
-                                        <mat-radio-group aria-label="Select an option" formControlName="LangaugeRadio"
+                                        <!-- <mat-radio-group aria-label="Select an option" formControlName="LangaugeRadio"
                                             name="LangaugeRadio" (change)="onChangeLangaugeRadio($event)"
                                             style="font-weight: bold;">
                                             <mat-radio-button value="Marathi">print In Marathi</mat-radio-button>
                                             <mat-radio-button value="English">print In English</mat-radio-button>
-                                        </mat-radio-group>
+                                        </mat-radio-group> -->
                                     </form>
                                 </div>
-                    
-                    
-                                <div fxLayout="row">
-                                    <div class="action-btns gap-8" fxLayout="row" style="margin-left: 1200px;">
+
+                            </mat-card>
+
+                            <div class="sales-radio-buttons gap-6" fxLayout="row" fxLayoutAlign="space-between center">
+                                <form [formGroup]="caseFormGroup">
+                                    <mat-checkbox (change)="LetterheadFilter($event)" aria-label="Letter Head"
+                                        formControlName="Lhaed">
+                                        Print on Letter Header
+                                    </mat-checkbox>
+
+                                    <mat-radio-group aria-label="Select an option" formControlName="LangaugeRadio"
+                                        (change)="onChangeLangaugeRadio($event)">
+                                        <mat-radio-button value="CashPay">Print In Marathi</mat-radio-button>
+                                        <mat-radio-button value="Online">Print In English</mat-radio-button>
+                                    </mat-radio-group>
+                                </form>
+                                <!-- <div class="action-btns gap-8" fxLayout="row" style="margin-left: 1200px;">
                                         <button class="btn btn-danger-outline" (click)="onClear()">Reset</button>
                                         <button class="btn btn-primary" (click)="onSave()"  [disabled]="caseFormGroup.invalid && dsItemList.data.length==0">Save</button>
                     
-                                    </div>
+                                    </div> -->
+
+                                <div class="sales-footer-buttons gap-6" fxLayout="row">
+                                    <button class="btn btn-danger-outline" (click)="onClose()">Reset</button>
+                                    <button class="btn btn-primary " (click)="onSave()">Save</button>
                                 </div>
-                            </mat-card>
+
+
+                            </div>
+
                             <!-- </div> -->
-                    
-                    
+
+
                         </div>
                     </mat-tab>
                     <mat-tab label="Previous Visit Information">
@@ -528,19 +570,17 @@
                             Previous Visit Information
                         </ng-template>
                         <div fxFlex.gt-sm="30%">
-                    
+
                             <div fxlayout="row">
-                                <div fxFlex.gt-sm="99%" fxLayoutGap="5px"
-                                    style="height:100px !important;">
+                                <div fxFlex.gt-sm="99%" fxLayoutGap="5px" style="height:100px !important;">
                                     <mat-card>
                                         <mat-table class="table1" matSort [dataSource]="dataSource1"
                                             [@animateStagger]="{value:'50'}"
                                             style="height: 100px !important;overflow: auto;">
-        
+
                                             <ng-container matColumnDef="VisitId"
                                                 style="width:80px;max-width:80px;min-width:80px;">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                    fxShow.gt-sm
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
                                                     style="width:80px;max-width:80px;min-width:80px;">
                                                     VisitID </mat-header-cell>
                                                 <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm
@@ -550,8 +590,7 @@
                                             <ng-container matColumnDef="VisitDate"
                                                 style="background-color: rgb(157, 164, 164);"
                                                 style="width:80px;max-width:80px;min-width:80px;">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                    fxShow.gt-sm
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
                                                     style="width:80px;max-width:80px;min-width:80px;">
                                                     VisitDate
                                                 </mat-header-cell>
@@ -560,36 +599,34 @@
                                                     {{element.VisitDate | date:'shortDate'}}
                                                 </mat-cell>
                                             </ng-container>
-        
+
                                             <ng-container matColumnDef="DocName"
                                                 style="width:200px;max-width:200px;min-width:200px;">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                    fxShow.gt-sm
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
                                                     style="width:150px;max-width:150px;min-width:150px;">
                                                     DoctorName </mat-header-cell>
                                                 <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm
                                                     style="width:200px;max-width:200px;min-width:200px;">
                                                     {{element.DocName }} </mat-cell>
                                             </ng-container>
-        
-                                            
+
+
                                             <ng-container matColumnDef="loading">
                                                 <mat-footer-cell *matFooterCellDef colspan="6">
                                                     loading data...
                                                 </mat-footer-cell>
                                             </ng-container>
-        
+
                                             <ng-container matColumnDef="noData">
                                                 <mat-footer-cell *matFooterCellDef colspan="6">
-        
-                                                    <mat-spinner *ngIf="isLoadingStr=='loading'"
-                                                        [diameter]='30'>
+
+                                                    <mat-spinner *ngIf="isLoadingStr=='loading'" [diameter]='30'>
                                                     </mat-spinner>
                                                     <span *ngIf="isLoadingStr=='no-data'">No data
                                                         found...</span>
                                                 </mat-footer-cell>
                                             </ng-container>
-        
+
                                             <mat-header-row class="accent"
                                                 *matHeaderRowDef="displayedVisitColumns; sticky: true">
                                             </mat-header-row>
@@ -602,16 +639,16 @@
                                                 [ngClass]="{'hide':!(dataSource1!=null && dataSource1.data.length==0)}">
                                             </mat-footer-row>
                                         </mat-table>
-        
-        
+
+
                                     </mat-card>
                                 </div>
-        
+
                             </div>
                         </div>
                     </mat-tab>
-                    </mat-tab-group>
-                    
+                </mat-tab-group>
+
             </div>
         </div>
     </div>
