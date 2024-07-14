@@ -39,6 +39,8 @@ export class MLCInformationComponent implements OnInit {
   ABuckleNo: any;
   PoliceStation: any;
   MlcObj=new MlcDetail({})
+  DetailGiven:any;
+  Remark:any;
 
   constructor(public _AdmissionService: AdmissionService,
     private formBuilder: FormBuilder,
@@ -93,6 +95,7 @@ debugger
   
   optionsMLC: any[] = [];
 
+  
   getMlcdetail(AdmissionId){
     let Query = "Select * from T_MLCInformation where  AdmissionId=" + AdmissionId + " ";
     this._AdmissionService.getMLCDetail(Query).subscribe(data => {
@@ -108,6 +111,10 @@ debugger
         this.AuthorityName=this.MlcObj.AuthorityName;
         this.ABuckleNo=this.MlcObj.BuckleNo;
         this.PoliceStation=this.MlcObj.PoliceStation;
+        this.Remark=this.MlcObj.Remark;
+        this.DetailGiven=this.MlcObj.DetailGiven;
+
+        
       }
     });
 
@@ -287,9 +294,9 @@ debugger
 
   }, 100);
 
-
-
 }
+
+
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
@@ -306,7 +313,8 @@ export class MlcDetail {
   AuthorityName: any;
   BuckleNo: any;
   PoliceStation: any;
-  
+  DetailGiven:any;
+  Remark:any;
   /**
    * Constructor
    *
@@ -323,6 +331,8 @@ export class MlcDetail {
       this.AuthorityName = MlcDetail.MiddleName || '';
       this.BuckleNo = MlcDetail.BuckleNo || '';
       this.PoliceStation = MlcDetail.PoliceStation || '';
+      this.DetailGiven = MlcDetail.DetailGiven || '';
+      this.Remark = MlcDetail.Remark || '';
 
     }
   }

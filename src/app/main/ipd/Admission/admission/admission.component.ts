@@ -1398,6 +1398,7 @@ export class AdmissionComponent implements OnInit {
 
 
   OnChangeBedList(wardObj) {
+    debugger
     this._AdmissionService.getBedCombo(wardObj.RoomId).subscribe(data => {
       this.BedList = data;
       this.optionsBed = this.BedList.slice();
@@ -2186,6 +2187,38 @@ this.getAdmittedPatientList_1()
       console.log('The dialog was closed - Insert Action', result);
     });
   }
+
+
+  getMLCdetailview(Id) {
+    // this.sIsLoading = 'loading-data';
+  debugger
+    setTimeout(() => {
+  
+      this._AdmissionService.getMLCDetailView(Id
+      ).subscribe(res => {
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "MLC Detail Viewer"
+            }
+          });
+  
+        matDialog.afterClosed().subscribe(result => {
+          // this.AdList = false;
+          // this.sIsLoading = ' ';
+        });
+      });
+  
+    }, 100);
+  
+  }
+
+  
+  
   getRecord(contact, m): void {
 
     if (m == "Edit Admission") {
@@ -3200,6 +3233,8 @@ vOPDNo:any;
 TarrifName:any
 OPDNo:any;
 WardName:any;
+Remark:any;
+DetailGiven:any;
   /**
 * Constructor
 *
@@ -3339,6 +3374,8 @@ WardName:any;
       this.TarrifName=AdmissionPersonl.TarrifName || ''
       this.WardName =AdmissionPersonl.WardName || ''
       this.OPDNo=AdmissionPersonl.OPDNo || ''
+      this.Remark =AdmissionPersonl.Remark || ''
+      this.DetailGiven=AdmissionPersonl.DetailGiven || ''
     }
   }
 }

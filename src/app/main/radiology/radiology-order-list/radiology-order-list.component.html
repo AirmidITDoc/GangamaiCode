@@ -250,7 +250,8 @@
                                         class="backgroundBlur">
                                         <div class="spinner-border"></div>
                                     </div>
-                                    <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
+                                    <mat-table #table matSort [dataSource]="dataSource"
+                                        [@animateStagger]="{value:'50'}">
 
                                         <ng-container matColumnDef="IsCompleted" sticky>
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
@@ -265,16 +266,18 @@
                                                 </button>
                                             </mat-cell>
                                         </ng-container>
-                                        
+
                                         <ng-container matColumnDef="PatientType">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                                 Patient Type
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
 
-                                                <mat-icon *ngIf="contact.PatientType =='Self'" matTooltip="Patient Category Self">account_box
+                                                <mat-icon *ngIf="contact.PatientType =='Self'"
+                                                    matTooltip="Patient Category Self">account_box
                                                 </mat-icon>
-                                                <mat-icon *ngIf="contact.PatientType !== 'Self'" matTooltip="Patient Category Company">business
+                                                <mat-icon *ngIf="contact.PatientType !== 'Self'"
+                                                    matTooltip="Patient Category Company">business
                                                 </mat-icon>
                                             </mat-cell>
                                         </ng-container>
@@ -298,7 +301,8 @@
                                         </ng-container>
 
                                         <ng-container matColumnDef="PatientName" sticky>
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-220">Patient Name
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                class="w-220">Patient Name
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm
                                                 [matTooltip]="contact.PatientName" class="w-220">
@@ -306,7 +310,7 @@
                                             </mat-cell>
                                         </ng-container>
 
-                                       
+
 
                                         <ng-container matColumnDef="DoctorName">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
@@ -338,20 +342,6 @@
                                             </mat-cell>
                                         </ng-container>
 
-                                     
-
-                                        <!-- <ng-container matColumnDef="IsPrinted">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
-                                                IsPrinted
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                                <mat-icon matTooltip="IsPrinted" *ngIf="contact.IsPrinted==true"
-                                                class="pill green-700 s-18" >check_circle</mat-icon>
-                                                <mat-icon matTooltip="Not Printed" *ngIf="contact.IsPrinted==false"
-                                                class="pill red-700 s-18" >cancel</mat-icon>  
-                                            </mat-cell>
-                                        </ng-container> -->
-
                                         <ng-container matColumnDef="PBillNo">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                                 BillNo
@@ -369,7 +359,7 @@
                                                 <span> {{contact.MobileNo || '--'}}</span>
                                             </mat-cell>
                                         </ng-container>
-                                        
+
                                         <ng-container matColumnDef="CompanyName">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                                 CompanyName
@@ -378,7 +368,7 @@
                                                 <span> {{contact.CompanyName || '--'}}</span>
                                             </mat-cell>
                                         </ng-container>
-                                        
+
                                         <ng-container matColumnDef="RefDoctorName">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                                 RefDoctorName
@@ -396,22 +386,21 @@
                                                     matTooltip="how_to_edit">
                                                     <mat-icon title="Edit Menu">edit</mat-icon>
                                                 </button>
-                                                <button mat-icon-button
+                                                <!-- <button mat-icon-button
                                                     (click)="viewgetRadioloyTemplateReportPdf(contact)"
                                                     matTooltip="print">
-                                                <!-- <button mat-icon-button (click)="getView(contact)" matTooltip="how_to_reg">
-                                                    <mat-icon>how_to_reg</mat-icon>
-                                                </button> -->
-                                                <button mat-icon-button (click)="getPrint(contact)" matTooltip="print">
-                                                    <mat-icon>print</mat-icon>
-                                                </button>
-                                                <button mat-icon-button>
-                                                    <mat-icon title="Email">mail</mat-icon>
-                                                </button>
-                                                <button mat-icon-button title="Send Bill On WhatsApp">
-                                                    <img width="100" height="20px"
-                                                        src="assets/images/logos/WhatsApp.png">
-                                                </button>
+                                                    -->
+                                                    <button mat-icon-button (click)="viewgetRadioloyTemplateReportPdf(contact)"
+                                                        matTooltip="print">
+                                                        <mat-icon>print</mat-icon>
+                                                    </button>
+                                                    <button mat-icon-button>
+                                                        <mat-icon title="Email">mail</mat-icon>
+                                                    </button>
+                                                    <button mat-icon-button title="Send Bill On WhatsApp">
+                                                        <img width="100" height="20px"
+                                                            src="assets/images/logos/WhatsApp.png">
+                                                    </button>
                                             </mat-cell>
                                         </ng-container>
 

@@ -813,7 +813,10 @@ export class MedicineItemList {
   DoseId1:any;
   DoseId2:any;
   Day:any;
-  
+  DaysOption2:any;
+  DaysOption3:any;
+  DoseNameOption2:any;
+  DoseNameOption3:any;
   /**
   * Constructor
   *
@@ -834,6 +837,10 @@ export class MedicineItemList {
       this.Day2 = MedicineItemList.Day2 || 0;
       this.DoseId1 = MedicineItemList.DoseId1 || '';
       this.DoseId2 = MedicineItemList.DoseId2 || 0;
+      this.DaysOption2 = MedicineItemList.DaysOption2 || 0;
+      this.DaysOption3 = MedicineItemList.DaysOption3 || 0;
+      this.DoseNameOption2 = MedicineItemList.DoseNameOption2 || '';
+      this.DoseNameOption3 = MedicineItemList.DoseNameOption3 || '';
     }
   }
 }

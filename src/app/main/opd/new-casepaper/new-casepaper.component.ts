@@ -181,6 +181,7 @@ export class NewCasepaperComponent implements OnInit {
   @ViewChild('diagnosisInput') diagnosisInput: ElementRef<HTMLInputElement>;
 
   dsItemList = new MatTableDataSource<MedicineItemList>();
+  dsItemList1 = new MatTableDataSource<MedicineItemList>();
   // @ViewChild('historyInput') historyInput: ElementRef<HTMLInputElement>;
   // @ViewChild('diagnosisInput') diagnosisInput: ElementRef<HTMLInputElement>;
 
@@ -234,7 +235,7 @@ export class NewCasepaperComponent implements OnInit {
   displayedColumns: string[] = [
     'ItemName',
     'DoseName',
-    'Day',
+    'Days',
     'Remark',
     'DoseName1',
     'Day1',
@@ -246,7 +247,7 @@ export class NewCasepaperComponent implements OnInit {
   displayedVisitColumns = [
 
     'VisitId',
-    'VisitDate',
+    'VisitTime',
     'DocName'
 
   ];
@@ -338,45 +339,7 @@ export class NewCasepaperComponent implements OnInit {
     );
 
 
-    this.doseFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterDose();
-      });
-
-    this.drugFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterDrug();
-      });
-
-
-    //   this.historyFilterCtrl.valueChanges
-    //   .pipe(takeUntil(this._onDestroy))
-    //   .subscribe(() => {
-    //     this.filterHistory();
-    //   });
-
-    // this.dignosFilterCtrl.valueChanges
-    //   .pipe(takeUntil(this._onDestroy))
-    //   .subscribe(() => {
-    //     this.filterDiagnosis();
-    //   });
-
-    this.complaintFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterComplaint();
-      });
-
-
-    this.examinationFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterExamination();
-      });
-
-    this.getPrescriptionListFill(this.VisitId);
+    // this.getPrescriptionListFill(this.VisitId);
   }
 
 
@@ -494,7 +457,7 @@ export class NewCasepaperComponent implements OnInit {
     this.dataSource.data = [];
     this.registerObj = obj;
     this.PatientName = obj.FirstName + " " + obj.LastName;
-    this.RegId = obj.RegId;
+    this.RegId = obj.RegID;
     this.Doctorname = obj.Doctorname;
     this.VisitDate = this.datePipe.transform(obj.VisitDate, 'dd/MM/yyyy hh:mm a');
     this.CompanyName = obj.CompanyName;
@@ -515,6 +478,8 @@ export class NewCasepaperComponent implements OnInit {
     this.BedName = obj.BedName;
     this.PatientType = obj.PatientType;
     this.prescriptionDetails(this.VisitId);
+    this.getVisistList();
+    this.getPrescriptionListFill(this.VisitId);
   }
 
 
@@ -780,122 +745,10 @@ export class NewCasepaperComponent implements OnInit {
     return of(filtered.slice(skip, skip + take));
   }
 
-  // private filterHistory(){
-  //   if (!this.HistoryList) {
-  //     return;
-  //   }
-  //   // get the search keyword
-  //   let search = this.historyFilterCtrl.value;
-  //   if (!search) {
-  //     this.filteredHistory.next(this.HistoryList.slice());
-  //     return;
-  //   } else {
-  //     search = search.toLowerCase();
-  //   }
-  //   // filter the diagnosis
-  //   this.filteredHistory.next(
-  //     this.HistoryList.filter(HisEl => HisEl.PastHistoryDescr.toLowerCase().indexOf(search) > -1)
-  //   );
-
-  // }
-  // private filterDiagnosis() {
-  //   if (!this.diagnosisList) {
-  //     return;
-  //   }
-  //   // get the search keyword
-  //   let search = this.dignosFilterCtrl.value;
-  //   if (!search) {
-  //     this.filteredDiagnosis.next(this.diagnosisList.slice());
-  //     return;
-  //   } else {
-  //     search = search.toLowerCase();
-  //   }
-  //   // filter the diagnosis
-  //   this.filteredDiagnosis.next(
-  //     this.diagnosisList.filter(diagnosisEl => diagnosisEl.ComplaintName.toLowerCase().indexOf(search) > -1)
-  //   );
-  // } 
-  private filterComplaint() {
-    if (!this.complaintList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.complaintFilterCtrl.value;
-    if (!search) {
-      this.filteredComplaint.next(this.complaintList.slice());
-      return;
-    } else {
-      search = search.toLowerCase();
-    }
-    // filter the diagnosis
-    this.filteredComplaint.next(
-      this.complaintList.filter(El => El.ComplaintName.toLowerCase().indexOf(search) > -1)
-    );
-  }
-
-  private filterExamination() {
-    if (!this.examinationList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.examinationFilterCtrl.value;
-    if (!search) {
-      this.filteredExamination.next(this.examinationList.slice());
-      return;
-    } else {
-      search = search.toLowerCase();
-    }
-    // filter the diagnosis
-    this.filteredExamination.next(
-      this.examinationList.filter(El => El.ExaminationDescr.toLowerCase().indexOf(search) > -1)
-    );
-  }
-  private filterDose() {
-
-    if (!this.doseList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.doseFilterCtrl.value;
-    if (!search) {
-      this.filteredDose.next(this.doseList.slice());
-      return;
-    } else {
-      search = search.toLowerCase();
-    }
-    // filter the history
-    this.filteredDose.next(
-      this.doseList.filter(doseEl => doseEl.DoseName.toLowerCase().indexOf(search) > -1)
-    );
-  }
-
-  private filterDrug() {
-
-    if (!this.drugList1) {
-      return;
-    }
-    // get the search keyword
-    let search = this.drugFilterCtrl.value;
-    if (!search) {
-      this.filteredDrug.next(this.drugList1.slice());
-      return;
-    } else {
-      search = search.toLowerCase();
-    }
-    // filter the history
-    this.filteredDrug.next(
-      this.drugList1.filter(doseEl => doseEl.ItemName.toLowerCase().indexOf(search) > -1)
-    );
-  }
-
+  
   casePaperData: CasepaperVisitDetails = new CasepaperVisitDetails({});
 
-  // casepaperVisitDetails() {
-  //   this._CasepaperService.getcasepaperVisitDetails(this.selectedAdvanceObj.AdmissionID).subscribe((data: CasepaperVisitDetails) => {
-  //     this.casePaperData = data[0];
-  //   });
-  // }
-
+  
     prescriptionDetails(VisitId) {
       debugger
       this._CasepaperService.RtrvPreviousprescriptionDetails(VisitId).subscribe((data: any) => {
@@ -1186,7 +1039,7 @@ export class NewCasepaperComponent implements OnInit {
 
       
     });
-
+    this.onClear()
 
   }
 
@@ -1231,8 +1084,11 @@ export class NewCasepaperComponent implements OnInit {
       this.BMIstatus='Normal'
     if(BMI > 25 && BMI< 39.9)
       this.BMIstatus='Overweight'
-    if(BMI => 40)
+    if(BMI > 40)
       this.BMIstatus='Obese'
+
+    this.BMI=BMI.toFixed(2) +"( " + this.BMIstatus + ")";
+    
   }
 
 
@@ -1242,20 +1098,46 @@ export class NewCasepaperComponent implements OnInit {
     debugger;
     this._CasepaperService.RtrvPreviousprescriptionDetails(visitId).subscribe(Visit => {
       this.dsItemList.data = Visit as MedicineItemList[];
-
       console.log(this.dsItemList.data);
+
+      if(this.dsItemList.data.length > 0){
+      this.dsItemList.data.forEach(element => {
+        element.Day1=element.DaysOption2
+        element.Day2=element.DaysOption3
+      
+        element.DoseName1=element.DoseNameOption2.DoseName
+        element.DoseName2=element.DoseNameOption3.DoseName
+        element.DoseId1=element.DoseNameOption2.DoseId
+        element.DoseName2=element.DoseNameOption3.DoseName
+
+
+        
+      });
+      }
+      this.sIsLoading = '';
+
+    })
+  }
+
+  getPrescriptionListFill1(visitId) {
+    debugger;
+    this._CasepaperService.RtrvPreviousprescriptionDetails(visitId).subscribe(Visit => {
+      this.dsItemList1.data = Visit as MedicineItemList[];
+
+      console.log(this.dsItemList1.data);
     
       this.sIsLoading = '';
 
     })
   }
 
+
   getVisistList() {
     debugger;
     this.sIsLoading = 'loading';
     var D_data = {
-      // "VisitId": 70765,//this.selectedAdvanceObj.VisitId,
-      "VisitId":  this.VisitId,
+      
+      "RegId":  this.RegId,
     }
     console.log(D_data);
     this.sIsLoading = 'loading-data';
@@ -1349,7 +1231,7 @@ export class NewCasepaperComponent implements OnInit {
           ItemName: this.MedicineItemForm.get('ItemId').value.ItemName || '',
           DoseId:this.MedicineItemForm.get('DoseId').value.DoseId || 0,
           DoseName: this.MedicineItemForm.get('DoseId').value.DoseName || '',
-          Day: this.vDay,
+          Days: this.vDay,
           DoseId1:this.MedicineItemForm.get('DoseId').value.DoseId || 0,
           DoseName1: this.MedicineItemForm.get('DoseId').value.DoseName || '',
           Day1:this.Day1,
@@ -1371,7 +1253,7 @@ export class NewCasepaperComponent implements OnInit {
     this.MedicineItemForm.get('Day').reset('');
     this.MedicineItemForm.get('Instruction').reset('');
     this.itemid.nativeElement.focus();
-
+    this.Chargelist=[];
     this.getdosedetail();
   }
 
@@ -1430,8 +1312,8 @@ export class NewCasepaperComponent implements OnInit {
     // }
   }
   
-
-
+  
+  @ViewChild('ChiefComp') ChiefComp: ElementRef;
   @ViewChild('EHeight') EHeight: ElementRef;
   @ViewChild('EBSL') EBSL: ElementRef;
   @ViewChild('EWeight') EWeight: ElementRef;
@@ -1450,7 +1332,7 @@ export class NewCasepaperComponent implements OnInit {
  
   public onEnterWeight(event): void {
     if (event.which === 13) {
-      this.ESpO2.nativeElement.focus();
+      this.EBSL.nativeElement.focus();
       // if(this.mstatus) this.mstatus.focus();
     }
   }
@@ -1469,12 +1351,12 @@ export class NewCasepaperComponent implements OnInit {
  
   public onEnterPulse(event): void {
     if (event.which === 13) {
-      this.EBMI.nativeElement.focus();
+      this.EBP.nativeElement.focus();
     }
   }
   public onEnterBMI(event): void {
     if (event.which === 13) {
-      this.EBP.nativeElement.focus();
+      // this.EBP.nativeElement.focus();
       // if(this.mstatus) this.mstatus.focus();
     }
   }
@@ -1487,7 +1369,7 @@ export class NewCasepaperComponent implements OnInit {
   }
   onEnterTemp(event): void {
     if (event.which === 13) {
-      this.ETemp.nativeElement.focus();
+      // this.ETemp.nativeElement.focus();
       // if(this.mstatus) this.mstatus.focus();
     }
   }
@@ -1503,6 +1385,8 @@ export class NewCasepaperComponent implements OnInit {
   LetterheadFilter(event) {
 
   }
+
+  onClose(){}
   onClear() {
     this.caseFormGroup.reset();
     this.searchFormGroup.get('RegId').reset();
@@ -1527,6 +1411,7 @@ export class NewCasepaperComponent implements OnInit {
     this.RefDocName = " ";
     this.BedName = " ";
     this.PatientType = " ";
+    this.BMIstatus= " ";
    }
 }
 

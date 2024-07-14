@@ -246,7 +246,7 @@
                                                                 </button>
                                                                 <button mat-icon-button
                                                                     *ngIf="contact.IsMLC==1; else noMLC "
-                                                                    matTooltip="Print MLC paper">
+                                                                    matTooltip="Print MLC paper" (click)="getMLCdetailview(contact.AdmissionID)">
                                                                     <mat-icon>print</mat-icon>
                                                                 </button>
 

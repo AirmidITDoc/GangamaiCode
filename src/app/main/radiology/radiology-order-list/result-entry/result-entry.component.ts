@@ -14,6 +14,7 @@ import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { ToastrService } from 'ngx-toastr';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 // import { Editor } from 'ngx-editor';
 
 @Component({
@@ -154,9 +155,14 @@ getUpdatetemplate(){
     });
    }
   
+   const domParser = new DOMParser();
 
-   let ResultEntryhtml=this._radiologytemplateService.myform.get("ResultEntry").value;
-   console.log(ResultEntryhtml)
+   const htmlElement = domParser.parseFromString(this._radiologytemplateService.myform.get("ResultEntry").value, 'text/html');
+   
+  
+  //  let ResultEntryhtml=this._radiologytemplateService.myform.get("ResultEntry").value;
+  //  console.log(ResultEntryhtml)
+   console.log(htmlElement)
   //  ResultEntryhtml=this._radiologytemplateService.myform.get("ResultEntry").value.innerHTML;
   //  console.log(ResultEntryhtml)
 
@@ -174,7 +180,7 @@ getUpdatetemplate(){
             "SuggestionNotes": this._radiologytemplateService.myform.get("Suggatationnote").value || '',
             "AdmVisitDoctorID":0, 
             "RefDoctorID": this._radiologytemplateService.myform.get("DoctorId").value.DoctorId || 1,
-            "ResultEntry": this._radiologytemplateService.myform.get("ResultEntry").value || '', 
+            "ResultEntry":htmlElement// this._radiologytemplateService.myform.get("ResultEntry").value || '', 
           }
         }
         console.log(m_data);
@@ -185,7 +191,7 @@ getUpdatetemplate(){
               if (result.isConfirmed) {
                 this._radiologytemplateService.myform.get('TemplateDesc').reset();
                 this.dialogRef.close();
-                this.getPrint(this.selectedAdvanceObj.RadReportId);
+                this.viewgetRadioloyTemplateReportPdf(data);
               }
 
             });
@@ -221,7 +227,7 @@ getUpdatetemplate(){
               if (result.isConfirmed) {
                 this.dialogRef.close();
                 this._radiologytemplateService.myform.get('TemplateDesc').reset();
-                this.getPrint(this.selectedAdvanceObj.RadReportId);
+                this.viewgetRadioloyTemplateReportPdf(this.selectedAdvanceObj.RadReportId);
               } 
             });
           } else {
@@ -231,46 +237,27 @@ getUpdatetemplate(){
       } 
   }
 
-  getPrint(el) {
-    debugger;
-    var D_data = {
-      "RadReportId":94377,// el,//82371,
-      "OP_IP_Type": 0,//this.selectedAdvanceObj.OP_IP_Type
-    }
-   
-let printContents; //`<div style="padding:20px;height:550px"><div><div style="display:flex"><img src="http://localhost:4200/assets/images/logos/Airmid_NewLogo.jpeg" width="90"><div><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="color:#464343">6158, Siddheshwar peth, near zilla parishad, solapur-3 phone no.: (0217) 2323001 / 02</div><div style="color:#464343">www.yashodharahospital.org</div></div></div><div style="border:1px solid grey;border-radius:16px;text-align:center;padding:8px;margin-top:5px"><span style="font-weight:700">IP ADVANCE RECEIPT</span></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex;justify-content:space-between"><div style="display:flex"><div style="width:100px;font-weight:700">Advance No</div><div style="width:10px;font-weight:700">:</div><div>6817</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Reg. No</div><div style="width:10px;font-weight:700">:</div><div>117399</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Date</div><div style="width:10px;font-weight:700">:</div><div>26/06/2019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3:15:49PM</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex;width:477px"><div style="width:100px;font-weight:700">Patient Name</div><div style="width:10px;font-weight:700">:</div><div>Mrs. Suglabai Dhulappa Waghmare</div></div><div style="display:flex"><div style="width:60px;font-weight:700">IPD No</div><div style="width:10px;font-weight:700">:</div><div>IP/53757/2019</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:100px;font-weight:700">DOA</div><div style="width:10px;font-weight:700">:</div><div>30/10/2019</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:100px;font-weight:700">Patient Type</div><div style="width:10px;font-weight:700">:</div><div>Self</div></div></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Advacne Amount</div><div style="width:10px;font-weight:700">:</div><div>4,000.00</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:150px;font-weight:700">Amount in Words</div><div style="width:10px;font-weight:700">:</div><div>FOUR THOUSANDS RUPPEE ONLY</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Reason of Advance</div><div style="width:10px;font-weight:700">:</div><div></div></div></div></div><div style="position:relative;top:100px;text-align:right"><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="font-weight:700;font-size:16px">Cashier</div><div>Paresh Manlor</div></div></div>`;
-this.subscriptionArr.push(
-  this._radiologytemplateService.getRadiologyPrint(D_data).subscribe(res => {
-    if(res){
-    this.reportPrintObj = res[0] as RadiologyPrint;
-   // console.log(this.reportPrintObj);
-   }
-  
-    this.getTemplate();
-        
-  })
-);
-  }
-
-  // Select * from lvw_Retrieve_PathologyResultIPPatientUpdate where PathReportId in(760617)
-
-  getTemplate() {
-    let query = 'select tempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp a where TempId=7';
-    this._radiologytemplateService.getTemplate(query).subscribe((resData: any) => {
-      this.printTemplate = resData[0].TempDesign;
-      let keysArray = ['AdmissionDate','RegNo','RadiologyDocName','ReportDate','ResultEntry','PatientName','SuggestionNotes','GenderName','AgeYear','RadReportId','PrintTestName','CategoryName']; // resData[0].TempKeys;
-        for (let i = 0; i < keysArray.length; i++) {
-          let reString = "{{" + keysArray[i] + "}}";
-          let re = new RegExp(reString, "g");
-          this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
-        }
-        this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
-        // this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
-        setTimeout(() => {
-          this.print();
-        }, 1000);
+ 
+  viewgetRadioloyTemplateReportPdf(obj) {
+    debugger
+    this._radiologytemplateService.getRadiologyTempReport(
+      obj,0
+      ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Radiology Template  Viewer"
+          }
+        });
     });
-  } 
+  }
+  
+
+
   onEdit(row) {
     var m_data = {
       // "TemplateId": row.TemplateId,
@@ -296,48 +283,7 @@ this.subscriptionArr.push(
     //   // this.getRadiologytemplateMasterList();
     // });
   }
-  onPrint() {
-    let popupWin, printContents;
-    popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
-    popupWin.document.write(` <html>
-    <head><style type="text/css">`);
-    popupWin.document.write(`
-        table th, table td {
-        border:1px solid #bdbdbd;
-        padding:0.5em;
-      }
-      `);
-    popupWin.document.write(`
-      </style>
-          <title></title>
-      </head>
-    `);
-    popupWin.document.write(`
-      <div>${this._radiologytemplateService.myform.get("TemplateName").value}</div>
-    `);
-    popupWin.document.write(`<body onload="window.print();window.close()">${this._radiologytemplateService.myform.get("TemplateDesc").value}</body>
-    </html>`);
-    popupWin.document.close();
-  }
 
-  print() {
-
-    let popupWin, printContents;
-    // printContents =this.printTemplate; // document.getElementById('print-section').innerHTML;
-    
-    popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
-    // popupWin.document.open();
-    popupWin.document.write(` <html>
-    <head><style type="text/css">`);
-    popupWin.document.write(`
-      </style>
-          <title></title>
-      </head>
-    `);
-    popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
-    </html>`);
-    popupWin.document.close();
-    }
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;

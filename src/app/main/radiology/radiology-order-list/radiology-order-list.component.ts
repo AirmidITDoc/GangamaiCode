@@ -407,7 +407,7 @@ export class RadiologyOrderListComponent implements OnInit {
   viewgetRadioloyTemplateReportPdf(obj) {
     debugger
     this._RadiologyOrderListService.getRadiologyTempReport(
-      94377,1
+      obj.RadReportId,0
       ).subscribe(res => {
       const dialogRef = this._matDialog.open(PdfviewerComponent,
         {
