@@ -154,18 +154,12 @@ getUpdatetemplate(){
       toastClass: 'tostr-tost custom-toast-warning',
     });
    }
-  
+   console.log(this._radiologytemplateService.myform.get("ResultEntry").value)
    const domParser = new DOMParser();
-
-   const htmlElement = domParser.parseFromString(this._radiologytemplateService.myform.get("ResultEntry").value, 'text/html');
-   
-  
-  //  let ResultEntryhtml=this._radiologytemplateService.myform.get("ResultEntry").value;
-  //  console.log(ResultEntryhtml)
+  const htmlElement = domParser.parseFromString(this._radiologytemplateService.myform.get("ResultEntry").value, 'text/html');
+ 
    console.log(htmlElement)
-  //  ResultEntryhtml=this._radiologytemplateService.myform.get("ResultEntry").value.innerHTML;
-  //  console.log(ResultEntryhtml)
-
+  
       if (!this.selectedAdvanceObj.RadReportId) {
         var m_data = {
           insertRadiologyTemplateMaster: {
@@ -180,7 +174,7 @@ getUpdatetemplate(){
             "SuggestionNotes": this._radiologytemplateService.myform.get("Suggatationnote").value || '',
             "AdmVisitDoctorID":0, 
             "RefDoctorID": this._radiologytemplateService.myform.get("DoctorId").value.DoctorId || 1,
-            "ResultEntry":htmlElement// this._radiologytemplateService.myform.get("ResultEntry").value || '', 
+            "ResultEntry": this._radiologytemplateService.myform.get("ResultEntry").value || '', 
           }
         }
         console.log(m_data);

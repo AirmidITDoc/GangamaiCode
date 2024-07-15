@@ -598,12 +598,13 @@ export class NewCasepaperComponent implements OnInit {
   // }
 
   SpinLoading:any=""
-  viewgetIpprescriptionReportPdf(OP_IP_ID) {
+  viewgetOpprescriptionReportPdf(OP_IP_ID) {
+    debugger
     setTimeout(() => {
       this.SpinLoading = true;
       //  this.AdList=true;
       this._CasepaperService.getOpPrescriptionview(
-        OP_IP_ID, 1
+        OP_IP_ID
       ).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,
           {
@@ -612,7 +613,7 @@ export class NewCasepaperComponent implements OnInit {
             width: '100%',
             data: {
               base64: res["base64"] as string,
-              title: "IP Prescription Viewer"
+              title: "OP Prescription Viewer"
             }
           });
         dialogRef.afterClosed().subscribe(result => {
@@ -995,7 +996,7 @@ export class NewCasepaperComponent implements OnInit {
     insertOPDPrescription['drugId'] = element.ItemID;
     insertOPDPrescription['doseId'] =  element.DoseId || 0;
    
-    insertOPDPrescription['days'] = element.Day || 0;
+    insertOPDPrescription['days'] = element.Days || 0;
     insertOPDPrescription['qtyPerDay'] =0,// element.Qty || 0
     insertOPDPrescription['totalQty'] = 0,//element.Qty || 0;
     insertOPDPrescription['instructionId'] =1,// element.Instruction || '';
@@ -1029,7 +1030,7 @@ export class NewCasepaperComponent implements OnInit {
         Swal.fire('Congratulations !', 'Casepaper save Successfully !', 'success').then((result) => {
           if (result.isConfirmed) {
 
-            this.viewgetIpprescriptionReportPdf(this.vOPIPId);
+            this.viewgetOpprescriptionReportPdf(this.vOPIPId);
             this.getWhatsappshareSales(this.vOPIPId,this.vMobileNo)
           }
         });
@@ -1087,7 +1088,7 @@ export class NewCasepaperComponent implements OnInit {
     if(BMI > 40)
       this.BMIstatus='Obese'
 
-    this.BMI=BMI.toFixed(2) +"( " + this.BMIstatus + ")";
+     this.BMIstatus=BMI.toFixed(2) +"( " + this.BMIstatus + ")";
     
   }
 
@@ -1253,7 +1254,7 @@ export class NewCasepaperComponent implements OnInit {
     this.MedicineItemForm.get('Day').reset('');
     this.MedicineItemForm.get('Instruction').reset('');
     this.itemid.nativeElement.focus();
-    this.Chargelist=[];
+    // this.Chargelist=[];
     this.getdosedetail();
   }
 

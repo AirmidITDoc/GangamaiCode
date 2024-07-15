@@ -117,8 +117,8 @@ var data={
     this.FlagRefundIdSelected = false;
 
     }else if (this.ReportName == 'OP Bill Report') {
-      this.FlagBillNoSelected = true;
-      this.FlagUserSelected = false;
+      this.FlagBillNoSelected = false;
+      this.FlagUserSelected = true;
       this.FlagPaymentIdSelected = false;
       this.FlagDoctorSelected = false;
        this.FlagRefundIdSelected = false;
@@ -130,7 +130,7 @@ var data={
      this.FlagDoctorSelected = false;
       this.FlagRefundIdSelected = false;
     } 
-    else if (this.ReportName == 'Credit Reports') {
+    else if (this.ReportName == 'Credit Reports ') {
       this.FlagBillNoSelected = false;
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
@@ -263,7 +263,7 @@ var data={
     else if (this.ReportName == 'Bill Summary Report') {
       this.viewgetOPBillSummaryReportPdf();
     }
-     else if (this.ReportName == 'Credit Reports') {
+     else if (this.ReportName == 'Credit Reports ') {
       this.viewgetCreditReportPdf();
     } 
     else if (this.ReportName == 'Refund of Bill Reports') {
@@ -396,8 +396,7 @@ var data={
   }
 
   viewgetCreditReportPdf() {
-    this.sIsLoading = 'loading-data';
-  
+      debugger
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
       this.AdList = true;
@@ -533,33 +532,40 @@ var data={
   }
  
 
+
   viewgetOPBillReportPdf() {
-  let  BillNo=this._OPReportsService.userForm.get('BillNo').value ||0;
-    this.sIsLoading = 'loading-data';
-    setTimeout(() => {
-      // this.SpinLoading =true;
-     this.AdList=true;
-    this._OPReportsService.getOpBillReceipt(
-   BillNo
-    ).subscribe(res => {
-      const matDialog = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "OP BILL Viewer"
-          }
-        });
-        matDialog.afterClosed().subscribe(result => {
-          this.AdList=false;
-          this.sIsLoading = '';
-        });
-    });
-   
-    },100);
-  }
+    let AddUserId = 0;
+    if (this._OPReportsService.userForm.get('UserId').value)
+      AddUserId = this._OPReportsService.userForm.get('UserId').value.UserId
+  
+      this.sIsLoading = 'loading-data';
+      setTimeout(() => {
+        // this.SpinLoading =true;
+       this.AdList=true;
+      this._OPReportsService.getOpBilldetail(
+        this.datePipe.transform(this._OPReportsService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+        this.datePipe.transform(this._OPReportsService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+        AddUserId
+      ).subscribe(res => {
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "OP BILLS Viewer"
+            }
+          });
+          matDialog.afterClosed().subscribe(result => {
+            this.AdList=false;
+            this.sIsLoading = '';
+          });
+      });
+     
+      },100);
+    }
+  
   userChk(option) {
     this.UserId = option.UserID || 0;
     this.UserName = option.UserName;

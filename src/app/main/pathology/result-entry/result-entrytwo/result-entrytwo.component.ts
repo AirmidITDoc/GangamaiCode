@@ -11,6 +11,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-result-entrytwo',
@@ -42,10 +43,10 @@ export class ResultEntrytwoComponent implements OnInit {
   printTemplate:any;
   PathReportID: any;
   PathTestId: any
-  subscriptionArr: Subscription[] = [];
-  reportPrintObj: Templateprintdetail;
-  reportPrintObjList: SampleDetailObj[] = [];
-  reportPrintObjs: SampleDetailObj ;
+  // subscriptionArr: Subscription[] = [];
+  // reportPrintObj: Templateprintdetail;
+  // reportPrintObjList: SampleDetailObj[] = [];
+  // reportPrintObjs: SampleDetailObj ;
 
   
   // public iframe: object = { enable: true };
@@ -68,7 +69,7 @@ TemplateDesc:any;
   ngOnInit(): void {
     this.otherForm = this.formBuilder.group({
       TemplateName:['',Validators.required],
-      TemplateDesc:['',Validators.required],
+      ResultEntry:['',Validators.required],
       TemplateId:[0]
     
     });
@@ -76,7 +77,7 @@ TemplateDesc:any;
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       this.selectedAdvanceObj1 = this.advanceDataStored.storage;
-      
+      console.log( this.selectedAdvanceObj )
       this.vTemplateDesc= this.selectedAdvanceObj.TemplateDesc;
     }
   }
@@ -120,22 +121,27 @@ TemplateDesc:any;
   // }
   onSubmit() {
     debugger;
-    let pathologyTemplateDeleteObj = {};
-    pathologyTemplateDeleteObj['pathReportID'] = this.selectedAdvanceObj.PathReportID;
+    
+  console.log(this.otherForm.get("ResultEntry").value)
+    const domParser = new DOMParser();
+    const htmlElement = domParser.parseFromString(this.otherForm.get("ResultEntry").value, 'text/html');
+    console.log(htmlElement)
 
+
+    let pathologyTemplateDeleteObj = {};
+    pathologyTemplateDeleteObj['pathReportId'] = this.selectedAdvanceObj.PathReportID;
     this.isLoading = 'submit';
     let Billdetsarr = [];
-    
-    // foreach(i:any i<10)
-     {
+   
+     
     let pathologyTemplateInsertObj = {};
         
     pathologyTemplateInsertObj['PathReportId'] = this.selectedAdvanceObj.PathReportID ;
     pathologyTemplateInsertObj['PathTemplateId']= this.selectedAdvanceObj.PathTemplateId || 9;
-    pathologyTemplateInsertObj['PathTemplateDetailsResult']= this.otherForm.get("TemplateDesc").value,
+    pathologyTemplateInsertObj['PathTemplateDetailsResult']= this.otherForm.get("ResultEntry").value,
     pathologyTemplateInsertObj['TestId'] = this.selectedAdvanceObj.PathTestID || 11;
     Billdetsarr.push(pathologyTemplateInsertObj);
-    }
+    
     let pathologyTemplateUpdateObj = {};
    
     pathologyTemplateUpdateObj['PathReportID'] =this.selectedAdvanceObj.PathReportID;
@@ -151,16 +157,13 @@ TemplateDesc:any;
     pathologyTemplateUpdateObj['RefDoctorID'] =  30;
    
     const pathologyTemplateDelete = new PthologyresulDelt(pathologyTemplateDeleteObj);
-    // const PthologyresultTemplateInsert = new PthologyresultInsert(pathologyTemplateInsertObj);
     const pathologyTemplateUpdate = new PthologyresulUp(pathologyTemplateUpdateObj); 
 
      let PatientHeaderObj = {};
 
      PatientHeaderObj['ReportDate'] = this.dateTimeObj.date;
      PatientHeaderObj['ReportTime'] = this.dateTimeObj.date;
-    
    
-    // this.dialogRef.afterClosed().subscribe(result => {
           console.log('==============================  Advance Amount ===========');
           let submitData = {
             "deletePathologyReportTemplateDetails": pathologyTemplateDelete,
@@ -175,7 +178,7 @@ TemplateDesc:any;
               Swal.fire('Congratulations !', 'Pathology Template data saved Successfully !', 'success').then((result) => {
                 if (result.isConfirmed) {
                  this.dialogRef.close();
-               // this.getPrint();
+                 this.viewgetPathologyTemplateReportPdf(response);
                 }
               });
             } else {
@@ -186,6 +189,30 @@ TemplateDesc:any;
         
    // });
   }
+
+
+  
+  viewgetPathologyTemplateReportPdf(obj) {
+    debugger
+    this._SampleService.getPathologyTempReport(
+      obj.RadReportId,0
+      ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Pathology Template  Viewer"
+          }
+        });
+    });
+  }
+  
+
+
+
   onBlur(e:any){
     this.vTemplateDesc=e.target.innerHTML;
   }
@@ -200,29 +227,29 @@ TemplateDesc:any;
     this._SampleService.populateForm(m_data);
   }
 
-  onPrint() {
-    let popupWin, printContents;
-    popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
-    popupWin.document.write(` <html>
-    <head><style type="text/css">`);
-      popupWin.document.write(`
-        table th, table td {
-        border:1px solid #bdbdbd;
-        padding:0.5em;
-      }
-      `);
-      popupWin.document.write(`
-      </style>
-          <title></title>
-      </head>
-    `);
-    popupWin.document.write(`
-      <div>${this._SampleService.myform.get("TemplateName").value}</div>
-    `);
-    popupWin.document.write(`<body onload="window.print();window.close()">${this._SampleService.myform.get("TemplateDesc").value}</body>
-    </html>`);
-    popupWin.document.close();
-  }
+  // onPrint() {
+  //   let popupWin, printContents;
+  //   popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
+  //   popupWin.document.write(` <html>
+  //   <head><style type="text/css">`);
+  //     popupWin.document.write(`
+  //       table th, table td {
+  //       border:1px solid #bdbdbd;
+  //       padding:0.5em;
+  //     }
+  //     `);
+  //     popupWin.document.write(`
+  //     </style>
+  //         <title></title>
+  //     </head>
+  //   `);
+  //   popupWin.document.write(`
+  //     <div>${this._SampleService.myform.get("TemplateName").value}</div>
+  //   `);
+  //   popupWin.document.write(`<body onload="window.print();window.close()">${this._SampleService.myform.get("TemplateDesc").value}</body>
+  //   </html>`);
+  //   popupWin.document.close();
+  // }
 
  
 

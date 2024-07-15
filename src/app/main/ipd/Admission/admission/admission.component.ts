@@ -363,21 +363,6 @@ export class AdmissionComponent implements OnInit {
       this.getTariffCombo()
 
 
-    // if (this._ActRoute.url == '/ipd/admission') {
-    //   debugger
-    // if(this.accountService.currentUserValue.user.id==1)
-    // {
-    //   this.menuActions.push("Update Consultant Doctor");
-    //   this.menuActions.push("Update Referred Doctor");
-     
-    // }
-    // else if(this.accountService.currentUserValue.user.id !=1){
-  //     this.menuActions.push("Update Consultant Doctor");
-  //     this.menuActions.push("Update Referred Doctor");
-  //     this.menuActions.push('Update TPA Company Information');
-  //   }
-
-  // }
     
     this.filteredOptionsPatientType = this.hospitalFormGroup.get('PatientTypeID').valueChanges.pipe(
       startWith(''),
@@ -430,37 +415,35 @@ export class AdmissionComponent implements OnInit {
     this.VFollowupcount = 0;
     this.VBillcount = 0;
     this.vIsDischarg = 0;
+    this.VOPtoIPcount= 0;
     console.log(data)
     this.Vtotalcount;
     
     for (var i = 0; i < data.length; i++) {
-      if (data[i].PatientOldNew == 1) {
-        this.VNewcount = this.VNewcount + 1;
-      }
-      else if (data[i].PatientOldNew == 2) {
-        this.VFollowupcount = this.VFollowupcount + 1;
-      }
-      else if (data[i].AdmissionID !== 0) {
-        this.VAdmissioncount = data.length;
-      }
-      else if (data[i].IsBillGenerated == 1) {
-        this.VBillcount = this.VBillcount + 1;
-      }
-      else if (data[i].IsOpToIPConv == 1) {
-
+    
+      // if (data[i].PatientOldNew == 1) {
+      //   this.VNewcount = this.VNewcount + 1;
+      // }
+      // else if (data[i].PatientOldNew == 2) {
+      //   this.VFollowupcount = this.VFollowupcount + 1;
+      // }
+      // else if (data[i].AdmissionID !== 0) {
+      //   this.VAdmissioncount = data.length;
+      // }
+      // else if (data[i].IsBillGenerated == 1) {
+      //   this.VBillcount = this.VBillcount + 1;
+      // }
+      // else
+      debugger
+       if (data[i].IsOpToIPconv ==true) {
         this.VOPtoIPcount = this.VOPtoIPcount + 1;
+        console.log( this.VOPtoIPcount )
       } else if (data[i].IsDischarged == 1) {
         this.vIsDischarg = this.vIsDischarg + 1;
       }
       this.Vtotalcount = this.Vtotalcount + 1;
     }
-    //  data.forEach((element) => {
-    //     console.log(element)
-    //     // if(element.PatientOldNew==1){
-    //     //   this.Vtotalcount+1;
-    //     // }
-
-    //   });
+   
   }
 
   ngOnDestroys() {
@@ -474,7 +457,6 @@ export class AdmissionComponent implements OnInit {
         ['', [
           Validators.required,
           Validators.maxLength(50),
-          // Validators.pattern("^[a-zA-Z._ -]*$"),
           Validators.pattern('^[a-zA-Z () ]*$')
         ]],
       MiddleName:
@@ -792,7 +774,6 @@ export class AdmissionComponent implements OnInit {
     obj.AgeYear = obj.AgeYear.trim();
     this.registerObj = obj;
     console.log(this.registerObj );
-// this.onChangeDateofBirth(this.registerObj.DateofBirth)
 
     this.PatientName = obj.PatientName;
     this.RegId = obj.RegId;
@@ -804,14 +785,13 @@ export class AdmissionComponent implements OnInit {
     this.onChangeDateofBirth(this.registerObj.DateofBirth)
     this.setDropdownObjs();
 
-    // this.chekAdmittedpatient();
   }
 
   AdmittedRegId: any = 0;
   chekAdmittedpatient(obj) {
     
     this.AdmittedRegId = obj.RegId;
-    // let SelectQueryForAllAdmitted = "select isnull(RegId,0) as regid from Admission where regid =  " + this.searchFormGroup.get('RegId').value;
+ 
     let Query = "select isnull(RegID,0) as RegID from Admission where RegID =  " + this.AdmittedRegId + " and Admissionid not in(select Admissionid from Discharge) "
     console.log(Query)
     this._AdmissionService.getRegIdDetailforAdmission(Query).subscribe(data => {
@@ -823,8 +803,7 @@ export class AdmissionComponent implements OnInit {
         this.onReset();
         this.personalFormGroup.get('RegId').reset();
         this.regno.nativeElement.focus();
-        // this.registerObj = new AdmissionPersonlModel({});
-      } else {
+              } else {
         this.getSelectedObj(obj);
       }
     });
@@ -1009,9 +988,7 @@ export class AdmissionComponent implements OnInit {
       this.getSubTPACompList();
       this.getcityList1();
 
-      // this.getRegistrationList();
-
-      this.showtable = true;
+         this.showtable = true;
     }
 
     const todayDate = new Date();
@@ -1071,13 +1048,6 @@ export class AdmissionComponent implements OnInit {
     });
   }
 
-
-  // getTariffList() {
-  //   this._AdmissionService.getTariffCombo().subscribe(data => {
-  //     this.TariffList = data;
-  //     this.hospitalFormGroup.get('TariffId').setValue(this.TariffList[0]);
-  //   });
-  // }
 
   getTariffList() {
     this._AdmissionService.getTariffCombo().subscribe(data => {
@@ -1379,7 +1349,7 @@ export class AdmissionComponent implements OnInit {
 
 
   OnChangeDoctorList(departmentObj) {
-    debugger
+    
     
     this.hospitalFormGroup.get('DoctorId').reset();
 
@@ -1398,7 +1368,7 @@ export class AdmissionComponent implements OnInit {
 
 
   OnChangeBedList(wardObj) {
-    debugger
+    
     this._AdmissionService.getBedCombo(wardObj.RoomId).subscribe(data => {
       this.BedList = data;
       this.optionsBed = this.BedList.slice();
@@ -1443,11 +1413,6 @@ export class AdmissionComponent implements OnInit {
       
     }
 
-    // if (value.PatientTypeId == 2) {
-    //   this.patienttype = 2;
-    // } else if (value.PatientTypeId !== 2) {
-    //   this.patienttype = 1;
-    // }
   }
 
   onReset() {
@@ -1557,12 +1522,7 @@ export class AdmissionComponent implements OnInit {
       });
       return;
     }
-    // if ((this.vTariff == '' || this.vTariff == null || this.vTariff == undefined)) {
-    //   this.toastr.warning('Please select Tariff', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
+  
     if ((this.vDepartmentid == '' || this.vDepartmentid == null || this.vDepartmentid == undefined)) {
       this.toastr.warning('Please Select Department', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -1612,12 +1572,7 @@ export class AdmissionComponent implements OnInit {
         return;
       }
     }
-    // if(!this.PatientTypeList.some(item => item.PatientType ===this.VisitFormGroup.get('PatientTypeID').value.PatientType)){
-    //   this.toastr.warning('Please Select valid PatientType', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
+ 
     if(!this.TariffList.some(item => item.TariffName ===this.hospitalFormGroup.get('TariffId').value.TariffName)){
       this.toastr.warning('Please Select valid TariffName', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -1661,14 +1616,7 @@ export class AdmissionComponent implements OnInit {
         return;
       }
     }
-    // if(this.hospitalFormGroup.get('refDoctorId').value){
-    //   if(!this.Doctor1List.some(item => item.DoctorName ===this.hospitalFormGroup.get('refDoctorId').value.DoctorName)){
-    //     this.toastr.warning('Please Select valid RefDoctor', 'Warning !', {
-    //       toastClass: 'tostr-tost custom-toast-warning',
-    //     });
-    //     return;
-    //   }
-    // }
+   
     if(this.hospitalFormGroup.get('CompanyId').value){
       if(!this.CompanyList.some(item => item.CompanyName ===this.hospitalFormGroup.get('CompanyId').value.CompanyName)){
         this.toastr.warning('Please Select valid CompanyName', 'Warning !', {
@@ -1710,14 +1658,7 @@ export class AdmissionComponent implements OnInit {
       }
     }
 
-    // if(this.VisitFormGroup.get('PurposeId').value){
-    //   if(!this.PurposeList.some(item => item.PurposeName ===this.VisitFormGroup.get('PurposeId').value.PurposeName)){
-    //     this.toastr.warning('Please Select valid PurposeName', 'Warning !', {
-    //       toastClass: 'tostr-tost custom-toast-warning',
-    //     });
-    //     return;
-    //   }
-    // }
+   
   
     if ((!this.personalFormGroup.invalid && !this.hospitalFormGroup.invalid && !this.wardFormGroup.invalid && !this.otherFormGroup.invalid)) {
     this.OnSaveAdmission();
@@ -1742,7 +1683,7 @@ export class AdmissionComponent implements OnInit {
         return;
       }
     }
-debugger
+
     if (!this.personalFormGroup.invalid && !this.hospitalFormGroup.invalid && !this.wardFormGroup.invalid && !this.otherFormGroup.invalid) {
       if (this.searchFormGroup.get('regRadio').value == "registration") {
         //Api
@@ -1829,8 +1770,6 @@ debugger
           admissionNewInsert['RefDoctorDept'] = this.hospitalFormGroup.get('Departmentid').value.DepartmentName || '';
         submissionObj['admissionNewInsert'] = admissionNewInsert;
 
-
-        // let query = "Update BedMaster set IsAvailible=0 where BedId=" + this.wardFormGroup.get('BedId').value.BedId;
         let BedStatusUpdate = {};
         BedStatusUpdate['BedId'] = this.wardFormGroup.get('BedId').value.BedId ? this.wardFormGroup.get('BedId').value.BedId : 0;
 
@@ -1924,11 +1863,7 @@ debugger
             Swal.fire('Congratulations !', 'Admission Of Registered Patient Successfully !', 'success').then((result) => {
               if (result.isConfirmed) {
                 this._matDialog.closeAll();
-                // this.personalFormGroup.reset();
-                // this.hospitalFormGroup.reset();
-                // this.wardFormGroup.reset();
-                // this.otherFormGroup.reset();
-
+               
                 this.getAdmittedPatientCasepaperview(response, true);
                 this.onReset();
               }
@@ -2033,7 +1968,7 @@ this.getAdmittedPatientList_1()
   // }
   resultsLength = 0;
   getAdmittedPatientList_1() {
-    debugger
+    
     var Param = {
       "F_Name": this._AdmissionService.myFilterform.get("FirstName").value + '%' || "%",
       "L_Name": this._AdmissionService.myFilterform.get("LastName").value + '%' || "%",
@@ -2171,10 +2106,7 @@ this.getAdmittedPatientList_1()
     
     this.advanceDataStored.storage = new AdmissionPersonlModel(contact);
     this._AdmissionService.populateForm(contact);
-    // contact.AdmissionID=53732;
-    //  console.log(row)
-  
-    const dialogRef = this._matDialog.open(MLCInformationComponent,
+       const dialogRef = this._matDialog.open(MLCInformationComponent,
       {
         maxWidth: '85vw',
         height: '600px', width: '100%',
@@ -2191,7 +2123,7 @@ this.getAdmittedPatientList_1()
 
   getMLCdetailview(Id) {
     // this.sIsLoading = 'loading-data';
-  debugger
+  
     setTimeout(() => {
   
       this._AdmissionService.getMLCDetailView(Id
@@ -2248,44 +2180,6 @@ this.getAdmittedPatientList_1()
  
     else if (m == "Update TPA Company Information") {
 
-      // let xx = {
-
-      //   RegNo: contact.RegId,
-      //   AdmissionID: contact.AdmissionID,
-      //   PatientName: contact.PatientName,
-      //   Doctorname: contact.Doctorname,
-      //   AdmDateTime: contact.AdmDateTime,
-      //   AgeYear: contact.AgeYear,
-      //   ClassId: contact.ClassId,
-      //   TariffName: contact.TariffName,
-      //   TariffId: contact.TariffId,
-      //   HospitalAddress: contact.HospitalAddress,
-      //   BDate: contact.BDate,
-      //   BalanceAmt: contact.BalanceAmt,
-      //   TotalAmt: contact.TotalAmt,
-      //   BillDate: contact.BillDate,
-      //   BillNo: contact.BillNo,
-      //   ConcessionAmt: contact.ConcessionAmt,
-      //   HospitalName: contact.HospitalName,
-      //   NetPayableAmt: contact.NetPayableAmt,
-      //   OPD_IPD_ID: contact.OPD_IPD_ID,
-      //   OPD_IPD_Type: contact.OPD_IPD_Type,
-      //   PBillNo: contact.PBillNo,
-      //   PaidAmount: contact.PaidAmount,
-      //   VisitDate: contact.VisitDate,
-      //   TotalBillAmount: contact.TotalBillAmount,
-      //   TransactionType: contact.TransactionType,
-      //   ConsultantDocName: contact.ConsultantDocName,
-      //   DepartmentName: contact.DepartmentName,
-      //   AddedByName: contact.AddedByName,
-      //   NetAmount: contact.NetAmount,
-      //   ServiceName: contact.ServiceName,
-      //   Price: contact.Price,
-      //   Qty: contact.Qty,
-      //   IsMLC: contact.IsMLC,
-      //   SubCompanyId: contact.SubTpaComId
-
-      // };
 
       this.advanceDataStored.storage = new AdmissionPersonlModel(contact);
       this._AdmissionService.populateForm(contact);
@@ -2423,8 +2317,6 @@ this.getAdmittedPatientList_1()
   @ViewChild('admitdoc1') admitdoc1: ElementRef;
   @ViewChild('ptype') ptype: ElementRef;
   @ViewChild('tariff') tariff: ElementRef;
-  // @ViewChild('ptype') ptype: MatSelect;
-  // @ViewChild('tariff') tariff: MatSelect;
   @ViewChild('dept') dept: ElementRef;
   @ViewChild('deptdoc') deptdoc: ElementRef;
   @ViewChild('refdoc') refdoc: ElementRef;
@@ -2719,7 +2611,7 @@ this.getAdmittedPatientList_1()
     if(this.savebutton) this.savebutton.focus();
   }
   setSaveflag(){
-    debugger
+    
     if(this.otherFormGroup.get('RelationshipId').value){
       if(!this.RelationshipList.some(item => item.RelationshipName ===this.otherFormGroup.get('RelationshipId').value.RelationshipName)){
         this.toastr.warning('Please Select valid RelationshipName', 'Warning !', {
@@ -2837,7 +2729,7 @@ this.getAdmittedPatientList_1()
       });
       dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed - Insert Action', result);
-        // this. getAdmittedPatientList_1();
+        this. getAdmittedPatientList_1();
        
       });
   }
@@ -2999,7 +2891,7 @@ export class Admission {
       this.SubCompanyId = Admission.SubCompanyId || 0;
       this.AdmittedDoctorName = Admission.AdmittedDoctorName || ''
       this.PatientTypeId = Admission.PatientTypeId || ''
-      this.IsOpToIPconv = Admission.IsOpToIPconv || 0;
+      this.IsOpToIPconv = Admission.IsOpToIPconv || '';
     }
   }
 }
@@ -3315,8 +3207,8 @@ DetailGiven:any;
       this.RefDocName = AdmissionPersonl.RefDocName || '';
       this.RelativePhoneNo = AdmissionPersonl.RelativePhoneNo || '';
       this.DepartmentId=AdmissionPersonl.DepartmentId || 0;
-      this.IsOpToIPconv=AdmissionPersonl.IsOpToIPconv || 0
-      this.RelativeName=AdmissionPersonl.RelativeName || ''
+      this.IsOpToIPconv=AdmissionPersonl.IsOpToIPconv || '';
+      this.RelativeName=AdmissionPersonl.RelativeName || '';
       this.RelativeAddress=AdmissionPersonl.RelativeAddress || ''
       this.ClassName=AdmissionPersonl.ClassName || ''
       this.IsBillGenerated=AdmissionPersonl.IsBillGenerated || 0

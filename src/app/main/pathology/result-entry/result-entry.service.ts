@@ -113,6 +113,12 @@ export class ResultEntryService {
     return this._httpClient.get("Pathology/view-PathReportMultiple?PathReportId=" + PathReportId + "&OP_IP_Type="+OP_IP_Type);
   }
 
+  public getPathologyTempReport( PathReportId,OP_IP_Type){
+    return this._httpClient.get("Pathology/view-PathTemplate?PathReportId=" + PathReportId + "&OP_IP_Type="+OP_IP_Type);
+  }
+
+  
+ 
   populateForm(employee) {
     this.myform.patchValue(employee);
   }

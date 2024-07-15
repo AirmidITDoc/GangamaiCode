@@ -237,10 +237,12 @@
                             </span>
                             <mat-autocomplete #autoAddoc1="matAutocomplete" [displayWith]="getOptionTextRefDoc">
                                 <mat-option *ngFor="let option of filteredOptionsDoc1 | async" [value]="option">
-                                    {{option.DoctorName}}
+                                    {{option.Doctorname}}
                                 </mat-option>
                             </mat-autocomplete>
                         </mat-form-field>
+
+                        
 
                         <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <mat-label>Admitted Doctor 2</mat-label>
@@ -255,7 +257,7 @@
                             </span>
                             <mat-autocomplete #autodoc2="matAutocomplete" [displayWith]="getOptionTextDoc2">
                                 <mat-option *ngFor="let option of filteredOptionsDoc2 | async" [value]="option">
-                                    {{option.DoctorName}}
+                                    {{option.Doctorname}}
                                 </mat-option>
                             </mat-autocomplete>
                         </mat-form-field>

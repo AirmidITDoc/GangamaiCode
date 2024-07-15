@@ -52,16 +52,19 @@ export class OpBillingreportService {
   public getOPBillSummary(FromDate,ToDate,AddedById){
     return this._httpClient.get("OPReport/view-BillReportSummary?FromDate="+FromDate+"&ToDate="+ToDate+"&AddedById="+AddedById);
   }
+  public getOpBilldetail(FromDate,ToDate,AddedById){
+    return this._httpClient.get("OPReport/view-BillReportSummary?FromDate="+FromDate+"&ToDate="+ToDate+"&AddedById="+AddedById);
+  }
 
   public getOpRefundofbillview(FromDate,ToDate){
-    return this._httpClient.get("OPReport/view-OpRefundofbillList?FromDate="+FromDate+"&ToDate="+ToDate);
+    return this._httpClient.get("OPReport/view-OPDRefundOfBill?FromDate="+FromDate+"&ToDate="+ToDate);
   }
 
   public getOPIPBillSummary(BillNo){
     return this._httpClient.get("OutPatient/view-Op-BillReceipt?BillNo="+BillNo);
   }
   public getOPcreditlist(FromDate,ToDate){
-    return this._httpClient.get("OPReport/view-OpPatientCreditList?FromDate="+FromDate+"&ToDate="+ToDate);
+    return this._httpClient.get("OPReport/view-OPDBillBalanceReport?FromDate="+FromDate+"&ToDate="+ToDate);
   }
   
   public getOpDailyCollectionuserwise(FromDate,ToDate,AddedById){

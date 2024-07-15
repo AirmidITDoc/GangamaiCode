@@ -135,43 +135,43 @@ export class ResultEntryComponent implements OnInit {
   getView(contact) {
     console.log(contact);
 
-    let XX = {
-      Adm_Visit_docId: contact.Adm_Visit_docId,
-      AgeYear: contact.AgeYear,
-      CategoryName: contact.CategoryName,
-      ChargeId: contact.ChargeId,
-      DOA: contact.DOA,
-      DOT: contact.DOT,
-      DoctorName: contact.DoctorName,
-      GenderName: contact.GenderName,
-      IsCompleted: contact.IsCompleted,
-      IsPrinted: contact.IsPrinted,
-      IsSampleCollection: contact.IsSampleCollection,
-      IsTemplateTest: contact.IsTemplateTest,
-      IsVerifySign: contact.IsVerifySign,
-      OPD_IPD_ID: contact.OPD_IPD_ID,
-      OPD_IPD_Type: contact.OPD_IPD_Type,
-      OP_IP_No: contact.OP_IP_No,
-      PBillNo: contact.PBillNo,
-      PathReportID: contact.PathReportID,
-      PathTestID: contact.PathTestID,
-      PatientName: contact.PatientName,
-      PatientType: contact.PatientType,
-      RegNo: contact.RegNo,
-      SampleCollectionTime: contact.SampleCollectionTime,
-      SampleNo: contact.SampleNo,
-      ServiceId: contact.ServiceId,
-      ServiceName: contact.ServiceName,
-      VADate: contact.VADate,
-      VATime: contact.VATime,
-      Visit_Adm_ID: contact.Visit_Adm_ID
+    // let XX = {
+    //   Adm_Visit_docId: contact.Adm_Visit_docId,
+    //   AgeYear: contact.AgeYear,
+    //   CategoryName: contact.CategoryName,
+    //   ChargeId: contact.ChargeId,
+    //   DOA: contact.DOA,
+    //   DOT: contact.DOT,
+    //   DoctorName: contact.DoctorName,
+    //   GenderName: contact.GenderName,
+    //   IsCompleted: contact.IsCompleted,
+    //   IsPrinted: contact.IsPrinted,
+    //   IsSampleCollection: contact.IsSampleCollection,
+    //   IsTemplateTest: contact.IsTemplateTest,
+    //   IsVerifySign: contact.IsVerifySign,
+    //   OPD_IPD_ID: contact.OPD_IPD_ID,
+    //   OPD_IPD_Type: contact.OPD_IPD_Type,
+    //   OP_IP_No: contact.OP_IP_No,
+    //   PBillNo: contact.PBillNo,
+    //   PathReportID: contact.PathReportID,
+    //   PathTestID: contact.PathTestID,
+    //   PatientName: contact.PatientName,
+    //   PatientType: contact.PatientType,
+    //   RegNo: contact.RegNo,
+    //   SampleCollectionTime: contact.SampleCollectionTime,
+    //   SampleNo: contact.SampleNo,
+    //   ServiceId: contact.ServiceId,
+    //   ServiceName: contact.ServiceName,
+    //   VADate: contact.VADate,
+    //   VATime: contact.VATime,
+    //   Visit_Adm_ID: contact.Visit_Adm_ID
 
 
-    };
-
-    this.advanceDataStored.storage = new Templateprintdetail(XX);
+    // };
+debugger
+    this.advanceDataStored.storage = new Templateprintdetail(contact);
     if (contact.IsTemplateTest) {
-      const dialogRef = this._matDialog.open(PathTemplateViewComponent,
+      const dialogRef = this._matDialog.open(ResultEntrytwoComponent,
         {
           maxWidth: "80vw",
           maxHeight: "100vh", width: '100%', height: "100%"
@@ -379,31 +379,31 @@ console.log(m_data)
       PatientType: this.PatientType
 
     };
-    this.advanceDataStored.storage = new SampleDetailObj(xx);
+    this.advanceDataStored.storage = new SampleDetailObj(m);
     // this.ServiceIdList.push(m.ServiceId);
     console.log(m);
-    // debugger
+     debugger
     if (m.IsTemplateTest == 1) {
-      this.advanceDataStored.storage = new SampleDetailObj(xx);
+      this.advanceDataStored.storage = new SampleDetailObj(m);
       const dialogRef = this._matDialog.open(ResultEntrytwoComponent,
         {
           maxWidth: "90%",
           height: '95%',
           width: '100%',
-          data: {
-            "OP_IP_Type": m.OPD_IPD_Type,
-            "OPD_IPD_ID": m.OPD_IPD_ID,
-            "ServiceId": m.ServiceId,
-            "IsCompleted": m.IsCompleted,
-            "PathReportID": m.PathReportID,
-            "TestId": m.PathTestID,
-            "PathTemplateId": m.PathTemplateId,
-            "CategoryID": m.CategoryID,
-            "SampleDetailObj": m.SampleDetailObj,
-            "DoctorId": m.PathResultDr1,
-            "PathTestID": m.PathTestID,
-            "TemplateDesc": m.TemplateDesc
-          }
+          // data: {
+          //   "OP_IP_Type": m.OPD_IPD_Type,
+          //   "OPD_IPD_ID": m.OPD_IPD_ID,
+          //   "ServiceId": m.ServiceId,
+          //   "IsCompleted": m.IsCompleted,
+          //   "PathReportID": m.PathReportID,
+          //   "TestId": m.PathTestID,
+          //   "PathTemplateId": m.PathTemplateId,
+          //   "CategoryID": m.CategoryID,
+          //   "SampleDetailObj": m.SampleDetailObj,
+          //   "DoctorId": m.PathResultDr1,
+          //   "PathTestID": m.PathTestID,
+          //   "TemplateDesc": m.TemplateDesc
+          // }
         });
 
 
@@ -412,7 +412,7 @@ console.log(m_data)
       });
     }
     else {
-      this.advanceDataStored.storage = new SampleDetailObj(xx);
+      this.advanceDataStored.storage = new SampleDetailObj(m);
       const dialogRef = this._matDialog.open(ResultEntryOneComponent,
         {
           maxWidth: "95vw",
@@ -495,61 +495,6 @@ console.log(m_data)
 
     }, 100);
   }
-
-  // getPrintPathologyReport(el) {
-
-  //   var D_data = {
-  //     "OP_IP_Type": 1,// el.OPD_IPD_Type
-
-  //   }
-  //   // trucate pathology Record
-  //   let TruncateQuery = "Truncate Table Temp_PathReportId"
-  //   this._SampleService.getInsertStatementQuery(TruncateQuery).subscribe((resData: any) => {
-  //     var m = resData;
-  //   });
-
-  //   // Insert pathology Id for report
-  //   let InsertQuery = "insert into Temp_PathReportId (PathReportId) values ('" + el.PathReportID + "')"
-  //   this._SampleService.getInsertStatementQuery(InsertQuery).subscribe((resData: any) => {
-  //     var m = resData;
-  //   });
-
-  //   let printContents; //`<div style="padding:20px;height:550px"><div><div style="display:flex"><img src="http://localhost:4200/assets/images/logos/Airmid_NewLogo.jpeg" width="90"><div><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="color:#464343">6158, Siddheshwar peth, near zilla parishad, solapur-3 phone no.: (0217) 2323001 / 02</div><div style="color:#464343">www.yashodharahospital.org</div></div></div><div style="border:1px solid grey;border-radius:16px;text-align:center;padding:8px;margin-top:5px"><span style="font-weight:700">IP ADVANCE RECEIPT</span></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex;justify-content:space-between"><div style="display:flex"><div style="width:100px;font-weight:700">Advance No</div><div style="width:10px;font-weight:700">:</div><div>6817</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Reg. No</div><div style="width:10px;font-weight:700">:</div><div>117399</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Date</div><div style="width:10px;font-weight:700">:</div><div>26/06/2019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3:15:49PM</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex;width:477px"><div style="width:100px;font-weight:700">Patient Name</div><div style="width:10px;font-weight:700">:</div><div>Mrs. Suglabai Dhulappa Waghmare</div></div><div style="display:flex"><div style="width:60px;font-weight:700">IPD No</div><div style="width:10px;font-weight:700">:</div><div>IP/53757/2019</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:100px;font-weight:700">DOA</div><div style="width:10px;font-weight:700">:</div><div>30/10/2019</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:100px;font-weight:700">Patient Type</div><div style="width:10px;font-weight:700">:</div><div>Self</div></div></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Advacne Amount</div><div style="width:10px;font-weight:700">:</div><div>4,000.00</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:150px;font-weight:700">Amount in Words</div><div style="width:10px;font-weight:700">:</div><div>FOUR THOUSANDS RUPPEE ONLY</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Reason of Advance</div><div style="width:10px;font-weight:700">:</div><div></div></div></div></div><div style="position:relative;top:100px;text-align:right"><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="font-weight:700;font-size:16px">Cashier</div><div>Paresh Manlor</div></div></div>`;
-  //   this.subscriptionArr.push(
-  //     this._SampleService.getPathologyPrint(D_data).subscribe(res => {
-  //       this.reportPrintObjList = res as SampleDetailObj[];
-  //       console.log(this.reportPrintObjList);
-  //       this.reportPrintObjs = res[0] as SampleDetailObj;
-
-  //       this.getTemplateMultiple();
-
-
-  //     })
-  //   );
-  //   // }
-  //   // else{}
-  // }
-
-  // // PRINT 
-  // prints() {
-  //   // HospitalName, HospitalAddress, AdvanceNo, PatientName
-  //   let popupWin, printContents;
-  //   // printContents =this.printTemplate; // document.getElementById('print-section').innerHTML;
-
-  //   popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
-  //   // popupWin.document.open();
-  //   popupWin.document.write(` <html>
-  //   <head><style type="text/css">`);
-  //   popupWin.document.write(`
-  //     </style>
-  //         <title></title>
-  //     </head>
-  //   `);
-  //   popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
-  //   </html>`);
-  //   popupWin.document.close();
-  // }
-
 
 
   onExport(exprtType) {

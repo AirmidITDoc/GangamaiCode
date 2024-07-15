@@ -699,7 +699,7 @@ dataSource2 = new MatTableDataSource<RefundMaster>();
       Start: (this.paginator?.pageIndex ?? 0),
       Length: (this.paginator?.pageSize ?? 35),
     }
-
+    console.log(D_data)
     this._BrowseOPDBillsService.getBrowseOpdPaymentReceiptList(D_data).subscribe(Visit => {
       this.dataSource1.data = Visit as BrowseOpdPaymentReceipt[];
       this.dataSource1.data = Visit["Table1"] ?? [] as BrowseOpdPaymentReceipt[];

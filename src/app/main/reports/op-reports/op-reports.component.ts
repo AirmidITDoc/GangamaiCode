@@ -174,8 +174,8 @@ var data={
       this.FlagDoctorSelected = false;
 
     }else if (this.ReportName == 'OP Bill Receipt') {
-      this.FlagBillNoSelected = true;
-      this.FlagUserSelected = false;
+      this.FlagBillNoSelected = false;
+      this.FlagUserSelected = true;
       this.FlagDoctorSelected = false;
 
     }
@@ -913,13 +913,18 @@ viewOpDailyCollectionSummaryPdf() {
 
 
 viewgetOPBillReportPdf() {
-  let  BillNo=this._OPReportsService.userForm.get('BillNo').value ||0;
+  let AddUserId = 0;
+  if (this._OPReportsService.userForm.get('UserId').value)
+    AddUserId = this._OPReportsService.userForm.get('UserId').value.UserId
+
     this.sIsLoading = 'loading-data';
     setTimeout(() => {
       // this.SpinLoading =true;
      this.AdList=true;
-    this._OPReportsService.getOpBillReceipt(
-   BillNo
+    this._OPReportsService.getOpBilldetail(
+      this.datePipe.transform(this._OPReportsService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      this.datePipe.transform(this._OPReportsService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      AddUserId
     ).subscribe(res => {
       const matDialog = this._matDialog.open(PdfviewerComponent,
         {

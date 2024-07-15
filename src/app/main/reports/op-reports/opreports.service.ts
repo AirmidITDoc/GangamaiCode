@@ -284,8 +284,8 @@ return this._httpClient.get("OPReport/view-OPDoctorWiseNewOldPatientReport?FromD
   public getOpDailyCollectionsummary(FromDate,ToDate){
     return this._httpClient.get("OPReport/view-OPCollectionSummary?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
-  public getOpBillReceipt(BillNo){
-    return this._httpClient.get("OutPatient/view-Op-BillReceipt?BillNo="+BillNo);
+  public getOpBilldetail(FromDate,ToDate,AddedById){
+    return this._httpClient.get("OPReport/view-BillReportSummary?FromDate="+FromDate+"&ToDate="+ToDate+"&AddedById="+AddedById);
   }
   public getOPBillSummary(FromDate,ToDate,AddedById){
     return this._httpClient.get("OPReport/view-OpBillReportSummary?FromDate="+FromDate+"&ToDate="+ToDate+"&AddedById="+AddedById);
