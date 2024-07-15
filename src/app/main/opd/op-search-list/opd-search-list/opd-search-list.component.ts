@@ -169,56 +169,56 @@ export class OpdSearchListComponent implements OnInit {
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
     console.log(contact)
     let PatientHeaderObj = {};
-    PatientHeaderObj['Date'] = this.datePipe.transform(contact.BillDate, 'MM/dd/yyyy') || '01/01/1900',
-    PatientHeaderObj['RegNo'] = contact.RegNo;
-    PatientHeaderObj['PatientName'] = contact.PatientName;
-    PatientHeaderObj['OPD_IPD_Id'] = contact.OPD_IPD_ID;
-    PatientHeaderObj['Age'] = contact.PatientAge;
-    PatientHeaderObj['DepartmentName'] = contact.DepartmentName;
-    PatientHeaderObj['DoctorName'] = contact.DoctorName;
-    PatientHeaderObj['TariffName'] = contact.TariffName;
-    PatientHeaderObj['CompanyName'] = contact.CompanyName;
-    PatientHeaderObj['NetPayAmount'] = contact.NetPayableAmt; 
+    // PatientHeaderObj['Date'] = this.datePipe.transform(contact.BillDate, 'MM/dd/yyyy') || '01/01/1900',
+    // PatientHeaderObj['RegNo'] = contact.RegNo;
+    // PatientHeaderObj['PatientName'] = contact.PatientName;
+    // PatientHeaderObj['OPD_IPD_Id'] = contact.OPD_IPD_ID;
+    // PatientHeaderObj['Age'] = contact.PatientAge;
+    // PatientHeaderObj['DepartmentName'] = contact.DepartmentName;
+    // PatientHeaderObj['DoctorName'] = contact.DoctorName;
+    // PatientHeaderObj['TariffName'] = contact.TariffName;
+    // PatientHeaderObj['CompanyName'] = contact.CompanyName;
+    // PatientHeaderObj['NetPayAmount'] = contact.NetPayableAmt; 
     
-    const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
-      { 
-        maxWidth: "80vw",
-       // height: '600px',
-        width: '70%',
-        data: {
-          vPatientHeaderObj: PatientHeaderObj,
-          FromName: "OP-Bill"
-        }
-      });
-    // PatientHeaderObj['Date'] = formattedDate;
-    // PatientHeaderObj['PatientName'] = this.PatientName;
-    // PatientHeaderObj['OPD_IPD_Id'] =this.vAdmissionID;
-    // PatientHeaderObj['AdvanceAmount'] = contact.NetPayableAmt; 
-    // PatientHeaderObj['NetPayAmount'] = contact.NetPayableAmt;
-    // PatientHeaderObj['PBillNo'] = contact.PBillNo;
-    // PatientHeaderObj['BillTime'] = contact.BillTime;
-    // PatientHeaderObj['RegNo'] = contact.RegNo; 
-    // const dialogRef = this._matDialog.open(IPpaymentWithadvanceComponent,
-    //   {
-    //     maxWidth: "95vw",
-    //     height: '650px',
-    //     width: '85%',
+    // const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
+    //   { 
+    //     maxWidth: "80vw",
+    //     height: '600px',
+    //     width: '80%',
     //     data: {
-    //       advanceObj: PatientHeaderObj,
-    //       FromName: "OP-SETTLEMENT"
+    //       vPatientHeaderObj: PatientHeaderObj,
+    //       FromName: "OP-Bill"
     //     }
     //   });
+    PatientHeaderObj['Date'] = formattedDate;
+    PatientHeaderObj['PatientName'] = this.PatientName;
+    PatientHeaderObj['OPD_IPD_Id'] = contact.OPD_IPD_ID;
+    PatientHeaderObj['AdvanceAmount'] = contact.NetPayableAmt; 
+    PatientHeaderObj['NetPayAmount'] = contact.NetPayableAmt;
+    PatientHeaderObj['PBillNo'] = contact.PBillNo;
+    PatientHeaderObj['OPDNo'] = contact.OPDNo;
+    PatientHeaderObj['RegNo'] = this.RegNo; 
+    const dialogRef = this._matDialog.open(IPpaymentWithadvanceComponent,
+      {
+        maxWidth: "95vw",
+        height: '650px',
+        width: '85%',
+        data: {
+          advanceObj: PatientHeaderObj,
+          FromName: "OP-SETTLEMENT"
+        }
+      });
 
       dialogRef.afterClosed().subscribe(result => {
         console.log(result)
         if (result.IsSubmitFlag == true) {
-
-          this.vpaidamt = result.submitDataPay.ipPaymentInsert.PaidAmt;
-          this.vbalanceamt = result.submitDataPay.ipPaymentInsert.BalanceAmt;
+debugger
+          this.vpaidamt = result.PaidAmt;
+          this.vbalanceamt = result.BalAmt
 
           let updateBillobj = {};
           updateBillobj['BillNo'] = contact.BillNo;
-          updateBillobj['BillBalAmount'] = result.submitDataPay.ipPaymentInsert.balanceAmountController || result.submitDataPay.ipPaymentInsert.BalanceAmt;//result.BalAmt;
+          updateBillobj['BillBalAmount'] = result.BalAmt ||  this.vbalanceamt  //result.BalAmt;
        
           let Data = {
             "updateBill": updateBillobj,

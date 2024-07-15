@@ -572,9 +572,10 @@ onSave() {
       this.AgeYear = '';
       this.AgeMonth = '';
       this.GenderName = '';
-      this.AgeDay = ''
+      this.AgeDay = '';
       this.TotalRefundAmount=0;
       this.RefundBalAmount=0;
+      this.RegNo = '';
     }
   }
 

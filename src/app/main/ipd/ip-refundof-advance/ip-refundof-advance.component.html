@@ -190,9 +190,9 @@
 
                                         <ng-container matColumnDef="RefundAmt">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                class="w-80">RefundAmt
+                                                class="w-130">RefundAmt
                                             </mat-header-cell>
-                                            <mat-cell class="w-80" *matCellDef="let element" fxShow.gt-sm>
+                                            <mat-cell class="w-130" *matCellDef="let element" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
                                                     <input matInput [(ngModel)]="element.RefundAmt" onlyNumber
                                                         (keyup)="getCellCalculation(element,element.RefundAmt)"

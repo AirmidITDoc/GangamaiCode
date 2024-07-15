@@ -558,6 +558,7 @@ export class InterimBillComponent implements OnInit {
       PatientHeaderObj['NetPayAmount'] = this.netAmount;
       PatientHeaderObj['AdvanceAmount'] =  this.netAmount; 
       PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
+      PatientHeaderObj['ComapanyId'] = this.selectedAdvanceObj.CompanyId;
 
       // const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
       //   {
