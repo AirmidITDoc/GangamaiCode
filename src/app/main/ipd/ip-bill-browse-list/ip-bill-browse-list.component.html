@@ -357,6 +357,14 @@
                                         </mat-cell>
                                     </ng-container>
 
+                                    <ng-container matColumnDef="CompDiscAmt">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>Comapny DiscAmt
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-md>
+                                            <span> {{contact.CompDiscAmt | currency:"INR":"symbol"}}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
                                     <ng-container matColumnDef="NetPayableAmt">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>Net Amount
                                         </mat-header-cell>

@@ -192,11 +192,11 @@ export class IPSettlementComponent implements OnInit {
     let PatientHeaderObj = {}; 
     PatientHeaderObj['Date'] = formattedDate;
     PatientHeaderObj['PatientName'] = this.PatientName;
-    PatientHeaderObj['OPD_IPD_Id'] =this.vAdmissionID;
+    PatientHeaderObj['OPD_IPD_Id'] =contact.OPD_IPD_ID;
     PatientHeaderObj['AdvanceAmount'] = contact.NetPayableAmt; 
     PatientHeaderObj['NetPayAmount'] = contact.NetPayableAmt;
     PatientHeaderObj['PBillNo'] = contact.PBillNo;
-    PatientHeaderObj['BillTime'] = contact.BillTime;
+    PatientHeaderObj['IPDNo'] = contact.IPDNo;
     PatientHeaderObj['RegNo'] = contact.RegNo; 
     
     const dialogRef = this._matDialog.open(IPpaymentWithadvanceComponent,

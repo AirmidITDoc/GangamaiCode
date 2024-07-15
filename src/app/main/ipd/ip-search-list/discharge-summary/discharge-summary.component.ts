@@ -674,7 +674,7 @@ OnSave(){
     insertIPPrescriptionDischargeObj['instructionId'] = 0;
     insertIPPrescriptionDischargeObj['qtyPerDay'] = 0;
     insertIPPrescriptionDischargeObj['totalQty'] = 0; 
-    insertIPPrescriptionDischargeObj['instruction'] =  ''  ;
+    insertIPPrescriptionDischargeObj['instruction'] = 0 ;
     insertIPPrescriptionDischargeObj['remark'] =0;
     insertIPPrescriptionDischargeObj['isEnglishOrIsMarathi'] = 0;
     insertIPPrescriptionDischargeObj['storeId'] = this.accountService.currentUserValue.user.storeId || 0;

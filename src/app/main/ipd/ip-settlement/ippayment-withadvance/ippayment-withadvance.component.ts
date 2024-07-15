@@ -139,6 +139,7 @@ private _onDestroy = new Subject<void>();
       this.paidAmt = parseInt(this.advanceData.advanceObj.AdvanceAmount);
       this.PatientName = this.advanceData.advanceObj.PatientName; 
       this.OPD_IPD_Id = this.advanceData.advanceObj.OPDNo;
+      this.OPD_IPD_Id = this.advanceData.advanceObj.IPDNo;
       this.RegNo = this.advanceData.advanceObj.RegNo;
       this.BillTime = this.advanceData.advanceObj.Date;
       this.getBalanceAmt(); 

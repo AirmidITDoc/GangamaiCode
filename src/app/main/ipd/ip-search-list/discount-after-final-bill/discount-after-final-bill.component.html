@@ -137,7 +137,7 @@
                                                 (keydown)="onEnterFinalDiscAmt($event)" #FinalDiscAmt readonly>
                                         </mat-form-field>
 
-                                        <mat-form-field appearance="outline" fxFlex>
+                                        <mat-form-field appearance="outline" fxFlex *ngIf="CompanyName != ''">
                                             <mat-label>Company DiscAmt</mat-label>
                                             <input matInput name="FinalCompanyDiscAmt" formControlName="FinalCompanyDiscAmt" type="text" OnlyNumber
                                                 [(ngModel)]="vFinalCompanyDiscAmt" (keypress)="keyPressCharater($event)"
@@ -173,7 +173,7 @@
                                                     (keydown)="onEnterFinalDisc($event)" #DiscAmount2   (keyup)="CalcDiscAmt()">
                                             </mat-form-field>  
                                         </div>
-                                        <div fxLayout="row" fxLayoutGap="4px">
+                                        <div fxLayout="row" fxLayoutGap="4px" *ngIf="CompanyName != ''">
                                             <mat-form-field appearance="outline" fxFlex="30%">
                                                 <mat-label>Company DiscPer</mat-label>
                                                 <input matInput name="CompanyDiscper" formControlName="CompanyDiscper" type="text" OnlyNumber

@@ -30,6 +30,7 @@ export class DiscountAfterFinalBillComponent implements OnInit {
   vCompanyDiscper:any;
   ConcessionReasonList:any=[];
   vFinalCompanyDiscAmt:any;
+  CompanyName:any = '';
 
   constructor(
     public _matDialog: MatDialog,
@@ -51,6 +52,8 @@ export class DiscountAfterFinalBillComponent implements OnInit {
       this.vFinalNetAmt =  Math.round(this.selectedAdvanceObj.NetPayableAmt)
       this.vNetamount =  Math.round(this.selectedAdvanceObj.NetPayableAmt)
       this.vFinalDiscAmt =  Math.round(this.selectedAdvanceObj.ConcessionAmt);
+      this.CompanyName = this.selectedAdvanceObj.CompanyName || '';
+      console.log(this.CompanyName)
     }
     this.CreateMyForm();
     this.getConcessionReasonList();

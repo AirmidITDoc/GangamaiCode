@@ -99,6 +99,7 @@ export class IPBillBrowseListComponent implements OnInit {
     'UnitName',
     'TotalAmt',
     'ConcessionAmt',
+    'CompDiscAmt',
     'NetPayableAmt',
     'BalanceAmt',
     'CashPay',
