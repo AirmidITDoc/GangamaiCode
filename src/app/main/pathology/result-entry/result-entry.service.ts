@@ -27,7 +27,7 @@ export class ResultEntryService {
       ]],
       // BillNo:[''],
       // BillDate:[''],
-      PatientTypeSearch: ['1'],
+      PatientTypeSearch: ['0'],
       StatusSearch: ['0'],
       CategoryId: [''],
       start: [new Date().toISOString()],

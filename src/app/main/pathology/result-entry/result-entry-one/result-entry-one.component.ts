@@ -13,10 +13,7 @@ import { ConfigService } from 'app/core/services/config.service';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
-import Swal from 'sweetalert2';
-import { AdministrationModule } from 'app/main/administration/administration.module';
-import { AdmissionModule } from 'app/main/ipd/Admission/admission/admission.module';
-import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
+import Swal from 'sweetalert2'; 
 
 @Component({
   selector: 'app-result-entry-one',
@@ -35,27 +32,21 @@ export class ResultEntryOneComponent implements OnInit {
     'NormalRange',
 
   ];
-  isLoading: string = '';
-
-  Pthologyresult: any = [];
-
+  isLoading: string = ''; 
+  Pthologyresult: any = []; 
   PathologyDoctorList: any = [];
   DoctorList: any = [];
-  Doctor1List: any = [];
-
+  Doctor1List: any = []; 
   otherForm: FormGroup;
   msg: any;
-  PatientHeaderObj: any;
-  selectedAdvanceObj: SampleDetailObj;
-  selectedAdvanceObj1:AdmissionPersonlModel;
+  PatientHeaderObj: any; 
+  selectedAdvanceObj1:SampleDetailObj;
   screenFromString = 'opd-casepaper';
-  hasSelectedContacts: boolean;
-  s
+  hasSelectedContacts: boolean; 
   advanceData: any;
   dataSource = new MatTableDataSource<Pthologyresult>();
   configDoc:any;
-  sIsLoading: string = '';
-
+  sIsLoading: string = '';  
   filteredresultdr: Observable<string[]>;
   filteredpathdr: Observable<string[]>;
   filteredrefdr: Observable<string[]>;
@@ -85,25 +76,8 @@ export class ResultEntryOneComponent implements OnInit {
     private configService: ConfigService,
     private _fuseSidebarService: FuseSidebarService) {
 
-    this.advanceData = data;
-    // console.log(this.advanceData);
-  }
-
-  // //doctorone filter
-  // public pathodoctorFilterCtrl: FormControl = new FormControl();
-  // public filteredPathDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-  // //doctorone filter
-  // public refDoctorFilterCtrl: FormControl = new FormControl();
-  // public filteredRefDoctorone: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-
-  // //doctorone filter
-  // public doctorFilterCtrl: FormControl = new FormControl();
-  // public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-  private _onDestroy = new Subject<void>();
-
+    this.advanceData = data; 
+  } 
   ngOnInit(): void {
     this.otherForm = this.formBuilder.group({
       suggestionNotes: '',
@@ -112,30 +86,17 @@ export class ResultEntryOneComponent implements OnInit {
       AdmDoctorID: [0],
       RefDoctorID: [0],
     });
-
-  // console.log(this.configService.getConfigParam());
-  //  console.log(this.configService.getConfigParam().IsPathologistDr);
-  //   this.configDoc= this.configService.getConfigParam().IsPathologistDr;
+ 
     this.getPathresultDoctorList();
     this.getDoctorList();
-    this.getRefDoctorList();
-    
+    this.getRefDoctorList(); 
+    this.setDropdownObjs(); 
 
-   
-   
-    this.setDropdownObjs();
-debugger;
-   
-
-    if (this.advanceDataStored.storage) {
-      this.selectedAdvanceObj = this.advanceDataStored.storage;
-      this.selectedAdvanceObj1 = this.advanceDataStored.storage;
-      
-      console.log(this.selectedAdvanceObj);
+    if (this.advanceDataStored.storage) { 
+      this.selectedAdvanceObj1 = this.advanceDataStored.storage; 
+      console.log(this.selectedAdvanceObj1);
       this.PatientHeaderObj = this.advanceDataStored.storage;
-    }
-   
-
+    } 
 
     //For Diffrente List Dispaly(IP?OP)
     if (this.advanceData.IsCompleted == true) {
@@ -162,18 +123,17 @@ debugger;
 
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
-    this.dateTimeObj = dateTimeObj;
-    console.log(this.dateTimeObj);
+    this.dateTimeObj = dateTimeObj; 
   }
 
   setDropdownObjs() {
-        const toSelect = this.PathologyDoctorList.find(c => c.DoctorId == this.selectedAdvanceObj.PathResultDr1);
+        const toSelect = this.PathologyDoctorList.find(c => c.DoctorId == this.selectedAdvanceObj1.PathResultDr1);
         this.otherForm.get('DoctorId').setValue(toSelect);
 
-        const toSelect1 = this.DoctorList.find(c => c.DoctorID == this.selectedAdvanceObj.AdmDocId);
+        const toSelect1 = this.DoctorList.find(c => c.DoctorID == this.selectedAdvanceObj1.AdmDocId);
         this.otherForm.get('AdmDoctorID').setValue(toSelect1);
 
-        // const toSelect2 = this.DoctorList.find(c => c.DoctorID == this.selectedAdvanceObj.AdmDocId);
+        // const toSelect2 = this.DoctorList.find(c => c.DoctorID == this.selectedAdvanceObj1.AdmDocId);
         // this.otherForm.get('DoctorId').setValue(toSelect1);
   }
   
@@ -220,7 +180,7 @@ debugger;
   onSave() {
     debugger;
     let pathologyDeleteObj = {};
-    pathologyDeleteObj['pathReportID'] = this.selectedAdvanceObj.PathReportID;
+    pathologyDeleteObj['pathReportID'] = this.selectedAdvanceObj1.PathReportID;
 
     this.isLoading = 'submit';
     let PathInsertArry = [];
@@ -228,7 +188,7 @@ debugger;
     this.Pthologyresult.forEach((element) => {
 console.log(element)
       let pathologyInsertReportObj = {};
-      pathologyInsertReportObj['PathReportId'] = this.selectedAdvanceObj.PathReportID;
+      pathologyInsertReportObj['PathReportId'] = this.selectedAdvanceObj1.PathReportID;
       pathologyInsertReportObj['CategoryID'] = element.CategoryID || 0;
       pathologyInsertReportObj['TestID'] = element.TestId || 0;
       pathologyInsertReportObj['SubTestId'] = element.SubTestID || 0;
@@ -243,8 +203,8 @@ console.log(element)
       pathologyInsertReportObj['SubTestName'] = element.SubTestName || '';
       pathologyInsertReportObj['ParameterName'] = element.ParameterName || '';
       pathologyInsertReportObj['UnitName'] = element.UnitName || '';
-      pathologyInsertReportObj['PatientName'] = this.selectedAdvanceObj.PatientName || '';
-      pathologyInsertReportObj['RegNo'] = this.selectedAdvanceObj.RegNo;
+      pathologyInsertReportObj['PatientName'] = this.selectedAdvanceObj1.PatientName || '';
+      pathologyInsertReportObj['RegNo'] = this.selectedAdvanceObj1.RegNo;
       pathologyInsertReportObj['SampleID'] = element.SampleID || '';
 
       PathInsertArry.push(pathologyInsertReportObj);
@@ -252,7 +212,7 @@ console.log(element)
     });
 debugger;
     let pathologyUpdateReportObj = {};
-    pathologyUpdateReportObj['PathReportID'] = this.selectedAdvanceObj.PathReportID;
+    pathologyUpdateReportObj['PathReportID'] = this.selectedAdvanceObj1.PathReportID;
     pathologyUpdateReportObj['ReportDate'] =this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
     pathologyUpdateReportObj['ReportTime'] =this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
     pathologyUpdateReportObj['IsCompleted'] = true;
@@ -262,7 +222,7 @@ debugger;
     pathologyUpdateReportObj['PathResultDr3'] = 0;
     pathologyUpdateReportObj['IsTemplateTest'] = 0;
     pathologyUpdateReportObj['SuggestionNotes'] = this.otherForm.get('suggestionNotes').value || "";
-    pathologyUpdateReportObj['AdmVisitDoctorID'] =  this.selectedAdvanceObj.AdmDocId,//this.otherForm.get('AdmDoctorID').value.DoctorID || 0;
+    pathologyUpdateReportObj['AdmVisitDoctorID'] =  this.selectedAdvanceObj1.AdmDocId,//this.otherForm.get('AdmDoctorID').value.DoctorID || 0;
     pathologyUpdateReportObj['RefDoctorID'] = this.otherForm.get('RefDoctorID').value.DoctorID || 0;
 
     const pathologyDelete = new PthologyresulDelt(pathologyDeleteObj);
