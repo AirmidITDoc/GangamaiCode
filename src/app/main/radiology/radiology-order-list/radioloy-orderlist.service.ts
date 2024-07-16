@@ -124,10 +124,10 @@ export class RadioloyOrderlistService {
       this.myform.patchValue(employee);
     }
   
-    public getRadioTestDetails(employee) {
-      return this._httpClient.post("Generic/GetByProc?procName=Rtrv_RadioResultEntryList_Test_Dtls", employee)
+    // public getRadioTestDetails(employee) {
+    //   return this._httpClient.post("Generic/GetByProc?procName=Rtrv_RadioResultEntryList_Test_Dtls", employee)
     
-    }
+    // }
 
     public getTestList(employee){
       return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PathResultEntryList_Test_Dtls1", employee)

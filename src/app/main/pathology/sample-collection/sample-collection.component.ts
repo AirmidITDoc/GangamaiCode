@@ -10,8 +10,7 @@ import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { DatePipe } from '@angular/common';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { AdvanceDetailObj } from 'app/main/opd/appointment/appointment.component';
-import { SampleDetailComponent } from './sample-detail/sample-detail.component';
+import { AdvanceDetailObj } from 'app/main/opd/appointment/appointment.component'; 
 import { SampleList, SampledetailtwoComponent } from './sampledetailtwo/sampledetailtwo.component';
 import { fuseAnimations } from '@fuse/animations';
 import { NursingPathRadRequestList } from '../sample-request/sample-request.component';
@@ -38,7 +37,7 @@ export class SampleCollectionComponent implements OnInit {
   sIsLoading: string = '';
   menuActions: Array<string> = [];
   hasSelectedContacts: boolean;
-
+  dateTimeObj: any;
   setStep(index: number) {
     this.step = index;
   }
@@ -56,7 +55,7 @@ export class SampleCollectionComponent implements OnInit {
   dataSource1 = new MatTableDataSource<SampleList>();
 
   displayedColumns: string[] = [
-    //'checkbox',
+    'OP_Ip_Type',
     'DOA',
     // 'DOT',
     'RegNo',
@@ -64,6 +63,7 @@ export class SampleCollectionComponent implements OnInit {
     'DoctorName',
     'PBillNo',
     'PatientType',
+    'CompanyName', 
     'WardName',
     'buttons' 
   ];
@@ -73,12 +73,9 @@ export class SampleCollectionComponent implements OnInit {
     'ServiceName',
     //'IsPrinted',
     'SampleCollectionTime', 
-  ];
+  ]; 
 
-
-
-  constructor(
-
+  constructor( 
     private formBuilder: FormBuilder,
     public _SampleService: SampleCollectionService,
     private _ActRoute: Router,
@@ -91,8 +88,7 @@ export class SampleCollectionComponent implements OnInit {
     private reportDownloadService: ExcelDownloadService
   ) { }
   ngOnInit(): void {
-    this.getPatientsList();
-
+    this.getPatientsList(); 
   }
 
   get f() { return this._SampleService.myformSearch.controls }
@@ -103,16 +99,10 @@ export class SampleCollectionComponent implements OnInit {
 
   onClose() {
     // this.dialogRef.close();
-  }
-
-  onSubmit() { }
-
-  dateTimeObj: any;
+  } 
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
-  }
-
-
+  } 
   onShow(event: MouseEvent) {
     // this.click = false;// !this.click;
     this.click = !this.click;
@@ -127,22 +117,15 @@ export class SampleCollectionComponent implements OnInit {
 
     }, 1000);
     this.MouseEvent = true;
-    this.click = true;
-
-  }
-
-
-  onClear() {
-
+    this.click = true; 
+  } 
+  onClear() { 
     this._SampleService.myformSearch.get('FirstNameSearch').reset();
     this._SampleService.myformSearch.get('LastNameSearch').reset();
     this._SampleService.myformSearch.get('RegNoSearch').reset();
     this._SampleService.myformSearch.get('StatusSearch').reset();
     this._SampleService.myformSearch.get('PatientTypeSearch').reset();
-  }
-
-
-
+  } 
 
   getPatientsList() {
     this.sIsLoading = 'loading-data';
@@ -166,21 +149,15 @@ export class SampleCollectionComponent implements OnInit {
     },
       error => {
         this.sIsLoading = '';
-      });
-
-
+      }); 
   }
-
-
-
+ 
   onSearchClear() {
     this._SampleService.myformSearch.reset({ RegNoSearch: '', FirstNameSearch: '', LastNameSearch: '', PatientTypeSearch: '', StatusSearch: '' });
   }
 
   onEdit(row) { 
-    console.log(row)
-    
-
+    console.log(row) 
     let OPIP
     if (this._SampleService.myformSearch.get("PatientTypeSearch").value == '1') {
     
@@ -207,55 +184,14 @@ export class SampleCollectionComponent implements OnInit {
     },
       error => {
         this.sIsLoading = '';
-      });
-  
-
-    // if (row.checked) {
-    //   let xx = {
-    //     RegNo: m.RegNo,
-    //     AdmissionID: m.VisitId,
-    //     PatientName: m.PatientName,
-    //     Doctorname: m.DoctorName,
-    //     AdmDateTime: m.DOA,
-    //     AgeYear: m.AgeYear,
-    //     WardName: m.WardName,
-
-    //   };
-    //   this.advanceDataStored.storage = new AdvanceDetailObj(xx);
-
-    //   const dialogRef = this._matDialog.open(SampleDetailComponent,
-    //     {
-    //       maxWidth: "80vw",
-    //       maxHeight: "80vh",
-    //       width: '100%',
-    //       height: "100%",
-    //       data: {
-    //         BillNo: m.BillNo,
-    //         OP_IP_Type: m.PatientType,
-    //         From_dt: m.PathDate,
-
-    //       }
-
-    //     });
-
-    //   dialogRef.afterClosed().subscribe(result => {
-    //     console.log('The dialog was closed - Insert Action', result);
-
-    //   });
-    // }
-
-    // this.getSampledetailList();
+      }); 
   }
 
 
 
 
-  onLABSave() {
-
-
-    this.sIsLoading = 'submit';
-
-
+  onLABSave() { 
+    this.sIsLoading = 'submit'; 
     let BillDetail = {};
     BillDetail['emergencyFlag'] = "0",
       BillDetail['billTotalAmount'] = "";
@@ -279,9 +215,7 @@ export class SampleCollectionComponent implements OnInit {
       testListInsertObj['testCode'] = element.ServiceName;
       testList.push(testListInsertObj);
     });
-    BillDetail["testList"] = testList;
-
-
+    BillDetail["testList"] = testList; 
 
     let paymentListarr = [];
     let paymentList = {};
@@ -332,83 +266,7 @@ export class SampleCollectionComponent implements OnInit {
       this.sIsLoading = '';
     });
   }
-
-
-  getRecord(contact) {
-
-    // console.log(contact);
-
-    let xx = {
-      RegNo: contact.RegNo,
-      AdmissionID: contact.VisitId,
-      PatientName: contact.PatientName,
-      Doctorname: contact.DoctorName,
-      AdmDateTime: contact.DOA,
-      AgeYear: contact.AgeYear,
-      WardName: contact.WardName,
-
-    };
-    this.advanceDataStored.storage = new AdvanceDetailObj(xx);
-
-    const dialogRef = this._matDialog.open(SampleDetailComponent,
-      {
-        maxWidth: "70vw",
-        maxHeight: "80vh", width: '100%', height: "100%",
-        data: {
-          BillNo: contact.BillNo,
-          OP_IP_Type: contact.PatientType,
-          From_dt: contact.PathDate,
-
-        }
-
-      });
-
-    dialogRef.afterClosed().subscribe(result => {
-      // console.log('The dialog was closed - Insert Action', result);
-
-    });
-  }
-
-
-
-
-  // onEditNew(row, m): void {
-  //   ;
-
-  //   if (row.checked) {
-  //     let xx = {
-  //       RegNo: m.RegNo,
-  //       AdmissionID: m.VisitId,
-  //       PatientName: m.PatientName,
-  //       Doctorname: m.DoctorName,
-  //       AdmDateTime: m.DOA,
-  //       AgeYear: m.AgeYear,
-  //       WardName: m.WardName,
-
-  //     };
-  //     this.advanceDataStored.storage = new AdvanceDetailObj(xx);
-
-  //     const dialogRef = this._matDialog.open(SampledetailtwoComponent,
-  //       {
-  //         maxWidth: "85vw",
-  //         height: '480px',
-  //         width: '100%',
-  //         data: {
-  //           BillNo: m.BillNo,
-  //           OP_IP_Type: m.PatientType,
-  //           From_dt: m.PathDate,
-
-  //         }
-
-  //       });
-
-  //     dialogRef.afterClosed().subscribe(result => {
-  //       console.log('The dialog was closed - Insert Action', result);
-
-  //     });
-  //   }
-
-  // }
+  
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {

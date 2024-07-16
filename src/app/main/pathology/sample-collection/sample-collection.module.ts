@@ -30,8 +30,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTableModule } from '@angular/material/table';
-import { SampledetailtwoComponent } from './sampledetailtwo/sampledetailtwo.component';
-import { SampleDetailComponent } from './sample-detail/sample-detail.component';
+import { SampledetailtwoComponent } from './sampledetailtwo/sampledetailtwo.component'; 
 import { SampleCollectionComponent } from './sample-collection.component';
 import { SampleCollectionService } from './sample-collection.service';
 import { SharedModule } from 'app/main/shared/shared.module';
@@ -47,10 +46,8 @@ const routes: Routes = [
 ];
 @NgModule({
   declarations: [
-    SampleCollectionComponent,
-    SampleDetailComponent,
-    SampledetailtwoComponent
-     
+    SampleCollectionComponent, 
+    SampledetailtwoComponent 
   ],
   imports: [
       RouterModule.forChild(routes),

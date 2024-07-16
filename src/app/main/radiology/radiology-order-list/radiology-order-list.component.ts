@@ -47,19 +47,18 @@ export class RadiologyOrderListComponent implements OnInit {
   SBillNo: any;
   SOPIPtype: any;
   SFromDate: any;
-
+  dateTimeObj: any;
   setStep(index: number) {
     this.step = index;
   }
-  SearchName: string;
-
-
+  SearchName: string; 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
 
   dataSource = new MatTableDataSource<RadioPatientList>();
   displayedColumns: string[] = [
+    'OP_Ip_Type',
     'IsCompleted',
     'PatientType', 
     'RadDate',
@@ -76,24 +75,8 @@ export class RadiologyOrderListComponent implements OnInit {
 
   ];
 
-  dataSource1 = new MatTableDataSource<RadioPatientList>();
-  displayedColumns1: string[] = [
-    'checkbox',
-    // 'VADate',
-    'ServiceName',
-    'IsCompleted',
-    'IsSampleCollection',
-    // 'SampleCollectionTime',
-    'RadTestID',
-    'action',
-    // 'IsVerifySign',
-    // 'IsTemplateTest'
-    // 'PathReportID',
-    // 'buttons' 
-  ];
-
-  constructor(
-
+  dataSource1 = new MatTableDataSource<RadioPatientList>(); 
+  constructor( 
     private formBuilder: FormBuilder,
     public _RadiologyOrderListService: RadioloyOrderlistService,
     private _ActRoute: Router,
@@ -106,24 +89,17 @@ export class RadiologyOrderListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getcaterorylist();
-    this.getRadiologyPatientsList();
-
-
-    // if (this._ActRoute.url == '/radiology/radiology-order-list')
-    //   {
-    //         this.menuActions.push('Template Details');
-
-    //   }
-  }
-
+    //this.getcaterorylist();
+    this.getRadiologyPatientsList(); 
+  } 
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
-  }
-
+  } 
 
   getcaterorylist() {
-    this._RadiologyOrderListService.getCategoryNameCombo().subscribe(data => this.CategoryList = data);
+    this._RadiologyOrderListService.getCategoryNameCombo().subscribe((data) =>{
+      this.CategoryList = data
+    }) 
   }
 
   onClose() {
@@ -151,16 +127,12 @@ export class RadiologyOrderListComponent implements OnInit {
         this.sIsLoading = '';
       });
   }
-
-  onSubmit() { }
-
-  dateTimeObj: any;
+  
+ 
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
-
-
-
+ 
   onShow(event: MouseEvent) { 
     this.click = !this.click;  
     setTimeout(() => {
@@ -172,21 +144,15 @@ export class RadiologyOrderListComponent implements OnInit {
     }, 500);
     this.MouseEvent = true;
     this.click = true; 
-  }
-
-
-  onClear() {
-
+  } 
+  onClear() { 
     this._RadiologyOrderListService.myformSearch.get('FirstNameSearch').reset();
     this._RadiologyOrderListService.myformSearch.get('LastNameSearch').reset();
     this._RadiologyOrderListService.myformSearch.get('RegNoSearch').reset();
     this._RadiologyOrderListService.myformSearch.get('StatusSearch').reset();
     this._RadiologyOrderListService.myformSearch.get('PatientTypeSearch').reset();
     this._RadiologyOrderListService.myformSearch.get('CategoryId').reset();
-  }
-
-
-
+  } 
   getRadiologyPatientsList() {
     this.sIsLoading = 'loading-data';
     var m_data = {
@@ -206,8 +172,7 @@ export class RadiologyOrderListComponent implements OnInit {
       this.dataSource.paginator = this.paginator;
       console.log(this.dataSource.data);
       this.sIsLoading = '';
-      this.click = false;
-
+      this.click = false; 
     },
       error => {
         this.sIsLoading = '';
@@ -220,30 +185,34 @@ export class RadiologyOrderListComponent implements OnInit {
   }
 
   getRecord(contact): void {
-    console.log(contact);
+    //console.log(contact);
     let xx = {
       RegNo: contact.RegNo,
-      AdmissionID: contact.VisitId,
       PatientName: contact.PatientName,
-      Doctorname: contact.ConsultantDoctor,
+      Doctorname: contact.DoctorName,
+      DepartmentName: contact.DepartmentName,
       AdmDateTime: contact.AdmissionTime,
+      OP_IP_Number: contact.OP_IP_Number,
       AgeYear: contact.AgeYear,
+      GenderName: contact.GenderName,
+      RefDoctorName: contact.RefDoctorName,
+      PatientType: contact.PatientType,
+      CompanyName: contact.CompanyName,
+      LBL: contact.LBL,
       RadReportId: contact.RadReportId,
       RadTestID: contact.RadTestID, 
-      PatientType: contact.PatientType,
-      GenderName: contact.GenderName,
+      AdmissionID: contact.VisitId,
       AdmissionDate: contact.AdmissionDate,
       CategoryName: contact.CategoryName,
-      ChargeId: contact.ChargeId,
-      ConsultantDoctor: contact.ConsultantDoctor,
       OPD_IPD_ID: contact.OPD_IPD_ID,
-      OPDNo: contact.OP_IP_Number,
+      ChargeId: contact.ChargeId, 
       PBillNo: contact.PBillNo,
       RadDate: contact.RadDate,
       ServiceName: contact.ServiceName,
       TestName: contact.TestName,
-      OP_IP_Type: contact.OP_IP_Type,
+      OP_IP_Type: contact.OPD_IPD_Type,
     };
+    console.log(xx);
     this.advanceDataStored.storage = new RadiologyPrint(xx);
     const dialogRef = this._matDialog.open(ResultEntryComponent,
       {
@@ -288,7 +257,9 @@ export class RadiologyOrderListComponent implements OnInit {
     const dialogRef = this._matDialog.open(RadiologyTemplateReportComponent,
       {
         maxWidth: "95vw",
-        maxHeight: "130vh", width: '100%', height: "100%"
+        maxHeight: "130vh", 
+        width: '100%',
+        height: "100%"
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
@@ -303,26 +274,26 @@ export class RadiologyOrderListComponent implements OnInit {
     this.SBillNo = m.PBillNo;
     this.SOPIPtype = m.OPD_IPD_Type;
     this.SFromDate = this.datePipe.transform(m.PathDate, "yyyy-MM-dd ");
-    console.log(m);
-    debugger;
-    var m_data = {
-      "BillNo": m.PBillNo,
-      "OP_IP_Type": m.OPD_IPD_Type,
-      // "From_Dt": this.datePipe.transform(m.PathDate, "yyyy-MM-dd"),
-    }
-    console.log(m_data);
-    //  setTimeout(() => {
-    this._SampleService.getRadioTestDetails(m_data).subscribe(Visit => {
-      this.dataSource1.data = Visit as RadioPatientList[];
-      console.log(this.dataSource1.data);
-      this.dataSource1.sort = this.sort;
-      this.dataSource1.paginator = this.paginator;
-      this.sIsLoading = '';
-      this.click = false;
-    },
-      error => {
-        this.sIsLoading = '';
-      });
+  //  console.log(m);
+    // debugger;
+    // var m_data = {
+    //   "BillNo": m.PBillNo,
+    //   "OP_IP_Type": m.OPD_IPD_Type,
+    //   // "From_Dt": this.datePipe.transform(m.PathDate, "yyyy-MM-dd"),
+    // }
+    // console.log(m_data);
+    // //  setTimeout(() => {
+    // this._SampleService.getRadioTestDetails(m_data).subscribe(Visit => {
+    //   this.dataSource1.data = Visit as RadioPatientList[];
+    //   console.log(this.dataSource1.data);
+    //   this.dataSource1.sort = this.sort;
+    //   this.dataSource1.paginator = this.paginator;
+    //   this.sIsLoading = '';
+    //   this.click = false;
+    // },
+    //   error => {
+    //     this.sIsLoading = '';
+    //   });
 
   }
 
@@ -491,8 +462,7 @@ export class Templateinfo {
       this.AdmDateTime = Templateinfo.AdmDateTime || '';
       this.AgeYear = Templateinfo.AgeYear || '';
       this.RadReportId = Templateinfo.RadReportId || '';
-      this.RadTestID = Templateinfo.RadTestID || '';
-
+      this.RadTestID = Templateinfo.RadTestID || ''; 
     }
   }
 }
@@ -524,6 +494,7 @@ export class RadiologyPrint {
   ReportTime: Date;
   ResultEntry: String;
   RadiologyDocName: string;
+  RefDoctorName:any;
   SuggestionNotes: string;
   UserName: string;
   PrintTestName: string;
@@ -532,11 +503,20 @@ export class RadiologyPrint {
   ChargeId: number;
   ServiceName: String;
   OP_IP_Type: any;
+  OP_IP_Number:any;
+  CompanyName:any;
+  DepartmentName:any;
+  AgeMonth:any;
 
   constructor(RadiologyPrint) {
     this.RadDate = RadiologyPrint.RadDate || '';
+    this.CompanyName = RadiologyPrint.CompanyName || '';
+    this.DepartmentName = RadiologyPrint.DepartmentName || '';
+    this.RefDoctorName = RadiologyPrint.RefDoctorName || '';
     this.RadTime = RadiologyPrint.RadTime;
     this.RegNo = RadiologyPrint.RegNo;
+    this.OP_IP_Number = RadiologyPrint.OP_IP_Number || '';
+    this.RadTime = RadiologyPrint.RadTime;
     this.PatientName = RadiologyPrint.PatientName;
     this.PBillNo = RadiologyPrint.PBillNo;
     this.PatientType = RadiologyPrint.PatientType || '0';
@@ -554,6 +534,7 @@ export class RadiologyPrint {
     this.ReportTime = RadiologyPrint.ReportTime || '';
     this.ResultEntry = RadiologyPrint.ResultEntry || '';
     this.RadiologyDocName = RadiologyPrint.RadiologyDocName || '0';
+    this.AgeMonth = RadiologyPrint.AgeMonth || '0';
     this.SuggestionNotes = RadiologyPrint.SuggestionNotes || '';
     this.UserName = RadiologyPrint.UserName;
     this.RadReportId = RadiologyPrint.RadReportId;

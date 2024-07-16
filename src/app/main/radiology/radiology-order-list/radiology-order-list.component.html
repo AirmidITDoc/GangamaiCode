@@ -253,11 +253,22 @@
                                     <mat-table #table matSort [dataSource]="dataSource"
                                         [@animateStagger]="{value:'50'}">
 
+                                        <ng-container matColumnDef="OP_Ip_Type" sticky>
+                                            <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-80"> 
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact"  class="w-80"> 
+                                                    <mat-icon   *ngIf="contact.OPD_IPD_Type==1"  title="IP"
+                                                    class="pill green-600 s-16">circle</mat-icon>
+                                                    <mat-icon  *ngIf="contact.OPD_IPD_Type==0"  title="OP"
+                                                    class="pill orange s-16">circle</mat-icon> 
+                                            </mat-cell>
+                                        </ng-container> 
+
                                         <ng-container matColumnDef="IsCompleted" sticky>
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                                 IsCompleted
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                            <mat-cell *matCellDef="let contact">
                                                 <button mat-icon-button>
                                                     <mat-icon title="IsCompleted" *ngIf="contact.IsCompleted==true"
                                                         class="active-icon green-500 s-16">check_circle</mat-icon>

@@ -93,20 +93,20 @@ export class ResultEntryComponent implements OnInit {
     public toastr: ToastrService,
     private advanceDataStored: AdvanceDataStored,
     public dialogRef: MatDialogRef<ResultEntryComponent>,
-  ) {  }
-
-  ngOnInit(): void { 
-    this.getTemplateList();
-    this.getDoctorList(); 
+  ) { 
+    this.getDoctorList()
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
-      console.log(this.selectedAdvanceObj)
-      
-    } 
-    if (this.selectedAdvanceObj.RadReportId) { 
-      this.getUpdatetemplate();
-    } 
+    }
+   }
+
+  ngOnInit(): void { 
+    //this.getTemplateList(); 
+    if (this.advanceDataStored.storage) {
+       this.getUpdatetemplate();  
+    }  
   }
+  RefDoctorID:any;
 getUpdatetemplate(){
   var m_data = {
     "RadReportId": this.selectedAdvanceObj.RadReportId, 
@@ -117,14 +117,23 @@ getUpdatetemplate(){
     this.vTemplateDesc = this.regobj[0].ResultEntry;
     this.SuggestionNotes = this.regobj[0].SuggestionNotes;
     this.DoctorId = this.regobj[0].RadResultDr1;
-  });
-}
-  onBlur(e:any){
-    this.vTemplateDesc=e.target.innerHTML;
+    this.RefDoctorID = this.regobj[0].RefDoctorID;
+    console.log(this.RefDoctorID); 
+    this.Rtevdropdownvalue();
+  }); 
+}   
+Rtevdropdownvalue(){
+  debugger
+  if(this.RefDoctorID){
+     const toSelect = this.Doctorlist.find(c => c.DoctorId == this.RefDoctorID);
+     console.log(toSelect)
+     this._radiologytemplateService.myform.get('DoctorId').setValue(toSelect);
   } 
+}
   getDoctorList() {
     this._radiologytemplateService.getdoctorCombo().subscribe(data => {
       this.Doctorlist = data;
+      //console.log(this.Doctorlist); 
       this.optionsDoc1 = this.Doctorlist.slice();
       this.filteredrefdr = this._radiologytemplateService.myform.get('DoctorId').valueChanges.pipe(
         startWith(''),
@@ -142,7 +151,9 @@ getUpdatetemplate(){
     return option && option.Doctorname ? option.Doctorname : '';
   }
 
-
+  onBlur(e:any){
+    this.vTemplateDesc=e.target.innerHTML;
+  } 
   getTemplateList() {
     let Id = 1;
     this._radiologytemplateService.gettemplateCombo(Id).subscribe(data => { this.templatelist = data; })
@@ -233,7 +244,7 @@ getUpdatetemplate(){
 
  
   viewgetRadioloyTemplateReportPdf(obj) {
-    debugger
+    // debugger
     this._radiologytemplateService.getRadiologyTempReport(
       obj,0
       ).subscribe(res => {

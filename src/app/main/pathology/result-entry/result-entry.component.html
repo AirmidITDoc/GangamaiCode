@@ -113,13 +113,13 @@
             <div class="content-card">
                 <div fxLayout="column" class="gap-12">
                     <div class="layout-card-container">
-                        <mat-card>
+                        <mat-card style="padding: 6px;">
                             <div fxLayout="column" class="gap-8">
                                 <div class="table-header">
                                     <div fxLayout="row wrap" fxLayoutAlign="space-between center">
-                                        <div class="table-header-title">
+                                        <!-- <div class="table-header-title">
                                             <span class="h3 font-weight-600">Pathology Result Details</span>
-                                        </div>
+                                        </div> -->
                                         <div class="table-header-right">
                                             <div class="export-buttons">
                                                 <div fxLayout="row" fxLayoutAlign="center center" class="gap-8">
@@ -130,6 +130,15 @@
                                                     <button type="button" mat-icon-button (click)="exportResultentryReportExcel()" [disabled]="!(dataSource.data.length > 0)">
                                                         <img width="32" height="10px" src="assets/images/svg/xls-svg.svg">
                                                     </button>
+
+                                                    <div  fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                                        <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                                                        <span >: OP </span>
+                                                    </div>
+                                                    <div   fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                                        <mat-icon class="pill green s-16">circle</mat-icon>
+                                                        <span >: IP </span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
