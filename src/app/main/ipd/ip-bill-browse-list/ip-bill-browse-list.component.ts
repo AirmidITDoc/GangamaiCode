@@ -647,6 +647,7 @@ console.log(PatientHeaderObj)
   groupWiseObj: any = {};
 
   viewgetBillReportPdf(BillNo) {
+    debugger
     setTimeout(() => {
       // this.SpinLoading =true;
       this.chkprint = true;

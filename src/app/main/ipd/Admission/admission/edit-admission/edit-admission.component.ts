@@ -248,11 +248,11 @@ export class EditAdmissionComponent implements OnInit {
 
     // );
 
-    // this.filteredOptionsRefrenceDoc = this.hospitalFormGroup.get('refDoctorId').valueChanges.pipe(
-    //   startWith(''),
-    //   map(value => this._filterrefDoctorId(value)),
+    this.filteredOptionsRefrenceDoc = this.hospitalFormGroup.get('refDoctorId').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterrefDoctorId(value)),
 
-    // );
+    );
 
     // this.filteredOptionsRelation = this.otherFormGroup.get('RelationshipId').valueChanges.pipe(
     //   startWith(''),
@@ -605,6 +605,7 @@ export class EditAdmissionComponent implements OnInit {
   }
 
   getRefDoctorList() {
+    debugger
     this._AdmissionService.getDoctorMaster2Combo().subscribe(data => {
       this.RefDoctorList = data;
       console.log(this.RefDoctorList);
@@ -629,7 +630,7 @@ export class EditAdmissionComponent implements OnInit {
 
   private _filteradmittedDoctor2(value: any): string[] {
     if (value) {
-      const filterValue = value && value.DoctorName ? value.Doctorname.toLowerCase() : value.toLowerCase();
+      const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
       return this.Doctor2List.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
     }
   }

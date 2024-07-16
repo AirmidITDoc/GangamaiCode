@@ -510,7 +510,11 @@
                                                 <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
                                             </button>
 
-                                            <div fxFlex="row" fxLayoutAlign="start">
+                                            <button mat-icon-button class="material-icons" (click)="viewgetBillReportPdf(contact.BillNo)" matTooltip="Print Final Bill">
+                                                <mat-icon> print </mat-icon>
+                                            </button>
+
+                                            <!-- <div fxFlex="row" fxLayoutAlign="start">
                                                 <button class="menu-btn" mat-icon-button [matMenuTriggerFor]="moreMenu"
                                                     aria-label="More" (click)="$event.stopPropagation();">
                                                     <mat-icon class="secondary-text">more_vert</mat-icon>
@@ -523,7 +527,7 @@
                                                         </button>
                                                     </ng-container>
                                                 </mat-menu>
-                                            </div>
+                                            </div> -->
                                         </mat-cell>
                                     </ng-container>
 

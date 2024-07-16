@@ -497,11 +497,10 @@ export class DischargeSummaryComponent implements OnInit {
   }
   getdischargeIdbyadmission(){
     let Query = "Select DischargeId from Discharge where  AdmissionID=" + this.selectedAdvanceObj.AdmissionID + " ";
-    //console.log(Query)
+ 
     this._IpSearchListService.getDischargeId(Query).subscribe(data => {
       this.registerObj = data[0];
-     // console.log(this.registerObj);
-      this.vDischargeId=this.registerObj.DischargeId
+    this.vDischargeId=this.registerObj.DischargeId
     });
   }
   DocName1:any;

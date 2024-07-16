@@ -26,6 +26,7 @@ import { ToastrService } from 'ngx-toastr';
 import { CompanyInformationComponent } from '../company-information/company-information.component';
 import { NewCasepaperComponent } from 'app/main/opd/new-casepaper/new-casepaper.component';
 import { IPRefundofAdvanceComponent } from '../ip-refundof-advance/ip-refundof-advance.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 
 
@@ -82,6 +83,7 @@ export class IPSearchListComponent implements OnInit {
     'RefDocName',
     'PatientType',
     'CompanyName',
+    'buttons1',
     'buttons'
   ];
 
@@ -635,6 +637,45 @@ export class IPSearchListComponent implements OnInit {
   }
 
  
+
+  printDischargeslip(contact) {
+console.log(contact)
+  this._IpSearchListService.getIpDischargeReceipt(
+      contact.AdmissionID
+    ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "CHECK OUT SLIP Viewer"
+          }
+        });
+    });
+  }
+
+  
+  printDischargesummary(contact) {
+  
+  this._IpSearchListService.getIpDischargesummaryReceipt(
+    contact.AdmissionID
+  ).subscribe(res => {
+    const dialogRef = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Discharge SummaryViewer"
+        }
+      });
+  });
+}
+
+
 }
 
 
