@@ -112,30 +112,29 @@
                         <mat-card style="padding: 6px;">
                             <div fxLayout="column" class="gap-8">
                                 <div class="table-header">
-                                    <div fxLayout="row wrap" fxLayoutAlign="space-between center">
-                                        <!-- <div class="table-header-title">
-                                            <span class="h3 font-weight-600">Lab Or Rad Details</span>
-                                        </div> -->
-                                        <div class="table-header-right">
-                                            <div class="export-buttons">
-                                                <div fxLayout="row" fxLayoutAlign="center center" class="gap-8">
-                                                    <button type="button" mat-icon-button (click)="exportReportPdf()" [disabled]="!(dataSource.data.length > 0)">
-                                                        <img width="32" height="10px" src="assets/images/svg/pdf-svg.svg">
-                                                    </button>
-
-                                                    <button type="button" mat-icon-button (click)="exportSamplecollectionReportExcel()" [disabled]="!(dataSource.data.length > 0)">
-                                                        <img width="32" height="10px" src="assets/images/svg/xls-svg.svg">
-                                                    </button>
-
-                                                    <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                                                        <mat-icon class="pill orange-600 s-16">circle</mat-icon>
-                                                        <span >: OP </span>
-                                                    </div>
-                                                    <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                                                        <mat-icon class="pill green s-16">circle</mat-icon>
-                                                        <span >: IP </span>
-                                                    </div>
+                                    <div class="table-header-right">
+                                        <div class="export-buttons">
+                                            <div fxLayout="row" fxLayoutAlign="end" class="gap-8">
+                                
+                                                <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                                    <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                                                    <span>: OP </span>
                                                 </div>
+                                                <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                                    <mat-icon class="pill green s-16">circle</mat-icon>
+                                                    <span>: IP </span>
+                                                </div>
+                                
+                                                <button type="button" mat-icon-button (click)="exportReportPdf()"
+                                                    [disabled]="!(dataSource.data.length > 0)">
+                                                    <img width="32" height="10px" src="assets/images/svg/pdf-svg.svg">
+                                                </button>
+                                
+                                                <button type="button" mat-icon-button (click)="exportSamplecollectionReportExcel()"
+                                                    [disabled]="!(dataSource.data.length > 0)">
+                                                    <img width="32" height="10px" src="assets/images/svg/xls-svg.svg">
+                                                </button>
+                                
                                             </div>
                                         </div>
                                     </div>
@@ -154,6 +153,12 @@
                                                     class="pill green-600 s-16">circle</mat-icon>
                                                     <mat-icon  *ngIf="contact.LBL=='OP'"  title="OP"
                                                     class="pill orange s-16">circle</mat-icon> 
+
+                                                    <mat-icon *ngIf="!contact.CompanyName" matTooltip="Patient Category Self">account_box
+                                                    </mat-icon>
+                                                    
+                                                    <mat-icon *ngIf="contact.CompanyName" matTooltip="Patient Category Company">business
+                                                    </mat-icon>
                                             </mat-cell>
                                         </ng-container> 
 
@@ -230,7 +235,7 @@
 
                                             <mat-cell *matCellDef="let contact"> 
                                                 <button mat-icon-button matTooltip="Edit" (click)="getSampleRecords(contact)">
-                                                    <mat-icon title="New form">edit</mat-icon>
+                                                    <mat-icon title="New form" *ngIf="!contact.IsSampleCollection">edit</mat-icon>
                                                 </button>
                                             </mat-cell>
                                         </ng-container> 
@@ -249,7 +254,9 @@
                                         <mat-header-row class="accent min-width-1300" *matHeaderRowDef="displayedColumns; sticky: true">
                                         </mat-header-row>
 
-                                        <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact min-width-1300" [@animate]="{value:'*',params:{y:'100%'}}" (click)="onEdit(contact)"></mat-row>
+                                        <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact min-width-1300"
+                                        [ngClass]="contact.PatientType !== 'Self' ? 'self-row' : ''" 
+                                         [@animate]="{value:'*',params:{y:'100%'}}" (click)="onEdit(contact)"></mat-row>
                                        
                                         <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                                         </mat-footer-row>

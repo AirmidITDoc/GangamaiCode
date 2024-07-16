@@ -31,17 +31,16 @@ export class ResultEntryComponent implements OnInit {
 
 
   displayedColumns: string[] = [
-
+    'OP_Ip_Type',
     'Date',
-    'Time',
+   // 'Time',
     'RegNo',
     'PatientName',
     'DoctorName',
     'PatientType',
     'PBillNo',
     'GenderName',
-    'AgeYear',
-    'PathDues'
+    'AgeYear',  
 
   ];
 
@@ -72,8 +71,8 @@ export class ResultEntryComponent implements OnInit {
   PatientName: any;
   OPD_IPD: any;
   Age: any;
-  PatientType: any;
-
+  PatientType: any; 
+  dateTimeObj: any;
   setStep(index: number) {
     this.step = index;
   }
@@ -81,24 +80,19 @@ export class ResultEntryComponent implements OnInit {
 
 
   @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator) paginator: MatPaginator; 
 
-
-
-  dataSource = new MatTableDataSource<PatientList>();
-
-
+  dataSource = new MatTableDataSource<PatientList>(); 
   dataSource1 = new MatTableDataSource<SampleList>();
   @ViewChild(MatPaginator) PathTestpaginator: MatPaginator;
 
   displayedColumns1: string[] = [
-    'checkbox',
+    //'checkbox', 
+    'IsCompleted', 
     'IsTemplateTest',
     'TestName',
-    'IsCompleted',
-    'Age',
     'SampleCollectionTime',
-    'SampleNo',
+    // 'SampleNo',
     'DoctorName',
     'action'
 
@@ -108,9 +102,7 @@ export class ResultEntryComponent implements OnInit {
   constructor(
 
     private formBuilder: FormBuilder,
-    public _SampleService: ResultEntryService,
-    private _ActRoute: Router,
-    // public dialogRef: MatDialogRef<PathologresultEntryComponent>,
+    public _SampleService: ResultEntryService, 
     public datePipe: DatePipe,
     private reportDownloadService: ExcelDownloadService,
     public _matDialog: MatDialog,
@@ -122,6 +114,9 @@ export class ResultEntryComponent implements OnInit {
 
   ngOnInit(): void {
     this.getPatientsList();
+  }
+  getDateTime(dateTimeObj) {
+    this.dateTimeObj = dateTimeObj;
   }
 
   // validation
@@ -194,16 +189,7 @@ debugger
 
   onClose() {
     // this.dialogRef.close();
-  }
-
-  onSubmit() { }
-  dateTimeObj: any;
-  getDateTime(dateTimeObj) {
-    this.dateTimeObj = dateTimeObj;
-  }
-
-
-
+  } 
   onShow(event: MouseEvent) {
     // this.click = false;// !this.click;
     this.click = !this.click;
@@ -223,32 +209,15 @@ debugger
   }
 
 
-  onClear() {
-
+  onClear() { 
     this._SampleService.myformSearch.get('FirstNameSearch').reset();
     this._SampleService.myformSearch.get('LastNameSearch').reset();
     this._SampleService.myformSearch.get('RegNoSearch').reset();
     this._SampleService.myformSearch.get('StatusSearch').reset();
     this._SampleService.myformSearch.get('PatientTypeSearch').reset();
   }
-
-  showdoc() {
-    // const dialogRef = this._matDialog.open(NursingNoteComponent,
-    //   {
-    //     maxWidth: "85vw",
-    //     height: '780px',
-    //     width: '100%',
-
-    //   });
-  }
-
-
-  onRowSelect(e) {
-    console.log(e);
-  }
-
-  getPatientsList() {
-
+  
+  getPatientsList() { 
     this.dataSource1.data = [];
     this.sIsLoading = 'loading-data';
     var m_data = {
@@ -289,10 +258,8 @@ console.log(m_data)
   }
 
   // for sampledetails tablemyformSearch
-  onEdit(m) {
-
-    console.log(m);
-
+  onEdit(m) { 
+    console.log(m); 
     this.PatientName = m.PatientName;
     this.OPD_IPD = m.OP_IP_No
     this.Age = m.AgeYear
@@ -325,24 +292,17 @@ console.log(m_data)
 
   }
 
-  SearchTest($event) {
-// debugger
+  SearchTest($event) { 
     var m_data = {
       "BillNo": this.SBillNo,
       "OP_IP_Type": this.SOPIPtype,
       "IsCompleted": this._SampleService.myformSearch.get("TestStatusSearch").value || 0,
       // "From_Dt": this.datePipe.transform(this.SFromDate, "yyyy-MM-dd "),
     }
-    console.log(m_data);
-    //  setTimeout(() => {
+    //console.log(m_data); 
     this._SampleService.getTestList(m_data).subscribe(Visit => {
       this.dataSource1.data = Visit as SampleList[];
-      console.log(this.dataSource1.data);
-
-      // if (this.dataSource1.data[0].IsCompleted) {
-
-      // }
-
+     // console.log(this.dataSource1.data);  
       this.dataSource1.sort = this.sort;
       this.dataSource1.paginator = this.paginator;
       this.sIsLoading = '';
@@ -379,8 +339,7 @@ console.log(m_data)
       PatientType: this.PatientType
 
     };
-    this.advanceDataStored.storage = new SampleDetailObj(m);
-    // this.ServiceIdList.push(m.ServiceId);
+    this.advanceDataStored.storage = new SampleDetailObj(m); 
     console.log(m);
      debugger
     if (m.IsTemplateTest == 1) {
@@ -417,14 +376,9 @@ console.log(m_data)
         {
           maxWidth: "95vw",
           height: '670px',
-          width: '100%',
+          width: '70%',
           data: {
-            "RegNo": m.RegNo,
-            "OP_IP_Type": m.OPD_IPD_Type,
-            "OPD_IPD_ID": m.OPD_IPD_ID,
-            "ServiceId": m.ServiceId,
-            "IsCompleted": m.IsCompleted,
-            "PathReportID": m.PathReportID,
+           data : m
           }
         });
       dialogRef.afterClosed().subscribe(result => {
@@ -710,11 +664,8 @@ export class PatientList {
     this.PatientType = PatientList.PatientType || '0';
     this.DoctorName = PatientList.DoctorName || 1;
     this.AgeYear = PatientList.AgeYear || 0;
-    this.GenderName = PatientList.GenderName;
-
-
-  }
-
+    this.GenderName = PatientList.GenderName;  
+  } 
 }
 
 export class SampleList {
@@ -776,7 +727,12 @@ export class SampleDetailObj {
   PathTime: any;
   PathResultDr1: any;
   PathTestID: any;
-
+  OP_IP_No:any;
+  DepartmentName: any;
+  CompanyName:any;
+  IPDNo:any;
+  PatientType:any;
+  RefDocName:any;
   /**
   * Constructor
   *
@@ -785,7 +741,13 @@ export class SampleDetailObj {
   constructor(SampleDetailObj) {
     {
       this.RegNo = SampleDetailObj.RegNo || 0;
-      this.AdmissionID = SampleDetailObj.AdmissionID || '';
+      this.AdmissionID = SampleDetailObj.AdmissionID || '';   
+      this.RefDocName = SampleDetailObj.RefDocName || '';  
+      this.CompanyName = SampleDetailObj.CompanyName || '';  
+      this.IPDNo = SampleDetailObj.IPDNo || ''; 
+      this.DepartmentName = SampleDetailObj.DepartmentName || ''; 
+      this.PatientType = SampleDetailObj.PatientType || ''; 
+      this.OP_IP_No = SampleDetailObj.OP_IP_No || '';
       this.PatientName = SampleDetailObj.PatientName || '';
       this.Doctorname = SampleDetailObj.Doctorname || '';
       this.AdmDateTime = SampleDetailObj.AdmDateTime || '';
