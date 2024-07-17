@@ -1979,8 +1979,8 @@ this.getAdmittedPatientList_1()
       "Admtd_Dschrgd_All": 0,
       "M_Name": this._AdmissionService.myFilterform.get("MiddleName").value + '%' || "%",
       "IPNo": this._AdmissionService.myFilterform.get("IPDNo").value || '0',
-      Start: (this.paginator?.pageIndex ?? 1),
-      Length: (this.paginator?.pageSize ?? 10),
+      Start: (this.paginator?.pageIndex ?? 0),
+      Length: (this.paginator?.pageSize ?? 35),
     }
     console.log(Param);
     this._AdmissionService.getAdmittedPatientList_1(Param).subscribe(data => {

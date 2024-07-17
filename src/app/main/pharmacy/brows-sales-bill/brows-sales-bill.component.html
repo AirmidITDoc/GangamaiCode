@@ -874,7 +874,7 @@
                                                     <input matStartDate formControlName="start"
                                                         placeholder="Start date">
                                                     <input matEndDate formControlName="end" placeholder="End date"
-                                                        (dateChange)="getAdmittedPatientList_1()">
+                                                        (dateChange)="getAdmittedPatientList()">
                                                 </mat-date-range-input>
                                                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                                 <mat-date-range-picker #picker></mat-date-range-picker>
@@ -883,32 +883,40 @@
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Reg No</mat-label>
                                                 <input name="RegNo" formControlName="RegNo" matInput
-                                                    (keyup)="getAdmittedPatientList_1()">
+                                                    (keyup)="getAdmittedPatientList()">
                                             </mat-form-field>
 
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>IPD No</mat-label>
                                                 <input name="IPDNo" formControlName="IPDNo" matInput
-                                                    (keyup)="getAdmittedPatientList_1()">
+                                                    (keyup)="getAdmittedPatientList()">
                                             </mat-form-field>
 
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>First Name</mat-label>
                                                 <input name="FirstName" formControlName="FirstName" matInput
-                                                    (keyup)="getAdmittedPatientList_1()">
+                                                    (keyup)="getAdmittedPatientList()">
                                             </mat-form-field>
 
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Middle Name</mat-label>
                                                 <input name="MiddleName" formControlName="MiddleName" matInput
-                                                    (keyup)="getAdmittedPatientList_1()">
+                                                    (keyup)="getAdmittedPatientList()">
                                             </mat-form-field>
 
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Last Name</mat-label>
                                                 <input name="LastName" formControlName="LastName" matInput
-                                                    (keyup)="getAdmittedPatientList_1()">
+                                                    (keyup)="getAdmittedPatientList()">
                                             </mat-form-field>
+
+                                            <div class="slide-toggle mb-2">
+                                                <mat-slide-toggle name="IsDischarge" (change)="onChangeIsactive($event)"
+                                                    formControlName="IsDischarge" [(ngModel)]="isChecked">
+                                                    IsDischarge
+                                                </mat-slide-toggle>
+                                            </div>
+
                                             <!-- 
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Doctor Name</mat-label>
@@ -937,7 +945,7 @@
                                                     matTooltip="close">
                                                     <mat-icon class="cleariconbutton">close</mat-icon>
                                                 </button> -->
-                                                <button mat-raised-button (click)="getAdmittedPatientList_1()"
+                                                <button mat-raised-button (click)="getAdmittedPatientList()"
                                                     matTooltip="search">
                                                     <mat-icon class="searchiconbutton">search</mat-icon>
                                                 </button>
@@ -1190,9 +1198,9 @@
                                                 <mat-footer-row *matFooterRowDef="['noData']"
                                                     [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
                                             </mat-table>
-                                            <mat-paginator [pageSizeOptions]="[35, 50, 75, 100]" [pageSize]="35"
+                                            <mat-paginator #IPListpaginator [pageSizeOptions]="[35, 50, 75, 100]" [pageSize]="35"
                                                 [length]="resultsLength" showFirstLastButtons
-                                                (page)="getAdmittedPatientList_1()">
+                                                (page)="getAdmittedPatientList()">
                                             </mat-paginator>
                                         </div>
                                     </div>
