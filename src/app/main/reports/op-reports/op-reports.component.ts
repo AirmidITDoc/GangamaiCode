@@ -88,16 +88,16 @@ FlagBillNoSelected: boolean = false;
       this.Reportsection='OP Reports'
     if (this._ActRoute.url == "/reports/opmisreports") 
     this.Reportsection='OP MIS Reports'
-   
-    // if (this._ActRoute.url == "/reports/ipreport") 
-    //   this.Reportsection='IP Reports'
-    // if (this._ActRoute.url == "/reports/pharmacyreport") 
-    //   this.Reportsection='Pharm Reports'
-    // if (this._ActRoute.url == "/reports/ipbillingreport") 
-    //   this.Reportsection='IPBilling Reports'
     if (this._ActRoute.url == "/reports/opbillingreport") 
       this.Reportsection='OP Billing'
     this.bindReportData();
+    this.GetUserList();
+
+    this.filteredOptionsUser = this._OPReportsService.userForm.get('UserId').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterUser(value)),
+
+    );
   }
 
   bindReportData() {
@@ -173,7 +173,7 @@ var data={
       this.FlagUserSelected = true;
       this.FlagDoctorSelected = false;
 
-    }else if (this.ReportName == 'OP Bill Receipt') {
+    }else if (this.ReportName == 'OP Bill Report') {
       this.FlagBillNoSelected = false;
       this.FlagUserSelected = true;
       this.FlagDoctorSelected = false;
@@ -185,7 +185,7 @@ var data={
     this.FlagBillNoSelected = false;
 
     } 
-    else if (this.ReportName == 'Credit Reports') {
+    else if (this.ReportName == 'OP Bill Balance Report') {
       this.FlagBillNoSelected = false;
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
@@ -480,7 +480,7 @@ var data={
       this.viewOpDailyCollectionSummaryPdf();
       
     }
-    else if (this.ReportName == 'OP Bill Receipt') {
+    else if (this.ReportName == 'OP Bill Report') {
       this.viewgetOPBillReportPdf();
       
     }
@@ -490,7 +490,7 @@ var data={
     else if (this.ReportName == 'Bill Summary Report') {
       this.viewgetOPBillSummaryReportPdf();
     }
-     else if (this.ReportName == 'Credit Reports') {
+     else if (this.ReportName == 'OP Bill Balance Report') {
       this.viewgetCreditReportPdf();
     } 
     else if (this.ReportName == 'Refund of Bill Reports') {
@@ -1025,7 +1025,7 @@ viewgetOPBillReportPdf() {
       this.sIsLoading = 'loading-data';
       this.AdList = true;
      
-      this._OPReportsService.getOPcreditlist(
+      this._OPReportsService.getOPcreditbalancelist(
         this.datePipe.transform(this._OPReportsService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
         this.datePipe.transform(this._OPReportsService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
        
@@ -1063,7 +1063,7 @@ viewgetOPBillReportPdf() {
           width: '100%',
           data: {
             base64: res["base64"] as string,
-            title: "Op Refund Of Bill Receipt Viewer"
+            title: "Op Refund Of Bill Report Viewer"
           }
         });
         dialogRef.afterClosed().subscribe(result => {
@@ -1597,7 +1597,7 @@ getDocwiseopdcollsummaryview() {
   this.sIsLoading = 'loading-data';
   setTimeout(() => {
 
-  this._OPReportsService.getDocwisenopdcollsummarytView(
+  this._OPReportsService.getDoctorwisenopdcollsummarytView(
     this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
     this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
     ).subscribe(res => {
@@ -1740,6 +1740,68 @@ getDeptservicegroupwisecollsummaryview(){
   PaymentModeChk(option) {
     this.PaymentMode = option.PaymentMode;
   }
+  GetUserList() {
+    var data = {
+          "StoreId": this._loggedUser.currentUserValue.user.storeId
+        }
+    this._OPReportsService.getUserdetailList(data).subscribe(data => {
+      this.UserList = data;
+      if (this.UserId) {
+        const ddValue = this.UserList.filter(c => c.UserId == this.UserId);
+        this._OPReportsService.userForm.get('UserId').setValue(ddValue[0]);
+        this._OPReportsService.userForm.updateValueAndValidity();
+        return;
+      }
+    });
+  }
+
+  getSelectedObj(obj){
+    this.UserId=obj.UserId;
+  }
+
+
+  getOptionTextUser(option) {
+    return option && option.UserName ? option.UserName : '';
+  }
+
+  private _filterUser(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.UserName ? value.UserName.toLowerCase() : value.toLowerCase();
+      return this.UserList.filter(option => option.UserName.toLowerCase().includes(filterValue));
+    }
+  }
+
+
+
+  // private _filterUser(value: any): string[] {
+  //   if (value) {
+  //     const filterValue = value && value.UserName ? value.UserName.toLowerCase() : value.toLowerCase();
+  //     return this.optionsUser.filter(option => option.UserName.toLowerCase().includes(filterValue));
+  //   }
+  // }
+
+  // GetUserList() {
+  //   var data = {
+  //     "StoreId": this._loggedUser.currentUserValue.user.storeId
+  //   }
+  //   this._OPReportsService.getUserdetailList(data).subscribe(data => {
+  //     this.UserList = data;
+  //     this.optionsUser = this.UserList.slice();
+  //     // console.log(this.UserList);
+  //     this.filteredOptionsUser = this._OPReportsService.userForm.get('UserId').valueChanges.pipe(
+  //       startWith(''),
+  //       map(value => value ? this._filterUser(value) : this.UserList.slice()),
+  //     );
+
+  //   });
+  //   const toSelect = this.UserList.find(c => c.UserId == this.UserId);
+  //   this._OPReportsService.userForm.get('UserId').setValue(toSelect);
+
+  // }
+  // getOptionTextUser(option) {
+  //   return option && option.UserName ? option.UserName : '';
+  // }
+
 
   onClose() { }
 

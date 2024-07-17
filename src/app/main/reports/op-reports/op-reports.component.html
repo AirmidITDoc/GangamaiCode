@@ -9,7 +9,7 @@
 
             <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
                 style="font-size: 20px;width: 70%; font-weight: 400;">
-                REPORTS
+               OP REPORTS
             </span>
 
             <div fxLayout="column" fxLayout.gt-xs="row">
@@ -89,12 +89,12 @@
                                 fusePerfectScrollbar>
                                 <div>
                                     <span
-                                        style="font-family: 'Times New Roman', Times, serif;font-size: medium;color: rgb(80, 6, 30);padding: 10px;">Selected
-                                        Report : {{ReportName}}</span>
+                                        style="font-family: 'Times New Roman', Times, serif;font-size: medium;color: rgb(3, 29, 79);padding: 10px;">Selected
+                                        Report :<span style="font-weight: bold;">{{ReportName}}</span>  | </span>
 
                                     <span
-                                        style="font-family: 'Times New Roman', Times, serif;font-size: medium;color: rgb(80, 6, 30);float: right;">Current
-                                        User : {{UserId}} | {{UserName}}</span>
+                                        style="font-family: 'Times New Roman', Times, serif;font-size: medium;color: rgb(3, 29, 79);float: right;">Current
+                                        User :<span style="font-weight:bold ;"> {{UserId}} | {{UserName}} </span></span>
                                 </div>
                                 <br />
                                 <div fxLayout="row" fxLayoutAlign="start none">
@@ -110,26 +110,12 @@
                                         <mat-date-range-picker #picker></mat-date-range-picker>
                                     </mat-form-field>
 
-                                    <!-- <mat-form-field appearance="outline" style="margin-left: 10px;width:60%;">
-                                        <mat-label>User Name</mat-label>
-                                        <mat-select formControlName="UserId" name="UserId" required (selectionChange)="userChk()">
-                                            <mat-option></mat-option>
-                                            <mat-option *ngFor="let m of UserList" [value]="m">
-                                                {{m.UserName}} 
-                                            </mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
- -->
-                                    <button mat-raised-button class="searchButton" matTooltip="Print"
-                                        style="margin-left: 20px;background-color: rgb(3, 38, 59);border-radius: 16px;color: azure;width: 100px;"
-                                        (click)="getPrint()">
-                                        Show
-                                    </button>
                                 </div>
+
+
                                 <div fxLayout="column" fxLayoutAlign="start none">
-                                    <div *ngIf="FlagUserSelected" style="margin-left: 20px;">
-                                        <mat-form-field appearance="outline" fxFlex="80%" fxFlex.xs="100%"
-                                            fxFlex.sm="80%">
+                                    <div *ngIf="FlagUserSelected" style="margin-left:2%;">
+                                        <mat-form-field appearance="outline" fxFlex="60%;">
                                             <mat-label>User</mat-label>
                                             <input matAutocompletePosition="below" type="text" placeholder="Select User"
                                                 matInput formControlName="UserId" [matAutocomplete]="autoUser">
@@ -161,57 +147,22 @@
                                                 matInput>
 
                                         </mat-form-field>
-                                        <mat-form-field appearance="outline"  *ngIf="FlagRefundIdSelected">
+                                        <mat-form-field appearance="outline" *ngIf="FlagRefundIdSelected">
                                             <mat-label>Refund Id</mat-label>
                                             <input name="RefundId" formControlName="RefundId" placeholder="Refund Id"
                                                 matInput>
 
                                         </mat-form-field>
                                     </div>
-                                    <!-- <div *ngIf="FlagVisitSelected" style="margin-left: 20px;">
-                                        <mat-form-field appearance="outline">
-                                            <mat-label>Visit Id</mat-label>
-                                            <input name="VisitId" formControlName="VisitId" placeholder="Visit Id"
-                                                matInput>
-
-                                        </mat-form-field>
-                                    </div> -->
-                                    <!-- <div *ngIf="FlagPaymentIdSelected" style="margin-left: 20px;">
-                                        <mat-form-field appearance="outline">
-                                            <mat-label>Payment Id</mat-label>
-                                            <input name="PaymentId" formControlName="PaymentId" placeholder="Payment Id"
-                                                matInput>
-
-                                        </mat-form-field>
-                                    </div> -->
-                                    <!-- <div *ngIf="FlagRefundIdSelected" style="margin-left: 20px;">
-                                        <mat-form-field appearance="outline">
-                                            <mat-label>Refund Id</mat-label>
-                                            <input name="RefundId" formControlName="RefundId" placeholder="Refund Id"
-                                                matInput>
-
-                                        </mat-form-field>
-                                    </div> -->
-
-
-
-                                    <!-- <span *ngIf="SpinLoading" style="width:60px;height: 60px;margin-left:10px;">
-                                        Processing..... <i class="fa-solid fa-spinner fa-spin loading-spinner"></i>
-                                    </span> -->
-
-                                    <!-- <button mat-raised-button class="searchButton" matTooltip="Print"
-                                        style="width: 400px;margin-left: 50px;background-color: rgb(3, 38, 59);border-radius: 16px;color: azure;width: 400px;"
-                                        (click)="viewDailyCollectionPdf()"> Print New By Vimal
+                                  
+                                </div>
+                                <div fxLayout="row" fxLayoutAlign="start none">
+                                    <button class="btn btn-primary " color="accent" (click)="getPrint()"
+                                        style="margin-left:2%;">
+                                        <span>Print</span>
                                     </button>
 
-                                    <button mat-raised-button class="searchButton" matTooltip="Print"
-                                    style="width: 400px;margin-left: 50px;background-color: rgb(3, 38, 59);border-radius: 16px;color: azure;width: 400px;"
-                                    (click)="viewDailyCollectionSummaryPdf()">
-                                    Print New Daily Collection Summary
-                                </button> -->
-
                                 </div>
-
                             </form>
 
 

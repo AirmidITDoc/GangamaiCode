@@ -28,7 +28,8 @@ export class IpReportComponent implements OnInit {
   DoctorList: any = [];
   sIsLoading: string = '';
   currentDate = new Date();
- 
+  Reportsection='IP Reports';
+
     ReportID: any;
  
   filteredOptionsUser: Observable<string[]>;
@@ -87,7 +88,17 @@ export class IpReportComponent implements OnInit {
 
 
   ngOnInit(): void {
+
+        
+    if (this._ActRoute.url == "/reports/ipreport") 
+      this.Reportsection='IP Reports'
+    if (this._ActRoute.url == "/reports/ipmisreports") 
+    this.Reportsection='IPD MIS REPORT'
+    if (this._ActRoute.url == "/reports/ipbillingreport") 
+      this.Reportsection='IPBilling Reports'
     this.bindReportData();
+  
+    
     this.GetUserList();
     this.getDoctorList();
     const toSelect = this.UserList.find(c => c.UserId == this.UserId);
@@ -98,7 +109,7 @@ export class IpReportComponent implements OnInit {
   bindReportData() {
     // let qry = "SELECT * FROM ReportConfigMaster WHERE IsActive=1 AND IsDeleted=0 AND ReportType=1";
 var data={
-  ReportSection:"IP Reports"//"IP Reports"
+  ReportSection:this.Reportsection//"IP Reports"
 }
     this._IPReportService.getDataByQuery(data).subscribe(data => {
       this.dataSource.data = data as any[];
@@ -421,6 +432,79 @@ var data={
     this.FlagUserSelected = false;
 
   }
+
+
+  //IpBilling
+
+  if (this.ReportName == 'Advance Report') {
+    this.FlagUserSelected = false;
+    // this.FlagDoctorSelected = false;
+    // this.FlagAdvanceDetailIDSelected=true;
+    // this.FlagBillSelected=false;
+    // this.FlagRefundIdSelected=false;
+
+  } else if (this.ReportName == 'IP Bill Report') {
+    this.FlagUserSelected = false;
+    // this.FlagDoctorSelected = false;
+    // this.FlagAdvanceDetailIDSelected=false;
+    // this.FlagBillSelected=false;
+    // this.FlagRefundIdSelected=false;
+  }else if (this.ReportName == 'OP IP Bill Summary') {
+    this.FlagUserSelected = false;
+    // this.FlagDoctorSelected = false;
+    // this.FlagAdvanceDetailIDSelected=false;
+    // this.FlagBillSelected=false;
+    // this.FlagRefundIdSelected=false;
+
+  }  else if (this.ReportName == 'Bill Summary Report') {
+    this.FlagUserSelected = true;
+    // this.FlagDoctorSelected = false;
+    // this.FlagAdvanceDetailIDSelected=false;
+    // this.FlagBillSelected=false;
+    // this.FlagRefundIdSelected=false;
+  } 
+  if (this.ReportName == 'Credit Report') {
+    this.FlagUserSelected = false;
+    // this.FlagDoctorSelected = false;
+    // this.FlagAdvanceDetailIDSelected=false;
+    // this.FlagBillSelected=false;
+    // this.FlagRefundIdSelected=false;
+
+  } else if (this.ReportName == 'Refund of Advance Report') {
+    this.FlagUserSelected = false;
+    // this.FlagDoctorSelected = false;
+    // this.FlagRefundIdSelected=false;
+    // this.FlagAdvanceDetailIDSelected=false;
+    // this.FlagBillSelected=false;
+  } else if (this.ReportName == 'Refund of Bill Report') {
+    this.FlagUserSelected = false;
+    // this.FlagDoctorSelected = false;
+    // this.FlagRefundIdSelected=false;
+    // this.FlagAdvanceDetailIDSelected=false;
+    // this.FlagBillSelected=false;
+  } 
+  else if (this.ReportName == 'IP Daily Collection Report') {
+    this.FlagUserSelected = true;
+    // this.FlagDoctorSelected = false;
+    // this.FlagRefundIdSelected=false;
+    // this.FlagAdvanceDetailIDSelected=false;
+    // this.FlagBillSelected=false;
+  } else if (this.ReportName == 'IP Discharge & Bill Generation Pending Report') {
+    this.FlagUserSelected = false;
+    // this.FlagDoctorSelected = false;
+    // this.FlagRefundIdSelected=false;
+    // this.FlagAdvanceDetailIDSelected=false;
+    // this.FlagBillSelected=false;
+  } else if (this.ReportName == 'IP Bill Generation Payment Due report') {
+    this.FlagUserSelected = false;
+    // this.FlagDoctorSelected = false;
+    // this.FlagRefundIdSelected=false;
+    // this.FlagAdvanceDetailIDSelected=false;
+    // this.FlagBillSelected=false;
+  } 
+
+  
+
   }
 
 
@@ -596,6 +680,43 @@ var data={
     }
     else if (this.ReportName == 'Company wise Credit Report Summary') {
       this.viewCompanywisecreditsummaryPdf();
+    }
+
+
+    //IPBilling
+
+    if (this.ReportName == 'Advance Report') {
+      this.viewgetAdvanceReportPdf();
+    } 
+    else if (this.ReportName == 'IP Bill Report') {
+      this.viewgetBillReportPdf();
+    } else if (this.ReportName == 'Bill Summary Report') {
+      this.viewgetBillSummaryReportPdf();
+    }
+    else if (this.ReportName == 'OP IP Bill Summary') {
+      this.viewgetBillSummaryReportPdf();
+    }
+    
+    else if (this.ReportName == 'Credit Report') {
+      this.viewgetCreditReportPdf();
+    }
+    else if (this.ReportName == 'Refund of Advance Report') {
+      this.viewgetRefundofadvanceReportPdf();
+    }
+    else if (this.ReportName == 'Refund of Bill Report') {
+      this.viewgetRefundofbillReportPdf();
+    }
+   if (this.ReportName == 'IP Daily Collection Report') {
+      this.viewIPDailyCollectionPdf();
+    } else if (this.ReportName == 'IP Discharge & Bill Generation Pending report') {
+      this.viewgetDiscbillgeneratingpendingReportPdf();
+    } else if (this.ReportName == 'IP Bill Generation Payment Due Report') {
+      this.viewgetBillgenepaymentdueReportPdf();
+    }
+    else if (this.ReportName == 'IP Discharge & Bill Generation Pending Report') {
+      this.viewgetIpdischargebillgenependingPdf();
+    }else if (this.ReportName == 'IP Bill Generation Payment Due report') {
+      this.ViewgetIpbillgenepaymentdueview();
     }
   }
 
@@ -1861,7 +1982,406 @@ viewCompanywisecreditsummaryPdf() {
 }
 
 
+//IPBilling
 
+
+
+viewIPDailyCollectionPdf() {
+
+  let AddUserId = 0;
+  if (this._IPReportService.userForm.get('UserId').value)
+    
+  AddUserId = this._IPReportService.userForm.get('UserId').value.UserId
+
+  setTimeout(() => {
+    // this.sIsLoading = 'loading-data';
+    this.AdList = true;
+   
+    this._IPReportService.getIPDailyCollection(
+      this.datePipe.transform(this._IPReportService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      this.datePipe.transform(this._IPReportService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      AddUserId
+      
+    ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "IP Daily Collection Viewer"
+          }
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        this.AdList = false;
+        this.sIsLoading = '';
+      });
+    });
+
+  }, 100);
+}
+
+viewgetOPIPCommanReportPdf() {
+  let AddUserId = 0;
+
+    if (this._IPReportService.userForm.get('UserId').value)
+      
+    AddUserId = this._IPReportService.userForm.get('UserId').value.UserId
+
+    let DoctorId = 0;
+  
+    if (this._IPReportService.userForm.get('DoctorId').value)
+      
+      DoctorId = this._IPReportService.userForm.get('DoctorId').value.DoctorID
+
+
+  setTimeout(() => {
+    this.sIsLoading = 'loading-data';
+    this.AdList = true;
+    
+    this._IPReportService.getOPIPCommanCollectionSummary(
+      this.datePipe.transform(this._IPReportService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      this.datePipe.transform(this._IPReportService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      AddUserId,DoctorId
+    ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "OP IP Comman Report"
+          }
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        this.AdList = false;
+        this.sIsLoading = ' ';
+      });
+
+    });
+
+  }, 100);
+}
+
+viewgetOPIPBillSummaryReportPdf() {
+
+  let AddUserId = 0;
+  if (this._IPReportService.userForm.get('UserId').value)
+    AddUserId = this._IPReportService.userForm.get('UserId').value.UserId
+
+  setTimeout(() => {
+    this.sIsLoading = 'loading-data';
+    this.AdList = true;
+   
+    this._IPReportService.getOPIPBillSummary(
+      this.datePipe.transform(this._IPReportService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      this.datePipe.transform(this._IPReportService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+     
+    ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "OPIP Bill Summary Viewer"
+          }
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        this.AdList = false;
+        this.sIsLoading = '';
+      });
+    });
+
+  }, 100);
+}
+
+viewgetCreditReportPdf(){
+ 
+this._IPReportService.getCreditReceipt(
+  this.datePipe.transform(this._IPReportService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      this.datePipe.transform(this._IPReportService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+     
+).subscribe(res => {
+  const dialogRef = this._matDialog.open(PdfviewerComponent,
+    {
+      maxWidth: "85vw",
+      height: '750px',
+      width: '100%',
+      data: {
+        base64: res["base64"] as string,
+        title: "Ip Credit  Viewer"
+      }
+    });
+});
+}
+
+viewgetAdvanceReportPdf() {
+
+this._IPReportService.getViewAdvanceReport(
+  this.datePipe.transform(this._IPReportService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+  this.datePipe.transform(this._IPReportService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+ 
+).subscribe(res => {
+  const dialogRef = this._matDialog.open(PdfviewerComponent,
+    {
+      maxWidth: "85vw",
+      height: '750px',
+      width: '100%',
+      data: {
+        base64: res["base64"] as string,
+        title: "Ip Advance Report Viewer"
+      }
+    });
+});
+}
+
+
+viewgetBillReportPdf() {
+let AddUserId = 0;
+if (this._IPReportService.userForm.get('UserId').value)
+  AddUserId = this._IPReportService.userForm.get('UserId').value.UserId
+
+this._IPReportService.getIpBillReport(
+  this.datePipe.transform(this._IPReportService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+  this.datePipe.transform(this._IPReportService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+  AddUserId
+).subscribe(res => {
+  const dialogRef = this._matDialog.open(PdfviewerComponent,
+    {
+      maxWidth: "85vw",
+      height: '750px',
+      width: '100%',
+      data: {
+        base64: res["base64"] as string,
+        title: "Ip Bill  Viewer"
+      }
+    });
+});
+}
+
+
+
+
+viewgetBillSummaryReportPdf(){
+
+let AddUserId = 0;
+if (this._IPReportService.userForm.get('UserId').value)
+AddUserId = this._IPReportService.userForm.get('UserId').value.UserId
+
+setTimeout(() => {
+this.sIsLoading = 'loading-data';
+this.AdList = true;
+
+this._IPReportService.getIPBillSummary(
+  this.datePipe.transform(this._IPReportService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+  this.datePipe.transform(this._IPReportService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+ 
+).subscribe(res => {
+  const dialogRef = this._matDialog.open(PdfviewerComponent,
+    {
+      maxWidth: "85vw",
+      height: '750px',
+      width: '100%',
+      data: {
+        base64: res["base64"] as string,
+        title: "IP Bill Summary Viewer"
+      }
+    });
+  dialogRef.afterClosed().subscribe(result => {
+    this.AdList = false;
+    this.sIsLoading = '';
+  });
+});
+
+}, 100);
+}
+
+
+viewgetRefundofadvanceReportPdf() {
+setTimeout(() => {
+
+  this.sIsLoading = 'loading-data';
+  //  this.AdList=true;
+  this._IPReportService.getRefundofAdvanceview(
+    this.datePipe.transform(this._IPReportService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+  this.datePipe.transform(this._IPReportService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+ 
+  ).subscribe(res => {
+    const dialogRef = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Refund Of Advance  Viewer"
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      // this.AdList=false;
+      this.sIsLoading = '';
+      // this.SpinLoading = false;
+    });
+
+  });
+
+}, 100);
+}
+
+viewgetRefundofbillReportPdf(){
+setTimeout(() => {
+
+  this.sIsLoading = 'loading-data';
+
+this._IPReportService.getRefundofbillview(
+  this.datePipe.transform(this._IPReportService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+  this.datePipe.transform(this._IPReportService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+ 
+).subscribe(res => {
+  const dialogRef = this._matDialog.open(PdfviewerComponent,
+    {
+      maxWidth: "85vw",
+      height: '750px',
+      width: '100%',
+      data: {
+        base64: res["base64"] as string,
+        title: "Refund Of Bill  Viewer"
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      // this.AdList=false;
+      this.sIsLoading = '';
+      // this.SpinLoading = false;
+    });
+  
+});
+
+},100);
+}
+
+
+
+viewgetDiscbillgeneratingpendingReportPdf(){
+setTimeout(() => {
+ 
+  this.sIsLoading = 'loading-data';
+//  this.AdList=true;
+this._IPReportService.getIPDischargeBillgeneratependingview(
+ this.datePipe.transform(this._IPReportService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+ this.datePipe.transform(this._IPReportService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+
+).subscribe(res => {
+  const dialogRef = this._matDialog.open(PdfviewerComponent,
+    {
+      maxWidth: "85vw",
+      height: '750px',
+      width: '100%',
+      data: {
+        base64: res["base64"] as string,
+        title: "Discharge Bill Generate Pending Report View"
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      // this.AdList=false;
+      this.sIsLoading = '';
+      // this.SpinLoading = false;
+    });
+  
+});
+
+},100);
+}
+viewgetBillgenepaymentdueReportPdf(){
+setTimeout(() => {
+ 
+   this.sIsLoading = 'loading-data';
+ //  this.AdList=true;
+ this._IPReportService.getBillgeneratepaymentdueview(
+  this.datePipe.transform(this._IPReportService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+  this.datePipe.transform(this._IPReportService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+ 
+ ).subscribe(res => {
+   const dialogRef = this._matDialog.open(PdfviewerComponent,
+     {
+       maxWidth: "85vw",
+       height: '750px',
+       width: '100%',
+       data: {
+         base64: res["base64"] as string,
+         title: "Bill Generated Payment Due Report View"
+       }
+     });
+     dialogRef.afterClosed().subscribe(result => {
+       // this.AdList=false;
+       this.sIsLoading = '';
+       // this.SpinLoading = false;
+     });
+   
+ });
+
+ },100);
+}
+
+
+viewgetIpdischargebillgenependingPdf(){
+this.sIsLoading = 'loading-data';
+setTimeout(() => {
+
+this._IPReportService.getIdischargebillgenependingView(
+  this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+  this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+  ).subscribe(res => {
+  const matDialog = this._matDialog.open(PdfviewerComponent,
+    {
+      maxWidth: "85vw",
+      height: '750px',
+      width: '100%',
+      data: {
+        base64: res["base64"] as string,
+        title: "Ip Discharge Bill Generated Pending  Viewer"
+      }
+    });
+
+    matDialog.afterClosed().subscribe(result => {
+      // this.AdList=false;
+      this.sIsLoading = ' ';
+    });
+});
+
+},100);
+}
+
+ViewgetIpbillgenepaymentdueview(){
+this.sIsLoading = 'loading-data';
+setTimeout(() => {
+
+this._IPReportService.getIpbillgenepaymentdueView(
+  this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+  this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+  ).subscribe(res => {
+  const matDialog = this._matDialog.open(PdfviewerComponent,
+    {
+      maxWidth: "85vw",
+      height: '750px',
+      width: '100%',
+      data: {
+        base64: res["base64"] as string,
+        title: "Ip Bill Generated Pament Due  Viewer"
+      }
+    });
+
+    matDialog.afterClosed().subscribe(result => {
+      // this.AdList=false;
+      this.sIsLoading = ' ';
+    });
+});
+
+},100);
+}
 
 
 

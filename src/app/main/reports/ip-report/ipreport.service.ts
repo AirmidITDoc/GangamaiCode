@@ -232,4 +232,63 @@ public getCompanywisecreditsummaryView(FromDate,ToDate){
   
   return this._httpClient.get("IPReport/view-CompanyWiseCreditReportSummary?FromDate=" + FromDate+"&ToDate="+ToDate);
 }
+
+// IPBilling
+
+public getIPDailyCollection(FromDate,ToDate,AddedById){
+  return this._httpClient.get("IPReport/view-IPDailyCollectionReport?FromDate=" +  FromDate + "&ToDate=" + ToDate+"&AddedById="+AddedById);
+}
+
+public getOPIPCommanCollectionSummary(FromDate,ToDate,AddedById,DoctorId){
+  return this._httpClient.get("IPReport/view-CommanDailyCollectionReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&AddedById="+AddedById+"&DoctorId="+DoctorId);
+}
+
+
+public getOPIPBillSummary(FromDate,ToDate){
+  return this._httpClient.get("IPReport/view-OPIPBILLSummaryReport?FromDate=" + FromDate + "&ToDate="+ToDate);
+}
+
+
+public getCreditReceipt(FromDate,ToDate){
+  return this._httpClient.get("IPReport/view-IPCreditReport?FromDate=" + FromDate + "&ToDate="+ToDate);
+}
+
+public getViewAdvanceReport(FromDate,ToDate){
+  return this._httpClient.get("IPReport/view-IPDAdvanceReport?FromDate=" + FromDate+"&ToDate="+ToDate);
+}
+public getIpBillReport(FromDate,ToDate,AddedById,){
+  return this._httpClient.get("IPReport/view-BillReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&AddedById="+AddedById);
+}
+
+
+public getIPBillSummary(FromDate,ToDate){
+  return this._httpClient.get("IPReport/view-BillSummaryReport?FromDate=" + FromDate + "&ToDate="+ToDate);
+}
+
+public getRefundofbillview(FromDate,ToDate){
+  return this._httpClient.get("IPReport/view-RefundofBillReport?FromDate=" + FromDate + "&ToDate="+ToDate);
+}
+
+public getIPDischargeBillgeneratependingview(FromDate,ToDate){
+  return this._httpClient.get("view-IPDischargeAndBillGenerationPendingReport?FromDate=" + FromDate + "&ToDate="+ToDate);
+}
+
+public getIpbillgenepaymentdueView(FromDate,ToDate){
+  
+  return this._httpClient.get("IPReport/view-IPBillGenerationPaymentDueReport?FromDate=" + FromDate+"&ToDate="+ToDate);
+}
+
+public getIdischargebillgenependingView(FromDate,ToDate){
+  
+  return this._httpClient.get("CommanReport/view-IPDischargeBillGenerationPendingReport?FromDate=" + FromDate+"&ToDate="+ToDate);
+}
+public getBillgeneratepaymentdueview(FromDate,ToDate){
+  return this._httpClient.get("IPReport/view-IPCreditReport?FromDate=" + FromDate + "&ToDate="+ToDate);
+}
+
+public getRefundofAdvanceview(FromDate,ToDate){
+  return this._httpClient.get("IPReport/view-RefundofAdvanceReport?FromDate=" + FromDate + "&ToDate="+ToDate);
+}
+
+
 }

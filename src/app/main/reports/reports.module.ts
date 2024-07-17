@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { IpReportComponent } from './ip-report/ip-report.component';
-import { IpBillingReportComponent } from './ip-billing-report/ip-billing-report.component';
-import { OPBillingReportComponent } from './opbilling-report/opbilling-report.component';
+// import { IpReportComponent } from './ip-report/ip-report.component';
+// import { IpBillingReportComponent } from './ip-billing-report/ip-billing-report.component';
+// import { OPBillingReportComponent } from './opbilling-report/opbilling-report.component';
 import { CommonReportComponent } from './common-report/common-report.component';
  // loadChildren: () =>
         //     import("./opbilling-report/opbillingreport.module").then(
@@ -12,9 +12,9 @@ import { CommonReportComponent } from './common-report/common-report.component';
 const appRoutes: Routes = [
     {
         path: "opbillingreport",
-       loadChildren: () =>
-            import("./opbilling-report/opbillingreport.module").then(
-                (m) => m.OpbillingreportModule
+        loadChildren: () =>
+            import("./op-reports/opreports.module").then(
+                (m) => m.OPReportsModule
             ),
     },
     {
@@ -33,10 +33,17 @@ const appRoutes: Routes = [
             ),
     },
     {
+        path: "ipmisreports",
+        loadChildren: () =>
+            import("./ip-report/ipreort.module").then(
+                (m) => m.IPReortModule
+            ),
+    },
+    {
         path: "ipbillingreport",
         loadChildren: () =>
-            import("./ip-billing-report/ipbilling.module").then(
-                (m) => m.IpbillingModule
+            import("./ip-report/ipreort.module").then(
+                (m) => m.IPReortModule
             ),
     },
     {

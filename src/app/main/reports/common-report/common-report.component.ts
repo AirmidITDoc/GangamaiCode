@@ -58,7 +58,7 @@ export class CommonReportComponent implements OnInit {
   IsLoading: boolean = false;
   searchDoctorList: any = [];
   optionsSearchDoc: any[] = [];
-
+  
 
   displayedColumns = [
     'ReportName'
@@ -84,14 +84,19 @@ export class CommonReportComponent implements OnInit {
   ngOnInit(): void {
     this.bindReportData();
     this.getDoctorList();
-   
-    // const toSelect = this.UserList.find(c => c.UserId == this.UserId);
-    // this._OPReportsService.userForm.get('UserId').setValue(toSelect);
+    this.GetUserList();
+ 
+    this.filteredOptionsUser = this._OPReportsService.userForm.get('UserId').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterUser(value)),
+
+    );
+
 
   }
 
   bindReportData() {
-    // let qry = "SELECT * FROM ReportConfigMaster WHERE IsActive=1 AND IsDeleted=0 AND ReportType=1";
+    
 var data={
   ReportSection:"COMMON REPORT"
 }
@@ -839,31 +844,31 @@ viewgetCanclechargelistPdf(){
   },100);
 }
 ViewgetDocdeptwisemonthlycollview(){
-  // this.sIsLoading = 'loading-data';
-  // setTimeout(() => {
+  this.sIsLoading = 'loading-data';
+  setTimeout(() => {
  
-  // this._OPReportsService.getDocDeptwisemonthcollectionView(
-  //   this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-  //   this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-  //   ).subscribe(res => {
-  //   const matDialog = this._matDialog.open(PdfviewerComponent,
-  //     {
-  //       maxWidth: "85vw",
-  //       height: '750px',
-  //       width: '100%',
-  //       data: {
-  //         base64: res["base64"] as string,
-  //         title: "Doctor Dept Wise Monthly Collection  Viewer"
-  //       }
-  //     });
+  this._OPReportsService.getDoctorDeptwisemonthlycollectionView(
+    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+    ).subscribe(res => {
+    const matDialog = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Doctor Dept Wise Monthly Collection  Viewer"
+        }
+      });
 
-  //     matDialog.afterClosed().subscribe(result => {
-  //       // this.AdList=false;
-  //       this.sIsLoading = ' ';
-  //     });
-  // });
+      matDialog.afterClosed().subscribe(result => {
+        // this.AdList=false;
+        this.sIsLoading = ' ';
+      });
+  });
  
-  // },100);
+  },100);
 }
 getIpcompanywisebill(){
   this.sIsLoading = 'loading-data';
@@ -1034,7 +1039,7 @@ getBillsummaryforopdipdview(){
   this.sIsLoading = 'loading-data';
   setTimeout(() => {
  
-  this._OPReportsService.getBillgeneforopdipdView(
+  this._OPReportsService.getBillsummaryopdipdView(
     this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
     this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
     ).subscribe(res => {
@@ -1098,7 +1103,7 @@ getDoctorvisitAdminwisegroupview(){
 
   onClose() { }
   getOptionTextsearchDoctor(option) {
-    return option && option.DoctorName ? option.DoctorName : '';
+    return option && option.Doctorname ? option.Doctorname : '';
   }
 
 getDoctorList() {
@@ -1114,10 +1119,67 @@ getDoctorList() {
 
   private _filterSearchdoc(value: any): string[] {
     if (value) {
-      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
-      return this.optionsSearchDoc.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
+      const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
+      return this.optionsSearchDoc.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
     }
 
+  }
+
+  private _filterUser(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.UserName ? value.UserName.toLowerCase() : value.toLowerCase();
+      return this.UserList.filter(option => option.UserName.toLowerCase().includes(filterValue));
+    }
+  }
+
+  
+  // private _filterUser(value: any): string[] {
+  //   if (value) {
+  //     const filterValue = value && value.UserName ? value.UserName.toLowerCase() : value.toLowerCase();
+  //     return this.optionsUser.filter(option => option.UserName.toLowerCase().includes(filterValue));
+  //   }
+  // }
+
+  // GetUserList() {
+  //   var data = {
+  //     "StoreId": this._loggedUser.currentUserValue.user.storeId
+  //   }
+  //   this._OPReportsService.getUserdetailList(data).subscribe(data => {
+  //     this.UserList = data;
+  //     this.optionsUser = this.UserList.slice();
+  //   this.filteredOptionsUser = this._OPReportsService.userForm.get('UserId').valueChanges.pipe(
+  //       startWith(''),
+  //       map(value => value ? this._filterUser(value) : this.UserList.slice()),
+  //     );
+
+  //   });
+  //   const toSelect = this.UserList.find(c => c.UserId == this.UserId);
+  //   this._OPReportsService.userForm.get('UserId').setValue(toSelect);
+
+  // }
+
+  GetUserList() {
+    var data = {
+          "StoreId": this._loggedUser.currentUserValue.user.storeId
+        }
+    this._OPReportsService.getUserdetailList(data).subscribe(data => {
+      this.UserList = data;
+      if (this.UserId) {
+        const ddValue = this.UserList.filter(c => c.UserId == this.UserId);
+        this._OPReportsService.userForm.get('UserId').setValue(ddValue[0]);
+        this._OPReportsService.userForm.updateValueAndValidity();
+        return;
+      }
+    });
+  }
+
+  getSelectedObj(obj){
+    this.UserId=obj.UserId;
+  }
+
+
+  getOptionTextUser(option) {
+    return option && option.UserName ? option.UserName : '';
   }
 
 }
