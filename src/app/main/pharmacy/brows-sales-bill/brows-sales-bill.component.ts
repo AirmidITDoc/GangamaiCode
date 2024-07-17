@@ -22,11 +22,10 @@ import { E } from '@angular/cdk/keycodes';
 import * as XLSX from 'xlsx';
 const jsPDF = require('jspdf');
 // require('jspdf-autotable');
-import autoTable from 'jspdf-autotable'
 import { Admission } from 'app/main/ipd/Admission/admission/admission.component';
-import { AdmissionService } from 'app/main/ipd/Admission/admission/admission.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { IPSearchListService } from 'app/main/ipd/ip-search-list/ip-search-list.service';
 
 @Component({
   selector: 'app-brows-sales-bill',
@@ -36,7 +35,7 @@ import { Router } from '@angular/router';
   animations: fuseAnimations
 })
 export class BrowsSalesBillComponent implements OnInit {
-
+  isLoadingStr: string = '';
   @ViewChild('billTemplate') billTemplate: ElementRef;
   @ViewChild('billTemplate2') billTemplate2: ElementRef;
   @ViewChild('billSalesReturn') billSalesReturn: ElementRef;
@@ -157,14 +156,15 @@ export class BrowsSalesBillComponent implements OnInit {
 
   dssalesReturnList = new MatTableDataSource<SalesReturnList>();
   dssalesReturnList1 = new MatTableDataSource<SalesReturnDetList>();
-
+  isChecked: boolean = false;
 
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator) IPListpaginator: MatPaginator;
 
   constructor(
-    public _AdmissionService: AdmissionService,
+    public _AdmissionService: IPSearchListService,
     public _BrowsSalesBillService: BrowsSalesBillService,
     public _BrowsSalesService: SalesService,
     public _AppointmentSreviceService: AppointmentSreviceService,
@@ -187,7 +187,7 @@ export class BrowsSalesBillComponent implements OnInit {
       this.menuActions.push("Patient Sales Detail");
      
     }
-    this.getAdmittedPatientList_1();
+    this.getAdmittedPatientList();
     this.getSalesList();
     this.getSalesReturnList()
     this.gePharStoreList();
@@ -207,8 +207,8 @@ export class BrowsSalesBillComponent implements OnInit {
       "Admtd_Dschrgd_All": 0,
       "M_Name": this._AdmissionService.myFilterform.get("MiddleName").value + '%' || "%",
       "IPNo": this._AdmissionService.myFilterform.get("IPDNo").value || '0',
-      Start: (this.paginator?.pageIndex ?? 1),
-      Length: (this.paginator?.pageSize ?? 10),
+      Start: (this.IPListpaginator?.pageIndex ?? 0),
+      Length: (this.IPListpaginator?.pageSize ?? 35),
     }
     console.log(Param);
     this._AdmissionService.getAdmittedPatientList_1(Param).subscribe(data => {
@@ -223,6 +223,91 @@ export class BrowsSalesBillComponent implements OnInit {
       error => {
         this.sIsLoading = '';
       });
+  }
+  
+
+  IsDischarge: any;
+  onChangeIsactive(SiderOption) {
+    this.IsDischarge = SiderOption.checked;
+    if (SiderOption.checked == true) {
+      this._AdmissionService.myFilterform.get('IsDischarge').setValue(1);
+      this._AdmissionService.myFilterform.get('start').setValue((new Date()).toISOString());
+      this._AdmissionService.myFilterform.get('end').setValue((new Date()).toISOString());
+    }
+    else {
+      this._AdmissionService.myFilterform.get('IsDischarge').setValue(0);
+      this._AdmissionService.myFilterform.get('start').setValue(''),
+      this._AdmissionService.myFilterform.get('end').setValue('')
+    }
+  }
+
+  getAdmittedPatientList() {
+
+    if (this._AdmissionService.myFilterform.get("IsDischarge").value == "0" || this._AdmissionService.myFilterform.get("IsDischarge").value == false) {
+      this.isLoadingStr = 'loading';
+      var D_data = {
+        "F_Name": this._AdmissionService.myFilterform.get("FirstName").value + '%' || "%",
+        "L_Name": this._AdmissionService.myFilterform.get("LastName").value + '%' || "%",
+        "Reg_No": this._AdmissionService.myFilterform.get("RegNo").value || 0,
+        "Doctor_Id": this._AdmissionService.myFilterform.get("DoctorId").value || 0,
+        "From_Dt": this.datePipe.transform(this._AdmissionService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
+        "To_Dt": this.datePipe.transform(this._AdmissionService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
+        "Admtd_Dschrgd_All": this._AdmissionService.myFilterform.get('IsDischarge').value || 0,
+        "M_Name": this._AdmissionService.myFilterform.get("MiddleName").value + '%' || "%",
+        "IPNo": this._AdmissionService.myFilterform.get("IPDNo").value || 0,
+        Start: (this.paginator?.pageIndex ?? 0),
+        Length: (this.paginator?.pageSize ?? 35),
+      }
+      console.log(D_data);
+      setTimeout(() => {
+        this.isLoadingStr = 'loading';
+        this._AdmissionService.getAdmittedPatientList_1(D_data).subscribe(data => {
+          this.dataSource.data = data["Table1"] ?? [] as Admission[];
+          // console.log(this.dataSource.data)
+          this.dataSource.sort = this.sort;
+          this.resultsLength = data["Table"][0]["total_row"];
+          this.sIsLoading = '';
+        },
+          error => {
+            this.sIsLoading = '';
+          });
+      }, 1000);
+    }
+    else {
+      this.isLoadingStr = 'loading';
+      var Params = {
+        "F_Name": this._AdmissionService.myFilterform.get("FirstName").value + '%' || "%",
+        "L_Name": this._AdmissionService.myFilterform.get("LastName").value + '%' || "%",
+        "M_Name": this._AdmissionService.myFilterform.get("MiddleName").value + '%' || "%",
+        "Reg_No": this._AdmissionService.myFilterform.get("RegNo").value || 0,
+        "Doctor_Id": this._AdmissionService.myFilterform.get("DoctorId").value || 0,
+        "From_Dt": this.datePipe.transform(this._AdmissionService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
+        "To_Dt": this.datePipe.transform(this._AdmissionService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
+        "Admtd_Dschrgd_All": this._AdmissionService.myFilterform.get('IsDischarge').value,
+        "IPNo": this._AdmissionService.myFilterform.get("IPDNo").value || 0,
+        Start: (this.paginator?.pageIndex ?? 0),
+        Length: (this.paginator?.pageSize ?? 35),
+      }
+      console.log(D_data);
+      setTimeout(() => {
+        this.isLoadingStr = 'loading';
+        this._AdmissionService.getDischargedPatientList_1(Params).subscribe(data => {
+          // this.dataSource.data = data as Admission[];
+          this.dataSource.data = data["Table1"] ?? [] as Admission[];
+          console.log(this.dataSource.data)
+          this.dataSource.sort = this.sort;
+          this.resultsLength = data["Table"][0]["total_row"];
+          // this.dataSource.paginator = this.paginator;
+          this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
+          this.sIsLoading = '';
+          // this.click = false;
+        },
+          error => {
+            this.sIsLoading = '';
+          });
+      }, 1000);
+
+    }
   }
 
   Admissiondetail(data) {

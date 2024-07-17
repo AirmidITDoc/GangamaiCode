@@ -103,7 +103,7 @@ export class IPSearchListComponent implements OnInit {
 
   ngOnInit(): void {
     //this.onClear();
-    this.getAdmittedPatientList(); 
+    this.getAdmittedPatientList();
     if (this._ActRoute.url == '/ipd/ipadvance') {
       this.menuActions.push('Advance');
       this.menuActions.push('Bed Transfer');
@@ -136,20 +136,20 @@ export class IPSearchListComponent implements OnInit {
     }
     else if (this._ActRoute.url == '/ipd/ip-casepaper') {
       this.menuActions.push('Medical CasePaper');
-    
+
     }
     else if (this._ActRoute.url == '/nursingstation/bedtransfer') {
       this.menuActions.push('Bed Transfer');
       this.menuActions.push('Doctor Note');
       this.menuActions.push('Nursing Note');
 
-    } 
-   
+    }
+
   }
   get f() { return this._IpSearchListService.myFilterform.controls; }
-  
+
   ngOnChanges(changes: SimpleChanges) {
- 
+
     this.click = !this.click;
     setTimeout(() => {
       {
@@ -162,14 +162,14 @@ export class IPSearchListComponent implements OnInit {
     this.MouseEvent = true;
   }
 
- 
+
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
 
   resultsLength = 0;
   getAdmittedPatientList() {
-  
+
     if (this._IpSearchListService.myFilterform.get("IsDischarge").value == "0" || this._IpSearchListService.myFilterform.get("IsDischarge").value == false) {
       this.isLoadingStr = 'loading';
       var D_data = {
@@ -182,17 +182,17 @@ export class IPSearchListComponent implements OnInit {
         "Admtd_Dschrgd_All": this._IpSearchListService.myFilterform.get('IsDischarge').value || 0,
         "M_Name": this._IpSearchListService.myFilterform.get("MiddleName").value + '%' || "%",
         "IPNo": this._IpSearchListService.myFilterform.get("IPDNo").value || 0,
-        Start:(this.paginator?.pageIndex??0),
-        Length:(this.paginator?.pageSize??35),
+        Start: (this.paginator?.pageIndex ?? 0),
+        Length: (this.paginator?.pageSize ?? 35),
       }
-      
+
       setTimeout(() => {
-          this.isLoadingStr = 'loading';
-          this._IpSearchListService.getAdmittedPatientList_1(D_data).subscribe(data => {
-          this.dataSource.data = data["Table1"]??[] as Admission[];
-         // console.log(this.dataSource.data)
+        this.isLoadingStr = 'loading';
+        this._IpSearchListService.getAdmittedPatientList_1(D_data).subscribe(data => {
+          this.dataSource.data = data["Table1"] ?? [] as Admission[];
+          // console.log(this.dataSource.data)
           this.dataSource.sort = this.sort;
-          this.resultsLength= data["Table"][0]["total_row"];
+          this.resultsLength = data["Table"][0]["total_row"];
           this.sIsLoading = '';
         },
           error => {
@@ -212,20 +212,20 @@ export class IPSearchListComponent implements OnInit {
         "To_Dt": this.datePipe.transform(this._IpSearchListService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
         "Admtd_Dschrgd_All": this._IpSearchListService.myFilterform.get('IsDischarge').value,
         "IPNo": this._IpSearchListService.myFilterform.get("IPDNo").value || 0,
-        Start:(this.paginator?.pageIndex??0),
-        Length:(this.paginator?.pageSize??35),
-      } 
+        Start: (this.paginator?.pageIndex ?? 0),
+        Length: (this.paginator?.pageSize ?? 35),
+      }
       setTimeout(() => {
         this.isLoadingStr = 'loading';
         this._IpSearchListService.getDischargedPatientList_1(Params).subscribe(data => {
           // this.dataSource.data = data as Admission[];
-          this.dataSource.data = data["Table1"]??[] as Admission[];
+          this.dataSource.data = data["Table1"] ?? [] as Admission[];
           console.log(this.dataSource.data)
           this.dataSource.sort = this.sort;
-          this.resultsLength= data["Table"][0]["total_row"];
+          this.resultsLength = data["Table"][0]["total_row"];
           // this.dataSource.paginator = this.paginator;
           this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
-           this.sIsLoading = '';
+          this.sIsLoading = '';
           // this.click = false;
         },
           error => {
@@ -263,35 +263,35 @@ export class IPSearchListComponent implements OnInit {
   getRecord(contact, m): void {
     if (m == "Advance") {
       console.log(contact);
-     
+
       this.advanceDataStored.storage = new AdvanceDetailObj(contact);
       this._IpSearchListService.populateForm(contact);
       //debugger
-      let Advflag:boolean=false;
+      let Advflag: boolean = false;
       if (contact.IsBillGenerated) {
-        Advflag=true;
+        Advflag = true;
       }
-      if(contact.IsDischarged){
-        Advflag=true;
+      if (contact.IsDischarged) {
+        Advflag = true;
       }
 
-      if(!Advflag){
-      const dialogRef = this._matDialog.open(IPAdvanceComponent,
-        {
-          maxWidth: "100%",
-          height: '95%',
-          width: '80%',
+      if (!Advflag) {
+        const dialogRef = this._matDialog.open(IPAdvanceComponent,
+          {
+            maxWidth: "100%",
+            height: '95%',
+            width: '80%',
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          console.log('The dialog was closed - Insert Action', result);
         });
-      dialogRef.afterClosed().subscribe(result => {
-        console.log('The dialog was closed - Insert Action', result);
-      });
-    }else{
-      Swal.fire("Bil Generatd !")
-    }
+      } else {
+        Swal.fire("Bil Generatd !")
+      }
     }
     else if (m == "Discharge Summary") {
       console.log(contact);
-     this.advanceDataStored.storage = new AdvanceDetailObj(contact);
+      this.advanceDataStored.storage = new AdvanceDetailObj(contact);
       this._IpSearchListService.populateForm1(contact);
       const dialogRef = this._matDialog.open(DischargeSummaryComponent,
         {
@@ -305,9 +305,9 @@ export class IPSearchListComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed - Insert Action', result);
       });
-    } 
+    }
     else if (m == "Payment") {
-      
+
       var m_data = {
         RegNo: contact.RegNo,
         RegId: contact.RegID,
@@ -331,7 +331,7 @@ export class IPSearchListComponent implements OnInit {
         opD_IPD_Typec: contact.opD_IPD_Type
 
       }
-      
+
       this.advanceDataStored.storage = new AdvanceDetailObj(m_data);
       this._IpSearchListService.populateForm1(m_data);
       const dialogRef = this._matDialog.open(IPSettlementComponent,
@@ -340,7 +340,7 @@ export class IPSearchListComponent implements OnInit {
           maxWidth: "95vw",
           height: '110vh',
           width: '100%',
-          data:m_data
+          data: m_data
 
         });
 
@@ -349,9 +349,9 @@ export class IPSearchListComponent implements OnInit {
       });
     }
     else if (m == "Refund of Bill") {
-    
+
       console.log(" This is for IP Refund of Bill pop : " + m);
-     
+
       this.advanceDataStored.storage = new AdvanceDetailObj(contact);
 
       // if (!contact.IsBillGenerated || contact.IsDischarged ==1) {
@@ -365,11 +365,11 @@ export class IPSearchListComponent implements OnInit {
         console.log('The dialog was closed - Insert Action', result);
         //  this.getRadiologytemplateMasterList();
       });
-    // }else{Swal.fire("Bill Generated")}
+      // }else{Swal.fire("Bill Generated")}
     }
     else if (m == "Refund of Advance") {
-     
-     
+
+
       this.advanceDataStored.storage = new AdvanceDetailObj(contact);
       this._IpSearchListService.populateForm2(contact);
       // if (!contact.IsBillGenerated) {
@@ -381,7 +381,7 @@ export class IPSearchListComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
         this.getAdmittedPatientList();
       });
-    // }else Swal.fire("Bill already Generated")
+      // }else Swal.fire("Bill already Generated")
     }
     else if (m == "Update Company Information") {
       let m_data = {
@@ -405,9 +405,9 @@ export class IPSearchListComponent implements OnInit {
         IPDNo: contact.IPDNo,
         DocNameID: contact.DocNameID,
         opD_IPD_Typec: contact.opD_IPD_Type,
-        CompanyName:contact.CompanyName
+        CompanyName: contact.CompanyName
       }
-     
+
       this.advanceDataStored.storage = new AdvanceDetailObj(m_data);
       this._IpSearchListService.populateForm2(m_data);
       // if (!contact.IsBillGenerated) {
@@ -419,7 +419,7 @@ export class IPSearchListComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
         this.getAdmittedPatientList();
       });
-    // }else Swal.fire("Bill already Generated")
+      // }else Swal.fire("Bill already Generated")
     }
     else if (m == "Bill") {
       console.log(" This is for  Bill pop : " + m);
@@ -448,14 +448,14 @@ export class IPSearchListComponent implements OnInit {
       //   IsDischarged:contact.IsDischarged,
       // };
       this.advanceDataStored.storage = new AdvanceDetailObj(contact);
-      
+
       if (!contact.IsBillGenerated) {
-        
+
         const dialogRef = this._matDialog.open(IPBillingComponent,
           {
             maxWidth: "90%",
-            width:'98%',
-            height: '95%',   
+            width: '98%',
+            height: '95%',
           });
         dialogRef.afterClosed().subscribe(result => {
           console.log('The dialog was closed - Insert Action', result);
@@ -466,8 +466,8 @@ export class IPSearchListComponent implements OnInit {
     else if (m == "Discharge") {
       console.log(contact);
       if (!contact.IsDischarged) {
-       
-      
+
+
         this.advanceDataStored.storage = new AdvanceDetailObj(contact);
         this._IpSearchListService.populateForm(contact);
         const dialogRef = this._matDialog.open(DischargeComponent,
@@ -485,7 +485,7 @@ export class IPSearchListComponent implements OnInit {
         });
       } else {
         console.log(contact)
-      Swal.fire({
+        Swal.fire({
           title: 'Patient Already Discharged Do you Want to Edit',
           // showDenyButton: true,
           showCancelButton: true,
@@ -494,7 +494,7 @@ export class IPSearchListComponent implements OnInit {
         }).then((result) => {
 
           if (result.isConfirmed) {
-        
+
             this.advanceDataStored.storage = new AdvanceDetailObj(contact);
             this._IpSearchListService.populateForm(contact);
             const dialogRef = this._matDialog.open(DischargeComponent,
@@ -516,10 +516,10 @@ export class IPSearchListComponent implements OnInit {
     }
     else if (m == "Bed Transfer") {
       console.log(" This is for BedTransfer pop : " + m);
-     
+
       this.advanceDataStored.storage = new AdmissionPersonlModel(contact);
       this._IpSearchListService.populateForm(contact);
-     console.log(contact)
+      console.log(contact)
       const dialogRef = this._matDialog.open(BedTransferComponent,
         {
           maxWidth: "85vw",
@@ -533,7 +533,7 @@ export class IPSearchListComponent implements OnInit {
       console.log(" This is for Case Paper pop : " + m);
       this.advanceDataStored.storage = new AdvanceDetailObj(contact);
       this._IpSearchListService.populateForm(contact);
-     
+
       const dialogRef = this._matDialog.open(NewCasepaperComponent,
         {
           maxWidth: "95vw",
@@ -544,8 +544,8 @@ export class IPSearchListComponent implements OnInit {
         this.getAdmittedPatientList();
       });
     }
- 
- 
+
+
   }
 
 
@@ -566,7 +566,7 @@ export class IPSearchListComponent implements OnInit {
 
 
   private filterDoctor() {
-   
+
     if (!this.doctorNameCmbList) {
       return;
     }
@@ -579,7 +579,7 @@ export class IPSearchListComponent implements OnInit {
     else {
       search = search.toLowerCase();
     }
-   
+
     this.filtereddoctor.next(
       this.doctorNameCmbList.filter(bank => bank.DoctorName.toLowerCase().indexOf(search) > -1)
     );
@@ -587,7 +587,7 @@ export class IPSearchListComponent implements OnInit {
 
 
   private filterWard() {
-   
+
     if (!this.wardNameCmbList) {
       return;
     }
@@ -632,15 +632,15 @@ export class IPSearchListComponent implements OnInit {
     else {
       this._IpSearchListService.myFilterform.get('IsDischarge').setValue(0);
       this._IpSearchListService.myFilterform.get('start').setValue(''),
-      this._IpSearchListService.myFilterform.get('end').setValue('')
+        this._IpSearchListService.myFilterform.get('end').setValue('')
     }
   }
 
- 
+
 
   printDischargeslip(contact) {
-console.log(contact)
-  this._IpSearchListService.getIpDischargeReceipt(
+    console.log(contact)
+    this._IpSearchListService.getIpDischargeReceipt(
       contact.AdmissionID
     ).subscribe(res => {
       const dialogRef = this._matDialog.open(PdfviewerComponent,
@@ -656,24 +656,24 @@ console.log(contact)
     });
   }
 
-  
+
   printDischargesummary(contact) {
-  
-  this._IpSearchListService.getIpDischargesummaryReceipt(
-    contact.AdmissionID
-  ).subscribe(res => {
-    const dialogRef = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Discharge SummaryViewer"
-        }
-      });
-  });
-}
+
+    this._IpSearchListService.getIpDischargesummaryReceipt(
+      contact.AdmissionID
+    ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Discharge SummaryViewer"
+          }
+        });
+    });
+  }
 
 
 }
@@ -781,20 +781,20 @@ export class AdvanceDetailObj {
   storage: any;
   IsMLC: any;
   NetPayableAmt: any;
-  OPD_IPD_Id:any;
-  RegID:any;
-  CompanyName:any;
-  RoomName:any;
-  DOA:any;
-  DOD:any;
-  DepartmentName:any;
-  RefDocName:any;
-  GenderName:any;
-  DocNameID:any;
+  OPD_IPD_Id: any;
+  RegID: any;
+  CompanyName: any;
+  RoomName: any;
+  DOA: any;
+  DOD: any;
+  DepartmentName: any;
+  RefDocName: any;
+  GenderName: any;
+  DocNameID: any;
 
   PolicyNo: any;
   MemberNo: any;
-  
+
   ClaimNo: any;
   CompBillNo: any;
   CompBillDate: any;
@@ -816,7 +816,7 @@ export class AdvanceDetailObj {
   H_NetAmt: any;
   H_PaidAmt: any;
   H_BalAmt: any;
-  MobileNo:any;
+  MobileNo: any;
   PatientAge: any;
   /**
   * Constructor
@@ -857,17 +857,17 @@ export class AdvanceDetailObj {
       this.NetPayableAmt = AdvanceDetailObj.NetPayableAmt || 0;
       this.OPD_IPD_Id = AdvanceDetailObj.OPD_IPD_Id || 0;
       this.RegID = AdvanceDetailObj.RegID || 0;
-      this.CompanyName=AdvanceDetailObj.CompanyName || ''
-      this.RoomName=AdvanceDetailObj.RoomName || ''
-      this.DOA=AdvanceDetailObj.DOA || ''
-      this.DOD=AdvanceDetailObj.DOD || ''
-      this.DepartmentName= AdvanceDetailObj.DepartmentName|| ''
-      this.AgeMonth= AdvanceDetailObj.AgeMonth|| ''
-      this.AgeDay= AdvanceDetailObj.AgeDay|| ''
-      this.RefDocName=AdvanceDetailObj.RefDocName || ''
-      this.GenderName =AdvanceDetailObj.GenderName ||''
-      this.DocNameID=AdvanceDetailObj.DocNameID | 0
-      this.MobileNo=AdvanceDetailObj.MobileNo || ''
+      this.CompanyName = AdvanceDetailObj.CompanyName || ''
+      this.RoomName = AdvanceDetailObj.RoomName || ''
+      this.DOA = AdvanceDetailObj.DOA || ''
+      this.DOD = AdvanceDetailObj.DOD || ''
+      this.DepartmentName = AdvanceDetailObj.DepartmentName || ''
+      this.AgeMonth = AdvanceDetailObj.AgeMonth || ''
+      this.AgeDay = AdvanceDetailObj.AgeDay || ''
+      this.RefDocName = AdvanceDetailObj.RefDocName || ''
+      this.GenderName = AdvanceDetailObj.GenderName || ''
+      this.DocNameID = AdvanceDetailObj.DocNameID | 0
+      this.MobileNo = AdvanceDetailObj.MobileNo || ''
     }
   }
 }
@@ -891,10 +891,10 @@ export class ChargesList {
   ClassId: number;
   ClassName: string;
   ChargesAddedName: string;
-  BalanceQty:any;
-  IsStatus:any;
-  extMobileNo:any;
-  ConcessionPercentage:any;
+  BalanceQty: any;
+  IsStatus: any;
+  extMobileNo: any;
+  ConcessionPercentage: any;
   constructor(ChargesList) {
     this.ChargesId = ChargesList.ChargesId || '';
     this.ServiceId = ChargesList.ServiceId || '';
@@ -913,10 +913,10 @@ export class ChargesList {
     this.ClassId = ChargesList.ClassId || 0;
     this.ClassName = ChargesList.ClassName || '';
     this.ChargesAddedName = ChargesList.ChargesAddedName || '';
-    this.BalanceQty=ChargesList.BalanceQty || 0;
-    this.IsStatus=ChargesList.IsStatus || 0;
-    this.extMobileNo=ChargesList.extMobileNo || ''
-    this.ConcessionPercentage=ChargesList.ConcessionPercentage ||''
+    this.BalanceQty = ChargesList.BalanceQty || 0;
+    this.IsStatus = ChargesList.IsStatus || 0;
+    this.extMobileNo = ChargesList.extMobileNo || ''
+    this.ConcessionPercentage = ChargesList.ConcessionPercentage || ''
   }
 }
 export class AdvanceHeader {

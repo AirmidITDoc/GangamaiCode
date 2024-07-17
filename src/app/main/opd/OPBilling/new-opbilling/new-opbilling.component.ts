@@ -1296,6 +1296,7 @@ console.log(obj)
     this.CompanyName = ''
     this.RefDocName = ''
     this.advanceDataStored.storage = [];
+    this.BillingForm.get('PaymentType').setValue('CashPay');
   }
 
   showNewPaymnet() {
@@ -1411,7 +1412,7 @@ console.log(obj)
   // Patient Search;
   getSearchList() {
     var m_data = {
-      "Keyword": `${this.searchFormGroup.get('RegId').value}%`
+      "Keyword": `${this.searchFormGroup.get('RegId').value}`
     }
     this._oPSearhlistService.getPatientVisitedListSearch(m_data).subscribe(data => {
       this.PatientListfilteredOptions = data;

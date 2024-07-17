@@ -1994,8 +1994,8 @@ console.log(this._AppointmentSreviceService.myFilterform.get("DoctorId").value)
     let tokenNumberWithDoctorWiseUpdate = {};
     registrationUpdate['regID'] = this.registerObj.RegId;
     registrationUpdate['regDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-      registrationUpdate['regTime'] = this.dateTimeObj.time,
-      registrationUpdate['prefixId'] = this.personalFormGroup.get('PrefixID').value.PrefixID;
+    registrationUpdate['regTime'] = this.dateTimeObj.time,
+     registrationUpdate['prefixId'] = this.personalFormGroup.get('PrefixID').value.PrefixID;
     registrationUpdate['firstName'] = this.registerObj.FirstName;
     registrationUpdate['middleName'] = this.registerObj.MiddleName || '';
     registrationUpdate['lastName'] = this.registerObj.LastName;

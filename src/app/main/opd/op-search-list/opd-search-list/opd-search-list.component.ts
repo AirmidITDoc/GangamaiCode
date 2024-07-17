@@ -99,7 +99,7 @@ export class OpdSearchListComponent implements OnInit {
   }  
   getSearchList() { 
     var m_data = {
-      "Keyword": `${this.searchFormGroup.get('RegId').value}%`
+      "Keyword": `${this.searchFormGroup.get('RegId').value}`
     }
     if (this.searchFormGroup.get('RegId').value.length >= 1) {
       this._opSearchListService.getRegisteredList(m_data).subscribe(resData => {
@@ -123,8 +123,8 @@ export class OpdSearchListComponent implements OnInit {
     this.AgeYear = obj.AgeYear; 
     this.AgeDay = obj.AgeDay;
     this.AgeMonth = obj.AgeMonth;
-   this.GenderName = obj.GenderName;
-   this.MobileNo = obj.MobileNo;  
+    this.GenderName = obj.GenderName;
+    this.MobileNo = obj.MobileNo;  
     this.getCreditBillDetails(); 
   }
  

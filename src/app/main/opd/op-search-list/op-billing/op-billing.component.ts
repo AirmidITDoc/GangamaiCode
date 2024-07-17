@@ -468,7 +468,6 @@ export class OPBillingComponent implements OnInit {
     let ConcessionId = 0;
     if (this.BillingForm.get('ConcessionId').value)
       ConcessionId = this.BillingForm.get('ConcessionId').value.ConcessionId;
-debugger
     let InsertBillUpdateBillNoObj = {};
     InsertBillUpdateBillNoObj['BillNo'] = 0;
     InsertBillUpdateBillNoObj['OPD_IPD_ID'] = this.vOPIPId;
