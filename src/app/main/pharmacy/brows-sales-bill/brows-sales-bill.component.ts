@@ -156,7 +156,7 @@ export class BrowsSalesBillComponent implements OnInit {
 
   dssalesReturnList = new MatTableDataSource<SalesReturnList>();
   dssalesReturnList1 = new MatTableDataSource<SalesReturnDetList>();
-
+  isChecked: boolean = false;
 
 
   @ViewChild(MatSort) sort: MatSort;
@@ -225,7 +225,7 @@ export class BrowsSalesBillComponent implements OnInit {
       });
   }
   
-  isChecked: boolean = false;
+
   IsDischarge: any;
   onChangeIsactive(SiderOption) {
     this.IsDischarge = SiderOption.checked;
