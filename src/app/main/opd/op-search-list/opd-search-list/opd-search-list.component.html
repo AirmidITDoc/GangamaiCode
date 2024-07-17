@@ -50,7 +50,7 @@
                                         <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
                                             (optionSelected)='getSelectedObj($event.option.value)'>
                                             <mat-option *ngFor="let option of filteredOptions" [value]="option">
-                                                {{option.FirstName}} {{option.MiddleName}}  |
+                                                {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} |
                                                 {{option.RegNo}} | {{option.MobileNo}}
                                             </mat-option>
                                         </mat-autocomplete>
