@@ -19,15 +19,15 @@
     </mat-toolbar>
     <div class="content">
         <div class="center p-12 pb-56" style="border-radius: 4px;">
-            <div  fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="8px">
+            <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="8px">
                 <div fxLayout="column">
                     <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 9px; height: fit-content;">
                         <div class="patient-info-sales my-8">
                             <div class="patient-info-title border-bottom pb-2">
                                 <span class="h1">Patient Information</span>
                             </div>
-                            <div class="Ipd-patient-info" fxFlexFill fxLayout="row"
-                                fxLayoutAlign="space-between center" class="patient-info">
+                            <div class="Ipd-patient-info" fxFlexFill fxLayout="row" fxLayoutAlign="space-between center"
+                                class="patient-info">
                                 <div class="patient-sub">
                                     <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
                                         fxLayoutAlign="space-between">
@@ -36,8 +36,7 @@
                                                 <span class="patient-col-key">UHID No
                                                 </span>
                                                 <span>:</span>
-                                                <span
-                                                    class="patient-col-value">{{selectedAdvanceObj1.RegNo}}</span>
+                                                <span class="patient-col-value">{{selectedAdvanceObj1.RegNo}}</span>
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Patient Name
@@ -70,8 +69,7 @@
                                             <div class="patient-col">
                                                 <span class="patient-col-key">IPD No</span>
                                                 <span>:</span>
-                                                <span
-                                                    class="patient-col-value">{{selectedAdvanceObj1.IPDNo}}</span>
+                                                <span class="patient-col-value">{{selectedAdvanceObj1.IPDNo}}</span>
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Age | Sex
@@ -95,8 +93,7 @@
                                                 <span class="patient-col-key">Ward | Bed Name
                                                 </span>
                                                 <span>:</span>
-                                                <span
-                                                    class="patient-col-value">{{selectedAdvanceObj1.RoomName}}
+                                                <span class="patient-col-value">{{selectedAdvanceObj1.RoomName}}
                                                     | {{selectedAdvanceObj1.BedName}}</span>
                                             </div>
                                             <div class="patient-col">
@@ -124,21 +121,19 @@
                                 </div>
                             </div>
                         </div>
-                    </mat-card> 
+                    </mat-card>
                 </div>
                 <div fxFlex.gt-sm="100%" fxFlex>
-                    <div fxlayout="row"> 
+                    <div fxlayout="row">
                         <div fxFlex.gt-sm="100%" fxFlex style="width: 100%;overflow:auto;">
-                            <div matColumnDef="loading"
-                                [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                            <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
                                 class="backgroundBlur">
                                 <div class="spinner-border text-danger"></div>
 
                             </div>
                             <mat-card style="padding: 6px;">
-                                <mat-table #table matSort [dataSource]="dataSource"
-                                    [@animateStagger]="{value:'50'}" style="overflow:auto"
-                                    style="width:100%;">
+                                <mat-table matSort [dataSource]="dataSource" class="h-260"
+                                    [@animateStagger]="{value:'50'}">
 
                                     <ng-container matColumnDef="TestName" sticky>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
@@ -147,43 +142,39 @@
                                         <mat-cell *matCellDef="let contact">
                                             {{contact.TestName}}
                                         </mat-cell>
-                                    </ng-container> 
+                                    </ng-container>
 
                                     <ng-container matColumnDef="ParameterName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                            fxShow.gt-md>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                             ParameterName
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                             {{contact.ParameterName}}
                                         </mat-cell>
-                                    </ng-container> 
+                                    </ng-container>
 
                                     <ng-container matColumnDef="ResultValue">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                            fxShow.gt-md>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                             Result
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             <mat-form-field appearance="legacy">
                                                 <input matInput [(ngModel)]="contact.ResultValue">
                                             </mat-form-field>
-                                        </mat-cell> 
-                                    </ng-container> 
+                                        </mat-cell>
+                                    </ng-container>
 
                                     <ng-container matColumnDef="NormalRange">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                            fxShow.gt-md>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                             NormalRange
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                             {{contact.NormalResult}}
                                         </mat-cell>
-                                    </ng-container> 
+                                    </ng-container>
 
                                     <ng-container matColumnDef="loading">
-                                        <mat-header-cell *matFooterCellDef colspan="6"
-                                            style="display: none;">
+                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
                                         </mat-header-cell>
                                     </ng-container>
 
@@ -195,8 +186,8 @@
 
                                     <mat-header-row class="accent"
                                         *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                                    <mat-row *matRowDef="let contact; columns: displayedColumns;"
-                                        class="contact" [@animate]="{value:'*',params:{y:'100%'}}">
+                                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                                        [@animate]="{value:'*',params:{y:'100%'}}">
                                     </mat-row>
                                     <mat-footer-row *matFooterRowDef="['loading']"
                                         [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
@@ -205,86 +196,92 @@
                                         [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
                                     </mat-footer-row>
                                 </mat-table>
-                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" showFirstLastButtons style="position: sticky;">
-                                 </mat-paginator> 
+
                             </mat-card>
                         </div>
-                    </div> 
+                    </div>
                 </div>
-                    <div fxFlex.gt-sm="100%" fxFlex>
-                        <form [formGroup]="otherForm">
-                            <mat-card style="padding: 6px;">
-                                <div fxLayout="column" fxLayout="row" fxLayout="4px">
-                                    <mat-form-field appearance="outline" fxFlex="40%">
-                                        <mat-label>Suggestion Note </mat-label>
-                                        <textarea rows="1" name="suggestionNotes" formControlName="suggestionNotes" matInput></textarea>
-                                        <mat-error>Please enter Suggestion </mat-error>
-                                    </mat-form-field> 
+                <div fxFlex.gt-sm="100%" fxFlex>
+                    <form [formGroup]="otherForm">
+                        <mat-card style="padding: 6px;">
+                            <div fxLayout="column" fxLayout="row" fxLayout="4px">
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Suggestion Note </mat-label>
+                                    <textarea rows="1" name="suggestionNotes" formControlName="suggestionNotes" matInput
+                                        [(ngModel)]="vsuggation" (keydown)="onEnterSugg($event)"></textarea>
+                                    <mat-error>Please enter Suggestion </mat-error>
+                                </mat-form-field>
 
-                                        <mat-form-field appearance="outline" fxFlex="19.5%">
-                                            <mat-label>Result Doctor Name</mat-label>
-                                            <input matAutocompletePosition="below" type="text" placeholder="Select PathResultDoctorId"
-                                                matInput #dept (keydown)="onEnterresultdr($event)" formControlName="PathResultDoctorId"
-                                                [matAutocomplete]="autoResult" required>
-                                            <span matSuffix style="display: flex;">
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="otherForm.get('PathResultDoctorId').setValue(''); isresultdrSelected = false;">close</mat-icon>
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="otherForm.get('PathResultDoctorId').setValue(''); isresultdrSelected = false;">search</mat-icon>
-                                            </span>
-                                            <mat-autocomplete #autoResult="matAutocomplete" [displayWith]="getOptionTextresultdr">
-                                                <mat-option *ngFor="let option of filteredresultdr | async" [value]="option">
-                                                    {{option.Doctorname}}
-                                                </mat-option>
-                                            </mat-autocomplete>
-                                        </mat-form-field>
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Result Doctor Name</mat-label>
+                                    <input matAutocompletePosition="below" type="text"
+                                        placeholder="Select PathResultDoctorId" #PathResultDoctorId
+                                        (keydown)="onEnterPathResultDoctorId($event,vPathResultDoctorId.DoctorId)"
+                                        matInput (keydown)="onEnterresultdr($event)"
+                                        formControlName="PathResultDoctorId" [(ngModel)]="vPathResultDoctorId"
+                                        [matAutocomplete]="autoResult" required>
+                                    <span matSuffix style="display: flex;">
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="otherForm.get('PathResultDoctorId').setValue(''); isresultdrSelected = false;">close</mat-icon>
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="otherForm.get('PathResultDoctorId').setValue(''); isresultdrSelected = false;">search</mat-icon>
+                                    </span>
+                                    <mat-autocomplete #autoResult="matAutocomplete"
+                                        [displayWith]="getOptionTextresultdr">
+                                        <mat-option *ngFor="let option of filteredresultdr | async" [value]="option">
+                                            {{option.Doctorname}}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
 
-                                        <mat-form-field appearance="outline" fxFlex="19.5%">
-                                            <mat-label>Doctor Name</mat-label>
-                                            <input matAutocompletePosition="below" type="text" placeholder="Select DoctorId" matInput #dept
-                                                (keydown)="onEnterresultdr($event)" formControlName="DoctorId"
-                                                [matAutocomplete]="autoDoctor" required>
-                                            <span matSuffix style="display: flex;">
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="otherForm.get('DoctorId').setValue(''); isresultdrSelected = false;">close</mat-icon>
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="otherForm.get('DoctorId').setValue(''); isresultdrSelected = false;">search</mat-icon>
-                                            </span>
-                                            <mat-autocomplete #autoDoctor="matAutocomplete" [displayWith]="getOptionTextpath">
-                                                <mat-option *ngFor="let option of filteredpathdr | async" [value]="option">
-                                                    {{option.Doctorname}}
-                                                </mat-option>
-                                            </mat-autocomplete>
-                                        </mat-form-field>
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Doctor Name</mat-label>
+                                    <input matAutocompletePosition="below" type="text" placeholder="Select DoctorId"
+                                        matInput (keydown)="onEnterDoctorId($event,vDoctorId.DoctorId)"
+                                        (keydown)="onEnterresultdr($event)" formControlName="DoctorId"
+                                        [(ngModel)]="vDoctorId" #DoctorId [matAutocomplete]="autoDoctor" required>
+                                    <span matSuffix style="display: flex;">
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="otherForm.get('DoctorId').setValue(''); isresultdrSelected = false;">close</mat-icon>
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="otherForm.get('DoctorId').setValue(''); isresultdrSelected = false;">search</mat-icon>
+                                    </span>
+                                    <mat-autocomplete #autoDoctor="matAutocomplete" [displayWith]="getOptionTextpath">
+                                        <mat-option *ngFor="let option of filteredpathdr | async" [value]="option">
+                                            {{option.Doctorname}}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
 
-                                        <mat-form-field appearance="outline" fxFlex="19.5%">
-                                            <mat-label>Doctor Name</mat-label>
-                                            <input matAutocompletePosition="below" type="text" placeholder="Select DoctorId" matInput #dept
-                                                (keydown)="onEnterresultdr($event)" formControlName="RefDoctorID"
-                                                [matAutocomplete]="autoRefdr" required>
-                                            <span matSuffix style="display: flex;">
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="otherForm.get('RefDoctorID').setValue(''); isresultdrSelected = false;">close</mat-icon>
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="otherForm.get('RefDoctorID').setValue(''); isresultdrSelected = false;">search</mat-icon>
-                                            </span>
-                                            <mat-autocomplete #autoRefdr="matAutocomplete" [displayWith]="getOptionTextRefdr">
-                                                <mat-option *ngFor="let option of filteredrefdr | async" [value]="option">
-                                                    {{option.Doctorname}}
-                                                </mat-option>
-                                            </mat-autocomplete>
-                                        </mat-form-field> 
-                                </div>
-                            </mat-card> 
-                        </form>
-                    </div> 
-                <div fxLayout="row" fxLayoutAlign="end" > 
-                        <div class="modal-footer-buttons" fxLayoutGap="6px" style="padding: 8px;">
-                            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                            <button class="btn btn-primary" (click)="onSave()" [disabled]="otherForm.invalid">Save</button>
-                        </div> 
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Doctor Name</mat-label>
+                                    <input matAutocompletePosition="below" type="text" placeholder="Select DoctorId"
+                                        matInput #RefDoctorID formControlName="RefDoctorID" [(ngModel)]="vRefDoctorID"
+                                        (keydown)="onEnterRefDoctorID($event,vRefDoctorID.DoctorID)"
+                                        [matAutocomplete]="autoRefdr" required>
+                                    <span matSuffix style="display: flex;">
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="otherForm.get('RefDoctorID').setValue(''); isresultdrSelected = false;">close</mat-icon>
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="otherForm.get('RefDoctorID').setValue(''); isresultdrSelected = false;">search</mat-icon>
+                                    </span>
+                                    <mat-autocomplete #autoRefdr="matAutocomplete" [displayWith]="getOptionTextRefdr">
+                                        <mat-option *ngFor="let option of filteredrefdr | async" [value]="option">
+                                            {{option.Doctorname}}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+                            </div>
+                        </mat-card>
+                    </form>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="end">
+                    <div class="modal-footer-buttons" fxLayoutGap="6px" style="padding: 8px;">
+                        <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                        <button class="btn btn-primary" (click)="onSave()" [disabled]="otherForm.invalid">Save</button>
+                    </div>
                 </div>
             </div>
-        </div> 
-    </div> 
-</div> 
+        </div>
+    </div>
+</div>

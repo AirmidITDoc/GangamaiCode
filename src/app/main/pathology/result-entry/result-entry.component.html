@@ -53,14 +53,14 @@
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Search First Name</mat-label>
-                                    <input name="FirstNameSearch" formControlName="FirstNameSearch" matInput (keyup)="onShow($event)">
+                                    <input name="FirstNameSearch" formControlName="FirstNameSearch" matInput (keyup)="onShow($event)" type="text">
                                     <span class="error" *ngIf="f.FirstNameSearch.invalid && f.FirstNameSearch.touched">FirstName
                                         is required Enter only Alphabets</span>
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline">
                                     <mat-label>Search Last Name</mat-label>
-                                    <input name="LastNameSearch" formControlName="LastNameSearch" matInput (keyup)="onShow($event)">
+                                    <input name="LastNameSearch" formControlName="LastNameSearch" matInput (keyup)="onShow($event)" type="text">
                                     <span class="error" *ngIf="f.LastNameSearch.invalid && f.LastNameSearch.touched">LastName is required Enter only Alphabets</span>
                                 </mat-form-field>
 
@@ -301,6 +301,10 @@
                                     <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur">
                                         <div class="spinner-border"></div>
                                     </div>
+                                    <button mat-raised-button *ngIf="selection.selected.length>0"
+                                        (click)="chkresultentry()">
+                                      Result entry
+                                    </button>
                                     <mat-table class="mat-table-2 h-210" #table matSort [dataSource]="dataSource1" [@animateStagger]="{value:'50'}">
 
                                         <!-- <ng-container matColumnDef="checkbox" sticky>
@@ -309,20 +313,37 @@
                                                 </mat-checkbox>
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-80">
-                                                <mat-checkbox aria-label="Checked" (change)="onresultentry(contact)">
+                                                <mat-checkbox aria-label="Checked" (change)="onresultentryshow(contact)">
                                                 </mat-checkbox>
                                             </mat-cell>
                                         </ng-container> -->
+
+                                        <ng-container matColumnDef="select">
+                                            <th mat-header-cell *matHeaderCellDef>
+                                                <mat-checkbox (change)="$event ? masterToggle() : null"
+                                                    [checked]="selection.hasValue()" 
+                                                    [indeterminate]="selection.hasValue() && !isAllSelected(contact)">
+                                                </mat-checkbox>
+                                            </th>
+                                            <td mat-cell *matCellDef="let contact">
+                                                <mat-checkbox (click)="$event.stopPropagation()" (change)="onresultentryshow($event,contact)"
+                                                    (change)="$event ? selection.toggle(contact) : null"
+                                                    [checked]="selection.isSelected(contact)">
+                                                </mat-checkbox>
+                                            </td>
+                                        </ng-container>
 
                                         <ng-container matColumnDef="IsTemplateTest">
                                             <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-90">IsTemplate</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" class="w-90">
                                                 <!-- {{contact.IsBillGenerated}}  -->
-                                                <mat-icon *ngIf="contact.IsTemplateTest=='1' else noMLC" matTooltip="IsTemplateTest" 
-                                                >assignment</mat-icon>
-                                                <ng-template #noMLC>
+                                                <mat-icon *ngIf="contact.IsTemplateTest=='1'" matTooltip="IsTemplateTest">assignment</mat-icon>
+                                                <mat-icon *ngIf="contact.IsTemplateTest !='1'"  matTooltip="Result Entry">
+                                                    <img width="30px" height="30px" src="assets/images/logos/pathology.png">
+                                                </mat-icon>
+                                                <!-- <ng-template #noMLC>
                                                     <span>--</span>
-                                                </ng-template>
+                                                </ng-template> -->
                                                
                                             </mat-cell>
                                         </ng-container>
@@ -379,7 +400,7 @@
                                                 Action</mat-header-cell>
                                             <mat-cell *matCellDef="let contact">
 
-                                                <button mat-icon-button class="material-icons" (click)="onresultentry(contact)" matTooltip="Result Entry" *ngIf="!contact.IsCompleted">
+                                                <button mat-icon-button class="material-icons" (click)="onresultentry(contact)" matTooltip="Result Entry">
                                                     <mat-icon title="Result Entry">description</mat-icon>
                                                 </button>
 

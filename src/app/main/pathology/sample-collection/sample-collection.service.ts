@@ -22,12 +22,10 @@ export class SampleCollectionService {
     return this._formBuilder.group({
       RegNoSearch: [],
       FirstNameSearch: ['', [
-
         Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
       ]],
       LastNameSearch: ['', [
-
-        Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
+      Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
       ]],
       // BillNo:[''],
       // BillDate:[''],

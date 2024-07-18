@@ -15,6 +15,7 @@ import { ResultEntryComponent } from './result-entry/result-entry.component';
 import { RadiologyTemplateReportComponent } from './radiology-template-report/radiology-template-report.component';
 import { fuseAnimations } from '@fuse/animations';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
 
 @Component({
   selector: 'app-radiology-order-list',
@@ -86,6 +87,7 @@ export class RadiologyOrderListComponent implements OnInit {
     public _SampleService: RadioloyOrderlistService,
     private accountService: AuthenticationService,
     private _fuseSidebarService: FuseSidebarService,
+    private reportDownloadService: ExcelDownloadService,
   ) { }
 
   ngOnInit(): void {
@@ -318,90 +320,35 @@ export class RadiologyOrderListComponent implements OnInit {
   
 
 
-  onExport(exprtType) {
-    // debugger;
-    // let columnList=[];
-    // if(this.dataSource.data.length == 0){
-    //   // this.toastr.error("No Data Found");
-    //   Swal.fire('Error !', 'No Data Found', 'error');
-    // }
-    // else{
-    //   var excelData = [];
-    //   var a=1;
-    //   for(var i=0;i<this.dataSource.data.length;i++){
-    //     let singleEntry = {
-    //       // "Sr No":a+i,
-    //       "RegNo" :this.dataSource.data[i]["RegNo"] ? this.dataSource.data[i]["RegNo"] :"N/A",
-    //       "Radiology Date" :this.dataSource.data[i]["RadDate"] ? this.dataSource.data[i]["RadDate"]:"N/A",
-    //       "Radiology Time" :this.dataSource.data[i]["RadTime"] ? this.dataSource.data[i]["RadTime"]:"N/A",
-    //       "ConsultantDoctor Name" :this.dataSource.data[i]["ConsultantDoctor"] ? this.dataSource.data[i]["ConsultantDoctor"]:"N/A",
-    //       "PatientType" :this.dataSource.data[i]["PatientType"] ? this.dataSource.data[i]["PatientType"] :"N/A",
-    //       "AgeDay" :this.dataSource.data[i]["AgeDay"] ? this.dataSource.data[i]["AgeDay"] : "N/A",
-    //       "AgeMonth" :this.dataSource.data[i]["AgeMonth"] ? this.dataSource.data[i]["AgeMonth"] :"N/A",
-    //       "AgeYear" :this.dataSource.data[i]["AgeYear"] ? this.dataSource.data[i]["AgeYear"] : "N/A",
-    //       "GenderName'" :this.dataSource.data[i]["GenderName'"] ? this.dataSource.data[i]["GenderName'"] :"N/A",
-    //       "PBillNo" :this.dataSource.data[i]["PBillNo"] ? this.dataSource.data[i]["PBillNo"] : "N/A",
-
-
-    //     };
-    //     excelData.push(singleEntry);
-    //   }
-    //   var fileName = "Radiology-Order-List " + new Date() +".xlsx";
-    //   if(exprtType =="Excel"){
-    //     const ws: XLSX.WorkSheet=XLSX.utils.json_to_sheet(excelData);
-    //     var wscols = [];
-    //     if(excelData.length > 0){ 
-    //       var columnsIn = excelData[0]; 
-    //       for(var key in columnsIn){
-    //         let headerLength = {wch:(key.length+1)};
-    //         let columnLength = headerLength;
-    //         try{
-    //           columnLength = {wch: Math.max(...excelData.map(o => o[key].length), 0)+1}; 
-    //         }
-    //         catch{
-    //           columnLength = headerLength;
-    //         }
-    //         if(headerLength["wch"] <= columnLength["wch"]){
-    //           wscols.push(columnLength)
-    //         }
-    //         else{
-    //           wscols.push(headerLength)
-    //         }
-    //       } 
-    //     }
-    //     ws['!cols'] = wscols;
-    //     const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    //     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-    //     XLSX.writeFile(wb, fileName);
-    //   }else{
-    //     let doc = new jsPDF('p','pt', 'a4');
-    //     doc.page = 0;
-    //     var col=[];
-    //     for (var k in excelData[0]) col.push(k);
-    //       console.log(col.length)
-    //     var rows = [];
-    //     excelData.forEach(obj => {
-    //       console.log(obj)
-    //       let arr = [];
-    //       col.forEach(col => {
-    //         arr.push(obj[col]);
-    //       });
-    //       rows.push(arr);
-    //     });
-
-    //     doc.autoTable(col, rows,{
-    //       margin:{left:5,right:5,top:5},
-    //       theme:"grid",
-    //       styles: {
-    //         fontSize: 3
-    //       }});
-    //     doc.setFontSize(3);
-    //     // doc.save("Indoor-Patient-List.pdf");
-    //     window.open(URL.createObjectURL(doc.output("blob")))
-    //   }
-    // }
+  exportReportExcel() {
+    let exportHeaders = ['OP_Ip_Type', 'IsCompleted', 'RadDate', 'RegNo', 'PatientName', 'Doctorname', 'AgeGender', 'ServiceName','PBillNo','MobileNo','CompanyName','RefDoctorName'];
+    this.reportDownloadService.getExportJsonData(this.dataSource.data, exportHeaders, 'Radiology List');
   }
-}
+
+  exportReportPdf() {
+    let actualData = [];
+    this.dataSource.data.forEach(e => {
+      var tempObj = [];
+      tempObj.push(e.OP_Ip_Type);
+      tempObj.push(e.IsCompleted);
+      tempObj.push(e.RadDate);
+      tempObj.push(e.RegNo);
+      tempObj.push(e.PatientName);
+      tempObj.push(e.Doctorname);
+      tempObj.push(e.AgeGender);
+      tempObj.push(e.ServiceName);
+      tempObj.push(e.PBillNo);
+      tempObj.push(e.MobileNo);
+      tempObj.push(e.CompanyName);
+      tempObj.push(e.RefDoctorName);
+      
+      actualData.push(tempObj);
+    });
+    let headers = [['OP_Ip_Type', 'IsCompleted', 'RadDate', 'RegNo', 'PatientName', 'Doctorname', 'AgeGender', 'ServiceName','PBillNo','MobileNo','CompanyName','RefDoctorName']];
+    this.reportDownloadService.exportPdfDownload(headers, actualData, 'Radiology List');
+  }
+
+} 
 
 
 export class RadioPatientList {
@@ -417,7 +364,15 @@ export class RadioPatientList {
   GenderName: String;
   PBillNo: number;
   OPD_IPD_ID: any;
-
+OP_Ip_Type: any;
+IsCompleted: any;
+DoctorName: any;
+AgeGender: any;
+ServiceName: any;
+MobileNo: any;
+CompanyName: any;
+RefDoctorName: any;
+Doctorname:any;
 
   constructor(RadioPatientList) {
     this.RadDate = RadioPatientList.RadDate || '';
@@ -432,6 +387,16 @@ export class RadioPatientList {
     this.AgeYear = RadioPatientList.AgeYear;
     this.GenderName = RadioPatientList.GenderName;
     this.OPD_IPD_ID = RadioPatientList.OPD_IPD_ID || '';
+
+    this.OP_Ip_Type = RadioPatientList.OP_Ip_Type || '';
+    this.IsCompleted = RadioPatientList.IsCompleted || '0';
+    this.DoctorName = RadioPatientList.DoctorName || '';
+    this.AgeGender = RadioPatientList.AgeGender;
+    this.ServiceName = RadioPatientList.ServiceName;
+    this.MobileNo = RadioPatientList.MobileNo || '';
+    this.CompanyName = RadioPatientList.CompanyName;
+    this.RefDoctorName = RadioPatientList.RefDoctorName || '';
+    this.Doctorname=RadioPatientList.Doctorname || ''
   }
 
 }
@@ -507,6 +472,7 @@ export class RadiologyPrint {
   CompanyName:any;
   DepartmentName:any;
   AgeMonth:any;
+  ServiceId:any;
 
   constructor(RadiologyPrint) {
     this.RadDate = RadiologyPrint.RadDate || '';
@@ -553,7 +519,7 @@ export class RadiologyPrint {
     this.AdmDateTime = RadiologyPrint.AdmDateTime || '';
 
     this.RadTestID = RadiologyPrint.RadTestID || '';
-
+    this.ServiceId = RadiologyPrint.ServiceId || 0;
   }
 
 }

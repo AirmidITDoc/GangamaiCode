@@ -54,15 +54,14 @@
 
                                 <mat-form-field appearance="outline">
                                     <mat-label>First Name</mat-label>
-                                    <input name="FirstNameSearch" formControlName="FirstNameSearch" matInput (keyup)="onShow($event)">
-                                    <span class="error" *ngIf="f.FirstNameSearch.invalid && f.FirstNameSearch.touched">FirstName
-                                        is
+                                    <input name="FirstNameSearch" formControlName="FirstNameSearch" matInput (keyup)="onShow($event)" type="text">
+                                    <span class="error" *ngIf="f.FirstNameSearch.invalid && f.FirstNameSearch.touched">FirstName is
                                         required Enter only Alphabets</span>
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline">
                                     <mat-label>Last Name</mat-label>
-                                    <input name="LastNameSearch" formControlName="LastNameSearch" matInput (keyup)="onShow($event)">
+                                    <input name="LastNameSearch" formControlName="LastNameSearch" matInput (keyup)="onShow($event)" type="text">
                                     <span class="error" *ngIf="f.LastNameSearch.invalid && f.LastNameSearch.touched">LastName is
                                         required Enter only Alphabets</span>
                                 </mat-form-field>

@@ -1,17 +1,19 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { fuseAnimations } from '@fuse/animations';
 import { SampleDetailObj, Templateprintdetail } from '../result-entry.component';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { ResultEntryService } from '../result-entry.service';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { map, startWith } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-result-entrytwo',
@@ -34,7 +36,7 @@ export class ResultEntrytwoComponent implements OnInit {
     
   };
 
-  
+  vTemplateName: any = 0;
   isLoading: string = '';
   msg: any;
   selectedAdvanceObj: SampleDetailObj;
@@ -43,27 +45,33 @@ export class ResultEntrytwoComponent implements OnInit {
   printTemplate:any;
   PathReportID: any;
   PathTestId: any
-  // subscriptionArr: Subscription[] = [];
-  // reportPrintObj: Templateprintdetail;
-  // reportPrintObjList: SampleDetailObj[] = [];
-  // reportPrintObjs: SampleDetailObj ;
+  TemplateList:any=[];
+  optionsTemplate: any[] = [];
 
-  
-  // public iframe: object = { enable: true };
-TemplateDesc:any;
+  isTemplateNameSelected: boolean = false;
+ filteredOptionsisTemplate: Observable<string[]>;
+ 
+ TemplateDesc:any;
   otherForm: FormGroup;
-  private _matDialog: any;
+  // private _matDialog: any;
   vTemplateDesc:any="";
   constructor(
     public _SampleService: ResultEntryService,
     private accountService: AuthenticationService,
-    // public notification: NotificationServiceService,
+    public toastr: ToastrService,
     private advanceDataStored: AdvanceDataStored,
     private formBuilder: FormBuilder,
     public datePipe: DatePipe,
+    public _matDialog: MatDialog,
      public dialogRef: MatDialogRef<ResultEntrytwoComponent>,
   ) {
     dialogRef.disableClose = true;
+    if (this.advanceDataStored.storage) {
+      this.selectedAdvanceObj = this.advanceDataStored.storage;
+      this.selectedAdvanceObj1 = this.advanceDataStored.storage;
+      console.log( this.selectedAdvanceObj )
+      this.vTemplateDesc= this.selectedAdvanceObj.TemplateDesc;
+    }
    }
 
   ngOnInit(): void {
@@ -73,13 +81,8 @@ TemplateDesc:any;
       TemplateId:[0]
     
     });
-
-    if (this.advanceDataStored.storage) {
-      this.selectedAdvanceObj = this.advanceDataStored.storage;
-      this.selectedAdvanceObj1 = this.advanceDataStored.storage;
-      console.log( this.selectedAdvanceObj )
-      this.vTemplateDesc= this.selectedAdvanceObj.TemplateDesc;
-    }
+    this.getTemplateList();
+   
   }
 
   // onSubmit() {
@@ -120,12 +123,23 @@ TemplateDesc:any;
   //   }
   // }
   onSubmit() {
-    debugger;
-    
-  console.log(this.otherForm.get("ResultEntry").value)
-    const domParser = new DOMParser();
-    const htmlElement = domParser.parseFromString(this.otherForm.get("ResultEntry").value, 'text/html');
-    console.log(htmlElement)
+    debugger
+    if ((this.vTemplateName == '' || this.vTemplateName == null || this.vTemplateName == undefined)) {
+      this.toastr.warning('Please select valid Template ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if(this.otherForm.get("ResultEntry").value ==''){
+      this.toastr.warning('Please Enter Result Entry ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+  // console.log(this.otherForm.get("ResultEntry").value)
+  //   const domParser = new DOMParser();
+  //   const htmlElement = domParser.parseFromString(this.otherForm.get("ResultEntry").value, 'text/html');
+  //   console.log(htmlElement)
 
 
     let pathologyTemplateDeleteObj = {};
@@ -137,7 +151,7 @@ TemplateDesc:any;
     let pathologyTemplateInsertObj = {};
         
     pathologyTemplateInsertObj['PathReportId'] = this.selectedAdvanceObj.PathReportID ;
-    pathologyTemplateInsertObj['PathTemplateId']= this.selectedAdvanceObj.PathTemplateId || 9;
+    pathologyTemplateInsertObj['PathTemplateId']= this.otherForm.get("TemplateName").value.TemplateId || 0;
     pathologyTemplateInsertObj['PathTemplateDetailsResult']= this.otherForm.get("ResultEntry").value,
     pathologyTemplateInsertObj['TestId'] = this.selectedAdvanceObj.PathTestID || 11;
     Billdetsarr.push(pathologyTemplateInsertObj);
@@ -146,15 +160,15 @@ TemplateDesc:any;
    
     pathologyTemplateUpdateObj['PathReportID'] =this.selectedAdvanceObj.PathReportID;
     pathologyTemplateUpdateObj['ReportDate'] = this.dateTimeObj.date;
-    pathologyTemplateUpdateObj['ReportTime'] = this.dateTimeObj.date;
-    pathologyTemplateUpdateObj['IsCompleted'] = 0;
-    pathologyTemplateUpdateObj['IsPrinted'] = 0;
-    pathologyTemplateUpdateObj['PathResultDr1'] = 10;
-    pathologyTemplateUpdateObj['PathResultDr3'] = 20;
+    pathologyTemplateUpdateObj['ReportTime'] = this.dateTimeObj.time;
+    pathologyTemplateUpdateObj['IsCompleted'] = 1;
+    pathologyTemplateUpdateObj['IsPrinted'] = 1;
+    pathologyTemplateUpdateObj['PathResultDr1'] = 0;
+    pathologyTemplateUpdateObj['PathResultDr3'] = 0;
     pathologyTemplateUpdateObj['IsTemplateTest'] = 1;
-    pathologyTemplateUpdateObj['SuggestionNotes'] =  "Hello";
-    pathologyTemplateUpdateObj['AdmVisitDoctorID'] = 30;
-    pathologyTemplateUpdateObj['RefDoctorID'] =  30;
+    pathologyTemplateUpdateObj['SuggestionNotes'] =  "";
+    pathologyTemplateUpdateObj['AdmVisitDoctorID'] = 0;
+    pathologyTemplateUpdateObj['RefDoctorID'] =  0;
    
     const pathologyTemplateDelete = new PthologyresulDelt(pathologyTemplateDeleteObj);
     const pathologyTemplateUpdate = new PthologyresulUp(pathologyTemplateUpdateObj); 
@@ -178,7 +192,7 @@ TemplateDesc:any;
               Swal.fire('Congratulations !', 'Pathology Template data saved Successfully !', 'success').then((result) => {
                 if (result.isConfirmed) {
                  this.dialogRef.close();
-                 this.viewgetPathologyTemplateReportPdf(response);
+                 this.viewgetPathologyTemplateReportPdf(this.selectedAdvanceObj.PathReportID);
                 }
               });
             } else {
@@ -195,7 +209,8 @@ TemplateDesc:any;
   viewgetPathologyTemplateReportPdf(obj) {
     debugger
     this._SampleService.getPathologyTempReport(
-      obj.RadReportId,0
+      obj,this.selectedAdvanceObj.OP_IP_Type
+      
       ).subscribe(res => {
       const dialogRef = this._matDialog.open(PdfviewerComponent,
         {
@@ -204,7 +219,7 @@ TemplateDesc:any;
           width: '100%',
           data: {
             base64: res["base64"] as string,
-            title: "Pathology Template  Viewer"
+            title: "Pathology Template Report Viewer"
           }
         });
     });
@@ -268,9 +283,34 @@ TemplateDesc:any;
   }
 
 
+  getTemplateList() {
+    var mdata={
+        Id:this.selectedAdvanceObj.ServiceId
+    }
+    this._SampleService.getTemplateCombo(mdata).subscribe(data => {
+      this.TemplateList = data;
+      this.optionsTemplate = this.TemplateList.slice();
+      this.filteredOptionsisTemplate = this.otherForm.get('TemplateName').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterTemplate(value) : this.TemplateList.slice()),
+      );
 
+    });
+  }
 
+  private _filterTemplate(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.TemplateName ? value.TemplateName.toLowerCase() : value.toLowerCase();
 
+      return this.optionsTemplate.filter(option => option.TemplateName.toLowerCase().includes(filterValue));
+    }
+  }
+
+  
+  getOptionTextTemplate(option) {
+
+    return option && option.TemplateName ? option.TemplateName : '';
+  }
 
 }
 

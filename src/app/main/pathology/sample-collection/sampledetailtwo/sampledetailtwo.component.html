@@ -245,8 +245,11 @@
         
                         <mat-form-field appearance="outline">
                             <mat-label>Collection Date / Time</mat-label>
-                            <input matInput type="datetime-local" placeholder=" date" [value]="date" [(ngModel)]="date"
-                                (change)="date=$event.target.value" formControlName="SampleDateTime">
+                            <input matInput type="datetime-local" placeholder="date" [value]="date" [(ngModel)]="date"
+                                (change)="date=$event.target.value" formControlName="SampleDateTime" />
+
+                                <!-- <input type="date" my-date="date" my-date-format="DD/MM/YYYY, hh:mm:ss" value="2015-08-09"  formControlName="SampleDateTime"
+                                [(ngModel)]="date"> -->
                         </mat-form-field>
                     </div>
                 </form>

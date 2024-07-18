@@ -94,13 +94,13 @@
 
                                         <mat-form-field appearance="outline">
                                             <mat-label>Search First Name</mat-label>
-                                            <input name="FirstNameSearch" formControlName="FirstNameSearch" matInput
+                                            <input name="FirstNameSearch" formControlName="FirstNameSearch" matInput type="text"
                                                 (keyup)="onShow($event)">
                                         </mat-form-field>
 
                                         <mat-form-field appearance="outline">
                                             <mat-label>Search Last Name</mat-label>
-                                            <input name="LastNameSearch" formControlName="LastNameSearch" matInput
+                                            <input name="LastNameSearch" formControlName="LastNameSearch" matInput type="text"
                                                 (keyup)="onShow($event)">
                                         </mat-form-field>
 
@@ -213,9 +213,8 @@
                                         </mat-radio-group>
                                     </div>
                                 </div>
-                                <mat-divider vertical style="color: gray;"></mat-divider>
-                                <div class="radio-content" fxLayout="column" style="padding: 5px 15px 0px 10px;"
-                                    fxFlex="15%">
+                                <!-- <mat-divider vertical style="color: gray;"></mat-divider> -->
+                                <div class="radio-content" fxLayout="column" style="padding: 5px 15px 0px 10px;" fxFlex="15%">
                                     <mat-label><b>Status</b></mat-label>
                                     <div fxLayout="row">
                                         <mat-radio-group name="StatusSearch" formControlName="StatusSearch" value='2'
@@ -226,7 +225,7 @@
                                     </div>
                                 </div>
 
-                                <div class="action-buttons mt-12">
+                                <div class="action-buttons mt-12"  fxFlex="12%">
                                     <button type="button" mat-raised-button class="clearbutton" matTooltip="close"
                                         (click)="onClear()">
                                         <mat-icon>close</mat-icon>
@@ -235,11 +234,19 @@
                                         (click)="onShow($event)" [disabled]="click" matTooltip="search">
                                         <mat-icon>search</mat-icon>
                                     </button>
+
+                                    <!-- <button type="button" mat-icon-button (click)="exportReportPdf()"
+                                        [disabled]="dataSource.data.length ==0">
+                                        <img width="32" height="10px" src="assets/images/svg/pdf-svg.svg">
+                                    </button>
+
+                                    <button type="button" mat-icon-button (click)="exportReportExcel()"
+                                        [disabled]="dataSource.data.length == 0">
+                                        <img width="32" height="10px" src="assets/images/svg/xls-svg.svg">
+                                    </button> -->
                                 </div>
                             </div>
                         </form>
-
-
 
 
                         <mat-card>
@@ -254,15 +261,15 @@
                                         [@animateStagger]="{value:'50'}">
 
                                         <ng-container matColumnDef="OP_Ip_Type" sticky>
-                                            <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-80"> 
+                                            <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-80">
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact"  class="w-80"> 
-                                                    <mat-icon   *ngIf="contact.OPD_IPD_Type==1"  title="IP"
+                                            <mat-cell *matCellDef="let contact" class="w-80">
+                                                <mat-icon *ngIf="contact.OPD_IPD_Type==1" title="IP"
                                                     class="pill green-600 s-16">circle</mat-icon>
-                                                    <mat-icon  *ngIf="contact.OPD_IPD_Type==0"  title="OP"
-                                                    class="pill orange s-16">circle</mat-icon> 
+                                                <mat-icon *ngIf="contact.OPD_IPD_Type==0" title="OP"
+                                                    class="pill orange s-16">circle</mat-icon>
                                             </mat-cell>
-                                        </ng-container> 
+                                        </ng-container>
 
                                         <ng-container matColumnDef="IsCompleted" sticky>
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
@@ -401,17 +408,18 @@
                                                     (click)="viewgetRadioloyTemplateReportPdf(contact)"
                                                     matTooltip="print">
                                                     -->
-                                                    <button mat-icon-button (click)="viewgetRadioloyTemplateReportPdf(contact)"
-                                                        matTooltip="print">
-                                                        <mat-icon>print</mat-icon>
-                                                    </button>
-                                                    <button mat-icon-button>
-                                                        <mat-icon title="Email">mail</mat-icon>
-                                                    </button>
-                                                    <button mat-icon-button title="Send Bill On WhatsApp">
-                                                        <img width="100" height="20px"
-                                                            src="assets/images/logos/WhatsApp.png">
-                                                    </button>
+                                                <button mat-icon-button
+                                                    (click)="viewgetRadioloyTemplateReportPdf(contact)"
+                                                    matTooltip="print">
+                                                    <mat-icon>print</mat-icon>
+                                                </button>
+                                                <button mat-icon-button>
+                                                    <mat-icon title="Email">mail</mat-icon>
+                                                </button>
+                                                <button mat-icon-button title="Send Bill On WhatsApp">
+                                                    <img width="100" height="20px"
+                                                        src="assets/images/logos/WhatsApp.png">
+                                                </button>
                                             </mat-cell>
                                         </ng-container>
 

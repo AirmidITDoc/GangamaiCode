@@ -13,6 +13,7 @@ import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
 import { AdmissionModule } from 'app/main/ipd/Admission/admission/admission.module';
 import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
+import moment from 'moment';
 
 @Component({
   selector: 'app-sampledetailtwo',
@@ -72,11 +73,27 @@ Currentdate:any;
     dialogRef.disableClose = true;
     this.advanceData = data;
     console.log(this.advanceData);
-    this.date = new Date().toISOString().slice(0, 16);
-     //this.date= (this.datePipe.transform(new Date(),"MM-dd-YYYY hh:mm")).toString().slice(0, 16) || '01/01/1900',
+    console.log(new Date())
+    debugger
+    let mydate= new Date()
+
+    // this.date = mydate.toISOString().slice(0, 19).replace('T', ' ');
+    
+    this.date = (this.datePipe.transform(new Date(),"MM-dd-YYYY hh:mm tt"));
+
+    //this.date= (this.datePipe.transform(new Date(),"MM-dd-YYYY hh:mm")).toString().slice(0, 16) || '01/01/1900',
     //this.date = new Date();
+
+ 
     console.log( this.date )
+
+
+    var now = new Date();
+now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+this.date = now.toISOString().slice(0,16);
   }
+
+
 
   ngOnInit(): void {
 

@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { SampleDetailObj } from '../result-entry.component';
 import { MatTableDataSource } from '@angular/material/table';
@@ -14,6 +14,8 @@ import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
 import Swal from 'sweetalert2'; 
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-result-entry-one',
@@ -39,7 +41,7 @@ export class ResultEntryOneComponent implements OnInit {
   Doctor1List: any = []; 
   otherForm: FormGroup;
   msg: any;
-  PatientHeaderObj: any; 
+  
   selectedAdvanceObj1:SampleDetailObj;
   screenFromString = 'opd-casepaper';
   hasSelectedContacts: boolean; 
@@ -59,24 +61,38 @@ export class ResultEntryOneComponent implements OnInit {
   currentDate: Date = new Date();
 
   isresultdrSelected: boolean = false;
-  isReligionSelected: boolean = false;
-  isMaritalSelected: boolean = false;
+  // isReligionSelected: boolean = false;
+  // isMaritalSelected: boolean = false;
+
+  vPathResultDoctorId: any = 0;
+  vDoctorId: any = 0;
+  vRefDoctorID: any = 0;
+  vsuggation: any = '';
+  reportIdData={};
   
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(private formBuilder: FormBuilder,
-    // public _matDialog: MatDialog,
     public _SampleService: ResultEntryService,
     public datePipe: DatePipe,
     private dialogRef: MatDialogRef<ResultEntryOneComponent>,
-    // public dialog: MatDialog,
+    public _matDialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private advanceDataStored: AdvanceDataStored,
     private configService: ConfigService,
+    public toastr: ToastrService,
     private _fuseSidebarService: FuseSidebarService) {
 
-    this.advanceData = data; 
+    this.advanceData = data.patientdata; 
+    console.log(this.advanceData )
+
+    if (this.data) {
+      console.log(this.data)
+      this.reportIdData = this.data.RIdData;
+      console.log(this.reportIdData )
+    }
+
   } 
   ngOnInit(): void {
     this.otherForm = this.formBuilder.group({
@@ -95,7 +111,7 @@ export class ResultEntryOneComponent implements OnInit {
     if (this.advanceDataStored.storage) { 
       this.selectedAdvanceObj1 = this.advanceDataStored.storage; 
       console.log(this.selectedAdvanceObj1);
-      this.PatientHeaderObj = this.advanceDataStored.storage;
+      
     } 
 
     //For Diffrente List Dispaly(IP?OP)
@@ -107,7 +123,7 @@ export class ResultEntryOneComponent implements OnInit {
         this.getResultListOP();
       }
     } else {
-      this.getResultList();
+      this.getResultList(this.advanceData);
     }
 
     
@@ -138,11 +154,12 @@ export class ResultEntryOneComponent implements OnInit {
   }
   
 
-  getResultList() {
-    debugger;
+  getResultList(advanceData) {
+    
+    console.log(advanceData)
     this.sIsLoading = 'loading-data';
-    let SelectQuery = "Select * from lvw_Retrieve_PathologyResult where opd_ipd_id=" + this.advanceData.OPD_IPD_ID + " and ServiceID in (" + this.advanceData.ServiceId + ") and OPD_IPD_Type = " + this.advanceData.OP_IP_Type + " AND IsCompleted = 0 and PathReportID = " + this.advanceData.PathReportID + ""
-   
+    let SelectQuery = "Select * from lvw_Retrieve_PathologyResult where opd_ipd_id=" + advanceData.OPD_IPD_ID + " and ServiceID in (" + advanceData.ServiceId + ") and OPD_IPD_Type = " + advanceData.OPD_IPD_Type + " AND IsCompleted = 0 and PathReportID = " + advanceData.PathReportID+ ""
+   console.log(SelectQuery)
     this._SampleService.getPathologyResultList(SelectQuery).subscribe(Visit => {
       this.dataSource.data = Visit as Pthologyresult[];
       this.Pthologyresult = Visit as Pthologyresult[];
@@ -177,8 +194,29 @@ export class ResultEntryOneComponent implements OnInit {
   onEnterresultdr($event){
     
   }
+ 
   onSave() {
-    debugger;
+    debugger
+    if ((this.vPathResultDoctorId == '' || this.vPathResultDoctorId == null || this.vPathResultDoctorId == undefined)) {
+      this.toastr.warning('Please select valid PathResultDoctorId ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if ((this.vDoctorId == '' || this.vDoctorId == null || this.vDoctorId == undefined)) {
+      this.toastr.warning('Please select valid DoctorId', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if ((this.vRefDoctorID == '' || this.vRefDoctorID == null || this.vRefDoctorID == undefined)) {
+      this.toastr.warning('Please select RefDoctorID', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+
+
     let pathologyDeleteObj = {};
     pathologyDeleteObj['pathReportID'] = this.selectedAdvanceObj1.PathReportID;
 
@@ -210,7 +248,7 @@ console.log(element)
       PathInsertArry.push(pathologyInsertReportObj);
 
     });
-debugger;
+
     let pathologyUpdateReportObj = {};
     pathologyUpdateReportObj['PathReportID'] = this.selectedAdvanceObj1.PathReportID;
     pathologyUpdateReportObj['ReportDate'] =this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
@@ -228,14 +266,7 @@ debugger;
     const pathologyDelete = new PthologyresulDelt(pathologyDeleteObj);
     const pathologyUpdateObj = new PthologyresulUp(pathologyUpdateReportObj);
 
-    // let PatientHeaderObj = {};
-
-    // PatientHeaderObj['ReportDate'] = this.dateTimeObj.date;
-    // PatientHeaderObj['ReportTime'] = this.dateTimeObj.time;
-    // PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName;
-    // PatientHeaderObj['RegNo'] = this.selectedAdvanceObj.RegNo;
-
-    // this.dialogRef.afterClosed().subscribe(result => {
+    
     console.log('==============================  PathologyResult ===========');
     let submitData = {
       "deletepathreportheader": pathologyDelete,
@@ -248,6 +279,7 @@ debugger;
         Swal.fire('Congratulations !', 'Pathology Resulentry data saved Successfully !', 'success').then((result) => {
           if (result.isConfirmed) {
             this.dialogRef.close();
+            this.viewgetPathologyTestReportPdf(this.selectedAdvanceObj1)
           }
         });
       } else {
@@ -259,10 +291,67 @@ debugger;
     // });
   }
 
+  @ViewChild('PathResultDoctorId') PathResultDoctorId: ElementRef;
+  @ViewChild('DoctorId') DoctorId: ElementRef;
+  @ViewChild('RefDoctorID') RefDoctorID: ElementRef;
 
 
+  public onEnterSugg(event): void {
+    if (event.which === 13) {
+  
+      this.PathResultDoctorId.nativeElement.focus();
+    }
+  }
+
+  
+  public onEnterPathResultDoctorId(event,value): void {
+      if (event.which === 13) {
+
+      console.log(value)
+      if (value == undefined) {
+        this.toastr.warning('Please Enter Valid Pathology Doctor .', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      } else {
+        this.DoctorId.nativeElement.focus();
+      }
+    }
+  }
+  public onEnterDoctorId(event,value): void {
+   
+      if (event.which === 13) {
+
+        console.log(value)
+        if (value == undefined) {
+          this.toastr.warning('Please Enter Valid DoctorId.', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return;
+        } else {
+          this.RefDoctorID.nativeElement.focus();
+        }
+      }
+
+  }
+
+  public onEnterRefDoctorID(event,value): void {
+    
+    if (event.which === 13) {
+
+      console.log(value)
+      if (value == undefined) {
+        this.toastr.warning('Please Enter Referenc Doctor.', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      } 
+    }
+
+  }
+  
   // getPathologyDoctorList() {
-  //   debugger;
+  //   
    
   //   this._SampleService.getPathologyDoctorCombo().subscribe(data => {
   //     this.PathologyDoctorList = data;
@@ -351,7 +440,7 @@ debugger;
 
 
   getResultListIP() {
-    debugger;
+    
     this.sIsLoading = 'loading-data';
     let SelectQuery = "Select * from lvw_Retrieve_PathologyResultIPPatientUpdate where PathReportId in(" + this.advanceData.PathReportID + ")"
 
@@ -370,7 +459,7 @@ debugger;
   }
 
   getResultListOP() {
-    debugger;
+    
     this.sIsLoading = 'loading-data';
     let SelectQuery = "Select * from lvw_Retrieve_PathologyResultUpdate where PathReportId in(" + this.advanceData.PathReportID + ")"
     this._SampleService.getPathologyResultListforOP(SelectQuery).subscribe(Visit => {
@@ -394,6 +483,33 @@ debugger;
     this.dialogRef.close();
   }
 
+
+  viewgetPathologyTestReportPdf(contact) {
+    debugger
+    setTimeout(() => {
+      // this.SpinLoading = true;
+      // this.AdList = true;
+      this._SampleService.getPathTestReport(
+        contact.PathReportID,contact.OP_IP_Type
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "pathology Test  Viewer"
+            }
+          });
+          dialogRef.afterClosed().subscribe(result => {
+            // this.AdList=false;
+            // this.SpinLoading = false;
+          });
+      });
+
+    }, 100);
+  }
 
 
 

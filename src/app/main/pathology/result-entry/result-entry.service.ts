@@ -17,13 +17,15 @@ export class ResultEntryService {
   createSearchForm(): FormGroup {
     return this._formBuilder.group({
       RegNoSearch: [],
-      FirstNameSearch: ['', [
-
-        Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
+      FirstNameSearch:  ['', [
+        Validators.maxLength(50),
+        // Validators.pattern("^[a-zA-Z._ -]*$"),
+        Validators.pattern('^[a-zA-Z () ]*$')
       ]],
       LastNameSearch: ['', [
-
-        Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
+        Validators.maxLength(50),
+        // Validators.pattern("^[a-zA-Z._ -]*$"),
+        Validators.pattern('^[a-zA-Z () ]*$')
       ]],
       // BillNo:[''],
       // BillDate:[''],
@@ -85,7 +87,7 @@ export class ResultEntryService {
   }
 
   public getSampleList(employee) {
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PathResultEntryList_Test_Dtls", employee)
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PathResultEntryList_Test_Dtls", employee)
   }
 
   public getInsertStatementQuery(query) {
@@ -96,9 +98,9 @@ export class ResultEntryService {
     return this._httpClient.post("Generic/GetByProc?procName=rptPathologyReportPrintMultiple", employee)
   }
   public getTestList(employee){
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PathResultEntryList_Test_Dtls1", employee)
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PathResultEntryList_Test_Dtls", employee)
   }
-
+  // Rtrv_PathResultEntryList_Test_Dtls1
   public PathTemplateResultentryInsert(employee) {
     return this._httpClient.post("Pathology/PathologyTemplateResult", employee);
   }
@@ -117,6 +119,9 @@ export class ResultEntryService {
     return this._httpClient.get("Pathology/view-PathTemplate?PathReportId=" + PathReportId + "&OP_IP_Type="+OP_IP_Type);
   }
 
+  getTemplateCombo(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_PathTemplateMasterForCombo", employee)
+  }
   
  
   populateForm(employee) {

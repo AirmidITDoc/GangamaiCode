@@ -135,6 +135,29 @@
     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
         
             <div fxFlex.gt-sm="100%" fxFlex>
+                <div fxLayoutGap="5px">
+                    <!-- <h3 style="font-weight:bold ;">TemplateInformation</h3> -->
+                   
+                    <mat-form-field appearance="outline">
+                        <mat-label>Template Name</mat-label>
+                        <input matAutocompletePosition="below" type="text"  [(ngModel)]="vTemplateName"
+                            placeholder="Enter Template Name" matInput formControlName="TemplateName"
+                            [matAutocomplete]="autotemp">
+                        <span matSuffix style="display: flex;">
+                            <mat-icon class="mat-icon-close"
+                                (click)="_radiologytemplateService.myform.get('TemplateName').setValue(''); isTemplateNameSelected = false;">close</mat-icon>
+                            <mat-icon class="mat-icon-close"
+                                (click)="_radiologytemplateService.myform.get('TemplateName').setValue(''); isTemplateNameSelected = false;">search</mat-icon>
+                        </span>
+                        <mat-autocomplete #autotemp="matAutocomplete" [displayWith]="getOptionTextTemplate">
+                            <mat-option *ngFor="let option of filteredOptionsisTemplate | async"
+                                [value]="option">
+                                {{option.TemplateName}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+
                 <div fxlayout="row" style="padding: 5px 5px 5px 5px;"> 
                  
                     <mat-card fxFlex style="padding: 6px;">

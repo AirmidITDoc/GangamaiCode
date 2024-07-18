@@ -134,11 +134,25 @@
                    
 
                     <div fxLayoutGap="5px">
-                        <h3 style="font-weight:bold ;">TemplateInformation</h3>
-                        <mat-form-field appearance="outline" fxFlex="40%;">
-                            <!-- <mat-label>Template Name</mat-label> -->
-                            <input name="TemplateName" formControlName="TemplateName" matInput required placeholder="Enter Template Name">
-                            <mat-error>Please Enter Template Name </mat-error>
+                        <!-- <h3 style="font-weight:bold ;">TemplateInformation</h3> -->
+                       
+                        <mat-form-field appearance="outline">
+                            <mat-label>Template Name</mat-label>
+                            <input matAutocompletePosition="below" type="text"  [(ngModel)]="vTemplateName"
+                                placeholder="Enter Template Name" matInput formControlName="TemplateName"
+                                [matAutocomplete]="autotemp">
+                            <span matSuffix style="display: flex;">
+                                <mat-icon class="mat-icon-close"
+                                    (click)="otherForm.get('TemplateName').setValue(''); isTemplateNameSelected = false;">close</mat-icon>
+                                <mat-icon class="mat-icon-close"
+                                    (click)="otherForm.get('TemplateName').setValue(''); isTemplateNameSelected = false;">search</mat-icon>
+                            </span>
+                            <mat-autocomplete #autotemp="matAutocomplete" [displayWith]="getOptionTextTemplate">
+                                <mat-option *ngFor="let option of filteredOptionsisTemplate | async"
+                                    [value]="option">
+                                    {{option.TemplateName}}
+                                </mat-option>
+                            </mat-autocomplete>
                         </mat-form-field>
                     </div>
                     <div fxLayoutGap="5px">
@@ -148,12 +162,12 @@
 
                     </div>
                     <div fxLayoutGap="5px">
-
+                      
                         <div class="footer-navigation-container">
                             <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px">
                                 <button class="btn btn-danger-outline" (click)="onClose()">Clear</button>
                                 <button class="btn btn-primary" (click)="onSubmit()"
-                                    [disabled]="otherForm.invalid">Save</button>
+                              [disabled]="otherForm.invalid">Save</button>
                             </div>
                         </div>
 

@@ -57,10 +57,14 @@ export class ResultEntryComponent implements OnInit {
   DoctorId: any;
   printTemplate: any;
   subscriptionArr: Subscription[] = [];
-  //Template filter
-  public templateFilterCtrl: FormControl = new FormControl();
-  public filteredtemplate: ReplaySubject<any> = new ReplaySubject<any>(1);
+  TemplateList:any=[];
+  optionsTemplate: any[] = [];
 
+  isTemplateNameSelected: boolean = false;
+ filteredOptionsisTemplate: Observable<string[]>;
+ vTemplateName: any = 0;
+
+  
   //doctor filter
   public DoctorFilterCtrl: FormControl = new FormControl();
   public filtereddoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
@@ -95,6 +99,7 @@ export class ResultEntryComponent implements OnInit {
     public dialogRef: MatDialogRef<ResultEntryComponent>,
   ) { 
     this.getDoctorList()
+    this.getTemplateList();
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
     }
@@ -154,22 +159,27 @@ Rtevdropdownvalue(){
   onBlur(e:any){
     this.vTemplateDesc=e.target.innerHTML;
   } 
-  getTemplateList() {
-    let Id = 1;
-    this._radiologytemplateService.gettemplateCombo(Id).subscribe(data => { this.templatelist = data; })
-  }
 
   onSubmit() {
-   if(this.vTemplateDesc == '' || this.vTemplateDesc == null || this.vTemplateDesc == undefined){
-    this.toastr.warning('Enter Template Details', 'Warning !', {
+  
+   if ((this.vTemplateName == '' || this.vTemplateName == null || this.vTemplateName == undefined)) {
+    this.toastr.warning('Please select valid Template ', 'Warning !', {
       toastClass: 'tostr-tost custom-toast-warning',
     });
-   }
-   console.log(this._radiologytemplateService.myform.get("ResultEntry").value)
-   const domParser = new DOMParser();
-  const htmlElement = domParser.parseFromString(this._radiologytemplateService.myform.get("ResultEntry").value, 'text/html');
+    return;
+  }
+  if(this._radiologytemplateService.myform.get("TemplateId").value ==''){
+    this.toastr.warning('Please Enter Template Entry ', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  }
+
+  //  console.log(this._radiologytemplateService.myform.get("ResultEntry").value)
+  //  const domParser = new DOMParser();
+  // const htmlElement = domParser.parseFromString(this._radiologytemplateService.myform.get("ResultEntry").value, 'text/html');
  
-   console.log(htmlElement)
+  //  console.log(htmlElement)
   
       if (!this.selectedAdvanceObj.RadReportId) {
         var m_data = {
@@ -262,6 +272,35 @@ Rtevdropdownvalue(){
   }
   
 
+
+  getTemplateList() {
+    var mdata={
+        Id:this.selectedAdvanceObj.ServiceId
+    }
+    this._radiologytemplateService.getTemplateCombo(mdata).subscribe(data => {
+      this.TemplateList = data;
+      this.optionsTemplate = this.TemplateList.slice();
+      this.filteredOptionsisTemplate = this._radiologytemplateService.myform.get('TemplateName').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterTemplate(value) : this.TemplateList.slice()),
+      );
+
+    });
+  }
+
+  private _filterTemplate(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.TemplateName ? value.TemplateName.toLowerCase() : value.toLowerCase();
+
+      return this.optionsTemplate.filter(option => option.TemplateName.toLowerCase().includes(filterValue));
+    }
+  }
+
+  
+  getOptionTextTemplate(option) {
+
+    return option && option.TemplateName ? option.TemplateName : '';
+  }
 
   onEdit(row) {
     var m_data = {

@@ -279,16 +279,16 @@ export class SampleCollectionComponent implements OnInit {
 
   getSampleRecords(contact) {
     console.log(contact)
-    let xx = {
-      RegNo: contact.RegNo,
-      AdmissionID: contact.VisitId,
-      PatientName: contact.PatientName,
-      Doctorname: contact.DoctorName,
-      AdmDateTime: contact.DOA,
-      AgeYear: contact.AgeYear,
-      WardName: contact.WardName,
+    // let xx = {
+    //   RegNo: contact.RegNo,
+    //   AdmissionID: contact.VisitId,
+    //   PatientName: contact.PatientName,
+    //   Doctorname: contact.DoctorName,
+    //   AdmDateTime: contact.DOA,
+    //   AgeYear: contact.AgeYear,
+    //   WardName: contact.WardName,
 
-    };
+    // };
     this.advanceDataStored.storage = new AdvanceDetailObj(contact);
 
     const dialogRef1 = this._matDialog1.open(SampledetailtwoComponent,
@@ -297,9 +297,7 @@ export class SampleCollectionComponent implements OnInit {
         height: '80vh',
         width: '100%',
         data: {
-          // BillNo: contact.BillNo,
-          // OP_IP_Type: contact.PatientType,
-          // From_dt: contact.PathDate,
+         
           regobj:contact
         } 
       });
