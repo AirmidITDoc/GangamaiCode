@@ -22,9 +22,7 @@ import Swal from 'sweetalert2';
 export class NewAdvanceComponent implements OnInit {
   displayedColumns = [
     'Date',
-    'AdvanceNo',
-    'UHIDNo',
-    'PatientName',
+    'AdvanceNo', 
     'AdvanceAmount',
     'UsedAmount',
     'BalanceAmount',
@@ -129,6 +127,8 @@ export class NewAdvanceComponent implements OnInit {
    this.vRefDocName = obj.RefDocName
    this.getAdvanceList(obj);
   }
+  vAdvanceId:any;
+  vAdvanceDetailID:any;
   getAdvanceList(obj) {
     this.sIsLoading = 'loading';
     var m_data = {
@@ -138,6 +138,8 @@ export class NewAdvanceComponent implements OnInit {
       this.sIsLoading = 'loading';
       this._PharAdvanceService.getAdvanceList(m_data).subscribe(Visit => {
         this.dsIpItemList.data = Visit as IpItemList[];
+        this.vAdvanceId = this.dsIpItemList.data[0]['AdvanceId'];
+        this.vAdvanceDetailID = this.dsIpItemList.data[0].AdvanceDetailID;
         console.log(this.dsIpItemList.data)
         this.dsIpItemList.sort = this.sort;
         this.dsIpItemList.paginator = this.paginator;  
@@ -156,8 +158,7 @@ export class NewAdvanceComponent implements OnInit {
   //   netAmt = element.reduce((sum, { BalanceAmount }) => sum += +(BalanceAmount || 0), 0);
   //   this.Advavilableamt = netAmt;
   //   return netAmt;
-  // }
-  vAdvanceDetailID:any;
+  // } 
   keyPressCharater(event){
     var inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
@@ -167,6 +168,7 @@ export class NewAdvanceComponent implements OnInit {
       return false;
     }
   }
+ 
   onSave(){ 
     if(this.vadvanceAmount == '' || this.vadvanceAmount == null || this.vadvanceAmount == undefined || this.vadvanceAmount ==0){
       this.toastr.warning('Please enter advance amount', 'Warning !', {
@@ -188,32 +190,29 @@ export class NewAdvanceComponent implements OnInit {
         insertPHAdvanceObj['isCancelled'] = false;
         insertPHAdvanceObj['isCancelledBy'] = '0';
         insertPHAdvanceObj['isCancelledDate'] = this.dateTimeObj.date || '01/01/1900'
-        debugger
-      let insertPHAdvanceDetail = [];
-      let insertPHAdvanceDetailobj = {};
-        this.dsIpItemList.data.forEach((element)=> { 
-        insertPHAdvanceDetailobj['advanceDetailID'] = 0;
-        insertPHAdvanceDetailobj['date'] = this.dateTimeObj.date  ;
-        insertPHAdvanceDetailobj['time'] =  this.dateTimeObj.time ;
-        insertPHAdvanceDetailobj['advanceId'] = element.AdvanceId || 0;
-        insertPHAdvanceDetailobj['refId'] = this.vRegId || 0;
-        insertPHAdvanceDetailobj['transactionId'] = 2;
-        insertPHAdvanceDetailobj['opD_IPD_Type'] = 1;
-        insertPHAdvanceDetailobj['opD_IPD_Id'] = element.OPD_IPD_Id || 0;
-        insertPHAdvanceDetailobj['advanceAmount'] = this._PharAdvanceService.NewAdvanceForm.get('advanceAmt').value;
-        insertPHAdvanceDetailobj['usedAmount'] = element.UsedAmount;
-        insertPHAdvanceDetailobj['balanceAmount'] =this._PharAdvanceService.NewAdvanceForm.get('advanceAmt').value;
-        insertPHAdvanceDetailobj['refundAmount'] = element.RefundAmount;
-        insertPHAdvanceDetailobj['reasonOfAdvanceId'] = 0;
-        insertPHAdvanceDetailobj['addedBy'] = this._loggedService.currentUserValue.user.id;
-        insertPHAdvanceDetailobj['isCancelled'] = false;
-        insertPHAdvanceDetailobj['isCancelledBy'] = 0;
-        insertPHAdvanceDetailobj['isCancelledDate'] = this.dateTimeObj.date;
-        insertPHAdvanceDetailobj['reason'] = this._PharAdvanceService.NewAdvanceForm.get('comment').value || '';
-        insertPHAdvanceDetailobj['storeId'] = this._loggedService.currentUserValue.user.storeId || 0;
-        insertPHAdvanceDetail.push(insertPHAdvanceDetailobj);
-      });
-      console.log(insertPHAdvanceDetail)
+       
+      let insertPHAdvanceDetailobj = {}; 
+          insertPHAdvanceDetailobj['advanceDetailID'] = 0;
+          insertPHAdvanceDetailobj['date'] = this.dateTimeObj.date  ;
+          insertPHAdvanceDetailobj['time'] =  this.dateTimeObj.time ;
+          insertPHAdvanceDetailobj['advanceId'] =  0;
+          insertPHAdvanceDetailobj['refId'] = this.vRegId || 0;
+          insertPHAdvanceDetailobj['transactionId'] = 2;
+          insertPHAdvanceDetailobj['opD_IPD_Type'] = 1;
+          insertPHAdvanceDetailobj['opD_IPD_Id'] =this.vAdmissionID || 0;
+          insertPHAdvanceDetailobj['advanceAmount'] = this._PharAdvanceService.NewAdvanceForm.get('advanceAmt').value;
+          insertPHAdvanceDetailobj['usedAmount'] =   0;
+          insertPHAdvanceDetailobj['balanceAmount'] =this._PharAdvanceService.NewAdvanceForm.get('advanceAmt').value;
+          insertPHAdvanceDetailobj['refundAmount'] = 0;
+          insertPHAdvanceDetailobj['reasonOfAdvanceId'] = 0;
+          insertPHAdvanceDetailobj['addedBy'] = this._loggedService.currentUserValue.user.id;
+          insertPHAdvanceDetailobj['isCancelled'] = false;
+          insertPHAdvanceDetailobj['isCancelledBy'] = 0;
+          insertPHAdvanceDetailobj['isCancelledDate'] = this.dateTimeObj.date;
+          insertPHAdvanceDetailobj['reason'] = this._PharAdvanceService.NewAdvanceForm.get('comment').value || '';
+          insertPHAdvanceDetailobj['storeId'] = this._loggedService.currentUserValue.user.storeId || 0;
+        
+
         let PatientHeaderObj = {};
         PatientHeaderObj['Date'] = this.dateTimeObj.date || '01/01/1900'
         PatientHeaderObj['OPD_IPD_Id'] = this.vIPDNo;
@@ -239,7 +238,7 @@ export class NewAdvanceComponent implements OnInit {
             console.log('==============================  Advance Amount ===========',result);
             let submitData = {
               "insertPHAdvance": insertPHAdvanceObj,
-              "insertPHAdvanceDetail": insertPHAdvanceDetail,
+              "insertPHAdvanceDetail": insertPHAdvanceDetailobj,
               "insertPHPayment": result.submitDataPay.ipPaymentInsert
             };
             console.log(submitData);
@@ -250,6 +249,7 @@ export class NewAdvanceComponent implements OnInit {
                   if (result.isConfirmed) {
                     //this.viewgetAdvanceReceiptReportPdf(response); 
                     this._matDialog.closeAll();
+                    this.onClose();
                   }
                 });
               } else {
@@ -262,35 +262,31 @@ export class NewAdvanceComponent implements OnInit {
   
        }
       else { 
-      //   let updatePHAdvanceObj = {};
-      //   updatePHAdvanceObj['advanceAmount'] = this._PharAdvanceService.NewAdvanceForm.get('advanceAmt').value || 0
-      //   updatePHAdvanceObj['balanceAmount'] = this.dateTimeObj.date || '01/01/1900'
-      //   updatePHAdvanceObj['advanceId'] = this.dateTimeObj.time || '01/01/1900' 
+        let updatePHAdvanceObj = {};
+        updatePHAdvanceObj['advanceAmount'] = this._PharAdvanceService.NewAdvanceForm.get('advanceAmt').value || 0
+        updatePHAdvanceObj['balanceAmount'] = this._PharAdvanceService.NewAdvanceForm.get('advanceAmt').value || 0 
+        updatePHAdvanceObj['advanceId'] = this.vAdvanceId || 0;
 
-       let insertPHAdvanceDetail = [];
-      this.dsIpItemList.data.forEach((element)=> {
-        let insertPHAdvanceDetailobj = {};
-        insertPHAdvanceDetailobj['advanceDetailID'] = 0;
-        insertPHAdvanceDetailobj['date'] = element.Date || this.dateTimeObj.date  ;
-        insertPHAdvanceDetailobj['time'] =  this.dateTimeObj.time ;
-        insertPHAdvanceDetailobj['advanceId'] = element.AdvanceId || 0;
-        insertPHAdvanceDetailobj['refId'] = this.vRegId || 0;
-        insertPHAdvanceDetailobj['transactionId'] = 2;
-        insertPHAdvanceDetailobj['opD_IPD_Type'] = 1;
-        insertPHAdvanceDetailobj['opD_IPD_Id'] = element.OPD_IPD_Id || 0;
-        insertPHAdvanceDetailobj['advanceAmount'] = element.AdvanceAmount || this._PharAdvanceService.NewAdvanceForm.get('advanceAmt').value;
-        insertPHAdvanceDetailobj['usedAmount'] = element.UsedAmount;
-        insertPHAdvanceDetailobj['balanceAmount'] = element.BalanceAmount || this._PharAdvanceService.NewAdvanceForm.get('advanceAmt').value;
-        insertPHAdvanceDetailobj['refundAmount'] = element.RefundAmount;
-        insertPHAdvanceDetailobj['reasonOfAdvanceId'] = 0;
-        insertPHAdvanceDetailobj['addedBy'] = this._loggedService.currentUserValue.user.id;
-        insertPHAdvanceDetailobj['isCancelled'] = false;
-        insertPHAdvanceDetailobj['isCancelledBy'] = 0;
-        insertPHAdvanceDetailobj['isCancelledDate'] = this.dateTimeObj.date || '01/01/1900'
-        insertPHAdvanceDetailobj['reason'] = this._PharAdvanceService.NewAdvanceForm.get('comment').value || '';
-        insertPHAdvanceDetailobj['storeId'] = this._loggedService.currentUserValue.user.storeId || 0;
-        insertPHAdvanceDetail.push(insertPHAdvanceDetailobj);
-      });
+      let insertPHAdvanceDetailobj = {}; 
+      insertPHAdvanceDetailobj['advanceDetailID'] =  this.vAdvanceDetailID || 0;
+      insertPHAdvanceDetailobj['date'] = this.dateTimeObj.date  ;
+      insertPHAdvanceDetailobj['time'] =  this.dateTimeObj.time ;
+      insertPHAdvanceDetailobj['advanceId'] = this.vAdvanceId || 0;
+      insertPHAdvanceDetailobj['refId'] = this.vRegId || 0;
+      insertPHAdvanceDetailobj['transactionId'] = 2;
+      insertPHAdvanceDetailobj['opD_IPD_Type'] = 1;
+      insertPHAdvanceDetailobj['opD_IPD_Id'] =this.vAdmissionID || 0;
+      insertPHAdvanceDetailobj['advanceAmount'] = this._PharAdvanceService.NewAdvanceForm.get('advanceAmt').value;
+      insertPHAdvanceDetailobj['usedAmount'] =   0;
+      insertPHAdvanceDetailobj['balanceAmount'] =this._PharAdvanceService.NewAdvanceForm.get('advanceAmt').value;
+      insertPHAdvanceDetailobj['refundAmount'] = 0;
+      insertPHAdvanceDetailobj['reasonOfAdvanceId'] = 0;
+      insertPHAdvanceDetailobj['addedBy'] = this._loggedService.currentUserValue.user.id;
+      insertPHAdvanceDetailobj['isCancelled'] = false;
+      insertPHAdvanceDetailobj['isCancelledBy'] = 0;
+      insertPHAdvanceDetailobj['isCancelledDate'] = this.dateTimeObj.date;
+      insertPHAdvanceDetailobj['reason'] = this._PharAdvanceService.NewAdvanceForm.get('comment').value || '';
+      insertPHAdvanceDetailobj['storeId'] = this._loggedService.currentUserValue.user.storeId || 0;
   
          let PatientHeaderObj = {};
         PatientHeaderObj['Date'] = this.dateTimeObj.date || '01/01/1900'
@@ -303,9 +299,9 @@ export class NewAdvanceComponent implements OnInit {
         
           const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
             {
-              maxWidth: "75vw",
-              height: '75vh',
-              width: '100%',
+              maxWidth: "90vw",
+              height: '640px',
+              width: '70%',
   
               data: {
                 vPatientHeaderObj: PatientHeaderObj,
@@ -317,9 +313,9 @@ export class NewAdvanceComponent implements OnInit {
             console.log('==============================  Advance Amount ===========');
   
             let submitData = {
-              // "advanceHeaderUpdate": updatePHAdvanceObj,
-              // "advanceDetailInsert1": insertPHAdvanceDetail,
-              // "ipPaymentInsert1": result.submitDataPay.ipPaymentInsert
+              "updatePHAdvance": updatePHAdvanceObj,
+              "insertPHAdvanceDetail": insertPHAdvanceDetailobj,
+              "insertPHPayment": result.submitDataPay.ipPaymentInsert
             };
             console.log(submitData);
             this._PharAdvanceService.UpdateIpPharmaAdvance(submitData).subscribe(response => {
@@ -327,6 +323,7 @@ export class NewAdvanceComponent implements OnInit {
                 Swal.fire('Congratulations !', 'IP Pharma Advance data Updated Successfully !', 'success').then((result) => {
                   if (result.isConfirmed) { 
                     this._matDialog.closeAll();
+                    this.onClose();
                    // this.viewgetAdvanceReceiptReportPdf(response);
                     // this.getPrint(response);
                   }
@@ -367,6 +364,7 @@ export class IpItemList {
   NeftPay:any;
   PayTMPay: any;
   UserName:any;
+  AdvanceDetailID:any;
 
   constructor(IpItemList) {
     {

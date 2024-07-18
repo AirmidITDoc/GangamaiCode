@@ -27,10 +27,9 @@ export class ItemMasterComponent implements OnInit {
         this.step = index;
     }
     SearchName: string;
-
+    sIsLoading: string = ''; 
     @ViewChild(MatSort) sort: MatSort;
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-    @ViewChild(MatAccordion) accordion: MatAccordion;
+    @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
 
     displayedColumns: string[] = [
         "ItemID",

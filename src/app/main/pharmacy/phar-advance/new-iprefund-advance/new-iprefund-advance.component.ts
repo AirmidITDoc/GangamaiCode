@@ -18,19 +18,17 @@ import { MatPaginator } from '@angular/material/paginator';
   animations: fuseAnimations,
 })
 export class NewIPRefundAdvanceComponent implements OnInit {
-  displayedColumnsRef = [
-    'AddmissionDate',
-    'IPDNO',
-    'DoctorName' 
+  displayedColumns1 = [
+    'Date',
+    'RefundAmount' 
   ];
   displayedColumns = [
-    'Date',
+    'Date', 
+    'AdvanceNo', 
     'AdvanceAmount',
     'UsedAmount',
     'BalanceAmount',
-    'RefundAmount',
-    'PreviousRef',
-    'AdvanceNo', 
+    'RefundAmount', 
   ];
 
   dateTimeObj: any;
@@ -38,18 +36,34 @@ export class NewIPRefundAdvanceComponent implements OnInit {
   isLoading = true;
   isRegIdSelected: boolean = false;
   PatientListfilteredOptionsref: any;
+  screenFromString = 'pharma-refund';
   noOptionFound: any;
   filteredOptions: any;
-
+  vToatalRefunfdAmt:any;
+  vBalanceAmount:any;
   vRegNo: any;
   vPatienName: any;
   vMobileNo: any;
   vAdmissionDate: any;
   vAdmissionID: any;
-  vIPDNo: any;
-
+  vIPDNo: any; 
+  vRoomName:any;
+  vTariffName:any;
+  vBedName:any;
+  vCompanyName:any;
+  vDoctorName:any;
+  vGenderName:any;
+  vAge:any;
+  vAgeMonth:any;
+  vAgeDay:any;
+  vRefDocName:any;
+  vDepartment:any;
+  vadvanceAmount:any;
+  vRegId:any;
+  vPatientType:any;
   dsIpItemList = new MatTableDataSource<IpItemList>();
-  dsRefIpItemList = new MatTableDataSource<IpRefItemList>();
+  // dsRefIpItemList = new MatTableDataSource<IpRefItemList>();
+  dsPreRefundList =  new MatTableDataSource<IpRefItemList>();
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
@@ -94,22 +108,31 @@ export class NewIPRefundAdvanceComponent implements OnInit {
   getSelectedObj(obj) {
     console.log(obj)
     this.vRegNo = obj.RegNo;
+    this.vRegId= obj.RegID;
     this.vPatienName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
     this.vAdmissionDate = obj.AdmissionDate;
-    this.vMobileNo = obj.MobileNo;
+    this.vRoomName = obj.RoomName; 
     this.vAdmissionID = obj.AdmissionID;
-    this.vIPDNo = obj.IPDNo 
-    this.getAdvanceOldList(obj);
+    this.vIPDNo = obj.IPDNo
+    this.vTariffName = obj.TariffName;
+    this.vBedName = obj.BedName;
+    this.vCompanyName = obj.CompanyName;
+    this.vDoctorName = obj.DoctorName;
+    this.vGenderName = obj.GenderName;
+    this.vAge = obj.Age
+    this.vAgeMonth = obj.AgeMonth
+    this.vAgeDay = obj.AgeDay
+    this.vRefDocName = obj.RefDocName
   }
-  getAdvanceOldList(obj) { 
-    let strSql = "select AdmissionId,DOA,IPDNo,AdmittedDr from lvwAdmissionListWithRegNoForPhar where RegNo = " + this.vRegNo + " order by AdmissionId desc"
-    this._PharAdvanceService.getAdvanceOldList(strSql).subscribe(data => {
-      this.dsRefIpItemList.data = data as any;
-      console.log(this.dsRefIpItemList.data)
-      this.dsRefIpItemList.sort = this.sort;
-      this.dsRefIpItemList.paginator = this.Secondpaginator;
-    });   
-  }
+  // getAdvanceOldList(obj) { 
+  //   let strSql = "select AdmissionId,DOA,IPDNo,AdmittedDr from lvwAdmissionListWithRegNoForPhar where RegNo = " + this.vRegNo + " order by AdmissionId desc"
+  //   this._PharAdvanceService.getAdvanceOldList(strSql).subscribe(data => {
+  //     this.dsRefIpItemList.data = data as any;
+  //     console.log(this.dsRefIpItemList.data)
+  //     this.dsRefIpItemList.sort = this.sort;
+  //     this.dsRefIpItemList.paginator = this.Secondpaginator;
+  //   });   
+  // }
   
   getAdvanceList(obj) {
     this.sIsLoading = 'loading';
@@ -136,21 +159,28 @@ export class NewIPRefundAdvanceComponent implements OnInit {
     }, 500);
 
   }
-  TotalAdvamt: any;
-  Advavilableamt: any;
-  vadvanceAmount: any;
-  vPatientType: any;
+ 
   getAdvancetotal(element) {
     let netAmt;
     netAmt = element.reduce((sum, { AdvanceAmount }) => sum += +(AdvanceAmount || 0), 0);
-    this.TotalAdvamt = netAmt;
+    this.vToatalRefunfdAmt = netAmt;
     return netAmt;
   }
 
   getAdvavilable(element) {
     let netAmt;
     netAmt = element.reduce((sum, { BalanceAmount }) => sum += +(BalanceAmount || 0), 0);
-    this.Advavilableamt = netAmt;
+    this.vBalanceAmount = netAmt;
+    return netAmt;
+  }
+  getRefundSum(element) {
+    let netAmt;
+    netAmt = element.reduce((sum, { RefundAmount }) => sum += +(RefundAmount || 0), 0); 
+    return netAmt;
+  }
+  getAdvaceSum(element) {
+    let netAmt;
+    netAmt = element.reduce((sum, { AdvanceAmount }) => sum += +(AdvanceAmount || 0), 0); 
     return netAmt;
   }
   keyPressCharater(event) {
@@ -343,30 +373,24 @@ export class NewIPRefundAdvanceComponent implements OnInit {
   }
 }
   export class IpItemList {
-  
-    ItemName: string;
-    BatchNo: number;
-    Expdate: number;
-    Qty: string;
-    MRP: number;
-    TotalMRP: number;
-    GSTAmount: number;
-    CGST: any;
-    SGST: any;
-    IGST: any;
-  
+   
+    AdvanceNo: number;
+    PreviousRef: number;
+    BalanceAmount: any;
+    UsedAmount: any;
+    AdvanceAmount: any;
+    Date:any;
+    RefundAmount:any;
+ 
     constructor(IpItemList) {
-      {
-        this.ItemName = IpItemList.ItemName || '';
-        this.BatchNo = IpItemList.BatchNo || 0;
-        this.Expdate = IpItemList.Expdate || 0;
-        this.Qty = IpItemList.Qty || 0;
-        this.MRP = IpItemList.MRP || 0;
-        this.TotalMRP = IpItemList.TotalMRP || 0;
-        this.GSTAmount = IpItemList.GSTAmount || 0;
-        this.CGST = IpItemList.CGST || 0;
-        this.SGST = IpItemList.SGST || 0;
-        this.IGST = IpItemList.IGST || 0;
+      { 
+        this.AdvanceAmount = IpItemList.AdvanceAmount || 0;
+        this.UsedAmount = IpItemList.UsedAmount || 0;
+        this.BalanceAmount = IpItemList.BalanceAmount || 0;
+        this.AdvanceNo = IpItemList.AdvanceNo || 0; 
+        this.PreviousRef = IpItemList.PreviousRef || 0; 
+        this.RefundAmount = IpItemList.RefundAmount || 0;
+        this.Date = IpItemList.Date || 0;
       }
     }
   }

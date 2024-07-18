@@ -313,7 +313,7 @@
 
             <mat-form-field  appearance="outline" fxFlex fxFlex.xs="100%" style="margin-right:10px;">
               <mat-label>Store Name</mat-label>
-              <mat-select  [(ngModel)]="vStoreName"  multiple  formControlName="StoreId" >
+              <mat-select  [(ngModel)]="vStoreName"  multiple  formControlName="StoreId" #storename>
                 <mat-option *ngFor="let option of StorecmbList" [value]="option" > 
                   {{ option.StoreName }}
                 </mat-option>
@@ -337,7 +337,7 @@
        
     
         <div class="modal-footer-buttons gap-8" fxLayout="row" fxLayoutAlign="end" style="padding: 20px;"> 
-            <button class="btn btn-danger-outline" (click)="onClear()">Reset</button>
+            <button class="btn btn-danger-outline" (click)="onClear()">Close</button>
             <button class="btn btn-primary " (click)="onSubmit()" [disabled]="Savebtn">Save</button> 
         </div>
    

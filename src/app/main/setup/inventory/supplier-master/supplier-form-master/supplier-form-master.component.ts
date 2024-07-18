@@ -157,45 +157,20 @@ export class SupplierFormMasterComponent implements OnInit {
       // this.setDropdownObjs1();
     }
     
-    this.filteredOptionsCity = this._supplierService.myform.get('CityId').valueChanges.pipe(
-      startWith(''),
-      map(value => this._filterCity(value)),
-      
-    );
+   
 
     // this.filteredOptionsSuppliertype = this._supplierService.myform.get('SupplierType').valueChanges.pipe(
     //   startWith(''),
     //   map(value => this._filterSupplierType(value)),
     // );
 
-    this.filteredOptionsModeofpayment = this._supplierService.myform.get('ModeOfPayment').valueChanges.pipe(
-      startWith(''),
-      map(value => this._filterModeofpayment(value)),
-    );
+   
 
-    this.filteredOptionsTermofpayment = this._supplierService.myform.get('TermOfPayment').valueChanges.pipe(
-      startWith(''),
-      map(value => this._filterTermofpayment(value)),
-    );
-
-    this.filteredOptionsBank1 = this._supplierService.myform.get('BankName').valueChanges.pipe(
-      startWith(''),
-      map(value => this._filterBank(value)),
-    );
 
   
-    this.filteredOptionsStore = this._supplierService.myform.get('StoreId').valueChanges.pipe(
-      startWith(''),
-      map(value => this._filterStore(value)),
-      
-    );
+  
 
-    this.filteredOptionsVender = this._supplierService.myform.get('VenderTypeId').valueChanges.pipe(
-      startWith(''),
-      map(value => this._filtervender(value)),
-      
-    );
-
+  
 
   }
 
@@ -213,8 +188,12 @@ export class SupplierFormMasterComponent implements OnInit {
   
     getBankNameList1() {
         this._supplierService.getBankMasterCombo().subscribe(data => {
-          this.BankNameList1 = data;
-          console.log(this.BankNameList1 )
+          this.BankNameList1 = data;  
+          this.filteredOptionsBank1 = this._supplierService.myform.get('BankName').valueChanges.pipe(
+            map(value => value ? this._filterBank(value) : this.BankNameList1.slice()),
+          );
+         
+        
           if (this.data) {
             const ddValue = this.BankNameList1.filter(c => c.BankId == this.data.registerObj.BankId);
             this._supplierService.myform.get('BankName').setValue(ddValue[0]);
@@ -258,6 +237,11 @@ export class SupplierFormMasterComponent implements OnInit {
       
     this._supplierService.getCityMasterCombo().subscribe(data => {
       this.CitycmbList = data;
+      this.filteredOptionsCity = this._supplierService.myform.get('CityId').valueChanges.pipe(
+        startWith(''), 
+        map(value => value ? this._filterCity(value) : this.CitycmbList.slice()),
+        
+      );
       if (this.data) {
         const ddValue = this.CitycmbList.filter(c => c.CityId == this.data.registerObj.CityId);
         this._supplierService.myform.get('CityId').setValue(ddValue[0]);
@@ -268,7 +252,7 @@ export class SupplierFormMasterComponent implements OnInit {
     });
     
   }
- 
+  
   
   private _filterCity(value: any): string[] {
     if (value) {
@@ -354,6 +338,10 @@ var m = {
       
     this._supplierService.getModeofpaymentMasterCombo().subscribe(data => {
       this.PaymentmodecmbList = data;
+      this.filteredOptionsModeofpayment = this._supplierService.myform.get('ModeOfPayment').valueChanges.pipe(
+        startWith(''), 
+        map(value => value ? this._filterModeofpayment(value) : this.PaymentmodecmbList.slice()),
+      );
       if (this.data) {
         const ddValue = this.PaymentmodecmbList.filter(c => c.id == this.data.registerObj.ModeOfPayment);
         this._supplierService.myform.get('ModeOfPayment').setValue(ddValue[0]);
@@ -400,6 +388,11 @@ var m = {
       
     this._supplierService.getTermofpaymentMasterCombo().subscribe(data => {
       this.PaymenttermcmbList = data;
+      
+    this.filteredOptionsTermofpayment = this._supplierService.myform.get('TermOfPayment').valueChanges.pipe(
+      startWith(''), 
+      map(value => value ? this._filterTermofpayment(value) : this.PaymenttermcmbList.slice()),
+    );
       if (this.data) {
         const ddValue = this.PaymenttermcmbList.filter(c => c.Id == this.data.registerObj.TermOfPayment);
         this._supplierService.myform.get('TermOfPayment').setValue(ddValue[0]);
@@ -448,26 +441,15 @@ var m = {
 
      
 
-
-    // getStoreNameCombobox() {
-
-    //     this._supplierService.getStoreMasterCombo().subscribe(data => {
-    //         this.StorecmbList = data;
-    //         this.StorecmbList = this.StorecmbList.slice();
-    //         this.filteredOptionsStore = this._supplierService.myform.get('StoreId').valueChanges.pipe(
-    //             startWith(''),
-    //             map(value => value ? this._filterStore(value) : this.StorecmbList.slice()),
-    //         );
-
-    //     });
-
-    // }
-
+ 
 
     getStoreNameCombobox() {
       
       this._supplierService.getStoreMasterCombo().subscribe(data => {
         this.StorecmbList = data;
+        this.filteredOptionsStore = this._supplierService.myform.get('StoreId').valueChanges.pipe( 
+          map(value => value ? this._filterStore(value) : this.StorecmbList.slice()),
+        );
         // this.optionsStore = this.StorecmbList.slice();
         if (this.data) {
           debugger
@@ -490,9 +472,12 @@ var m = {
     getVenderNameCombobox() {
 
       this._supplierService.getVenderMasterCombo().subscribe(data => {
-          this.VendercmbList = data;
-          console.log(this.VendercmbList)
-          // this.optionsVender = this.VendercmbList.slice();
+          this.VendercmbList = data; 
+          this.filteredOptionsVender = this._supplierService.myform.get('VenderTypeId').valueChanges.pipe(
+           
+            map(value => value ? this._filtervender(value) : this.VendercmbList.slice()),
+          );
+      
           if (this.data) {
             const ddValue = this.VendercmbList.filter(c => c.VenderTypeId == this.data.registerObj.VenderTypeId);
             this._supplierService.myform.get('VenderTypeId').setValue(ddValue[0]);

@@ -179,7 +179,7 @@
                                     <ng-container matColumnDef="Date" sticky>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Date
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.Date | date}}
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.Date}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -189,23 +189,7 @@
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                             <span> {{element.AdvanceNo}}</span>
                                         </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="UHIDNo" sticky>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                            UHID No </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <span> {{element.RegNo}}</span>
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="PatientName" sticky>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                            Patient Name </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <span> {{element.PatientName}}</span>
-                                        </mat-cell>
-                                    </ng-container>
+                                    </ng-container>  
 
                                     <ng-container matColumnDef="AdvanceAmount">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>

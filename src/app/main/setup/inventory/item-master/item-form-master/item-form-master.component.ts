@@ -87,7 +87,7 @@ export class ItemFormMasterComponent implements OnInit {
     vItemGeneric: any;
     vItemClass: any;
     vDrugType: any;
-
+    sIsLoading:string = '';
     vManufId: any;
     vCompanyId: any;
     vStoragelocation: any;
@@ -139,64 +139,11 @@ export class ItemFormMasterComponent implements OnInit {
     }
  
 
-    setDropdownObjs1() {
-        this.filteredItemType = this._itemService.myform.get('ItemTypeID').valueChanges.pipe(
-            startWith(''),
-            map(value => value ? this._filterItemtype(value) : this.ItemTypecmbList.slice()),
-        );
-
-        this.filteredOptionsManu = this._itemService.myform.get('ManufId').valueChanges.pipe(
-            startWith(''),
-            map(value => value ? this._filterManu(value) : this.ManufacurecmbList.slice()),
-        );
-
-        this.filteredItemcategory = this._itemService.myform.get('ItemCategoryId').valueChanges.pipe(
-            startWith(''),
-            map(value => value ? this._filterCategory(value) : this.ItemCategorycmbList.slice()),
-        );
-
-
-        this.filteredItemgeneric = this._itemService.myform.get('ItemGenericNameId').valueChanges.pipe(
-            startWith(''),
-            map(value => value ? this._filterGenericname(value) : this.ItemGenericcmbList.slice()),
-        );
-
-
-        this.filteredItemclass = this._itemService.myform.get('ItemClassId').valueChanges.pipe(
-            startWith(''),
-            map(value => value ? this._filterClass(value) : this.ItemClasscmbList.slice()),
-        );
-
-        this.filteredUnitofmeasurement = this._itemService.myform.get('PurchaseUOMId').valueChanges.pipe(
-            startWith(''),
-            map(value => value ? this._filterUnitofmeasurement(value) : this.ItemUomcmbList.slice()),
-        );
-
-        this.filteredStockUOMId = this._itemService.myform.get('StockUOMId').valueChanges.pipe(
-            startWith(''),
-            map(value => value ? this._filterStockUMO(value) : this.StockUomcmbList.slice()),
-        );
-
-        this.filteredCurrency = this._itemService.myform.get('CurrencyId').valueChanges.pipe(
-            startWith(''),
-            map(value => value ? this._filterSCurrency(value) : this.CurrencycmbList.slice()),
-        );
-
-        this.filteredOptionsDrugtype = this._itemService.myform.get('DrugType').valueChanges.pipe(
-            startWith(''),
-            map(value => value ? this._filterDrugType(value) : this.DrugList.slice()),
-        );
-
+    setDropdownObjs1() {  
         this.filteredOptionsStore = this._itemService.myform.get('StoreId').valueChanges.pipe(
             startWith(''),
             map(value => value ? this._filterStore(value) : this.StorecmbList.slice()),
-        );
-
-        this.filteredOptionsCompany = this._itemService.myform.get('CompanyId').valueChanges.pipe(
-            startWith(''),
-            map((ele: any | null) => ele ? this._filterCompany(ele) : this.CompanyList.slice()));
-      
-
+        ); 
     }
   
     // getAssigneToStoreList() {
@@ -240,88 +187,87 @@ export class ItemFormMasterComponent implements OnInit {
   
     get f() {
         return this._itemService.myform.controls;
-    }
-
-
-
-    //     getitemtypeNameMasterCombo() {
-    // 
-    //         this._itemService.getitemtypeMasterCombo().subscribe(data => {
-    //             this.ItemTypecmbList = data;
-    //             this.ItemTypecmbList = this.ItemTypecmbList.slice();
-    //             this.filteredItemType = this._itemService.myform.get('ItemTypeID').valueChanges.pipe(
-    //                 startWith(''),
-    //                 map(value => value ? this._filterItemtype(value) : this.ItemTypecmbList.slice()),
-    //             );
-
-    //         });
-
-
-    //     }
-
+    } 
     getitemtypeNameMasterCombo() {
 
         this._itemService.getitemtypeMasterCombo().subscribe(data => {
             this.ItemTypecmbList = data;
-            
-            if (this.data) {
+            this.filteredItemType = this._itemService.myform.get('ItemTypeID').valueChanges.pipe(
+                startWith(''),
+                map(value => value ? this._filterItemtype(value) : this.ItemTypecmbList.slice()),
+            );
 
+            if (this.data) {
                 const ddValue = this.ItemTypecmbList.filter(c => c.ItemTypeId == this.data.registerObj.ItemTypeID);
                 this._itemService.myform.get('ItemTypeID').setValue(ddValue[0]);
-
                 this._itemService.myform.updateValueAndValidity();
                 return;
             }
-        });
-
+        }); 
+    }
+    private _filterItemtype(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.ItemTypeName ? value.ItemTypeName.toLowerCase() : value.toLowerCase(); 
+            return this.ItemTypecmbList.filter(option => option.ItemTypeName.toLowerCase().includes(filterValue));
+        } 
     }
 
-    getitemclassNameMasterCombo() {
-
-
+    getitemclassNameMasterCombo() { 
         this._itemService.getitemclassMasterCombo().subscribe(data => {
             this.ItemClasscmbList = data;
-            if (this.data) {
-
+            this.filteredItemclass = this._itemService.myform.get('ItemClassId').valueChanges.pipe(
+                startWith(''),
+                map(value => value ? this._filterClass(value) : this.ItemClasscmbList.slice()),
+            );
+            if (this.data) { 
                 const ddValue = this.ItemClasscmbList.filter(c => c.ItemClassId == this.data.registerObj.ItemClassId);
                 this._itemService.myform.get('ItemClassId').setValue(ddValue[0]);
 
                 this._itemService.myform.updateValueAndValidity();
                 return;
             }
-        });
-
+        }); 
     }
 
 
-    getitemcategoryNameMasterCombo() {
-
+    getitemcategoryNameMasterCombo() { 
         this._itemService.getitemcategoryMasterCombo().subscribe(data => {
             this.ItemCategorycmbList = data;
+            this.filteredItemcategory = this._itemService.myform.get('ItemCategoryId').valueChanges.pipe(
+                startWith(''),
+                map(value => value ? this._filterCategory(value) : this.ItemCategorycmbList.slice()),
+            );
+
             if (this.data) {
-
                 const ddValue = this.ItemCategorycmbList.filter(c => c.ItemCategoryId == this.data.registerObj.ItemCategaryId);
-                this._itemService.myform.get('ItemCategoryId').setValue(ddValue[0]);
-
+                this._itemService.myform.get('ItemCategoryId').setValue(ddValue[0]); 
                 this._itemService.myform.updateValueAndValidity();
                 return;
             }
         });
     }
+    private _filterCategory(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.ItemCategoryName ? value.ItemCategoryName.toLowerCase() : value.toLowerCase();
 
-
+            return this.ItemCategorycmbList.filter(option => option.ItemCategoryName.toLowerCase().includes(filterValue));
+        } 
+    } 
     Chkdisc() {
         let Disc = parseFloat(this._itemService.myform.get("MaxDisc").value)
         if (Disc >= 100) {
             Swal.fire("Enter Discount Less than 100 !")
             this._itemService.myform.get("MaxDisc").setValue(0);
-        }
-
+        } 
     }
 
     getitemgenericNameMasterCombo() {
         this._itemService.getitemgenericMasterCombo().subscribe(data => {
             this.ItemGenericcmbList = data;
+            this.filteredItemgeneric = this._itemService.myform.get('ItemGenericNameId').valueChanges.pipe(
+                startWith(''),
+                map(value => value ? this._filterGenericname(value) : this.ItemGenericcmbList.slice()),
+            );
             if (this.data) {
 
                 const ddValue = this.ItemGenericcmbList.filter(c => c.ItemGenericNameId == this.data.registerObj.ItemGenericNameId);
@@ -338,6 +284,11 @@ export class ItemFormMasterComponent implements OnInit {
     getCompanyList() {
         this._itemService.getCompanyCombo().subscribe(data => {
             this.CompanyList = data;
+            this.filteredOptionsCompany = this._itemService.myform.get('CompanyId').valueChanges.pipe(
+                startWith(''),
+                map((ele: any | null) => ele ? this._filterCompany(ele) : this.CompanyList.slice()));
+          
+    
             if (this.data) {
           
                 const ddValue = this.CompanyList.filter(c => c.CompanyId == this.data.registerObj.ItemCompnayId);
@@ -360,6 +311,10 @@ export class ItemFormMasterComponent implements OnInit {
 
         this._itemService.getunitofMeasurementMasterCombo().subscribe(data => {
             this.ItemUomcmbList = data;
+            this.filteredUnitofmeasurement = this._itemService.myform.get('PurchaseUOMId').valueChanges.pipe(
+                startWith(''),
+                map(value => value ? this._filterUnitofmeasurement(value) : this.ItemUomcmbList.slice()),
+            );
             if (this.data) {
 
                 const ddValue = this.ItemUomcmbList.filter(c => c.UnitOfMeasurementId == this.data.registerObj.PurchaseUOMId);
@@ -376,6 +331,10 @@ export class ItemFormMasterComponent implements OnInit {
 
         this._itemService.getStockUMOMasterCombo().subscribe(data => {
             this.StockUomcmbList = data;
+            this.filteredStockUOMId = this._itemService.myform.get('StockUOMId').valueChanges.pipe(
+                startWith(''),
+                map(value => value ? this._filterStockUMO(value) : this.StockUomcmbList.slice()),
+            );
             if (this.data) {
 
                 const ddValue = this.StockUomcmbList.filter(c => c.UnitOfMeasurementId == this.data.registerObj.StockUOMId);
@@ -392,7 +351,11 @@ export class ItemFormMasterComponent implements OnInit {
 
         this._itemService.getCurrencyMasterCombo().subscribe(data => {
             this.CurrencycmbList = data;
-            this._itemService.myform.get('CurrencyId').setValue(this.CurrencycmbList[0]);
+            console.log(this.CurrencycmbList)
+            this.filteredCurrency = this._itemService.myform.get('CurrencyId').valueChanges.pipe(
+                startWith(''),
+                map(value => value ? this._filterSCurrency(value) : this.CurrencycmbList.slice()),
+            );
             if (this.data) {
 
                 const ddValue = this.CurrencycmbList.filter(c => c.CurrencyId == this.data.registerObj.CurrencyId);
@@ -431,64 +394,36 @@ export class ItemFormMasterComponent implements OnInit {
             return this.StorecmbList.filter(option => option.StoreName.toLowerCase().includes(filterValue));
         }
 
-    }
-
-
-    private _filterItemtype(value: any): string[] {
-        if (value) {
-            const filterValue = value && value.ItemTypeName ? value.ItemTypeName.toLowerCase() : value.toLowerCase();
-
-            return this.ItemTypecmbList.filter(option => option.ItemTypeName.toLowerCase().includes(filterValue));
-        }
-
-    }
-
+    } 
     private _filterClass(value: any): string[] {
         if (value) {
             const filterValue = value && value.ItemClassName ? value.ItemClassName.toLowerCase() : value.toLowerCase();
             //   this.isDoctorSelected = false;
             return this.ItemClasscmbList.filter(option => option.ItemClassName.toLowerCase().includes(filterValue));
-        }
-
-    }
-
-
-
-    private _filterCategory(value: any): string[] {
-        if (value) {
-            const filterValue = value && value.ItemCategoryName ? value.ItemCategoryName.toLowerCase() : value.toLowerCase();
-
-            return this.ItemCategorycmbList.filter(option => option.ItemCategoryName.toLowerCase().includes(filterValue));
-        }
-
-    }
+        } 
+    } 
 
     private _filterGenericname(value: any): string[] {
         if (value) {
             const filterValue = value && value.ItemGenericName ? value.ItemGenericName.toLowerCase() : value.toLowerCase();
             //   this.isDoctorSelected = false;
             return this.ItemGenericcmbList.filter(option => option.ItemGenericName.toLowerCase().includes(filterValue));
-        }
-
-    }
-
-
+        } 
+    } 
 
     private _filterUnitofmeasurement(value: any): string[] {
         if (value) {
             const filterValue = value && value.UnitOfMeasurementName ? value.UnitOfMeasurementName.toLowerCase() : value.toLowerCase();
             //   this.isDoctorSelected = false;
             return this.ItemUomcmbList.filter(option => option.UnitOfMeasurementName.toLowerCase().includes(filterValue));
-        }
-
+        } 
     }
     private _filterStockUMO(value: any): string[] {
         if (value) {
             const filterValue = value && value.UnitOfMeasurementName ? value.UnitOfMeasurementName.toLowerCase() : value.toLowerCase();
             //   this.isDoctorSelected = false;
             return this.StockUomcmbList.filter(option => option.UnitOfMeasurementName.toLowerCase().includes(filterValue));
-        }
-
+        } 
     }
 
 
@@ -507,6 +442,10 @@ export class ItemFormMasterComponent implements OnInit {
 
         this._itemService.getDrugTypeCombo().subscribe(data => {
             this.DrugList = data;
+            this.filteredOptionsDrugtype = this._itemService.myform.get('DrugType').valueChanges.pipe(
+                startWith(''),
+                map(value => value ? this._filterDrugType(value) : this.DrugList.slice()),
+            );
             if (this.data) {
           
                 const ddValue = this.DrugList.filter(c => c.ItemDrugTypeId == this.data.registerObj.DrugType);
@@ -544,6 +483,10 @@ export class ItemFormMasterComponent implements OnInit {
     getManufactureNameMasterCombo() {
         this._itemService.getManufactureMasterCombo().subscribe(data => {
             this.ManufacurecmbList = data;
+            this.filteredOptionsManu = this._itemService.myform.get('ManufId').valueChanges.pipe(
+                startWith(''),
+                map(value => value ? this._filterManu(value) : this.ManufacurecmbList.slice()),
+            );
             if (this.data) {
 
                 const ddValue = this.ManufacurecmbList.filter(c => c.ManufId == this.data.registerObj.ManufId);
@@ -556,62 +499,10 @@ export class ItemFormMasterComponent implements OnInit {
     }
 
 
-
-
-
-    // getDrugTypeCombo() {
-
-    //     this._itemService.getDrugTypeCombo
-    //     ().subscribe(data => {
-    //         this.DrugList = data;
-    //         this.DrugList = this.DrugList.slice();
-    //         this.filteredOptionsManu = this._itemService.myform.get('DrugType').valueChanges.pipe(
-    //             startWith(''),
-    //             map(value => value ? this._filterDrugType(value) : this.DrugList.slice()),
-    //         );
-
-    //     });
-
-    // }
-
-
-    // getStoreNameMasterCombo() {
-
-    //     this._itemService.getStoreMasterCombo().subscribe(data => {
-    //         this.StorecmbList = data;
-    //         this.StorecmbList = this.StorecmbList.slice();
-    //         this.filteredOptionsStore = this._itemService.myform.get('StoreId').valueChanges.pipe(
-    //             startWith(''),
-    //             map(value => value ? this._filterStore(value) : this.StorecmbList.slice()),
-    //         );
-
-    //     });
-
-    // }
+ 
 
     casePaperData: CasepaperVisitDetails = new CasepaperVisitDetails({});
-
-
-
-// Main
-//     getStoreNameMasterCombo() {
-
-// 
-//         this._itemService.getStoreMasterCombo().subscribe(data => {
-//             this.StorecmbList = data;
-//             if (this.data) {
-//                 
-//                 const ddValue = this.StorecmbList.filter(c => c.Storeid == this.data.registerObj.StoreId);
-//                 this._itemService.myform.get('StoreId').setValue(ddValue[0]);
-
-//                 this._itemService.myform.updateValueAndValidity();
-//                 return;
-//             }
-//         });
-
-//     }
-
-
+ 
 
     getOptionTextManu(option) {
         return option && option.ManufName ? option.ManufName : '';

@@ -59,7 +59,9 @@ export class PharAdvanceService {
       RegID: [''],
       Op_ip_id: ['1'],
       advanceAmt:[''],
-      comment:['']
+      comment:[''],
+      ToatalRefunfdAmt:[''], 
+      BalanceAmount:[''],
     });
    }
 

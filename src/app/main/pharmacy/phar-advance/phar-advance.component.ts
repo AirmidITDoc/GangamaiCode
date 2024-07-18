@@ -26,6 +26,7 @@ export class PharAdvanceComponent implements OnInit {
     'RegNo',
     'PatientName',
     'AdvanceAmount',
+    'BalanceAmount',
     'CashPayAmount',
     'ChequePayAmount',
     'CardPayAmount',
@@ -144,7 +145,7 @@ export class PharAdvanceComponent implements OnInit {
       {
         maxWidth: "100%",
         height: '95%',
-        width: '95%' 
+        width: '70%' 
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);

@@ -1,4 +1,4 @@
-<div class="page-layout simple inner-scroll inner-sidebar right-sidebar">
+<div class="page-layout simple inner-scroll inner-sidebar right-sidebar"  >
 <mat-toolbar style="height: 50px; justify-content:space-between;width: 100%;">
     <div fxLayout="row" fxLayoutAlign="start center">
         <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
@@ -9,13 +9,17 @@
             <mat-icon>account_box</mat-icon>
         </button>
         <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
-            New IPD Refund Advance
+             IP Pharmacy Refund Advance
         </span>
-        <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog" style="color: white;"
-            style="margin-left: 1120px;">
-            <mat-icon style="color: white;">close</mat-icon>
-        </button>
+       
     </div>
+    <div fxLayout="row" fxLayoutALign="end start">
+        <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
+        </app-common-date>
+        <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div> 
 </mat-toolbar>
 
 
@@ -37,7 +41,7 @@
                                     </mat-radio-group>
                                 </div>
 
-                                <mat-form-field appearance="outline" fxFlex="50%">
+                                <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>PatientName</mat-label>
                                     <input type="text" name="RegID" formControlName="RegID" matInput required
                                         placeholder="RegNo / First Name / Last Name / Mobile No"
@@ -64,47 +68,109 @@
                                 </mat-form-field>
                             </div>
 
-                            <div>
+                            <mat-card style="padding: 5px;">
                                 <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
                                     <div class="patient-info-container">
                                         <div class="patient-info-box">
-                                            <div class="patient-info-title border-bottom pb-2">
+                                            <div class="patient-info-title">
                                                 <span class="h1">Patient Information</span>
                                             </div>
-                                            <div class="patient-info-box my-8">
-                                                <div class="patient-info-row ">
-                                                    <div class="patient-col">
-                                                        <span class="patient-col-key">RegNo</span>
-                                                        <span>:</span>
-                                                        <span class="patient-col-value">{{vRegNo}}</span>
-                                                    </div>
-                                                    <div class="patient-col">
-                                                        <span class="patient-col-key ">Patient Name</span>
-                                                        <span>:</span>
-                                                        <span class="patient-col-value">{{vPatienName}}</span>
-                                                    </div> 
-                                                    <div class="patient-col">
-                                                        <span class="patient-col-key">AdmissionID</span>
-                                                        <span>:</span>
-                                                        <span class="patient-col-value">{{vAdmissionID}}</span>
-                                                    </div> 
-                                                    <div class="patient-col">
-                                                        <span class="patient-col-key">IPDNo</span>
-                                                        <span>:</span>
-                                                        <span class="patient-col-value">{{vIPDNo}}</span>
+                                            <hr>
+                                            <div class="Ipd-patient-info" fxFlexFill fxLayout="row" fxLayoutAlign="space-between center"
+                                                class="patient-info">
+                                                <div class="patient-sub">
+                                                    <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
+                                                        fxLayoutAlign="space-between">
+                                                        <div fxLayout="column" fxLayoutGap="6px">
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key">UHID No
+                                                                </span>
+                                                                <span>:</span>
+                                                                <span
+                                                                    class="patient-col-value">{{vRegNo}}</span>
+                                                            </div>
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key">Patient Name
+                                                                </span>
+                                                                <span>:</span>
+                                                                <span
+                                                                    class="patient-col-value">{{vPatienName}}</span>
+                                                            </div>
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key">Doctor Name</span>
+                                                                <span>:</span>
+                                                                <span class="patient-col-value">{{vDoctorName}}</span>
+                                                            </div>
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key">Department</span>
+                                                                <span>:</span>
+                                                                <span class="patient-col-value">{{vDepartment}}</span>
+                                                            </div>
+                                                        </div>
+                                                        <div fxLayout="column" fxLayoutGap="6px">
+                                                            
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key">DOA | Time</span>
+                                                                <span>:</span>
+                                                                <span class="patient-col-value">{{vAdmissionDate | date:'dd/MM/YYYY'}}</span>
+                                                            </div>
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key">IPD No</span>
+                                                                <span>:</span>
+                                                                <span class="patient-col-value">{{vIPDNo}}</span>
+                                                            </div>
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key">Age | Sex
+                                                                </span>
+                                                                <span>:</span>
+                                                                <span class="patient-col-value">{{vAge}}Y|{{vAgeMonth}}M|{{vAgeDay}} D | {{vGenderName}}</span>
+                                                            </div>
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key">Ref-Doctor Name
+                                                                </span>
+                                                                <span>:</span>
+                                                                <span class="patient-col-value">{{vRefDocName}}</span>
+                                                            </div>
+                                                           
+                                                        </div>
+                                                        <div fxLayout="column" fxLayoutGap="6px">
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key">Ward | Bed Name
+                                                                </span>
+                                                                <span>:</span>
+                                                                <span class="patient-col-value">{{vRoomName}} | {{vBedName}}</span>
+                                                            </div>
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key">Patient Type
+                                                                </span>
+                                                                <span>:</span>
+                                                                <span class="patient-col-value">{{vPatientType}}</span>
+                                                            </div>
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key">Tarrif Name
+                                                                </span>
+                                                                <span>:</span>
+                                                                <span class="patient-col-value">{{vTariffName}}</span>
+                                                            </div>
+                                                            <div class="patient-col" >
+                                                                <span class="patient-col-key">Company Name</span>
+                                                                <span>:</span>
+                                                                <span class="patient-col-value" style="color: orange;">{{vCompanyName}}</span>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> 
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </mat-card> 
                         </div>
                     </form>
 
 
 
-                    <div fxFlex.gt-sm="100%" fxFlex>
+                    <!-- <div fxFlex.gt-sm="100%" fxFlex>
 
                         <div fxlayout="column">
                             <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
@@ -164,139 +230,189 @@
                                 showFirstLastButtons>
                             </mat-paginator>
                         </div>
-                    </div>
-
-                    <div fxFlex.gt-sm="100%" fxFlex>
-
-                        <div fxlayout="column">
-                            <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                                class="backgroundBlur" style="height: 100%;">
-                                <div class="spinner-border text-danger"></div>
-                            </div>
-                            <mat-table matSort [dataSource]="dsIpItemList" [@animateStagger]="{value:'50'}"
-                           class="h-150">
-
-                                <ng-container matColumnDef="Date">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Date
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.Date | date}}
-                                    </mat-cell>
-                                </ng-container> 
-
-                                <ng-container matColumnDef="AdvanceAmount">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                        Advance Amt </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                        <span> {{element.AdvanceAmount | currency:'INR'}}</span>
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="UsedAmount">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                        Used Amt </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                        <span> {{element.UsedAmount | currency:'INR'}}</span>
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="BalanceAmount">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                        Balance Amt </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                        <span> {{element.BalanceAmount | currency:'INR'}}</span>
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="RefundAmount">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                        Refund Amt </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                        <span> {{element.RefundAmount | currency:'INR'}}</span>
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="PreviousRef">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Cash Pay
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                        <span> {{element.PreviousRef}}</span>
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="AdvanceNo">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm> 
-                                        AdvanceNo
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                        <span> {{element.AdvanceNo}}</span>
-                                    </mat-cell>
-                                </ng-container>  
-
-                                <ng-container matColumnDef="loading">
-                                    <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                    </mat-header-cell>
-                                </ng-container>
+                    </div> -->
+                    <div fxLayout="row" fxLayoutGap="10px">
                     
-                                <ng-container matColumnDef="noData">
-                                    <mat-footer-cell *matFooterCellDef colspan="6">
-                                        no data found...
-                                    </mat-footer-cell>
-                                </ng-container>
-
-
-                                <mat-header-row class="accent min-width-1300"
-                                    *matHeaderRowDef="displayedColumns; sticky: true">
-                                </mat-header-row>
-                                <mat-row *matRowDef="let contact; columns: displayedColumns;"
-                                    class="contact min-width-1300"
-                                    [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                <mat-footer-row *matFooterRowDef="['loading']"
-                                    [ngClass]="{'hide':dsIpItemList!=null}"></mat-footer-row>
-                                <mat-footer-row *matFooterRowDef="['noData']"
-                                    [ngClass]="{'hide':!(dsIpItemList!=null && dsIpItemList.data.length==0)}"></mat-footer-row>
-                            </mat-table>
-                            <mat-paginator #Secondpaginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16"
-                                showFirstLastButtons>
-                            </mat-paginator>
-                        </div>
-                    </div>
+                        <div fxFlex.gt-md="70%" fxFlex.md="50%" fxFlex.lt-md="100%">
+                            <mat-card style="padding: 6px;height: 300px;">
+                                <div fxlayout="column">
+                                    <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur"
+                                        style="height: 100%;">
+                                        <div class="spinner-border text-danger"></div>
+                                    </div>
+                                    <mat-table class="h-200" matSort [dataSource]="dsIpItemList" [@animateStagger]="{value:'50'}" 
+                                    style="width: 100%;overflow: auto;">
                     
-                    <div class="table-footer mt-8">
-
-                        <form [formGroup]="_PharAdvanceService.NewRefundForm" style="padding: 10px 10px 5px 10px;">
-
-                            <div fxlayout="row" fxLayoutGap="8px" fxLayoutAlign="start">
-
-                                <mat-form-field appearance="outline" fxFlex="35%">
-                                    <mat-label>Remark</mat-label>
-                                    <input matInput formControlName="comment" name="comment"> 
-                                </mat-form-field> 
-
-                                <div fxLayout="row" class="gap-4" style="padding-top: 15px;">
-                                    <span class="net-amt-mat-label" style="font-weight:bold;padding-bottom: 8px;">Total
-                                        Refund Amount :
-                                    </span>&nbsp;
+                                        <ng-container matColumnDef="Date">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Date
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.Date | date}}
+                                            </mat-cell>
+                                        </ng-container>
+                    
+                                        <ng-container matColumnDef="AdvanceAmount">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                Advance Amt </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <span> {{element.AdvanceAmount | currency:'INR'}}</span>
+                                            </mat-cell>
+                                        </ng-container>
+                    
+                                        <ng-container matColumnDef="UsedAmount">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                Used Amt </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <span> {{element.UsedAmount | currency:'INR'}}</span>
+                                            </mat-cell>
+                                        </ng-container>
+                    
+                                        <ng-container matColumnDef="BalanceAmount">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                Balance Amt </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <span> {{element.BalanceAmount | currency:'INR'}}</span>
+                                            </mat-cell>
+                                        </ng-container>
+                    
+                                        <ng-container matColumnDef="RefundAmount">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                Refund Amt </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <span> {{element.RefundAmount | currency:'INR'}}</span>
+                                            </mat-cell>
+                                        </ng-container> 
+                    
+                                        <ng-container matColumnDef="AdvanceNo">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                AdvanceNo
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <span> {{element.AdvanceNo}}</span>
+                                            </mat-cell>
+                                        </ng-container>
+                    
+                                        <ng-container matColumnDef="loading">
+                                            <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                            </mat-header-cell>
+                                        </ng-container>
+                    
+                                        <ng-container matColumnDef="noData">
+                                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                                no data found...
+                                            </mat-footer-cell>
+                                        </ng-container>
+                    
+                    
+                                        <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+                                        </mat-header-row>
+                                        <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                        <mat-footer-row *matFooterRowDef="['loading']"
+                                            [ngClass]="{'hide':dsIpItemList!=null}"></mat-footer-row>
+                                        <mat-footer-row *matFooterRowDef="['noData']"
+                                            [ngClass]="{'hide':!(dsIpItemList!=null && dsIpItemList.data.length==0)}"></mat-footer-row>
+                                    </mat-table>  
+                                    <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16"
+                                    showFirstLastButtons>
+                                    </mat-paginator>
+                                   
+                                </div>
+                                <!-- <div class="net-amt"> 
+                                    <span class="net-amt-label">Total Advance Amt:</span>&nbsp;
                                     <span class="net-amt-value"
-                                        style="margin-left:10px;font-weight:bolder;color: blue;margin-right: 100px;">{{getAdvancetotal(dsIpItemList.data)
-                                        | currency:'INR'}}</span>&nbsp;&nbsp;&nbsp;
-        
-                                    <span class="net-amt-mat-label" style="font-weight:bold;margin-left:20px;"> 
-                                        Balance amount :
-                                    </span>&nbsp;
-                                    <span class="net-amt-value text-primary"
-                                        style="margin-left:10px;font-weight:bolder;color: blue;margin-right: 100px;">{{getAdvavilable(dsIpItemList.data)
-                                        | currency:'INR'}}</span>
-                                </div> 
-
+                                        style="font-weight:bold;color: blue;">{{getAdvaceSum(dsIpItemList.data) |
+                                        currency:'INR' }}</span>
+                                </div> -->
+                            </mat-card>
+                        </div>
+                        <div fxFlex.gt-md="30%" fxFlex.md="50%" fxFlex.lt-md="100%">
+                            <mat-card style="padding: 6px;height: 300px;">
+                                <div fxlayout="column">
+                                    <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur"
+                                        style="height: 100%;overflow: auto;">
+                                        <div class="spinner-border text-danger"></div>
+                                    </div>
+                                    <mat-table class="h-200" matSort [dataSource]="dsPreRefundList" [@animateStagger]="{value:'50'}" 
+                                    style="width: 100%;">
+                    
+                                        <ng-container matColumnDef="Date">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Date
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.Date | date}}
+                                            </mat-cell>
+                                        </ng-container>
+                    
+                                        <ng-container matColumnDef="RefundAmount">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                Refund Amount </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <span> {{element.RefundAmount | currency:'INR'}}</span>
+                                            </mat-cell>
+                                        </ng-container>
+                    
+                                        <ng-container matColumnDef="loading">
+                                            <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                            </mat-header-cell>
+                                        </ng-container>
+                    
+                                        <ng-container matColumnDef="noData">
+                                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                                no data found...
+                                            </mat-footer-cell>
+                                        </ng-container>
+                    
+                                        <mat-header-row class="accent min" *matHeaderRowDef="displayedColumns1; sticky: true">
+                                        </mat-header-row>
+                                        <mat-row *matRowDef="let contact; columns: displayedColumns1;" class="contact"
+                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                        <mat-footer-row *matFooterRowDef="['loading']"
+                                            [ngClass]="{'hide':dsPreRefundList!=null}"></mat-footer-row>
+                                        <mat-footer-row *matFooterRowDef="['noData']"
+                                            [ngClass]="{'hide':!(dsPreRefundList!=null && dsPreRefundList.data.length==0)}"></mat-footer-row>
+                                    </mat-table>  
+                                    <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16"
+                                    showFirstLastButtons>
+                                    </mat-paginator>
                                
-                                <div class="sales-footer-buttons gap-8 " fxLayout="row"
-                                    style="padding: 0px 30px 0px 30px;">
-                                    <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
-                                    <button class="btn btn-primary " (click)="onSave()">Save</button>
-                                </div> 
-                            </div>
-                        </form>
-                    </div>  
+                                </div>
+                                <!-- <div class="net-amt"> 
+                                    <span class="net-amt-label">Total Refund Amt:</span>&nbsp;
+                                    <span class="net-amt-value"
+                                        style="font-weight:bold;color: blue;">{{getRefundSum(dsPreRefundList.data) |
+                                        currency:'INR' }}</span>
+                                </div>   -->
+                            </mat-card>
+                        </div>
+                    
+                    </div>
+                    
+                   <div fxLayout="column" fxLayout="row">
+                    <mat-card style="padding: 6px;width: 100%;" fxLayoutGap="4px">
+                        
+                        <mat-form-field appearance="outline" fxFlex="16%">
+                            <mat-label>Total Refund Amount</mat-label>
+                            <input matInput formControlName="ToatalRefunfdAmt" name="ToatalRefunfdAmt"
+                             required readonly [(ngModel)]="vToatalRefunfdAmt"> 
+                        </mat-form-field> 
+
+                        <mat-form-field appearance="outline" fxFlex="16%">
+                            <mat-label>  Balance amount</mat-label>
+                            <input matInput formControlName="BalanceAmount" name="BalanceAmount"
+                            required readonly [(ngModel)]="vBalanceAmount"> 
+                        </mat-form-field>  
+                        
+                        <mat-form-field appearance="outline" fxFlex="52%">
+                            <mat-label>Remark</mat-label>
+                            <input matInput formControlName="comment" name="comment"> 
+                        </mat-form-field> 
+
+                        <div fxLayout="row" style="padding: 0px 10px 0px 30px;">
+                            <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>&nbsp;
+                            <button class="btn btn-primary " (click)="onSave()">Save</button>
+                        </div> 
+
+                    </mat-card> 
+                   </div> 
                 </div>
             </div> 
         </div>
