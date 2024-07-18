@@ -91,6 +91,7 @@ export class ItemMasterComponent implements OnInit {
     }
     chargeslist:any=[];
     getItemMasterList() {
+        this.sIsLoading = '';
         var m_data = {
             ItemName:this._itemService.myformSearch.get("ItemNameSearch").value + "%" || "%",
             StoreID: this._loggedService.currentUserValue.user.storeId
