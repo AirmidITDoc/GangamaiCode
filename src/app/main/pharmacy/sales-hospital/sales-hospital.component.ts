@@ -1715,7 +1715,8 @@ export class SalesHospitalComponent implements OnInit {
   }
 
   getGSTAmtSum(element) {
-    this.FinalDiscAmt = (element.reduce((sum, { DiscAmt }) => sum += +(DiscAmt || 0), 0)).toFixed(2);
+    //this.FinalDiscAmt = (element.reduce((sum, { DiscAmt }) => sum += +(DiscAmt || 0), 0)).toFixed(2);
+    this.FinalGSTAmt = (element.reduce((sum, { GSTAmount }) => sum += +(GSTAmount || 0), 0)).toFixed(2);
     return this.FinalGSTAmt;
   }
 
@@ -1793,8 +1794,7 @@ export class SalesHospitalComponent implements OnInit {
     }
   }
 
-  getFinalDiscperAmt() {
-    debugger
+  getFinalDiscperAmt() { 
     let Disc = this.ItemSubform.get('FinalDiscPer').value || 0;
     let DiscAmt = this.ItemSubform.get('FinalDiscAmt').value || 0;
 
@@ -2268,19 +2268,29 @@ export class SalesHospitalComponent implements OnInit {
     // }
   }
   onSavePayOption() {
-    this.vPatientType = this.ItemSubform.get('PatientType').value;
+    this.vPatientType = this.ItemSubform.get('PatientType').value; 
+   
     let PatientHeaderObj = {};
     PatientHeaderObj['Date'] = this.dateTimeObj.date;
+    PatientHeaderObj['RegNo'] = this.RegNo;
     PatientHeaderObj['PatientName'] = this.PatientName;
-    PatientHeaderObj['OPD_IPD_Id'] = this.OP_IP_Id;
+    if ( this.vPatientType == 'IP'){
+      PatientHeaderObj['OPD_IPD_Id'] = this.IPDNo;
+    }else{
+      PatientHeaderObj['OPD_IPD_Id'] = this.OPDNo;
+    } 
+    PatientHeaderObj['Age'] = this.Age ;
     PatientHeaderObj['NetPayAmount'] = this.ItemSubform.get('roundoffAmt').value; //this.ItemSubform.get('FinalNetAmount').value;
     this.isLoading123=false;
     const dialogRef = this._matDialog.open(OpPaymentNewComponent,
-      {
-        data: {
-          vPatientHeaderObj: PatientHeaderObj,
+        {
+          maxWidth: "80vw",
+          height: '650px',
+          width: '80%',
+          data: {
+            vPatientHeaderObj: PatientHeaderObj,
           FromName: "Phar-SalesPay"
-        }
+          }
       });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -3409,6 +3419,7 @@ getSearchListIP() {
   IPDNo:any; 
   TariffName:any;
   CompanyName:any;
+  Age:any;
   getSelectedObjRegIP(obj) {
     let IsDischarged = obj.IsDischarged 
     if(IsDischarged == 1){
@@ -3430,6 +3441,7 @@ getSearchListIP() {
       this.DoctorName = obj.DoctorName;
       this.TariffName =obj.TariffName
       this.CompanyName = obj.CompanyName;
+      this.Age = obj.Age;
     } 
   }
   OPDNo:any;

@@ -182,7 +182,7 @@ export class OpPaymentNewComponent implements OnInit {
       this.amount1 = this.cashAmt = this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);
       this.paidAmt = this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);
       this.billNo = parseInt(this.advanceData.SalesId);
-      this.PatientName = this.advanceData.PatientName;
+      this.PatientName = this.advanceData.PatientName; 
       this.selectedPaymnet1 = 'cash';
       this.BillDate = this.advanceData.Date;
       this.Paymentobj['TransactionType'] = 2;
@@ -337,15 +337,7 @@ export class OpPaymentNewComponent implements OnInit {
   }
   @ViewChild('Reference') Reference: ElementRef;
 
-  keyPressCharater(event) {
-    var inp = String.fromCharCode(event.keyCode);
-    if (/^\d{0,12}$/.test(inp)) {
-      return true;
-    } else {
-      this.patientDetailsFormGrp.get('referenceNo1').setValue('')
-      return false;
-    }
-  }
+ 
   onChangePaymnt(event: any) {
 
     let value = event.value;
@@ -1338,7 +1330,15 @@ export class OpPaymentNewComponent implements OnInit {
     }
     this.isSaveDisabled = false;
   }
-
+  keyPressCharater(event){
+    var inp = String.fromCharCode(event.keyCode);
+    if (/^\d*\.?\d*$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
 }
 export class PharPaymentInsert {
   PaymentId: number;

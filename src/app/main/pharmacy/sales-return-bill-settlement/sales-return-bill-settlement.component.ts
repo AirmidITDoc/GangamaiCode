@@ -58,9 +58,30 @@ export class SalesReturnBillSettlementComponent implements OnInit {
   vAdmissionDate: any;
   vAdmissionID: any;
   vIPDNo: any;
-
-  dsPaidItemList = new MatTableDataSource<PaidItemList>();
-  dsCredititemList = new MatTableDataSource<CreditItemList>();
+  PatientListfilteredOptionsOP:any;
+  PatientListfilteredOptionsIP:any;
+  RegNo:any;
+  IPDNo:any; 
+  TariffName:any;
+  CompanyName:any;
+  registerObj:any;
+  PatientName:any;
+  RegId:any;
+  OP_IP_Id:any;
+  DoctorName:any;
+  RoomName:any;
+  BedName:any;
+  Age:any;
+  GenderName:any;
+  OPDNo:any;
+  OP_IPType:any;
+  DoctorNamecheck:boolean=false;
+  IPDNocheck:boolean=false;
+  OPDNoCheck:boolean=false;
+  vFinalPaidAmount:any;
+  vFinalNetAmount:any;
+  vFinalBalAmount:any;
+  dsPaidItemList = new MatTableDataSource<PaidItemList>(); 
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
@@ -83,14 +104,11 @@ export class SalesReturnBillSettlementComponent implements OnInit {
   vConditionExt:boolean=false;
   vConditionIP:boolean=false;
 
-  ngOnInit(): void { 
-
-       
+  ngOnInit(): void {  
     this.vPharExtOpt = this._loggedService.currentUserValue.user.pharExtOpt;
     this.vPharOPOpt = this._loggedService.currentUserValue.user.pharOPOpt;
     this.vPharIPOpt = this._loggedService.currentUserValue.user.pharIPOpt;
-
-   
+ 
     if (this.vPharExtOpt == true) {  
         this.vSelectedOption = 'External'; 
     }else{
@@ -150,17 +168,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
   //  this.saleSelectedDatasource.data = [];
    this.PatientInformRest();
   }
-  PatientListfilteredOptionsOP:any;
-  PatientListfilteredOptionsIP:any;
-  RegNo:any;
-  IPDNo:any; 
-  TariffName:any;
-  CompanyName:any;
-  registerObj:any;
-  PatientName:any;
-  RegId:any;
-  OP_IP_Id:any;
-  DoctorName:any;
+
   getSelectedObjRegIP(obj) {
     console.log(obj)
     this.DoctorNamecheck = true;
@@ -175,15 +183,13 @@ export class SalesReturnBillSettlementComponent implements OnInit {
     this.DoctorName = obj.DoctorName;
     this.TariffName =obj.TariffName
     this.CompanyName = obj.CompanyName 
+    this.RoomName = obj.RoomName;
+    this.BedName = obj.BedName
+    this.GenderName = obj.GenderName
+    this.Age = obj.Age 
+    this.getIpSalesList();
   }
-  OPDNo:any;
-  OP_IPType:any;
-  DoctorNamecheck:boolean=false;
-  IPDNocheck:boolean=false;
-  OPDNoCheck:boolean=false;
-  vFinalPaidAmount:any;
-  vFinalNetAmount:any;
-  vFinalBalAmount:any;
+
   getSelectedObjOP(obj) {
     console.log(obj)
     this.OPDNoCheck = true;
@@ -196,7 +202,21 @@ export class SalesReturnBillSettlementComponent implements OnInit {
     this.RegNo =obj.RegNo; 
     this.OPDNo = obj.OPDNo;
     this.CompanyName = obj.CompanyName;
-    this.TariffName = obj.TariffName; 
+    this.TariffName = obj.TariffName;  
+    this.GenderName = obj.GenderName
+    this.Age = obj.AgeYear 
+    this.getIpSalesList();
+  }
+  getOptionTextOp(option) {
+    if (!option)
+      return '';
+    return option.FirstName + ' ' + option.MiddleName + ' ' + option.LastName; 
+  }
+  getOptionTextIP(option) {
+    if (!option)
+      return '';
+    return option.FirstName + ' ' + option.MiddleName + ' ' + option.LastName;
+
   }
   PatientInformRest(){
     this.PatientName = ''  
@@ -211,30 +231,23 @@ export class SalesReturnBillSettlementComponent implements OnInit {
     if (event.value == 'OP') {
       this.OP_IPType = 0;
       this.RegId = ""; 
-      this._SelseSettelmentservice.ItemSubform.get('MobileNo').clearValidators();
-      this._SelseSettelmentservice.ItemSubform.get('PatientName').clearValidators();
-      this._SelseSettelmentservice.ItemSubform.get('MobileNo').updateValueAndValidity();
-      this._SelseSettelmentservice.ItemSubform.get('PatientName').updateValueAndValidity();
+      this._SelseSettelmentservice.ItemSubform.get('MobileNo').clearValidators(); 
+      this._SelseSettelmentservice.ItemSubform.get('MobileNo').updateValueAndValidity(); 
     }
     else if (event.value == 'IP') {
       this.OP_IPType = 1;
       this.RegId = ""; 
-      this._SelseSettelmentservice.ItemSubform.get('MobileNo').clearValidators();
-      this._SelseSettelmentservice.ItemSubform.get('PatientName').clearValidators();
-      this._SelseSettelmentservice.ItemSubform.get('MobileNo').updateValueAndValidity();
-      this._SelseSettelmentservice.ItemSubform.get('PatientName').updateValueAndValidity();
+      this._SelseSettelmentservice.ItemSubform.get('MobileNo').clearValidators(); 
+      this._SelseSettelmentservice.ItemSubform.get('MobileNo').updateValueAndValidity(); 
     } else {
       this._SelseSettelmentservice.ItemSubform.get('MobileNo').reset();
       this._SelseSettelmentservice.ItemSubform.get('MobileNo').setValidators([Validators.required]);
-      this._SelseSettelmentservice.ItemSubform.get('MobileNo').enable();
-      this._SelseSettelmentservice.ItemSubform.get('PatientName').reset();
-      this._SelseSettelmentservice.ItemSubform.get('PatientName').setValidators([Validators.required]);
-      this._SelseSettelmentservice.ItemSubform.get('PatientName').enable();
+      this._SelseSettelmentservice.ItemSubform.get('MobileNo').enable(); 
       this._SelseSettelmentservice.ItemSubform.updateValueAndValidity(); 
       this.OP_IPType = 2;
     }
   }
-
+ 
   @ViewChild('doctorname') doctorname: ElementRef;
   @ViewChild('mobileno') mobileno: ElementRef; 
   @ViewChild('patientname') patientname: ElementRef;
@@ -255,73 +268,34 @@ export class SalesReturnBillSettlementComponent implements OnInit {
      // this.address.nativeElement.focus();
     }
   }
-  getRefSearchList() {
-    var m_data = {
-      "Keyword": `${this._SelseSettelmentservice.userFormGroup.get('RegID').value}%`
+   
+  getIpSalesList() {  
+    let OP_IP_Type
+    if (this.vSelectedOption == 'OP') {
+      OP_IP_Type = 0;
     }
-    if (this._SelseSettelmentservice.userFormGroup.get('RegID').value.length >= 1) {
-      this._SelseSettelmentservice.getAdmittedpatientlist(m_data).subscribe(resData => {
-        this.filteredOptions = resData;
-        console.log(resData)
-        this.PatientListfilteredOptionsref = resData;
-        if (this.filteredOptions.length == 0) {
-          this.noOptionFound = true;
-        } else {
-          this.noOptionFound = false;
-        }
-      });
-    }
-  }
-  getOptionTextref(option) {
-    if (!option) return '';
-    return option.FirstName + ' ' + option.PatientName + ' (' + option.RegID + ')';
-  }
-  getSelectedObj(obj) {
-    console.log(obj)
-    this.vRegNo = obj.RegNo;
-    this.vPatienName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
-    this.vAdmissionDate = obj.AdmissionDate;
-    this.vMobileNo = obj.MobileNo;
-    this.vAdmissionID = obj.AdmissionID;
-    this.vIPDNo = obj.IPDNo  
-  } 
-  
-  getSalesList(obj) {
-    this.sIsLoading = 'loading';
+    else if (this.vSelectedOption == 'IP') {
+      OP_IP_Type = 1;
+    } else {
+      OP_IP_Type = 2;
+    } 
+    this.sIsLoading = 'loading-data'; 
     var m_data = {
-      "AdmissionId": obj.AdmissionId
+      "RegId": this.RegId,
+      "OP_IP_ID": this.OP_IP_Id,
+      "OP_IP_Type":OP_IP_Type
     }
     console.log(m_data)
-    setTimeout(() => {
-      this.sIsLoading = 'loading';
-      this._SelseSettelmentservice.getSalesList(m_data).subscribe(Visit => {
-        this.dsPaidItemList.data = Visit as PaidItemList[];
-        console.log(this.dsPaidItemList.data)
-        this.dsPaidItemList.sort = this.sort;
-        this.dsPaidItemList.paginator = this.Secondpaginator; 
-      },
-        error => {
-          this.sIsLoading = this.dsPaidItemList.data.length == 0 ? 'no-data' : '';
-        });
-    }, 500);
-
-  }
-  TotalAdvamt: any;
-  Advavilableamt: any;
-  vadvanceAmount: any;
-  vPatientType: any;
-  getAdvancetotal(element) {
-    let netAmt;
-    netAmt = element.reduce((sum, { AdvanceAmount }) => sum += +(AdvanceAmount || 0), 0);
-    this.TotalAdvamt = netAmt;
-    return netAmt;
-  }
-
-  getAdvavilable(element) {
-    let netAmt;
-    netAmt = element.reduce((sum, { BalanceAmount }) => sum += +(BalanceAmount || 0), 0);
-    this.Advavilableamt = netAmt;
-    return netAmt;
+    this._SelseSettelmentservice.getSalesList(m_data).subscribe(Visit => {
+      this.dsPaidItemList.data = Visit as PaidItemList[];
+      console.log(this.dsPaidItemList.data)
+      this.dsPaidItemList.sort = this.sort;
+      this.dsPaidItemList.paginator = this.Secondpaginator; 
+      this.sIsLoading = ''; 
+    },
+      error => {
+        this.sIsLoading = '';
+      });
   }
   keyPressCharater(event) {
     var inp = String.fromCharCode(event.keyCode);
@@ -331,9 +305,6 @@ export class SalesReturnBillSettlementComponent implements OnInit {
       event.preventDefault();
       return false;
     }
-  }
-  OnSave() {
-    
   } 
   onClose() {
     this._matDialog.closeAll();
@@ -341,8 +312,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
   }
   OnReset() {
     this._SelseSettelmentservice.ItemSubform.reset(); 
-    this.dsPaidItemList.data = [];
-    this.dsCredititemList.data =[];
+    this.dsPaidItemList.data = []; 
   }
 }
   export class PaidItemList {

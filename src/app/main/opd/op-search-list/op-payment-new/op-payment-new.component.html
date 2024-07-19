@@ -26,37 +26,39 @@
             <form [formGroup]="patientDetailsFormGrp" class="mat-form-field-auto mat-error-fix">
                 <div fxLayout="column" class="gap-20">
                     <div class="patient-info-container patient-info">
-                        <mat-card>
-                            <div class="patient-info-box">
-                                <div class="patient-info-title border-bottom pb-2">
-                                    <span class="h2">Patient Information</span>
-                                </div>
-                                <div class="patient-info-box my-8">
-                                    <div class="patient-info-row row-gap-4" fxLayout="row wrap">
-                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
-                                            <span class="patient-col-key ">Patient Name</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{advanceData.PatientName}}</span>
-                                        </div>
-                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
-                                            <span class="patient-col-key">Gender / Age</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">Male / 44</span>
-                                        </div>
-                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
-                                            <span class="patient-col-key">Gender</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">Male</span>
-                                        </div>
-                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
-                                            <span class="patient-col-key">Patient Source</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">Hospital</span>
-                                        </div>
+                        <mat-card style="padding: 10px;">
+                            <div class="patient-info-container">
+                                <div class="patient-info-box">
+                                    <div class="patient-info-title border-bottom pb-2">
+                                        <span class="h1">Patient Information</span>
                                     </div>
+                                    <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row" fxLayoutAlign="space-between">
+                                       
+                                            <div class="patient-col gap-1" fxFlex="30%">
+                                                <span class="patient-col-key">UHID No</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{advanceData.RegNo}}</span>
+                                            </div>
+                                            <div class="patient-col gap-1" fxFlex="30%">
+                                                <span class="patient-col-key">Patient Name</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{advanceData.PatientName}}</span>
+                                            </div>
+                                            <div class="patient-col gap-1" fxFlex="30%">
+                                                <span class="patient-col-key">OPD/IPD No</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{advanceData.OPD_IPD_Id}}</span>
+                                            </div>
+                                            <div class="patient-col gap-1" fxFlex="30%">
+                                                <span class="patient-col-key">Age</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{advanceData.Age || '0'}}Y</span>
+                                            </div>
+                                        
+                                    </div> 
                                 </div>
                             </div>
-                        </mat-card>
+                        </mat-card> 
                     </div>
                     <div class="patient-info-container payment-bill-info">
                         <mat-card>
@@ -66,15 +68,16 @@
                                 </div>
                                 <div class="patient-info-box my-8">
                                     <div class="patient-info-row row-gap-4" fxLayout="row wrap">
+                                       
                                         <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
-                                            <span class="patient-col-key ">Bill Amount</span>
+                                            <span class="patient-col-key">Date</span>
                                             <span>:</span>
                                             <span class="patient-col-value gap-4" fxLayout="row">
-                                                ₹ {{netPayAmt}}
+                                                 {{BillDate}}
                                             </span>
                                         </div>
                                         <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
-                                            <span class="patient-col-key">Net Amount</span>
+                                            <span class="patient-col-key ">Bill Amount</span>
                                             <span>:</span>
                                             <span class="patient-col-value gap-4" fxLayout="row">
                                                 ₹ {{netPayAmt}}
@@ -110,13 +113,22 @@
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Amount</mat-label>
                                                 <input matInput formControlName="amount1" (keyup)="getBalanceAmt()"
-                                                    [(ngModel)]="amount1" required>
+                                                    [(ngModel)]="amount1" required (keypress)="keyPressAlphanumeric()">
                                             </mat-form-field>
 
                                             <ng-container *ngIf="selectedPaymnet1 != 'cash'">
-                                                <mat-form-field appearance="outline" fxFlex>
+                                                <!-- <mat-form-field appearance="outline" fxFlex>
                                                     <mat-label>Reference Number</mat-label>
                                                     <input matInput formControlName="referenceNo1" required>
+                                                </mat-form-field> -->
+ 
+                                                <mat-form-field appearance="outline" fxFlex>
+                                                    <mat-label>Reference Number</mat-label>
+                                                    <input matInput formControlName="referenceNo1"  placeholder="Card Number" required 
+                                                    max="999999999999" min="100000000000" autocomplete="off" maxlength="12" minlength="4" 
+                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);"
+                                                    required="required" value="987665868822">
+                                                  
                                                 </mat-form-field>
 
                                                 <mat-form-field appearance="outline" fxFlex *ngIf="UpiFlag1">
@@ -179,7 +191,7 @@
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Amount</mat-label>
                                                 <input matInput formControlName="amount2" (keyup)="getBalanceAmt()"
-                                                    [(ngModel)]="amount2" required>
+                                                    [(ngModel)]="amount2" required (keypress)="keyPressAlphanumeric($event)">
                                                 <mat-error
                                                     *ngIf="patientDetailsFormGrp.get('amount2').hasError('required')">
                                                     Required field cannot be left blank
@@ -187,13 +199,25 @@
                                             </mat-form-field>
 
                                             <ng-container *ngIf="selectedPaymnet2 != 'cash'">
-                                                <mat-form-field appearance="outline" fxFlex>
+                                                <!-- <mat-form-field appearance="outline" fxFlex>
                                                     <mat-label>Reference Number</mat-label>
                                                     <input matInput formControlName="referenceNo2" required>
                                                     <mat-error
                                                         *ngIf="patientDetailsFormGrp.get('referenceNo2').hasError('required')">
                                                         Required field cannot be left blank
                                                     </mat-error>
+                                                </mat-form-field> -->
+
+                                                <mat-form-field appearance="outline" fxFlex>
+                                                    <mat-label>Reference Number</mat-label>
+                                                    <input matInput formControlName="referenceNo2"  placeholder="Card Number" required 
+                                                    max="999999999999" min="100000000000" autocomplete="off" maxlength="12" minlength="4" 
+                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);"
+                                                    required="required" value="987665868822">
+                                                    <mat-error
+                                                    *ngIf="patientDetailsFormGrp.get('referenceNo2').hasError('required')">
+                                                    Required field cannot be left blank
+                                                </mat-error>
                                                 </mat-form-field>
 
                                                 <mat-form-field appearance="outline" fxFlex *ngIf="UpiFlag2">
@@ -265,7 +289,7 @@
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Amount</mat-label>
                                                 <input matInput formControlName="amount3" (keyup)="getBalanceAmt()"
-                                                    [(ngModel)]="amount3" required>
+                                                    [(ngModel)]="amount3" required (keypress)="keyPressAlphanumeric($event)">
                                                 <mat-error
                                                     *ngIf="patientDetailsFormGrp.get('amount3').hasError('required')">
                                                     Required field cannot be left blank
@@ -273,13 +297,25 @@
                                             </mat-form-field>
 
                                             <ng-container *ngIf="selectedPaymnet3 != 'cash'">
-                                                <mat-form-field appearance="outline" fxFlex>
+                                                <!-- <mat-form-field appearance="outline" fxFlex>
                                                     <mat-label>Reference Number</mat-label>
                                                     <input matInput formControlName="referenceNo3">
                                                     <mat-error
                                                         *ngIf="patientDetailsFormGrp.get('referenceNo3').hasError('required')">
                                                         Required field cannot be left blank
                                                     </mat-error>
+                                                </mat-form-field> -->
+
+                                                <mat-form-field appearance="outline" fxFlex>
+                                                    <mat-label>Reference Number</mat-label>
+                                                    <input matInput formControlName="referenceNo3"  placeholder="Card Number" required 
+                                                    max="999999999999" min="100000000000" autocomplete="off" maxlength="12" minlength="4" 
+                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);"
+                                                    required="required" value="987665868822">
+                                                    <mat-error
+                                                    *ngIf="patientDetailsFormGrp.get('referenceNo3').hasError('required')">
+                                                    Required field cannot be left blank
+                                                </mat-error>
                                                 </mat-form-field>
 
                                                 <mat-form-field appearance="outline" fxFlex *ngIf="UpiFlag3">
@@ -351,17 +387,29 @@
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Amount</mat-label>
                                                 <input matInput formControlName="amount4" (keyup)="getBalanceAmt()"
-                                                    [(ngModel)]="amount4">
+                                                    [(ngModel)]="amount4" (keypress)="keyPressAlphanumeric($event)">
                                             </mat-form-field>
 
                                             <ng-container *ngIf="selectedPaymnet4 != 'cash'">
-                                                <mat-form-field appearance="outline" fxFlex>
+                                                <!-- <mat-form-field appearance="outline" fxFlex>
                                                     <mat-label>Reference Number</mat-label>
                                                     <input matInput formControlName="referenceNo4" required>
                                                     <mat-error
                                                         *ngIf="patientDetailsFormGrp.get('referenceNo4').hasError('required')">
                                                         Required field cannot be left blank
                                                     </mat-error>
+                                                </mat-form-field> -->
+
+                                                <mat-form-field appearance="outline" fxFlex>
+                                                    <mat-label>Reference Number</mat-label>
+                                                    <input matInput formControlName="referenceNo4"  placeholder="Card Number" required 
+                                                    max="999999999999" min="100000000000" autocomplete="off" maxlength="12" minlength="4" 
+                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);"
+                                                    required="required" value="987665868822">
+                                                    <mat-error
+                                                    *ngIf="patientDetailsFormGrp.get('referenceNo4').hasError('required')">
+                                                    Required field cannot be left blank
+                                                </mat-error>
                                                 </mat-form-field>
 
                                                 <mat-form-field appearance="outline" fxFlex *ngIf="UpiFlag4">
@@ -434,17 +482,29 @@
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Amount</mat-label>
                                                 <input matInput formControlName="amount5" (keyup)="getBalanceAmt()"
-                                                    [(ngModel)]="amount5">
+                                                    [(ngModel)]="amount5" (keypress)="keyPressAlphanumeric($event)">
                                             </mat-form-field>
 
                                             <ng-container *ngIf="selectedPaymnet5 != 'cash'">
-                                                <mat-form-field appearance="outline" fxFlex>
+                                                <!-- <mat-form-field appearance="outline" fxFlex>
                                                     <mat-label>Reference Number</mat-label>
                                                     <input matInput formControlName="referenceNo5" required>
                                                     <mat-error
                                                         *ngIf="patientDetailsFormGrp.get('referenceNo5').hasError('required')">
                                                         Required field cannot be left blank
                                                     </mat-error>
+                                                </mat-form-field> -->
+
+                                                <mat-form-field appearance="outline" fxFlex>
+                                                    <mat-label>Reference Number</mat-label>
+                                                    <input matInput formControlName="referenceNo5"  placeholder="Card Number" required 
+                                                    max="999999999999" min="100000000000" autocomplete="off" maxlength="12" minlength="4" 
+                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);"
+                                                    required="required" value="987665868822">
+                                                    <mat-error
+                                                    *ngIf="patientDetailsFormGrp.get('referenceNo5').hasError('required')">
+                                                    Required field cannot be left blank
+                                                </mat-error>
                                                 </mat-form-field>
 
                                                 <mat-form-field appearance="outline" fxFlex *ngIf="UpiFlag5">
@@ -731,7 +791,7 @@
                                 <!-- <mat-form-field appearance="outline" fxFlex="16%">
                                     <mat-label>Reference Number</mat-label>
                                     <input matInput formControlName="referenceNo1" required #Reference
-                                    (keypress)="keyPressCharater($event)">
+                                    (keypress)="keyPressAlphanumeric($event)">
                                 </mat-form-field> -->
 
                                 <mat-form-field appearance="outline" fxFlex="16%">
