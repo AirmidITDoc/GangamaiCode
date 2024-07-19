@@ -1702,7 +1702,9 @@ export class SalesHospitalComponent implements OnInit {
 
     this.IsOnlineRefNo = false;
     this.ItemSubform.get('referanceNo').reset('');
-
+    this.ItemSubform.get('MobileNo').reset('');
+    this.ItemSubform.get('PatientName').reset('');
+    this.ItemSubform.get('DoctorName').reset('');
     this.ConShow = false;
     this.ItemSubform.get('ConcessionId').clearValidators();
     this.ItemSubform.get('ConcessionId').updateValueAndValidity();
@@ -1786,16 +1788,17 @@ export class SalesHospitalComponent implements OnInit {
     } else {
       this.chkdiscper = false;
       this.DiscAmt = 0;
-      this.ItemSubform.get('DiscAmt').enable();
+      this.ItemSubform.get('DiscAmt').enable(); 
       this.NetAmt = (this.TotalMRP - this.DiscAmt).toFixed(2);
     }
   }
 
   getFinalDiscperAmt() {
-    let Disc = this.ItemSubform.get('FinalDiscPer').value;
-    let DiscAmt = this.ItemSubform.get('FinalDiscAmt').value;
+    debugger
+    let Disc = this.ItemSubform.get('FinalDiscPer').value || 0;
+    let DiscAmt = this.ItemSubform.get('FinalDiscAmt').value || 0;
 
-    if (Disc > 0 || DiscAmt > 0) {
+    if (Disc > 0 || Disc < 100) {
       this.ConShow = true
       this.FinalDiscAmt = ((this.FinalTotalAmt * (Disc)) / 100).toFixed(2);
       this.ItemSubform.get('FinalDiscAmt').setValue(this.FinalDiscAmt);
@@ -2476,10 +2479,7 @@ export class SalesHospitalComponent implements OnInit {
   }
  
 
-  getPrint3(el) {
-
-debugger
-
+  getPrint3(el) { 
     if (this.vPaymode=='Credit') {
       this.type = "Credit"
       this.Creditflag = true;
