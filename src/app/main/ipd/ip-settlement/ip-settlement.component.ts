@@ -235,8 +235,7 @@ export class IPSettlementComponent implements OnInit {
             UpdateAdvanceDetailObj['UsedAmount'] = element.UsedAmount;
             UpdateAdvanceDetailObj['BalanceAmount'] = element.BalanceAmount;
             UpdateAdvanceDetailarr.push(UpdateAdvanceDetailObj);
-          });
-
+          }); 
         }
         else {
           let UpdateAdvanceDetailObj = {};
@@ -246,18 +245,22 @@ export class IPSettlementComponent implements OnInit {
             UpdateAdvanceDetailarr.push(UpdateAdvanceDetailObj);
         }
 
+     
         let UpdateAdvanceHeaderObj = {};
-        if (result.submitDataAdvancePay.length > 0) {
-          UpdateAdvanceHeaderObj['AdvanceId'] = UpdateAdvanceDetailarr1[0]['AdvanceNo'],
+        if (result.submitDataAdvancePay.length > 0) { 
+            UpdateAdvanceHeaderObj['AdvanceId'] = UpdateAdvanceDetailarr1[0]['AdvanceNo'],
             UpdateAdvanceHeaderObj['AdvanceUsedAmount'] = UpdateAdvanceDetailarr1[0]['AdvanceAmount'],
             UpdateAdvanceHeaderObj['BalanceAmount'] = UpdateAdvanceDetailarr1[0]['BalanceAmount']
         }
-        else {
-
-          UpdateAdvanceHeaderObj['AdvanceId'] = 0,
+        else { 
+            UpdateAdvanceHeaderObj['AdvanceId'] = 0,
             UpdateAdvanceHeaderObj['AdvanceUsedAmount'] = 0,
             UpdateAdvanceHeaderObj['BalanceAmount'] = 0
         }
+
+
+
+
         let submitData = {
           "ipPaymentCreditUpdate": result.submitDataPay.ipPaymentInsert,
           "updateIpBill": BillUpdateObj,

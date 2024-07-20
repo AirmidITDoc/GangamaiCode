@@ -80,6 +80,7 @@
     </div> 
 
     <div class="table-container" style="padding: 5px 15px 5px 15px;">
+        <mat-card style="padding: 6px;">
         <mat-table matSort class="h-120" [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
     
             <ng-container matColumnDef="Date">
@@ -109,9 +110,9 @@
                     <!-- {{element.UsedAmount | currency:'INR'}} -->
                     <!-- [readonly]="element.BalanceAmount == 0" -->
                     <mat-form-field appearance="legacy">
-                        <input matInput [(ngModel)]="element.UsedAmount" (keyup)="getAdvanceAmt(element, i)"
-                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 15);"
-                            required="required" value="9876658688">
+                        <input matInput [(ngModel)]="element.UsedAmount" (keyup)="getAdvanceAmt(element, i)" 
+                            required="required" value="9876658688"  (keypress)="keyPressAlphanumeric($event)" type="text" OnlyNumber
+                           [disabled]="element.RefundAmount == element.AdvanceAmount">
                     </mat-form-field>
                 </mat-cell>
             </ng-container>
@@ -149,6 +150,15 @@
             <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(isLoading=='no-data')}">
             </mat-footer-row>
         </mat-table> 
+        <div class="net-amt">
+            <!-- <span class="net-amt-label" style="font-weight:bold;">Total Refund Amt
+                            :</span>&nbsp; -->
+            <span class="net-amt-label">Total Advance Amt:</span>&nbsp;
+            <span class="net-amt-value"
+                style="font-weight:bold;color: blue;">{{getAdvanceSum(dataSource.data) |
+                currency:'INR' }}</span>
+        </div>
+    </mat-card>
         <!-- <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" showFirstLastButtons></mat-paginator> -->
     </div> 
 
@@ -193,7 +203,7 @@
                     <mat-form-field appearance="outline" style="width: 180px;">
                         <mat-label>Enter Cash</mat-label>
                         <input matInput formControlName="cashAmountController" [(ngModel)]="cashAmt"
-                            (keyup)="calculatePaidAmt('cashAmountController')" (keypress)="keyPressCharater($event)">
+                            (keyup)="calculatePaidAmt('cashAmountController')" (keypress)="keyPressAlphanumeric($event)">
                         <mat-error
                             *ngIf="paymentForm.controls.cashAmountController.touched && paymentForm.controls.cashAmountController.invalid">
                             <span *ngIf="paymentForm.controls.cashAmountController.errors.required">This field is
@@ -216,7 +226,7 @@
                                 <mat-label>Enter Amount</mat-label>
                                 <input matInput formControlName="cardAmountController" [(ngModel)]="cardAmt"
                                     (keyup)="calculatePaidAmt('cardAmountController')"
-                                    (keypress)="keyPressCharater($event)">
+                                    (keypress)="keyPressAlphanumeric($event)">
                                 <mat-error *ngIf="paymentForm.get('cardAmountController').hasError('invalidRange')">
                                     Entered Amount must not be greater than Net Amount
                                 </mat-error>
@@ -287,7 +297,7 @@
                                 <mat-label>Enter Amount</mat-label>
                                 <input matInput formControlName="chequeAmountController" [(ngModel)]="chequeAmt"
                                     (keyup)="calculatePaidAmt('chequeAmountController')"
-                                    (keypress)="keyPressCharater($event)">
+                                    (keypress)="keyPressAlphanumeric($event)">
                                 <mat-error *ngIf="paymentForm.get('chequeAmountController').hasError('invalidRange')">
                                     Entered Amount must not be greater than Net Amount
                                 </mat-error>
@@ -355,7 +365,7 @@
                                 <mat-label>Enter Amount</mat-label>
                                 <input matInput formControlName="neftAmountController" [(ngModel)]="neftAmt"
                                     (keyup)="calculatePaidAmt('neftAmountController')"
-                                    (keypress)="keyPressCharater($event)">
+                                    (keypress)="keyPressAlphanumeric($event)">
                                 <mat-error *ngIf="paymentForm.get('neftAmountController').hasError('invalidRange')">
                                     Entered Amount must not be greater than Net Amount
                                 </mat-error>
@@ -424,7 +434,7 @@
                                 <mat-label>Enter Amount</mat-label>
                                 <input matInput formControlName="paytmAmountController" [(ngModel)]="paytmAmt"
                                     (keyup)="calculatePaidAmt('paytmAmountController')"
-                                    (keypress)="keyPressCharater($event)">
+                                    (keypress)="keyPressAlphanumeric($event)">
                                 <mat-error *ngIf="paymentForm.get('paytmAmountController').hasError('invalidRange')">
                                     Entered Amount must not be greater than Net Amount
                                 </mat-error>
@@ -466,7 +476,7 @@
                             <mat-form-field appearance="outline" style="width: 180px;">
                                 <mat-label>Enter Amount</mat-label>
                                 <input matInput formControlName="wrfAmountController" [(ngModel)]="wrfAmt"
-                                    (keyup)="calculatePaidAmt('wrfAmountController')" (keypress)="keyPressCharater($event)">
+                                    (keyup)="calculatePaidAmt('wrfAmountController')"  (keypress)="keyPressAlphanumeric($event)">
                                 <mat-error *ngIf="paymentForm.get('wrfAmountController').hasError('invalidRange')">
                                     Entered Amount must not be greater than Net Amount
                                 </mat-error>
@@ -483,7 +493,7 @@
                             <mat-form-field appearance="outline" style="width: 180px;">
                                 <mat-label>Enter Amount</mat-label>
                                 <input matInput formControlName="tdsAmountController" [(ngModel)]="tdsAmt"
-                                    (keyup)="calculatePaidAmt('tdsAmountController')" (keypress)="keyPressCharater($event)">
+                                    (keyup)="calculatePaidAmt('tdsAmountController')" (keypress)="keyPressAlphanumeric($event)">
                                 <mat-error *ngIf="paymentForm.get('tdsAmountController').hasError('invalidRange')">
                                     Entered Amount must not be greater than Net Amount
                                 </mat-error>
