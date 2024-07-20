@@ -333,7 +333,7 @@ private _onDestroy = new Subject<void>();
     this.advanceData.advanceObj.OPD_IPD_Id;//=4;
     this.dataSource.data = [];
     this.isLoading = 'loading';
-    let Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount from AdvanceDetail where OPD_IPD_Id=" + this.advanceData.advanceObj.OPD_IPD_Id + ""
+    let Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount,BalanceAmount as balamt from AdvanceDetail where OPD_IPD_Id=" + this.advanceData.advanceObj.OPD_IPD_Id + ""
     this.ipSearchService.getAdvcanceDetailslist(Query).subscribe(data => {
       // this.chargeslist = data as ChargesList[];
       this.dataSource.data = data as [];
@@ -498,8 +498,7 @@ private _onDestroy = new Subject<void>();
     // }
   }
 
-  getAdvanceAmt1(element, index) {
-    debugger
+  getAdvanceAmt1(element, index) { 
     // console.log(index);
     // console.log(element.UsedAmount);
     if (element.UsedAmount == "") {
@@ -514,17 +513,18 @@ private _onDestroy = new Subject<void>();
     // }
   }
   totalAdvanceUsedAmt:any=0;
-  getAdvanceAmt(element, index) {
-    debugger  
-  if(element.UsedAmount > 0 || element.UsedAmount <= element.BalanceAmount){
+  getAdvanceAmt(element, index) { 
+
+    if (element.UsedAmount > element.balamt){
+      Swal.fire(' Amount is less than Balance Amount:-' + element.balamt);
+      element.UsedAmount = '';
+      element.BalanceAmount = element.balamt;
+    }
+  else if(element.UsedAmount > 0){
     element.BalanceAmount = element.AdvanceAmount - element.UsedAmount 
-  }else if (element.UsedAmount > element.AdvanceAmount){
-    Swal.fire('Used Amount' + element.UsedAmount +'less than Balance Amount' + element.AdvanceAmount);
+  } else if(element.UsedAmount == '' || element.UsedAmount == null || element.UsedAmount == undefined || element.UsedAmount == '0' ){
     element.UsedAmount = '';
-    element.BalanceAmount = element.AdvanceAmount;
-  }else if(element.UsedAmount == '' || element.UsedAmount == null || element.UsedAmount == undefined || element.UsedAmount == '0' ){
-    element.UsedAmount = '';
-    element.BalanceAmount = element.AdvanceAmount;
+    element.BalanceAmount = element.balamt;
   } 
   // this.totalAdvanceUsedAmt = parseInt(this.totalAdvanceUsedAmt) + parseInt(element.UsedAmount) ;
   // this.advanceAmt = this.totalAdvanceUsedAmt;

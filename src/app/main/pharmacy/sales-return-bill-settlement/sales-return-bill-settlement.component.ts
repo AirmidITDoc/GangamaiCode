@@ -177,6 +177,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
     this.registerObj = obj;
     this.PatientName = obj.FirstName + ' ' + obj.LastName;
     this.RegId = obj.RegID;
+    this.vAdmissionDate = obj.AdmissionDate;
     this.OP_IP_Id = this.registerObj.AdmissionID;
     this.IPDNo = obj.IPDNo;
     this.RegNo =obj.RegNo;

@@ -228,12 +228,16 @@ export class IPSettlementComponent implements OnInit {
         console.log(UpdateAdvanceDetailarr1);
  
         let UpdateAdvanceDetailarr = [];
+        let BalanceAmt= 0;
+        let UsedAmt = 0;
         if (result.submitDataAdvancePay.length > 0) {
           result.submitDataAdvancePay.forEach((element) => {
             let UpdateAdvanceDetailObj = {};
             UpdateAdvanceDetailObj['AdvanceDetailID'] = element.AdvanceDetailID;
             UpdateAdvanceDetailObj['UsedAmount'] = element.UsedAmount;
+            UsedAmt +=element.UsedAmount;
             UpdateAdvanceDetailObj['BalanceAmount'] = element.BalanceAmount;
+            BalanceAmt +=element.BalanceAmount;
             UpdateAdvanceDetailarr.push(UpdateAdvanceDetailObj);
           }); 
         }
@@ -249,8 +253,8 @@ export class IPSettlementComponent implements OnInit {
         let UpdateAdvanceHeaderObj = {};
         if (result.submitDataAdvancePay.length > 0) { 
             UpdateAdvanceHeaderObj['AdvanceId'] = UpdateAdvanceDetailarr1[0]['AdvanceNo'],
-            UpdateAdvanceHeaderObj['AdvanceUsedAmount'] = UpdateAdvanceDetailarr1[0]['AdvanceAmount'],
-            UpdateAdvanceHeaderObj['BalanceAmount'] = UpdateAdvanceDetailarr1[0]['BalanceAmount']
+            UpdateAdvanceHeaderObj['AdvanceUsedAmount'] =UsedAmt ,
+            UpdateAdvanceHeaderObj['BalanceAmount'] = BalanceAmt
         }
         else { 
             UpdateAdvanceHeaderObj['AdvanceId'] = 0,

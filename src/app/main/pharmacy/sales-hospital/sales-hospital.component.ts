@@ -2099,7 +2099,7 @@ export class SalesHospitalComponent implements OnInit {
     SalesInsert['totalAmount'] = this.ItemSubform.get('FinalTotalAmt').value || 0; //this.FinalTotalAmt
     SalesInsert['vatAmount'] = this.ItemSubform.get('FinalGSTAmt').value || 0;
     SalesInsert['discAmount'] = this.ItemSubform.get('FinalDiscAmt').value || 0; //this.FinalDiscAmt;
-    SalesInsert['netAmount'] = this.ItemSubform.get('FinalNetAmount').value || 0;
+    SalesInsert['netAmount'] =  this.ItemSubform.get('roundoffAmt').value || 0;  
     SalesInsert['paidAmount'] = this.ItemSubform.get('roundoffAmt').value; // NetAmt;
     SalesInsert['balanceAmount'] = 0;
     SalesInsert['concessionReasonID'] = ConcessionId || 0;
@@ -2335,7 +2335,7 @@ export class SalesHospitalComponent implements OnInit {
           SalesInsert['totalAmount'] = this.ItemSubform.get('FinalTotalAmt').value || 0; //this.FinalTotalAmt
           SalesInsert['vatAmount'] = this.ItemSubform.get('FinalGSTAmt').value || 0;
           SalesInsert['discAmount'] = this.ItemSubform.get('FinalDiscAmt').value || 0; //this.FinalDiscAmt;
-          SalesInsert['netAmount'] = this.ItemSubform.get('FinalNetAmount').value || 0;
+          SalesInsert['netAmount'] =  this.ItemSubform.get('roundoffAmt').value || 0;  
           SalesInsert['paidAmount'] = this.ItemSubform.get('roundoffAmt').value || 0; // NetAmt;
           SalesInsert['balanceAmount'] = 0;
           SalesInsert['concessionReasonID'] = ConcessionId || 0;
@@ -2798,10 +2798,11 @@ export class SalesHospitalComponent implements OnInit {
       salesInsertCredit['oP_IP_Type'] = 1;
       salesInsertCredit['oP_IP_ID'] = this.OP_IP_Id;
     }
-    salesInsertCredit['totalAmount'] = this.FinalTotalAmt
-    salesInsertCredit['vatAmount'] = this.VatAmount;
-    salesInsertCredit['discAmount'] = this.FinalDiscAmt;
-    salesInsertCredit['netAmount'] = NetAmt;
+
+    salesInsertCredit['totalAmount'] = this.ItemSubform.get('FinalTotalAmt').value || 0; //this.FinalTotalAmt
+    salesInsertCredit['vatAmount'] = this.ItemSubform.get('FinalGSTAmt').value || 0;
+    salesInsertCredit['discAmount'] = this.ItemSubform.get('FinalDiscAmt').value || 0; //this.FinalDiscAmt;
+    salesInsertCredit['netAmount'] = this.ItemSubform.get('roundoffAmt').value || 0;  
     salesInsertCredit['paidAmount'] = 0;
     salesInsertCredit['balanceAmount'] = NetAmt;
     salesInsertCredit['concessionReasonID'] = ConcessionId || 0;

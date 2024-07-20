@@ -35,7 +35,7 @@ export class IpSalesReturnComponent implements OnInit {
   chargeslist: any = []; 
   dateTimeObj: any;
   vRegNo:any;
-  vPatienName:any;
+  vPatientName:any;
   vMobileNo:any;
   vAdmissionDate:any;
   vReturnQty:any;
@@ -68,6 +68,14 @@ export class IpSalesReturnComponent implements OnInit {
   vFinalNetAmount:any;
   vFinalTotalAmt:any
   vRegID:any;
+  vIPDNo:any; 
+  vTariffName:any;
+  vCompanyName:any; 
+  vDoctorName:any;
+  vRoomName:any;
+  vBedName:any;
+  vAge:any;
+  vGenderName:any;
  ;
  dsIpSaleItemList = new MatTableDataSource<IPSalesItemList>();
   SelectedList = new MatTableDataSource<IndentList>();
@@ -78,26 +86,27 @@ export class IpSalesReturnComponent implements OnInit {
     'ItemName',
     'BatchNo',
     'ExpDate',
-    'MRP',
     'Qty',
     'ReturnQty',
+    'MRP',
     'TotalAmt',
     'GST',
     'GSTAmt',
     'Disc',
     'DiscAmt',
     'LandedPrice',
-    'TotalLandedAmount', 
-    'PurRateWf',
-    'PurTotAmt', 
+    // 'TotalLandedAmount', 
+    // 'PurRateWf',
+    // 'PurTotAmt', 
     'NetAmount' ,
-    'SalesDetId',
-    'StkID'
+    //'SalesDetId',
+    'StkID',
+    'Action'
   ];
  
 
   @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
 
   constructor(
     public _IpSalesRetService: IpSalesReturnService,
@@ -135,22 +144,36 @@ export class IpSalesReturnComponent implements OnInit {
   } 
   getOptionText(option) {
     if (!option) return '';
-    return option.FirstName + ' ' + option.PatientName + ' (' + option.RegID + ')';
+    return option.FirstName + ' ' + option.LastName + ' (' + option.RegNo + ')';
   }
+
 
   getSelectedObj(obj){
     console.log(obj)
    this.vRegNo = obj.RegNo;
-   this.vPatienName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.PatientName;
+   this.vPatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.PatientName;
    this.vAdmissionDate = obj.AdmissionDate;
    this.vMobileNo = obj.MobileNo; 
    this.vAdmissionID = obj.AdmissionID;
-   this.vRegId = obj.RegID
-   //this.getItemNameList(this.vRegId);
+   this.vRegId = obj.RegID;
+   this.vIPDNo = obj.IPDNo; 
+   this.vDoctorName = obj.DoctorName;
+   this.vTariffName =obj.TariffName
+   this.vCompanyName = obj.CompanyName 
+   this.vRoomName = obj.RoomName;
+   this.vBedName = obj.BedName
+   this.vGenderName = obj.GenderName
+   this.vAge = obj.Age 
    this.itemname.nativeElement.focus();
   }
   filteredOptionsItem:any;
   getItemNameList() {
+    if ((this.vRegID == '' || this.vRegID == null || this.vRegID == undefined)) {
+      this.toastr.warning('Please select patient', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
     if(this._IpSalesRetService.userFormGroup.get('TypeodPay').value == 'CashPay')
       {
     var Param = {
@@ -264,7 +287,18 @@ this.vItemName = '';
 this.vReturnQty = 0 ;
 this.vTotalQty = 0 ;
  }
+ deleteTableRow(event, element) {
+  // if (this.key == "Delete") {
+  let index = this.chargeslist.indexOf(element);
+  if (index >= 0) {
+    this.chargeslist.splice(index, 1);
+    this.dsIpSaleItemList.data = [];
+    this.dsIpSaleItemList.data = this.chargeslist;
+  }
+  Swal.fire('Success !', 'ItemList Row Deleted Successfully', 'success');
 
+  // }
+}
 calculation(){
   if(parseInt(this.vReturnQty) > parseInt(this.vTotalQty)){
     this.toastr.warning('Return Qty cannot be greater than BalQty', 'Warning !', {
@@ -288,16 +322,24 @@ getCellCalculation(contact, ReturnQty) {
     });
     contact.ReturnQty = 0;
     contact.ReturnQty = ''; 
-    contact.TotalAmount = 0;
+    contact.TotalAmt = 0;
+    contact.GSTAmt = 0;
+    contact.DiscAmt = 0;
+    contact.NetAmount = 0;
+  }
+  else if(contact.ReturnQty == '0' || contact.ReturnQty == '' || contact.ReturnQty == null || contact.ReturnQty == undefined){
+    contact.ReturnQty = 0;
+    contact.ReturnQty = ''; 
+    contact.TotalAmt = 0;
     contact.GSTAmt = 0;
     contact.DiscAmt = 0;
     contact.NetAmount = 0;
   }
   else { 
-    contact.TotalAmount = (parseFloat(contact.MRP) * parseFloat(contact.ReturnQty)).toFixed(2);
-    contact.GSTAmt=  ((parseFloat(contact.GST) * parseFloat(contact.TotalAmount))/100).toFixed(2) || 0;
-    contact.DiscAmt=  ((parseFloat(contact.Disc) * parseFloat(contact.TotalAmount))/100).toFixed(2) || 0;
-    contact.NetAmount = (parseFloat(contact.TotalAmount) - parseFloat(contact.DiscAmt)).toFixed(2);
+    contact.TotalAmt = (parseFloat(contact.MRP) * parseFloat(contact.ReturnQty)).toFixed(2);
+    contact.GSTAmt=  ((parseFloat(contact.GST) * parseFloat(contact.TotalAmt))/100).toFixed(2) || 0;
+    contact.DiscAmt=  ((parseFloat(contact.Disc) * parseFloat(contact.TotalAmt))/100).toFixed(2) || 0;
+    contact.NetAmount = (parseFloat(contact.TotalAmt) - parseFloat(contact.DiscAmt)).toFixed(2);
     contact.PurTotAmt = (parseFloat(contact.PurRateWf) * parseFloat(contact.ReturnQty)).toFixed(2);
     contact.TotalLandedAmount = (parseFloat(contact.LandedPrice) * parseFloat(contact.ReturnQty)).toFixed(2);
   }
@@ -504,7 +546,7 @@ keyPressAlphanumeric(event) {
       this.toastr.error('API error!', 'error !', {
         toastClass: 'tostr-tost custom-toast-error',
       });
-    });
+    }); 
   }
   onCreditPaySave() {
     const currentDate = new Date();
@@ -660,7 +702,7 @@ keyPressAlphanumeric(event) {
       this.toastr.error('API error!', 'error !', {
         toastClass: 'tostr-tost custom-toast-error',
       });
-    });
+    }); 
   }
   OnReset() {
     this._IpSalesRetService.userFormGroup.reset();
@@ -668,10 +710,19 @@ keyPressAlphanumeric(event) {
     this.dsIpSaleItemList.data = [];
     this.chargeslist = [];
     this.vRegNo = '';
-    this.vPatienName = '';
+    this.vPatientName = '';
     this.vAdmissionID = '';
-    this.vAdmissionDate = '';
-    this._IpSalesRetService.userFormGroup.get('Op_ip_id').setValue(1);
+    this.vAdmissionDate = ''; 
+    this.vRegId ='';
+    this.vIPDNo = ''; 
+    this.vDoctorName =  '';
+    this.vTariffName =  '';
+    this.vCompanyName =  '';
+    this.vRoomName =  '';
+    this.vBedName =  '';
+    this.vGenderName =  '';
+    this.vAge =  '';
+    this._IpSalesRetService.userFormGroup.get('Op_ip_id').setValue('1');
   }
 
   onClear() {

@@ -122,6 +122,11 @@
                                                         <span>:</span>
                                                         <span class="patient-col-value">{{OPDNo}}</span>
                                                     </div>
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">AdmissionDate</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{vAdmissionDate}}</span>
+                                                    </div>
                                                     <div class="patient-col" *ngIf="DoctorNamecheck">
                                                         <span class="patient-col-key">Doctor Name
                                                         </span>
@@ -187,7 +192,7 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                                 Total Amt </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                <span> {{element.TotalAmount}}</span>
+                                                <span> {{element.TotalAmount | currency:"INR":"symbol"}}</span>
                                             </mat-cell>
                                         </ng-container>
                         
@@ -195,7 +200,7 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                                Concession Amt </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                <span> {{element.DiscAmount}}</span>
+                                                <span> {{element.DiscAmount | currency:"INR":"symbol"}}</span>
                                             </mat-cell>
                                         </ng-container>
                         
@@ -203,7 +208,7 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>NetPayAmount
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                <span> {{element.NetAmount}}</span>
+                                                <span> {{element.NetAmount | currency:"INR":"symbol"}}</span>
                                             </mat-cell>
                                         </ng-container>
                         
@@ -212,15 +217,16 @@
                                                 PaidAmount
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                <span> {{element.PaidAmount}}</span>
+                                                <span> {{element.PaidAmount | currency:"INR":"symbol"}}</span>
                                             </mat-cell>
                                         </ng-container>
                         
                                         <ng-container matColumnDef="BalanceAmt">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>BalanceAmt
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                <span> {{element.BalanceAmount}}</span>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm
+                                            [ngClass]="{'positive-balance': element.BalanceAmount > 0 }">
+                                                <span> {{element.BalanceAmount | currency:"INR":"symbol"}}</span>
                                             </mat-cell>
                                         </ng-container>
                         
@@ -229,7 +235,7 @@
                                                 RefundAmt
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                <span> {{element.RefundAmt}}</span>
+                                                <span> {{element.RefundAmt | currency:"INR":"symbol"}}</span>
                                             </mat-cell>
                                         </ng-container> 
                         

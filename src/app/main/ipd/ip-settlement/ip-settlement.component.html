@@ -224,7 +224,8 @@
                                                             (click)="addpayment(contact)" >
                                                             <mat-icon>payment</mat-icon> 
                                                         </button> 
-                                                        <button mat-icon-button (click)="getViewbill1(contact)" matTooltip="Print">
+                                                        <button mat-icon-button (click)="viewgetSettlementReportPdf(contact,flag)" matTooltip="Print"
+                                                        *ngIf="contact.BalanceAmt==0">
                                                             <mat-icon>print</mat-icon>
                                                         </button>
                                                     </mat-cell>

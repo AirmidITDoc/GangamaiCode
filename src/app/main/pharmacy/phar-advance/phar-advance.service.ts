@@ -87,4 +87,7 @@ export class PharAdvanceService {
   public UpdateIpPharmaAdvance(data) {
     return this._httpClient.post("Pharmacy/Update_PhAdvance",data)
   }
+  public InsertRefundOfAdv(data) {
+    return this._httpClient.post("/api/Pharmacy/InsertPharRefundofAdvance",data)
+  }
 }
