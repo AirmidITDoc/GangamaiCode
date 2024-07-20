@@ -187,35 +187,35 @@ export class RadiologyOrderListComponent implements OnInit {
   }
 
   getRecord(contact): void {
-    //console.log(contact);
-    let xx = {
-      RegNo: contact.RegNo,
-      PatientName: contact.PatientName,
-      Doctorname: contact.DoctorName,
-      DepartmentName: contact.DepartmentName,
-      AdmDateTime: contact.AdmissionTime,
-      OP_IP_Number: contact.OP_IP_Number,
-      AgeYear: contact.AgeYear,
-      GenderName: contact.GenderName,
-      RefDoctorName: contact.RefDoctorName,
-      PatientType: contact.PatientType,
-      CompanyName: contact.CompanyName,
-      LBL: contact.LBL,
-      RadReportId: contact.RadReportId,
-      RadTestID: contact.RadTestID, 
-      AdmissionID: contact.VisitId,
-      AdmissionDate: contact.AdmissionDate,
-      CategoryName: contact.CategoryName,
-      OPD_IPD_ID: contact.OPD_IPD_ID,
-      ChargeId: contact.ChargeId, 
-      PBillNo: contact.PBillNo,
-      RadDate: contact.RadDate,
-      ServiceName: contact.ServiceName,
-      TestName: contact.TestName,
-      OP_IP_Type: contact.OPD_IPD_Type,
-    };
-    console.log(xx);
-    this.advanceDataStored.storage = new RadiologyPrint(xx);
+    console.log(contact);
+    // let xx = {
+    //   RegNo: contact.RegNo,
+    //   PatientName: contact.PatientName,
+    //   Doctorname: contact.DoctorName,
+    //   DepartmentName: contact.DepartmentName,
+    //   AdmDateTime: contact.AdmissionTime,
+    //   OP_IP_Number: contact.OP_IP_Number,
+    //   AgeYear: contact.AgeYear,
+    //   GenderName: contact.GenderName,
+    //   RefDoctorName: contact.RefDoctorName,
+    //   PatientType: contact.PatientType,
+    //   CompanyName: contact.CompanyName,
+    //   LBL: contact.LBL,
+    //   RadReportId: contact.RadReportId,
+    //   RadTestID: contact.RadTestID, 
+    //   AdmissionID: contact.VisitId,
+    //   AdmissionDate: contact.AdmissionDate,
+    //   CategoryName: contact.CategoryName,
+    //   OPD_IPD_ID: contact.OPD_IPD_ID,
+    //   ChargeId: contact.ChargeId, 
+    //   PBillNo: contact.PBillNo,
+    //   RadDate: contact.RadDate,
+    //   ServiceName: contact.ServiceName,
+    //   TestName: contact.TestName,
+    //   OP_IP_Type: contact.OPD_IPD_Type,
+    // };
+    
+    this.advanceDataStored.storage = new RadiologyPrint(contact);
     const dialogRef = this._matDialog.open(ResultEntryComponent,
       {
         maxWidth: "90%",
@@ -231,30 +231,8 @@ export class RadiologyOrderListComponent implements OnInit {
   getView(contact) {
     debugger;
     console.log(contact);
-    let xx = {
-      RegNo: contact.RegNo,
-      PatientName: contact.PatientName,
-      PatientType: contact.PatientType,
-      GenderName: contact.GenderName,
-      AdmissionDate: contact.AdmissionDate,
-      AgeYear: contact.AgeYear,
-      CategoryName: contact.CategoryName,
-      ChargeId: contact.ChargeId,
-      ConsultantDoctor: contact.ConsultantDoctor,
-      OPDNo: contact.OPD_IPD_ID,
-      OP_IP_Number: contact.OP_IP_Number,
-      PBillNo: contact.PBillNo,
-      RadDate: contact.RadDate,
-      RadReportId: contact.RadReportId,
-      RadTestID: contact.RadTestID,
-      ServiceName: contact.ServiceName,
-      TestName: contact.TestName,
-      OP_IP_Type: contact.OPD_IPD_Type,
-      // Visit_Adm_ID: contact.PBillNo,
-
-    };
-
-    this.advanceDataStored.storage = new RadiologyPrint(xx);
+   
+    this.advanceDataStored.storage = new RadiologyPrint(contact);
 
     const dialogRef = this._matDialog.open(RadiologyTemplateReportComponent,
       {
@@ -276,27 +254,7 @@ export class RadiologyOrderListComponent implements OnInit {
     this.SBillNo = m.PBillNo;
     this.SOPIPtype = m.OPD_IPD_Type;
     this.SFromDate = this.datePipe.transform(m.PathDate, "yyyy-MM-dd ");
-  //  console.log(m);
-    // debugger;
-    // var m_data = {
-    //   "BillNo": m.PBillNo,
-    //   "OP_IP_Type": m.OPD_IPD_Type,
-    //   // "From_Dt": this.datePipe.transform(m.PathDate, "yyyy-MM-dd"),
-    // }
-    // console.log(m_data);
-    // //  setTimeout(() => {
-    // this._SampleService.getRadioTestDetails(m_data).subscribe(Visit => {
-    //   this.dataSource1.data = Visit as RadioPatientList[];
-    //   console.log(this.dataSource1.data);
-    //   this.dataSource1.sort = this.sort;
-    //   this.dataSource1.paginator = this.paginator;
-    //   this.sIsLoading = '';
-    //   this.click = false;
-    // },
-    //   error => {
-    //     this.sIsLoading = '';
-    //   });
-
+ 
   }
 
  

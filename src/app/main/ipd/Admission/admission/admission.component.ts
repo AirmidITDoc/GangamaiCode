@@ -3127,6 +3127,8 @@ OPDNo:any;
 WardName:any;
 Remark:any;
 DetailGiven:any;
+OP_IP_No:any;
+
   /**
 * Constructor
 *
@@ -3268,6 +3270,7 @@ DetailGiven:any;
       this.OPDNo=AdmissionPersonl.OPDNo || ''
       this.Remark =AdmissionPersonl.Remark || ''
       this.DetailGiven=AdmissionPersonl.DetailGiven || ''
+      this.OP_IP_No=AdmissionPersonl.OP_IP_No ||''
     }
   }
 }

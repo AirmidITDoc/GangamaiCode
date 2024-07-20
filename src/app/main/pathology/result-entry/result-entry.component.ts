@@ -20,6 +20,9 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
 import { ToastrService } from 'ngx-toastr';
 import { SelectionModel } from '@angular/cdk/collections';
+import { SampledetailtwoComponent } from '../sample-collection/sampledetailtwo/sampledetailtwo.component';
+import { AdvanceDetailObj } from 'app/main/opd/appointment/appointment.component';
+import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
 
 @Component({
   selector: 'app-result-entry',
@@ -43,7 +46,7 @@ export class ResultEntryComponent implements OnInit {
     'PBillNo',
     'GenderName',
     'AgeYear',  
-
+    'action'
   ];
 
 
@@ -66,7 +69,7 @@ export class ResultEntryComponent implements OnInit {
   PathReportID: any;
   PathTestId: any
   subscriptionArr: Subscription[] = [];
-  reportPrintObj: Templateprintdetail;
+  reportPrintObj: AdmissionPersonlModel;
   SBillNo: any;
   SOPIPtype: any;
   SFromDate: any;
@@ -201,6 +204,8 @@ console.log(m_data)
   // for sampledetails tablemyformSearch
   onEdit(m) { 
     console.log(m); 
+    this.reportPrintObj=m
+    console.log(this.reportPrintObj); 
     this.PatientName = m.PatientName;
     this.OPD_IPD = m.OP_IP_No
     this.Age = m.AgeYear
@@ -253,14 +258,12 @@ console.log(m_data)
   }
 
 
-  isAllSelected(contact) {
-    debugger
+  isAllSelected() {
+    
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource1.data.length;
 
-    this.advanceDataStored.storage = new SampleDetailObj(this.dataSource1.data[0]);
-
-    return numSelected === numRows;
+     return numSelected === numRows;
     
   }
 
@@ -274,18 +277,19 @@ console.log(m_data)
       let data=[];
       this.selection.selected.forEach(element => {
         if(element.PathTestServiceId !=0)
-        data.push({PathReportId:element["PathReportID"].toString()});
+        data.push({PathReportId:element["PathReportID"].toString(),ServiceId:element["ServiceId"].toString()});
       });
       console.log(data)
+      console.log(this.advanceDataStored.storage)
       const dialogRef = this._matDialog.open(ResultEntryOneComponent,
         {
-          maxWidth: "90%",
-          height: '95%',
-          width: '100%',
+          maxWidth: "95vw",
+          height: '670px',
+          width: '90%',
           data: {
             RIdData:data,
-            patientdata:this.advanceDataStored.storage,
-            title: "Path ReportId"
+            patientdata:this.reportPrintObj,
+            OPIPID:this.OPIPID
           }
         });
       dialogRef.afterClosed().subscribe(result => {
@@ -297,11 +301,11 @@ console.log(m_data)
     }, 100);
   }
 
-
+OPIPID:any=0;
   onresultentryshow(event,m){
-debugger
-  
+    this.OPIPID=m.OPD_IPD_ID
     this.advanceDataStored.storage = new SampleDetailObj(m); 
+    console.log(this.advanceDataStored.storage )
     if(event.checked){
     if(m.PathTestServiceId==0){
       this.toastr.warning('Result Not Generated !', 'Warning !', {
@@ -332,8 +336,12 @@ debugger
           maxWidth: "90%",
           height: '95%',
           width: '100%',
-          data:m
-          
+          data:this.reportPrintObj,
+          // data: {
+          //   RIdData:data,
+          //   patientdata:this.advanceDataStored.storage,
+          //   OPIPID:this.OPIPID
+          // }
         });
 
 
@@ -404,7 +412,7 @@ debugger
       this.SpinLoading = true;
       this.AdList = true;
       this._SampleService.getPathTestReport(
-        contact.PathReportID,contact.OPD_IPD_Type
+        contact.OPD_IPD_Type
       ).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,
           {
@@ -479,6 +487,28 @@ debugger
 
   }
 
+  onsamplecolltion(contact) {
+    console.log(contact)
+   
+    this.advanceDataStored.storage = new AdvanceDetailObj(contact);
+
+    const dialogRef1 = this._matDialog.open(SampledetailtwoComponent,
+      {
+        maxWidth: "70vw",
+        height: '80vh',
+        width: '100%',
+        data: {
+         
+          regobj:contact
+        } 
+      });
+
+    dialogRef1.afterClosed().subscribe(result => {
+      // console.log('The dialog was closed - Insert Action', result);
+      // this.getPatientsList();
+    });
+  }
+  
 
   onClear() { 
     this._SampleService.myformSearch.get('FirstNameSearch').reset();
@@ -580,6 +610,8 @@ export class SampleDetailObj {
   PatientType:any;
   RefDocName:any;
   ServiceId:any;
+  ChargeId:any;
+
   /**
   * Constructor
   *
@@ -628,6 +660,8 @@ export class SampleDetailObj {
       this.PathTime = SampleDetailObj.PathTime || '';
       this.PathTestID = SampleDetailObj.PathTestID || 0;
       this.ServiceId = SampleDetailObj.ServiceId || 0;
+      this.ChargeId=SampleDetailObj.ChargeId || 0
+
     }
   }
 }

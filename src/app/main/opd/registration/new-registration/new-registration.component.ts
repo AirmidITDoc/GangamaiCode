@@ -121,8 +121,7 @@ export class NewRegistrationComponent implements OnInit {
     private router: Router,
 
   ) {
-    //  console.log(this.data) 
-    // this.registerObj = this.data.registerObj;
+  
   }
 
 
@@ -135,7 +134,6 @@ export class NewRegistrationComponent implements OnInit {
     this.getPrefixList();
     this.getMaritalStatusList();
     this.getReligionList();
-    // this.getPatientTypeList();
     this.getAreaList();
     this.getCityList();
     this.getDoctor1List();

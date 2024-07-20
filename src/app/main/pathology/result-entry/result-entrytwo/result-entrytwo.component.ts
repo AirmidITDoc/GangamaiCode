@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { fuseAnimations } from '@fuse/animations';
 import { SampleDetailObj, Templateprintdetail } from '../result-entry.component';
 import { Observable, Subscription } from 'rxjs';
@@ -7,7 +7,7 @@ import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
@@ -62,13 +62,18 @@ export class ResultEntrytwoComponent implements OnInit {
     private advanceDataStored: AdvanceDataStored,
     private formBuilder: FormBuilder,
     public datePipe: DatePipe,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     public _matDialog: MatDialog,
      public dialogRef: MatDialogRef<ResultEntrytwoComponent>,
   ) {
     dialogRef.disableClose = true;
+    if(this.data)
+      this.selectedAdvanceObj1 = this.data;
+    console.log( this.selectedAdvanceObj1)
+    
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
-      this.selectedAdvanceObj1 = this.advanceDataStored.storage;
+      
       console.log( this.selectedAdvanceObj )
       this.vTemplateDesc= this.selectedAdvanceObj.TemplateDesc;
     }
@@ -285,7 +290,7 @@ export class ResultEntrytwoComponent implements OnInit {
 
   getTemplateList() {
     var mdata={
-        Id:this.selectedAdvanceObj.ServiceId
+        Id:this.selectedAdvanceObj.ChargeId
     }
     this._SampleService.getTemplateCombo(mdata).subscribe(data => {
       this.TemplateList = data;

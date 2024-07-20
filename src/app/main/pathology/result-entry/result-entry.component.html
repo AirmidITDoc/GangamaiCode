@@ -79,7 +79,7 @@
                                                 <mat-radio-button value='0'>OP</mat-radio-button>
                                             </mat-radio-group>
                                         </div>
-                                        <div class="radio-content" fxLayout="row" class="gap-4">
+                                        <div class="radio-content" fxLayout="row" class="gap-4" >
                                             <mat-label> Status : </mat-label>
                                             <mat-radio-group name="StatusSearch" formControlName="StatusSearch" value='2' fxLayoutAlign="center center" (change)="onShow($event)">
                                                 <mat-radio-button value='0'>Pending</mat-radio-button>
@@ -227,14 +227,7 @@
                                             </mat-cell>
                                         </ng-container>
 
-                                        <ng-container matColumnDef="AgeYear">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
-                                                AgeYear
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                                <span> {{contact.AgeYear}}</span>
-                                            </mat-cell>
-                                        </ng-container>
+                                       
 
                                         <ng-container matColumnDef="GenderName">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
@@ -244,6 +237,26 @@
                                                 <span> {{contact.GenderName}}</span>
                                             </mat-cell>
                                         </ng-container> 
+                                        <ng-container matColumnDef="AgeYear">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                                AgeYear
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                                <span> {{contact.AgeYear}}</span>
+                                            </mat-cell>
+                                        </ng-container>
+                                        <ng-container matColumnDef="action" stickyEnd>
+                                            <mat-header-cell *matHeaderCellDef fxShow.gt-sm>
+                                                Action</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact">
+                                                <!-- *ngIf="conatct.IsTemplateTest==0" -->
+                                                <button mat-icon-button class="material-icons" (click)="onsamplecolltion(contact)" matTooltip="Sample Collection"
+                                               >
+                                                    <mat-icon title="Sample Collection">description</mat-icon>
+                                                </button>
+
+                                            </mat-cell>
+                                        </ng-container>
 
                                         <ng-container matColumnDef="loading">
                                             <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
@@ -277,12 +290,9 @@
                             <div fxLayout="column" class="gap-8">
                                 <div class="table-header">
                                     <div fxLayout="row wrap" fxLayoutAlign="space-between center">
-                                        <div class="table-header-title">
-                                            <span class="h3 font-weight-600">Test Details</span>
-                                        </div>
-
+                                      
                                         <div class="table-header-right">
-                                            <div class="gap-8" fxLayout="row" fxLayoutAlign="end center">
+                                            <div class="gap-8" fxLayout="row" fxLayoutAlign="end center" style="margin-left:850px;">
                                                 <mat-label> Test Status : </mat-label>
 
                                                 <form [formGroup]="_SampleService.myformSearch">
@@ -298,36 +308,27 @@
                                     
                                 </div>
                                 <div class="table-wrapper">
-                                    <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur">
+                                    <!-- <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur">
                                         <div class="spinner-border"></div>
-                                    </div>
+                                    </div> -->
                                     <button mat-raised-button *ngIf="selection.selected.length>0"
                                         (click)="chkresultentry()">
                                       Result entry
                                     </button>
                                     <mat-table class="mat-table-2 h-210" #table matSort [dataSource]="dataSource1" [@animateStagger]="{value:'50'}">
 
-                                        <!-- <ng-container matColumnDef="checkbox" sticky>
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">
-                                                <mat-checkbox aria-label="Checked">
-                                                </mat-checkbox>
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-80">
-                                                <mat-checkbox aria-label="Checked" (change)="onresultentryshow(contact)">
-                                                </mat-checkbox>
-                                            </mat-cell>
-                                        </ng-container> -->
+                                      
 
                                         <ng-container matColumnDef="select">
                                             <th mat-header-cell *matHeaderCellDef>
-                                                <mat-checkbox (change)="$event ? masterToggle() : null"
+                                                <mat-checkbox (change)="$event ? masterToggle() : null" 
                                                     [checked]="selection.hasValue()" 
-                                                    [indeterminate]="selection.hasValue() && !isAllSelected(contact)">
+                                                    [indeterminate]="selection.hasValue() && !isAllSelected()">
                                                 </mat-checkbox>
                                             </th>
                                             <td mat-cell *matCellDef="let contact">
                                                 <mat-checkbox (click)="$event.stopPropagation()" (change)="onresultentryshow($event,contact)"
-                                                    (change)="$event ? selection.toggle(contact) : null"
+                                                    (change)="$event ? selection.toggle(contact) : null" *ngIf="contact.IsTemplateTest !='1'" 
                                                     [checked]="selection.isSelected(contact)">
                                                 </mat-checkbox>
                                             </td>
@@ -399,8 +400,9 @@
                                             <mat-header-cell *matHeaderCellDef fxShow.gt-sm>
                                                 Action</mat-header-cell>
                                             <mat-cell *matCellDef="let contact">
-
-                                                <button mat-icon-button class="material-icons" (click)="onresultentry(contact)" matTooltip="Result Entry">
+                                                <!-- *ngIf="contact.IsTemplateTest=='1'"  -->
+                                                <button mat-icon-button class="material-icons" (click)="onresultentry(contact)" matTooltip="Result Entry"
+                                              >
                                                     <mat-icon title="Result Entry">description</mat-icon>
                                                 </button>
 

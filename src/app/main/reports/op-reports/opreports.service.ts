@@ -134,7 +134,7 @@ return this._httpClient.get("OPReport/view-OPDoctorWiseNewOldPatientReport?FromD
 
   public getDoctorwisenopdcollsummarytView(FromDate,ToDate){
   
-    return this._httpClient.get("OPReport/view-DrWiseOPDCollectionDetails?FromDate=" + FromDate+"&ToDate="+ToDate);
+    return this._httpClient.get("OPReport/view-DoctorWiseOpdCollectionSummary?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
 
   public getDeptwiseopdcolldetailView(FromDate,ToDate){
@@ -338,13 +338,6 @@ return this._httpClient.get("OPReport/view-OPDoctorWiseNewOldPatientReport?FromD
 
 
 
-
-
-
-
-
-
-
   //Inventory
   public getCurrentstockReport(ItemName,StoreId){
     return this._httpClient.get("InventoryTransaction/view-InvCurrentStock?ItemName="+ItemName+"&ItemName="+StoreId);
@@ -355,26 +348,98 @@ return this._httpClient.get("OPReport/view-OPDoctorWiseNewOldPatientReport?FromD
   public getItemExpiryReport(ExpMonth,ExpYear,StoreID){
     return this._httpClient.get("InventoryTransaction/view-ExpiryItemList?ExpMonth="+ExpMonth+"&ExpYear="+ExpYear+"&StoreID="+StoreID);
   }
+  // Inventory
+  public getItemlistReport(FromDate,ToDate){
+    return this._httpClient.get("InventoryReports/view-ItemList?FromDate="+FromDate+"&ToDate="+ToDate);
+  }
+
   
+  public getSupplierlistReport(FromDate,ToDate){
+    return this._httpClient.get("InventoryReports/view-SupplierList?FromDate="+FromDate+"&ToDate="+ToDate);
+  }
+  public getIndentlistReport(FromDate,ToDate,FromStoreId,ToStoreId){
+    return this._httpClient.get("InventoryReports/view-IndentReport?FromDate="+FromDate+"&ToDate="+ToDate+"&FromStoreId="+FromStoreId+"&ToStoreId="+ToStoreId);
+  }
   
+ public getMonthlypurchaseGRNReport(FromDate,ToDate){
+    return this._httpClient.get("InventoryReports/view-MonthlyPurchaseGRNReport?FromDate="+FromDate+"&ToDate="+ToDate);
+  }
+
+  public getGRNReportlist(FromDate,ToDate,StoreId,SupplierID){
+    return this._httpClient.get("InventoryReports/view-MonthlyPurchaseGRNReport?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId+"&SupplierID="+SupplierID);
+  }
+  
+  public getGRNReportNABH(FromDate,ToDate,StoreId){
+    return this._httpClient.get("InventoryReports/view-GRNReportNΑΒΗ?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId);
+  }
   public getNonmovinglistReport(NonMovingDay,StoreId){
     return this._httpClient.get("InventoryTransaction/view-NonMovingItem?NonMovingDay="+NonMovingDay+"&StoreId="+StoreId);
   }
+
+  
+  public getGRNReturnReport(FromDate,ToDate,StoreId,SupplierID){
+    return this._httpClient.get("InventoryReports/view-GRNReturnReport?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId+"&SupplierID="+SupplierID);
+  }
+  
+  public getGRNwiseprodqtyReport(FromDate,ToDate,StoreId,SupplierID){
+    return this._httpClient.get("InventoryReports/view-GRNWiseProductQtyReport?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId+"&SupplierID="+SupplierID);
+  }
+  
+
+  public getGRNpurchaseReport(FromDate,ToDate,StoreId){
+    return this._httpClient.get("InventoryReports/view-GRNPurchaseReport?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId);
+  }
+
+  
+
+  public getSupplierwiseGRNReport(StoreId,SupplierID,FromDate,ToDate){
+    return this._httpClient.get("/api/InventoryReports/view-SupplierWiseGRNList?StoreId="+StoreId +"&SupplierID="+SupplierID + "&FromDate="+FromDate +"&ToDate="+ToDate);
+  }
+
+  public getIssuetodeptlistReport(FromDate,ToDate,FromStoreId,ToStoreId,ItemId){
+    return this._httpClient.get("InventoryReports/view-IssueToDepartment?FromDate="+FromDate+"&ToDate="+ToDate + "&FromStoreId="+FromStoreId +"&ToStoreId="+ToStoreId+"&ItemId="+ItemId);
+  }
+  
+  public getIssuetodeptitemwiseReport(FromDate,ToDate,FromStoreId,ToStoreId,ItemId){
+    return this._httpClient.get("InventoryReports/view-IssueToDepartmentItemWise?FromDate="+FromDate+"&ToDate="+ToDate + "&FromStoreId="+FromStoreId +"&ToStoreId="+ToStoreId+"&ItemId="+ItemId);
+  }
+  
+  
+
+ public getReturnfromdeptlistReport(FromDate,ToDate,FromStoreId,ToStoreId){
+  return this._httpClient.get("InventoryReports/view-ReturnFromDepartment?FromDate="+FromDate+"&ToDate="+ToDate + "&FromStoreId="+FromStoreId +"&ToStoreId="+ToStoreId);
+}
+
+
+public getPurchaseorderview(FromDate,ToDate,SupplierID,ToStoreId){
+  return this._httpClient.get("InventoryReports/view-ReturnFromDepartment?FromDate="+FromDate+"&ToDate="+ToDate + "&SupplierID="+SupplierID +"&ToStoreId="+ToStoreId);
+}
   public getIndentwiseReport(IndentId){
     return this._httpClient.get("InventoryTransaction/view-IndentWise?IndentId="+IndentId);
   }
-
+  public getMaterialConsumptionlistReport(FromDate,ToDate,ToStoreId){
+    return this._httpClient.get("InventoryReports/view-MaterialConsumption?FromDate="+FromDate+"&ToDate="+ToDate + "&ToStoreId="+ToStoreId);
+  }
   public getMaterialConsumptionReport(MaterialConsumptionId){
     return this._httpClient.get("InPatient/view-MaterialConsumption?MaterialConsumptionId="+MaterialConsumptionId);
   }
+  public getItemExpirylistReport(ExpMonth,ExpYear,StoreID,FromDate,ToDate){
+    return this._httpClient.get("InventoryReports/view-ItemExpiryReport?ExpMonth="+ExpMonth +"&ExpYear="+ExpYear + "&StoreID="+StoreID+"&FromDate="+FromDate + "&ToDate="+ToDate);
+  }
+  
   public getIssuetodeptReport(IssueId){
     return this._httpClient.get("InventoryTransaction/view-IssuetoDeptIssuewise?IssueId="+IssueId);
   }
+  public getMaterialconsumptionmonthsummaryReport(FromDate,ToDate,StoreId,){
+    return this._httpClient.get("InventoryReports/view-MaterialConsumptionMonthlySummary?FromDate="+FromDate+"&ToDate="+ToDate + "&StoreId="+StoreId );
+  }
   
-  
+  public getCurrentstocklistReport(FromDate,ToDate){
+    return this._httpClient.get("InventoryReports/view-CurrentStockReport?FromDate="+FromDate+"&ToDate="+ToDate);
+  }
   
   public getReturnfromdeptReport(IssueId){
-    return this._httpClient.get("InventoryTransaction/view-ReturnfromDept?IssueId="+IssueId);
+    return this._httpClient.get("InventoryReports/view-ReturnFromDepartment?IssueId="+IssueId);
   }
   public getGRNreportview(GRNID) {
     return this._httpClient.get("Pharmacy/view-GRNReport?GRNID=" + GRNID);

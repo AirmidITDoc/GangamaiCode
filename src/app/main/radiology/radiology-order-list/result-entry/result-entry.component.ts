@@ -98,11 +98,13 @@ export class ResultEntryComponent implements OnInit {
     private advanceDataStored: AdvanceDataStored,
     public dialogRef: MatDialogRef<ResultEntryComponent>,
   ) { 
-    this.getDoctorList()
-    this.getTemplateList();
+   
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
+      console.log(this.selectedAdvanceObj )
     }
+    this.getDoctorList()
+    this.getTemplateList();
    }
 
   ngOnInit(): void { 
@@ -275,7 +277,8 @@ Rtevdropdownvalue(){
 
   getTemplateList() {
     var mdata={
-        Id:this.selectedAdvanceObj.ServiceId
+        Id:this.selectedAdvanceObj.ChargeId
+
     }
     this._radiologytemplateService.getTemplateCombo(mdata).subscribe(data => {
       this.TemplateList = data;

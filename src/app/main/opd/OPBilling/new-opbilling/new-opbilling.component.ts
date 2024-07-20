@@ -962,12 +962,15 @@ console.log(obj)
         return;
       }
       if (this.registeredForm.get('DoctorID').value) {
-        if (!this.doctorNameCmbList.find(item => item.DoctorName == this.registeredForm.get('DoctorID').value.DoctorName)) {
+        if (!this.doctorNameCmbList.find(item => item.Doctorname == this.registeredForm.get('DoctorID').value.Doctorname)) {
           this.toastr.warning('Please select valid Doctor Name', 'Warning !', {
             toastClass: 'tostr-tost custom-toast-warning',
           });
           return;
         }
+        this.ChargesDoctorname= this.registeredForm.get('DoctorID').value.Doctorname ||''
+        this.DoctornewId=this.registeredForm.get('DoctorID').value.DoctorId || 0;
+        console.log(this.ChargesDoctorname)
       }
     }
     this.isLoading = 'save';

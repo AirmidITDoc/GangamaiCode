@@ -1469,7 +1469,7 @@ this.viewSalesstatement(contact);
     setTimeout(() => {
       // this.SpinLoading =true;
       this.AdList = true;
-      this._BrowsSalesBillService.getPdfSalesstatement(el.OP_IP_ID, StoreId).subscribe(res => {
+      this._BrowsSalesBillService.getPdfSalesstatement(el.OP_IP_ID,StoreId).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,
           {
             maxWidth: "85vw",

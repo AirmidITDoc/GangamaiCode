@@ -216,18 +216,18 @@ export class IPBillBrowseListComponent implements OnInit {
 
 
   getRecord(contact, m): void {
-    if (m == "Print Final Bill") {
+   
       if (!contact.InterimOrFinal)
         this.viewgetBillReportPdf(contact.BillNo)
       else
         this.viewgetInterimBillReportPdf(contact.BillNo)
-    }
-    else if (m == "Print FinalBill Datewise") {
-      this.viewgetBillReportDatewisePdf(contact);
-    }
-    else if (m == "Print FinalBill WardWise") {
-      this.viewgetBillReportwardwisePdf(contact);
-    }
+    
+    // else if (m == "Print FinalBill Datewise") {
+    //   this.viewgetBillReportDatewisePdf(contact);
+    // }
+    // else if (m == "Print FinalBill WardWise") {
+    //   this.viewgetBillReportwardwisePdf(contact);
+    // }
 
   }
 

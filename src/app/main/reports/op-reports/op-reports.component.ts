@@ -67,13 +67,12 @@ FlagBillNoSelected: boolean = false;
 
   dataSource = new MatTableDataSource<ReportDetail>();
   constructor(
-    // this.dataSource.data = TREE_DATA;
-    public _OPReportsService: OPReportsService,
     
+    public _OPReportsService: OPReportsService,
     public _matDialog: MatDialog,
     private _ActRoute: Router,
     public datePipe: DatePipe,
-        private _loggedUser: AuthenticationService,
+    private _loggedUser: AuthenticationService,
     private formBuilder: FormBuilder
   ) {
     this.UserId = this._loggedUser.currentUserValue.user.id;

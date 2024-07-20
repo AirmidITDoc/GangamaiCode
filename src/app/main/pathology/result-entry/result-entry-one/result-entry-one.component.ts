@@ -13,9 +13,10 @@ import { ConfigService } from 'app/core/services/config.service';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
-import Swal from 'sweetalert2'; 
+import Swal from 'sweetalert2';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { ToastrService } from 'ngx-toastr';
+import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
 
 @Component({
   selector: 'app-result-entry-one',
@@ -34,21 +35,22 @@ export class ResultEntryOneComponent implements OnInit {
     'NormalRange',
 
   ];
-  isLoading: string = ''; 
-  Pthologyresult: any = []; 
+  isLoading: string = '';
+  Pthologyresult: any = [];
   PathologyDoctorList: any = [];
   DoctorList: any = [];
-  Doctor1List: any = []; 
+  Doctor1List: any = [];
   otherForm: FormGroup;
   msg: any;
-  
-  selectedAdvanceObj1:SampleDetailObj;
+
+  selectedAdvanceObj1: SampleDetailObj;
+  selectedAdvanceObj2: AdmissionPersonlModel;
   screenFromString = 'opd-casepaper';
-  hasSelectedContacts: boolean; 
+  hasSelectedContacts: boolean;
   advanceData: any;
   dataSource = new MatTableDataSource<Pthologyresult>();
-  configDoc:any;
-  sIsLoading: string = '';  
+  configDoc: any;
+  sIsLoading: string = '';
   filteredresultdr: Observable<string[]>;
   filteredpathdr: Observable<string[]>;
   filteredrefdr: Observable<string[]>;
@@ -61,15 +63,15 @@ export class ResultEntryOneComponent implements OnInit {
   currentDate: Date = new Date();
 
   isresultdrSelected: boolean = false;
-  // isReligionSelected: boolean = false;
-  // isMaritalSelected: boolean = false;
 
   vPathResultDoctorId: any = 0;
   vDoctorId: any = 0;
   vRefDoctorID: any = 0;
   vsuggation: any = '';
-  reportIdData={};
-  
+  reportIdData: any = [];
+  ServiceIdData: any = [];
+  OPIPID: any = 0;
+
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -84,35 +86,44 @@ export class ResultEntryOneComponent implements OnInit {
     public toastr: ToastrService,
     private _fuseSidebarService: FuseSidebarService) {
 
-    this.advanceData = data.patientdata; 
-    console.log(this.advanceData )
+   
 
     if (this.data) {
-      console.log(this.data)
-      this.reportIdData = this.data.RIdData;
-      console.log(this.reportIdData )
+      debugger
+      this.advanceData = data.patientdata;
+      this.selectedAdvanceObj2 = data.patientdata;
+      console.log(this.advanceData)
+      
+      this.OPIPID = this.data.OPIPID;
+      this.data.RIdData.forEach((element) => {
+        this.reportIdData.push(element.PathReportId)
+        this.ServiceIdData.push(element.ServiceId)
+
+      });
+
+      console.log(this.reportIdData)
     }
 
-  } 
+  }
   ngOnInit(): void {
     this.otherForm = this.formBuilder.group({
       suggestionNotes: '',
       PathResultDoctorId: [0],
-      DoctorId:['', Validators.required],
+      DoctorId: ['', Validators.required],
       AdmDoctorID: [0],
       RefDoctorID: [0],
     });
- 
+
     this.getPathresultDoctorList();
     this.getDoctorList();
-    this.getRefDoctorList(); 
-    this.setDropdownObjs(); 
+    this.getRefDoctorList();
+    this.setDropdownObjs();
 
-    if (this.advanceDataStored.storage) { 
-      this.selectedAdvanceObj1 = this.advanceDataStored.storage; 
+    if (this.advanceDataStored.storage) {
+      this.selectedAdvanceObj1 = this.advanceDataStored.storage;
       console.log(this.selectedAdvanceObj1);
-      
-    } 
+
+    }
 
     //For Diffrente List Dispaly(IP?OP)
     if (this.advanceData.IsCompleted == true) {
@@ -126,11 +137,11 @@ export class ResultEntryOneComponent implements OnInit {
       this.getResultList(this.advanceData);
     }
 
-    
-      setTimeout(function () {
-        let element: HTMLElement = document.getElementById('auto_trigger') as HTMLElement;
-        element.click();
-      }, 1000);
+
+    setTimeout(function () {
+      let element: HTMLElement = document.getElementById('auto_trigger') as HTMLElement;
+      element.click();
+    }, 1000);
   }
 
   toggleSidebar(name): void {
@@ -139,31 +150,31 @@ export class ResultEntryOneComponent implements OnInit {
 
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
-    this.dateTimeObj = dateTimeObj; 
+    this.dateTimeObj = dateTimeObj;
   }
 
   setDropdownObjs() {
-        const toSelect = this.PathologyDoctorList.find(c => c.DoctorId == this.selectedAdvanceObj1.PathResultDr1);
-        this.otherForm.get('DoctorId').setValue(toSelect);
+    const toSelect = this.PathologyDoctorList.find(c => c.DoctorId == this.selectedAdvanceObj1.PathResultDr1);
+    this.otherForm.get('DoctorId').setValue(toSelect);
 
-        const toSelect1 = this.DoctorList.find(c => c.DoctorID == this.selectedAdvanceObj1.AdmDocId);
-        this.otherForm.get('AdmDoctorID').setValue(toSelect1);
+    const toSelect1 = this.DoctorList.find(c => c.DoctorID == this.selectedAdvanceObj1.AdmDocId);
+    this.otherForm.get('AdmDoctorID').setValue(toSelect1);
 
-        // const toSelect2 = this.DoctorList.find(c => c.DoctorID == this.selectedAdvanceObj1.AdmDocId);
-        // this.otherForm.get('DoctorId').setValue(toSelect1);
+    // const toSelect2 = this.DoctorList.find(c => c.DoctorID == this.selectedAdvanceObj1.AdmDocId);
+    // this.otherForm.get('DoctorId').setValue(toSelect1);
   }
-  
+
 
   getResultList(advanceData) {
-    
-    console.log(advanceData)
+
+    debugger
     this.sIsLoading = 'loading-data';
-    let SelectQuery = "Select * from lvw_Retrieve_PathologyResult where opd_ipd_id=" + advanceData.OPD_IPD_ID + " and ServiceID in (" + advanceData.ServiceId + ") and OPD_IPD_Type = " + advanceData.OPD_IPD_Type + " AND IsCompleted = 0 and PathReportID = " + advanceData.PathReportID+ ""
-   console.log(SelectQuery)
+    // let SelectQuery = "Select * from lvw_Retrieve_PathologyResult where opd_ipd_id=" + advanceData.OPD_IPD_ID + " and ServiceID in (" + advanceData.ServiceId + ") and OPD_IPD_Type = " + advanceData.OPD_IPD_Type + " AND IsCompleted = 0 and PathReportID = " + advanceData.PathReportID+ ""
+    let SelectQuery = "Select * from lvw_Retrieve_PathologyResult where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + advanceData.OP_IP_Type + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ")"
+    console.log(SelectQuery)
     this._SampleService.getPathologyResultList(SelectQuery).subscribe(Visit => {
       this.dataSource.data = Visit as Pthologyresult[];
       this.Pthologyresult = Visit as Pthologyresult[];
-      // console.log(this.Pthologyresult);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
       this.sIsLoading = '';
@@ -191,42 +202,43 @@ export class ResultEntryOneComponent implements OnInit {
     return option && option.Doctorname ? option.Doctorname : '';
   }
 
-  onEnterresultdr($event){
-    
+  onEnterresultdr($event) {
+
   }
- 
+
   onSave() {
     debugger
-    if ((this.vPathResultDoctorId == '' || this.vPathResultDoctorId == null || this.vPathResultDoctorId == undefined)) {
-      this.toastr.warning('Please select valid PathResultDoctorId ', 'Warning !', {
+
+
+    if (!this.PathologyDoctorList.some(item => item.Doctorname === this.otherForm.get('PathResultDoctorId').value.Doctorname)) {
+      this.toastr.warning('Please Select valid Patholgy Doctorname', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    if ((this.vDoctorId == '' || this.vDoctorId == null || this.vDoctorId == undefined)) {
-      this.toastr.warning('Please select valid DoctorId', 'Warning !', {
+    if (!this.DoctorList.some(item => item.Doctorname === this.otherForm.get('DoctorId').value.Doctorname)) {
+      this.toastr.warning('Please Select valid Doctorname', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    if ((this.vRefDoctorID == '' || this.vRefDoctorID == null || this.vRefDoctorID == undefined)) {
-      this.toastr.warning('Please select RefDoctorID', 'Warning !', {
+    if (!this.Doctor1List.some(item => item.Doctorname === this.otherForm.get('RefDoctorID').value.Doctorname)) {
+      this.toastr.warning('Please Select valid Ref Doctorname', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
 
-
+    // this.data.RIdData.forEach((element1) => {
     let pathologyDeleteObj = {};
-    pathologyDeleteObj['pathReportID'] = this.selectedAdvanceObj1.PathReportID;
+    pathologyDeleteObj['pathReportID'] = this.selectedAdvanceObj1.PathReportID// element1.PathReportId;
 
     this.isLoading = 'submit';
     let PathInsertArry = [];
 
     this.Pthologyresult.forEach((element) => {
-console.log(element)
       let pathologyInsertReportObj = {};
-      pathologyInsertReportObj['PathReportId'] = this.selectedAdvanceObj1.PathReportID;
+      pathologyInsertReportObj['PathReportId'] = this.selectedAdvanceObj1.PathReportID //element1.PathReportId;
       pathologyInsertReportObj['CategoryID'] = element.CategoryID || 0;
       pathologyInsertReportObj['TestID'] = element.TestId || 0;
       pathologyInsertReportObj['SubTestId'] = element.SubTestID || 0;
@@ -250,23 +262,23 @@ console.log(element)
     });
 
     let pathologyUpdateReportObj = {};
-    pathologyUpdateReportObj['PathReportID'] = this.selectedAdvanceObj1.PathReportID;
-    pathologyUpdateReportObj['ReportDate'] =this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
-    pathologyUpdateReportObj['ReportTime'] =this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
-    pathologyUpdateReportObj['IsCompleted'] = true;
+    pathologyUpdateReportObj['PathReportID'] = this.selectedAdvanceObj1.PathReportID// element1.PathReportId;
+    pathologyUpdateReportObj['ReportDate'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
+      pathologyUpdateReportObj['ReportTime'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy hh:mm"),
+      pathologyUpdateReportObj['IsCompleted'] = true;
     pathologyUpdateReportObj['IsPrinted'] = true;
     pathologyUpdateReportObj['PathResultDr1'] = this.otherForm.get('PathResultDoctorId').value.DoctorId || 0;
     pathologyUpdateReportObj['PathResultDr2'] = this.otherForm.get('DoctorId').value.DoctorId || 0;
     pathologyUpdateReportObj['PathResultDr3'] = 0;
     pathologyUpdateReportObj['IsTemplateTest'] = 0;
     pathologyUpdateReportObj['SuggestionNotes'] = this.otherForm.get('suggestionNotes').value || "";
-    pathologyUpdateReportObj['AdmVisitDoctorID'] =  this.selectedAdvanceObj1.AdmDocId,//this.otherForm.get('AdmDoctorID').value.DoctorID || 0;
-    pathologyUpdateReportObj['RefDoctorID'] = this.otherForm.get('RefDoctorID').value.DoctorID || 0;
+    pathologyUpdateReportObj['AdmVisitDoctorID'] = this.selectedAdvanceObj1.AdmDocId,//this.otherForm.get('AdmDoctorID').value.DoctorID || 0;
+      pathologyUpdateReportObj['RefDoctorID'] = this.otherForm.get('RefDoctorID').value.DoctorID || 0;
 
     const pathologyDelete = new PthologyresulDelt(pathologyDeleteObj);
     const pathologyUpdateObj = new PthologyresulUp(pathologyUpdateReportObj);
 
-    
+
     console.log('==============================  PathologyResult ===========');
     let submitData = {
       "deletepathreportheader": pathologyDelete,
@@ -298,15 +310,15 @@ console.log(element)
 
   public onEnterSugg(event): void {
     if (event.which === 13) {
-  
+
       this.PathResultDoctorId.nativeElement.focus();
     }
   }
 
-  
-  public onEnterPathResultDoctorId(event,value): void {
-      if (event.which === 13) {
 
+  public onEnterPathResultDoctorId(event, value): void {
+    debugger
+    if (event.which === 13) {
       console.log(value)
       if (value == undefined) {
         this.toastr.warning('Please Enter Valid Pathology Doctor .', 'Warning !', {
@@ -318,25 +330,25 @@ console.log(element)
       }
     }
   }
-  public onEnterDoctorId(event,value): void {
-   
-      if (event.which === 13) {
+  public onEnterDoctorId(event, value): void {
 
-        console.log(value)
-        if (value == undefined) {
-          this.toastr.warning('Please Enter Valid DoctorId.', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          return;
-        } else {
-          this.RefDoctorID.nativeElement.focus();
-        }
+    if (event.which === 13) {
+
+      console.log(value)
+      if (value == undefined) {
+        this.toastr.warning('Please Enter Valid DoctorId.', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      } else {
+        this.RefDoctorID.nativeElement.focus();
       }
+    }
 
   }
 
-  public onEnterRefDoctorID(event,value): void {
-    
+  public onEnterRefDoctorID(event, value): void {
+
     if (event.which === 13) {
 
       console.log(value)
@@ -345,14 +357,14 @@ console.log(element)
           toastClass: 'tostr-tost custom-toast-warning',
         });
         return;
-      } 
+      }
     }
 
   }
-  
+
   // getPathologyDoctorList() {
   //   
-   
+
   //   this._SampleService.getPathologyDoctorCombo().subscribe(data => {
   //     this.PathologyDoctorList = data;
   //    this.filteredPathDoctor.next(this.PathologyDoctorList.slice());
@@ -361,7 +373,7 @@ console.log(element)
   //   //console.log(this.PathologyDoctorList);
   // }
 
-   
+
   getPathresultDoctorList() {
     this._SampleService.getPathologyDoctorCombo().subscribe(data => {
       this.PathologyDoctorList = data;
@@ -370,7 +382,7 @@ console.log(element)
         startWith(''),
         map(value => value ? this._filterdoc3(value) : this.PathologyDoctorList.slice()),
       );
-      
+
     });
   }
 
@@ -389,7 +401,7 @@ console.log(element)
   //   })
   // }
 
-  
+
   getDoctorList() {
     this._SampleService.getDoctorMaster1Combo().subscribe(data => {
       this.DoctorList = data;
@@ -398,7 +410,7 @@ console.log(element)
         startWith(''),
         map(value => value ? this._filterdoc2(value) : this.DoctorList.slice()),
       );
-      
+
     });
   }
 
@@ -426,7 +438,7 @@ console.log(element)
         startWith(''),
         map(value => value ? this._filterdoc1(value) : this.Doctor1List.slice()),
       );
-      
+
     });
   }
 
@@ -440,7 +452,7 @@ console.log(element)
 
 
   getResultListIP() {
-    
+
     this.sIsLoading = 'loading-data';
     let SelectQuery = "Select * from lvw_Retrieve_PathologyResultIPPatientUpdate where PathReportId in(" + this.advanceData.PathReportID + ")"
 
@@ -459,7 +471,7 @@ console.log(element)
   }
 
   getResultListOP() {
-    
+
     this.sIsLoading = 'loading-data';
     let SelectQuery = "Select * from lvw_Retrieve_PathologyResultUpdate where PathReportId in(" + this.advanceData.PathReportID + ")"
     this._SampleService.getPathologyResultListforOP(SelectQuery).subscribe(Visit => {
@@ -490,7 +502,7 @@ console.log(element)
       // this.SpinLoading = true;
       // this.AdList = true;
       this._SampleService.getPathTestReport(
-        contact.PathReportID,contact.OP_IP_Type
+        contact.OP_IP_Type
       ).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,
           {
@@ -502,10 +514,10 @@ console.log(element)
               title: "pathology Test  Viewer"
             }
           });
-          dialogRef.afterClosed().subscribe(result => {
-            // this.AdList=false;
-            // this.SpinLoading = false;
-          });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          // this.SpinLoading = false;
+        });
       });
 
     }, 100);
@@ -531,13 +543,13 @@ export class Pthologyresult {
 
 
 export class PthologyTemplateresult {
-  
+
   TemplateDesc: String;
   PrintTestName: String;
   PathReportID: any;
   TestId: any;
-  PathResultDr1:any;
-  
+  PathResultDr1: any;
+
   constructor(PthologyTemplateresult) {
     this.TemplateDesc = PthologyTemplateresult.TemplateDesc || '';
     this.PrintTestName = PthologyTemplateresult.PrintTestName || '';
