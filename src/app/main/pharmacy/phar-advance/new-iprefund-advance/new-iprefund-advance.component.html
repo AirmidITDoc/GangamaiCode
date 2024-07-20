@@ -388,7 +388,7 @@
                     
                    <div fxLayout="column" fxLayout="row">
                     <mat-card style="padding: 6px;width: 100%;" fxLayoutGap="4px">
-                        
+                        <form [formGroup]="_PharAdvanceService.NewRefundForm">
                         <mat-form-field appearance="outline" fxFlex="16%">
                             <mat-label>Total Refund Amount</mat-label>
                             <input matInput formControlName="ToatalRefunfdAmt" name="ToatalRefunfdAmt"
@@ -410,7 +410,7 @@
                             <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>&nbsp;
                             <button class="btn btn-primary " (click)="onSave()">Save</button>
                         </div> 
-
+                    </form>
                     </mat-card> 
                    </div> 
                 </div>

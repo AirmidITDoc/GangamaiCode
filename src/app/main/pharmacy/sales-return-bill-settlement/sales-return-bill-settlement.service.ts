@@ -36,7 +36,7 @@ export class SalesReturnBillSettlementService {
       MobileNo: ['', [Validators.required, Validators.pattern("^[0-9]*$"),
       Validators.minLength(10),
       Validators.maxLength(10),]],
-      PatientType: ['OP'], 
+      PatientType: ['IP'], 
     });
   }
   
@@ -44,7 +44,7 @@ export class SalesReturnBillSettlementService {
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch ", employee)
   }
   public getSalesList(Param){ 
-    return this._httpClient.post("Generic/GetByProc?procName=m_Retrieve_PrescriptionListforSales",Param);
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_Phar_Bill_List_Settlement",Param);
   }
   public getItemDetailList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Ret_PrescriptionDet",Param);

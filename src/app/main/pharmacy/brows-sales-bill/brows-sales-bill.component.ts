@@ -71,7 +71,7 @@ export class BrowsSalesBillComponent implements OnInit {
   Creditflag: boolean = false;
   menuActions: Array<string> = [];
   displayedColumns: string[] = [
-    'action',
+    'OP_Ip_Type', 
     //  'action1',
     //  'action2',
     // 'payment',
@@ -102,7 +102,7 @@ export class BrowsSalesBillComponent implements OnInit {
     'IGST'
   ]
   displayedColumns3: string[] = [
-    'action',
+    'OP_Ip_Type',
     // 'action1',
     // 'action2',
     'SalesDate',
@@ -112,7 +112,8 @@ export class BrowsSalesBillComponent implements OnInit {
     'NetAmt',
     'BalAmt',
     'PaidAmt',
-    'Type'
+    'Type', 
+    'action',
   ]
   displayedColumns4: string[] = [
     'ItemName',
@@ -130,6 +131,7 @@ export class BrowsSalesBillComponent implements OnInit {
 
   displayedColumnsplist = [
     // 'IsMLC',
+    'Action',
     'RegNo',
     'PatientName',
     'DOA',
@@ -178,7 +180,13 @@ export class BrowsSalesBillComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    
+    this.getAdmittedPatientList();
+    this.getSalesList();
+    this.getSalesReturnList()
+    this.gePharStoreList();
+    this.gePharStoreList1();
+
+
     if (this._ActRoute.url == '/pharmacy/browsesalesbill') {
 
       this.menuActions.push('Patient Ledger');
@@ -187,11 +195,7 @@ export class BrowsSalesBillComponent implements OnInit {
       this.menuActions.push("Patient Sales Detail");
      
     }
-    this.getAdmittedPatientList();
-    this.getSalesList();
-    this.getSalesReturnList()
-    this.gePharStoreList();
-    this.gePharStoreList1();
+ 
   }
 
 
@@ -404,9 +408,9 @@ export class BrowsSalesBillComponent implements OnInit {
 
     const dialogRef = this._matDialog.open(OpPaymentNewComponent,
       {
-        maxWidth: "100vw",
-        height: '600px',
-        width: '100%',
+        maxWidth: "90vw",
+        height: '624px',
+        width: '90%',
         data: {
           vPatientHeaderObj: SelectedValue,
           FromName: "SalesSETTLEMENT"
@@ -1463,13 +1467,20 @@ this.viewSalesstatement(contact);
   }
 
  viewSalesstatement(el) {
+  console.log(el) 
   debugger
   let StoreId= this._loggedService.currentUserValue.user.storeId || 0
     this.sIsLoading = 'loading-data';
     setTimeout(() => {
-      // this.SpinLoading =true;
+      // this.SpinLoading =true; el.AdmissionID,StoreId
       this.AdList = true;
+<<<<<<< HEAD
       this._BrowsSalesBillService.getPdfSalesstatement(el.OP_IP_ID,StoreId).subscribe(res => {
+=======
+      console.log(StoreId)
+      console.log(el.AdmissionID)
+      this._BrowsSalesBillService.getPdfSalesstatement(el.AdmissionID,StoreId).subscribe(res => {
+>>>>>>> e6f398ee5872d7fda932c5af7b6d56afe74ce545
         const dialogRef = this._matDialog.open(PdfviewerComponent,
           {
             maxWidth: "85vw",

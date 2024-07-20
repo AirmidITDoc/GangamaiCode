@@ -161,7 +161,7 @@ public getSalesDetail_Patientwise(FromDate,ToDate,SalesFromNumber,SalesToNumber,
     return this._httpClient.get("Pharmacy/view-PharSalesCashBookReport?FromDate=" + FromDate + "&ToDate=" + ToDate + "&PaymentMode=" + PaymentMode + "&StoreId="+StoreId);
   }
   public getPdfSalesstatement(OP_IP_ID,StoreId){
-    return this._httpClient.get("Sales/view-PatientStatement?OP_IP_ID=" + OP_IP_ID  + "&StoreId=" + StoreId);
+    return this._httpClient.get("Sales/view-PatientStatement?OP_IP_ID=" + OP_IP_ID +"&StoreId=" + StoreId);
   }
   
 }

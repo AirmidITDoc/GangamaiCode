@@ -10,6 +10,10 @@ import { InvalidDataValidator } from 'app/main/shared/validators/invalide-valida
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
+import Swal from 'sweetalert2';
+import { ConsentModule } from 'app/main/nursingstation/consent/consent.module';
+import { Console } from 'console';
+import { element } from 'protractor';
 // import { InvalidDataValidator } from 'app/shared/validators/invalide-validators';
 
 
@@ -329,7 +333,7 @@ private _onDestroy = new Subject<void>();
     this.advanceData.advanceObj.OPD_IPD_Id;//=4;
     this.dataSource.data = [];
     this.isLoading = 'loading';
-    let Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount from AdvanceDetail where OPD_IPD_Id=" + this.advanceData.advanceObj.OPD_IPD_Id + ""
+    let Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount,BalanceAmount as balamt from AdvanceDetail where OPD_IPD_Id=" + this.advanceData.advanceObj.OPD_IPD_Id + ""
     this.ipSearchService.getAdvcanceDetailslist(Query).subscribe(data => {
       // this.chargeslist = data as ChargesList[];
       this.dataSource.data = data as [];
@@ -494,7 +498,7 @@ private _onDestroy = new Subject<void>();
     // }
   }
 
-  getAdvanceAmt(element, index) {
+  getAdvanceAmt1(element, index) { 
     // console.log(index);
     // console.log(element.UsedAmount);
     if (element.UsedAmount == "") {
@@ -508,7 +512,31 @@ private _onDestroy = new Subject<void>();
     //   element.UsedAmount = balTem;
     // }
   }
+  totalAdvanceUsedAmt:any=0;
+  getAdvanceAmt(element, index) { 
 
+    if (element.UsedAmount > element.balamt){
+      Swal.fire(' Amount is less than Balance Amount:-' + element.balamt);
+      element.UsedAmount = '';
+      element.BalanceAmount = element.balamt;
+    }
+  else if(element.UsedAmount > 0){
+    element.BalanceAmount = element.AdvanceAmount - element.UsedAmount 
+  } else if(element.UsedAmount == '' || element.UsedAmount == null || element.UsedAmount == undefined || element.UsedAmount == '0' ){
+    element.UsedAmount = '';
+    element.BalanceAmount = element.balamt;
+  } 
+  // this.totalAdvanceUsedAmt = parseInt(this.totalAdvanceUsedAmt) + parseInt(element.UsedAmount) ;
+  // this.advanceAmt = this.totalAdvanceUsedAmt;
+  this.calculatePaidAmt();
+  }
+  getAdvanceSum(element) { 
+     let AdvanceAmt = element.reduce((sum, { AdvanceAmount }) => sum += +(AdvanceAmount || 0), 0);
+     let UsedAmt = element.reduce((sum, { UsedAmount }) => sum += +(UsedAmount || 0), 0);
+      this.advanceAmt = UsedAmt;
+      return AdvanceAmt;  
+  
+  }
   calculateBalance2() {
     if (this.dataSource.data && this.dataSource.data.length > 0) {
       let totalAdvanceAmt = 0;
@@ -644,13 +672,20 @@ private _onDestroy = new Subject<void>();
     this.dataSource.data.forEach((element) => {
       let Advanceobj = {};
       console.log(element);
-      Advanceobj['AdvanceNo'] = this.dataSource.data[0].AdvanceId;
-      Advanceobj['AdvanceDetailID'] = this.dataSource.data[0].AdvanceDetailID;
-      Advanceobj['AdvanceAmount'] = this.dataSource.data[0].AdvanceAmount;
-      Advanceobj['UsedAmount'] = this.dataSource.data[0].UsedAmount;
-      Advanceobj['Date'] = this.dataSource.data[0].Date;
-      Advanceobj['BalanceAmount'] = this.dataSource.data[0].BalanceAmount;
-      Advanceobj['RefundAmount'] = this.dataSource.data[0].RefundAmount;
+      // Advanceobj['AdvanceNo'] = this.dataSource.data[0].AdvanceId;
+      // Advanceobj['AdvanceDetailID'] = this.dataSource.data[0].AdvanceDetailID;
+      // Advanceobj['AdvanceAmount'] = this.dataSource.data[0].AdvanceAmount;
+      // Advanceobj['UsedAmount'] = this.dataSource.data[0].UsedAmount;
+      // Advanceobj['Date'] = this.dataSource.data[0].Date;
+      // Advanceobj['BalanceAmount'] = this.dataSource.data[0].BalanceAmount;
+      // Advanceobj['RefundAmount'] = this.dataSource.data[0].RefundAmount;
+      Advanceobj['AdvanceNo'] = element.AdvanceId;
+      Advanceobj['AdvanceDetailID'] = element.AdvanceDetailID;
+      Advanceobj['AdvanceAmount'] = element.AdvanceAmount;
+      Advanceobj['UsedAmount'] = element.UsedAmount;
+      Advanceobj['Date'] = element.Date;
+      Advanceobj['BalanceAmount'] = element.BalanceAmount;
+      Advanceobj['RefundAmount'] = element.RefundAmount;
       Advancesarr.push(Advanceobj);
     });
 
@@ -759,6 +794,15 @@ private _onDestroy = new Subject<void>();
   //   const y = new AdvanceDetails(x);
   //   return y;
   // }
+  keyPressAlphanumeric(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  } 
   keyPressCharater(event){
     var inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
