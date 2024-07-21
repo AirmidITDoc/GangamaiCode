@@ -5,6 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 // import { IpBillingReportComponent } from './ip-billing-report/ip-billing-report.component';
 // import { OPBillingReportComponent } from './opbilling-report/opbilling-report.component';
 import { CommonReportComponent } from './common-report/common-report.component';
+import { InventoryReportComponent } from './inventory-report/inventory-report.component';
  // loadChildren: () =>
         //     import("./opbilling-report/opbillingreport.module").then(
         //         (m) => m.OpbillingreportModule
@@ -66,8 +67,16 @@ const appRoutes: Routes = [
             import("./common-report/common-report.module").then(
                 (m) => m.CommonReportModule
             ),
-    }
-];
+    },
+    {
+        path: "inventoryreport",
+        loadChildren: () =>
+            import("./inventory-report/inventory.module").then(
+                (m) => m.InventoryModule
+            ),
+    },
+
+   ];
 
 @NgModule({
     declarations: [],

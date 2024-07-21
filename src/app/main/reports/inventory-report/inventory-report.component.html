@@ -1,0 +1,202 @@
+<div id="contacts" fusePerfectScrollbar class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <!-- HEADER -->
+
+    <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center ">
+
+        <!-- APP TITLE -->
+        <div fxLayout="row" fxLayoutAlign="space-between center " style="width: 100%;">
+
+            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                style="font-size: 20px;width: 70%; font-weight: 400;">
+                INVENTORY REPORTS
+            </span>
+
+            <div fxLayout="column" fxLayout.gt-xs="row">
+
+                <span class="material-icons" style="cursor: pointer; margin-top: 18px; color: #fff;"
+                    (click)="onClose()">
+                    close
+                </span>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- CONTENT -->
+    <div class="content" style="width: 100% !important; height: 100% !important;">
+        <!-- CENTER -->
+        <div class="center p-24 pb-56" style="width: 100% !important; height: 100% !important;">
+            <!-- CONTENT -->
+            <div class="content-card" style="width: 100% !important; height: 100% !important;">
+                <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
+                    <div fxlayout="column" style="width: 50%;">
+                        <!-- style="width: 100%;" -->
+                        <div fxFlex.gt-sm="100%" style="width: 99%;">
+                            <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                                class="backgroundBlur" style="height: 100%;">
+                                <div class="spinner-border text-danger"></div>
+                            </div>
+
+                            <mat-table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
+                                <ng-container matColumnDef="ReportName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Report
+                                        Name
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.ReportName}}
+                                    </mat-cell>
+                                </ng-container>
+
+
+
+                                <ng-container matColumnDef="loading">
+                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                        no data found...
+                                    </mat-footer-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="noData">
+                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                        <mat-spinner style="float:left;" *ngIf="isLoadingStr=='loading'"
+                                            [diameter]='30'>
+                                        </mat-spinner>
+                                        <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
+                                    </mat-footer-cell>
+                                </ng-container>
+
+
+                                <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+                                </mat-header-row>
+                                <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                                    [@animate]="{value:'*',params:{y:'100%'}}"
+                                    (click)="ReportSelection(contact)"></mat-row>
+                                <mat-footer-row *matFooterRowDef="['loading']"
+                                    [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
+                                <mat-footer-row *matFooterRowDef="['noData']"
+                                    [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
+                            </mat-table>
+
+                        </div>
+
+                    </div>
+
+                    <div  fxlayout="column" style="width: 50%;">
+
+                        <div class="dialog-content-wrapper" style="width: 100%;">
+                            <!-- ================================ LABEL HEADER  -->
+                            <form [formGroup]="_OPReportsService.userForm" style="padding: 6px 6px 5px 5px;"
+                                fusePerfectScrollbar>
+                                <div>
+                                    <span
+                                        style="font-family: 'Times New Roman', Times, serif;font-size: medium;color: rgb(3, 29, 79);padding: 10px;">Selected
+                                        Report :<span style="font-weight: bold;">{{ReportName}}</span>  |</span>
+
+                                    <span
+                                        style="font-family: 'Times New Roman', Times, serif;font-size: medium;color: rgb(3, 29, 79);float: right;">Current
+                                        User : <span style="font-weight:bold ;"> {{UserId}} | {{UserName}} </span></span>
+                                </div>
+                                <br />
+                                <div fxLayout="row" fxLayoutAlign="start none">
+                                    <br />
+
+                                    <mat-form-field appearance="outline" style="margin-left: 2%;">
+                                        <mat-label>Enter a date range</mat-label>
+                                        <mat-date-range-input [rangePicker]="picker">
+                                            <input matStartDate formControlName="startdate" placeholder="Start date">
+                                            <input matEndDate formControlName="enddate" placeholder="End date">
+                                        </mat-date-range-input>
+                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <mat-date-range-picker #picker></mat-date-range-picker>
+                                    </mat-form-field>
+
+                                </div>
+                                <div fxLayout="column" fxLayoutAlign="start none">
+                                    <div *ngIf="FlagUserSelected" style="margin-left:2%;">
+                                        <mat-form-field appearance="outline" fxFlex="40%">
+                                            <mat-label>User</mat-label>
+                                            <input matAutocompletePosition="below" type="text" placeholder="Select User"
+                                                matInput formControlName="UserId" [matAutocomplete]="autoUser">
+                                            <span matSuffix style="display: flex;">
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_OPReportsService.userForm.get('UserId').setValue(''); isUserSelected = false;">close</mat-icon>
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_OPReportsService.userForm.get('UserId').setValue(''); isUserSelected = false;">search</mat-icon>
+                                            </span>
+                                            <mat-autocomplete #autoUser="matAutocomplete"  (optionSelected)='getSelectedObj($event.option.value)'
+                                                [displayWith]="getOptionTextUser">
+                                                <mat-option *ngFor="let option of filteredOptionsUser | async"
+                                                    [value]="option" (onSelectionChange)="userChk(option)">
+                                                    {{option.UserId}} | {{option.UserName}}
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
+
+                                        <!-- <mat-form-field appearance="outline" *ngIf="FlagVisitSelected" style="margin-left:2%;">
+                                            <mat-label>Visit Id</mat-label>
+                                            <input name="VisitId" formControlName="VisitId" placeholder="Visit Id"
+                                                matInput>
+
+                                        </mat-form-field>
+
+                                        <mat-form-field appearance="outline" *ngIf="FlagServiceIdSelected" style="margin-left:2%;">
+                                            <mat-label>Service Id</mat-label>
+                                            <input name="ServiceId" formControlName="ServiceId" placeholder="Service Id"
+                                                matInput>
+
+                                        </mat-form-field>
+
+                                        <mat-form-field appearance="outline" *ngIf="FlaggroupIdSelected" style="margin-left:2%;">
+                                            <mat-label>Group Id</mat-label>
+                                            <input name="GroupId" formControlName="GroupId" placeholder="Group Id"
+                                                matInput>
+
+                                        </mat-form-field> -->
+
+                                        <mat-form-field appearance="outline" fxFlex="50%" *ngIf="FlagDoctorIDSelected" style="margin-left:2%;">
+                                            <mat-label>Doctor Name</mat-label>
+                                            <input matAutocompletePosition="below" type="text"
+                                                placeholder="Select Doctor" matInput
+                                                formControlName="DoctorID"
+                                                [matAutocomplete]="autosearchDoctor" required>
+                                            <span matSuffix style="display: flex;">
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_OPReportsService.userForm.get('DoctorID').setValue(''); isSearchdoctorSelected = false;">close</mat-icon>
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_OPReportsService.userForm.get('DoctorID').setValue(''); isSearchdoctorSelected = false;">search</mat-icon>
+                                            </span>
+                                            <mat-autocomplete #autosearchDoctor="matAutocomplete"
+                                                [displayWith]="getOptionTextsearchDoctor">
+                                                <mat-option
+                                                    *ngFor="let option of filteredOptionssearchDoctor | async"
+                                                    [value]="option">
+                                                    {{option.Doctorname}}
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
+                                    </div>
+                                   
+                                </div>
+                                <div fxLayout="row" fxLayoutAlign="start none">
+                                    <button class="btn btn-primary " color="accent" (click)="getPrint()"
+                                        style="margin-left:2%;">
+                                        <span>Print</span>
+                                    </button>
+
+                                </div>
+                            </form>
+
+
+                            <!-- ================================ LABEL HEADER  -->
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <!-- / CONTENT -->
+    </div>
+    <!-- / CENTER -->
+</div>

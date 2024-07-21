@@ -1115,8 +1115,9 @@ viewgetOPBillReportPdf() {
        this.AdList = true;
        this._OPReportsService.getCurrentstockdatewiseReport(
         this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-        StoreId
-        // ? this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
+        StoreId,
+         this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+         this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
        ).subscribe(res => {
          const dialogRef = this._matDialog.open(PdfviewerComponent,
            {

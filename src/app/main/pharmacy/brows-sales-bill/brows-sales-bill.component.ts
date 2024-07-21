@@ -1474,13 +1474,9 @@ this.viewSalesstatement(contact);
     setTimeout(() => {
       // this.SpinLoading =true; el.AdmissionID,StoreId
       this.AdList = true;
-<<<<<<< HEAD
-      this._BrowsSalesBillService.getPdfSalesstatement(el.OP_IP_ID,StoreId).subscribe(res => {
-=======
       console.log(StoreId)
       console.log(el.AdmissionID)
       this._BrowsSalesBillService.getPdfSalesstatement(el.AdmissionID,StoreId).subscribe(res => {
->>>>>>> e6f398ee5872d7fda932c5af7b6d56afe74ce545
         const dialogRef = this._matDialog.open(PdfviewerComponent,
           {
             maxWidth: "85vw",

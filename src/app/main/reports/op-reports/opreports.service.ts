@@ -342,8 +342,8 @@ return this._httpClient.get("OPReport/view-OPDoctorWiseNewOldPatientReport?FromD
   public getCurrentstockReport(ItemName,StoreId){
     return this._httpClient.get("InventoryTransaction/view-InvCurrentStock?ItemName="+ItemName+"&ItemName="+StoreId);
   }
-  public getCurrentstockdatewiseReport(LedgerDate,StoreId){
-    return this._httpClient.get("InventoryTransaction/view-InvDaywiseStock?LedgerDate="+LedgerDate+"&StoreId="+StoreId);
+  public getCurrentstockdatewiseReport(InsertDate,StoreId,FromDate,ToDate){
+    return this._httpClient.get("InventoryTransaction/view-CurrentStockDateWise?InsertDate="+InsertDate+"&StoreId="+StoreId+"&FromDate="+FromDate+"&ToDate="+ToDate);
   }
   public getItemExpiryReport(ExpMonth,ExpYear,StoreID){
     return this._httpClient.get("InventoryTransaction/view-ExpiryItemList?ExpMonth="+ExpMonth+"&ExpYear="+ExpYear+"&StoreID="+StoreID);
@@ -366,7 +366,7 @@ return this._httpClient.get("OPReport/view-OPDoctorWiseNewOldPatientReport?FromD
   }
 
   public getGRNReportlist(FromDate,ToDate,StoreId,SupplierID){
-    return this._httpClient.get("InventoryReports/view-MonthlyPurchaseGRNReport?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId+"&SupplierID="+SupplierID);
+    return this._httpClient.get("InventoryReports/view-GRNReport?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId+"&SupplierID="+SupplierID);
   }
   
   public getGRNReportNABH(FromDate,ToDate,StoreId){
@@ -391,7 +391,6 @@ return this._httpClient.get("OPReport/view-OPDoctorWiseNewOldPatientReport?FromD
   }
 
   
-
   public getSupplierwiseGRNReport(StoreId,SupplierID,FromDate,ToDate){
     return this._httpClient.get("/api/InventoryReports/view-SupplierWiseGRNList?StoreId="+StoreId +"&SupplierID="+SupplierID + "&FromDate="+FromDate +"&ToDate="+ToDate);
   }
@@ -404,15 +403,14 @@ return this._httpClient.get("OPReport/view-OPDoctorWiseNewOldPatientReport?FromD
     return this._httpClient.get("InventoryReports/view-IssueToDepartmentItemWise?FromDate="+FromDate+"&ToDate="+ToDate + "&FromStoreId="+FromStoreId +"&ToStoreId="+ToStoreId+"&ItemId="+ItemId);
   }
   
-  
 
  public getReturnfromdeptlistReport(FromDate,ToDate,FromStoreId,ToStoreId){
   return this._httpClient.get("InventoryReports/view-ReturnFromDepartment?FromDate="+FromDate+"&ToDate="+ToDate + "&FromStoreId="+FromStoreId +"&ToStoreId="+ToStoreId);
-}
+ }
 
 
 public getPurchaseorderview(FromDate,ToDate,SupplierID,ToStoreId){
-  return this._httpClient.get("InventoryReports/view-ReturnFromDepartment?FromDate="+FromDate+"&ToDate="+ToDate + "&SupplierID="+SupplierID +"&ToStoreId="+ToStoreId);
+  return this._httpClient.get("InventoryReports/view-PurchaseOrder?FromDate="+FromDate+"&ToDate="+ToDate + "&SupplierID="+SupplierID +"&ToStoreId="+ToStoreId);
 }
   public getIndentwiseReport(IndentId){
     return this._httpClient.get("InventoryTransaction/view-IndentWise?IndentId="+IndentId);
@@ -438,6 +436,7 @@ public getPurchaseorderview(FromDate,ToDate,SupplierID,ToStoreId){
     return this._httpClient.get("InventoryReports/view-CurrentStockReport?FromDate="+FromDate+"&ToDate="+ToDate);
   }
   
+
   public getReturnfromdeptReport(IssueId){
     return this._httpClient.get("InventoryReports/view-ReturnFromDepartment?IssueId="+IssueId);
   }

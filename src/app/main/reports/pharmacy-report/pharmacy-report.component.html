@@ -108,14 +108,10 @@
                                         <mat-date-range-picker #picker></mat-date-range-picker>
                                     </mat-form-field>
 
-                                    <button mat-raised-button class="searchButton" matTooltip="Print"
-                                        style="margin-left: 20px;background-color: rgb(3, 38, 59);border-radius: 16px;color: azure;width: 100px;"
-                                        (click)="getPrint()">
-                                        Show
-                                    </button>
+                                    
                                 </div>
                                 <div fxLayout="row" fxLayoutAlign="start none">
-                                    <div  *ngIf="FlagUserSelected" style="margin-left: 10px;">                                 
+                                    <div  *ngIf="FlagUserSelected" style="margin-left: 2%;">                                 
                                           <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>User</mat-label>
                                         <input matAutocompletePosition="below" type="text" placeholder="Select User" matInput
@@ -134,7 +130,7 @@
                                         </mat-autocomplete>
                                       </mat-form-field>
                                     </div>
-                                    <div  *ngIf="FlagPaymentSelected" style="margin-left: 10px;">     
+                                    <div  *ngIf="FlagPaymentSelected" style="margin-left: 2%;">     
                                       <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>PayemntMode</mat-label>
                                         <input matAutocompletePosition="below" type="text" placeholder="Select PaymentMode" matInput
@@ -153,8 +149,8 @@
                                         </mat-autocomplete>
                                       </mat-form-field>
                                     </div>
-                                    <div  *ngIf="FlagStoreSelected" style="margin-left: 10px;"> 
-                                        <mat-form-field appearance="outline" fxFlex>
+                                    <!-- <div  *ngIf="FlagStoreSelected" style="margin-left:2%;"> 
+                                        <mat-form-field appearance="outline" style="width:50%;">
                                         <mat-label>Store Name</mat-label>
                                         <mat-select formControlName="StoreId" name="StoreId1" required>
                                             <mat-option></mat-option>
@@ -163,7 +159,7 @@
                                             </mat-option>
                                         </mat-select>
                                     </mat-form-field>
-                                    </div>
+                                    </div> -->
 
 
                                    
@@ -184,7 +180,13 @@
                                 </button> -->
 
                                 </div>
+                                <div fxLayout="row" fxLayoutAlign="start none">
+                                    <button class="btn btn-primary " color="accent" (click)="getPrint()"
+                                        style="margin-left:2%;">
+                                        <span>Print</span>
+                                    </button>
 
+                                </div>
                             </form>
 
 
