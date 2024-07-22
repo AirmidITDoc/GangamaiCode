@@ -152,6 +152,21 @@
                         </mat-form-field>
 
 
+                        <!-- <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Patient Type</mat-label>
+                            <input matAutocompletePosition="below" type="text" placeholder="Select PatientTypeID" matInput #ptype (keydown)="onEnterptype($event)" formControlName="PatientTypeID" [matAutocomplete]="autoPatientTypeID" required>
+                            <span matSuffix style="display: flex;">
+                                <mat-icon class="mat-icon-close" (click)="hospitalFormGroup.get('PatientTypeID').setValue(''); ispatienttypeSelected = false;">close</mat-icon>
+                                <mat-icon class="mat-icon-close" (click)="hospitalFormGroup.get('PatientTypeID').setValue(''); ispatienttypeSelected = false;">search</mat-icon>
+                            </span>
+                            <mat-autocomplete #autoPatientTypeID="matAutocomplete" [displayWith]="getOptionTextpatienttype">
+                                <mat-option *ngFor="let option of filteredOptionsPatientType | async" [value]="option" (onSelectionChange)="onChangePatient(option)">
+                                    {{option.PatientType}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field> -->
+
+
 
                         <mat-form-field appearance="outline">
                             <mat-label>Tariff Name</mat-label>

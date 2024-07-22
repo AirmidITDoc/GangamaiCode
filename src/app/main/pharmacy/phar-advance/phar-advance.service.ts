@@ -90,4 +90,14 @@ export class PharAdvanceService {
   public InsertRefundOfAdv(data) {
     return this._httpClient.post("/api/Pharmacy/InsertPharRefundofAdvance",data)
   }
+
+  public getViewPahrmaAdvanceReceipt(AdvanceDetailID){
+    return this._httpClient.get("Pharmacy/view-IP-PharmaAdvanceReceipt?AdvanceDetailID=" + AdvanceDetailID);
+  }
+
+  public getViewPahrmaRefundAdvanceReceipt(RefundId){
+    return this._httpClient.get("Pharmacy/view-IP-PharmaAdvanceReturnReceipt?RefundId=" + RefundId);
+  }
+
+  
 }

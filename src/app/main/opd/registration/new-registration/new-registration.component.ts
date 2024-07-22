@@ -106,8 +106,7 @@ export class NewRegistrationComponent implements OnInit {
   filteredOptionsReligion: Observable<string[]>;
   filteredOptionsMstatus: Observable<string[]>;
   filteredOptionsArea: Observable<string[]>;
-
-        
+     
 
 
   constructor(public _registerService: RegistrationService,
@@ -307,23 +306,6 @@ export class NewRegistrationComponent implements OnInit {
   }
 
 
-  getCityList() {
-    this._registerService.getCityListCombo().subscribe(data => {
-      this.cityList = data;
-      if (this.data) {
-        const ddValue = this.cityList.filter(c => c.CityId == this.registerObj.CityId);
-        this.personalFormGroup.get('CityId').setValue(ddValue[0]);
-        this.personalFormGroup.updateValueAndValidity();
-        return;
-      }
-    });
-  }
-  private _filterCity(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.CityName ? value.CityName.toLowerCase() : value.toLowerCase();
-      return this.cityList.filter(option => option.CityName.toLowerCase().includes(filterValue));
-    }
-  }
 
 
 
@@ -398,6 +380,23 @@ export class NewRegistrationComponent implements OnInit {
     })
   }
 
+  getCityList() {
+    this._registerService.getCityListCombo().subscribe(data => {
+      this.cityList = data;
+      if (this.data) {
+        const ddValue = this.cityList.filter(c => c.CityId == this.registerObj.CityId);
+        this.personalFormGroup.get('CityId').setValue(ddValue[0]);
+        this.personalFormGroup.updateValueAndValidity();
+        return;
+      }
+    });
+  }
+  private _filterCity(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.CityName ? value.CityName.toLowerCase() : value.toLowerCase();
+      return this.cityList.filter(option => option.CityName.toLowerCase().includes(filterValue));
+    }
+  }
 
 
   getcityList() {

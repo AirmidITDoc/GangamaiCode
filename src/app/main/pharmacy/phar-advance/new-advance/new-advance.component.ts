@@ -11,6 +11,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { element } from 'protractor';
 import { OPAdvancePaymentComponent } from 'app/main/opd/op-search-list/op-advance-payment/op-advance-payment.component';
 import Swal from 'sweetalert2';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-new-advance',
@@ -247,7 +248,7 @@ export class NewAdvanceComponent implements OnInit {
               if (response) {
                 Swal.fire('Congratulations !', 'IP Pharmacy Advance data saved Successfully !', 'success').then((result) => {
                   if (result.isConfirmed) {
-                    //this.viewgetAdvanceReceiptReportPdf(response); 
+                    this.viewgetIPAdvanceReportPdf(response); 
                     this._matDialog.closeAll();
                     this.onClose();
                   }
@@ -324,8 +325,7 @@ export class NewAdvanceComponent implements OnInit {
                   if (result.isConfirmed) { 
                     this._matDialog.closeAll();
                     this.onClose();
-                   // this.viewgetAdvanceReceiptReportPdf(response);
-                    // this.getPrint(response);
+                    this.viewgetIPAdvanceReportPdf( this.vAdvanceDetailID ); 
                   }
                 });
               } else {
@@ -337,6 +337,39 @@ export class NewAdvanceComponent implements OnInit {
           });
         }
   }
+
+
+   
+viewgetIPAdvanceReportPdf(contact) {
+  debugger
+  
+  this.sIsLoading = 'loading-data';
+  setTimeout(() => {
+   
+  this._PharAdvanceService.getViewPahrmaAdvanceReceipt(
+ contact
+  ).subscribe(res => {
+    const matDialog = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Phrama Advance Receipt Viewer"
+        }
+      });
+      matDialog.afterClosed().subscribe(result => {
+                this.sIsLoading = '';
+      });
+  });
+ 
+  },100)
+  
+}
+
+
+
   onClose(){
     this._matDialog.closeAll();
     this.OnReset();

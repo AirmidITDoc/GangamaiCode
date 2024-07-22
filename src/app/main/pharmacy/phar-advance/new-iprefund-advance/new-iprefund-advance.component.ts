@@ -11,6 +11,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { element } from 'protractor';
 import Swal from 'sweetalert2';
 import { OPAdvancePaymentComponent } from 'app/main/opd/op-search-list/op-advance-payment/op-advance-payment.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 
 @Component({
@@ -282,7 +283,7 @@ export class NewIPRefundAdvanceComponent implements OnInit {
             if (response) {
               Swal.fire('Congratulations !', 'IP Advance data saved Successfully !', 'success').then((result) => {
                 if (result.isConfirmed) {
-                  //this.viewgetAdvanceReceiptReportPdf(response);
+                  this.viewgetRefundofAdvanceReportPdf(response);
 
                   this._matDialog.closeAll();
                 }
@@ -295,6 +296,39 @@ export class NewIPRefundAdvanceComponent implements OnInit {
 
         });  
   }
+
+
+
+  viewgetRefundofAdvanceReportPdf(contact) {
+       
+    this.sIsLoading = 'loading-data';
+    setTimeout(() => {
+     
+    this._PharAdvanceService.getViewPahrmaRefundAdvanceReceipt(
+   contact
+    ).subscribe(res => {
+      const matDialog = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Pharma Refund Of Advance Viewer"
+          }
+        });
+        matDialog.afterClosed().subscribe(result => {
+                  this.sIsLoading = '';
+        });
+    });
+   
+    },100)
+    
+  }
+
+  
+
+  
   onClose() {
     this._matDialog.closeAll();
     this.OnReset();

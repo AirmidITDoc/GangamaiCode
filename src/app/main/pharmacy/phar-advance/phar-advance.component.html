@@ -191,8 +191,8 @@
                                             <mat-header-cell *matHeaderCellDef fxShow.gt-sm  
                                                 style="color: white;" class="w-80">Action
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let row"  class="w-80">
-                                                <button mat-icon-button matTooltip="print">
+                                            <mat-cell *matCellDef="let contact"  class="w-80">
+                                                <button mat-icon-button matTooltip="print" (click)="viewgetIPAdvanceReportPdf(contact)">
                                                     <mat-icon>print</mat-icon>
                                                 </button>
                                             </mat-cell>
@@ -424,7 +424,7 @@
                                                     style="color: white;">Action
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let row"  >
-                                                    <button mat-icon-button matTooltip="print">
+                                                    <button mat-icon-button matTooltip="print" (click)="viewgetRefundofAdvanceReportPdf(contact)">
                                                         <mat-icon>print</mat-icon>
                                                     </button>
                                                 </mat-cell>

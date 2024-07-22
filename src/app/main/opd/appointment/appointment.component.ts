@@ -1877,6 +1877,7 @@ console.log(this._AppointmentSreviceService.myFilterform.get("DoctorId").value)
       registrationSave['address'] = this.registerObj.Address || '';
       registrationSave['City'] = this.personalFormGroup.get('CityId').value.CityName || '';
       registrationSave['pinNo'] = '123';
+      debugger
       registrationSave['dateOfBirth'] = this.datePipe.transform(this.registerObj.DateofBirth, "MM-dd-yyyy"), //this.personalFormGroup.get('DateofBirth').value.DateofBirth;
         registrationSave['age'] = this.registerObj.AgeYear;
       registrationSave['genderID'] = this.personalFormGroup.get('GenderId').value.GenderId;

@@ -205,48 +205,49 @@ export class EditAdmissionComponent implements OnInit {
       this.vRelativeAddress = this.registerObj1.RelativeAddress
       
       this.setDropdownObjs();
+      
     }
 
     this.isAlive = true;
 
 
-    // this.filteredOptionsPatientType = this.hospitalFormGroup.get('PatientTypeID').valueChanges.pipe(
-    //   startWith(''),
-    //   map(value => this._filterPtype(value)),
+    this.filteredOptionsPatientType = this.hospitalFormGroup.get('PatientTypeID').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterPtype(value)),
 
-    // );
+    );
 
-    // this.filteredOptionsTarrif = this.hospitalFormGroup.get('TariffId').valueChanges.pipe(
-    //   startWith(''),
-    //   map(value => this._filterTariffId(value)),
+    this.filteredOptionsTarrif = this.hospitalFormGroup.get('TariffId').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterTariffId(value)),
 
-    // );
+    );
 
 
-    // this.filteredOptionsDep = this.hospitalFormGroup.get('Departmentid').valueChanges.pipe(
-    //   startWith(''),
-    //   map(value => this._filterdept(value)),
+    this.filteredOptionsDep = this.hospitalFormGroup.get('Departmentid').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterdept(value)),
 
-    // );
+    );
 
-    // this.filteredOptionsDoc = this.hospitalFormGroup.get('DoctorId').valueChanges.pipe(
-    //   startWith(''),
-    //   map(value => this._filterDoctorId(value)),
+    this.filteredOptionsDoc = this.hospitalFormGroup.get('DoctorId').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterDoctorId(value)),
 
-    // );
+    );
   
 
-    // this.filteredOptionsDoc1 = this.hospitalFormGroup.get('admittedDoctor1').valueChanges.pipe(
-    //   startWith(''),
-    //   map(value => this._filteradmittedDoctor1(value)),
+    this.filteredOptionsDoc1 = this.hospitalFormGroup.get('admittedDoctor1').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filteradmittedDoctor1(value)),
 
-    // // );
+    );
 
-    // this.filteredOptionsDoc2 = this.hospitalFormGroup.get('admittedDoctor2').valueChanges.pipe(
-    //   startWith(''),
-    //   map(value => this._filteradmittedDoctor2(value)),
+    this.filteredOptionsDoc2 = this.hospitalFormGroup.get('admittedDoctor2').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filteradmittedDoctor2(value)),
 
-    // );
+    );
 
     this.filteredOptionsRefrenceDoc = this.hospitalFormGroup.get('refDoctorId').valueChanges.pipe(
       startWith(''),
@@ -254,23 +255,23 @@ export class EditAdmissionComponent implements OnInit {
 
     );
 
-    // this.filteredOptionsRelation = this.otherFormGroup.get('RelationshipId').valueChanges.pipe(
-    //   startWith(''),
-    //   map(value => this._filterRelationshipId(value)),
+    this.filteredOptionsRelation = this.otherFormGroup.get('RelationshipId').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterRelationshipId(value)),
 
-    // );
+    );
 
-    // this.filteredOptionsCompany = this.hospitalFormGroup.get('CompanyId').valueChanges.pipe(
-    //   startWith(''),
-    //   map(value => this._filterCompany(value)),
+    this.filteredOptionsCompany = this.hospitalFormGroup.get('CompanyId').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterCompany(value)),
 
-    // );
+    );
 
-    // this.filteredOptionsSubCompany = this.hospitalFormGroup.get('SubCompanyId').valueChanges.pipe(
-    //   startWith(''),
-    //   map(value => this._filterSubCompany(value)),
+    this.filteredOptionsSubCompany = this.hospitalFormGroup.get('SubCompanyId').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterSubCompany(value)),
 
-    // );
+    );
 
   }
 
@@ -663,6 +664,21 @@ export class EditAdmissionComponent implements OnInit {
       }
     });
   }
+
+  getptypeCombo() {
+    this._AdmissionService.getPatientTypeCombo().subscribe(data => {
+      this.PatientTypeList = data;
+      this.optionsPatientType = this.PatientTypeList.slice();
+      this.filteredOptionsPatientType = this.hospitalFormGroup.get('PatientTypeID').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterPtype(value) : this.PatientTypeList.slice()),
+      );
+    });
+  }
+
+
+
+
 
 
   private _filterTariffId(value: any): string[] {

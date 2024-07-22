@@ -401,8 +401,7 @@
                                                 Action</mat-header-cell>
                                             <mat-cell *matCellDef="let contact">
                                                 <!-- *ngIf="contact.IsTemplateTest=='1'"  -->
-                                                <button mat-icon-button class="material-icons" (click)="onresultentry(contact)" matTooltip="Result Entry"
-                                              >
+                                                <button mat-icon-button class="material-icons" (click)="onresultentry(contact)" matTooltip="Result Entry" *ngIf="contact.IsTemplateTest =='1'">
                                                     <mat-icon title="Result Entry">description</mat-icon>
                                                 </button>
 

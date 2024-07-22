@@ -11,6 +11,8 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { NewAdvanceComponent } from './new-advance/new-advance.component';
 import { NewIPRefundAdvanceComponent } from './new-iprefund-advance/new-iprefund-advance.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 
 @Component({
   selector: 'app-phar-advance',
@@ -64,6 +66,7 @@ export class PharAdvanceComponent implements OnInit {
     public _matDialog: MatDialog,
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe, 
+    public _WhatsAppEmailService:WhatsAppEmailService,
     public toastr: ToastrService,
   ) { }
 
@@ -152,6 +155,100 @@ export class PharAdvanceComponent implements OnInit {
       this.getIPAdvanceRefundList();
     }); 
   }
+
+ 
+viewgetIPAdvanceReportPdf(contact) {
+  debugger
+  
+  this.sIsLoading = 'loading-data';
+  setTimeout(() => {
+   
+  this._PharAdvanceService.getViewPahrmaAdvanceReceipt(
+ contact.AdvanceDetailID
+  ).subscribe(res => {
+    const matDialog = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Pharma Advance Receipt Viewer"
+        }
+      });
+      matDialog.afterClosed().subscribe(result => {
+                this.sIsLoading = '';
+      });
+  });
+ 
+  },100)
+  
+}
+
+
+
+
+viewgetRefundofAdvanceReportPdf(contact) {
+       
+  this.sIsLoading = 'loading-data';
+  setTimeout(() => {
+   
+  this._PharAdvanceService.getViewPahrmaRefundAdvanceReceipt(
+ contact
+  ).subscribe(res => {
+    const matDialog = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Pharma Refund Of Advance Receipt Viewer"
+        }
+      });
+      matDialog.afterClosed().subscribe(result => {
+                this.sIsLoading = '';
+      });
+  });
+ 
+  },100)
+  
+}
+
+
+currentDate = new Date();
+getWhatsappsAdvance(el, vmono) {
+  debugger
+  if(vmono !='' && vmono !="0"){
+  var m_data = {
+    "insertWhatsappsmsInfo": {
+      "mobileNumber": vmono || 0,
+      "smsString": '',
+      "isSent": 0,
+      "smsType": 'IPPharmaAdvance',
+      "smsFlag": 0,
+      "smsDate": this.currentDate,
+      "tranNo": el,
+      "PatientType": 2,//el.PatientType,
+      "templateId": 0,
+      "smSurl": "info@gmail.com",
+      "filePath": '',
+      "smsOutGoingID": 0
+    }
+  }
+  this._WhatsAppEmailService.InsertWhatsappSales(m_data).subscribe(response => {
+    if (response) {
+      this.toastr.success('IP Pharma Advance Receipt Sent on WhatsApp Successfully.', 'Save !', {
+        toastClass: 'tostr-tost custom-toast-success',
+      });
+    } else {
+      this.toastr.error('API Error!', 'Error WhatsApp!', {
+        toastClass: 'tostr-tost custom-toast-error',
+      });
+    }
+  });
+}
+}
 }
 export class IPAdvanceList {
 
