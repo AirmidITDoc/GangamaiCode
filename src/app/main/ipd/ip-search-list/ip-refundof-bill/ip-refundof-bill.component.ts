@@ -21,7 +21,7 @@ import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.s
 import { ToastrService } from 'ngx-toastr';
 import { element } from 'protractor';
 import { BrowseIpdreturnadvanceReceipt } from '../../ip-refundof-advance/ip-refundof-advance.component';
-import { OpPaymentVimalComponent } from 'app/main/opd/op-search-list/op-payment-new-vimal/op-payment-vimal.component';
+import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
 
 type NewType = Observable<any[]>;
 @Component({
@@ -484,7 +484,7 @@ onSave() {
   //       FromName: "Advance-Refund",
   //     }
   //   });
-  const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
+  const dialogRef = this._matDialog.open(OpPaymentComponent,
     {
       maxWidth: "80vw",
       height: '650px',

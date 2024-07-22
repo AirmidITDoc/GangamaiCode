@@ -25,7 +25,7 @@ import { OPAdvancePaymentComponent } from '../op-advance-payment/op-advance-paym
 import { element } from 'protractor';
 import { ToastrService } from 'ngx-toastr';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
-import { OpPaymentVimalComponent } from '../op-payment-new-vimal/op-payment-vimal.component';
+import { OpPaymentComponent } from '../op-payment/op-payment.component';
 type NewType = Observable<any[]>;
 
 
@@ -520,7 +520,7 @@ onSave() {
         // PatientHeaderObj['OPD_IPD_Id'] =  this.IPDNo;
         PatientHeaderObj['Age'] =  this.AgeYear;
         PatientHeaderObj['NetPayAmount'] = this.TotalRefundAmount; 
-        const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
+        const dialogRef = this._matDialog.open(OpPaymentComponent,
           {
             maxWidth: "80vw",
             height: '650px',

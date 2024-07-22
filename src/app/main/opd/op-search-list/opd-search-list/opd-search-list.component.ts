@@ -20,7 +20,7 @@ import { NewOPRefundofbillComponent } from '../new-oprefundofbill/new-oprefundof
 import Swal from 'sweetalert2';
 import { IPpaymentWithadvanceComponent } from 'app/main/ipd/ip-settlement/ippayment-withadvance/ippayment-withadvance.component';
 import { IpPaymentInsert } from '../op-advance-payment/op-advance-payment.component';
-import { OpPaymentVimalComponent } from '../op-payment-new-vimal/op-payment-vimal.component';
+import { OpPaymentComponent } from '../op-payment/op-payment.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 
@@ -180,7 +180,7 @@ export class OpdSearchListComponent implements OnInit {
     // PatientHeaderObj['CompanyName'] = contact.CompanyName;
     // PatientHeaderObj['NetPayAmount'] = contact.NetPayableAmt; 
     
-    // const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
+    // const dialogRef = this._matDialog.open(OpPaymentComponent,
     //   { 
     //     maxWidth: "80vw",
     //     height: '600px',
