@@ -427,7 +427,7 @@ onSave() {
   InsertRefundObj['OPD_IPD_ID'] =  this.vOPIPId || 0
   InsertRefundObj['RefundAmount'] = this.RefundOfBillFormGroup.get('TotalRefundAmount').value || 0;
   InsertRefundObj['Remark'] = this.RefundOfBillFormGroup.get('Remark').value || '';
-  InsertRefundObj['TransactionId'] = 1;
+  InsertRefundObj['TransactionId'] = 2;
   InsertRefundObj['AddedBy'] = this.accountService.currentUserValue.user.id,
   InsertRefundObj['IsCancelled'] = 0;
   InsertRefundObj['IsCancelledBy'] = 0;

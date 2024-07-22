@@ -11,6 +11,8 @@ import { difference } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
 import { Validators } from '@angular/forms';
+import { IPpaymentWithadvanceComponent } from 'app/main/ipd/ip-settlement/ippayment-withadvance/ippayment-withadvance.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-sales-return-bill-settlement',
@@ -22,28 +24,19 @@ import { Validators } from '@angular/forms';
 export class SalesReturnBillSettlementComponent implements OnInit {
 
   displayedColumnsPaid = [
+    'button',
     'SalesDate',
     'PillNo',
     'RegNo',
+    'CompanyName',
     'BillAmt',
     'conAmount',
     'NetPayAmount',
     'PaidAmount',
     'BalanceAmt',
-    'RefundAmt', 
+    'action', 
   ];
-  displayedColumnsCredit = [
-    'SalesDate',
-    'PillNo',
-    'RegNo',
-    'BillAmt',
-    'conAmount',
-    'NetPayAmount',
-    'PaidAmount',
-    'BalanceAmt',
-    'RefundAmt', 
-    'FinalAmt'
-  ];
+ 
 
   dateTimeObj: any;
   sIsLoading: string = '';
@@ -93,7 +86,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
     private _loggedService: AuthenticationService,
-    
+    public toastr: ToastrService,
   ) { }
   vPharExtOpt:any ;
   vPharOPOpt: any ;
@@ -297,6 +290,67 @@ export class SalesReturnBillSettlementComponent implements OnInit {
       error => {
         this.sIsLoading = '';
       });
+  } 
+  OnPayment(contact) { 
+    const currentDate = new Date();
+    const datePipe = new DatePipe('en-US');
+    const formattedTime = datePipe.transform(currentDate, 'shortTime');
+    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+    console.log(contact)
+    let PatientHeaderObj = {}; 
+    
+    PatientHeaderObj['Date'] = formattedDate;
+    PatientHeaderObj['PatientName'] = this.PatientName;
+    PatientHeaderObj['OPD_IPD_Id'] = contact.OP_IP_ID;
+    PatientHeaderObj['AdvanceAmount'] = contact.NetAmount; 
+    PatientHeaderObj['NetPayAmount'] = contact.NetAmount;
+    PatientHeaderObj['PBillNo'] = contact.PBillNo;
+    PatientHeaderObj['IPDNo'] = this.IPDNo;
+    PatientHeaderObj['RegNo'] = this.RegNo; 
+    const dialogRef = this._matDialog.open(IPpaymentWithadvanceComponent,
+      {
+        maxWidth: "95vw",
+        height: '650px',
+        width: '85%',
+        data: {
+          advanceObj: PatientHeaderObj,
+          FromName: "IP-Pharma-SETTLEMENT"
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result)
+
+      if (result.IsSubmitFlag == true) {
+
+        let updateBillobj = {};
+        updateBillobj['salesID'] = contact.SalesId;
+        updateBillobj['BillNo'] = contact.SalesId;
+        updateBillobj['BillBalAmount'] = 0// result.submitDataPay.ipPaymentInsert.balanceAmountController //result.BalAmt;
+
+         
+        let Data = {
+          "update_Pharmacy_BillBalAmount": updateBillobj,
+          "salesPayment": result.submitDataPay.ipPaymentInsert
+        };
+        console.log(Data);
+
+        this._SelseSettelmentservice.InsertSalessettlement(Data).subscribe(response => { 
+          if (response) {  
+            this.toastr.success('Sales Credit Payment Successfully !', 'Success', {
+              toastClass: 'tostr-tost custom-toast-error',
+            });
+            this._matDialog.closeAll();  
+            this.getIpSalesList();
+          }
+          else { 
+            this.toastr.error('Sales Credit Payment  not saved !', 'error', {
+              toastClass: 'tostr-tost custom-toast-error',
+            });
+          }
+        }); 
+      } 
+    });
+
   }
   keyPressCharater(event) {
     var inp = String.fromCharCode(event.keyCode);
@@ -314,6 +368,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
   OnReset() {
     this._SelseSettelmentservice.ItemSubform.reset(); 
     this.dsPaidItemList.data = []; 
+    this.PatientInformRest();
   }
 }
   export class PaidItemList {

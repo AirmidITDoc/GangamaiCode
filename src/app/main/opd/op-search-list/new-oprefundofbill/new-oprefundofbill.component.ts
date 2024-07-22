@@ -449,14 +449,14 @@ onSave() {
         InsertRefundObj['RefundDate'] = this.dateTimeObj.date;
         InsertRefundObj['RefundTime'] = this.dateTimeObj.time;
         InsertRefundObj['BillId'] = this.BillNo,//parseInt(this.RefundOfBillFormGroup.get('BillNo').value);
-          InsertRefundObj['AdvanceId'] = 0;
+        InsertRefundObj['AdvanceId'] = 0;
         InsertRefundObj['OPD_IPD_Type'] = 0; 
         InsertRefundObj['OPD_IPD_ID'] = this.vOPIPId,
-          InsertRefundObj['RefundAmount'] = parseInt(this.RefundOfBillFormGroup.get('TotalRefundAmount').value);
+        InsertRefundObj['RefundAmount'] = parseInt(this.RefundOfBillFormGroup.get('TotalRefundAmount').value);
         InsertRefundObj['Remark'] = this.RefundOfBillFormGroup.get('Remark').value;
         InsertRefundObj['TransactionId'] = 2;
         InsertRefundObj['AddedBy'] = this.accountService.currentUserValue.user.id,
-          InsertRefundObj['IsCancelled'] = 0;
+        InsertRefundObj['IsCancelled'] = 0;
         InsertRefundObj['IsCancelledBy'] = 0;
         InsertRefundObj['IsCancelledDate'] = this.dateTimeObj.date;
         InsertRefundObj['refundId'] = 0;

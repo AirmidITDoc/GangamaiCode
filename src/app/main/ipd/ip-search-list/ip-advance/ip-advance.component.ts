@@ -373,7 +373,7 @@ vAdvanceDetId:any;
       AdvanceDetObj['Time'] = this.dateTimeObj.time || '01/01/1900'
       AdvanceDetObj['AdvanceId'] = this.vAdvanceId || 0;
       AdvanceDetObj['RefId'] =this.selectedAdvanceObj.RegID || 0;
-      AdvanceDetObj['transactionID'] = 2;
+      AdvanceDetObj['transactionID'] = 1;
       AdvanceDetObj['OPD_IPD_Type'] = 1;
       AdvanceDetObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
       AdvanceDetObj['AdvanceAmount'] = this.advanceAmount;

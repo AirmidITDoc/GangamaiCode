@@ -1248,9 +1248,10 @@ ServiceList:any=[];
         CompanyId: this.selectedAdvanceObj.CompanyId,
         IsBillGenerated: this.selectedAdvanceObj.IsBillGenerated,
         UnitId: this.selectedAdvanceObj.UnitId,
-        MobileNo: this.selectedAdvanceObj.MobileNo
+        MobileNo: this.selectedAdvanceObj.MobileNo,
+        AdvTotalAmount:this.vAdvTotalAmount || 0
       };
-      // console.log(xx)
+    // console.log(m_data)
       this.advanceDataStored.storage = new AdvanceDetailObj(m_data);
       console.log('this.interimArray==', this.interimArray,m_data);
       this._matDialog.open(InterimBillComponent,
@@ -1341,7 +1342,7 @@ ServiceList:any=[];
         InsertBillUpdateBillNoObj['BillDate'] = this.dateTimeObj.date;
         InsertBillUpdateBillNoObj['OPD_IPD_Type'] = 1;
         InsertBillUpdateBillNoObj['AddedBy'] = this.accountService.currentUserValue.user.id,
-        InsertBillUpdateBillNoObj['TotalAdvanceAmount'] = 0;
+        InsertBillUpdateBillNoObj['TotalAdvanceAmount'] =  this.vAdvTotalAmount || 0,
         InsertBillUpdateBillNoObj['BillTime'] = this.dateTimeObj.date;
         InsertBillUpdateBillNoObj['ConcessionReasonId'] = this.Ipbillform.get('ConcessionId').value.ConcessionId || 0
         InsertBillUpdateBillNoObj['IsSettled'] = 0;
@@ -1466,7 +1467,7 @@ ServiceList:any=[];
     InsertBillUpdateBillNoObj['BillDate'] = this.dateTimeObj.date;
     InsertBillUpdateBillNoObj['OPD_IPD_Type'] = 1;
     InsertBillUpdateBillNoObj['AddedBy'] = this.accountService.currentUserValue.user.id,
-    InsertBillUpdateBillNoObj['TotalAdvanceAmount'] = 0;
+    InsertBillUpdateBillNoObj['TotalAdvanceAmount'] = this.vAdvTotalAmount || 0,
     InsertBillUpdateBillNoObj['BillTime'] = this.dateTimeObj.date;
     InsertBillUpdateBillNoObj['ConcessionReasonId'] = this.Ipbillform.get('ConcessionId').value.ConcessionId || 0 ,//this.ConcessionId;
     InsertBillUpdateBillNoObj['IsSettled'] = false;

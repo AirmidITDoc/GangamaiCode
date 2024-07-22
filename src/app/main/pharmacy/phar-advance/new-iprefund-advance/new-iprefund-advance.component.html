@@ -246,7 +246,7 @@
                                         <ng-container matColumnDef="Date">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Date
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.Date | date}}
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.Date}}
                                             </mat-cell>
                                         </ng-container>
                     
@@ -272,24 +272,27 @@
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                 <span> {{element.BalanceAmount | currency:'INR'}}</span>
                                             </mat-cell>
-                                        </ng-container>
-                    
+                                        </ng-container> 
+
                                         <ng-container matColumnDef="RefundAmount">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                                 Refund Amt </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                <span> {{element.RefundAmount | currency:'INR'}}</span>
+                                                <mat-form-field appearance="legacy">
+                                                    <input matInput [(ngModel)]="element.RefundAmount" onlyNumber
+                                                        (keyup)="getCellCalculation(element,element.RefundAmount)" (keypress)="keyPressCharater($event)">
+                                                </mat-form-field>
                                             </mat-cell>
-                                        </ng-container> 
+                                        </ng-container>
                     
-                                        <ng-container matColumnDef="AdvanceNo">
+                                        <!-- <ng-container matColumnDef="AdvanceNo">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                                 AdvanceNo
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                 <span> {{element.AdvanceNo}}</span>
                                             </mat-cell>
-                                        </ng-container>
+                                        </ng-container> -->
                     
                                         <ng-container matColumnDef="loading">
                                             <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
@@ -306,7 +309,7 @@
                                         <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
                                         </mat-header-row>
                                         <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
-                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                            [@animate]="{value:'*',params:{y:'100%'}}" (click)="onEdit(contact)"></mat-row>
                                         <mat-footer-row *matFooterRowDef="['loading']"
                                             [ngClass]="{'hide':dsIpItemList!=null}"></mat-footer-row>
                                         <mat-footer-row *matFooterRowDef="['noData']"
@@ -317,12 +320,12 @@
                                     </mat-paginator>
                                    
                                 </div>
-                                <!-- <div class="net-amt"> 
+                                <div class="net-amt"> 
                                     <span class="net-amt-label">Total Advance Amt:</span>&nbsp;
                                     <span class="net-amt-value"
                                         style="font-weight:bold;color: blue;">{{getAdvaceSum(dsIpItemList.data) |
                                         currency:'INR' }}</span>
-                                </div> -->
+                                </div>
                             </mat-card>
                         </div>
                         <div fxFlex.gt-md="30%" fxFlex.md="50%" fxFlex.lt-md="100%">
@@ -374,45 +377,40 @@
                                     showFirstLastButtons>
                                     </mat-paginator>
                                
-                                </div>
-                                <!-- <div class="net-amt"> 
-                                    <span class="net-amt-label">Total Refund Amt:</span>&nbsp;
-                                    <span class="net-amt-value"
-                                        style="font-weight:bold;color: blue;">{{getRefundSum(dsPreRefundList.data) |
-                                        currency:'INR' }}</span>
-                                </div>   -->
+                                </div> 
                             </mat-card>
                         </div>
                     
                     </div>
                     
-                   <div fxLayout="column" fxLayout="row">
-                    <mat-card style="padding: 6px;width: 100%;" fxLayoutGap="4px">
-                        <form [formGroup]="_PharAdvanceService.NewRefundForm">
-                        <mat-form-field appearance="outline" fxFlex="16%">
-                            <mat-label>Total Refund Amount</mat-label>
-                            <input matInput formControlName="ToatalRefunfdAmt" name="ToatalRefunfdAmt"
-                             required readonly [(ngModel)]="vToatalRefunfdAmt"> 
-                        </mat-form-field> 
-
-                        <mat-form-field appearance="outline" fxFlex="16%">
-                            <mat-label>  Balance amount</mat-label>
-                            <input matInput formControlName="BalanceAmount" name="BalanceAmount"
-                            required readonly [(ngModel)]="vBalanceAmount"> 
-                        </mat-form-field>  
-                        
-                        <mat-form-field appearance="outline" fxFlex="52%">
-                            <mat-label>Remark</mat-label>
-                            <input matInput formControlName="comment" name="comment"> 
-                        </mat-form-field> 
-
-                        <div fxLayout="row" style="padding: 0px 10px 0px 30px;">
-                            <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>&nbsp;
-                            <button class="btn btn-primary " (click)="onSave()">Save</button>
-                        </div> 
+                   <mat-card>
+                    <form [formGroup]="_PharAdvanceService.NewRefundForm">
+                        <div fxLayout="row" fxLayoutGap="6px">
+                            <mat-form-field appearance="outline" fxFlex="16%">
+                                <mat-label>Total Refund Amount</mat-label>
+                                <input matInput formControlName="ToatalRefunfdAmt" name="ToatalRefunfdAmt" required readonly
+                                    [(ngModel)]="vToatalRefunfdAmt">
+                            </mat-form-field>
+                
+                            <mat-form-field appearance="outline" fxFlex="16%">
+                                <mat-label> Balance amount</mat-label>
+                                <input matInput formControlName="BalanceAmount" name="BalanceAmount" required readonly
+                                    [(ngModel)]="vBalanceAmount">
+                            </mat-form-field>
+                
+                            <mat-form-field appearance="outline" fxFlex="52%">
+                                <mat-label>Remark</mat-label>
+                                <input matInput formControlName="comment" name="comment">
+                            </mat-form-field>
+                
+                            <div fxLayout="row" style="padding: 0px 10px 0px 30px;">
+                                <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>&nbsp;
+                                <button class="btn btn-primary " (click)="onSave()">Save</button>
+                            </div>
+                        </div>
                     </form>
-                    </mat-card> 
-                   </div> 
+                   </mat-card>
+                  
                 </div>
             </div> 
         </div>

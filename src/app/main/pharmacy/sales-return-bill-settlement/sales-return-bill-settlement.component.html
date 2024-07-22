@@ -165,6 +165,20 @@
                                 <mat-card  style="padding: 5px;"> 
                                     
                                     <mat-table matSort [dataSource]="dsPaidItemList" [@animateStagger]="{value:'50'}" class="h-150">
+                                        <ng-container matColumnDef="button" sticky>
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md class="w-80">
+                                                 
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-80">
+                                                <mat-icon *ngIf="contact.PatientType !='Company'" matTooltip="Patient Category Self">account_box
+                                                </mat-icon>
+                                                
+                                                <mat-icon *ngIf="contact.PatientType =='Company'" matTooltip="Patient Category Company">business
+                                                </mat-icon>
+                                            </mat-cell>
+                                        </ng-container>
+
+
                                         <ng-container matColumnDef="SalesDate">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>SalesDate
                                             </mat-header-cell>
@@ -187,6 +201,14 @@
                                                 <span> {{element.RegNo}}</span>
                                             </mat-cell>
                                         </ng-container>
+
+                                        <ng-container matColumnDef="CompanyName">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                Company Name </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <span> {{element.CompanyName}}</span>
+                                            </mat-cell>
+                                        </ng-container>
                         
                                         <ng-container matColumnDef="BillAmt">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
@@ -198,14 +220,14 @@
                         
                                         <ng-container matColumnDef="conAmount">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                               Concession Amt </mat-header-cell>
+                                               Discount Amt </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                 <span> {{element.DiscAmount | currency:"INR":"symbol"}}</span>
                                             </mat-cell>
                                         </ng-container>
                         
                                         <ng-container matColumnDef="NetPayAmount">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>NetPayAmount
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Net Amt
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                 <span> {{element.NetAmount | currency:"INR":"symbol"}}</span>
@@ -214,7 +236,7 @@
                         
                                         <ng-container matColumnDef="PaidAmount">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                PaidAmount
+                                                Paid Amt
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                 <span> {{element.PaidAmount | currency:"INR":"symbol"}}</span>
@@ -222,7 +244,7 @@
                                         </ng-container>
                         
                                         <ng-container matColumnDef="BalanceAmt">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>BalanceAmt
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Balance Amt
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm
                                             [ngClass]="{'positive-balance': element.BalanceAmount > 0 }">
@@ -230,14 +252,28 @@
                                             </mat-cell>
                                         </ng-container>
                         
-                                        <ng-container matColumnDef="RefundAmt">
+                                        <!-- <ng-container matColumnDef="RefundAmt">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                                 RefundAmt
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                 <span> {{element.RefundAmt | currency:"INR":"symbol"}}</span>
                                             </mat-cell>
-                                        </ng-container> 
+                                        </ng-container>  -->
+
+                                        <ng-container matColumnDef="action" stickyEnd>
+                                            <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;" class="w-80">
+                                                Action</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" class="w-80">
+                                                <button mat-icon-button  *ngIf="contact.BalanceAmount>0" matTooltip="Payment"
+                                                    (click)="OnPayment(contact)" >
+                                                    <mat-icon>payment</mat-icon> 
+                                                </button> 
+                                                <button mat-icon-button   matTooltip="Print">
+                                                    <mat-icon>print</mat-icon>
+                                                </button>
+                                            </mat-cell>
+                                        </ng-container>  
                         
                                         <ng-container matColumnDef="loading">
                                             <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
@@ -254,7 +290,8 @@
                                         <mat-header-row class="accent" *matHeaderRowDef="displayedColumnsPaid; sticky: true">
                                         </mat-header-row>
                                         <mat-row *matRowDef="let contact; columns: displayedColumnsPaid;" 
-                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                            [@animate]="{value:'*',params:{y:'100%'}}"
+                                            [ngClass]="contact.PatientType !== 'Self' ? 'self-row' : ''"  ></mat-row>
                                         <mat-footer-row *matFooterRowDef="['loading']"
                                             [ngClass]="{'hide':dsPaidItemList!=null}"></mat-footer-row>
                                         <mat-footer-row *matFooterRowDef="['noData']"

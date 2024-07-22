@@ -593,11 +593,12 @@ console.log(obj)
 
       PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
       PatientHeaderObj['PatientName'] = this.PatientName;
-      PatientHeaderObj['UHIDNO'] = this.RegNo;
-      PatientHeaderObj['Doctorname'] = this.Doctorname;
+      PatientHeaderObj['RegNo'] = this.RegNo;
+      PatientHeaderObj['DoctorName'] = this.Doctorname;
       PatientHeaderObj['CompanyName'] = this.CompanyName;
       PatientHeaderObj['DepartmentName'] = this.DepartmentName;
       PatientHeaderObj['OPD_IPD_Id'] = this.vOPDNo;
+      PatientHeaderObj['Age'] = this.AgeYear;
       PatientHeaderObj['NetPayAmount'] = this.BillingForm.get('FinalAmt').value;
 
       if (this.BillingForm.get('PaymentType').value == 'PayOption') { 

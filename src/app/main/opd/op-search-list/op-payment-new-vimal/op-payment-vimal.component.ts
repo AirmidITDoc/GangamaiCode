@@ -372,8 +372,16 @@ if(this.amount1 !=0 ){
     this.Paymentobj['AdvanceUsedAmount'] = 0;
     this.Paymentobj['AdvanceId'] = 0;
     this.Paymentobj['RefundId'] = 0;
-    this.Paymentobj['TransactionType'] = 0;
-    this.Paymentobj['Remark'] = "Cashpayment";
+    let TransactionType ;
+    if(this.data.FromName == "OP-Bill"){
+      TransactionType = 0;
+    }else if(this.data.FromName == "OP-RefundOfBill" ||  this.data.FromName == "IP-RefundOfBill" || this.data.FromName == "IP-RefundOfAdvance"){
+      TransactionType = 2;
+    }else if(this.data.FromName == "IP-Advance"){
+      TransactionType =1;
+    }
+    this.Paymentobj['TransactionType'] = TransactionType;
+    this.Paymentobj['Remark'] = " ";
     this.Paymentobj['AddBy'] = this._loggedService.currentUserValue.user.id,
     this.Paymentobj['IsCancelled'] = 0;
     this.Paymentobj['IsCancelledBy'] = 0;
