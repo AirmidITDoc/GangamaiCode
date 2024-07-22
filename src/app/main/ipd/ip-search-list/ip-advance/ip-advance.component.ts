@@ -25,7 +25,7 @@ import { OPAdvancePaymentComponent } from 'app/main/opd/op-search-list/op-advanc
 import { AdmissionPersonlModel } from '../../Admission/admission/admission.component';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 import { ToastrService } from 'ngx-toastr';
-import { OpPaymentVimalComponent } from 'app/main/opd/op-search-list/op-payment-new-vimal/op-payment-vimal.component';
+import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
 
 
 @Component({
@@ -265,7 +265,7 @@ vAdvanceDetId:any;
         //       advanceObj: PatientHeaderObj,
         //     }
         //   });
-        const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
+        const dialogRef = this._matDialog.open(OpPaymentComponent,
           {
             maxWidth: "80vw",
             height: '650px',
@@ -373,7 +373,7 @@ vAdvanceDetId:any;
       AdvanceDetObj['Time'] = this.dateTimeObj.time || '01/01/1900'
       AdvanceDetObj['AdvanceId'] = this.vAdvanceId || 0;
       AdvanceDetObj['RefId'] =this.selectedAdvanceObj.RegID || 0;
-      AdvanceDetObj['transactionID'] = 2;
+      AdvanceDetObj['transactionID'] = 1;
       AdvanceDetObj['OPD_IPD_Type'] = 1;
       AdvanceDetObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
       AdvanceDetObj['AdvanceAmount'] = this.advanceAmount;
@@ -422,7 +422,7 @@ vAdvanceDetId:any;
         //       advanceObj: PatientHeaderObj,
         //     }
         //   });
-        const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
+        const dialogRef = this._matDialog.open(OpPaymentComponent,
           {
             maxWidth: "80vw",
             height: '650px',

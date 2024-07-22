@@ -13,13 +13,13 @@ import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 
 @Component({
-  selector: 'app-op-payment-vimal',
-  templateUrl: './op-payment-vimal.component.html',
-  styleUrls: ['./op-payment-vimal.component.scss'],
+  selector: 'app-op-payment',
+  templateUrl: './op-payment.component.html',
+  styleUrls: ['./op-payment.component.scss'],
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations
 })
-export class OpPaymentVimalComponent implements OnInit {
+export class OpPaymentComponent implements OnInit {
 
   currentDate = new Date();
   patientDetailsFormGrp: FormGroup;
@@ -156,7 +156,7 @@ debugger
   TariffName:any;
   constructor(
     private formBuilder: FormBuilder,
-    private dialogRef: MatDialogRef<OpPaymentVimalComponent>,
+    private dialogRef: MatDialogRef<OpPaymentComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private opService: OPSearhlistService,
     private _loggedService: AuthenticationService,
@@ -372,8 +372,16 @@ if(this.amount1 !=0 ){
     this.Paymentobj['AdvanceUsedAmount'] = 0;
     this.Paymentobj['AdvanceId'] = 0;
     this.Paymentobj['RefundId'] = 0;
-    this.Paymentobj['TransactionType'] = 0;
-    this.Paymentobj['Remark'] = "Cashpayment";
+    let TransactionType ;
+    if(this.data.FromName == "OP-Bill"){
+      TransactionType = 0;
+    }else if(this.data.FromName == "OP-RefundOfBill" ||  this.data.FromName == "IP-RefundOfBill" || this.data.FromName == "IP-RefundOfAdvance"){
+      TransactionType = 2;
+    }else if(this.data.FromName == "IP-Advance"){
+      TransactionType =1;
+    }
+    this.Paymentobj['TransactionType'] = TransactionType;
+    this.Paymentobj['Remark'] = " ";
     this.Paymentobj['AddBy'] = this._loggedService.currentUserValue.user.id,
     this.Paymentobj['IsCancelled'] = 0;
     this.Paymentobj['IsCancelledBy'] = 0;

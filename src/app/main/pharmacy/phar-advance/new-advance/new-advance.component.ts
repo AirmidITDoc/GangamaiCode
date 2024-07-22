@@ -237,6 +237,7 @@ export class NewAdvanceComponent implements OnInit {
             });
           dialogRef.afterClosed().subscribe(result => {
             console.log('==============================  Advance Amount ===========',result);
+            console.log(result);
             let submitData = {
               "insertPHAdvance": insertPHAdvanceObj,
               "insertPHAdvanceDetail": insertPHAdvanceDetailobj,

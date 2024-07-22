@@ -25,7 +25,7 @@ import { IPSearchListService } from '../ip-search-list/ip-search-list.service';
 import { AdvanceDataStored } from '../advance';
 import { AdvanceDetailObj } from '../ip-search-list/ip-search-list.component';
 import { element } from 'protractor';
-import { OpPaymentVimalComponent } from 'app/main/opd/op-search-list/op-payment-new-vimal/op-payment-vimal.component';
+import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
 
 @Component({
   selector: 'app-ip-refundof-advance',
@@ -404,7 +404,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
     IPRefundofAdvanceObj['UsedAmount'] = this.UsedAmount;
     IPRefundofAdvanceObj['RefundAmount'] = this.NewRefundAmount;
     IPRefundofAdvanceObj['Remark'] = this.RefundOfAdvanceFormGroup.get("Remark").value;
-    IPRefundofAdvanceObj['TransactionId'] = 1;
+    IPRefundofAdvanceObj['TransactionId'] = 2;
     IPRefundofAdvanceObj['AddedBy'] = this.accountService.currentUserValue.user.id,
       IPRefundofAdvanceObj['IsCancelled'] = false;
     IPRefundofAdvanceObj['IsCancelledBy'] = 0;
@@ -471,7 +471,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
     //       FromName: "Advance-Refund"
     //     }
     //   });
-    const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
+    const dialogRef = this._matDialog.open(OpPaymentComponent,
       {
         maxWidth: "80vw",
         height: '650px',

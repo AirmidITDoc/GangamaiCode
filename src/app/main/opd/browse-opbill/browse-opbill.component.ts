@@ -22,7 +22,7 @@ import { ExcelDownloadService } from 'app/main/shared/services/excel-download.se
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 import { BrowseOpdPaymentReceipt } from '../browse-payment-list/browse-payment-list.component';
 import { RefundMaster } from '../browse-refund-list/browse-refund-list.component';
-import { OpPaymentVimalComponent } from '../op-search-list/op-payment-new-vimal/op-payment-vimal.component';
+import { OpPaymentComponent } from '../op-search-list/op-payment/op-payment.component';
 import { ToastrService } from 'ngx-toastr';
 
 
@@ -195,7 +195,7 @@ dataSource2 = new MatTableDataSource<RefundMaster>();
     PatientHeaderObj['NetPayAmount'] = contact.NetPayableAmt;
     this.vMobileNo = contact.MobileNo;
     
-    const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
+    const dialogRef = this._matDialog.open(OpPaymentComponent,
       {
 
         maxWidth: "80vw",

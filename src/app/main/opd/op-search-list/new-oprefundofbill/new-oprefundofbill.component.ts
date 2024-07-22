@@ -25,7 +25,7 @@ import { OPAdvancePaymentComponent } from '../op-advance-payment/op-advance-paym
 import { element } from 'protractor';
 import { ToastrService } from 'ngx-toastr';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
-import { OpPaymentVimalComponent } from '../op-payment-new-vimal/op-payment-vimal.component';
+import { OpPaymentComponent } from '../op-payment/op-payment.component';
 type NewType = Observable<any[]>;
 
 
@@ -449,14 +449,14 @@ onSave() {
         InsertRefundObj['RefundDate'] = this.dateTimeObj.date;
         InsertRefundObj['RefundTime'] = this.dateTimeObj.time;
         InsertRefundObj['BillId'] = this.BillNo,//parseInt(this.RefundOfBillFormGroup.get('BillNo').value);
-          InsertRefundObj['AdvanceId'] = 0;
+        InsertRefundObj['AdvanceId'] = 0;
         InsertRefundObj['OPD_IPD_Type'] = 0; 
         InsertRefundObj['OPD_IPD_ID'] = this.vOPIPId,
-          InsertRefundObj['RefundAmount'] = parseInt(this.RefundOfBillFormGroup.get('TotalRefundAmount').value);
+        InsertRefundObj['RefundAmount'] = parseInt(this.RefundOfBillFormGroup.get('TotalRefundAmount').value);
         InsertRefundObj['Remark'] = this.RefundOfBillFormGroup.get('Remark').value;
         InsertRefundObj['TransactionId'] = 2;
         InsertRefundObj['AddedBy'] = this.accountService.currentUserValue.user.id,
-          InsertRefundObj['IsCancelled'] = 0;
+        InsertRefundObj['IsCancelled'] = 0;
         InsertRefundObj['IsCancelledBy'] = 0;
         InsertRefundObj['IsCancelledDate'] = this.dateTimeObj.date;
         InsertRefundObj['refundId'] = 0;
@@ -520,7 +520,7 @@ onSave() {
         // PatientHeaderObj['OPD_IPD_Id'] =  this.IPDNo;
         PatientHeaderObj['Age'] =  this.AgeYear;
         PatientHeaderObj['NetPayAmount'] = this.TotalRefundAmount; 
-        const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
+        const dialogRef = this._matDialog.open(OpPaymentComponent,
           {
             maxWidth: "80vw",
             height: '650px',

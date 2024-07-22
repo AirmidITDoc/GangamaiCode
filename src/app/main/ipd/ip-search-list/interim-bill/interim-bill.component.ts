@@ -392,7 +392,7 @@ export class InterimBillComponent implements OnInit {
     insertBillUpdateBillNo1obj['billDate'] = this.dateTimeObj.date;
     insertBillUpdateBillNo1obj['opD_IPD_Type'] = 1;
       insertBillUpdateBillNo1obj['AddedBy'] = this.accountService.currentUserValue.user.id || 0;
-    insertBillUpdateBillNo1obj['totalAdvanceAmount'] = 0;
+    insertBillUpdateBillNo1obj['totalAdvanceAmount'] = this.selectedAdvanceObj.AdvTotalAmount;
     insertBillUpdateBillNo1obj['billTime'] = this.dateTimeObj.date;
     insertBillUpdateBillNo1obj['concessionReasonId'] = this.InterimFormGroup.get('ConcessionId').value.ConcessionId || 0,
       insertBillUpdateBillNo1obj['isSettled'] = false;

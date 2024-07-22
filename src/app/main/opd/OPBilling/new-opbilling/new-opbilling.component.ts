@@ -22,7 +22,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { ToastrService } from 'ngx-toastr';
 import { MatSelect } from '@angular/material/select';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
-import { OpPaymentVimalComponent } from '../../op-search-list/op-payment-new-vimal/op-payment-vimal.component';
+import { OpPaymentComponent } from '../../op-search-list/op-payment/op-payment.component';
 
 @Component({
   selector: 'app-new-opbilling',
@@ -593,15 +593,16 @@ console.log(obj)
 
       PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
       PatientHeaderObj['PatientName'] = this.PatientName;
-      PatientHeaderObj['UHIDNO'] = this.RegNo;
-      PatientHeaderObj['Doctorname'] = this.Doctorname;
+      PatientHeaderObj['RegNo'] = this.RegNo;
+      PatientHeaderObj['DoctorName'] = this.Doctorname;
       PatientHeaderObj['CompanyName'] = this.CompanyName;
       PatientHeaderObj['DepartmentName'] = this.DepartmentName;
       PatientHeaderObj['OPD_IPD_Id'] = this.vOPDNo;
+      PatientHeaderObj['Age'] = this.AgeYear;
       PatientHeaderObj['NetPayAmount'] = this.BillingForm.get('FinalAmt').value;
 
       if (this.BillingForm.get('PaymentType').value == 'PayOption') { 
-        const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
+        const dialogRef = this._matDialog.open(OpPaymentComponent,
           {
             maxWidth: "80vw",
             height: '650px',

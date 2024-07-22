@@ -793,8 +793,7 @@ export class AdvanceDetailObj {
   DocNameID: any;
 
   PolicyNo: any;
-  MemberNo: any;
-
+  MemberNo: any; 
   ClaimNo: any;
   CompBillNo: any;
   CompBillDate: any;
@@ -818,6 +817,7 @@ export class AdvanceDetailObj {
   H_BalAmt: any;
   MobileNo: any;
   PatientAge: any;
+  AdvTotalAmount:any;
   /**
   * Constructor
   *
@@ -868,6 +868,7 @@ export class AdvanceDetailObj {
       this.GenderName = AdvanceDetailObj.GenderName || ''
       this.DocNameID = AdvanceDetailObj.DocNameID | 0
       this.MobileNo = AdvanceDetailObj.MobileNo || ''
+      this.AdvTotalAmount = AdvanceDetailObj.AdvTotalAmount || 0
     }
   }
 }

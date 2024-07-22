@@ -71,6 +71,9 @@ export class PharAdvanceService {
   public getIPAdvanceRefList(Param) {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_BrowseT_PhAdvRefundReceipt", Param);
   }
+  public getRefundAdvanceList(Param) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_Phar_RefundOfAdvance", Param);
+  }
   public getAdmittedpatientlist(employee){
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch ", employee)
   }
@@ -88,7 +91,10 @@ export class PharAdvanceService {
     return this._httpClient.post("Pharmacy/Update_PhAdvance",data)
   }
   public InsertRefundOfAdv(data) {
-    return this._httpClient.post("/api/Pharmacy/InsertPharRefundofAdvance",data)
+    return this._httpClient.post("Pharmacy/InsertPharRefundofAdvance",data)
+  }
+  public getPreRefundofAdvance(query) {
+    return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
   }
 
   public getViewPahrmaAdvanceReceipt(AdvanceDetailID){

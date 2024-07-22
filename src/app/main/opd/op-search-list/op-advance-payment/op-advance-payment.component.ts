@@ -166,7 +166,7 @@ export class OPAdvancePaymentComponent implements OnInit {
       this.billNo = parseInt(this.advanceData.advanceObj.BillId);
       this.PatientName = this.advanceData.advanceObj.PatientName;
     }
-    if (this.advanceData.FromName == "IP-Pharma-Advance") {
+    if (this.advanceData.FromName == "IP-Pharma-Advance" || this.advanceData.FromName == "IP-Pharma-Refund") {
       this.netPayAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
       this.cashAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
       this.paidAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
@@ -175,8 +175,7 @@ export class OPAdvancePaymentComponent implements OnInit {
       this.RegNo = this.advanceData.advanceObj.UHIDNO;
       this.BillDate = this.advanceData.advanceObj.Date;
       this.IPDNo = this.advanceData.advanceObj.OPD_IPD_Id
-      this.DoctorName = this.advanceData.advanceObj.DoctorName;
-
+      this.DoctorName = this.advanceData.advanceObj.DoctorName; 
     }
     else {
       this.netPayAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
@@ -782,7 +781,7 @@ export class OPAdvancePaymentComponent implements OnInit {
         Paymentobj['AdvanceUsedAmount'] = 0;
         Paymentobj['AdvanceId'] = 0;
         Paymentobj['RefundId'] = 0;
-        Paymentobj['TransactionType'] = 0;
+        Paymentobj['TransactionType'] = 1;
         Paymentobj['Remark'] = this.paymentForm.get('commentsController').value;
         Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
           Paymentobj['IsCancelled'] = 0;
@@ -896,7 +895,7 @@ export class OPAdvancePaymentComponent implements OnInit {
         Paymentobj['AdvanceUsedAmount'] = 0;
         Paymentobj['AdvanceId'] = 0;
         Paymentobj['RefundId'] = 0;
-        Paymentobj['TransactionType'] = 0;
+        Paymentobj['TransactionType'] = 8;
         Paymentobj['Remark'] = this.paymentForm.get('commentsController').value;
         Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
         Paymentobj['IsCancelled'] = 0;
@@ -915,6 +914,37 @@ export class OPAdvancePaymentComponent implements OnInit {
         Paymentobj['PaidAmt'] = this.paymentForm.get('paidAmountController').value;
         Paymentobj['BalanceAmt'] = this.paymentForm.get('balanceAmountController').value;
         Paymentobj['tdsAmount'] = 0;
+      }
+      else if (this.advanceData.FromName == "IP-Pharma-Refund") { 
+        Paymentobj['BillNo'] = this.billNo;
+        Paymentobj['ReceiptNo'] = '';
+        Paymentobj['PaymentDate'] = this.dateTimeObj.date;
+        Paymentobj['PaymentTime'] = this.dateTimeObj.time;
+        Paymentobj['CashPayAmount'] = parseInt(this.cashAmt.toString());
+        Paymentobj['ChequePayAmount'] = parseInt(this.chequeAmt.toString());
+        Paymentobj['ChequeNo'] = this.chequeNo;
+        Paymentobj['BankName'] = this.paymentForm.get('chequeBankNameController').value.BankName;
+        Paymentobj['ChequeDate'] = this.dateTimeObj.date;
+        Paymentobj['CardPayAmount'] = parseInt(this.cardAmt.toString());
+        Paymentobj['CardNo'] = this.cardNo;
+        Paymentobj['CardBankName'] = this.paymentForm.get('cardBankNameController').value.BankName;
+        Paymentobj['CardDate'] = this.dateTimeObj.date;
+        Paymentobj['AdvanceUsedAmount'] = 0;
+        Paymentobj['AdvanceId'] = 0;
+        Paymentobj['RefundId'] = 0;
+        Paymentobj['TransactionType'] = 9;
+        Paymentobj['Remark'] = this.paymentForm.get('commentsController').value;
+        Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
+        Paymentobj['IsCancelled'] = 0;
+        Paymentobj['IsCancelledBy'] = 0;
+        Paymentobj['IsCancelledDate'] = this.dateTimeObj.date; 
+        Paymentobj['NEFTPayAmount'] = parseInt(this.neftAmt.toString());
+        Paymentobj['NEFTNo'] = this.neftNo;
+        Paymentobj['NEFTBankMaster'] = this.paymentForm.get('neftBankNameController').value.BankName;
+        Paymentobj['NEFTDate'] = this.dateTimeObj.date;
+        Paymentobj['PayTMAmount'] = parseInt(this.paytmAmt.toString());
+        Paymentobj['PayTMTranNo'] = this.paytmTransNo;
+        Paymentobj['PayTMDate'] = this.dateTimeObj.date; 
       }
       const ipPaymentInsert = new IpPaymentInsert(Paymentobj);
       let submitDataPay = {

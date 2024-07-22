@@ -164,13 +164,16 @@ private _onDestroy = new Subject<void>();
       this.cashAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
       this.paidAmt = parseInt(this.advanceData.advanceObj.NetPayAmount); 
     }
-    if (this.advanceData.FromName ==  "SETTLEMENT") {
-      this.netPayAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
-      this.cashAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
-      this.paidAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
-      this.PatientName = this.advanceData.advanceObj.PatientName;
-      this.BillDate = this.advanceData.advanceObj.Date;
-    }
+    if (this.advanceData.FromName == "IP-Pharma-SETTLEMENT") {
+      this.netPayAmt = parseInt(this.advanceData.advanceObj.AdvanceAmount);
+      // this.cashAmt = parseInt(this.advanceData.advanceObj.AdvanceAmount);
+      this.paidAmt = parseInt(this.advanceData.advanceObj.AdvanceAmount);
+      this.PatientName = this.advanceData.advanceObj.PatientName;  
+      this.OPD_IPD_Id = this.advanceData.advanceObj.IPDNo;
+      this.RegNo = this.advanceData.advanceObj.RegNo;
+      this.BillTime = this.advanceData.advanceObj.Date;
+      this.getBalanceAmt(); 
+    } 
   }
 
   ngOnInit(): void {
@@ -658,6 +661,39 @@ private _onDestroy = new Subject<void>();
       ipPaymentInsert['PayTMDate'] = this.dateTimeObj.date;
       ipPaymentInsert['tdsAmount'] = this.tdsAmt || 0; 
     }
+    else if(this.advanceData.FromName == "IP-Pharma-SETTLEMENT"){ 
+      ipPaymentInsert['PaymentId'] = '0';
+      ipPaymentInsert['billNo'] = 0;
+      ipPaymentInsert['PaymentDate'] = this.dateTimeObj.date;
+      ipPaymentInsert['PaymentTime'] = this.dateTimeObj.time;
+      ipPaymentInsert['CashPayAmount'] = this.cashAmt || 0;
+      ipPaymentInsert['ChequePayAmount'] = this.chequeAmt || 0;
+      ipPaymentInsert['ChequeNo'] = this.chequeNo || 0;
+      ipPaymentInsert['BankName'] =this.paymentForm.get('chequeBankNameController').value.BankName || '';// this.chequeBankName;
+      ipPaymentInsert['ChequeDate'] = this.dateTimeObj.date;
+      ipPaymentInsert['CardPayAmount'] = this.cardAmt || 0;
+      ipPaymentInsert['CardNo'] = this.cardNo || 0;
+      ipPaymentInsert['CardBankName'] = this.paymentForm.get('cardBankNameController').value.BankName || '';//this.cardBankName;
+      ipPaymentInsert['CardDate'] = this.dateTimeObj.date;
+      ipPaymentInsert['AdvanceUsedAmount'] = this.advanceAmt || 0;
+      ipPaymentInsert['AdvanceId'] = this.AdvanceId || 0,
+      ipPaymentInsert['RefundId'] = '0';
+      ipPaymentInsert['TransactionType'] = 4;
+      ipPaymentInsert['Remark'] = '';
+      ipPaymentInsert['AddBy'] = this.authServie.currentUserValue.user.id || 0;
+      ipPaymentInsert['IsCancelled'] = 'false';
+      ipPaymentInsert['IsCancelledBy'] = '0'; 
+      ipPaymentInsert['IsCancelledDate'] = this.dateTimeObj.date; 
+      ipPaymentInsert['opD_IPD_Type'] = 1 ;
+      ipPaymentInsert['NEFTPayAmount'] = this.neftAmt;
+      ipPaymentInsert['NEFTNo'] = this.neftNo || 0;
+      ipPaymentInsert['NEFTBankMaster'] = this.paymentForm.get('neftBankNameController').value.BankName || '';//this.neftBankName;
+      ipPaymentInsert['NEFTDate'] = this.dateTimeObj.date;
+      ipPaymentInsert['PayTMAmount'] = this.paytmAmt || 0;
+      ipPaymentInsert['PayTMTranNo'] = this.paytmTransNo || 0;
+      ipPaymentInsert['PayTMDate'] = this.dateTimeObj.date; 
+    }
+
 
 
     //const ipPaymentInsert = new IpPaymentInsert(Paymentobj);
