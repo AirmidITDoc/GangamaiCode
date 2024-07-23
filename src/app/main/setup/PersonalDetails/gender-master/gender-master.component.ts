@@ -23,7 +23,6 @@ export class GenderMasterComponent implements OnInit {
     displayedColumns: string[] = [
         "GenderId",
         "GenderName",
-
         "IsDeleted",
         "action",
     ];
@@ -53,8 +52,9 @@ export class GenderMasterComponent implements OnInit {
  
 
     getGenderMasterList() {
+        debugger
         var Param = {  
-            GenderName:this._GenderService.myformSearch.get("GenderNameSearch").value.trim()  || "%",
+            GenderName:this._GenderService.myformSearch.get("GenderNameSearch").value.trim() +"%" || "%",
         };
         this._GenderService.getGenderMasterList(Param).subscribe((Menu) => {
             this.DSGenderMasterList.data = Menu as GenderMaster[];
@@ -113,7 +113,7 @@ export class GenderMasterComponent implements OnInit {
                          toastClass: 'tostr-tost custom-toast-error',
                        });
                     });
-            } else {
+            } else {debugger
                 var m_dataUpdate = {
                     genderMasterUpdate: {
                         genderId:
@@ -166,6 +166,8 @@ export class GenderMasterComponent implements OnInit {
   
 
     onEdit(row) {
+
+        debugger
         var m_data = {
             GenderId: row.GenderId,
             GenderName: row.GenderName.trim(),

@@ -6,6 +6,7 @@ import { RouterModule, Routes } from '@angular/router';
 // import { OPBillingReportComponent } from './opbilling-report/opbilling-report.component';
 import { CommonReportComponent } from './common-report/common-report.component';
 import { InventoryReportComponent } from './inventory-report/inventory-report.component';
+import { GSTReportComponent } from './gst-report/gst-report.component';
  // loadChildren: () =>
         //     import("./opbilling-report/opbillingreport.module").then(
         //         (m) => m.OpbillingreportModule
@@ -23,6 +24,14 @@ const appRoutes: Routes = [
         loadChildren: () =>
             import("./pharmacy-report/pharmacyreport.module").then(
                 (m) => m.PharmacyreportModule
+            ),
+
+    },
+    {
+        path: "gstreport",
+        loadChildren: () =>
+            import("./gst-report/gst-report.module").then(
+                (m) => m.GstReportModule
             ),
 
     },

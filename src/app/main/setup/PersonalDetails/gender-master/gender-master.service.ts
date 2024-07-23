@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 
 @Injectable()
 export class GenderMasterService {
@@ -23,7 +23,11 @@ export class GenderMasterService {
     createGenderForm(): FormGroup {
         return this._formBuilder.group({
             GenderId: [""],
-            GenderName: [""],
+            GenderName: ['', [
+                Validators.required,
+                Validators.maxLength(50),
+                Validators.pattern('^[a-zA-Z () ]*$')
+              ]],
             IsDeleted: [""],
         });
     }

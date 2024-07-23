@@ -249,6 +249,7 @@ export class NewAdvanceComponent implements OnInit {
               if (response) {
                 Swal.fire('Congratulations !', 'IP Pharmacy Advance data saved Successfully !', 'success').then((result) => {
                   if (result.isConfirmed) {
+                    console.log(response)
                     this.viewgetIPAdvanceReportPdf(response); 
                     this._matDialog.closeAll();
                     this.onClose();
