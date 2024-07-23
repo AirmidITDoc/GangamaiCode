@@ -1243,11 +1243,11 @@
 
 
 </div>
-<mat-drawer #drawer1 class="example-sidenav" id="showTable" mode="side" position="end" class="h-520"
-    style="margin-top: 200px !important;margin-right: 95px;font-size: medium;">
+<mat-drawer #drawer1 class="example-sidenav" id="showTable" mode="side" position="end" class="h-420"
+    style="margin-top: 300px !important;margin-right: 95px;font-size: medium;">
     <div class="mat-drawer-table">
         <div class="service-table1">
-            <mat-table #table matSort [dataSource]="dataSource1" [@animateStagger]="{value:'50'}" class="h-480">
+            <mat-table #table matSort [dataSource]="dataSource1" [@animateStagger]="{value:'50'}" class="h-300">
 
                 <ng-container matColumnDef="ServiceName">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Service Name
@@ -1258,33 +1258,12 @@
                 </ng-container>
 
                 <ng-container matColumnDef="Price">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-90">Price
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">Price
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-90">
-                        <span> {{contact.Price}}</span>
+                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-80">
+                        <span> {{contact.price}}</span>
                     </mat-cell>
-                </ng-container>
-
-                <!--  <ng-container matColumnDef="Price">
-                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Price
-                </mat-header-cell>
-                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                    <mat-form-field appearance="legacy">
-                        <input matInput [(ngModel)]="contact.Price">
-                        <span matPrefix>₹</span>
-                    </mat-form-field>
-                </mat-cell>
-            </ng-container>
-
-           <ng-container matColumnDef="Qty">
-                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Qty
-                </mat-header-cell>
-                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                    <mat-form-field appearance="legacy">
-                        <input matInput [(ngModel)]="contact.Qty" (keyup)="getTotalAmount(contact)">
-                    </mat-form-field>
-                </mat-cell>
-            </ng-container> -->
+                </ng-container> 
 
                 <ng-container matColumnDef="loading">
                     <mat-footer-cell *matFooterCellDef colspan="6">

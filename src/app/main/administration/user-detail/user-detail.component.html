@@ -31,6 +31,35 @@
                             <div class="nav material2">
                                 <div class="user-formlist" *ngIf="true">
                                     <div class="user-form-col gap-8" fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+
+                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                            <mat-form-field appearance="outline" style="width:614px;">
+                                                <mat-label>Unit Name </mat-label>
+                                                <mat-select formControlName="HospitalId" required #hname
+                                                    (keydown)="onEnterUnit($event)">
+                                                    <mat-option *ngFor="let Doc of HospitalList1" [value]="Doc">
+                                                        {{Doc.HospitalName}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%"> 
+                                            <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>Mobile No </mat-label>
+                                                <input matInput [(ngModel)]="vMobileNo" formControlName="MobileNo" #MobileNo
+                                                name="MobileNo"   placeholder="Enter Only 10 digit " required
+                                                max="9999999999" min="1000000000" autocomplete="off" maxlength="10" minlength="10"
+                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
+                                                    required="required" value="9876658688"   (keydown)="onEnterMobileno($event)">
+                                                    <mat-error class="error"
+                                                    *ngIf="UserForm.get('MobileNo').invalid && UserForm.get('MobileNo').touched">10
+                                                    digits Mobile number is required</mat-error>
+                                            </mat-form-field>
+                                        </div>  
+                                    </div>
+                                    <div class="user-form-col gap-8" fxFlexFill fxLayout="column" fxLayout.gt-xs="row"> 
+
                                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>First Name</mat-label>

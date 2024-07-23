@@ -30,8 +30,8 @@ export class DiscountAfterSalesBillService {
   CreateaIpFinalform() {
     return this._formbuilder.group({
       FinalNetAmount: '',
-      FinalTotalAmt:'' ,
-      FinalGSTAmt:'',
+      FinalPaidAmt:'' ,
+      FinalBalAmt:'',
       FinalDiscAmount:''
     });
   }

@@ -50,6 +50,7 @@ export class UserDetailComponent implements OnInit {
   vPharExpOpt:any;
   vPharIPOpt:any;
   vPharOPOpt:any;
+  vMobileNo:any;
 
   constructor(public _UserService: AdministrationService,
     private accountService: AuthenticationService,
@@ -74,11 +75,12 @@ export class UserDetailComponent implements OnInit {
       this.vPharIPOpt = this.registerObj.PharIPOpt;
       this.vPharOPOpt = this.registerObj.PharOPOpt;
     }
-      console.log(this.registerObj)
+    console.log(this.registerObj)
     this.getDoctorlist1();
     this.getRoleNamelist1();
-   this.getwebRoleNamelist1();
+    this.getwebRoleNamelist1();
     this.gePharStoreList1();
+    this.getHospitalList1();
 
     this.filteredOptionsRole = this.UserForm.get('RoleId').valueChanges.pipe(
       startWith(''),
@@ -138,15 +140,24 @@ export class UserDetailComponent implements OnInit {
       IsActive: 'true',
       PharExpOpt:'',
       PharIPOpt:'',
-      PharOPOpt:''
+      PharOPOpt:'',
+      MobileNo:'',
+      HospitalId:''
     });
 
+  }
+  HospitalList1: any = [];
+  getHospitalList1() {
+    this._UserService.getHospitalCombo().subscribe(data => {
+      this.HospitalList1 = data;
+      this.UserForm.get('HospitalId').setValue(this.HospitalList1[0]);
+    })
   }
   gePharStoreList() {
     var vdata = {
       Id: this._loggedService.currentUserValue.user.storeId
     }
-    this._BatchAndExpDateAdjustmentService.getLoggedStoreList(vdata).subscribe(data => {
+    this._UserService.getLoggedStoreList(vdata).subscribe(data => {
       this.StoreList = data;
       this.UserForm.get('StoreId').setValue(this.StoreList[0]);
     });
@@ -253,11 +264,21 @@ export class UserDetailComponent implements OnInit {
   @ViewChild('password') password: ElementRef;
   @ViewChild('mailid') mailid: ElementRef;
   @ViewChild('role') role: ElementRef;
-
+  @ViewChild('MobileNo') MobileNo: ElementRef;
   @ViewChild('docname') docname: ElementRef;
   @ViewChild('webrole') webrole: ElementRef;
   // @ViewChild('Fax') Fax: ElementRef;
+  onEnterUnit(event) {
+    if (event.which === 13) {
+      this.MobileNo.nativeElement.focus();
+    }
+  }
 
+  onEnterMobileno(event) {
+    if (event.which === 13) {
+      this.fname.nativeElement.focus();
+    }
+  }
   onEnterfname(event) {
     if (event.which === 13) {
       this.lname.nativeElement.focus();
