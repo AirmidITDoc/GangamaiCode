@@ -25,6 +25,13 @@ export class AdministrationService {
 
     });
   }
+    //Hospital Combobox List
+    public getHospitalCombo() {
+      return this._httpClient.post("Generic/GetByProc?procName=rtrv_UnitMaster_1", {})
+    }
+  public getLoggedStoreList(Param) {
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional", Param);
+  }
   public getUserList(employee) {
     return this._httpClient.post("Generic/GetByProc?procName=RtrvUserList", employee)
   }

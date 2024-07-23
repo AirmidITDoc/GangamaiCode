@@ -29,9 +29,12 @@ export class DiscountAfterSalesBillComponent implements OnInit {
     'BillAmt',
     'conAmount',
     'NetPayAmount',
+    'RefundAmt',
     'PaidAmount',
     'BalanceAmt',
-    'action', 
+    'discPer',
+    'PreDiscAmt',
+    // 'action', 
   ];
   
  
@@ -52,13 +55,13 @@ export class DiscountAfterSalesBillComponent implements OnInit {
     vItemName:any;
     vRegId:any;
     vAdmissionID:any;  
-    vFinalGSTAmt:any;
-    vFinalDiscAmount:any;
+    FinalBalAmt:any;
+    vFinalPaidAmt:any=0;
     vSalesID:any;
     vOP_IP_Id:any;
     vOP_IP_Type:any;  
-    vFinalNetAmount:any;
-    vFinalTotalAmt:any
+    vFinalNetAmount:any=0;
+    vFinalBalAmt:any=0;
     vRegID:any;
     vIPDNo:any; 
     vTariffName:any;
@@ -148,44 +151,51 @@ export class DiscountAfterSalesBillComponent implements OnInit {
           this.sIsLoading = '';
         });
     } 
-  getCellCalculation(contact, ReturnQty) {
-    if (parseInt(contact.ReturnQty) > parseInt(contact.Qty)) {
-      this.toastr.warning('Return Qty cannot be greater than BalQty', 'Warning !', {
+    SelectedArray: any = [];
+    tableElementChecked(event, element) { 
+      if (event.checked) {
+        console.log(element) 
+        element.PaidAmount =  element.BalanceAmount;
+        element.BalanceAmount = 0;
+        this.vFinalNetAmount = (parseFloat(this.vFinalNetAmount) + parseFloat(element.NetAmount)).toFixed(2);
+        this.vFinalBalAmt = (parseFloat(this.vFinalBalAmt) + parseFloat(element.BalanceAmount)).toFixed(2);
+        this.vFinalPaidAmt = (parseFloat(this.vFinalPaidAmt) + parseFloat(element.PaidAmount)).toFixed(2); 
+       
+      }
+      else{ 
+        this.vFinalNetAmount = (parseFloat(this.vFinalNetAmount) - parseFloat(element.NetAmount)).toFixed(2);
+        this.vFinalBalAmt = (parseFloat(this.vFinalBalAmt) - parseFloat(element.BalanceAmount)).toFixed(2);
+        this.vFinalPaidAmt = (parseFloat(this.vFinalPaidAmt) - parseFloat(element.PaidAmount)).toFixed(2); 
+        element.BalanceAmount =  element.PaidAmount;
+        element.PaidAmount = 0;
+      }
+      //console.log(this.SelectedArray) 
+    } 
+  getCellCalculation(contact, discPer) {
+    debugger 
+    if (parseInt(contact.discPer) >= 100 ) {
+      this.toastr.warning('Discount cannot be greater than 100%', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
-      contact.ReturnQty = 0;
-      contact.ReturnQty = ''; 
-      contact.TotalAmt = 0;
-      contact.GSTAmt = 0;
-      contact.DiscAmt = 0;
-      contact.NetAmount = 0;
+      contact.discPer = '';
+    } 
+    else if(contact.discPer > 0) { 
+      let finaldiscAmt = (parseFloat(contact.discPer) * parseFloat(contact.TotalAmount) / 100).toFixed(2);
+      let TotaldiscAmt =  (parseFloat(contact.DiscAmount) + parseFloat(finaldiscAmt)).toFixed(2);
+      contact.DiscAmount =  TotaldiscAmt ;  
+
+      contact.NetAmount = (parseFloat(contact.TotalAmount) - parseFloat(contact.DiscAmount)).toFixed(2);  
+      contact.BalanceAmount = contact.NetAmount ; 
     }
-    else if(contact.ReturnQty == '0' || contact.ReturnQty == '' || contact.ReturnQty == null || contact.ReturnQty == undefined){
-      contact.ReturnQty = 0;
-      contact.ReturnQty = ''; 
-      contact.TotalAmt = 0;
-      contact.GSTAmt = 0;
-      contact.DiscAmt = 0;
-      contact.NetAmount = 0;
-    }
-    else { 
-      contact.TotalAmt = (parseFloat(contact.MRP) * parseFloat(contact.ReturnQty)).toFixed(2);
-      contact.GSTAmt=  ((parseFloat(contact.GST) * parseFloat(contact.TotalAmt))/100).toFixed(2) || 0;
-      contact.DiscAmt=  ((parseFloat(contact.Disc) * parseFloat(contact.TotalAmt))/100).toFixed(2) || 0;
-      contact.NetAmount = (parseFloat(contact.TotalAmt) - parseFloat(contact.DiscAmt)).toFixed(2);
-      contact.PurTotAmt = (parseFloat(contact.PurRateWf) * parseFloat(contact.ReturnQty)).toFixed(2);
-      contact.TotalLandedAmount = (parseFloat(contact.LandedPrice) * parseFloat(contact.ReturnQty)).toFixed(2);
+    else if(contact.discPer == '0' || contact.discPer == '' || contact.discPer == null || contact.discPer == undefined){
+       
+      contact.DiscAmount =  contact.PreDiscAmt ;  
+
+      contact.NetAmount = (parseFloat(contact.TotalAmount) - parseFloat(contact.DiscAmount)).toFixed(2);  
+      contact.BalanceAmount = contact.NetAmount ; 
     }
   }
-  getTotalAmt(element) {
-   
-    this.vFinalNetAmount = (element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0)).toFixed(2);
-    this.vFinalTotalAmt = (element.reduce((sum, { TotalAmt }) => sum += +(TotalAmt || 0), 0)).toFixed(2);
-    this.vFinalGSTAmt = (element.reduce((sum, { GSTAmt }) => sum += +(GSTAmt || 0), 0)).toFixed(2);
-    this.vFinalDiscAmount = (element.reduce((sum, { DiscAmt }) => sum += +(DiscAmt || 0), 0)).toFixed(2);
-   
-    return this.vFinalNetAmount;
-  }
+ 
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {

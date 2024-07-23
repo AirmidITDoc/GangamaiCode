@@ -457,11 +457,17 @@ console.log(obj)
 
     this.TotalnetPaybleAmt = this.b_TotalChargesAmount - this.vConcessionAmt;
   }
-
-  onSaveOPBill2() {
+  savebtn:boolean=true;
+  onSaveOPBill2() { 
 
     if ((this.vOPIPId == '' || this.vOPIPId == null || this.vOPIPId == undefined)) {
       this.toastr.warning('Please select Patient', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if ((!this.dataSource.data.length)) {
+      this.toastr.warning('Please add service in table', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
@@ -474,18 +480,7 @@ console.log(obj)
         return;
       }
       }
-    if ((this.dataSource.data.length < 0)) {
-      this.toastr.warning('Please add service in table', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    if ((this.dataSource.data.length < 0)) {
-      this.toastr.warning('Please add service in table', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
+ 
     if (this.CompanyId !== 0 && this.CompanyId !== "") {
       this.saveCreditbill();
     }
@@ -510,8 +505,7 @@ console.log(obj)
       if(this.BillingForm.get('ConcessionId').value)
       ConcessionReason = this.BillingForm.get('ConcessionId').value.ConcessionReason;
 
-      this.isLoading = 'submit';
-
+      this.isLoading = 'submit'; 
       let InsertBillUpdateBillNoObj = {};
       InsertBillUpdateBillNoObj['BillNo'] = 0;
       InsertBillUpdateBillNoObj['OPD_IPD_ID'] = this.vOPIPId;
@@ -653,6 +647,7 @@ console.log(obj)
                     this.viewgetBillReportPdf(response);
                     this.getWhatsappshareSales(response, vmMobileNo)
                     this.onClose();
+                    this.savebtn = true;
                   }
                 });
                 this.onClose();
@@ -762,6 +757,7 @@ console.log(obj)
                 this.viewgetBillReportPdf(response);
                 this.getWhatsappshareSales(response, this.vMobileNo)
                 this.onClose();
+                this.savebtn = true;
               }
             });
           } else {
@@ -772,11 +768,10 @@ console.log(obj)
       }
     }
 
-
+   this.vOPIPId == ''
   }
 
-  saveCreditbill() {
-    this.saveclick = true;
+  saveCreditbill() { 
     let disamt = this.BillingForm.get('concessionAmt').value;
 
     
@@ -905,6 +900,7 @@ console.log(obj)
             this.viewgetBillReportPdf(response);
             this.getWhatsappshareSales(response, this.vMobileNo);
             this.onClose();
+            this.savebtn = true;
           }
         });
         this.onClose();
@@ -1007,6 +1003,7 @@ console.log(obj)
     this.Servicename.nativeElement.focus();
     this.add = false;
     this.finaldiscAmt();
+    this.savebtn = false;
   }
   finalDisc1: any = 0;
   finaldiscAmt() {

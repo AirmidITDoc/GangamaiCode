@@ -571,7 +571,7 @@
                                 <!-- [disabled]="BillingForm.invalid" -->
                                 <div class="action-btns gap-8" fxLayout="row">
                                     <button class="btn btn-danger-outline" (click)="onClear()">Close</button>
-                                    <button class="btn btn-primary" (click)="onSaveOPBill2()">Save</button>
+                                    <button class="btn btn-primary" (click)="onSaveOPBill2()" [disabled]="savebtn">Save</button>
                                 </div>
                             </div>
                         </div>
