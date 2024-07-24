@@ -23,8 +23,7 @@ export class DiscountAfterSalesBillComponent implements OnInit {
   displayedColumns = [
     'button',
     'SalesDate',
-    'PillNo',
-    'RegNo',
+    'PillNo', 
     'CompanyName',
     'BillAmt',
     'conAmount',
@@ -117,7 +116,7 @@ export class DiscountAfterSalesBillComponent implements OnInit {
     getSelectedObj(obj){
       console.log(obj)
      this.vRegNo = obj.RegNo;
-     this.vPatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.PatientName;
+     this.vPatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
      this.vAdmissionDate = obj.AdmissionDate;
      this.vMobileNo = obj.MobileNo; 
      this.vAdmissionID = obj.AdmissionID;

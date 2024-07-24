@@ -200,34 +200,34 @@ export class BrowsSalesBillComponent implements OnInit {
 
 
   resultsLength = 0;
-  getAdmittedPatientList_1() {
-    var Param = {
-      "F_Name": this._AdmissionService.myFilterform.get("FirstName").value + '%' || "%",
-      "L_Name": this._AdmissionService.myFilterform.get("LastName").value + '%' || "%",
-      "Reg_No": this._AdmissionService.myFilterform.get("RegNo").value || "0",
-      "Doctor_Id": this._AdmissionService.myFilterform.get("searchDoctorId").value.DoctorID || "0",
-      "From_Dt": this.datePipe.transform(this._AdmissionService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
-      "To_Dt": this.datePipe.transform(this._AdmissionService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
-      "Admtd_Dschrgd_All": 0,
-      "M_Name": this._AdmissionService.myFilterform.get("MiddleName").value + '%' || "%",
-      "IPNo": this._AdmissionService.myFilterform.get("IPDNo").value || '0',
-      Start: (this.IPListpaginator?.pageIndex ?? 0),
-      Length: (this.IPListpaginator?.pageSize ?? 35),
-    }
-    console.log(Param);
-    this._AdmissionService.getAdmittedPatientList_1(Param).subscribe(data => {
-      this.dataSource.data = data["Table1"] ?? [] as Admission[];
-      if (this.dataSource.data.length > 0) {
-        this.Admissiondetail(this.dataSource.data);
-      }
-      this.dataSource.sort = this.sort;
-      this.resultsLength = data["Table"][0]["total_row"];
-      this.sIsLoading = '';
-    },
-      error => {
-        this.sIsLoading = '';
-      });
-  }
+  // getAdmittedPatientList_1() {
+  //   var Param = {
+  //     "F_Name": this._AdmissionService.myFilterform.get("FirstName").value + '%' || "%",
+  //     "L_Name": this._AdmissionService.myFilterform.get("LastName").value + '%' || "%",
+  //     "Reg_No": this._AdmissionService.myFilterform.get("RegNo").value || "0",
+  //     "Doctor_Id": this._AdmissionService.myFilterform.get("searchDoctorId").value.DoctorID || "0",
+  //     "From_Dt": this.datePipe.transform(this._AdmissionService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
+  //     "To_Dt": this.datePipe.transform(this._AdmissionService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
+  //     "Admtd_Dschrgd_All": 0,
+  //     "M_Name": this._AdmissionService.myFilterform.get("MiddleName").value + '%' || "%",
+  //     "IPNo": this._AdmissionService.myFilterform.get("IPDNo").value || '0',
+  //     Start: (this.IPListpaginator?.pageIndex ?? 0),
+  //     Length: (this.IPListpaginator?.pageSize ?? 35),
+  //   }
+  //   console.log(Param);
+  //   this._AdmissionService.getAdmittedPatientList_1(Param).subscribe(data => {
+  //     this.dataSource.data = data["Table1"] ?? [] as Admission[];
+  //     if (this.dataSource.data.length > 0) {
+  //       this.Admissiondetail(this.dataSource.data);
+  //     }
+  //     this.dataSource.sort = this.sort;
+  //     this.resultsLength = data["Table"][0]["total_row"];
+  //     this.sIsLoading = '';
+  //   },
+  //     error => {
+  //       this.sIsLoading = '';
+  //     });
+  // }
   
 
   IsDischarge: any;
@@ -237,11 +237,13 @@ export class BrowsSalesBillComponent implements OnInit {
       this._AdmissionService.myFilterform.get('IsDischarge').setValue(1);
       this._AdmissionService.myFilterform.get('start').setValue((new Date()).toISOString());
       this._AdmissionService.myFilterform.get('end').setValue((new Date()).toISOString());
+      this.getAdmittedPatientList();
     }
     else {
       this._AdmissionService.myFilterform.get('IsDischarge').setValue(0);
       this._AdmissionService.myFilterform.get('start').setValue(''),
       this._AdmissionService.myFilterform.get('end').setValue('')
+      this.getAdmittedPatientList();
     }
   }
 
@@ -262,7 +264,7 @@ export class BrowsSalesBillComponent implements OnInit {
         Start: (this.paginator?.pageIndex ?? 0),
         Length: (this.paginator?.pageSize ?? 35),
       }
-      console.log(D_data);
+      //console.log(D_data);
       setTimeout(() => {
         this.isLoadingStr = 'loading';
         this._AdmissionService.getAdmittedPatientList_1(D_data).subscribe(data => {
@@ -292,7 +294,7 @@ export class BrowsSalesBillComponent implements OnInit {
         Start: (this.paginator?.pageIndex ?? 0),
         Length: (this.paginator?.pageSize ?? 35),
       }
-      console.log(D_data);
+     // console.log(D_data);
       setTimeout(() => {
         this.isLoadingStr = 'loading';
         this._AdmissionService.getDischargedPatientList_1(Params).subscribe(data => {
@@ -379,8 +381,8 @@ export class BrowsSalesBillComponent implements OnInit {
     this.dateTimeObj = dateTimeObj;
   }
 
-  getSalesList() {
-
+  getSalesList() { 
+    this.sIsLoading = 'loading-data';
     var vdata = {
       F_Name: this._BrowsSalesBillService.userForm.get('F_Name').value || '%',
       L_Name: this._BrowsSalesBillService.userForm.get('L_Name').value || '%',
@@ -389,20 +391,84 @@ export class BrowsSalesBillComponent implements OnInit {
       Reg_No: this._BrowsSalesBillService.userForm.get('RegNo').value || 0,
       SalesNo: this._BrowsSalesBillService.userForm.get('SalesNo').value || 0,
       OP_IP_Type: this._BrowsSalesBillService.userForm.get('OP_IP_Type').value,
-      StoreId: this._BrowsSalesBillService.userForm.get('StoreId').value.storeid || 0,
-      IPNo: this._BrowsSalesBillService.userForm.get('IPNo').value || 0
-
+      StoreId:  this._loggedService.currentUserValue.user.storeId || 0,
+      IPNo: this._BrowsSalesBillService.userForm.get('IPNo').value || 0 
     }
-    //  console.log(vdata);
-    this._BrowsSalesBillService.getSalesList(vdata).subscribe(data => {
-      this.dssaleList1.data = data as SaleList[];
-      this.dssaleList1.sort = this.sort;
-      this.dssaleList1.paginator = this.paginator;
-      console.log(this.dssaleList1.data);
+    //console.log(vdata); 
+    setTimeout(() => {
+    this.sIsLoading = 'loading-data';
+      this.sIsLoading = '';
+      this._BrowsSalesBillService.getSalesList(vdata).subscribe(data => { 
+        this.dssaleList1.data = data as SaleList[];
+        //console.log(this.dssaleList1.data);
+        this.dssaleList1.sort = this.sort;
+        this.dssaleList1.paginator = this.paginator; 
+        this.sIsLoading = this.dssaleList1.data.length == 0 ? 'no-data' : '';
+        this.sIsLoading = ''; 
+      },
+        error => {
+          this.sIsLoading = '';
+        });
+    }, 1000); 
+  } 
+  getSalesDetList(Parama) {
+    var vdata = {
+      SalesID: Parama.SalesId,
+      OP_IP_Type: Parama.OP_IP_Type
+    }
+    this._BrowsSalesBillService.getSalesDetList(vdata).subscribe(data => {
+      this.dssalesList2.data = data as SalesDetList[];
+      // this.dssalesList2.sort = this.sort;
+      // this.dssalesList2.paginator = this.paginator;
+      // console.log( this.dssalesList2.data);
     })
-
   }
 
+  getSalesReturnList() {
+    this.sIsLoading = 'loading-data';
+    var vdata = {
+      F_Name: this._BrowsSalesBillService.formReturn.get('F_Name').value || '%',
+      L_Name: this._BrowsSalesBillService.formReturn.get('L_Name').value || '%',
+      From_Dt: this.datePipe.transform(this._BrowsSalesBillService.formReturn.get('startdate1').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      To_Dt: this.datePipe.transform(this._BrowsSalesBillService.formReturn.get('enddate1').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      Reg_No: this._BrowsSalesBillService.formReturn.get('RegNo').value || 0,
+      SalesNo: this._BrowsSalesBillService.formReturn.get('SalesNo').value || 0,
+      OP_IP_Type: this._BrowsSalesBillService.formReturn.get('OP_IP_Types').value || 0,
+      StoreId: this._loggedService.currentUserValue.user.storeId || 0
+    }
+    console.log(vdata); 
+    setTimeout(() => {
+      this.sIsLoading = 'loading-data';
+      this._BrowsSalesBillService.getSalesReturnList(vdata).subscribe(data => {
+        this.dssalesReturnList.data = data as SalesReturnList[];
+        console.log(this.dssalesReturnList.data);
+        this.dssalesReturnList.sort = this.sort;
+      this.dssalesReturnList.paginator = this.paginator;
+        this.sIsLoading = this.dssalesReturnList.data.length == 0 ? 'no-data' : 'no data';
+        this.sIsLoading = ''; 
+      },
+        error => {
+          this.sIsLoading = '';
+        });
+    }, 1000);
+  }
+  getSalesReturnDetList(Parama) {
+    var vdata = {
+      SalesReturnId: Parama.SalesReturnId
+
+    }
+
+    this._BrowsSalesBillService.getSalesReturnDetList(vdata).subscribe(data => {
+      this.dssalesReturnList1.data = data as SalesReturnDetList[];
+      // this.dssalesReturnList1.sort = this.sort;
+      // this.dssalesReturnList1.paginator = this.paginator;
+      // console.log(this.dssalesReturnList1.data);
+    })
+  }
+  onSelect1(Parama) {
+    // console.log(Parama);
+    this.getSalesReturnDetList(Parama)
+  }
   OnPayment(SelectedValue) {
 
 
@@ -500,56 +566,6 @@ export class BrowsSalesBillComponent implements OnInit {
       // }
     });
 
-  }
-
-  getSalesDetList(Parama) {
-    var vdata = {
-      SalesID: Parama.SalesId,
-      OP_IP_Type: Parama.OP_IP_Type
-    }
-    this._BrowsSalesBillService.getSalesDetList(vdata).subscribe(data => {
-      this.dssalesList2.data = data as SalesDetList[];
-      // this.dssalesList2.sort = this.sort;
-      // this.dssalesList2.paginator = this.paginator;
-      // console.log( this.dssalesList2.data);
-    })
-  }
-
-  getSalesReturnList() {
-    var vdata = {
-      F_Name: this._BrowsSalesBillService.formReturn.get('F_Name').value || '%',
-      L_Name: this._BrowsSalesBillService.formReturn.get('L_Name').value || '%',
-      From_Dt: this.datePipe.transform(this._BrowsSalesBillService.formReturn.get('startdate1').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      To_Dt: this.datePipe.transform(this._BrowsSalesBillService.formReturn.get('enddate1').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      Reg_No: this._BrowsSalesBillService.formReturn.get('RegNo').value || 0,
-      SalesNo: this._BrowsSalesBillService.formReturn.get('SalesNo').value || 0,
-      OP_IP_Type: this._BrowsSalesBillService.formReturn.get('OP_IP_Types').value || 0,
-      StoreId: this._BrowsSalesBillService.formReturn.get('StoreId').value.storeid || 0,
-    }
-    console.log(vdata);
-    this._BrowsSalesBillService.getSalesReturnList(vdata).subscribe(data => {
-      this.dssalesReturnList.data = data as SalesReturnList[];
-      this.dssalesReturnList.sort = this.sort;
-      this.dssalesReturnList.paginator = this.paginator;
-      console.log(this.dssalesReturnList.data);
-    })
-  }
-  getSalesReturnDetList(Parama) {
-    var vdata = {
-      SalesReturnId: Parama.SalesReturnId
-
-    }
-
-    this._BrowsSalesBillService.getSalesReturnDetList(vdata).subscribe(data => {
-      this.dssalesReturnList1.data = data as SalesReturnDetList[];
-      // this.dssalesReturnList1.sort = this.sort;
-      // this.dssalesReturnList1.paginator = this.paginator;
-      // console.log(this.dssalesReturnList1.data);
-    })
-  }
-  onSelect1(Parama) {
-    // console.log(Parama);
-    this.getSalesReturnDetList(Parama)
   }
 
 

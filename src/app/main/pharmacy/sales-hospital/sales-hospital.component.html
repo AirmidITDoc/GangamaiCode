@@ -31,12 +31,16 @@
         <!-- CENTER -->
         <div class="center p-24 pb-56" fusePerfectScrollbar>
             <!-- CONTENT -->
-            <div *ngIf="isLoading123">
-                <div id="pause" class="d-flex align-items-center justify-content-center">
-                    <div id="spinner"></div>
-                </div>
-            </div>
+           
             <div class="content-card">
+                <!-- <div *ngIf="isLoading123">
+                    <div id="pause" class="d-flex align-items-center justify-content-center">
+                        <div id="spinner"></div>
+                    </div>
+                </div> -->
+                <div *ngIf="isLoading123" class="spinner-container backgroundBlur" style="width:100%;height:100%;">
+                    <mat-spinner diameter="100" class="text-danger"></mat-spinner>
+                </div>
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-12">
                     <div fxFlex="80%" fxFlex.sm="70%" fxFlex.xs="100%" class="table-left">
                         <div class="center p-2 pb-56" fxFlexAlign="start center">

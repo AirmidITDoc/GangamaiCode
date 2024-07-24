@@ -34,6 +34,11 @@
         <div class="center p-24 pb-56" fusePerfectScrollbar>
             <!-- CONTENT -->
             <div class="content-card">
+                <div *ngIf="isLoading123">
+                    <div id="pause" class="d-flex align-items-center justify-content-center">
+                        <div id="spinner"></div>
+                    </div>
+                </div> 
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                     <div fxFlex.xs="100%" fxFlex.gt-xs="95%" fxFlex style="background-color: white;">
 
@@ -534,9 +539,9 @@
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             <mat-form-field appearance="legacy">
-                                                <input matInput [(ngModel)]="contact.ReturnQty"
+                                                <input matInput [(ngModel)]="contact.ReturnQty" OnlyNumber
                                                     (keyup)="getCellCalculation(contact,contact.ReturnQty)" #ReturnQty
-                                                    type="number" autocomplete="off">
+                                                    type="text" autocomplete="off"  (keypress)="keyPressAlphanumeric($event)">
                                             </mat-form-field>
                                         </mat-cell>
                                     </ng-container>

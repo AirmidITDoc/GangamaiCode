@@ -156,15 +156,7 @@
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-80">
                                                 <span> {{element.SalesNo}}</span>
                                             </mat-cell>
-                                        </ng-container>
-                        
-                                        <ng-container matColumnDef="RegNo">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-80">
-                                                UHID No </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-80"> 
-                                                <span> {{element.RegNo}}</span>
-                                            </mat-cell>
-                                        </ng-container>
+                                        </ng-container> 
     
                                         <ng-container matColumnDef="CompanyName">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-130">
@@ -315,7 +307,7 @@
                                     <div> 
                                         <div fxLayout="row" style="padding: 0px 50px 0px 50px;"  fxLayoutGap="8px">
                                             <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>
-                                            <button class="btn btn-primary " (click)="onSave()">Save</button>
+                                            <button class="btn btn-primary " (click)="onSave()" [disabled]="!vFinalPaidAmt">Save</button>
                                         </div>
                                     </div> 
                                 </div>  

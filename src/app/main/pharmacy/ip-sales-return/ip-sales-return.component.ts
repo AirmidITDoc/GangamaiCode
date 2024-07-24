@@ -151,7 +151,7 @@ export class IpSalesReturnComponent implements OnInit {
   getSelectedObj(obj){
     console.log(obj)
    this.vRegNo = obj.RegNo;
-   this.vPatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.PatientName;
+   this.vPatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
    this.vAdmissionDate = obj.AdmissionDate;
    this.vMobileNo = obj.MobileNo; 
    this.vAdmissionID = obj.AdmissionID;
@@ -174,6 +174,7 @@ export class IpSalesReturnComponent implements OnInit {
       });
       return;
     }
+    this.dsIpSaleItemList.data = [];
     if(this._IpSalesRetService.userFormGroup.get('TypeodPay').value == 'CashPay')
       {
     var Param = {
@@ -360,8 +361,7 @@ keyPressAlphanumeric(event) {
     event.preventDefault();
     return false;
   }
-} 
-  
+}  
   vcheckreturnQty:any=''; 
   savebtn:boolean=false;
   onSave() {
@@ -378,12 +378,9 @@ keyPressAlphanumeric(event) {
       return;
     }
     const isCheckReturnQty = this.dsIpSaleItemList.data.some(item => item.ReturnQty === this.vcheckreturnQty);
-    if(!isCheckReturnQty){
-    if (this._IpSalesRetService.userFormGroup.get('TypeodPay').value == 'CashPay') {
-      this.onCashPaySave();
-    } else {
-      this.onCreditPaySave();
-    }
+    if(!isCheckReturnQty){ 
+      this.isLoading123 = true; 
+      this.onCreditPaySave(); 
   }
   else{
     this.toastr.warning('Please enter ReturnQty Without ReturnQty Cannot perform save operation.', 'Warning !', {
@@ -391,8 +388,9 @@ keyPressAlphanumeric(event) {
     }); 
   }
   }
-
-  onCashPaySave() {
+  isLoading123 = false;
+ 
+  onCreditPaySave() {
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
     const formattedTime = datePipe.transform(currentDate, 'shortTime');
@@ -408,9 +406,18 @@ keyPressAlphanumeric(event) {
     salesReturnHeader['TotalAmount'] = this._IpSalesRetService.IPFinalform.get('FinalTotalAmt').value || 0;
     salesReturnHeader['VatAmount'] = this._IpSalesRetService.IPFinalform.get('FinalGSTAmt').value || 0;
     salesReturnHeader['DiscAmount'] = this._IpSalesRetService.IPFinalform.get('FinalDiscAmount').value || 0;
-    salesReturnHeader['NetAmount'] = this._IpSalesRetService.IPFinalform.get('FinalNetAmount').value || 0;
-    salesReturnHeader['PaidAmount'] = this._IpSalesRetService.IPFinalform.get('FinalNetAmount').value || 0;
-    salesReturnHeader['BalanceAmount'] = 0;
+    salesReturnHeader['NetAmount'] = Math.round(this._IpSalesRetService.IPFinalform.get('FinalNetAmount').value) || 0;
+    let PaidAmount
+    let balanceAmount
+    if(this._IpSalesRetService.userFormGroup.get('TypeodPay').value == 'CashPay'){
+      PaidAmount = Math.round(this._IpSalesRetService.IPFinalform.get('FinalNetAmount').value) || 0;
+      balanceAmount = 0;
+    }else{
+      balanceAmount = Math.round(this._IpSalesRetService.IPFinalform.get('FinalNetAmount').value) || 0; 
+      PaidAmount = 0;
+    } 
+    salesReturnHeader['PaidAmount'] = PaidAmount || 0;
+    salesReturnHeader['BalanceAmount'] = balanceAmount || 0;
     salesReturnHeader['IsSellted'] = 1;
     salesReturnHeader['IsPrint'] = 0,
     salesReturnHeader['IsFree'] = 0;
@@ -441,7 +448,13 @@ keyPressAlphanumeric(event) {
       salesReturnDetailCredit['PurTot'] = element.PurTotAmt;
       salesReturnDetailCredit['SalesID'] = this.vSalesID;
       salesReturnDetailCredit['SalesDetID'] = element.SalesDetId;
-      salesReturnDetailCredit['isCashOrCredit'] = 0;
+      let isCashOrCredit 
+      if(this._IpSalesRetService.userFormGroup.get('TypeodPay').value == 'CashPay'){
+        isCashOrCredit = 0;
+      }else{ 
+        isCashOrCredit = 1;
+      }  
+      salesReturnDetailCredit['isCashOrCredit'] = isCashOrCredit;
       salesReturnDetailCredit['cgstPer'] = ((element.GST)/2);
       salesReturnDetailCredit['cgstAmt'] =  ((element.GSTAmt)/2);
       salesReturnDetailCredit['sgstPer'] = ((element.GST)/2);
@@ -482,7 +495,6 @@ keyPressAlphanumeric(event) {
     Insert_ItemMovementReport_Cursor['TypeId'] = 2;
 
     let PaymentInsertobj = {};
-
     PaymentInsertobj['BillNo'] = 0,
     PaymentInsertobj['ReceiptNo'] = '',
     PaymentInsertobj['PaymentDate'] = formattedDate;
@@ -515,193 +527,75 @@ keyPressAlphanumeric(event) {
     PaymentInsertobj['PayTMDate'] = '01/01/1900',
     PaymentInsertobj['paymentId'] = 0
 
-    let submitData = {
-      "salesReturnHeader": salesReturnHeader,
-      "salesReturnDetail": salesReturnDetailInsertCreditarr,
-      "salesReturn_CurStk_Upt": updateCurStkSalesCreditarray,
-      "update_SalesReturnQty_SalesTbl": Update_SalesReturnQtySalesTblarray,
-      "update_SalesRefundAmt_SalesHeader": Update_SalesRefundAmt_SalesHeader,
-      "cal_GSTAmount_SalesReturn": Cal_GSTAmount_SalesReturn,
-      "insert_ItemMovementReport_Cursor": Insert_ItemMovementReport_Cursor,
-      "salesReturnPayment": PaymentInsertobj
-    };
-    console.log(submitData);
-    this._IpSalesRetService.InsertCashSalesReturn(submitData).subscribe(response => {
-      if (response) {
-        console.log(response);
-        this.toastr.success('Record Saved Successfully.', 'Save !', {
-          toastClass: 'tostr-tost custom-toast-success',
-        });
-        // this.getSalesRetPrint(response);  
-        this.OnReset();
-        this.savebtn=false;  
-      } else {
-        this.toastr.error('transaction error!', 'error !', {
-          toastClass: 'tostr-tost custom-toast-error',
-        });
-      }
-      this.sIsLoading = '';
-    }, error => {
-      this.toastr.error('API error!', 'error !', {
+ if(this._IpSalesRetService.userFormGroup.get('TypeodPay').value == 'CashPay'){
+
+  let submitData = {
+    "salesReturnHeader": salesReturnHeader,
+    "salesReturnDetail": salesReturnDetailInsertCreditarr,
+    "salesReturn_CurStk_Upt": updateCurStkSalesCreditarray,
+    "update_SalesReturnQty_SalesTbl": Update_SalesReturnQtySalesTblarray,
+    "update_SalesRefundAmt_SalesHeader": Update_SalesRefundAmt_SalesHeader,
+    "cal_GSTAmount_SalesReturn": Cal_GSTAmount_SalesReturn,
+    "insert_ItemMovementReport_Cursor": Insert_ItemMovementReport_Cursor,
+    "salesReturnPayment": PaymentInsertobj
+  };
+  console.log(submitData);
+  this._IpSalesRetService.InsertCashSalesReturn(submitData).subscribe(response => {
+    if (response) {
+      console.log(response);
+      this.toastr.success('Record Saved Successfully.', 'Save !', {
+        toastClass: 'tostr-tost custom-toast-success',
+      });
+      // this.getSalesRetPrint(response);  
+      this.OnReset();
+      this.savebtn=false;   
+    } else {
+      this.toastr.error('transaction error!', 'error !', {
         toastClass: 'tostr-tost custom-toast-error',
       });
-    }); 
-  }
-  onCreditPaySave() {
-    const currentDate = new Date();
-    const datePipe = new DatePipe('en-US');
-    const formattedTime = datePipe.transform(currentDate, 'shortTime');
-    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
-
-    this.savebtn=true;  
-    let salesReturnHeader = {};
-    salesReturnHeader['Date'] = formattedDate;
-    salesReturnHeader['Time'] = formattedTime;
-    salesReturnHeader['SalesId'] = this.vSalesID;
-    salesReturnHeader['OP_IP_ID'] = this.vOP_IP_Id;
-    salesReturnHeader['OP_IP_Type'] = this.vOP_IP_Type;
-    salesReturnHeader['TotalAmount'] = this._IpSalesRetService.IPFinalform.get('FinalTotalAmt').value || 0;
-    salesReturnHeader['VatAmount'] = this._IpSalesRetService.IPFinalform.get('FinalGSTAmt').value || 0;
-    salesReturnHeader['DiscAmount'] = this._IpSalesRetService.IPFinalform.get('FinalDiscAmount').value || 0;
-    salesReturnHeader['NetAmount'] = this._IpSalesRetService.IPFinalform.get('FinalNetAmount').value || 0;
-    salesReturnHeader['PaidAmount'] = this._IpSalesRetService.IPFinalform.get('FinalNetAmount').value || 0;
-    salesReturnHeader['BalanceAmount'] = 0;
-    salesReturnHeader['IsSellted'] = 1;
-    salesReturnHeader['IsPrint'] = 0,
-    salesReturnHeader['IsFree'] = 0;
-    salesReturnHeader['UnitID'] = 1;
-    salesReturnHeader['addedBy'] = this.accountService.currentUserValue.user.id,
-    salesReturnHeader['StoreID'] = this.accountService.currentUserValue.user.storeId,
-    salesReturnHeader['Narration'] = "";
-    salesReturnHeader['SalesReturnId'] = 0
-
-    let salesReturnDetailInsertCreditarr = [];
-    this.dsIpSaleItemList.data.forEach((element) => {
-      let salesReturnDetailCredit = {};
-      salesReturnDetailCredit['SalesReturnId'] = 0;
-      salesReturnDetailCredit['itemId'] = element.ItemId;
-      salesReturnDetailCredit['batchNo'] = element.BatchNo;
-      salesReturnDetailCredit['batchExpDate'] = element.ExpDate;
-      salesReturnDetailCredit['unitMRP'] = element.MRP;
-      salesReturnDetailCredit['qty'] = element.ReturnQty;
-      salesReturnDetailCredit['totalAmount'] = element.TotalAmt;
-      salesReturnDetailCredit['vatPer'] = element.GST;
-      salesReturnDetailCredit['vatAmount'] = element.GSTAmt;
-      salesReturnDetailCredit['discPer'] = element.Disc;
-      salesReturnDetailCredit['discAmount'] = element.DiscAmt;
-      salesReturnDetailCredit['grossAmount'] = element.NetAmount;
-      salesReturnDetailCredit['landedPrice'] = element.LandedPrice;
-      salesReturnDetailCredit['totalLandedAmount'] = element.TotalLandedAmount;
-      salesReturnDetailCredit['PurRate'] = element.PurRateWf;
-      salesReturnDetailCredit['PurTot'] = element.PurTotAmt;
-      salesReturnDetailCredit['SalesID'] = this.vSalesID;
-      salesReturnDetailCredit['SalesDetID'] = element.SalesDetId;
-      salesReturnDetailCredit['isCashOrCredit'] = 0;
-      salesReturnDetailCredit['cgstPer'] = ((element.GST)/2);
-      salesReturnDetailCredit['cgstAmt'] =  ((element.GSTAmt)/2);
-      salesReturnDetailCredit['sgstPer'] = ((element.GST)/2);
-      salesReturnDetailCredit['sgstAmt'] = ((element.GSTAmt)/2);
-      salesReturnDetailCredit['igstPer'] =  0;
-      salesReturnDetailCredit['igstAmt'] =  0;
-      salesReturnDetailCredit['stkID'] = element.StkID;
-      salesReturnDetailInsertCreditarr.push(salesReturnDetailCredit);
+    } 
+  }, error => {
+    this.toastr.error('API error!', 'error !', {
+      toastClass: 'tostr-tost custom-toast-error',
     });
-
-    console.log(salesReturnDetailInsertCreditarr);
-    let updateCurStkSalesCreditarray = [];
-    this.dsIpSaleItemList.data.forEach((element) => {
-      let updateCurStkSalesCredit = {};
-      updateCurStkSalesCredit['itemId'] = element.ItemId;
-      updateCurStkSalesCredit['issueQty'] = element.ReturnQty;
-      updateCurStkSalesCredit['storeID'] = this.accountService.currentUserValue.user.storeId,
-      updateCurStkSalesCredit['stkID'] = element.StkID;
-      updateCurStkSalesCreditarray.push(updateCurStkSalesCredit);
-    });
-
-    let Update_SalesReturnQtySalesTblarray = [];
-    this.dsIpSaleItemList.data.forEach((element) => {
-      let Update_SalesReturnQtySalesTbl = {};
-      Update_SalesReturnQtySalesTbl['SalesDetId'] = element.SalesDetId;
-      Update_SalesReturnQtySalesTbl['ReturnQty'] = element.ReturnQty;
-      Update_SalesReturnQtySalesTblarray.push(Update_SalesReturnQtySalesTbl);
-    });
-
-    let Update_SalesRefundAmt_SalesHeader = {};
-    Update_SalesRefundAmt_SalesHeader['SalesReturnId'] = 0;
-
-    let Cal_GSTAmount_SalesReturn = {};
-    Cal_GSTAmount_SalesReturn['SalesReturnID'] = 0;
-
-    let Insert_ItemMovementReport_Cursor = {};
-    Insert_ItemMovementReport_Cursor['Id'] = 0;
-    Insert_ItemMovementReport_Cursor['TypeId'] = 2;
-
-    let PaymentInsertobj = {};
-
-    PaymentInsertobj['BillNo'] = 0,
-    PaymentInsertobj['ReceiptNo'] = '',
-    PaymentInsertobj['PaymentDate'] = formattedDate;
-    PaymentInsertobj['PaymentTime'] = formattedTime;
-    PaymentInsertobj['CashPayAmount'] = 0;
-    PaymentInsertobj['ChequePayAmount'] = 0,
-    PaymentInsertobj['ChequeNo'] = 0,
-    PaymentInsertobj['BankName'] = '',
-    PaymentInsertobj['ChequeDate'] = '01/01/1900',
-    PaymentInsertobj['CardPayAmount'] = this._IpSalesRetService.IPFinalform.get('FinalNetAmount').value || 0;
-    PaymentInsertobj['CardNo'] = '',
-    PaymentInsertobj['CardBankName'] = '',
-    PaymentInsertobj['CardDate'] = '01/01/1900',
-    PaymentInsertobj['AdvanceUsedAmount'] = 0;
-    PaymentInsertobj['AdvanceId'] = 0;
-    PaymentInsertobj['RefundId'] = 0;
-    PaymentInsertobj['TransactionType'] = 5;
-    PaymentInsertobj['Remark'] = '',
-    PaymentInsertobj['AddBy'] = this.accountService.currentUserValue.user.id,
-    PaymentInsertobj['IsCancelled'] = 0;
-    PaymentInsertobj['IsCancelledBy'] = 0;
-    PaymentInsertobj['IsCancelledDate'] = '01/01/1900',
-    PaymentInsertobj['OPD_IPD_Type'] = 3;
-    PaymentInsertobj['NEFTPayAmount'] = 0,
-    PaymentInsertobj['NEFTNo'] = '',
-    PaymentInsertobj['NEFTBankMaster'] = '',
-    PaymentInsertobj['NEFTDate'] = '01/01/1900',
-    PaymentInsertobj['PayTMAmount'] = 0,
-    PaymentInsertobj['PayTMTranNo'] = '',
-    PaymentInsertobj['PayTMDate'] = '01/01/1900',
-    PaymentInsertobj['paymentId'] = 0
-
-    let submitData = {
-      "salesReturnHeader": salesReturnHeader,
-      "salesReturnDetail": salesReturnDetailInsertCreditarr,
-      "salesReturn_CurStk_Upt": updateCurStkSalesCreditarray,
-      "update_SalesReturnQty_SalesTbl": Update_SalesReturnQtySalesTblarray,
-      "update_SalesRefundAmt_SalesHeader": Update_SalesRefundAmt_SalesHeader,
-      "cal_GSTAmount_SalesReturn": Cal_GSTAmount_SalesReturn,
-      "insert_ItemMovementReport_Cursor": Insert_ItemMovementReport_Cursor,
-      "salesReturnPayment": PaymentInsertobj
-    };
-    console.log(submitData);
-    this._IpSalesRetService.InsertCashSalesReturn(submitData).subscribe(response => {
-      if (response) {
-        console.log(response);
-        this.toastr.success('Record Saved Successfully.', 'Save !', {
-          toastClass: 'tostr-tost custom-toast-success',
-        });
-        // this.getSalesRetPrint(response);
-        this.savebtn=false;  
-        this.OnReset();
-
-      } else {
-        this.toastr.error('transaction error!', 'error !', {
-          toastClass: 'tostr-tost custom-toast-error',
-        });
-      }
-      this.sIsLoading = '';
-    }, error => {
-      this.toastr.error('API error!', 'error !', {
+  }); 
+ }
+ else{ 
+  let submitData = {
+    "salesReturnHeader": salesReturnHeader,
+    "salesReturnDetail": salesReturnDetailInsertCreditarr,
+    "salesReturn_CurStk_Upt": updateCurStkSalesCreditarray,
+    "update_SalesReturnQty_SalesTbl": Update_SalesReturnQtySalesTblarray,
+    "update_SalesRefundAmt_SalesHeader": Update_SalesRefundAmt_SalesHeader,
+    "cal_GSTAmount_SalesReturn": Cal_GSTAmount_SalesReturn,
+    "insert_ItemMovementReport_Cursor": Insert_ItemMovementReport_Cursor
+  };
+  console.log(submitData);
+  this._IpSalesRetService.InsertCreditSalesReturn(submitData).subscribe(response => {
+    if (response) {
+      console.log(response);
+      this.toastr.success('Record Saved Successfully.', 'Save !', {
+        toastClass: 'tostr-tost custom-toast-success',
+      });
+      // this.getSalesRetPrint(response);
+      this.savebtn=false;  
+      this.OnReset();
+    
+    } else {
+      this.toastr.error('transaction error!', 'error !', {
         toastClass: 'tostr-tost custom-toast-error',
       });
-    }); 
+    }
+    this.sIsLoading = '';
+  }, error => {
+    this.toastr.error('API error!', 'error !', {
+      toastClass: 'tostr-tost custom-toast-error',
+    });
+  });  
+ } 
+    setTimeout(() => { 
+      this.isLoading123=false;
+    }, 2000);
   }
   OnReset() {
     this._IpSalesRetService.userFormGroup.reset();

@@ -23,7 +23,11 @@
 
 
     <div class="content">
-
+        <div *ngIf="isLoading123">
+            <div id="pause" class="d-flex align-items-center justify-content-center">
+                <div id="spinner"></div>
+            </div>
+        </div>
         <div class="center p-12 pb-56" fxFlexAlign="start center">
 
             <div class="content-card" style="border-radius:4px; ">
@@ -335,7 +339,7 @@
                                     <div class="sales-footer-buttons gap-8 " fxLayout="row"
                                         style="padding: 0px 50px 0px 120px;">
                                         <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
-                                        <button class="btn btn-primary " (click)="onSave()">Save</button>
+                                        <button class="btn btn-primary" [disabled]="!vadvanceAmount"  (click)="onSave()">Save</button>
                                     </div>
 
                                 </div>

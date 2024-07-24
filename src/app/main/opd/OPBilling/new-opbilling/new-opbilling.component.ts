@@ -458,6 +458,7 @@ console.log(obj)
     this.TotalnetPaybleAmt = this.b_TotalChargesAmount - this.vConcessionAmt;
   }
   savebtn:boolean=true;
+  isLoading123 = false;
   onSaveOPBill2() { 
 
     if ((this.vOPIPId == '' || this.vOPIPId == null || this.vOPIPId == undefined)) {
@@ -480,7 +481,7 @@ console.log(obj)
         return;
       }
       }
- 
+      this.isLoading123 = true; 
     if (this.CompanyId !== 0 && this.CompanyId !== "") {
       this.saveCreditbill();
     }
@@ -641,58 +642,26 @@ console.log(obj)
             console.log(submitData);
             this._oPSearhlistService.InsertOPBilling(submitData).subscribe(response => {
               if (response) {
-                Swal.fire('OP Bill With Payment!', 'Bill Generated Successfully !', 'success').then((result) => {
-                  if (result.isConfirmed) {
+                this.toastr.success(' OP Bill payment! Record Saved Successfully.', 'Save !', {
+                  toastClass: 'tostr-tost custom-toast-success',
+                });  
                     let m = response;
                     this.viewgetBillReportPdf(response);
                     this.getWhatsappshareSales(response, vmMobileNo)
                     this.onClose();
-                    this.savebtn = true;
-                  }
-                });
-                this.onClose();
+                    this.savebtn = true;  
               } else {
-                Swal.fire('Error !', 'OP Billing data not saved', 'error');
+                this.toastr.success('OP Billing data not saved', 'error', {
+                  toastClass: 'tostr-tost custom-toast-success',
+                });  
               }
               this.isLoading = '';
             });
-          }
-          // else {
-          //   Swal.fire({
-          //     title: 'Do you want to generate Credit Bill',
-          //     // showDenyButton: true,
-          //     showCancelButton: true,
-          //     confirmButtonText: 'OK',
-
-          //   }).then((flag) => {
-
-          //     if (flag.isConfirmed) {
-          //       InsertBillUpdateBillNoObj['BalanceAmt'] = result.submitDataPay.ipPaymentInsert.CashPayAmount;
-          //       let submitData = {
-          //         "chargesDetailCreditInsert": InsertAdddetArr,
-          //         "insertBillcreditupdatewithbillno": InsertBillUpdateBillNoObj,
-          //         "opBillDetailscreditInsert": Billdetsarr,
-          //         "opCalDiscAmountBillcredit": opCalDiscAmountBill,
-          //       };
-          //       console.log(submitData);
-          //       this._oPSearhlistService.InsertOPBillingCredit(submitData).subscribe(response => {
-          //         if (response) {
-          //           Swal.fire('OP Bill Credit !', 'Bill Generated Successfully!', 'success').then((result) => {
-          //             if (result.isConfirmed) {
-          //               let m = response;
-          //               this.viewgetBillReportPdf(response);
-          //               this.getWhatsappshareSales(response, vmMobileNo)
-          //             }
-          //           });
-          //         } else {
-          //           Swal.fire('Error !', 'OP Billing data not saved', 'error');
-          //         }
-          //         this.isLoading = '';
-          //       });
-          //     }
-          //   });
-          // }
+          } 
         });
+        setTimeout(() => {
+          this.isLoading123 = false;
+        }, 2000);
       }
       else if (this.BillingForm.get('PaymentType').value == 'CreditPay') {
         this.saveCreditbill();
@@ -751,20 +720,24 @@ console.log(obj)
         console.log(submitData);
         this._oPSearhlistService.InsertOPBilling(submitData).subscribe(response => {
           if (response) {
-            Swal.fire('OP Bill with cash payment!', 'Bill Generated Successfully !', 'success').then((result) => {
-              if (result.isConfirmed) {
+            this.toastr.success(' OP Bill with cash payment! Record Saved Successfully.', 'Save !', {
+              toastClass: 'tostr-tost custom-toast-success',
+            }); 
                 let m = response;
                 this.viewgetBillReportPdf(response);
                 this.getWhatsappshareSales(response, this.vMobileNo)
                 this.onClose();
-                this.savebtn = true;
-              }
-            });
+                this.savebtn = true; 
           } else {
-            Swal.fire('Error !', 'OP Billing data not saved', 'error');
+            this.toastr.success('OP Billing data not saved', 'error!', {
+              toastClass: 'tostr-tost custom-toast-success',
+            });  
           }
           this.isLoading = '';
         });
+        setTimeout(() => {
+          this.isLoading123 = false;
+        }, 2000);
       }
     }
 
@@ -893,23 +866,26 @@ console.log(obj)
     };
     console.log(submitData);
     this._oPSearhlistService.InsertOPBillingCredit(submitData).subscribe(response => {
-      if (response) {
-        Swal.fire('OP Bill Credit !', 'Bill Generated Successfully!', 'success').then((result) => {
-          if (result.isConfirmed) {
+      if (response) { 
+        this.toastr.success(' OP Bill Credit Record Saved Successfully.', 'Save !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        });
+             this.savebtn = true; 
             let m = response;
             this.viewgetBillReportPdf(response);
             this.getWhatsappshareSales(response, this.vMobileNo);
             this.onClose();
-            this.savebtn = true;
-          }
-        });
-        this.onClose();
+     
       } else {
-        Swal.fire('Error !', 'OP Billing data not saved', 'error');
+        this.toastr.success('OP Billing data not saved', 'error', {
+          toastClass: 'tostr-tost custom-toast-success',
+        }); 
       }
       this.isLoading = '';
     });
-
+    setTimeout(() => {
+      this.isLoading123 = false;
+    }, 2000);
 
 
     // this.dataSource.data = [];

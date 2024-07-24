@@ -1696,7 +1696,8 @@ export class SalesHospitalComponent implements OnInit {
     this.FinalNetAmount = 0;
     this.ItemSubform.reset();
     this.RegId = '';
-
+    this.PatientName = '';
+    this.DoctorName = '';
     this.ItemSubform.get('PatientType').setValue('External');
     this.ItemSubform.get('CashPay').setValue('CashPay');
 
@@ -2025,7 +2026,7 @@ export class SalesHospitalComponent implements OnInit {
       }
     });
   }
-
+  isLoading123 = false;
   onSave(event) {
     event.srcElement.setAttribute('disabled', true);
     let patientTypeValue1 = this.ItemSubform.get('PatientType').value;
@@ -2037,8 +2038,7 @@ export class SalesHospitalComponent implements OnInit {
         event.srcElement.removeAttribute('disabled');
         return;
       }
-    }
-   
+    } 
     if (this.FinalTotalAmt == 0 || this.FinalNetAmount == 0) {
       this.toastr.warning('Please check Sales total Amount', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -2054,24 +2054,27 @@ export class SalesHospitalComponent implements OnInit {
       });
       event.srcElement.removeAttribute('disabled');
       return;
-    }
-    this.isLoading123 = true;
+    } 
+   
     if (this.ItemSubform.get('CashPay').value == 'CashPay' || this.ItemSubform.get('CashPay').value == 'Online') {
       this.onCashOnlinePaySave()
     }
-    else if (this.ItemSubform.get('CashPay').value == 'Credit') {
+    else if (this.ItemSubform.get('CashPay').value == 'Credit') { 
       this.onCreditpaySave()
     }
-    else if (this.ItemSubform.get('CashPay').value == 'PayOption') {
+    else if (this.ItemSubform.get('CashPay').value == 'PayOption') { 
       this.onSavePayOption()
     }
    
     this.getDraftorderList();
     //this.mobileno.nativeElement.focus();
     event.srcElement.removeAttribute('disabled');
-  }
-  isLoading123 = false;
+    this.PatientName = '';
+    this.DoctorName = '';
+  } 
+ 
   onCashOnlinePaySave() {
+    this.isLoading123 = true; 
     let nowDate = new Date();
     let nowDate1 = nowDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
     this.newDateTimeObj = { date: nowDate1[0], time: nowDate1[1] };
@@ -2081,7 +2084,7 @@ export class SalesHospitalComponent implements OnInit {
     let ConcessionId = 0;
     if (this.ItemSubform.get('ConcessionId').value)
       ConcessionId = this.ItemSubform.get('ConcessionId').value.ConcessionId;
-
+ 
     let SalesInsert = {};
     SalesInsert['Date'] = this.newDateTimeObj.date;
     SalesInsert['time'] = this.newDateTimeObj.time;
@@ -2254,15 +2257,15 @@ export class SalesHospitalComponent implements OnInit {
         this.toastr.error('API Error!', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
         });
-      }
-      this.isLoading123=false;
-      this.sIsLoading = '';
+      } 
     }, error => {
       this.toastr.error('API Error!', 'Error !', {
         toastClass: 'tostr-tost custom-toast-error',
       });
     });
-
+    setTimeout(() => { 
+      this.isLoading123=false;
+    }, 2000);
 
 
     // }
@@ -2447,6 +2450,7 @@ export class SalesHospitalComponent implements OnInit {
                 toastClass: 'tostr-tost custom-toast-error',
               });
             }
+            this.isLoading123=false;
             this.sIsLoading = '';
             // });
           }, error => {
@@ -2463,27 +2467,17 @@ export class SalesHospitalComponent implements OnInit {
           // this.PatientName = '';
           // this.MobileNo = '';
           this.saleSelectedDatasource.data = [];
+         
         }
         else {
           this.toastr.warning('Please check Payment Mode and Amount (Now it is Selected Zero).', 'Save !', {
             toastClass: 'tostr-tost custom-toast-warning',
           });
         }
-      }
-      else {
-
-        if (this.vPatientType == 'External') {
-          // Swal.fire("Plz Chk Payment Data !");
-        } else {
-          // Swal.fire('Do You Want to generate Credit Bill ?').then((result) => {
-          //   if (result.isConfirmed) {
-          //     this.onCreditpaySave();
-          //   }
-          // });
-
-
-        }
-      }
+        setTimeout(() => { 
+          this.isLoading123=false;
+        }, 2000);
+      } 
     })
 
   }
@@ -2779,6 +2773,7 @@ export class SalesHospitalComponent implements OnInit {
   }
 
   onCreditpaySave() {
+    this.isLoading123 = true; 
     // if (this._salesService.IndentSearchGroup.get('PatientType').value == "External" && this.PatientName  != null && this.MobileNo != null) {
     let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
     let ConcessionId = 0;

@@ -144,53 +144,45 @@
                                                     </div>
                                                     
                                                 </div>
-                                            </div>
-                                            <div matColumnDef="loading"
-                                                [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                                                class="backgroundBlur" style="height: 100%;">
-                                                <div class="spinner-border text-danger"></div>
-
+                                            </div> 
+                                            <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                                            class="backgroundBlur" style="height: 100%;">
+                                            <div class="spinner-border text-danger"></div>
                                             </div>
 
-                                            <mat-table #table matSort [dataSource]="dssaleList1"
-                                                [@animateStagger]="{value:'50'}">
+                                            <mat-table #table matSort [dataSource]="dssaleList1" [@animateStagger]="{value:'50'}">
                                                 <ng-container matColumnDef="OP_Ip_Type" sticky>
                                                     <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-100">
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" class="w-100">
-                                                        <mat-icon *ngIf="contact.OP_IP_Type==1" matTooltip="IP"
-                                                            class="pill green-600 s-16">circle</mat-icon>
-                                                        <mat-icon *ngIf="contact.OP_IP_Type==0" matTooltip="OP"
-                                                            class="pill orange s-16">circle</mat-icon>
-                                                            <mat-icon *ngIf="contact.OP_IP_Type==2" matTooltip="External"
-                                                            class="pill blue s-16">circle</mat-icon>
-
-                                                            <button mat-icon-button matTooltip="Bill Return" *ngIf="contact.IsRefundFlag==true">
-                                                                <mat-icon>replay</mat-icon>
-                                                            </button>
-                                                            <button mat-icon-button matTooltip="Credit Bill" *ngIf="contact.PaidType=='Credit' && contact.IsRefundFlag==false"
-                                                                (click)="OnPayment(contact)">
-                                                                <mat-icon>payment</mat-icon>
-                                                            </button>
+                                                        <mat-icon *ngIf="contact.OP_IP_Type==1" matTooltip="IP" class="pill green-600 s-16">circle</mat-icon>
+                                                        <mat-icon *ngIf="contact.OP_IP_Type==0" matTooltip="OP" class="pill orange s-16">circle</mat-icon>
+                                                        <mat-icon *ngIf="contact.OP_IP_Type==2" matTooltip="External" class="pill blue s-16">circle</mat-icon>
+                                            
+                                                        <button mat-icon-button matTooltip="Bill Return" *ngIf="contact.IsRefundFlag==true">
+                                                            <mat-icon>replay</mat-icon>
+                                                        </button>
+                                                        <button mat-icon-button matTooltip="Credit Bill"
+                                                            *ngIf="contact.PaidType=='Credit' && contact.IsRefundFlag==false" (click)="OnPayment(contact)">
+                                                            <mat-icon>payment</mat-icon>
+                                                        </button>
                                                     </mat-cell>
-                                                </ng-container> 
-
-                                                <!-- 
-                                                <ng-container matColumnDef="payment">
+                                                </ng-container>
+                                            
+                                                <!-- <ng-container matColumnDef="payment">
                                                     <mat-header-cell *matHeaderCellDef fxShow.gt-sm>
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact">
                                                         <button mat-icon-button matTooltip="Credit Bill" *ngIf="contact.PaidType=='Credit'"
-                                                        (click)="OnPayment(contact)">
-                                                        <mat-icon>payment</mat-icon>
-                                                    </button>
-
-                                                        <mat-icon *ngIf="contact.PaidType=='Credit'"
-                                                            matTooltip="Credit Bill"
+                                                            (click)="OnPayment(contact)">
+                                                            <mat-icon>payment</mat-icon>
+                                                        </button>
+                                                
+                                                        <mat-icon *ngIf="contact.PaidType=='Credit'" matTooltip="Credit Bill"
                                                             (click)="OnPayment(contact)">payment</mat-icon>
                                                     </mat-cell>
                                                 </ng-container> -->
-
+                                            
                                                 <ng-container matColumnDef="Date" sticky>
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">Date
                                                     </mat-header-cell>
@@ -198,25 +190,23 @@
                                                         {{contact.Date | date: 'dd/MM/yyyy'}}
                                                     </mat-cell>
                                                 </ng-container>
-
+                                            
                                                 <ng-container matColumnDef="SalesNo" sticky>
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                        fxShow.gt-sm class="w-80">SalesNo
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">SalesNo
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-80">
                                                         {{contact.SalesNo}}
                                                     </mat-cell>
-                                                </ng-container> 
-
+                                                </ng-container>
+                                            
                                                 <ng-container matColumnDef="RegNo" sticky>
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                        fxShow.gt-sm class="w-100">UHID No
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">UHID No
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
                                                         {{contact.RegNo}}
                                                     </mat-cell>
-                                                </ng-container> 
-
+                                                </ng-container>
+                                            
                                                 <ng-container matColumnDef="PatientName" sticky>
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-160">
                                                         Patient Name
@@ -224,8 +214,8 @@
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-160">
                                                         {{contact.PatientName}}
                                                     </mat-cell>
-                                                </ng-container> 
-
+                                                </ng-container>
+                                            
                                                 <ng-container matColumnDef="NetAmt">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                         Net Amt
@@ -233,8 +223,8 @@
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                         {{contact.NetAmount | currency:"INR":"symbol"}}
                                                     </mat-cell>
-                                                </ng-container> 
-
+                                                </ng-container>
+                                            
                                                 <ng-container matColumnDef="BalAmt">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                         Bal Amt
@@ -243,7 +233,7 @@
                                                         {{contact.BalanceAmount | currency:"INR":"symbol"}}
                                                     </mat-cell>
                                                 </ng-container>
-
+                                            
                                                 <ng-container matColumnDef="PaidAmt">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                         Paid Amt
@@ -252,7 +242,7 @@
                                                         {{contact.PaidAmount | currency:"INR":"symbol"}}
                                                     </mat-cell>
                                                 </ng-container>
-
+                                            
                                                 <ng-container matColumnDef="PaidType">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                         Paid Type
@@ -261,7 +251,7 @@
                                                         {{contact.PaidType}}
                                                     </mat-cell>
                                                 </ng-container>
-
+                                            
                                                 <ng-container matColumnDef="IPNo">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                         IPNo
@@ -270,56 +260,57 @@
                                                         {{contact.IPNO}}
                                                     </mat-cell>
                                                 </ng-container>
-
+                                            
                                                 <ng-container matColumnDef="action1" stickyEnd>
-                                                
+                                            
                                                     <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-160">
                                                         <span class="mat-header-text">Action</span>
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" class="w-160 gap-4">
-                                                        <button mat-icon-button matTooltip="Print2"
-                                                        (click)="getPrint2(contact)">
-                                                        <mat-icon>print3</mat-icon>
+                                                        <button mat-icon-button matTooltip="Print2" (click)="getPrint2(contact)">
+                                                            <mat-icon>print3</mat-icon>
                                                         </button>
-                                                        <button mat-icon-button matTooltip="View As Pdf"
-                                                        (click)="viewSalesPdf(contact)">
-                                                        <mat-icon>visibility</mat-icon>
+                                                        <button mat-icon-button matTooltip="View As Pdf" (click)="viewSalesPdf(contact)">
+                                                            <mat-icon>visibility</mat-icon>
                                                         </button>
-                                                        <button mat-icon-button matTooltip="Send Bill On WhatsApp"
-                                                        (click)="getWhatsappshareSales(contact)">
-                                                        <img width="100" height="20px"
-                                                            src="assets/images/logos/WhatsApp.png">
+                                                        <button mat-icon-button matTooltip="Send Bill On WhatsApp" (click)="getWhatsappshareSales(contact)">
+                                                            <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
                                                         </button>
-
+                                            
                                                         <!-- <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More" (click)="$event.stopPropagation();">
-                                                            <mat-icon class="secondary-text">more_vert</mat-icon>
-                                                        </button>
-                                                        <mat-menu #moreMenu="matMenu">
-                                                            <ng-container *ngFor="let m of menuActions, let i=index">
-                                                                <button mat-menu-item aria-label="remove" (click)="getRecord(contact,m)">
-                                                                    <span>{{m}}</span>
-                                                                </button>
-                                                            </ng-container>
-                                                        </mat-menu> -->
-                                            </mat-cell>
-                                        </ng-container>
-
-
-
-                                                <mat-header-row class="accent min-width-1350"
-                                                    *matHeaderRowDef="displayedColumns;"></mat-header-row>
-                                                <mat-row *matRowDef="let contact; columns: displayedColumns;"
-                                                    class="contact min-width-1350"
-                                                    [@animate]="{value:'*',params:{y:'100%'}}"
-                                                    (click)="onSelect(contact)">
+                                                                                                                                                        <mat-icon class="secondary-text">more_vert</mat-icon>
+                                                                                                                                                    </button>
+                                                                                                                                                    <mat-menu #moreMenu="matMenu">
+                                                                                                                                                        <ng-container *ngFor="let m of menuActions, let i=index">
+                                                                                                                                                            <button mat-menu-item aria-label="remove" (click)="getRecord(contact,m)">
+                                                                                                                                                                <span>{{m}}</span>
+                                                                                                                                                            </button>
+                                                                                                                                                        </ng-container>
+                                                                                                                                                    </mat-menu> -->
+                                                    </mat-cell>
+                                                </ng-container>
+                                            
+                                                <ng-container matColumnDef="loading">
+                                                    <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                                    </mat-header-cell>
+                                                </ng-container>
+                                            
+                                                <ng-container matColumnDef="noData">
+                                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                                        no data found...
+                                                    </mat-footer-cell>
+                                                </ng-container>
+                                                <mat-header-row class="accent min-width-1350" *matHeaderRowDef="displayedColumns;"></mat-header-row>
+                                                <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact min-width-1350"
+                                                    [@animate]="{value:'*',params:{y:'100%'}}" (click)="onSelect(contact)">
                                                 </mat-row>
-                                                <!-- <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                                             </mat-footer-row>
-                                             <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dsprescritionList!=null && dsprescritionList.data.length==0)}">
-                                             </mat-footer-row> -->
-
+                                                <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                                </mat-footer-row>
+                                                <mat-footer-row *matFooterRowDef="['noData']"
+                                                    [ngClass]="{'hide':!(dssaleList1!=null && dssaleList1.data.length==0)}">
+                                                </mat-footer-row> 
                                             </mat-table>
-                                            <mat-paginator [pageSizeOptions]="[15, 25, 35, 100]" [pageSize]="10"
+                                            <mat-paginator  #paginator [pageSizeOptions]="[15, 25, 35, 100]" [pageSize]="10"
                                                 showFirstLastButtons> </mat-paginator>
 
 
@@ -541,7 +532,8 @@
 
 
                                             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                                <mat-radio-group formControlName="OP_IP_Types" name="OP_IP_Types">
+                                                <mat-radio-group formControlName="OP_IP_Types" name="OP_IP_Types"
+                                                (change)="getSalesReturnList()">
                                                     <mat-radio-button value="3"> All</mat-radio-button>
                                                     <mat-radio-button value="0">OP</mat-radio-button>
                                                     <mat-radio-button value="1">IP</mat-radio-button>
@@ -599,6 +591,11 @@
                                                     </div>
                                                     
                                                 </div>
+                                            </div>
+
+                                            <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                                            class="backgroundBlur" style="height: 100%;">
+                                            <div class="spinner-border text-danger"></div>
                                             </div>
 
                                             <mat-table class="Table3" matSort [dataSource]="dssalesReturnList"
@@ -714,19 +711,29 @@
                                                     </mat-cell>
                                                 </ng-container>
 
-                                                <mat-header-row class="accent"
-                                                    *matHeaderRowDef="displayedColumns3; sticky: true"></mat-header-row>
-                                                <mat-row *matRowDef="let contact; columns: displayedColumns3;"
-                                                    class="contact" [@animate]="{value:'*',params:{y:'100%'}}"
-                                                    (click)="onSelect1(contact)">
+                                                <ng-container matColumnDef="loading">
+                                                    <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                                    </mat-header-cell>
+                                                </ng-container>
+                                            
+                                                <ng-container matColumnDef="noData">
+                                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                                        no data found...
+                                                    </mat-footer-cell>
+                                                </ng-container>
+
+                                                <mat-header-row class="accent" *matHeaderRowDef="displayedColumns3; sticky: true"></mat-header-row>
+                                                <mat-row *matRowDef="let contact; columns: displayedColumns3;" class="contact"
+                                                    [@animate]="{value:'*',params:{y:'100%'}}" (click)="onSelect1(contact)">
                                                 </mat-row>
-                                                <!-- <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                                             </mat-footer-row>
-                                             <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dsprescritionList!=null && dsprescritionList.data.length==0)}">
-                                             </mat-footer-row> -->
+                                                <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                                </mat-footer-row>
+                                                <mat-footer-row *matFooterRowDef="['noData']"
+                                                    [ngClass]="{'hide':!(dssalesReturnList!=null && dssalesReturnList.data.length==0)}">
+                                                </mat-footer-row>
 
                                             </mat-table>
-                                            <mat-paginator [pageSizeOptions]="[15, 25, 35, 100]" [pageSize]="15"
+                                            <mat-paginator  [pageSizeOptions]="[15, 25, 35, 100]" [pageSize]="15"
                                                 showFirstLastButtons> </mat-paginator>
 
 

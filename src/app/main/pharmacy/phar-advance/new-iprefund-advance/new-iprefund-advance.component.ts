@@ -210,6 +210,7 @@ export class NewIPRefundAdvanceComponent implements OnInit {
  
   BalanceAmount:any;
   advanceId:any;
+  isLoading123 = false;
   onSave() { 
     if(this.vRegNo  == '' || this.vRegNo == null || this.vRegNo == undefined || this.vRegNo == '0'){
       this.toastr.warning('Please select patient', 'Warning !', {
@@ -221,7 +222,7 @@ export class NewIPRefundAdvanceComponent implements OnInit {
         toastClass: 'tostr-tost custom-toast-warning',
       });
     }
-
+      this.isLoading123 = true; 
       this.sIsLoading = 'submit'; 
       let insertPharRefundofAdvance = {};
       insertPharRefundofAdvance['refundDate'] = this.dateTimeObj.date || '01/01/1900'
@@ -301,20 +302,25 @@ export class NewIPRefundAdvanceComponent implements OnInit {
           this._PharAdvanceService.InsertRefundOfAdv(submitData).subscribe(response => {
 
             if (response) {
-              Swal.fire('Congratulations !', 'IP Advance data saved Successfully !', 'success').then((result) => {
-                if (result.isConfirmed) {
+              this.toastr.success('IP Pharma Refund Of Advance data Saved Successfully !', 'Saved !', {
+                toastClass: 'tostr-tost custom-toast-success',
+              });  
                   this.viewgetRefundofAdvanceReportPdf(response);
 
-                  this._matDialog.closeAll();
-                }
-              });
+                  this._matDialog.closeAll(); 
             } else {
-              Swal.fire('Error !', 'IP Advance data not saved', 'error');
+              this.toastr.success('IP Pharma Refund Of Advance data not Saved!', 'Error!', {
+                toastClass: 'tostr-tost custom-toast-success',
+              });   
             }
             this.sIsLoading = '';
           });
 
         });  
+        
+      setTimeout(() => {
+        this.isLoading123 = false;
+      }, 2000);
   }
 
 

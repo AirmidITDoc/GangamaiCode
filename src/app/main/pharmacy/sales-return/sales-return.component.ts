@@ -499,9 +499,10 @@ export class SalesReturnComponent implements OnInit {
   onclickrow(contact) {
     Swal.fire("Row selected :" + contact)
   }
-
+  isLoading123 = false;
   onSave() {
     if (this.FinalTotalAmount != 0 && this.FinalTotalAmount != null && this.FinalTotalAmount != 'NaN' && this.selectedssaleDetailList.data.length > 0) {
+     this.isLoading123 = true;
       if (this.PaymentType == 'Paid') {
         this.onCashOnlinePaySave()
       }
@@ -512,8 +513,20 @@ export class SalesReturnComponent implements OnInit {
     else {
       Swal.fire("Chk Return Amount and Item List !")
     }
+    
+    setTimeout(() => {
+      this.isLoading123 = false;
+    }, 2000);
   }
-
+  keyPressAlphanumeric(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }  
   onCreditpaySave() {
 
     let nowDate = new Date();

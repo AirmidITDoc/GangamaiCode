@@ -16,6 +16,7 @@
 
     <!--Middle Data-->
     <div class="layout-body" fusePerfectScrollbar>
+        
         <!-- CENTER -->
         <div class="layout-body-container">
             <div fxLayout="column" class="gap-12">
@@ -436,7 +437,7 @@
                                         <div class="footer-navigation-container">
                                             <div class="layout-footer-buttons">
                                                 <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                                                <button type="button" class="btn btn-primary" (click)="onSave()" [disabled]="this.RefundOfBillFormGroup.invalid">Save</button>
+                                                <button type="button" class="btn btn-primary" (click)="onSave()" [disabled]="!TotalRefundAmount || dataSource2.data.length==0">Save</button>
                                             </div>
                                         </div>
                                     </div>
