@@ -272,15 +272,15 @@
                                                 <input matInput placeholder="Percentage" formControlName="ChargeDiscPer"
                                                     [ngModel]="v_ChargeDiscPer" autocomplete="off" #disper
                                                     (keydown)="onEnterdiscper($event)" (keyup)="calculatePersc()" onlyNumber
-                                                    maxlength="3" type="text" onlyNumber keyPressCharater
-                                                    (keypress)="keyPressAlphanumeric($event)">
+                                                    maxlength="5" type="text"   keyPressCharater
+                                                    (keypress)="keyPressCharater($event)">
                                             </mat-form-field>
             
                                             <mat-form-field appearance="outline" fxFlex="5%">
                                                 <mat-label>Disc Amt</mat-label>
                                                 <input matInput [(ngModel)]="b_ChargeDisAmount" name="ChargeDiscAmount" #discamt
-                                                    formControlName="ChargeDiscAmount" type="text" onlyNumber
-                                                    (keydown)="onEnterdiscAmount($event)" id="DiscAmt" readonly>
+                                                    formControlName="ChargeDiscAmount" type="text" onlyNumber (keyup)="calChargeDiscAmt()"
+                                                    (keydown)="onEnterdiscAmount($event)" id="DiscAmt"  (keypress)="keyPressAlphanumeric($event)">
                                                 <mat-error
                                                     *ngIf="registeredForm.get('ChargeDiscAmount').invalid && registeredForm.get('ChargeDiscAmount').touched">
                                                     Discount Amount Schod me Less than Tptal Amount TotalAmount is

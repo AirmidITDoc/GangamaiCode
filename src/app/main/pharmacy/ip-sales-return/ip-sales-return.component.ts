@@ -167,14 +167,17 @@ export class IpSalesReturnComponent implements OnInit {
    this.itemname.nativeElement.focus();
   }
   filteredOptionsItem:any;
+OnRadioChange(){
+  this.dsIpSaleItemList.data = [];
+  this.getItemNameList();
+}
   getItemNameList() {
     if ((this.vRegID == '' || this.vRegID == null || this.vRegID == undefined)) {
       this.toastr.warning('Please select patient', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
-    }
-    this.dsIpSaleItemList.data = [];
+    } 
     if(this._IpSalesRetService.userFormGroup.get('TypeodPay').value == 'CashPay')
       {
     var Param = {

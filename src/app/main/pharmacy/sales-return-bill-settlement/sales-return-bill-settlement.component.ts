@@ -11,7 +11,7 @@ import { difference } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
 import { Validators } from '@angular/forms';
-import { IPpaymentWithadvanceComponent } from 'app/main/ipd/ip-settlement/ippayment-withadvance/ippayment-withadvance.component';
+import { IpPaymentInsert, IPpaymentWithadvanceComponent } from 'app/main/ipd/ip-settlement/ippayment-withadvance/ippayment-withadvance.component';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -291,7 +291,10 @@ export class SalesReturnBillSettlementComponent implements OnInit {
         this.sIsLoading = '';
       });
   } 
+  isLoading123 = false;
   OnPayment(contact) { 
+    
+    this.isLoading123 = true; 
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
     const formattedTime = datePipe.transform(currentDate, 'shortTime');
@@ -304,9 +307,10 @@ export class SalesReturnBillSettlementComponent implements OnInit {
     PatientHeaderObj['OPD_IPD_Id'] = contact.OP_IP_ID;
     PatientHeaderObj['AdvanceAmount'] = contact.NetAmount; 
     PatientHeaderObj['NetPayAmount'] = contact.NetAmount;
-    PatientHeaderObj['PBillNo'] = contact.PBillNo;
+    PatientHeaderObj['BillNo'] = contact.SalesId;
     PatientHeaderObj['IPDNo'] = this.IPDNo;
     PatientHeaderObj['RegNo'] = this.RegNo; 
+    PatientHeaderObj['OP_IP_Type'] = contact.OP_IP_Type; 
     const dialogRef = this._matDialog.open(IPpaymentWithadvanceComponent,
       {
         maxWidth: "95vw",
@@ -321,16 +325,55 @@ export class SalesReturnBillSettlementComponent implements OnInit {
       console.log(result)
 
       if (result.IsSubmitFlag == true) {
-
         let updateBillobj = {};
         updateBillobj['salesID'] = contact.SalesId;
-        updateBillobj['BillNo'] = contact.SalesId;
-        updateBillobj['BillBalAmount'] = 0// result.submitDataPay.ipPaymentInsert.balanceAmountController //result.BalAmt;
+        updateBillobj['salRefundAmt'] =0 ;
+        updateBillobj['balanceAmount'] = 0// result.submitDataPay.ipPaymentInsert.balanceAmountController //result.BalAmt;
+ 
 
-         
+        let UpdateAdvanceDetailarr1: IpPaymentInsert[] = []; 
+    
+         UpdateAdvanceDetailarr1 = result.submitDataAdvancePay; 
+
+        let UpdateAdvanceDetailarr = [];
+        let BalanceAmt= 0;
+        let UsedAmt = 0;
+        if (result.submitDataAdvancePay.length > 0) {
+          result.submitDataAdvancePay.forEach((element) => {
+            let update_T_PHAdvanceDetailObj = {};
+            update_T_PHAdvanceDetailObj['AdvanceDetailID'] = element.AdvanceDetailID;
+            update_T_PHAdvanceDetailObj['UsedAmount'] = element.UsedAmount;
+            UsedAmt +=element.UsedAmount;
+            update_T_PHAdvanceDetailObj['BalanceAmount'] = element.BalanceAmount;
+            BalanceAmt +=element.BalanceAmount;
+            UpdateAdvanceDetailarr.push(update_T_PHAdvanceDetailObj);
+          }); 
+        }
+        else {
+          let update_T_PHAdvanceDetailObj = {};
+          update_T_PHAdvanceDetailObj['AdvanceDetailID'] = 0,
+          update_T_PHAdvanceDetailObj['UsedAmount'] = 0,
+          update_T_PHAdvanceDetailObj['BalanceAmount'] = 0,
+            UpdateAdvanceDetailarr.push(update_T_PHAdvanceDetailObj);
+        }
+     
+        let update_T_PHAdvanceHeaderObj = {};
+        if (result.submitDataAdvancePay.length > 0) { 
+          update_T_PHAdvanceHeaderObj['AdvanceId'] = UpdateAdvanceDetailarr1[0]['AdvanceNo'],
+          update_T_PHAdvanceHeaderObj['AdvanceUsedAmount'] =UsedAmt ,
+          update_T_PHAdvanceHeaderObj['BalanceAmount'] = BalanceAmt
+        }
+        else { 
+          update_T_PHAdvanceHeaderObj['AdvanceId'] = 0,
+          update_T_PHAdvanceHeaderObj['AdvanceUsedAmount'] = 0,
+          update_T_PHAdvanceHeaderObj['BalanceAmount'] = 0
+        }
+
         let Data = {
           "update_Pharmacy_BillBalAmount": updateBillobj,
-          "salesPayment": result.submitDataPay.ipPaymentInsert
+          "salesPayment": result.submitDataPay.ipPaymentInsert,
+          "update_T_PHAdvanceDetail":UpdateAdvanceDetailarr,
+          "update_T_PHAdvanceHeader":update_T_PHAdvanceHeaderObj
         };
         console.log(Data);
 
@@ -340,17 +383,19 @@ export class SalesReturnBillSettlementComponent implements OnInit {
               toastClass: 'tostr-tost custom-toast-error',
             });
             this._matDialog.closeAll();  
-            this.getIpSalesList();
+            this.getIpSalesList(); 
           }
           else { 
             this.toastr.error('Sales Credit Payment  not saved !', 'error', {
               toastClass: 'tostr-tost custom-toast-error',
-            });
+            }); 
           }
-        }); 
+        });
+        
       } 
+      this.isLoading123 = false; 
     });
-
+    
   }
   keyPressCharater(event) {
     var inp = String.fromCharCode(event.keyCode);
@@ -368,7 +413,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
   OnReset() {
     this._SelseSettelmentservice.ItemSubform.reset(); 
     this.dsPaidItemList.data = []; 
-    this.PatientInformRest();
+    this.PatientInformRest();  
   }
 }
   export class PaidItemList {

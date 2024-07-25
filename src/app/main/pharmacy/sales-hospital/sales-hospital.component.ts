@@ -2026,7 +2026,7 @@ export class SalesHospitalComponent implements OnInit {
       }
     });
   }
-  isLoading123 = false;
+ 
   onSave(event) {
     event.srcElement.setAttribute('disabled', true);
     let patientTypeValue1 = this.ItemSubform.get('PatientType').value;
@@ -2054,8 +2054,7 @@ export class SalesHospitalComponent implements OnInit {
       });
       event.srcElement.removeAttribute('disabled');
       return;
-    } 
-   
+    }  
     if (this.ItemSubform.get('CashPay').value == 'CashPay' || this.ItemSubform.get('CashPay').value == 'Online') {
       this.onCashOnlinePaySave()
     }
@@ -2066,13 +2065,12 @@ export class SalesHospitalComponent implements OnInit {
       this.onSavePayOption()
     }
    
-    this.getDraftorderList();
-    //this.mobileno.nativeElement.focus();
+    this.getDraftorderList(); 
     event.srcElement.removeAttribute('disabled');
     this.PatientName = '';
     this.DoctorName = '';
   } 
- 
+  isLoading123 = false;
   onCashOnlinePaySave() {
     this.isLoading123 = true; 
     let nowDate = new Date();
@@ -2244,6 +2242,7 @@ export class SalesHospitalComponent implements OnInit {
           this.Itemchargeslist = [];
           this._matDialog.closeAll();
           this.ItemFormreset();
+          this.isLoading123=false;
          // this.patientDetailsFormGrp.reset();
          this.ItemSubform.reset();
           this.Formreset();
@@ -2257,22 +2256,21 @@ export class SalesHospitalComponent implements OnInit {
         this.toastr.error('API Error!', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
         });
+        this.isLoading123=false;
       } 
     }, error => {
       this.toastr.error('API Error!', 'Error !', {
         toastClass: 'tostr-tost custom-toast-error',
       });
-    });
-    setTimeout(() => { 
       this.isLoading123=false;
-    }, 2000);
-
+    }); 
+ 
 
     // }
   }
   onSavePayOption() {
     this.vPatientType = this.ItemSubform.get('PatientType').value; 
-   
+    this.isLoading123=true; 
     let PatientHeaderObj = {};
     PatientHeaderObj['Date'] = this.dateTimeObj.date;
     PatientHeaderObj['RegNo'] = this.RegNo;
@@ -2284,7 +2282,7 @@ export class SalesHospitalComponent implements OnInit {
     } 
     PatientHeaderObj['Age'] = this.Age ;
     PatientHeaderObj['NetPayAmount'] = this.ItemSubform.get('roundoffAmt').value; //this.ItemSubform.get('FinalNetAmount').value;
-    this.isLoading123=false;
+  
     const dialogRef = this._matDialog.open(OpPaymentNewComponent,
         {
           maxWidth: "80vw",
@@ -2444,28 +2442,28 @@ export class SalesHospitalComponent implements OnInit {
                 this._matDialog.closeAll();
                 this.ItemFormreset();
                 this.Formreset();
+                this.isLoading123=false;
               }
             } else {
               this.toastr.error('API Error!', 'Error !', {
                 toastClass: 'tostr-tost custom-toast-error',
               });
+              this.isLoading123=false; 
             }
-            this.isLoading123=false;
-            this.sIsLoading = '';
+           
             // });
           }, error => {
 
             this.toastr.error('API Error!', 'Error !', {
               toastClass: 'tostr-tost custom-toast-error',
             });
+            this.isLoading123=false; 
           });
 
           this.ItemFormreset();
           this.patientDetailsFormGrp.reset();
           this.Formreset();
-          this.ItemSubform.get('ConcessionId').reset();
-          // this.PatientName = '';
-          // this.MobileNo = '';
+          this.ItemSubform.get('ConcessionId').reset(); 
           this.saleSelectedDatasource.data = [];
          
         }
@@ -2474,14 +2472,152 @@ export class SalesHospitalComponent implements OnInit {
             toastClass: 'tostr-tost custom-toast-warning',
           });
         }
-        setTimeout(() => { 
-          this.isLoading123=false;
-        }, 2000);
+         this.isLoading123=false;
       } 
     })
 
   }
- 
+  onCreditpaySave() {
+    this.isLoading123 = true; 
+    // if (this._salesService.IndentSearchGroup.get('PatientType').value == "External" && this.PatientName  != null && this.MobileNo != null) {
+    let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
+    let ConcessionId = 0;
+    if (this.ItemSubform.get('ConcessionId').value)
+      ConcessionId = this.ItemSubform.get('ConcessionId').value.ConcessionId;
+
+    let salesInsertCredit = {};
+    salesInsertCredit['Date'] = this.dateTimeObj.date;
+    salesInsertCredit['time'] = this.dateTimeObj.time;
+    if (this.ItemSubform.get('PatientType').value == 'External') {
+      salesInsertCredit['oP_IP_Type'] = 2;
+      salesInsertCredit['oP_IP_ID'] = this.OP_IP_Id;
+    } else if (this.ItemSubform.get('PatientType').value == 'OP') {
+      salesInsertCredit['oP_IP_Type'] = 0;
+      salesInsertCredit['oP_IP_ID'] = this.OP_IP_Id;
+    } else if (this.ItemSubform.get('PatientType').value == 'IP') {
+      salesInsertCredit['oP_IP_Type'] = 1;
+      salesInsertCredit['oP_IP_ID'] = this.OP_IP_Id;
+    }
+
+    salesInsertCredit['totalAmount'] = this.ItemSubform.get('FinalTotalAmt').value || 0; //this.FinalTotalAmt
+    salesInsertCredit['vatAmount'] = this.ItemSubform.get('FinalGSTAmt').value || 0;
+    salesInsertCredit['discAmount'] = this.ItemSubform.get('FinalDiscAmt').value || 0; //this.FinalDiscAmt;
+    salesInsertCredit['netAmount'] = this.ItemSubform.get('roundoffAmt').value || 0;  
+    salesInsertCredit['paidAmount'] = 0;
+    salesInsertCredit['balanceAmount'] = NetAmt;
+    salesInsertCredit['concessionReasonID'] = ConcessionId || 0;
+    salesInsertCredit['concessionAuthorizationId'] = 0;
+    salesInsertCredit['isSellted'] = 0;
+    salesInsertCredit['isPrint'] = 0;
+    salesInsertCredit['isFree'] = 0;
+    salesInsertCredit['unitID'] = 1;
+    salesInsertCredit['addedBy'] = this._loggedService.currentUserValue.user.id,
+    salesInsertCredit['externalPatientName'] = this.PatientName;
+    salesInsertCredit['doctorName'] = "";
+    salesInsertCredit['storeId'] = this._loggedService.currentUserValue.user.storeId,
+    salesInsertCredit['isPrescription'] = this.IPMedID || 0;
+    salesInsertCredit['creditReason'] = '';
+    salesInsertCredit['creditReasonID'] = 0;
+    salesInsertCredit['wardId'] = 0;
+    salesInsertCredit['bedID'] = 0;
+    salesInsertCredit['discper_H'] = 0;
+    salesInsertCredit['isPurBill'] = 0;
+    salesInsertCredit['isBillCheck'] = 0;
+    salesInsertCredit['salesHeadName'] = ""
+    salesInsertCredit['salesTypeId'] = 0;
+    salesInsertCredit['salesId'] = 0;
+    salesInsertCredit['extMobileNo'] = this.MobileNo || 0;
+    salesInsertCredit['extAddress'] = this.vextAddress || '';
+
+    let salesDetailInsertCreditarr = [];
+    this.saleSelectedDatasource.data.forEach((element) => {
+      let salesDetailInsertCredit = {};
+      salesDetailInsertCredit['salesID'] = 0;
+      salesDetailInsertCredit['itemId'] = element.ItemId;
+      salesDetailInsertCredit['batchNo'] = element.BatchNo;
+      salesDetailInsertCredit['batchExpDate'] = element.BatchExpDate;//this.datePipe.transform(element.BatchExpDate,"yyyy/mm/dd");// element.BatchExpDate;
+      salesDetailInsertCredit['unitMRP'] = element.UnitMRP;
+      salesDetailInsertCredit['qty'] = element.Qty;
+      salesDetailInsertCredit['totalAmount'] = element.TotalMRP;
+      salesDetailInsertCredit['vatPer'] = element.VatPer;
+      salesDetailInsertCredit['vatAmount'] = element.VatAmount;
+      salesDetailInsertCredit['discPer'] = element.DiscPer;
+      salesDetailInsertCredit['discAmount'] = element.DiscAmt;
+      salesDetailInsertCredit['grossAmount'] = element.NetAmt;
+      salesDetailInsertCredit['landedPrice'] = element.LandedRate;
+      salesDetailInsertCredit['totalLandedAmount'] = element.LandedRateandedTotal;
+      salesDetailInsertCredit['purRateWf'] = element.PurchaseRate;
+      salesDetailInsertCredit['purTotAmt'] = element.PurTotAmt;
+      salesDetailInsertCredit['cgstPer'] = element.CgstPer;
+      salesDetailInsertCredit['cgstAmt'] = element.CGSTAmt;
+      salesDetailInsertCredit['sgstPer'] = element.SgstPer;
+      salesDetailInsertCredit['sgstAmt'] = element.SGSTAmt;
+      salesDetailInsertCredit['igstPer'] = element.IgstPer
+      salesDetailInsertCredit['igstAmt'] = element.IGSTAmt
+      salesDetailInsertCredit['isPurRate'] = 0;
+      salesDetailInsertCredit['stkID'] = element.StockId;
+      salesDetailInsertCreditarr.push(salesDetailInsertCredit);
+    });
+
+    let updateCurStkSalesCreditarray = [];
+    this.saleSelectedDatasource.data.forEach((element) => {
+      let updateCurStkSalesCredit = {};
+      updateCurStkSalesCredit['itemId'] = element.ItemId;
+      updateCurStkSalesCredit['issueQty'] = element.Qty;
+      updateCurStkSalesCredit['storeID'] = this._loggedService.currentUserValue.user.storeId,
+        updateCurStkSalesCredit['stkID'] = element.StockId;
+
+      updateCurStkSalesCreditarray.push(updateCurStkSalesCredit);
+    });
+
+    let cal_DiscAmount_SalesCredit = {};
+    cal_DiscAmount_SalesCredit['salesID'] = 0;
+
+    let cal_GSTAmount_SalesCredit = {};
+    cal_GSTAmount_SalesCredit['salesID'] = 0;
+
+    // console.log("Procced with Payment Option");
+
+    let submitData = {
+      "salesInsertCredit": salesInsertCredit,
+      "salesDetailInsertCredit": salesDetailInsertCreditarr,
+      "updateCurStkSalesCredit": updateCurStkSalesCreditarray,
+      "cal_DiscAmount_SalesCredit": cal_DiscAmount_SalesCredit,
+      "cal_GSTAmount_SalesCredit": cal_GSTAmount_SalesCredit
+    };
+    console.log(submitData)
+    let vMobileNo = this.mobileno;
+    this._salesService.InsertCreditSales(submitData).subscribe(response => {
+      if (response) {
+        this.toastr.success('Record Saved Successfully.', 'Credit Save !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        });
+        this.getPrint3(response);
+        this.getWhatsappshareSales(response, vMobileNo);
+        this.Itemchargeslist = [];
+        this._matDialog.closeAll();
+        this.isLoading123=false;
+
+      } else { 
+        this.toastr.error('API Error!', 'Error !', {
+          toastClass: 'tostr-tost custom-toast-error',
+        }); 
+      } 
+    }, error => { 
+      this.toastr.error('API Error!', 'Error !', {
+        toastClass: 'tostr-tost custom-toast-error',
+      }); 
+    });
+    this.ItemFormreset();
+    this.Formreset();
+    this.ItemSubform.get('ConcessionId').reset();
+    this.getConcessionReasonList();
+    //this.PatientName = '';
+    // this.MobileNo = '';
+    this.saleSelectedDatasource.data = [];
+    this.saleSelectedDatasource.data = [];
+
+  }
 
   getPrint3(el) { 
     if (this.vPaymode=='Credit') {
@@ -2772,150 +2908,7 @@ export class SalesHospitalComponent implements OnInit {
     this.ItemFormreset();
   }
 
-  onCreditpaySave() {
-    this.isLoading123 = true; 
-    // if (this._salesService.IndentSearchGroup.get('PatientType').value == "External" && this.PatientName  != null && this.MobileNo != null) {
-    let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
-    let ConcessionId = 0;
-    if (this.ItemSubform.get('ConcessionId').value)
-      ConcessionId = this.ItemSubform.get('ConcessionId').value.ConcessionId;
 
-    let salesInsertCredit = {};
-    salesInsertCredit['Date'] = this.dateTimeObj.date;
-    salesInsertCredit['time'] = this.dateTimeObj.time;
-    if (this.ItemSubform.get('PatientType').value == 'External') {
-      salesInsertCredit['oP_IP_Type'] = 2;
-      salesInsertCredit['oP_IP_ID'] = this.OP_IP_Id;
-    } else if (this.ItemSubform.get('PatientType').value == 'OP') {
-      salesInsertCredit['oP_IP_Type'] = 0;
-      salesInsertCredit['oP_IP_ID'] = this.OP_IP_Id;
-    } else if (this.ItemSubform.get('PatientType').value == 'IP') {
-      salesInsertCredit['oP_IP_Type'] = 1;
-      salesInsertCredit['oP_IP_ID'] = this.OP_IP_Id;
-    }
-
-    salesInsertCredit['totalAmount'] = this.ItemSubform.get('FinalTotalAmt').value || 0; //this.FinalTotalAmt
-    salesInsertCredit['vatAmount'] = this.ItemSubform.get('FinalGSTAmt').value || 0;
-    salesInsertCredit['discAmount'] = this.ItemSubform.get('FinalDiscAmt').value || 0; //this.FinalDiscAmt;
-    salesInsertCredit['netAmount'] = this.ItemSubform.get('roundoffAmt').value || 0;  
-    salesInsertCredit['paidAmount'] = 0;
-    salesInsertCredit['balanceAmount'] = NetAmt;
-    salesInsertCredit['concessionReasonID'] = ConcessionId || 0;
-    salesInsertCredit['concessionAuthorizationId'] = 0;
-    salesInsertCredit['isSellted'] = 0;
-    salesInsertCredit['isPrint'] = 0;
-    salesInsertCredit['isFree'] = 0;
-    salesInsertCredit['unitID'] = 1;
-    salesInsertCredit['addedBy'] = this._loggedService.currentUserValue.user.id,
-      salesInsertCredit['externalPatientName'] = this.PatientName;
-    salesInsertCredit['doctorName'] = "";
-    salesInsertCredit['storeId'] = this._loggedService.currentUserValue.user.storeId,
-      salesInsertCredit['isPrescription'] = this.IPMedID || 0;
-    salesInsertCredit['creditReason'] = '';
-    salesInsertCredit['creditReasonID'] = 0;
-    salesInsertCredit['wardId'] = 0;
-    salesInsertCredit['bedID'] = 0;
-    salesInsertCredit['discper_H'] = 0;
-    salesInsertCredit['isPurBill'] = 0;
-    salesInsertCredit['isBillCheck'] = 0;
-    salesInsertCredit['salesHeadName'] = ""
-    salesInsertCredit['salesTypeId'] = 0;
-    salesInsertCredit['salesId'] = 0;
-    salesInsertCredit['extMobileNo'] = this.MobileNo || 0;
-    salesInsertCredit['extAddress'] = this.vextAddress || '';
-
-    let salesDetailInsertCreditarr = [];
-    this.saleSelectedDatasource.data.forEach((element) => {
-      let salesDetailInsertCredit = {};
-      salesDetailInsertCredit['salesID'] = 0;
-      salesDetailInsertCredit['itemId'] = element.ItemId;
-      salesDetailInsertCredit['batchNo'] = element.BatchNo;
-      salesDetailInsertCredit['batchExpDate'] = element.BatchExpDate;//this.datePipe.transform(element.BatchExpDate,"yyyy/mm/dd");// element.BatchExpDate;
-      salesDetailInsertCredit['unitMRP'] = element.UnitMRP;
-      salesDetailInsertCredit['qty'] = element.Qty;
-      salesDetailInsertCredit['totalAmount'] = element.TotalMRP;
-      salesDetailInsertCredit['vatPer'] = element.VatPer;
-      salesDetailInsertCredit['vatAmount'] = element.VatAmount;
-      salesDetailInsertCredit['discPer'] = element.DiscPer;
-      salesDetailInsertCredit['discAmount'] = element.DiscAmt;
-      salesDetailInsertCredit['grossAmount'] = element.NetAmt;
-      salesDetailInsertCredit['landedPrice'] = element.LandedRate;
-      salesDetailInsertCredit['totalLandedAmount'] = element.LandedRateandedTotal;
-      salesDetailInsertCredit['purRateWf'] = element.PurchaseRate;
-      salesDetailInsertCredit['purTotAmt'] = element.PurTotAmt;
-      salesDetailInsertCredit['cgstPer'] = element.CgstPer;
-      salesDetailInsertCredit['cgstAmt'] = element.CGSTAmt;
-      salesDetailInsertCredit['sgstPer'] = element.SgstPer;
-      salesDetailInsertCredit['sgstAmt'] = element.SGSTAmt;
-      salesDetailInsertCredit['igstPer'] = element.IgstPer
-      salesDetailInsertCredit['igstAmt'] = element.IGSTAmt
-      salesDetailInsertCredit['isPurRate'] = 0;
-      salesDetailInsertCredit['stkID'] = element.StockId;
-      salesDetailInsertCreditarr.push(salesDetailInsertCredit);
-    });
-
-    let updateCurStkSalesCreditarray = [];
-    this.saleSelectedDatasource.data.forEach((element) => {
-      let updateCurStkSalesCredit = {};
-      updateCurStkSalesCredit['itemId'] = element.ItemId;
-      updateCurStkSalesCredit['issueQty'] = element.Qty;
-      updateCurStkSalesCredit['storeID'] = this._loggedService.currentUserValue.user.storeId,
-        updateCurStkSalesCredit['stkID'] = element.StockId;
-
-      updateCurStkSalesCreditarray.push(updateCurStkSalesCredit);
-    });
-
-    let cal_DiscAmount_SalesCredit = {};
-    cal_DiscAmount_SalesCredit['salesID'] = 0;
-
-    let cal_GSTAmount_SalesCredit = {};
-    cal_GSTAmount_SalesCredit['salesID'] = 0;
-
-    // console.log("Procced with Payment Option");
-
-    let submitData = {
-      "salesInsertCredit": salesInsertCredit,
-      "salesDetailInsertCredit": salesDetailInsertCreditarr,
-      "updateCurStkSalesCredit": updateCurStkSalesCreditarray,
-      "cal_DiscAmount_SalesCredit": cal_DiscAmount_SalesCredit,
-      "cal_GSTAmount_SalesCredit": cal_GSTAmount_SalesCredit
-    };
-    console.log(submitData)
-    let vMobileNo = this.mobileno;
-    this._salesService.InsertCreditSales(submitData).subscribe(response => {
-      if (response) {
-        this.toastr.success('Record Saved Successfully.', 'Credit Save !', {
-          toastClass: 'tostr-tost custom-toast-success',
-        });
-        this.getPrint3(response);
-        this.getWhatsappshareSales(response, vMobileNo);
-        this.Itemchargeslist = [];
-        this._matDialog.closeAll();
-
-      } else {
-
-        this.toastr.error('API Error!', 'Error !', {
-          toastClass: 'tostr-tost custom-toast-error',
-        });
-      }
-      this.isLoading123=false;
-      this.sIsLoading = '';
-    }, error => {
-
-      this.toastr.error('API Error!', 'Error !', {
-        toastClass: 'tostr-tost custom-toast-error',
-      });
-    });
-    this.ItemFormreset();
-    this.Formreset();
-    this.ItemSubform.get('ConcessionId').reset();
-    this.getConcessionReasonList();
-    //this.PatientName = '';
-    // this.MobileNo = '';
-    this.saleSelectedDatasource.data = [];
-    this.saleSelectedDatasource.data = [];
-
-  }
 
   OnEnableDraftAdd() {
     if (this.drafttable == false) {

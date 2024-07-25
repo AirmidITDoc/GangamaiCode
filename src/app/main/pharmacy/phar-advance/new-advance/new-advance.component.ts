@@ -237,7 +237,7 @@ export class NewAdvanceComponent implements OnInit {
         });
       dialogRef.afterClosed().subscribe(result => {
         console.log('==============================  Advance Amount ===========', result);
-        console.log(result);
+       
         let submitData = {
           "insertPHAdvance": insertPHAdvanceObj,
           "insertPHAdvanceDetail": insertPHAdvanceDetailobj,
@@ -249,23 +249,21 @@ export class NewAdvanceComponent implements OnInit {
           if (response) {
             this.toastr.success('IP Pharma Advance data Saved Successfully !', 'Saved !', {
               toastClass: 'tostr-tost custom-toast-success',
-            });  
-                console.log(response)
-                this.viewgetIPAdvanceReportPdf(response);
-                this._matDialog.closeAll();
-                this.onClose(); 
+            });
+            console.log(response)
+            this.viewgetIPAdvanceReportPdf(response);
+            this._matDialog.closeAll();
+            this.isLoading123 = false;
+            this.onClose();
           } else {
             this.toastr.success('IP Pharma Advance data not Saved!', 'Error !', {
               toastClass: 'tostr-tost custom-toast-success',
-            });  
+            });
+            this.isLoading123 = false;
           }
-          this.isLoading = '';
         });
-
-      });
-      setTimeout(() => {
         this.isLoading123 = false;
-      }, 2000);
+      }); 
 
     }
     else {

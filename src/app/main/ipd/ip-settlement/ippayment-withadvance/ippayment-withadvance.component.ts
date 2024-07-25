@@ -171,7 +171,9 @@ private _onDestroy = new Subject<void>();
       this.PatientName = this.advanceData.advanceObj.PatientName;  
       this.OPD_IPD_Id = this.advanceData.advanceObj.IPDNo;
       this.RegNo = this.advanceData.advanceObj.RegNo;
-      this.BillTime = this.advanceData.advanceObj.Date;
+      this.BillTime = this.advanceData.advanceObj.Date; 
+      this.PBillNo = this.advanceData.advanceObj.BillNo;
+      
       this.getBalanceAmt(); 
     } 
   }
@@ -336,7 +338,12 @@ private _onDestroy = new Subject<void>();
     this.advanceData.advanceObj.OPD_IPD_Id;//=4;
     this.dataSource.data = [];
     this.isLoading = 'loading';
-    let Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount,BalanceAmount as balamt from AdvanceDetail where OPD_IPD_Id=" + this.advanceData.advanceObj.OPD_IPD_Id + ""
+    let Query
+    if(this.advanceData.FromName == "IP-Pharma-SETTLEMENT"){
+      Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount,BalanceAmount as balamt from T_PHAdvanceDetail where OPD_IPD_Id=" + this.advanceData.advanceObj.OPD_IPD_Id + ""
+    }else{
+      Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount,BalanceAmount as balamt from AdvanceDetail where OPD_IPD_Id=" + this.advanceData.advanceObj.OPD_IPD_Id + ""
+    }
     this.ipSearchService.getAdvcanceDetailslist(Query).subscribe(data => {
       // this.chargeslist = data as ChargesList[];
       this.dataSource.data = data as [];
@@ -580,7 +587,7 @@ private _onDestroy = new Subject<void>();
     console.log('dateTimeObj==', dateTimeObj);
     this.dateTimeObj = dateTimeObj;
   }
-
+  currentDate = new Date();
   saveClicked() {
     if (this.dataSource.data.length > 0) {
       this.AdvanceId = this.dataSource.data[0]['AdvanceId'];
@@ -661,37 +668,40 @@ private _onDestroy = new Subject<void>();
       ipPaymentInsert['PayTMDate'] = this.dateTimeObj.date;
       ipPaymentInsert['tdsAmount'] = this.tdsAmt || 0; 
     }
-    else if(this.advanceData.FromName == "IP-Pharma-SETTLEMENT"){ 
-      ipPaymentInsert['PaymentId'] = '0';
-      ipPaymentInsert['billNo'] = 0;
-      ipPaymentInsert['PaymentDate'] = this.dateTimeObj.date;
-      ipPaymentInsert['PaymentTime'] = this.dateTimeObj.time;
+    else if(this.advanceData.FromName == "IP-Pharma-SETTLEMENT"){  
+
+      ipPaymentInsert['paymentId'] = 0;
+      ipPaymentInsert['BillNo'] = this.advanceData.advanceObj.BillNo;
+      ipPaymentInsert['ReceiptNo'] = '';
+      ipPaymentInsert['PaymentDate'] = this.currentDate || '01/01/1900';
+      ipPaymentInsert['PaymentTime'] = this.currentDate || '01/01/1900';
       ipPaymentInsert['CashPayAmount'] = this.cashAmt || 0;
       ipPaymentInsert['ChequePayAmount'] = this.chequeAmt || 0;
-      ipPaymentInsert['ChequeNo'] = this.chequeNo || 0;
+      ipPaymentInsert['ChequeNo'] = this.chequeNo || '';
       ipPaymentInsert['BankName'] =this.paymentForm.get('chequeBankNameController').value.BankName || '';// this.chequeBankName;
-      ipPaymentInsert['ChequeDate'] = this.dateTimeObj.date;
+      ipPaymentInsert['ChequeDate'] = this.currentDate || '01/01/1900';
       ipPaymentInsert['CardPayAmount'] = this.cardAmt || 0;
-      ipPaymentInsert['CardNo'] = this.cardNo || 0;
+      ipPaymentInsert['CardNo'] = this.cardNo || '';
       ipPaymentInsert['CardBankName'] = this.paymentForm.get('cardBankNameController').value.BankName || '';//this.cardBankName;
-      ipPaymentInsert['CardDate'] = this.dateTimeObj.date;
+      ipPaymentInsert['CardDate'] = this.currentDate || '01/01/1900';
       ipPaymentInsert['AdvanceUsedAmount'] = this.advanceAmt || 0;
       ipPaymentInsert['AdvanceId'] = this.AdvanceId || 0,
-      ipPaymentInsert['RefundId'] = '0';
+      ipPaymentInsert['RefundId'] = 0;
       ipPaymentInsert['TransactionType'] = 4;
       ipPaymentInsert['Remark'] = '';
       ipPaymentInsert['AddBy'] = this.authServie.currentUserValue.user.id || 0;
-      ipPaymentInsert['IsCancelled'] = 'false';
-      ipPaymentInsert['IsCancelledBy'] = '0'; 
-      ipPaymentInsert['IsCancelledDate'] = this.dateTimeObj.date; 
-      ipPaymentInsert['opD_IPD_Type'] = 1 ;
-      ipPaymentInsert['NEFTPayAmount'] = this.neftAmt;
-      ipPaymentInsert['NEFTNo'] = this.neftNo || 0;
+      ipPaymentInsert['IsCancelled'] = 0;
+      ipPaymentInsert['IsCancelledBy'] = 0; 
+      ipPaymentInsert['IsCancelledDate'] =this.currentDate || '01/01/1900';
+      ipPaymentInsert['opD_IPD_Type'] =3;
+      ipPaymentInsert['NEFTPayAmount'] = this.neftAmt || 0;
+      ipPaymentInsert['NEFTNo'] = this.neftNo || '';
       ipPaymentInsert['NEFTBankMaster'] = this.paymentForm.get('neftBankNameController').value.BankName || '';//this.neftBankName;
-      ipPaymentInsert['NEFTDate'] = this.dateTimeObj.date;
+      ipPaymentInsert['NEFTDate'] = this.currentDate || '01/01/1900';
       ipPaymentInsert['PayTMAmount'] = this.paytmAmt || 0;
-      ipPaymentInsert['PayTMTranNo'] = this.paytmTransNo || 0;
-      ipPaymentInsert['PayTMDate'] = this.dateTimeObj.date; 
+      ipPaymentInsert['PayTMTranNo'] = this.paytmTransNo || '';
+      ipPaymentInsert['PayTMDate'] = this.currentDate || '01/01/1900';
+
     }
 
 

@@ -283,8 +283,8 @@ export class NewOPBillingComponent implements OnInit {
       qty: [Validators.required, Validators.pattern("^[0-9]*$")],
       ChargeTotalAmount: [Validators.required],
       DoctorID: [0],
-      ChargeDiscPer: [0],
-      ChargeDiscAmount: [0],
+      ChargeDiscPer: [''],
+      ChargeDiscAmount: [''],
       doctorId: [0],
       netAmount: [''],
     });
@@ -1068,9 +1068,8 @@ console.log(obj)
   // Charges Wise Disc Percentage 
 
   calculatePersc() {
-    this.v_ChargeDiscPer = this.registeredForm.get('ChargeDiscPer').value || 0;
-
-    if ((this.v_ChargeDiscPer < 101) && (this.v_ChargeDiscPer > 0)) {
+    this.v_ChargeDiscPer = this.registeredForm.get('ChargeDiscPer').value || 0; 
+    if((this.v_ChargeDiscPer < 101) && (this.v_ChargeDiscPer > 0)) {
       this.b_ChargeDisAmount = ((parseFloat(this.b_totalAmount) * parseFloat(this.v_ChargeDiscPer)) / 100).toFixed(2);
 
       this.b_netAmount = (parseFloat(this.b_totalAmount) - parseFloat(this.b_ChargeDisAmount)).toFixed(2);
@@ -1079,23 +1078,49 @@ console.log(obj)
       // this.BillingForm.get('concessionAmt').readonly();
       this.Consessionres = true;
     }
-    else if ((this.v_ChargeDiscPer > 100) || (this.v_ChargeDiscPer < 0)) {
+    else if(this.v_ChargeDiscPer > 100) {
       Swal.fire("Enter Discount % Less than 100 & Greater > 0")
       // this.v_ChargeDiscPer=0;
       this.b_ChargeDisAmount = '';
+      this.v_ChargeDiscPer = '';
       this.b_netAmount = this.b_totalAmount;
       this.registeredForm.get('ChargeDiscAmount').setValue(this.b_ChargeDisAmount);
       this.registeredForm.get('netAmount').setValue(this.b_netAmount);
       this.Consessionres = false;
-    }
-
-    if (this.v_ChargeDiscPer == "0" || this.v_ChargeDiscPer == null || this.v_ChargeDiscPer == '') {
+    } 
+    else if(this.v_ChargeDiscPer == "0" || this.v_ChargeDiscPer == null || this.v_ChargeDiscPer == '') {
       this.b_netAmount = this.b_totalAmount;
       this.b_ChargeDisAmount = '';
       this.registeredForm.get('ChargeDiscAmount').setValue(this.b_ChargeDisAmount);
       this.registeredForm.get('netAmount').setValue(this.b_netAmount);
       this.Consessionres = false;
-    }
+    } 
+ 
+  }
+  calChargeDiscAmt(){  
+    if(this.b_ChargeDisAmount > this.b_totalAmount) {
+      Swal.fire("Enter Discount Amount Less than Total Amount & Greater > 0") 
+      this.v_ChargeDiscPer = '';
+      this.b_ChargeDisAmount = '';
+      this.b_netAmount = this.b_totalAmount;
+      this.registeredForm.get('ChargeDiscPer').setValue(this.v_ChargeDiscPer);
+      this.registeredForm.get('netAmount').setValue(this.b_netAmount);
+      this.Consessionres = false;
+    }   
+      else if(this.b_ChargeDisAmount > 0) { 
+        this.v_ChargeDiscPer = ((parseFloat(this.b_ChargeDisAmount) / parseFloat(this.b_totalAmount)) * 100).toFixed(2);  
+        this.b_netAmount = (parseFloat(this.b_totalAmount) - parseFloat(this.b_ChargeDisAmount)).toFixed(2);
+        this.registeredForm.get('ChargeDiscPer').setValue(this.v_ChargeDiscPer);
+        this.registeredForm.get('netAmount').setValue(this.b_netAmount); 
+        this.Consessionres = true;
+      }
+      else if(this.b_ChargeDisAmount == "0" || this.b_ChargeDisAmount == null || this.b_ChargeDisAmount == '') {
+        this.b_netAmount = this.b_totalAmount;
+        this.v_ChargeDiscPer = '';
+        this.registeredForm.get('ChargeDiscPer').setValue(this.v_ChargeDiscPer);
+        this.registeredForm.get('netAmount').setValue(this.b_netAmount);
+        this.Consessionres = false;
+      } 
   }
 
   finaldisc = 0;

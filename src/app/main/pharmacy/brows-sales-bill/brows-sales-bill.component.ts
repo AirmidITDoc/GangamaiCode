@@ -518,7 +518,7 @@ export class BrowsSalesBillComponent implements OnInit {
           CreditPaymentobj['IsCancelled'] = 0;
         CreditPaymentobj['IsCancelledBy'] = 0;
         CreditPaymentobj['IsCancelledDate'] = "01/01/1900";
-        CreditPaymentobj['opD_IPD_Type'] = 3;
+        CreditPaymentobj['opD_IPD_Type'] = this._BrowsSalesBillService.formReturn.get('OP_IP_Types').value 
         CreditPaymentobj['neftPayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.NEFTPayAmount) || 0;
         CreditPaymentobj['neftNo'] = result.submitDataPay.ipPaymentInsert.NEFTNo || '';
         CreditPaymentobj['neftBankMaster'] = result.submitDataPay.ipPaymentInsert.NEFTBankMaster || '';
