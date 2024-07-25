@@ -1,14 +1,14 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
+import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { fuseAnimations } from "@fuse/animations";
 import { Router } from "@angular/router";
 import { FormBuilder, FormControl } from "@angular/forms";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { ParametermasterService } from "../parametermaster.service";
 import { MatTableDataSource } from "@angular/material/table";
-import { ReplaySubject, Subject } from "rxjs";
+import { Observable, ReplaySubject, Subject } from "rxjs";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
-import { takeUntil } from "rxjs/operators";
+import { map, startWith, takeUntil } from "rxjs/operators";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
 import { ParametermasterComponent } from "../parametermaster.component";
@@ -48,22 +48,17 @@ export class ParameterFormMasterComponent implements OnInit {
     vMinValue: any;
     vMaxValue: any;
     msg: any;
+    UnitId:any=0;
+    filteredOptionsUnit: Observable<string[]>;
+    optionsUnit :any []=[];
+    isunitSelected:boolean=false;
+    ParaId:any;
+    DefaultValue:any;
 
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    // uitname filter
-    // public unitnameFilterCtrl: FormControl = new FormControl();
-    // public filteredUnitname: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-    // // prefix filter
-    // public parameternameFilterCtrl: FormControl = new FormControl();
-    // public filteredParametername: ReplaySubject<any> = new ReplaySubject<any>(
-    //     1
-    // );
-
-    // private _onDestroy = new Subject<void>();
-
+ 
     dataSource = new MatTableDataSource<PathDescriptiveMaster>();
     dsParameterAgeList = new MatTableDataSource<PathParaRangeAgeMaster>();
 
@@ -103,15 +98,26 @@ export class ParameterFormMasterComponent implements OnInit {
 
         this._ParameterService.getUnitMasterCombo().subscribe((data) => {
             this.UnitcmbList = data;
-            //this.filteredUnitname.next(this.UnitcmbList.slice());
-            // if (this.data) {
-            //     const toSelectSexId = this.UnitcmbList.find(c => c.GenderName == this.registerObj.GenderName);
-            //     this._ParameterService.myform.get('SexId').setValue(toSelectSexId);
-            //    //console.log(toSelectGSTType);  
-            //   console.log(this.registerObj); 
-            //    } 
-        });
-    }
+            this.optionsUnit = this.UnitcmbList.slice();
+            this.filteredOptionsUnit = this._ParameterService.myform.get('UnitId').valueChanges.pipe(
+              startWith(''),
+              map((value: any) => value ? this._filterunit(value) : this.UnitcmbList.slice()),
+            );
+       
+    });
+}
+    private _filterunit(value: any): string[] {
+        if (value) {
+          const filterValue = value && value.UnitName ? value.UnitName.toLowerCase() : value.toLowerCase();
+    
+          return this.optionsUnit.filter(option => option.UnitName.toLowerCase().includes(filterValue));
+        }
+    
+      }
+      getOptionTextUnit(option){
+        return option && option.UnitName ? option.UnitName :" ";
+      }
+    
     getDscriptiveMasterList() {
         this._ParameterService.getDescriptiveMasterList().subscribe((Menu) => {
             this.dataSource.data = Menu as PathDescriptiveMaster[];
@@ -180,38 +186,76 @@ export class ParameterFormMasterComponent implements OnInit {
             this.dsParameterAgeList.data = [...this.dsParameterAgeList.data];
             console.log(this.dsParameterAgeList.data);
         }
-        else {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Duplicate Row',
-                text: 'You are adding a duplicate row.',
-                confirmButtonText: 'OK'
-            });
+        else {            
+                this.toastr.success('You are adding a duplicate row', ' !', {
+                  toastClass: 'tostr-tost custom-toast-success',
+                });
+              
         }
-       
+        this._ParameterService.myform.get("SexID").reset();
+        this._ParameterService.myform.get("MinAge").reset();
+        this._ParameterService.myform.get("MaxAge").reset();
+        this._ParameterService.myform.get("MinValue").reset();
+        this._ParameterService.myform.get("MaxValue").reset();
+        this._ParameterService.myform.get("AgeType").reset();
     }
 
+    @ViewChild('minage') minage: ElementRef;
+    @ViewChild('maxage') maxage: ElementRef;
+  // @ViewChild('purpose') purpose: ElementRef;
+  
+    ageyearcheck(event) {
 
-    // unitname filter
-    // private filterUnitname() {
-    //     if (!this.UnitcmbList) {
-    //         return;
-    //     }
-    //     // get the search keyword
-    //     let search = this.unitnameFilterCtrl.value;
-    //     if (!search) {
-    //         this.filteredUnitname.next(this.UnitcmbList.slice());
-    //         return;
-    //     } else {
-    //         search = search.toLowerCase();
-    //     }
-    //     // filter the banks
-    //     this.filteredUnitname.next(
-    //         this.UnitcmbList.filter(
-    //             (bank) => bank.UnitName.toLowerCase().indexOf(search) > -1
-    //         )
-    //     );
-    // }
+        if (parseInt(event) < 0) {
+          this.toastr.warning('Please Enter Valid Minium Age ', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+    
+          this.minage.nativeElement.focus();
+        }
+        return;
+       
+      }
+
+      ageyear1check(event) {
+
+        if (parseInt(event) > 110) {
+          this.toastr.warning('Please Enter Valid Maximum Age.', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+    
+          this.maxage.nativeElement.focus();
+        }
+        return;
+       
+      }
+
+      public onEnteragey(event, value): void {
+        if (event.which === 13) {
+          this.maxage.nativeElement.focus();
+    
+          this.ageyearcheck(value);
+        }
+      }
+      public onEnteragem(event,value): void {
+        if (event.which === 13) {
+            this.ageyear1check(value);
+         // this.maxage.nativeElement.focus();
+        }
+      }
+      public onEntermin(event, value): void {
+        if (event.which === 13) {
+          this.maxage.nativeElement.focus();
+    
+        }
+      }
+      public onEntermax(event): void {
+        if (event.which === 13) {
+          this.maxage.nativeElement.focus();
+        }
+      }
+
+
 
     get f() {
         return this._ParameterService.myform.controls;
@@ -254,12 +298,11 @@ export class ParameterFormMasterComponent implements OnInit {
                 
                 for (var val of this.selectedItems) {
                     var data = {
-                        parameterID: +this._ParameterService.myform.get("ParameterID").value || 0,
+                        parameterID: +this._ParameterService.descform.get("ParaId").value || 0,
                         parameterValues: val,
-                        isDefaultValue: this._ParameterService.myform.get("DefaultValue").value?true:false,
+                        isDefaultValue: this._ParameterService.descform.get("DefaultValue").value?true:false,
                         addedby: this.accountService.currentUserValue.user.id,
-                        defaultValue:
-                        this._ParameterService.myform.get("DefaultValue").value ? this._ParameterService.myform.get("DefaultValue").value.trim() : "%",
+                        defaultValue:this._ParameterService.descform.get("DefaultValue").value ? this._ParameterService.descform.get("DefaultValue").value.trim() : "%",
                     };
                     data2.push(data);
                 }
@@ -292,8 +335,8 @@ export class ParameterFormMasterComponent implements OnInit {
                 parameterShortName: this._ParameterService.myform.get("ParameterShortName").value.trim() || "%",
                 parameterName: this._ParameterService.myform.get("ParameterName").value.trim() || "%",
                 printParameterName: this._ParameterService.myform.get("PrintParameterName").value.trim() || "%",
-                methodName: this._ParameterService.myform.get("MethodName").value.trim() || "%",
-                unitId: this._ParameterService.myform.get("UnitId").value ||  1,
+                methodName: this._ParameterService.myform.get("MethodName").value || "%",
+                unitId: this._ParameterService.myform.get("UnitId").value.UnitId || 0,
                 isNumeric: this._ParameterService.is_numeric,
                 isDeleted: Boolean(JSON.parse(this._ParameterService.myform.get("IsDeleted").value)),
                 parameterID: this._ParameterService.myform.get("ParameterID").value || 0,
@@ -313,7 +356,7 @@ export class ParameterFormMasterComponent implements OnInit {
             if (!this._ParameterService.myform.get("ParameterID").value) {
                 PathParameterMasterInsert['addedby'] = this.accountService.currentUserValue.user.id || 1;
                m_data['pathParameterMasterInsert'] = PathParameterMasterInsert;
-         
+               console.log(m_data);
                 
             this._ParameterService
             .insertParameterMaster(m_data)

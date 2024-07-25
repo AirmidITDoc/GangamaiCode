@@ -133,17 +133,22 @@
                     <mat-card>
                         <div class="table-wrapper">
                             <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" class="h-280">
-                                <ng-container matColumnDef="checkbox" sticky>
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">
-
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-80">
-                                        <mat-checkbox aria-label="Checked" (change)="tableElementChecked($event, contact)" >
-                                            <!-- (change)="onEditNew($event,contact)" >  -->
+                             
+                                <ng-container matColumnDef="select">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-checkbox (change)="$event ? masterToggle() : null" 
+                                            [checked]="selection.hasValue()" 
+                                            [indeterminate]="selection.hasValue() && !isAllSelected()">
                                         </mat-checkbox>
-                                    </mat-cell>
+                                    </th>
+                                    <td mat-cell *matCellDef="let contact">
+                                        <mat-checkbox (click)="$event.stopPropagation()" (change)="tableElementChecked($event,contact)"
+                                            (change)="$event ? selection.toggle(contact) : null" [checked]="selection.isSelected(contact)">
+                                        </mat-checkbox>
+                                         
+                                    </td>
                                 </ng-container>
-
+                               
                                 <ng-container matColumnDef="VADate">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Date
                                     </mat-header-cell>

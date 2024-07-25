@@ -3128,7 +3128,10 @@ WardName:any;
 Remark:any;
 DetailGiven:any;
 OP_IP_No:any;
-
+OPD_IPD_ID:any;
+OPD_IPD_Type:any;
+PathReportID:any;
+AdmDocId:any;
   /**
 * Constructor
 *
@@ -3271,6 +3274,10 @@ OP_IP_No:any;
       this.Remark =AdmissionPersonl.Remark || ''
       this.DetailGiven=AdmissionPersonl.DetailGiven || ''
       this.OP_IP_No=AdmissionPersonl.OP_IP_No ||''
+       this.OPD_IPD_ID=AdmissionPersonl.OPD_IPD_ID || ''
+      this.OPD_IPD_Type=AdmissionPersonl.OPD_IPD_Type ||''
+      this.PathReportID=AdmissionPersonl.PathReportID || 0
+      this.AdmDocId=AdmissionPersonl.AdmDocId || 0
     }
   }
 }

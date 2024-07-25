@@ -277,7 +277,7 @@ Rtevdropdownvalue(){
 
   getTemplateList() {
     var mdata={
-        Id:this.selectedAdvanceObj.ChargeId
+        Id:this.selectedAdvanceObj.ServiceId
 
     }
     this._radiologytemplateService.getTemplateCombo(mdata).subscribe(data => {

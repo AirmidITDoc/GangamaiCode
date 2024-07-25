@@ -1301,21 +1301,14 @@ console.log(this._AppointmentSreviceService.myFilterform.get("DoctorId").value)
 
       this.Vtotalcount = this.Vtotalcount + 1;
     }
-    //  data.forEach((element) => {
-    //     console.log(element)
-    //     // if(element.PatientOldNew==1){
-    //     //   this.Vtotalcount+1;
-    //     // }
-
-    //   });
+   
   }
 
 
 
 
   getVisitDetails() {
-    // this.Quantity.nativeElement.focus();
-    // setTimeout(() => this.Quantity.nativeElement.focus(), 1000);
+  
     const dialogRef = this._matDialog.open(VisitDetailsComponent,
       {
         maxWidth: "800px",
@@ -1325,16 +1318,14 @@ console.log(this._AppointmentSreviceService.myFilterform.get("DoctorId").value)
         disableClose: true,
         data: {
           "VisitId": this.VisitId// 159641
-          // "StoreId": this._salesService.IndentSearchGroup.get('StoreId').value.storeid
+          
         }
       });
     dialogRef.afterClosed().subscribe(result => {
 
       this.VisitFlag = 1;
       this.DoctorId = result.DoctorId;
-      // this.BatchNo = result.BatchNo;
-
-
+    
       const toSelectDept = this.DepartmentList.find(c => c.Departmentid == result.DepartmentId);
       this.VisitFormGroup.get('Departmentid').setValue(toSelectDept);
 

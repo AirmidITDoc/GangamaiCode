@@ -311,10 +311,16 @@
                                     <!-- <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur">
                                         <div class="spinner-border"></div>
                                     </div> -->
-                                    <button mat-raised-button *ngIf="selection.selected.length>0"
-                                        (click)="chkresultentry()">
+                                    <!-- *ngIf="selection.selected.length>0" -->
+                                    <button mat-raised-button 
+                                        (click)="chkresultentry(selection.selected)">
                                       Result entry
                                     </button>
+                                    <!-- <button mat-raised-button 
+                                    (click)="Printresultentry(selection.selected)">
+                                          Print Result entry
+                                     </button> -->
+
                                     <mat-table class="mat-table-2 h-210" #table matSort [dataSource]="dataSource1" [@animateStagger]="{value:'50'}">
 
                                       
@@ -328,11 +334,33 @@
                                             </th>
                                             <td mat-cell *matCellDef="let contact">
                                                 <mat-checkbox (click)="$event.stopPropagation()" (change)="onresultentryshow($event,contact)"
-                                                    (change)="$event ? selection.toggle(contact) : null" *ngIf="contact.IsTemplateTest !='1'" 
+                                                    (change)="$event ? selection.toggle(contact) : null" *ngIf="contact.IsTemplateTest !='1' else noMLC" 
                                                     [checked]="selection.isSelected(contact)">
                                                 </mat-checkbox>
+                                                 <ng-template #noMLC>
+                                                    <span>----</span>
+                                                </ng-template>
                                             </td>
                                         </ng-container>
+
+                                        <!-- <ng-container matColumnDef="select" sticky>
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-50">
+                                                <span class="material-icons" (click)="getResultList()">
+                                                    cached
+                                                </span>
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" class="w-50">
+                                                <mat-checkbox aria-label="Checked" (change)="onresultentryshow($event,contact)" *ngIf="contact.IsTemplateTest !='1' else noMLC" >
+                                                </mat-checkbox>
+                                                <ng-template #noMLC>
+                                                    <span>----</span>
+                                                </ng-template>
+                                            </mat-cell>
+                                        </ng-container> -->
+
+
+
+
 
                                         <ng-container matColumnDef="IsTemplateTest">
                                             <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-90">IsTemplate</mat-header-cell>
@@ -400,14 +428,14 @@
                                             <mat-header-cell *matHeaderCellDef fxShow.gt-sm>
                                                 Action</mat-header-cell>
                                             <mat-cell *matCellDef="let contact">
-                                                <!-- *ngIf="contact.IsTemplateTest=='1'"  -->
-                                                <button mat-icon-button class="material-icons" (click)="onresultentry(contact)" matTooltip="Result Entry" *ngIf="contact.IsTemplateTest =='1'">
+                                                <!-- *ngIf="contact.IsTemplateTest=='1'" (click)="chkresultentry(contact,$event,contact.select) -->
+                                                <button mat-icon-button class="material-icons"  matTooltip="Result Entry" (click)="chkresultentry(contact,false)">
                                                     <mat-icon title="Result Entry">description</mat-icon>
                                                 </button>
 
-                                                <!-- <button mat-icon-button class="material-icons" (click)="(contact,'EMAIL')" matTooltip="Cancel Result">
+                                                <button mat-icon-button class="material-icons" (click)="Cancleresult(contact)" matTooltip="Cancel Result">
                                                     <mat-icon title="Cancel Result">delete_forever</mat-icon>
-                                                </button> -->
+                                                </button>
 
                                                 <button mat-icon-button (click)="getPrint(contact)" matTooltip="Print" *ngIf="contact.IsCompleted">
                                                     <mat-icon>print</mat-icon>

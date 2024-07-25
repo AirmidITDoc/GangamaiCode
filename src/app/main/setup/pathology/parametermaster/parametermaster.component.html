@@ -32,10 +32,10 @@ dynamicTableHeight>
                             <form [formGroup]="_ParameterService.myformSearch">
                                 <div class="dialog-content-wrapper">
                                     <mat-form-field class="mr-sm-12" fxFlex>
-                                        <input matInput placeholder="Search --> Parameter Name" autocomplete="off"
+                                        <input matInput placeholder="Search --> Parameter Name" autocomplete="off" (keyup)="onSearch()"
                                             name="ParameterNameSearch" formControlName="ParameterNameSearch" />
                                         <button mat-button matSuffix mat-icon-button aria-label="Clear"
-                                            (click)="onSearchClear()" (keyup)=" onSearch()">
+                                            (click)="onSearchClear()">
                                             <mat-icon>close</mat-icon>
                                         </button>
                                     </mat-form-field>
@@ -47,9 +47,9 @@ dynamicTableHeight>
                                         <mat-radio-button mat-fab value="1">IsDeactive</mat-radio-button>
                                     </mat-radio-group>
 
-                                    <button mat-raised-button (click)="onSearch()" fxLayoutAlign="center center">
+                                   
+                                    <button type="button" mat-raised-button class="searchButton" (click)="onSearch()"  matTooltip="search">
                                         <mat-icon>search</mat-icon>
-                                        Search
                                     </button>
                                 </div>
                             </form>

@@ -256,15 +256,17 @@ var data={
 
   getPrint() {
     if (this.ReportName == 'Pharmacy Daily Collection') {
-      this.viewDailyCollectionPdf();
+      this.viewparmacyDailyCollectionPdf();
     } else if (this.ReportName == 'Pharmacy Daily Collection Summary') {
       this.viewDailyCollectionSummaryPdf();
     } else if (this.ReportName == 'Sales Summary Report') {
       this.viewgetsalesSummaryReportPdf();
     } else if (this.ReportName == 'Sales Patient Wise Report') {
       this.viewgetSalesPatientWiseReportPdf();
+    // } else if (this.ReportName == 'Sales Return Summary Report') {
+    //   this.viewgetSalesReturnReportPdf();
     } else if (this.ReportName == 'Sales Return Summary Report') {
-      this.viewgetSalesReturnReportPdf();
+      this.viewgetSalesReturnsummaryReportPdf();
     } else if (this.ReportName == 'Sales Return PatientWise Report') {
       this.viewgetSalesReturnPatientwiseReportPdf();
     } else if (this.ReportName == 'Sales Credit Report') {
@@ -282,7 +284,7 @@ var data={
 
 
 
-  viewDailyCollectionPdf() {
+  viewparmacyDailyCollectionPdf() {
     debugger
     let AddUserId = 0;
     if (this._BrowsSalesBillService.userForm.get('UserId').value)
@@ -297,7 +299,7 @@ var data={
       this.sIsLoading = 'loading-data';
       this.AdList = true;
       
-      this._PharmacyreportService.getSalesDailyCollectionNew(
+      this._PharmacyreportService.getPharmacyDailyCollectionNew(
         this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
         this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
         storeId , AddUserId
@@ -477,11 +479,11 @@ var data={
   }
 
 
-  viewgetSalesReturnReportPdf() {
+  viewgetSalesReturnsummaryReportPdf() {
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
       this.AdList = true;
-      this._PharmacyreportService.getSalesReturn(
+      this._PharmacyreportService.getSalesReturnsummary(
         this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
         this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900', 0, 0,
         this._loggedUser.currentUserValue.user.storeId

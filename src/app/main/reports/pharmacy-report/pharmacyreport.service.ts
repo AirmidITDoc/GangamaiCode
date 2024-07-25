@@ -37,7 +37,7 @@ export class PharmacyreportService {
   }
 
 
-  public getSalesDailyCollectionNew(FromDate,ToDate,StoreId,AddedById){
+  public getPharmacyDailyCollectionNew(FromDate,ToDate,StoreId,AddedById){
     return this._httpClient.get("Sales/view-pharmacy-daily-collection?FromDate=" +  FromDate + "&ToDate=" + ToDate+"&StoreId="+StoreId+"&AddedById="+AddedById);
   }
 
@@ -53,8 +53,8 @@ export class PharmacyreportService {
     return this._httpClient.get("Sales/view-Sales_Report_PatientWiseNew?FromDate=" + FromDate + "&ToDate="+ToDate + "&SalesFromNumber="+SalesFromNumber+"&SalesToNumber="+SalesToNumber+"&AddedBy="+AddedBy+"&StoreId="+StoreId);
   }
 
-  public getSalesReturn(FromDate,ToDate,SalesFromNumber,SalesToNumber,StoreId){
-    return this._httpClient.get("Sales/view-SalesReturn_Report?FromDate=" + FromDate+"&ToDate="+ToDate+"&SalesFromNumber="+SalesFromNumber+"&SalesToNumber="+SalesToNumber+"&StoreId="+StoreId);
+  public getSalesReturnsummary(FromDate,ToDate,SalesFromNumber,SalesToNumber,StoreId){
+    return this._httpClient.get("Sales/view-SalesReturnSummary_Report?FromDate=" + FromDate+"&ToDate="+ToDate+"&SalesFromNumber="+SalesFromNumber+"&SalesToNumber="+SalesToNumber+"&StoreId="+StoreId);
   }
 
 
@@ -64,6 +64,9 @@ export class PharmacyreportService {
   public getSalesReturnPatientwise(FromDate,ToDate,SalesFromNumber,SalesToNumber,StoreId){
     return this._httpClient.get("Sales/view-SalesReturn_Patientwise_Report?FromDate=" + FromDate+"&ToDate="+ToDate+"&SalesFromNumber="+SalesFromNumber+"&SalesToNumber="+SalesToNumber+"&StoreId="+StoreId);
   }
+
+  
+
 
   public getSalesCashBook(FromDate,ToDate,PaymentMode,StoreId){
     return this._httpClient.get("Sales/view-PharSalesCashBookReport?FromDate=" + FromDate + "&ToDate=" + ToDate + "&PaymentMode=" + PaymentMode + "&StoreId="+StoreId);

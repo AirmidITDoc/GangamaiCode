@@ -25,6 +25,7 @@ import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatButtonModule } from "@angular/material/button";
 import { ParameterFormMasterComponent } from './parameter-form-master/parameter-form-master.component';
+import { MatAutocompleteModule } from "@angular/material/autocomplete";
 
 const routes: Routes = [
     {
@@ -55,6 +56,7 @@ const routes: Routes = [
         MatSnackBarModule,
         FuseSharedModule,
         FuseConfirmDialogModule,
+        MatAutocompleteModule,
         FuseSidebarModule,
         CommonModule,
         MatExpansionModule,

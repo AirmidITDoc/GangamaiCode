@@ -38,14 +38,14 @@ export class ResultEntryComponent implements OnInit {
   displayedColumns: string[] = [
     'OP_Ip_Type',
     'Date',
-   // 'Time',
+    // 'Time',
     'RegNo',
     'PatientName',
     'DoctorName',
     'PatientType',
     'PBillNo',
     'GenderName',
-    'AgeYear',  
+    'AgeYear',
     'action'
   ];
 
@@ -76,8 +76,11 @@ export class ResultEntryComponent implements OnInit {
   PatientName: any;
   OPD_IPD: any;
   Age: any;
-  PatientType: any; 
+  PatientType: any;
   dateTimeObj: any;
+  chargeslist = [];
+  resultSource = [];
+
   setStep(index: number) {
     this.step = index;
   }
@@ -85,15 +88,18 @@ export class ResultEntryComponent implements OnInit {
 
 
   @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator; 
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  dataSource = new MatTableDataSource<PatientList>(); 
+  dataSource = new MatTableDataSource<PatientList>();
   dataSource1 = new MatTableDataSource<SampleList>();
+  // resultSource = new MatTableDataSource<SampleList>();
+
+
   @ViewChild(MatPaginator) PathTestpaginator: MatPaginator;
 
   displayedColumns1: string[] = [
-    'select', 
-    'IsCompleted', 
+    'select',
+    'IsCompleted',
     'IsTemplateTest',
     'TestName',
     'SampleCollectionTime',
@@ -107,7 +113,7 @@ export class ResultEntryComponent implements OnInit {
   constructor(
 
     private formBuilder: FormBuilder,
-    public _SampleService: ResultEntryService, 
+    public _SampleService: ResultEntryService,
     public datePipe: DatePipe,
     private reportDownloadService: ExcelDownloadService,
     public _matDialog: MatDialog,
@@ -115,7 +121,10 @@ export class ResultEntryComponent implements OnInit {
     private accountService: AuthenticationService,
     public toastr: ToastrService,
     private _fuseSidebarService: FuseSidebarService,
-  ) { }
+  ) {
+
+    this.selection.clear();
+  }
 
 
   ngOnInit(): void {
@@ -159,9 +168,9 @@ export class ResultEntryComponent implements OnInit {
     }
   }
 
- 
-  
-  getPatientsList() { 
+
+
+  getPatientsList() {
     this.dataSource1.data = [];
     this.sIsLoading = 'loading-data';
     var m_data = {
@@ -173,7 +182,7 @@ export class ResultEntryComponent implements OnInit {
       "IsCompleted": parseInt(this._SampleService.myformSearch.get("StatusSearch").value) || 0,
       "OP_IP_Type": parseInt(this._SampleService.myformSearch.get("PatientTypeSearch").value) || 0,
     }
-console.log(m_data)
+
     this._SampleService.getPatientList(m_data).subscribe(Visit => {
       this.dataSource.data = Visit as PatientList[];
       this.dataSource.sort = this.sort;
@@ -196,16 +205,16 @@ console.log(m_data)
       return false;
     }
   }
-  
+
   onSearchClear() {
     this._SampleService.myformSearch.reset({ RegNoSearch: '', FirstNameSearch: '', LastNameSearch: '', PatientTypeSearch: '', StatusSearch: '' });
   }
 
   // for sampledetails tablemyformSearch
-  onEdit(m) { 
-    console.log(m); 
-    this.reportPrintObj=m
-    console.log(this.reportPrintObj); 
+  onEdit(m) {
+
+    this.reportPrintObj = m
+
     this.PatientName = m.PatientName;
     this.OPD_IPD = m.OP_IP_No
     this.Age = m.AgeYear
@@ -220,8 +229,7 @@ console.log(m_data)
       "OP_IP_Type": m.OPD_IPD_Type,
       "From_Dt": this.datePipe.transform(m.PathDate, "yyyy-MM-dd"),
     }
-    console.log(m_data);
-    
+
     this._SampleService.getSampleList(m_data).subscribe(Visit => {
       this.dataSource1.data = Visit as SampleList[];
       console.log(this.dataSource1.data);
@@ -237,17 +245,17 @@ console.log(m_data)
 
   }
 
-  SearchTest($event) { 
+  SearchTest($event) {
     var m_data = {
       "BillNo": this.SBillNo,
       "OP_IP_Type": this.SOPIPtype,
       "IsCompleted": this._SampleService.myformSearch.get("TestStatusSearch").value || 0,
-    
+
     }
-    
+
     this._SampleService.getTestList(m_data).subscribe(Visit => {
       this.dataSource1.data = Visit as SampleList[];
-     this.dataSource1.sort = this.sort;
+      this.dataSource1.sort = this.sort;
       this.dataSource1.paginator = this.paginator;
       this.sIsLoading = '';
       this.click = false;
@@ -257,125 +265,159 @@ console.log(m_data)
       });
   }
 
+  selection = new SelectionModel<SampleList>(true, []);
+  masterToggle() {
+    // if there is a selection then clear that selection
+    if (this.isSomeSelected()) {
+      this.selection.clear();
+    } else {
+      this.isAllSelected()
+        ? this.selection.clear()
+        : this.dataSource1.data.forEach(row => this.selection.select(row));
+    }
+
+    this.resultSource.push(this.selection);
+    console.log(this.resultSource)
+  }
+
+  isSomeSelected() {
+    // console.log(this.selection.selected);
+    return this.selection.selected.length > 0;
+  }
+
 
   isAllSelected() {
-    
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource1.data.length;
 
-     return numSelected === numRows;
-    
+    return numSelected === numRows;
   }
 
+  chkresultentry(contact) {
 
-  selection = new SelectionModel<Templateprintdetail>(true, []);
-  
-  chkresultentry(){
     debugger
-    setTimeout(() => {
-      // this.SpinLoading = true;
-      let data=[];
-      this.selection.selected.forEach(element => {
-        if(element.PathTestServiceId !=0)
-        data.push({PathReportId:element["PathReportID"].toString(),ServiceId:element["ServiceId"].toString()});
-      });
-      console.log(data)
-      console.log(this.advanceDataStored.storage)
-      const dialogRef = this._matDialog.open(ResultEntryOneComponent,
-        {
-          maxWidth: "95vw",
-          height: '670px',
-          width: '90%',
-          data: {
-            RIdData:data,
-            patientdata:this.reportPrintObj,
-            OPIPID:this.OPIPID
-          }
-        });
-      dialogRef.afterClosed().subscribe(result => {
-        this.SpinLoading = false;
-      });
-      dialogRef.afterClosed().subscribe(result => {
-        this.SpinLoading = false;
-      });
-    }, 100);
-  }
-
-OPIPID:any=0;
-  onresultentryshow(event,m){
-    this.OPIPID=m.OPD_IPD_ID
-    this.advanceDataStored.storage = new SampleDetailObj(m); 
-    console.log(this.advanceDataStored.storage )
-    if(event.checked){
-    if(m.PathTestServiceId==0){
-      this.toastr.warning('Result Not Generated !', 'Warning !', {
+    if (this.selection.selected.length == 0) {
+      this.toastr.warning('CheckBox Select !', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
+    else {
 
+      setTimeout(() => {
+
+        let data = [];
+        this.selection.selected.forEach(element => {
+          console.log(element)
+          data.push({ PathReportId: element["PathReportID"].toString(), ServiceId: element["ServiceId"].toString(), IsCompleted: element["IsCompleted"].toString() });
+        });
+        console.log(data)
+
+        const dialogRef = this._matDialog.open(ResultEntryOneComponent,
+          {
+            maxWidth: "95vw",
+            height: '670px',
+            width: '90%',
+            data: {
+              RIdData: data,
+              patientdata: this.reportPrintObj,
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          this.SpinLoading = false;
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          this.SpinLoading = false;
+        });
+      }, 100);
+
+    }
+    // this.selection.clear();
+    // this.selection.selected.length=0;
   }
+
+
+
+  // getResultList(contact){
+
+  // }
+
+
+  OPIPID: any = 0;
+  onresultentryshow(event, m) {
+    this.OPIPID = m.OPD_IPD_ID
+    this.advanceDataStored.storage = new SampleDetailObj(m);
+    console.log(this.advanceDataStored.storage)
+    if (event.checked) {
+      if (m.PathTestServiceId == 0) {
+        this.toastr.warning('This Test Not Created !', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+
+    }
   }
 
 
 
   // for sample detail table to resultentry page
-  PathTestServiceId:any=0;
-  onresultentry(m) {
+  // PathTestServiceId:any=0;
+  // onresultentry(m) {
+  //   debugger
+  //   console.log(m);
+
+  //   this.advanceDataStored.storage = new SampleDetailObj(m); 
+  //   this.PathTestServiceId=m.PathTestServiceId;
+  //   console.log(m);
+
+  //   if (m.IsTemplateTest == 1) {
+  //     this.advanceDataStored.storage = new SampleDetailObj(m);
+  //     const dialogRef = this._matDialog.open(ResultEntrytwoComponent,
+  //       {
+  //         maxWidth: "90%",
+  //         height: '95%',
+  //         width: '100%',
+  //         data:this.reportPrintObj,
+  //         // data: {
+  //         //   RIdData:data,
+  //         //   patientdata:this.advanceDataStored.storage,
+  //         //   OPIPID:this.OPIPID
+  //         // }
+  //       });
+
+
+  //     dialogRef.afterClosed().subscribe(result => {
+  //       console.log('Pathology Template  Saved ..', result);
+  //     });
+  //   }
+  //   else {
+  //     this.advanceDataStored.storage = new SampleDetailObj(m);
+  //     const dialogRef = this._matDialog.open(ResultEntryOneComponent,
+  //       {
+  //         maxWidth: "95vw",
+  //         height: '670px',
+  //         width: '70%',
+  //         data: {
+  //          data : m
+  //         }
+  //       });
+  //     dialogRef.afterClosed().subscribe(result => {
+  //       console.log('PathologyResult Saved ..', result);
+  //     });
+  //   }
+  // }
+
+
+  Cancleresult(contact) { }
+
+  getPrint(contact) {
     debugger
-    console.log(m);
-    
-    this.advanceDataStored.storage = new SampleDetailObj(m); 
-    this.PathTestServiceId=m.PathTestServiceId;
-    console.log(m);
-  
-    if (m.IsTemplateTest == 1) {
-      this.advanceDataStored.storage = new SampleDetailObj(m);
-      const dialogRef = this._matDialog.open(ResultEntrytwoComponent,
-        {
-          maxWidth: "90%",
-          height: '95%',
-          width: '100%',
-          data:this.reportPrintObj,
-          // data: {
-          //   RIdData:data,
-          //   patientdata:this.advanceDataStored.storage,
-          //   OPIPID:this.OPIPID
-          // }
-        });
-
-
-      dialogRef.afterClosed().subscribe(result => {
-        console.log('Pathology Template  Saved ..', result);
-      });
-    }
-    else {
-      this.advanceDataStored.storage = new SampleDetailObj(m);
-      const dialogRef = this._matDialog.open(ResultEntryOneComponent,
-        {
-          maxWidth: "95vw",
-          height: '670px',
-          width: '70%',
-          data: {
-           data : m
-          }
-        });
-      dialogRef.afterClosed().subscribe(result => {
-        console.log('PathologyResult Saved ..', result);
-      });
-    }
-  }
-
- 
- 
- 
-  getPrint(contact){
-    debugger
-    if(contact.IsTemplateTest)
+    if (contact.IsTemplateTest)
       this.viewgetPathologyTemplateReportPdf(contact)
     else
-    this.viewgetPathologyTestReportPdf(contact)
-      }
+      this.viewgetPathologyTestReportPdf(contact)
+  }
 
   AdList: boolean = false;
   viewgetPathologyTemplateReportPdf(contact) {
@@ -383,7 +425,7 @@ OPIPID:any=0;
       this.SpinLoading = true;
       this.AdList = true;
       this._SampleService.getPathTempReport(
-        contact.PathReportID,contact.OPD_IPD_Type
+        contact.PathReportID, contact.OPD_IPD_Type
       ).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,
           {
@@ -395,10 +437,10 @@ OPIPID:any=0;
               title: "Pathology Template  Viewer"
             }
           });
-          dialogRef.afterClosed().subscribe(result => {
-            this.AdList=false;
-            this.SpinLoading = false;
-          });
+        dialogRef.afterClosed().subscribe(result => {
+          this.AdList = false;
+          this.SpinLoading = false;
+        });
       });
 
     }, 100);
@@ -424,20 +466,20 @@ OPIPID:any=0;
               title: "pathology Test  Viewer"
             }
           });
-          dialogRef.afterClosed().subscribe(result => {
-            this.AdList=false;
-            this.SpinLoading = false;
-          });
+        dialogRef.afterClosed().subscribe(result => {
+          this.AdList = false;
+          this.SpinLoading = false;
+        });
       });
 
     }, 100);
   }
 
 
- 
-  exportResultentryReportExcel(){
+
+  exportResultentryReportExcel() {
     this.sIsLoading == 'loading-data'
-    let exportHeaders = ['Date', 'Time', 'RegNo', 'PatientName', 'DoctorName', 'PatientType', 'PBillNo','GenderName','AgeYear','PathDues'];
+    let exportHeaders = ['Date', 'Time', 'RegNo', 'PatientName', 'DoctorName', 'PatientType', 'PBillNo', 'GenderName', 'AgeYear', 'PathDues'];
     this.reportDownloadService.getExportJsonData(this.dataSource.data, exportHeaders, 'Result Entry');
     this.dataSource.data = [];
     this.sIsLoading = '';
@@ -459,7 +501,7 @@ OPIPID:any=0;
       // tempObj.push(e.PathAmount);
       actualData.push(tempObj);
     });
-    let headers = [['Date', 'Time', 'RegNo', 'DoctorName', 'PatientType', 'PBillNo', 'GenderName','AgeYear','PathAmount']];
+    let headers = [['Date', 'Time', 'RegNo', 'DoctorName', 'PatientType', 'PBillNo', 'GenderName', 'AgeYear', 'PathAmount']];
     this.reportDownloadService.exportPdfDownload(headers, actualData, 'Result Entry');
   }
 
@@ -467,8 +509,8 @@ OPIPID:any=0;
 
 
   onClose() {
-    
-  } 
+
+  }
   onShow(event: MouseEvent) {
     // this.click = false;// !this.click;
     this.click = !this.click;
@@ -489,7 +531,7 @@ OPIPID:any=0;
 
   onsamplecolltion(contact) {
     console.log(contact)
-   
+
     this.advanceDataStored.storage = new AdvanceDetailObj(contact);
 
     const dialogRef1 = this._matDialog.open(SampledetailtwoComponent,
@@ -498,9 +540,9 @@ OPIPID:any=0;
         height: '80vh',
         width: '100%',
         data: {
-         
-          regobj:contact
-        } 
+
+          regobj: contact
+        }
       });
 
     dialogRef1.afterClosed().subscribe(result => {
@@ -508,9 +550,9 @@ OPIPID:any=0;
       // this.getPatientsList();
     });
   }
-  
 
-  onClear() { 
+
+  onClear() {
     this._SampleService.myformSearch.get('FirstNameSearch').reset();
     this._SampleService.myformSearch.get('LastNameSearch').reset();
     this._SampleService.myformSearch.get('RegNoSearch').reset();
@@ -540,8 +582,8 @@ export class PatientList {
     this.PatientType = PatientList.PatientType || '0';
     this.DoctorName = PatientList.DoctorName || 1;
     this.AgeYear = PatientList.AgeYear || 0;
-    this.GenderName = PatientList.GenderName;  
-  } 
+    this.GenderName = PatientList.GenderName;
+  }
 }
 
 export class SampleList {
@@ -603,14 +645,14 @@ export class SampleDetailObj {
   PathTime: any;
   PathResultDr1: any;
   PathTestID: any;
-  OP_IP_No:any;
+  OP_IP_No: any;
   DepartmentName: any;
-  CompanyName:any;
-  IPDNo:any;
-  PatientType:any;
-  RefDocName:any;
-  ServiceId:any;
-  ChargeId:any;
+  CompanyName: any;
+  IPDNo: any;
+  PatientType: any;
+  RefDocName: any;
+  ServiceId: any;
+  ChargeId: any;
 
   /**
   * Constructor
@@ -620,12 +662,12 @@ export class SampleDetailObj {
   constructor(SampleDetailObj) {
     {
       this.RegNo = SampleDetailObj.RegNo || 0;
-      this.AdmissionID = SampleDetailObj.AdmissionID || '';   
-      this.RefDocName = SampleDetailObj.RefDocName || '';  
-      this.CompanyName = SampleDetailObj.CompanyName || '';  
-      this.IPDNo = SampleDetailObj.IPDNo || ''; 
-      this.DepartmentName = SampleDetailObj.DepartmentName || ''; 
-      this.PatientType = SampleDetailObj.PatientType || ''; 
+      this.AdmissionID = SampleDetailObj.AdmissionID || '';
+      this.RefDocName = SampleDetailObj.RefDocName || '';
+      this.CompanyName = SampleDetailObj.CompanyName || '';
+      this.IPDNo = SampleDetailObj.IPDNo || '';
+      this.DepartmentName = SampleDetailObj.DepartmentName || '';
+      this.PatientType = SampleDetailObj.PatientType || '';
       this.OP_IP_No = SampleDetailObj.OP_IP_No || '';
       this.PatientName = SampleDetailObj.PatientName || '';
       this.Doctorname = SampleDetailObj.Doctorname || '';
@@ -660,7 +702,7 @@ export class SampleDetailObj {
       this.PathTime = SampleDetailObj.PathTime || '';
       this.PathTestID = SampleDetailObj.PathTestID || 0;
       this.ServiceId = SampleDetailObj.ServiceId || 0;
-      this.ChargeId=SampleDetailObj.ChargeId || 0
+      this.ChargeId = SampleDetailObj.ChargeId || 0
 
     }
   }
@@ -699,7 +741,7 @@ export class Templateprintdetail {
   Visit_Adm_ID: any;
   ReportDate: Date;
   PathTemplateDetailsResult: any;
-  PathTestServiceId:any;
+  PathTestServiceId: any;
   /**
    * Constructor
    *
@@ -740,7 +782,7 @@ export class Templateprintdetail {
       this.Visit_Adm_ID = Templateprintdetail.Visit_Adm_ID || '';
       this.ReportDate = Templateprintdetail.ReportDate || '';
       this.PathTemplateDetailsResult = Templateprintdetail.PathTemplateDetailsResult || '';
-      this.PathTestServiceId=Templateprintdetail.PathTestServiceId|| 0
+      this.PathTestServiceId = Templateprintdetail.PathTestServiceId || 0
     }
   }
 

@@ -14,6 +14,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { AdmissionModule } from 'app/main/ipd/Admission/admission/admission.module';
 import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
 import moment from 'moment';
+import { SelectionModel } from '@angular/cdk/collections';
 
 @Component({
   selector: 'app-sampledetailtwo',
@@ -31,7 +32,7 @@ export class SampledetailtwoComponent implements OnInit {
   isLoading: String = '';
 Currentdate:any;
   displayedColumns: string[] = [
-    'checkbox',
+    'select',
     // 'VADate',
     'ServiceName',
     // 'IsSampleCollection',
@@ -126,7 +127,7 @@ this.date = now.toISOString().slice(0,16);
       }
       this.samplelist.push(element);
     }
-    // console.log(this.samplelist);
+    
   }
   getSampledetailList() { 
     let OPIP
@@ -158,10 +159,11 @@ this.date = now.toISOString().slice(0,16);
 
   onSave() { 
     this.isLoading = 'save'; 
-    if(!this.interimArray.length){
+    if(this.selection.selected.length==0){
       Swal.fire('Error !', 'Please select sample data', 'error');
       return;
     }
+
     let updatesamcollection = []; 
 
     this.samplelist.forEach((element) => {
@@ -191,85 +193,35 @@ this.date = now.toISOString().slice(0,16);
     }); 
     this.isLoading = ''; 
   } 
-  // onLABSave() {
-  //   this.sIsLoading = 'submit';
+  
+  
+  selection = new SelectionModel<SampleList>(true, []);
+  masterToggle() {
+    // if there is a selection then clear that selection
+    if (this.isSomeSelected()) {
+      this.selection.clear();
+    } else {
+      this.isAllSelected()
+        ? this.selection.clear()
+        : this.dataSource.data.forEach(row => this.selection.select(row));
+    }
 
-  //   let BillDetail = {};
-  //   BillDetail['emergencyFlag'] = "0",
-  //     BillDetail['billTotalAmount'] = "";
-  //   BillDetail['advance'] = "0";
-  //   BillDetail['billDate'] = "";
-  //   BillDetail['paymentType'] = "CREDIT";
-  //   BillDetail['referralName'] = " ";
-  //   BillDetail['otherReferral'] = "";
-  //   BillDetail['sampleId'] = "";
-  //   BillDetail['orderNumber'] = " ";
-  //   BillDetail['referralIdLH'] = "";
-  //   BillDetail['organisationName'] = "";
-  //   BillDetail['billConcession'] = "0",
-  //     BillDetail['additionalAmount'] = "0",
-  //     BillDetail['organizationIdLH'] = "440132",
-  //     BillDetail['comments'] = "CGHS";
+    this.samplelist.push(this.selection);
+  }
 
-  //   let testList = [];
-  //   this.samplelist.forEach((element) => {
-  //     let testListInsertObj = {};
-  //     testListInsertObj['testCode'] = element.ServiceName;
-  //     testList.push(testListInsertObj);
-  //   });
-  //   BillDetail["testList"] = testList;
+  isSomeSelected() {
+   
+    return this.selection.selected.length > 0;
+  }
 
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
 
+     return numSelected === numRows;
+    
+  }
 
-  //   let paymentListarr = [];
-  //   let paymentList = {};
-  //   paymentList['paymentType'] = "CREDIT",
-  //   paymentList['paymentAmount'] = "";
-  //   paymentList['chequeNo'] = "";
-  //   paymentList['issueBank'] = "";
-  //   paymentListarr.push(paymentList);
-
-
-  //   BillDetail["paymentList"] = paymentListarr;
-
-  //   let submitData = {
-  //     "mobile": "",
-  //     "email": "",
-  //     "designation": "Mr.",
-  //     "fullName": "AirmidTest",//this.dataSource.data[0].PatientName,
-  //     "age": 81,
-  //     "gender": "Female",
-  //     "area": "",
-  //     "city": "",
-  //     "patientType": "IPD",
-  //     "labPatientId": "HISPATIENTID",
-  //     "pincode": " ",
-  //     "patientId": "",
-  //     "dob": "",
-  //     "passportNo": "",
-  //     "panNumber": "",
-  //     "aadharNumber": "",
-  //     "insuranceNo": "",
-  //     "nationalityethnicity": "",
-  //     "ethnicity": "",
-  //     "nationalIdentityNumber": "",
-  //     "workerCode": "w12",
-  //     "doctorCode": "",
-  //     "billDetails": BillDetail
-     
-
-  //   };
-  //   console.log(submitData);
-  //   this._SampleService.InsertLabDetail(submitData).subscribe(response => {
-  //     if (response) {
-  //       Swal.fire('Lab Detail Send Successfully !', 'success').then((result) => {
-  //       });
-  //     } else {
-  //       Swal.fire('Error !', 'Lab Detail  not Send', 'error');
-  //     }
-  //     this.sIsLoading = '';
-  //   });
-  // }
 
   onClose() {
     this.dialogRef.close(); 
