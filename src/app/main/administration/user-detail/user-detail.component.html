@@ -33,7 +33,7 @@
                                     <div class="user-form-col gap-8" fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
 
                                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
-                                            <mat-form-field appearance="outline" style="width:614px;">
+                                            <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Unit Name </mat-label>
                                                 <mat-select formControlName="HospitalId" required #hname
                                                     (keydown)="onEnterUnit($event)">
@@ -200,10 +200,14 @@
                                             </mat-form-field>
                                         </div>
                                     </div>
-                                    <div class="user-form-col gap-8 py-12" fxFlexFill fxLayout="column"
+                                    <div class="user-form-col gap-8" fxFlexFill fxLayout="column"
                                         fxLayout.gt-xs="row">
-                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%" *ngIf="docflag">
-                                            <mat-form-field appearance="outline" fxFlex>
+                                      
+                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%" >
+                                            <mat-checkbox formControlName="IsDoctor" (change)="chkdoctor($event)" style="padding: 10px;">IsDoctor
+                                            </mat-checkbox>&nbsp;
+                                            
+                                            <mat-form-field appearance="outline" fxFlex *ngIf="docflag">
                                                 <mat-label>Docotor Name</mat-label>
                                                 <input matAutocompletePosition="below" type="text"
                                                     placeholder="Select RoleName" matInput #docname
@@ -224,6 +228,29 @@
                                                 </mat-autocomplete>
                                             </mat-form-field>
                                         </div>
+                                        <!-- <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%" *ngIf="docflag"> 
+
+                                            <mat-form-field appearance="outline" fxFlex >
+                                                <mat-label>Docotor Name</mat-label>
+                                                <input matAutocompletePosition="below" type="text"
+                                                    placeholder="Select RoleName" matInput #docname
+                                                    formControlName="DoctorId" [matAutocomplete]="autoDocName" required
+                                                    (keydown)="onEnterdocName($event)">
+                                                <span matSuffix style="display: flex;">
+                                                    <mat-icon class="mat-icon-close"
+                                                        (click)="UserForm.get('DoctorId').setValue(''); isDoctorSelected = false;">close</mat-icon>
+                                                    <mat-icon class="mat-icon-close"
+                                                        (click)="UserForm.get('DoctorId').setValue(''); isDoctorSelected = false;">search</mat-icon>
+                                                </span>
+                                                <mat-autocomplete #autoDocName="matAutocomplete"
+                                                    [displayWith]="getOptionTextDoctorName">
+                                                    <mat-option *ngFor="let option of filteredOptionsDoctorName| async"
+                                                        [value]="option">
+                                                        {{option.DoctorName}}
+                                                    </mat-option>
+                                                </mat-autocomplete>
+                                            </mat-form-field>
+                                        </div> -->
 
                                       
 
@@ -242,16 +269,9 @@
                                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%"> 
                                         
                                             <div fxLayoutAlign="start center" fxLayoutAlign="space-between center" style="padding-top: 10px;">
-                                                <mat-checkbox formControlName="PharExpOpt" [(ngModel)]="vPharExpOpt">PharExpOpt
-                                                </mat-checkbox>
-                                                <mat-checkbox formControlName="PharIPOpt" [(ngModel)]="vPharIPOpt">PharIPOpt
-                                                </mat-checkbox>
-                                                <mat-checkbox formControlName="PharOPOpt" [(ngModel)]="vPharOPOpt">PharOPOpt
-                                                </mat-checkbox>
-                                                <mat-checkbox formControlName="IsDoctor" (change)="chkdoctor($event)">IsDoctor
-                                                </mat-checkbox>
-                                                <mat-checkbox formControlName="IsActive" [(ngModel)]="registerObj.IsActive">Active
-                                                </mat-checkbox>
+                                                
+                                                <!-- <mat-checkbox formControlName="IsDoctor" (change)="chkdoctor($event)">IsDoctor
+                                                </mat-checkbox>  -->
                                             </div>
                                         </div>
                                     </div>
@@ -261,21 +281,37 @@
                                             <!-- [checked] -->
                                             <div fxLayout="row wrap" fxLayoutAlign="space-between center"
                                                 class="w-100-p gap-8">
-                                                <mat-checkbox formControlName="Ipoverify"
-                                                    [(ngModel)]="registerObj.IsPOVerify">Incharge
-                                                    PO Verify</mat-checkbox>
-                                                <mat-checkbox formControlName="Poverify"
-                                                    [(ngModel)]="registerObj.IsPOVerify">PO
-                                                    Verify</mat-checkbox>
                                                 <mat-checkbox formControlName="Grnverify"
                                                     [(ngModel)]="registerObj.IsGRNVerify">GRN
                                                     Verify</mat-checkbox>
+                                                <mat-checkbox formControlName="Poverify"
+                                                    [(ngModel)]="registerObj.IsPOVerify">PO
+                                                    Verify</mat-checkbox>
+                                                <mat-checkbox formControlName="Ipoverify"
+                                                    [(ngModel)]="registerObj.IsPOVerify">Incharge
+                                                    PO Verify</mat-checkbox>
+                                               
                                                 <mat-checkbox formControlName="Indentverify"
                                                     [(ngModel)]="registerObj.IsIndentVerify">Indent
                                                     Verify</mat-checkbox>
                                                 <mat-checkbox formControlName="IIverify"
                                                     [(ngModel)]="registerObj.IsInchIndVfy">Incharge
                                                     Indent Verify</mat-checkbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr> 
+                                    <div class="user-form-col py-12" fxLayout="column">
+                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                            <!-- [checked] -->
+                                            <div fxLayout="row wrap" fxLayoutAlign="space-between center"
+                                                class="w-100-p gap-8" fxFlex="50%">
+                                                <mat-checkbox formControlName="PharExpOpt" [(ngModel)]="vPharExpOpt">PharmacyExternalopt
+                                                </mat-checkbox>
+                                                <mat-checkbox formControlName="PharIPOpt" [(ngModel)]="vPharIPOpt">PharmacyIPDopt
+                                                </mat-checkbox>
+                                                <mat-checkbox formControlName="PharOPOpt" [(ngModel)]="vPharOPOpt">PharmacyOPDopt
+                                                </mat-checkbox>  
                                             </div>
                                         </div>
                                     </div>
@@ -287,47 +323,46 @@
                                             </div>
                                             <div class="icon-info-row" fxLayout="column" fxLayout.gt-xs="row">
                                                 <div class="icon-info-col " fxLayout="row wrap" style="row-gap: 4px;">
-                                                    <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">
+                                                    <div fxFlex="25%" fxFlex.xs="50%" fxFlex.sm="50%">
                                                         <mat-checkbox formControlName="CollectionInformation"
                                                             [(ngModel)]="registerObj.IsCollection">
                                                             Collection Information</mat-checkbox>
                                                     </div>
-                                                    <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">
+                                                    <div fxFlex="25%" fxFlex.xs="50%" fxFlex.sm="50%">
                                                         <mat-checkbox formControlName="PatientInformation"
                                                             [(ngModel)]="registerObj.IsPatientInfo">
                                                             PatientInformation</mat-checkbox>
                                                     </div>
-                                                    <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">
+                                                    <div fxFlex="25%" fxFlex.xs="50%" fxFlex.sm="50%">
                                                         <mat-checkbox formControlName="ViewBrowseBill"
                                                             [(ngModel)]="registerObj.ViewBrowseBill">
                                                             ViewBrowseBill</mat-checkbox>
                                                     </div>
-                                                    <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">
+                                                    <div fxFlex="25%" fxFlex.xs="50%" fxFlex.sm="50%">
                                                         <mat-checkbox formControlName="BedStatus"
                                                             [(ngModel)]="registerObj.IsBedStatus">
                                                             Bed Status</mat-checkbox>
                                                     </div>
-                                                    <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">
-
+                                                    <div fxFlex="25%" fxFlex.xs="50%" fxFlex.sm="50%"> 
                                                         <mat-checkbox formControlName="CurrentStock"
                                                             [(ngModel)]="registerObj.IsCurrentStk">
                                                             Is Pharmacy Bal Clearnace
                                                         </mat-checkbox>
                                                     </div>
-                                                    <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">
+                                                    <div fxFlex="25%" fxFlex.xs="50%" fxFlex.sm="50%">
                                                         <mat-checkbox formControlName="IsPharmacyBalClearnace"
                                                             [(ngModel)]="registerObj.IsPharmacyBalClearnace">
                                                             Current Stock
                                                         </mat-checkbox>
                                                     </div>
-                                                    <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">
+                                                    <div fxFlex="25%" fxFlex.xs="50%" fxFlex.sm="50%">
                                                         <mat-checkbox formControlName="IsAddChargeDelete"
                                                             [(ngModel)]="registerObj.IsAddChargeDelete">
                                                             IsAddChargeDelete
                                                         </mat-checkbox>
                                                     </div>
                                                 </div>
-                                                <div class="icon-info-col">
+                                                <div class="icon-info-col" fxLayoutGap="50px">
                                                     <mat-form-field appearance="outline" style="width:150px;">
                                                         <mat-label>Browse Days </mat-label>
                                                         <input name="bdays" formControlName="bdays" matInput
@@ -337,6 +372,9 @@
                                                             bdays is required
                                                         </mat-error>
                                                     </mat-form-field>
+
+                                                    <mat-checkbox formControlName="IsActive" [(ngModel)]="registerObj.IsActive">Active
+                                                    </mat-checkbox>
                                                 </div>
                                             </div>
                                         </div>

@@ -227,18 +227,22 @@ export class SalesReturnBillSettlementComponent implements OnInit {
       this.RegId = ""; 
       this._SelseSettelmentservice.ItemSubform.get('MobileNo').clearValidators(); 
       this._SelseSettelmentservice.ItemSubform.get('MobileNo').updateValueAndValidity(); 
+      this.PatientInformRest();
+      this._SelseSettelmentservice.ItemSubform.get('RegID').setValue('');
     }
     else if (event.value == 'IP') {
       this.OP_IPType = 1;
       this.RegId = ""; 
       this._SelseSettelmentservice.ItemSubform.get('MobileNo').clearValidators(); 
       this._SelseSettelmentservice.ItemSubform.get('MobileNo').updateValueAndValidity(); 
+      this.PatientInformRest();
+      this._SelseSettelmentservice.ItemSubform.get('RegID').setValue('');
     } else {
       this._SelseSettelmentservice.ItemSubform.get('MobileNo').reset();
       this._SelseSettelmentservice.ItemSubform.get('MobileNo').setValidators([Validators.required]);
       this._SelseSettelmentservice.ItemSubform.get('MobileNo').enable(); 
       this._SelseSettelmentservice.ItemSubform.updateValueAndValidity(); 
-      this.OP_IPType = 2;
+      this.OP_IPType = 2; 
     }
   }
  

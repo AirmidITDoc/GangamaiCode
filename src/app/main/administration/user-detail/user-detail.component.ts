@@ -343,6 +343,7 @@ export class UserDetailComponent implements OnInit {
   vEmail:any;
   vStoreId:any;
   vRoleName:any;
+  mobileno:any;
   Save() {
 // debugger
 
@@ -397,7 +398,7 @@ export class UserDetailComponent implements OnInit {
     }
     if (this.vUserId == 0) {
       this.isLoading = 'submit';
-
+      this.mobileno = this.UserForm.get('MobileNo').value.toString();
       var m_data = {
         "loginInsert": {
           "FirstName": this.UserForm.get('FirstName').value || '',
@@ -410,28 +411,30 @@ export class UserDetailComponent implements OnInit {
           "RoleId": this.UserForm.get('RoleId').value.RoleId || 0,
           "isDoctorType": this.UserForm.get('IsDoctor').value || 0,
           "doctorID":  this.DoctorId ,
-          "Status": this.UserForm.get('Status').value || '',
           "isPOVerify": this.UserForm.get('poverify').value || 0,
-          "isPOInchargeVerify": this.UserForm.get('Ipoverify').value || 0,
           "isGRNVerify": this.UserForm.get('Grnverify').value || 0,
-          "isBedStatus": this.UserForm.get('BedStatus').value.DoctorId || 0,
           "isCollection": true,
-          "isIndentVerify": this.UserForm.get('Indentverify').value || 0,
-          "isInchIndVfy": this.UserForm.get('IIverify').value || 0,
-          "CollectionInformation": this.UserForm.get('CollectionInformation').value || '',
+          "isBedStatus": this.UserForm.get('BedStatus').value.DoctorId || 0,
           "isCurrentStk": this.UserForm.get('CurrentStock').value || 0,
           "isPatientInfo": this.UserForm.get('PatientInformation').value || 0,
           "isDateInterval": true,
           "isDateIntervalDays": 0,
           "mailId": this.UserForm.get('MailId').value || 0,
           "MailDomain": " ",// this.UserForm.get('MailDomain').value || 0,
-          // "ViewBrowseBill": this.UserForm.get('ViewBrowseBill').value || 0,
           "addChargeIsDelete": this.UserForm.get('IsAddChargeDelete').value || 0,
-          "IsPharmacyBalClearnace": this.UserForm.get('IsPharmacyBalClearnace').value || 0,
+          "isIndentVerify": this.UserForm.get('Indentverify').value || 0,
+          "isPOInchargeVerify": this.UserForm.get('Ipoverify').value || 0,
+          "isInchIndVfy": this.UserForm.get('IIverify').value || 0,
           "WebRoleId": this.UserForm.get('WebroleId').value.RoleId , 
           "PharExpOpt": this.UserForm.get('PharExpOpt').value || 0,
           "PharIPOpt": this.UserForm.get('PharIPOpt').value || 0,
-          "PharOPOpt": this.UserForm.get('PharOPOpt').value || 0  
+          "PharOPOpt": this.UserForm.get('PharOPOpt').value || 0 ,  
+          "unitId": this.UserForm.get('HospitalId').value.HospitalId || 0,  
+          "mobileNo": this.mobileno
+          //"CollectionInformation": this.UserForm.get('CollectionInformation').value || '', 
+          // "ViewBrowseBill": this.UserForm.get('ViewBrowseBill').value || 0, 
+          //"IsPharmacyBalClearnace": this.UserForm.get('IsPharmacyBalClearnace').value || 0,
+        
         }
       }
 

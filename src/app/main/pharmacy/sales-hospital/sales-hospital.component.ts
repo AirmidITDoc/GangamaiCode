@@ -2125,7 +2125,13 @@ export class SalesHospitalComponent implements OnInit {
     SalesInsert['salesTypeId'] = 0;
     SalesInsert['salesId'] = 0;
     SalesInsert['extMobileNo'] = this.MobileNo || 0;
-    SalesInsert['extAddress'] = this.vextAddress || '';
+    SalesInsert['extAddress'] = this.vextAddress || ''; 
+    if (this.ItemSubform.get('FinalDiscPer').value != 0) {
+      SalesInsert['IsItem_Header_disc'] = 0;
+    } else if (this.ItemSubform.get('FinalDiscPer').value == 0) {
+      SalesInsert['IsItem_Header_disc'] =1;
+    } 
+  
 
     let salesDetailInsertarr = [];
     this.saleSelectedDatasource.data.forEach((element) => {
@@ -2362,6 +2368,11 @@ export class SalesHospitalComponent implements OnInit {
           SalesInsert['salesId'] = 0;
           SalesInsert['extMobileNo'] = this.MobileNo || 0;
           SalesInsert['extAddress'] = this.vextAddress || '';
+          if (this.ItemSubform.get('FinalDiscPer').value != 0) {
+            SalesInsert['IsItem_Header_disc'] = 0;
+          } else if (this.ItemSubform.get('FinalDiscPer').value == 0) {
+            SalesInsert['IsItem_Header_disc'] =1;
+          } 
 
           let salesDetailInsertarr = [];
           this.saleSelectedDatasource.data.forEach((element) => {
@@ -2528,6 +2539,11 @@ export class SalesHospitalComponent implements OnInit {
     salesInsertCredit['salesId'] = 0;
     salesInsertCredit['extMobileNo'] = this.MobileNo || 0;
     salesInsertCredit['extAddress'] = this.vextAddress || '';
+    if (this.ItemSubform.get('FinalDiscPer').value != 0) {
+      salesInsertCredit['IsItem_Header_disc'] = 0;
+    } else if (this.ItemSubform.get('FinalDiscPer').value == 0) {
+      salesInsertCredit['IsItem_Header_disc'] =1;
+    } 
 
     let salesDetailInsertCreditarr = [];
     this.saleSelectedDatasource.data.forEach((element) => {
