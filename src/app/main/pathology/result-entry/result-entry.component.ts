@@ -294,7 +294,7 @@ export class ResultEntryComponent implements OnInit {
   }
 
   chkresultentry(contact) {
-
+  
     debugger
     if (this.selection.selected.length == 0) {
       this.toastr.warning('CheckBox Select !', 'Warning !', {
@@ -305,7 +305,6 @@ export class ResultEntryComponent implements OnInit {
     else {
 
       setTimeout(() => {
-
         let data = [];
         this.selection.selected.forEach(element => {
           console.log(element)
@@ -329,11 +328,11 @@ export class ResultEntryComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
           this.SpinLoading = false;
         });
+        data=[];
       }, 100);
 
     }
-    // this.selection.clear();
-    // this.selection.selected.length=0;
+   
   }
 
 

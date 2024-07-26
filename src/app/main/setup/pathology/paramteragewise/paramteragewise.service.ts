@@ -10,6 +10,10 @@ export class ParamteragewiseService {
     myformSearch: FormGroup;
     myIsNumericform:FormGroup;
     myIsDescriptiveform:FormGroup;
+    is_numeric : Boolean = true;
+    descriptiveList = [];
+    numericList = [];
+
     constructor(
         private _httpClient: HttpClient,
         private _formBuilder: FormBuilder
@@ -69,12 +73,13 @@ export class ParamteragewiseService {
             MinAge:[""],
             MaxAge: [""],
             MinValue: [""],
-            Maxvalue: [""],
-            AgeTypeId:[""],
+            MaxValue: [""],
+            AgeType:[""],
         });  
     }
     createDescriptiveForm(): FormGroup {
         return this._formBuilder.group({
+            ParaId:[""],
             Value:[""],
             DefaultValue: ["", [Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")]],
         });
@@ -168,4 +173,31 @@ export class ParamteragewiseService {
     populateForm(param) {
         this.myform.patchValue(param);
     }
+
+
+    public getTableData(param){
+        if(this.is_numeric) {
+            return this._httpClient.post(
+                "Generic/GetByProc?procName=Rtrv_PathParameterRangeWithAge",
+                { ParameterId: param }
+            ); 
+        }
+        else{
+        return this._httpClient.post(
+            "Generic/GetByProc?procName=Rtrv_PathDescriptiveValues_1",
+            { ParameterId: param }
+        ); 
+    }
+}
+    populateForm1(param) {
+        debugger;
+        this.myform.patchValue(param);
+        this.myform.get("IsPrintDisSummary").setValue(param.IsPrintDisSummary == "false" ? false : true);
+        this.myform.get("IsNumeric").setValue(param.IsNumeric == 1? 1: 2);
+        this.is_numeric = param.IsNumeric == 1? true : false;
+        this.numericList = param.numericList;
+        this.descriptiveList = param.descriptiveList;
+        if (this.descriptiveList[0]?.DefaultValue) this.myform.get("DefaultValue").setValue(this.descriptiveList[0]?.DefaultValue);
+        
+}
 }

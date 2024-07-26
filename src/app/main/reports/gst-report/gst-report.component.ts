@@ -97,11 +97,70 @@ export class GSTReportComponent implements OnInit {
        this.FlagUserSelected = false;
        this.FlagStoreSelected = true;
      } 
-    //  else if (this.ReportName == 'Monthly Purchase(GRN) Report') {
-    //    this.FlagBillNoSelected = false;
-    //    this.FlagUserSelected = false;
-    //    this.FlagDoctorSelected = false;
-    //  } 
+   
+     else if (this.ReportName == 'Purchase GST Report Supplier Wise-GST%') {
+      this.FlagUserSelected = false;
+      this.FlagStoreSelected = true;
+    } 
+    else if (this.ReportName == 'Purchase GST Report Supplier Wise-Without GST%') {
+      this.FlagUserSelected = false;
+      this.FlagStoreSelected = true;
+    } 
+    else if (this.ReportName == 'Purchase GST Report Date Wise') {
+      this.FlagUserSelected = false;
+      this.FlagStoreSelected = true;
+    } 
+    else if (this.ReportName == 'Purchase GST Report - Summary') {
+      this.FlagUserSelected = false;
+      this.FlagStoreSelected = true;
+    } 
+    else if (this.ReportName == 'Purchase Retum GST Report Date Wise Purchase Return GST Report - Summary') {
+      this.FlagUserSelected = false;
+      this.FlagStoreSelected = true;
+    } 
+    else if (this.ReportName == 'Purchase GST Summary') {
+      this.FlagUserSelected = false;
+      this.FlagStoreSelected = true;
+    } 
+    else if (this.ReportName == 'Sales GST Report') {
+      this.FlagUserSelected = false;
+      this.FlagStoreSelected = true;
+    } 
+    else if (this.ReportName == 'Sales GST Date Wise Report') {
+      this.FlagUserSelected = false;
+      this.FlagStoreSelected = true;
+    } 
+    else if (this.ReportName == 'Sales Return GST Report') {
+      this.FlagUserSelected = false;
+      this.FlagStoreSelected = true;
+    } 
+    else if (this.ReportName == 'Sales Return GST Date Wise Report') {
+      this.FlagUserSelected = false;
+      this.FlagStoreSelected = true;
+    } 
+    else if (this.ReportName == 'Sales GST Summary Consolidated') {
+      this.FlagUserSelected = false;
+      this.FlagStoreSelected = true;
+    } 
+    else if (this.ReportName == 'HSN Code Wise Report') {
+      this.FlagUserSelected = false;
+      this.FlagStoreSelected = true;
+    } 
+    else if (this.ReportName == 'GST B2CS Report') {
+      this.FlagUserSelected = false;
+      this.FlagStoreSelected = true;
+    } 
+    else if (this.ReportName == 'GST B2GS Report Consolidated') {
+      this.FlagUserSelected = false;
+      this.FlagStoreSelected = true;
+    }   else if (this.ReportName == 'GSTRZA Purchase Report') {
+      this.FlagUserSelected = false;
+      this.FlagStoreSelected = true;
+    } 
+    else if (this.ReportName == 'GSTR2A Supplier Wise Purchase Report') {
+      this.FlagUserSelected = false;
+      this.FlagStoreSelected = true;
+    } 
     }
 
 
@@ -115,9 +174,54 @@ export class GSTReportComponent implements OnInit {
       else if (this.ReportName == 'Sales Profit Item Wise Summary Report') {
         this.viewgetprofititemwisesummaryPdf();
       }
-      // else if (this.ReportName == 'Monthly Purchase(GRN) Report') {
-      //   this.viewgetMonthlypurchaseGrnPdf();
-      // }
+     
+      else if (this.ReportName == 'Purchase GST Report Supplier Wise-GST%') {
+        this.viewgetpurchasesupplierwisegstPdf();
+     } 
+     else if (this.ReportName == 'Purchase GST Report Supplier Wise-Without GST%') {
+      this.viewgetpurchasesupplierwisewithoutgstPdf();
+     } 
+     else if (this.ReportName == 'Purchase GST Report Date Wise') {
+      this.viewgetpurchasegstdatewisePdf();
+     } 
+     else if (this.ReportName == 'Purchase GST Report - Summary') {
+      this.viewgetpurchasegstsummaryPdf();
+     } 
+     else if (this.ReportName == 'Purchase Retum GST Report Date Wise Purchase Return GST Report - Summary') {
+      this.viewgetpurchasereturngstdatewisePdf();
+     } 
+     else if (this.ReportName == 'Purchase GST Summary') {
+      this.viewgetpurchasegstsummaryPdf();
+     } 
+     else if (this.ReportName == 'Sales GST Report') {
+      this.viewgetSalesGstreportPdf();
+     } 
+     else if (this.ReportName == 'Sales GST Date Wise Report') {
+      this.viewgetSalesGstdatewisereportPdf();
+     } 
+     else if (this.ReportName == 'Sales Return GST Report') {
+      this.viewgetSalesreturngstPdf();
+     } 
+     else if (this.ReportName == 'Sales Return GST Date Wise Report') {
+      this.viewgetSalesreturngstdatewisePdf();
+     } 
+     else if (this.ReportName == 'Sales GST Summary Consolidated') {
+     // this.viewgetSalesreturngstsummconsolidatedPdf();
+     } 
+     else if (this.ReportName == 'HSN Code Wise Report') {
+      this.viewgetHSMCodewisePdf();
+     } 
+     else if (this.ReportName == 'GST B2CS Report') {
+      this.viewgetGSTB2CsPdf();
+     } 
+     else if (this.ReportName == 'GST B2GS Report Consolidated') {
+     // this.viewgetGSTB2CsconsolidatedPdf();
+     }   else if (this.ReportName == 'GSTRZA Purchase Report') {
+      this.viewgeGSTRAZpurchasePdf();
+     } 
+     else if (this.ReportName == 'GSTR2A Supplier Wise Purchase Report') {
+      this.viewgeGSTRAZsuppwelierwisepurchasePdf();
+     } 
 
     }
 
@@ -219,8 +323,461 @@ export class GSTReportComponent implements OnInit {
        }, 100);
      }
   
+     viewgetpurchasesupplierwisegstPdf() {
+      debugger
+      this.sIsLoading = 'loading-data';
+   
+      let storeId =this._loggedUser.currentUserValue.user.storeId;
+      if (this._GstReportService.userForm.get('StoreId').value.StoreId)
+        storeId = this._GstReportService.userForm.get('StoreId').value.StoreId
+  
+       setTimeout(() => {
+       
+         this._GstReportService.getpurchasesupplierwiseReport(
+          this.datePipe.transform(this._GstReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._GstReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",storeId
+         ).subscribe(res => {
+           const dialogRef = this._matDialog.open(PdfviewerComponent,
+             {
+               maxWidth: "85vw",
+               height: '750px',
+               width: '100%',
+               data: {
+                 base64: res["base64"] as string,
+                 title: "Purchase GST Report Supplier Wise  Viewer"
+               }
+             });
+           dialogRef.afterClosed().subscribe(result => {
+             
+             this.sIsLoading = '';
+           });
+         });
+   
+       }, 100);
+     }
+     viewgetpurchasesupplierwisewithoutgstPdf() {
+      this.sIsLoading = 'loading-data';
+   
+      let storeId =this._loggedUser.currentUserValue.user.storeId;
+      if (this._GstReportService.userForm.get('StoreId').value.StoreId)
+        storeId = this._GstReportService.userForm.get('StoreId').value.StoreId
+  
+       setTimeout(() => {
+       
+         this._GstReportService.getpurchasesupplierwisewithoutgstReport(
+          this.datePipe.transform(this._GstReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._GstReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",storeId
+         ).subscribe(res => {
+           const dialogRef = this._matDialog.open(PdfviewerComponent,
+             {
+               maxWidth: "85vw",
+               height: '750px',
+               width: '100%',
+               data: {
+                 base64: res["base64"] as string,
+                 title: "Purchase Supplier Wise Without GST Report  Viewer"
+               }
+             });
+           dialogRef.afterClosed().subscribe(result => {
+             
+             this.sIsLoading = '';
+           });
+         });
+   
+       }, 100);
+     }
+
+
+     viewgetpurchasegstdatewisePdf() {
+      this.sIsLoading = 'loading-data';
+   
+      let storeId =this._loggedUser.currentUserValue.user.storeId;
+      if (this._GstReportService.userForm.get('StoreId').value.StoreId)
+        storeId = this._GstReportService.userForm.get('StoreId').value.StoreId
+  
+       setTimeout(() => {
+       
+         this._GstReportService.getpurchasedatewiseReport(
+          this.datePipe.transform(this._GstReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._GstReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",storeId
+         ).subscribe(res => {
+           const dialogRef = this._matDialog.open(PdfviewerComponent,
+             {
+               maxWidth: "85vw",
+               height: '750px',
+               width: '100%',
+               data: {
+                 base64: res["base64"] as string,
+                 title: "Purchase Date Wise Report Viewer"
+               }
+             });
+           dialogRef.afterClosed().subscribe(result => {
+             
+             this.sIsLoading = '';
+           });
+         });
+   
+       }, 100);
+     }
+
+     viewgetpurchasegstsummaryPdf() {
+      this.sIsLoading = 'loading-data';
+   
+      let storeId =this._loggedUser.currentUserValue.user.storeId;
+      if (this._GstReportService.userForm.get('StoreId').value.StoreId)
+        storeId = this._GstReportService.userForm.get('StoreId').value.StoreId
+  
+       setTimeout(() => {
+       
+         this._GstReportService.getpurchasegstsummaryReport(
+          this.datePipe.transform(this._GstReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._GstReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",storeId
+         ).subscribe(res => {
+           const dialogRef = this._matDialog.open(PdfviewerComponent,
+             {
+               maxWidth: "85vw",
+               height: '750px',
+               width: '100%',
+               data: {
+                 base64: res["base64"] as string,
+                 title: "Purchase GST Summary  Viewer"
+               }
+             });
+           dialogRef.afterClosed().subscribe(result => {
+             
+             this.sIsLoading = '';
+           });
+         });
+   
+       }, 100);
+     }
+
+     viewgetpurchasereturnsummaryPdf() {
+      this.sIsLoading = 'loading-data';
+   
+      let storeId =this._loggedUser.currentUserValue.user.storeId;
+      if (this._GstReportService.userForm.get('StoreId').value.StoreId)
+        storeId = this._GstReportService.userForm.get('StoreId').value.StoreId
+  
+       setTimeout(() => {
+       
+         this._GstReportService.getpurchasereturngstsummaryReport(
+          this.datePipe.transform(this._GstReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._GstReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
+         ).subscribe(res => {
+           const dialogRef = this._matDialog.open(PdfviewerComponent,
+             {
+               maxWidth: "85vw",
+               height: '750px',
+               width: '100%',
+               data: {
+                 base64: res["base64"] as string,
+                 title: "Purchase Return Summary  Viewer"
+               }
+             });
+           dialogRef.afterClosed().subscribe(result => {
+             
+             this.sIsLoading = '';
+           });
+         });
+   
+       }, 100);
+     }
+
+     viewgetpurchasereturngstdatewisePdf() {
+      this.sIsLoading = 'loading-data';
+   
+      let storeId =this._loggedUser.currentUserValue.user.storeId;
+      if (this._GstReportService.userForm.get('StoreId').value.StoreId)
+        storeId = this._GstReportService.userForm.get('StoreId').value.StoreId
+  
+       setTimeout(() => {
+       
+         this._GstReportService.getpurchasereturndatewiseReport(
+          this.datePipe.transform(this._GstReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._GstReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",storeId
+         ).subscribe(res => {
+           const dialogRef = this._matDialog.open(PdfviewerComponent,
+             {
+               maxWidth: "85vw",
+               height: '750px',
+               width: '100%',
+               data: {
+                 base64: res["base64"] as string,
+                 title: "Purchase Return Date Wise  Viewer"
+               }
+             });
+           dialogRef.afterClosed().subscribe(result => {
+             
+             this.sIsLoading = '';
+           });
+         });
+   
+       }, 100);
+     }
+
+     viewgetSalesGstreportPdf() {
+      this.sIsLoading = 'loading-data';
+   
+      let storeId =this._loggedUser.currentUserValue.user.storeId;
+      if (this._GstReportService.userForm.get('StoreId').value.StoreId)
+        storeId = this._GstReportService.userForm.get('StoreId').value.StoreId
+  
+       setTimeout(() => {
+       
+         this._GstReportService.getSalesGstReport(
+          this.datePipe.transform(this._GstReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._GstReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",storeId
+         ).subscribe(res => {
+           const dialogRef = this._matDialog.open(PdfviewerComponent,
+             {
+               maxWidth: "85vw",
+               height: '750px',
+               width: '100%',
+               data: {
+                 base64: res["base64"] as string,
+                 title: "Sales GST Report  Viewer"
+               }
+             });
+           dialogRef.afterClosed().subscribe(result => {
+             
+             this.sIsLoading = '';
+           });
+         });
+   
+       }, 100);
+     }
+
+     
+     viewgetSalesGstdatewisereportPdf() {
+      this.sIsLoading = 'loading-data';
+   
+      let storeId =this._loggedUser.currentUserValue.user.storeId;
+      if (this._GstReportService.userForm.get('StoreId').value.StoreId)
+        storeId = this._GstReportService.userForm.get('StoreId').value.StoreId
+  
+       setTimeout(() => {
+       
+         this._GstReportService.getSalesGstdatewiseReport(
+          this.datePipe.transform(this._GstReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._GstReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
+         ).subscribe(res => {
+           const dialogRef = this._matDialog.open(PdfviewerComponent,
+             {
+               maxWidth: "85vw",
+               height: '750px',
+               width: '100%',
+               data: {
+                 base64: res["base64"] as string,
+                 title: "Sales GST Date Wise Report  Viewer"
+               }
+             });
+           dialogRef.afterClosed().subscribe(result => {
+             
+             this.sIsLoading = '';
+           });
+         });
+   
+       }, 100);
+     }
+
+     
+     viewgetSalesreturngstPdf() {
+      this.sIsLoading = 'loading-data';
+   
+      let storeId =this._loggedUser.currentUserValue.user.storeId;
+      if (this._GstReportService.userForm.get('StoreId').value.StoreId)
+        storeId = this._GstReportService.userForm.get('StoreId').value.StoreId
+  
+       setTimeout(() => {
+       
+         this._GstReportService.getSalesreturnReport(
+          this.datePipe.transform(this._GstReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._GstReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
+         ).subscribe(res => {
+           const dialogRef = this._matDialog.open(PdfviewerComponent,
+             {
+               maxWidth: "85vw",
+               height: '750px',
+               width: '100%',
+               data: {
+                 base64: res["base64"] as string,
+                 title: "SalesReturn Report  Viewer"
+               }
+             });
+           dialogRef.afterClosed().subscribe(result => {
+             
+             this.sIsLoading = '';
+           });
+         });
+   
+       }, 100);
+     }
+
+     viewgetSalesreturngstdatewisePdf() {
+      this.sIsLoading = 'loading-data';
+   
+      let storeId =this._loggedUser.currentUserValue.user.storeId;
+      if (this._GstReportService.userForm.get('StoreId').value.StoreId)
+        storeId = this._GstReportService.userForm.get('StoreId').value.StoreId
+  
+       setTimeout(() => {
+       
+         this._GstReportService.getSalesreturndatewiseReport(
+          this.datePipe.transform(this._GstReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._GstReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
+         ).subscribe(res => {
+           const dialogRef = this._matDialog.open(PdfviewerComponent,
+             {
+               maxWidth: "85vw",
+               height: '750px',
+               width: '100%',
+               data: {
+                 base64: res["base64"] as string,
+                 title: "Sales Return Date wise Report  Viewer"
+               }
+             });
+           dialogRef.afterClosed().subscribe(result => {
+             
+             this.sIsLoading = '';
+           });
+         });
+   
+       }, 100);
+     }
+
+
+     viewgetHSMCodewisePdf() {
+      this.sIsLoading = 'loading-data';
+   
+      let storeId =this._loggedUser.currentUserValue.user.storeId;
+      if (this._GstReportService.userForm.get('StoreId').value.StoreId)
+        storeId = this._GstReportService.userForm.get('StoreId').value.StoreId
+  
+       setTimeout(() => {
+       
+         this._GstReportService.getHSNcodewiseReport(
+          this.datePipe.transform(this._GstReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._GstReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
+         ).subscribe(res => {
+           const dialogRef = this._matDialog.open(PdfviewerComponent,
+             {
+               maxWidth: "85vw",
+               height: '750px',
+               width: '100%',
+               data: {
+                 base64: res["base64"] as string,
+                 title: "HSN Code Report  Viewer"
+               }
+             });
+           dialogRef.afterClosed().subscribe(result => {
+             
+             this.sIsLoading = '';
+           });
+         });
+   
+       }, 100);
+     }
+
+
+     
+     viewgetGSTB2CsPdf() {
+      this.sIsLoading = 'loading-data';
+   
+      let storeId =this._loggedUser.currentUserValue.user.storeId;
+      if (this._GstReportService.userForm.get('StoreId').value.StoreId)
+        storeId = this._GstReportService.userForm.get('StoreId').value.StoreId
+  
+       setTimeout(() => {
+       
+         this._GstReportService.geGSTB2cReport(
+          this.datePipe.transform(this._GstReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._GstReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
+         ).subscribe(res => {
+           const dialogRef = this._matDialog.open(PdfviewerComponent,
+             {
+               maxWidth: "85vw",
+               height: '750px',
+               width: '100%',
+               data: {
+                 base64: res["base64"] as string,
+                 title: "GST B2C Report  Viewer"
+               }
+             });
+           dialogRef.afterClosed().subscribe(result => {
+             
+             this.sIsLoading = '';
+           });
+         });
+   
+       }, 100);
+     }
+
      
 
+     viewgeGSTRAZpurchasePdf() {
+      this.sIsLoading = 'loading-data';
+   
+      let storeId =this._loggedUser.currentUserValue.user.storeId;
+      if (this._GstReportService.userForm.get('StoreId').value.StoreId)
+        storeId = this._GstReportService.userForm.get('StoreId').value.StoreId
+  
+       setTimeout(() => {
+       
+         this._GstReportService.geGSTRAZPurchaseReport(
+          this.datePipe.transform(this._GstReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._GstReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
+         ).subscribe(res => {
+           const dialogRef = this._matDialog.open(PdfviewerComponent,
+             {
+               maxWidth: "85vw",
+               height: '750px',
+               width: '100%',
+               data: {
+                 base64: res["base64"] as string,
+                 title: "GST RAZ Purchase Report  Viewer"
+               }
+             });
+           dialogRef.afterClosed().subscribe(result => {
+             
+             this.sIsLoading = '';
+           });
+         });
+   
+       }, 100);
+     }
+
+     viewgeGSTRAZsuppwelierwisepurchasePdf() {
+      this.sIsLoading = 'loading-data';
+   
+      let storeId =this._loggedUser.currentUserValue.user.storeId;
+      if (this._GstReportService.userForm.get('StoreId').value.StoreId)
+        storeId = this._GstReportService.userForm.get('StoreId').value.StoreId
+  
+       setTimeout(() => {
+       
+         this._GstReportService.geGSTR2ASupplierwiseReport(
+          this.datePipe.transform(this._GstReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._GstReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
+         ).subscribe(res => {
+           const dialogRef = this._matDialog.open(PdfviewerComponent,
+             {
+               maxWidth: "85vw",
+               height: '750px',
+               width: '100%',
+               data: {
+                 base64: res["base64"] as string,
+                 title: "GST RAZ Supplier wise Report  Viewer"
+               }
+             });
+           dialogRef.afterClosed().subscribe(result => {
+             
+             this.sIsLoading = '';
+           });
+         });
+   
+       }, 100);
+     }
 
   GetUserList() {
     var data = {

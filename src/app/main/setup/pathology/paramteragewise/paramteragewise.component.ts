@@ -120,7 +120,7 @@ export class ParamteragewiseComponent implements OnInit {
         this.getParameterMasterList();
     }
 
-    onEdit(row) {
+    onEdit1(row) {
         var m_data = {
             ParameterID: row.ParameterID,
             ParameterShortName: row.ParameterShortName.trim(),
@@ -143,7 +143,7 @@ export class ParamteragewiseComponent implements OnInit {
 
         const dialogRef = this._matDialog.open(ParamteragewiseformComponent, {
             maxWidth: "70vw",
-            maxHeight: "90vh",
+            maxHeight: "95vh",
             width: "100%",
             height: "100%",
             data : {
@@ -156,7 +156,60 @@ export class ParamteragewiseComponent implements OnInit {
             this.getParameterMasterList();
         });
     }
+    onEdit(row) {
+        var m_data = {
+            ParameterID: row.ParameterID,
+            ParameterShortName: row.ParameterShortName.trim(),
+            ParameterName: row.ParameterName.trim(),
+            PrintParameterName: row.PrintParameterName.trim(),
+            UnitId: row.UnitId,
+            IsNumeric: row.IsNumericParameter,
+            IsDeleted: JSON.stringify(row.Isdeleted),
+            UpdatedBy: row.UpdatedBy,
+            IsPrintDisSummary: JSON.stringify(row.IsPrintDisSummary),
+            MethodName: row.MethodName,
+            ParaMultipleRange: row.ParaMultipleRange,
+        };
 
+      
+        this._ParameterageService.getTableData(row.ParameterID).subscribe((data) => {
+                debugger;
+            if(row.IsNumericParameter==1){
+                
+                m_data['numericList'] = data;
+                m_data['descriptiveList'] = [];
+
+            }
+            else {
+                let updatedData = []
+                for (const key in data) {
+                    if (data.hasOwnProperty(key)) {
+                        const element = data[key];
+                        updatedData.push(element.ParameterValues);
+                    }
+                }
+                
+                m_data['descriptiveList'] = updatedData;
+                m_data['numericList'] = [];
+            }
+            console.log(m_data)
+            this._ParameterageService.populateForm1(m_data);
+            const dialogRef = this._matDialog.open(ParamteragewiseformComponent, {
+            maxWidth: "75vw",
+            maxHeight: "95vh",
+            width: "100%",
+            height: "100%",
+            data : {
+                registerObj : row,
+              }
+             });
+
+        dialogRef.afterClosed().subscribe((result) => {
+            console.log("The dialog was closed - Insert Action", result);
+            this.getParameterMasterList();
+        });
+        })
+    }
     onAdd() {
         const dialogRef = this._matDialog.open(ParamteragewiseformComponent, {
             maxWidth: "70vw",

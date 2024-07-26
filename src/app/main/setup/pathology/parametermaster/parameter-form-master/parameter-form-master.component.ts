@@ -81,7 +81,7 @@ export class ParameterFormMasterComponent implements OnInit {
         this.getDscriptiveMasterList();
         if (this._ParameterService.myform.get("ParameterID").value) {
        
-            this.dsParameterAgeList.data =        this._ParameterService.numericList;
+            this.dsParameterAgeList.data =this._ParameterService.numericList;
                  this.selectedItems = this._ParameterService.descriptiveList;
         }
              

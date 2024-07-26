@@ -10,10 +10,10 @@ dynamicTableHeight>
                 <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
                     style="color: white;">account_box
                 </mat-icon>
-                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" >
                     Parameter Wise Age Master
                 </span>
-                <button mat-raised-button color="pine" style="margin-left: 1200px;" (click)="onAdd()">Add
+                <button mat-raised-button color="pine" style="margin-left: 850px;" (click)="onAdd()">Add
                     <mat-icon>add_to_photos</mat-icon>
 
                 </button>
@@ -32,10 +32,10 @@ dynamicTableHeight>
                             <form [formGroup]="_ParameterageService.myformSearch">
                                 <div class="dialog-content-wrapper">
                                     <mat-form-field class="mr-sm-12" fxFlex>
-                                        <input matInput placeholder="Search --> Parameter Name" autocomplete="off"
+                                        <input matInput placeholder="Search --> Parameter Name" autocomplete="off" (keyup)=" onSearch()"
                                             name="ParameterNameSearch" formControlName="ParameterNameSearch" />
                                         <button mat-button matSuffix mat-icon-button aria-label="Clear"
-                                            (click)="onSearchClear()" (keyup)=" onSearch()">
+                                            (click)="onSearchClear()" (keyup)="onSearch()">
                                             <mat-icon>close</mat-icon>
                                         </button>
                                     </mat-form-field>

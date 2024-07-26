@@ -53,6 +53,77 @@ export class GstReportService {
   
     return this._httpClient.get("GSTReport/view-SalesProfitItemWiseSummaryReport?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId);
   }
+
+  public getpurchasesupplierwiseReport(FromDate,ToDate,StoreId){
+  
+    return this._httpClient.get("GSTReport/view-PurchaseGSTReportSupplierWiseGST?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId);
+  }
+  public getpurchasesupplierwisewithoutgstReport(FromDate,ToDate,StoreID){
+  
+    return this._httpClient.get("GSTReport/view-PurchaseGSTReportSupplierWiseWithoutGST?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreID="+StoreID);
+  }
+
+  public getpurchasedatewiseReport(FromDate,ToDate,StoreId){
+  
+    return this._httpClient.get("GSTReport/view-ViewPurchaseGSTReportDateWise?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId);
+  }
+  
+  public getpurchasegstsummaryReport(FromDate,ToDate,StoreId){
+  
+    return this._httpClient.get("GSTReport/view-ViewPurchaseGSTReportSummary?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId);
+  }
+
+
+  public getpurchasereturndatewiseReport(FromDate,ToDate,StoreId){
+  
+    return this._httpClient.get("GSTReport/view-PurchaseRetumGSTReportDateWise?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId);
+  }
+  public getpurchasereturngstsummaryReport(FromDate,ToDate){
+  
+    return this._httpClient.get("GSTReport/view-PurchaseRetumGSTReportDateWise?FromDate="+FromDate+"&ToDate="+ToDate);
+  }
+  
+  public getSalesGstReport(FromDate,ToDate,StoreId){
+  
+    return this._httpClient.get("GSTReport/view-SalesGSTReport?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId);
+  }
+  
+  public getSalesGstdatewiseReport(FromDate,ToDate){
+  
+    return this._httpClient.get("GSTReport/view-SalesGSTDateWiseReport?FromDate="+FromDate+"&ToDate="+ToDate);
+  }
+  
+  public getSalesreturnReport(FromDate,ToDate){
+  
+    return this._httpClient.get("GSTReport/view-SalesReturnGSTReport?FromDate="+FromDate+"&ToDate="+ToDate);
+  }
+
+
+  public getSalesreturndatewiseReport(FromDate,ToDate){
+  
+    return this._httpClient.get("GSTReport/view-SalesReturnGSTDateWiseReport?FromDate="+FromDate+"&ToDate="+ToDate);
+  }
+  
+ 
+  public geGSTB2cReport(FromDate,ToDate){
+  
+    return this._httpClient.get("GSTReport/view-SalesReturnGSTReport?FromDate="+FromDate+"&ToDate="+ToDate);
+  }
+  
+  public getHSNcodewiseReport(FromDate,ToDate){
+  
+    return this._httpClient.get("GSTReport/view-HSNCodeWiseReport?FromDate="+FromDate+"&ToDate="+ToDate);
+  }
+
+  public geGSTRAZPurchaseReport(FromDate,ToDate){
+  
+    return this._httpClient.get("GSTReport/view-GSTRZAPurchaseReport?FromDate="+FromDate+"&ToDate="+ToDate);
+  }
+ 
+  public geGSTR2ASupplierwiseReport(FromDate,ToDate){
+  
+    return this._httpClient.get("GSTReport/view-ViewGSTR2ASupplierWisePurchaseReport?FromDate="+FromDate+"&ToDate="+ToDate);
+  }
   getStoreList(){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ToStoreName",{})
   }
