@@ -14,7 +14,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { DatePipe } from '@angular/common';
+import { CurrencyPipe, DatePipe } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatStepperModule } from '@angular/material/stepper';
@@ -51,6 +51,7 @@ import {MatSliderModule} from '@angular/material/slider';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { OpPaymentComponent } from './op-payment/op-payment.component';
 import { OpPaymentNewComponent } from './op-payment-new/op-payment-new.component';
+import { OpPaymentVimalComponent } from './op-payment-vimal/op-payment-vimal.component';
 
 
 
@@ -78,7 +79,8 @@ const routes: Routes = [
          OPRefundofBillComponent,
         SchduleTreeComponent,
         OpPaymentNewComponent,
-        OpPaymentComponent
+        OpPaymentComponent,
+        OpPaymentVimalComponent
         // NewOPRefundofbillComponent,
         // OutstandingPaymentComponent
     ],
@@ -129,7 +131,8 @@ const routes: Routes = [
     providers: [
         OPSearhlistService,
         NotificationServiceService ,
-        DatePipe
+        DatePipe,
+        CurrencyPipe
     ],
     entryComponents: [
         OpdSearchListComponent
