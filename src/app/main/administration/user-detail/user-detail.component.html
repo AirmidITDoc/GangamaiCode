@@ -1,6 +1,5 @@
 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
     <div class="modal-wrapper">
-        <form [formGroup]="UserForm">
             <div class="modal-header">
                 <div class="modal-header-content">
                     <div class="modal-header-title">
@@ -25,6 +24,8 @@
                 </div>
             </div>
             <div class="modal-body">
+                
+              <form [formGroup]="UserForm">
                 <div class="content" *ngIf="true">
                     <div class="center px-12" fxFlexAlign="start center">
                         <div class="content-card" style="border-radius:4px; ">
@@ -47,7 +48,7 @@
                                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%"> 
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Mobile No </mat-label>
-                                                <input matInput [(ngModel)]="vMobileNo" formControlName="MobileNo" #MobileNo
+                                                <input matInput [(ngModel)]="registerObj.MobileNo" formControlName="MobileNo" #MobileNo
                                                 name="MobileNo"   placeholder="Enter Only 10 digit " required
                                                 max="9999999999" min="1000000000" autocomplete="off" maxlength="10" minlength="10"
                                                     oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
@@ -137,7 +138,7 @@
                                                     placeholder="Select RoleName" matInput #role
                                                     formControlName="RoleId" [matAutocomplete]="autoRoleName" required
                                                     (keydown)="onEnterrole($event)" #role
-                                                    (keydown)="onEnterrole($event)" [(ngModel)]="vRoleName">
+                                                     [(ngModel)]="vRoleName">
                                                 <span matSuffix style="display: flex;">
                                                     <mat-icon class="mat-icon-close"
                                                         (click)="UserForm.get('RoleId').setValue(''); isRoleSelected = false;">close</mat-icon>
@@ -161,7 +162,7 @@
                                                 <input matAutocompletePosition="below" type="text"
                                                     placeholder="Select Store Name" matInput #StoreId
                                                     formControlName="StoreId" [matAutocomplete]="autoStoreName" required
-                                                    (keydown)="onEnterStore($event)" #StoreId [(ngModel)]="vStoreId">
+                                                    (keydown)="onEnterStore($event)" #storeId [(ngModel)]="vStoreId">
                                                 <span matSuffix style="display: flex;">
                                                     <mat-icon class="mat-icon-close"
                                                         (click)="UserForm.get('StoreId').setValue(''); isStoreSelected = false;">close</mat-icon>
@@ -265,15 +266,7 @@
                                                 </mat-checkbox>
                                             </div>
                                         </div> -->
-
-                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%"> 
-                                        
-                                            <div fxLayoutAlign="start center" fxLayoutAlign="space-between center" style="padding-top: 10px;">
-                                                
-                                                <!-- <mat-checkbox formControlName="IsDoctor" (change)="chkdoctor($event)">IsDoctor
-                                                </mat-checkbox>  -->
-                                            </div>
-                                        </div>
+ 
                                     </div>
                                     <hr>
                                     <div class="user-form-col py-12" fxLayout="column">
@@ -288,7 +281,7 @@
                                                     [(ngModel)]="registerObj.IsPOVerify">PO
                                                     Verify</mat-checkbox>
                                                 <mat-checkbox formControlName="Ipoverify"
-                                                    [(ngModel)]="registerObj.IsPOVerify">Incharge
+                                                    [(ngModel)]="registerObj.isPOInchargeVerify">Incharge
                                                     PO Verify</mat-checkbox>
                                                
                                                 <mat-checkbox formControlName="Indentverify"
@@ -323,41 +316,41 @@
                                             </div>
                                             <div class="icon-info-row" fxLayout="column" fxLayout.gt-xs="row">
                                                 <div class="icon-info-col " fxLayout="row wrap" style="row-gap: 4px;">
-                                                    <div fxFlex="25%" fxFlex.xs="50%" fxFlex.sm="50%">
+                                                    <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">
                                                         <mat-checkbox formControlName="CollectionInformation"
                                                             [(ngModel)]="registerObj.IsCollection">
                                                             Collection Information</mat-checkbox>
                                                     </div>
-                                                    <div fxFlex="25%" fxFlex.xs="50%" fxFlex.sm="50%">
+                                                    <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">
                                                         <mat-checkbox formControlName="PatientInformation"
                                                             [(ngModel)]="registerObj.IsPatientInfo">
                                                             PatientInformation</mat-checkbox>
                                                     </div>
-                                                    <div fxFlex="25%" fxFlex.xs="50%" fxFlex.sm="50%">
+                                                    <!-- <div fxFlex="25%" fxFlex.xs="50%" fxFlex.sm="50%">
                                                         <mat-checkbox formControlName="ViewBrowseBill"
                                                             [(ngModel)]="registerObj.ViewBrowseBill">
                                                             ViewBrowseBill</mat-checkbox>
-                                                    </div>
-                                                    <div fxFlex="25%" fxFlex.xs="50%" fxFlex.sm="50%">
+                                                    </div> -->
+                                                    <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">
                                                         <mat-checkbox formControlName="BedStatus"
                                                             [(ngModel)]="registerObj.IsBedStatus">
                                                             Bed Status</mat-checkbox>
                                                     </div>
-                                                    <div fxFlex="25%" fxFlex.xs="50%" fxFlex.sm="50%"> 
+                                                    <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%"> 
                                                         <mat-checkbox formControlName="CurrentStock"
                                                             [(ngModel)]="registerObj.IsCurrentStk">
                                                             Is Pharmacy Bal Clearnace
                                                         </mat-checkbox>
                                                     </div>
-                                                    <div fxFlex="25%" fxFlex.xs="50%" fxFlex.sm="50%">
+                                                    <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">
                                                         <mat-checkbox formControlName="IsPharmacyBalClearnace"
                                                             [(ngModel)]="registerObj.IsPharmacyBalClearnace">
                                                             Current Stock
                                                         </mat-checkbox>
                                                     </div>
-                                                    <div fxFlex="25%" fxFlex.xs="50%" fxFlex.sm="50%">
+                                                    <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">
                                                         <mat-checkbox formControlName="IsAddChargeDelete"
-                                                            [(ngModel)]="registerObj.IsAddChargeDelete">
+                                                            [(ngModel)]="registerObj.AddChargeIsDelete">
                                                             IsAddChargeDelete
                                                         </mat-checkbox>
                                                     </div>
@@ -384,15 +377,17 @@
                         </div>
                     </div>
                 </div>
+              </form>
             </div>
-            <div class="modal-footer">
-                <div class="footer-navigation-container">
-                    <div class="modal-footer-buttons">
-                        <button class="btn btn-danger-outline" (click)="onClose()">Cancel</button>
-                        <button class="btn btn-primary" (click)="Save()">Save</button>
-                    </div>
+          
+       
+        <div class="modal-footer">
+            <div class="footer-navigation-container">
+                <div class="modal-footer-buttons">
+                    <button class="btn btn-danger-outline" (click)="onClose()">Cancel</button>
+                    <button class="btn btn-primary" (click)="Save()">Save</button>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
 </div>

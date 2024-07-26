@@ -158,7 +158,7 @@ export class CreateUserComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
-
+      this.getUserList();
     });
   }
 
@@ -171,7 +171,7 @@ export class CreateUserComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
-      // this.getAdmittedPatientList();
+      this.getUserList();
     });
   }
 
@@ -198,6 +198,7 @@ export class CreateUserComponent implements OnInit {
     }
     this._UserService.getUserList(m_data).subscribe(Visit => {
       this.dataSource1.data = Visit as UserList[];
+      console.log(this.dataSource1.data)
       this.dataSource1.sort = this.sort;
       this.dataSource1.paginator = this.paginator;
       this.sIsLoading = '';
