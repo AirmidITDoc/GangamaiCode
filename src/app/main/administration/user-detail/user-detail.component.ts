@@ -80,34 +80,13 @@ export class UserDetailComponent implements OnInit {
     this.getRoleNamelist1();
     this.getwebRoleNamelist1();
     this.gePharStoreList1();
-    this.getHospitalList1();
-
-    this.filteredOptionsRole = this.UserForm.get('RoleId').valueChanges.pipe(
-      startWith(''),
-      map(value => this._filterRole(value)),
-
-    );
-
-    this.filteredOptionswebrollName = this.UserForm.get('WebroleId').valueChanges.pipe(
-      startWith(''),
-      map(value => this._filterwebRole(value)),
-
-    );
-
-    this.filteredOptionsStorename = this.UserForm.get('StoreId').valueChanges.pipe(
-      startWith(''),
-      map(value => this._filterStore(value)),
-
-    );
-
-    this.filteredOptionsDoctorName = this.UserForm.get('DoctorId').valueChanges.pipe(
-      startWith(''),
-      map(value => this._filterDoctor(value)),
-    );
+    this.getHospitalList1(); 
   }
 
   createPesonalForm() {
     return this._formBuilder.group({
+      MobileNo:'',
+      HospitalId:'',
       FirstName: '',
       LastName: '',
       LoginName: '',
@@ -122,9 +101,9 @@ export class UserDetailComponent implements OnInit {
       DoctorId: '',
       IsDoctor: '',
       
-      RoleName: '',
-      Status: '1',
-      poverify: '',
+     // RoleName: '',
+    // Status: '1',
+       Poverify: '',
       Ipoverify: '',
       Grnverify: '',
       Indentverify: '',
@@ -141,8 +120,7 @@ export class UserDetailComponent implements OnInit {
       PharExpOpt:'',
       PharIPOpt:'',
       PharOPOpt:'',
-      MobileNo:'',
-      HospitalId:''
+  
     });
 
   }
@@ -173,6 +151,10 @@ export class UserDetailComponent implements OnInit {
   gePharStoreList1() {
     this._UserService.getStoreList().subscribe(data => {
       this.Store1List = data;
+      this.filteredOptionsStorename = this.UserForm.get('StoreId').valueChanges.pipe(
+        startWith(''), 
+        map(value => value ? this._filterStore(value) : this.Store1List.slice()),
+      );
       if (this.data) {
       const ddValue = this.Store1List.filter(c => c.StoreId == this.registerObj.StoreId);
       this.UserForm.get('StoreId').setValue(ddValue[0]);
@@ -193,6 +175,11 @@ export class UserDetailComponent implements OnInit {
   getDoctorlist1() {
     this._UserService.getDoctorMasterCombo().subscribe(data => {
       this.DocotorList = data;
+      console.log(this.DocotorList)
+      this.filteredOptionsDoctorName = this.UserForm.get('DoctorId').valueChanges.pipe(
+        startWith(''), 
+        map(value => value ? this._filterDoctor(value) : this.DocotorList.slice()),
+      );
       if (this.data) {
         const ddValue = this.DocotorList.filter(c => c.DoctorID == this.registerObj.DoctorID);
         this.UserForm.get('DoctorId').setValue(ddValue[0]);
@@ -215,6 +202,10 @@ export class UserDetailComponent implements OnInit {
     // debugger
     this._UserService.getRoleCombobox().subscribe(data => {
       this.RoleNameList = data;
+      this.filteredOptionsRole = this.UserForm.get('RoleId').valueChanges.pipe(
+        startWith(''), 
+        map(value => value ? this._filterRole(value) : this.RoleNameList.slice()),
+      );
       if (this.data) {
         const ddValue = this.RoleNameList.filter(c => c.RoleId == this.registerObj.RoleId);
         this.UserForm.get('RoleId').setValue(ddValue[0]);
@@ -238,6 +229,11 @@ export class UserDetailComponent implements OnInit {
   getwebRoleNamelist1() {
     this._UserService.getwebRoleCombobox().subscribe(data => {
       this.WebRoleNameList = data;
+      
+    this.filteredOptionswebrollName = this.UserForm.get('WebroleId').valueChanges.pipe(
+      startWith(''), 
+      map(value => value ? this._filterwebRole(value) : this.WebRoleNameList.slice()),
+    );
       console.log(data)
       if (this.data) {
         const ddValue = this.WebRoleNameList.filter(c => c.RoleId == this.registerObj.WebRoleId);
@@ -266,7 +262,8 @@ export class UserDetailComponent implements OnInit {
   @ViewChild('role') role: ElementRef;
   @ViewChild('MobileNo') MobileNo: ElementRef;
   @ViewChild('docname') docname: ElementRef;
-  @ViewChild('webrole') webrole: ElementRef;
+  @ViewChild('webrole') webrole: ElementRef; 
+  @ViewChild('storeId') storeId: ElementRef;
   // @ViewChild('Fax') Fax: ElementRef;
   onEnterUnit(event) {
     if (event.which === 13) {
@@ -309,6 +306,7 @@ export class UserDetailComponent implements OnInit {
 
   onEnterrole(event) {
     if (event.which === 13) {
+      this.storeId.nativeElement.focus();
     }
   }
   onEnterdocName(event) {
@@ -317,6 +315,7 @@ export class UserDetailComponent implements OnInit {
   }
   onEnterStore(event) {
     if (event.which === 13) {
+      this.webrole.nativeElement.focus();
     }
   }
 
@@ -334,7 +333,9 @@ export class UserDetailComponent implements OnInit {
     }
   }
   onClose() {
-    this.dialogRef.close();
+   this.dialogRef.close();
+   this.UserForm.reset();
+   this.UserForm.get('HospitalId').setValue(this.HospitalList1[0]);
   }
   vFirstName:any;
   vLastName:any;
@@ -343,6 +344,7 @@ export class UserDetailComponent implements OnInit {
   vEmail:any;
   vStoreId:any;
   vRoleName:any;
+  mobileno:number= 0;
   Save() {
 // debugger
 
@@ -395,9 +397,20 @@ export class UserDetailComponent implements OnInit {
       });
       return;
     }
-    if (this.vUserId == 0) {
-      this.isLoading = 'submit';
+  debugger
+    let PharmExpOpt = 0;
+    let PharmIPOpt = false;
+    let PharmOPOpt = false; 
+      if(this.UserForm.get('PharExpOpt').value){
+        PharmExpOpt = 1
+      }
+      PharmIPOpt = this.UserForm.get('PharIPOpt').value 
+      PharmOPOpt = this.UserForm.get('PharOPOpt').value 
 
+
+    this.mobileno = parseInt(this.UserForm.get('MobileNo').value) ||  0;
+    if (this.vUserId == 0) {
+      this.isLoading = 'submit'; 
       var m_data = {
         "loginInsert": {
           "FirstName": this.UserForm.get('FirstName').value || '',
@@ -410,28 +423,30 @@ export class UserDetailComponent implements OnInit {
           "RoleId": this.UserForm.get('RoleId').value.RoleId || 0,
           "isDoctorType": this.UserForm.get('IsDoctor').value || 0,
           "doctorID":  this.DoctorId ,
-          "Status": this.UserForm.get('Status').value || '',
-          "isPOVerify": this.UserForm.get('poverify').value || 0,
-          "isPOInchargeVerify": this.UserForm.get('Ipoverify').value || 0,
+          "isPOVerify": this.UserForm.get('Poverify').value || 0,
           "isGRNVerify": this.UserForm.get('Grnverify').value || 0,
-          "isBedStatus": this.UserForm.get('BedStatus').value.DoctorId || 0,
           "isCollection": true,
-          "isIndentVerify": this.UserForm.get('Indentverify').value || 0,
-          "isInchIndVfy": this.UserForm.get('IIverify').value || 0,
-          "CollectionInformation": this.UserForm.get('CollectionInformation').value || '',
+          "isBedStatus": this.UserForm.get('BedStatus').value.DoctorId || 0,
           "isCurrentStk": this.UserForm.get('CurrentStock').value || 0,
           "isPatientInfo": this.UserForm.get('PatientInformation').value || 0,
           "isDateInterval": true,
           "isDateIntervalDays": 0,
           "mailId": this.UserForm.get('MailId').value || 0,
           "MailDomain": " ",// this.UserForm.get('MailDomain').value || 0,
-          // "ViewBrowseBill": this.UserForm.get('ViewBrowseBill').value || 0,
           "addChargeIsDelete": this.UserForm.get('IsAddChargeDelete').value || 0,
-          "IsPharmacyBalClearnace": this.UserForm.get('IsPharmacyBalClearnace').value || 0,
-          "WebRoleId": this.UserForm.get('WebroleId').value.RoleId , 
-          "PharExpOpt": this.UserForm.get('PharExpOpt').value || 0,
-          "PharIPOpt": this.UserForm.get('PharIPOpt').value || 0,
-          "PharOPOpt": this.UserForm.get('PharOPOpt').value || 0  
+          "isIndentVerify": this.UserForm.get('Indentverify').value || 0,
+          "isPOInchargeVerify": this.UserForm.get('Ipoverify').value || 0,
+          "isInchIndVfy": this.UserForm.get('IIverify').value || 0,
+          "WebRoleId": this.UserForm.get('WebroleId').value.RoleId ,  
+          "PharExpOpt": PharmExpOpt,
+          "PharIPOpt": PharmIPOpt,
+          "PharOPOpt": PharmOPOpt ,  
+          "unitId": this.UserForm.get('HospitalId').value.HospitalId || 0,  
+          "mobileNo": this.mobileno
+          //"CollectionInformation": this.UserForm.get('CollectionInformation').value || '', 
+          // "ViewBrowseBill": this.UserForm.get('ViewBrowseBill').value || 0, 
+          //"IsPharmacyBalClearnace": this.UserForm.get('IsPharmacyBalClearnace').value || 0,
+        
         }
       }
 
@@ -466,15 +481,15 @@ export class UserDetailComponent implements OnInit {
           "RoleId": this.UserForm.get('RoleId').value.RoleId || 0,
           "isDoctorType":this.UserForm.get('IsDoctor').value || 0,
           "doctorID":  this.DoctorId ,
-          "Status": this.UserForm.get('Status').value || '',
-          "isPOVerify": this.UserForm.get('poverify').value || 0,
+          // "Status": this.UserForm.get('Status').value || '',
+          "isPOVerify": this.UserForm.get('Poverify').value || 0,
           "isPOInchargeVerify": this.UserForm.get('Ipoverify').value || 0,
           "isGRNVerify": this.UserForm.get('Grnverify').value || 0,
           "isBedStatus": this.UserForm.get('BedStatus').value.DoctorId || 0,
           "isCollection": true,
           "isIndentVerify": this.UserForm.get('Indentverify').value || 0,
           "isInchIndVfy": this.UserForm.get('IIverify').value || 0,
-          "CollectionInformation": this.UserForm.get('CollectionInformation').value || '',
+          // "CollectionInformation": this.UserForm.get('CollectionInformation').value || '',
           "isCurrentStk": this.UserForm.get('CurrentStock').value || 0,
           "isPatientInfo": this.UserForm.get('PatientInformation').value || 0,
           "isDateInterval": true,
@@ -484,8 +499,12 @@ export class UserDetailComponent implements OnInit {
           // "ViewBrowseBill": this.UserForm.get('ViewBrowseBill').value || 0,
           "addChargeIsDelete": this.UserForm.get('IsAddChargeDelete').value || 0,
           "IsPharmacyBalClearnace": this.UserForm.get('IsPharmacyBalClearnace').value || 0,
-          "WebRoleId": this.UserForm.get('WebroleId').value.RoleId 
-
+          "WebRoleId": this.UserForm.get('WebroleId').value.RoleId ,
+          "PharExpOpt":PharmExpOpt,
+          "PharIPOpt": PharmIPOpt,
+          "PharOPOpt":PharmOPOpt ,   
+          "unitId": this.UserForm.get('HospitalId').value.HospitalId || 0,  
+          "mobileNo": this.mobileno
         }
       }
 
@@ -591,29 +610,27 @@ export class UserDetail {
       this.WebRoleId = UserDetail.WebRoleId || 0;
       this.Indentverify = UserDetail.Indentverify || '';
       this.IIverify = UserDetail.IIverify || '';
-      this.FirstName = UserDetail.Indentverify || '';
-      this.LastName = UserDetail.Indentverify || '';
-      this.IsActive = UserDetail.Indentverify || 'true';
-      this.AddedBy = UserDetail.Indentverify || '';
-      this.RoleName = UserDetail.Indentverify || '';
-
-      this.StoreName = UserDetail.Indentverify || '';
-      this.IsDoctorType = UserDetail.Indentverify || '';
-
-      this.DoctorName = UserDetail.Indentverify || '';
-      this.IsPOVerify = UserDetail.Indentverify || '';
-      this.IsGRNVerify = UserDetail.Indentverify || '';
-      this.IsCollection = UserDetail.Indentverify || '';
-      this.IsBedStatus = UserDetail.Indentverify || '';
-      this.IsCurrentStk = UserDetail.Indentverify || '';
-      this.IsPatientInfo = UserDetail.Indentverify || '';
-      this.IsDateInterval = UserDetail.Indentverify || '';
-      this.IsDateIntervalDays = UserDetail.Indentverify || '';
-      this.MailId = UserDetail.Indentverify || '';
+      this.FirstName = UserDetail.FirstName || '';
+      this.LastName = UserDetail.LastName || '';
+      this.IsActive = UserDetail.IsActive || 'true';
+      this.AddedBy = UserDetail.AddedBy || '';
+      this.RoleName = UserDetail.RoleName || ''; 
+      this.StoreName = UserDetail.StoreName || '';
+      this.IsDoctorType = UserDetail.IsDoctorType || ''; 
+      this.DoctorName = UserDetail.DoctorName || '';
+      this.IsPOVerify = UserDetail.IsPOVerify || '';
+      this.IsGRNVerify = UserDetail.IsGRNVerify || '';
+      this.IsCollection = UserDetail.IsCollection || '';
+      this.IsBedStatus = UserDetail.IsBedStatus || '';
+      this.IsCurrentStk = UserDetail.IsCurrentStk || '';
+      this.IsPatientInfo = UserDetail.IsPatientInfo || '';
+      this.IsDateInterval = UserDetail.IsDateInterval || '';
+      this.IsDateIntervalDays = UserDetail.IsDateIntervalDays || '';
+      this.MailId = UserDetail.MailId || '';
       this.bdays = UserDetail.bdays || 0;
-      this.AddChargeIsDelete = UserDetail.Indentverify || '';
-      this.IsIndentVerify = UserDetail.Indentverify || '';
-      this.IsInchIndVfy = UserDetail.Indentverify || '';
+      this.AddChargeIsDelete = UserDetail.AddChargeIsDelete || '';
+      this.IsIndentVerify = UserDetail.IsIndentVerify || '';
+      this.IsInchIndVfy = UserDetail.IsInchIndVfy || '';
       this.ViewBrowseBill = UserDetail.ViewBrowseBill || '';
       this.IsPharmacyBalClearnace=UserDetail.IsPharmacyBalClearnace || 0;
       this.IsAddChargeDelete =UserDetail.IsAddChargeDelete || 0;

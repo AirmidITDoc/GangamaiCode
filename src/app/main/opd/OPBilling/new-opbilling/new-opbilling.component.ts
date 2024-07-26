@@ -980,6 +980,8 @@ console.log(obj)
     this.add = false;
     this.finaldiscAmt();
     this.savebtn = false;
+    this.ChargesDoctorname = '';
+    this.DoctornewId = 0;
   }
   finalDisc1: any = 0;
   finaldiscAmt() {
@@ -1042,6 +1044,7 @@ console.log(obj)
     this.registeredForm.get('ChargeDiscPer').reset(0);
     this.registeredForm.get('ChargeDiscAmount').reset(0);
     this.registeredForm.get('netAmount').reset(0);
+    this.registeredForm.get('DoctorID').reset('');
     // this.v_ChargeDiscPer = 0;
     // this.b_ChargeDisAmount = 0;
     this.registeredForm.reset();
