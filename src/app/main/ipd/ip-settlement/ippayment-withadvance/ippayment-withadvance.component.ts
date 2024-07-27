@@ -668,11 +668,9 @@ private _onDestroy = new Subject<void>();
       ipPaymentInsert['PayTMDate'] = this.dateTimeObj.date;
       ipPaymentInsert['tdsAmount'] = this.tdsAmt || 0; 
     }
-    else if(this.advanceData.FromName == "IP-Pharma-SETTLEMENT"){  
-
-      ipPaymentInsert['paymentId'] = 0;
-      ipPaymentInsert['BillNo'] = this.advanceData.advanceObj.BillNo;
-      ipPaymentInsert['ReceiptNo'] = '';
+    else if(this.advanceData.FromName == "IP-Pharma-SETTLEMENT"){   
+ 
+      ipPaymentInsert['BillNo'] = this.advanceData.advanceObj.BillNo; 
       ipPaymentInsert['PaymentDate'] = this.currentDate || '01/01/1900';
       ipPaymentInsert['PaymentTime'] = this.currentDate || '01/01/1900';
       ipPaymentInsert['CashPayAmount'] = this.cashAmt || 0;
@@ -701,7 +699,7 @@ private _onDestroy = new Subject<void>();
       ipPaymentInsert['PayTMAmount'] = this.paytmAmt || 0;
       ipPaymentInsert['PayTMTranNo'] = this.paytmTransNo || '';
       ipPaymentInsert['PayTMDate'] = this.currentDate || '01/01/1900';
-
+      ipPaymentInsert['paymentId'] = 0;
     }
 
 
@@ -725,7 +723,7 @@ private _onDestroy = new Subject<void>();
       // Advanceobj['Date'] = this.dataSource.data[0].Date;
       // Advanceobj['BalanceAmount'] = this.dataSource.data[0].BalanceAmount;
       // Advanceobj['RefundAmount'] = this.dataSource.data[0].RefundAmount;
-      Advanceobj['AdvanceNo'] = element.AdvanceId;
+      Advanceobj['AdvanceId'] = element.AdvanceId;
       Advanceobj['AdvanceDetailID'] = element.AdvanceDetailID;
       Advanceobj['AdvanceAmount'] = element.AdvanceAmount;
       Advanceobj['UsedAmount'] = element.UsedAmount;

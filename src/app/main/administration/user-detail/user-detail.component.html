@@ -98,9 +98,10 @@
                                                     #loginname (keydown)="onEnterloginname($event)">
                                                 <mat-error class="error"
                                                     *ngIf="UserForm.get('LoginName').invalid && UserForm.get('LoginName').touched">
-                                                    LoginName is required
+                                                    LoginName is required 
                                                 </mat-error>
-                                            </mat-form-field>
+                                                <mat-error *ngIf="UserForm.get('LoginName').hasError('pattern')">Space is Not allowed </mat-error>
+                                            </mat-form-field> 
                                         </div>
                                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
                                             <mat-form-field appearance="outline" fxFlex>
@@ -109,12 +110,16 @@
                                                 <input name="Password" formControlName="Password" matInput
                                                     type="password" required [(ngModel)]="vPassword"
                                                     [(ngModel)]="registerObj.Password" #password
-                                                    (keydown)="onEnterpassword($event)">
+                                                    (keydown)="onEnterpassword($event)"
+                                                    max="999999999999" min="100000000099" autocomplete="off" maxlength="12" minlength="6"
+                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);"
+                                                     value="987665868888"   >
                                                 <mat-error class="error"
                                                     *ngIf="UserForm.get('Password').invalid && UserForm.get('Password').touched">
-                                                    Password is required
+                                                    Password is required min 6 or max 12 digit
                                                 </mat-error>
                                             </mat-form-field>
+ 
                                         </div>
                                     </div>
                                     <div class="user-form-col gap-8" fxFlexFill fxLayout="column" fxLayout.gt-xs="row">

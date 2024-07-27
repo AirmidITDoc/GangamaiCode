@@ -210,7 +210,7 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                                 Company Name </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                <span> {{element.CompanyName}}</span>
+                                                <span> {{element.CompanyName || '-'}}</span>
                                             </mat-cell>
                                         </ng-container>
                         

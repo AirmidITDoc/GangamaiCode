@@ -131,9 +131,9 @@
                                         </ng-container>
                             
                                         <ng-container matColumnDef="PatientName" sticky>
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-180">
                                                 Patient Name</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
                                                 {{contact.PatientName}}
                                             </mat-cell>
                                         </ng-container>
@@ -209,9 +209,9 @@
                                             </mat-footer-cell>
                                         </ng-container>
                             
-                                        <mat-header-row class="accent min-width-1150" *matHeaderRowDef="displayedColumns; sticky: true">
+                                        <mat-header-row class="accent min-width-1200" *matHeaderRowDef="displayedColumns; sticky: true">
                                         </mat-header-row>
-                                        <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact min-width-1150"
+                                        <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact min-width-1200"
                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                         <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                                         </mat-footer-row>
@@ -339,7 +339,7 @@
                                             [@animateStagger]="{value:'50'}" style="overflow: auto;">
          
         
-                                            <ng-container matColumnDef="RefundDate">
+                                            <ng-container matColumnDef="RefundDate" sticky>
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     Refund Date</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
@@ -347,7 +347,7 @@
                                                 </mat-cell>
                                             </ng-container>
         
-                                            <ng-container matColumnDef="RefundNo">
+                                            <ng-container matColumnDef="RefundNo" sticky>
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     Refund No</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
@@ -355,7 +355,7 @@
                                                 </mat-cell>
                                             </ng-container>
         
-                                            <ng-container matColumnDef="RegNo">
+                                            <ng-container matColumnDef="RegNo" sticky>
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                    UHID No</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
@@ -363,10 +363,10 @@
                                                 </mat-cell>
                                             </ng-container>
         
-                                            <ng-container matColumnDef="PatientName">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-230">
+                                            <ng-container matColumnDef="PatientName" sticky>
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
                                                     Patient Name</mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-230">
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
                                                     <span>{{contact.PatientName}}</span>
                                                 </mat-cell>
                                             </ng-container>
@@ -441,12 +441,11 @@
                                                 </mat-footer-cell>
                                             </ng-container>
                                            
-                                            <mat-header-row class="accent "
+                                            <mat-header-row class="accent min-width-1300"
                                                 *matHeaderRowDef="displayedColumnsRef; sticky: true">
-                                            </mat-header-row>
-        
+                                            </mat-header-row> 
                                             <mat-row *matRowDef="let contact; columns: displayedColumnsRef;"
-                                            
+                                            class="contact min-width-1300"
                                                 [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                             <mat-footer-row *matFooterRowDef="['loading']"
                                                 [ngClass]="{'hide':!(sIsLoading == 'loading-data')}"></mat-footer-row>

@@ -308,24 +308,31 @@ export class NewIPRefundAdvanceComponent implements OnInit {
                 toastClass: 'tostr-tost custom-toast-success',
               });  
                   this.viewgetRefundofAdvanceReportPdf(response);
-
+                  this.OnReset();
                   this._matDialog.closeAll(); 
+                  this.isLoading123 = false;
             } else {
               this.toastr.success('IP Pharma Refund Of Advance data not Saved!', 'Error!', {
                 toastClass: 'tostr-tost custom-toast-success',
               });   
-            }
-            this.sIsLoading = '';
+              this.isLoading123 = false;
+            } 
           });
 
         });  
         
-      setTimeout(() => {
-        this.isLoading123 = false;
-      }, 2000);
   }
 
-
+  onClose() {
+    this._matDialog.closeAll();
+    this.OnReset();
+  }
+  OnReset() {
+    this._PharAdvanceService.NewRefundForm.reset();
+    this._PharAdvanceService.NewRefundForm.get('Op_ip_id').setValue(1);
+    this.dsIpItemList.data = [];
+    this._PharAdvanceService.NewRefundForm.get('RegID').setValue('')
+  }
 
   viewgetRefundofAdvanceReportPdf(contact) {
        
@@ -353,20 +360,8 @@ export class NewIPRefundAdvanceComponent implements OnInit {
     },100)
     
   }
+ 
 
-  
-
-  
-  onClose() {
-    this._matDialog.closeAll();
-    this.OnReset();
-  }
-  OnReset() {
-    this._PharAdvanceService.NewRefundForm.reset();
-    this._PharAdvanceService.NewRefundForm.get('Op_ip_id').setValue(1);
-    this.dsIpItemList.data = [];
-    this._PharAdvanceService.NewRefundForm.get('RegID').setValue('')
-  }
   keyPressCharater(event) {
     var inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
