@@ -89,7 +89,7 @@ export class UserDetailComponent implements OnInit {
       HospitalId:'',
       FirstName: '',
       LastName: '',
-      LoginName: '',
+      LoginName: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9_]*')]],
       Password: '',
       StoreId: '',
      MailId: [

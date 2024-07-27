@@ -177,7 +177,7 @@ export class NewAdvanceComponent implements OnInit {
       });
     }
     this.isLoading123 = true; 
-    if (!this.vAdvanceDetailID) {
+    if (!this.vAdvanceId) {
       let insertPHAdvanceObj = {};
       insertPHAdvanceObj['advanceID'] = 0;
       insertPHAdvanceObj['date'] = this.dateTimeObj.date || '01/01/1900';

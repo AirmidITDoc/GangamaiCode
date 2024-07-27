@@ -64,23 +64,9 @@
                                                             <mat-radio-button value="External"
                                                                 [disabled]="vConditionExt">External</mat-radio-button>
                                                         </mat-radio-group>
-
-                                                        <!-- <mat-radio-group aria-label="Select an option" 
-                                                            formControlName="PatientType" [(ngModel)]="vSelectedOption"
-                                                            name="paymode" (change)="onChangePatientType($event)"
-                                                            (blur)="onChangePatientType($event)" fxLayout="row">
-                                                            <span *ngIf="opflag" hidden="true"><mat-radio-button 
-                                                                    value="OP" checked="opflag">OP</mat-radio-button></span>
-                                                            <span *ngIf="ipflag" hidden="true"><mat-radio-button 
-                                                                    value="IP" checked="ipflag" >IP</mat-radio-button></span>
-                                                            <span *ngIf="externalflag" hidden="true"><mat-radio-button 
-                                                                    value="External" checked="externalflag">External</mat-radio-button></span>
-                                                        </mat-radio-group>
-                                                        <span style="font-weight: bold;">Selected Patinet Type :{{Patienttype}}</span>
-                                                         -->
-
-
-                                                        <mat-form-field appearance="outline"
+ 
+                                                        <div >
+                                                        <mat-form-field appearance="outline"  style="width: 500px;"
                                                             *ngIf="ItemSubform.get('PatientType').value != 'IP' && ItemSubform.get('PatientType').value != 'External'">
                                                             <input type="text" name="RegID" formControlName="RegID"
                                                                 placeholder="OP-RegNo / First Name / Last Name / Mobile No"
@@ -107,11 +93,11 @@
                                                         </mat-form-field>
 
 
-                                                        <mat-form-field appearance="outline"
+                                                        <mat-form-field appearance="outline"  style="width: 500px;"
                                                             *ngIf="ItemSubform.get('PatientType').value != 'OP' && ItemSubform.get('PatientType').value != 'External'"
-                                                            fxFlex="50%">
+                                                             >
                                                             <input type="text" name="RegID" formControlName="RegID"
-                                                                placeholder="RegNo / First Name / Last Name / Mobile No"
+                                                                placeholder="IP RegNo / First Name / Last Name / Mobile No"
                                                                 matInput [matAutocomplete]="auto2"
                                                                 (input)="getSearchListIP()">
                                                             <span matSuffix style="display: flex;">
@@ -132,10 +118,10 @@
                                                                 </mat-option>
                                                             </mat-autocomplete> 
                                                         </mat-form-field>
-
+                                                       </div>
                                                         <mat-form-field appearance="outline"
                                                             *ngIf="ItemSubform.get('PatientType').value == 'External'"
-                                                            fxFlex="12%">
+                                                            fxFlex="60%">
                                                             <mat-label>Mobile Number</mat-label>
                                                             <input name="MobileNo" formControlName="MobileNo"
                                                                 placeholder="Mobile Number" matInput required

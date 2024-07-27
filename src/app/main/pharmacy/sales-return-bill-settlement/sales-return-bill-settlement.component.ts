@@ -296,6 +296,8 @@ export class SalesReturnBillSettlementComponent implements OnInit {
       });
   } 
   isLoading123 = false;
+  BalanceAm1:any= 0;
+  UsedAmt1:any =0;
   OnPayment(contact) { 
     
     this.isLoading123 = true; 
@@ -332,7 +334,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
         let updateBillobj = {};
         updateBillobj['salesID'] = contact.SalesId;
         updateBillobj['salRefundAmt'] =0 ;
-        updateBillobj['balanceAmount'] = 0// result.submitDataPay.ipPaymentInsert.balanceAmountController //result.BalAmt;
+        updateBillobj['balanceAmount'] = result.BalAmt || 0 ;// result.submitDataPay.ipPaymentInsert.balanceAmountController //result.BalAmt;
  
 
         let UpdateAdvanceDetailarr1: IpPaymentInsert[] = []; 
@@ -340,16 +342,15 @@ export class SalesReturnBillSettlementComponent implements OnInit {
          UpdateAdvanceDetailarr1 = result.submitDataAdvancePay; 
 
         let UpdateAdvanceDetailarr = [];
-        let BalanceAmt= 0;
-        let UsedAmt = 0;
+       0;
         if (result.submitDataAdvancePay.length > 0) {
           result.submitDataAdvancePay.forEach((element) => {
             let update_T_PHAdvanceDetailObj = {};
             update_T_PHAdvanceDetailObj['AdvanceDetailID'] = element.AdvanceDetailID;
             update_T_PHAdvanceDetailObj['UsedAmount'] = element.UsedAmount;
-            UsedAmt +=element.UsedAmount;
+            this.UsedAmt1 = (this.UsedAmt1 + element.UsedAmount);
             update_T_PHAdvanceDetailObj['BalanceAmount'] = element.BalanceAmount;
-            BalanceAmt +=element.BalanceAmount;
+            this.BalanceAm1 =(this.BalanceAm1 + element.BalanceAmount);
             UpdateAdvanceDetailarr.push(update_T_PHAdvanceDetailObj);
           }); 
         }
@@ -363,9 +364,9 @@ export class SalesReturnBillSettlementComponent implements OnInit {
      
         let update_T_PHAdvanceHeaderObj = {};
         if (result.submitDataAdvancePay.length > 0) { 
-          update_T_PHAdvanceHeaderObj['AdvanceId'] = UpdateAdvanceDetailarr1[0]['AdvanceNo'],
-          update_T_PHAdvanceHeaderObj['AdvanceUsedAmount'] =UsedAmt ,
-          update_T_PHAdvanceHeaderObj['BalanceAmount'] = BalanceAmt
+          update_T_PHAdvanceHeaderObj['AdvanceId'] = UpdateAdvanceDetailarr1[0]['AdvanceId'],
+          update_T_PHAdvanceHeaderObj['AdvanceUsedAmount'] =this.UsedAmt1 ,
+          update_T_PHAdvanceHeaderObj['BalanceAmount'] = this.BalanceAm1
         }
         else { 
           update_T_PHAdvanceHeaderObj['AdvanceId'] = 0,
@@ -374,10 +375,10 @@ export class SalesReturnBillSettlementComponent implements OnInit {
         }
 
         let Data = {
-          "update_Pharmacy_BillBalAmount": updateBillobj,
-          "salesPayment": result.submitDataPay.ipPaymentInsert,
-          "update_T_PHAdvanceDetail":UpdateAdvanceDetailarr,
-          "update_T_PHAdvanceHeader":update_T_PHAdvanceHeaderObj
+          "salesPaymentSettlement": result.submitDataPay.ipPaymentInsert, 
+          "update_Pharmacy_BillBalAmountSettlement": updateBillobj,
+          "update_T_PHAdvanceDetailSettlement":UpdateAdvanceDetailarr,
+          "update_T_PHAdvanceHeaderSettlement":update_T_PHAdvanceHeaderObj
         };
         console.log(Data);
 
@@ -395,9 +396,9 @@ export class SalesReturnBillSettlementComponent implements OnInit {
             }); 
           }
         });
-        
+        this.isLoading123 = false; 
       } 
-      this.isLoading123 = false; 
+    
     });
     
   }
@@ -413,6 +414,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
   onClose() {
     this._matDialog.closeAll();
     this.OnReset();
+    this.isLoading123 = false; 
   }
   OnReset() {
     this._SelseSettelmentservice.ItemSubform.reset(); 
