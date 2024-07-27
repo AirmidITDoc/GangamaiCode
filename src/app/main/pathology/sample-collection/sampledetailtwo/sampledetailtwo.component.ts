@@ -130,11 +130,12 @@ this.date = now.toISOString().slice(0,16);
     
   }
   getSampledetailList() { 
+    debugger
     let OPIP
-    if (this.selectedAdvanceObj1.PatientType == "IP") {
+    if (this.selectedAdvanceObj1.LBL == "IP" || this.selectedAdvanceObj1.Lbl == "IP") {
       OPIP = 1;
     }
-    else {
+    else if (this.selectedAdvanceObj1.LBL == "OP" || this.selectedAdvanceObj1.Lbl == "OP"){
       OPIP = 0;
     } 
      

@@ -316,10 +316,10 @@
                                         (click)="chkresultentry(selection.selected)">
                                       Result entry
                                     </button>
-                                    <!-- <button mat-raised-button 
-                                    (click)="Printresultentry(selection.selected)">
+                                    <button mat-raised-button 
+                                    (click)="Printresultentry()" *ngIf="selection.selected.length>0">
                                           Print Result entry
-                                     </button> -->
+                                     </button>
 
                                     <mat-table class="mat-table-2 h-210" #table matSort [dataSource]="dataSource1" [@animateStagger]="{value:'50'}">
 

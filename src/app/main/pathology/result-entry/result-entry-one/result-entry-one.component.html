@@ -60,8 +60,8 @@
     
                                             <div class="patient-col" *ngIf="selectedAdvanceObj2.PatientType == 'IP'">
                                                 <span class="patient-col-key">DOA | Time</span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{selectedAdvanceObj.DOA}}</span>
+                                                <!-- <span>:</span>
+                                                <span class="patient-col-value">{{selectedAdvanceObj.DOA}}</span> -->
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">OPD/IPD No</span>
@@ -206,7 +206,7 @@
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Result Doctor Name</mat-label>
+                                    <mat-label>Pathologist Name</mat-label>
                                     <input matAutocompletePosition="below" type="text"
                                         placeholder="Select PathResultDoctorId" #PathResultDoctorId
                                         (keydown)="onEnterPathResultDoctorId($event,vPathResultDoctorId.DoctorId)"
@@ -232,7 +232,7 @@
                                     <input matAutocompletePosition="below" type="text" placeholder="Select DoctorId"
                                         matInput (keydown)="onEnterDoctorId($event,vDoctorId.DoctorId)"
                                         (keydown)="onEnterresultdr($event)" formControlName="DoctorId"
-                                        [(ngModel)]="vDoctorId" #DoctorId [matAutocomplete]="autoDoctor" required>
+                                        [(ngModel)]="vDoctorId" #DoctorId [matAutocomplete]="autoDoctor">
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
                                             (click)="otherForm.get('DoctorId').setValue(''); isresultdrSelected = false;">close</mat-icon>
@@ -251,7 +251,7 @@
                                     <input matAutocompletePosition="below" type="text" placeholder="Select DoctorId"
                                         matInput #RefDoctorID formControlName="RefDoctorID" [(ngModel)]="vRefDoctorID"
                                         (keydown)="onEnterRefDoctorID($event,vRefDoctorID.DoctorID)"
-                                        [matAutocomplete]="autoRefdr" required>
+                                        [matAutocomplete]="autoRefdr">
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
                                             (click)="otherForm.get('RefDoctorID').setValue(''); isresultdrSelected = false;">close</mat-icon>
@@ -270,7 +270,7 @@
                                 <div class="modal-footer-buttons" fxLayoutGap="6px" style="padding: 8px;">
                                     <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
                                     <button class="btn btn-primary" (click)="onSave()" [disabled]="otherForm.invalid">Save</button>
-                                    <!-- <button class="btn btn-primary" (click)="Printresultentry(this.Select)" [disabled]="printf">Print</button> -->
+                                    <!-- <button class="btn btn-primary" (click)="Printresultentry()">Print</button> -->
                                 </div>
                             </div>
                         </mat-card>

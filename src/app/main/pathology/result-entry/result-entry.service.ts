@@ -110,10 +110,9 @@ export class ResultEntryService {
   }
 
   
-  public PathPrintResultentryInsert(PathReportId){
-    return this._httpClient.get("Pathology/PathPrintResultentryInsert?PathReportId=" + PathReportId);
+  public PathPrintResultentryInsert(employee) {
+    return this._httpClient.post("Pathology/PathPrintResultentryInsert", employee);
   }
-
 
   public getPathTestReport(OP_IP_Type){
     return this._httpClient.get("Pathology/view-PathReportMultiple?OP_IP_Type=" + OP_IP_Type);

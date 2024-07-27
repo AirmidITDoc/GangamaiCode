@@ -80,6 +80,7 @@ export class ResultEntryComponent implements OnInit {
   dateTimeObj: any;
   chargeslist = [];
   resultSource = [];
+  printdata= [];
 
   setStep(index: number) {
     this.step = index;
@@ -306,11 +307,14 @@ export class ResultEntryComponent implements OnInit {
 
       setTimeout(() => {
         let data = [];
+        
         this.selection.selected.forEach(element => {
           console.log(element)
           data.push({ PathReportId: element["PathReportID"].toString(), ServiceId: element["ServiceId"].toString(), IsCompleted: element["IsCompleted"].toString() });
+          this.printdata.push({ PathReportId: element["PathReportID"].toString()});
         });
-        console.log(data)
+        
+        console.log(this.printdata)
 
         const dialogRef = this._matDialog.open(ResultEntryOneComponent,
           {
@@ -445,15 +449,47 @@ export class ResultEntryComponent implements OnInit {
     }, 100);
   }
 
+  Printresultentry() {
+    
+    console.log(this.selection.selected)
+      
+      let pathologyDelete = [];
+    
+      this.selection.selected.forEach((element) => {
+        debugger
+        this.SOPIPtype=element["OPD_IPD_Type"]
+          let pathologyDeleteObj = {};
+           pathologyDeleteObj['pathReportId'] = element["PathReportID"]
+            pathologyDelete.push(pathologyDeleteObj);
+          });
+          let submitData = {
+            "printInsert": pathologyDelete,
+          };
+          console.log(submitData);
+          this._SampleService.PathPrintResultentryInsert(submitData).subscribe(response => {
+            debugger
+            if (response) {
+              Swal.fire('Congratulations !', 'Pathology Print Resulentry data saved Successfully !', 'success').then((result) => {
+                if (result.isConfirmed) {
+                  debugger
+                  this.viewgetPathologyTestReportPdf(this.SOPIPtype)
+                }
+              });
+            } else {
+              Swal.fire('Error !', 'Pathology Print Resulentry data not saved', 'error');
+            }
+    
+          });
+          this.selection.select();
+      }
 
-
-  viewgetPathologyTestReportPdf(contact) {
+  viewgetPathologyTestReportPdf(OPD_IPD_Type) {
     debugger
     setTimeout(() => {
       this.SpinLoading = true;
       this.AdList = true;
       this._SampleService.getPathTestReport(
-        contact.OPD_IPD_Type
+        OPD_IPD_Type
       ).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,
           {
