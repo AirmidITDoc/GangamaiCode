@@ -2069,6 +2069,7 @@ export class SalesHospitalComponent implements OnInit {
     event.srcElement.removeAttribute('disabled');
     this.PatientName = '';
     this.DoctorName = '';
+    this.ItemSubform.get('FinalDiscPer').enable();
   } 
   isLoading123 = false;
   onCashOnlinePaySave() {
@@ -2126,10 +2127,11 @@ export class SalesHospitalComponent implements OnInit {
     SalesInsert['salesId'] = 0;
     SalesInsert['extMobileNo'] = this.MobileNo || 0;
     SalesInsert['extAddress'] = this.vextAddress || ''; 
+
     if (this.ItemSubform.get('FinalDiscPer').value != 0) {
-      SalesInsert['IsItem_Header_disc'] = 0;
+      SalesInsert['IsItem_Header_disc'] = 1;   // total amount wise discount 
     } else if (this.ItemSubform.get('FinalDiscPer').value == 0) {
-      SalesInsert['IsItem_Header_disc'] =1;
+      SalesInsert['IsItem_Header_disc'] =0;   // item wise discount amt
     } 
   
 
@@ -2368,11 +2370,12 @@ export class SalesHospitalComponent implements OnInit {
           SalesInsert['salesId'] = 0;
           SalesInsert['extMobileNo'] = this.MobileNo || 0;
           SalesInsert['extAddress'] = this.vextAddress || '';
-          if (this.ItemSubform.get('FinalDiscPer').value != 0) {
-            SalesInsert['IsItem_Header_disc'] = 0;
-          } else if (this.ItemSubform.get('FinalDiscPer').value == 0) {
-            SalesInsert['IsItem_Header_disc'] =1;
+          if(this.ItemSubform.get('FinalDiscPer').value != 0) {
+            SalesInsert['IsItem_Header_disc'] = 1;   // total amount wise discount 
+          } else if(this.ItemSubform.get('FinalDiscPer').value == 0) {
+            SalesInsert['IsItem_Header_disc'] =0;   // item wise discount amt
           } 
+        
 
           let salesDetailInsertarr = [];
           this.saleSelectedDatasource.data.forEach((element) => {
@@ -2434,6 +2437,7 @@ export class SalesHospitalComponent implements OnInit {
             "salesDraftStatusUpdate": salesDraftStatusUpdate,
             "salesPayment": result.submitDataPay.ipPaymentInsert
           };
+          
           let vMobileNo = this.MobileNo;
           console.log(submitData)
           this._salesService.InsertCashSales(submitData).subscribe(response => {
@@ -2459,7 +2463,7 @@ export class SalesHospitalComponent implements OnInit {
               this.toastr.error('API Error!', 'Error !', {
                 toastClass: 'tostr-tost custom-toast-error',
               });
-              this.isLoading123=false; 
+          
             }
            
             // });
@@ -2539,11 +2543,12 @@ export class SalesHospitalComponent implements OnInit {
     salesInsertCredit['salesId'] = 0;
     salesInsertCredit['extMobileNo'] = this.MobileNo || 0;
     salesInsertCredit['extAddress'] = this.vextAddress || '';
-    if (this.ItemSubform.get('FinalDiscPer').value != 0) {
-      salesInsertCredit['IsItem_Header_disc'] = 0;
-    } else if (this.ItemSubform.get('FinalDiscPer').value == 0) {
-      salesInsertCredit['IsItem_Header_disc'] =1;
+    if(this.ItemSubform.get('FinalDiscPer').value != 0) {
+      salesInsertCredit['isItem_Header_disc'] = 1;   // total wise discount amt 
+    } else if(this.ItemSubform.get('FinalDiscPer').value == 0) {
+      salesInsertCredit['isItem_Header_disc'] = 0;   // item amount wise discount 
     } 
+  
 
     let salesDetailInsertCreditarr = [];
     this.saleSelectedDatasource.data.forEach((element) => {
@@ -2612,18 +2617,21 @@ export class SalesHospitalComponent implements OnInit {
         this.getWhatsappshareSales(response, vMobileNo);
         this.Itemchargeslist = [];
         this._matDialog.closeAll();
-        this.isLoading123=false;
+        this.isLoading123=false; 
 
       } else { 
         this.toastr.error('API Error!', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
         }); 
+        this.isLoading123=false;
       } 
     }, error => { 
       this.toastr.error('API Error!', 'Error !', {
         toastClass: 'tostr-tost custom-toast-error',
       }); 
+      this.isLoading123=false;
     });
+  
     this.ItemFormreset();
     this.Formreset();
     this.ItemSubform.get('ConcessionId').reset();
@@ -3426,7 +3434,8 @@ getSearchListIP() {
   CompanyName:any;
   Age:any;
   getSelectedObjRegIP(obj) {
-    let IsDischarged = obj.IsDischarged 
+    let IsDischarged = 0;
+    IsDischarged = obj.IsDischarged 
     if(IsDischarged == 1){
       Swal.fire('Selected Patient is already discharged');
       //this.PatientInformRest();

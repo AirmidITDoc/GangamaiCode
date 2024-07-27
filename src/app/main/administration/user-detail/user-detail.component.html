@@ -205,7 +205,8 @@
                                         fxLayout.gt-xs="row">
                                       
                                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%" >
-                                            <mat-checkbox formControlName="IsDoctor" (change)="chkdoctor($event)" style="padding: 10px;">IsDoctor
+                                            <mat-checkbox formControlName="IsDoctor" (change)="chkdoctor($event)" 
+                                            [(ngModel)]="registerObj.DoctorID" style="padding: 10px;">IsDoctor
                                             </mat-checkbox>&nbsp;
                                             
                                             <mat-form-field appearance="outline" fxFlex *ngIf="docflag">
@@ -224,7 +225,7 @@
                                                     [displayWith]="getOptionTextDoctorName">
                                                     <mat-option *ngFor="let option of filteredOptionsDoctorName| async"
                                                         [value]="option">
-                                                        {{option.DoctorName}}
+                                                        {{option.Doctorname}}
                                                     </mat-option>
                                                 </mat-autocomplete>
                                             </mat-form-field>
@@ -337,14 +338,14 @@
                                                             Bed Status</mat-checkbox>
                                                     </div>
                                                     <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%"> 
-                                                        <mat-checkbox formControlName="CurrentStock"
-                                                            [(ngModel)]="registerObj.IsCurrentStk">
+                                                        <mat-checkbox formControlName="IsPharmacyBalClearnace"
+                                                            [(ngModel)]="registerObj.IsPharmacyBalClearnace">
                                                             Is Pharmacy Bal Clearnace
                                                         </mat-checkbox>
                                                     </div>
                                                     <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">
-                                                        <mat-checkbox formControlName="IsPharmacyBalClearnace"
-                                                            [(ngModel)]="registerObj.IsPharmacyBalClearnace">
+                                                        <mat-checkbox formControlName="CurrentStock"
+                                                            [(ngModel)]="registerObj.IsCurrentStk">
                                                             Current Stock
                                                         </mat-checkbox>
                                                     </div>

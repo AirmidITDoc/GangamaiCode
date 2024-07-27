@@ -181,7 +181,10 @@ export class UserDetailComponent implements OnInit {
         map(value => value ? this._filterDoctor(value) : this.DocotorList.slice()),
       );
       if (this.data) {
-        const ddValue = this.DocotorList.filter(c => c.DoctorID == this.registerObj.DoctorID);
+        if(this.registerObj.DoctorID){
+          this.docflag = true
+        }
+        const ddValue = this.DocotorList.filter(c => c.DoctorId == this.registerObj.DoctorID);
         this.UserForm.get('DoctorId').setValue(ddValue[0]);
         this.UserForm.updateValueAndValidity();
         return;
@@ -190,12 +193,12 @@ export class UserDetailComponent implements OnInit {
   }
   private _filterDoctor(value: any): string[] {
     if (value) {
-      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
-      return this.DocotorList.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
+      const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
+      return this.DocotorList.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
     }
   }
   getOptionTextDoctorName(option) {
-    return option && option.DoctorName ? option.DoctorName : '';
+    return option && option.Doctorname ? option.Doctorname : '';
   }
 
   getRoleNamelist1() {
@@ -326,11 +329,11 @@ export class UserDetailComponent implements OnInit {
     if (this.UserForm.get('IsDoctor').value  == true) {
       this.docflag = true
       this.DoctorId =this.UserForm.get('DoctorId').value.DoctorId;
-      
+      console.log(this.DoctorId)
     }else{
       this.docflag = false
       this.DoctorId=0;
-    }
+    }            
   }
   onClose() {
    this.dialogRef.close();
@@ -426,7 +429,7 @@ export class UserDetailComponent implements OnInit {
           "isPOVerify": this.UserForm.get('Poverify').value || 0,
           "isGRNVerify": this.UserForm.get('Grnverify').value || 0,
           "isCollection": true,
-          "isBedStatus": this.UserForm.get('BedStatus').value.DoctorId || 0,
+          "isBedStatus": this.UserForm.get('BedStatus').value  || 0,
           "isCurrentStk": this.UserForm.get('CurrentStock').value || 0,
           "isPatientInfo": this.UserForm.get('PatientInformation').value || 0,
           "isDateInterval": true,
@@ -485,7 +488,7 @@ export class UserDetailComponent implements OnInit {
           "isPOVerify": this.UserForm.get('Poverify').value || 0,
           "isPOInchargeVerify": this.UserForm.get('Ipoverify').value || 0,
           "isGRNVerify": this.UserForm.get('Grnverify').value || 0,
-          "isBedStatus": this.UserForm.get('BedStatus').value.DoctorId || 0,
+          "isBedStatus": this.UserForm.get('BedStatus').value || 0,
           "isCollection": true,
           "isIndentVerify": this.UserForm.get('Indentverify').value || 0,
           "isInchIndVfy": this.UserForm.get('IIverify').value || 0,

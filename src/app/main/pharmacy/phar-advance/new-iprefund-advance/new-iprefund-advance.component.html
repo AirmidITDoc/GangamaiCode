@@ -41,7 +41,7 @@
                             <div fxLayout="row" fxLayoutAlign="start center">
                                 <div class="radio-container">
                                     <mat-radio-group formControlName="Op_ip_id" fxFlex="5%">
-                                        <mat-radio-button value="1">IP</mat-radio-button>
+                                        <mat-radio-button value="1"  [checked]="true">IP</mat-radio-button>
                                     </mat-radio-group>
                                 </div>
 
@@ -237,7 +237,7 @@
                     </div> -->
                     <div fxLayout="row" fxLayoutGap="10px">
                     
-                        <div fxFlex.gt-md="70%" fxFlex.md="50%" fxFlex.lt-md="100%">
+                        <div fxFlex.gt-md="75%" fxFlex.md="50%" fxFlex.lt-md="100%">
                             <mat-card style="padding: 6px;height: 300px;">
                                 <div fxlayout="column">
                                     <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur"
@@ -287,16 +287,16 @@
                                                         (keyup)="getCellCalculation(element,element.RefundAmount)" (keypress)="keyPressCharater($event)">
                                                 </mat-form-field>
                                             </mat-cell>
-                                        </ng-container>
-                    
-                                        <!-- <ng-container matColumnDef="AdvanceNo">
+                                        </ng-container> 
+
+                                        <ng-container matColumnDef="PrevRefundAmount">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                AdvanceNo
+                                                Prev.Ref.Amount
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                <span> {{element.AdvanceNo}}</span>
+                                                <span> {{element.PrevRefundAmount  | currency:'INR'}}</span>
                                             </mat-cell>
-                                        </ng-container> -->
+                                        </ng-container>
                     
                                         <ng-container matColumnDef="loading">
                                             <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
@@ -332,7 +332,7 @@
                                 </div>
                             </mat-card>
                         </div>
-                        <div fxFlex.gt-md="30%" fxFlex.md="50%" fxFlex.lt-md="100%">
+                        <div fxFlex.gt-md="25%" fxFlex.md="50%" fxFlex.lt-md="100%">
                             <mat-card style="padding: 6px;height: 300px;">
                                 <div fxlayout="column">
                                     <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur"
@@ -345,7 +345,7 @@
                                         <ng-container matColumnDef="Date">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Date
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.Date | date}}
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.RefundDate | date}}
                                             </mat-cell>
                                         </ng-container>
                     

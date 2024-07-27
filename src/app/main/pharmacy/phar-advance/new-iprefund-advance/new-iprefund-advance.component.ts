@@ -33,6 +33,7 @@ export class NewIPRefundAdvanceComponent implements OnInit {
     'UsedAmount',
     'BalanceAmount',
     'RefundAmount', 
+    'PrevRefundAmount'
   ];
 
   dateTimeObj: any;
@@ -173,7 +174,7 @@ export class NewIPRefundAdvanceComponent implements OnInit {
     
     //this.NewRefundAmount = 0;
     console.log(row);
-    let Query = "select RefundDate,RefundAmount from refund where AdvanceId=" + row.AdvanceId
+    let Query = "select RefundDate,RefundAmount from t_PhRefund where AdvanceId=" + row.AdvanceId
     
     this._PharAdvanceService.getPreRefundofAdvance(Query).subscribe(Visit => {
       this.dsPreRefundList.data =  Visit as IpItemList[]; 
@@ -238,12 +239,13 @@ export class NewIPRefundAdvanceComponent implements OnInit {
       insertPharRefundofAdvance['isCancelled'] = false;
       insertPharRefundofAdvance['isCancelledBy'] = 0;
       insertPharRefundofAdvance['isCancelledDate'] ='01/01/1900';
+      insertPharRefundofAdvance['strId'] =  this._loggedService.currentUserValue.user.storeId || 0;
       insertPharRefundofAdvance['refundId'] = 0; 
  
         let updatePharAdvanceHeaderobj = {};
         updatePharAdvanceHeaderobj['advanceId'] =this.advanceId || 0;
         updatePharAdvanceHeaderobj['advanceUsedAmount'] = 0;
-        updatePharAdvanceHeaderobj['balanceAmount'] = parseFloat(this._PharAdvanceService.NewRefundForm.get('BalanceAmount').value) || 0;
+        updatePharAdvanceHeaderobj['balanceAmount'] = parseFloat(this.vBalanceAmount) || 0;
  
 
       let insertPharRefundofAdvanceDetail = [];
@@ -258,7 +260,7 @@ export class NewIPRefundAdvanceComponent implements OnInit {
 
       let updatePharAdvanceDetailBalAmount = [];
       this.dsIpItemList.data.forEach((element) =>{
-        let updatePharAdvanceDetailBalAmountobj = {};
+        let updatePharAdvanceDetailBalAmountobj = {}; 
         updatePharAdvanceDetailBalAmountobj['advanceDetailID'] =element.AdvanceDetailID || 0;
         updatePharAdvanceDetailBalAmountobj['balanceAmount'] = element.BalanceAmount || 0;
         updatePharAdvanceDetailBalAmountobj['refundAmount'] = element.RefundAmount || 0;
@@ -360,9 +362,10 @@ export class NewIPRefundAdvanceComponent implements OnInit {
     this.OnReset();
   }
   OnReset() {
-    this._PharAdvanceService.NewAdvanceForm.reset();
-    this._PharAdvanceService.NewAdvanceForm.get('Op_ip_id').setValue(1);
+    this._PharAdvanceService.NewRefundForm.reset();
+    this._PharAdvanceService.NewRefundForm.get('Op_ip_id').setValue(1);
     this.dsIpItemList.data = [];
+    this._PharAdvanceService.NewRefundForm.get('RegID').setValue('')
   }
   keyPressCharater(event) {
     var inp = String.fromCharCode(event.keyCode);
@@ -384,11 +387,13 @@ export class NewIPRefundAdvanceComponent implements OnInit {
     Date:any;
     RefundAmount:any;
     AdvanceDetailID:any;
+    PrevRefundAmount:any;
  
     constructor(IpItemList) {
       { 
         this.AdvanceAmount = IpItemList.AdvanceAmount || 0;
         this.UsedAmount = IpItemList.UsedAmount || 0;
+        this.PrevRefundAmount = IpItemList.PrevRefundAmount || 0;
         this.BalanceAmount = IpItemList.BalanceAmount || 0;
         this.AdvanceNo = IpItemList.AdvanceNo || 0; 
         this.PreviousRef = IpItemList.PreviousRef || 0; 
