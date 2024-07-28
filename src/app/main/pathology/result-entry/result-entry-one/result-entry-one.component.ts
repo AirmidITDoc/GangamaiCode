@@ -493,10 +493,11 @@ export class ResultEntryOneComponent implements OnInit {
     });
 
     this.data.RIdData.forEach((element) => {
+      let pathologyUpdateReportObj = {};
       pathologyUpdateReportObj['PathReportID'] = element.PathReportId// element1.PathReportId;
       pathologyUpdateReportObj['ReportDate'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
-        pathologyUpdateReportObj['ReportTime'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy hh:mm"),
-        pathologyUpdateReportObj['IsCompleted'] = true;
+      pathologyUpdateReportObj['ReportTime'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy hh:mm"),
+      pathologyUpdateReportObj['IsCompleted'] = true;
       pathologyUpdateReportObj['IsPrinted'] = true;
       pathologyUpdateReportObj['PathResultDr1'] = this.otherForm.get('PathResultDoctorId').value.DoctorId || 0;
       pathologyUpdateReportObj['PathResultDr2'] = 0; //this.otherForm.get('DoctorId').value.DoctorId || 0;

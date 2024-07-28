@@ -106,6 +106,7 @@ export class ResultEntryComponent implements OnInit {
     'TestName',
     'SampleCollectionTime',
     'SampleNo',
+    'CategoryName',
     'action'
   ];
 
@@ -337,7 +338,6 @@ export class ResultEntryComponent implements OnInit {
   }
 
   getWhatsappshareSales(contact) {
-
     if (!contact.IsTemplateTest) {
       if (this.selection.selected.length == 0) {
         this.toastr.warning('CheckBox Select !', 'Warning !', {
@@ -519,40 +519,28 @@ export class ResultEntryComponent implements OnInit {
 
 
   whatsappresultentry() {
-
     console.log(this.selection.selected)
-
     let pathologyDelete = [];
-
     this.selection.selected.forEach((element) => {
-
       this.SOPIPtype = element["OPD_IPD_Type"]
       let pathologyDeleteObj = {};
       pathologyDeleteObj['pathReportId'] = element["PathReportID"]
       pathologyDelete.push(pathologyDeleteObj);
     });
-
     let submitData = {
       "printInsert": pathologyDelete,
     };
-
     console.log(submitData);
     this._SampleService.PathPrintResultentryInsert(submitData).subscribe(response => {
     });
-
-
     // this.selection.clear();
   }
 
 
   Printresultentry() {
-
     console.log(this.selection.selected)
-
     let pathologyDelete = [];
-
     this.selection.selected.forEach((element) => {
-
       this.SOPIPtype = element["OPD_IPD_Type"]
       let pathologyDeleteObj = {};
       pathologyDeleteObj['pathReportId'] = element["PathReportID"]
@@ -562,21 +550,12 @@ export class ResultEntryComponent implements OnInit {
     let submitData = {
       "printInsert": pathologyDelete,
     };
-
-
     console.log(submitData);
     this._SampleService.PathPrintResultentryInsert(submitData).subscribe(response => {
-      debugger
       if (response) {
         this.viewgetPathologyTestReportPdf(this.SOPIPtype)
-
-      } else {
-        // Swal.fire('Error !', 'Pathology Print Resulentry data not saved', 'error');
       }
-
     });
-
-
     this.selection.clear();
   }
 

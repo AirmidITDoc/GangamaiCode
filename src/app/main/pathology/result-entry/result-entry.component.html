@@ -426,9 +426,9 @@
                                         </ng-container>
 
                                         <ng-container matColumnDef="TestName" sticky>
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">TestName
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-250">TestName
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250">
                                                 <span> {{contact.ServiceName}}</span>
                                             </mat-cell>
                                         </ng-container>
@@ -463,14 +463,14 @@
                                             </mat-cell>
                                         </ng-container>
 
-                                        <!-- <ng-container matColumnDef="DoctorName">
+                                        <ng-container matColumnDef="CategoryName">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
-                                                DoctorName
+                                                CategoryName
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                                <span> {{contact.DoctorName }}</span>
+                                                <span> {{contact.CategoryName}}</span>
                                             </mat-cell>
-                                        </ng-container> -->
+                                        </ng-container>
 
                                         <ng-container matColumnDef="action" stickyEnd>
                                             <mat-header-cell *matHeaderCellDef fxShow.gt-sm>
