@@ -365,7 +365,7 @@
                                         <div class="spinner-border"></div>
                                     </div> -->
                                     <!-- *ngIf="selection.selected.length>0" -->
-                                    <button mat-raised-button (click)="chkresultentry(selection.selected)">
+                                    <button mat-raised-button (click)="chkresultentry(selection.selected,true)">
                                       Result Entry
                                     </button>
                                     <button mat-raised-button (click)="Printresultentry()" *ngIf="selection.selected.length>0">
@@ -477,7 +477,7 @@
                                                 Action</mat-header-cell>
                                             <mat-cell *matCellDef="let contact">
                                                 <!-- *ngIf="contact.IsTemplateTest=='1'" (click)="chkresultentry(contact,$event,contact.select) -->
-                                                <button mat-icon-button class="material-icons"  matTooltip="Result Entry" (click)="chkresultentry(contact,false)">
+                                                <button mat-icon-button class="material-icons"  matTooltip="Result Entry" (click)="chkresultentry(contact,false)" *ngIf="contact.IsTemplateTest">
                                                     <mat-icon title="Result Entry">description</mat-icon>
                                                 </button>
 

@@ -81,8 +81,8 @@ export class ResultEntryComponent implements OnInit {
   dateTimeObj: any;
   chargeslist = [];
   resultSource = [];
-  printdata= [];
-  Mobileno:any;
+  printdata = [];
+  Mobileno: any;
   setStep(index: number) {
     this.step = index;
   }
@@ -124,7 +124,7 @@ export class ResultEntryComponent implements OnInit {
     private _fuseSidebarService: FuseSidebarService,
   ) {
 
-    
+
   }
 
 
@@ -142,34 +142,6 @@ export class ResultEntryComponent implements OnInit {
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
-
-  getView(contact) {
-    console.log(contact);
-
-    this.advanceDataStored.storage = new Templateprintdetail(contact);
-    if (contact.IsTemplateTest) {
-      const dialogRef = this._matDialog.open(ResultEntrytwoComponent,
-        {
-          maxWidth: "80vw",
-          maxHeight: "100vh", width: '100%', height: "100%"
-        });
-      dialogRef.afterClosed().subscribe(result => {
-        console.log('The dialog was closed - Insert Action', result);
-      });
-    }
-    else {
-      const dialogRef = this._matDialog.open(ResultEntryOneComponent,
-        {
-          maxWidth: "80vw",
-          maxHeight: "100vh", width: '100%', height: "100%"
-        });
-      dialogRef.afterClosed().subscribe(result => {
-        console.log('The dialog was closed - Insert Action', result);
-      });
-    }
-  }
-
-
 
   getPatientsList() {
     this.dataSource1.data = [];
@@ -213,14 +185,14 @@ export class ResultEntryComponent implements OnInit {
 
   // for sampledetails tablemyformSearch
   onEdit(m) {
-
+    console.log(m)
     this.reportPrintObj = m
-debugger
+    debugger
     this.PatientName = m.PatientName;
     this.OPD_IPD = m.OP_IP_No
     this.Age = m.AgeYear
     this.PatientType = m.PatientType
-    this.Mobileno=m.mobileNo
+    this.Mobileno = m.MobileNo
     this.SBillNo = m.BillNo;
     this.SOPIPtype = m.OPD_IPD_Type;
     this.SFromDate = this.datePipe.transform(m.PathDate, "yyyy-MM-dd ");
@@ -243,7 +215,7 @@ debugger
       error => {
         this.sIsLoading = '';
       });
-
+    this.selection.clear();
   }
 
   SearchTest($event) {
@@ -293,92 +265,120 @@ debugger
 
     return numSelected === numRows;
   }
-
-  chkresultentry(contact) {
-  
+  IsTemplateTest: any;
+  chkresultentry(contact, flag) {
     debugger
-    if (this.selection.selected.length == 0) {
-      this.toastr.warning('CheckBox Select !', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    else {
 
-      setTimeout(() => {
-        let data = [];
-        
-        this.selection.selected.forEach(element => {
-          console.log(element)
-          data.push({ PathReportId: element["PathReportID"].toString(), ServiceId: element["ServiceId"].toString(), IsCompleted: element["IsCompleted"].toString() });
-          this.printdata.push({ PathReportId: element["PathReportID"].toString()});
+    if (flag)
+      this.IsTemplateTest = contact[0]["IsTemplateTest"]
+    else
+      this.IsTemplateTest = contact.IsTemplateTest
+
+    console.log(contact)
+    if (this.IsTemplateTest == 0) {
+      if (this.selection.selected.length == 0) {
+
+        this.toastr.warning('CheckBox Select !', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
         });
-        
-        console.log(this.printdata)
+        return;
+      }
+      else {
+        setTimeout(() => {
+          let data = [];
 
-        const dialogRef = this._matDialog.open(ResultEntryOneComponent,
-          {
-            maxWidth: "95vw",
-            height: '670px',
-            width: '90%',
-            data: {
-              RIdData: data,
-              patientdata: this.reportPrintObj,
+          this.selection.selected.forEach(element => {
+            console.log(element)
+            data.push({ PathReportId: element["PathReportID"].toString(), ServiceId: element["ServiceId"].toString(), IsCompleted: element["IsCompleted"].toString() });
+            this.printdata.push({ PathReportId: element["PathReportID"].toString() });
+          });
+
+          console.log(this.printdata)
+
+          const dialogRef = this._matDialog.open(ResultEntryOneComponent,
+            {
+              maxWidth: "95vw",
+              height: '670px',
+              width: '90%',
+              data: {
+                RIdData: data,
+                patientdata: this.reportPrintObj,
+              }
+            });
+          dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+              // this.selection.clear();
+              // data = [];
+              this.SpinLoading = false;
             }
           });
-        dialogRef.afterClosed().subscribe(result => {
-          this.SpinLoading = false;
-        });
-        dialogRef.afterClosed().subscribe(result => {
-          this.SpinLoading = false;
-        });
-        data=[];
-      }, 100);
 
+
+        }, 100);
+
+      }
+    }
+    else if (contact.IsTemplateTest == 1) {
+      this.advanceDataStored.storage = new SampleDetailObj(contact);
+      const dialogRef = this._matDialog.open(ResultEntrytwoComponent,
+        {
+          maxWidth: "90%",
+          height: '95%',
+          width: '100%',
+          data: contact,
+        });
+
+
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('Pathology Template  Saved ..', result);
+      });
     }
     // this.selection.clear();
   }
 
-  getWhatsappshareSales(el) {
+  getWhatsappshareSales(contact) {
 
-    if (this.selection.selected.length == 0) {
-      this.toastr.warning('CheckBox Select !', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }else{
-    this.Printresultentry();
-  
-    if (this.Mobileno != '') {
-      var m_data = {
-        "insertWhatsappsmsInfo": {
-          "mobileNumber": this.Mobileno || 0,
-          "smsString": '',
-          "isSent": 0,
-          "smsType": 'PathlogyTestResult',
-          "smsFlag": 0,
-          "smsDate": this.currentDate,
-          "tranNo": el,
-          "PatientType": 2,//el.PatientType,
-          "templateId": 0,
-          "smSurl": "info@gmail.com",
-          "filePath": '',
-          "smsOutGoingID": 0
-        }
+    if (!contact.IsTemplateTest) {
+      if (this.selection.selected.length == 0) {
+        this.toastr.warning('CheckBox Select !', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
       }
-      this._WhatsAppEmailService.InsertWhatsappSales(m_data).subscribe(response => {
-        if (response) {
-          this.toastr.success('Result Sent on WhatsApp Successfully.', 'Save !', {
-            toastClass: 'tostr-tost custom-toast-success',
-          });
-        } else {
-          this.toastr.error('API Error!', 'Error WhatsApp!', {
-            toastClass: 'tostr-tost custom-toast-error',
-          });
+    } else if (contact) {
+      this.whatsappresultentry();
+
+      if (this.Mobileno != '') {
+        var m_data = {
+          "insertWhatsappsmsInfo": {
+            "mobileNumber": this.Mobileno || 0,
+            "smsString": '',
+            "isSent": 0,
+            "smsType": 'PathlogyTestResult',
+            "smsFlag": 0,
+            "smsDate": this.currentDate,
+            "tranNo": contact.OPD_IPD_Type,
+            "PatientType": 2,//el.PatientType,
+            "templateId": 0,
+            "smSurl": "info@gmail.com",
+            "filePath": '',
+            "smsOutGoingID": 0
+          }
         }
-      });
+
+        this._WhatsAppEmailService.InsertWhatsappSales(m_data).subscribe(response => {
+          if (response) {
+            this.toastr.success('Result Sent on WhatsApp Successfully.', 'Save !', {
+              toastClass: 'tostr-tost custom-toast-success',
+            });
+          } else {
+            this.toastr.error('API Error!', 'Error WhatsApp!', {
+              toastClass: 'tostr-tost custom-toast-error',
+            });
+          }
+        });
+      }
     }
-  }
   }
 
   OPIPID: any = 0;
@@ -405,10 +405,6 @@ debugger
   //   debugger
   //   console.log(m);
 
-  //   this.advanceDataStored.storage = new SampleDetailObj(m); 
-  //   this.PathTestServiceId=m.PathTestServiceId;
-  //   console.log(m);
-
   //   if (m.IsTemplateTest == 1) {
   //     this.advanceDataStored.storage = new SampleDetailObj(m);
   //     const dialogRef = this._matDialog.open(ResultEntrytwoComponent,
@@ -416,12 +412,8 @@ debugger
   //         maxWidth: "90%",
   //         height: '95%',
   //         width: '100%',
-  //         data:this.reportPrintObj,
-  //         // data: {
-  //         //   RIdData:data,
-  //         //   patientdata:this.advanceDataStored.storage,
-  //         //   OPIPID:this.OPIPID
-  //         // }
+  //         data: this.reportPrintObj,
+
   //       });
 
 
@@ -429,69 +421,74 @@ debugger
   //       console.log('Pathology Template  Saved ..', result);
   //     });
   //   }
-  //   else {
-  //     this.advanceDataStored.storage = new SampleDetailObj(m);
-  //     const dialogRef = this._matDialog.open(ResultEntryOneComponent,
-  //       {
-  //         maxWidth: "95vw",
-  //         height: '670px',
-  //         width: '70%',
-  //         data: {
-  //          data : m
-  //         }
-  //       });
-  //     dialogRef.afterClosed().subscribe(result => {
-  //       console.log('PathologyResult Saved ..', result);
-  //     });
-  //   }
+  //   // else {
+  //   //   this.advanceDataStored.storage = new SampleDetailObj(m);
+  //   //   const dialogRef = this._matDialog.open(ResultEntryOneComponent,
+  //   //     {
+  //   //       maxWidth: "95vw",
+  //   //       height: '670px',
+  //   //       width: '70%',
+  //   //       data: {
+  //   //        data : m
+  //   //       }
+  //   //     });
+  //   //   dialogRef.afterClosed().subscribe(result => {
+  //   //     console.log('PathologyResult Saved ..', result);
+  //   //   });
+  //   // }
   // }
 
 
 
   Cancleresult(row) {
-      
+
     Swal.fire({
-        title: 'Do you want to Change Active Status Of Test',
-         showCancelButton: true,
-        confirmButtonText: 'OK',
-  
-      }).then((flag) => {
-        let Query;
-        if (flag.isConfirmed) {
-            if(row.Isdeleted){
-             Query = "Update M_PathParameterMaster set Isdeleted=0 where ParameterID=" +
-            row.ParameterID;
-            console.log(Query);
-            }else{
-                 Query = "Update M_PathParameterMaster set Isdeleted=1 where ParameterID=" +
-                row. ParameterID;
-            }
+      title: 'Do you want to Change Active Status Of Test',
+      showCancelButton: true,
+      confirmButtonText: 'OK',
 
-            this._SampleService.deactivateTheStatus(Query)
-                .subscribe((data) => (this.msg = data));
-            this.onEdit(row);
-        }
-      });
+    }).then((flag) => {
 
+      if (flag.isConfirmed) {
+        let Rollback = {}
+        Rollback["PathReportId"] = row.PathReportID
+
+        let submitData = {
+          "rollbackReport": Rollback
+        };
+        console.log(submitData);
+        this._SampleService.RoolbackStatus(submitData).subscribe(response => {
+          if (response) {
+            Swal.fire('Congratulations !', 'Data Updated Successfully !', 'success').then((result) => {
+              this._matDialog.closeAll();
+            });
+          } else {
+            Swal.fire('Error !', 'Pathology Resulentry data not Updated', 'error');
+          }
+
+        });
+      }
+    });
     this.onEdit(row);
-}
+  }
+
 
 
   getPrint(contact) {
     if (contact.IsTemplateTest)
       this.viewgetPathologyTemplateReportPdf(contact)
-    else{
+    else {
       // this.viewgetPathologyTestReportPdf(contact)
       if (this.selection.selected.length == 0) {
         this.toastr.warning('CheckBox Select !', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
         return;
-      }else{
-      this.Printresultentry();
+      } else {
+        this.Printresultentry();
+      }
     }
-  }
-  this.selection.clear();
+    this.selection.clear();
   }
   AdList: boolean = false;
   viewgetPathologyTemplateReportPdf(contact) {
@@ -520,76 +517,68 @@ debugger
     }, 100);
   }
 
-  // Printresultentry() {
-    
-  //   console.log(this.selection.selected)
-      
-  //     let pathologyDelete = [];
-    
-  //     this.selection.selected.forEach((element) => {
-  //       debugger
-  //       this.SOPIPtype=element["OPD_IPD_Type"]
-  //         let pathologyDeleteObj = {};
-  //          pathologyDeleteObj['pathReportId'] = element["PathReportID"]
-  //           pathologyDelete.push(pathologyDeleteObj);
-  //         });
-  //         let submitData = {
-  //           "printInsert": pathologyDelete,
-  //         };
-  //         console.log(submitData);
-  //         this._SampleService.PathPrintResultentryInsert(submitData).subscribe(response => {
-  //           debugger
-  //           if (response) {
-  //             Swal.fire('Congratulations !', 'Pathology Print Resulentry data saved Successfully !', 'success').then((result) => {
-  //               if (result.isConfirmed) {
-  //                 debugger
-  //                 this.viewgetPathologyTestReportPdf(this.SOPIPtype)
-  //               }
-  //             });
-  //           } else {
-  //             Swal.fire('Error !', 'Pathology Print Resulentry data not saved', 'error');
-  //           }
-    
-  //         });
-  //         this.selection.clear();
-  //         let pathologyDeleteObj = {};
-  //     }
+
+  whatsappresultentry() {
+
+    console.log(this.selection.selected)
+
+    let pathologyDelete = [];
+
+    this.selection.selected.forEach((element) => {
+
+      this.SOPIPtype = element["OPD_IPD_Type"]
+      let pathologyDeleteObj = {};
+      pathologyDeleteObj['pathReportId'] = element["PathReportID"]
+      pathologyDelete.push(pathologyDeleteObj);
+    });
+
+    let submitData = {
+      "printInsert": pathologyDelete,
+    };
+
+    console.log(submitData);
+    this._SampleService.PathPrintResultentryInsert(submitData).subscribe(response => {
+    });
+
+
+    // this.selection.clear();
+  }
 
 
   Printresultentry() {
-    
+
     console.log(this.selection.selected)
-      
-      let pathologyDelete = [];
-    
-      this.selection.selected.forEach((element) => {
-                
-        this.SOPIPtype=element["OPD_IPD_Type"]
-          let pathologyDeleteObj = {};
-           pathologyDeleteObj['pathReportId'] = element["PathReportID"]
-           pathologyDelete.push(pathologyDeleteObj);
-          });
 
-          let submitData = {
-            "printInsert": pathologyDelete,
-          };
+    let pathologyDelete = [];
+
+    this.selection.selected.forEach((element) => {
+
+      this.SOPIPtype = element["OPD_IPD_Type"]
+      let pathologyDeleteObj = {};
+      pathologyDeleteObj['pathReportId'] = element["PathReportID"]
+      pathologyDelete.push(pathologyDeleteObj);
+    });
+
+    let submitData = {
+      "printInsert": pathologyDelete,
+    };
 
 
-          console.log(submitData);
-          this._SampleService.PathPrintResultentryInsert(submitData).subscribe(response => {
-            debugger
-            if (response) {
-              this.viewgetPathologyTestReportPdf(this.SOPIPtype)
-              
-            } else {
-              // Swal.fire('Error !', 'Pathology Print Resulentry data not saved', 'error');
-            }
-    
-          });
-             
-     
-        this.selection.clear();
+    console.log(submitData);
+    this._SampleService.PathPrintResultentryInsert(submitData).subscribe(response => {
+      debugger
+      if (response) {
+        this.viewgetPathologyTestReportPdf(this.SOPIPtype)
+
+      } else {
+        // Swal.fire('Error !', 'Pathology Print Resulentry data not saved', 'error');
       }
+
+    });
+
+
+    this.selection.clear();
+  }
 
 
 
@@ -659,7 +648,6 @@ debugger
   onShow(event: MouseEvent) {
     // this.click = false;// !this.click;
     this.click = !this.click;
-    // this. showSpinner = true;
 
     setTimeout(() => {
       {
@@ -717,6 +705,7 @@ export class PatientList {
   DoctorName: String;
   AgeYear: any;
   GenderName: String;
+  MobileNo: any;
 
   constructor(PatientList) {
     this.DOA = PatientList.DOA || '0';
@@ -728,6 +717,7 @@ export class PatientList {
     this.DoctorName = PatientList.DoctorName || 1;
     this.AgeYear = PatientList.AgeYear || 0;
     this.GenderName = PatientList.GenderName;
+    this.MobileNo = PatientList.MobileNo || ''
   }
 }
 

@@ -79,6 +79,16 @@ export class ResultEntryService {
 
   }
 
+
+  public getPathologyTemplateforIP(query){
+    return this._httpClient.post("Generic/GetBySelectQuery?query=" + query, {})
+
+  }
+  public getPathologyTemplateforOP(query){
+    return this._httpClient.post("Generic/GetBySelectQuery?query=" + query, {})
+
+  }
+
   public getPathTemplatePrint(No) {
     return this._httpClient.post("Generic/GetByProc?procName=rptPrintPathologyReportTemplate", No)
   }
@@ -126,6 +136,11 @@ export class ResultEntryService {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_PathTemplateMasterForCombo", employee)
   }
   
+  
+  public RoolbackStatus(employee) {
+    return this._httpClient.post("Pathology/PathResultentryrollback", employee);
+  }
+
   public deactivateTheStatus(m_data) {
     return this._httpClient.post(
         "Generic/ExecByQueryStatement?query=" + m_data, {});

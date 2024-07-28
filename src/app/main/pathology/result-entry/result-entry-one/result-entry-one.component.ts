@@ -76,6 +76,8 @@ export class ResultEntryOneComponent implements OnInit {
   OP_IPType: any;
   Iscompleted: any;
   PathReportId: any;
+  PathResultDr1: any;
+
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -125,11 +127,7 @@ export class ResultEntryOneComponent implements OnInit {
     // this.getDoctorList();
     // this.getRefDoctorList();
 
-    
-    this.setDropdownObjs();
 
-
-    debugger
     if (this.Iscompleted == 1) {
       if (this.OP_IPType == 1)
         this.getResultListIP();
@@ -137,9 +135,19 @@ export class ResultEntryOneComponent implements OnInit {
         this.getResultListOP();
     } else {
       this.getResultList(this.selectedAdvanceObj2);
+
+
     }
 
+    this.getPathresultDoctorList();
+    this.filteredresultdr = this.otherForm.get('PathResultDoctorId').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterdoc3(value)),
+    );
 
+
+
+    // this.setDropdownObjs();
     setTimeout(function () {
       let element: HTMLElement = document.getElementById('auto_trigger') as HTMLElement;
       element.click();
@@ -156,6 +164,7 @@ export class ResultEntryOneComponent implements OnInit {
   }
 
   setDropdownObjs() {
+    debugger
     const toSelect = this.PathologyDoctorList.find(c => c.DoctorId == this.Pthologyresult.PathResultDr1);
     this.otherForm.get('DoctorId').setValue(toSelect);
 
@@ -176,6 +185,7 @@ export class ResultEntryOneComponent implements OnInit {
     this._SampleService.getPathologyResultList(SelectQuery).subscribe(Visit => {
       this.dataSource.data = Visit as Pthologyresult[];
       this.Pthologyresult = Visit as Pthologyresult[];
+      this.PathResultDr1 = this.Pthologyresult.PathResultDr1;
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
       this.sIsLoading = '';
@@ -445,7 +455,7 @@ export class ResultEntryOneComponent implements OnInit {
       });
       return;
     }
-   
+
     this.isLoading = 'submit';
     let PathInsertArryobj = [];
     let PathInsertArry = [];
@@ -485,11 +495,11 @@ export class ResultEntryOneComponent implements OnInit {
     this.data.RIdData.forEach((element) => {
       pathologyUpdateReportObj['PathReportID'] = element.PathReportId// element1.PathReportId;
       pathologyUpdateReportObj['ReportDate'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
-      pathologyUpdateReportObj['ReportTime'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy hh:mm"),
-      pathologyUpdateReportObj['IsCompleted'] = true;
+        pathologyUpdateReportObj['ReportTime'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy hh:mm"),
+        pathologyUpdateReportObj['IsCompleted'] = true;
       pathologyUpdateReportObj['IsPrinted'] = true;
       pathologyUpdateReportObj['PathResultDr1'] = this.otherForm.get('PathResultDoctorId').value.DoctorId || 0;
-      pathologyUpdateReportObj['PathResultDr2'] = 0 ; //this.otherForm.get('DoctorId').value.DoctorId || 0;
+      pathologyUpdateReportObj['PathResultDr2'] = 0; //this.otherForm.get('DoctorId').value.DoctorId || 0;
       pathologyUpdateReportObj['PathResultDr3'] = 0;
       pathologyUpdateReportObj['IsTemplateTest'] = 0;
       pathologyUpdateReportObj['SuggestionNotes'] = this.otherForm.get('suggestionNotes').value || "";
@@ -575,26 +585,43 @@ export class ResultEntryOneComponent implements OnInit {
   }
 
 
+  // getPathresultDoctorList() {
+  //   this._SampleService.getPathologyDoctorCombo().subscribe(data => {
+  //     this.PathologyDoctorList = data;
+  //     this.optionsDoc3 = this.PathologyDoctorList.slice();
+  //     this.filteredresultdr = this.otherForm.get('PathResultDoctorId').valueChanges.pipe(
+  //       startWith(''),
+  //       map(value => value ? this._filterdoc3(value) : this.PathologyDoctorList.slice()),
+  //     );
+  //   });
+  // }
+
+
+  // private _filterdoc3(value: any): string[] {
+  //   if (value) {
+  //     const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
+  //     return this.optionsDoc3.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
+  //   }
+  // }
+
+
   getPathresultDoctorList() {
     this._SampleService.getPathologyDoctorCombo().subscribe(data => {
       this.PathologyDoctorList = data;
-      this.optionsDoc3 = this.PathologyDoctorList.slice();
-      this.filteredresultdr = this.otherForm.get('PathResultDoctorId').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterdoc3(value) : this.PathologyDoctorList.slice()),
-      );
+      if (this.data) {
+        const ddValue = this.PathologyDoctorList.filter(c => c.ReligionId == this.Pthologyresult.PathResultDr1);
+        this.otherForm.get('PathResultDoctorId').setValue(ddValue[0]);
+        this.otherForm.updateValueAndValidity();
+        return;
+      }
     });
   }
-
-
   private _filterdoc3(value: any): string[] {
     if (value) {
       const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
-      return this.optionsDoc3.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
+      return this.PathologyDoctorList.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
     }
   }
-
-
 
   getDoctorList() {
     this._SampleService.getDoctorMaster1Combo().subscribe(data => {
@@ -640,7 +667,6 @@ export class ResultEntryOneComponent implements OnInit {
     this._SampleService.getPathologyResultListforIP(SelectQuery).subscribe(Visit => {
       this.dataSource.data = Visit as Pthologyresult[];
       this.Pthologyresult = Visit as Pthologyresult[];
-      // console.log(this.Pthologyresult);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
       this.sIsLoading = '';
@@ -656,7 +682,7 @@ export class ResultEntryOneComponent implements OnInit {
     console.log(SelectQuery)
     this._SampleService.getPathologyResultListforOP(SelectQuery).subscribe(Visit => {
       this.dataSource.data = Visit as Pthologyresult[];
-      this.Pthologyresult = Visit as Pthologyresult[];
+       this.Pthologyresult = Visit as Pthologyresult[];
       console.log(this.Pthologyresult);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;

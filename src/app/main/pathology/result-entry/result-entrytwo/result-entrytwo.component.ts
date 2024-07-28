@@ -47,14 +47,16 @@ export class ResultEntrytwoComponent implements OnInit {
   PathTestId: any
   TemplateList:any=[];
   optionsTemplate: any[] = [];
-
+  sIsLoading: string = '';
   isTemplateNameSelected: boolean = false;
  filteredOptionsisTemplate: Observable<string[]>;
  
  TemplateDesc:any;
   otherForm: FormGroup;
+  reportIdData:any;
   // private _matDialog: any;
   vTemplateDesc:any="";
+  OP_IPType:any;
   constructor(
     public _SampleService: ResultEntryService,
     private accountService: AuthenticationService,
@@ -67,16 +69,22 @@ export class ResultEntrytwoComponent implements OnInit {
      public dialogRef: MatDialogRef<ResultEntrytwoComponent>,
   ) {
     dialogRef.disableClose = true;
-    if(this.data)
+  
+    if(this.data){
       this.selectedAdvanceObj1 = this.data;
-    console.log( this.selectedAdvanceObj1)
-    
-    if (this.advanceDataStored.storage) {
-      this.selectedAdvanceObj = this.advanceDataStored.storage;
-      
-      console.log( this.selectedAdvanceObj )
-      this.vTemplateDesc= this.selectedAdvanceObj.TemplateDesc;
+      this.selectedAdvanceObj = this.data;
+  
+      console.log( this.data)
+    this.OP_IPType=this.selectedAdvanceObj1.OPD_IPD_Type
+    this.reportIdData =this.selectedAdvanceObj1.PathReportID
+   // this.vTemplateDesc= this.selectedAdvanceObj.TemplateDesc;
     }
+    // if (this.advanceDataStored.storage) {
+    //   this.selectedAdvanceObj = this.advanceDataStored.storage;
+    //   console.log( this.selectedAdvanceObj )
+     // this.vTemplateDesc= this.selectedAdvanceObj.TemplateDesc;
+    
+    // }
    }
 
   ngOnInit(): void {
@@ -88,7 +96,44 @@ export class ResultEntrytwoComponent implements OnInit {
     });
     this.getTemplateList();
    
-  }
+    
+    // if (this.Iscompleted == 1) {
+      if (this.OP_IPType == 1)
+        this.getTemplatedetailIP();
+      else
+        this.getTemplatedetailOP();
+    }
+   
+
+
+
+
+    getTemplatedetailIP() {
+      this.sIsLoading = 'loading-data';
+      let SelectQuery = "Select * from lvw_Retrieve_PathologyResultIPPatientUpdate where PathReportId in(" + this.reportIdData + ")"
+      console.log(SelectQuery);
+      this._SampleService.getPathologyTemplateforIP(SelectQuery).subscribe(Visit => {
+        // this.Pthologyresult = Visit as Pthologyresult[];
+      
+      },
+        error => {
+          this.sIsLoading = '';
+        });
+    }
+  
+    getTemplatedetailOP() {
+      this.sIsLoading = 'loading-data';
+      let SelectQuery = "Select * from lvw_Retrieve_PathologyResultUpdate where PathReportId in(" + this.reportIdData + ")"
+      console.log(SelectQuery)
+      this._SampleService.getPathologyTemplateforOP(SelectQuery).subscribe(Visit => {
+      // this.Pthologyresult = Visit as Pthologyresult[];
+      //   console.log(this.Pthologyresult);
+      
+      },
+        error => {
+          this.sIsLoading = '';
+        });
+    }
 
   // onSubmit() {
   //   if (this._SampleService.myform.valid) {
@@ -141,12 +186,7 @@ export class ResultEntrytwoComponent implements OnInit {
       });
       return;
     }
-  // console.log(this.otherForm.get("ResultEntry").value)
-  //   const domParser = new DOMParser();
-  //   const htmlElement = domParser.parseFromString(this.otherForm.get("ResultEntry").value, 'text/html');
-  //   console.log(htmlElement)
-
-
+  
     let pathologyTemplateDeleteObj = {};
     pathologyTemplateDeleteObj['pathReportId'] = this.selectedAdvanceObj.PathReportID;
     this.isLoading = 'submit';
@@ -247,31 +287,7 @@ export class ResultEntrytwoComponent implements OnInit {
     this._SampleService.populateForm(m_data);
   }
 
-  // onPrint() {
-  //   let popupWin, printContents;
-  //   popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
-  //   popupWin.document.write(` <html>
-  //   <head><style type="text/css">`);
-  //     popupWin.document.write(`
-  //       table th, table td {
-  //       border:1px solid #bdbdbd;
-  //       padding:0.5em;
-  //     }
-  //     `);
-  //     popupWin.document.write(`
-  //     </style>
-  //         <title></title>
-  //     </head>
-  //   `);
-  //   popupWin.document.write(`
-  //     <div>${this._SampleService.myform.get("TemplateName").value}</div>
-  //   `);
-  //   popupWin.document.write(`<body onload="window.print();window.close()">${this._SampleService.myform.get("TemplateDesc").value}</body>
-  //   </html>`);
-  //   popupWin.document.close();
-  // }
-
- 
+   
 
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
