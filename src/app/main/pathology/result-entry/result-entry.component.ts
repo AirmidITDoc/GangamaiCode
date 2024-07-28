@@ -104,10 +104,8 @@ export class ResultEntryComponent implements OnInit {
     'IsTemplateTest',
     'TestName',
     'SampleCollectionTime',
-    // 'SampleNo',
-    'DoctorName',
+    'SampleNo',
     'action'
-
   ];
 
   hasSelectedContacts: boolean;

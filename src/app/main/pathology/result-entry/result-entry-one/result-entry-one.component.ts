@@ -94,12 +94,12 @@ export class ResultEntryOneComponent implements OnInit {
     if (this.data) {
 
       this.selectedAdvanceObj2 = data.patientdata;
-      console.log(this.selectedAdvanceObj2 )
+      console.log(this.selectedAdvanceObj2)
       this.OPIPID = this.selectedAdvanceObj2.OPD_IPD_ID;
       this.OP_IPType = this.selectedAdvanceObj2.OPD_IPD_Type;
       this.reportIdData = [];
 
-      
+
       this.data.RIdData.forEach((element) => {
         this.reportIdData.push(element.PathReportId)
         this.ServiceIdData.push(element.ServiceId)
@@ -116,7 +116,7 @@ export class ResultEntryOneComponent implements OnInit {
     this.otherForm = this.formBuilder.group({
       suggestionNotes: '',
       PathResultDoctorId: [0],
-      DoctorId: ['', Validators.required],
+      DoctorId: [0],
       AdmDoctorID: [0],
       RefDoctorID: [0],
     });
@@ -126,7 +126,7 @@ export class ResultEntryOneComponent implements OnInit {
     this.getRefDoctorList();
     this.setDropdownObjs();
 
-    
+
     debugger
     if (this.Iscompleted == 1) {
       if (this.OP_IPType == 1)
@@ -166,7 +166,7 @@ export class ResultEntryOneComponent implements OnInit {
 
   getResultList(advanceData) {
 
-    
+
     this.sIsLoading = 'loading-data';
 
     let SelectQuery = "Select * from lvw_Retrieve_PathologyResult where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ")"
@@ -244,7 +244,7 @@ export class ResultEntryOneComponent implements OnInit {
   //       console.log(element)
   //       // if(element.ParameterId)
   //       //   element.PathReportID=element.ParameterId
-        
+
   //       let pathologyInsertReportObj = {};
 
   //       if (element.PathReportID == this.PathReportId) {
@@ -300,7 +300,7 @@ export class ResultEntryOneComponent implements OnInit {
   //     console.log(submitData);
   //     this._SampleService.PathResultentryInsert(submitData).subscribe(response => {
   //       if (response) {
-          
+
   //         this.Saveflag = 1;
   //       } else {
   //         this.Saveflag = 0;
@@ -356,7 +356,7 @@ export class ResultEntryOneComponent implements OnInit {
 
   //     this.Pthologyresult.forEach((element) => {
   //       console.log(element)
-        
+
   //       let pathologyInsertReportObj = {};
 
   //       if (element.PathReportID == element.PathReportId) {
@@ -412,7 +412,7 @@ export class ResultEntryOneComponent implements OnInit {
   //     console.log(submitData);
   //     this._SampleService.PathResultentryInsert(submitData).subscribe(response => {
   //       if (response) {
-          
+
   //         this.Saveflag = 1;
   //       } else {
   //         this.Saveflag = 0;
@@ -436,8 +436,8 @@ export class ResultEntryOneComponent implements OnInit {
 
   onSave() {
 
-  
-    if ((this.vPathResultDoctorId == '' || this.vPathResultDoctorId == null || this.vPathResultDoctorId == undefined)) {
+
+    if ((this.vPathResultDoctorId == '')) {
       this.toastr.warning('Please select valid Pathalogist', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -455,7 +455,7 @@ export class ResultEntryOneComponent implements OnInit {
     //   });
     //   return;
     // }
-  
+
     this.isLoading = 'submit';
     let PathInsertArryobj = [];
     let PathInsertArry = [];
@@ -463,19 +463,14 @@ export class ResultEntryOneComponent implements OnInit {
     let pathologyUpdateReportObjarray = [];
     let pathologyUpdateReportObj = {};
 
-    console.log(this.data.RIdData)
-
     this.data.RIdData.forEach((element) => {
       let pathologyDeleteObj = {};
       pathologyDeleteObj['pathReportID'] = element.PathReportId// element1.PathReportId;
       pathologyDeleteObjarray.push(pathologyDeleteObj);
     });
 
-
     this.Pthologyresult.forEach((element) => {
-      console.log(element)
       let pathologyInsertReportObj = {};
-
       pathologyInsertReportObj['PathReportId'] = element.PathReportId //element1.PathReportId;
       pathologyInsertReportObj['CategoryID'] = element.CategoryID || 0;
       pathologyInsertReportObj['TestID'] = element.TestId || 0;
@@ -494,33 +489,24 @@ export class ResultEntryOneComponent implements OnInit {
       pathologyInsertReportObj['PatientName'] = this.selectedAdvanceObj2.PatientName || '';
       pathologyInsertReportObj['RegNo'] = this.selectedAdvanceObj2.RegNo;
       pathologyInsertReportObj['SampleID'] = element.SampleID || '';
-
       PathInsertArry.push(pathologyInsertReportObj);
-
-
     });
 
     this.data.RIdData.forEach((element) => {
-
       pathologyUpdateReportObj['PathReportID'] = element.PathReportId// element1.PathReportId;
       pathologyUpdateReportObj['ReportDate'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
-        pathologyUpdateReportObj['ReportTime'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy hh:mm"),
-        pathologyUpdateReportObj['IsCompleted'] = true;
+      pathologyUpdateReportObj['ReportTime'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy hh:mm"),
+      pathologyUpdateReportObj['IsCompleted'] = true;
       pathologyUpdateReportObj['IsPrinted'] = true;
       pathologyUpdateReportObj['PathResultDr1'] = this.otherForm.get('PathResultDoctorId').value.DoctorId || 0;
-      pathologyUpdateReportObj['PathResultDr2'] = this.otherForm.get('DoctorId').value.DoctorId || 0;
+      pathologyUpdateReportObj['PathResultDr2'] = 0 ; //this.otherForm.get('DoctorId').value.DoctorId || 0;
       pathologyUpdateReportObj['PathResultDr3'] = 0;
       pathologyUpdateReportObj['IsTemplateTest'] = 0;
       pathologyUpdateReportObj['SuggestionNotes'] = this.otherForm.get('suggestionNotes').value || "";
-      pathologyUpdateReportObj['AdmVisitDoctorID'] = this.selectedAdvanceObj2.AdmDocId || 0,//this.otherForm.get('AdmDoctorID').value.DoctorID || 0;
-        pathologyUpdateReportObj['RefDoctorID'] = this.otherForm.get('RefDoctorID').value.DoctorID || 0;
-
+      pathologyUpdateReportObj['AdmVisitDoctorID'] = 0; //this.otherForm.get('AdmDoctorID').value.DoctorID || 0;
+      pathologyUpdateReportObj['RefDoctorID'] = this.otherForm.get('RefDoctorID').value.DoctorID || 0;
       pathologyUpdateReportObjarray.push(pathologyUpdateReportObj);
     });
-
-    // const pathologyDelete = new PthologyresulDelt(pathologyDeleteObj);
-    // const pathologyUpdateObj = new PthologyresulUp(pathologyUpdateReportObj);
-
 
     console.log('==============================  PathologyResult ===========');
     let submitData = {
@@ -528,14 +514,11 @@ export class ResultEntryOneComponent implements OnInit {
       "insertpathreportdetail": PathInsertArry,
       "updatepathreportheader": pathologyUpdateReportObjarray
     };
-
-
     console.log(submitData);
     this._SampleService.PathResultentryInsert(submitData).subscribe(response => {
       if (response) {
-        Swal.fire('Congratulations !', 'Pathology Resulentry data saved Successfully !', 'success').then((result) => {
+        Swal.fire('Congratulations !', 'Data saved Successfully !', 'success').then((result) => {
         });
-        // this.Printresultentry();
       } else {
         Swal.fire('Error !', 'Pathology Resulentry data not saved', 'error');
       }
@@ -544,15 +527,12 @@ export class ResultEntryOneComponent implements OnInit {
 
   }
 
-
   @ViewChild('PathResultDoctorId') PathResultDoctorId: ElementRef;
   @ViewChild('DoctorId') DoctorId: ElementRef;
   @ViewChild('RefDoctorID') RefDoctorID: ElementRef;
 
-
   public onEnterSugg(event): void {
     if (event.which === 13) {
-
       this.PathResultDoctorId.nativeElement.focus();
     }
   }
@@ -601,7 +581,6 @@ export class ResultEntryOneComponent implements OnInit {
         return;
       }
     }
-
   }
 
 
@@ -613,7 +592,6 @@ export class ResultEntryOneComponent implements OnInit {
         startWith(''),
         map(value => value ? this._filterdoc3(value) : this.PathologyDoctorList.slice()),
       );
-
     });
   }
 
@@ -622,10 +600,7 @@ export class ResultEntryOneComponent implements OnInit {
       const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
       return this.optionsDoc3.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
     }
-
   }
-
-
   getDoctorList() {
     this._SampleService.getDoctorMaster1Combo().subscribe(data => {
       this.DoctorList = data;
@@ -634,7 +609,6 @@ export class ResultEntryOneComponent implements OnInit {
         startWith(''),
         map(value => value ? this._filterdoc2(value) : this.DoctorList.slice()),
       );
-
     });
   }
 
@@ -643,10 +617,7 @@ export class ResultEntryOneComponent implements OnInit {
       const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
       return this.optionsDoc2.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
     }
-
   }
-
-
 
   getRefDoctorList() {
     this._SampleService.getDoctorMaster1Combo().subscribe(data => {
@@ -656,7 +627,6 @@ export class ResultEntryOneComponent implements OnInit {
         startWith(''),
         map(value => value ? this._filterdoc1(value) : this.Doctor1List.slice()),
       );
-
     });
   }
 
@@ -665,15 +635,12 @@ export class ResultEntryOneComponent implements OnInit {
       const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
       return this.optionsDoc1.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
     }
-
   }
 
 
   getResultListIP() {
-
     this.sIsLoading = 'loading-data';
     let SelectQuery = "Select * from lvw_Retrieve_PathologyResultIPPatientUpdate where PathReportId in(" + this.reportIdData + ")"
-
     console.log(SelectQuery);
     this._SampleService.getPathologyResultListforIP(SelectQuery).subscribe(Visit => {
       this.dataSource.data = Visit as Pthologyresult[];
@@ -689,7 +656,6 @@ export class ResultEntryOneComponent implements OnInit {
   }
 
   getResultListOP() {
-
     this.sIsLoading = 'loading-data';
     let SelectQuery = "Select * from lvw_Retrieve_PathologyResultUpdate where PathReportId in(" + this.reportIdData + ")"
     console.log(SelectQuery)
@@ -743,47 +709,29 @@ export class ResultEntryOneComponent implements OnInit {
   }
 
   Printresultentry() {
-    
-debugger
-console.log(Pthologyresult)
-  
-    let FinalPathInsertArry = [];
-    let PathInsertArry = [];
     let pathologyDelete = [];
-
     this.data.RIdData.forEach((element) => {
       let pathologyDeleteObj = {};
-     pathologyDeleteObj['pathReportId'] = element.PathReportId// element1.PathReportId;
+      pathologyDeleteObj['pathReportId'] = element.PathReportId// element1.PathReportId;
       pathologyDelete.push(pathologyDeleteObj);
-
       let submitData = {
         "printInsert": pathologyDelete,
       };
       console.log(submitData);
       this._SampleService.PathPrintResultentryInsert(submitData).subscribe(response => {
         if (response) {
-          Swal.fire('Congratulations !', 'Pathology Print Resulentry data saved Successfully !', 'success').then((result) => {
+          Swal.fire('Congratulations !', 'Pathology Report Print !!', 'success').then((result) => {
             if (result.isConfirmed) {
-              
               this.viewgetPathologyTestReportPdf(this.OP_IPType)
             }
           });
         } else {
-          Swal.fire('Error !', 'Pathology Print Resulentry data not saved', 'error');
+          Swal.fire('Error !', 'Pathology Print not saved', 'error');
         }
-
       });
     });
   }
-
-
-
-
 }
-
-
-
-
 
 export class Pthologyresult {
   TestName: String;
