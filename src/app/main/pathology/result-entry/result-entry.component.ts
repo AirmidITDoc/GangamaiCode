@@ -23,6 +23,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { SampledetailtwoComponent } from '../sample-collection/sampledetailtwo/sampledetailtwo.component';
 import { AdvanceDetailObj } from 'app/main/opd/appointment/appointment.component';
 import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
+import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 
 @Component({
   selector: 'app-result-entry',
@@ -81,7 +82,7 @@ export class ResultEntryComponent implements OnInit {
   chargeslist = [];
   resultSource = [];
   printdata= [];
-
+  Mobileno:any;
   setStep(index: number) {
     this.step = index;
   }
@@ -119,10 +120,11 @@ export class ResultEntryComponent implements OnInit {
     private advanceDataStored: AdvanceDataStored,
     private accountService: AuthenticationService,
     public toastr: ToastrService,
+    public _WhatsAppEmailService: WhatsAppEmailService,
     private _fuseSidebarService: FuseSidebarService,
   ) {
 
-    this.selection.clear();
+    
   }
 
 
@@ -213,12 +215,12 @@ export class ResultEntryComponent implements OnInit {
   onEdit(m) {
 
     this.reportPrintObj = m
-
+debugger
     this.PatientName = m.PatientName;
     this.OPD_IPD = m.OP_IP_No
     this.Age = m.AgeYear
     this.PatientType = m.PatientType
-
+    this.Mobileno=m.mobileNo
     this.SBillNo = m.BillNo;
     this.SOPIPtype = m.OPD_IPD_Type;
     this.SFromDate = this.datePipe.transform(m.PathDate, "yyyy-MM-dd ");
@@ -334,15 +336,50 @@ export class ResultEntryComponent implements OnInit {
       }, 100);
 
     }
-   
+    // this.selection.clear();
   }
 
+  getWhatsappshareSales(el) {
 
-
-  // getResultList(contact){
-
-  // }
-
+    if (this.selection.selected.length == 0) {
+      this.toastr.warning('CheckBox Select !', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }else{
+    this.Printresultentry();
+  
+    if (this.Mobileno != '') {
+      var m_data = {
+        "insertWhatsappsmsInfo": {
+          "mobileNumber": this.Mobileno || 0,
+          "smsString": '',
+          "isSent": 0,
+          "smsType": 'PathlogyTestResult',
+          "smsFlag": 0,
+          "smsDate": this.currentDate,
+          "tranNo": el,
+          "PatientType": 2,//el.PatientType,
+          "templateId": 0,
+          "smSurl": "info@gmail.com",
+          "filePath": '',
+          "smsOutGoingID": 0
+        }
+      }
+      this._WhatsAppEmailService.InsertWhatsappSales(m_data).subscribe(response => {
+        if (response) {
+          this.toastr.success('Result Sent on WhatsApp Successfully.', 'Save !', {
+            toastClass: 'tostr-tost custom-toast-success',
+          });
+        } else {
+          this.toastr.error('API Error!', 'Error WhatsApp!', {
+            toastClass: 'tostr-tost custom-toast-error',
+          });
+        }
+      });
+    }
+  }
+  }
 
   OPIPID: any = 0;
   onresultentryshow(event, m) {
@@ -410,16 +447,52 @@ export class ResultEntryComponent implements OnInit {
   // }
 
 
-  Cancleresult(contact) { }
+
+  Cancleresult(row) {
+      
+    Swal.fire({
+        title: 'Do you want to Change Active Status Of Test',
+         showCancelButton: true,
+        confirmButtonText: 'OK',
+  
+      }).then((flag) => {
+        let Query;
+        if (flag.isConfirmed) {
+            if(row.Isdeleted){
+             Query = "Update M_PathParameterMaster set Isdeleted=0 where ParameterID=" +
+            row.ParameterID;
+            console.log(Query);
+            }else{
+                 Query = "Update M_PathParameterMaster set Isdeleted=1 where ParameterID=" +
+                row. ParameterID;
+            }
+
+            this._SampleService.deactivateTheStatus(Query)
+                .subscribe((data) => (this.msg = data));
+            this.onEdit(row);
+        }
+      });
+
+    this.onEdit(row);
+}
+
 
   getPrint(contact) {
-    debugger
     if (contact.IsTemplateTest)
       this.viewgetPathologyTemplateReportPdf(contact)
-    else
-      this.viewgetPathologyTestReportPdf(contact)
+    else{
+      // this.viewgetPathologyTestReportPdf(contact)
+      if (this.selection.selected.length == 0) {
+        this.toastr.warning('CheckBox Select !', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }else{
+      this.Printresultentry();
+    }
   }
-
+  this.selection.clear();
+  }
   AdList: boolean = false;
   viewgetPathologyTemplateReportPdf(contact) {
     setTimeout(() => {
@@ -447,6 +520,42 @@ export class ResultEntryComponent implements OnInit {
     }, 100);
   }
 
+  // Printresultentry() {
+    
+  //   console.log(this.selection.selected)
+      
+  //     let pathologyDelete = [];
+    
+  //     this.selection.selected.forEach((element) => {
+  //       debugger
+  //       this.SOPIPtype=element["OPD_IPD_Type"]
+  //         let pathologyDeleteObj = {};
+  //          pathologyDeleteObj['pathReportId'] = element["PathReportID"]
+  //           pathologyDelete.push(pathologyDeleteObj);
+  //         });
+  //         let submitData = {
+  //           "printInsert": pathologyDelete,
+  //         };
+  //         console.log(submitData);
+  //         this._SampleService.PathPrintResultentryInsert(submitData).subscribe(response => {
+  //           debugger
+  //           if (response) {
+  //             Swal.fire('Congratulations !', 'Pathology Print Resulentry data saved Successfully !', 'success').then((result) => {
+  //               if (result.isConfirmed) {
+  //                 debugger
+  //                 this.viewgetPathologyTestReportPdf(this.SOPIPtype)
+  //               }
+  //             });
+  //           } else {
+  //             Swal.fire('Error !', 'Pathology Print Resulentry data not saved', 'error');
+  //           }
+    
+  //         });
+  //         this.selection.clear();
+  //         let pathologyDeleteObj = {};
+  //     }
+
+
   Printresultentry() {
     
     console.log(this.selection.selected)
@@ -454,32 +563,35 @@ export class ResultEntryComponent implements OnInit {
       let pathologyDelete = [];
     
       this.selection.selected.forEach((element) => {
-        debugger
+                
         this.SOPIPtype=element["OPD_IPD_Type"]
           let pathologyDeleteObj = {};
            pathologyDeleteObj['pathReportId'] = element["PathReportID"]
-            pathologyDelete.push(pathologyDeleteObj);
+           pathologyDelete.push(pathologyDeleteObj);
           });
+
           let submitData = {
             "printInsert": pathologyDelete,
           };
+
+
           console.log(submitData);
           this._SampleService.PathPrintResultentryInsert(submitData).subscribe(response => {
             debugger
             if (response) {
-              Swal.fire('Congratulations !', 'Pathology Print Resulentry data saved Successfully !', 'success').then((result) => {
-                if (result.isConfirmed) {
-                  debugger
-                  this.viewgetPathologyTestReportPdf(this.SOPIPtype)
-                }
-              });
+              this.viewgetPathologyTestReportPdf(this.SOPIPtype)
+              
             } else {
-              Swal.fire('Error !', 'Pathology Print Resulentry data not saved', 'error');
+              // Swal.fire('Error !', 'Pathology Print Resulentry data not saved', 'error');
             }
     
           });
-          this.selection.select();
+             
+     
+        this.selection.clear();
       }
+
+
 
   viewgetPathologyTestReportPdf(OPD_IPD_Type) {
     debugger

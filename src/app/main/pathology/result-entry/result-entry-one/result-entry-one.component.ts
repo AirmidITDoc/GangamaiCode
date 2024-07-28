@@ -122,8 +122,10 @@ export class ResultEntryOneComponent implements OnInit {
     });
 
     this.getPathresultDoctorList();
-    this.getDoctorList();
-    this.getRefDoctorList();
+    // this.getDoctorList();
+    // this.getRefDoctorList();
+
+    
     this.setDropdownObjs();
 
 
@@ -154,13 +156,13 @@ export class ResultEntryOneComponent implements OnInit {
   }
 
   setDropdownObjs() {
-    const toSelect = this.PathologyDoctorList.find(c => c.DoctorId == this.selectedAdvanceObj2.PathResultDr1);
+    const toSelect = this.PathologyDoctorList.find(c => c.DoctorId == this.Pthologyresult.PathResultDr1);
     this.otherForm.get('DoctorId').setValue(toSelect);
 
-    const toSelect1 = this.DoctorList.find(c => c.DoctorID == this.selectedAdvanceObj2.AdmDocId);
-    this.otherForm.get('AdmDoctorID').setValue(toSelect1);
+    // const toSelect1 = this.DoctorList.find(c => c.DoctorID == this.selectedAdvanceObj2.AdmDocId);
+    // this.otherForm.get('AdmDoctorID').setValue(toSelect1);
 
-
+    this.otherForm.updateValueAndValidity();
   }
 
 
@@ -443,19 +445,7 @@ export class ResultEntryOneComponent implements OnInit {
       });
       return;
     }
-    // if ((this.vDoctorId == '' || this.vDoctorId == null || this.vDoctorId == undefined)) {
-    //   this.toastr.warning('Please select valid Doctor', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
-    // if ((this.vRefDoctorID == '' || this.vRefDoctorID == null || this.vRefDoctorID == undefined)) {
-    //   this.toastr.warning('Please select valid Ref Doctor', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
-
+   
     this.isLoading = 'submit';
     let PathInsertArryobj = [];
     let PathInsertArry = [];
@@ -518,6 +508,7 @@ export class ResultEntryOneComponent implements OnInit {
     this._SampleService.PathResultentryInsert(submitData).subscribe(response => {
       if (response) {
         Swal.fire('Congratulations !', 'Data saved Successfully !', 'success').then((result) => {
+          this._matDialog.closeAll();
         });
       } else {
         Swal.fire('Error !', 'Pathology Resulentry data not saved', 'error');
@@ -595,12 +586,16 @@ export class ResultEntryOneComponent implements OnInit {
     });
   }
 
+
   private _filterdoc3(value: any): string[] {
     if (value) {
       const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
       return this.optionsDoc3.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
     }
   }
+
+
+
   getDoctorList() {
     this._SampleService.getDoctorMaster1Combo().subscribe(data => {
       this.DoctorList = data;

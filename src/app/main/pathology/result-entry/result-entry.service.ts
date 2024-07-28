@@ -126,7 +126,10 @@ export class ResultEntryService {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_PathTemplateMasterForCombo", employee)
   }
   
- 
+  public deactivateTheStatus(m_data) {
+    return this._httpClient.post(
+        "Generic/ExecByQueryStatement?query=" + m_data, {});
+}
   populateForm(employee) {
     this.myform.patchValue(employee);
   }
