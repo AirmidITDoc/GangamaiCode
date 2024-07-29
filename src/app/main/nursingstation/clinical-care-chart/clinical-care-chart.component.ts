@@ -10,6 +10,10 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { DoctornoteComponent } from '../doctornote/doctornote/doctornote.component';
 import { NursingnoteComponent } from '../nursingnote/nursingnote/nursingnote.component';
+import { patientinfo } from '../Patientwisematerialconsumption/new-patientwise-materialconsumption/new-patientwise-materialconsumption.component';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
+import { error } from 'console';
 
 @Component({
   selector: 'app-clinical-care-chart',
@@ -57,14 +61,29 @@ export class ClinicalCareChartComponent implements OnInit {
     'Drange',
     'Action'
   ]
-
-  FloorList:any=[];
+  isLoading: String = '';
+  sIsLoading: string = ""; 
   WardList:any=[];
   isRegIdSelected:boolean=false;
   //screenFromString:'fromdate-form';
   screenFromString1 = 'admission-form';
   screenFromString = 'admission-form';
   dateTimeObj:any;
+  isWardNameSelected : boolean=false; 
+  wardListfilteredOptions: Observable<string[]>;
+  vWardId:any;
+  checkDailyWeight:boolean=false;
+  vDepartmentName:any;
+  vpatientName:any;
+  vDoctorname:any;
+  vAgeYear:any;
+  vAgeDay:any;
+  vAgeMonth:any;
+  vRegNo:any;
+  vDailyWeight:any;
+  painLevel:any;
+  additionalNotes:any;
+  painLocation:any;
 
   dsClinicalcarePatient = new MatTableDataSource<PatientList>();
   dsPainsAssessment =new MatTableDataSource<PainAssesList>();
@@ -72,9 +91,8 @@ export class ClinicalCareChartComponent implements OnInit {
   dsInputOutTable = new MatTableDataSource<INputOutputList>();
 
   @ViewChild(MatSort) sort: MatSort;
-  @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
-  @ViewChild('Outputpaginator', { static: true }) public Outputpaginator: MatPaginator;
-
+  @ViewChild('wardpaginator', { static: true }) public wardpaginator: MatPaginator;
+  @ViewChild('Outputpaginator', { static: true }) public Outputpaginator: MatPaginator; 
   
   constructor(
     public _ClinicalcareService:ClinicalCareChartService,
@@ -83,8 +101,10 @@ export class ClinicalCareChartComponent implements OnInit {
     public _matDialog: MatDialog,
     public toastr: ToastrService,
   ) { }
-
+  scaleNumbers: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+ 
   ngOnInit(): void {
+    this.getwardList();
   }
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
@@ -94,6 +114,61 @@ export class ClinicalCareChartComponent implements OnInit {
   }
   public setFocus(nextElementId): void {
     document.querySelector<HTMLInputElement>(`#${nextElementId}`)?.focus();
+  }
+  getwardList(){
+    this._ClinicalcareService.getWardList().subscribe((data) =>{
+      this.WardList = data;
+      console.log(this.WardList)
+      this.wardListfilteredOptions = this._ClinicalcareService.MyForm.get('WardName').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterWardname(value) : this.WardList.slice()),
+      ); 
+    });
+  }
+  private _filterWardname(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.WardName ? value.WardName.toLowerCase() : value.toLowerCase();
+      return this.WardList.filter(option => option.WardName.toLowerCase().includes(filterValue));
+    }
+  } 
+  getOptionTextWardName(option) {
+    if (!option) return '';
+    return option.WardName ;
+  }
+  getSelectedObjward(obj) {
+    this.vWardId = obj.WardId 
+    this.getPatientListwardWise();
+  } 
+  getPatientListwardWise(){
+   this.sIsLoading = ''
+    var vdata={
+      'WardId':  this.vWardId,
+      'DoctorId': 0
+    }
+    console.log(vdata)
+    this._ClinicalcareService.getPatientList(vdata).subscribe((data) =>{
+      this.dsClinicalcarePatient.data = data as PatientList[];
+      this.dsClinicalcarePatient.sort = this.sort;  
+      this.dsClinicalcarePatient.paginator = this.wardpaginator; 
+      console.log(this.dsClinicalcarePatient.data); 
+    },
+  error =>{
+    this.sIsLoading = ''; 
+  });
+  }
+
+  getpatientDet(obj){ 
+    console.log(obj) 
+    this.vpatientName = obj.PatientName;
+    this.vDoctorname = obj.DoctorName;
+    this.vAgeYear = obj.AgeYear;
+    this.vDepartmentName = obj.DepartmentName
+    this.vAgeMonth = obj.AgeMonth;
+    this.vAgeDay =obj.AgeDay;
+    this.vRegNo = obj.RegNo;
+  }
+  OnAdd(){
+    this.checkDailyWeight = true;
   }
   getDoctornote(){
     //console.log(contact)
@@ -120,14 +195,19 @@ export class ClinicalCareChartComponent implements OnInit {
   }
 }
 export class PatientList {
-  patientId: any;
+  DoctorName: any;
+  AgeYear: any;
   PatientName: string; 
+  DepartmentName: string; 
+  RegNo:any;
 
   constructor(PatientList) {
     {
 
-      this.patientId = PatientList.patientId || 0;
-      this.PatientName = PatientList.PatientName || ""; 
+      this.DoctorName = PatientList.DoctorName || 0;
+      this.PatientName = PatientList.PatientName || "";
+      this.DepartmentName = PatientList.DepartmentName || "";
+      this.AgeYear = PatientList.AgeYear || 0; 
     }
   }
 }
