@@ -1,6 +1,6 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { SampleDetailObj } from '../result-entry.component';
+import {  SampleDetailObj } from '../result-entry.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -18,6 +18,8 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { ToastrService } from 'ngx-toastr';
 import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
 import { debug } from 'console';
+import { MatDrawer } from '@angular/material/sidenav';
+import { MatAccordion } from '@angular/material/expansion';
 
 @Component({
   selector: 'app-result-entry-one',
@@ -36,6 +38,7 @@ export class ResultEntryOneComponent implements OnInit {
     'NormalRange',
 
   ];
+
   isLoading: string = '';
   Pthologyresult: any = [];
   PathologyDoctorList: any = [];
@@ -51,6 +54,7 @@ export class ResultEntryOneComponent implements OnInit {
   advanceData: any;
   dataSource = new MatTableDataSource<Pthologyresult>();
   resultdataSource = new MatTableDataSource<Pthologyresult>();
+  
   configDoc: any;
   sIsLoading: string = '';
   filteredresultdr: Observable<string[]>;
@@ -79,6 +83,8 @@ export class ResultEntryOneComponent implements OnInit {
   PathResultDr1: any;
 
 
+  @ViewChild(MatAccordion) accordion: MatAccordion;
+  @ViewChild('drawer') public drawer: MatDrawer;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 

@@ -3133,6 +3133,8 @@ OPD_IPD_Type:any;
 PathReportID:any;
 AdmDocId:any;
 PathResultDr1:any;
+ServiceId:any;
+PathTestID:any;
   /**
 * Constructor
 *
@@ -3280,6 +3282,8 @@ PathResultDr1:any;
       this.PathReportID=AdmissionPersonl.PathReportID || 0
       this.AdmDocId=AdmissionPersonl.AdmDocId || 0
       this.PathResultDr1=AdmissionPersonl.PathResultDr1 || 0
+      this.ServiceId=AdmissionPersonl.ServiceId || 0;
+      this.PathTestID=AdmissionPersonl.PathTestID || 0
     }
   }
 }
