@@ -150,8 +150,8 @@
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                     <mat-form-field appearance="legacy">
-                                                        <input matInput autocomplete="off"
-                                                            [(ngModel)]="contact.ResultValue">
+                                                        <input matInput autocomplete="off" (keyup)="onResultUp(contact)"
+                                                           [disabled]="contact.Formula" [(ngModel)]="contact.ResultValue">
                                                     </mat-form-field>
                                                 </mat-cell>
                                             </ng-container>
@@ -162,6 +162,14 @@
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                                     {{contact.NormalResult}}
+                                                </mat-cell>
+                                            </ng-container>
+                                            <ng-container matColumnDef="Formula">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                                    Formula
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                                    {{contact.Formula}}
                                                 </mat-cell>
                                             </ng-container>
 
