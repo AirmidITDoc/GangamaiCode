@@ -206,10 +206,7 @@ export class ResultEntryOneComponent implements OnInit {
     }
 
     getResultList(advanceData) {
-        debugger
-
         this.sIsLoading = 'loading-data';
-
         let SelectQuery = "Select * from lvw_Retrieve_PathologyResult where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ")"
         console.log(SelectQuery)
         this._SampleService.getPathologyResultList(SelectQuery).subscribe(Visit => {
@@ -248,237 +245,8 @@ export class ResultEntryOneComponent implements OnInit {
     }
     Saveflag = 2;
     printf: boolean = true;
-    // onSave2() {
-
-    //   if (!this.PathologyDoctorList.some(item => item.Doctorname === this.otherForm.get('PathResultDoctorId').value.Doctorname)) {
-    //     this.toastr.warning('Please Select valid Patholgy Doctorname', 'Warning !', {
-    //       toastClass: 'tostr-tost custom-toast-warning',
-    //     });
-    //     return;
-    //   }
-    //   if (!this.DoctorList.some(item => item.Doctorname === this.otherForm.get('DoctorId').value.Doctorname)) {
-    //     this.toastr.warning('Please Select valid Doctorname', 'Warning !', {
-    //       toastClass: 'tostr-tost custom-toast-warning',
-    //     });
-    //     return;
-    //   }
-    //   if (!this.Doctor1List.some(item => item.Doctorname === this.otherForm.get('RefDoctorID').value.Doctorname)) {
-    //     this.toastr.warning('Please Select valid Ref Doctorname', 'Warning !', {
-    //       toastClass: 'tostr-tost custom-toast-warning',
-    //     });
-    //     return;
-    //   }
-
-    //   let pathologyDeleteObj = {};
-    //   this.isLoading = 'submit';
-    //   let PathInsertArryobj = [];
-    //   let PathInsertArry = [];
-    //   let pathologyDeleteObjarray = [];
-    //   let pathologyUpdateReportObjarray = [];
-    //   let pathologyUpdateReportObj = {};
-
-
-    //   this.data.RIdData.forEach((element1) => {
-    //     this.PathReportId = element1.PathReportId
-    //     pathologyDeleteObj['pathReportID'] = this.PathReportId// element1.PathReportId;
-
-    //     this.Pthologyresult.forEach((element) => {
-    //       console.log(element)
-    //       // if(element.ParameterId)
-    //       //   element.PathReportID=element.ParameterId
-
-    //       let pathologyInsertReportObj = {};
-
-    //       if (element.PathReportID == this.PathReportId) {
-    //         pathologyInsertReportObj['PathReportId'] = this.PathReportId //element1.PathReportId;
-    //         pathologyInsertReportObj['CategoryID'] = element.CategoryID || 0;
-    //         pathologyInsertReportObj['TestID'] = element.TestId || 0;
-    //         pathologyInsertReportObj['SubTestId'] = element.SubTestID || 0;
-    //         pathologyInsertReportObj['ParameterId'] = element.ParameterId || 0;
-    //         pathologyInsertReportObj['ResultValue'] = element.ResultValue || '';
-    //         pathologyInsertReportObj['UnitId'] = element.UnitId || 1;
-    //         pathologyInsertReportObj['NormalRange'] = element.NormalResult || '';
-    //         pathologyInsertReportObj['PrintOrder'] = element.PrintOrder || 0;
-    //         pathologyInsertReportObj['PIsNumeric'] = element.PIsNumeric || 0;
-    //         pathologyInsertReportObj['CategoryName'] = element.CategoryName || '';
-    //         pathologyInsertReportObj['TestName'] = element.TestName || '';
-    //         pathologyInsertReportObj['SubTestName'] = element.SubTestName || '';
-    //         pathologyInsertReportObj['ParameterName'] = element.ParameterName || '';
-    //         pathologyInsertReportObj['UnitName'] = element.UnitName || '';
-    //         pathologyInsertReportObj['PatientName'] = this.selectedAdvanceObj2.PatientName || '';
-    //         pathologyInsertReportObj['RegNo'] = this.selectedAdvanceObj2.RegNo;
-    //         pathologyInsertReportObj['SampleID'] = element.SampleID || '';
-
-    //         PathInsertArry.push(pathologyInsertReportObj);
-    //       }
-    //     });
-
-    //     pathologyUpdateReportObj['PathReportID'] = this.PathReportId// element1.PathReportId;
-    //     pathologyUpdateReportObj['ReportDate'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
-    //       pathologyUpdateReportObj['ReportTime'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy hh:mm"),
-    //       pathologyUpdateReportObj['IsCompleted'] = true;
-    //     pathologyUpdateReportObj['IsPrinted'] = true;
-    //     pathologyUpdateReportObj['PathResultDr1'] = this.otherForm.get('PathResultDoctorId').value.DoctorId || 0;
-    //     pathologyUpdateReportObj['PathResultDr2'] = this.otherForm.get('DoctorId').value.DoctorId || 0;
-    //     pathologyUpdateReportObj['PathResultDr3'] = 0;
-    //     pathologyUpdateReportObj['IsTemplateTest'] = 0;
-    //     pathologyUpdateReportObj['SuggestionNotes'] = this.otherForm.get('suggestionNotes').value || "";
-    //     pathologyUpdateReportObj['AdmVisitDoctorID'] = this.selectedAdvanceObj2.AdmDocId || 0,//this.otherForm.get('AdmDoctorID').value.DoctorID || 0;
-    //       pathologyUpdateReportObj['RefDoctorID'] = this.otherForm.get('RefDoctorID').value.DoctorID || 0;
-
-    //     //pathologyUpdateReportObjarray.push(pathologyUpdateReportObj);
-
-
-    //     // const pathologyDelete = new PthologyresulDelt(pathologyDeleteObj);
-    //     // const pathologyUpdateObj = new PthologyresulUp(pathologyUpdateReportObj);
-
-
-    //     console.log('==============================  PathologyResult ===========');
-    //     let submitData = {
-    //       "deletepathreportheader": pathologyDeleteObj,
-    //       "insertpathreportdetail": PathInsertArry,
-    //       "updatepathreportheader": pathologyUpdateReportObj
-    //     };
-    //     console.log(submitData);
-    //     this._SampleService.PathResultentryInsert(submitData).subscribe(response => {
-    //       if (response) {
-
-    //         this.Saveflag = 1;
-    //       } else {
-    //         this.Saveflag = 0;
-    //       }
-    //       this.isLoading = '';
-    //     });
-    //     console.log(this.Saveflag)
-    //   });
-    //   this.Printresultentry(this.data.RIdData);
-    //   if (this.Saveflag == 1) {
-    //     this.printf = false;
-    //     Swal.fire('Congratulations !', 'Pathology Resulentry data saved Successfully !', 'success').then((result) => {
-    //     });
-    //     this.Printresultentry(this.Pthologyresult);
-    //   } else if (this.Saveflag == 0) {
-    //     Swal.fire('Error !', 'Pathology Resulentry data not saved', 'error');
-    //   }
-    //   this.onClear();
-
-    // }
-    // onSave1() {
-
-    //   if (!this.PathologyDoctorList.some(item => item.Doctorname === this.otherForm.get('PathResultDoctorId').value.Doctorname)) {
-    //     this.toastr.warning('Please Select valid Patholgy Doctorname', 'Warning !', {
-    //       toastClass: 'tostr-tost custom-toast-warning',
-    //     });
-    //     return;
-    //   }
-    //   if (!this.DoctorList.some(item => item.Doctorname === this.otherForm.get('DoctorId').value.Doctorname)) {
-    //     this.toastr.warning('Please Select valid Doctorname', 'Warning !', {
-    //       toastClass: 'tostr-tost custom-toast-warning',
-    //     });
-    //     return;
-    //   }
-    //   if (!this.Doctor1List.some(item => item.Doctorname === this.otherForm.get('RefDoctorID').value.Doctorname)) {
-    //     this.toastr.warning('Please Select valid Ref Doctorname', 'Warning !', {
-    //       toastClass: 'tostr-tost custom-toast-warning',
-    //     });
-    //     return;
-    //   }
-
-    //   let pathologyDeleteObj = {};
-    //   this.isLoading = 'submit';
-    //   let PathInsertArryobj = [];
-    //   let PathInsertArry = [];
-    //   let pathologyDeleteObjarray = [];
-    //   let pathologyUpdateReportObjarray = [];
-    //   let pathologyUpdateReportObj = {};
-
-
-    //   this.data.RIdData.forEach((element1) => {
-    //     pathologyDeleteObj['pathReportID'] = element1.PathReportId// element1.PathReportId;
-
-    //     this.Pthologyresult.forEach((element) => {
-    //       console.log(element)
-
-    //       let pathologyInsertReportObj = {};
-
-    //       if (element.PathReportID == element.PathReportId) {
-    //         pathologyInsertReportObj['PathReportId'] = this.PathReportId //element1.PathReportId;
-    //         pathologyInsertReportObj['CategoryID'] = element.CategoryID || 0;
-    //         pathologyInsertReportObj['TestID'] = element.TestId || 0;
-    //         pathologyInsertReportObj['SubTestId'] = element.SubTestID || 0;
-    //         pathologyInsertReportObj['ParameterId'] = element.ParameterId || 0;
-    //         pathologyInsertReportObj['ResultValue'] = element.ResultValue || '';
-    //         pathologyInsertReportObj['UnitId'] = element.UnitId || 1;
-    //         pathologyInsertReportObj['NormalRange'] = element.NormalResult || '';
-    //         pathologyInsertReportObj['PrintOrder'] = element.PrintOrder || 0;
-    //         pathologyInsertReportObj['PIsNumeric'] = element.PIsNumeric || 0;
-    //         pathologyInsertReportObj['CategoryName'] = element.CategoryName || '';
-    //         pathologyInsertReportObj['TestName'] = element.TestName || '';
-    //         pathologyInsertReportObj['SubTestName'] = element.SubTestName || '';
-    //         pathologyInsertReportObj['ParameterName'] = element.ParameterName || '';
-    //         pathologyInsertReportObj['UnitName'] = element.UnitName || '';
-    //         pathologyInsertReportObj['PatientName'] = this.selectedAdvanceObj2.PatientName || '';
-    //         pathologyInsertReportObj['RegNo'] = this.selectedAdvanceObj2.RegNo;
-    //         pathologyInsertReportObj['SampleID'] = element.SampleID || '';
-
-    //         PathInsertArry.push(pathologyInsertReportObj);
-    //       }
-    //     });
-
-    //     pathologyUpdateReportObj['PathReportID'] = this.PathReportId// element1.PathReportId;
-    //     pathologyUpdateReportObj['ReportDate'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
-    //       pathologyUpdateReportObj['ReportTime'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy hh:mm"),
-    //       pathologyUpdateReportObj['IsCompleted'] = true;
-    //     pathologyUpdateReportObj['IsPrinted'] = true;
-    //     pathologyUpdateReportObj['PathResultDr1'] = this.otherForm.get('PathResultDoctorId').value.DoctorId || 0;
-    //     pathologyUpdateReportObj['PathResultDr2'] = this.otherForm.get('DoctorId').value.DoctorId || 0;
-    //     pathologyUpdateReportObj['PathResultDr3'] = 0;
-    //     pathologyUpdateReportObj['IsTemplateTest'] = 0;
-    //     pathologyUpdateReportObj['SuggestionNotes'] = this.otherForm.get('suggestionNotes').value || "";
-    //     pathologyUpdateReportObj['AdmVisitDoctorID'] = this.selectedAdvanceObj2.AdmDocId || 0,//this.otherForm.get('AdmDoctorID').value.DoctorID || 0;
-    //       pathologyUpdateReportObj['RefDoctorID'] = this.otherForm.get('RefDoctorID').value.DoctorID || 0;
-
-    //     //pathologyUpdateReportObjarray.push(pathologyUpdateReportObj);
-
-
-    //     // const pathologyDelete = new PthologyresulDelt(pathologyDeleteObj);
-    //     // const pathologyUpdateObj = new PthologyresulUp(pathologyUpdateReportObj);
-
-
-    //     console.log('==============================  PathologyResult ===========');
-    //     let submitData = {
-    //       "deletepathreportheader": pathologyDeleteObj,
-    //       "insertpathreportdetail": PathInsertArry,
-    //       "updatepathreportheader": pathologyUpdateReportObj
-    //     };
-    //     console.log(submitData);
-    //     this._SampleService.PathResultentryInsert(submitData).subscribe(response => {
-    //       if (response) {
-
-    //         this.Saveflag = 1;
-    //       } else {
-    //         this.Saveflag = 0;
-    //       }
-    //       this.isLoading = '';
-    //     });
-    //     console.log(this.Saveflag)
-    //   });
-    //   this.Printresultentry(this.data.RIdData);
-    //   // if (this.Saveflag == 1) {
-    //   //   this.printf = false;
-    //   //   Swal.fire('Congratulations !', 'Pathology Resulentry data saved Successfully !', 'success').then((result) => {
-    //   //   });
-    //   //   this.Printresultentry(this.Pthologyresult);
-    //   // } else if (this.Saveflag == 0) {
-    //   //   Swal.fire('Error !', 'Pathology Resulentry data not saved', 'error');
-    //   // }
-    //   this.onClear();
-
-    // }
 
     onSave() {
-
-
         if ((this.vPathResultDoctorId == '')) {
             this.toastr.warning('Please select valid Pathalogist', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
@@ -487,11 +255,9 @@ export class ResultEntryOneComponent implements OnInit {
         }
 
         this.isLoading = 'submit';
-        let PathInsertArryobj = [];
         let PathInsertArry = [];
         let pathologyDeleteObjarray = [];
         let pathologyUpdateReportObjarray = [];
-        let pathologyUpdateReportObj = {};
 
         this.data.RIdData.forEach((element) => {
             let pathologyDeleteObj = {};
@@ -692,7 +458,6 @@ export class ResultEntryOneComponent implements OnInit {
 
 
     getResultListIP() {
-        debugger
         this.sIsLoading = 'loading-data';
         let SelectQuery = "Select * from lvw_Retrieve_PathologyResultIPPatientUpdate where PathReportId in(" + this.reportIdData + ")"
         console.log(SelectQuery);
@@ -709,7 +474,6 @@ export class ResultEntryOneComponent implements OnInit {
     }
 
     getResultListOP() {
-        debugger
         this.sIsLoading = 'loading-data';
         let SelectQuery = "Select * from lvw_Retrieve_PathologyResultUpdate where PathReportId in(" + this.reportIdData + ")"
         console.log(SelectQuery)
@@ -792,12 +556,20 @@ export class Pthologyresult {
     SubTestName: boolean;
     ParameterName: Date;
     NormalRange: any;
+    Formula:any;
+    ParameterShortName:any;
+    ResultValue: any;
+
     constructor(Pthologyresult) {
         this.TestName = Pthologyresult.TestName || '';
         this.SubTestName = Pthologyresult.SubTestName || '';
         this.ParameterName = Pthologyresult.ParameterName || '';
         this.NormalRange = Pthologyresult.NormalRange || 0;
+        this.Formula= Pthologyresult.Formula ||'';
+        this.ParameterShortName=Pthologyresult.ParameterShortName ||'';
+        this.ResultValue= Pthologyresult.ResultValue||'';
     }
+
 }
 
 

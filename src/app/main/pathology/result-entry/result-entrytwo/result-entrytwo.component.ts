@@ -233,8 +233,6 @@ export class ResultEntrytwoComponent implements OnInit {
   }
   
 
-
-
   onBlur(e:any){
     this.vTemplateDesc=e.target.innerHTML;
   }
@@ -296,6 +294,17 @@ export class ResultEntrytwoComponent implements OnInit {
     return option && option.TemplateName ? option.TemplateName : '';
   }
 
+  onAddTemplate(){
+    debugger
+    this.vTemplateDesc=this.otherForm.get('TemplateName').value.TemplateDesc || ''
+    console.log(this.vTemplateDesc)
+
+    // const parser = new DOMParser();
+    // this.vTemplateDesc = parser.parseFromString(this.otherForm.get('TemplateName').value.TemplateDesc, 'text/html');
+
+    // console.log(this.vTemplateDesc)
+
+  }
 }
 
 
