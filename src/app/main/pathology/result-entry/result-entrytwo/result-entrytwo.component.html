@@ -132,11 +132,8 @@
         <mat-card class="example-card" name="m1">
             <div fxFlexFill fxLayout="column">
                 <form [formGroup]="otherForm" style="border: blue;">
-                   
+                    <div fxFlexFill fxLayout="row">
 
-                    <div fxLayoutGap="5px">
-                        <!-- <h3 style="font-weight:bold ;">TemplateInformation</h3> -->
-                       
                         <mat-form-field appearance="outline">
                             <mat-label>Template Name</mat-label>
                             <input matAutocompletePosition="below" type="text"  [(ngModel)]="vTemplateName"
@@ -155,11 +152,22 @@
                                 </mat-option>
                             </mat-autocomplete>
                         </mat-form-field>
+
+                        <button (click)="onAddTemplate()" class="btn btn-primary btn-with-icon py-8" style="margin-left: 10px;">
+                        <span class="btn-icon">
+                            <mat-icon> add </mat-icon>
+                        </span>
+                    </button>
+
                     </div>
                     <div fxLayoutGap="5px">
 
                         <angular-editor (blur)="onBlur($event)" [config]="editorConfig" style="height:300px !important;"
-                            [(ngModel)]="vTemplateDesc" required formControlName="ResultEntry"></angular-editor>
+                            [(ngModel)]="vTemplateDesc" required formControlName="ResultEntry">
+                            <!-- <div>
+                                <div [innerHTML]="vTemplateDesc"></div>
+                            </div> -->
+                        </angular-editor>
 
                     </div>
                     <div fxLayoutGap="5px">
