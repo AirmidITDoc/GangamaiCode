@@ -12,35 +12,44 @@
             </span>
         </div>
     </mat-toolbar>
-    <div class="contact"  fusePerfectScrollbar >
+    <div class="contact" fusePerfectScrollbar>
         <div class="center p-12 pb-56" style="border-radius: 4px;">
             <form [formGroup]="_ClinicalcareService.MyForm">
             <div fxFlexFill fxLayout="column">
 
                 <div fxLayout="row" fxLayoutGap="4px"> 
                     <div fxFlex.gt-sm="24%" fxFlex>
-                    <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>Floor</mat-label>
-                        <mat-select formControlName="Floor" name="Floor" Placeholder="select Floor">
-                            <mat-option></mat-option>
-                            <!-- <mat-option *ngFor="let m of FloorList" [value]="m">
-                                                {{m.Floor}}
-                                            </mat-option> -->
-                        </mat-select>
-                    </mat-form-field>&nbsp;
+                        <!-- <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Floor</mat-label>
+                            <mat-select formControlName="Floor" name="Floor" Placeholder="select Floor">
+                                <mat-option></mat-option>
+                                <mat-option *ngFor="let m of FloorList" [value]="m">
+                                                                    {{m.Floor}}
+                                                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>&nbsp; -->
+                       
+                        <mat-form-field appearance="outline" fxFlex>
+                            <input type="text" name="WardName" formControlName="WardName"
+                                placeholder="search Ward Name" matInput 
+                                [matAutocomplete]="autoWard" required >
+                            <span matSuffix style="display: flex;">
+                                <mat-icon class="mat-icon-close"
+                                    (click)="_ClinicalcareService.MyForm.get('WardName').setValue(''); isWardNameSelected = false;">close</mat-icon>
+                                <mat-icon class="mat-icon-close"
+                                    (click)="_ClinicalcareService.MyForm.get('WardName').setValue(''); isWardNameSelected = false;">search</mat-icon>
+                            </span> 
+                            <mat-autocomplete #autoWard="matAutocomplete"
+                            [displayWith]="getOptionTextWardName"    (optionSelected)='getSelectedObjward($event.option.value)'>
+                            <mat-option *ngFor="let option of wardListfilteredOptions | async"
+                                [value]="option">
+                                {{option.WardName}}
+                            </mat-option>
+                        </mat-autocomplete>
+                        </mat-form-field>
+                    </div>&nbsp;
                 
-                    <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>Ward</mat-label>
-                        <mat-select formControlName="Ward" name="Ward" Placeholder="select Ward">
-                            <mat-option></mat-option>
-                            <!-- <mat-option *ngFor="let m of WardList" [value]="m">
-                                                {{m.Ward}}
-                                            </mat-option> -->
-                        </mat-select>
-                    </mat-form-field>
-                 </div>&nbsp;
-                
-                    <div fxFlex="row" fxFlex.gt-sm="76%" fxFlex style="height: 55px;background-color:whitesmoke;
+                    <!-- <div fxFlex="row" fxFlex.gt-sm="76%" fxFlex style="height: 55px;background-color:whitesmoke;
                     border-radius: 10px;padding:10px 0px 0px 10px">
                     
                         <div fxFlex="row">
@@ -50,7 +59,7 @@
                                 </h3>
                             </div>
                             <div style="width: 150px;">
-                                <!-- <h6 class="labels-h6">{{Gender}}</h6> -->
+                                <h6 class="labels-h6">{{vRegNo}}-{{vpatientName}}</h6>
                             </div>
                     
                         </div>
@@ -62,7 +71,7 @@
                                 </h3>
                             </div>
                             <div style="width: 150px;">
-                                <!-- <h6 class="labels-h6">{{Gender}}</h6> -->
+                                <h6 class="labels-h6">{{vDoctorname}}</h6>
                             </div>
                     
                         </div>
@@ -73,7 +82,7 @@
                                 </h3>
                             </div>
                             <div style="width: 150px;">
-                                <!-- <h6 class="labels-h6">{{Gender}}</h6> -->
+                                <h6 class="labels-h6">{{vDepartmentName}}</h6>
                             </div>
                     
                         </div>
@@ -85,32 +94,56 @@
                                 </h3>
                             </div>
                             <div style="width: 100px;">
-                                <!-- <h6 class="labels-h6">{{Gender}}</h6> -->
+                                <h6 class="labels-h6">{{vAgeYear}}Y|{{vAgeMonth}}|M|{{vAgeDay}}D</h6>
                             </div>
                         </div> 
-                    </div>
+                    </div> -->
+
+                    <mat-card fxFlex.gt-sm="76%" fxFlex style="padding: 2px ;height: 40px;">
+                    
+                        <div class="patient-sub">
+                            <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row" fxLayoutAlign="space-between center">
+                    
+                                <div class="patient-col">
+                                    <span class="patient-col-key">Patient Name
+                                    </span>
+                                    <span>:</span>
+                                    <span class="patient-col-value">{{vRegNo}}-{{vpatientName}}</span>
+                                </div>
+                                <div class="patient-col">
+                                    <span class="patient-col-key">Doctor Name</span>
+                                    <span>:</span>
+                                    <span class="patient-col-value">{{vDoctorname}}</span>
+                                </div>
+                                <div class="patient-col">
+                                    <span class="patient-col-key">Department</span>
+                                    <span>:</span>
+                                    <span class="patient-col-value">{{vDepartmentName}}</span>
+                                </div>
+                                <div class="patient-col">
+                                    <span class="patient-col-key">Age</span>
+                                    <span>:</span>
+                                    <span class="patient-col-value">{{vAgeYear}}Y|{{vAgeMonth}}|M|{{vAgeDay}}D</span>
+                                </div>
+                    
+                            </div>
+                        </div>
+                    </mat-card>
                 
                 </div>
 
                 <div fxLayout="row" fxLayoutGap="4px">
+                    
                     <mat-form-field appearance="outline" fxFlex="24%">
                         <input type="text" name="RegID" formControlName="RegID"
-                            placeholder="RegNo / First Name / Last Name / Mobile No" matInput
-                            >
+                            placeholder="Search First Name / Last Name " matInput
+                           >
                         <span matSuffix style="display: flex;">
                             <mat-icon class="mat-icon-close"
                                 (click)="_ClinicalcareService.MyForm.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
                             <mat-icon class="mat-icon-close"
                                 (click)="_ClinicalcareService.MyForm.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
-                        </span>
-                        <!-- <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getOptionTextReg"
-                            (optionSelected)='getSelectedObjReg($event.option.value)'>
-                            <mat-option *ngFor="let option of PatientListfilteredOptions" [value]="option">
-                                {{option.FirstName}} {{option.MiddleName}}
-                                {{option.LastName}} | {{option.RegNo}} |
-                                {{option.MobileNo}}
-                            </mat-option>
-                        </mat-autocomplete> -->
+                        </span> 
                     </mat-form-field>&nbsp;&nbsp;&nbsp;
 
                     <!-- <mat-form-field appearance="outline" fxFlex="10%">
@@ -148,14 +181,19 @@
 
                 <div fxLayout="row" fxLayoutGap="8px">
                     <div fxFlex.gt-sm="24%" fxFlex>
+                        <div matColumnDef="loading"
+                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                        class="backgroundBlur" style="height: 50%;width: 250px;" >
+                        <div class="spinner-border text-danger"></div>
+                    </div>
                       <mat-table class="table2" matSort [dataSource]="dsClinicalcarePatient"
                         [@animateStagger]="{value:'50'}" style="overflow: auto;height:450px;">
 
                         <ng-container matColumnDef="patientId">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                patientId </mat-header-cell>
-                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                {{element.patientId}} </mat-cell>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-100">
+                                Bed No </mat-header-cell>
+                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-100">
+                                {{element.BedName}} </mat-cell>
                         </ng-container>
 
                         <ng-container matColumnDef="PatientName">
@@ -178,107 +216,266 @@
 
                         <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
                         </mat-header-row>
-                        <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
-                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                        <mat-footer-row *matFooterRowDef="['noData']"
+                        <mat-row *matRowDef="let row; columns: displayedColumns;"  
+                            [@animate]="{value:'*',params:{y:'100%'}}"
+                            (click)="getpatientDet(row)"></mat-row>
+                            <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                            </mat-footer-row>
+                            <mat-footer-row *matFooterRowDef="['noData']" 
                             [ngClass]="{'hide':!(dsClinicalcarePatient!=null && dsClinicalcarePatient.data.length==0)}">
-                        </mat-footer-row>
+                            </mat-footer-row> 
                       </mat-table>
-                      <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10"
+                      <mat-paginator #wardpaginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="12"
                         showFirstLastButtons>
                      </mat-paginator>
 
                     </div> 
 
                     <div fxFlex.gt-sm="74%" fxFlex  >
-                        <mat-tab-group >
-                            <mat-tab label="Pain Assessment" >
+                        <mat-tab-group style="overflow: auto;">
+                            <mat-tab label="Pain Assessment" style="overflow: auto;">
                                 <div class="center p-12 pb-56" style="border-radius: 4px;overflow: auto;" >
                                     <form [formGroup]="_ClinicalcareService.PainAssessForm" fusePerfectScrollbar>
                                         <div fxFlexFill fxLayout="column">
-                                            <div fxFlex="row" >
-                                                <h4>Assessment List</h4>
+                                            
+                                                <!-- <h4>Assessment List</h4>
                                                 <mat-form-field appearance="outline" fxFlex="13%" style="margin-left: 700px;">
                                                     <mat-label>Daily Weight</mat-label>
                                                     <input matInput placeholder="Weight in KG" name="Mobile"  
                                                         formControlName="DailyWeight">
                                                 </mat-form-field> &nbsp;&nbsp;&nbsp;&nbsp;
-                                                <button class="btn btn-primary">Save</button>
-                                            </div>
+                                                <button class="btn btn-primary">Save</button> -->
+                                            
 
-                                            <div fxLayout="row" fxLayoutGap="8px">
-                                                <div fxFlex.gt-sm="60%" fxFlex>
-                                                    <mat-table class="table2" matSort [dataSource]="dsPainsAssessment" [@animateStagger]="{value:'50'}"
-                                                        style="overflow: auto;height:100px;margin-bottom: 10px;">
-                                            
-                                                        <ng-container matColumnDef="givendate">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                                Given Date </mat-header-cell>
-                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                {{element.PatientName}} </mat-cell>
-                                                        </ng-container>
-                                            
-                                                        <ng-container matColumnDef="giventime">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                                Given TIme </mat-header-cell>
-                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                {{element.PatientName}} </mat-cell>
-                                                        </ng-container>
-                                            
-                                                        <ng-container matColumnDef="PainAssess">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                                Pain Assessment </mat-header-cell>
-                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                {{element.PatientName}} </mat-cell>
-                                                        </ng-container>
-                                            
-                                                        <ng-container matColumnDef="Employeename">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                                Employee name </mat-header-cell>
-                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                {{element.PatientName}} </mat-cell>
-                                                        </ng-container>
-                                                        <ng-container matColumnDef="Action">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                                Action </mat-header-cell>
-                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                {{element.Action}} </mat-cell>
-                                                        </ng-container>
-                                            
-                                                        <ng-container matColumnDef="loading">
-                                                            <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                                            </mat-header-cell>
-                                                        </ng-container>
-                                            
-                                                        <ng-container matColumnDef="noData">
-                                                            <mat-footer-cell *matFooterCellDef colspan="6">
-                                                                no data found...
-                                                            </mat-footer-cell>
-                                                        </ng-container>
-                                            
-                                                        <mat-header-row class="accent" *matHeaderRowDef="displayedPainAsse; sticky: true">
-                                                        </mat-header-row>
-                                                        <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
-                                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                                        <mat-footer-row *matFooterRowDef="['noData']"
-                                                            [ngClass]="{'hide':!(dsPainsAssessment!=null && dsPainsAssessment.data.length==0)}">
-                                                        </mat-footer-row>
-                                                    </mat-table> 
-                                            
+                                            <div fxLayout="column" fxLayoutGap="2px">
+                                                <div fxLayout="row" fxLayoutAlign="space-between center">
+                                                    <h4 style="padding: 0px;">Assessment List</h4> 
+                                                    <div>
+                                                    <mat-form-field appearance="outline" fxFlex="50%">
+                                                        <mat-label>Daily Weight</mat-label>
+                                                        <input matInput placeholder="Weight in KG" name="Mobile" formControlName="DailyWeight"
+                                                            [(ngModel)]="vDailyWeight">
+                                                    </mat-form-field> &nbsp;&nbsp;
+                                                    <div>
+                                                    <button #addbutton class="btn btn-primary btn-with-icon" [disabled]="vDailyWeight>0" (click)="OnAdd()">
+                                                        <span class="btn-icon">
+                                                            <mat-icon> add </mat-icon>
+                                                        </span>
+                                                        <span>Add</span>
+                                                    </button>
+                                                   </div>
                                                 </div>
-                                                <div fxFlex.gt-sm="40%" fxFlex>
-                                            
                                                 </div>
-                                            
+                                               <div fxLayout="row" fxLayoutGap="10px">
+                                                    <div fxFlex.gt-sm="60%" fxLayout="column" fxFlex>
+                                                
+                                                        <mat-card style="padding: 5px;">
+                                                            <mat-table class="table2" matSort [dataSource]="dsPainsAssessment" [@animateStagger]="{value:'50'}"
+                                                                style="overflow: auto;height:80px;margin-bottom: 10px;">
+                                                
+                                                                <ng-container matColumnDef="givendate">
+                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                        Given Date </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                        {{element.PatientName}} </mat-cell>
+                                                                </ng-container>
+                                                
+                                                                <ng-container matColumnDef="giventime">
+                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                        Given TIme </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                        {{element.PatientName}} </mat-cell>
+                                                                </ng-container>
+                                                
+                                                                <ng-container matColumnDef="PainAssess">
+                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                        Pain Assessment </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                        {{element.PatientName}} </mat-cell>
+                                                                </ng-container>
+                                                
+                                                                <ng-container matColumnDef="Employeename">
+                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                        Employee name </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                        {{element.PatientName}} </mat-cell>
+                                                                </ng-container>
+                                                                <ng-container matColumnDef="Action">
+                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                        Action </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                        {{element.Action}} </mat-cell>
+                                                                </ng-container>
+                                                
+                                                                <ng-container matColumnDef="loading">
+                                                                    <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                                                    </mat-header-cell>
+                                                                </ng-container>
+                                                
+                                                                <ng-container matColumnDef="noData">
+                                                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                                                        no data found...
+                                                                    </mat-footer-cell>
+                                                                </ng-container>
+                                                
+                                                                <mat-header-row class="accent" *matHeaderRowDef="displayedPainAsse; sticky: true">
+                                                                </mat-header-row>
+                                                                <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
+                                                                    [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                                                <mat-footer-row *matFooterRowDef="['noData']"
+                                                                    [ngClass]="{'hide':!(dsPainsAssessment!=null && dsPainsAssessment.data.length==0)}">
+                                                                </mat-footer-row>
+                                                            </mat-table>
+                                                        </mat-card>
+                                                    </div>
+                                                    <div fxFlex.gt-sm="40%" fxLayout="column" fxFlex="20%">
+                                                
+                                                        <div *ngIf="checkDailyWeight">
+                                                            <mat-card style="padding: 5px;">
+                                                                <mat-table class="table2" matSort [dataSource]="dsPainsAssessment" [@animateStagger]="{value:'50'}"
+                                                                    style="overflow: auto;height:60px;margin-bottom: 10px;">
+                                                
+                                                                    <ng-container matColumnDef="givendate">
+                                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                            Given Date </mat-header-cell>
+                                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                            {{element.PatientName}} </mat-cell>
+                                                                    </ng-container>
+                                                
+                                                                    <ng-container matColumnDef="giventime">
+                                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                            Given TIme </mat-header-cell>
+                                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                            {{element.PatientName}} </mat-cell>
+                                                                    </ng-container>
+                                                
+                                                                    <ng-container matColumnDef="PainAssess">
+                                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                            Pain Assessment </mat-header-cell>
+                                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                            {{element.PatientName}} </mat-cell>
+                                                                    </ng-container>
+                                                
+                                                                    <ng-container matColumnDef="Employeename">
+                                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                            Employee name </mat-header-cell>
+                                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                            {{element.PatientName}} </mat-cell>
+                                                                    </ng-container>
+                                                                    <ng-container matColumnDef="Action">
+                                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                            Action </mat-header-cell>
+                                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                            {{element.Action}} </mat-cell>
+                                                                    </ng-container>
+                                                
+                                                                    <ng-container matColumnDef="loading">
+                                                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                                                        </mat-header-cell>
+                                                                    </ng-container>
+                                                
+                                                                    <ng-container matColumnDef="noData">
+                                                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                                                            no data found...
+                                                                        </mat-footer-cell>
+                                                                    </ng-container>
+                                                
+                                                                    <mat-header-row class="accent" *matHeaderRowDef="displayedPainAsse; sticky: true">
+                                                                    </mat-header-row>
+                                                                    <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
+                                                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                                                        [ngClass]="{'hide':!(dsPainsAssessment!=null && dsPainsAssessment.data.length==0)}">
+                                                                    </mat-footer-row>
+                                                                </mat-table>
+                                                            </mat-card>
+                                                        </div>
+                                                    </div>
+                                                </div> 
                                             </div>
-                                            <div fxFlex.gt-sm="60%">
-                                                <mat-card style="width: 100%;height: 200px;">
+                                          
+                                                <mat-card style="width: 100%;height: 300px;">
+                                                    <div fxFlex.gt-sm="20%">
+                                                        </div>
+                                                    <div fxFlex.gt-sm="80%">
+                                                    <h1 style="text-align: center;">Pain Measurement Scale</h1>
+                                                    <div>
+                                                        <div fxLayoutAling="end center">
+                                                            <div style="height: 2px;background-color:black;width:775px;border-radius: 10px;"></div>
+                                                            <div fxLayout="row" fxLayoutGap="70px">
+                                                                <div fxLayout="column">
+                                                                    <span> | </span>
+                                                                    <span> 0 </span> 
+                                                                </div>
+                                                                <div fxLayout="column">
+                                                                    <span> | </span>
+                                                                    <span> 1 </span> 
+                                                                </div>
+                                                                <div fxLayout="column">
+                                                                    <span> | </span>
+                                                                    <span> 2 </span> 
+                                                                </div>
+                                                                <div fxLayout="column">
+                                                                    <span> | </span>
+                                                                    <span> 3 </span> 
+                                                                </div>
+                                                                <div fxLayout="column">
+                                                                    <span> | </span>
+                                                                    <span> 4 </span> 
+                                                                </div>
+                                                                <div fxLayout="column">
+                                                                    <span> | </span>
+                                                                    <span> 5 </span> 
+                                                                </div>
+                                                                <div fxLayout="column">
+                                                                    <span> | </span>
+                                                                    <span> 6 </span> 
+                                                                </div>
+                                                                <div fxLayout="column">
+                                                                    <span> | </span>
+                                                                    <span> 7 </span> 
+                                                                </div>
+                                                                <div fxLayout="column">
+                                                                    <span> | </span>
+                                                                    <span> 8 </span> 
+                                                                </div>
+                                                                <div fxLayout="column">
+                                                                    <span> | </span>
+                                                                    <span> 9 </span> 
+                                                                </div>
+                                                                <div fxLayout="column">
+                                                                    <span> | </span>
+                                                                    <span> 10 </span> 
+                                                                </div>
+                                                            
+                                                        </div>
+                                                            <div class="scale-numbers">
+                                                              <!-- <div *ngFor="let number of scaleNumbers" class="number">{{ number }}</div> -->
+                                                            </div>
+                                                          </div>
+                                                          
+                                            
+                                                        <div>
+                                                            <mat-label>Pain Level</mat-label>
+                                                            <!-- <mat-slider thumbLabel tickInterval="1" min="0" max="10" [(ngModel)]="painLevel"></mat-slider> -->
+                                                            <mat-slider min="0" max="10" step="1" thumbLabel [(ngModel)]="painLevel"></mat-slider>
+                                                        </div> 
 
+
+                                                        
+                                                           
+                                            
+                                                        <!-- <h2>Pain Location: {{painLocation}}</h2> -->
+ 
+
+                                            
+                                                        <button mat-button color="primary">Submit</button>
+                                                    </div>
                                                    
-                                                    
+                                                   </div>
                                                 </mat-card>
-
-                                            </div>
+                                            
+                                          
                                         </div>
                                     </form>
                                 </div>

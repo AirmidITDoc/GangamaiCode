@@ -1,1 +1,26 @@
+.painmeasurement {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+  }
  
+  .scale-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .scale-line {
+    width: 100%;
+    height: 2px;
+    background-color: #000;
+    margin-right: 10px;
+  }
+  
+  .scale-numbers {
+    display: flex;
+  }
+  
+  .number {
+    margin-right: 10px;
+  }
+  
