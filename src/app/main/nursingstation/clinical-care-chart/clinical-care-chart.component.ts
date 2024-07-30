@@ -14,6 +14,7 @@ import { patientinfo } from '../Patientwisematerialconsumption/new-patientwise-m
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { error } from 'console';
+import { MatSliderChange } from '@angular/material/slider';
 
 @Component({
   selector: 'app-clinical-care-chart',
@@ -100,11 +101,11 @@ export class ClinicalCareChartComponent implements OnInit {
     public datePipe: DatePipe,
     public _matDialog: MatDialog,
     public toastr: ToastrService,
-  ) { }
-  scaleNumbers: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
- 
+  ) { } 
+  NoPain:any;
   ngOnInit(): void {
     this.getwardList();
+    this.NoPain = '&#128512;'
   }
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
@@ -112,6 +113,29 @@ export class ClinicalCareChartComponent implements OnInit {
   getSelectedObjReg(){
     
   }
+  selectedPainLevel: number; 
+  onSliderChange(event: MatSliderChange) {
+    this.selectedPainLevel = event.value;
+    console.log(this.selectedPainLevel)
+  }
+  getEmoji(painLevel: number): string {
+  // Map pain levels to corresponding emojis
+  const emojiMap = {
+    0: '&#x1F600;', // Neutral face
+    1: '&#x1F641;', // Slightly frowning face
+    2: '&#x1F60A;',
+    3: '&#x1F641;',
+    4: '&#x1F641;',
+    5: '&#x1F641;',
+    6: '&#x1F612;',
+    7: '&#x1F641;',
+    8: '&#x1F620;',
+    9: '&#x1F641;',
+    10:'&#x1F629;' // Loudly crying face
+  };
+
+  return emojiMap[painLevel];
+}
   public setFocus(nextElementId): void {
     document.querySelector<HTMLInputElement>(`#${nextElementId}`)?.focus();
   }

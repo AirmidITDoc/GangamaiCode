@@ -37,7 +37,7 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { ClinicalCareChartComponent } from './clinical-care-chart.component';  
 import { MatSliderModule } from '@angular/material/slider'; 
-import { FormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms'; 
 
 const routes: Routes = [
   {
