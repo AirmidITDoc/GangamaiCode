@@ -15,6 +15,13 @@ import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { error } from 'console';
 import { MatSliderChange } from '@angular/material/slider';
+import { PhlebitisScoreComponent } from './phlebitis-score/phlebitis-score.component';
+import { MedicationErrorComponent } from './medication-error/medication-error.component';
+import { DischargeSummaryComponent } from 'app/main/ipd/ip-search-list/discharge-summary/discharge-summary.component';
+import { PrescriptionComponent } from '../prescription/prescription.component';
+import { BedTransferComponent } from 'app/main/ipd/ip-search-list/bed-transfer/bed-transfer.component';
+import { NewPrescriptionComponent } from '../prescription/new-prescription/new-prescription.component';
+import { NewRequestforlabComponent } from '../requestforlabtest/new-requestforlab/new-requestforlab.component';
 
 @Component({
   selector: 'app-clinical-care-chart',
@@ -102,10 +109,10 @@ export class ClinicalCareChartComponent implements OnInit {
     public _matDialog: MatDialog,
     public toastr: ToastrService,
   ) { } 
-  NoPain:any;
+ 
   ngOnInit(): void {
     this.getwardList();
-    this.NoPain = '&#128512;'
+    this.getPatientListwardWise();
   }
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
@@ -122,15 +129,15 @@ export class ClinicalCareChartComponent implements OnInit {
   // Map pain levels to corresponding emojis
   const emojiMap = {
     0: '&#x1F600;', // Neutral face
-    1: '&#x1F641;', // Slightly frowning face
+    1: '&#x1F600;', // Slightly frowning face
     2: '&#x1F60A;',
-    3: '&#x1F641;',
+    3: '&#x1F60A;',
     4: '&#x1F641;',
     5: '&#x1F641;',
     6: '&#x1F612;',
-    7: '&#x1F641;',
+    7: '&#x1F612;',
     8: '&#x1F620;',
-    9: '&#x1F641;',
+    9: '&#x1F620;',
     10:'&#x1F629;' // Loudly crying face
   };
 
@@ -160,13 +167,18 @@ export class ClinicalCareChartComponent implements OnInit {
     return option.WardName ;
   }
   getSelectedObjward(obj) {
-    this.vWardId = obj.WardId 
+    this.vWardId = obj.WardId  
     this.getPatientListwardWise();
   } 
+  getwardWisePatList(){
+    this._ClinicalcareService.MyForm.get('WardName').setValue('');
+      this.vWardId = '';
+      this.getPatientListwardWise(); 
+  }
   getPatientListwardWise(){
    this.sIsLoading = ''
     var vdata={
-      'WardId':  this.vWardId,
+      'WardId':  this.vWardId || 0,
       'DoctorId': 0
     }
     console.log(vdata)
@@ -178,7 +190,7 @@ export class ClinicalCareChartComponent implements OnInit {
     },
   error =>{
     this.sIsLoading = ''; 
-  });
+  }); 
   }
 
   getpatientDet(obj){ 
@@ -199,8 +211,8 @@ export class ClinicalCareChartComponent implements OnInit {
     const dialogRef = this._matDialog.open(DoctornoteComponent,
       {
         maxWidth: "100%",
-        height: '95%',
-        width: '95%', 
+        height: '90%',
+        width: '90%',
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result); 
@@ -210,12 +222,80 @@ export class ClinicalCareChartComponent implements OnInit {
       const dialogRef = this._matDialog.open(NursingnoteComponent,
         {
           maxWidth: "100%",
-          height: '95%',
-          width: '95%', 
+          height: '90%',
+          width: '90%',
         });
       dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed - Insert Action', result); 
       });  
+  }
+  getDischargeSummary(){ 
+    const dialogRef = this._matDialog.open(DischargeSummaryComponent,
+      {
+        maxWidth: "100%",
+        height: '90%',
+        width: '90%',
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result); 
+    });  
+}
+getPriscription(){ 
+  const dialogRef = this._matDialog.open(NewPrescriptionComponent,
+    {
+      maxWidth: "100%",
+      height: '90%',
+      width: '90%', 
+    });
+  dialogRef.afterClosed().subscribe(result => {
+    console.log('The dialog was closed - Insert Action', result); 
+  });  
+}
+getbedTransfer(){ 
+  const dialogRef = this._matDialog.open(BedTransferComponent,
+    {
+      maxWidth: "100%",
+      height: '90%',
+      width: '90%', 
+    });
+  dialogRef.afterClosed().subscribe(result => {
+    console.log('The dialog was closed - Insert Action', result); 
+  });  
+}
+getLabRequest(){ 
+  const dialogRef = this._matDialog.open(NewRequestforlabComponent,
+    {
+      maxWidth: "100%",
+      height: '90%',
+      width: '90%', 
+    });
+  dialogRef.afterClosed().subscribe(result => {
+    console.log('The dialog was closed - Insert Action', result); 
+  });  
+}
+  getPhlebitis(){
+    //console.log(contact)
+    const dialogRef = this._matDialog.open(PhlebitisScoreComponent,
+      {
+        maxWidth: "100%",
+        height: '90%',
+        width: '90%', 
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result); 
+    });
+  }
+  getMedicationReport(){
+    //console.log(contact)
+    const dialogRef = this._matDialog.open(MedicationErrorComponent,
+      {
+        maxWidth: "100%",
+        height: '90%',
+        width: '90%',  
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result); 
+    });
   }
 }
 export class PatientList {

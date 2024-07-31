@@ -32,12 +32,12 @@
                         <mat-form-field appearance="outline" fxFlex>
                             <input type="text" name="WardName" formControlName="WardName"
                                 placeholder="search Ward Name" matInput 
-                                [matAutocomplete]="autoWard" required >
+                                [matAutocomplete]="autoWard" required  >
                             <span matSuffix style="display: flex;">
                                 <mat-icon class="mat-icon-close"
-                                    (click)="_ClinicalcareService.MyForm.get('WardName').setValue(''); isWardNameSelected = false;">close</mat-icon>
+                                    (click)="getwardWisePatList()">close</mat-icon>
                                 <mat-icon class="mat-icon-close"
-                                    (click)="_ClinicalcareService.MyForm.get('WardName').setValue(''); isWardNameSelected = false;">search</mat-icon>
+                                    (click)="getwardWisePatList()">search</mat-icon>
                             </span> 
                             <mat-autocomplete #autoWard="matAutocomplete"
                             [displayWith]="getOptionTextWardName"    (optionSelected)='getSelectedObjward($event.option.value)'>
@@ -137,7 +137,7 @@
                     <mat-form-field appearance="outline" fxFlex="24%">
                         <input type="text" name="RegID" formControlName="RegID"
                             placeholder="Search First Name / Last Name " matInput
-                           >
+                          >
                         <span matSuffix style="display: flex;">
                             <mat-icon class="mat-icon-close"
                                 (click)="_ClinicalcareService.MyForm.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
@@ -160,17 +160,33 @@
                              #TODate>
                         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                         <mat-datepicker #picker1></mat-datepicker>
-                    </mat-form-field> --> 
-
-                     
-                    <div>
-                        <img width="32" height="10px" src="assets/images/logos/DoctorNote.png"
-                        (click)="getDoctornote()" style="padding-top: 5px;"  matTooltip="DoctorNote"> 
+                    </mat-form-field> -->  
+                    <div> 
+                        <img width="25px" height="10px" src="assets/images/logos/Bed_Transfer.png" 
+                        style="padding-top: 5px;"  (click)="getbedTransfer()"  matTooltip="Bed Transfer"> 
+                    </div>&nbsp; 
+                    <div> 
+                        <img width="25px" height="10px" src="assets/images/logos/LabRequest.png" 
+                        style="padding-top: 5px;"  (click)="getLabRequest()"  matTooltip="Lab Request"> 
+                    </div>&nbsp; 
+                    <div> 
+                        <img width="25px" height="10px" src="assets/images/logos/dischargesummary.jpeg" 
+                        style="padding-top: 5px;"  (click)="getDischargeSummary()"  matTooltip="Discharge Summary"> 
+                    </div>&nbsp; 
+                    <div> 
+                        <img width="25px" height="10px" src="assets/images/logos/discharge.jpeg" 
+                        style="padding-top: 5px;"  (click)="getPriscription()"  matTooltip="IP Prescription"> 
                     </div>&nbsp; 
                     <div>
-                        <img width="32" height="10px" src="assets/images/logos/NursingNote.png"
-                        (click)="getNursingnote()" style="padding-top: 5px;"  matTooltip="NuesingNote"> 
+                        <img width="25" height="10px" src="assets/images/logos/DoctorNote.png"
+                        (click)="getDoctornote()" style="padding-top: 5px;"  matTooltip="Doctor Note">  
+                    </div>&nbsp; 
+                    <div>
+                        <img width="25" height="10px" src="assets/images/logos/NursingNote.png"
+                        (click)="getNursingnote()" style="padding-top: 5px;"  matTooltip="Nuesing Note"> 
                     </div>&nbsp;&nbsp;
+
+                  
 
                     <app-common-date [screenFrom]="screenFromString" style="margin-left: 300px;"
                     (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
@@ -389,15 +405,15 @@
                                                 </div>
                                             </div> 
                                         
-                                            <mat-card style="width: 100%;height: 200px;"> 
+                                            <mat-card class="h-150px" fxFlex> 
                                                 <div fxFlex.gt-sm="15%">
                                                  
                                                 </div> 
                                                 <div fxFlex.gt-sm="85%"> 
-                                                    <div fxLayoutAling="end center">
+                                                    <div fxLayout="column" fxLayoutAling="center">
                                                         <h1 style="text-align: center;">Pain Measurement Scale</h1>
-                                                        <div style="height: 2px;background-color:black;width:775px;border-radius: 10px;"></div>
-                                                        <div fxLayout="row" fxLayoutGap="70px">
+                                                        <div fxFlex="2px" style="background-color:black;margin-right: 46px;" ></div>
+                                                        <div fxLayout="row" fxLayoutAlign="space-between" style="margin-right: 30px;" >
                                                             <div fxLayout="column">
                                                                 <span class="vertical-line"></span>
                                                                 <span> 0 </span>
@@ -441,51 +457,62 @@
                                                             </div>
                                                             <div fxLayout="column">
                                                                 <span class="vertical-line"></span>
-                                                                <span> 10 </span>
+                                                                <span style="margin-right: 5px;"> 10 </span>
                                                             </div>
                                             
                                                         </div>
-                                                        <div fxLayout="row" fxLayoutGap="70px">
+                                                        <div fxLayout="row" fxLayoutAlign="space-between" style="margin-right: 10px;">
                                                             <div fxLayout="column">
-                                                                <span style="margin-right: 12px;">No Pain</span>
+                                                                <span style="margin-right: 5px;margin-left: 0px;">No Pain</span>
+                                                                <img width="45" height="15px" src="assets/images/logos/61.png"
+                                                                 style="margin: 0px 5px 0px 0px;"  matTooltip="No Pain"> 
                                                             </div>
                                                             <div fxLayout="column">
                                                                 <span style="margin: 0px 15px 0px 15px;">Mild Pain</span>
+                                                                <img width="45" height="15px" src="assets/images/logos/5.jpeg"
+                                                                style="margin: 0px 15px 0px 15px;"  matTooltip="Mild Pain"> 
                                                             </div>
                                                             <div fxLayout="column">
                                                                 <span style="margin-right: 12px;">Moderate Pain</span>
+                                                                <img width="45" height="15px" src="assets/images/logos/4.jpeg"
+                                                                style="margin: 0px 15px 0px 15px;" matTooltip="Moderate Pain"> 
                                             
                                                             </div>
                                                             <div fxLayout="column">
                                                                 <span style="margin-right: 5px;">Severe Pain</span>
+                                                                <img width="45" height="15px" src="assets/images/logos/3.jpeg"
+                                                                style="margin-right: 10px;"  matTooltip="Severe Pain"> 
                                             
                                                             </div>
                                                             <div fxLayout="column">
                                                                 <span style="margin-right: 0px;">Very Server Pain</span>
+                                                                <img width="45" height="15px" src="assets/images/logos/2.jpeg"
+                                                                style="margin: 0px 15px 0px 15px;" matTooltip="Very Server Pain"> 
                                             
                                                             </div>
                                                             <div fxLayout="column">
                                                                 <span>Worst Pain</span>
-                                            
+                                                                <img width="45" height="15px" src="assets/images/logos/1.jpeg"
+                                                                style="padding-top: 0px;"  matTooltip="Worst Pain"> 
                                                             </div>
                                             
-                                                        </div> 
-                                                    </div>
-                                            
-                                                    <div>
-                                                        <mat-slider thumbLabel min="0" max="10" step="2" [(ngModel)]="painLevel" (change)="onSliderChange($event)"
-                                                            style="width: 790px;height: 10px;"></mat-slider>
-                                                    </div> 
-                                                    <div style="padding: 20px;">
-                                                        Selected Pain Level: {{selectedPainLevel}}
-                                                        <span [innerHTML]="getEmoji(selectedPainLevel)"></span>
-                                                    </div>
+                                                        </div>  
+
+                                                        <div style="margin-right: 30px;">
+                                                            <mat-slider class="custom-slider" thumbLabel min="0" max="10" step="1" [(ngModel)]="painLevel" 
+                                                            (change)="onSliderChange($event)"  fxFlex tickInterval="1"></mat-slider>
+                                                        </div>  
+                                                        <div style="padding:5px;">
+                                                            Selected Pain Level: {{selectedPainLevel}}
+                                                            <span [innerHTML]="getEmoji(selectedPainLevel)"></span>
+                                                        </div>
+                                                    </div>  
                                                 </div>
                                              
                                             </mat-card>
                                             <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="end" style="padding: 5;"> 
-                                                <button class="btn btn-secondary" style="color: white;">Report Medication Error</button> 
-                                                <button class="btn btn-warning" style="color: white;">Phlebitis</button>  
+                                                <button class="btn btn-secondary" style="color: white;" (click)="getMedicationReport()">Report Medication Error</button> 
+                                                <button class="btn btn-warning" style="color: white;" (click)="getPhlebitis()">Phlebitis</button>  
                                                 <button class="btn btn-danger" style="color: white;">Initial Nursing Assessment</button> 
                                                 <button class="btn btn-primary" (click)="sidenav.toggle()">Save</button> 
                                             </div>  
