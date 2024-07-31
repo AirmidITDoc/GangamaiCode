@@ -9,7 +9,6 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 // import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { NotificationServiceService } from 'app/core/notification-service.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { TemplateReportComponent } from 'app/main/setup/pathology/templatemaster/template-report/template-report.component';
 import { RadiologyTemplateMasterService } from '../radiology-template-master.service';
 import { AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.component';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
@@ -157,28 +156,24 @@ export class RadiologyTemplateFormComponent implements OnInit {
   }
  
 
-
+  OnPrintPop(TemplateId){}
  
  
-  
- 
+  // OnPrintPop(TemplateId) {
 
-
-  OnPrintPop(TemplateId) {
-
-    var m_data = { "TemplateId": TemplateId, }
-    // console.log(m_data);
-    this._radiologytemplateService.populatePrintForm(m_data);
-    const dialogRef = this._matDialog.open(TemplateReportComponent,
-      {
-        maxWidth: "95vw",
-        maxHeight: "95vh", width: '100%', height: "100%"
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
+  //   var m_data = { "TemplateId": TemplateId, }
+  //   // console.log(m_data);
+  //   this._radiologytemplateService.populatePrintForm(m_data);
+  //   const dialogRef = this._matDialog.open(TemplateReportComponent,
+  //     {
+  //       maxWidth: "95vw",
+  //       maxHeight: "95vh", width: '100%', height: "100%"
+  //     });
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     console.log('The dialog was closed - Insert Action', result);
     
-    });
-  }
+  //   });
+  // }
   printTemplate: any;
   templateHeading: any;
 

@@ -1,5 +1,5 @@
 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fusePerfectScrollbar
-dynamicTableHeight>
+    dynamicTableHeight>
 
     <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
         fxLayoutAlign.gt-xs="space-between center">
@@ -29,24 +29,26 @@ dynamicTableHeight>
                                 <div class="dialog-content-wrapper">
                                     <mat-form-field class="mr-sm-12" fxFlex>
                                         <input matInput placeholder="Search --> Category Name" autocomplete="off"
-                                            name="CategoryNameSearch" formControlName="CategoryNameSearch" />
+                                            (keyup)="onSearch()" name="CategoryNameSearch"
+                                            formControlName="CategoryNameSearch" />
                                         <button mat-button matSuffix mat-icon-button aria-label="Clear"
                                             (click)="onSearchClear()" (keyup)="onSearch()">
                                             <mat-icon>close</mat-icon>
                                         </button>
                                     </mat-form-field>
 
-                                    <mat-radio-group name="IsDeletedSearch"  formControlName="IsDeletedSearch" (change) ="onFilterChange()" >
-                                        <mat-radio-button (click)="toggle(0)" [checked]="true" value="0" >All</mat-radio-button>
-                                        <mat-radio-button mat-fab value="1" (click)="toggle(1)"  >IsActive</mat-radio-button>
-                                        <mat-radio-button (click)="toggle(2)"   value="2">IsDeactive</mat-radio-button>
+                                    <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch"
+                                        (change)="onFilterChange()">
+                                        <mat-radio-button (click)="toggle(0)" [checked]="true"
+                                            value="0">All</mat-radio-button>
+                                        <mat-radio-button mat-fab value="1"
+                                            (click)="toggle(1)">IsActive</mat-radio-button>
+                                        <mat-radio-button (click)="toggle(2)" value="2">IsDeactive</mat-radio-button>
                                     </mat-radio-group>
-                                    
-                                    
 
-                                    <button mat-raised-button (click)="onSearch()" fxLayoutAlign="center center">
+
+                                    <button type="button" mat-raised-button class="searchButton" (click)="onSearch()"  matTooltip="search">
                                         <mat-icon>search</mat-icon>
-                                        Search
                                     </button>
                                 </div>
                             </form>
@@ -157,12 +159,12 @@ dynamicTableHeight>
                                 </form>
                             </div>
                             <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
-                                <div class="button-row">
-                                    <button mat-raised-button color="accent" type="submit" (click)="onSubmit()"
-                                        style="border-radius: 16px;"
-                                        [disabled]="_categorymasterService.myform.invalid">Save</button>
-                                    <button mat-raised-button color="warn" (click)="onClear()"
-                                        style="border-radius: 16px;">Clear</button>
+                                <div fxLayout="row" fxLayoutAlign="end">
+                                    <div class="modal-footer-buttons" style="padding:2px;">
+                                        <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
+                                        <button class="btn btn-primary" (click)="onSubmit()"
+                                            [disabled]="_categorymasterService.myform.invalid">Save</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

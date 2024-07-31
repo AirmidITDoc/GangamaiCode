@@ -28,7 +28,7 @@
                             <form [formGroup]="_unitmasterService.myformSearch">
                                 <div class="dialog-content-wrapper">
                                     <mat-form-field class="mr-sm-12" fxFlex>
-                                        <input matInput placeholder="Search --> Unit Name" autocomplete="off"
+                                        <input matInput placeholder="Search --> Unit Name" autocomplete="off" (keyup)="onSearch()"
                                             name="UnitNameSearch" formControlName="UnitNameSearch" />
                                         <button mat-button matSuffix mat-icon-button aria-label="Clear"
                                             (click)="onSearchClear()" (keyup)="onSearch()">
@@ -45,7 +45,7 @@
 
                                     <button mat-raised-button (click)="onSearch()" fxLayoutAlign="center center">
                                         <mat-icon>search</mat-icon>
-                                        Search
+                                        
                                     </button>
                                 </div>
                             </form>
@@ -151,12 +151,12 @@
                                 </form>
                             </div>
                             <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
-                                <div class="button-row">
-                                    <button mat-raised-button color="accent" type="submit" (click)="onSubmit()"
-                                        [disabled]="_unitmasterService.myform.invalid"
-                                        style="border-radius: 16px;">Save</button>
-                                    <button mat-raised-button color="warn" (click)="onClear()"
-                                        style="border-radius: 16px;">Clear</button>
+                              
+                                <div fxLayout="row" fxLayoutAlign="end">
+                                    <div class="modal-footer-buttons" style="padding:2px;">
+                                        <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
+                                        <button class="btn btn-primary" (click)="onSubmit()">Save</button>
+                                    </div>
                                 </div>
                             </div>
 

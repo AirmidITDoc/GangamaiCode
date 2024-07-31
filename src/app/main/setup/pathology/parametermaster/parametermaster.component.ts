@@ -9,6 +9,7 @@ import { MatAccordion } from "@angular/material/expansion";
 import { fuseAnimations } from "@fuse/animations";
 import { ParameterFormMasterComponent } from "./parameter-form-master/parameter-form-master.component";
 import { connectableObservableDescriptor } from "rxjs/internal/observable/ConnectableObservable";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-parametermaster",
@@ -29,7 +30,7 @@ export class ParametermasterComponent implements OnInit {
         // "MethodName",
         //"ParaMultipleRange",
         "AddedBy",
-        "IsDeleted",
+        "Isdeleted",
         "action",
     ];
 
@@ -79,17 +80,17 @@ export class ParametermasterComponent implements OnInit {
     getParameterMasterList() {
         this.sIsLoading = 'loading-data';
         var m_data = {
-            ParameterName:
-                this._ParameterService.myformSearch.get("ParameterNameSearch").value.trim() + "%" || "%",
+            ParameterName:this._ParameterService.myformSearch.get("ParameterNameSearch").value.trim() + "%" || "%",
+            IsDeleted: this._ParameterService.myformSearch.get("IsDeletedSearch").value || 0
         };
-        debugger;
+      debugger
         this._ParameterService.getParameterMasterList(m_data).subscribe((Menu) => {
             this.DSParameterList.data = Menu as PathparameterMaster[];
             this.isLoading = false;
             this.DSParameterList.sort = this.sort;
             this.DSParameterList.paginator = this.paginator;
             this.sIsLoading = '';
-            console.log(this.DSParameterList);
+            console.log(this.DSParameterList.data);
         },
             error => {
                 this.sIsLoading = '';
@@ -97,27 +98,33 @@ export class ParametermasterComponent implements OnInit {
     }
 
 
-    onDeactive(ParameterID) {
-        this.confirmDialogRef = this._matDialog.open(
-            FuseConfirmDialogComponent,
-            {
-                disableClose: false,
-            }
-        );
-        this.confirmDialogRef.componentInstance.confirmMessage =
-            "Are you sure you want to deactive?";
-        this.confirmDialogRef.afterClosed().subscribe((result) => {
-            if (result) {
-                let Query =
+    onDeactive(row,ParameterID) {
+      
+        Swal.fire({
+            title: 'Do you want to Change Active Status Of Paramter',
+             showCancelButton: true,
+            confirmButtonText: 'OK',
+      
+          }).then((flag) => {
+            let Query;
+            if (flag.isConfirmed) {
+                if(row.Isdeleted){
+                 Query =
                 "Update M_PathParameterMaster set Isdeleted=0 where ParameterID=" +
                     ParameterID;
                 console.log(Query);
+                }else{
+                     Query =
+                    "Update M_PathParameterMaster set Isdeleted=1 where ParameterID=" +
+                        ParameterID;
+                }
+
                 this._ParameterService.deactivateTheStatus(Query)
                     .subscribe((data) => (this.msg = data));
                 this.getParameterMasterList();
             }
-            this.confirmDialogRef = null;
-        });
+          });
+
         this.getParameterMasterList();
     }
 
@@ -136,7 +143,6 @@ export class ParametermasterComponent implements OnInit {
             ParaMultipleRange: row.ParaMultipleRange,
         };
 
-      
         this._ParameterService.getTableData(row.ParameterID).subscribe((data) => {
                 debugger;
             if(row.IsNumericParameter==1){
@@ -160,7 +166,7 @@ export class ParametermasterComponent implements OnInit {
             this._ParameterService.populateForm(m_data);
             const dialogRef = this._matDialog.open(ParameterFormMasterComponent, {
             maxWidth: "75vw",
-            maxHeight: "95vh",
+            maxHeight: "80vh",
             width: "100%",
             height: "100%",
             data : {
@@ -179,7 +185,7 @@ export class ParametermasterComponent implements OnInit {
 
         const dialogRef = this._matDialog.open(ParameterFormMasterComponent, {
             maxWidth: "70vw",
-            maxHeight: "90vh",
+            maxHeight: "80vh",
             width: "100%",
             height: "100%",
         });
@@ -197,7 +203,7 @@ export class PathparameterMaster {
     PrintParameterName: string;
     UnitId: number;
     IsNumeric: Number;
-    IsDeleted: boolean;
+    Isdeleted: boolean;
     AddedBy: number;
     UpdatedBy: number;
     IsPrintDisSummary: boolean;
@@ -218,7 +224,7 @@ export class PathparameterMaster {
             this.PrintParameterName =PathparameterMaster.PrintParameterName || "";
             this.UnitId = PathparameterMaster.UnitId || "";
             this.IsNumeric = PathparameterMaster.IsNumeric || "false";
-            this.IsDeleted = PathparameterMaster.IsDeleted || "false";
+            this.Isdeleted = PathparameterMaster.Isdeleted || "";
             this.AddedBy = PathparameterMaster.AddedBy || "";
             this.UpdatedBy = PathparameterMaster.UpdatedBy || "";
             this.IsPrintDisSummary = PathparameterMaster.IsPrintDisSummary || "false";

@@ -392,7 +392,7 @@ return this._httpClient.get("OPReport/view-OPDoctorWiseNewOldPatientReport?FromD
 
   
   public getSupplierwiseGRNReport(StoreId,SupplierID,FromDate,ToDate){
-    return this._httpClient.get("/api/InventoryReports/view-SupplierWiseGRNList?StoreId="+StoreId +"&SupplierID="+SupplierID + "&FromDate="+FromDate +"&ToDate="+ToDate);
+    return this._httpClient.get("InventoryReports/view-SupplierWiseGRNList?StoreId="+StoreId +"&SupplierID="+SupplierID + "&FromDate="+FromDate +"&ToDate="+ToDate);
   }
 
   public getIssuetodeptlistReport(FromDate,ToDate,FromStoreId,ToStoreId,ItemId){

@@ -76,10 +76,7 @@ export class ParamteragewiseformComponent implements OnInit {
     ngOnInit(): void {
         this.selectedItems = [];
         this.dsParameterAgeList.data=[];
-        // if(this.data){
-        //     this.registerObj=this.data;
-        // }
-
+       
         this.getUnitNameCombobox();
         this.getGenderNameCombobox();
         this.getAgeTypeList();
@@ -87,7 +84,7 @@ export class ParamteragewiseformComponent implements OnInit {
         if (this._ParameterageService.myform.get("ParameterID").value) {
        
             this.dsParameterAgeList.data =this._ParameterageService.numericList;
-                 this.selectedItems = this._ParameterageService.descriptiveList;
+            this.selectedItems = this._ParameterageService.descriptiveList;
         }
         
     }

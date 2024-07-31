@@ -76,7 +76,7 @@ export class ParametermasterService {
     createSearchForm():FormGroup{
         return this._formBuilder.group({
             ParameterNameSearch: [""],
-            IsDeletedSearch: ["2"],
+            IsDeletedSearch: ["1"],
         });
     }
 
@@ -194,7 +194,7 @@ export class ParametermasterService {
         this.is_numeric = param.IsNumeric == 1? true : false;
         this.numericList = param.numericList;
         this.descriptiveList = param.descriptiveList;
-        if (this.descriptiveList[0]?.DefaultValue) this.myform.get("DefaultValue").setValue(this.descriptiveList[0]?.DefaultValue);
+       if (this.descriptiveList[0]?.DefaultValue) this.myform.get("DefaultValue").setValue(this.descriptiveList[0]?.DefaultValue);
         
 }
 }
