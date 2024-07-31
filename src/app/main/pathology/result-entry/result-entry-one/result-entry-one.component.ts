@@ -20,6 +20,7 @@ import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admissio
 import { debug } from 'console';
 import { MatDrawer } from '@angular/material/sidenav';
 import { MatAccordion } from '@angular/material/expansion';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 @Component({
     selector: 'app-result-entry-one',
@@ -170,7 +171,6 @@ export class ResultEntryOneComponent implements OnInit {
     }
 
     setDropdownObjs() {
-        debugger
         const toSelect = this.PathologyDoctorList.find(c => c.DoctorId == this.Pthologyresult.PathResultDr1);
         this.otherForm.get('DoctorId').setValue(toSelect);
 
@@ -190,7 +190,8 @@ export class ResultEntryOneComponent implements OnInit {
         });
         return Keys;
     }
-
+    @ViewChild('languageMenuTrigger') languageMenuTrigger: MatMenuTrigger;
+    isShowHelp: boolean = false;
     onResultUp(data) {
         let items = this.dataSource.data.filter(x => (x?.Formula ?? "").indexOf('{{' + data.ParameterShortName + '}}') > 0);
         for (let i = 0; i < items.length; i++) {
@@ -203,6 +204,23 @@ export class ResultEntryOneComponent implements OnInit {
             });
             items[i].ResultValue = isNaN(eval(formula)) ? "" : eval(formula);
         }
+    }
+    helpItems: any[] = [];
+    selectedParam:any;
+    onKeydown(e, data) {
+        this.selectedParam=data.ParameterId;
+        let SelectQuery = "SELECT ParameterValues, IsDefaultValue, ParameterId FROM dbo.M_ParameterDescriptiveMaster WHERE ParameterId = " + data.ParameterId;
+        this._SampleService.getPathologyResultList(SelectQuery).subscribe(Visit => {
+            this.helpItems = Visit as any[];
+            this.isShowHelp = true;
+            this.languageMenuTrigger.openMenu();
+        },
+            error => {
+                this.sIsLoading = '';
+            });
+    }
+    onSelectHelp(e){
+        this.dataSource.data.find(x=>x.ParameterId==this.selectedParam).ResultValue=e;
     }
 
     getResultList(advanceData) {
@@ -556,8 +574,8 @@ export class Pthologyresult {
     SubTestName: boolean;
     ParameterName: Date;
     NormalRange: any;
-    Formula:any;
-    ParameterShortName:any;
+    Formula: any;
+    ParameterShortName: any;
     ResultValue: any;
 
     constructor(Pthologyresult) {
@@ -565,9 +583,9 @@ export class Pthologyresult {
         this.SubTestName = Pthologyresult.SubTestName || '';
         this.ParameterName = Pthologyresult.ParameterName || '';
         this.NormalRange = Pthologyresult.NormalRange || 0;
-        this.Formula= Pthologyresult.Formula ||'';
-        this.ParameterShortName=Pthologyresult.ParameterShortName ||'';
-        this.ResultValue= Pthologyresult.ResultValue||'';
+        this.Formula = Pthologyresult.Formula || '';
+        this.ParameterShortName = Pthologyresult.ParameterShortName || '';
+        this.ResultValue = Pthologyresult.ResultValue || '';
     }
 
 }
