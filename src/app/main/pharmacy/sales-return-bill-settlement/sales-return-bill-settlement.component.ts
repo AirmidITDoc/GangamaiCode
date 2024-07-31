@@ -311,8 +311,8 @@ export class SalesReturnBillSettlementComponent implements OnInit {
     PatientHeaderObj['Date'] = formattedDate;
     PatientHeaderObj['PatientName'] = this.PatientName;
     PatientHeaderObj['OPD_IPD_Id'] = contact.OP_IP_ID;
-    PatientHeaderObj['AdvanceAmount'] = contact.NetAmount; 
-    PatientHeaderObj['NetPayAmount'] = contact.NetAmount;
+    PatientHeaderObj['AdvanceAmount'] = contact.BalanceAmount; 
+    PatientHeaderObj['NetPayAmount'] = contact.BalanceAmount;
     PatientHeaderObj['BillNo'] = contact.SalesId;
     PatientHeaderObj['IPDNo'] = this.IPDNo;
     PatientHeaderObj['RegNo'] = this.RegNo; 
