@@ -131,10 +131,7 @@ export class ResultEntryOneComponent implements OnInit {
         });
 
         this.getPathresultDoctorList();
-        // this.getDoctorList();
-        // this.getRefDoctorList();
-
-
+       debugger
         if (this.Iscompleted == 1) {
             if (this.OP_IPType == 1)
                 this.getResultListIP();
@@ -173,10 +170,6 @@ export class ResultEntryOneComponent implements OnInit {
     setDropdownObjs() {
         const toSelect = this.PathologyDoctorList.find(c => c.DoctorId == this.Pthologyresult.PathResultDr1);
         this.otherForm.get('DoctorId').setValue(toSelect);
-
-        // const toSelect1 = this.DoctorList.find(c => c.DoctorID == this.selectedAdvanceObj2.AdmDocId);
-        // this.otherForm.get('AdmDoctorID').setValue(toSelect1);
-
         this.otherForm.updateValueAndValidity();
     }
     getShortNames(formula: string): string[] {
@@ -230,6 +223,7 @@ export class ResultEntryOneComponent implements OnInit {
         this._SampleService.getPathologyResultList(SelectQuery).subscribe(Visit => {
             this.dataSource.data = Visit as Pthologyresult[];
             this.Pthologyresult = Visit as Pthologyresult[];
+            console.log( this.Pthologyresult )
             this.PathResultDr1 = this.Pthologyresult.PathResultDr1;
             this.dataSource.sort = this.sort;
             this.dataSource.paginator = this.paginator;
@@ -240,13 +234,43 @@ export class ResultEntryOneComponent implements OnInit {
             });
     }
 
-    // getPathologyDoctorList() {
-    //   this._SampleService.getPathologyDoctorMaster1Combo().subscribe(data => { this.PathologyDoctorList = data; 
-    //     this.filteredPathDoctor.next(this.PathologyDoctorList.slice());
-    //   })
-    // }
+ 
 
+    
+    getResultListIP() {
+        this.sIsLoading = 'loading-data';
+        let SelectQuery = "Select * from lvw_Retrieve_PathologyResultIPPatientUpdate where PathReportId in(" + this.reportIdData + ")"
+        console.log(SelectQuery);
+        this._SampleService.getPathologyResultListforIP(SelectQuery).subscribe(Visit => {
+            this.dataSource.data = Visit as Pthologyresult[];
+            this.Pthologyresult = Visit as Pthologyresult[];
+            this.dataSource.sort = this.sort;
+            this.dataSource.paginator = this.paginator;
+            this.sIsLoading = '';
+        },
+            error => {
+                this.sIsLoading = '';
+            });
+    }
 
+    getResultListOP() {
+        this.sIsLoading = 'loading-data';
+        let SelectQuery = "Select * from lvw_Retrieve_PathologyResultUpdate where PathReportId in(" + this.reportIdData + ")"
+        console.log(SelectQuery)
+        this._SampleService.getPathologyResultListforOP(SelectQuery).subscribe(Visit => {
+            this.dataSource.data = Visit as Pthologyresult[];
+            this.Pthologyresult = Visit as Pthologyresult[];
+            console.log(this.Pthologyresult);
+            this.dataSource.sort = this.sort;
+            this.dataSource.paginator = this.paginator;
+            this.sIsLoading = '';
+        },
+            error => {
+                this.sIsLoading = '';
+            });
+    }
+
+   
 
     getOptionTextresultdr(option) {
         return option && option.Doctorname ? option.Doctorname : '';
@@ -284,6 +308,7 @@ export class ResultEntryOneComponent implements OnInit {
         });
 
         this.Pthologyresult.forEach((element) => {
+            debugger
             let pathologyInsertReportObj = {};
             pathologyInsertReportObj['PathReportId'] = element.PathReportId //element1.PathReportId;
             pathologyInsertReportObj['CategoryID'] = element.CategoryID || 0;
@@ -308,6 +333,7 @@ export class ResultEntryOneComponent implements OnInit {
 
         this.data.RIdData.forEach((element) => {
             let pathologyUpdateReportObj = {};
+            debugger
             pathologyUpdateReportObj['PathReportID'] = element.PathReportId// element1.PathReportId;
             pathologyUpdateReportObj['ReportDate'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
                 pathologyUpdateReportObj['ReportTime'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy hh:mm"),
@@ -475,46 +501,6 @@ export class ResultEntryOneComponent implements OnInit {
     }
 
 
-    getResultListIP() {
-        this.sIsLoading = 'loading-data';
-        let SelectQuery = "Select * from lvw_Retrieve_PathologyResultIPPatientUpdate where PathReportId in(" + this.reportIdData + ")"
-        console.log(SelectQuery);
-        this._SampleService.getPathologyResultListforIP(SelectQuery).subscribe(Visit => {
-            this.dataSource.data = Visit as Pthologyresult[];
-            this.Pthologyresult = Visit as Pthologyresult[];
-            this.dataSource.sort = this.sort;
-            this.dataSource.paginator = this.paginator;
-            this.sIsLoading = '';
-        },
-            error => {
-                this.sIsLoading = '';
-            });
-    }
-
-    getResultListOP() {
-        this.sIsLoading = 'loading-data';
-        let SelectQuery = "Select * from lvw_Retrieve_PathologyResultUpdate where PathReportId in(" + this.reportIdData + ")"
-        console.log(SelectQuery)
-        this._SampleService.getPathologyResultListforOP(SelectQuery).subscribe(Visit => {
-            this.dataSource.data = Visit as Pthologyresult[];
-            this.Pthologyresult = Visit as Pthologyresult[];
-            console.log(this.Pthologyresult);
-            this.dataSource.sort = this.sort;
-            this.dataSource.paginator = this.paginator;
-            this.sIsLoading = '';
-        },
-            error => {
-                this.sIsLoading = '';
-            });
-    }
-
-    onClear() {
-        this.otherForm.reset();
-    }
-
-    onClose() {
-        this.dialogRef.close();
-    }
 
 
     viewgetPathologyTestReportPdf(contact) {
@@ -567,6 +553,14 @@ export class ResultEntryOneComponent implements OnInit {
             });
         });
     }
+
+    onClear() {
+        this.otherForm.reset();
+    }
+
+    onClose() {
+        this.dialogRef.close();
+    }
 }
 
 export class Pthologyresult {
@@ -577,7 +571,8 @@ export class Pthologyresult {
     Formula: any;
     ParameterShortName: any;
     ResultValue: any;
-
+    ParameterId:any;
+    ParameterID:any;
     constructor(Pthologyresult) {
         this.TestName = Pthologyresult.TestName || '';
         this.SubTestName = Pthologyresult.SubTestName || '';
@@ -586,6 +581,8 @@ export class Pthologyresult {
         this.Formula = Pthologyresult.Formula || '';
         this.ParameterShortName = Pthologyresult.ParameterShortName || '';
         this.ResultValue = Pthologyresult.ResultValue || '';
+        this.ParameterId = Pthologyresult.ParameterId || '';
+        this.ParameterID = Pthologyresult.ParameterID || '';
     }
 
 }

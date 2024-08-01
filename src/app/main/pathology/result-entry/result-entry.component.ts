@@ -334,6 +334,7 @@ export class ResultEntryComponent implements OnInit {
         console.log('Pathology Template  Saved ..', result);
       });
     }
+    this.getPatientsList()
     // this.selection.clear();
   }
 

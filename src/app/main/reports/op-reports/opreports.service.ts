@@ -22,6 +22,7 @@ export class OPReportsService {
         RefundId:'',
         DoctorID:'',
         ServiceId:'',
+        DepartmentId:'',
         GroupId:''
         // Radio:['1']
 
@@ -169,7 +170,10 @@ return this._httpClient.get("OPReport/view-OPDoctorWiseNewOldPatientReport?FromD
     return this._httpClient.get("CommanReport/view-ReferenceDoctorWisePatientCountReport?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
  
+  public getDepartmentCombo() {
+    return this._httpClient.post("Generic/GetByProc?procName=RetrieveDepartmentMasterForCombo", {})
 
+  }
 
 
   public getConcessionreportView(FromDate,ToDate,OP_IP_Type,DoctorID){
@@ -228,9 +232,9 @@ return this._httpClient.get("OPReport/view-OPDoctorWiseNewOldPatientReport?FromD
   
     return this._httpClient.get("CommanReport/view-ServicewiseReportwithbill?ServiceId="+ServiceId+"&FromDate=" + FromDate+"&ToDate="+ToDate);
   }
-  public getServicewisereportView(FromDate,ToDate,ServiceId){
+  public getServicewisereportView(ServiceId,FromDate,ToDate,){
   
-    return this._httpClient.get("CommanReport/view-ServicewisepatientamtReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&ServiceId="+ServiceId);
+    return this._httpClient.get("CommanReport/view-ServiceWiseReport?ServiceId=" + ServiceId+"&FromDate="+FromDate+"&ToDate="+ToDate);
   }
 
   public getBillsummarywithtcsView(FromDate,ToDate){
@@ -448,4 +452,8 @@ public getPurchaseorderview(FromDate,ToDate,SupplierID,ToStoreId){
     return this._httpClient.get("InventoryTransaction/view-ItemWisePurchase?FromDate="+FromDate+"&todate="+todate+"&StoreId="+StoreId);
   }
   
+
+  public getBillingServiceList(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ServicesList", employee)
+  }
   }

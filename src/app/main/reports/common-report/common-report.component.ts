@@ -32,6 +32,8 @@ export class CommonReportComponent implements OnInit {
  
   filteredOptionsUser: Observable<string[]>;
   filteredOptionsDoctorMode: Observable<string[]>;
+  filteredOptionsDep: Observable<string[]>;
+  isDepartmentSelected
   isUserSelected: boolean = false;
   isSearchdoctorSelected: boolean = false;
 
@@ -42,11 +44,14 @@ export class CommonReportComponent implements OnInit {
   FlagDoctorIDSelected: boolean = false;
   FlaggroupIdSelected: boolean = false;
   FlagServiceIdSelected: boolean = false;
+  FlagDepartmentSelected: boolean = false;
+
 
   optionsUser: any[] = [];
   optionsPaymentMode: any[] = [];
+  optionsDep: any[] = [];
   PaymentMode: any;
- 
+  DepartmentList:any=[];
   ReportName: any;
   
   SpinLoading: boolean = false;
@@ -66,13 +71,11 @@ export class CommonReportComponent implements OnInit {
 
   dataSource = new MatTableDataSource<ReportDetail>();
   constructor(
-    // this.dataSource.data = TREE_DATA;
     public _OPReportsService: OPReportsService,
-    
     public _matDialog: MatDialog,
     private _ActRoute: Router,
     public datePipe: DatePipe,
-        private _loggedUser: AuthenticationService,
+    private _loggedUser: AuthenticationService,
     private formBuilder: FormBuilder
   ) {
     this.UserId = this._loggedUser.currentUserValue.user.id;
@@ -85,6 +88,8 @@ export class CommonReportComponent implements OnInit {
     this.bindReportData();
     this.getDoctorList();
     this.GetUserList();
+    this.getDepartmentList();
+    this.getServiceListCombobox();
  
     this.filteredOptionsUser = this._OPReportsService.userForm.get('UserId').valueChanges.pipe(
       startWith(''),
@@ -200,11 +205,13 @@ var data={
       this.FlagVisitSelected=false;
     }
     else if (this.ReportName == 'Service Wise Report') {
-      this.FlagUserSelected = false;
+      this.FlagUserSelected = true;
       this.FlagPaymentIdSelected = false;
       this.FlagDoctorIDSelected=false;
       this.FlagRefundIdSelected = false;
       this.FlagVisitSelected=false;
+      this.FlagServiceIdSelected=false;
+      this.FlagDepartmentSelected=true;
     }else if (this.ReportName == 'Bill Summary With TCS Report') {
       this.FlagUserSelected = false;
       this.FlagPaymentIdSelected = false;
@@ -378,13 +385,18 @@ var data={
 
   viewgetDocwisepatientcountReportPdf() {
    debugger
-   let DosctorID=this._OPReportsService.userForm.get("DoctorID").value.DoctorID || 0
+  
+   let DoctorID = 0;
+   if (this._OPReportsService.userForm.get('DoctorID').value)
+    DoctorID = this._OPReportsService.userForm.get('DoctorID').value.DoctorID
+
+   
      setTimeout(() => {
        this.AdList = true;
        this._OPReportsService.getdocwisepatinetcountReport(
         this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
         this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-        DosctorID
+        DoctorID
        ).subscribe(res => {
          const dialogRef = this._matDialog.open(PdfviewerComponent,
            {
@@ -438,7 +450,11 @@ var data={
 
 viewgetConcessionReportPdf() {
   let OP_IP_Type=1;
-  let DoctorID =this._OPReportsService.userForm.get("DoctorID").value.DoctorID || 0
+  
+  let DoctorID = 0;
+  if (this._OPReportsService.userForm.get('DoctorID').value)
+   DoctorID = this._OPReportsService.userForm.get('DoctorID').value.DoctorID
+
   this.sIsLoading = 'loading-data';
   setTimeout(() => {
  
@@ -470,9 +486,16 @@ viewgetConcessionReportPdf() {
 
 viewgetDailyCollectionReportPdf() {
   debugger
-  console.log(this._OPReportsService.userForm.get('DoctorID').value)
-  let AddedById=this._OPReportsService.userForm.get('UserId').value.UserId || 0
-  let DoctorId=this._OPReportsService.userForm.get('DoctorID').value.DoctorID || 0
+ 
+  let AddedById = 0;
+  if (this._OPReportsService.userForm.get('UserId').value)
+    AddedById = this._OPReportsService.userForm.get('UserId').value.UserId
+
+
+  let DoctorId = 0;
+  if (this._OPReportsService.userForm.get('DoctorId').value)
+    DoctorId = this._OPReportsService.userForm.get('DoctorId').value.DoctorId
+
   this.sIsLoading = 'loading-data';
   setTimeout(() => {
  
@@ -733,13 +756,24 @@ getServicewisereportwithbillview(){
 }
 viewgetServicewiseReportPdf(){
   this.sIsLoading = 'loading-data';
-  let ServiceId=this._OPReportsService.userForm.get('ServiceId').value | 0
+//  let GroupId=this._OPReportsService.userForm.get('GroupId').value || 0
+//   let AddedById=this._OPReportsService.userForm.get('UserId').value.UserId || 0
+//   let DoctorId=this._OPReportsService.userForm.get('DoctorID').value.DoctorID || 0
+//   let ServiceId=this._OPReportsService.userForm.get('ServiceId').value
+//   let DepartmentId=this._OPReportsService.userForm.get('DepartmentId').value.DepartmentId
+
+  
+  let ServiceId = 0;
+  if (this._OPReportsService.userForm.get('ServiceId').value)
+    ServiceId = this._OPReportsService.userForm.get('ServiceId').value.ServiceId
+
+
+  
   setTimeout(() => {
  
-  this._OPReportsService.getServicewisereportView(
+  this._OPReportsService.getServicewisereportView(ServiceId,
     this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-    ServiceId
+    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
     ).subscribe(res => {
     const matDialog = this._matDialog.open(PdfviewerComponent,
       {
@@ -1132,31 +1166,7 @@ getDoctorList() {
     }
   }
 
-  
-  // private _filterUser(value: any): string[] {
-  //   if (value) {
-  //     const filterValue = value && value.UserName ? value.UserName.toLowerCase() : value.toLowerCase();
-  //     return this.optionsUser.filter(option => option.UserName.toLowerCase().includes(filterValue));
-  //   }
-  // }
-
-  // GetUserList() {
-  //   var data = {
-  //     "StoreId": this._loggedUser.currentUserValue.user.storeId
-  //   }
-  //   this._OPReportsService.getUserdetailList(data).subscribe(data => {
-  //     this.UserList = data;
-  //     this.optionsUser = this.UserList.slice();
-  //   this.filteredOptionsUser = this._OPReportsService.userForm.get('UserId').valueChanges.pipe(
-  //       startWith(''),
-  //       map(value => value ? this._filterUser(value) : this.UserList.slice()),
-  //     );
-
-  //   });
-  //   const toSelect = this.UserList.find(c => c.UserId == this.UserId);
-  //   this._OPReportsService.userForm.get('UserId').setValue(toSelect);
-
-  // }
+ 
 
   GetUserList() {
     var data = {
@@ -1172,6 +1182,57 @@ getDoctorList() {
       }
     });
   }
+  filteredOptions: any;
+
+  getServiceListCombobox() {
+   
+      var m_data = {
+        SrvcName: "%",
+        TariffId: 0,
+        ClassId: 0,
+      };
+      console.log(m_data)
+      
+        this._OPReportsService.getBillingServiceList(m_data).subscribe(data => {
+          this.filteredOptions = data;
+        
+        });
+           
+  }
+
+  getDepartmentList() {
+    this._OPReportsService.getDepartmentCombo().subscribe(data => {
+      this.DepartmentList = data;
+      this.optionsDep = this.DepartmentList.slice();
+      this.filteredOptionsDep = this._OPReportsService.userForm.get('Departmentid').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterDep(value) : this.DepartmentList.slice()),
+      );
+
+    });
+  }
+
+  private _filterDep(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.departmentName ? value.departmentName.toLowerCase() : value.toLowerCase();
+      return this.optionsDep.filter(option => option.departmentName.toLowerCase().includes(filterValue));
+    }
+
+  }
+
+
+
+  getOptionTextDep(option) {
+    return option && option.departmentName ? option.departmentName : '';
+  }
+
+  getOptionText(option) {
+    if (!option)
+      return '';
+    return option.ServiceName;
+
+  }
+
 
   getSelectedObj(obj){
     this.UserId=obj.UserId;

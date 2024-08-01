@@ -888,15 +888,6 @@ console.log(obj)
     }, 2000);
 
 
-    // this.dataSource.data = [];
-    // this.chargeslist = [];
-    // this.PatientName = " ";
-    // this.vOPDNo = " ";
-    // this.vOPIPId = " ";
-    // this.Doctorname = "";
-    // this.Tarrifname = "";
-    // this.Consessionres = false;
-    // this.searchFormGroup.get('RegId').reset();
   }
   vDoctor: any;
   onAddCharges() {
