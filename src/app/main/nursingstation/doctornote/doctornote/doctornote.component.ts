@@ -1,20 +1,19 @@
-import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { DoctornoteService } from '../doctornote.service';
-import { NotificationServiceService } from 'app/core/notification-service.service';
-import { AdvanceDataStored } from 'app/main/ipd/advance';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { DatePipe } from '@angular/common';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { ReplaySubject, Subject, Subscription } from 'rxjs';
-import Swal from 'sweetalert2';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { takeUntil } from 'rxjs/operators';
-import { fuseAnimations } from '@fuse/animations';
-import { MatTableDataSource } from '@angular/material/table';
-import { ToastrService } from 'ngx-toastr';
-import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
+import { MatPaginator } from "@angular/material/paginator";
+import { MatSort } from "@angular/material/sort";
+import { MatTableDataSource } from "@angular/material/table";
+import { AdmissionPersonlModel } from "app/main/ipd/Admission/admission/admission.component";
+import { DoctornoteService } from "../doctornote.service";
+import { AuthenticationService } from "app/core/services/authentication.service";
+import { AdvanceDataStored } from "app/main/ipd/advance";
+import { FormBuilder } from "@angular/forms";
+import { DatePipe } from "@angular/common";
+import { ToastrService } from "ngx-toastr";
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
+import Swal from "sweetalert2";
+import { fuseAnimations } from "@fuse/animations";
+
+ 
 
 @Component({
   selector: 'app-doctornote',
@@ -52,7 +51,9 @@ export class DoctornoteComponent implements OnInit {
   isLoading:string ='';
   PathologyDoctorList:any=[];
   wardList:any=[];
-  DoctorNoteList:any=[];
+  DoctorNoteList:any=[]; 
+  NoteList:any=[];
+  vCompanyName:any;
   vRegNo:any;
   vDescription:any;
   vPatienName:any;
@@ -60,11 +61,16 @@ export class DoctornoteComponent implements OnInit {
   vAdmissionDate:any;
   vAdmissionID:any;
   vIPDNo:any;
-  vAge:any;
+  vAgeyear:any;
+  vAgeMonth:any;
+  vAgeDay:any;
   vWardName:any;
   vBedName:any;
-  NoteList:any=[];
-  
+  vPatientType:any;
+  vRefDocName:any;
+  vTariffName:any;
+  vDoctorname:any;
+  vDepartmentName:any;
 
   selectedAdvanceObj: AdmissionPersonlModel;
   dsPatientList = new MatTableDataSource;
@@ -80,17 +86,35 @@ export class DoctornoteComponent implements OnInit {
     private advanceDataStored: AdvanceDataStored,
     private formBuilder: FormBuilder, 
     public datePipe: DatePipe, 
-    public toastr: ToastrService,
-  ) {  if (this.advanceDataStored.storage) {
-    debugger
-     this.selectedAdvanceObj = this.advanceDataStored.storage;
-     // this.PatientHeaderObj = this.advanceDataStored.storage;
-     console.log( this.selectedAdvanceObj)
-   } }
+    public toastr: ToastrService, 
+    public _matDialog: MatDialog, 
+    // @Inject(MAT_DIALOG_DATA) public data: any,
+    // public dialogRef: MatDialogRef<DoctornoteComponent>,
+  ) { 
+  //    if (this.advanceDataStored.storage) {
+  //   debugger
+  //    this.selectedAdvanceObj = this.advanceDataStored.storage;
+  //    // this.PatientHeaderObj = this.advanceDataStored.storage;
+  //    console.log( this.selectedAdvanceObj)
+  //  } 
+  }
 
   
- 
-  ngOnInit(): void { 
+
+  ngOnInit(): void {  
+    // if(this.data.Obj){
+    //   this.selectedAdvanceObj = this.data.Obj;
+    //   console.log(this.selectedAdvanceObj)
+    //   this.vRegNo = this.selectedAdvanceObj.RegNo;
+    //   this.vPatienName = this.selectedAdvanceObj.PatientName;
+    //   this.vDoctorname = this.selectedAdvanceObj.DoctorName;
+    //   this.vDepartmentName = this.selectedAdvanceObj.DepartmentName;
+    //   this.vAgeyear = this.selectedAdvanceObj.AgeYear;
+    //   this.vAgeMonth = this.selectedAdvanceObj.AgeMonth;
+    //   this.vAgeDay = this.selectedAdvanceObj.AgeDay;
+    //   this.vBedName = this.selectedAdvanceObj.BedName;
+    //   this.vWardName = this.selectedAdvanceObj.RoomName; 
+    // }
     this.getDoctorNoteList(); 
     this.getWardNameList();
   }

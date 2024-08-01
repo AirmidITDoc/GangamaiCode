@@ -3027,7 +3027,7 @@ export class SalesHospitalComponent implements OnInit {
       "StoreId": this._loggedService.currentUserValue.user.storeId || 0
     }
     this._salesService.getDraftBillItem(m_data).subscribe(draftdata => {
-      // console.log(draftdata)
+       console.log(draftdata)
       this.Itemchargeslist1 = draftdata as any;
       if (this.Itemchargeslist1.length == 0) {
         Swal.fire(contact.ItemId + " : " + "Item Stock is Not Avilable:")
@@ -3710,6 +3710,7 @@ getSearchListIP() {
   }
   dsItemNameList1 = new MatTableDataSource<IndentList>();
   IPMedID:any;
+  TotalBalQty:any=0;
   getPRESCRIPTION() {
     if (this.ItemSubform.get('PatientType').value == 'IP') {
       const dialogRef = this._matDialog.open(PrescriptionComponent,
@@ -3750,32 +3751,42 @@ getSearchListIP() {
             "StoreId": this._loggedService.currentUserValue.user.storeId || 0
           }
           this._salesService.getDraftBillItem(m_data).subscribe(draftdata => {
-            console.log(draftdata)
+            //console.log(draftdata)
             this.Itemchargeslist1 = draftdata as any;
             if (this.Itemchargeslist1.length == 0) {
               Swal.fire(contact.ItemId + " : " + "Item Stock is Not Avilable:")
             }
             else if (this.Itemchargeslist1.length > 0) {
-              let ItemID;
-              this.Itemchargeslist1.forEach((element) => {
-                // console.log(element)
-                if (ItemID != element.ItemId) {
-                  this.QtyBalchk = 0;
-                }
-                if (this.QtyBalchk != 1) {
-                  if (contact.QtyPerDay <= element.BalanceQty) {
-                    this.QtyBalchk = 1;
-                    this.getFinalCalculation(element, contact.QtyPerDay);
-                    ItemID = element.ItemId;
+              let ItemID = contact.ItemId;
+              // Debugger
+              let remaing_qty = contact.QtyPerDay;
+              let bal_qnt = 0;
+              this.Itemchargeslist1.forEach((element) => { 
+                  let PreQty = remaing_qty;
+                  if (PreQty > 0){    
+                      if (ItemID != element.ItemId) {
+                          this.QtyBalchk = 0;
+                      }
+                      // if (this.QtyBalchk != 1) {
+                      if (PreQty <= element.BalanceQty) {
+                          this.QtyBalchk = 1;
+                          this.getFinalCalculation(element, PreQty);
+                          ItemID = element.ItemId;
+                          bal_qnt += element.BalanceQty-PreQty;
+                      }
+                      else if (PreQty > element.BalanceQty) {                          
+                          this.QtyBalchk = 1;
+                          //Swal.fire("For Item :" + element.ItemId + " adding the Balance Qty: ", element.BalanceQty)
+                          this.getFinalCalculation(element, element.BalanceQty);
+                          ItemID = element.ItemId;
+                      } 
+                      remaing_qty = PreQty- element.BalanceQty;
+                  }else{
+                      bal_qnt+=element.BalanceQty;
                   }
-                  else {
-                    Swal.fire("Balance Qty is :", element.BalanceQty)
-                    this.QtyBalchk = 0;
-                    Swal.fire("Balance Qty is Less than Selected Item Qty for Item :" + element.ItemId + "Balance Qty:", element.BalanceQty)
-                  }
-                }
               });
-            }
+              Swal.fire("Balance Qty is :", String(bal_qnt))
+          }  
           });
         });
       });
@@ -3784,8 +3795,7 @@ getSearchListIP() {
         toastClass: 'tostr-tost custom-toast-success',
       });
     }
-  }
- 
+  } 
 }
 
 
