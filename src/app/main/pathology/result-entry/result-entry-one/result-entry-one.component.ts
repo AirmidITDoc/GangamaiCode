@@ -577,6 +577,7 @@ export class Pthologyresult {
     Formula: any;
     ParameterShortName: any;
     ResultValue: any;
+    ParameterId: any;
 
     constructor(Pthologyresult) {
         this.TestName = Pthologyresult.TestName || '';
