@@ -571,8 +571,8 @@ export class Pthologyresult {
     Formula: any;
     ParameterShortName: any;
     ResultValue: any;
-    ParameterId:any;
-    ParameterID:any;
+    ParameterId: any;
+
     constructor(Pthologyresult) {
         this.TestName = Pthologyresult.TestName || '';
         this.SubTestName = Pthologyresult.SubTestName || '';
@@ -582,7 +582,7 @@ export class Pthologyresult {
         this.ParameterShortName = Pthologyresult.ParameterShortName || '';
         this.ResultValue = Pthologyresult.ResultValue || '';
         this.ParameterId = Pthologyresult.ParameterId || '';
-        this.ParameterID = Pthologyresult.ParameterID || '';
+       // this.ParameterID = Pthologyresult.ParameterID || '';
     }
 
 }

@@ -192,9 +192,10 @@ export class ClinicalCareChartComponent implements OnInit {
     this.sIsLoading = ''; 
   }); 
   }
-
+registerObj:any;
   getpatientDet(obj){ 
     console.log(obj) 
+    this.registerObj = obj;
     this.vpatientName = obj.PatientName;
     this.vDoctorname = obj.DoctorName;
     this.vAgeYear = obj.AgeYear;
@@ -207,18 +208,32 @@ export class ClinicalCareChartComponent implements OnInit {
     this.checkDailyWeight = true;
   }
   getDoctornote(){
-    //console.log(contact)
+   if(this.vRegNo == 0 || this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined){
+    this.toastr.warning('Please select Patient','Warning !',{
+      toastClass: 'tostr-tost custom-toast-warning',
+    }) 
+    return;
+   }
     const dialogRef = this._matDialog.open(DoctornoteComponent,
       {
         maxWidth: "100%",
         height: '90%',
-        width: '90%',
+        width: '90%', 
+        data: {
+          Obj: this.registerObj 
+        }
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result); 
     });
   }
   getNursingnote(){ 
+    if(this.vRegNo == 0 || this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined){
+      this.toastr.warning('Please select Patient','Warning !',{
+        toastClass: 'tostr-tost custom-toast-warning',
+      }) 
+      return;
+     }
       const dialogRef = this._matDialog.open(NursingnoteComponent,
         {
           maxWidth: "100%",
@@ -230,6 +245,12 @@ export class ClinicalCareChartComponent implements OnInit {
       });  
   }
   getDischargeSummary(){ 
+    if(this.vRegNo == 0 || this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined){
+      this.toastr.warning('Please select Patient','Warning !',{
+        toastClass: 'tostr-tost custom-toast-warning',
+      }) 
+      return;
+     }
     const dialogRef = this._matDialog.open(DischargeSummaryComponent,
       {
         maxWidth: "100%",
@@ -241,6 +262,12 @@ export class ClinicalCareChartComponent implements OnInit {
     });  
 }
 getPriscription(){ 
+  if(this.vRegNo == 0 || this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined){
+    this.toastr.warning('Please select Patient','Warning !',{
+      toastClass: 'tostr-tost custom-toast-warning',
+    }) 
+    return;
+   }
   const dialogRef = this._matDialog.open(NewPrescriptionComponent,
     {
       maxWidth: "100%",
@@ -252,6 +279,12 @@ getPriscription(){
   });  
 }
 getbedTransfer(){ 
+  if(this.vRegNo == 0 || this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined){
+    this.toastr.warning('Please select Patient','Warning !',{
+      toastClass: 'tostr-tost custom-toast-warning',
+    }) 
+    return;
+   }
   const dialogRef = this._matDialog.open(BedTransferComponent,
     {
       maxWidth: "100%",
@@ -263,6 +296,12 @@ getbedTransfer(){
   });  
 }
 getLabRequest(){ 
+  if(this.vRegNo == 0 || this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined){
+    this.toastr.warning('Please select Patient','Warning !',{
+      toastClass: 'tostr-tost custom-toast-warning',
+    }) 
+    return;
+   }
   const dialogRef = this._matDialog.open(NewRequestforlabComponent,
     {
       maxWidth: "100%",
@@ -278,7 +317,7 @@ getLabRequest(){
     const dialogRef = this._matDialog.open(PhlebitisScoreComponent,
       {
         maxWidth: "100%",
-        height: '90%',
+        height: '95%',
         width: '90%', 
       });
     dialogRef.afterClosed().subscribe(result => {
@@ -290,7 +329,7 @@ getLabRequest(){
     const dialogRef = this._matDialog.open(MedicationErrorComponent,
       {
         maxWidth: "100%",
-        height: '90%',
+        height: '95%',
         width: '90%',  
       });
     dialogRef.afterClosed().subscribe(result => {
