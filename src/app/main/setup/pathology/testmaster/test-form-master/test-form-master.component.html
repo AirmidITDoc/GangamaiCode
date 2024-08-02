@@ -42,124 +42,157 @@
                                                     placeholder="Select PrintTestName" matInput required>
                                                 <mat-error>Please enter PrintTestName </mat-error>
                                             </mat-form-field>
-                                            <!-- <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>Category Name</mat-label> 
-                                                <mat-select formControlName="CategoryId" placeholder="Bank"
-                                                    #singleSelect required>
-                                                    <mat-option>
-                                                        <ngx-mat-select-search [formControl]="categoryFilterCtrl"
-                                                            [placeholderLabel]="'Search'"
-                                                            [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+
+                                            <mat-form-field appearance="outline" style="padding-right: 10px;"
+                                                fxFlex="50%">
+                                                <mat-label>CategoryName</mat-label>
+                                                <input matAutocompletePosition="below" type="text"
+                                                    placeholder="Select CategoryName" [(ngModel)]="vCategoryId" required
+                                                    matInput formControlName="CategoryId"
+                                                    [matAutocomplete]="autoCategoryId">
+                                                <span matSuffix style="display: flex;">
+                                                    <mat-icon class="mat-icon-close"
+                                                        (click)="_TestService.myform.get('CategoryId').setValue(''); iscategorySelected = false;">close</mat-icon>
+                                                    <mat-icon class="mat-icon-close"
+                                                        (click)="_TestService.myform.get('CategoryId').setValue(''); iscategorySelected = false;">search</mat-icon>
+                                                </span>
+                                                <mat-autocomplete #autoCategoryId="matAutocomplete"
+                                                    [displayWith]="getOptionTextCategory">
+                                                    <mat-option *ngFor="let option of filteredOptionsCategory | async"
+                                                        [value]="option">
+                                                        {{option.CategoryName}}
                                                     </mat-option>
-                                                    <mat-option *ngFor="let element of filteredCategory | async"
-                                                        [value]="element.CategoryId">
-                                                        {{element.CategoryName}}
-                                                    </mat-option>
-                                                </mat-select>
-                                            </mat-form-field> -->
-<!-- /new category -->
-                                            <mat-form-field appearance="outline" fxFlex>
-                                                    <input matInput placeholder="Category Name"  [matAutocomplete]="auto2" 
-                                             [formControl]="categoryFilterCtrl" (keyup.enter)="chooseFirstOption(auto2)">
-                                                    <mat-autocomplete #auto2="matAutocomplete">
-                                                    <mat-option *ngFor="let state of filterStates2(this.categoryFilterCtrl.value)" [value]="state.CategoryName">{{state.CategoryName}}</mat-option>
-                                                    </mat-autocomplete>
+                                                </mat-autocomplete>
                                             </mat-form-field>
 
-
-                                            <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                                                <mat-label>Service Name</mat-label>
-                                                <mat-select formControlName="ServiceID" placeholder="Bank" #singleSelect required disableOptionCentering="true">
-                                                    <mat-option>
-                                                        <ngx-mat-select-search [formControl]="serviceFilterCtrl" [placeholderLabel]="'Search'"
-                                                            [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                                            <mat-form-field appearance="outline" style="padding-right: 10px;"
+                                                fxFlex="50%">
+                                                <mat-label>ServiceName</mat-label>
+                                                <input matAutocompletePosition="below" type="text"
+                                                    placeholder="Select Service Type" [(ngModel)]="ServiceID" required
+                                                    matInput formControlName="ServiceID"
+                                                    [matAutocomplete]="autoServiceID">
+                                                <span matSuffix style="display: flex;">
+                                                    <mat-icon class="mat-icon-close"
+                                                        (click)="_TestService.myform.get('ServiceID').setValue(''); isserviceSelected = false;">close</mat-icon>
+                                                    <mat-icon class="mat-icon-close"
+                                                        (click)="_TestService.myform.get('ServiceID').setValue(''); isserviceSelected = false;">search</mat-icon>
+                                                </span>
+                                                <mat-autocomplete #autoServiceID="matAutocomplete"
+                                                    [displayWith]="getOptionTextService">
+                                                    <mat-option *ngFor="let option of filteredOptionsService | async"
+                                                        [value]="option">
+                                                        {{option.ServiceName}}
                                                     </mat-option>
-                                                    <mat-option *ngFor="let element of filteredService | async" [value]="element.ServiceID">
-                                                        {{element.ServiceName}}
-                                                    </mat-option>
-                                                </mat-select>
-                                            </mat-form-field>  -->
-                                            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                                                <mat-label>Service Name</mat-label>
-                                                <input matInput placeholder="Service Name"  [matAutocomplete]="auto1" 
-                                             [formControl]="filterServiceCtrl" (keyup.enter)="chooseFirstOption(auto1)">
-                                                    <mat-autocomplete #auto1="matAutocomplete">
-                                                    <mat-option *ngFor="let state of filterStates(this.filterServiceCtrl.value)" [value]="state.ServiceName">{{state.ServiceName}}</mat-option>
-                                                    </mat-autocomplete>
+                                                </mat-autocomplete>
                                             </mat-form-field>
-                                            
-                                          
                                         </div>
-                                        
 
-                                        <div  fxLayout="row" style="padding-top:10px"> 
+
+                                        <div fxLayout="row" style="padding-top:10px">
                                             <div *ngIf="_TestService.is_subtest">
-                                            <mat-form-field style="width: 22rem">
-                                            <input matInput placeholder="Search" autocomplete="off"
-                                            name="ParameterNameSearch" formControlName="ParameterNameSearch" />
-                                        <button mat-button matSuffix mat-icon-button aria-label="Clear"
-                                            (click)="onSearchClear()" (keyup)="onSearch()">
-                                            <mat-icon>close</mat-icon>
-                                        </button>
-                                    </mat-form-field>
-                                    <mat-checkbox formControlName="IsSubTest" [(ngModel)]="isChecked" (change)="getSubTestMasterList()"
-                                    value="true" name="IsSubTest" >IsSub
-                                    Test</mat-checkbox>
-                                             </div>
+                                                <mat-form-field style="width: 22rem">
+                                                    <input matInput placeholder="Search" autocomplete="off"
+                                                        name="ParameterNameSearch" (keyup)="onSearch()"
+                                                        formControlName="ParameterNameSearch" />
+                                                    <button mat-button matSuffix mat-icon-button aria-label="Clear"
+                                                        (click)="onSearchClear()" (keyup)="onSearch()">
+                                                        <mat-icon>close</mat-icon>
+                                                    </button>
+                                                </mat-form-field>
+                                                <mat-checkbox formControlName="IsSubTest" [(ngModel)]="isChecked"
+                                                    (change)="getSubTestMasterList()" value="true"
+                                                    name="IsSubTest">IsSub
+                                                    Test</mat-checkbox>
+                                            </div>
 
-                                        
-                                        <section class="example-section" style="position: absolute; margin-left:50rem;">
-                                            <mat-radio-group name="Status" formControlName="Status" 
-                                                fxLayout="row">
-                                                <mat-radio-button (click)="toggle(1)"  value="1" [checked]='_TestService.is_subtest' class="mr-sm-12" formControlName="IsSubTest">Test
-                                                </mat-radio-button>
-                                                <mat-radio-button (click)="toggle(1)"  value="2" [checked]='!_TestService.is_subtest' class="mr-sm-12" formControlName="IsSubTest">IsSubTest
-                                                </mat-radio-button>
-                                                <mat-radio-button (click)="toggle(2)"  value="3" [checked]='!_TestService.is_subtest'class="mr-sm-12"formControlName="IsTemplateTest">Template
-                                                    Formate
-                                                </mat-radio-button>
-                                            </mat-radio-group>    
-                                        </section>
-
-                                
-                                           
+                                            <!-- [checked]='_TestService.is_subtest' -->
+                                          
                                         </div>
                                         <ng-template [ngIf]="_TestService.is_subtest">
 
-                                    <div fxLayout="row" fxFlex="100%" fxLayoutAlign="6px">
-                                         <div fxLayout="column" fxFlex="30%">
-                                            <mat-card style="height:267px;width: 100%;">
-                                                
-                                               
-                                                 <mat-table #table class="table1" matSort *ngIf="!isChecked"
-                                                        [dataSource]="paramterList" [@animateStagger]="{value:'50'}"
-                                                        style="overflow:auto; width: 100%;">
-                                                       
-                                                        <ng-container matColumnDef="ParameterName">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                                                Parameter Values        
+                                            <div fxLayout="row" fxFlex="100%" fxLayoutAlign="6px">
+                                                <div fxLayout="column" fxFlex="30%">
+                                                    <mat-card style="height:267px;width: 100%;">
 
-                                                            </mat-header-cell>
-                                                            <mat-cell *matCellDef="let element" fxShow.gt-sm  (click) ="onAdd(element)">
-                                                                {{element.ParameterName}} 
-                                                            </mat-cell>      
 
-                                                       </ng-container>
-                                                        
+                                                        <mat-table #table class="table1" matSort *ngIf="!isChecked"
+                                                            [dataSource]="paramterList" [@animateStagger]="{value:'50'}"
+                                                            style="overflow:auto; width: 100%;">
 
-                                                       <ng-container matColumnDef="Add">
-                                                        <mat-header-cell *matHeaderCellDef >
-                                                            Add
-                                                        </mat-header-cell>
-                                                        <mat-cell *matCellDef="let element" fxShow.gt-sm style="padding-left:2rem;">
-                                                            
-                                                                <mat-icon (click) ="onAdd(element)" style="cursor:pointer"> add </mat-icon> 
-                                                        </mat-cell>    
+                                                            <ng-container matColumnDef="ParameterName">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                                    Parameter Values
 
-                                                    </ng-container>
-                                                    
-                                                        
-                                                       <!-- <ng-container matColumnDef="ParameterAction">
+                                                                </mat-header-cell>
+                                                                <mat-cell *matCellDef="let element" fxShow.gt-sm
+                                                                    (click)="onAdd(element)">
+                                                                    {{element.ParameterName}}
+                                                                </mat-cell>
+
+                                                            </ng-container>
+
+
+                                                            <ng-container matColumnDef="Add">
+                                                                <mat-header-cell *matHeaderCellDef>
+                                                                    Add
+                                                                </mat-header-cell>
+                                                                <mat-cell *matCellDef="let element" fxShow.gt-sm
+                                                                    style="padding-left:2rem;">
+
+                                                                    <mat-icon (click)="onAdd(element)"
+                                                                        style="cursor:pointer"> add </mat-icon>
+                                                                </mat-cell>
+
+                                                            </ng-container>
+
+                                                            <ng-container matColumnDef="loading">
+                                                                <mat-footer-cell *matFooterCellDef colspan="6">
+
+                                                                </mat-footer-cell>
+                                                            </ng-container>
+
+
+                                                            <mat-header-row class="accent"
+                                                                *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                                                            <mat-row *matRowDef="let row; columns: displayedColumns;"
+                                                                class="element"
+                                                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+
+                                                        </mat-table>
+                                                        <mat-table #table class="table1" matSort *ngIf="isTemplate"
+                                                            [dataSource]="subTestList.data"
+                                                            [@animateStagger]="{value:'50'}"
+                                                            style="overflow:auto; width: 100%;">
+
+                                                            <ng-container matColumnDef="ParameterName">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                                    Parameter Values
+
+                                                                </mat-header-cell>
+                                                                <mat-cell *matCellDef="let element" fxShow.gt-sm
+                                                                    (click)="onAdd(element)">
+                                                                    {{element.TestName}}
+                                                                </mat-cell>
+
+                                                            </ng-container>
+
+
+                                                            <ng-container matColumnDef="Add">
+                                                                <mat-header-cell *matHeaderCellDef>
+                                                                    Add
+                                                                </mat-header-cell>
+                                                                <mat-cell *matCellDef="let element" fxShow.gt-sm
+                                                                    style="padding-left:2rem;">
+
+                                                                    <mat-icon (click)="onAdd(element)"
+                                                                        style="cursor:pointer"> add </mat-icon>
+                                                                </mat-cell>
+
+                                                            </ng-container>
+
+
+                                                            <!-- <ng-container matColumnDef="ParameterAction">
                                                             <mat-header-cell *matHeaderCellDef >
                                                                 Add
                                                             </mat-header-cell>
@@ -171,373 +204,269 @@
                                                             </mat-cell>    
 
                                                         </ng-container>  -->
-                                                         
-                                             
 
-                                                        <ng-container matColumnDef="loading">
-                                                            <mat-footer-cell *matFooterCellDef colspan="6">
 
-                                                            </mat-footer-cell>
-                                                        </ng-container>
 
-                                                        <!-- <ng-container matColumnDef="noData">
-                                                            <mat-footer-cell *matFooterCellDef colspan="6">
-                                                              No Parameter found...
-                                                            </mat-footer-cell>
-                                                          </ng-container> -->
+                                                            <ng-container matColumnDef="loading">
+                                                                <mat-footer-cell *matFooterCellDef colspan="6">
 
-                                                        <mat-header-row class="accent"
-                                                            *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                                                        <mat-row *matRowDef="let row; columns: displayedColumns;"
-                                                            class="element"
-                                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                                                </mat-footer-cell>
+                                                            </ng-container>
+                                                            <mat-header-row class="accent"
+                                                                *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                                                            <mat-row *matRowDef="let row; columns: displayedColumns;"
+                                                                class="element"
+                                                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                                        </mat-table>
+                                                    </mat-card>
+                                                </div>
+                                                <mat-divider vertical style="margin: 0px;padding: 5px;"></mat-divider>
+                                                <div fxLayout="column" fxFlex="70%">
+                                                    <mat-card style="height:267px;width: 100%;">
+                                                        <mat-table #table class="table1" matSort
+                                                            [dataSource]="DSTestList" cdkDropList
+                                                            (cdkDropListDropped)="drop($event)">
 
-                                                        <!-- <mat-footer-row *matFooterRowDef="['loading']"
-                                                            [ngClass]="{'hide':paramterList!=null}"></mat-footer-row>
-                                                        <mat-footer-row *matFooterRowDef="['noData']"
-                                                            [ngClass]="{'hide':!(paramterList!=null)}"></mat-footer-row> -->
 
-                                                    </mat-table>
-                                                 <mat-table #table class="table1" matSort *ngIf="isTemplate"
-                                                        [dataSource]="subTestList.data" [@animateStagger]="{value:'50'}"
-                                                        style="overflow:auto; width: 100%;">
-                                                       
-                                                        <ng-container matColumnDef="ParameterName">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                                                Parameter Values        
+                                                            <ng-container matColumnDef="Reorder">
+                                                                <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
+                                                                <mat-cell *matCellDef="let element">
+                                                                    <mat-icon
+                                                                        style="cursor: pointer;">reorder</mat-icon>
 
-                                                            </mat-header-cell>
-                                                            <mat-cell *matCellDef="let element" fxShow.gt-sm  (click) ="onAdd(element)">
-                                                                {{element.TestName}} 
-                                                            </mat-cell>      
+                                                                </mat-cell>
+                                                            </ng-container>
+                                                            <ng-container matColumnDef="ParameterName">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                                    Parameter
+                                                                </mat-header-cell>
+                                                                <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                                                    {{element.ParameterName}}
+                                                                </mat-cell>
+                                                            </ng-container>
 
-                                                       </ng-container>
-                                                        
+                                                            <ng-container matColumnDef="UnitName">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                                    Unit
+                                                                </mat-header-cell>
+                                                                <mat-cell *matCellDef="let element">
+                                                                    Unit
+                                                                </mat-cell>
+                                                            </ng-container>
 
-                                                       <ng-container matColumnDef="Add">
-                                                        <mat-header-cell *matHeaderCellDef >
-                                                            Add
-                                                        </mat-header-cell>
-                                                        <mat-cell *matCellDef="let element" fxShow.gt-sm style="padding-left:2rem;">
-                                                            
-                                                                <mat-icon (click) ="onAdd(element)" style="cursor:pointer"> add </mat-icon> 
-                                                        </mat-cell>    
+                                                            <ng-container matColumnDef="Range">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                                    Range
+                                                                </mat-header-cell>
+                                                                <mat-cell *matCellDef="let element">
+                                                                    Range
+                                                                </mat-cell>
+                                                            </ng-container>
 
-                                                    </ng-container>
-                                                    
-                                                        
-                                                       <!-- <ng-container matColumnDef="ParameterAction">
-                                                            <mat-header-cell *matHeaderCellDef >
-                                                                Add
-                                                            </mat-header-cell>
-                                                            <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                                                <button mat-raised-button style="background-color: blue; color: white;"
-                                                                 (click)="OnAdd(element)">
-                                                                    <mat-icon> arrow </mat-icon> Add
-                                                                  </button>
-                                                            </mat-cell>    
+                                                            <ng-container matColumnDef="Action">
+                                                                <mat-header-cell
+                                                                    *matHeaderCellDef>Action</mat-header-cell>
+                                                                <mat-cell *matCellDef="let element">
+                                                                    <button mat-icon-button color="warn"
+                                                                        (click)="onDeleteRow(element)">
+                                                                        <mat-icon>delete</mat-icon>
+                                                                    </button>
+                                                                </mat-cell>
+                                                            </ng-container>
 
-                                                        </ng-container>  -->
-                                                         
-                                             
 
-                                                        <ng-container matColumnDef="loading">
-                                                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                                            <ng-container matColumnDef="loading">
+                                                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                                                </mat-footer-cell>
+                                                            </ng-container>
 
-                                                            </mat-footer-cell>
-                                                        </ng-container>
+                                                            <ng-container matColumnDef="noData">
+                                                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                                                    Select Parameters...
+                                                                </mat-footer-cell>
+                                                            </ng-container>
 
-                                                        <!-- <ng-container matColumnDef="noData">
-                                                            <mat-footer-cell *matFooterCellDef colspan="6">
-                                                              No Parameter found...
-                                                            </mat-footer-cell>
-                                                          </ng-container> -->
 
-                                                        <mat-header-row class="accent"
-                                                            *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                                                        <mat-row *matRowDef="let row; columns: displayedColumns;"
-                                                            class="element"
-                                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                                            <mat-header-row class="accent"
+                                                                *matHeaderRowDef="displayedColumns2; sticky: true"></mat-header-row>
+                                                            <mat-row *matRowDef="let row; columns: displayedColumns2;"
+                                                                class="element"
+                                                                [@animate]="{value:'*',params:{y:'100%'}}"
+                                                                cdkDrag></mat-row>
+                                                            <mat-footer-row *matFooterRowDef="['loading']"
+                                                                [ngClass]="{'hide':DSTestList!=null}"></mat-footer-row>
+                                                            <!-- <mat-footer-row *matFooterRowDef="['noData']"
+                                                                [ngClass]="{'hide':!(DSTestList!=null && DSTestList.data.length==0)}"></mat-footer-row> -->
+                                                        </mat-table>
 
-                                                        <!-- <mat-footer-row *matFooterRowDef="['loading']"
-                                                            [ngClass]="{'hide':paramterList!=null}"></mat-footer-row>
-                                                        <mat-footer-row *matFooterRowDef="['noData']"
-                                                            [ngClass]="{'hide':!(paramterList!=null)}"></mat-footer-row> -->
+                                                    </mat-card>
+                                                </div>
 
-                                                    </mat-table>
-                                                </mat-card>
                                             </div>
-                                            <mat-divider vertical style="margin: 0px;padding: 5px;"></mat-divider>
-                                            <div fxLayout="column" fxFlex="70%">
-                                                <mat-card style="height:267px;width: 100%;">
-                                                    <mat-table #table class="table1" matSort [dataSource]="DSTestList" cdkDropList (cdkDropListDropped)="drop($event)">
+                                        </ng-template>
 
-                                                        <!-- Header Column Definitions -->
-                                                        <ng-container matColumnDef="Reorder">
-                                                            <mat-header-cell
-                                                                *matHeaderCellDef>#</mat-header-cell>
-                                                            <mat-cell *matCellDef="let element">
-                                                                <mat-icon style="cursor: pointer;">reorder</mat-icon>
+                                        <ng-template [ngIf]="_TestService.is_templatetest">
+                                            <div class="content-card">
+                                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
+                                                    fxLayoutGap="10px">
+                                                    <div fxFlex.gt-sm="100%" fxFlex>
+                                                        <div fxlayout="row" style=" background-color: white;
+                                                         padding: 5px 10px 5px 10px;">
+                                                            <form [formGroup]="_TestService.mytemplateform">
+                                                                <input type="hidden" name="TemplateId"
+                                                                    formControlName="TemplateId">
+                                                                <div fxFlexFill fxLayout="row">
 
-                                                            </mat-cell>
-                                                        </ng-container>
-                                                        <ng-container matColumnDef="ParameterName">
-                                                          <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                                            Parameter
-                                                          </mat-header-cell>
-                                                          <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                                            {{element.ParameterName}}
-                                                          </mat-cell>
-                                                        </ng-container>
-                                                      
-                                                        <ng-container matColumnDef="UnitName">
-                                                          <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                                            Unit
-                                                          </mat-header-cell>
-                                                          <mat-cell *matCellDef="let element">
-                                                            Unit
-                                                           </mat-cell>
-                                                        </ng-container> 
-                                                      
-                                                        <ng-container matColumnDef="Range">
-                                                          <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                                            Range
-                                                          </mat-header-cell>
-                                                          <mat-cell *matCellDef="let element">
-                                                             Range
-                                                           </mat-cell>
-                                                        </ng-container> 
-                                                      
-                                                        <ng-container matColumnDef="Action">
-                                                            <mat-header-cell
-                                                                *matHeaderCellDef>Action</mat-header-cell>
-                                                            <mat-cell *matCellDef="let element">
-                                                                <button mat-icon-button color="warn"
-                                                                    (click)="onDeleteRow(element)">
-                                                                    <mat-icon>delete</mat-icon>
-                                                                </button>
-                                                            </mat-cell>
-                                                        </ng-container>
-                                                      
-                                                        <!-- Footer Rows -->
-                                                        <ng-container matColumnDef="loading">
-                                                          <mat-footer-cell *matFooterCellDef colspan="6">
-                                                          </mat-footer-cell>
-                                                        </ng-container>
-                                                      
-                                                        <ng-container matColumnDef="noData">
-                                                          <mat-footer-cell *matFooterCellDef colspan="6">
-                                                            Select Parameters...
-                                                          </mat-footer-cell>
-                                                        </ng-container>
-                                                      
-                                                        <!-- Header and Footer Row Definitions -->
-                                                        <mat-header-row class="accent" *matHeaderRowDef="displayedColumns2; sticky: true"></mat-header-row>
-                                                        <mat-row *matRowDef="let row; columns: displayedColumns2;" class="element" [@animate]="{value:'*',params:{y:'100%'}}" cdkDrag></mat-row>
-                                                        <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':DSTestList!=null}"></mat-footer-row>
-                                                        <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(DSTestList!=null && DSTestList.data.length==0)}"></mat-footer-row>
-                                                      </mat-table>
-                                                      
-                                                </mat-card>
+                                                                    <mat-form-field appearance="outline">
+                                                                        <mat-label>Template Name</mat-label>
+                                                                        <input matAutocompletePosition="below"
+                                                                            type="text" [(ngModel)]="vTemplateName"
+                                                                            placeholder="Enter Template Name" matInput
+                                                                            formControlName="TemplateName"
+                                                                            [matAutocomplete]="autotemp">
+                                                                        <span matSuffix style="display: flex;">
+                                                                            <mat-icon class="mat-icon-close"
+                                                                                (click)="otherForm.get('TemplateName').setValue(''); isTemplateNameSelected = false;">close</mat-icon>
+                                                                            <mat-icon class="mat-icon-close"
+                                                                                (click)="otherForm.get('TemplateName').setValue(''); isTemplateNameSelected = false;">search</mat-icon>
+                                                                        </span>
+                                                                        <mat-autocomplete #autotemp="matAutocomplete"
+                                                                            [displayWith]="getOptionTextTemplate">
+                                                                            <mat-option
+                                                                                *ngFor="let option of filteredOptionsisTemplate | async"
+                                                                                [value]="option">
+                                                                                {{option.TemplateName}}
+                                                                            </mat-option>
+                                                                        </mat-autocomplete>
+                                                                    </mat-form-field>
+
+                                                                    <button (click)="onAddTemplate()"
+                                                                        class="btn btn-primary btn-with-icon py-8"
+                                                                        style="margin-left: 10px;">
+                                                                        <span class="btn-icon">
+                                                                            <mat-icon> add </mat-icon>
+                                                                        </span>
+                                                                    </button>
+                                                                </div>
+                                                                <div fxFlexFill fxLayout="row">
+                                                                    <mat-table matSort
+                                                                        [dataSource]="Templatetdatasource"
+                                                                        [@animateStagger]="{value:'50'}"
+                                                                        style="overflow:auto; width: 100%;height:380px;">
+
+                                                                        <ng-container matColumnDef="TemplateName">
+                                                                            <mat-header-cell *matHeaderCellDef
+                                                                                mat-sort-header>
+                                                                                TemplateName
+
+                                                                            </mat-header-cell>
+                                                                            <mat-cell *matCellDef="let element"
+                                                                                fxShow.gt-sm>
+                                                                                {{element.TemplateName}}
+                                                                            </mat-cell>
+
+                                                                        </ng-container>
+
+                                                                        <ng-container matColumnDef="Action">
+                                                                            <mat-header-cell
+                                                                                *matHeaderCellDef>Action</mat-header-cell>
+                                                                            <mat-cell *matCellDef="let element">
+                                                                                <button mat-icon-button color="warn"
+                                                                                    (click)="onDeleteTemplateRow(element)">
+                                                                                    <mat-icon>delete</mat-icon>
+                                                                                </button>
+                                                                            </mat-cell>
+                                                                        </ng-container>
+
+                                                                        <ng-container matColumnDef="loading">
+                                                                            <mat-footer-cell *matFooterCellDef
+                                                                                colspan="6">
+
+                                                                            </mat-footer-cell>
+                                                                        </ng-container>
+
+
+                                                                        <mat-header-row class="accent"
+                                                                            *matHeaderRowDef="displayedColumns5; sticky: true"></mat-header-row>
+                                                                        <mat-row
+                                                                            *matRowDef="let row; columns: displayedColumns5;"
+                                                                            class="element"
+                                                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+
+                                                                    </mat-table>
+
+                                                                </div>
+
+
+
+                                                            </form>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
                                             </div>
+                                        </ng-template>
 
-                                      </div>
-                                      </ng-template>
 
-                                      <!-- <ng-template [ngIf]="_TestService.is_subtest">
-                                    <div fxLayout="row"  fxFlex="100%" fxLayoutAlign="6px">
-                                         <div fxLayout="column" fxFlex="30%">
-                                            <mat-card style="height:267px;width: 100%;">
-                                                
-                                               
-                                                 <mat-table #table class="table1" matSort
-                                                        [dataSource]="paramterList" [@animateStagger]="{value:'50'}"
-                                                        style="overflow:auto; width: 100%;">
-                                                       
-                                                        <ng-container matColumnDef="ParameterName">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                                                Parameter Values        
+                                        <hr>
+                                        <section class="example-section"
+                                        style="position: absolute; margin-left:50rem;">
+                                        <mat-radio-group name="Status" formControlName="Status" fxLayout="row">
+                                            <mat-radio-button (click)="toggle(1)" value="1"
+                                                [checked]='_TestService.is_subtest' class="mr-sm-12">Test
+                                            </mat-radio-button>
+                                            <mat-radio-button (click)="toggle(2)" value="2"
+                                            [checked]='_TestService.is_templatetest'  class="mr-sm-12">IsSubTest
+                                            </mat-radio-button>
+                                            <mat-radio-button (click)="toggle(3)" value="3"
+                                                [checked]='_TestService.is_templatetest' class="mr-sm-12">Template
+                                                Formate
+                                            </mat-radio-button>
+                                        </mat-radio-group>
+                                    </section>
 
-                                                            </mat-header-cell>
-                                                            <mat-cell *matCellDef="let element" fxShow.gt-sm  (click) ="onAdd(element)">
-                                                                {{element.ParameterName}} 
-                                                            </mat-cell>      
+                                        <div fxLayout="row" fxLayoutGap="5px" *ngIf="_TestService.is_subtest">
+                                            <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>Technique Name</mat-label>
+                                                <input name="TechniqueName" formControlName="TechniqueName"
+                                                    placeholder="Technique Name" matInput>
+                                                <mat-error>Please enter TechniqueName </mat-error>
+                                            </mat-form-field>
 
-                                                       </ng-container>
-                                                        
+                                            <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>Machine Name</mat-label>
+                                                <input name="MachineName" formControlName="MachineName"
+                                                    placeholder="Machine Name" matInput>
+                                                <mat-error>Please enter MachineName </mat-error>
+                                            </mat-form-field>
 
-                                                       <ng-container matColumnDef="Add">
-                                                        <mat-header-cell *matHeaderCellDef >
-                                                            Add
-                                                        </mat-header-cell>
-                                                        <mat-cell *matCellDef="let element" fxShow.gt-sm style="padding-left:2rem;">
-                                                            
-                                                                <mat-icon (click) ="onAdd(element)" style="cursor:pointer"> add </mat-icon> 
-                                                        </mat-cell>    
 
-                                                    </ng-container> -->
-                                                    
-                                                        
-                                                       <!-- <ng-container matColumnDef="ParameterAction">
-                                                            <mat-header-cell *matHeaderCellDef >
-                                                                Add
-                                                            </mat-header-cell>
-                                                            <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                                                <button mat-raised-button style="background-color: blue; color: white;"
-                                                                 (click)="OnAdd(element)">
-                                                                    <mat-icon> arrow </mat-icon> Add
-                                                                  </button>
-                                                            </mat-cell>    
+                                        </div>
+                                        <div fxLayout="row" fxLayoutGap="5px" *ngIf="_TestService.is_subtest">
+                                            <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>Foot Note</mat-label>
+                                                <textarea name="FootNote" formControlName="FootNote"
+                                                    placeholder="Foot Note" matInput></textarea>
+                                                <mat-error>Please enter FootNote </mat-error>
+                                            </mat-form-field>
 
-                                                        </ng-container>  -->
-                                                         
-                                             
-
-                                                        <!-- <ng-container matColumnDef="loading">
-                                                            <mat-footer-cell *matFooterCellDef colspan="6">
-
-                                                            </mat-footer-cell>
-                                                        </ng-container> -->
-
-                                                        <!-- <ng-container matColumnDef="noData">
-                                                            <mat-footer-cell *matFooterCellDef colspan="6">
-                                                              No Parameter found...
-                                                            </mat-footer-cell>
-                                                          </ng-container> -->
-
-                                                        <!-- <mat-header-row class="accent"
-                                                            *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                                                        <mat-row *matRowDef="let row; columns: displayedColumns;"
-                                                            class="element"
-                                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row> -->
-
-                                                        <!-- <mat-footer-row *matFooterRowDef="['loading']"
-                                                            [ngClass]="{'hide':paramterList!=null}"></mat-footer-row>
-                                                        <mat-footer-row *matFooterRowDef="['noData']"
-                                                            [ngClass]="{'hide':!(paramterList!=null)}"></mat-footer-row> -->
-
-                                                    <!-- </mat-table>
-                                                </mat-card>
-                                            </div>
-                                            <mat-divider vertical style="margin: 0px;padding: 5px;"></mat-divider>
-                                            <div fxLayout="column" fxFlex="70%">
-                                                <mat-card style="height:267px;width: 100%;">
-                                                    <mat-table #table class="table1" matSort [dataSource]="DSTestList" cdkDropList (cdkDropListDropped)="drop($event)"> -->
-
-                                                        <!-- Header Column Definitions -->
-                                                        <!-- <ng-container matColumnDef="Reorder">
-                                                            <mat-header-cell
-                                                                *matHeaderCellDef>#</mat-header-cell>
-                                                            <mat-cell *matCellDef="let element">
-                                                                <mat-icon style="cursor: pointer;">reorder</mat-icon>
-
-                                                            </mat-cell>
-                                                        </ng-container>
-                                                        <ng-container matColumnDef="ParameterName">
-                                                          <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                                            Parameter
-                                                          </mat-header-cell>
-                                                          <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                                            {{element.ParameterName}}
-                                                          </mat-cell>
-                                                        </ng-container>
-                                                      
-                                                        <ng-container matColumnDef="UnitName">
-                                                          <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                                            Unit
-                                                          </mat-header-cell>
-                                                          <mat-cell *matCellDef="let element">
-                                                            Unit
-                                                           </mat-cell>
-                                                        </ng-container> 
-                                                      
-                                                        <ng-container matColumnDef="Range">
-                                                          <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                                            Range
-                                                          </mat-header-cell>
-                                                          <mat-cell *matCellDef="let element">
-                                                             Range
-                                                           </mat-cell>
-                                                        </ng-container> 
-                                                      
-                                                        <ng-container matColumnDef="Action">
-                                                            <mat-header-cell
-                                                                *matHeaderCellDef>Action</mat-header-cell>
-                                                            <mat-cell *matCellDef="let element">
-                                                                <button mat-icon-button color="warn"
-                                                                    (click)="onDeleteRow(element)">
-                                                                    <mat-icon>delete</mat-icon>
-                                                                </button>
-                                                            </mat-cell>
-                                                        </ng-container>
-                                                      
-                                                        Footer Rows -->
-                                                        <!-- <ng-container matColumnDef="loading">
-                                                          <mat-footer-cell *matFooterCellDef colspan="6">
-                                                          </mat-footer-cell>
-                                                        </ng-container>
-                                                      
-                                                        <ng-container matColumnDef="noData">
-                                                          <mat-footer-cell *matFooterCellDef colspan="6">
-                                                            Select Parameters...
-                                                          </mat-footer-cell>
-                                                        </ng-container> -->
-                                                      
-                                                        <!-- Header and Footer Row Definitions -->
-                                                        <!-- <mat-header-row class="accent" *matHeaderRowDef="displayedColumns2; sticky: true"></mat-header-row>
-                                                        <mat-row *matRowDef="let row; columns: displayedColumns2;" class="element" [@animate]="{value:'*',params:{y:'100%'}}" cdkDrag></mat-row>
-                                                        <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':DSTestList!=null}"></mat-footer-row>
-                                                        <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(DSTestList!=null && DSTestList.data.length==0)}"></mat-footer-row>
-                                                      </mat-table>
-                                                      
-                                                </mat-card>
-                                            </div>
-
-                                      </div>
-                                    </ng-template> -->
-                                      <hr>
-                                      <div fxLayout="row"  fxLayoutGap="5px" *ngIf="_TestService.is_subtest" >
-                                                <mat-form-field appearance="outline" fxFlex>
-                                                    <mat-label>Technique Name</mat-label>
-                                                    <input name="TechniqueName" formControlName="TechniqueName"
-                                                        placeholder="Technique Name" matInput>
-                                                    <mat-error>Please enter TechniqueName </mat-error>
-                                                </mat-form-field>
-
-                                                <mat-form-field appearance="outline" fxFlex>
-                                                    <mat-label>Machine Name</mat-label>
-                                                    <input name="MachineName" formControlName="MachineName"
-                                                        placeholder="Machine Name" matInput>
-                                                    <mat-error>Please enter MachineName </mat-error>
-                                                </mat-form-field>
-                                        
-                                      <mat-form-field appearance="outline" fxFlex >
-                                        <mat-label>Foot Note</mat-label>
-                                        <textarea name="FootNote" formControlName="FootNote"
-                                            style="height: 10px;" placeholder="Foot Note"
-                                            matInput></textarea>
-                                        <mat-error>Please enter FootNote </mat-error>
-                                    </mat-form-field>
-
-                                    <mat-form-field appearance="outline" fxFlex>
-                                        <mat-label>Suggestion Note</mat-label>
-                                        <textarea name="SuggestionNote" formControlName="SuggestionNote"
-                                            style="height: 10px;" placeholder="Suggestion Note"
-                                            matInput></textarea>
-                                        <mat-error>Please enter Suggestion Note </mat-error>
-                                    </mat-form-field>
-                                     </div>
-
+                                            <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>Suggestion Note</mat-label>
+                                                <textarea name="SuggestionNote" formControlName="SuggestionNote"
+                                                    placeholder="Suggestion Note" matInput></textarea>
+                                                <mat-error>Please enter Suggestion Note </mat-error>
+                                            </mat-form-field>
+                                        </div>
                                     </div>
                                 </div>
                                 <hr>
                                 <div mat-dialog-actions class="m-0 p-8" fxLayout="row" fxLayoutAlign="end center">
-                                    <div class="button-row">
-                                        <button mat-raised-button color="accent" type="submit" (click)="onSubmit()"
-                                            style="border-radius: 16px;width: 80px; height:40px;"
-                                            [disabled]="_TestService.myform.invalid">Save</button>
-                                        <button mat-raised-button color="warn" (click)="onClear()"
-                                            style="border-radius: 16px;width: 80px; height:40px;">Clear</button>
+
+                                    <div fxLayout="row" fxLayoutAlign="end">
+                                        <div class="modal-footer-buttons" style="padding:2px;">
+                                            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                                            <button class="btn btn-primary" (click)="onSubmit()">Save</button>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -551,4 +480,3 @@
     </div>
 
 </div>
-

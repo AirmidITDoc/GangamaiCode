@@ -1,5 +1,4 @@
-<mat-tab-group style="width: 100%;" #tabGroup fusePerfectScrollbar
-dynamicTableHeight>
+<mat-tab-group style="width: 100%;" #tabGroup fusePerfectScrollbar dynamicTableHeight>
     <mat-tab label="Pathology Test List">
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
@@ -19,8 +18,7 @@ dynamicTableHeight>
                 </div>
 
                 <div fxLayout="row" fxLayoutAlign="start end">
-                    <button mat-raised-button color="pine" (click)="onAdd()"
-                        fxLayoutAlign="center center">
+                    <button mat-raised-button color="pine" (click)="onAdd()" fxLayoutAlign="center center">
                         Add &nbsp;<mat-icon color="Primary" title=" Add New Template ">add_to_photos</mat-icon>
                     </button>
                 </div>
@@ -37,9 +35,10 @@ dynamicTableHeight>
                                         <div class="dialog-content-wrapper">
                                             <mat-form-field class="mr-sm-12" fxFlex>
                                                 <input matInput placeholder="Search --> Test Name" autocomplete="off"
-                                                    name="TestNameSearch" formControlName="TestNameSearch" />
+                                                    (keyup)="onSearch()" name="TestNameSearch"
+                                                    formControlName="TestNameSearch" />
                                                 <button mat-button matSuffix mat-icon-button aria-label="Clear"
-                                                    (click)="onSearch()" >
+                                                    (click)="onSearch()">
                                                     <mat-icon>close</mat-icon>
                                                 </button>
                                             </mat-form-field>
@@ -51,10 +50,10 @@ dynamicTableHeight>
                                                 <mat-radio-button mat-fab value="1">IsDeactive</mat-radio-button>
                                             </mat-radio-group>
 
-                                            <button mat-raised-button (click)="onSearch()"
-                                                fxLayoutAlign="center center">
+
+                                            <button type="button" mat-raised-button class="searchButton"
+                                                (click)="onSearch()" matTooltip="search">
                                                 <mat-icon>search</mat-icon>
-                                                Search
                                             </button>
                                         </div>
                                         <div style="padding: 5px;">
@@ -84,14 +83,17 @@ dynamicTableHeight>
                                         <ng-container matColumnDef="TestName">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200"> TestName
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-200"> {{element.TestName}}
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-200">
+                                                {{element.TestName}}
                                             </mat-cell>
                                         </ng-container>
 
                                         <ng-container matColumnDef="PrintTestName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200"> PrintTestName
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200">
+                                                PrintTestName
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-200"> {{element.PrintTestName}}
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-200">
+                                                {{element.PrintTestName}}
                                             </mat-cell>
                                         </ng-container>
 
@@ -121,16 +123,19 @@ dynamicTableHeight>
                                         </ng-container>
 
                                         <ng-container matColumnDef="SuggestionNote">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200"> SuggestionNote
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200">
+                                                SuggestionNote
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-200"> {{element.SuggestionNote}}
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-200">
+                                                {{element.SuggestionNote}}
                                             </mat-cell>
                                         </ng-container>
 
                                         <ng-container matColumnDef="FootNote">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200"> FootNote
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-200"> {{element.FootNote}}
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-200">
+                                                {{element.FootNote}}
                                             </mat-cell>
                                         </ng-container>
 
@@ -147,14 +152,14 @@ dynamicTableHeight>
                                             </mat-cell>
                                         </ng-container>
 
-                                        <ng-container matColumnDef="IsDeleted">
+                                        <ng-container matColumnDef="Isdeleted">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                                 IsActive
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                <mat-icon *ngIf="!element.IsDeleted"
+                                                <mat-icon *ngIf="element.Isdeleted"
                                                     class="active-icon green-600 s-16">check_circle</mat-icon>
-                                                <mat-icon *ngIf="element.IsDeleted"
+                                                <mat-icon *ngIf="!element.Isdeleted"
                                                     class="active-icon red-500 s-16">close</mat-icon>
                                             </mat-cell>
                                         </ng-container>
@@ -166,7 +171,7 @@ dynamicTableHeight>
                                             <mat-cell *matCellDef="let row">
                                                 <button mat-icon-button (click)="onEdit(row)"><mat-icon
                                                         title="Edit Menu">edit</mat-icon></button>
-                                                <button mat-icon-button (click)="onDeactive(row.TestId)"
+                                                <button mat-icon-button (click)="onDeactive(row,row.TestId)"
                                                     color="warn"><mat-icon>delete_outline</mat-icon></button>
 
                                             </mat-cell>
@@ -224,12 +229,12 @@ dynamicTableHeight>
                         {{_TestService.myform.controls.TestId.value?"Modify Test Master":"New
                         Test Master"}}
                     </span> -->
-                    <!-- <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog"
+    <!-- <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog"
                     style="margin-left: 1300px;">
                     <mat-icon>close</mat-icon>
                 </button> -->
 
-                <!-- </div>
+    <!-- </div>
             </mat-toolbar>
 
             <div class="content">
@@ -298,8 +303,8 @@ dynamicTableHeight>
                                                             <div fxLayout="row">
 
                                                                 <ng-container *ngIf="showDropdown1; else dropdown2"> -->
-                                                                    <!-- Dropdown 1 content goes here -->
-                                                                    <!-- <mat-form-field appearance="outline" fxFlex="50%">
+    <!-- Dropdown 1 content goes here -->
+    <!-- <mat-form-field appearance="outline" fxFlex="50%">
                                                                         <mat-label>Subtest Name</mat-label>
                                                                         <mat-select formControlName="ParameterName"
                                                                             placeholder="Bank" #singleSelect required>
@@ -441,7 +446,7 @@ dynamicTableHeight>
                                                             <mat-error>Please enter Suggestion Note </mat-error>
                                                         </mat-form-field> -->
 
-<!-- 
+    <!-- 
 
                                                         <mat-form-field appearance="outline" fxFlex>
                                                             <mat-label>Service Name</mat-label>
