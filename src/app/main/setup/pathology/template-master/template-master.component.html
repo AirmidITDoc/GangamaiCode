@@ -64,11 +64,11 @@ dynamicTableHeight>
                                 </div>
 
                                 <mat-table matSort [dataSource]="Templatedatasource"
-                                [@animateStagger]="{value:'50'}" style="overflow:auto; width: 100%;">
+                                [@animateStagger]="{value:'50'}">
 
                                 <ng-container matColumnDef="TemplateId">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                        fxShow.gt-sm>Template Id
+                                        fxShow.gt-sm>Template Code
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                         {{element.TemplateId}}
@@ -77,20 +77,14 @@ dynamicTableHeight>
 
 
                                 <ng-container matColumnDef="TemplateName">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header> TemplateName
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Template Name
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxShow.gt-sm>
                                         {{element.TemplateName}}
                                     </mat-cell>
                                 </ng-container>
 
-                                <ng-container matColumnDef="TemplateDesc">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header> TemplateDesc
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                        {{element.TemplateDesc}}
-                                    </mat-cell>
-                                </ng-container>
+                               
 
                                 <ng-container matColumnDef="Isdeleted">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>

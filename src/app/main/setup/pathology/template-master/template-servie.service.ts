@@ -37,7 +37,7 @@ createTemplateForm(): FormGroup {
 
 
 public getTemplateMasterList(param) {
-  return this._httpClient.post( "Generic/GetByProc?procName=Rtrv_TemplateMaster_by_Name",param );
+  return this._httpClient.post( "Generic/GetByProc?procName=m_Rtrv_TemplateMaster_by_Name",param );
 }
 
 

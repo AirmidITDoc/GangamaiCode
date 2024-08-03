@@ -165,7 +165,7 @@ export class UnitmasterComponent implements OnInit {
         }
     }
     onFilterChange(){
-        debugger;
+        ;
         if(this._unitmasterService.currentStatus==1){
             this.tempList.data = []
             for (let item of this.DSUnitmasterList.data) {

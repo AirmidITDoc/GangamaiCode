@@ -80,12 +80,7 @@ export class ResultEntrytwoComponent implements OnInit {
 
    // this.vTemplateDesc= this.selectedAdvanceObj.TemplateDesc;
     }
-    // if (this.advanceDataStored.storage) {
-    //   this.selectedAdvanceObj = this.advanceDataStored.storage;
-    //   console.log( this.selectedAdvanceObj )
-     // this.vTemplateDesc= this.selectedAdvanceObj.TemplateDesc;
     
-    // }
    }
 
   ngOnInit(): void {
@@ -108,7 +103,7 @@ export class ResultEntrytwoComponent implements OnInit {
 
     getTemplatedetailIP() {
       this.sIsLoading = 'loading-data';
-      let SelectQuery = "Select * from lvw_Retrieve_PathologyResultIPPatientUpdate where PathReportId in(" + this.reportIdData + ")"
+      let SelectQuery = "select * from T_PathologyReportTemplateDetails  where PathReportId in(" + this.reportIdData + ")"
       console.log(SelectQuery);
       this._SampleService.getPathologyTemplateforIP(SelectQuery).subscribe(Visit => {
         // this.Pthologyresult = Visit as Pthologyresult[];
@@ -121,7 +116,7 @@ export class ResultEntrytwoComponent implements OnInit {
   
     getTemplatedetailOP() {
       this.sIsLoading = 'loading-data';
-      let SelectQuery = "Select * from lvw_Retrieve_PathologyResultUpdate where PathReportId in(" + this.reportIdData + ")"
+      let SelectQuery = "select * from T_PathologyReportTemplateDetails  where PathReportId in(" + this.reportIdData + ")"
       console.log(SelectQuery)
       this._SampleService.getPathologyTemplateforOP(SelectQuery).subscribe(Visit => {
       // this.Pthologyresult = Visit as Pthologyresult[];
@@ -135,7 +130,7 @@ export class ResultEntrytwoComponent implements OnInit {
 
  
   onSubmit() {
-    debugger
+    
     if ((this.vTemplateName == '' || this.vTemplateName == null || this.vTemplateName == undefined)) {
       this.toastr.warning('Please select valid Template ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -152,7 +147,7 @@ export class ResultEntrytwoComponent implements OnInit {
     let pathologyTemplateDeleteObj = {};
     pathologyTemplateDeleteObj['pathReportId'] = this.selectedAdvanceObj1.PathReportID;
     this.isLoading = 'submit';
-    let Billdetsarr = [];
+    // let pathologyTemplateInsertObjarr = [];
    
      
     let pathologyTemplateInsertObj = {};
@@ -160,8 +155,9 @@ export class ResultEntrytwoComponent implements OnInit {
     pathologyTemplateInsertObj['PathReportId'] = this.selectedAdvanceObj1.PathReportID ;
     pathologyTemplateInsertObj['PathTemplateId']= this.otherForm.get("TemplateName").value.TemplateId || 0;
     pathologyTemplateInsertObj['PathTemplateDetailsResult']= this.otherForm.get("ResultEntry").value,
+    pathologyTemplateInsertObj['TemplateResultInHTML']= this.otherForm.get("ResultEntry").value,
     pathologyTemplateInsertObj['TestId'] = this.selectedAdvanceObj1.PathTestID || 11;
-    Billdetsarr.push(pathologyTemplateInsertObj);
+    // pathologyTemplateInsertObjarr.push(pathologyTemplateInsertObj);
     
     let pathologyTemplateUpdateObj = {};
    
@@ -188,7 +184,7 @@ export class ResultEntrytwoComponent implements OnInit {
           console.log('==============================  Advance Amount ===========');
           let submitData = {
             "deletePathologyReportTemplateDetails": pathologyTemplateDelete,
-            "insertPathologyReportTemplateDetails": Billdetsarr,
+            "insertPathologyReportTemplateDetails": pathologyTemplateInsertObj,
             "updatePathTemplateReportHeader": pathologyTemplateUpdate
           };
         console.log(submitData);
@@ -214,7 +210,7 @@ export class ResultEntrytwoComponent implements OnInit {
 
   
   viewgetPathologyTemplateReportPdf(PathReportID) {
-    debugger
+    
     this._SampleService.getPathologyTempReport(
       PathReportID,this.selectedAdvanceObj1.OPD_IPD_Type
       
@@ -295,7 +291,7 @@ export class ResultEntrytwoComponent implements OnInit {
   }
 
   onAddTemplate(){
-    debugger
+    
     this.vTemplateDesc=this.otherForm.get('TemplateName').value.TemplateDesc || ''
     console.log(this.vTemplateDesc)
 

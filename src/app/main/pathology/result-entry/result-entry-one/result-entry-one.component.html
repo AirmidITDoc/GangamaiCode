@@ -125,7 +125,7 @@
                                     [@animateStagger]="{value:'50'}">
 
                                     <ng-container matColumnDef="TestName" sticky>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="border-right">
                                             TestName
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact">
@@ -134,22 +134,22 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="ParameterName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md class="border-right">
                                             ParameterName
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                             {{contact.ParameterName}}
                                         </mat-cell>
                                     </ng-container>
-
+                                    <!-- Help-Value -DefaultValue-->
                                     <ng-container matColumnDef="ResultValue">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md class="border-right">
                                             Result
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            <mat-form-field appearance="legacy">
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="border-right">
+                                            <mat-form-field appearance="legacy" [ngClass]="{'Result-Formula': contact.Formula !=null}">
                                                 <input matInput autocomplete="off" (keyup)="onResultUp(contact)"
-                                                    (keydown.F2)="onKeydown($event,contact)"
+                                                    (keydown.F2)="onKeydown($event,contact)"  
                                                     [disabled]="contact.Formula" [(ngModel)]="contact.ResultValue">
                                             </mat-form-field>
                                             <button [matMenuTriggerFor]="addMenu" #languageMenuTrigger="matMenuTrigger"
@@ -158,18 +158,18 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="NormalRange">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md class="border-right">
                                             NormalRange
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="border-right" >
                                             {{contact.NormalResult}}
                                         </mat-cell>
                                     </ng-container>
                                     <ng-container matColumnDef="Formula">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md class="border-right">
                                             Formula
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="border-right">
                                             {{contact.Formula}}
                                         </mat-cell>
                                     </ng-container>

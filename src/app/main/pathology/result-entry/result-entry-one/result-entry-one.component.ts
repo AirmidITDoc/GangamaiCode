@@ -108,7 +108,6 @@ export class ResultEntryOneComponent implements OnInit {
             this.OP_IPType = this.selectedAdvanceObj2.OPD_IPD_Type;
             this.reportIdData = [];
 
-
             this.data.RIdData.forEach((element) => {
                 this.reportIdData.push(element.PathReportId)
                 this.ServiceIdData.push(element.ServiceId)
@@ -116,8 +115,6 @@ export class ResultEntryOneComponent implements OnInit {
                     this.Iscompleted = 1;
             });
 
-
-            console.log(this.reportIdData)
         }
 
     }
@@ -131,7 +128,7 @@ export class ResultEntryOneComponent implements OnInit {
         });
 
         this.getPathresultDoctorList();
-       debugger
+       
         if (this.Iscompleted == 1) {
             if (this.OP_IPType == 1)
                 this.getResultListIP();
@@ -308,7 +305,7 @@ export class ResultEntryOneComponent implements OnInit {
         });
 
         this.Pthologyresult.forEach((element) => {
-            debugger
+            
             let pathologyInsertReportObj = {};
             pathologyInsertReportObj['PathReportId'] = element.PathReportId //element1.PathReportId;
             pathologyInsertReportObj['CategoryID'] = element.CategoryID || 0;
@@ -333,7 +330,7 @@ export class ResultEntryOneComponent implements OnInit {
 
         this.data.RIdData.forEach((element) => {
             let pathologyUpdateReportObj = {};
-            debugger
+            
             pathologyUpdateReportObj['PathReportID'] = element.PathReportId// element1.PathReportId;
             pathologyUpdateReportObj['ReportDate'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
                 pathologyUpdateReportObj['ReportTime'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy hh:mm"),

@@ -74,7 +74,7 @@ export class ParameterFormMasterComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        debugger;
+        ;
         this.selectedItems = [];
         this.dsParameterAgeList.data = [];
 
@@ -299,7 +299,7 @@ export class ParameterFormMasterComponent implements OnInit {
             }
         }
         console.log(invalid);
-        debugger
+        
         // if (this._ParameterService.myform.valid) {
         var numeric_info = [];
         var data2 = [];
@@ -368,7 +368,7 @@ export class ParameterFormMasterComponent implements OnInit {
             console.log(m_data);
 
             this._ParameterService.insertParameterMaster(m_data).subscribe((data) => {
-                debugger
+                
                 if (data) {
                     this._ParameterService.myform.reset();
                     // this._ParameterService.myform.get("IsDeleted").setValue(false);

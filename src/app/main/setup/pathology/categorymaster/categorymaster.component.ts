@@ -150,7 +150,7 @@ export class CategorymasterComponent implements OnInit {
         }
     }
     onFilterChange(){
-        debugger;
+        ;
         if(this._categorymasterService.currentStatus==1){
             this.tempList.data = []
             for (let item of this.DSCategoryMasterList.data) {

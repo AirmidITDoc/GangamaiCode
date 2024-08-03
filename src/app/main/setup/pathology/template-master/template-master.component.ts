@@ -22,7 +22,6 @@ export class TemplateMasterComponent implements OnInit {
   displayedColumns: string[] = [
     "TemplateId",
     "TemplateName",
-    "TemplateDesc",
     "Isdeleted",
     "AddedBy",
     "UpdatedBy",
@@ -54,7 +53,7 @@ export class TemplateMasterComponent implements OnInit {
       TemplateName:
         this._TemplateServieService.myformSearch.get("TemplateNameSearch").value + "%" || "%",
     };
-    debugger;
+    ;
     this._TemplateServieService.getTemplateMasterList(m_data).subscribe((Menu) => {
       this.Templatedatasource.data = Menu as TemplateMaster[];
       this.isLoading = false;
@@ -181,7 +180,7 @@ export class TemplateMaster {
   Isdeleted:any;
   AddedBy:any;
   UpdatedBy:any;
-
+  TemplateDescInHTML:any;
   /**
    * Constructor
    *
@@ -195,7 +194,7 @@ export class TemplateMaster {
           this.Isdeleted = TemplateMaster.Isdeleted || 0;
           this.AddedBy = TemplateMaster.AddedBy || 0;
           this.UpdatedBy = TemplateMaster.UpdatedBy || 0;
-          
+          this.TemplateDescInHTML = TemplateMaster.TemplateDescInHTML || '';
       }
   }
 }

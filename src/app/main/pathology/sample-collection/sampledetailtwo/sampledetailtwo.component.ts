@@ -75,7 +75,7 @@ Currentdate:any;
     this.advanceData = data;
     console.log(this.advanceData);
     console.log(new Date())
-    debugger
+    
     let mydate= new Date()
 
     // this.date = mydate.toISOString().slice(0, 19).replace('T', ' ');
@@ -131,7 +131,7 @@ this.date = now.toISOString().slice(0,16);
     
   }
   getSampledetailList() { 
-    debugger
+    
     let OPIP
     if (this.selectedAdvanceObj1.LBL == "IP" || this.selectedAdvanceObj1.Lbl == "IP") {
       OPIP = 1;

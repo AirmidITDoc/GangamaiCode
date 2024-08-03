@@ -83,7 +83,7 @@ export class ParametermasterComponent implements OnInit {
             ParameterName:this._ParameterService.myformSearch.get("ParameterNameSearch").value.trim() + "%" || "%",
             IsDeleted: this._ParameterService.myformSearch.get("IsDeletedSearch").value || 0
         };
-      debugger
+      
         this._ParameterService.getParameterMasterList(m_data).subscribe((Menu) => {
             this.DSParameterList.data = Menu as PathparameterMaster[];
             this.isLoading = false;
@@ -144,7 +144,7 @@ export class ParametermasterComponent implements OnInit {
         };
 
         this._ParameterService.getTableData(row.ParameterID).subscribe((data) => {
-                debugger;
+                ;
             if(row.IsNumericParameter==1){
                 
                 m_data['numericList'] = data;

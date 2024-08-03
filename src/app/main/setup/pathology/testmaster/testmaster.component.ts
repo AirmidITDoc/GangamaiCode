@@ -29,6 +29,7 @@ export class TestmasterComponent implements OnInit {
         "TestName",
         "PrintTestName",
         "CategoryName",
+        "ServiceName",
         "TechniqueName",
         "MachineName",
         "SuggestionNote",
@@ -144,7 +145,7 @@ export class TestmasterComponent implements OnInit {
             });
     }
     getSubTestMasterList() {
-        debugger;
+        ;
         this.sIsLoading = 'loading-data';
         var m_data = {
             ServiceName: this._TestService.myformSearch.get('TestNameSearch').value + "%" || "%"
@@ -317,7 +318,7 @@ export class TestmasterComponent implements OnInit {
     }
     // onSubmit() {
 
-    //     debugger
+    //     
     //     if (!this._TestService.myform.get("TestId").value) {
 
     //         let insertPathologyTestMaster = {};
@@ -449,28 +450,25 @@ export class TestmasterComponent implements OnInit {
     //     }
 
     // }
-   
+
     selectedValue: string = '';
     @ViewChild('tabGroup') tabGroup: MatTabGroup;
 
     onEdit(row) {
-        debugger
+debugger
         if (row.IsNumericParameter == 1) {
-            let SelectQuery = "select * from M_PathTestDetailMaster where TestId=" + row.TestId
-            console.log(SelectQuery);
-            this._TestService.getTestListfor(SelectQuery).subscribe(Visit => {
+            this._TestService.getTestListfor(row.TestId).subscribe(Visit => {
                 row['TestList'] = Visit;
                 console.log(Visit)
-                
+
             });
         } else if (row.IsNumericParameter == 0) {
-            let SelectQuery = "select * from M_PathTemplateDetails where TestId=" + row.TestId
-            console.log(SelectQuery);
-            this._TestService.getTemplateListfor(SelectQuery).subscribe(Visit => {
+
+            this._TestService.getTemplateListfor(row.TestId).subscribe(Visit => {
                 row['descriptiveList'] = Visit;
                 console.log(Visit)
             });
-           
+
         }
 
         this._TestService.populateForm(row);
@@ -579,7 +577,7 @@ export class TemplatedetailList {
     TemplateName: any;
     constructor(TemplateList) {
         {
-            this.TemplateId = TemplateList.TemplateId || "";
+            this.TemplateId = TemplateList.TemplateId || 0;
             this.TemplateName = TemplateList.TemplateName || "";
 
         }

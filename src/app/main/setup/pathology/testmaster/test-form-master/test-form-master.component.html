@@ -87,10 +87,28 @@
                                                 </mat-autocomplete>
                                             </mat-form-field>
                                         </div>
+                                        <div fxLayout="row" fxLayoutGap="5px">
+                                            <section class="example-section"
+                                                style="margin-left: 30%;">
+                                                <mat-radio-group name="Status" formControlName="Status" fxLayout="row">
+                                                    <mat-radio-button (click)="toggle(1)" value="1"
+                                                        [checked]='_TestService.is_Test' class="mr-sm-12">Test
+                                                    </mat-radio-button>
+                                                    <mat-radio-button (click)="toggle(2)" value="2"
+                                                        [checked]='_TestService.is_subtest'
+                                                        class="mr-sm-12">IsSubTest
+                                                    </mat-radio-button>
+                                                    <mat-radio-button (click)="toggle(3)" value="3"
+                                                        [checked]='_TestService.is_templatetest'
+                                                        class="mr-sm-12">Template
+                                                        Formate
+                                                    </mat-radio-button>
+                                                </mat-radio-group>
+                                            </section>
+                                        </div>
 
-
-                                        <div fxLayout="row" style="padding-top:10px">
-                                            <div *ngIf="_TestService.is_subtest">
+                                        <div fxLayout="row" style="padding-top:10px;">
+                                            <div *ngIf="!_TestService.is_templatetest">
                                                 <mat-form-field style="width: 22rem">
                                                     <input matInput placeholder="Search" autocomplete="off"
                                                         name="ParameterNameSearch" (keyup)="onSearch()"
@@ -107,9 +125,9 @@
                                             </div>
 
                                             <!-- [checked]='_TestService.is_subtest' -->
-                                          
+
                                         </div>
-                                        <ng-template [ngIf]="_TestService.is_subtest">
+                                        <ng-template [ngIf]="_TestService.is_subtest || _TestService.is_Test">
 
                                             <div fxLayout="row" fxFlex="100%" fxLayoutAlign="6px">
                                                 <div fxLayout="column" fxFlex="30%">
@@ -317,7 +335,7 @@
                                                                     formControlName="TemplateId">
                                                                 <div fxFlexFill fxLayout="row">
 
-                                                                    <mat-form-field appearance="outline">
+                                                                    <mat-form-field appearance="outline" flex>
                                                                         <mat-label>Template Name</mat-label>
                                                                         <input matAutocompletePosition="below"
                                                                             type="text" [(ngModel)]="vTemplateName"
@@ -347,6 +365,9 @@
                                                                             <mat-icon> add </mat-icon>
                                                                         </span>
                                                                     </button>
+                                                                </div>
+                                                                <div fxFlexFill fxLayout="row">
+
                                                                 </div>
                                                                 <div fxFlexFill fxLayout="row">
                                                                     <mat-table matSort
@@ -409,23 +430,9 @@
 
 
                                         <hr>
-                                        <section class="example-section"
-                                        style="position: absolute; margin-left:50rem;">
-                                        <mat-radio-group name="Status" formControlName="Status" fxLayout="row">
-                                            <mat-radio-button (click)="toggle(1)" value="1"
-                                                [checked]='_TestService.is_subtest' class="mr-sm-12">Test
-                                            </mat-radio-button>
-                                            <mat-radio-button (click)="toggle(2)" value="2"
-                                            [checked]='_TestService.is_templatetest'  class="mr-sm-12">IsSubTest
-                                            </mat-radio-button>
-                                            <mat-radio-button (click)="toggle(3)" value="3"
-                                                [checked]='_TestService.is_templatetest' class="mr-sm-12">Template
-                                                Formate
-                                            </mat-radio-button>
-                                        </mat-radio-group>
-                                    </section>
 
-                                        <div fxLayout="row" fxLayoutGap="5px" *ngIf="_TestService.is_subtest">
+
+                                        <div fxLayout="row" fxLayoutGap="5px" *ngIf="!_TestService.is_templatetest">
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Technique Name</mat-label>
                                                 <input name="TechniqueName" formControlName="TechniqueName"
@@ -442,7 +449,7 @@
 
 
                                         </div>
-                                        <div fxLayout="row" fxLayoutGap="5px" *ngIf="_TestService.is_subtest">
+                                        <div fxLayout="row" fxLayoutGap="5px" *ngIf="!_TestService.is_templatetest">
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Foot Note</mat-label>
                                                 <textarea name="FootNote" formControlName="FootNote"

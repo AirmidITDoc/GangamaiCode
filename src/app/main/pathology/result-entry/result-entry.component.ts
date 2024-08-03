@@ -188,7 +188,7 @@ export class ResultEntryComponent implements OnInit {
   onEdit(m) {
     console.log(m)
     this.reportPrintObj = m
-    debugger
+    
     this.PatientName = m.PatientName;
     this.OPD_IPD = m.OP_IP_No
     this.Age = m.AgeYear
@@ -268,7 +268,7 @@ export class ResultEntryComponent implements OnInit {
   }
   IsTemplateTest: any;
   chkresultentry(contact, flag) {
-    debugger
+    
 
     if (flag)
       this.IsTemplateTest = contact[0]["IsTemplateTest"]
@@ -400,47 +400,6 @@ export class ResultEntryComponent implements OnInit {
 
 
 
-  // for sample detail table to resultentry page
-  // PathTestServiceId:any=0;
-  // onresultentry(m) {
-  //   debugger
-  //   console.log(m);
-
-  //   if (m.IsTemplateTest == 1) {
-  //     this.advanceDataStored.storage = new SampleDetailObj(m);
-  //     const dialogRef = this._matDialog.open(ResultEntrytwoComponent,
-  //       {
-  //         maxWidth: "90%",
-  //         height: '95%',
-  //         width: '100%',
-  //         data: this.reportPrintObj,
-
-  //       });
-
-
-  //     dialogRef.afterClosed().subscribe(result => {
-  //       console.log('Pathology Template  Saved ..', result);
-  //     });
-  //   }
-  //   // else {
-  //   //   this.advanceDataStored.storage = new SampleDetailObj(m);
-  //   //   const dialogRef = this._matDialog.open(ResultEntryOneComponent,
-  //   //     {
-  //   //       maxWidth: "95vw",
-  //   //       height: '670px',
-  //   //       width: '70%',
-  //   //       data: {
-  //   //        data : m
-  //   //       }
-  //   //     });
-  //   //   dialogRef.afterClosed().subscribe(result => {
-  //   //     console.log('PathologyResult Saved ..', result);
-  //   //   });
-  //   // }
-  // }
-
-
-
   Cancleresult(row) {
 
     Swal.fire({
@@ -477,7 +436,7 @@ export class ResultEntryComponent implements OnInit {
 
   getPrint(contact) {
 
-    debugger
+    
     if (contact.IsTemplateTest)
       this.viewgetPathologyTemplateReportPdf(contact)
     else {
@@ -565,7 +524,7 @@ export class ResultEntryComponent implements OnInit {
 
 
   viewgetPathologyTestReportPdf(OPD_IPD_Type) {
-    debugger
+    
     setTimeout(() => {
       this.SpinLoading = true;
       this.AdList = true;

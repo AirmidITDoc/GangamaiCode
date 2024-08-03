@@ -6,7 +6,8 @@ import { FormBuilder, FormGroup } from "@angular/forms";
     providedIn: "root",
 })
 export class TestmasterService {
-    is_subtest = true;
+    is_Test = true;
+    is_subtest = false;
     is_templatetest= false;
     myformSearch: FormGroup;
     myform: FormGroup;
@@ -153,8 +154,8 @@ export class TestmasterService {
         );
     }
     
-    getTemplateCombo(employee) {
-        return this._httpClient.post("Generic/GetByProc?procName=Retrieve_PathTemplateMasterForCombo", employee)
+    getTemplateCombo() {
+        return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PathTemplateMasterForComboMaster", {})
       }
       
 
@@ -174,14 +175,14 @@ export class TestmasterService {
         );
     }
 
-   public getTestListfor(m_data){
-    return this._httpClient.post(
-        "Generic/ExecByQueryStatement?query=" + m_data, {});
-}
-public getTemplateListfor(m_data){
-    return this._httpClient.post(
-        "Generic/ExecByQueryStatement?query=" + m_data, {});
-}
+    getTestListfor(data) {
+        return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PathTestForUpdate",data)
+      }
+
+      getTemplateListfor(data) {
+        return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PathTemplateForUpdate", data)
+      }
+
 
 descriptiveList = [];
 numericList = [];

@@ -172,7 +172,7 @@ export class SampleCollectionComponent implements OnInit {
       "OP_IP_Type": OPIP
     }
   console.log(m_data);
-  // debugger
+  // 
     this._SampleService.getSampleDetailsList(m_data).subscribe(Visit => {
       this.dataSource1.data = Visit as SampleList[];
       console.log(this.dataSource1.data);
