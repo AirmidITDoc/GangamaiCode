@@ -1,12 +1,12 @@
 <div class="simple page-layout inner-scroll inner-sidebar left-sidebar">
     <mat-toolbar class="accent" style="width: 100%;height: 40px;justify-content: space-between;">
         <div fxLayout="row" fxLayoutAlign="start center">
-            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+            <!-- <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
                 <mat-icon>menu</mat-icon>
             </button>
             <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
                 style="color: white;">account_box
-            </mat-icon>
+            </mat-icon> -->
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
                Phlebitis Score
             </span>
@@ -129,7 +129,7 @@
                             </div>
                         </mat-card>
                     </form>
-                    <div fxLayout="column" fxLayoutGap="6px" style="overflow: auto;" fxFlex="420px">
+                    <div fxLayout="column" fxLayoutGap="6px">
                         <div fxFlex="100%" fxFlex>
                             <mat-card style="padding: 5px;">
                                 <mat-table class="h-150px" matSort [dataSource]="datasource" [@animateStagger]="{value:'50'}"
@@ -186,7 +186,7 @@
                                 </mat-table>
                             </mat-card>
                         </div>
-                        <div fxLayout="column" fxLayoutGap="4px">
+                        <div fxLayout="column" fxLayoutGap="2px">
                     
                             <div fxFlexFill fxFlex="100%">
                                 <div FxLayoutAlign="start center">

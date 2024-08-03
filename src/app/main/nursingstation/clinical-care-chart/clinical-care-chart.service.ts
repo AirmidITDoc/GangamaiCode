@@ -160,4 +160,5 @@ export class ClinicalCareChartService {
     public getPatientList(param){
       return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_AdmisionList_NursingList",param);
     }
+  
 }

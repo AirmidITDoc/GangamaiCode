@@ -8,6 +8,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-medication-error',
@@ -17,8 +19,22 @@ import { MatPaginator } from '@angular/material/paginator';
   animations: fuseAnimations
 })
 export class MedicationErrorComponent implements OnInit {
+  displayedColumns: string[] = [
+    'ErrorID',
+    'Added',
+    'ErrorIdList',
+    'AddedDate',
+    'ID',
+    'Date',
+    'Remark'
+  ]
+  displayedColumnsError: string[]=[
+     'Select',
+     'Errors'
+  ]
 
   MyForm:FormGroup;
+  SearchMyForm:FormGroup;
   PatientType:any;
   RefDocName:any;
   DepartmentName:any;
@@ -36,9 +52,16 @@ export class MedicationErrorComponent implements OnInit {
   WardName:any;
   BedNo:any;
   IPDNo:any;
+  isErrorTypeSelected:boolean=false;
+  ErrorTypeListfilteredOptions:Observable<string[]>;
+  vRemark:any;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
+
+  dsMedicationList = new MatTableDataSource
+  dsErrorTypeList = new MatTableDataSource
+
   
   constructor(
     public _formbuilder:FormBuilder,
@@ -51,13 +74,33 @@ export class MedicationErrorComponent implements OnInit {
 
   ngOnInit(): void {
     this.CreateMyForm();
+    this.CreateSearchMyForm();
   }
   CreateMyForm(){
     this.MyForm = this._formbuilder.group({
-
+      ErrorType:[''],
+      Remark:['']
+    });
+  }
+  CreateSearchMyForm(){
+    this.SearchMyForm = this._formbuilder.group({
+      start:[new Date().toISOString()],
+      end:[new Date().toISOString()]
     });
   }
 
+getErrorTypeList(){
+
+}
+  getSelectedObjErrorType(obj){
+
+  }
+  getOptionTextErrorType(option){
+    return option.ErrorType
+  }
+  getMedicationList(){
+
+  } 
   onClose(){
     this._matDialog.closeAll(); 
   }

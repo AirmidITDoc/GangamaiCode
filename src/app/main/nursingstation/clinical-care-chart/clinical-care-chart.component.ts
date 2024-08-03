@@ -22,6 +22,8 @@ import { PrescriptionComponent } from '../prescription/prescription.component';
 import { BedTransferComponent } from 'app/main/ipd/ip-search-list/bed-transfer/bed-transfer.component';
 import { NewPrescriptionComponent } from '../prescription/new-prescription/new-prescription.component';
 import { NewRequestforlabComponent } from '../requestforlabtest/new-requestforlab/new-requestforlab.component';
+import { AdvanceDataStored } from 'app/main/ipd/advance';
+import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
 
 @Component({
   selector: 'app-clinical-care-chart',
@@ -69,6 +71,29 @@ export class ClinicalCareChartComponent implements OnInit {
     'Drange',
     'Action'
   ]
+  displayedOxygen: string[] = [
+    'Date',
+    'Time',
+    'IV',
+    'Infusions',
+    'Boluses',
+    'Peroral',
+    'Perrt',
+    'Perjt',
+    'IntakeOther',
+    'Urine',
+    'Drange',
+    'Action'
+  ]
+  displayedSugar: string[] = [
+    'Date',
+    'Time',
+    'IV',
+    'Infusions',
+    'Boluses',
+    'Peroral', 
+    'Action'
+  ]
   isLoading: String = '';
   sIsLoading: string = ""; 
   WardList:any=[];
@@ -97,7 +122,9 @@ export class ClinicalCareChartComponent implements OnInit {
   dsPainsAssessment =new MatTableDataSource<PainAssesList>();
   dsvitalsList =new MatTableDataSource<VitalsList>();
   dsInputOutTable = new MatTableDataSource<INputOutputList>();
-
+  dsOxygenTable = new MatTableDataSource<INputOutputList>();
+  dsSugarTable = new MatTableDataSource<INputOutputList>();
+  
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('wardpaginator', { static: true }) public wardpaginator: MatPaginator;
   @ViewChild('Outputpaginator', { static: true }) public Outputpaginator: MatPaginator; 
@@ -108,6 +135,7 @@ export class ClinicalCareChartComponent implements OnInit {
     public datePipe: DatePipe,
     public _matDialog: MatDialog,
     public toastr: ToastrService,
+    private advanceDataStored: AdvanceDataStored
   ) { } 
  
   ngOnInit(): void {
@@ -214,6 +242,7 @@ registerObj:any;
     }) 
     return;
    }
+   this.advanceDataStored.storage = new AdmissionPersonlModel(this.registerObj);
     const dialogRef = this._matDialog.open(DoctornoteComponent,
       {
         maxWidth: "100%",
@@ -234,6 +263,7 @@ registerObj:any;
       }) 
       return;
      }
+     this.advanceDataStored.storage = new AdmissionPersonlModel(this.registerObj);
       const dialogRef = this._matDialog.open(NursingnoteComponent,
         {
           maxWidth: "100%",
@@ -251,6 +281,7 @@ registerObj:any;
       }) 
       return;
      }
+     this.advanceDataStored.storage = new AdmissionPersonlModel(this.registerObj);
     const dialogRef = this._matDialog.open(DischargeSummaryComponent,
       {
         maxWidth: "100%",
@@ -268,6 +299,7 @@ getPriscription(){
     }) 
     return;
    }
+   this.advanceDataStored.storage = new AdmissionPersonlModel(this.registerObj);
   const dialogRef = this._matDialog.open(NewPrescriptionComponent,
     {
       maxWidth: "100%",
@@ -285,6 +317,8 @@ getbedTransfer(){
     }) 
     return;
    }
+   this.advanceDataStored.storage = new AdmissionPersonlModel(this.registerObj);
+  //  this._IpSearchListService.populateForm(this.registerObj); 
   const dialogRef = this._matDialog.open(BedTransferComponent,
     {
       maxWidth: "100%",
@@ -295,6 +329,7 @@ getbedTransfer(){
     console.log('The dialog was closed - Insert Action', result); 
   });  
 }
+
 getLabRequest(){ 
   if(this.vRegNo == 0 || this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined){
     this.toastr.warning('Please select Patient','Warning !',{
@@ -302,6 +337,7 @@ getLabRequest(){
     }) 
     return;
    }
+   this.advanceDataStored.storage = new AdmissionPersonlModel(this.registerObj);
   const dialogRef = this._matDialog.open(NewRequestforlabComponent,
     {
       maxWidth: "100%",
@@ -313,7 +349,13 @@ getLabRequest(){
   });  
 }
   getPhlebitis(){
-    //console.log(contact)
+    if(this.vRegNo == 0 || this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined){
+      this.toastr.warning('Please select Patient','Warning !',{
+        toastClass: 'tostr-tost custom-toast-warning',
+      }) 
+      return;
+     }
+    this.advanceDataStored.storage = new AdmissionPersonlModel(this.registerObj);
     const dialogRef = this._matDialog.open(PhlebitisScoreComponent,
       {
         maxWidth: "100%",
@@ -325,7 +367,13 @@ getLabRequest(){
     });
   }
   getMedicationReport(){
-    //console.log(contact)
+    if(this.vRegNo == 0 || this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined){
+      this.toastr.warning('Please select Patient','Warning !',{
+        toastClass: 'tostr-tost custom-toast-warning',
+      }) 
+      return;
+     }
+    this.advanceDataStored.storage = new AdmissionPersonlModel(this.registerObj);
     const dialogRef = this._matDialog.open(MedicationErrorComponent,
       {
         maxWidth: "100%",

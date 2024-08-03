@@ -87,34 +87,28 @@ export class DoctornoteComponent implements OnInit {
     private formBuilder: FormBuilder, 
     public datePipe: DatePipe, 
     public toastr: ToastrService, 
-    public _matDialog: MatDialog, 
-    // @Inject(MAT_DIALOG_DATA) public data: any,
-    // public dialogRef: MatDialogRef<DoctornoteComponent>,
+    public _matDialog: MatDialog,  
   ) { 
-  //    if (this.advanceDataStored.storage) {
-  //   debugger
-  //    this.selectedAdvanceObj = this.advanceDataStored.storage;
-  //    // this.PatientHeaderObj = this.advanceDataStored.storage;
-  //    console.log( this.selectedAdvanceObj)
-  //  } 
+     if (this.advanceDataStored.storage) {
+    debugger
+     this.selectedAdvanceObj = this.advanceDataStored.storage;
+     // this.PatientHeaderObj = this.advanceDataStored.storage;
+     console.log( this.selectedAdvanceObj)
+   } 
   }
 
   
 
-  ngOnInit(): void {  
-    // if(this.data.Obj){
-    //   this.selectedAdvanceObj = this.data.Obj;
-    //   console.log(this.selectedAdvanceObj)
-    //   this.vRegNo = this.selectedAdvanceObj.RegNo;
-    //   this.vPatienName = this.selectedAdvanceObj.PatientName;
-    //   this.vDoctorname = this.selectedAdvanceObj.DoctorName;
-    //   this.vDepartmentName = this.selectedAdvanceObj.DepartmentName;
-    //   this.vAgeyear = this.selectedAdvanceObj.AgeYear;
-    //   this.vAgeMonth = this.selectedAdvanceObj.AgeMonth;
-    //   this.vAgeDay = this.selectedAdvanceObj.AgeDay;
-    //   this.vBedName = this.selectedAdvanceObj.BedName;
-    //   this.vWardName = this.selectedAdvanceObj.RoomName; 
-    // }
+  ngOnInit(): void {     
+      this.vRegNo = this.selectedAdvanceObj.RegNo;
+      this.vPatienName = this.selectedAdvanceObj.PatientName;
+      this.vDoctorname = this.selectedAdvanceObj.DoctorName;
+      this.vDepartmentName = this.selectedAdvanceObj.DepartmentName;
+      this.vAgeyear = this.selectedAdvanceObj.AgeYear;
+      this.vAgeMonth = this.selectedAdvanceObj.AgeMonth;
+      this.vAgeDay = this.selectedAdvanceObj.AgeDay;
+      this.vBedName = this.selectedAdvanceObj.BedName;
+      this.vWardName = this.selectedAdvanceObj.RoomName;  
     this.getDoctorNoteList(); 
     this.getWardNameList();
   }

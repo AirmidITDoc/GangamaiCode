@@ -1,12 +1,12 @@
 <div class="simple page-layout inner-scroll inner-sidebar left-sidebar">
     <mat-toolbar class="accent" style="width: 100%;height: 40px;justify-content: space-between;">
         <div fxLayout="row" fxLayoutAlign="start center">
-            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+            <!-- <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
                 <mat-icon>menu</mat-icon>
             </button>
             <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
                 style="color: white;">account_box
-            </mat-icon>
+            </mat-icon> -->
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
               Medication Error Report
             </span>
@@ -21,124 +21,291 @@
     <div class="content">
         <div class="center p-12 pb-56" style="border-radius: 4px;">
             <div class="content-card">
-                <div fxLayout="row" fxLayout="column" fxFlexFill>
-                    <form [formGroup]="MyForm">
+                <div fxLayout="row" fxLayout="column" fxFlexFill fxLayoutGap="10px">
                         <mat-card style="padding: 6px;">
                             <div class="patient-info-container">
                                 <div class="patient-info-box">
                                     <div class="patient-info-title border-bottom pb-2">
                                         <span class="h2">Patient Information</span>
                                     </div>
-                                    <div class="Ipd-patient-info" fxFlexFill fxLayout="row"
-                                    fxLayoutAlign="space-between center" class="patient-info">
-                                    <div class="patient-sub">
-                                        <div class="patient-info-row patient-info-1-111 pt-8"
-                                            fxLayout="row" fxLayoutAlign="space-between">
-                                            <div fxLayout="column" fxLayoutGap="6px">
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">UHID No
-                                                    </span>
-                                                    <span>:</span>
-                                                    <span
-                                                        class="patient-col-value">{{RegNo}}</span>
+                                    <div class="Ipd-patient-info" fxFlexFill fxLayout="row" fxLayoutAlign="space-between center" class="patient-info">
+                                        <div class="patient-sub">
+                                            <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row" fxLayoutAlign="space-between">
+                                                <div fxLayout="column" fxLayoutGap="6px">
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">UHID No
+                                                        </span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{RegNo}}</span>
+                                                    </div>
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">Patient Name
+                                                        </span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{PatientName}}</span>
+                                                    </div>
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">Doctor Name</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{Doctorname}}</span>
+                                                    </div>
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">Department</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{DepartmentName}}</span>
+                                                    </div>
                                                 </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Patient Name
-                                                    </span>
-                                                    <span>:</span>
-                                                    <span
-                                                        class="patient-col-value">{{PatientName}}</span>
+                                                <div fxLayout="column" fxLayoutGap="6px">
+                                
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">DOA | Time</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{AdmissionDate | date:'dd/MM/YYYY'}}</span>
+                                                    </div>
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">IPD No</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{IPDNo}}</span>
+                                                    </div>
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">Age | Sex
+                                                        </span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{Ageyear}}Y|{{AgeMonth}}M|{{AgeDay}} D | {{GenderName}}</span>
+                                                    </div>
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">Ref-Doctor Name
+                                                        </span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{RefDocName}}</span>
+                                                    </div>
+                                
                                                 </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Doctor Name</span>
-                                                    <span>:</span>
-                                                    <span
-                                                        class="patient-col-value">{{Doctorname}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Department</span>
-                                                    <span>:</span>
-                                                    <span
-                                                        class="patient-col-value">{{DepartmentName}}</span>
-                                                </div>
-                                            </div>
-                                            <div fxLayout="column" fxLayoutGap="6px">
-
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">DOA | Time</span>
-                                                    <span>:</span>
-                                                    <span
-                                                        class="patient-col-value">{{AdmissionDate | date:'dd/MM/YYYY'}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">IPD No</span>
-                                                    <span>:</span>
-                                                    <span
-                                                        class="patient-col-value">{{IPDNo}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Age | Sex
-                                                    </span>
-                                                    <span>:</span>
-                                                    <span
-                                                        class="patient-col-value">{{Ageyear}}Y|{{AgeMonth}}M|{{AgeDay}} D | {{GenderName}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Ref-Doctor Name
-                                                    </span>
-                                                    <span>:</span>
-                                                    <span
-                                                        class="patient-col-value">{{RefDocName}}</span>
-                                                </div>
-
-                                            </div>
-                                            <div fxLayout="column" fxLayoutGap="6px">
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Ward | Bed Name
-                                                    </span>
-                                                    <span>:</span>
-                                                    <span
-                                                        class="patient-col-value">{{WardName}}
-                                                        | {{BedNo}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Patient Type
-                                                    </span>
-                                                    <span>:</span>
-                                                    <span
-                                                        class="patient-col-value">{{PatientType}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Tarrif Name
-                                                    </span>
-                                                    <span>:</span>
-                                                    <span
-                                                        class="patient-col-value">{{Tarrifname}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Company Name</span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value"
-                                                        style="color: orange;">{{CompanyName}}</span>
+                                                <div fxLayout="column" fxLayoutGap="6px">
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">Ward | Bed Name
+                                                        </span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{WardName}}
+                                                            | {{BedNo}}</span>
+                                                    </div>
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">Patient Type
+                                                        </span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{PatientType}}</span>
+                                                    </div>
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">Tarrif Name
+                                                        </span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{Tarrifname}}</span>
+                                                    </div>
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">Company Name</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value" style="color: orange;">{{CompanyName}}</span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                </div>
                             </div>
                         </mat-card>
-                    </form>
-                    2222222222222222
-                    2
-                    2
-                    2
-                    2
 
-                    2
-                    22
+                    <div fxLayout="row" fxLayoutALign="start center" fxLayoutGap="10px">
+                        <div fxFlex="60%" fxFlexFill>
+                            <mat-card style="padding: 5px;"> 
+                                <div fxLayout="column" fxLayoutALign="start center" fxLayoutGap="4px">
+                                    <form [formGroup]="SearchMyForm">
+                                        <div fxLayout="row" fxLayoutAlign="start none" fxLayoutGap="10px">
+                                            <mat-form-field appearance="outline" fxFlex="40%">
+                                                <mat-label>Enter a date range</mat-label>
+                                                <mat-date-range-input [rangePicker]="picker">
+                                                    <input matStartDate formControlName="start" placeholder="Start date">
+                                                    <input matEndDate formControlName="end" placeholder="End date"
+                                                        (dateChange)='getMedicationList()'>
+                                                </mat-date-range-input>
+                                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                                <mat-date-range-picker #picker></mat-date-range-picker>
+                                            </mat-form-field>
+                            
+                                            <div style="padding: 10px;">
+                                                <button mat-raised-button class="searchButton" (click)="getMedicationList()" matTooltip="search">
+                                                    <mat-icon class="searchiconbutton">search</mat-icon>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <div fxLayout="column"> 
+                                        <div class="table-header">
+                                            <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+                                                <div class="table-header-title">
+                                                    <span class="h3 font-weight-600">Medication List</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <mat-table matSort [dataSource]="dsMedicationList" [@animateStagger]="{value:'50'}"
+                                            style="overflow: auto;height:310px;">
+                                            <ng-container matColumnDef="ErrorID">
+                            
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-100">
+                                                    ErrorID </mat-header-cell>
+                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-100">
+                                                    {{element.ErrorID}} </mat-cell>
+                                            </ng-container>
+                            
+                                            <ng-container matColumnDef="Added">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                    AddedUpdatedBy </mat-header-cell>
+                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                    {{element.AddedUpdatedBy}} </mat-cell>
+                                            </ng-container>
+                            
+                                            <ng-container matColumnDef="ErrorIdList">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                    ErrorIdList </mat-header-cell>
+                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                    {{element.ErrorIdList}} </mat-cell>
+                                            </ng-container> 
+                                            
+                                            <ng-container matColumnDef="AddedDate">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                    AddedUpdatedDate </mat-header-cell>
+                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                    {{element.AddedUpdatedDate}} </mat-cell>
+                                            </ng-container>
+                            
+                                            <ng-container matColumnDef="ID">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                    ID </mat-header-cell>
+                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                    {{element.ID}} </mat-cell>
+                                            </ng-container>
 
-                    22
+                                            <ng-container matColumnDef="Date">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                    Date </mat-header-cell>
+                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                    {{element.Date}} </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="Remark">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                    Remark </mat-header-cell>
+                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                    {{element.Remark}} </mat-cell>
+                                            </ng-container>
+                            
+                                            <ng-container matColumnDef="loading">
+                                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                                </mat-header-cell>
+                                            </ng-container>
+                            
+                                            <ng-container matColumnDef="noData">
+                                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                                    no data found...
+                                                </mat-footer-cell>
+                                            </ng-container>
+                            
+                                            <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+                                            </mat-header-row>
+                                            <mat-row *matRowDef="let row; columns: displayedColumns;"
+                                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                            <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                            </mat-footer-row>
+                                            <mat-footer-row *matFooterRowDef="['noData']"
+                                                [ngClass]="{'hide':!(dsMedicationList!=null && dsMedicationList.data.length==0)}">
+                                            </mat-footer-row>
+                                        </mat-table> 
+                                        <mat-paginator #paginator [pageSizeOptions]="[15, 24, 35, 100]"
+                                        [pageSize]="15"  >
+                                    </mat-paginator>
+                                    </div>
+                                </div>
+                            </mat-card>
+                        </div>
+
+                        <div fxFlex="40%" fxFlexFill fxLayout="column">
+                         
+                                <form [formGroup]="MyForm">
+                                    <div fxLayout="column" fxLayoutALign="start center" fxLayoutGap="6px">
+                                        <mat-card style="padding: 5px;">
+                                            <div fxLayout="column" fxLayoutGap="2px"> 
+                                            <mat-form-field appearance="outline" fxFlex="40%">
+                                                <input type="text" name="ErrorType" formControlName="ErrorType" placeholder="search Error Type" matInput
+                                                    [matAutocomplete]="autoErrorType" required>
+                                                <span matSuffix style="display: flex;">
+                                                    <mat-icon class="mat-icon-close"
+                                                        (click)="MyForm.get('ErrorType').setValue(''); isErrorTypeSelected = false;">close</mat-icon>
+                                                    <mat-icon class="mat-icon-close"
+                                                        (click)="MyForm.get('ErrorType').setValue(''); isErrorTypeSelected = false;">search</mat-icon>
+                                                </span>
+                                                <mat-autocomplete #autoErrorType="matAutocomplete" [displayWith]="getOptionTextErrorType"
+                                                    (optionSelected)='getSelectedObjErrorType($event.option.value)'>
+                                                    <mat-option *ngFor="let option of ErrorTypeListfilteredOptions | async" [value]="option">
+                                                        <!-- {{option.WardName}} -->
+                                                    </mat-option>
+                                                </mat-autocomplete>
+                                            </mat-form-field>
+                                        
+                                            <mat-table  matSort [dataSource]="dsErrorTypeList" [@animateStagger]="{value:'50'}"
+                                                style="overflow: auto;height:270px;">
+                                                <ng-container matColumnDef="Select">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-100">
+                                                        Select </mat-header-cell>
+                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-100">
+                                                        {{element.Select}} </mat-cell>
+                                                </ng-container>
+                                        
+                                                <ng-container matColumnDef="Errors">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                        Errors </mat-header-cell>
+                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                        {{element.Errors}} </mat-cell>
+                                                </ng-container>
+                                        
+                                                <ng-container matColumnDef="loading">
+                                                    <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                                    </mat-header-cell>
+                                                </ng-container>
+                                        
+                                                <ng-container matColumnDef="noData">
+                                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                                        no data found...
+                                                    </mat-footer-cell>
+                                                </ng-container>
+                                        
+                                                <mat-header-row class="accent" *matHeaderRowDef="displayedColumnsError; sticky: true">
+                                                </mat-header-row>
+                                                <mat-row *matRowDef="let row; columns: displayedColumnsError;"
+                                                    [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                                <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                                </mat-footer-row>
+                                                <mat-footer-row *matFooterRowDef="['noData']"
+                                                    [ngClass]="{'hide':!(dsErrorTypeList!=null && dsErrorTypeList.data.length==0)}">
+                                                </mat-footer-row>
+                                            </mat-table>
+                                            
+                                        </div>
+                                        </mat-card>
+                                        <mat-form-field appearance="outline" fxFlex="50%">
+                                            <mat-label>Remark</mat-label>
+                                            <input matInput name="Remark" formControlName="Remark" [(ngModel)]="vRemark">
+                                        </mat-form-field>
+                                    </div>  
+                                </form>
+                                <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="end" style="padding: 5;">  
+                                    <button class="btn btn-danger-outline" type="button" value="Input">Close</button> 
+                                    <button class="btn btn-primary"  
+                                    type="submit" value="submit">Save</button> 
+                                </div> 
+                        </div>
+
+                     
+                    </div>
+                       
                 </div>
             </div>
         </div> 
