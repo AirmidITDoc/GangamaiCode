@@ -3,6 +3,7 @@ import { RegInsert } from './appointment.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Subject } from 'rxjs';
+import { LoaderService } from 'app/core/components/loader/loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,7 @@ export class AppointmentSreviceService {
   now = Date.now();
   sIsLoading: string = '';
   constructor(public _httpClient: HttpClient,
+    private _loaderService: LoaderService,
     private _formBuilder: FormBuilder
   ) {
     this.myFilterform = this.filterForm();
@@ -159,17 +161,27 @@ export class AppointmentSreviceService {
 }
 
   // Add new Appointment
-  public appointregInsert(employee) {
+  public appointregInsert(employee, loader = true) {
+    if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.post("OutPatient/AppointmentInsert", employee);
 }
 
   // Update  registration
-  public appointregupdate(employee) {
+  public appointregupdate(employee, loader = true) {
+    if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.post("OutPatient/AppointmentVisitUpdate", employee);
 }
   
-public Appointmentcancle(employee) {
-  return this._httpClient.post("OutPatient/AppointmentCancle", employee);
+public Appointmentcancle(employee, loader = true) {
+
+    if (loader) {
+        this._loaderService.show();
+    }
+    return this._httpClient.post("OutPatient/AppointmentCancle", employee);
 }
 public documentuploadInsert(employee){
   return this._httpClient.post("InPatient/DocAttachment", employee);
@@ -185,11 +197,17 @@ public documentdownloadInsert(employee){
   return this._httpClient.post("File/UploadFile", employee);
 }
   // display Appointment list
-  public getAppointmentList(employee) {
+  public getAppointmentList(employee, loader = true) {
+    if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetDataSetByProc?procName=m_Rtrv_VisitDetailsList_1_Pagi", employee)
   }
 
-  public getAppointmentListold(employee) {
+  public getAppointmentListold(employee, loader = true) {
+    if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetDataSetByProc?procName=m_Rtvr_VisitDetailsList_1", employee)
   }
 
@@ -321,7 +339,10 @@ public documentdownloadInsert(employee){
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientVisitedListSearch", employee)
   }
   //registration list 
-  public getPhoneAppointmentList1(employee) {
+  public getPhoneAppointmentList1(employee, loader = true) {
+    if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PhoneAppointmentListSearch", employee)
   }
   getuploadeddocumentsList(query){
@@ -359,7 +380,10 @@ public documentdownloadInsert(employee){
   public getTemplate(query) {
     return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
   } 
-  public getOPDPrecriptionPrint(VisitId) {
+  public getOPDPrecriptionPrint(VisitId, loader = true) {
+    if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=rptAppointmentPrint1", VisitId)
   }
   
@@ -377,7 +401,10 @@ public documentdownloadInsert(employee){
       return this._httpClient.post("OutPatient/OPDCrossConsultationInsert",element)
     }
 
-    public getAppointmentReport(VisitId){
+    public getAppointmentReport(VisitId, loader = true){
+        if (loader) {
+            this._loaderService.show();
+        }
       return this._httpClient.get("OutPatient/view-PatientAppointment?VisitId=" + VisitId);
     }
     public getDoctorMasterNew() {

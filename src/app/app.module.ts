@@ -23,7 +23,7 @@ import { fuseConfig } from 'app/fuse-config';
 
 import { FakeDbService } from "app/fake-db/fake-db.service";
 import { AppComponent } from 'app/app.component';
-import { LayoutModule } from 'app/layout/layout.module';
+
 import { JwtInterceptor } from "./core/jwt.interceptor";
 // import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { SpinnerInterceptor } from "./core/spinner.interceptor";
@@ -38,6 +38,9 @@ import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { SharedModule } from './main/shared/shared.module';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BandwidthService } from './core/services/bandwidth.service';
+import { LoaderModule } from "./core/components/loader/loader.module";
+import { LayoutModule } from './layout/layout.module';
+
 
 const appRoutes: Routes = [
     {
@@ -179,39 +182,37 @@ class PickDateAdapter extends NativeDateAdapter {
         InternetConnectionComponent,
     ],
     imports: [
-        BrowserModule,
-        AppConfigModule,
-        BrowserAnimationsModule,
-        HttpClientModule,
-        RouterModule.forRoot(appRoutes),
-
-        TranslateModule.forRoot(),
-        MatMomentDateModule,
-        MatDatepickerModule,
-        MatNativeDateModule,
-        // Material
-        MatButtonModule,
-        MatIconModule,
-        MatSnackBarModule,
-
-        // Fuse modules
-        FuseModule.forRoot(fuseConfig),
-        FuseProgressBarModule,
-        FuseSharedModule,
-        FuseSidebarModule,
-        FuseThemeOptionsModule,
-        SharedModule,
-        // App modules
-        LayoutModule,NgxExtendedPdfViewerModule,
-        ToastrModule.forRoot({timeOut: 5000,
-          positionClass: 'toast-bottom-right',
-          preventDuplicates: true,
-          progressBar: true,
-          progressAnimation: 'increasing',
-        })
-
-
-    ],
+    BrowserModule,
+    AppConfigModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
+    RouterModule.forRoot(appRoutes),
+    TranslateModule.forRoot(),
+    MatMomentDateModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    // Material
+    MatButtonModule,
+    MatIconModule,
+    MatSnackBarModule,
+    // Fuse modules
+    FuseModule.forRoot(fuseConfig),
+    FuseProgressBarModule,
+    FuseSharedModule,
+    FuseSidebarModule,
+    FuseThemeOptionsModule,
+    SharedModule,
+    // App modules
+    LayoutModule, 
+    NgxExtendedPdfViewerModule,
+    ToastrModule.forRoot({ timeOut: 5000,
+        positionClass: 'toast-bottom-right',
+        preventDuplicates: true,
+        progressBar: true,
+        progressAnimation: 'increasing',
+    }),
+    LoaderModule
+],
     providers: [
 
         BandwidthService,

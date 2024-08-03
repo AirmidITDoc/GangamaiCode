@@ -2,7 +2,7 @@
 <app-internet-connection *ngIf="isOffLine" [isLoading]="isLoading" [isOffLine]="isOffLine"></app-internet-connection>
 <fuse-progress-bar></fuse-progress-bar>
 <!-- / PROGRESS BAR -->
-
+<app-loader></app-loader>
 <!-- VERTICAL LAYOUT 1 -->
 <ng-container *ngIf="fuseConfig.layout.style === 'vertical-layout-1'">
     <!-- <div class="vertical-layout-1"> -->
