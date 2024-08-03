@@ -126,6 +126,95 @@
                 -webkit-animation: right-wobble 1.3125s cubic-bezier(0.35, 0, 0.25, 1) infinite;
             }
 
+            /* spinner-load-wrapper */
+            .spinner-load-wrapper {
+                /* display: block;
+                position: relative; */
+                width: 100%;
+                height: 100%;
+                opacity: 0.7;
+                text-align: center;
+                display: block;
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                /* background-color: #2D323D; */
+                background-color: #2D323D;
+                z-index: 99999;
+                pointer-events: none;
+            }
+
+            .spinner-load-wrapper .spinner {
+                position: absolute;
+                overflow: hidden;
+                left: 50%;
+                top: 50%;
+                margin-left: -50px;
+                animation: outer-rotate 2.91667s linear infinite;
+            }
+
+            .spinner-load-wrapper .spinner .inner {
+                width: 100px;
+                height: 100px;
+                position: relative;
+                animation: sporadic-rotate 5.25s cubic-bezier(0.35, 0, 0.25, 1) infinite;
+            }
+
+            .spinner-load-wrapper .spinner .inner .gap {
+                position: absolute;
+                left: 49px;
+                right: 49px;
+                top: 0;
+                bottom: 0;
+                border-top: 10px solid;
+                box-sizing: border-box;
+            }
+
+            .spinner-load-wrapper .spinner .inner .left,
+            .spinner-load-wrapper .spinner .inner .right {
+                position: absolute;
+                top: 0;
+                height: 100px;
+                width: 50px;
+                overflow: hidden;
+            }
+
+            .spinner-load-wrapper .spinner .inner .left .half-circle,
+            .spinner-load-wrapper .spinner .inner .right .half-circle {
+                position: absolute;
+                top: 0;
+                width: 100px;
+                height: 100px;
+                box-sizing: border-box;
+                border: 10px solid #4285F4;
+                border-bottom-color: transparent;
+                border-radius: 50%;
+            }
+
+            .spinner-load-wrapper .spinner .inner .left {
+                left: 0;
+            }
+
+            .spinner-load-wrapper .spinner .inner .left .half-circle {
+                left: 0;
+                border-right-color: transparent;
+                animation: left-wobble 1.3125s cubic-bezier(0.35, 0, 0.25, 1) infinite;
+                -webkit-animation: left-wobble 1.3125s cubic-bezier(0.35, 0, 0.25, 1) infinite;
+            }
+
+            .spinner-load-wrapper .spinner .inner .right {
+                right: 0;
+            }
+
+            .spinner-load-wrapper .spinner .inner .right .half-circle {
+                right: 0;
+                border-left-color: transparent;
+                animation: right-wobble 1.3125s cubic-bezier(0.35, 0, 0.25, 1) infinite;
+                -webkit-animation: right-wobble 1.3125s cubic-bezier(0.35, 0, 0.25, 1) infinite;
+            }
+
             @keyframes outer-rotate {
                 0% {
                     transform: rotate(0deg) scale(0.5);
