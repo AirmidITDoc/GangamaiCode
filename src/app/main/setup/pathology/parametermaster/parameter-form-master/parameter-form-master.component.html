@@ -14,7 +14,7 @@
                 Parameter Master"}}
             </span>
             <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog"
-                style="margin-left: 760px;">
+                style="margin-left: 920px;">
                 <mat-icon>close</mat-icon>
             </button>
 
@@ -110,22 +110,15 @@
                                             <mat-error>Please Select Unit Name </mat-error>
                                         </mat-form-field> -->
 
-
-                                        <mat-form-field appearance="outline" style="padding-right: 10px;" fxFlex="50%">
-                                            <mat-label>Unit Name</mat-label>
-                                            <input matAutocompletePosition="below" type="text"
-                                                placeholder="Select Unit Type" [(ngModel)]="UnitId" required matInput
-                                                formControlName="UnitId" [matAutocomplete]="autoUnitId">
+                                        <mat-form-field appearance="outline" fxFlex="50%">
+                                            <mat-label>UnitName</mat-label>
+                                            <input matAutocompletePosition="below" type="text" placeholder="Select UnitName" matInput  formControlName="UnitId" [matAutocomplete]="autoUnitId" required>
                                             <span matSuffix style="display: flex;">
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="_ParameterService.myform.get('UnitId').setValue(''); isunitSelected = false;">close</mat-icon>
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="_ParameterService.myform.get('UnitId').setValue(''); isunitSelected = false;">search</mat-icon>
+                                                <mat-icon class="mat-icon-close" (click)="_ParameterService.myform.get('UnitId').setValue(''); isunitSelected = false;">close</mat-icon>
+                                                <mat-icon class="mat-icon-close" (click)="_ParameterService.myform.get('UnitId').setValue(''); isunitSelected = false;">search</mat-icon>
                                             </span>
-                                            <mat-autocomplete #autoUnitId="matAutocomplete"
-                                                [displayWith]="getOptionTextUnit">
-                                                <mat-option *ngFor="let option of filteredOptionsUnit | async"
-                                                    [value]="option">
+                                            <mat-autocomplete #autoUnitId="matAutocomplete" [displayWith]="getOptionTextUnit">
+                                                <mat-option *ngFor="let option of filteredOptionsUnit | async" [value]="option">
                                                     {{option.UnitName}}
                                                 </mat-option>
                                             </mat-autocomplete>
@@ -343,22 +336,28 @@
                                                                     matInput>
                                                             </mat-form-field>
                                                            
-
                                                             <mat-form-field appearance="outline" class="mr-sm-12"
+                                                            fxFlex="90%"  style="margin-left: 2%;">
+                                                            <mat-label>Parameter</mat-label>
+                                                            <input name="DefaultValue" placeholder="Enter DefaultValue"
+                                                                [(ngModel)]="DefaultValue" formControlName="DefaultValue"
+                                                                matInput>
+                                                         </mat-form-field>
+
+
+
+                                                            <!-- <mat-form-field appearance="outline" class="mr-sm-12"
                                                                 style="margin-left: 2%;">
                                                                 <textarea name="DefaultValue" matInput rows="1" [(ngModel)]="DefaultValue"
                                                                     cols="150" placeholder="Enter Default Value"
                                                                     formControlName="DefaultValue" matInput>
                                                               </textarea>
-                                                                <!-- <span class="error"
-                                                                    *ngIf="f.DefaultValue.invalid && f.DefaultValue.touched">DefaultValue
-                                                                    required Enter only Alphabets</span> -->
-                                                            </mat-form-field>
-                                                          
+                                                              </mat-form-field>
+                                                           -->
                                                              <!-- [disabled]="DefaultValue ! ==" "" -->
                                                              <div matTooltip="Select All Value to enable this button!!">
                                                                 <button mat-raised-button class="custom_add_button"
-                                                                     (click)="AddData(DefaultValue)"> Add
+                                                                     (click)="AddData(ParaId)"> Add
                                                                     <mat-icon> add_to_photos </mat-icon>
                                                                 </button>
                                                             </div>

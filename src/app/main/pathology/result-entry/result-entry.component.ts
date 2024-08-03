@@ -334,6 +334,7 @@ export class ResultEntryComponent implements OnInit {
         console.log('Pathology Template  Saved ..', result);
       });
     }
+    this.getPatientsList()
     // this.selection.clear();
   }
 
@@ -475,6 +476,8 @@ export class ResultEntryComponent implements OnInit {
 
 
   getPrint(contact) {
+
+    debugger
     if (contact.IsTemplateTest)
       this.viewgetPathologyTemplateReportPdf(contact)
     else {
@@ -576,7 +579,7 @@ export class ResultEntryComponent implements OnInit {
             width: '100%',
             data: {
               base64: res["base64"] as string,
-              title: "pathology Test  Viewer"
+              title: "pathology Test Report Viewer"
             }
           });
         dialogRef.afterClosed().subscribe(result => {

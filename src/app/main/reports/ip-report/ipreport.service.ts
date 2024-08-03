@@ -21,7 +21,7 @@ export class IPReportService {
         RequestId:'',
         PaymentId:'',
         MaterialConsumptionId:'',
-        WardId:'',
+        RoomId:'',
         CompanyId:''
         // Radio:['1']
 
@@ -38,13 +38,21 @@ export class IPReportService {
   public getDoctorList(){
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo",{})
   }
- 
-  
+  public getCompanyCombo() {
+    return this._httpClient.post("Generic/GetByProc?procName=RetrieveCompanyMasterForCombo", {})
+  }
+  public getWardCombo() {
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RoomMasterForCombo", {})
+  }
 public getAdmittedPatientListView(FromDate,ToDate,DoctorId,WardId){
   
-  return this._httpClient.get("InPatient/view-Admitted_PatientList?FromDate=" + FromDate+"&ToDate="+ToDate+"&DoctorId="+DoctorId+"&WardId="+WardId);
+  return this._httpClient.get("IPReport/view-IPDAdmissionList?FromDate=" + FromDate+"&ToDate="+ToDate+"&DoctorId="+DoctorId+"&WardId="+WardId);
 }
+
+  public getCurrentAdmittedPatientListView(DoctorId,WardId,CompanyId){
   
+  return this._httpClient.get("InPatient/view-Admitted_PatientList?DoctorId=" + DoctorId +"&WardId="+WardId+"&CompanyId="+CompanyId);
+}
 public getAdmittedPatientListCompanywiseView(FromDate,ToDate){
   
   return this._httpClient.get("IPReport/view-CompanyWiseAdmissionCountDetail?FromDate=" + FromDate+"&ToDate="+ToDate);

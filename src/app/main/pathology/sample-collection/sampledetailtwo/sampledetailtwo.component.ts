@@ -126,6 +126,7 @@ this.date = now.toISOString().slice(0,16);
         }
       }
       this.samplelist.push(element);
+      console.log();
     }
     
   }
@@ -167,11 +168,11 @@ this.date = now.toISOString().slice(0,16);
 
     let updatesamcollection = []; 
 
-    this.samplelist.forEach((element) => {
+   this.selection.selected.forEach((element) => {
       console.log(element);
       let UpdateAddSampleDetailsObj = {};
       UpdateAddSampleDetailsObj['PathReportID'] = element.PathReportID,
-        UpdateAddSampleDetailsObj['SampleDateTime'] = this._SampleService.sampldetailform.get('SampleDateTime').value || ''
+        UpdateAddSampleDetailsObj['SampleDateTime'] = this._SampleService.sampldetailform.get('SampleDateTime').value || '01/01/1900'
       UpdateAddSampleDetailsObj['IsSampleCollection'] = 1;// this.datePipe.transform(this._SampleService.sampldetailform.get('SampleDateTime').value, "MM-dd-yyyy"),//  
       UpdateAddSampleDetailsObj['No'] = element.SampleNo || 0;
       updatesamcollection.push(UpdateAddSampleDetailsObj);
@@ -206,7 +207,7 @@ this.date = now.toISOString().slice(0,16);
         ? this.selection.clear()
         : this.dataSource.data.forEach(row => this.selection.select(row));
     }
-
+    console.log(this.selection)
     this.samplelist.push(this.selection);
   }
 
@@ -236,6 +237,7 @@ export class SampleList {
   IsSampleCollection: boolean;
   SampleCollectionTime: Date;
   PathReportID: any; 
+  SampleNo:any;
 
   constructor(SampleList) {
     this.VADate = SampleList.VADate || '';
@@ -245,5 +247,6 @@ export class SampleList {
     this.IsSampleCollection = SampleList.IsSampleCollection || 0;
     this.SampleCollectionTime = SampleList.SampleCollectionTime || '';
     this.PathReportID = SampleList.PathReportID || 0; 
+    this.SampleNo = SampleList.SampleNo || 0; 
   } 
 }

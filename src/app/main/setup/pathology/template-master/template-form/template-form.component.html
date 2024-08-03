@@ -1,0 +1,80 @@
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+    <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                {{_TemplateServieService.myform.controls.TemplateId.value?"Modify Template Master":"New
+                Template Master"}}
+            </span>
+            <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog"
+                style="margin-left: 920px;">
+                <mat-icon>close</mat-icon>
+            </button>
+          
+        </div>
+    </mat-toolbar>
+
+    <div class="content">
+        <div class="center p-24 pb-56" fusePerfectScrollbar>
+            <div class="content-card">
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                    <div fxFlex.gt-sm="100%" fxFlex>
+                        <div fxlayout="row" style=" background-color: white;
+                         padding: 5px 10px 5px 10px;">
+                            <form [formGroup]="_TemplateServieService.myform">
+                                <input type="hidden" name="TemplateId" formControlName="TemplateId">
+
+                                <div class="dialog-content-wrapper">
+                                    <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column">
+
+                                        <mat-form-field appearance="outline" fxFlex="40%">
+                                            <mat-label>Template Name</mat-label>
+                                            <input matInput placeholder="Template Name"
+                                                [(ngModel)]="vTemplateName" name="TemplateName"
+                                                formControlName="TemplateName" required>
+                                            <mat-error>Please enter TestName </mat-error>
+                                        </mat-form-field>
+
+                                        <div>
+                                         
+                                            <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
+                                                style="height:800px !important;" [(ngModel)]="vTemplateDesc"
+                                                required  formControlName="TemplateDesc"></angular-editor>
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+                               
+                                <!-- [disabled]="_TemplateServieService.myform.invalid" -->
+                                <div mat-dialog-actions class="m-0 p-16" fxLayout="row"
+                                    fxLayoutAlign="end center">
+
+                                    <div fxLayout="row" fxLayoutAlign="end">
+                                        <mat-radio-button value='true' [checked]="true" name="IsDeleted"
+                                            formControlName="IsDeleted">IsActive</mat-radio-button>
+                                        <div class="modal-footer-buttons" style="padding:2px;">
+                                            <button class="btn btn-danger-outline"
+                                                (click)="onClear()">Clear</button>
+                                            <button class="btn btn-primary" (click)="onSubmit()"
+                                               >Save</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

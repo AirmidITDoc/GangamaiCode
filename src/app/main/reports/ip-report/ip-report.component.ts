@@ -42,13 +42,18 @@ export class IpReportComponent implements OnInit {
   FlagAdmissionIdSelected: boolean = false;
   FlagAdvanceIdSelected: boolean = false;
   FlagRequestIdSelected: boolean = false;
-
+  FlagWardSelected : boolean = false;
+  FlagCompanySelected : boolean = false;
   FlagPaymentIdSelected: boolean = false;
   FlagMaterialConsumptionIdSelected: boolean = false;
   FlagWardIdSelected: boolean = false;
   FlagCompanyIdSelected: boolean = false;
 
 
+  isWardSelected: boolean = false;
+  isCompanyselected: boolean = false;
+  filteredOptionsWard: Observable<string[]>;
+  filteredOptionsCompany: Observable<string[]>;
   optionsUser: any[] = [];
   optionsPaymentMode: any[] = [];
   PaymentMode: any;
@@ -64,6 +69,10 @@ export class IpReportComponent implements OnInit {
   IsLoading: boolean = false;
   searchDoctorList: any = [];
   optionsSearchDoc: any[] = [];
+  WardList:any=[];
+  optionsWard: any[] = [];
+  optionsCompany: any[] = [];
+  CompanyList: any =[];
 
 
   displayedColumns = [
@@ -100,6 +109,8 @@ export class IpReportComponent implements OnInit {
   
     
     this.GetUserList();
+    this.getWardList();
+    this.getCompanyList();
     this.getDoctorList();
     const toSelect = this.UserList.find(c => c.UserId == this.UserId);
     this._IPReportService.userForm.get('UserId').setValue(toSelect);
@@ -171,10 +182,12 @@ var data={
 
     }
     else if (this.ReportName == 'IPD Current Admitted List') {
-      
+      debugger
       this.FlagAdmissionIdSelected=false
       this.FlagUserSelected = false;
-      this.FlagDoctorSelected = false;
+      this.FlagDoctorSelected = true;
+      this.FlagWardSelected = true;
+      this.FlagCompanySelected = true;
       this.FlagAdvanceIdSelected = false;
       this.FlagRequestIdSelected = false;
       this.FlagPaymentIdSelected = false;
@@ -438,24 +451,14 @@ var data={
 
   if (this.ReportName == 'Advance Report') {
     this.FlagUserSelected = false;
-    // this.FlagDoctorSelected = false;
-    // this.FlagAdvanceDetailIDSelected=true;
-    // this.FlagBillSelected=false;
-    // this.FlagRefundIdSelected=false;
+   
 
   } else if (this.ReportName == 'IP Bill Report') {
     this.FlagUserSelected = false;
-    // this.FlagDoctorSelected = false;
-    // this.FlagAdvanceDetailIDSelected=false;
-    // this.FlagBillSelected=false;
-    // this.FlagRefundIdSelected=false;
+   
   }else if (this.ReportName == 'OP IP Bill Summary') {
     this.FlagUserSelected = false;
-    // this.FlagDoctorSelected = false;
-    // this.FlagAdvanceDetailIDSelected=false;
-    // this.FlagBillSelected=false;
-    // this.FlagRefundIdSelected=false;
-
+   
   }  else if (this.ReportName == 'Bill Summary Report') {
     this.FlagUserSelected = true;
     // this.FlagDoctorSelected = false;
@@ -508,9 +511,59 @@ var data={
   }
 
 
+  getWardList() {
+    this._IPReportService.getWardCombo().subscribe(data => {
+      this.WardList = data;
+      this.optionsWard = this.WardList.slice();
+      this.filteredOptionsWard = this._IPReportService.userForm.get('RoomId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterWard(value) : this.WardList.slice()),
+      );
+
+    });
+  }
+  private _filterWard(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.RoomName ? value.RoomName.toLowerCase() : value.toLowerCase();
+      return this.optionsWard.filter(option => option.RoomName.toLowerCase().includes(filterValue));
+    }
+
+  }
+
+  getOptionTextCompany(option) {
+    return option && option.CompanyName ? option.CompanyName : '';
+  }
+  getOptionTextWard(option) {
+    return option && option.RoomName ? option.RoomName : '';
+  }
+
+
   getOptionTextUser(option) {
     return option && option.UserName ? option.UserName : '';
   }
+
+
+  getCompanyList() {
+    this._IPReportService.getCompanyCombo().subscribe(data => {
+      this.CompanyList = data;
+      this.optionsCompany = this.CompanyList.slice();
+      this.filteredOptionsCompany =this._IPReportService.userForm.get('CompanyId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterCompany(value) : this.CompanyList.slice()),
+      );
+
+    });
+  }
+
+
+  private _filterCompany(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.CompanyName ? value.CompanyName.toLowerCase() : value.toLowerCase();
+      return this.optionsCompany.filter(option => option.CompanyName.toLowerCase().includes(filterValue));
+    }
+
+  }
+
 
   getOptionTextPaymentMode(option) {
     this.PaymentMode = option.PaymentMode;
@@ -545,7 +598,7 @@ var data={
   }
 
   getOptionTextsearchDoctor(option) {
-    return option && option.DoctorName ? option.DoctorName : '';
+    return option && option.Doctorname ? option.Doctorname : '';
   }
 
   getDoctorList() {
@@ -913,14 +966,24 @@ viewgetIPAdvanceReportPdf() {
 
 
   viewgetCurrentadmittedReportPdf(){
+    debugger
+
+    let DoctorId = 0;
+    if (this._IPReportService.userForm.get('DoctorId').value)
+      DoctorId = this._IPReportService.userForm.get('UserId').value.DoctorId
+    let RoomId = 0;
+    if (this._IPReportService.userForm.get('RoomId').value)
+      RoomId =  this._IPReportService.userForm.get('RoomId').value.RoomId
+    let CompanyId = 0;
+    if (this._IPReportService.userForm.get('CompanyId').value)
+      CompanyId = this._IPReportService.userForm.get('CompanyId').value.CompanyId
+
+
     setTimeout(() => {
       this.SpinLoading =true;
       this.AdList=true;
-     this._IPReportService.getAdmittedPatientListView(
-      
-       this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-       this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-       0,0,
+     this._IPReportService.getCurrentAdmittedPatientListView(
+      DoctorId,RoomId,CompanyId
        ).subscribe(res => {
        const matDialog = this._matDialog.open(PdfviewerComponent,
          {
@@ -1990,7 +2053,6 @@ viewIPDailyCollectionPdf() {
 
   let AddUserId = 0;
   if (this._IPReportService.userForm.get('UserId').value)
-    
   AddUserId = this._IPReportService.userForm.get('UserId').value.UserId
 
   setTimeout(() => {

@@ -7,10 +7,11 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 })
 export class TestmasterService {
     is_subtest = true;
+    is_templatetest= false;
     myformSearch: FormGroup;
     myform: FormGroup;
     AddParameterFrom: FormGroup;
-
+    mytemplateform: FormGroup;
     constructor(
         private _httpClient: HttpClient,
         private _formBuilder: FormBuilder
@@ -18,6 +19,7 @@ export class TestmasterService {
         this.myformSearch = this.createSearchForm();
         this.myform = this.createPathtestForm();
         this.AddParameterFrom = this.createAddparaFrom();
+        this.mytemplateform = this.createTemplateForm();
     }
 
     createPathtestForm(): FormGroup {
@@ -46,6 +48,7 @@ export class TestmasterService {
             parametertxt: [""],
             PTemplateId: [""],
             IsSubTest: ["true"],
+            Status:[1]
         });
     }
 
@@ -62,7 +65,15 @@ export class TestmasterService {
             NewIsSubTest: [" "],
         });
     }
-
+    createTemplateForm(): FormGroup {
+        return this._formBuilder.group({
+          
+            TemplateId:[""],
+            TemplateName:[""],
+          
+        });
+      }
+      
     initializeFormGroup() {
         this.createPathtestForm();
     }
@@ -142,9 +153,12 @@ export class TestmasterService {
         );
     }
     
+    getTemplateCombo(employee) {
+        return this._httpClient.post("Generic/GetByProc?procName=Retrieve_PathTemplateMasterForCombo", employee)
+      }
+      
 
-
-    // Insert Perfix Master
+    // Insert  Master
     public insertPathologyTestMaster(param) {
         return this._httpClient.post(
             "PathologyMaster/PathologyTestMasterSave",
@@ -152,7 +166,7 @@ export class TestmasterService {
         );
     }
 
-    // Update Perfix Master
+    // Update  Master
     public updatePathologyTestMaster(param) {
         return this._httpClient.post(
             "PathologyMaster/PathologyTestMasterUpdate",
@@ -160,8 +174,23 @@ export class TestmasterService {
         );
     }
 
+   public getTestListfor(m_data){
+    return this._httpClient.post(
+        "Generic/ExecByQueryStatement?query=" + m_data, {});
+}
+public getTemplateListfor(m_data){
+    return this._httpClient.post(
+        "Generic/ExecByQueryStatement?query=" + m_data, {});
+}
+
+descriptiveList = [];
+numericList = [];
+
     populateForm(param) {
         debugger;
         this.myform.patchValue(param);
+       
+        this.numericList = param.TestList;
+        this.descriptiveList = param.descriptiveList;
     }
 }

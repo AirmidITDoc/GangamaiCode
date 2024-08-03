@@ -8,6 +8,7 @@ import { fuseAnimations } from "@fuse/animations";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { ParamteragewiseService } from "./paramteragewise.service";
 import { ParamteragewiseformComponent } from "./paramteragewiseform/paramteragewiseform.component";
+import Swal from "sweetalert2";
  
 @Component({
     selector: "app-paramteragewise",
@@ -29,7 +30,7 @@ export class ParamteragewiseComponent implements OnInit {
         // "MethodName",
         //"ParaMultipleRange",
         "AddedBy",
-        "IsDeleted",
+        "Isdeleted",
         "action",
     ];
 
@@ -96,28 +97,33 @@ export class ParamteragewiseComponent implements OnInit {
     }
 
 
-    onDeactive(ParameterID) {
-        this.confirmDialogRef = this._matDialog.open(
-            FuseConfirmDialogComponent,
-            {
-                disableClose: false,
-            }
-        );
-        this.confirmDialogRef.componentInstance.confirmMessage =
-            "Are you sure you want to deactive?";
-        this.confirmDialogRef.afterClosed().subscribe((result) => {
-            if (result) {
-                let Query =
+    onDeactive(row,ParameterID) {
+       
+        Swal.fire({
+            title: 'Do you want to Change Active Status Paramter',
+             showCancelButton: true,
+            confirmButtonText: 'OK',
+      
+          }).then((flag) => {
+            let Query ;
+            if (flag.isConfirmed) {
+                if(row.Isdeleted){
+                 Query =
                 "Update M_PathParameterMaster set Isdeleted=0 where ParameterID=" +
                     ParameterID;
                 console.log(Query);
+                }else{
+                     Query =
+                    "Update M_PathParameterMaster set Isdeleted=1 where ParameterID=" +
+                        ParameterID;
+                    console.log(Query);
+                }
                 this._ParameterageService.deactivateTheStatus(Query)
                     .subscribe((data) => (this.msg = data));
                 this.getParameterMasterList();
             }
-            this.confirmDialogRef = null;
-        });
-        this.getParameterMasterList();
+          });
+
     }
 
     onEdit1(row) {
@@ -231,7 +237,7 @@ export class PathparameterMaster {
     PrintParameterName: string;
     UnitId: number;
     IsNumeric: Number;
-    IsDeleted: boolean;
+    Isdeleted: boolean;
     AddedBy: number;
     UpdatedBy: number;
     IsPrintDisSummary: boolean;
@@ -252,7 +258,7 @@ export class PathparameterMaster {
             this.PrintParameterName =PathparameterMaster.PrintParameterName || "";
             this.UnitId = PathparameterMaster.UnitId || "";
             this.IsNumeric = PathparameterMaster.IsNumeric || "false";
-            this.IsDeleted = PathparameterMaster.IsDeleted || "false";
+            this.Isdeleted = PathparameterMaster.Isdeleted || "false";
             this.AddedBy = PathparameterMaster.AddedBy || "";
             this.UpdatedBy = PathparameterMaster.UpdatedBy || "";
             this.IsPrintDisSummary = PathparameterMaster.IsPrintDisSummary || "false";

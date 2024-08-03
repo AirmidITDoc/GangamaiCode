@@ -1,0 +1,293 @@
+<div class="simple page-layout inner-scroll inner-sidebar left-sidebar">
+    <mat-toolbar class="accent" style="width: 100%;height: 40px;justify-content: space-between;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+               Phlebitis Score
+            </span>
+        </div>
+        <div class="close-icon">
+            <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+
+    <div class="content">
+        <div class="center p-12 pb-56" style="border-radius: 4px;">
+            <div class="content-card" >
+                <div fxLayout="row" fxLayout="column" fxFlexFill fxLayoutGap="6px">
+                    <form [formGroup]="MyForm">
+                        <mat-card style="padding: 6px;">
+                            <div class="patient-info-container">
+                                <div class="patient-info-box">
+                                    <div class="patient-info-title border-bottom pb-2">
+                                        <span class="h2">Patient Information</span>
+                                    </div>
+                                    <div class="Ipd-patient-info" fxFlexFill fxLayout="row"
+                                    fxLayoutAlign="space-between center" class="patient-info">
+                                    <div class="patient-sub">
+                                        <div class="patient-info-row patient-info-1-111 pt-8"
+                                            fxLayout="row" fxLayoutAlign="space-between">
+                                            <div fxLayout="column" fxLayoutGap="6px">
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">UHID No
+                                                    </span>
+                                                    <span>:</span>
+                                                    <span
+                                                        class="patient-col-value">{{RegNo}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Patient Name
+                                                    </span>
+                                                    <span>:</span>
+                                                    <span
+                                                        class="patient-col-value">{{PatientName}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Doctor Name</span>
+                                                    <span>:</span>
+                                                    <span
+                                                        class="patient-col-value">{{Doctorname}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Department</span>
+                                                    <span>:</span>
+                                                    <span
+                                                        class="patient-col-value">{{DepartmentName}}</span>
+                                                </div>
+                                            </div>
+                                            <div fxLayout="column" fxLayoutGap="6px">
+
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">DOA | Time</span>
+                                                    <span>:</span>
+                                                    <span
+                                                        class="patient-col-value">{{AdmissionDate | date:'dd/MM/YYYY'}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">IPD No</span>
+                                                    <span>:</span>
+                                                    <span
+                                                        class="patient-col-value">{{IPDNo}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Age | Sex
+                                                    </span>
+                                                    <span>:</span>
+                                                    <span
+                                                        class="patient-col-value">{{Ageyear}}Y|{{AgeMonth}}M|{{AgeDay}} D | {{GenderName}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Ref-Doctor Name
+                                                    </span>
+                                                    <span>:</span>
+                                                    <span
+                                                        class="patient-col-value">{{RefDocName}}</span>
+                                                </div>
+
+                                            </div>
+                                            <div fxLayout="column" fxLayoutGap="6px">
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Ward | Bed Name
+                                                    </span>
+                                                    <span>:</span>
+                                                    <span
+                                                        class="patient-col-value">{{WardName}}
+                                                        | {{BedNo}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Patient Type
+                                                    </span>
+                                                    <span>:</span>
+                                                    <span
+                                                        class="patient-col-value">{{PatientType}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Tarrif Name
+                                                    </span>
+                                                    <span>:</span>
+                                                    <span
+                                                        class="patient-col-value">{{Tarrifname}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Company Name</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value"
+                                                        style="color: orange;">{{CompanyName}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </mat-card>
+                    </form>
+                    <div fxLayout="column" fxLayoutGap="6px" style="overflow: auto;" fxFlex="420px">
+                        <div fxFlex="100%" fxFlex>
+                            <mat-card style="padding: 5px;">
+                                <mat-table class="h-150px" matSort [dataSource]="datasource" [@animateStagger]="{value:'50'}"
+                                    style="overflow: auto;">
+                                    <ng-container matColumnDef="patientId">
+                    
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-100">
+                                            Bed No </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-100">
+                                            {{element.BedName}} </mat-cell>
+                                    </ng-container>
+                    
+                                    <ng-container matColumnDef="RegNo">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                            RegNo </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            {{element.RegNo}} </mat-cell>
+                                    </ng-container>
+                    
+                                    <ng-container matColumnDef="PatientName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                            PatientName </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            {{element.PatientName}} </mat-cell>
+                                    </ng-container>
+                    
+                                    <ng-container matColumnDef="MobileNo">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                            MobileNo </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            {{element.MobileNo}} </mat-cell>
+                                    </ng-container>
+                    
+                                    <ng-container matColumnDef="loading">
+                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                        </mat-header-cell>
+                                    </ng-container>
+                    
+                                    <ng-container matColumnDef="noData">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            no data found...
+                                        </mat-footer-cell>
+                                    </ng-container>
+                    
+                                    <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+                                    </mat-header-row>
+                                    <mat-row *matRowDef="let row; columns: displayedColumns;"
+                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                    <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                    </mat-footer-row>
+                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                        [ngClass]="{'hide':!(datasource!=null && datasource.data.length==0)}">
+                                    </mat-footer-row>
+                                </mat-table>
+                            </mat-card>
+                        </div>
+                        <div fxLayout="column" fxLayoutGap="4px">
+                    
+                            <div fxFlexFill fxFlex="100%">
+                                <div FxLayoutAlign="start center">
+                                    <span>VIP</span>
+                                </div>
+                                <fieldset style="border: 1px solid black;height: 75px;padding: 0px 0px 0px 10px;">
+                                    <legend>IV site appears healty</legend>
+                                    <mat-checkbox name="IVsiteAppears" formControlName="IVsiteAppears">
+                                        IV site appears healty</mat-checkbox>
+                                </fieldset>
+                            </div>
+                            <div fxFlexFill fxFlex="100%">
+                                <fieldset style="border: 1px solid black;height: 75px;padding: 0px 0px 0px 10px;" fxLayoutGap="15px">
+                                    <legend>One of the following signs are evident and extensive</legend>
+                                    <mat-checkbox name="OneIVsitePain" formControlName="OneIVsitePain">
+                                        Slight pain near IV site OR
+                                    </mat-checkbox>
+                                    <mat-checkbox name="OneIVsiteRedness" formControlName="OneIVsiteRedness">
+                                        Slight redness near IV site OR
+                                    </mat-checkbox>
+                                </fieldset>
+                            </div>
+                            <div fxFlexFill fxFlex="100%">
+                                <fieldset style="border: 1px solid black;height: 75px;padding: 0px 0px 0px 10px;" fxLayoutGap="15px">
+                                    <legend>Two of the following signs are evident and extensive</legend>
+                                    <mat-checkbox name="TwoIVsitePain" formControlName="TwoIVsitePain">
+                                        Pain at IV site
+                                    </mat-checkbox>
+                                    <mat-checkbox name="TwoIVsiteRedness" formControlName="TwoIVsiteRedness">
+                                        Redness
+                                    </mat-checkbox>
+                                    <mat-checkbox name="TwoIVsiteSwelling" formControlName="TwoIVsiteSwelling">
+                                        Swelling
+                                    </mat-checkbox>
+                                </fieldset>
+                            </div>
+                            <div fxFlexFill fxFlex="100%">
+                                <fieldset style="border: 1px solid black;height: 75px;padding: 0px 0px 0px 10px;" fxLayoutGap="15px">
+                                    <legend>All of the following signs are evident</legend>
+                                    <mat-checkbox name="AllIVsitePain" formControlName="AllIVsitePain">
+                                        Pain along path of cannule
+                                    </mat-checkbox>
+                                    <mat-checkbox name="AllIVsiteRedness" formControlName="AllIVsiteRedness">
+                                        Redness around site
+                                    </mat-checkbox>
+                                    <mat-checkbox name="AllIVsiteSwelling" formControlName="AllIVsiteSwelling">
+                                        Swelling
+                                    </mat-checkbox>
+                                </fieldset>
+                            </div>
+                            <div fxFlexFill fxFlex="100%">
+                                <fieldset style="border: 1px solid black;height: 75px;" fxLayoutGap="15px">
+                                    <legend>All of the following signs are evident and extensive</legend>
+                                    <mat-checkbox name="AllIVsitePainExt" formControlName="AllIVsitePainExt">
+                                        Pain along path of cannule
+                                    </mat-checkbox>
+                                    <mat-checkbox name="AllIVsiteRednessExt" formControlName="AllIVsiteRednessExt">
+                                        Redness around site
+                                    </mat-checkbox>
+                                    <mat-checkbox name="AllIVsiteSwellingExt" formControlName="AllIVsiteSwellingExt">
+                                        Swelling
+                                    </mat-checkbox>
+                                    <mat-checkbox name="AllIVsitePheleExt" formControlName="AllIVsitePheleExt">
+                                        Pheleble venous cord
+                                    </mat-checkbox>
+                                </fieldset>
+                            </div>
+                            <div fxFlexFill fxFlex="100%">
+                                <fieldset style="border: 1px solid black;height: 75px;" fxLayoutGap="15px">
+                                    <legend>All of the following signs are evident and extensive</legend>
+                                    <mat-checkbox name="AllIVsitePain" formControlName="AllIVsitePainExt1">
+                                        Pain along path of cannule
+                                    </mat-checkbox>
+                                    <mat-checkbox name="AllIVsiteRednessExt1" formControlName="AllIVsiteRednessExt1">
+                                        Redness around site
+                                    </mat-checkbox>
+                                    <mat-checkbox name="AllIVsiteSwellingExt1" formControlName="AllIVsiteSwellingExt1">
+                                        Swelling
+                                    </mat-checkbox>
+                                    <mat-checkbox name="AllIVsitePhleExt1" formControlName="AllIVsitePhleExt1">
+                                        Pheleble venous cord
+                                    </mat-checkbox>
+                                    <mat-checkbox name="AllIVsitePyrexExt1" formControlName="AllIVsitePyrexExt1">
+                                        Pyrexi
+                                    </mat-checkbox>
+                                </fieldset>
+                            </div>
+                    
+                        </div>
+                    
+                    </div>
+                    <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="end" style="padding: 5;">  
+                        <button class="btn btn-danger-outline" type="button" value="Input">Close</button> 
+                        <button class="btn btn-primary"  
+                        type="submit" value="submit">Save</button> 
+                    </div> 
+                </div>
+
+               
+
+            </div>
+        </div> 
+    </div>
+</div>

@@ -35,7 +35,11 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatStepperModule } from '@angular/material/stepper';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-import { ClinicalCareChartComponent } from './clinical-care-chart.component';
+import { ClinicalCareChartComponent } from './clinical-care-chart.component';  
+import { MatSliderModule } from '@angular/material/slider'; 
+import { FormsModule } from '@angular/forms';
+import { PhlebitisScoreComponent } from './phlebitis-score/phlebitis-score.component';
+import { MedicationErrorComponent } from './medication-error/medication-error.component'; 
 
 const routes: Routes = [
   {
@@ -47,7 +51,9 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    ClinicalCareChartComponent
+    ClinicalCareChartComponent,
+    PhlebitisScoreComponent,
+    MedicationErrorComponent
   ],
   imports: [    
         RouterModule.forChild(routes),
@@ -88,7 +94,9 @@ const routes: Routes = [
         NgxMatSelectSearchModule,
         MatDatepickerModule,
         //  NgMultiSelectDropDownModule.forRoot(),
-         MatTooltipModule
+         MatTooltipModule, 
+         MatSliderModule, 
+         FormsModule
   ],
   providers: [
     DatePipe,

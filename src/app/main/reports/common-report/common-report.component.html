@@ -81,7 +81,7 @@
 
                     </div>
 
-                    <div  fxlayout="column" style="width: 50%;">
+                    <div fxlayout="column" style="width: 50%;">
 
                         <div class="dialog-content-wrapper" style="width: 100%;">
                             <!-- ================================ LABEL HEADER  -->
@@ -90,11 +90,12 @@
                                 <div>
                                     <span
                                         style="font-family: 'Times New Roman', Times, serif;font-size: medium;color: rgb(3, 29, 79);padding: 10px;">Selected
-                                        Report :<span style="font-weight: bold;">{{ReportName}}</span>  |</span>
+                                        Report :<span style="font-weight: bold;">{{ReportName}}</span> |</span>
 
                                     <span
                                         style="font-family: 'Times New Roman', Times, serif;font-size: medium;color: rgb(3, 29, 79);float: right;">Current
-                                        User : <span style="font-weight:bold ;"> {{UserId}} | {{UserName}} </span></span>
+                                        User : <span style="font-weight:bold ;"> {{UserId}} | {{UserName}}
+                                        </span></span>
                                 </div>
                                 <br />
                                 <div fxLayout="row" fxLayoutAlign="start none">
@@ -123,7 +124,8 @@
                                                 <mat-icon class="mat-icon-close"
                                                     (click)="_OPReportsService.userForm.get('UserId').setValue(''); isUserSelected = false;">search</mat-icon>
                                             </span>
-                                            <mat-autocomplete #autoUser="matAutocomplete"  (optionSelected)='getSelectedObj($event.option.value)'
+                                            <mat-autocomplete #autoUser="matAutocomplete"
+                                                (optionSelected)='getSelectedObj($event.option.value)'
                                                 [displayWith]="getOptionTextUser">
                                                 <mat-option *ngFor="let option of filteredOptionsUser | async"
                                                     [value]="option" (onSelectionChange)="userChk(option)">
@@ -131,33 +133,14 @@
                                                 </mat-option>
                                             </mat-autocomplete>
                                         </mat-form-field>
+                                    </div>
 
-                                        <!-- <mat-form-field appearance="outline" *ngIf="FlagVisitSelected" style="margin-left:2%;">
-                                            <mat-label>Visit Id</mat-label>
-                                            <input name="VisitId" formControlName="VisitId" placeholder="Visit Id"
-                                                matInput>
-
-                                        </mat-form-field>
-
-                                        <mat-form-field appearance="outline" *ngIf="FlagServiceIdSelected" style="margin-left:2%;">
-                                            <mat-label>Service Id</mat-label>
-                                            <input name="ServiceId" formControlName="ServiceId" placeholder="Service Id"
-                                                matInput>
-
-                                        </mat-form-field>
-
-                                        <mat-form-field appearance="outline" *ngIf="FlaggroupIdSelected" style="margin-left:2%;">
-                                            <mat-label>Group Id</mat-label>
-                                            <input name="GroupId" formControlName="GroupId" placeholder="Group Id"
-                                                matInput>
-
-                                        </mat-form-field> -->
-
-                                        <mat-form-field appearance="outline" fxFlex="50%" *ngIf="FlagDoctorIDSelected" style="margin-left:2%;">
+                                    <div>
+                                        <mat-form-field appearance="outline" fxFlex="50%" *ngIf="FlagDoctorIDSelected"
+                                            style="margin-left:2%;">
                                             <mat-label>Doctor Name</mat-label>
                                             <input matAutocompletePosition="below" type="text"
-                                                placeholder="Select Doctor" matInput
-                                                formControlName="DoctorID"
+                                                placeholder="Select Doctor" matInput formControlName="DoctorID"
                                                 [matAutocomplete]="autosearchDoctor" required>
                                             <span matSuffix style="display: flex;">
                                                 <mat-icon class="mat-icon-close"
@@ -167,15 +150,65 @@
                                             </span>
                                             <mat-autocomplete #autosearchDoctor="matAutocomplete"
                                                 [displayWith]="getOptionTextsearchDoctor">
-                                                <mat-option
-                                                    *ngFor="let option of filteredOptionssearchDoctor | async"
+                                                <mat-option *ngFor="let option of filteredOptionssearchDoctor | async"
                                                     [value]="option">
                                                     {{option.Doctorname}}
                                                 </mat-option>
                                             </mat-autocomplete>
                                         </mat-form-field>
                                     </div>
-                                   
+                                    <div>
+                                    <mat-form-field appearance="outline" *ngIf="FlagVisitSelected">
+                                        <mat-label>Group Id</mat-label>
+                                        <input name="GroupId" formControlName="GroupId" placeholder="GroupId"
+                                            matInput>
+
+                                    </mat-form-field>
+                                    </div>
+                                    <div>
+                                        <mat-form-field appearance="outline"  fxFlex="50%" *ngIf="FlagServiceIdSelected"   style="margin-left:2%;">
+                                            <input type="text" name="ServiceId" formControlName="ServiceId" 
+                                                placeholder="Service Name" matInput [matAutocomplete]="auto" id="myInput">
+                                            <span matSuffix style="display: flex;">
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_OPReportsService.userForm.get('ServiceId').setValue(''); isServiceSelected = false;">close</mat-icon>
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_OPReportsService.userForm.get('ServiceId').setValue(''); isServiceSelected = false;">search</mat-icon>
+                                            </span>
+                                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
+                                                showPanel="true" (optionsScroll)="onScroll()" >
+                                                    <mat-option *ngFor="let option of filteredOptions" [value]="option"
+                                                    style="width: 500px;">
+                                                    {{option.ServiceName}} | Price {{option.Price}} |
+                                                   
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                            <mat-error *ngIf="_OPReportsService.userForm.get('ServiceId').hasError('required')">
+                                                Required field cannot be left blank
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div>
+                                        <mat-form-field appearance="outline" fxFlex="50%" *ngIf="FlagDepartmentSelected"   style="margin-left:2%;"> 
+                                            <mat-label>Department</mat-label>
+                                            <input matAutocompletePosition="below" type="text" placeholder="Select Department"
+                                                [(ngModel)]="vDepartmentid" matInput #dept
+                                                (keydown)="onEnterdept($event,vDepartmentid.Departmentid)"
+                                                formControlName="Departmentid" [matAutocomplete]="autoDep" required>
+                                            <span matSuffix style="display: flex;">
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_OPReportsService.userForm.get('DepartmentId').setValue(''); isDepartmentSelected = false;">close</mat-icon>
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_OPReportsService.userForm.get('DepartmentId').setValue(''); isDepartmentSelected = false;">search</mat-icon>
+                                            </span>
+                                            <mat-autocomplete #autoDep="matAutocomplete" [displayWith]="getOptionTextDep">
+                                                <mat-option *ngFor="let option of filteredOptionsDep | async" [value]="option">
+                                                    {{option.departmentName}}
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
+                                    </div>
                                 </div>
                                 <div fxLayout="row" fxLayoutAlign="start none">
                                     <button class="btn btn-primary " color="accent" (click)="getPrint()"

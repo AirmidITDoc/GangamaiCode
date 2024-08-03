@@ -58,6 +58,9 @@ export class ResultEntryService {
   public getPathologyResultList(query) {
     return this._httpClient.post("Generic/GetBySelectQuery?query=" + query, {})
   }
+  public getHelpresultData(query){
+    return this._httpClient.post("Generic/GetBySelectQuery?query=" + query, {})
+  }
   public PathResultentryInsert(employee) {
     return this._httpClient.post("Pathology/PathResultentryInsert", employee);
   }

@@ -28,9 +28,9 @@ export class ClinicalCareChartService {
    }
 
    createMyForm(){
-      return this._formbuilder.group({
-        Floor:[''],
-        Ward:[''],
+      return this._formbuilder.group({ 
+        WardName:[''],
+        RegID:['']
        // FromDate:[new Date()],
        // ToDate:[new Date()],
       })
@@ -152,5 +152,12 @@ export class ClinicalCareChartService {
         PDHDOutputQty:[''] 
 
       })
+    }
+
+    public getWardList(){
+      return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_WardMasterListForCombo",{});
+    }
+    public getPatientList(param){
+      return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_AdmisionList_NursingList",param);
     }
 }

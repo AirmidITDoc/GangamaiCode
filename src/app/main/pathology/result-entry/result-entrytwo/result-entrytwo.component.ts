@@ -39,7 +39,7 @@ export class ResultEntrytwoComponent implements OnInit {
   vTemplateName: any = 0;
   isLoading: string = '';
   msg: any;
-  selectedAdvanceObj: SampleDetailObj;
+  
   selectedAdvanceObj1: AdmissionPersonlModel;
   screenFromString = 'opd-casepaper';
   printTemplate:any;
@@ -72,11 +72,12 @@ export class ResultEntrytwoComponent implements OnInit {
   
     if(this.data){
       this.selectedAdvanceObj1 = this.data;
-      this.selectedAdvanceObj = this.data;
-  
-      console.log( this.data)
-    this.OP_IPType=this.selectedAdvanceObj1.OPD_IPD_Type
-    this.reportIdData =this.selectedAdvanceObj1.PathReportID
+       
+      console.log( this.selectedAdvanceObj1)
+      this.OP_IPType=this.selectedAdvanceObj1.OPD_IPD_Type
+      this.reportIdData =this.selectedAdvanceObj1.PathReportID
+
+
    // this.vTemplateDesc= this.selectedAdvanceObj.TemplateDesc;
     }
     // if (this.advanceDataStored.storage) {
@@ -105,9 +106,6 @@ export class ResultEntrytwoComponent implements OnInit {
     }
    
 
-
-
-
     getTemplatedetailIP() {
       this.sIsLoading = 'loading-data';
       let SelectQuery = "Select * from lvw_Retrieve_PathologyResultIPPatientUpdate where PathReportId in(" + this.reportIdData + ")"
@@ -135,43 +133,7 @@ export class ResultEntrytwoComponent implements OnInit {
         });
     }
 
-  // onSubmit() {
-  //   if (this._SampleService.myform.valid) {
-  //     if (!this._SampleService.myform.get("TemplateId").value) {
-  //       var m_data = {
-  //         insertRadiologyTemplateMaster: {
-  //           "TemplateName": (this._SampleService.myform.get("TemplateName").value).trim(),
-  //           "TemplateDesc": (this._SampleService.myform.get("TemplateDesc").value).trim(),
-  //           "IsDeleted": Boolean(JSON.parse(this._SampleService.myform.get("IsDeleted").value)),
-  //           "AddedBy": this.accountService.currentUserValue.user.id,
-            
-  //         }
-  //       }
-  //       // console.log(m_data);
-  //       // this._SampleService.insertRadiologyTemplateMaster(m_data).subscribe(data => {
-  //       //   this.msg = data;
-  //       // });
-  //       this.notification.success('Record added successfully')
-  //     }
-  //     else {
-  //       var m_dataUpdate = {
-  //         updateRadiologyTemplateMaster: {
-  //           "TemplateId": this._SampleService.myform.get("TemplateId").value,
-  //           "TemplateName": this._SampleService.myform.get("TemplateName").value,
-  //           "TemplateDesc": (this._SampleService.myform.get("TemplateDesc").value).trim(),
-  //           "IsDeleted": Boolean(JSON.parse(this._SampleService.myform.get("IsDeleted").value)),
-  //           "UpdatedBy": this.accountService.currentUserValue.user.id,
-
-  //         }
-  //       }
-  //       // // this._SampleService.updateRadiologyTemplateMaster(m_dataUpdate).subscribe(data => {
-  //       // //   this.msg = data;
-  //       // });
-  //       this.notification.success('Record updated successfully')
-  //     }
-  //     this.onClose();
-  //   }
-  // }
+ 
   onSubmit() {
     debugger
     if ((this.vTemplateName == '' || this.vTemplateName == null || this.vTemplateName == undefined)) {
@@ -188,22 +150,22 @@ export class ResultEntrytwoComponent implements OnInit {
     }
   
     let pathologyTemplateDeleteObj = {};
-    pathologyTemplateDeleteObj['pathReportId'] = this.selectedAdvanceObj.PathReportID;
+    pathologyTemplateDeleteObj['pathReportId'] = this.selectedAdvanceObj1.PathReportID;
     this.isLoading = 'submit';
     let Billdetsarr = [];
    
      
     let pathologyTemplateInsertObj = {};
         
-    pathologyTemplateInsertObj['PathReportId'] = this.selectedAdvanceObj.PathReportID ;
+    pathologyTemplateInsertObj['PathReportId'] = this.selectedAdvanceObj1.PathReportID ;
     pathologyTemplateInsertObj['PathTemplateId']= this.otherForm.get("TemplateName").value.TemplateId || 0;
     pathologyTemplateInsertObj['PathTemplateDetailsResult']= this.otherForm.get("ResultEntry").value,
-    pathologyTemplateInsertObj['TestId'] = this.selectedAdvanceObj.PathTestID || 11;
+    pathologyTemplateInsertObj['TestId'] = this.selectedAdvanceObj1.PathTestID || 11;
     Billdetsarr.push(pathologyTemplateInsertObj);
     
     let pathologyTemplateUpdateObj = {};
    
-    pathologyTemplateUpdateObj['PathReportID'] =this.selectedAdvanceObj.PathReportID;
+    pathologyTemplateUpdateObj['PathReportID'] =this.selectedAdvanceObj1.PathReportID;
     pathologyTemplateUpdateObj['ReportDate'] = this.dateTimeObj.date;
     pathologyTemplateUpdateObj['ReportTime'] = this.dateTimeObj.time;
     pathologyTemplateUpdateObj['IsCompleted'] = 1;
@@ -237,7 +199,7 @@ export class ResultEntrytwoComponent implements OnInit {
               Swal.fire('Congratulations !', 'Pathology Template data saved Successfully !', 'success').then((result) => {
                 if (result.isConfirmed) {
                  this.dialogRef.close();
-                 this.viewgetPathologyTemplateReportPdf(this.selectedAdvanceObj.PathReportID);
+                 this.viewgetPathologyTemplateReportPdf(this.selectedAdvanceObj1.PathReportID);
                 }
               });
             } else {
@@ -251,10 +213,10 @@ export class ResultEntrytwoComponent implements OnInit {
 
 
   
-  viewgetPathologyTemplateReportPdf(obj) {
+  viewgetPathologyTemplateReportPdf(PathReportID) {
     debugger
     this._SampleService.getPathologyTempReport(
-      obj,this.selectedAdvanceObj.OP_IP_Type
+      PathReportID,this.selectedAdvanceObj1.OPD_IPD_Type
       
       ).subscribe(res => {
       const dialogRef = this._matDialog.open(PdfviewerComponent,
@@ -270,8 +232,6 @@ export class ResultEntrytwoComponent implements OnInit {
     });
   }
   
-
-
 
   onBlur(e:any){
     this.vTemplateDesc=e.target.innerHTML;
@@ -306,7 +266,8 @@ export class ResultEntrytwoComponent implements OnInit {
 
   getTemplateList() {
     var mdata={
-        Id:this.selectedAdvanceObj.ChargeId
+        Id:this.selectedAdvanceObj1.ServiceId
+        
     }
     this._SampleService.getTemplateCombo(mdata).subscribe(data => {
       this.TemplateList = data;
@@ -333,6 +294,17 @@ export class ResultEntrytwoComponent implements OnInit {
     return option && option.TemplateName ? option.TemplateName : '';
   }
 
+  onAddTemplate(){
+    debugger
+    this.vTemplateDesc=this.otherForm.get('TemplateName').value.TemplateDesc || ''
+    console.log(this.vTemplateDesc)
+
+    // const parser = new DOMParser();
+    // this.vTemplateDesc = parser.parseFromString(this.otherForm.get('TemplateName').value.TemplateDesc, 'text/html');
+
+    // console.log(this.vTemplateDesc)
+
+  }
 }
 
 

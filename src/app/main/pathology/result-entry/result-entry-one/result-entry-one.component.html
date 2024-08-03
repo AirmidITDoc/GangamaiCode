@@ -17,6 +17,7 @@
             </button>
         </div>
     </mat-toolbar>
+
     <div class="content">
         <div class="center p-12 pb-56" style="border-radius: 4px;">
             <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="8px">
@@ -58,7 +59,8 @@
                                             <div class="patient-col">
                                                 <span class="patient-col-key">No</span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{selectedAdvanceObj2.OP_IP_No}} </span>
+                                                <span class="patient-col-value">{{selectedAdvanceObj2.OP_IP_No}}
+                                                </span>
                                             </div>
                                         </div>
                                         <div fxLayout="column" fxLayoutGap="6px">
@@ -66,7 +68,8 @@
                                                 <span class="patient-col-key">Age | Sex
                                                 </span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{selectedAdvanceObj2.AgeYear}}Y| D |
+                                                <span class="patient-col-value">{{selectedAdvanceObj2.AgeYear}}Y|
+                                                    D |
                                                     {{selectedAdvanceObj2.GenderName}}</span>
                                             </div>
                                         </div>
@@ -87,22 +90,20 @@
                 <div fxLayout="column">
                     <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 9px; height: fit-content;">
                         <div class="patient-info-sales my-8">
-                            <!-- <div class="patient-info-title border-bottom pb-2">
-                                <span class="h1">Patient Information</span>
-                            </div> -->
+
                             <div class="Ipd-patient-info" fxFlexFill fxLayout="row" fxLayoutAlign="space-between center"
                                 class="patient-info">
                                 <div class="patient-sub">
                                     <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
                                         fxLayoutAlign="space-between">
                                         <div fxLayout="row" fxLayoutAlign="end" class="gap-8">
-                                            <div  fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                            <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
                                                 <mat-icon class="pill green-600 s-16">circle</mat-icon>
-                                                <span >: Help Value </span>
+                                                <span>: Help Value </span>
                                             </div>
-                                            <div   fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                            <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
                                                 <mat-icon class="pill orange s-16">circle</mat-icon>
-                                                <span >: Formula </span>
+                                                <span>: Formula </span>
                                             </div>
                                         </div>
                                     </div>
@@ -147,8 +148,12 @@
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             <mat-form-field appearance="legacy">
-                                                <input matInput autocomplete="off" [(ngModel)]="contact.ResultValue">
+                                                <input matInput autocomplete="off" (keyup)="onResultUp(contact)"
+                                                    (keydown.F2)="onKeydown($event,contact)"
+                                                    [disabled]="contact.Formula" [(ngModel)]="contact.ResultValue">
                                             </mat-form-field>
+                                            <button [matMenuTriggerFor]="addMenu" #languageMenuTrigger="matMenuTrigger"
+                                                style="visibility: hidden;"></button>
                                         </mat-cell>
                                     </ng-container>
 
@@ -158,6 +163,14 @@
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                             {{contact.NormalResult}}
+                                        </mat-cell>
+                                    </ng-container>
+                                    <ng-container matColumnDef="Formula">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                            Formula
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                            {{contact.Formula}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -174,7 +187,8 @@
 
                                     <mat-header-row class="accent"
                                         *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                                    <mat-row *matRowDef="let contact; columns: displayedColumns;"
+                                        class="contact"
                                         [@animate]="{value:'*',params:{y:'100%'}}">
                                     </mat-row>
                                     <mat-footer-row *matFooterRowDef="['loading']"
@@ -189,6 +203,16 @@
                         </div>
                     </div>
                 </div>
+
+                <mat-menu #addMenu="matMenu" class="w-240">
+                    <mat-nav-list style="max-height: 312px; overflow: auto" fusePerfectScrollbar *ngIf="isShowHelp">
+                        <mat-list-item *ngFor="let item of helpItems">
+                            <div class="w-100-p" fxLayout="row" fxLayoutAlign="start center">
+                                <p class="m-0" matLine fxFlex (click)="onSelectHelp(item.ParameterValues)">{{item.ParameterValues}}</p>
+                            </div>
+                        </mat-list-item>
+                    </mat-nav-list>
+                </mat-menu>
                 <div fxFlex.gt-sm="100%" fxFlex>
                     <form [formGroup]="otherForm">
                         <mat-card style="padding: 6px;">
@@ -261,7 +285,7 @@
                                 </mat-form-field> -->
                             </div>
 
-                           
+
                         </mat-card>
                         <div fxLayout="row" fxLayoutAlign="end">
                             <div class="modal-footer-buttons" fxLayoutGap="6px" style="padding: 8px;">
@@ -277,4 +301,5 @@
             </div>
         </div>
     </div>
+
 </div>

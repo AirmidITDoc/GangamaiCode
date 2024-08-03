@@ -389,9 +389,7 @@ DoctorId:any=0;
       this.isDoctorSelected = false;
       return this.optionsDoc.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
     }
-    // const filterValue = value.toLowerCase();
-    // this.isDoctorSelected = false;
-    // return this.optionsDoc.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
+   
   }
 
 
