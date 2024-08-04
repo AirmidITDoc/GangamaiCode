@@ -14,6 +14,7 @@ import { MatTabGroup } from '@angular/material/tabs';
 import { DatePipe } from '@angular/common';
 import { UpdateradiologymasterComponent } from './updateradiologymaster/updateradiologymaster.component';
 import { MatDialog } from '@angular/material/dialog';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-radiology-test-master',
@@ -73,27 +74,7 @@ export class RadiologyTestMasterComponent implements OnInit {
 
   ngOnInit(): void {
     this.getRadiologyTestList();
-    // this.getCategoryNameCombobox();
-    // this.getServiceNameCombobox();
-    // this.getTemplateNameCombobox();
-
-
-    this.categoryFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterCategoryname();
-      });
-
-    this.serviceFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterServicename();
-      });
-    this.serviceFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterTemplatename();
-      });
+   
   }
   onSearch() {
     this.getRadiologyTestList();
@@ -123,207 +104,107 @@ export class RadiologyTestMasterComponent implements OnInit {
     });
   }
 
-  // categoryname filter
-  private filterCategoryname() {
-    if (!this.CategorycmbList) {
-
-      return;
-    }
-    // get the search keyword
-    let search = this.categoryFilterCtrl.value;
-    if (!search) {
-      this.filteredCategory.next(this.CategorycmbList.slice());
-      return;
-    } else {
-      search = search.toLowerCase();
-    }
-    // filter the banks
-    this.filteredCategory.next(
-      this.CategorycmbList.filter(bank => bank.CategoryName.toLowerCase().indexOf(search) > -1)
-    );
-  }
-
-
-  // Service name filter
-  private filterServicename() {
-    if (!this.ServicecmbList) {
-
-      return;
-    }
-    // get the search keyword
-    let search = this.serviceFilterCtrl.value;
-    if (!search) {
-      this.filteredService.next(this.ServicecmbList.slice());
-      return;
-    } else {
-      search = search.toLowerCase();
-    }
-    // filter the banks
-    this.filteredService.next(
-      this.ServicecmbList.filter(bank => bank.ServiceName.toLowerCase().indexOf(search) > -1)
-    );
-  }
-  // Template name filter
-  private filterTemplatename() {
-    if (!this.TemplatecmbList) {
-
-      return;
-    }
-    // get the search keyword
-    let search = this.templateFilterCtrl.value;
-    if (!search) {
-      this.filteredTemplate.next(this.TemplatecmbList.slice());
-      return;
-    } else {
-      search = search.toLowerCase();
-    }
-    // filter the banks
-    this.filteredTemplate.next(
-      this.TemplatecmbList.filter(bank => bank.TemplateName.toLowerCase().indexOf(search) > -1)
-    );
-  }
-
-
-
-
-  getServiceNameCombobox() {
-    this._radiologytestService.getServiceMasterCombo().subscribe(data => {
-      this.ServicecmbList = data;
-      this.filteredService.next(this.ServicecmbList.slice());
-      this._radiologytestService.myform.get('ServiceId').setValue(this.ServicecmbList[0]);
-    });
-  }
-  getTemplateNameCombobox() {
   
-    this._radiologytestService.gettemplateMasterCombo().subscribe(data => {
-      this.TemplatecmbList = data;
-      //console.log(this.TemplatecmbList);
-      this.filteredTemplate.next(this.TemplatecmbList.slice());
-    });
-  }
-
-  getCategoryNameCombobox() {
-
-    this._radiologytestService.getCategoryMasterCombo().subscribe(data => {
-      this.CategorycmbList = data;
-      this.filteredCategory.next(this.CategorycmbList.slice());
-      this._radiologytestService.myform.get('CategoryId').setValue(this.CategorycmbList[0]);
-
-    });
-  }
-  OnAdd(event) {
-    this.DSTestList.data = [];
-    this.ChargeList = this.dsTemparoryList.data;
-    this.ChargeList.push(
-      {
-        TemplateName: this._radiologytestService.AddParameterFrom.get('TemplateName').value.TemplateName || "",
-        TemplateId:this._radiologytestService.AddParameterFrom.get('TemplateName').value.TemplateId || 0,
-      });
-    this.DSTestList.data = this.ChargeList
-    // console.log(this.ChargeList);
-    // this._TestService.AddParameterFrom.get('ParameterName').setValue("");
-    this._radiologytestService.AddParameterFrom.reset();
-  }
   onClear() {
     this._radiologytestService.myform.reset({ IsDeleted: 'false' });
     this._radiologytestService.initializeFormGroup();
     this.DSTestList.data = [];
   }
    
-  onSubmit() {
-    if (this._radiologytestService.myform.valid) {
-      if (!this._radiologytestService.myform.get("TestId").value) {
-         let insertRadiologyTestMaster= {};
-         insertRadiologyTestMaster['testName'] = this._radiologytestService.myform.get("TestName").value;
-         insertRadiologyTestMaster['printTestName'] = this._radiologytestService.myform.get("PrintTestName").value;
-         insertRadiologyTestMaster['categoryId'] = this._radiologytestService.myform.get("CategoryId").value.CategoryId;
-         insertRadiologyTestMaster['addedBy'] = this.accountService.currentUserValue.user.id;
-         insertRadiologyTestMaster['serviceId'] = this._radiologytestService.myform.get("ServiceId").value.ServiceId;
+  // onSubmit() {
+  //   if (this._radiologytestService.myform.valid) {
+  //     if (!this._radiologytestService.myform.get("TestId").value) {
+  //        let insertRadiologyTestMaster= {};
+  //        insertRadiologyTestMaster['testName'] = this._radiologytestService.myform.get("TestName").value;
+  //        insertRadiologyTestMaster['printTestName'] = this._radiologytestService.myform.get("PrintTestName").value;
+  //        insertRadiologyTestMaster['categoryId'] = this._radiologytestService.myform.get("CategoryId").value.CategoryId;
+  //        insertRadiologyTestMaster['addedBy'] = this.accountService.currentUserValue.user.id;
+  //        insertRadiologyTestMaster['serviceId'] = this._radiologytestService.myform.get("ServiceId").value.ServiceId;
         
-         let insertRadiologyTemplateTest = [];
-         this.DSTestList.data.forEach((element) => {
-          let insertRtestObj={};
-          insertRtestObj['testId'] = 0;
-          insertRtestObj['templateId'] = element.TemplateId;
-          insertRadiologyTemplateTest.push(insertRtestObj);
+  //        let insertRadiologyTemplateTest = [];
+  //        this.DSTestList.data.forEach((element) => {
+  //         let insertRtestObj={};
+  //         insertRtestObj['testId'] = 0;
+  //         insertRtestObj['templateId'] = element.TemplateId;
+  //         insertRadiologyTemplateTest.push(insertRtestObj);
 
-         });
+  //        });
 
-         let submitData ={
-          "insertRadiologyTestMaster": insertRadiologyTestMaster,
-          "insertRadiologyTemplateTest":insertRadiologyTemplateTest
-         }
-        console.log(submitData);
-        this._radiologytestService.insertRadiologyTestMaster(submitData).subscribe(data => {
-          this.msg = data;
-          if (data) {
-            this.toastr.success('Record Saved Successfully.', 'Saved !', {
-              toastClass: 'tostr-tost custom-toast-success',
-            });
-            this.onClear();
-            this.getRadiologyTestList();
-          } else {
-            this.toastr.error('Radiology Test Master Data not saved !, Please check API error..', 'Error !', {
-              toastClass: 'tostr-tost custom-toast-error',
-            });
-          }
-          this.getRadiologyTestList();
-        }, error => {
-          this.toastr.error('Radiology  Test not saved !, Please check API error..', 'Error !', {
-            toastClass: 'tostr-tost custom-toast-error',
-          });
-        });
-      }  
-      else{
-        let updateRadiologyTestMaster= {};
-        updateRadiologyTestMaster['testId'] = this._radiologytestService.myform.get('TestId').value;
-        updateRadiologyTestMaster['testName'] = this._radiologytestService.myform.get("TestName").value;
-        updateRadiologyTestMaster['printTestName'] = this._radiologytestService.myform.get("PrintTestName").value;
-        updateRadiologyTestMaster['categoryId'] = this._radiologytestService.myform.get("CategoryId").value.CategoryId;
-        updateRadiologyTestMaster['updatedBy'] = this.accountService.currentUserValue.user.id;
-        updateRadiologyTestMaster['serviceId'] = this._radiologytestService.myform.get("ServiceId").value.ServiceId;
+  //        let submitData ={
+  //         "insertRadiologyTestMaster": insertRadiologyTestMaster,
+  //         "insertRadiologyTemplateTest":insertRadiologyTemplateTest
+  //        }
+  //       console.log(submitData);
+  //       this._radiologytestService.insertRadiologyTestMaster(submitData).subscribe(data => {
+  //         this.msg = data;
+  //         if (data) {
+  //           this.toastr.success('Record Saved Successfully.', 'Saved !', {
+  //             toastClass: 'tostr-tost custom-toast-success',
+  //           });
+  //           this.onClear();
+  //           this.getRadiologyTestList();
+  //         } else {
+  //           this.toastr.error('Radiology Test Master Data not saved !, Please check API error..', 'Error !', {
+  //             toastClass: 'tostr-tost custom-toast-error',
+  //           });
+  //         }
+  //         this.getRadiologyTestList();
+  //       }, error => {
+  //         this.toastr.error('Radiology  Test not saved !, Please check API error..', 'Error !', {
+  //           toastClass: 'tostr-tost custom-toast-error',
+  //         });
+  //       });
+  //     }  
+  //     else{
+  //       let updateRadiologyTestMaster= {};
+  //       updateRadiologyTestMaster['testId'] = this._radiologytestService.myform.get('TestId').value;
+  //       updateRadiologyTestMaster['testName'] = this._radiologytestService.myform.get("TestName").value;
+  //       updateRadiologyTestMaster['printTestName'] = this._radiologytestService.myform.get("PrintTestName").value;
+  //       updateRadiologyTestMaster['categoryId'] = this._radiologytestService.myform.get("CategoryId").value.CategoryId;
+  //       updateRadiologyTestMaster['updatedBy'] = this.accountService.currentUserValue.user.id;
+  //       updateRadiologyTestMaster['serviceId'] = this._radiologytestService.myform.get("ServiceId").value.ServiceId;
        
-        let insertRadiologyTemplateTest = [];
-        this.DSTestList.data.forEach((element) => {
-         let insertRtestObj={};
-         insertRtestObj['testId'] = element.TestId;
-         insertRtestObj['templateId'] = element.TemplateId;
-         insertRadiologyTemplateTest.push(insertRtestObj);
+  //       let insertRadiologyTemplateTest = [];
+  //       this.DSTestList.data.forEach((element) => {
+  //        let insertRtestObj={};
+  //        insertRtestObj['testId'] = element.TestId;
+  //        insertRtestObj['templateId'] = element.TemplateId;
+  //        insertRadiologyTemplateTest.push(insertRtestObj);
 
-        });
+  //       });
 
-        let radiologyTemplateDetDelete={};
-        radiologyTemplateDetDelete["testId"] =this._radiologytestService.myform.get('TestId').value; 
+  //       let radiologyTemplateDetDelete={};
+  //       radiologyTemplateDetDelete["testId"] =this._radiologytestService.myform.get('TestId').value; 
 
-        let submitData ={
-         "updateRadiologyTestMaster": updateRadiologyTestMaster,
-         "insertRadiologyTemplateTest":insertRadiologyTemplateTest,
-         "radiologyTemplateDetDelete": radiologyTemplateDetDelete
-        }
-       console.log(submitData);
-       this._radiologytestService.insertRadiologyTestMaster(submitData).subscribe(data => {
-         this.msg = data;
-         if (data) {
-           this.toastr.success('Record Saved Successfully.', 'Saved !', {
-             toastClass: 'tostr-tost custom-toast-success',
-           }); this.onClear();
-           this.getRadiologyTestList();
-         } else {
-           this.toastr.error('Radiology Test Master Data not saved !, Please check API error..', 'Error !', {
-             toastClass: 'tostr-tost custom-toast-error',
-           });
-         }
-         this.getRadiologyTestList();
-       }, error => {
-         this.toastr.error('Radiology  Test not saved !, Please check API error..', 'Error !', {
-           toastClass: 'tostr-tost custom-toast-error',
-         });
-       });
-      }
+  //       let submitData ={
+  //        "updateRadiologyTestMaster": updateRadiologyTestMaster,
+  //        "insertRadiologyTemplateTest":insertRadiologyTemplateTest,
+  //        "radiologyTemplateDetDelete": radiologyTemplateDetDelete
+  //       }
+  //      console.log(submitData);
+  //      this._radiologytestService.insertRadiologyTestMaster(submitData).subscribe(data => {
+  //        this.msg = data;
+  //        if (data) {
+  //          this.toastr.success('Record Saved Successfully.', 'Saved !', {
+  //            toastClass: 'tostr-tost custom-toast-success',
+  //          }); this.onClear();
+  //          this.getRadiologyTestList();
+  //        } else {
+  //          this.toastr.error('Radiology Test Master Data not saved !, Please check API error..', 'Error !', {
+  //            toastClass: 'tostr-tost custom-toast-error',
+  //          });
+  //        }
+  //        this.getRadiologyTestList();
+  //      }, error => {
+  //        this.toastr.error('Radiology  Test not saved !, Please check API error..', 'Error !', {
+  //          toastClass: 'tostr-tost custom-toast-error',
+  //        });
+  //      });
+  //     }
  
-      }
+  //     }
      
-  }
+  // }
 
   
   onAdd() {
@@ -365,6 +246,34 @@ export class RadiologyTestMasterComponent implements OnInit {
     });
 }
   
+onDeactive(row) {
+      
+  Swal.fire({
+      title: 'Do you want to Change Active Status Of Radiology Test',
+       showCancelButton: true,
+      confirmButtonText: 'OK',
+
+    }).then((flag) => {
+      let Query;
+      if (flag.isConfirmed) {
+          if(row.IsActive){
+           Query =
+          "Update M_RadiologyTestMaster set IsActive=0 where ParameterID=" +row.est;
+          console.log(Query);
+          }else{
+               Query =
+              "Update M_RadiologyTestMaster set IsActive=1 where ParameterID=" +row.Test;
+          }
+
+          this._radiologytestService.deactivateTheStatus(Query)
+              .subscribe((data) => (this.msg = data));
+          this.getRadiologyTestList();
+      }
+    });
+
+  this.getRadiologyTestList();
+}
+
 }
 
 

@@ -6,8 +6,8 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { ToastrService } from 'ngx-toastr';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormControl } from '@angular/forms';
-import { ReplaySubject, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
+import { map, startWith, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-updateradiologymaster',
@@ -24,24 +24,30 @@ export class UpdateradiologymasterComponent implements OnInit {
   RadiologytestMasterList: any;
   CategorycmbList: any = [];
   ServicecmbList: any = [];
-  TemplatecmbList: any = [];
+  TemplateList: any = [];
   msg: any;
   registerObj:any;
+  ServiceId:any;
+  CategoryId:any;
+  vTemplateName:any;
+  vCategoryId:any;
+  filteredOptionsCategory: Observable<string[]>;
+  optionscategory: any[] = [];
+  iscategorySelected: boolean = false;
 
+  filteredOptionsService: Observable<string[]>;
+  optionsservice: any[] = [];
+  isserviceSelected: boolean = false;
+
+  
+  isTemplateNameSelected: boolean = false;
+  filteredOptionsisTemplate: Observable<string[]>;
+  optionsTemplate: any[] = [];
+
+  
   DSTestList = new MatTableDataSource<TestList>();
   dsTemparoryList = new MatTableDataSource<TestList>();
-  // category filter
-  public categoryFilterCtrl: FormControl = new FormControl();
-  public filteredCategory: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-  //service filter
-  public serviceFilterCtrl: FormControl = new FormControl();
-  public filteredService: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-  //Template filter
-  public templateFilterCtrl: FormControl = new FormControl();
-  public filteredTemplate: ReplaySubject<any> = new ReplaySubject<any>(1);
-
+ 
   private _onDestroy = new Subject<void>();
   constructor(
     public _radiologytestService: RadiologyTestMasterService,
@@ -53,7 +59,7 @@ export class UpdateradiologymasterComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    if (this.data.Obj) {
+    if (this.data) {
       
       this.registerObj=this.data.Obj;
      // this.Remark = this.registerObj.Remarks;
@@ -65,122 +71,111 @@ export class UpdateradiologymasterComponent implements OnInit {
     this.getServiceNameCombobox();
     this.getTemplateNameCombobox();
 
-    this.categoryFilterCtrl.valueChanges
-    .pipe(takeUntil(this._onDestroy))
-    .subscribe(() => {
-      this.filterCategoryname();
-    });
-
-  this.serviceFilterCtrl.valueChanges
-    .pipe(takeUntil(this._onDestroy))
-    .subscribe(() => {
-      this.filterServicename();
-    });
-  this.serviceFilterCtrl.valueChanges
-    .pipe(takeUntil(this._onDestroy))
-    .subscribe(() => {
-      this.filterTemplatename();
-    });
+    this.getserviceNameCombobox();
+    this.getcategoryNameCombobox();
   }
- // categoryname filter
-  private filterCategoryname() {
-    if (!this.CategorycmbList) {
-
-      return;
-    }
-    // get the search keyword
-    let search = this.categoryFilterCtrl.value;
-    if (!search) {
-      this.filteredCategory.next(this.CategorycmbList.slice());
-      return;
-    } else {
-      search = search.toLowerCase();
-    }
-    // filter the banks
-    this.filteredCategory.next(
-      this.CategorycmbList.filter(bank => bank.CategoryName.toLowerCase().indexOf(search) > -1)
-    );
-  }
-
-
-  // Service name filter
-  private filterServicename() {
-    if (!this.ServicecmbList) {
-
-      return;
-    }
-    // get the search keyword
-    let search = this.serviceFilterCtrl.value;
-    if (!search) {
-      this.filteredService.next(this.ServicecmbList.slice());
-      return;
-    } else {
-      search = search.toLowerCase();
-    }
-    // filter the banks
-    this.filteredService.next(
-      this.ServicecmbList.filter(bank => bank.ServiceName.toLowerCase().indexOf(search) > -1)
-    );
-  }
-  // Template name filter
-  private filterTemplatename() {
-    if (!this.TemplatecmbList) {
-
-      return;
-    }
-    // get the search keyword
-    let search = this.templateFilterCtrl.value;
-    if (!search) {
-      this.filteredTemplate.next(this.TemplatecmbList.slice());
-      return;
-    } else {
-      search = search.toLowerCase();
-    }
-    // filter the banks
-    this.filteredTemplate.next(
-      this.TemplatecmbList.filter(bank => bank.TemplateName.toLowerCase().indexOf(search) > -1)
-    );
-  }
-
-
-
-
-  getServiceNameCombobox() {
-    this._radiologytestService.getServiceMasterCombo().subscribe(data => {
-      this.ServicecmbList = data;
-      this.filteredService.next(this.ServicecmbList.slice());
-      this._radiologytestService.myform.get('ServiceId').setValue(this.ServicecmbList[0]);
-      if (this.data) {
-        const toSelectServiceId= this.ServicecmbList.find(c => c.ServiceName == this.registerObj.ServiceName);
-        this._radiologytestService.myform.get('ServiceId').setValue(toSelectServiceId);
-        console.log(this.registerObj)
-        console.log(toSelectServiceId)
-       }
-    });
-  }
+ 
+ 
   getTemplateNameCombobox() {
-  
+
     this._radiologytestService.gettemplateMasterCombo().subscribe(data => {
-      this.TemplatecmbList = data;
-      //console.log(this.TemplatecmbList);
-      this.filteredTemplate.next(this.TemplatecmbList.slice());
+        this.TemplateList = data;
+        this.optionsTemplate = this.TemplateList.slice();
+        this.filteredOptionsisTemplate = this._radiologytestService.AddParameterFrom.get('TemplateName').valueChanges.pipe(
+            startWith(''),
+            map(value => value ? this._filterTemplate(value) : this.TemplateList.slice()),
+        );
+
     });
-  }
+}
+
+private _filterTemplate(value: any): string[] {
+    if (value) {
+        const filterValue = value && value.TemplateName ? value.TemplateName.toLowerCase() : value.toLowerCase();
+
+        return this.optionsTemplate.filter(option => option.TemplateName.toLowerCase().includes(filterValue));
+    }
+}
+
+
+getOptionTextTemplate(option) {
+
+    return option && option.TemplateName ? option.TemplateName : '';
+}
 
   getCategoryNameCombobox() {
 
-    this._radiologytestService.getCategoryMasterCombo().subscribe(data => {
-      this.CategorycmbList = data;
-      this.filteredCategory.next(this.CategorycmbList.slice());
-      this._radiologytestService.myform.get('CategoryId').setValue(this.CategorycmbList[0]);
-      if (this.data) {
-        const toSelectCategoryId= this.CategorycmbList.find(c => c.CategoryName == this.registerObj.CategoryName);
-        this._radiologytestService.myform.get('CategoryId').setValue(toSelectCategoryId);
-        console.log(this.registerObj.CategoryIds)
-        console.log(toSelectCategoryId)
-       }
+    this._radiologytestService.getCategoryMasterCombo().subscribe((data) => {
+        this.CategorycmbList = data;
+        if (this.data) {
+            const toSelectId = this.CategorycmbList.find(c => c.CategoryId == this.registerObj.CategoryId);
+            this._radiologytestService.myform.get('CategoryId').setValue(toSelectId);
+
+        }
+
     });
-  }
+}
+
+private _filtercategory(value: any): string[] {
+    if (value) {
+        const filterValue = value && value.CategoryName ? value.CategoryName.toLowerCase() : value.toLowerCase();
+        return this.optionscategory.filter(option => option.CategoryName.toLowerCase().includes(filterValue));
+    }
+
+}
+
+getOptionTextCategory(option) {
+    return option && option.CategoryName ? option.CategoryName : " ";
+}
+
+getcategoryNameCombobox() {
+    this._radiologytestService.getCategoryMasterCombo().subscribe(data => {
+        this.CategorycmbList = data;
+        this.optionscategory = this.CategorycmbList.slice();
+        this.filteredOptionsCategory = this._radiologytestService.myform.get('CategoryId').valueChanges.pipe(
+            startWith(''),
+            map(value => value ? this._filtercategory(value) : this.CategorycmbList.slice()),
+        );
+    });
+}
+
+getServiceNameCombobox() {
+
+    this._radiologytestService.getServiceMasterCombo().subscribe((data) => {
+        this.ServicecmbList = data;
+        if (this.data) {
+            const toSelectId = this.ServicecmbList.find(c => c.ServiceId == this.registerObj.ServiceID);
+            this._radiologytestService.myform.get('ServiceId').setValue(toSelectId);
+
+        }
+
+    });
+}
+
+private _filterservice(value: any): string[] {
+    if (value) {
+        const filterValue = value && value.ServiceName ? value.ServiceName.toLowerCase() : value.toLowerCase();
+        return this.optionsservice.filter(option => option.ServiceName.toLowerCase().includes(filterValue));
+    }
+
+}
+getOptionTextService(option) {
+    return option && option.ServiceName ? option.ServiceName : " ";
+}
+
+getserviceNameCombobox() {
+    this._radiologytestService.getServiceMasterCombo().subscribe(data => {
+        this.ServicecmbList = data;
+        this.optionsservice = this.ServicecmbList.slice();
+        this.filteredOptionsService = this._radiologytestService.myform.get('ServiceId').valueChanges.pipe(
+            startWith(''),
+            map(value => value ? this._filterservice(value) : this.ServicecmbList.slice()),
+        );
+    });
+}
+
+
+
   OnAdd(event) {
     this.DSTestList.data = [];
     this.ChargeList = this.dsTemparoryList.data;
@@ -190,9 +185,7 @@ export class UpdateradiologymasterComponent implements OnInit {
         TemplateId:this._radiologytestService.AddParameterFrom.get('TemplateName').value.TemplateId || 0,
       });
     this.DSTestList.data = this.ChargeList
-    // console.log(this.ChargeList);
-    // this._TestService.AddParameterFrom.get('ParameterName').setValue("");
-    this._radiologytestService.AddParameterFrom.reset();
+    this._radiologytestService.AddParameterFrom.get('TemplateName').reset();
   }
  
   gettemplateMasterComboList(el){

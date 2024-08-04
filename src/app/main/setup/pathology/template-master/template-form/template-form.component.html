@@ -13,14 +13,14 @@
                 Template Master"}}
             </span>
             <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog"
-                style="margin-left: 920px;">
+                style="margin-left: 820px;">
                 <mat-icon>close</mat-icon>
             </button>
           
         </div>
     </mat-toolbar>
 
-    <div class="content">
+    <div class="content" style="height: 1300px !important;">
         <div class="center p-24 pb-56" fusePerfectScrollbar>
             <div class="content-card">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
@@ -38,13 +38,13 @@
                                             <input matInput placeholder="Template Name"
                                                 [(ngModel)]="vTemplateName" name="TemplateName"
                                                 formControlName="TemplateName" required>
-                                            <mat-error>Please enter TestName </mat-error>
+                                            <mat-error>Please enter Template </mat-error>
                                         </mat-form-field>
 
                                         <div>
                                          
                                             <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
-                                                style="height:800px !important;" [(ngModel)]="vTemplateDesc"
+                                                style="height:1200px !important;" [(ngModel)]="vTemplateDesc"
                                                 required  formControlName="TemplateDesc"></angular-editor>
 
                                         </div>

@@ -36,28 +36,28 @@ export class RadiologyTemplateFormComponent implements OnInit {
     showToolbar: true,
 
   };
-  onBlur(e:any){
-    this.vTemplateDesc=e.target.innerHTML;
+  onBlur(e: any) {
+    this.vTemplateDesc = e.target.innerHTML;
   }
-  msg:any;
+  msg: any;
   selectedAdvanceObj: AdvanceDetailObj;
   hasSelectedContacts: boolean;
   screenFromString = 'OP-billing';
   RadiologytemplateMasterList: any;
   isLoading = true;
   reportdata: any = [];
-  dataArray= {};
+  dataArray = {};
   sIsLoading: string = '';
-  vTemplateName:any;
-  vTemplateDesc:any;
-  registerObj:any;
-  vTemplateId:any;
-  
+  vTemplateName: any;
+  vTemplateDesc: any;
+  registerObj: any;
+  vTemplateId: any;
+
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('reportDiv') reportDiv: ElementRef;
- 
-  
+
+
   constructor(
     public _radiologytemplateService: RadiologyTemplateMasterService,
     private accountService: AuthenticationService,
@@ -66,25 +66,25 @@ export class RadiologyTemplateFormComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private advanceDataStored: AdvanceDataStored,
     public toastr: ToastrService,
-   
-    
-    ) { }
 
-    
+
+  ) { }
+
+
   ngOnInit(): void {
     if (this.data.Obj) {
-      
-      this.registerObj=this.data.Obj;
+
+      this.registerObj = this.data.Obj;
       this.vTemplateId = this.registerObj.TemplateId;
       this.vTemplateName = this.registerObj.TemplateName;
       this.vTemplateDesc = this.registerObj.TemplateDesc;
       console.log(this.registerObj)
     }
-     
+
   }
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
-     this.dateTimeObj = dateTimeObj;
+    this.dateTimeObj = dateTimeObj;
   }
   onClose() {
     this._radiologytemplateService.myform.reset();
@@ -95,70 +95,70 @@ export class RadiologyTemplateFormComponent implements OnInit {
   }
   onSubmit() {
     if (!this._radiologytemplateService.myform.get("TemplateId").value) {
-    let insertRadiologyTemp = {};
-    insertRadiologyTemp['templateName'] = this._radiologytemplateService.myform.get("TemplateName").value;
-    insertRadiologyTemp['templateDesc'] = this._radiologytemplateService.myform.get("TemplateDesc").value;
-    insertRadiologyTemp['addedBy'] = this.accountService.currentUserValue.user.id;
+      let insertRadiologyTemp = {};
+      insertRadiologyTemp['templateName'] = this._radiologytemplateService.myform.get("TemplateName").value;
+      insertRadiologyTemp['templateDesc'] = this._radiologytemplateService.myform.get("TemplateDesc").value;
+      insertRadiologyTemp['addedBy'] = this.accountService.currentUserValue.user.id;
 
-    let submitData = {};
-    submitData['insertRadiologyTemplateMaster'] = insertRadiologyTemp
+      let submitData = {};
+      submitData['insertRadiologyTemplateMaster'] = insertRadiologyTemp
 
-    console.log(submitData);
-    this._radiologytemplateService.insertRadiologyTemplateMaster(submitData).subscribe(response => {
-      if (response) {
-        this.toastr.success('Record Saved Successfully.', 'Saved !', {
-          toastClass: 'tostr-tost custom-toast-success',
-        });
-        this._matDialog.closeAll();
-        this.onClear();
-      } else {
-        this.toastr.error('Template Master Master Data not saved !, Please check API error..', 'Error !', {
+      console.log(submitData);
+      this._radiologytemplateService.insertRadiologyTemplateMaster(submitData).subscribe(response => {
+        if (response) {
+          this.toastr.success('Record Saved Successfully.', 'Saved !', {
+            toastClass: 'tostr-tost custom-toast-success',
+          });
+          this._matDialog.closeAll();
+          this.onClear();
+        } else {
+          this.toastr.error('Template Master Master Data not saved !, Please check API error..', 'Error !', {
+            toastClass: 'tostr-tost custom-toast-error',
+          });
+        }
+        // this.isLoading = '';
+      }, error => {
+        this.toastr.error('New Template Order Data not saved !, Please check API error..', 'Error !', {
+          toastClass: 'tostr-tost custom-toast-error',
+        }); this._matDialog.closeAll();
+      });
+    }
+    else {
+      let updateRadiologyTemp = {};
+      updateRadiologyTemp['templateId'] = this.registerObj.TemplateId
+      updateRadiologyTemp['templateName'] = this._radiologytemplateService.myform.get("TemplateName").value;
+      updateRadiologyTemp['templateDesc'] = this._radiologytemplateService.myform.get("TemplateDesc").value;
+      updateRadiologyTemp['updatedBy'] = this.accountService.currentUserValue.user.id;
+
+      let submitData = {};
+      submitData['updateRadiologyTemplateMaster'] = updateRadiologyTemp
+
+      console.log(submitData);
+      this._radiologytemplateService.updateRadiologyTemplateMaster(submitData).subscribe(response => {
+        if (response) {
+          this.toastr.success('Record Updated Successfully.', 'Updated !', {
+            toastClass: 'tostr-tost custom-toast-success',
+          });
+          this._matDialog.closeAll();
+          this.onClear();
+        } else {
+          this.toastr.error('Template Master Master Data not Updated !, Please check API error..', 'Error !', {
+            toastClass: 'tostr-tost custom-toast-error',
+          });
+        }
+        // this.isLoading = '';
+      }, error => {
+        this.toastr.error('New Template Order Data not Updated !, Please check API error..', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
         });
-      }
-      // this.isLoading = '';
-    },error => {
-      this.toastr.error('New Template Order Data not saved !, Please check API error..', 'Error !', {
-       toastClass: 'tostr-tost custom-toast-error',
-     });this._matDialog.closeAll();
-   });
+      }); this._matDialog.closeAll();
+    }
   }
-  else{
-    let updateRadiologyTemp = {};
-    updateRadiologyTemp['templateId'] = this.registerObj.TemplateId
-    updateRadiologyTemp['templateName'] = this._radiologytemplateService.myform.get("TemplateName").value;
-    updateRadiologyTemp['templateDesc'] = this._radiologytemplateService.myform.get("TemplateDesc").value;
-    updateRadiologyTemp['updatedBy'] = this.accountService.currentUserValue.user.id;
 
-    let submitData = {};
-    submitData['updateRadiologyTemplateMaster'] = updateRadiologyTemp
 
-    console.log(submitData);
-    this._radiologytemplateService.updateRadiologyTemplateMaster(submitData).subscribe(response => {
-      if (response) {
-        this.toastr.success('Record Updated Successfully.', 'Updated !', {
-          toastClass: 'tostr-tost custom-toast-success',
-        });
-        this._matDialog.closeAll();
-        this.onClear();
-      } else {
-        this.toastr.error('Template Master Master Data not Updated !, Please check API error..', 'Error !', {
-          toastClass: 'tostr-tost custom-toast-error',
-        });
-      }
-      // this.isLoading = '';
-    },error => {
-      this.toastr.error('New Template Order Data not Updated !, Please check API error..', 'Error !', {
-       toastClass: 'tostr-tost custom-toast-error',
-     });
-   });this._matDialog.closeAll();
-  }
-  }
- 
+  OnPrintPop(TemplateId) { }
 
-  OnPrintPop(TemplateId){}
- 
- 
+
   // OnPrintPop(TemplateId) {
 
   //   var m_data = { "TemplateId": TemplateId, }
@@ -171,7 +171,7 @@ export class RadiologyTemplateFormComponent implements OnInit {
   //     });
   //   dialogRef.afterClosed().subscribe(result => {
   //     console.log('The dialog was closed - Insert Action', result);
-    
+
   //   });
   // }
   printTemplate: any;
@@ -214,7 +214,7 @@ export class RadiologyTemplateFormComponent implements OnInit {
     popupWin.document.write(`
       <div>${this.templateHeading}</div>
     `);
-      popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
+    popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
     </html>`);
     popupWin.document.close();
   }
@@ -234,14 +234,14 @@ export class RadiologytemplateMaster {
   RegNo: any;
   PatientName: String;
   PatientType: number;
-  TestName:String;
+  TestName: String;
   ConsultantDoctor: any;
-  CategoryName:String;
-  AgeYear:number;
-  GenderName:String;
+  CategoryName: String;
+  AgeYear: number;
+  GenderName: String;
   PBillNo: number;
-  
-  
+
+
 
 
   /**
@@ -250,24 +250,24 @@ export class RadiologytemplateMaster {
    * @param RadiologytemplateMaster
    */
   constructor(RadiologytemplateMaster) {
-      {
-          
-          this.TemplateId = RadiologytemplateMaster.TemplateId || '';
-          this.TemplateName = RadiologytemplateMaster.TemplateName;
-          this.TemplateDesc = RadiologytemplateMaster.TemplateDesc;
-          this.IsDeleted= RadiologytemplateMaster.IsDeleted;
+    {
 
-          this.RadDate = RadiologytemplateMaster.RadDate || '';
-          this.RadTime = RadiologytemplateMaster.RadTime;
-          this.RegNo = RadiologytemplateMaster.RegNo;
-          this.PatientName= RadiologytemplateMaster.PatientName;
-          this.PBillNo= RadiologytemplateMaster.PBillNo;
-          this.PatientType = RadiologytemplateMaster.PatientType || '0';
-          this.ConsultantDoctor = RadiologytemplateMaster.ConsultantDoctor || '';
-          this.TestName = RadiologytemplateMaster.TestName || '0';
-          this.CategoryName = RadiologytemplateMaster.CategoryName || '';
-          this.AgeYear= RadiologytemplateMaster.AgeYear;
-          this.GenderName= RadiologytemplateMaster.GenderName;
-      }
+      this.TemplateId = RadiologytemplateMaster.TemplateId || '';
+      this.TemplateName = RadiologytemplateMaster.TemplateName;
+      this.TemplateDesc = RadiologytemplateMaster.TemplateDesc;
+      this.IsDeleted = RadiologytemplateMaster.IsDeleted;
+
+      this.RadDate = RadiologytemplateMaster.RadDate || '';
+      this.RadTime = RadiologytemplateMaster.RadTime;
+      this.RegNo = RadiologytemplateMaster.RegNo;
+      this.PatientName = RadiologytemplateMaster.PatientName;
+      this.PBillNo = RadiologytemplateMaster.PBillNo;
+      this.PatientType = RadiologytemplateMaster.PatientType || '0';
+      this.ConsultantDoctor = RadiologytemplateMaster.ConsultantDoctor || '';
+      this.TestName = RadiologytemplateMaster.TestName || '0';
+      this.CategoryName = RadiologytemplateMaster.CategoryName || '';
+      this.AgeYear = RadiologytemplateMaster.AgeYear;
+      this.GenderName = RadiologytemplateMaster.GenderName;
+    }
   }
 }

@@ -93,10 +93,9 @@ export class TestFormMasterComponent implements OnInit {
             console.log(this.registerObj);
             this.TestId = this.registerObj.TestId
             this.TemplateId = this.registerObj.TemplateId;
-debugger
-            if (!this.registerObj.IsTemplateTest) {
-                this._TestService.is_subtest = true;
-                this.Subtest = this.registerObj.Subtest
+
+            if (!this.registerObj.IsTemplateTest && !this.registerObj.IsSubTest) {
+                this._TestService.is_subtest = false;
                 this.Statusflag = false;
                 this._TestService.is_templatetest = false;
                 this.fetchTestlist();
@@ -108,7 +107,15 @@ debugger
                 this.Statusflag = true;
                 this.fetchTemplate()
 
+            }else if(!this.registerObj.IsTemplateTest && this.registerObj.IsSubTest){
+                this.Subtest = this.registerObj.IsSubTest
+                this.Statusflag = false;
+                this._TestService.is_templatetest = false;
+                this._TestService.is_subtest = true;
+                this._TestService.is_Test = false;
+                this.fetchTestlist();
             }
+            
             this._TestService.populateForm(this.registerObj);
         }
 
@@ -327,6 +334,7 @@ debugger
                 TemplateName: this._TestService.mytemplateform.get("TemplateName").value.TemplateName,
             });
         this.Templatetdatasource.data = this.list
+        this._TestService.mytemplateform.get('TemplateName').reset();
     }
 
     onDeleteRow(event) {
@@ -387,6 +395,19 @@ debugger
     Statusflag: any = false;
 
     onSubmit() {
+
+        if ((this.ServiceID == '' || this.ServiceID == null || this.ServiceID == undefined)) {
+            this.toastr.warning('Please select valid Service Name ', 'Warning !', {
+              toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+          }
+          if ((this.vCategoryId == '' || this.vCategoryId == null || this.vCategoryId == undefined)) {
+            this.toastr.warning('Please select valid Category Name ', 'Warning !', {
+              toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+          }
 
         let submitData
         debugger

@@ -141,13 +141,14 @@
                                             {{contact.ParameterName}}
                                         </mat-cell>
                                     </ng-container>
-                                    <!-- Help-Value -DefaultValue-->
+                                    <!-- [ngClass]="{'Help-Value': contact.DefaultValue !=null}" -->
                                     <ng-container matColumnDef="ResultValue">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md class="border-right">
                                             Result
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="border-right">
-                                            <mat-form-field appearance="legacy" [ngClass]="{'Result-Formula': contact.Formula !=null}">
+                                            <mat-form-field appearance="legacy" [ngClass]="{'Result-Formula': contact.Formula !=null}"
+                                            >
                                                 <input matInput autocomplete="off" (keyup)="onResultUp(contact)"
                                                     (keydown.F2)="onKeydown($event,contact)"  
                                                     [disabled]="contact.Formula" [(ngModel)]="contact.ResultValue">

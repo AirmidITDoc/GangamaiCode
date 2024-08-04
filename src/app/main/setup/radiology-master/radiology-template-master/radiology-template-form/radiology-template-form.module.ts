@@ -25,11 +25,6 @@ import { RadiologyTemplateMasterService } from '../radiology-template-master.ser
 import { NotificationServiceService } from 'app/core/notification-service.service';
 import { RadiologyTemplateMasterComponent } from '../radiology-template-master.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
-// import { NgxPrintModule } from 'ngx-print';
-// import { NgxPrinterModule } from 'ngx-printer';
-// import { EditorComponent } from './editor/editor.component';
-// import { RichTextEditorModule } from '@syncfusion/ej2-angular-richtexteditor';
-
 
 const routes: Routes = [
   {

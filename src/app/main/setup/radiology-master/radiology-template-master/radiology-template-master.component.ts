@@ -11,8 +11,7 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { EditorComponent } from './editor/editor.component';
 import { RadiologyTemplateFormComponent } from './radiology-template-form/radiology-template-form.component';
 import { RadiologyTemplateMasterService } from './radiology-template-master.service';
-import { TemplateReportComponent } from './template-report/template-report.component';
-// import { RadioPatientList } from '../radiology/radiologyorder-list/radiologyorder-list.component';
+
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.component';
 import { RadioPatientList } from 'app/main/radiology/radiology-order-list/radiology-order-list.component';
@@ -84,8 +83,6 @@ export class RadiologyTemplateMasterComponent implements OnInit {
   registerObj: any;
   ngOnInit(): void {
 
-
-
     this.getRadiologytemplateMasterList();
     if (this._ActRoute.url == '/radiology/radiology-order-list') {
       this.menuActions.push('Template Details');
@@ -108,8 +105,8 @@ export class RadiologyTemplateMasterComponent implements OnInit {
     this.sIsLoading = 'loading-data';
     var m_data = {
       "TemplateName": this._radiologytemplateService.myformSearch.get("TemplateNameSearch").value + '%' || '%',
-      "Start":(this.paginator?.pageIndex??0),
-      "Length":(this.paginator?.pageSize??35)
+      "Start": (this.paginator?.pageIndex ?? 0),
+      "Length": (this.paginator?.pageSize ?? 35)
     }
     this._radiologytemplateService.getRadiologytemplateMasterList1(m_data).subscribe(data => {
       this.dataSource.data = data as RadioPatientList[];
@@ -187,23 +184,15 @@ export class RadiologyTemplateMasterComponent implements OnInit {
     }
   }
 
- 
+
   onEdit(row) {
     console.log(row)
-    var m_data = {
-      "TemplateId": row.TemplateId,
-      "TemplateName": row.TemplateName,
-      "TemplateDesc": row.TemplateDesc,
-      "IsDeleted": JSON.stringify(row.IsDeleted),
-      "UpdatedBy": row.UpdatedBy,
-    }
-    console.log(m_data);
-    this._radiologytemplateService.populateForm(m_data);
+    this._radiologytemplateService.populateForm(row);
     const dialogRef = this._matDialog.open(RadiologyTemplateFormComponent,
       {
         maxWidth: "80%",
         width: "80%",
-        height: "85%",
+        height: "95%",
         data: {
           Obj: row,
         }
@@ -213,27 +202,13 @@ export class RadiologyTemplateMasterComponent implements OnInit {
       this.getRadiologytemplateMasterList();
     });
   }
-  // row:any;
-  // openTab(row, tabGroup: MatTabGroup): void {
-  //   this.vTemplateName = row.TemplateName;
-  //   this.vTemplateDesc = row.TemplateDesc;
-  //   this.vTemplateId   = row.templateId;
-
-  //   const tabIndex = row === 'tab1' ? 0 : 1;
-  //   tabGroup.selectedIndex = tabIndex;
-
-  //   console.log(row)
-
-  //   this.getRadiologytemplateMasterList();
-
-  // }
 
   onAdd() {
     const dialogRef = this._matDialog.open(RadiologyTemplateFormComponent,
       {
         maxWidth: "80%",
         width: "80%",
-        height: "85%",
+        height: "95%",
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
@@ -243,132 +218,35 @@ export class RadiologyTemplateMasterComponent implements OnInit {
 
 
 
+  onDeactive(row) {
 
+    Swal.fire({
+      title: 'Do you want to Change Active Status Of Paramter',
+      showCancelButton: true,
+      confirmButtonText: 'OK',
 
-  getRecord(contact, m): void {
-    ;
-    console.log(contact, m);
+    }).then((flag) => {
+      let Query;
+      if (flag.isConfirmed) {
+        if (row.IsActive) {
+          Query =
+            "Update M_Radiology_TemplateMaster set IsActive=0 where TemplateId=" + row.TemplateId;
+          console.log(Query);
+        } else {
+          Query =
+            "Update M_Radiology_TemplateMaster set IsActive=1 where TemplateId=" + row.TemplateId;
+        }
 
-    if (m == "Template Details") {
-
-      let xx = {
-        RegNo: contact.RegNo,
-        AdmissionID: contact.VisitId,
-        PatientName: contact.PatientName,
-        Doctorname: contact.ConsultantDoctor,
-        AdmDateTime: contact.AdmissionTime,
-        AgeYear: contact.AgeYear,
-        //  PatientType: contact.PatientType,
-
-      };
-      this.advanceDataStored.storage = new AdvanceDetailObj(xx);
-      console.log(this.advanceDataStored.storage);
-      const dialogRef = this._matDialog.open(RadiologyTemplateFormComponent,
-        {
-          maxWidth: "70vw",
-          maxHeight: "90vh", width: '100%', height: "100%"
-        });
-      dialogRef.afterClosed().subscribe(result => {
-        console.log('The dialog was closed - Insert Action', result);
-
-      });
-    }
-  }
-
-  onDeactive(TemplateId) {
-    this.confirmDialogRef = this._matDialog.open(
-      FuseConfirmDialogComponent,
-      {
-        disableClose: false,
-      }
-    );
-    this.confirmDialogRef.componentInstance.confirmMessage =
-      "Are you sure you want to deactive?";
-    this.confirmDialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        let Query =
-          "Update M_Radiology_TemplateMaster set IsDeleted=1 where TemplateId=" +
-          TemplateId;
-
-        console.log(Query);
         this._radiologytemplateService.deactivateTheStatus(Query)
           .subscribe((data) => (this.msg = data));
         this.getRadiologytemplateMasterList();
       }
-      this.confirmDialogRef = null;
-      this.getRadiologytemplateMasterList();
     });
+
+    this.getRadiologytemplateMasterList();
   }
   onBlur(e: any) {
     this.vTemplateDesc = e.target.innerHTML;
-  }
-  OnPrintPop(TemplateId) {
-
-    var m_data = { "TemplateId": TemplateId, }
-    // console.log(m_data);
-    this._radiologytemplateService.populatePrintForm(m_data);
-    const dialogRef = this._matDialog.open(TemplateReportComponent,
-      {
-        maxWidth: "95vw",
-        maxHeight: "95vh", width: '100%', height: "100%"
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
-      this.getRadiologytemplateMasterList();
-    });
-  }
-
-  //   print() {
-  //     let printContents = document.getElementById('tempReport').innerHTML;
-  //     let originalContents = document.body.innerHTML;
-  //     document.body.innerHTML = printContents;
-  //     window.print();
-  //     window.close();
-  // }
-
-  printTemplate: any;
-  templateHeading: any;
-
-  PrintData(TemplateId) {
-    // debugger;
-    var D_data = {
-      "TemplateId": TemplateId,
-    }
-    this._radiologytemplateService.Print(D_data).subscribe(report => {
-      this.reportdata = report;
-      console.log(this.reportdata);
-      this.printTemplate = report[0].TemplateDesc;
-      this.templateHeading = report[0].TemplateName
-      this.print();
-    });
-  }
-
-  print() {
-    // HospitalName, HospitalAddress, AdvanceNo, PatientName
-    let popupWin, printContents;
-    // printContents =this.printTemplate; // document.getElementById('print-section').innerHTML;
-
-    popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
-    // popupWin.document.open();
-    popupWin.document.write(` <html>
-    <head><style type="text/css">`);
-    popupWin.document.write(`
-          table th, table td {
-          border:1px solid #bdbdbd;
-          padding:0.5em;
-        }
-        `);
-    popupWin.document.write(`
-    </style>
-        <title></title>
-    </head>
-    `);
-    popupWin.document.write(`
-      <div>${this.templateHeading}</div>
-    `);
-    popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
-    </html>`);
-    popupWin.document.close();
   }
 
 }

@@ -14,9 +14,9 @@
                 Radiology Template Master"}}
             </span>
             <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog"
-            style="margin-left: 960px;">
+                style="margin-left: 1060px;">
                 <mat-icon>close</mat-icon>
-              </button>
+            </button>
 
         </div>
     </mat-toolbar>
@@ -32,43 +32,38 @@
                                 <div class="dialog-content-wrapper">
                                     <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column">
 
-                                        <input type="hidden" name="TemplateId" formControlName="TemplateId" [(ngModel)]="vTemplateId">
-                                       
+                                        <input type="hidden" name="TemplateId" formControlName="TemplateId"
+                                            [(ngModel)]="vTemplateId">
+
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Template Name</mat-label>
-                                            <input matInput placeholder="Template Name"
-                                                [(ngModel)]="vTemplateName" name="TemplateName"
-                                                formControlName="TemplateName" required>
+                                            <input matInput placeholder="Template Name" [(ngModel)]="vTemplateName"
+                                                name="TemplateName" formControlName="TemplateName" required>
                                             <mat-error>Please enter TestName </mat-error>
                                         </mat-form-field>
 
                                         <div>
                                             <mat-label>Template Details</mat-label>
-                                            <angular-editor (blur)="onBlur($event)" [config]="editorConfig" style="height:200px;" [(ngModel)]="vTemplateDesc" required
-                                            formControlName="TemplateDesc"></angular-editor>
-                                              
+                                            <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
+                                                style="height:200px;" [(ngModel)]="vTemplateDesc" required
+                                                formControlName="TemplateDesc"></angular-editor>
+
                                         </div>
                                     </div>
                                 </div>
-                                <div fxLayoutAlign="end ">
 
-                                    <mat-radio-button value='true' class="p-12" name="IsDeleted" [checked]="true"
+                                <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+
+                                    <mat-radio-button value='true' [checked]="true" name="IsDeleted"
                                         formControlName="IsDeleted">IsActive</mat-radio-button>
-
-                                </div>
-                                <div mat-dialog-actions class="m-0 p-16" fxLayout="row"
-                                    fxLayoutAlign="end center">
-                                    <div class="button-row">
-                                        <button mat-raised-button color="accent" type="submit"
-                                            (click)="onSubmit()"
-                                            style="border-radius: 16px;width: 80px; height:40px;"
+                                    <div class="modal-footer-buttons" style="padding:2px;">
+                                        <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
+                                        <button class="btn btn-primary" (click)="onSubmit()"
                                             [disabled]="_radiologytemplateService.myform.invalid">Save</button>
-                                        <button mat-raised-button color="warn" (click)="onClear()"
-                                            style="border-radius: 16px;width: 80px; height:40px;">Clear</button>
                                     </div>
                                 </div>
                             </form>
-                        </div> 
+                        </div>
                     </div>
 
                 </div>
@@ -76,5 +71,3 @@
         </div>
     </div>
 </div>
-
-    

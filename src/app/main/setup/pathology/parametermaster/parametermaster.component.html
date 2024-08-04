@@ -1,5 +1,5 @@
 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fusePerfectScrollbar
-dynamicTableHeight>
+    dynamicTableHeight>
     <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
         fxLayoutAlign.gt-xs="space-between center">
         <div fxLayout="row" fxLayoutAlign="start center">
@@ -32,8 +32,9 @@ dynamicTableHeight>
                             <form [formGroup]="_ParameterService.myformSearch">
                                 <div class="dialog-content-wrapper">
                                     <mat-form-field class="mr-sm-12" fxFlex>
-                                        <input matInput placeholder="Search --> Parameter Name" autocomplete="off" (keyup)="onSearch()"
-                                            name="ParameterNameSearch" formControlName="ParameterNameSearch" />
+                                        <input matInput placeholder="Search --> Parameter Name" autocomplete="off"
+                                            (keyup)="onSearch()" name="ParameterNameSearch"
+                                            formControlName="ParameterNameSearch" />
                                         <button mat-button matSuffix mat-icon-button aria-label="Clear"
                                             (click)="onSearchClear()">
                                             <mat-icon>close</mat-icon>
@@ -47,8 +48,9 @@ dynamicTableHeight>
                                         <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
                                     </mat-radio-group>
 
-                                   
-                                    <button type="button" mat-raised-button class="searchButton" (click)="onSearch()"  matTooltip="search">
+
+                                    <button type="button" mat-raised-button class="searchButton" (click)="onSearch()"
+                                        matTooltip="search">
                                         <mat-icon>search</mat-icon>
                                     </button>
                                 </div>
@@ -57,6 +59,27 @@ dynamicTableHeight>
 
 
                         <div fxlayout="row">
+                            <div class="content-card">
+                                <div class="table-header">
+                                    <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+
+                                        <div class="table-header-right">
+                                            <div class="export-buttons">
+                                                <div fxLayout="row" fxLayoutAlign="center center" class="gap-8">
+                                                    <button type="button" mat-icon-button>
+                                                        <img width="32" height="10px" (click)="exportReportPdf()"
+                                                            src="assets/images/svg/pdf-svg.svg">
+                                                    </button>
+
+                                                    <button type="button" mat-icon-button>
+                                                        <img width="32" height="10px" (click)="exportParameterExcel()"
+                                                            src="assets/images/svg/xls-svg.svg">
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             <div style="width: 100%;">
                                 <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
                                     class="backgroundBlur">
@@ -134,10 +157,15 @@ dynamicTableHeight>
                                     <ng-container matColumnDef="action" stickyEnd>
                                         <mat-header-cell *matHeaderCellDef class="table-actions"> Action
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let row">
-                                            <button mat-icon-button (click)="onEdit(row)"><mat-icon
-                                                    title="Edit Menu">launch</mat-icon></button>
-                                            <button mat-icon-button (click)="onDeactive(row,row.ParameterID)"
+                                        <mat-cell *matCellDef="let element">
+                                            
+                                            <button mat-icon-button (click)="onEdit(element)"
+                                                *ngIf="element.Isdeleted"><mat-icon
+                                                    title="Edit Menu">edit</mat-icon></button>
+                                            <button mat-icon-button (click)="onEdit(element)"
+                                                *ngIf="!element.Isdeleted"><mat-icon
+                                                    title="Edit Menu">fix</mat-icon></button>
+                                            <button mat-icon-button (click)="onDeactive(element,element.ParameterID)"
                                                 color="warn"><mat-icon>delete_outline</mat-icon></button>
 
                                         </mat-cell>

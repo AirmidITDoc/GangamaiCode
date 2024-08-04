@@ -217,7 +217,7 @@ export class CategorymasterComponent implements OnInit {
         var m_data = {
             CategoryId: row.CategoryId,
             CategoryName: row.CategoryName.trim(),
-            IsDeleted: JSON.stringify(row.IsDeleted),
+            Isdeleted: JSON.stringify(row.Isdeleted),
             UpdatedBy: row.UpdatedBy,
         };
         this._categorymasterService.populateForm(m_data);
