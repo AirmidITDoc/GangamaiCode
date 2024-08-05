@@ -128,7 +128,7 @@ export class ResultEntryOneComponent implements OnInit {
         });
 
         this.getPathresultDoctorList();
-       
+
         if (this.Iscompleted == 1) {
             if (this.OP_IPType == 1)
                 this.getResultListIP();
@@ -183,6 +183,7 @@ export class ResultEntryOneComponent implements OnInit {
     @ViewChild('languageMenuTrigger') languageMenuTrigger: MatMenuTrigger;
     isShowHelp: boolean = false;
     onResultUp(data) {
+        debugger
         let items = this.dataSource.data.filter(x => (x?.Formula ?? "").indexOf('{{' + data.ParameterShortName + '}}') > 0);
         for (let i = 0; i < items.length; i++) {
             let formula = items[i].Formula;
@@ -193,12 +194,15 @@ export class ResultEntryOneComponent implements OnInit {
                     formula = formula.replace("{{" + e + "}}", itm.ResultValue)
             });
             items[i].ResultValue = isNaN(eval(formula)) ? "" : eval(formula);
+            if (!isNaN(items[i].ResultValue))
+                items[i].ResultValue = Math.round(items[i].ResultValue * 100) / 100;
         }
     }
     helpItems: any[] = [];
-    selectedParam:any;
+    selectedParam: any;
     onKeydown(e, data) {
-        this.selectedParam=data.ParameterId;
+        debugger
+        this.selectedParam = data.ParameterId;
         let SelectQuery = "SELECT ParameterValues, IsDefaultValue, ParameterId FROM dbo.M_ParameterDescriptiveMaster WHERE ParameterId = " + data.ParameterId;
         this._SampleService.getPathologyResultList(SelectQuery).subscribe(Visit => {
             this.helpItems = Visit as any[];
@@ -209,8 +213,8 @@ export class ResultEntryOneComponent implements OnInit {
                 this.sIsLoading = '';
             });
     }
-    onSelectHelp(e){
-        this.dataSource.data.find(x=>x.ParameterId==this.selectedParam).ResultValue=e;
+    onSelectHelp(e) {
+        this.dataSource.data.find(x => x.ParameterId == this.selectedParam).ResultValue = e;
     }
 
     getResultList(advanceData) {
@@ -220,7 +224,7 @@ export class ResultEntryOneComponent implements OnInit {
         this._SampleService.getPathologyResultList(SelectQuery).subscribe(Visit => {
             this.dataSource.data = Visit as Pthologyresult[];
             this.Pthologyresult = Visit as Pthologyresult[];
-            console.log( this.Pthologyresult )
+            console.log(this.Pthologyresult)
             this.PathResultDr1 = this.Pthologyresult.PathResultDr1;
             this.dataSource.sort = this.sort;
             this.dataSource.paginator = this.paginator;
@@ -231,9 +235,9 @@ export class ResultEntryOneComponent implements OnInit {
             });
     }
 
- 
 
-    
+
+
     getResultListIP() {
         this.sIsLoading = 'loading-data';
         let SelectQuery = "Select * from lvw_Retrieve_PathologyResultIPPatientUpdate where PathReportId in(" + this.reportIdData + ")"
@@ -267,7 +271,7 @@ export class ResultEntryOneComponent implements OnInit {
             });
     }
 
-   
+
 
     getOptionTextresultdr(option) {
         return option && option.Doctorname ? option.Doctorname : '';
@@ -305,7 +309,7 @@ export class ResultEntryOneComponent implements OnInit {
         });
 
         this.Pthologyresult.forEach((element) => {
-            
+
             let pathologyInsertReportObj = {};
             pathologyInsertReportObj['PathReportId'] = element.PathReportId //element1.PathReportId;
             pathologyInsertReportObj['CategoryID'] = element.CategoryID || 0;
@@ -330,7 +334,7 @@ export class ResultEntryOneComponent implements OnInit {
 
         this.data.RIdData.forEach((element) => {
             let pathologyUpdateReportObj = {};
-            
+
             pathologyUpdateReportObj['PathReportID'] = element.PathReportId// element1.PathReportId;
             pathologyUpdateReportObj['ReportDate'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
                 pathologyUpdateReportObj['ReportTime'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy hh:mm"),
@@ -580,7 +584,7 @@ export class Pthologyresult {
         this.ParameterShortName = Pthologyresult.ParameterShortName || '';
         this.ResultValue = Pthologyresult.ResultValue || '';
         this.ParameterId = Pthologyresult.ParameterId || '';
-       // this.ParameterID = Pthologyresult.ParameterID || '';
+        // this.ParameterID = Pthologyresult.ParameterID || '';
     }
 
 }

@@ -131,7 +131,7 @@ export class DiscountAfterFinalBillComponent implements OnInit {
 
     if (DiscAmt2) {
       if (DiscAmt2 > this.vFinalNetAmt) {
-        this.toastr.warning('Please enter discount amount less than netanoubt and greater than 0', 'warning !', {
+        this.toastr.warning('Please enter discount amount less than net Amount and greater than 0', 'warning !', {
           toastClass: 'tostr-tost custom-toast-error',
         });
         return this.vDiscAmount2 = '';
