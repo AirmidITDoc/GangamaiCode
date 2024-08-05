@@ -170,10 +170,10 @@
                                     
                                     <mat-table matSort [dataSource]="dsPaidItemList" [@animateStagger]="{value:'50'}" class="h-150">
                                         <ng-container matColumnDef="button" sticky>
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md class="w-80">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md class="w-60">
                                                  
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-80">
+                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-60">
                                                 <mat-icon *ngIf="contact.PatientType !='Company'" matTooltip="Patient Category Self">account_box
                                                 </mat-icon>
                                                 
@@ -184,33 +184,34 @@
 
 
                                         <ng-container matColumnDef="SalesDate">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>SalesDate
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-100">SalesDate
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.Date | date:'dd/MM/YYYY'}}
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-100">
+                                                 {{element.Date | date:'dd/MM/YYYY'}}
                                             </mat-cell>
                                         </ng-container>
                         
                                         <ng-container matColumnDef="PillNo">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-90">
                                                 Sales No</mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-90">
                                                 <span> {{element.SalesNo}}</span>
                                             </mat-cell>
                                         </ng-container>
                         
                                         <ng-container matColumnDef="RegNo">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-90">
                                                 UHID No </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-90">
                                                 <span> {{element.RegNo}}</span>
                                             </mat-cell>
                                         </ng-container>
 
                                         <ng-container matColumnDef="CompanyName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-150">
                                                 Company Name </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                <span> {{element.CompanyName || '-'}}</span>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-150">
+                                                <span> {{element.CompanyName || '--'}}</span>
                                             </mat-cell>
                                         </ng-container>
                         
@@ -266,9 +267,14 @@
                                         </ng-container>  -->
 
                                         <ng-container matColumnDef="action" stickyEnd>
-                                            <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;" class="w-80">
+                                            <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;" class="w-110">
                                                 Action</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" class="w-80">
+                                            <mat-cell *matCellDef="let contact" class="w-110">
+                                                   <!--  -->
+                                                   <button mat-icon-button matTooltip="Final Discount" 
+                                                   (click)="getDiscFinalBill(contact)" *ngIf="contact.BalanceAmount>0">
+                                                   <mat-icon>gradient</mat-icon>
+                                               </button>
                                                 <button mat-icon-button  *ngIf="contact.BalanceAmount>0" matTooltip="Payment"
                                                     (click)="OnPayment(contact)" >
                                                     <mat-icon>payment</mat-icon> 

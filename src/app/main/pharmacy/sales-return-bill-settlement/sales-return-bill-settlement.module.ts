@@ -34,7 +34,8 @@ import { SharedModule } from 'app/main/shared/shared.module';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
-import { SalesReturnBillSettlementComponent } from '../sales-return-bill-settlement/sales-return-bill-settlement.component';
+import { SalesReturnBillSettlementComponent } from '../sales-return-bill-settlement/sales-return-bill-settlement.component'; 
+import { DiscountAfterFinalBillComponent } from './discount-after-final-bill/discount-after-final-bill.component';
 
 const routes: Routes = [
   { 
@@ -45,9 +46,8 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    SalesReturnBillSettlementComponent,
-    
-    
+    SalesReturnBillSettlementComponent, 
+    DiscountAfterFinalBillComponent,
     
   ],
   imports: [

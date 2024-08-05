@@ -13,6 +13,7 @@ import Swal from 'sweetalert2';
 import { Validators } from '@angular/forms';
 import { IpPaymentInsert, IPpaymentWithadvanceComponent } from 'app/main/ipd/ip-settlement/ippayment-withadvance/ippayment-withadvance.component';
 import { ToastrService } from 'ngx-toastr';
+import { DiscountAfterFinalBillComponent } from './discount-after-final-bill/discount-after-final-bill.component';
 
 @Component({
   selector: 'app-sales-return-bill-settlement',
@@ -160,8 +161,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
     }
   //  this.saleSelectedDatasource.data = [];
    this.PatientInformRest();
-  }
-
+  } 
   getSelectedObjRegIP(obj) {
     console.log(obj)
     this.DoctorNamecheck = true;
@@ -421,6 +421,23 @@ export class SalesReturnBillSettlementComponent implements OnInit {
     this.dsPaidItemList.data = []; 
     this.PatientInformRest();  
   }
+  getDiscFinalBill(contact){  
+    console.log(contact)
+    let PatientInfo = this.registerObj
+    const dialogRef = this._matDialog.open(DiscountAfterFinalBillComponent,
+      {
+        maxWidth: "100%",
+        height: '72%',
+        width: '60%',
+        data: {
+          Obj:contact,PatientInfo
+        } 
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result); 
+      this.getIpSalesList();
+    });
+  } 
 }
   export class PaidItemList {
   

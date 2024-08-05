@@ -39,7 +39,11 @@ export class SalesReturnBillSettlementService {
       PatientType: ['IP'], 
     });
   }
-  
+  public getConcessionCombo()
+  {
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ConcessionReasonMasterForCombo", {});
+  } 
+
   public getAdmittedpatientlist(employee){
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch ", employee)
   }
