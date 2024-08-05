@@ -66,9 +66,26 @@
                                     </form>
                                 </div>
                                 <div style="width: 100%;">
-                                    <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                                        class="backgroundBlur">
-                                        <div class="spinner-border text-danger" style="margin-left: 150px;"></div>
+                                    <div class="content-card">
+                                        <div class="table-header">
+                                            <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+                                    
+                                                <div class="table-header-right">
+                                                    <div class="export-buttons">
+                                                        <div fxLayout="row" fxLayoutAlign="center center" class="gap-8">
+                                                            <button type="button" mat-icon-button>
+                                                                <img width="32" height="10px" (click)="exportReportPdf()"
+                                                                    src="assets/images/svg/pdf-svg.svg">
+                                                            </button>
+                                    
+                                                            <button type="button" mat-icon-button>
+                                                                <img width="32" height="10px" (click)="exportTestExcel()"
+                                                                    src="assets/images/svg/xls-svg.svg">             </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <mat-table matSort [dataSource]="DSTestMasterList" [@animateStagger]="{value:'50'}">
 
@@ -178,10 +195,14 @@
                                         <ng-container matColumnDef="action" stickyEnd>
                                             <mat-header-cell *matHeaderCellDef class="table-actions"> Action
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" >
-                                                <button mat-icon-button (click)="onEdit(element)" *ngIf="element.Isdeleted"><mat-icon
+                                            <mat-cell *matCellDef="let element">
+                                                <button mat-icon-button (click)="onEdit(element)"
+                                                    *ngIf="element.Isdeleted"><mat-icon
                                                         title="Edit Menu">edit</mat-icon></button>
-                                                <button mat-icon-button (click)="onDeactive(element,element.TestId)" *ngIf="element.Isdeleted"
+                                                <button mat-icon-button (click)="onEdit(element)"
+                                                    *ngIf="!element.Isdeleted"><mat-icon
+                                                        title="Edit Menu">fix</mat-icon></button>
+                                                <button mat-icon-button (click)="onDeactive(element,element.TestId)"
                                                     color="warn"><mat-icon>delete_outline</mat-icon></button>
 
                                             </mat-cell>
@@ -202,7 +223,8 @@
                                         <mat-header-row class="accent" class="accent min-width-2200"
                                             *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
                                         <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
-                                            [@animate]="{value:'*',params:{y:'100%'}}" class="element min-width-2200"></mat-row>
+                                            [@animate]="{value:'*',params:{y:'100%'}}"
+                                            class="element min-width-2200"></mat-row>
 
                                         <mat-footer-row *matFooterRowDef="['loading']"
                                             [ngClass]="{'hide':DSTestMasterList!=null}"></mat-footer-row>
@@ -223,4 +245,3 @@
             </div>
         </div>
     </mat-tab>
- 

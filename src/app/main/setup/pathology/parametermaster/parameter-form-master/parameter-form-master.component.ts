@@ -79,6 +79,7 @@ export class ParameterFormMasterComponent implements OnInit {
         this.dsParameterAgeList.data = [];
 
         this.getunitNameCombobox();
+        
         if (this.data) {
             this.getUnitNameCombobox();
             this.registerObj = this.data.registerObj;
@@ -94,7 +95,7 @@ export class ParameterFormMasterComponent implements OnInit {
 
         this.filteredOptionsUnit = this._ParameterService.myform.get('UnitId').valueChanges.pipe(
             startWith(''),
-            map(value => this._filterunit(value)),
+            map(value => this._filterUnit(value)),
         );
 
 
@@ -131,19 +132,27 @@ export class ParameterFormMasterComponent implements OnInit {
 
     }
 
+    private _filterUnit(value: any): string[] {
+        if (value) {
+          const filterValue = value && value.UnitName ? value.UnitName.toLowerCase() : value.toLowerCase();
+          return this.UnitcmbList.filter(option => option.UnitName.toLowerCase().includes(filterValue));
+        }
+      }
+    
+    getunitNameCombobox() {
+    this._ParameterService.getUnitMasterCombo().subscribe(data => {
+      this.UnitcmbList = data;
+      this.optionsUnit = this.UnitcmbList.slice();
+      this.filteredOptionsUnit = this._ParameterService.myform.get('UnitId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterUnit(value) : this.UnitcmbList.slice()),
+      );
+    });
+  }
+
+
     getOptionTextUnit(option) {
         return option && option.UnitName ? option.UnitName : " ";
-    }
-
-    getunitNameCombobox() {
-        this._ParameterService.getUnitMasterCombo().subscribe(data => {
-            this.UnitcmbList = data;
-            this.optionsUnit = this.UnitcmbList.slice();
-            this.filteredOptionsUnit = this._ParameterService.myform.get('UnitId').valueChanges.pipe(
-                startWith(''),
-                map(value => value ? this._filterunit(value) : this.UnitcmbList.slice()),
-            );
-        });
     }
 
 

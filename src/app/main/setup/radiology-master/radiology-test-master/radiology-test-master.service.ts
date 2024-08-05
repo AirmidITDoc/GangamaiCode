@@ -77,7 +77,10 @@ export class RadiologyTestMasterService {
   public updateRadiologyTestMaster(employee) {
     return this._httpClient.post("RadiologyMaster/RadiologyTestMasterUpdate", employee);
   }
-
+  public deactivateTheStatus(m_data) {
+    return this._httpClient.post(
+        "Generic/ExecByQueryStatement?query=" + m_data, {});
+}
   populateForm(employee) {
     this.myform.patchValue(employee);
   }

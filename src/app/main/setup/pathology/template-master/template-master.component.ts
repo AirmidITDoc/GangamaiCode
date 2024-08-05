@@ -9,6 +9,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { TemplateFormComponent } from './template-form/template-form.component';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
+import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
 
 @Component({
   selector: 'app-template-master',
@@ -22,7 +23,7 @@ export class TemplateMasterComponent implements OnInit {
   displayedColumns: string[] = [
     "TemplateId",
     "TemplateName",
-    "Isdeleted",
+    "IsDeleted",
     "AddedBy",
     "UpdatedBy",
     "action"
@@ -41,6 +42,7 @@ export class TemplateMasterComponent implements OnInit {
     public _TemplateServieService: TemplateServieService,
     public _matDialog: MatDialog,
     public toastr: ToastrService,
+    private reportDownloadService: ExcelDownloadService,
   ) { }
 
   ngOnInit(): void {
@@ -123,12 +125,12 @@ export class TemplateMasterComponent implements OnInit {
       if (flag.isConfirmed) {
         if (row.Isdeleted) {
           Query =
-            "Update M_TemplateMaster set Isdeleted=0 where TemplateId=" +
+            "Update M_TemplateMaster set IsDeleted=0 where TemplateId=" +
             PTemplateId;
           console.log(Query);
         } else {
           Query =
-            "Update M_TemplateMaster set Isdeleted=1 where TemplateId=" +
+            "Update M_TemplateMaster set IsDeleted=1 where TemplateId=" +
             PTemplateId;
           console.log(Query);
         }
@@ -170,6 +172,32 @@ export class TemplateMasterComponent implements OnInit {
     this.getTemplateMasterList();
   }
 
+
+  
+  exportTemplateExcel(){
+    this.sIsLoading == 'loading-data'
+    let exportHeaders = ['TemplateId', 'TemplateName', 'IsDeleted', 'AddedBy', 'UpdatedBy'];
+    this.reportDownloadService.getExportJsonData(this.Templatedatasource.data, exportHeaders, 'Pathology Template');
+    this.Templatedatasource.data = [];
+    this.sIsLoading = '';
+  }
+
+  exportReportPdf() {
+    let actualData = [];
+    this.Templatedatasource.data.forEach(e => {
+      var tempObj = [];
+      tempObj.push(e.TemplateId);
+      tempObj.push(e.TemplateName);
+      tempObj.push(e.IsDeleted);
+      tempObj.push(e.AddedBy);
+      
+      actualData.push(tempObj);
+    });
+    let headers = [['TemplateId', 'TemplateName', 'IsDeleted', 'AddedBy', 'UpdatedBy']];
+    this.reportDownloadService.exportPdfDownload(headers, actualData, 'Pathology Template');
+  }
+
+
 }
 
 
@@ -177,7 +205,7 @@ export class TemplateMaster {
   TemplateId: number;
   TemplateName: any;
   TemplateDesc: any;
-  Isdeleted:any;
+  IsDeleted:any;
   AddedBy:any;
   UpdatedBy:any;
   TemplateDescInHTML:any;
@@ -191,7 +219,7 @@ export class TemplateMaster {
           this.AddedBy = TemplateMaster.AddedBy || 0;
           this.TemplateName = TemplateMaster.TemplateName || "";
           this.TemplateDesc = TemplateMaster.TemplateDesc || "";
-          this.Isdeleted = TemplateMaster.Isdeleted || 0;
+          this.IsDeleted = TemplateMaster.IsDeleted || 0;
           this.AddedBy = TemplateMaster.AddedBy || 0;
           this.UpdatedBy = TemplateMaster.UpdatedBy || 0;
           this.TemplateDescInHTML = TemplateMaster.TemplateDescInHTML || '';

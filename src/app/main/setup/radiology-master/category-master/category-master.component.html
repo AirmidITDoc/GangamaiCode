@@ -165,10 +165,13 @@
                                 </form>
                             </div>
                             <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
-                                <div class="button-row">
-                                    <button mat-raised-button color="primary" type="submit" (click)="onSubmit()"
-                                        [disabled]="_categoryService.myform.invalid">Save</button>
-                                    <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
+                               
+                                <div fxLayout="row" fxLayoutAlign="end">
+                                    <div class="modal-footer-buttons" style="padding:2px;">
+                                        <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
+                                        <button class="btn btn-primary" (click)="onSubmit()"
+                                            [disabled]="_categoryService.myform.invalid">Save</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

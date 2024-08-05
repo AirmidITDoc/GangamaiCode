@@ -29,33 +29,27 @@ import { FuseSharedModule } from '@fuse/shared.module';
 import { NotificationServiceService } from 'app/core/notification-service.service';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { EditorComponent } from './editor/editor.component';
-import { PrintLayoutComponent } from './print-layout/print-layout.component';
+
 import { RadiologyTemplateFormComponent } from './radiology-template-form/radiology-template-form.component';
 import { RadiologyTemplateMasterComponent } from './radiology-template-master.component';
 import { RadiologyTemplateMasterService } from './radiology-template-master.service';
-import { TemplateReportComponent } from './template-report/template-report.component';
+
 import { SharedModule } from 'app/main/shared/shared.module';
 import {MatTabsModule} from '@angular/material/tabs';
 import { AngularEditorModule } from '@kolkov/angular-editor';
-// import { RichTextEditorModule } from '@syncfusion/ej2-angular-richtexteditor';
-
 
 
 const routes: Routes = [
     {
         path: '**',
         component: RadiologyTemplateMasterComponent,
-        // resolve: {
-        //     contacts: ServiceMasterService
-        // }
+       
     }
 ];
 
 @NgModule({
     declarations: [
         RadiologyTemplateMasterComponent,
-        TemplateReportComponent,
-        PrintLayoutComponent,
         EditorComponent,
         RadiologyTemplateFormComponent
     ],

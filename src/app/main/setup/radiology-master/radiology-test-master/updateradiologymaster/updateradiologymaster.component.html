@@ -35,51 +35,62 @@
 
                                             <input type="hidden" name="TestId" formControlName="TestId">
 
-                                            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex="60">
+                                            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                                                 <mat-label>Test Name</mat-label>
                                                 <input name="TestName" formControlName="TestName"
                                                     placeholder="Select Test Name" matInput required>
                                                 <mat-error>Please enter TestName </mat-error>
                                             </mat-form-field>
 
-                                            <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>Category Name</mat-label>
-                                                <mat-select formControlName="CategoryId" placeholder="Bank"
-                                                    #singleSelect>
-                                                    <mat-option>
-                                                        <ngx-mat-select-search [formControl]="categoryFilterCtrl"
-                                                            [placeholderLabel]="'Search'"
-                                                            [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                                                    </mat-option>
-                                                    <mat-option *ngFor="let element of filteredCategory | async"
-                                                        [value]="element">
-                                                        {{element.CategoryName}}
-                                                    </mat-option>
-                                                </mat-select>
-                                            </mat-form-field>
+                                            <mat-form-field appearance="outline" style="padding-right: 10px;" fxFlex>
+                                            <mat-label>CategoryName</mat-label>
+                                            <input matAutocompletePosition="below" type="text"
+                                                placeholder="Select CategoryName" [(ngModel)]="vCategoryId" required
+                                                matInput formControlName="CategoryId"
+                                                [matAutocomplete]="autoCategoryId">
+                                            <span matSuffix style="display: flex;">
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_radiologytestService.myform.get('CategoryId').setValue(''); iscategorySelected = false;">close</mat-icon>
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_radiologytestService.myform.get('CategoryId').setValue(''); iscategorySelected = false;">search</mat-icon>
+                                            </span>
+                                            <mat-autocomplete #autoCategoryId="matAutocomplete"
+                                                [displayWith]="getOptionTextCategory">
+                                                <mat-option *ngFor="let option of filteredOptionsCategory | async"
+                                                    [value]="option">
+                                                    {{option.CategoryName}}
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
                                         </div>
                                         <div fxLayout="row">
-                                            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex="60">
+                                            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                                                 <mat-label>PrintTestName</mat-label>
                                                 <input name="PrintTestName" formControlName="PrintTestName"
                                                     placeholder="Select PrintTestName" matInput required>
                                                 <mat-error>Please enter PrintTestName </mat-error>
                                             </mat-form-field>
 
-                                            <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>Service Name</mat-label>
-                                                <mat-select formControlName="ServiceId" placeholder="Bank" #singleSelect
-                                                    required>
-                                                    <mat-option>
-
-                                                        <ngx-mat-select-search [formControl]="serviceFilterCtrl"
-                                                            [placeholderLabel]="'Search'"></ngx-mat-select-search>
+                                         
+                                            <mat-form-field appearance="outline" style="padding-right: 10px;" fxFlex>
+                                                <mat-label>ServiceName</mat-label>
+                                                <input matAutocompletePosition="below" type="text"
+                                                    placeholder="Select Service Type" [(ngModel)]="ServiceId" required
+                                                    matInput formControlName="ServiceId"
+                                                    [matAutocomplete]="autoServiceID">
+                                                <span matSuffix style="display: flex;">
+                                                    <mat-icon class="mat-icon-close"
+                                                        (click)="_radiologytestService.myform.get('ServiceId').setValue(''); isserviceSelected = false;">close</mat-icon>
+                                                    <mat-icon class="mat-icon-close"
+                                                        (click)="_radiologytestService.myform.get('ServiceId').setValue(''); isserviceSelected = false;">search</mat-icon>
+                                                </span>
+                                                <mat-autocomplete #autoServiceID="matAutocomplete"
+                                                    [displayWith]="getOptionTextService">
+                                                    <mat-option *ngFor="let option of filteredOptionsService | async"
+                                                        [value]="option">
+                                                        {{option.ServiceName}}
                                                     </mat-option>
-                                                    <mat-option *ngFor="let element of filteredService | async"
-                                                        [value]="element">
-                                                        {{element.ServiceName}}
-                                                    </mat-option>
-                                                </mat-select>
+                                                </mat-autocomplete>
                                             </mat-form-field>
 
                                         </div>
@@ -89,36 +100,47 @@
                                                 <div fxLayout="row">
                                                     <input type="hidden" name="TestId" formControlName="TestId">
 
-                                                    <mat-form-field appearance="outline" fxFlex="50%">
+                                                    <mat-form-field appearance="outline" flex>
                                                         <mat-label>Template Name</mat-label>
-                                                        <mat-select formControlName="TemplateName" placeholder="Bank"
-                                                            #singleSelect required>
-                                                            <mat-option>
-                                                                <ngx-mat-select-search
-                                                                    [formControl]="templateFilterCtrl"
-                                                                    [placeholderLabel]="'Search'"
-                                                                    [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                                                        <input matAutocompletePosition="below"
+                                                            type="text" [(ngModel)]="vTemplateName"
+                                                            placeholder="Enter Template Name" matInput
+                                                            formControlName="TemplateName"
+                                                            [matAutocomplete]="autotemp">
+                                                        <span matSuffix style="display: flex;">
+                                                            <mat-icon class="mat-icon-close"
+                                                                (click)="_radiologytestService.AddParameterFrom.get('TemplateName').setValue(''); isTemplateNameSelected = false;">close</mat-icon>
+                                                            <mat-icon class="mat-icon-close"
+                                                                (click)="_radiologytestService.AddParameterFrom.get('TemplateName').setValue(''); isTemplateNameSelected = false;">search</mat-icon>
+                                                        </span>
+                                                        <mat-autocomplete #autotemp="matAutocomplete"
+                                                            [displayWith]="getOptionTextTemplate">
+                                                            <mat-option
+                                                                *ngFor="let option of filteredOptionsisTemplate | async"
+                                                                [value]="option">
+                                                                {{option.TemplateName}}
                                                             </mat-option>
-                                                            <mat-option *ngFor="let element of filteredTemplate | async"
-                                                                [value]="element">
-                                                                {{element.TemplateName}}
-                                                            </mat-option>
-                                                        </mat-select>
+                                                        </mat-autocomplete>
                                                     </mat-form-field>
 
+
+                                                              
+
                                                     <div matTooltip="Select All Value to enable this button!!">
-                                                        <button mat-raised-button style="background-color: blue; color: white; width: 70px;
-                                                              margin-left: 20px; margin-top: 10px;"
-                                                            (click)="OnAdd($event)"
-                                                            [disabled]="_radiologytestService.AddParameterFrom.invalid">
-                                                            <mat-icon> add </mat-icon>Add
-                                                        </button>
+                                                       
+                                                        <button (click)="OnAdd($event)"  [disabled]="_radiologytestService.AddParameterFrom.invalid"
+                                                        class="btn btn-primary btn-with-icon py-8"
+                                                        style="margin-left: 10px;">
+                                                        <span class="btn-icon">
+                                                            <mat-icon> add </mat-icon>
+                                                        </span>
+                                                    </button>
                                                     </div>
 
 
                                                 </div>
                                                 <mat-card style="height:330px;width:100%;">
-                                                    <mat-table #table class="table1" matSort [dataSource]="DSTestList"
+                                                    <mat-table  matSort [dataSource]="DSTestList"
                                                         [@animateStagger]="{value:'50'}"
                                                         style="overflow:auto; width: 100%;">
 
@@ -172,12 +194,12 @@
                                 </div>
 
                                 <div mat-dialog-actions class="m-0 p-8" fxLayout="row" fxLayoutAlign="end center">
-                                    <div class="button-row">
-                                        <button mat-raised-button color="accent" type="submit" (click)="onSubmit()"
-                                            style="border-radius: 16px;width: 80px; height:40px;"
-                                            [disabled]="_radiologytestService.myform.invalid">Save</button>
-                                        <button mat-raised-button color="warn" (click)="onClear()"
-                                            style="border-radius: 16px;width: 80px; height:40px;">Reset</button>
+                                   
+                                    <div fxLayout="row" fxLayoutAlign="end">
+                                        <div class="modal-footer-buttons" style="padding:2px;">
+                                            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                                            <button class="btn btn-primary" (click)="onSubmit()"  [disabled]="_radiologytestService.myform.invalid">Save</button>
+                                        </div>
                                     </div>
                                 </div>
 

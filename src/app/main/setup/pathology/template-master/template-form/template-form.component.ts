@@ -53,6 +53,14 @@ export class TemplateFormComponent implements OnInit {
 
 
     onSubmit() {
+
+
+        if ((this.vTemplateDesc == '' || this.vTemplateDesc == null || this.vTemplateDesc == undefined)) {
+            this.toastr.warning('Please Enter valid Template ', 'Warning !', {
+              toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+          }
         if (this._TemplateServieService.myform.valid) {
             if (!this._TemplateServieService.myform.get("TemplateId").value) {
                 let insertPathologyTemplateMaster = {};

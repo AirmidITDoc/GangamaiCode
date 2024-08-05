@@ -10,6 +10,7 @@ import { fuseAnimations } from "@fuse/animations";
 import { ParameterFormMasterComponent } from "./parameter-form-master/parameter-form-master.component";
 import { connectableObservableDescriptor } from "rxjs/internal/observable/ConnectableObservable";
 import Swal from "sweetalert2";
+import { ExcelDownloadService } from "app/main/shared/services/excel-download.service";
 
 @Component({
     selector: "app-parametermaster",
@@ -55,7 +56,8 @@ export class ParametermasterComponent implements OnInit {
 
     constructor(
         public _ParameterService: ParametermasterService,
-        public _matDialog: MatDialog
+        public _matDialog: MatDialog,
+        private reportDownloadService: ExcelDownloadService,
     ) { }
 
     ngOnInit(): void {
@@ -86,6 +88,7 @@ export class ParametermasterComponent implements OnInit {
       
         this._ParameterService.getParameterMasterList(m_data).subscribe((Menu) => {
             this.DSParameterList.data = Menu as PathparameterMaster[];
+            console.log( this.DSParameterList.data )
             this.isLoading = false;
             this.DSParameterList.sort = this.sort;
             this.DSParameterList.paginator = this.paginator;
@@ -194,6 +197,36 @@ export class ParametermasterComponent implements OnInit {
             this.getParameterMasterList();
         });
     }
+
+
+    
+    exportParameterExcel(){
+    this.sIsLoading == 'loading-data'
+    let exportHeaders = ['ParameterID', 'ParameterShortName','ParameterName','PrintParameterName', 'UnitId','IsNumeric','MethodName','Isdeleted', 'AddedBy', 'UpdatedBy'];
+    this.reportDownloadService.getExportJsonData(this.DSParameterList.data, exportHeaders, 'Pathology Parameter');
+    this.DSParameterList.data = [];
+    this.sIsLoading = '';
+  }
+
+  exportReportPdf() {
+    let actualData = [];
+    this.DSParameterList.data.forEach(e => {
+      var tempObj = [];
+      tempObj.push(e.ParameterID);
+      tempObj.push(e.ParameterShortName);
+      tempObj.push(e.ParameterName);
+      tempObj.push(e.PrintParameterName);
+      tempObj.push(e.UnitId);
+      tempObj.push(e.IsNumeric);
+      tempObj.push(e.MethodName);
+      tempObj.push(e.Isdeleted);
+      tempObj.push(e.AddedBy);
+      
+      actualData.push(tempObj);
+    });
+    let headers = [['ParameterID', 'ParameterShortName','ParameterName','PrintParameterName','UnitId','MethodName', 'Isdeleted', 'AddedBy', 'UpdatedBy']];
+    this.reportDownloadService.exportPdfDownload(headers, actualData, 'Pathology Parameter');
+  }
 }
 
 export class PathparameterMaster {
@@ -209,7 +242,6 @@ export class PathparameterMaster {
     IsPrintDisSummary: boolean;
     MethodName: string;
     ParaMultipleRange: string;
-
     IsDeletedSearch: number;
     /**
      * Constructor
@@ -234,56 +266,3 @@ export class PathparameterMaster {
     }
 }
 
-// export class PathDescriptiveMaster {
-//     DescriptiveID: number;
-//     ParameterId: number;
-//     ParameterValues: String;
-//     IsDefaultValue: boolean;
-//     AddedBy: number;
-//     UpdatedBy: number;
-//     DefaultValue: String;
-//     /**
-//      * Constructor
-//      *
-//      * @param PathDescriptiveMaster
-//      */
-//     constructor(PathDescriptiveMaster) {
-//         {
-//             this.DescriptiveID = PathDescriptiveMaster.DescriptiveID || "";
-//             this.ParameterId = PathDescriptiveMaster.ParameterId || "";
-//             this.ParameterValues = PathDescriptiveMaster.ParameterValues || "";
-//             this.IsDefaultValue = PathDescriptiveMaster.IsDefaultValue || "";
-//             this.AddedBy = PathDescriptiveMaster.AddedBy || "";
-//             this.UpdatedBy = PathDescriptiveMaster.UpdatedBy || "";
-//             this.DefaultValue = PathDescriptiveMaster.DefaultValue || "";
-//         }
-//     }
-// }
-
-// export class PathParaRangeMaster {
-//     PathparaRangeId: bigint;
-//     ParaId: bigint;
-//     SexId: bigint;
-//     MinValue: String;
-//     MaxValue: String;
-//     IsDeleted: boolean;
-//     Addedby: bigint;
-//     Updatedby: bigint;
-//     /**
-//      * Constructor
-//      *
-//      * @param PathParaRangeMaster
-//      */
-//     constructor(PathParaRangeMaster) {
-//         {
-//             this.PathparaRangeId = PathParaRangeMaster.PathparaRangeId || "";
-//             this.ParaId = PathParaRangeMaster.ParaId || "";
-//             this.SexId = PathParaRangeMaster.SexId || "";
-//             this.MinValue = PathParaRangeMaster.MinValue || "";
-//             this.MaxValue = PathParaRangeMaster.MaxValue || "";
-//             this.IsDeleted = PathParaRangeMaster.IsDeleted || "";
-//             this.Addedby = PathParaRangeMaster.Addedby || "";
-//             this.Updatedby = PathParaRangeMaster.Updatedby || "";
-//         }
-//     }
-// }
