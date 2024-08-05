@@ -58,7 +58,8 @@ export class ParameterFormMasterComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
-
+    ChargeList:any=[];
+    dsTemparoryList = new MatTableDataSource<PathDescriptiveMaster>();
     dataSource = new MatTableDataSource<PathDescriptiveMaster>();
     dsParameterAgeList = new MatTableDataSource<PathParaRangeAgeMaster>();
 
@@ -474,6 +475,7 @@ export class ParameterFormMasterComponent implements OnInit {
     isTxtUnique = true;
 
     AddData(txt) {
+        debugger
         if (txt.replace(/\s/g, '').length !== 0) {
 
             if (!this.selectedItems.includes(txt)) {
@@ -490,6 +492,28 @@ export class ParameterFormMasterComponent implements OnInit {
                 });
             }
         }
+    }
+
+    
+    onAddDescrow(event) {
+        console.log("event is :" + event)
+
+        // for parameters
+        // this.DSTestList.data = [];
+        this.ChargeList = this.dsTemparoryList.data;
+       
+        this.ChargeList.push(
+            {
+                //ParameterID: this._ParameterService.descform.get("ParaId").value,
+                ParameterName:this._ParameterService.descform.get("ParaId").value,
+                DefaultValue:this._ParameterService.descform.get("DefaultValue").value,
+            });
+        this.dsTemparoryList.data = this.ChargeList;
+
+        // let temp = this.paramterList.data;
+       
+        // temp.splice(temp.findIndex(item => item.ParameterName === event.ParameterName), 1);
+       
     }
 }
 

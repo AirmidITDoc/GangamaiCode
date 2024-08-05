@@ -1,23 +1,22 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-
-    <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
+<div class="page-layout simple inner-scroll inner-sidebar right-sidebar">
+    <mat-toolbar style="height: 50px; justify-content:space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
-
             <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
                 <mat-icon>menu</mat-icon>
             </button>
-            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-                style="color: white;">account_box
-            </mat-icon>
+            <button mat-icon-button class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                style="color: white;">
+                <mat-icon>account_box</mat-icon>
+            </button>
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
                 {{_ParameterService.myform.controls.ParameterID.value?"Modify Parameter Master":"New
                 Parameter Master"}}
             </span>
-            <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog"
-                style="margin-left: 920px;">
+        </div>
+        <div fxLayout="row" fxLayoutALign="end start">
+            <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
                 <mat-icon>close</mat-icon>
             </button>
-
         </div>
     </mat-toolbar>
     <div class="content">
@@ -33,7 +32,7 @@
                                     <input type="hidden" name="ParameterID" formControlName="ParameterID">
 
                                     <div>
-                                        <mat-form-field appearance="outline"  fxFlex="65%">
+                                        <mat-form-field appearance="outline" fxFlex="65%">
                                             <mat-label>Parameter ShortName</mat-label>
                                             <input name="ParameterShortName" placeholder="Select ParameterShort Name"
                                                 formControlName="ParameterShortName" required
@@ -43,7 +42,7 @@
                                                 *ngIf="f.ParameterShortName.invalid && f.ParameterShortName.touched">ParameterShortName
                                                 Enter only Alphabets</span>
                                         </mat-form-field>
-                                        <mat-form-field appearance="outline"  fxFlex="65%">
+                                        <mat-form-field appearance="outline" fxFlex="65%">
                                             <mat-label>Parameter Name</mat-label>
                                             <input name="ParameterName" placeholder="Select Parameter Name"
                                                 formControlName="ParameterName"
@@ -65,7 +64,7 @@
                                                 *ngIf="f.PrintParameterName.invalid && f.PrintParameterName.touched">PrintParameterName
                                                 required Enter only alphabets</span>
                                         </mat-form-field>
-                                        <mat-form-field appearance="outline"  fxFlex="65%">
+                                        <mat-form-field appearance="outline" fxFlex="65%">
                                             <mat-label>Method Name</mat-label>
                                             <input name="MethodName" placeholder="Select MethodName"
                                                 formControlName="MethodName" matInput
@@ -98,27 +97,22 @@
                                             </section>
                                         </div>
 
-                                        <!-- <mat-form-field appearance="outline" fxFlex="35%" style="padding-right: 10px;">
-                                            <mat-label>Unit Name</mat-label>
-                                            <mat-select placeholder="Select unitName " name="UnitId"
-                                                formControlName="UnitId" required>
-                                                <mat-option>-select-</mat-option>
-                                                <mat-option *ngFor="let M of UnitcmbList" [value]="M.UnitId">
-                                                    {{ M.UnitName }}
-                                                </mat-option>
-                                            </mat-select>
-                                            <mat-error>Please Select Unit Name </mat-error>
-                                        </mat-form-field> -->
-
+                                      
                                         <mat-form-field appearance="outline" fxFlex="50%">
                                             <mat-label>UnitName</mat-label>
-                                            <input matAutocompletePosition="below" type="text" placeholder="Select UnitName" matInput  formControlName="UnitId" [matAutocomplete]="autoUnitId" required>
+                                            <input matAutocompletePosition="below" type="text"
+                                                placeholder="Select UnitName" matInput formControlName="UnitId"
+                                                [matAutocomplete]="autoUnitId" required>
                                             <span matSuffix style="display: flex;">
-                                                <mat-icon class="mat-icon-close" (click)="_ParameterService.myform.get('UnitId').setValue(''); isunitSelected = false;">close</mat-icon>
-                                                <mat-icon class="mat-icon-close" (click)="_ParameterService.myform.get('UnitId').setValue(''); isunitSelected = false;">search</mat-icon>
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_ParameterService.myform.get('UnitId').setValue(''); isunitSelected = false;">close</mat-icon>
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_ParameterService.myform.get('UnitId').setValue(''); isunitSelected = false;">search</mat-icon>
                                             </span>
-                                            <mat-autocomplete #autoUnitId="matAutocomplete" [displayWith]="getOptionTextUnit">
-                                                <mat-option *ngFor="let option of filteredOptionsUnit | async" [value]="option">
+                                            <mat-autocomplete #autoUnitId="matAutocomplete"
+                                                [displayWith]="getOptionTextUnit">
+                                                <mat-option *ngFor="let option of filteredOptionsUnit | async"
+                                                    [value]="option">
                                                     {{option.UnitName}}
                                                 </mat-option>
                                             </mat-autocomplete>
@@ -318,7 +312,8 @@
                                 <ng-container *ngIf="!_ParameterService.is_numeric">
                                     <div fxFlex.gt-sm="100%" fxFlex>
 
-                                        <mat-card class="example-card" name="m1" style="padding: 0%;height: 310px !important;overflow: auto;">
+                                        <mat-card class="example-card" name="m1"
+                                            style="padding: 0%;height: 310px !important;overflow: auto;">
                                             <mat-card-content fxLayout="row" fxLayoutAlign="center center">
                                                 <mat-card-title>Descriptive Info</mat-card-title>
                                             </mat-card-content>
@@ -329,20 +324,21 @@
                                                         <div flex="100%">
 
                                                             <mat-form-field appearance="outline" class="mr-sm-12"
-                                                                fxFlex="30%"  style="margin-left: 2%;">
+                                                                fxFlex="30%" style="margin-left: 2%;">
                                                                 <mat-label>Parameter</mat-label>
                                                                 <input name="ParaId" placeholder="Enter value to add"
                                                                     [(ngModel)]="ParaId" formControlName="ParaId"
                                                                     matInput>
                                                             </mat-form-field>
-                                                           
+
                                                             <mat-form-field appearance="outline" class="mr-sm-12"
-                                                            fxFlex="90%"  style="margin-left: 2%;">
-                                                            <mat-label>Parameter</mat-label>
-                                                            <input name="DefaultValue" placeholder="Enter DefaultValue"
-                                                                [(ngModel)]="DefaultValue" formControlName="DefaultValue"
-                                                                matInput>
-                                                         </mat-form-field>
+                                                                fxFlex="90%" style="margin-left: 2%;">
+                                                                <mat-label>DefaultValue</mat-label>
+                                                                <input name="DefaultValue"
+                                                                    placeholder="Enter DefaultValue"
+                                                                    [(ngModel)]="DefaultValue"
+                                                                    formControlName="DefaultValue" matInput>
+                                                            </mat-form-field>
 
 
 
@@ -354,10 +350,10 @@
                                                               </textarea>
                                                               </mat-form-field>
                                                            -->
-                                                             <!-- [disabled]="DefaultValue ! ==" "" -->
-                                                             <div matTooltip="Select All Value to enable this button!!">
+                                                            <!-- [disabled]="DefaultValue ! ==" "" -->
+                                                            <div matTooltip="Select All Value to enable this button!!">
                                                                 <button mat-raised-button class="custom_add_button"
-                                                                     (click)="AddData(ParaId)"> Add
+                                                                    (click)="AddData(ParaId)"> Add
                                                                     <mat-icon> add_to_photos </mat-icon>
                                                                 </button>
                                                             </div>
@@ -368,7 +364,7 @@
                                                     </div>
                                                     <div style="display:block !important; width:100%;">
                                                         <div flex="100%" style="overflow: auto; max-height: 100vh;">
-                                                            <mat-list style="background: cornflowerblue;" 
+                                                            <mat-list style="background: cornflowerblue;"
                                                                 formControlName="parameterValues">
                                                                 <div mat-subheader
                                                                     style="font-weight: bold; background: #5e35b1; padding: 8px; color: #fff; border-top-left-radius: 4px; border-top-right-radius: 4px;">
@@ -436,12 +432,13 @@
 
                 </div>
                 <!-- [disabled]="_ParameterService.myform.invalid" -->
-                <div mat-dialog-actions class="m-0 p-2" fxLayout="row" fxLayoutAlign="end center">
-
-                    <div fxLayout="row" fxLayoutAlign="end">
-                        <div class="modal-footer-buttons" style="padding:2px;">
-                            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                            <button class="btn btn-primary" (click)="onSubmit()">Save</button>
+               
+                <div fxLayoutGap="5px">
+                      
+                    <div class="footer-navigation-container">
+                        <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px">
+                            <button class="btn btn-danger-outline" (click)="onClose()">Clear</button>
+                            <button class="btn btn-primary" (click)="onSubmit()" >Save</button>
                         </div>
                     </div>
 

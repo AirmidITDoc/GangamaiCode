@@ -1,25 +1,25 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-
-    <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
+<div class="page-layout simple inner-scroll inner-sidebar right-sidebar">
+    <mat-toolbar style="height: 50px; justify-content:space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
-
             <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
                 <mat-icon>menu</mat-icon>
             </button>
-            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-                style="color: white;">account_box
-            </mat-icon>
+            <button mat-icon-button class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                style="color: white;">
+                <mat-icon>account_box</mat-icon>
+            </button>
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
                 {{_TestService.myform.controls.TestId.value?"Modify Test Master":"New
                 Test Master"}}
             </span>
-            <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog"
-                style="margin-left: 62vw;">
+        </div>
+        <div fxLayout="row" fxLayoutALign="end start">
+            <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
                 <mat-icon>close</mat-icon>
             </button>
-
         </div>
     </mat-toolbar>
+
 
     <div class="content">
         <div class="center p-24 pb-56" fusePerfectScrollbar>
@@ -86,15 +86,13 @@
                                             </mat-form-field>
                                         </div>
                                         <div fxLayout="row" fxLayoutGap="5px">
-                                            <section class="example-section"
-                                                style="margin-left: 30%;">
+                                            <section class="example-section" style="margin-left: 30%;">
                                                 <mat-radio-group name="Status" formControlName="Status" fxLayout="row">
                                                     <mat-radio-button (click)="toggle(1)" value="1"
                                                         [checked]='_TestService.is_Test' class="mr-sm-12">Test
                                                     </mat-radio-button>
                                                     <mat-radio-button (click)="toggle(2)" value="2"
-                                                        [checked]='_TestService.is_subtest'
-                                                        class="mr-sm-12">IsSubTest
+                                                        [checked]='_TestService.is_subtest' class="mr-sm-12">IsSubTest
                                                     </mat-radio-button>
                                                     <mat-radio-button (click)="toggle(3)" value="3"
                                                         [checked]='_TestService.is_templatetest'
@@ -139,7 +137,6 @@
                                                             <ng-container matColumnDef="ParameterName">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header>
                                                                     Parameter Values
-
                                                                 </mat-header-cell>
                                                                 <mat-cell *matCellDef="let element" fxShow.gt-sm
                                                                     (click)="onAdd(element)">
@@ -238,7 +235,7 @@
                                                 </div>
                                                 <mat-divider vertical style="margin: 0px;padding: 5px;"></mat-divider>
                                                 <div fxLayout="column" fxFlex="70%">
-                                                    <mat-card style="height:267px;width: 100%;">
+                                                    <mat-card style="height:267px;width: 100%;overflow: auto;">
                                                         <mat-table #table class="table1" matSort
                                                             [dataSource]="DSTestList" cdkDropList
                                                             (cdkDropListDropped)="drop($event)">
@@ -260,26 +257,57 @@
                                                                     {{element.ParameterName}}
                                                                 </mat-cell>
                                                             </ng-container>
-
+                                                            <ng-container matColumnDef="PrintParameterName">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                                    PrintParameterName
+                                                                </mat-header-cell>
+                                                                <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                                                    {{element.PrintParameterName}}
+                                                                </mat-cell>
+                                                            </ng-container>
+                                                            <ng-container matColumnDef="MethodName">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                                    MethodName
+                                                                </mat-header-cell>
+                                                                <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                                                    {{element.MethodName}}
+                                                                </mat-cell>
+                                                            </ng-container>
                                                             <ng-container matColumnDef="UnitName">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header>
                                                                     Unit
                                                                 </mat-header-cell>
                                                                 <mat-cell *matCellDef="let element">
-                                                                    Unit
+                                                                    {{element.UnitName}}
                                                                 </mat-cell>
                                                             </ng-container>
 
-                                                            <ng-container matColumnDef="Range">
+                                                            <ng-container matColumnDef="ParaMultipleRange">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header>
                                                                     Range
                                                                 </mat-header-cell>
                                                                 <mat-cell *matCellDef="let element">
-                                                                    Range
+                                                                    {{element.ParaMultipleRange}}
+                                                                </mat-cell>
+                                                            </ng-container>
+                                                            <ng-container matColumnDef="Formula">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                                    Formula
+                                                                </mat-header-cell>
+                                                                <mat-cell *matCellDef="let element">
+                                                                    {{element.Formula}}
+                                                                </mat-cell>
+                                                            </ng-container>
+                                                            <ng-container matColumnDef="IsNumeric">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                                    IsNumeric
+                                                                </mat-header-cell>
+                                                                <mat-cell *matCellDef="let element">
+                                                                    {{element.IsNumeric}}
                                                                 </mat-cell>
                                                             </ng-container>
 
-                                                            <ng-container matColumnDef="Action">
+                                                            <ng-container matColumnDef="Action" stickyEnd>
                                                                 <mat-header-cell
                                                                     *matHeaderCellDef>Action</mat-header-cell>
                                                                 <mat-cell *matCellDef="let element">
@@ -303,10 +331,10 @@
                                                             </ng-container>
 
 
-                                                            <mat-header-row class="accent"
+                                                            <mat-header-row class="accent" class="accent min-width-1500"
                                                                 *matHeaderRowDef="displayedColumns2; sticky: true"></mat-header-row>
                                                             <mat-row *matRowDef="let row; columns: displayedColumns2;"
-                                                                class="element"
+                                                                class="element" class="element min-width-1500"
                                                                 [@animate]="{value:'*',params:{y:'100%'}}"
                                                                 cdkDrag></mat-row>
                                                             <mat-footer-row *matFooterRowDef="['loading']"
@@ -322,106 +350,127 @@
                                         </ng-template>
 
                                         <ng-template [ngIf]="_TestService.is_templatetest">
-                                            <div class="content-card">
-                                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
-                                                    fxLayoutGap="10px">
-                                                    <div fxFlex.gt-sm="100%" fxFlex>
-                                                        <div fxlayout="row" style=" background-color: white;
-                                                         padding: 5px 10px 5px 10px;">
-                                                            <form [formGroup]="_TestService.mytemplateform">
-                                                                <input type="hidden" name="TemplateId"
-                                                                    formControlName="TemplateId">
-                                                                <div fxFlexFill fxLayout="row">
+                                            <div class="content">
+                                                <div class="center p-24 pb-56">
+                                                    <div class="content-card">
+                                                        <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                                                            <div fxFlex.gt-sm="100%" fxFlex>
+                                                                <div fxlayout="row"
+                                                                    style=" background-color: white;padding: 5px 10px 5px 10px;">
+                                                                    <form [formGroup]="_TestService.mytemplateform">
+                                                                        <input type="hidden" name="TemplateId"
+                                                                            formControlName="TemplateId">
 
-                                                                    <mat-form-field appearance="outline" flex>
-                                                                        <mat-label>Template Name</mat-label>
-                                                                        <input matAutocompletePosition="below"
-                                                                            type="text" [(ngModel)]="vTemplateName"
-                                                                            placeholder="Enter Template Name" matInput
-                                                                            formControlName="TemplateName"
-                                                                            [matAutocomplete]="autotemp">
-                                                                        <span matSuffix style="display: flex;">
-                                                                            <mat-icon class="mat-icon-close"
-                                                                                (click)="otherForm.get('TemplateName').setValue(''); isTemplateNameSelected = false;">close</mat-icon>
-                                                                            <mat-icon class="mat-icon-close"
-                                                                                (click)="otherForm.get('TemplateName').setValue(''); isTemplateNameSelected = false;">search</mat-icon>
-                                                                        </span>
-                                                                        <mat-autocomplete #autotemp="matAutocomplete"
-                                                                            [displayWith]="getOptionTextTemplate">
-                                                                            <mat-option
-                                                                                *ngFor="let option of filteredOptionsisTemplate | async"
-                                                                                [value]="option">
-                                                                                {{option.TemplateName}}
-                                                                            </mat-option>
-                                                                        </mat-autocomplete>
-                                                                    </mat-form-field>
+                                                                        <div class="dialog-content-wrapper">
+                                                                            <div fxFlexFill fxLayout="row"
+                                                                                fxLayout.gt-xs="column">
+                                                                                <div fxLayout="row" fxLayoutGap="5px">
+                                                                                    <mat-form-field appearance="outline"
+                                                                                        flex="90%">
+                                                                                        <mat-label>Template
+                                                                                            Name</mat-label>
+                                                                                        <input
+                                                                                            matAutocompletePosition="below"
+                                                                                            type="text"
+                                                                                            [(ngModel)]="vTemplateName"
+                                                                                            placeholder="Enter Template Name"
+                                                                                            matInput
+                                                                                            formControlName="TemplateName"
+                                                                                            [matAutocomplete]="autotemp">
+                                                                                        <span matSuffix
+                                                                                            style="display: flex;">
+                                                                                            <mat-icon
+                                                                                                class="mat-icon-close"
+                                                                                                (click)="otherForm.get('TemplateName').setValue(''); isTemplateNameSelected = false;">close</mat-icon>
+                                                                                            <mat-icon
+                                                                                                class="mat-icon-close"
+                                                                                                (click)="otherForm.get('TemplateName').setValue(''); isTemplateNameSelected = false;">search</mat-icon>
+                                                                                        </span>
+                                                                                        <mat-autocomplete
+                                                                                            #autotemp="matAutocomplete"
+                                                                                            [displayWith]="getOptionTextTemplate">
+                                                                                            <mat-option
+                                                                                                *ngFor="let option of filteredOptionsisTemplate | async"
+                                                                                                [value]="option">
+                                                                                                {{option.TemplateName}}
+                                                                                            </mat-option>
+                                                                                        </mat-autocomplete>
+                                                                                    </mat-form-field>
 
-                                                                    <button (click)="onAddTemplate()"
-                                                                        class="btn btn-primary btn-with-icon py-8"
-                                                                        style="margin-left: 10px;">
-                                                                        <span class="btn-icon">
-                                                                            <mat-icon> add </mat-icon>
-                                                                        </span>
-                                                                    </button>
+                                                                                    <button (click)="onAddTemplate()"
+                                                                                        class="btn btn-primary btn-with-icon py-8"
+                                                                                        style="margin-left: 10px;">
+                                                                                        <span class="btn-icon">
+                                                                                            <mat-icon> add </mat-icon>
+                                                                                        </span>
+                                                                                    </button>
+                                                                                </div>
+
+                                                                                <div fxFlexFill fxLayout="row">
+                                                                                    <mat-table matSort
+                                                                                        [dataSource]="Templatetdatasource"
+                                                                                        [@animateStagger]="{value:'50'}"
+                                                                                        style="overflow:auto; width: 100%;height:380px;">
+
+                                                                                        <ng-container
+                                                                                            matColumnDef="TemplateName">
+                                                                                            <mat-header-cell
+                                                                                                *matHeaderCellDef
+                                                                                                mat-sort-header>
+                                                                                                TemplateName
+
+                                                                                            </mat-header-cell>
+                                                                                            <mat-cell
+                                                                                                *matCellDef="let element"
+                                                                                                fxShow.gt-sm>
+                                                                                                {{element.TemplateName}}
+                                                                                            </mat-cell>
+
+                                                                                        </ng-container>
+
+                                                                                        <ng-container
+                                                                                            matColumnDef="Action">
+                                                                                            <mat-header-cell
+                                                                                                *matHeaderCellDef>Action</mat-header-cell>
+                                                                                            <mat-cell
+                                                                                                *matCellDef="let element">
+                                                                                                <button mat-icon-button
+                                                                                                    color="warn"
+                                                                                                    (click)="onDeleteTemplateRow(element)">
+                                                                                                    <mat-icon>delete</mat-icon>
+                                                                                                </button>
+                                                                                            </mat-cell>
+                                                                                        </ng-container>
+
+                                                                                        <ng-container
+                                                                                            matColumnDef="loading">
+                                                                                            <mat-footer-cell
+                                                                                                *matFooterCellDef
+                                                                                                colspan="6">
+
+                                                                                            </mat-footer-cell>
+                                                                                        </ng-container>
+
+
+                                                                                        <mat-header-row class="accent"
+                                                                                            *matHeaderRowDef="displayedColumns5; sticky: true"></mat-header-row>
+                                                                                        <mat-row
+                                                                                            *matRowDef="let row; columns: displayedColumns5;"
+                                                                                            class="element"
+                                                                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+
+                                                                                    </mat-table>
+
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </form>
                                                                 </div>
-                                                                <div fxFlexFill fxLayout="row">
+                                                            </div>
 
-                                                                </div>
-                                                                <div fxFlexFill fxLayout="row">
-                                                                    <mat-table matSort
-                                                                        [dataSource]="Templatetdatasource"
-                                                                        [@animateStagger]="{value:'50'}"
-                                                                        style="overflow:auto; width: 100%;height:380px;">
-
-                                                                        <ng-container matColumnDef="TemplateName">
-                                                                            <mat-header-cell *matHeaderCellDef
-                                                                                mat-sort-header>
-                                                                                TemplateName
-
-                                                                            </mat-header-cell>
-                                                                            <mat-cell *matCellDef="let element"
-                                                                                fxShow.gt-sm>
-                                                                                {{element.TemplateName}}
-                                                                            </mat-cell>
-
-                                                                        </ng-container>
-
-                                                                        <ng-container matColumnDef="Action">
-                                                                            <mat-header-cell
-                                                                                *matHeaderCellDef>Action</mat-header-cell>
-                                                                            <mat-cell *matCellDef="let element">
-                                                                                <button mat-icon-button color="warn"
-                                                                                    (click)="onDeleteTemplateRow(element)">
-                                                                                    <mat-icon>delete</mat-icon>
-                                                                                </button>
-                                                                            </mat-cell>
-                                                                        </ng-container>
-
-                                                                        <ng-container matColumnDef="loading">
-                                                                            <mat-footer-cell *matFooterCellDef
-                                                                                colspan="6">
-
-                                                                            </mat-footer-cell>
-                                                                        </ng-container>
-
-
-                                                                        <mat-header-row class="accent"
-                                                                            *matHeaderRowDef="displayedColumns5; sticky: true"></mat-header-row>
-                                                                        <mat-row
-                                                                            *matRowDef="let row; columns: displayedColumns5;"
-                                                                            class="element"
-                                                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-
-                                                                    </mat-table>
-
-                                                                </div>
-
-
-
-                                                            </form>
                                                         </div>
                                                     </div>
-
                                                 </div>
                                             </div>
                                         </ng-template>
@@ -465,17 +514,18 @@
                                     </div>
                                 </div>
                                 <hr>
-                                <div mat-dialog-actions class="m-0 p-8" fxLayout="row" fxLayoutAlign="end center">
 
-                                    <div fxLayout="row" fxLayoutAlign="end">
-                                        <div class="modal-footer-buttons" style="padding:2px;">
-                                            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+
+                                <div fxLayoutGap="5px">
+
+                                    <div class="footer-navigation-container">
+                                        <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px">
+                                            <button class="btn btn-danger-outline" (click)="onClose()">Clear</button>
                                             <button class="btn btn-primary" (click)="onSubmit()">Save</button>
                                         </div>
                                     </div>
+
                                 </div>
-
-
                             </form>
                         </div>
                     </div>

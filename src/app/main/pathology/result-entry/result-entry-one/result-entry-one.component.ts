@@ -140,7 +140,7 @@ export class ResultEntryOneComponent implements OnInit {
 
         }
 
-        this.getPathresultDoctorList();
+        this.getPathresultdoctorList();
         this.filteredresultdr = this.otherForm.get('PathResultDoctorId').valueChanges.pipe(
             startWith(''),
             map(value => this._filterdoc3(value)),
@@ -423,16 +423,16 @@ export class ResultEntryOneComponent implements OnInit {
     }
 
 
-    // getPathresultDoctorList() {
-    //   this._SampleService.getPathologyDoctorCombo().subscribe(data => {
-    //     this.PathologyDoctorList = data;
-    //     this.optionsDoc3 = this.PathologyDoctorList.slice();
-    //     this.filteredresultdr = this.otherForm.get('PathResultDoctorId').valueChanges.pipe(
-    //       startWith(''),
-    //       map(value => value ? this._filterdoc3(value) : this.PathologyDoctorList.slice()),
-    //     );
-    //   });
-    // }
+    getPathresultdoctorList() {
+      this._SampleService.getPathologyDoctorCombo().subscribe(data => {
+        this.PathologyDoctorList = data;
+        this.optionsDoc3 = this.PathologyDoctorList.slice();
+        this.filteredresultdr = this.otherForm.get('PathResultDoctorId').valueChanges.pipe(
+          startWith(''),
+          map(value => value ? this._filterdoc3(value) : this.PathologyDoctorList.slice()),
+        );
+      });
+    }
 
 
     // private _filterdoc3(value: any): string[] {
@@ -446,12 +446,13 @@ export class ResultEntryOneComponent implements OnInit {
     getPathresultDoctorList() {
         this._SampleService.getPathologyDoctorCombo().subscribe(data => {
             this.PathologyDoctorList = data;
-            if (this.data) {
-                const ddValue = this.PathologyDoctorList.filter(c => c.ReligionId == this.Pthologyresult.PathResultDr1);
-                this.otherForm.get('PathResultDoctorId').setValue(ddValue[0]);
-                this.otherForm.updateValueAndValidity();
-                return;
-            }
+            // if (this.data) {
+            //     debugger
+            //     const ddValue = this.PathologyDoctorList.filter(c => c.DoctorId == this.selectedAdvanceObj2.Adm_Visit_docId);
+            //     this.otherForm.get('PathResultDoctorId').setValue(ddValue[0]);
+            //     this.otherForm.updateValueAndValidity();
+            //     return;
+            // }
         });
     }
     private _filterdoc3(value: any): string[] {

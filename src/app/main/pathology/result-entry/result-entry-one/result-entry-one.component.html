@@ -1,17 +1,18 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-    <mat-toolbar class="accent" style="width: 100%;height: 40px; justify-content: space-between;">
+<div class="page-layout simple inner-scroll inner-sidebar right-sidebar">
+    <mat-toolbar style="height: 50px; justify-content:space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
-            <!-- <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
                 <mat-icon>menu</mat-icon>
-            </button> -->
-            <!-- <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-                style="color: white;">account_box
-            </mat-icon> -->
-            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+            </button>
+            <button mat-icon-button class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                style="color: white;">
+                <mat-icon>account_box</mat-icon>
+            </button>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
                 Result Entry
             </span>
         </div>
-        <div class="close-icon">
+        <div fxLayout="row" fxLayoutALign="end start">
             <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
                 <mat-icon>close</mat-icon>
             </button>
@@ -98,11 +99,11 @@
                                         fxLayoutAlign="space-between">
                                         <div fxLayout="row" fxLayoutAlign="end" class="gap-8">
                                             <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                                                <mat-icon class="pill green-600 s-16">circle</mat-icon>
-                                                <span>: Help Value </span>
+                                                <mat-icon class="Help-Value">circle</mat-icon>
+                                                <span>: Help Value (F2)</span>
                                             </div>
                                             <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                                                <mat-icon class="pill orange s-16">circle</mat-icon>
+                                                <mat-icon class="Result-Formula">circle</mat-icon>
                                                 <span>: Formula </span>
                                             </div>
                                         </div>
@@ -125,7 +126,8 @@
                                     [@animateStagger]="{value:'50'}">
 
                                     <ng-container matColumnDef="TestName" sticky>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="border-right">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                            class="border-right">
                                             TestName
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact">
@@ -134,40 +136,47 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="ParameterName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md class="border-right">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
+                                            class="border-right">
                                             ParameterName
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                             {{contact.ParameterName}}
                                         </mat-cell>
                                     </ng-container>
-                                    <!-- [ngClass]="{'Help-Value': contact.DefaultValue !=null}" -->
-                                    <ng-container matColumnDef="ResultValue">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md class="border-right">
+                                    <!-- *ngIf="contact.ParaIsNumeric ==0 then 
+                                            "[ngClass]="{'Result-Formula': contact.Formula !=null}" else  [ngClass]="{'Help-Value': contact.ParaIsNumeric ==0}"-->
+
+                                    <ng-container matColumnDef="ResultValue" style="width:100%;font-weight: bold;">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header class="border-right">
                                             Result
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="border-right">
-                                            <mat-form-field appearance="legacy" [ngClass]="{'Result-Formula': contact.Formula !=null}"
-                                            >
+                                        <mat-cell *matCellDef="let contact" class="border-right">
+                                            <mat-form-field appearance="legacy"
+                                                [ngClass]="{'Result-Formula': contact.Formula !=null}">
                                                 <input matInput autocomplete="off" (keyup)="onResultUp(contact)"
-                                                    (keydown.F2)="onKeydown($event,contact)"  
+                                                    (keydown.F2)="onKeydown($event,contact)" matTooltip="Use Help Value"
                                                     [disabled]="contact.Formula" [(ngModel)]="contact.ResultValue">
+                                                
                                             </mat-form-field>
                                             <button [matMenuTriggerFor]="addMenu" #languageMenuTrigger="matMenuTrigger"
                                                 style="visibility: hidden;"></button>
+                                               <img width="20px;" height="20px;" src="assets/images/logos/help.jpeg" *ngIf=" contact.ParaIsNumeric ==0"  matTooltip="Use Help Value">
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="NormalRange">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md class="border-right">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
+                                            class="border-right">
                                             NormalRange
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="border-right" >
+                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="border-right">
                                             {{contact.NormalResult}}
                                         </mat-cell>
                                     </ng-container>
                                     <ng-container matColumnDef="Formula">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md class="border-right">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
+                                            class="border-right">
                                             Formula
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="border-right">
@@ -188,8 +197,7 @@
 
                                     <mat-header-row class="accent"
                                         *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                                    <mat-row *matRowDef="let contact; columns: displayedColumns;"
-                                        class="contact"
+                                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
                                         [@animate]="{value:'*',params:{y:'100%'}}">
                                     </mat-row>
                                     <mat-footer-row *matFooterRowDef="['loading']"
@@ -209,7 +217,8 @@
                     <mat-nav-list style="max-height: 312px; overflow: auto" fusePerfectScrollbar *ngIf="isShowHelp">
                         <mat-list-item *ngFor="let item of helpItems">
                             <div class="w-100-p" fxLayout="row" fxLayoutAlign="start center">
-                                <p class="m-0" matLine fxFlex (click)="onSelectHelp(item.ParameterValues)">{{item.ParameterValues}}</p>
+                                <p class="m-0" matLine fxFlex (click)="onSelectHelp(item.ParameterValues)">
+                                    {{item.ParameterValues}}</p>
                             </div>
                         </mat-list-item>
                     </mat-nav-list>

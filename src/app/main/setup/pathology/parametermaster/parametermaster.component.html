@@ -182,9 +182,9 @@
                                         </mat-footer-cell>
                                     </ng-container>
 
-                                    <mat-header-row class="accent"
+                                    <mat-header-row class="accent" class=" min-width-2200"
                                         *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                                    <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
+                                    <mat-row *matRowDef="let row; columns: displayedColumns;" class="element" class=" min-width-2200"
                                         [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                     <mat-footer-row *matFooterRowDef="['loading']"
                                         [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>

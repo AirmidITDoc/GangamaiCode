@@ -37,10 +37,14 @@ export class PharmacyreportService {
   }
 
 
-  public getPharmacyDailyCollectionNew(FromDate,ToDate,StoreId,AddedById){
-    return this._httpClient.get("Sales/view-pharmacy-daily-collection?FromDate=" +  FromDate + "&ToDate=" + ToDate+"&StoreId="+StoreId+"&AddedById="+AddedById);
-  }
+  // public getPharmacyDailyCollectionNew(FromDate,ToDate,StoreId,AddedById){
+  //   return this._httpClient.get("Sales/view-pharmacy-daily-collection?FromDate=" +  FromDate + "&ToDate=" + ToDate+"&StoreId="+StoreId+"&AddedById="+AddedById);
+  // }
 
+  public getPharmacyDailyCollectionNew(FromDate,ToDate,StoreId,AddedById){
+    return this._httpClient.get("PharmacyReport/view-PharmacyDailyCollectionReport?FromDate=" +  FromDate + "&ToDate=" + ToDate+"&StoreId="+StoreId+"&AddedById="+AddedById);
+  }
+  
   public getSalesDailyCollectionSummary(FromDate,ToDate,StoreId,AddedById){
     return this._httpClient.get("Sales/view-pharmacy-daily-collection_Summary?FromDate=" + FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId+"&AddedById="+AddedById);
   }

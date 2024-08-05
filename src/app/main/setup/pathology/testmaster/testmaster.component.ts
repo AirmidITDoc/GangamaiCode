@@ -282,7 +282,7 @@ export class TestmasterComponent implements OnInit {
 
         this._TestService.populateForm(row);
         const dialogRef = this._matDialog.open(TestFormMasterComponent, {
-            maxWidth: "70vw",
+            maxWidth: "90vw",
             maxHeight: "90vh",
             width: "100%",
             height: "100%",
@@ -299,7 +299,7 @@ export class TestmasterComponent implements OnInit {
     onAdd() {
         const dialogRef = this._matDialog.open(TestFormMasterComponent, {
 
-            width: "80%",
+            width: "90%",
             height: "95%",
         });
         dialogRef.afterClosed().subscribe((result) => {

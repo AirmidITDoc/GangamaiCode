@@ -308,9 +308,7 @@ export class ResultEntryComponent implements OnInit {
             });
           dialogRef.afterClosed().subscribe(result => {
             if (result) {
-              // this.selection.clear();
-              // data = [];
-              this.SpinLoading = false;
+            this.SpinLoading = false;
             }
           });
 

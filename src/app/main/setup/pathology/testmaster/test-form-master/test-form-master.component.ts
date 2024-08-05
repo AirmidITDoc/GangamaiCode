@@ -27,7 +27,7 @@ import { AuthenticationService } from "app/core/services/authentication.service"
 })
 export class TestFormMasterComponent implements OnInit {
     displayedColumns: string[] = ['ParameterName', 'Add'];
-    displayedColumns2: string[] = ['Reorder', 'ParameterName', 'UnitName', 'Range', 'Action'];
+    displayedColumns2: string[] = ['Reorder', 'ParameterName','PrintParameterName', 'MethodName','UnitName', 'ParaMultipleRange','Formula','IsNumeric', 'Action'];
     displayedColumns3: string[] = ['Template Name', 'Add'];
     displayedColumns4: string[] = ['ParameterName'];
     displayedColumns5: string[] = ['TemplateName', 'Action'];
@@ -347,6 +347,8 @@ export class TestFormMasterComponent implements OnInit {
         this.DSTestList.data = []
         temp.splice(temp.findIndex(item => item.ParameterName === event.ParameterName), 1);
         this.DSTestList.data = temp;
+
+        
     }
 
 
@@ -371,8 +373,8 @@ export class TestFormMasterComponent implements OnInit {
 
 
     onAdd(event) {
-        console.log("event is :" + event)
-
+        console.log(event)
+      
         // for parameters
         this.DSTestList.data = [];
         this.ChargeList = this.dsTemparoryList.data;
@@ -774,6 +776,13 @@ export class TestFormMasterComponent implements OnInit {
 export class TestList {
     ParameterName: any;
     ParameterID: number;
+    PrintParameterName: any;
+    MethodName: any;
+    UnitName: any;
+    ParaMultipleRange: any;
+    Formula: any;
+    IsNumeric: any;
+
     /**
      * Constructor
      *
@@ -781,7 +790,14 @@ export class TestList {
      */
     constructor(TestList) {
         {
+            this.ParameterID = TestList.ParameterID || "";
             this.ParameterName = TestList.ParameterName || "";
+            this.PrintParameterName = TestList.PrintParameterName || "";
+            this. MethodName = TestList. MethodName || "";
+            this. UnitName = TestList. UnitName || "";
+            this. ParaMultipleRange = TestList. ParaMultipleRange || "";
+            this. Formula = TestList. Formula || "";
+            this. IsNumeric = TestList. IsNumeric || "";
         }
     }
 }

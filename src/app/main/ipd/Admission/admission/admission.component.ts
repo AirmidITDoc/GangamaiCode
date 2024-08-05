@@ -35,6 +35,7 @@ import { EditConsultantDoctorComponent } from 'app/main/opd/appointment/edit-con
 import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 import { CompanyInformationComponent } from '../../company-information/company-information.component';
 import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
+import { ThemeService } from 'ng2-charts';
 
 @Component({
   selector: 'app-admission',
@@ -3135,6 +3136,7 @@ AdmDocId:any;
 PathResultDr1:any;
 ServiceId:any;
 PathTestID:any;
+Adm_Visit_docId:any;
   /**
 * Constructor
 *
@@ -3284,6 +3286,7 @@ PathTestID:any;
       this.PathResultDr1=AdmissionPersonl.PathResultDr1 || 0
       this.ServiceId=AdmissionPersonl.ServiceId || 0;
       this.PathTestID=AdmissionPersonl.PathTestID || 0
+      this.Adm_Visit_docId=AdmissionPersonl.Adm_Visit_docId || 0;
     }
   }
 }
