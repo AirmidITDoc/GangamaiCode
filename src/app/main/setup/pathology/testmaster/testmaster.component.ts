@@ -26,6 +26,7 @@ import { ExcelDownloadService } from "app/main/shared/services/excel-download.se
 })
 export class TestmasterComponent implements OnInit {
     displayedColumns: string[] = [
+        "IsTemplateTest",
         "TestId",
         "TestName",
         "PrintTestName",
@@ -33,10 +34,7 @@ export class TestmasterComponent implements OnInit {
         "ServiceName",
         "TechniqueName",
         "MachineName",
-        "SuggestionNote",
-        "FootNote",
         "AddedBy",
-        "IsTemplateTest",
         "Isdeleted",
         "action",
     ];

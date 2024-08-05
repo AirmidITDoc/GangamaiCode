@@ -87,14 +87,32 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <mat-table #table class="table" matSort [dataSource]="DSTestMasterList"
-                                        [@animateStagger]="{value:'50'}" style="overflow:auto; width: 100%;">
+                                    <mat-table matSort [dataSource]="DSTestMasterList" [@animateStagger]="{value:'50'}">
+
+                                        <ng-container matColumnDef="IsTemplateTest">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header> IsTemplateTest
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                            <mat-icon *ngIf="element.IsTemplateTest=='1'" matTooltip="IsTemplateTest">assignment</mat-icon>
+                                                <mat-icon *ngIf="element.IsTemplateTest !='1'"  matTooltip="Test">
+                                                    <img width="30px" height="30px" src="assets/images/logos/pathology.png">
+                                                </mat-icon>
+                                            </mat-cell>
+                                        </ng-container>
 
                                         <ng-container matColumnDef="TestId">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.TestId}}
                                             </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="CategoryName">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                fxShow.gt-sm>Categoryname
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                {{element.CategoryName}} </mat-cell>
                                         </ng-container>
 
                                         <ng-container matColumnDef="TestName">
@@ -113,19 +131,11 @@
                                                 {{element.PrintTestName}}
                                             </mat-cell>
                                         </ng-container>
-
-                                        <ng-container matColumnDef="CategoryName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                fxShow.gt-sm>Categoryname
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                {{element.CategoryName}} </mat-cell>
-                                        </ng-container>
                                         <ng-container matColumnDef="ServiceName">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                fxShow.gt-sm>ServiceName
+                                                fxShow.gt-sm class="w-200">Billing Service Name
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-200"> 
                                                 {{element.ServiceName}} </mat-cell>
                                         </ng-container>
 
@@ -145,7 +155,7 @@
                                             </mat-cell>
                                         </ng-container>
 
-                                        <ng-container matColumnDef="SuggestionNote">
+                                        <!-- <ng-container matColumnDef="SuggestionNote">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200">
                                                 SuggestionNote
                                             </mat-header-cell>
@@ -160,7 +170,7 @@
                                             <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-200">
                                                 {{element.FootNote}}
                                             </mat-cell>
-                                        </ng-container>
+                                        </ng-container> -->
 
                                         <ng-container matColumnDef="AddedBy">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header>AddedBy</mat-header-cell>
@@ -168,19 +178,7 @@
                                             </mat-cell>
                                         </ng-container>
 
-                                        <ng-container matColumnDef="IsTemplateTest">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header> IsTemplateTest
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                                <mat-icon *ngIf="element.IsTemplateTest=='1'"
-                                                    matTooltip="IsTemplateTest">assignment</mat-icon>
-                                                <mat-icon *ngIf="element.IsTemplateTest !='1'" matTooltip="Test">
-                                                    <img width="30px" height="30px"
-                                                        src="assets/images/logos/pathology.png">
-                                                </mat-icon>
-                                            </mat-cell>
-                                        </ng-container>
-
+                                     
                                         <ng-container matColumnDef="Isdeleted">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                                 IsActive
