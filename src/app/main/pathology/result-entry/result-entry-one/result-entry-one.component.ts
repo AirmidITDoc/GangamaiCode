@@ -36,6 +36,7 @@ export class ResultEntryOneComponent implements OnInit {
         // 'SubTestName',
         'ParameterName',
         'ResultValue',
+        'bold',
         'NormalRange',
         'Formula'
     ];
@@ -183,7 +184,7 @@ export class ResultEntryOneComponent implements OnInit {
     @ViewChild('languageMenuTrigger') languageMenuTrigger: MatMenuTrigger;
     isShowHelp: boolean = false;
     onResultUp(data) {
-        debugger
+        
         let items = this.dataSource.data.filter(x => (x?.Formula ?? "").indexOf('{{' + data.ParameterShortName + '}}') > 0);
         for (let i = 0; i < items.length; i++) {
             let formula = items[i].Formula;
@@ -197,7 +198,24 @@ export class ResultEntryOneComponent implements OnInit {
             if (!isNaN(items[i].ResultValue))
                 items[i].ResultValue = Math.round(items[i].ResultValue * 100) / 100;
         }
+
+        debugger
+        console.log(data)
+        if(parseFloat(data.ResultValue) < (parseFloat(data.MinValue)) && parseFloat(data.ResultValue) > parseFloat(data.Maxvalue)){
+       //  this.boldstatus=1;
+         data.bold=1;
+        }
+        
     }
+
+    boldstatus=0;
+
+
+
+
+
+
+
     helpItems: any[] = [];
     selectedParam: any;
     onKeydown(e, data) {
@@ -574,6 +592,7 @@ export class Pthologyresult {
     ParameterShortName: any;
     ResultValue: any;
     ParameterId: any;
+    bold:any;
 
     constructor(Pthologyresult) {
         this.TestName = Pthologyresult.TestName || '';
@@ -584,7 +603,7 @@ export class Pthologyresult {
         this.ParameterShortName = Pthologyresult.ParameterShortName || '';
         this.ResultValue = Pthologyresult.ResultValue || '';
         this.ParameterId = Pthologyresult.ParameterId || '';
-        // this.ParameterID = Pthologyresult.ParameterID || '';
+        this.bold = Pthologyresult.bold || 0;
     }
 
 }

@@ -157,11 +157,22 @@
                                                 <input matInput autocomplete="off" (keyup)="onResultUp(contact)"
                                                     (keydown.F2)="onKeydown($event,contact)" matTooltip="Use Help Value"
                                                     [disabled]="contact.Formula" [(ngModel)]="contact.ResultValue">
-                                                
+
                                             </mat-form-field>
                                             <button [matMenuTriggerFor]="addMenu" #languageMenuTrigger="matMenuTrigger"
                                                 style="visibility: hidden;"></button>
-                                               <img width="20px;" height="20px;" src="assets/images/logos/help.jpeg" *ngIf=" contact.ParaIsNumeric ==0"  matTooltip="Use Help Value">
+                                            <img width="20px;" height="20px;" src="assets/images/logos/help.jpeg"
+                                                *ngIf=" contact.ParaIsNumeric ==0" matTooltip="Use Help Value">
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="bold" fxFlex="10%;">
+                                        <mat-header-cell *matHeaderCellDef
+                                            class="border-right"></mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" class="border-right">
+                                            <mat-form-field>
+                                                <input matInput [(ngModel)]="boldstatus">
+                                            </mat-form-field>
                                         </mat-cell>
                                     </ng-container>
 
@@ -174,6 +185,7 @@
                                             {{contact.NormalRange}}
                                         </mat-cell>
                                     </ng-container>
+
                                     <ng-container matColumnDef="Formula">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
                                             class="border-right">
