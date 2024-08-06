@@ -151,12 +151,18 @@ export class AppointmentSreviceService {
 }
 
   // Add new registration
-  public regInsert(employee) {
+  public regInsert(employee,loader = true) {
+    if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.post("OutPatient/OPDRegistrationSave", employee);
 }
 
   // update registration
-  public regUpdate(employee) {
+  public regUpdate(employee,loader = true) {
+    if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.post("OutPatient/OPDAppointmentInsert", employee);
 }
 
@@ -177,23 +183,31 @@ export class AppointmentSreviceService {
 }
   
 public Appointmentcancle(employee, loader = true) {
-
     if (loader) {
         this._loaderService.show();
     }
     return this._httpClient.post("OutPatient/AppointmentCancle", employee);
 }
-public documentuploadInsert(employee){
-  return this._httpClient.post("InPatient/DocAttachment", employee);
+public documentuploadInsert(employee, loader = true){
+    if (loader) {
+        this._loaderService.show();
+    }
+    return this._httpClient.post("InPatient/DocAttachment", employee);
 }
 
 
-public getVisitedList(employee) {
+public getVisitedList(employee,loader = true) {
+    if (loader) {
+        this._loaderService.show();
+    }
   //  return this._httpClient.post("Generic/GetByProc?procName=ps_Rtrv_OpVisitDetailsList",employee)
   return this._httpClient.post("Generic/GetByProc?procName=M_VisitDetail",employee)
-  }
+}
   
-public documentdownloadInsert(employee){
+public documentdownloadInsert(employee,loader = true){
+    if (loader) {
+        this._loaderService.show();
+    }
   return this._httpClient.post("File/UploadFile", employee);
 }
   // display Appointment list
@@ -212,11 +226,17 @@ public documentdownloadInsert(employee){
   }
 
 
-  public getRegIdDetail(data){
+  public getRegIdDetail(data,loader = true){
+    if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
   }
   // Doctor Master Combobox List
-  public getAdmittedDoctorCombo() {
+  public getAdmittedDoctorCombo(loader = true) {
+    if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
   }
 
@@ -224,118 +244,199 @@ public documentdownloadInsert(employee){
   // Admission Form Combobox old
 
   //Prefix Combobox List
-  public getPrefixCombo() {
+  public getPrefixCombo(loader = true) {
+    if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=RetrievePrefixMasterForCombo", {})
   }
 
   //Gender Combobox List
-  public getGenderCombo(Id) {
+  public getGenderCombo(Id,loader = true) {
+    if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_SexMasterForCombo_Conditional", { "Id": Id })
   }
 
-  public getGenderMasterCombo() {
+  public getGenderMasterCombo(loader = true) {
+    if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveGenderMasterForCombo", {})
   }
 
   // Classmaster List
-  public getClassMasterCombo() {
+  public getClassMasterCombo(loader = true) {
+    if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_WardClassMasterForCombo", {})
   }
 
   //Area Combobox List
-  public getAreaCombo() {
+  public getAreaCombo(loader = true) {
+    if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_AreaMasterForCombo", {})
   }
 
   //Area Combobox List
-  public getPurposeList() {
+  public getPurposeList(loader=true) {
+    if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_PurposeMasterForCombo", {})
   }
 
   //Marital Combobox List
-  public getMaritalStatusCombo() {
+  public getMaritalStatusCombo(loader = true) {
+    if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_MaritalStatusMasterForCombo", {})
   }
   //Religion Combobox List
-  public getReligionCombo() {
+  public getReligionCombo(loader = true) {
+    if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ReligionMasterForCombo", {})
   }
   //Hospital Combobox List
-  public getHospitalCombo() {
+  public getHospitalCombo(loader = true) {
+    if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=rtrv_UnitMaster_1", {})
   }
   //Patient Type Combobox List
-  public getPatientTypeCombo() {
+  public getPatientTypeCombo(loader=true) {
+    if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=RetrievePatientTypeMasterForCombo", {})
   }
   //Tariff Combobox List
-  public getTariffCombo() {
+  public getTariffCombo(loader = true) {
+    if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveTariffMasterForCombo", {})
   }
   //company Combobox List
-  public getCompanyCombo() {
+  public getCompanyCombo(loader = true) {
+    if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveCompanyMasterForCombo", {})
   }
   //subtpa Combobox List
-  public getSubTPACompCombo() {
+  public getSubTPACompCombo(loader = true) {
+    if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveM_SubTPACompanyMasterForCombo", {})
   }
   //relationship Combobox List
-  public getRelationshipCombo() {
+  public getRelationshipCombo(loader = true) {
+    if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveRelationshipMasterForCombo", {})
   }
   //Deartment Combobox List
-  public getDepartmentCombo() {
+  public getDepartmentCombo(loader = true) {
+    if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveDepartmentMasterForCombo", {})
   }
   //Doctor Master Combobox List
-  public getDoctorMasterCombo(Id) {
+  public getDoctorMasterCombo(Id,loader = true) {
+    if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_DoctorWithDepartMasterForCombo_Conditional", { "Id": Id })
   }
   //Doctor 1 Combobox List
-  public getDoctorMaster1Combo() {
+  public getDoctorMaster1Combo(loader = true) {
+    if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_DoctorListForCombo", {})
   }
   //Doctor 2 Combobox List
-  public getDoctorMaster2Combo() {
+  public getDoctorMaster2Combo(loader = true) {
+    if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
   }
 
-  public getRefDoctorMasterCombo() {
+  public getRefDoctorMasterCombo(loader = true) {
+    if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_DoctorListForCombo", {})
   }
 
   //Ward Combobox List
-  public getWardCombo() {
+  public getWardCombo(loader = true) {
+    if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RoomMasterForCombo", {})
   }
   //Bed Combobox List
-  public getBedCombo(Id) {
+  public getBedCombo(Id,loader = true) {
+    if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveBedMasterForCombo_Conditional", { "Id": Id })
   }
 
   //  city list
-  public getCityList() {
+  public getCityList(loader = true) {
+    if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveCityMasterForCombo", {})
   }
   //state Combobox List
-  public getStateList(CityId) {
+  public getStateList(CityId,loader = true) {
+    if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StateMasterForCombo_Conditional", { "Id": CityId })
   }
   //country Combobox List
-  public getCountryList(StateId) {
+  public getCountryList(StateId,loader = true) {
+    if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_CountryMasterForCombo_Conditional", { "Id": StateId })
   }
   //service Combobox List
-  public getServiceList() {
+  public getServiceList(loader = true) {
+    if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ServiceMasterForCombo", {})
   }
   //registration list 
-  public getRegistrationList(employee) {
+  public getRegistrationList(employee,loader = true) {
+    if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientRegistrationList", employee)
   }
 
-  public getDocPatientRegList(employee){
+  public getDocPatientRegList(employee,loader = true){
+    if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientVisitedListSearch", employee)
   }
   //registration list 
@@ -345,18 +446,30 @@ public documentdownloadInsert(employee){
     }
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PhoneAppointmentListSearch", employee)
   }
-  getuploadeddocumentsList(query){
+  getuploadeddocumentsList(query,loader = true){
+    if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
   }
-  getfile(Id){
+  getfile(Id,loader = true){
+    if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.get("InPatient/get-file?Id="+Id)
   }
 
-  public UpdateQueryByStatement(query) {
+  public UpdateQueryByStatement(query,loader = true) {
+    if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.post("Generic/ExecByQueryStatement?query="+query, {})
   }
 
-  public getdeleteddocument(query) {
+  public getdeleteddocument(query,loader = true) {
+    if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.post("Generic/ExecByQueryStatement?query="+query, {})
   }
 
@@ -366,18 +479,30 @@ public documentdownloadInsert(employee){
   //   return this._httpClient.post("Generic/GetByProc?procName=Retrieve_DoctorWithDepartMasterForCombo", {})
   // }
 
-  public getDeptwiseDoctorMaster(){
+  public getDeptwiseDoctorMaster(loader = true){
+    if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_DoctorWithDepartMasterForCombo", {})
   }
-  populateForm(employee) {
+  populateForm(employee,loader = true) {
+    if (loader) {
+        this._loaderService.show();
+    }
     this.mySaveForm.patchValue(employee);
   }
 
-  getregisterListByRegId(employee){
+  getregisterListByRegId(employee,loader = true){
+    if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RegbyRegID", employee)
   }
 
-  public getTemplate(query) {
+  public getTemplate(query,loader = true) {
+    if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
   } 
   public getOPDPrecriptionPrint(VisitId, loader = true) {
@@ -387,17 +512,24 @@ public documentdownloadInsert(employee){
     return this._httpClient.post("Generic/GetByProc?procName=rptAppointmentPrint1", VisitId)
   }
   
-  public getOPPatient(employee) {
-
+  public getOPPatient(employee,loader = true) {
+    if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RegistrationList", employee)
   }
 
     // Doctor Master Combobox List
-    public getDoctorMasterComboA() {
-      return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
+    public getDoctorMasterComboA(loader = true) {
+        if (loader) {
+            this._loaderService.show();
+        }
+        return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
     }
-    public CrossConsultationInsert(element){
-
+    public CrossConsultationInsert(element,loader = true){
+        if (loader) {
+            this._loaderService.show();
+        }
       return this._httpClient.post("OutPatient/OPDCrossConsultationInsert",element)
     }
 
@@ -407,7 +539,10 @@ public documentdownloadInsert(employee){
         }
       return this._httpClient.get("OutPatient/view-PatientAppointment?VisitId=" + VisitId);
     }
-    public getDoctorMasterNew() {
+    public getDoctorMasterNew(loader = true) {
+        if (loader) {
+            this._loaderService.show();
+        }
       return this._httpClient.post("Generic/GetByProc?procName=Retrieve_DoctorWithDepartCombo_Conditional", {})
     }
 }
