@@ -40,17 +40,25 @@ export class NursingnoteComponent implements OnInit {
   PatientListfilteredOptions: any;
   noOptionFound:any;
   filteredOptions:any; 
+  vCompanyName:any;
   vRegNo:any;
+  vDescription:any;
   vPatienName:any;
   vGender:any;
   vAdmissionDate:any;
   vAdmissionID:any;
   vIPDNo:any;
-  vAge:any;
+  vAgeyear:any;
+  vAgeMonth:any;
+  vAgeDay:any;
   vWardName:any;
   vBedName:any;
-  NoteList:any=[];
-  vDescription:any;
+  vPatientType:any;
+  vRefDocName:any;
+  vTariffName:any;
+  vDoctorname:any;
+  vDepartmentName:any;
+  NoteList:any=[]; 
    selectedAdvanceObj: AdmissionPersonlModel;
   dsNursingNoteList = new MatTableDataSource<DocNote>();
  
@@ -66,7 +74,15 @@ export class NursingnoteComponent implements OnInit {
     private formBuilder: FormBuilder, 
     public datePipe: DatePipe,   
     public toastr: ToastrService,
-  ) {  }
+    public _matDialog: MatDialog,  
+  )
+  { 
+    if (this.advanceDataStored.storage) { 
+    this.selectedAdvanceObj = this.advanceDataStored.storage;
+    // this.PatientHeaderObj = this.advanceDataStored.storage;
+    console.log( this.selectedAdvanceObj)
+  } 
+ }
 
   //doctorone filter
   public pathodoctorFilterCtrl: FormControl = new FormControl();
@@ -74,13 +90,17 @@ export class NursingnoteComponent implements OnInit {
 
   private _onDestroy = new Subject<void>();
   ngOnInit(): void { 
-    this.getNoteList();
-  
-    // this.pathodoctorFilterCtrl.valueChanges
-    //   .pipe(takeUntil(this._onDestroy))
-    //   .subscribe(() => {
-    //     this.filterDoctor();
-    //   }); 
+    this.vRegNo = this.selectedAdvanceObj.RegNo;
+    this.vPatienName = this.selectedAdvanceObj.PatientName;
+    this.vDoctorname = this.selectedAdvanceObj.DoctorName;
+    this.vDepartmentName = this.selectedAdvanceObj.DepartmentName;
+    this.vAgeyear = this.selectedAdvanceObj.AgeYear;
+    this.vAgeMonth = this.selectedAdvanceObj.AgeMonth;
+    this.vAgeDay = this.selectedAdvanceObj.AgeDay;
+    this.vBedName = this.selectedAdvanceObj.BedName;
+    this.vWardName = this.selectedAdvanceObj.RoomName;
+
+    this.getNoteList(); 
     this.getDoctorList(); 
   }
   getSearchList() {
@@ -111,7 +131,7 @@ export class NursingnoteComponent implements OnInit {
    this.vWardName = obj.RoomName;
    this.vBedName = obj.BedName;
    this.vGender = obj.GenderName;
-   this.vAge = obj.Age
+  //  this.vAge = obj.Age
    this.vAdmissionID = obj.AdmissionID;
    this.vIPDNo = obj.IPDNo 
    this.getNoteTablelist(obj);
@@ -121,6 +141,24 @@ export class NursingnoteComponent implements OnInit {
     this.NoteList = data;
   })
  }
+ onClearPatientInfo() {
+  this.vRegNo = '';
+  this.vPatienName = '';
+  this.vWardName = '';
+  this.vBedName = '';
+  this.vGender = '';
+  this.vIPDNo = '';
+  this.vDepartmentName = '';
+  this.vDoctorname = '';
+  this.vAgeyear = '';
+  this.vAgeMonth = '';
+  this.vAgeDay = '';
+  this.vAdmissionDate = '';
+  this.vRefDocName = '';
+  this.vPatientType = '';
+  this.vTariffName = '';
+  this.vCompanyName = '';
+}
 
  onAdd(){
   if(this._NursingStationService.myform.get('Note').value){
@@ -240,7 +278,8 @@ export class NursingnoteComponent implements OnInit {
   } 
   onClose() {
     this._NursingStationService.myform.reset();
-    // this.dialogRef.close();
+    this._matDialog.closeAll();
+    this.onClearPatientInfo();
   } 
 }
  

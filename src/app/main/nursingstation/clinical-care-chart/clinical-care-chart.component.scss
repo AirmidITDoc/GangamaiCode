@@ -50,16 +50,16 @@
     border: 1px solid rgba(0, 0, 0, 0.5);
   }
   
-  .example-sidenav-content {
-    display: flex;
+  .example-sidenav-content { 
     height: 100%;
     align-items: center;
     justify-content: center;
+    padding: 12px;
   }
   
-  .example-sidenav {
-    padding: 20px;
-  }
+  // .example-sidenav {
+  //   padding: 20px;
+  // }
   
 
  
