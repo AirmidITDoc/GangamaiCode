@@ -401,9 +401,13 @@ export class ResultEntryComponent implements OnInit {
   Cancleresult(row) {
 
     Swal.fire({
-      title: 'Do you want to Change Active Status Of Test',
-      showCancelButton: true,
-      confirmButtonText: 'OK',
+      title: 'Confirm Deactivation',
+          text: 'Are you sure you want to Cancel the result?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, deactivate!'
 
     }).then((flag) => {
 

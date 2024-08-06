@@ -219,7 +219,7 @@ export class ResultEntryOneComponent implements OnInit {
 
     getResultList(advanceData) {
         this.sIsLoading = 'loading-data';
-        let SelectQuery = "Select * from lvw_Retrieve_PathologyResult where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ")"
+        let SelectQuery = "Select * from m_lvw_Retrieve_PathologyResult where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ")"
         console.log(SelectQuery)
         this._SampleService.getPathologyResultList(SelectQuery).subscribe(Visit => {
             this.dataSource.data = Visit as Pthologyresult[];
@@ -240,7 +240,7 @@ export class ResultEntryOneComponent implements OnInit {
 
     getResultListIP() {
         this.sIsLoading = 'loading-data';
-        let SelectQuery = "Select * from lvw_Retrieve_PathologyResultIPPatientUpdate where PathReportId in(" + this.reportIdData + ")"
+        let SelectQuery = "Select * from m_lvw_Retrieve_PathologyResultIPPatientUpdate where PathReportId in(" + this.reportIdData + ")"
         console.log(SelectQuery);
         this._SampleService.getPathologyResultListforIP(SelectQuery).subscribe(Visit => {
             this.dataSource.data = Visit as Pthologyresult[];
@@ -256,12 +256,12 @@ export class ResultEntryOneComponent implements OnInit {
 
     getResultListOP() {
         this.sIsLoading = 'loading-data';
-        let SelectQuery = "Select * from lvw_Retrieve_PathologyResultUpdate where PathReportId in(" + this.reportIdData + ")"
+        let SelectQuery = "Select * from m_lvw_Retrieve_PathologyResultUpdate where PathReportId in(" + this.reportIdData + ")"
         console.log(SelectQuery)
         this._SampleService.getPathologyResultListforOP(SelectQuery).subscribe(Visit => {
             this.dataSource.data = Visit as Pthologyresult[];
             this.Pthologyresult = Visit as Pthologyresult[];
-            console.log(this.Pthologyresult);
+            console.log( this.dataSource.data );
             this.dataSource.sort = this.sort;
             this.dataSource.paginator = this.paginator;
             this.sIsLoading = '';
@@ -314,11 +314,11 @@ export class ResultEntryOneComponent implements OnInit {
             pathologyInsertReportObj['PathReportId'] = element.PathReportId //element1.PathReportId;
             pathologyInsertReportObj['CategoryID'] = element.CategoryID || 0;
             pathologyInsertReportObj['TestID'] = element.TestId || 0;
-            pathologyInsertReportObj['SubTestId'] = element.SubTestID || 0;
+            pathologyInsertReportObj['SubTestId'] = element.SubTestId || 0;
             pathologyInsertReportObj['ParameterId'] = element.ParameterId || 0;
             pathologyInsertReportObj['ResultValue'] = element.ResultValue || '';
             pathologyInsertReportObj['UnitId'] = element.UnitId || 1;
-            pathologyInsertReportObj['NormalRange'] = element.NormalResult || '';
+            pathologyInsertReportObj['NormalRange'] = element.NormalRange || '';
             pathologyInsertReportObj['PrintOrder'] = element.PrintOrder || 0;
             pathologyInsertReportObj['PIsNumeric'] = element.PIsNumeric || 0;
             pathologyInsertReportObj['CategoryName'] = element.CategoryName || '';
@@ -579,7 +579,7 @@ export class Pthologyresult {
         this.TestName = Pthologyresult.TestName || '';
         this.SubTestName = Pthologyresult.SubTestName || '';
         this.ParameterName = Pthologyresult.ParameterName || '';
-        this.NormalRange = Pthologyresult.NormalRange || 0;
+        this.NormalRange = Pthologyresult.NormalRange || '';
         this.Formula = Pthologyresult.Formula || '';
         this.ParameterShortName = Pthologyresult.ParameterShortName || '';
         this.ResultValue = Pthologyresult.ResultValue || '';
