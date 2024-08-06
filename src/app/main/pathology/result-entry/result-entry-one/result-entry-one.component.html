@@ -152,14 +152,14 @@
                                             Result
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" class="border-right">
-                                            <mat-form-field appearance="legacy" *ngIf="!contact.IsHelpShown"
+                                            <mat-form-field appearance="legacy" *ngIf="!contact.IsHelpShown" style="width: 100%;"
                                                 [ngClass]="{'Result-Formula': contact.Formula !=null}">
-                                                <input matInput autocomplete="off" (keyup)="onResultUp(contact)" style="width: 100%;"
+                                                <input matInput autocomplete="off" (keyup)="onResultUp(contact)" 
                                                     (keydown.F2)="onKeydown($event,contact)" matTooltip="Use Help Value"
                                                     [disabled]="contact.Formula" [(ngModel)]="contact.ResultValue">
                                             </mat-form-field>
-                                            <mat-form-field appearance="legacy" *ngIf="contact.IsHelpShown">
-                                                <input type="text" matInput id="helpText_{{contact.ParameterId}}" [matAutocomplete]="auto" style="width: 100%;" (keyup)="filterHelp($event)">
+                                            <mat-form-field appearance="legacy" *ngIf="contact.IsHelpShown" style="width: 100%;">
+                                                <input type="text" matInput id="helpText_{{contact.ParameterId}}" [matAutocomplete]="auto" (keyup)="filterHelp($event)">
                                                 <mat-autocomplete #auto="matAutocomplete" (optionSelected)='onSelectHelp($event.option.value,contact)'>
                                                   <mat-option *ngFor="let option of helpItems" [value]="option.ParameterValues">
                                                     {{option.ParameterValues}}
