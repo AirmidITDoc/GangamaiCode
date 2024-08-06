@@ -267,7 +267,7 @@ registerObj:any;
       const dialogRef = this._matDialog.open(NursingnoteComponent,
         {
           maxWidth: "100%",
-          height: '90%',
+          height: '95%',
           width: '90%',
         });
       dialogRef.afterClosed().subscribe(result => {

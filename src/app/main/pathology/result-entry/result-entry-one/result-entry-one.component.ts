@@ -119,6 +119,7 @@ export class ResultEntryOneComponent implements OnInit {
         }
 
     }
+
     ngOnInit(): void {
         this.otherForm = this.formBuilder.group({
             suggestionNotes: '',
@@ -181,8 +182,6 @@ export class ResultEntryOneComponent implements OnInit {
         });
         return Keys;
     }
-    @ViewChild('languageMenuTrigger') languageMenuTrigger: MatMenuTrigger;
-    isShowHelp: boolean = false;
     onResultUp(data) {
         
         let items = this.dataSource.data.filter(x => (x?.Formula ?? "").indexOf('{{' + data.ParameterShortName + '}}') > 0);
@@ -217,22 +216,29 @@ export class ResultEntryOneComponent implements OnInit {
 
 
     helpItems: any[] = [];
+    helpFullItems: any[] = [];
     selectedParam: any;
     onKeydown(e, data) {
-        debugger
         this.selectedParam = data.ParameterId;
         let SelectQuery = "SELECT ParameterValues, IsDefaultValue, ParameterId FROM dbo.M_ParameterDescriptiveMaster WHERE ParameterId = " + data.ParameterId;
         this._SampleService.getPathologyResultList(SelectQuery).subscribe(Visit => {
             this.helpItems = Visit as any[];
-            this.isShowHelp = true;
-            this.languageMenuTrigger.openMenu();
+            this.helpFullItems=Visit as any[];
+            data["IsHelpShown"] = true;
+            setTimeout(() => {
+                document.getElementById("helpText_"+data.ParameterId).focus();
+            }, 100);
         },
             error => {
                 this.sIsLoading = '';
             });
     }
-    onSelectHelp(e) {
+    onSelectHelp(e, data) {
         this.dataSource.data.find(x => x.ParameterId == this.selectedParam).ResultValue = e;
+        data["IsHelpShown"] = false;
+    }
+    filterHelp(e){
+        this.helpItems= this.helpFullItems.filter(option => option.ParameterValues.toLowerCase().indexOf(e.target.value) >= 0);
     }
 
     getResultList(advanceData) {
@@ -279,7 +285,7 @@ export class ResultEntryOneComponent implements OnInit {
         this._SampleService.getPathologyResultListforOP(SelectQuery).subscribe(Visit => {
             this.dataSource.data = Visit as Pthologyresult[];
             this.Pthologyresult = Visit as Pthologyresult[];
-            console.log( this.dataSource.data );
+            console.log(this.dataSource.data);
             this.dataSource.sort = this.sort;
             this.dataSource.paginator = this.paginator;
             this.sIsLoading = '';
@@ -391,6 +397,7 @@ export class ResultEntryOneComponent implements OnInit {
     @ViewChild('PathResultDoctorId') PathResultDoctorId: ElementRef;
     @ViewChild('DoctorId') DoctorId: ElementRef;
     @ViewChild('RefDoctorID') RefDoctorID: ElementRef;
+    @ViewChild('helpinput') helpinput: ElementRef;
 
     public onEnterSugg(event): void {
         if (event.which === 13) {
@@ -446,14 +453,14 @@ export class ResultEntryOneComponent implements OnInit {
 
 
     getPathresultdoctorList() {
-      this._SampleService.getPathologyDoctorCombo().subscribe(data => {
-        this.PathologyDoctorList = data;
-        this.optionsDoc3 = this.PathologyDoctorList.slice();
-        this.filteredresultdr = this.otherForm.get('PathResultDoctorId').valueChanges.pipe(
-          startWith(''),
-          map(value => value ? this._filterdoc3(value) : this.PathologyDoctorList.slice()),
-        );
-      });
+        this._SampleService.getPathologyDoctorCombo().subscribe(data => {
+            this.PathologyDoctorList = data;
+            this.optionsDoc3 = this.PathologyDoctorList.slice();
+            this.filteredresultdr = this.otherForm.get('PathResultDoctorId').valueChanges.pipe(
+                startWith(''),
+                map(value => value ? this._filterdoc3(value) : this.PathologyDoctorList.slice()),
+            );
+        });
     }
 
 

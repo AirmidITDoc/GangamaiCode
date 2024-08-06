@@ -11,6 +11,11 @@
                 Nursing Note
             </span>
         </div>
+        <div class="close-icon">
+            <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
     </mat-toolbar>
     <div class="content">
         <div class="center p-12 pb-56" style="border-radius: 4px;">
@@ -19,7 +24,7 @@
 
                 <form [formGroup]="_NursingStationService.myform">
                     <div fxFlexFill fxLayout="column" fxLayoutGap="10px">
-                        <div fxLayout="row" fxLayoutAlign="start center">
+                        <!-- <div fxLayout="row" fxLayoutAlign="start center">
                            
                             <div class="radio-container">
                                 <mat-radio-group formControlName="Op_ip_id" fxFlex="5%" style="padding: 15px;">
@@ -57,9 +62,9 @@
                             (dateTimeEventEmitter)="getDateTime($event)">
                             </app-common-date> 
                        
-                        </div>
+                        </div> -->
 
-                        <mat-card *ngIf="vRegNo>0">
+                        <mat-card  style="padding: 5px;">
                             <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
                                 <div class="patient-info-container">
                                     <div class="patient-info-sales my-8">
@@ -71,109 +76,108 @@
                                             <div class="patient-sub">
                                                 <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
                                                     fxLayoutAlign="space-between">
-                                                    <div fxLayout="column" fxLayoutGap="10px">
+                                                    <div fxLayout="column" fxLayoutGap="6px">
                                                         <div class="patient-col">
                                                             <span class="patient-col-key">UHID No
                                                             </span>
                                                             <span>:</span>
-                                                            <!-- <span
-                                                                class="patient-col-value">{{selectedAdvanceObj.RegNo}}</span> -->
+                                                            <span
+                                                                class="patient-col-value">{{vRegNo}}</span>
                                                         </div>
                                                         <div class="patient-col">
                                                             <span class="patient-col-key">Patient Name
                                                             </span>
                                                             <span>:</span>
-                                                            <!-- <span
-                                                                class="patient-col-value">{{selectedAdvanceObj.PatientName}}</span> -->
+                                                            <span
+                                                                class="patient-col-value">{{vPatienName}}</span>
                                                         </div>
                                                         <div class="patient-col">
                                                             <span class="patient-col-key">Doctor Name</span>
                                                             <span>:</span>
-                                                            <!-- <span
-                                                                class="patient-col-value">{{selectedAdvanceObj.Doctorname}}</span> -->
+                                                            <span
+                                                                class="patient-col-value">{{vDoctorname}}</span>
                                                         </div>
                                                         <div class="patient-col">
                                                             <span class="patient-col-key">Department</span>
                                                             <span>:</span>
-                                                            <!-- <span
-                                                                class="patient-col-value">{{selectedAdvanceObj.DepartmentName}}</span> -->
+                                                            <span
+                                                                class="patient-col-value">{{vDepartmentName}}</span>
                                                         </div>
                                                     </div>
-                                                    <div fxLayout="column" fxLayoutGap="10px">
+                                                    <div fxLayout="column" fxLayoutGap="6px">
 
                                                         <div class="patient-col">
                                                             <span class="patient-col-key">DOA | Time</span>
                                                             <span>:</span>
-                                                            <!-- <span
-                                                                class="patient-col-value">{{selectedAdvanceObj.AdmDateTime}}</span> -->
+                                                            <span
+                                                                class="patient-col-value">{{vAdmissionDate}}</span>
                                                         </div>
                                                         <div class="patient-col">
                                                             <span class="patient-col-key">IPD No</span>
                                                             <span>:</span>
-                                                            <!-- <span
-                                                                class="patient-col-value">{{selectedAdvanceObj.IPDNo}}</span> -->
+                                                            <span
+                                                                class="patient-col-value">{{vIPDNo}}</span>
                                                         </div>
                                                         <div class="patient-col">
                                                             <span class="patient-col-key">Age | Sex
                                                             </span>
                                                             <span>:</span>
-                                                            <!-- <span
-                                                                class="patient-col-value">{{selectedAdvanceObj.AgeYear}}Y|{{selectedAdvanceObj.AgeMonth}}M|{{selectedAdvanceObj.AgeDay}}
-                                                                D | {{selectedAdvanceObj.GenderName}}</span> -->
+                                                            <span
+                                                                class="patient-col-value">{{vAgeyear}}Y|{{vAgeMonth}}M|{{vAgeDay}}
+                                                                D | {{vGender}}</span>
                                                         </div>
                                                         <div class="patient-col">
                                                             <span class="patient-col-key">Ref-Doctor Name
                                                             </span>
                                                             <span>:</span>
-                                                            <!-- <span
-                                                                class="patient-col-value">{{selectedAdvanceObj.RefDocName}}</span> -->
+                                                            <span
+                                                                class="patient-col-value">{{vRefDocName}}</span>
                                                         </div>
 
                                                     </div>
-                                                    <div fxLayout="column" fxLayoutGap="10px">
+                                                    <div fxLayout="column" fxLayoutGap="6px">
                                                         <div class="patient-col">
                                                             <span class="patient-col-key">Ward | Bed Name
                                                             </span>
                                                             <span>:</span>
                                                             <span
-                                                                class="patient-col-value">{{selectedAdvanceObj.RoomName}}
-                                                                | {{selectedAdvanceObj.BedName}}</span>
+                                                                class="patient-col-value">{{vWardName}}
+                                                                | {{vBedName}}</span>
                                                         </div>
                                                         <div class="patient-col">
                                                             <span class="patient-col-key">Patient Type
                                                             </span>
                                                             <span>:</span>
-                                                            <!-- <span
-                                                                class="patient-col-value">{{selectedAdvanceObj.PatientType}}</span> -->
+                                                            <span
+                                                                class="patient-col-value">{{vPatientType}}</span>
                                                         </div>
                                                         <div class="patient-col">
                                                             <span class="patient-col-key">Tarrif Name
                                                             </span>
                                                             <span>:</span>
-                                                            <!-- <span
-                                                                class="patient-col-value">{{selectedAdvanceObj.TariffName}}</span> -->
+                                                            <span
+                                                                class="patient-col-value">{{vTariffName}}</span>
                                                         </div>
                                                         <div class="patient-col">
                                                             <span class="patient-col-key">Company Name</span>
                                                             <span>:</span>
-                                                            <!-- <span class="patient-col-value"
-                                                                style="color: orange;">{{selectedAdvanceObj.CompanyName}}</span> -->
+                                                            <span class="patient-col-value"
+                                                                style="color: orange;">{{vCompanyName}}</span>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                               
-                           </div>
-                          
+                                </div> 
+                           </div> 
                         </mat-card>
                        
                         <div fxLayout="row" fxLayoutGap="10px">
                             <div fxFlex.gt-sm="40%" fxFlex>
+                                <mat-card style="padding: 5px;">
                                 <mat-table class="table2" matSort [dataSource]="dsNursingNoteList"
-                                    [@animateStagger]="{value:'50'}" style="overflow: auto;height:350px;">
+                                    [@animateStagger]="{value:'50'}" style="overflow: auto;height:360px;">
 
                                     <ng-container matColumnDef="VDate">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
@@ -225,12 +229,15 @@
                                 <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10"
                                     showFirstLastButtons>
                                 </mat-paginator>
+                              </mat-card>
                             </div>
                            
                             <div fxFlex.gt-sm="60%" fxFlex>
-                                <div fxLayout="column" fxLayoutGap="10px"> 
-                                        <div style="padding: 5px;"  fxLayout="row" fxLayoutGap="20px">
-                                    
+                             
+                                <div fxLayout="column" fxLayoutGap="10px">
+                                    <mat-card style="padding: 5px;height: 358px;overflow: auto;">
+                                        <div style="padding: 5px;" fxLayout="row" fxLayoutGap="20px">
+                                
                                             <mat-form-field appearance="outline" fxFlex="60%">
                                                 <mat-label>Notes</mat-label>
                                                 <mat-select formControlName="Note" placeholder="Select Note" #singleSelect>
@@ -240,27 +247,36 @@
                                                     </mat-option>
                                                 </mat-select>
                                             </mat-form-field>
-                                    
-                                            <button class="btn btn-primary btn-with-icon py-8" (click)="onAdd()" id="btnAdd">
-                                                <mat-icon>add</mat-icon>
-                                            </button>
-                                        </div> 
 
-                                    <div> 
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>Description</mat-label>
-                                            <textarea rows="10" matInput name="Description" formControlName="Description"
-                                                placeholder="Add Note....." type="text" id="Description" #description
-                                                required [(ngModel)]="vDescription"></textarea>
-                                        </mat-form-field> 
+                                            <div class="input-add-button">
+                                                <div>
+                                                    <button #addbutton class="btn btn-primary btn-with-icon"  (click)="onAdd()" id="btnAdd">
+                                                        <span class="btn-icon">
+                                                            <mat-icon> add </mat-icon>
+                                                        </span>
+                                                        <span>Add</span>
+                                                    </button> 
+                                                </div>
+                                            </div>
+                                          
+                                        </div>
+                                
+                                        <div>
+                                            <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>Description</mat-label>
+                                                <textarea rows="16" matInput name="Description" formControlName="Description"
+                                                    placeholder="Add Note....." type="text" id="Description" #description required
+                                                    [(ngModel)]="vDescription"></textarea>
+                                            </mat-form-field>
+                                        </div>
+                                    </mat-card>
+                                    <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="end">
+                                        <button class="btn btn-primary-outline" type="button" value="Input">New Template</button>
+                                        <button class="btn btn-danger-outline" type="button" value="Input">Reset</button>
+                                        <button class="btn btn-primary" type="submit" value="submit">Save</button>
                                     </div>
-                                    <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="end" style="padding-top: 50px;">
-                                        <button mat-raised-button class="py-8"><mat-icon>add</mat-icon>New
-                                            Template</button>
-                                        <button class="btn btn-danger-outline">Reset</button>
-                                        <button class="btn btn-primary">Save</button>
-                                    </div>
-                                </div> 
+                                </div>
+                            
                             </div> 
                         </div>  
                     </div>
