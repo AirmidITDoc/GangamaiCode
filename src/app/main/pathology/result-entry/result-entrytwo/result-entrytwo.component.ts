@@ -39,7 +39,7 @@ export class ResultEntrytwoComponent implements OnInit {
   vTemplateName: any = 0;
   isLoading: string = '';
   msg: any;
-  
+  currentDate: Date = new Date();
   selectedAdvanceObj1: AdmissionPersonlModel;
   screenFromString = 'opd-casepaper';
   printTemplate:any;
@@ -162,8 +162,8 @@ export class ResultEntrytwoComponent implements OnInit {
     let pathologyTemplateUpdateObj = {};
    
     pathologyTemplateUpdateObj['PathReportID'] =this.selectedAdvanceObj1.PathReportID;
-    pathologyTemplateUpdateObj['ReportDate'] = this.dateTimeObj.date;
-    pathologyTemplateUpdateObj['ReportTime'] = this.dateTimeObj.time;
+    pathologyTemplateUpdateObj['ReportDate'] =this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
+    pathologyTemplateUpdateObj['ReportTime'] =  this.datePipe.transform(this.currentDate, "MM-dd-yyyy hh:mm"),
     pathologyTemplateUpdateObj['IsCompleted'] = 1;
     pathologyTemplateUpdateObj['IsPrinted'] = 1;
     pathologyTemplateUpdateObj['PathResultDr1'] = 0;
@@ -178,8 +178,8 @@ export class ResultEntrytwoComponent implements OnInit {
 
      let PatientHeaderObj = {};
 
-     PatientHeaderObj['ReportDate'] = this.dateTimeObj.date;
-     PatientHeaderObj['ReportTime'] = this.dateTimeObj.date;
+     PatientHeaderObj['ReportDate'] =this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
+     PatientHeaderObj['ReportTime'] =  this.datePipe.transform(this.currentDate, "MM-dd-yyyy hh:mm"),
    
           console.log('==============================  Advance Amount ===========');
           let submitData = {

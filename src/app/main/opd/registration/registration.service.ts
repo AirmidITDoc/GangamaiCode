@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RegInsert } from './registration.component';
+import { LoaderService } from 'app/core/components/loader/loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,8 @@ export class RegistrationService {
 
   constructor(
     public _httpClient:HttpClient,
-    private _formBuilder: FormBuilder
+    private _formBuilder: FormBuilder,
+    private _loaderService: LoaderService
   ) { 
     this.myFilterform=this.filterForm();
     this.personalFormGroup=this.createPesonalForm();
@@ -96,7 +98,10 @@ export class RegistrationService {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RegistrationList",employee)
   }
 
-  public getPrefixCombo() {
+  public getPrefixCombo(loader = true) {
+    if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=RetrievePrefixMasterForCombo", {})
   }
 
@@ -155,7 +160,10 @@ public getPatientTypeCombo() {
       return this._httpClient.post("Generic/GetByProc?procName=Retrieve_DoctorListForCombo", {})
     }
  
-    populateFormpersonal(employee) {
+    populateFormpersonal(employee,loader=true) {
+        if (loader) {
+            this._loaderService.show();
+        }
       this.personalFormGroup.patchValue(employee);
     }
 

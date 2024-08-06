@@ -70,7 +70,6 @@ export class AppointmentComponent implements OnInit {
 
 
   msg: any;
-  sIsLoading: string = "";
   // isLoading = true;
   isRateLimitReached = false;
   hasSelectedContacts: boolean;
@@ -172,7 +171,6 @@ export class AppointmentComponent implements OnInit {
   isOpen = false;
   loadID = 0;
   savedValue: number = null;
-  SpinLoading: boolean = false;
   // Image upload
   docData;
   docType;
@@ -1202,8 +1200,6 @@ export class AppointmentComponent implements OnInit {
       IsMark: this._AppointmentSreviceService.myFilterform.get("IsMark").value || 0,
     };
     setTimeout(() => {
-      this.isLoadingStr = 'loading';
-
       this._AppointmentSreviceService.getAppointmentListold(D_data).subscribe(
         (Visit) => {
 
@@ -1232,7 +1228,6 @@ export class AppointmentComponent implements OnInit {
 debugger
 
 console.log(this._AppointmentSreviceService.myFilterform.get("DoctorId").value)
-    this.sIsLoading = "loading-data";
     var D_data = {
       F_Name: this._AppointmentSreviceService.myFilterform.get("FirstName").value.trim() + "%" || "%",
       L_Name: this._AppointmentSreviceService.myFilterform.get("LastName").value.trim() + "%" || "%",
@@ -1260,7 +1255,6 @@ console.log(this._AppointmentSreviceService.myFilterform.get("DoctorId").value)
           this.resultsLength = Visit["Table"][0]["total_row"];
           // this.dataSource.paginator = this.paginator;
           this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
-          this.sIsLoading = " ";
         },
         (error) => {
           // this.isLoading = 'list-loaded';
@@ -2192,7 +2186,6 @@ console.log(this._AppointmentSreviceService.myFilterform.get("DoctorId").value)
             // });
           },
           (error) => {
-            this.sIsLoading = "";
           }
         );
     } else if (m == "Update Consultant Doctor") {
@@ -2374,7 +2367,6 @@ console.log(this._AppointmentSreviceService.myFilterform.get("DoctorId").value)
       VisitId = obj
     }
 
-    this.sIsLoading = 'loading-data';
     setTimeout(() => {
       this.AdList = true;
       this._opappointmentService.getAppointmentReport(
@@ -2392,7 +2384,6 @@ console.log(this._AppointmentSreviceService.myFilterform.get("DoctorId").value)
           });
         dialogRef.afterClosed().subscribe(result => {
           this.AdList = false;
-          this.sIsLoading = '';
         });
       });
 
@@ -3110,18 +3101,13 @@ console.log(this._AppointmentSreviceService.myFilterform.get("DoctorId").value)
 
   // getVistDetailsList() {
   //   ;
-  //   this.sIsLoading = 'loading';
   //   var D_data = {
 
   //     "VisitId": 159641// this.selectedAdvanceObj.VisitId,
   //   }
 
-  //   this.sIsLoading = 'loading-data';
   //   this._opappointmentService.getVisitedList(D_data).subscribe(Visit => {
   //     this.dataSource1.data = Visit as CasepaperVisitDetails[];
-
-  //     this.sIsLoading = '';
-
 
   //   })
 
