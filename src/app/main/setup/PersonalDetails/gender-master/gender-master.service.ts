@@ -1,13 +1,13 @@
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { HttpService } from "app/core/http/http.service";
 
 @Injectable()
 export class GenderMasterService {
     myform: FormGroup;
     myformSearch: FormGroup;
     constructor(
-        private _httpClient: HttpClient,
+        private _httpClient: HttpService,
         private _formBuilder: FormBuilder
     ) {
         this.myform = this.createGenderForm();
@@ -36,20 +36,25 @@ export class GenderMasterService {
         this.createGenderForm();
     }
 
-    public getGenderMasterList(param) {
-        return this._httpClient.post("Generic/GetByProc?procName=Rtrv_DB_GenderMaster",param
-        );
-    }
-
-    public genderMasterInsert(Param) {
-        return this._httpClient.post("PersonalDetails/GenderSave", Param);
-    }
-
-    public genderMasterUpdate(Param) {
-        return this._httpClient.post("PersonalDetails/GenderUpdate", Param);
-    }
-
     populateForm(Param) {
         this.myform.patchValue(Param);
+    }
+
+
+
+    public getGenderMasterList(param: any, showLoader = true) {
+        return this._httpClient.post("Gender/List", param, showLoader);
+    }
+
+    public genderMasterInsert(Param: any, showLoader = true) {
+        return this._httpClient.post("Gender", Param, showLoader);
+    }
+
+    public genderMasterUpdate(id: number , Param: any, showLoader = true) {
+        return this._httpClient.put("Gender/" + id , Param, showLoader);
+    }
+
+    public deactivateTheStatus(m_data) {
+        return this._httpClient.delete("Gender?Id=" + m_data, {});
     }
 }

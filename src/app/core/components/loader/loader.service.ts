@@ -13,7 +13,6 @@ export class LoaderService {
   }
 
   show() {
-    debugger
     this._loaderSubject.next(true);
   }
 
