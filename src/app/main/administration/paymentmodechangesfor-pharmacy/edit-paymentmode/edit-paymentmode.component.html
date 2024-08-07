@@ -1,484 +1,319 @@
-<div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="10px"
-    style="width: 100%; background:#F5F5F5; padding: 10px 10px 10px 10px; ">
-    <!-- <div class="col-md-12" style="padding:10px;" *ngIf="selectedView == 'Dropdown'"> -->
-    <div class="container" style="width: 100%;">
-        <div style="width: 100%;">
-            <!-- <div fxFlex> -->
-            <div fxLayout="row" fxLayoutAlign="start center" class="accent"
-                style="width:100% ; height:37px;color: white;">
-
-                <div class="logo" fxLayout="row" fxLayoutAlign="start center" style="width: 100%;">
-                    <button mat-icon-button class="sidebar-toggle mr-12">
-                        <mat-icon>menu</mat-icon>
-                    </button>
-
-                    <span class="logo-text h2" [@animate]="{value:'*',params:{delay:'100ms',x:'-16px'}}"
-                        style="width: 98%;font-size: 16px;">
-                        Payment Mode Changes
-                    </span>
-
-                    <div fxLayout="row" style="float: right; margin-right: 5px;">
-                        <!-- <span style="margin-right: 40px;color: aliceblue;font-weight: bold;">
-                            <app-common-date [screenFrom]="screenFromString"
-                                (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
-                        </span> -->
-                        <span class="material-icons" style="cursor: pointer;" (click)="onClose()">
-                            close
-                        </span>
-                    </div>
-                </div>
-            </div>
-
-
-            <mat-card-content style="width: 100%;margin-right: 5px;">
-                <div fxLayout="column">
-
-                    <div>
-                        <mat-card style="padding: 8px 0 8px 0;">
-                            <fieldset class="fieldset-div" style="width: 50% !important;">
-                                <legend>Payment Information</legend>
-
-                                <div fxFlexFill fxLayout="row" fxLayoutAlign="space-between center"
-                                    class="patient-info">
-                                    <div class="patient-sub">
-                                        <div class="patient-info-1-111" fxLayout="row"
-                                            fxLayoutAlign="space-between center">
-                                            <div class="flex-item">
-                                                <h4 class="labels-h3">Patient Name</h4>
-                                            </div>
-                                            <div class="flex-item-middle">
-                                                <h5 class="labels-h6">:</h5>
-                                            </div>
-                                            <div class="flex-item" style="width: 275px;">
-                                                <h4 class="labels-h6">{{registerObj.PatientName}}</h4>
-                                            </div>
-
-                                            <div class="flex-item item-header" style="margin-left: 10px;">
-                                                <h4 class="labels-h3">Payment Id</h4>
-                                            </div>
-                                            <div class="flex-item-middle">
-                                                <h5 class="labels-h6">:</h5>
-                                            </div>
-                                            <div class="flex-item">
-                                                <h4 class="labels-h6">{{registerObj.PaymentId}}</h4>
-                                            </div>
-
-
-                                            <!-- <div class="flex-item item-header" style="margin-left: 10px;">
-                                                <h3 class="labels-h3">Tran Type</h3>
-                                            </div>
-                                            <div class="flex-item-middle">
-                                                <h6 class="labels-h6">:</h6>
-                                            </div>
-                                            <div class="flex-item">
-                                                <h6 class="labels-h6">{{PaymentId}}</h6>
-                                            </div> -->
-                                        </div>
-
+<div class="simple page-layout inner-scroll inner-sidebar left-sidebar">
+    <mat-toolbar style="width: 100%;height: 40px;justify-content: space-between;">
+        <div fxLayout="row" fxLayoutALign="start center">
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                Payment Mode Changes
+            </span> 
+        </div>
+        <div class="close-icon">
+            <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+    <div class="content">
+        <div class="center p-12 pb-56" style="border-radius:  4px;">
+            <div class="content-card">
+                <form [formGroup]="_Paymentmodesevice.paymentform">
+                    <div fxLayout="row" fxLayout="column" fxFlexFill fxLayoutGap="10px">
+                
+                        <mat-card>
+                            <div class="patient-info-container">
+                                <div class="patient-info-box">
+                                    <div class="patient-info-title border-bottom pb-2">
+                                        <span class="h2">Patient Information</span>
                                     </div>
-
-                                    <div class="patient-sub">
-                                        <div class="patient-info-1-111" fxLayout="row"
-                                            fxLayoutAlign="space-between center">
-                                            <div class="flex-item item-header">
-                                                <h4 class="labels-h3">Net Amount </h4>
+                                    <div class="Ipd-patient-info" fxFlexFill fxLayout="row" fxLayoutAlign="space-between center"
+                                        class="patient-info">
+                                        <div class="patient-sub">
+                                            <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
+                                                fxLayoutAlign="space-between">
+                
+                
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Patient Name
+                                                    </span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{registerObj.PatientName}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Payment Id</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{registerObj.PaymentId}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Net Amount</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{registerObj.PaidAmount | currency:'INR'}}</span>
+                                                </div>
+                
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Paid Amount</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{registerObj.PaidAmount | currency:'INR'}}</span>
+                                                </div>
+                
                                             </div>
-                                            <div class="flex-item-middle">
-                                                <h6 class="labels-h6">:</h6>
-                                            </div>
-                                            <div class="flex-item">
-                                                <h4 class="labels-h6">{{registerObj.PaidAmount}}</h4>
-                                            </div>
-                                            <div class="flex-item item-header">
-                                                <h4 class="labels-h3">Pai Amount</h4>
-                                            </div>
-                                            <div class="flex-item-middle">
-                                                <h6 class="labels-h6">:</h6>
-                                            </div>
-                                            <div class="flex-item">
-                                                <h4 class="labels-h6">{{registerObj.PaidAmount}}</h4>
-                                            </div>
-
-                                            <!-- <div class="flex-item item-header">
-                                                <h3 class="labels-h3">TarrifName</h3>
-                                            </div>
-                                            <div class="flex-item-middle">
-                                                <h6 class="labels-h6">:</h6>
-                                            </div>
-                                            <div class="flex-item">
-                                                <h6 class="labels-h6">{{TarrifName}}</h6>
-                                            </div> -->
-                                        </div>
-                                        <div class="patient-info-1-2" fxLayout="row"
-                                            fxLayoutAlign="space-between center">
-                                            <!-- <div class="flex-item item-header">
-                                            <h3 class="labels-h3">DoctorName</h3>
-                                        </div>
-                                        <div class="flex-item-middle">
-                                            <h6 class="labels-h6">:</h6>
-                                        </div>
-                                        <div class="flex-item">
-                                            <h6 class="labels-h6">{{Doctorname}}</h6>
-                                        </div> -->
-
-
-                                            <!-- <div class="flex-item item-header">
-                                            <h3 class="labels-h3">Doctor</h3>
-                                        </div>
-                                        <div class="flex-item-middle">
-                                            <h6 class="labels-h6">:</h6>
-                                        </div>
-                                        <div class="flex-item">
-                                            <h6 class="labels-h6">XYZ XYZ Xyz</h6>
-                                        </div> -->
                                         </div>
                                     </div>
                                 </div>
-                            </fieldset>
-                        </mat-card>
-                    </div>
-                </div>
-                <div>
-
-                    <div class="content-card"
-                        style="width:100%;  margin-top: 10px; float: right;background-color: white;margin-left: 10px;">
-                        <div>
-                            <div>
-                                <!-- ================================ LABEL HEADER  -->
-
-                                <mat-card fxFlex.gt-sm="100%" fxFlex style="margin-left: 10px;">
-
-
-
-                                    <form style="margin-right: 5px;" [formGroup]="_Paymentmodesevice.paymentform">
-                                        <div fxLayout="column">
-                                            <mat-card fxFlex.gt-sm="100%" fxFlex style="width: 100%; padding: 5px;
-                                            margin-top: 5px; height: fit-content;margin-left: 10px;">
-
-                                                <div fxLayout="row">
-                                                    <span class="flex-item-middle" fxFlex="20%" style="padding: 10px;">
-                                                        {{label}} :- </span>
-                                                    <mat-form-field appearance="outline" fxFlex="20%">
-                                                        <mat-label>{{label}}</mat-label>
-                                                        <input name="PaidAmount" formControlName="PaidAmount" matInput
-                                                            readonly [(ngModel)]="vPaidAmount">
-                                                    </mat-form-field>
-                                                </div>
-                                            </mat-card>
-                                            <div fxLayout="row" fxLayoutGap="20px">
-
-                                                <div fxLayout="column" fxFlex.gt-sm="100%" fxFlex fxLayoutGap="10px"
-                                                    style=" padding-left: 10px; padding-top: 10px; height:300px">
-
-                                                    <mat-card fxFlex.gt-sm="100%" fxFlex
-                                                        style="width: 100%; padding: 0;margin-top: 20px; height: fit-content;margin-right: 0px;">
-
-                                                        <div fxLayout="row" fxLayoutGap="20px" style="padding-left: 10px;">
-
-                                                            <mat-checkbox style="margin-left:70px;margin-top: 15px;" fxFlex="15%"
-                                                                [(ngModel)]="vCashCheckStatus" [checked]
-                                                                formControlName="IsCashpay"
-                                                                (change)="getPaidAmount($event)">Cash pay
-                                                            </mat-checkbox>
-
-                                                            <mat-form-field appearance="outline" fxFlex="25%">
-                                                                <mat-label>Cash  Pay</mat-label>
-  <!-- (keydown)="onEnterCashpay($event)" -->
-                                                                <input name="CashPayAmt" formControlName="CashPayAmt" 
-                                                                    matInput [(ngModel)]="vcashpay" #cashpay
-                                                                    (keyup)="getbalAmt()">
-                                                                <mat-error class="error"
-                                                                    *ngIf="_Paymentmodesevice.paymentform.get('CashPayAmt').invalid && _Paymentmodesevice.paymentform.get('CashPayAmt').touched">
-                                                                    CashPayAmt is required
-                                                                </mat-error>
-                                                            </mat-form-field>
-                                                        </div>
-
-                                                        <div fxLayout="row" fxLayoutGap="20px" style="padding-left: 10px;">
-                                                            <mat-checkbox style="margin-left:70px; margin-top: 30px;" fxFlex="15%"
-                                                                [(ngModel)]="vCardCheckStatus" [checked]
-                                                                formControlName="IsCardpay"
-                                                                (change)="getCardPayAmount($event)">Card  pay
-                                                            </mat-checkbox>
-
-                                                            <mat-form-field appearance="outline" fxFlex="25%">
-                                                                <mat-label>Debit / Credit Card Pay</mat-label>
- <!-- (keydown)="onEnterCardPayAmt($event)" -->
-                                                                <input name="CardPayAmt" formControlName="CardPayAmt"
-                                                                    matInput [(ngModel)]="vcardpay"
-                                                                    (keyup)="getbalAmt()">
-                                                                <mat-error class="error"
-                                                                    *ngIf="_Paymentmodesevice.paymentform.get('CardPayAmt').invalid && _Paymentmodesevice.paymentform.get('CardPayAmt').touched">
-                                                                    CardPayAmt is required
-                                                                </mat-error>
-                                                            </mat-form-field>
-
-                                                            <mat-form-field appearance="outline" fxFlex="25%">
-                                                                <mat-label>Card No</mat-label>
-
-                                                                <input name="CardNo" formControlName="CardNo" matInput
-                                                                    [(ngModel)]="registerObj.CardNo" #CardNo
-                                                                    [(ngModel)]="vCardNo"
-                                                                    (keydown)="onEnterCardNo($event)">
-                                                                <mat-error class="error"
-                                                                    *ngIf="_Paymentmodesevice.paymentform.get('CardNo').invalid && _Paymentmodesevice.paymentform.get('CardNo').touched">
-                                                                    Card is required
-                                                                </mat-error>
-                                                            </mat-form-field>
-
-                                                            <mat-form-field appearance="outline" fxFlex="25%">
-                                                                <mat-label>Bank Name</mat-label>
-                                                                <input matAutocompletePosition="below" type="text"
-                                                                    placeholder="Select BankName" matInput
-                                                                    formControlName="CardBankName"
-                                                                    [matAutocomplete]="autoBank1">
-                                                                <span matSuffix style="display: flex;">
-                                                                    <mat-icon class="mat-icon-close"
-                                                                        (click)="_Paymentmodesevice.paymentform.get('CardBankName').setValue(''); isBank1elected = false;">close</mat-icon>
-                                                                    <mat-icon class="mat-icon-close"
-                                                                        (click)="_Paymentmodesevice.paymentform.get('CardBankName').setValue(''); isBank1elected = false;">search</mat-icon>
-                                                                </span>
-                                                                <mat-autocomplete #autoBank1="matAutocomplete"
-                                                                    [displayWith]="getOptionTextBank1">
-                                                                    <mat-option
-                                                                        *ngFor="let option of filteredOptionsBank1 | async"
-                                                                        [value]="option">
-                                                                        {{option.BankName}}
-                                                                    </mat-option>
-                                                                </mat-autocomplete>
-                                                            </mat-form-field>
-                                                        </div>
-
-                                                        <div fxLayout="row" fxLayoutGap="20px" style="padding-left: 10px;">
-
-                                                            <mat-checkbox [checked]
-                                                                style="margin-left:70px;margin-top: 28px;" fxFlex="15%"
-                                                                [(ngModel)]="vCheckCheckStatus"
-                                                                formControlName="IsChequepay"
-                                                                (change)="getCheckPayAmount($event)">Cheque
-                                                                Pay
-                                                            </mat-checkbox>
-                                                            <mat-form-field appearance="outline" fxFlex="25%">
-                                                                <mat-label>Cheque Pay</mat-label>
-
-                                                                <input name="ChequePayAmt"
-                                                                    formControlName="ChequePayAmt" matInput required
-                                                                    [(ngModel)]="vchequepay" #CardPayAmt  (keyup)="getbalAmt()"
-                                                                    (keydown)="onEnterCheckPayAmt($event)">
-                                                                <mat-error class="error"
-                                                                    *ngIf="_Paymentmodesevice.paymentform.get('ChequePayAmt').invalid && _Paymentmodesevice.paymentform.get('ChequePayAmt').touched">
-                                                                    Cheque is required
-                                                                </mat-error>
-                                                            </mat-form-field>
-
-                                                            <mat-form-field appearance="outline" fxFlex="25%">
-                                                                <mat-label>Cheque No</mat-label>
-
-                                                                <input name="ChequeNo" formControlName="ChequeNo"
-                                                                    matInput required [(ngModel)]="registerObj.ChequeNo"
-                                                                    #ChequeNo (keydown)="onEnterChequeNo($event)"
-                                                                    [(ngModel)]="vchequeNo">
-                                                                <mat-error class="error"
-                                                                    *ngIf="_Paymentmodesevice.paymentform.get('ChequeNo').invalid && _Paymentmodesevice.paymentform.get('ChequeNo').touched">
-                                                                    Cheque is required
-                                                                </mat-error>
-                                                            </mat-form-field>
-
-                                                            <mat-form-field appearance="outline" fxFlex="25%">
-                                                                <mat-label>Bank Name</mat-label>
-                                                                <input matAutocompletePosition="below" type="text"
-                                                                    placeholder="Select BankName" matInput #chequebank
-                                                                    formControlName="ChequeBankName"
-                                                                    [matAutocomplete]="autoBank2">
-                                                                <span matSuffix style="display: flex;">
-                                                                    <mat-icon class="mat-icon-close"
-                                                                        (click)="_Paymentmodesevice.paymentform.get('ChequeBankName').setValue(''); isBank2elected = false;">close</mat-icon>
-                                                                    <mat-icon class="mat-icon-close"
-                                                                        (click)="_Paymentmodesevice.paymentform.get('ChequeBankName').setValue(''); isBank2elected = false;">search</mat-icon>
-                                                                </span>
-                                                                <mat-autocomplete #autoBank2="matAutocomplete"
-                                                                    [displayWith]="getOptionTextBank2">
-                                                                    <mat-option
-                                                                        *ngFor="let option of filteredOptionsBank2 | async"
-                                                                        [value]="option">
-                                                                        {{option.BankName}}
-                                                                    </mat-option>
-                                                                </mat-autocomplete>
-                                                            </mat-form-field>
-                                                        </div>
-                                                        <div fxLayout="row" fxLayoutGap="20px" style="padding-left: 10px;">
-                                                            <mat-checkbox [checked]
-                                                                style="margin-left:70px;margin-top: 24px;" fxFlex="15%"
-                                                                [(ngModel)]="vNFTPayCheckStatus"
-                                                                formControlName="IsNEFTpay"
-                                                                (change)="getNFTPayAmount($event)">NEFT  pay
-                                                            </mat-checkbox>
-
-                                                            <mat-form-field appearance="outline" fxFlex="25%">
-                                                                <mat-label>NEFTPayAmount Pay</mat-label>
-                                                                <input name="NEFTPayAmount"
-                                                                    formControlName="NEFTPayAmount" matInput required
-                                                                    [(ngModel)]="vneftpay" #NEFTPayAmount
-                                                                    (keyup)="getbalAmt()">
-                                                                <mat-error class="error"
-                                                                    *ngIf="_Paymentmodesevice.paymentform.get('NEFTPayAmount').invalid && _Paymentmodesevice.paymentform.get('NEFTPayAmount').touched">
-                                                                    Card is required
-                                                                </mat-error>
-                                                            </mat-form-field>
-
-                                                            <mat-form-field appearance="outline" fxFlex="25%">
-                                                                <mat-label>NEFT No</mat-label>
-
-                                                                <input name="NEFTNo" formControlName="NEFTNo" matInput
-                                                                    [(ngModel)]="registerObj.NEFTNo"
-                                                                    [(ngModel)]="vNEFTNo" #NEFTNo
-                                                                    (keydown)="onEnterNEFTNo($event)">
-                                                                <mat-error class="error"
-                                                                    *ngIf="_Paymentmodesevice.paymentform.get('NEFTNo').invalid && _Paymentmodesevice.paymentform.get('NEFTNo').touched">
-                                                                    Cheque is required
-                                                                </mat-error>
-                                                            </mat-form-field>
-
-                                                            <mat-form-field appearance="outline" fxFlex="25%">
-                                                                <mat-label>Bank Name</mat-label>
-                                                                <input matAutocompletePosition="below" type="text"
-                                                                    placeholder="Select BankName" matInput #nftbank
-                                                                    formControlName="NEFTBankName"
-                                                                    [matAutocomplete]="autoBank3">
-                                                                <span matSuffix style="display: flex;">
-                                                                    <mat-icon class="mat-icon-close"
-                                                                        (click)="_Paymentmodesevice.paymentform.get('NEFTBankName').setValue(''); isBank3elected = false;">close</mat-icon>
-                                                                    <mat-icon class="mat-icon-close"
-                                                                        (click)="_Paymentmodesevice.paymentform.get('NEFTBankName').setValue(''); isBank3elected = false;">search</mat-icon>
-                                                                </span>
-                                                                <mat-autocomplete #autoBank3="matAutocomplete"
-                                                                    [displayWith]="getOptionTextBank3">
-
-                                                                    <mat-option
-                                                                        *ngFor="let option of filteredOptionsBank3 | async"
-                                                                        [value]="option">
-                                                                        {{option.BankName}}
-                                                                    </mat-option>
-                                                                </mat-autocomplete>
-                                                            </mat-form-field>
-                                                        </div>
-
-                                                        <div fxLayout="row" fxLayoutGap="20px" style="padding-left: 10px;">
-                                                            <mat-checkbox [checked]
-                                                                style="margin-left:70px;margin-top: 23px;margin-bottom: 29px;" fxFlex="15%"
-                                                                formControlName="IsPayTMpay"
-                                                                [(ngModel)]="vPayTMCheckStatus"
-                                                                (change)="getPayTMPayAmount($event)">PayTM pay
-                                                            </mat-checkbox>
-                                                            <mat-form-field appearance="outline" fxFlex="25%">
-                                                                <mat-label>PayTMAmount </mat-label>
-
-                                                                <input name="PayTMAmount" formControlName="PayTMAmount"
-                                                                    matInput required [(ngModel)]="vpaytmpay"
-                                                                    (keyup)="getbalAmt()"
-                                                                    (keydown)="onEnterPayTMamt($event)">
-                                                                <mat-error class="error"
-                                                                    *ngIf="_Paymentmodesevice.paymentform.get('PayTMAmount').invalid && _Paymentmodesevice.paymentform.get('PayTMAmount').touched">
-                                                                    PayTMTranNo is required
-                                                                </mat-error>
-                                                            </mat-form-field>
-
-                                                            <mat-form-field appearance="outline" fxFlex="25%">
-                                                                <mat-label>PayTMTranNo </mat-label>
-
-                                                                <input name="PayTMTranNo" formControlName="PayTMTranNo"
-                                                                    matInput required [(ngModel)]="vPayTMTranNo"
-                                                                    #PayTMTranNo>
-                                                                <mat-error class="error"
-                                                                    *ngIf="_Paymentmodesevice.paymentform.get('PayTMTranNo').invalid && _Paymentmodesevice.paymentform.get('PayTMTranNo').touched">
-                                                                    PayTMTranNo is required
-                                                                </mat-error>
-                                                            </mat-form-field>
-                                                        </div>
-                                                    </mat-card>
-
-                                                </div>
-
-
-
-                                            </div>
-                                        </div>
-
-                                        <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
-
-                                            <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>PaidAmount </mat-label>
-                                              
-                                                <input name="PaidAmount" formControlName="PaidAmount" matInput required
-                                                    [(ngModel)]="vnetPayAmt" #PaidAmount>
-                                                <mat-error class="error"
-                                                    *ngIf="_Paymentmodesevice.paymentform.get('PaidAmount').invalid && _Paymentmodesevice.paymentform.get('PaidAmount').touched">
-                                                    PaidAmount is required
-                                                </mat-error>
-                                            </mat-form-field>
-
-                                            <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>BalAmount </mat-label>
-                                               
-                                                <input name="BalAmount" formControlName="BalAmount" matInput required
-                                                    [(ngModel)]="vbalanceAmt" #BalAmount>
-                                                <mat-error class="error"
-                                                    *ngIf="_Paymentmodesevice.paymentform.get('BalAmount').invalid && _Paymentmodesevice.paymentform.get('BalAmount').touched">
-                                                    BalAmount is required
-                                                </mat-error>
-                                            </mat-form-field>
-                                        </div> -->
-                                        <div style="margin-left:10px;margin-top: 10px;" fxLayoutGap="4px">
-                                            <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>PaidAmount </mat-label>
-                                              
-                                                <input name="PaidAmount" formControlName="PaidAmount" matInput required
-                                                    [(ngModel)]="vnetPayAmt" #PaidAmount readonly>
-                                                <mat-error class="error"
-                                                    *ngIf="_Paymentmodesevice.paymentform.get('PaidAmount').invalid && _Paymentmodesevice.paymentform.get('PaidAmount').touched">
-                                                    PaidAmount is required
-                                                </mat-error>
-                                            </mat-form-field>
-
-                                            <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>BalAmount </mat-label>
-                                               
-                                                <input name="BalAmount" formControlName="BalAmount" matInput required
-                                                    [(ngModel)]="vbalanceAmt" #BalAmount readonly>
-                                                <mat-error class="error"
-                                                    *ngIf="_Paymentmodesevice.paymentform.get('BalAmount').invalid && _Paymentmodesevice.paymentform.get('BalAmount').touched">
-                                                    BalAmount is required
-                                                </mat-error>
-                                            </mat-form-field>
-                                            
-                                           
-
-                                                <div class="sales-footer-buttons gap-8" fxLayout="row">
-                                                    <button class="btn btn-primary " (click)="Save()" 
-                                                        >Payment</button>
-                                                   
-                                                    <button class="btn btn-danger-outline" (click)="onClose()"
-                                                        >Cancel</button>
-                                                </div>
-                                        </div>
-
-                                    </form>
-
-                                </mat-card>
-
                             </div>
-                        </div>
+                        </mat-card>
+                
+                        <mat-card fxFlex="100%" style="padding: 5px 5px 5px 15px; ">
+                            <div fxLayout="row">
+                                <span class="flex-item-middle" fxFlex="17%" style="padding:10px;">
+                                    {{label}} :- </span>
+                                <mat-form-field appearance="outline" fxFlex="24.5%">
+                                    <mat-label>{{label}}</mat-label>
+                                    <input name="PaidAmount" formControlName="PaidAmount" matInput readonly [(ngModel)]="vPaidAmount">
+                                </mat-form-field>
+                            </div>
+                        </mat-card>
+                
+                        <mat-card fxFlex="100%" style=" padding: 10px 5px 5px 15px; ">
+                            <div fxLayout="column" fxFlex fxLayoutGap="10px">
+                
+                
+                                <div fxLayout="row" fxLayoutGap="20px" style="padding-left: 10px;">
+                
+                                    <mat-checkbox style="margin-left:70px;margin-top: 15px;" fxFlex="15%" [(ngModel)]="vCashCheckStatus"
+                                        [checked] formControlName="IsCashpay" (change)="getPaidAmount($event)">Cash pay
+                                    </mat-checkbox>
+                
+                                    <mat-form-field appearance="outline" fxFlex="25%">
+                                        <mat-label>Cash Pay</mat-label>
+                                        <!-- (keydown)="onEnterCashpay($event)" -->
+                                        <input name="CashPayAmt" formControlName="CashPayAmt" matInput [(ngModel)]="vcashpay" #cashpay
+                                            (keyup)="getbalAmt()">
+                                        <mat-error class="error"
+                                            *ngIf="_Paymentmodesevice.paymentform.get('CashPayAmt').invalid && _Paymentmodesevice.paymentform.get('CashPayAmt').touched">
+                                            CashPayAmt is required
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                
+                                <div fxLayout="row" fxLayoutGap="20px" style="padding-left: 10px;">
+                                    <mat-checkbox style="margin-left:70px; margin-top: 30px;" fxFlex="15%"
+                                        [(ngModel)]="vCardCheckStatus" [checked] formControlName="IsCardpay"
+                                        (change)="getCardPayAmount($event)">Card pay
+                                    </mat-checkbox>
+                
+                                    <mat-form-field appearance="outline" fxFlex="25%">
+                                        <mat-label>Debit / Credit Card Pay</mat-label>
+                                        <!-- (keydown)="onEnterCardPayAmt($event)" -->
+                                        <input name="CardPayAmt" formControlName="CardPayAmt" matInput [(ngModel)]="vcardpay"
+                                            (keyup)="getbalAmt()">
+                                        <mat-error class="error"
+                                            *ngIf="_Paymentmodesevice.paymentform.get('CardPayAmt').invalid && _Paymentmodesevice.paymentform.get('CardPayAmt').touched">
+                                            CardPayAmt is required
+                                        </mat-error>
+                                    </mat-form-field>
+                
+                                    <mat-form-field appearance="outline" fxFlex="25%">
+                                        <mat-label>Card No</mat-label> 
+                                        <input name="CardNo" formControlName="CardNo" matInput [(ngModel)]="registerObj.CardNo" #CardNo
+                                            [(ngModel)]="vCardNo" (keydown)="onEnterCardNo($event)"  placeholder="Card Number"
+                                            max="999999999999" min="100000000000" autocomplete="off" maxlength="12"  minlength="4"
+                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);"
+                                            required="required" value="987665868888">
+                                        <mat-error class="error"
+                                            *ngIf="_Paymentmodesevice.paymentform.get('CardNo').invalid && _Paymentmodesevice.paymentform.get('CardNo').touched">
+                                            Card No is required
+                                        </mat-error>
+                                    </mat-form-field> 
+                
+                                    <mat-form-field appearance="outline" fxFlex="25%">
+                                        <mat-label>Bank Name</mat-label>
+                                        <input matAutocompletePosition="below" type="text" placeholder="Select BankName" matInput
+                                            formControlName="CardBankName" [matAutocomplete]="autoBank1">
+                                        <span matSuffix style="display: flex;">
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_Paymentmodesevice.paymentform.get('CardBankName').setValue(''); isBank1elected = false;">close</mat-icon>
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_Paymentmodesevice.paymentform.get('CardBankName').setValue(''); isBank1elected = false;">search</mat-icon>
+                                        </span>
+                                        <mat-autocomplete #autoBank1="matAutocomplete" [displayWith]="getOptionTextBank1">
+                                            <mat-option *ngFor="let option of filteredOptionsBank1 | async" [value]="option">
+                                                {{option.BankName}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+                                </div>
+                
+                                <div fxLayout="row" fxLayoutGap="20px" style="padding-left: 10px;">
+                
+                                    <mat-checkbox [checked] style="margin-left:70px;margin-top: 28px;" fxFlex="15%"
+                                        [(ngModel)]="vCheckCheckStatus" formControlName="IsChequepay"
+                                        (change)="getCheckPayAmount($event)">Cheque
+                                        Pay
+                                    </mat-checkbox>
+                                    <mat-form-field appearance="outline" fxFlex="25%">
+                                        <mat-label>Cheque Pay</mat-label> 
+                                        <input name="ChequePayAmt" formControlName="ChequePayAmt" matInput required
+                                            [(ngModel)]="vchequepay" #CardPayAmt (keyup)="getbalAmt()" (keydown)="onEnterCheckPayAmt($event)"
+                                            min="100000000000" autocomplete="off" maxlength="12"  minlength="4"
+                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);"
+                                            required="required" value="987665868888">
+                                        <mat-error class="error"
+                                            *ngIf="_Paymentmodesevice.paymentform.get('ChequePayAmt').invalid && _Paymentmodesevice.paymentform.get('ChequePayAmt').touched">
+                                            Cheque is required
+                                        </mat-error>
+                                    </mat-form-field> 
+                
+                                    <mat-form-field appearance="outline" fxFlex="25%">
+                                        <mat-label>Cheque No</mat-label>
+                
+                                        <input name="ChequeNo" formControlName="ChequeNo" matInput required
+                                            [(ngModel)]="registerObj.ChequeNo" #ChequeNo (keydown)="onEnterChequeNo($event)"
+                                            [(ngModel)]="vchequeNo">
+                                        <mat-error class="error"
+                                            *ngIf="_Paymentmodesevice.paymentform.get('ChequeNo').invalid && _Paymentmodesevice.paymentform.get('ChequeNo').touched">
+                                            Cheque is required
+                                        </mat-error>
+                                    </mat-form-field>
+                
+                                    <mat-form-field appearance="outline" fxFlex="25%">
+                                        <mat-label>Bank Name</mat-label>
+                                        <input matAutocompletePosition="below" type="text" placeholder="Select BankName" matInput
+                                            #chequebank formControlName="ChequeBankName" [matAutocomplete]="autoBank2">
+                                        <span matSuffix style="display: flex;">
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_Paymentmodesevice.paymentform.get('ChequeBankName').setValue(''); isBank2elected = false;">close</mat-icon>
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_Paymentmodesevice.paymentform.get('ChequeBankName').setValue(''); isBank2elected = false;">search</mat-icon>
+                                        </span>
+                                        <mat-autocomplete #autoBank2="matAutocomplete" [displayWith]="getOptionTextBank2">
+                                            <mat-option *ngFor="let option of filteredOptionsBank2 | async" [value]="option">
+                                                {{option.BankName}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+                                </div>
+                                <div fxLayout="row" fxLayoutGap="20px" style="padding-left: 10px;">
+                                    <mat-checkbox [checked] style="margin-left:70px;margin-top: 24px;" fxFlex="15%"
+                                        [(ngModel)]="vNFTPayCheckStatus" formControlName="IsNEFTpay"
+                                        (change)="getNFTPayAmount($event)">NEFT pay
+                                    </mat-checkbox>
+                
+                                    <mat-form-field appearance="outline" fxFlex="25%">
+                                        <mat-label>NEFTPayAmount Pay</mat-label>
+                                        <input name="NEFTPayAmount" formControlName="NEFTPayAmount" matInput required
+                                            [(ngModel)]="vneftpay" #NEFTPayAmount (keyup)="getbalAmt()"
+                                            min="100000000000" autocomplete="off" maxlength="12"  minlength="4"
+                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);"
+                                            required="required" value="987665868888">
+                                        <mat-error class="error"
+                                            *ngIf="_Paymentmodesevice.paymentform.get('NEFTPayAmount').invalid && _Paymentmodesevice.paymentform.get('NEFTPayAmount').touched">
+                                            Card is required
+                                        </mat-error>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex="25%">
+                                        <mat-label>NEFT No</mat-label>
+                
+                                        <input name="NEFTNo" formControlName="NEFTNo" matInput [(ngModel)]="registerObj.NEFTNo"
+                                            [(ngModel)]="vNEFTNo" #NEFTNo (keydown)="onEnterNEFTNo($event)">
+                                        <mat-error class="error"
+                                            *ngIf="_Paymentmodesevice.paymentform.get('NEFTNo').invalid && _Paymentmodesevice.paymentform.get('NEFTNo').touched">
+                                            Cheque is required
+                                        </mat-error>
+                                    </mat-form-field>
+                
+                                    <mat-form-field appearance="outline" fxFlex="25%">
+                                        <mat-label>Bank Name</mat-label>
+                                        <input matAutocompletePosition="below" type="text" placeholder="Select BankName" matInput
+                                            #nftbank formControlName="NEFTBankName" [matAutocomplete]="autoBank3">
+                                        <span matSuffix style="display: flex;">
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_Paymentmodesevice.paymentform.get('NEFTBankName').setValue(''); isBank3elected = false;">close</mat-icon>
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_Paymentmodesevice.paymentform.get('NEFTBankName').setValue(''); isBank3elected = false;">search</mat-icon>
+                                        </span>
+                                        <mat-autocomplete #autoBank3="matAutocomplete" [displayWith]="getOptionTextBank3">
+                
+                                            <mat-option *ngFor="let option of filteredOptionsBank3 | async" [value]="option">
+                                                {{option.BankName}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+                                </div>
+                
+                                <div fxLayout="row" fxLayoutGap="20px" style="padding-left: 10px;">
+                                    <mat-checkbox [checked] style="margin-left:70px;margin-top: 23px;margin-bottom: 29px;" fxFlex="15%"
+                                        formControlName="IsPayTMpay" [(ngModel)]="vPayTMCheckStatus"
+                                        (change)="getPayTMPayAmount($event)">PayTM
+                                        pay
+                                    </mat-checkbox>
+                                    <mat-form-field appearance="outline" fxFlex="25%">
+                                        <mat-label>PayTMAmount </mat-label> 
+                                        <input name="PayTMAmount" formControlName="PayTMAmount" matInput required
+                                            [(ngModel)]="vpaytmpay" (keyup)="getbalAmt()" (keydown)="onEnterPayTMamt($event)"
+                                            min="100000000000" autocomplete="off" maxlength="12"  minlength="4"
+                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);"
+                                            required="required" value="987665868888">
+                                        <mat-error class="error"
+                                            *ngIf="_Paymentmodesevice.paymentform.get('PayTMAmount').invalid && _Paymentmodesevice.paymentform.get('PayTMAmount').touched">
+                                            PayTMTranNo is required
+                                        </mat-error>
+                                    </mat-form-field> 
+                
+                
+                                    <mat-form-field appearance="outline" fxFlex="25%">
+                                        <mat-label>PayTMTranNo </mat-label>
+                
+                                        <input name="PayTMTranNo" formControlName="PayTMTranNo" matInput required
+                                            [(ngModel)]="vPayTMTranNo" #PayTMTranNo>
+                                        <mat-error class="error"
+                                            *ngIf="_Paymentmodesevice.paymentform.get('PayTMTranNo').invalid && _Paymentmodesevice.paymentform.get('PayTMTranNo').touched">
+                                            PayTMTranNo is required
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </mat-card>
+                
+                        <mat-card style="padding: 10px">
+                            <div fxLayout="row" fxLayoutGap="6px">
+                                <mat-form-field appearance="outline" fxFlex="35%">
+                                    <mat-label>PaidAmount </mat-label>
+                                    <input name="PaidAmount" formControlName="PaidAmount" matInput required [(ngModel)]="vnetPayAmt"
+                                        #PaidAmount readonly>
+                                    <mat-error class="error"
+                                        *ngIf="_Paymentmodesevice.paymentform.get('PaidAmount').invalid && _Paymentmodesevice.paymentform.get('PaidAmount').touched">
+                                        PaidAmount is required
+                                    </mat-error>
+                                </mat-form-field>
+                
+                                <mat-form-field appearance="outline" fxFlex="35%">
+                                    <mat-label>BalAmount </mat-label>
+                                    <input name="BalAmount" formControlName="BalAmount" matInput required [(ngModel)]="vbalanceAmt"
+                                        #BalAmount readonly>
+                                    <mat-error class="error"
+                                        *ngIf="_Paymentmodesevice.paymentform.get('BalAmount').invalid && _Paymentmodesevice.paymentform.get('BalAmount').touched">
+                                        BalAmount is required
+                                    </mat-error>
+                                </mat-form-field>
+                
+                                <div class="footer-navigation-container">
+                                    <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px" style="margin: 10px 20px 0px 150px; ">
+                                        <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                                        <button class="btn btn-primary" (click)="Save()"  [disabled]="vbalanceAmt>0">Payment</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-card> 
                     </div>
-
-
-                 
-
-                </div>
-            </mat-card-content>
-            <!-- Final bill calculation -->
-
-
+                </form>
+            </div>
         </div>
-
     </div>
 </div>
+
+ 

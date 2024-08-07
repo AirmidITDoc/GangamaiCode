@@ -20,7 +20,7 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class PaymentmodechangesforPharmacyComponent implements OnInit {
   displayedColumns:string[] = [
-    'action',
+  
     'Date',
     'ReceiptNo',
     'SalesNo',
@@ -30,7 +30,8 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
     'ChequeAmt',
     'CardAmt',
     'NeftPay',
-     'PayAtm'
+     'PayAtm',
+     'action',
   ];
 
   sIsLoading: string = '';
@@ -106,6 +107,7 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
     });
    }
   onEdit(m) {
+    console.log(m)
     let xx = {
       UserId: m.UserId,
       FirstName: m.FirstName,
@@ -137,12 +139,12 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
     };
     this.advanceDataStored.storage = new PaymentPharmayList(xx);
     const dialogRef = this._matDialog.open(EditPaymentmodeComponent,
-      {
-        maxWidth: "78vw",
-        height: "75%",
-        width: '100%',
+      { 
+        height: "85%",
+        width: '75%',
         data: {
           registerObj: m,
+           FromName: "Pharma-PaymentModeChange"
         }
       });
     dialogRef.afterClosed().subscribe(result => {
