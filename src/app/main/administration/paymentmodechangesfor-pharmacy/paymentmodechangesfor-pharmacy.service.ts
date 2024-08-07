@@ -79,4 +79,7 @@ export class PaymentmodechangesforpharmacyService {
     public PaymentmodeUpdate(employee) {//Administration/UpdateLoginUser
       return this._httpClient.post("Pharmacy/UpdatePharmPaymentMode", employee);
     }
+    public PaymentmodeForIPD(employee) {//Administration/UpdateLoginUser
+      return this._httpClient.post("Pharmacy/UpdatePharmPaymentMode11111", employee);
+    }
 }

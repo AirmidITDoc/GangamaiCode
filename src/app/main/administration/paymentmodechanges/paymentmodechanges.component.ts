@@ -6,6 +6,8 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { DatePipe } from '@angular/common';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { EditPaymentmodeComponent } from '../paymentmodechangesfor-pharmacy/edit-paymentmode/edit-paymentmode.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-paymentmodechanges',
@@ -17,7 +19,7 @@ import { MatSort } from '@angular/material/sort';
 export class PaymentmodechangesComponent implements OnInit {
   
   displayedColumns:string[] = [
-    'action',
+    
     'PayDate',
     'ReceiptNo',
     'BillNo',
@@ -28,7 +30,10 @@ export class PaymentmodechangesComponent implements OnInit {
     'CashAmt',
     'ChequeAmt',
     'CardAmt',
-    'User'
+    'NEFTPayAmount',
+    'PayTMAmount',
+    'User',
+    'action',
   ];
  
   sIsLoading: string = '';
@@ -42,11 +47,13 @@ export class PaymentmodechangesComponent implements OnInit {
     public _PaymentmodechangesService:PaymentmodechangesService,
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
-
+    public _matDialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
- 
+    this.getOPReceiptList();
+    this.getIPAdvanceList();
+    this.getIPReceiptList();
   }
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
@@ -127,7 +134,55 @@ export class PaymentmodechangesComponent implements OnInit {
     this.sIsLoading = '';
   });
  }
- 
+ onEdit(m) {
+  console.log(m)
+  let xx = {
+    UserId: m.UserId,
+    FirstName: m.FirstName,
+    LastName: m.LastName,
+    UserLoginName: m.UserLoginName,
+    IsActive: m.IsActive,
+    AddedBy: m.AddedBy,
+    RoleName: m.RoleName,
+    RoleId: m.RoleId,
+    UserName: m.UserName,
+    StoreId: m.StoreId,
+    StoreName: m.StoreName,
+    IsDoctorType: m.IsDoctorType,
+    DoctorID: m.DoctorID,
+    DoctorName: m.DoctorName,
+    IsPOVerify: m.IsPOVerify,
+    IsGRNVerify: m.IsGRNVerify,
+    IsCollection: m.IsCollection,
+    IsBedStatus: m.IsBedStatus,
+    IsCurrentStk: m.IsCurrentStk,
+    IsPatientInfo: m.IsPatientInfo,
+    IsDateInterval: m.IsDateInterval,
+    IsDateIntervalDays: m.IsDateIntervalDays,
+    MailId: m.MailId,
+    MailDomain: m.MailDomain,
+    AddChargeIsDelete: m.AddChargeIsDelete,
+    IsIndentVerify: m.IsIndentVerify,
+    IsInchIndVfy: m.IsInchIndVfy,
+  };
+  // this.advanceDataStored.storage = new PaymentPharmayList(xx);
+  const dialogRef = this._matDialog.open(EditPaymentmodeComponent,
+    { 
+      height: "85%",
+      width: '75%',
+      data: {
+        registerObj: m,
+        FromName: "IP-PaymentModeChange"
+      },
+      
+    });
+  dialogRef.afterClosed().subscribe(result => {
+    console.log('The dialog was closed - Insert Action', result);
+    this.getOPReceiptList();
+    this.getIPAdvanceList();
+    this.getIPReceiptList();
+  });
+}
  
          
 
