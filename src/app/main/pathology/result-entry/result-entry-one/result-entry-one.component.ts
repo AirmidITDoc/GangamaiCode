@@ -36,6 +36,7 @@ export class ResultEntryOneComponent implements OnInit {
         // 'SubTestName',
         'ParameterName',
         'ResultValue',
+        'bold',
         'NormalRange',
         'Formula'
     ];
@@ -118,6 +119,7 @@ export class ResultEntryOneComponent implements OnInit {
         }
 
     }
+
     ngOnInit(): void {
         this.otherForm = this.formBuilder.group({
             suggestionNotes: '',
@@ -180,10 +182,8 @@ export class ResultEntryOneComponent implements OnInit {
         });
         return Keys;
     }
-    @ViewChild('languageMenuTrigger') languageMenuTrigger: MatMenuTrigger;
-    isShowHelp: boolean = false;
     onResultUp(data) {
-        debugger
+        
         let items = this.dataSource.data.filter(x => (x?.Formula ?? "").indexOf('{{' + data.ParameterShortName + '}}') > 0);
         for (let i = 0; i < items.length; i++) {
             let formula = items[i].Formula;
@@ -197,29 +197,53 @@ export class ResultEntryOneComponent implements OnInit {
             if (!isNaN(items[i].ResultValue))
                 items[i].ResultValue = Math.round(items[i].ResultValue * 100) / 100;
         }
+
+        debugger
+        console.log(data)
+        if(parseFloat(data.ResultValue) < (parseFloat(data.MinValue)) && parseFloat(data.ResultValue) > parseFloat(data.Maxvalue)){
+       //  this.boldstatus=1;
+         data.bold=1;
+        }
+        
     }
+
+    boldstatus=0;
+
+
+
+
+
+
+
     helpItems: any[] = [];
+    helpFullItems: any[] = [];
     selectedParam: any;
     onKeydown(e, data) {
-        debugger
         this.selectedParam = data.ParameterId;
         let SelectQuery = "SELECT ParameterValues, IsDefaultValue, ParameterId FROM dbo.M_ParameterDescriptiveMaster WHERE ParameterId = " + data.ParameterId;
         this._SampleService.getPathologyResultList(SelectQuery).subscribe(Visit => {
             this.helpItems = Visit as any[];
-            this.isShowHelp = true;
-            this.languageMenuTrigger.openMenu();
+            this.helpFullItems=Visit as any[];
+            data["IsHelpShown"] = true;
+            setTimeout(() => {
+                document.getElementById("helpText_"+data.ParameterId).focus();
+            }, 100);
         },
             error => {
                 this.sIsLoading = '';
             });
     }
-    onSelectHelp(e) {
+    onSelectHelp(e, data) {
         this.dataSource.data.find(x => x.ParameterId == this.selectedParam).ResultValue = e;
+        data["IsHelpShown"] = false;
+    }
+    filterHelp(e){
+        this.helpItems= this.helpFullItems.filter(option => option.ParameterValues.toLowerCase().indexOf(e.target.value) >= 0);
     }
 
     getResultList(advanceData) {
         this.sIsLoading = 'loading-data';
-        let SelectQuery = "Select * from lvw_Retrieve_PathologyResult where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ")"
+        let SelectQuery = "Select * from m_lvw_Retrieve_PathologyResult where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ")"
         console.log(SelectQuery)
         this._SampleService.getPathologyResultList(SelectQuery).subscribe(Visit => {
             this.dataSource.data = Visit as Pthologyresult[];
@@ -240,7 +264,7 @@ export class ResultEntryOneComponent implements OnInit {
 
     getResultListIP() {
         this.sIsLoading = 'loading-data';
-        let SelectQuery = "Select * from lvw_Retrieve_PathologyResultIPPatientUpdate where PathReportId in(" + this.reportIdData + ")"
+        let SelectQuery = "Select * from m_lvw_Retrieve_PathologyResultIPPatientUpdate where PathReportId in(" + this.reportIdData + ")"
         console.log(SelectQuery);
         this._SampleService.getPathologyResultListforIP(SelectQuery).subscribe(Visit => {
             this.dataSource.data = Visit as Pthologyresult[];
@@ -256,12 +280,12 @@ export class ResultEntryOneComponent implements OnInit {
 
     getResultListOP() {
         this.sIsLoading = 'loading-data';
-        let SelectQuery = "Select * from lvw_Retrieve_PathologyResultUpdate where PathReportId in(" + this.reportIdData + ")"
+        let SelectQuery = "Select * from m_lvw_Retrieve_PathologyResultUpdate where PathReportId in(" + this.reportIdData + ")"
         console.log(SelectQuery)
         this._SampleService.getPathologyResultListforOP(SelectQuery).subscribe(Visit => {
             this.dataSource.data = Visit as Pthologyresult[];
             this.Pthologyresult = Visit as Pthologyresult[];
-            console.log(this.Pthologyresult);
+            console.log(this.dataSource.data);
             this.dataSource.sort = this.sort;
             this.dataSource.paginator = this.paginator;
             this.sIsLoading = '';
@@ -314,11 +338,11 @@ export class ResultEntryOneComponent implements OnInit {
             pathologyInsertReportObj['PathReportId'] = element.PathReportId //element1.PathReportId;
             pathologyInsertReportObj['CategoryID'] = element.CategoryID || 0;
             pathologyInsertReportObj['TestID'] = element.TestId || 0;
-            pathologyInsertReportObj['SubTestId'] = element.SubTestID || 0;
+            pathologyInsertReportObj['SubTestId'] = element.SubTestId || 0;
             pathologyInsertReportObj['ParameterId'] = element.ParameterId || 0;
             pathologyInsertReportObj['ResultValue'] = element.ResultValue || '';
             pathologyInsertReportObj['UnitId'] = element.UnitId || 1;
-            pathologyInsertReportObj['NormalRange'] = element.NormalResult || '';
+            pathologyInsertReportObj['NormalRange'] = element.NormalRange || '';
             pathologyInsertReportObj['PrintOrder'] = element.PrintOrder || 0;
             pathologyInsertReportObj['PIsNumeric'] = element.PIsNumeric || 0;
             pathologyInsertReportObj['CategoryName'] = element.CategoryName || '';
@@ -373,6 +397,7 @@ export class ResultEntryOneComponent implements OnInit {
     @ViewChild('PathResultDoctorId') PathResultDoctorId: ElementRef;
     @ViewChild('DoctorId') DoctorId: ElementRef;
     @ViewChild('RefDoctorID') RefDoctorID: ElementRef;
+    @ViewChild('helpinput') helpinput: ElementRef;
 
     public onEnterSugg(event): void {
         if (event.which === 13) {
@@ -428,14 +453,14 @@ export class ResultEntryOneComponent implements OnInit {
 
 
     getPathresultdoctorList() {
-      this._SampleService.getPathologyDoctorCombo().subscribe(data => {
-        this.PathologyDoctorList = data;
-        this.optionsDoc3 = this.PathologyDoctorList.slice();
-        this.filteredresultdr = this.otherForm.get('PathResultDoctorId').valueChanges.pipe(
-          startWith(''),
-          map(value => value ? this._filterdoc3(value) : this.PathologyDoctorList.slice()),
-        );
-      });
+        this._SampleService.getPathologyDoctorCombo().subscribe(data => {
+            this.PathologyDoctorList = data;
+            this.optionsDoc3 = this.PathologyDoctorList.slice();
+            this.filteredresultdr = this.otherForm.get('PathResultDoctorId').valueChanges.pipe(
+                startWith(''),
+                map(value => value ? this._filterdoc3(value) : this.PathologyDoctorList.slice()),
+            );
+        });
     }
 
 
@@ -574,17 +599,18 @@ export class Pthologyresult {
     ParameterShortName: any;
     ResultValue: any;
     ParameterId: any;
+    bold:any;
 
     constructor(Pthologyresult) {
         this.TestName = Pthologyresult.TestName || '';
         this.SubTestName = Pthologyresult.SubTestName || '';
         this.ParameterName = Pthologyresult.ParameterName || '';
-        this.NormalRange = Pthologyresult.NormalRange || 0;
+        this.NormalRange = Pthologyresult.NormalRange || '';
         this.Formula = Pthologyresult.Formula || '';
         this.ParameterShortName = Pthologyresult.ParameterShortName || '';
         this.ResultValue = Pthologyresult.ResultValue || '';
         this.ParameterId = Pthologyresult.ParameterId || '';
-        // this.ParameterID = Pthologyresult.ParameterID || '';
+        this.bold = Pthologyresult.bold || 0;
     }
 
 }

@@ -111,39 +111,70 @@
                                 <mat-tab-group>
                                     <mat-tab label="FINAL DIAGNOSS">
                                         <mat-card class="mat-tab-card-container">
-                                            <div class="form-title mb-2 pb-2 border-bottom">
-                                                <span class="h1 font-weight-600">Diagnosis</span>
+                                            <div fxLayout="column" fxLayoutGap="10px">  
+                                                <div fxLayout="row" fxLayoutGap="10px">
+                                                    <div fxLayout="column" fxFlex>
+                                                        <div class="form-title mb-2 pb-2 border-bottom">
+                                                            <span class="h1 font-weight-600">Diagnosis</span>
+                                                        </div>
+                                                        <div class="form-input">
+                                                            <mat-form-field appearance="outline" fxFlex>
+                                                                <mat-label>Diagnosis</mat-label>
+                                                                <textarea matInput name="Diagnosis" formControlName="Diagnosis" [(ngModel)]="vDiagnosis" cols="300"
+                                                                    rows="8"></textarea>
+                                                            </mat-form-field>
+                                                        </div>
+                                                    </div>
+                                                    <div fxLayout="column" fxFlex >
+                                                        <div class="form-title mb-2 pb-2 border-bottom">
+                                                            <span class="h2 font-weight-600">HISTORY</span>
+                                                        </div>
+                                                        <div class="form-input">
+                                                            <mat-form-field appearance="outline" fxFlex>
+                                                                <mat-label>HISTORY</mat-label>
+                                                                <textarea matInput name="history" formControlName="history" [(ngModel)]="vhistory" cols="300"
+                                                                    rows="8"></textarea>
+                                                            </mat-form-field>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            
+                                                <div fxLayout="row" fxLayoutGap="10px">
+                                                    <div fxLayout="column" fxFlex>
+                                                        <div class="form-title mb-2 pb-2 border-bottom">
+                                                            <span class="h2 font-weight-600">CLINICAL CONDITION ON ADMISSION</span>
+                                                        </div>
+                                                        <div class="form-input">
+                                                            <mat-form-field appearance="outline" fxFlex>
+                                                                <mat-label>Clinical Condition OnAdmisssion</mat-label>
+                                                                <textarea matInput name="ClinicalConditionOnAdmisssion"
+                                                                    formControlName="ClinicalConditionOnAdmisssion" [(ngModel)]="vClinicalCondition" cols="300"
+                                                                    rows="8"></textarea>
+                                                            </mat-form-field>
+                                                        </div>
+                                                    </div>
+                                                    <div fxLayout="column" fxFlex>
+                                                        <div class="form-title mb-2 pb-2 border-bottom">
+                                                            <span class="h2 font-weight-600">CLINICAL FINDING</span>
+                                                        </div>
+                                                        <div class="form-input">
+                                                            <mat-form-field appearance="outline" fxFlex>
+                                                                <mat-label>CLINICAL FINDING</mat-label>
+                                                                <textarea matInput name="ClinicalFinding" formControlName="ClinicalFinding"
+                                                                    [(ngModel)]="vClinicalFinding" cols="300" rows="8"></textarea>
+                                                            </mat-form-field>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="form-input">
-                                                <mat-form-field appearance="outline" fxFlex>
-                                                    <mat-label>Diagnosis</mat-label>
-                                                    <textarea matInput name="Diagnosis" formControlName="Diagnosis"
-                                                        [(ngModel)]="vDiagnosis" cols="300"
-                                                        rows="8"></textarea>
-                                                </mat-form-field>
-                                            </div>
-    
-                                            <div class="form-title mb-2 pb-2 border-bottom">
-                                                <span class="h2 font-weight-600">CLINICAL CONDITION ON ADMISSION</span>
-                                            </div>
-                                            <div class="form-input">
-                                                <mat-form-field appearance="outline" fxFlex>
-                                                    <mat-label>Clinical Condition OnAdmisssion</mat-label>
-                                                    <textarea matInput name="ClinicalConditionOnAdmisssion"
-                                                        formControlName="ClinicalConditionOnAdmisssion"
-                                                        [(ngModel)]="vClinicalCondition"
-                                                        cols="300" rows="8"></textarea>
-                                                </mat-form-field>
-                                            </div>
-    
                                         </mat-card>
-                                    </mat-tab>
+                                    </mat-tab> 
     
-                                    <mat-tab label="SURGERY / PROCEDURE DONE">
+                                    <mat-tab label="SURGERY / OPRATIVE NOTES">
                                         <mat-card class="mat-tab-card-container" fxLayoutGap="6px">
                                             <div>
                                                 <div class="form-title mb-2 pb-2 border-bottom">
-                                                    <span class="h2 font-weight-600">SURGERY /PROCEDURE DONE</span>
+                                                    <span class="h2 font-weight-600">SURGERY/PROCEDURE DONE</span>
                                                 </div>
                                                 <div class="form-input">
                                                     <mat-form-field appearance="outline" fxFlex>
@@ -154,7 +185,7 @@
                                                 </div>
                                             </div>
                                             <div>
-                                                <div class="form-title mb-2 pb-2 border-bottom">
+                                                <!-- <div class="form-title mb-2 pb-2 border-bottom">
                                                     <span class="h2 font-weight-600">SURGICAL FINDINGS</span>
                                                 </div>
                                                 <div class="form-input">
@@ -162,6 +193,17 @@
                                                         <mat-label>SURGICAL FINDINGS</mat-label>
                                                         <textarea matInput name="SurgicalFinding" formControlName="SurgicalFinding"
                                                             [(ngModel)]="vSurgicalFinding" cols="300" rows="8"></textarea>
+                                                    </mat-form-field>
+                                                </div> -->
+
+                                                <div class="form-title mb-2 pb-2 border-bottom">
+                                                    <span class="h2 font-weight-600">OPRATIVE NOTES</span>
+                                                </div>
+                                                <div class="form-input">
+                                                    <mat-form-field appearance="outline" fxFlex>
+                                                        <mat-label>OPRATIVE NOTES</mat-label>
+                                                        <textarea matInput name="OperativeNotes" formControlName="OperativeNotes"
+                                                            [(ngModel)]="vOperativeNotes" cols="300" rows="8"></textarea>
                                                     </mat-form-field>
                                                 </div>
                                             </div>
@@ -182,7 +224,7 @@
                                                         rows="8"></textarea>
                                                 </mat-form-field>
                                             </div>
-                                        
+
                                             <div class="form-title mb-2 pb-2 border-bottom">
                                                 <span class="h2 font-weight-600">Radiology</span>
                                             </div>
@@ -207,7 +249,7 @@
                                                     <div class="form-input">
                                                         <mat-form-field appearance="outline" fxFlex>
                                                             <mat-label>Treatment Given</mat-label>
-                                                            <textarea matInput name="TreatmentGiven"
+                                                            <textarea matInput name="TreatmentGiven" style="white-space: pre-wrap;"
                                                                 formControlName="TreatmentGiven"
                                                                 [(ngModel)]="vTreatmentGiven" cols="200"
                                                                 rows="8"></textarea>

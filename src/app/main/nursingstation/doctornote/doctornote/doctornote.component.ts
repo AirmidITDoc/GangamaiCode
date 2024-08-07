@@ -208,8 +208,27 @@ OnAdd(){
 
   onClose() {
     this._NursingStationService.myform.reset();
-    // this.dialogRef.close();
+    this._matDialog.closeAll();
+    this.onClearPatientInfo();
   } 
+  onClearPatientInfo() {
+    this.vRegNo = '';
+    this.vPatienName = '';
+    this.vWardName = '';
+    this.vBedName = '';
+    this.vGender = '';
+    this.vIPDNo = '';
+    this.vDepartmentName = '';
+    this.vDoctorname = '';
+    this.vAgeyear = '';
+    this.vAgeMonth = '';
+    this.vAgeDay = '';
+    this.vAdmissionDate = '';
+    this.vRefDocName = '';
+    this.vPatientType = '';
+    this.vTariffName = '';
+    this.vCompanyName = '';
+  }
 }  
 export class DocNote {
 

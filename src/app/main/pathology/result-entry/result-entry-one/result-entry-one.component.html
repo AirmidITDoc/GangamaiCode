@@ -152,15 +152,23 @@
                                             Result
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" class="border-right">
-                                            <mat-form-field appearance="legacy"
+                                            <mat-form-field appearance="legacy" *ngIf="!contact.IsHelpShown" style="width: 100%;"
                                                 [ngClass]="{'Result-Formula': contact.Formula !=null}">
-                                                <input matInput autocomplete="off" (keyup)="onResultUp(contact)"
+                                                <input matInput autocomplete="off" (keyup)="onResultUp(contact)" 
                                                     (keydown.F2)="onKeydown($event,contact)" matTooltip="Use Help Value"
                                                     [disabled]="contact.Formula" [(ngModel)]="contact.ResultValue">
-                                                
                                             </mat-form-field>
-                                            <button [matMenuTriggerFor]="addMenu" #languageMenuTrigger="matMenuTrigger"
-                                                style="visibility: hidden;"></button>
+                                            <mat-form-field appearance="legacy" *ngIf="contact.IsHelpShown" style="width: 100%;">
+                                                <input type="text" matInput id="helpText_{{contact.ParameterId}}" [matAutocomplete]="auto" (keyup)="filterHelp($event)">
+                                                <mat-autocomplete #auto="matAutocomplete" (optionSelected)='onSelectHelp($event.option.value,contact)'>
+                                                  <mat-option *ngFor="let option of helpItems" [value]="option.ParameterValues">
+                                                    {{option.ParameterValues}}
+                                                  </mat-option>
+                                                </mat-autocomplete>
+                                              </mat-form-field>
+                                            
+                                            <!-- <button [matMenuTriggerFor]="addMenu" #languageMenuTrigger="matMenuTrigger"
+                                                style="visibility: hidden;"></button> -->
                                                <img width="20px;" height="20px;" src="assets/images/logos/help.jpeg" *ngIf=" contact.ParaIsNumeric ==0"  matTooltip="Use Help Value">
                                         </mat-cell>
                                     </ng-container>
@@ -171,9 +179,10 @@
                                             NormalRange
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="border-right">
-                                            {{contact.NormalResult}}
+                                            {{contact.NormalRange}}
                                         </mat-cell>
                                     </ng-container>
+
                                     <ng-container matColumnDef="Formula">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
                                             class="border-right">
@@ -212,17 +221,6 @@
                         </div>
                     </div>
                 </div>
-
-                <mat-menu #addMenu="matMenu" class="w-240">
-                    <mat-nav-list style="max-height: 312px; overflow: auto" fusePerfectScrollbar *ngIf="isShowHelp">
-                        <mat-list-item *ngFor="let item of helpItems">
-                            <div class="w-100-p" fxLayout="row" fxLayoutAlign="start center">
-                                <p class="m-0" matLine fxFlex (click)="onSelectHelp(item.ParameterValues)">
-                                    {{item.ParameterValues}}</p>
-                            </div>
-                        </mat-list-item>
-                    </mat-nav-list>
-                </mat-menu>
                 <div fxFlex.gt-sm="100%" fxFlex>
                     <form [formGroup]="otherForm">
                         <mat-card style="padding: 6px;">
