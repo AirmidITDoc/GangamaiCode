@@ -29,7 +29,7 @@
         <!-- / SIDEBAR -->
 
         <!-- CENTER -->
-        <div class="center p-24 pb-56" fusePerfectScrollbar>
+        <div class="center p-16 pb-56" fusePerfectScrollbar>
             <!-- CONTENT -->
            
             <div class="content-card">
@@ -48,7 +48,7 @@
                                 <div class="nav material2">
                                     <div fxLayout="column" fxLayoutAlign="start none">
                                         <form [formGroup]="ItemSubform" class="pt-0">
-                                            <mat-card class="header-form-card py-20" style="overflow: auto;">
+                                            <mat-card class="header-form-card py-12" style="overflow: auto;">
                                                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
                                                     fxLayoutAlign="space-between" class="gap-8">
                                                     <div class="radio-group-left gap-8" fxLayout="row"
@@ -79,7 +79,7 @@
                                                                     (click)="ItemSubform.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
                                                             </span>
                                                             <mat-autocomplete #auto1="matAutocomplete"
-                                                                [displayWith]="getSelectedObjOP"
+                                                                [displayWith]="getOptionTextOPObj"
                                                                 (optionSelected)='getSelectedObjOP($event.option.value)'>
                                                                 <mat-option
                                                                     *ngFor="let option of PatientListfilteredOptionsOP"
@@ -107,7 +107,7 @@
                                                                     (click)="ItemSubform.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
                                                             </span>
                                                             <mat-autocomplete #auto2="matAutocomplete"
-                                                                [displayWith]="getSelectedObjRegIP"
+                                                                [displayWith]="getOptionTextIPObj"
                                                                 (optionSelected)='getSelectedObjRegIP($event.option.value)'>
                                                                 <mat-option
                                                                     *ngFor="let option of PatientListfilteredOptionsIP"
@@ -1168,8 +1168,46 @@
                         </div>
                     </div>
                     <div fxFlex="20%" fxFlex.sm="30%" fxFlex.xs="100%" class="table-right">
-                        <mat-card style="height: calc(100vh - 95px - 48px);overflow: auto;">
-                            <div class="sales-table-right-box">
+                        <mat-card style="height: calc(108vh - 95px - 48px);overflow: auto;">
+                            <div class="sales-table-right-box" fxLayout="column" fxLayoutGap="6px">
+                                <mat-card fxFlex style="padding: 5px;">
+                                    <div class="Sales-bill-summary px-12">
+                                        <div class="Sales-bill-summary-title py-8 border-bottom">
+                                            <span class="h3 font-weight-600">Bill Summary </span>
+                                        </div>
+                                        <div class="bil-summary-list px-4 mt-8">
+                                            <ul class="gap-4 list-basic" fxLayout="column">
+                                                <li>
+                                                    <div class="list-item">
+                                                        <span class="list-item-key">Bill Amount :</span>
+                                                        <span class="list-item-value"> {{roundoffAmt |
+                                                            currency:'INR' }}</span>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="list-item">
+                                                        <span class="list-item-key">Credit Amount :</span>
+                                                        <span class="list-item-value"> {{TotalCreditAmt | currency:'INR'}}</span>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="list-item">
+                                                        <span class="list-item-key">Advance Amount :</span>
+                                                        <span class="list-item-value">
+                                                            {{TotalAdvanceAmt | currency:'INR'}}</span>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="list-item">
+                                                        <span class="list-item-key">Balance Amount :</span>
+                                                        <span class="list-item-value"> {{TotalBalanceAmt | currency:'INR'}}</span>
+                                                    </div>
+                                                </li> 
+                                             
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </mat-card>
                                 <!-- Draft Bill List -->
                                 <mat-table class="sales-table-right" #table matSort [dataSource]="dataSource1"
                                     [@animateStagger]="{value:'50'}">

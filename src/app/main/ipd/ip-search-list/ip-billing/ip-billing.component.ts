@@ -137,7 +137,7 @@ export class IPBillingComponent implements OnInit {
   ConcessionReasonList: any = [];
   CashCounterList: any = [];
 
-
+  vCashCounterID: any;
   disamt: any;
   b_price = '0';
   b_qty = '1';
@@ -152,7 +152,7 @@ export class IPBillingComponent implements OnInit {
   b_IsEditable = '';
   b_IsDocEditable = '';
   dateTimeObj: any;
-
+  isCashCounterSelected:boolean=false;
   // ConAmt: any;
   DoctornewId: any;
   concessionAmtOfNetAmt: any = 0;
@@ -236,7 +236,7 @@ export class IPBillingComponent implements OnInit {
   optionsclass: any[] = [];
 
   vMobileNo:any;
-
+  filteredOptionsCashCounter: Observable<string[]>;
   filteredOptionssearchDoctor: Observable<string[]>;
   optionsSearchDoc: any[] = [];
 
@@ -385,13 +385,14 @@ export class IPBillingComponent implements OnInit {
       GenerateBill: [1],
       CreditBill:[''],
       FinalAmount: 0,
-      CashCounterId: [''],
+      CashCounterID: [''],
       IpCash: [''],
       Pharcash: [''],
       ChargeClass: [''],
       AdminPer: [''],
       AdminAmt: [''],
-      Admincheck:['']
+      Admincheck:[''],
+      
     });
   }
   billheaderlist:any;
@@ -931,11 +932,28 @@ ServiceList:any=[];
       this.ConcessionReasonList = data;
       // this.Ipbillform.get('ConcessionId').setValue(this.ConcessionReasonList[1]);
     })
-  }
+  } 
   getCashCounterComboList() {
-    // this._IpSearchListService.getCashcounterList().subscribe(data => {
-    //   this.CashCounterList = data
-    // });
+    this._IpSearchListService.getCashcounterList().subscribe(data => {
+      this.CashCounterList = data
+      console.log(this.CashCounterList)
+      this.Ipbillform.get('CashCounterID').setValue(this.CashCounterList[3])
+      this.filteredOptionsCashCounter = this.Ipbillform.get('CashCounterID').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterCashCounter(value) : this.CashCounterList.slice()),
+      ); 
+    });
+  }
+  private _filterCashCounter(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.CashCounterName ? value.CashCounterName.toLowerCase() : value.toLowerCase();
+      return this.CashCounterList.filter(option => option.CashCounterName.toLowerCase().includes(filterValue));
+    } 
+  } 
+  getOptionTextCashCounter(option){ 
+    if (!option)
+      return '';
+    return option.CashCounterName;
   }
   vBillTotalAmt: any = 0;
 
@@ -2180,7 +2198,7 @@ export class Bill {
   TaxPer: any;
   TaxAmount: any;
   DiscComments: String;
-  CashCounterId: any;
+  vCashCounterID: any;
   Bdate: any;
   PBillNo: any;
   CashPayAmount: any;
@@ -2216,7 +2234,7 @@ export class Bill {
     this.TaxPer = InsertBillUpdateBillNoObj.TaxPer || '0';
     this.TaxAmount = InsertBillUpdateBillNoObj.TaxAmount || '0';
     this.DiscComments = InsertBillUpdateBillNoObj.DiscComments || '';
-    this.CashCounterId = InsertBillUpdateBillNoObj.CashCounterId || '';
+    this.vCashCounterID = InsertBillUpdateBillNoObj.CashCounterID || '';
     this.Bdate = InsertBillUpdateBillNoObj.Bdate || '';
 
     this.PBillNo = InsertBillUpdateBillNoObj.PBillNo || '0';
