@@ -136,9 +136,9 @@
                             </ng-container>
 
                             <ng-container matColumnDef="PatientName" sticky>
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-250">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-210">
                                     Patient Name</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250">
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-210">
                                     {{contact.PatientName}}
                                 </mat-cell>
                             </ng-container>
@@ -185,7 +185,7 @@
 
                             <ng-container matColumnDef="NEFTPayAmount">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                    NEFTPay Amt </mat-header-cell>
+                                    NEFT Amt </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                     {{contact.NEFTPayAmount }}
                                 </mat-cell>
@@ -193,7 +193,7 @@
 
                             <ng-container matColumnDef="PayTMAmount">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                    PayTPay Amt </mat-header-cell>
+                                    PayTM Amt </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                     {{contact.PayTMAmount }}
                                 </mat-cell>
@@ -210,10 +210,7 @@
                             <ng-container matColumnDef="action" stickyEnd>
                                 <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Action
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let contact">
-                                    <button mat-icon-button matTooltip="Print">
-                                        <mat-icon>print</mat-icon>
-                                    </button>
+                                <mat-cell *matCellDef="let contact"> 
                                     <button mat-icon-button matTooltip="Edit" (click)="onEdit(contact)">
                                         <mat-icon>edit</mat-icon>
                                     </button>

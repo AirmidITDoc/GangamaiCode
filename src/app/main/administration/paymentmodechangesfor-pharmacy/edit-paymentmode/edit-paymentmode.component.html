@@ -129,7 +129,7 @@
                                         </mat-error>
                                     </mat-form-field> 
                 
-                                    <mat-form-field appearance="outline" fxFlex="25%">
+                                    <!-- <mat-form-field appearance="outline" fxFlex="25%">
                                         <mat-label>Bank Name</mat-label>
                                         <input matAutocompletePosition="below" type="text" placeholder="Select BankName" matInput
                                             formControlName="CardBankName" [matAutocomplete]="autoBank1">
@@ -141,6 +141,26 @@
                                         </span>
                                         <mat-autocomplete #autoBank1="matAutocomplete" [displayWith]="getOptionTextBank1">
                                             <mat-option *ngFor="let option of filteredOptionsBank1 | async" [value]="option">
+                                                {{option.BankName}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field> -->
+
+                                    <mat-form-field appearance="outline"  fxFlex="25%">
+                                        <mat-label>Bank Name</mat-label>
+                                        <input matAutocompletePosition="below" type="text" placeholder="Select BankName"
+                                             matInput formControlName="CardBankName"
+                                            [matAutocomplete]="autoBank1" #CardBankName >
+                                        <span matSuffix style="display: flex;">
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_Paymentmodesevice.paymentform.get('CardBankName').setValue(''); isBank1elected = false;">close</mat-icon>
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_Paymentmodesevice.paymentform.get('CardBankName').setValue(''); isBank1elected = false;">search</mat-icon>
+                                        </span>
+                                        <mat-autocomplete #autoBank1="matAutocomplete"
+                                            [displayWith]="getOptionTextBank1">
+                                            <mat-option *ngFor="let option of filteredOptionsBank1 | async"
+                                                [value]="option">
                                                 {{option.BankName}}
                                             </mat-option>
                                         </mat-autocomplete>

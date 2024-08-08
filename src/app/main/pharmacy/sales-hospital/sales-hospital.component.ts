@@ -1713,6 +1713,9 @@ export class SalesHospitalComponent implements OnInit {
 
     this.saleSelectedDatasource.data = [];
     this.getDraftorderList();
+    this.TotalAdvanceAmt = 0;
+    this.TotalBalanceAmt = 0;
+    this.TotalCreditAmt = 0; 
   }
 
   getGSTAmtSum(element) {
@@ -3457,11 +3460,13 @@ getSearchListIP() {
       this.CompanyName = obj.CompanyName;
       this.Age = obj.Age;
     } 
+    this.getBillSummary();
   }
   OPDNo:any;
   DoctorNamecheck:boolean=false;
   IPDNocheck:boolean=false;
   OPDNoCheck:boolean=false;
+
   getSelectedObjOP(obj) { 
       console.log(obj)
       this.OPDNoCheck = true;
@@ -3475,6 +3480,13 @@ getSearchListIP() {
       this.OPDNo = obj.OPDNo;
       this.CompanyName = obj.CompanyName;
       this.TariffName = obj.TariffName; 
+      this.getBillSummary();
+  }
+  getOptionTextIPObj(option) { 
+    return option && option.FirstName ? option.LastName : ''; 
+  }
+  getOptionTextOPObj(option) { 
+    return option && option.FirstName ? option.LastName : ''; 
   }
   PatientInformRest(){
     this.PatientName = ''  
@@ -3796,6 +3808,27 @@ getSearchListIP() {
       });
     }
   } 
+  TotalCreditAmt:any=0;
+  TotalAdvanceAmt:any=0;
+  TotalBalanceAmt:any=0;
+getBillSummary(){
+  let query
+
+  query  = "select  SUM(BalanceAmount) as CreditAmount from t_salesheader where OP_IP_ID="+ this.OP_IP_Id 
+  this._salesService.getBillSummaryQuery(query).subscribe((data) =>{
+    console.log(data)
+    this.TotalCreditAmt = data[0].CreditAmount ;
+  });
+
+  query  = "select AdvanceAmount,BalanceAmount from T_PHAdvanceHeader where OPD_IPD_Id="+ this.OP_IP_Id
+  this._salesService.getBillSummaryQuery(query).subscribe((data) =>{
+    console.log(data)
+    let mdata = 
+    this.TotalAdvanceAmt = data[0].AdvanceAmount ;
+    this.TotalBalanceAmt = data[0].BalanceAmount ;
+  }); 
+}
+ 
 }
 
 

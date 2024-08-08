@@ -350,7 +350,7 @@
                                             <div class="patient-sub">
                                                 <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
                                                     fxLayoutAlign="space-between">
-                                                    <div fxLayout="column" fxLayoutGap="10px">
+                                                    <div fxLayout="column" fxLayoutGap="6px">
                                                         <div class="patient-col">
                                                             <span class="patient-col-key">UHID No
                                                             </span>
@@ -376,7 +376,7 @@
                                                             <span class="patient-col-value">{{selectedAdvanceObj.DepartmentName}}</span>
                                                         </div>
                                                     </div>
-                                                    <div fxLayout="column" fxLayoutGap="10px">
+                                                    <div fxLayout="column" fxLayoutGap="6px">
                                                         
                                                         <div class="patient-col">
                                                             <span class="patient-col-key">DOA | Time</span>
@@ -402,7 +402,7 @@
                                                         </div>
                                                        
                                                     </div>
-                                                    <div fxLayout="column" fxLayoutGap="10px">
+                                                    <div fxLayout="column" fxLayoutGap="6px">
                                                         <div class="patient-col">
                                                             <span class="patient-col-key">Ward | Bed Name
                                                             </span>
@@ -640,7 +640,7 @@
                                             (click)="deleteTableRow(contact)">
                                             delete
                                         </span> -->
-                                        <span class="material-icons" style="cursor: pointer;color: #5b5858;"
+                                        <span class="material-icons" style="cursor: pointer;color: #c95a5a;"
                                             (click)="deletecharges(contact)">
                                             delete
                                         </span>
@@ -1136,7 +1136,7 @@
                                         
                                     </mat-form-field> -->
 
-                                    <mat-form-field appearance="outline" fxFlex="10%" *ngIf="isAdminDisabled">
+                                    <mat-form-field appearance="outline" fxFlex="6%" *ngIf="isAdminDisabled">
                                         <mat-label>Admin %</mat-label>
                                         <input matInput [(ngModel)]="vAdminPer" name="AdminPer"   formControlName="AdminPer"
                                              (keypress)="keyPressCharater($event)" (keyup)="CalculateAdminCharge()">
@@ -1148,7 +1148,7 @@
                                             formControlName="AdminAmt"  >
                                     </mat-form-field>
 
-                                    <mat-form-field appearance="outline"  fxFlex="10%" *ngIf="ServiceDiscDisable">
+                                    <mat-form-field appearance="outline"  fxFlex="6%" *ngIf="ServiceDiscDisable">
                                         <mat-label>Disc %</mat-label>
                                         <input matInput placeholder="Percentage" formControlName="Percentage"
                                            [(ngModel)]="vPercentage" autocomplete="off" #finaldisc onlyNumber
@@ -1161,7 +1161,7 @@
                                             formControlName="concessionAmt" (keyup)="getDiscAmtCal()">
                                     </mat-form-field>
 
-                                    <mat-form-field *ngIf="ConShow" appearance="outline" fxFlex="10%">
+                                    <mat-form-field *ngIf="ConShow" appearance="outline" fxFlex="15%">
                                         <mat-label>Concession Reason Type</mat-label>
                                         <mat-select formControlName="ConcessionId" [(ngModel)]="vConcessionId">
                                             <mat-option *ngFor="let Doc of ConcessionReasonList" [value]="Doc">
@@ -1174,6 +1174,26 @@
                                         <mat-label>Net Amount</mat-label>
                                         <input matInput [(ngModel)]="vNetBillAmount" formControlName="FinalAmount"
                                             name="vNetBillAmount" readonly required>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex="20%">
+                                        <mat-label>Cash Counter</mat-label>
+                                        <input matAutocompletePosition="below" type="text" placeholder="Select Cash Counter"
+                                             matInput formControlName="CashCounterID"
+                                            [matAutocomplete]="autoSearchCashCounter" #CashCounterName [(ngModel)]="vCashCounterID">
+                                        <span matSuffix style="display: flex;">
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="Ipbillform.get('CashCounterID').setValue(''); isCashCounterSelected = false;">close</mat-icon>
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="Ipbillform.get('CashCounterID').setValue(''); isCashCounterSelected = false;">search</mat-icon>
+                                        </span>
+                                        <mat-autocomplete #autoSearchCashCounter="matAutocomplete"
+                                            [displayWith]="getOptionTextCashCounter">
+                                            <mat-option *ngFor="let option of filteredOptionsCashCounter| async"
+                                                [value]="option">
+                                                {{option.CashCounterName}}
+                                            </mat-option>
+                                        </mat-autocomplete>
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex>
@@ -1195,6 +1215,8 @@
                                         <mat-checkbox formControlName="CreditBill" (checked)=true>
                                            Credit Bill
                                         </mat-checkbox>
+
+                                     
 
                                         <!-- <div class="cash-container gap-12">
                                             <div class="net-amt-section">

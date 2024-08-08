@@ -90,6 +90,7 @@ export class NewOPBillingComponent implements OnInit {
   FinalAmt: any;
   DoctorFinalId = 'N';
   filteredOptionsDoctor: Observable<string[]>;
+  filteredOptionsCashCounter: Observable<string[]>;
   isDoctorSelected: boolean = false;
   optionsDoctor: any[] = [];
   b_price = '0';
@@ -172,7 +173,7 @@ export class NewOPBillingComponent implements OnInit {
   RegNo: any;
   vClassName: any;
   isServiceSelected: any;
-
+  isCashCounterSelected:boolean=false;
 
   //doctorone filter
   public doctorFilterCtrl: FormControl = new FormControl();
@@ -237,7 +238,7 @@ export class NewOPBillingComponent implements OnInit {
 
     //this.getServiceListCombobox();
     this.getAdmittedDoctorCombo();
-    // this.getCashCounterComboList();
+    this.getCashCounterComboList();
     this.getConcessionReasonList();
 
     this.doctorFilterCtrl.valueChanges
@@ -249,7 +250,8 @@ export class NewOPBillingComponent implements OnInit {
 
   createSearchForm() {
     return this.formBuilder.group({
-      RegId: ['']
+      RegId: [''],
+      CashCounterID:['']
     });
   }
 
@@ -481,6 +483,20 @@ console.log(obj)
         return;
       }
       }
+      if (!this.searchFormGroup.get('CashCounterID').value) {
+        this.toastr.warning('Select Cash Counter', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+      if (this.searchFormGroup.get('CashCounterID').value) {
+        if(!this.CashCounterList.some(item => item.CashCounterName === this.searchFormGroup.get('CashCounterID').value.CashCounterName)){
+          this.toastr.warning('Please Select valid Cash Counter Name', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return;
+        }  
+      }
       this.isLoading123 = true; 
     if (this.CompanyId !== 0 && this.CompanyId !== "") {
       this.saveCreditbill();
@@ -533,8 +549,8 @@ console.log(obj)
       InsertBillUpdateBillNoObj['TaxPer'] = 0;
       InsertBillUpdateBillNoObj['TaxAmount'] = 0;
       InsertBillUpdateBillNoObj['compDiscAmt'] = this.BillingForm.get('concessionAmt').value || 0;
-      InsertBillUpdateBillNoObj['discComments'] = ConcessionReason;
-
+      InsertBillUpdateBillNoObj['compDiscAmt'] = ConcessionReason;
+      InsertBillUpdateBillNoObj['cashCounterId'] =this.searchFormGroup.get('CashCounterID').value.CashCounterId || 0
       let Billdetsarr = [];
       this.dataSource.data.forEach((element) => {
         let BillDetailsInsertObj = {};
@@ -793,6 +809,7 @@ console.log(obj)
     InsertBillUpdateBillNoObj['TaxPer'] = 0;
     InsertBillUpdateBillNoObj['TaxAmount'] = 0;
     InsertBillUpdateBillNoObj['DiscComments'] =ConcessionReason;
+    InsertBillUpdateBillNoObj['cashCounterId'] =this.searchFormGroup.get('CashCounterID').value.CashCounterId || 0
 
     let Billdetsarr = [];
     this.dataSource.data.forEach((element) => {
@@ -1236,13 +1253,28 @@ console.log(obj)
       return this.doctorNameCmbList.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
     }
 
-  }
-
-
+  } 
   getCashCounterComboList() {
     this._oPSearhlistService.getCashcounterList().subscribe(data => {
       this.CashCounterList = data
+      console.log(this.CashCounterList)
+      this.searchFormGroup.get('CashCounterID').setValue(this.CashCounterList[0])
+      this.filteredOptionsCashCounter = this.searchFormGroup.get('CashCounterID').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterCashCounter(value) : this.CashCounterList.slice()),
+      ); 
     });
+  }
+  private _filterCashCounter(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.CashCounterName ? value.CashCounterName.toLowerCase() : value.toLowerCase();
+      return this.CashCounterList.filter(option => option.CashCounterName.toLowerCase().includes(filterValue));
+    } 
+  } 
+  getOptionTextCashCounter(option){ 
+    if (!option)
+      return '';
+    return option.CashCounterName;
   }
 
   getConcessionReasonList() {

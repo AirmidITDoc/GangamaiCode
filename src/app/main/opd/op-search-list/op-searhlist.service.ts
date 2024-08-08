@@ -238,7 +238,7 @@ export class OPSearhlistService {
 
    // Get CashCounter List 
   public getCashcounterList() {
-    return this._httpClient.post("Generic/GetByProc?procName=RtrvOPCashCounterForCombo", {})
+    return this._httpClient.post("Generic/GetByProc?procName=m_RtrvCashCounterForCombo", {})
   }
 
   public getIpPatientBillInfo(employee) {
@@ -289,11 +289,11 @@ public getConcessionCombo()
   }
 
   public InsertOPBilling(employee) : Observable<any> {
-    return this._httpClient.post("OutPatient/OPBillWithPayment", employee)
+    return this._httpClient.post("OutPatient/OPBillWithPaymentCashCounter", employee)
   }
 
   public InsertOPBillingCredit(employee) : Observable<any> {
-    return this._httpClient.post("OutPatient/OPBillingWithCredit", employee)
+    return this._httpClient.post("OutPatient/OPBillingWithCreditCashCounter", employee)
   }
   
   public InsertOPRefundBilling(employee) {
