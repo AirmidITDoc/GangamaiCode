@@ -173,6 +173,16 @@
                                         </mat-cell>
                                     </ng-container>
 
+                                    <ng-container matColumnDef="Flag">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
+                                            class="border-right">
+                                            Flag
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="border-right">
+                                            {{contact.ParaBoldFlag}}
+                                        </mat-cell>
+                                    </ng-container>
+
                                     <ng-container matColumnDef="NormalRange">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
                                             class="border-right">
