@@ -36,7 +36,7 @@ export class ResultEntryOneComponent implements OnInit {
         // 'SubTestName',
         'ParameterName',
         'ResultValue',
-        'bold',
+        'Flag',
         'NormalRange',
         'Formula'
     ];
@@ -183,7 +183,7 @@ export class ResultEntryOneComponent implements OnInit {
         return Keys;
     }
     onResultUp(data) {
-        
+
         let items = this.dataSource.data.filter(x => (x?.Formula ?? "").indexOf('{{' + data.ParameterShortName + '}}') > 0);
         for (let i = 0; i < items.length; i++) {
             let formula = items[i].Formula;
@@ -198,21 +198,25 @@ export class ResultEntryOneComponent implements OnInit {
                 items[i].ResultValue = Math.round(items[i].ResultValue * 100) / 100;
         }
 
-        debugger
-        console.log(data)
-        if(parseFloat(data.ResultValue) < (parseFloat(data.MinValue)) && parseFloat(data.ResultValue) > parseFloat(data.Maxvalue)){
-       //  this.boldstatus=1;
-         data.bold=1;
-        }
         
+        console.log(data)
+        data.ParaBoldFlag = '';
+        if (data.ParaIsNumeric) {
+          
+            let a= parseFloat(data.ResultValue);
+            let b=parseFloat(data.MinValue);
+            let c=parseFloat(data.Maxvalue);
+            debugger
+                   
+            if (b != null && c != null && a != null) {
+                if (a < b || a > c) {
+                    data.ParaBoldFlag = 'B';
+                }
+              }
+
     }
-
-    boldstatus=0;
-
-
-
-
-
+    }
+    boldstatus = 0;
 
 
     helpItems: any[] = [];
@@ -223,10 +227,10 @@ export class ResultEntryOneComponent implements OnInit {
         let SelectQuery = "SELECT ParameterValues, IsDefaultValue, ParameterId FROM dbo.M_ParameterDescriptiveMaster WHERE ParameterId = " + data.ParameterId;
         this._SampleService.getPathologyResultList(SelectQuery).subscribe(Visit => {
             this.helpItems = Visit as any[];
-            this.helpFullItems=Visit as any[];
+            this.helpFullItems = Visit as any[];
             data["IsHelpShown"] = true;
             setTimeout(() => {
-                document.getElementById("helpText_"+data.ParameterId).focus();
+                document.getElementById("helpText_" + data.ParameterId).focus();
             }, 100);
         },
             error => {
@@ -237,8 +241,8 @@ export class ResultEntryOneComponent implements OnInit {
         this.dataSource.data.find(x => x.ParameterId == this.selectedParam).ResultValue = e;
         data["IsHelpShown"] = false;
     }
-    filterHelp(e){
-        this.helpItems= this.helpFullItems.filter(option => option.ParameterValues.toLowerCase().indexOf(e.target.value) >= 0);
+    filterHelp(e) {
+        this.helpItems = this.helpFullItems.filter(option => option.ParameterValues.toLowerCase().indexOf(e.target.value) >= 0);
     }
 
     getResultList(advanceData) {
@@ -336,7 +340,7 @@ export class ResultEntryOneComponent implements OnInit {
 
             let pathologyInsertReportObj = {};
             pathologyInsertReportObj['PathReportId'] = element.PathReportId //element1.PathReportId;
-            pathologyInsertReportObj['CategoryID'] = element.CategoryID || 0;
+            pathologyInsertReportObj['CategoryID'] = element.CategoryId || 0;
             pathologyInsertReportObj['TestID'] = element.TestId || 0;
             pathologyInsertReportObj['SubTestId'] = element.SubTestId || 0;
             pathologyInsertReportObj['ParameterId'] = element.ParameterId || 0;
@@ -353,6 +357,8 @@ export class ResultEntryOneComponent implements OnInit {
             pathologyInsertReportObj['PatientName'] = this.selectedAdvanceObj2.PatientName || '';
             pathologyInsertReportObj['RegNo'] = this.selectedAdvanceObj2.RegNo;
             pathologyInsertReportObj['SampleID'] = element.SampleID || '';
+            pathologyInsertReportObj['ParaBoldFlag'] = element.ParaBoldFlag || '';
+
             PathInsertArry.push(pathologyInsertReportObj);
         });
 
@@ -371,6 +377,7 @@ export class ResultEntryOneComponent implements OnInit {
             pathologyUpdateReportObj['SuggestionNotes'] = this.otherForm.get('suggestionNotes').value || "";
             pathologyUpdateReportObj['AdmVisitDoctorID'] = 0; //this.otherForm.get('AdmDoctorID').value.DoctorID || 0;
             pathologyUpdateReportObj['RefDoctorID'] = this.otherForm.get('RefDoctorID').value.DoctorID || 0;
+
             pathologyUpdateReportObjarray.push(pathologyUpdateReportObj);
         });
 
@@ -599,7 +606,7 @@ export class Pthologyresult {
     ParameterShortName: any;
     ResultValue: any;
     ParameterId: any;
-    bold:any;
+    ParaBoldFlag: any;
 
     constructor(Pthologyresult) {
         this.TestName = Pthologyresult.TestName || '';
@@ -610,7 +617,7 @@ export class Pthologyresult {
         this.ParameterShortName = Pthologyresult.ParameterShortName || '';
         this.ResultValue = Pthologyresult.ResultValue || '';
         this.ParameterId = Pthologyresult.ParameterId || '';
-        this.bold = Pthologyresult.bold || 0;
+        this.ParaBoldFlag = Pthologyresult.ParaBoldFlag || '';
     }
 
 }

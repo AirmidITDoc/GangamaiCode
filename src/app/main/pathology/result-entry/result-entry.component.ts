@@ -673,6 +673,8 @@ export class SampleList {
   IsVerifySign: boolean;
   TemplateDesc: String;
   IsCompleted: boolean;
+  CategoryId:any;
+
   constructor(SampleList) {
     this.VADate = SampleList.VADate || '';
     this.ServiceName = SampleList.ServiceName || '';
@@ -682,6 +684,7 @@ export class SampleList {
     this.IsVerifySign = SampleList.IsVerifySign || 0;
     this.TemplateDesc = SampleList.TemplateDesc || '';
     this.IsCompleted = SampleList.IsCompleted || 0;
+    this.CategoryId = SampleList.CategoryId || 0;
   }
 
 }
