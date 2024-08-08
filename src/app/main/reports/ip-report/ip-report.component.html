@@ -191,6 +191,13 @@
                                                 placeholder="MaterialConsumption Id" matInput>
 
                                         </mat-form-field>
+
+                                        <mat-form-field appearance="outline" *ngIf="FlagDischargetypeIdSelected" fxFlex="60%">
+                                            <mat-label>DischargeType Id</mat-label>
+                                            <input name="DischargeTypeId" formControlName="DischargeTypeId"
+                                                placeholder="DischargeType Id" matInput>
+
+                                        </mat-form-field>
                                     </div>
                                     <div style="margin-left: 2%;">
                                         <mat-form-field appearance="outline" fxFlex="60%" *ngIf="FlagWardSelected">

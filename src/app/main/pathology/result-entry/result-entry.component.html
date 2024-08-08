@@ -391,25 +391,6 @@
                                             </td>
                                         </ng-container>
 
-                                        <!-- <ng-container matColumnDef="select" sticky>
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-50">
-                                                <span class="material-icons" (click)="getResultList()">
-                                                    cached
-                                                </span>
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" class="w-50">
-                                                <mat-checkbox aria-label="Checked" (change)="onresultentryshow($event,contact)" *ngIf="contact.IsTemplateTest !='1' else noMLC" >
-                                                </mat-checkbox>
-                                                <ng-template #noMLC>
-                                                    <span>----</span>
-                                                </ng-template>
-                                            </mat-cell>
-                                        </ng-container> -->
-
-
-
-
-
                                         <ng-container matColumnDef="IsTemplateTest">
                                             <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-90">IsTemplate</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" class="w-90">

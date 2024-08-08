@@ -100,9 +100,9 @@
                                 </ng-container>
 
                                 <ng-container matColumnDef="TestId">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-180">Code
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.TestId}}
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-180"> {{element.TestId}}
                                     </mat-cell>
                                 </ng-container>
 
@@ -114,9 +114,9 @@
                                 </ng-container>
 
                                 <ng-container matColumnDef="TestName">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200"> TestName
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-300"> TestName
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-200">
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-300">
                                         {{element.TestName}}
                                     </mat-cell>
                                 </ng-container>
@@ -196,9 +196,9 @@
                                         <button mat-icon-button (click)="onEdit(element)"
                                             *ngIf="element.Isdeleted"><mat-icon
                                                 title="Edit Menu">edit</mat-icon></button>
-                                        <button mat-icon-button (click)="onEdit(element)"
+                                        <button mat-icon-button 
                                             *ngIf="!element.Isdeleted"><mat-icon
-                                                title="Edit Menu">fix</mat-icon></button>
+                                                title="Edit Menu">highlight_off</mat-icon></button>
                                         <button mat-icon-button (click)="onDeactive(element,element.TestId)"
                                             color="warn"><mat-icon>delete_outline</mat-icon></button>
 

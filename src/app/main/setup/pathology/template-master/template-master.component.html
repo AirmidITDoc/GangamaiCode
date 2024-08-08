@@ -81,19 +81,19 @@
                             <mat-table matSort [dataSource]="Templatedatasource" [@animateStagger]="{value:'50'}">
 
                                 <ng-container matColumnDef="TemplateId">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide  class="w-180"
                                         fxShow.gt-sm>Template Code
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm  class="w-180">
                                         {{element.TemplateId}}
                                     </mat-cell>
                                 </ng-container>
 
 
                                 <ng-container matColumnDef="TemplateName">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Template Name
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header  class="w-480"> Template Name
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm  class="w-480">
                                         {{element.TemplateName}}
                                     </mat-cell>
                                 </ng-container>
@@ -135,9 +135,9 @@
                                         <button mat-icon-button (click)="onEdit(element)"
                                         *ngIf="element.IsDeleted"><mat-icon
                                             title="Edit Menu">edit</mat-icon></button>
-                                    <button mat-icon-button (click)="onEdit(element)"
+                                    <button mat-icon-button
                                         *ngIf="!element.IsDeleted"><mat-icon
-                                            title="Edit Menu">fix</mat-icon></button>
+                                            title="Edit Menu">highlight_off</mat-icon></button>
                                         <button mat-icon-button (click)="onDeactive(element,element.TemplateId)"
                                             color="warn">
                                             <mat-icon>delete_outline</mat-icon>
@@ -158,10 +158,10 @@
                                     </mat-footer-cell>
                                 </ng-container>
 
-                                <mat-header-row class="accent" class="accent min-width-2200"
+                                <mat-header-row  class="accent min-width-1500"
                                     *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
                                 <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
-                                    [@animate]="{value:'*',params:{y:'100%'}}" class="element min-width-2200"></mat-row>
+                                    [@animate]="{value:'*',params:{y:'100%'}}" class="element min-width-1500"></mat-row>
 
                                 <mat-footer-row *matFooterRowDef="['loading']"
                                     [ngClass]="{'hide':Templatedatasource!=null}"></mat-footer-row>

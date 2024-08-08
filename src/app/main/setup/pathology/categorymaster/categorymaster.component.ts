@@ -154,7 +154,7 @@ export class CategorymasterComponent implements OnInit {
         if(this._categorymasterService.currentStatus==1){
             this.tempList.data = []
             for (let item of this.DSCategoryMasterList.data) {
-                if(!item.IsDeleted)this.tempList.data.push(item)
+                if(item.IsDeleted)this.tempList.data.push(item)
                     
                 }
             }
@@ -162,7 +162,7 @@ export class CategorymasterComponent implements OnInit {
 
             this.tempList.data = []
             for (let item of this.DSCategoryMasterList.data) {
-                if(item.IsDeleted)this.tempList.data.push(item)
+                if(!item.IsDeleted)this.tempList.data.push(item)
                 
             }
         }

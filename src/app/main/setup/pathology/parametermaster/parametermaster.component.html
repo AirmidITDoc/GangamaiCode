@@ -80,130 +80,141 @@
                                         </div>
                                     </div>
                                 </div>
-                            <div style="width: 100%;">
-                                <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                                    class="backgroundBlur">
-                                    <div class="spinner-border text-danger" style="margin-left: 100px;"></div>
+                                <div style="width: 100%;">
+                                    <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                                        class="backgroundBlur">
+                                        <div class="spinner-border text-danger" style="margin-left: 100px;"></div>
+                                    </div>
+
+                                    <mat-table class="table1" matSort [dataSource]="DSParameterList"
+                                        [@animateStagger]="{value:'50'}" style="overflow:auto">
+
+                                        <ng-container matColumnDef="ParameterID">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide  class="w-180"
+                                                fxShow.gt-sm>ParameterID
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm  class="w-180">
+                                                {{element.ParameterID}}
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="ParameterName">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header  class="w-330"> ParameterName
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm  class="w-330"> {{element.ParameterName}}
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="ParameterShortName">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-230">ShortName
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-230">
+                                                {{element.ParameterShortName}}
+                                            </mat-cell>
+                                        </ng-container>
+
+
+                                        <ng-container matColumnDef="PrintParameterName">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                fxShow.gt-sm>PrintParameterName </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                {{element.PrintParameterName}} </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="UnitName">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header> UnitName
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.UnitName}}
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="IsNumeric">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header> IsNumeric
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                                {{element.IsNumericParameter}}
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="IsPrintDisSummary">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header> IsPrintDisSummary
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                                {{element.IsPrintDisSummary}}
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="AddedBy">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                AddedBy</mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.AddedBy}}
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="Isdeleted">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                IsActive
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <mat-icon *ngIf="element.Isdeleted"
+                                                    class="active-icon green-600 s-16">check_circle</mat-icon>
+                                                <mat-icon *ngIf="!element.Isdeleted"
+                                                    class="active-icon red-500 s-16">close</mat-icon>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="action" stickyEnd>
+                                            <mat-header-cell *matHeaderCellDef class="table-actions"> Action
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element">
+
+                                                <button mat-icon-button (click)="onEdit(element)"
+                                                    *ngIf="element.Isdeleted"><mat-icon
+                                                        title="Edit Menu">edit</mat-icon></button>
+                                                <button mat-icon-button
+                                                    *ngIf="!element.Isdeleted"><mat-icon
+                                                        title="Edit Menu">highlight_off</mat-icon></button>
+                                                <button mat-icon-button
+                                                    (click)="onDeactive(element,element.ParameterID)"
+                                                    color="warn"><mat-icon>delete_outline</mat-icon></button>
+
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="loading">
+                                            <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                            </mat-header-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="noData">
+                                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                                no data found...
+                                            </mat-footer-cell>
+                                        </ng-container>
+
+                                        <mat-header-row class="accent min-width-1800"
+                                        *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                                        <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
+                                        class=" min-width-1800"
+                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                        <mat-footer-row *matFooterRowDef="['loading']"
+                                            [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
+                                        <mat-footer-row *matFooterRowDef="['noData']"
+                                            [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
+
+                                    </mat-table>
+
+                                    <mat-paginator [pageSizeOptions]="[10, 15, 25, 100]" [pageSize]="10"
+                                        showFirstLastButtons></mat-paginator>
                                 </div>
 
-                                <mat-table class="table1" matSort [dataSource]="DSParameterList"
-                                    [@animateStagger]="{value:'50'}" style="overflow:auto">
-
-                                    <ng-container matColumnDef="ParameterID">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                            fxShow.gt-sm>ParameterID
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.ParameterID}}
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="ParameterName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header> ParameterName
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.ParameterName}}
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="ParameterShortName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header>ShortName </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.ParameterShortName}}
-                                        </mat-cell>
-                                    </ng-container>
-
-
-                                    <ng-container matColumnDef="PrintParameterName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                            fxShow.gt-sm>PrintParameterName </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            {{element.PrintParameterName}} </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="UnitName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header> UnitName </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.UnitName}}
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="IsNumeric">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header> IsNumeric </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.IsNumericParameter}}
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="IsPrintDisSummary">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header> IsPrintDisSummary
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.IsPrintDisSummary}}
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="AddedBy">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header> AddedBy</mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.AddedBy}}
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="Isdeleted">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm> IsActive
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <mat-icon *ngIf="element.Isdeleted"
-                                                class="active-icon green-600 s-16">check_circle</mat-icon>
-                                            <mat-icon *ngIf="!element.Isdeleted"
-                                                class="active-icon red-500 s-16">close</mat-icon>
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="action" stickyEnd>
-                                        <mat-header-cell *matHeaderCellDef class="table-actions"> Action
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let element">
-                                            
-                                            <button mat-icon-button (click)="onEdit(element)"
-                                                *ngIf="element.Isdeleted"><mat-icon
-                                                    title="Edit Menu">edit</mat-icon></button>
-                                            <button mat-icon-button (click)="onEdit(element)"
-                                                *ngIf="!element.Isdeleted"><mat-icon
-                                                    title="Edit Menu">fix</mat-icon></button>
-                                            <button mat-icon-button (click)="onDeactive(element,element.ParameterID)"
-                                                color="warn"><mat-icon>delete_outline</mat-icon></button>
-
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="loading">
-                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                        </mat-header-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="noData">
-                                        <mat-footer-cell *matFooterCellDef colspan="6">
-                                            no data found...
-                                        </mat-footer-cell>
-                                    </ng-container>
-
-                                    <mat-header-row class="accent" class=" min-width-2200"
-                                        *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                                    <mat-row *matRowDef="let row; columns: displayedColumns;" class="element" class=" min-width-2200"
-                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                    <mat-footer-row *matFooterRowDef="['loading']"
-                                        [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
-                                    <mat-footer-row *matFooterRowDef="['noData']"
-                                        [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
-
-                                </mat-table>
-
-                                <mat-paginator [pageSizeOptions]="[10, 15, 25, 100]" [pageSize]="10"
-                                    showFirstLastButtons></mat-paginator>
                             </div>
-
                         </div>
+
+
+
                     </div>
-
-
-
                 </div>
             </div>
         </div>
     </div>
-</div>

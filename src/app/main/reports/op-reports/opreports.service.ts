@@ -202,12 +202,12 @@ return this._httpClient.get("OPReport/view-OPDoctorWiseNewOldPatientReport?FromD
   
   public getgroupwisescollummaryView(FromDate,ToDate,GroupId){
   
-    return this._httpClient.get("CommanReport/view-GroupwisecollsummaryReport?FromDate=" + FromDate+"&ToDate="+ToDate,+"&GroupId="+GroupId);
+    return this._httpClient.get("CommanReport/view-GroupwiseSummaryReport?FromDate=" + FromDate+"&ToDate="+ToDate,+"&GroupId="+GroupId);
   }
   
   public getgroupwiserevenusummaryView(FromDate,ToDate){
   
-    return this._httpClient.get("CommanReport/view-GroupwiseRevenueSummary?FromDate=" + FromDate+"&ToDate="+ToDate);
+    return this._httpClient.get("CommanReport/view-GroupwiseRevenueSummary?FromDate="+FromDate+"&ToDate="+ToDate);
   }
   public getservicewisereportwithoutbillView(ServiceId,FromDate,ToDate){
   
@@ -314,8 +314,8 @@ return this._httpClient.get("OPReport/view-OPDoctorWiseNewOldPatientReport?FromD
   public getOpBilldetail(FromDate,ToDate,AddedById){
     return this._httpClient.get("OPReport/view-BillReportSummary?FromDate="+FromDate+"&ToDate="+ToDate+"&AddedById="+AddedById);
   }
-  public getOPBillSummary(FromDate,ToDate,AddedById){
-    return this._httpClient.get("​OPReport​/view-BillReportSummarySummary?FromDate="+FromDate+"&ToDate="+ToDate+"&AddedById="+AddedById);
+  public getOPBillSummary(FromDate,ToDate){
+    return this._httpClient.get("OPReport/view-BillReportSummarySummary?FromDate="+FromDate+"&ToDate="+ToDate);
   }
   public getOPcreditlist(FromDate,ToDate){
     return this._httpClient.get("OPReport/view-OpPatientCreditList?FromDate="+FromDate+"&ToDate="+ToDate);

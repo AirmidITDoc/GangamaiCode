@@ -995,8 +995,8 @@ viewgetOPBillReportPdf() {
      
       this._OPReportsService.getOPBillSummary(
         this.datePipe.transform(this._OPReportsService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-        this.datePipe.transform(this._OPReportsService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-        AddUserId
+        this.datePipe.transform(this._OPReportsService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+        
       ).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,
           {

@@ -57,7 +57,7 @@
                         <div fxlayout="row">
                             <div style="width: 100%;">
                                 <mat-table class='table' matSort [dataSource]="tempList.data"
-                                    [@animateStagger]="{value:'50'}" style="overflow:auto">
+                                    [@animateStagger]="{value:'50'}" style="overflow:auto;height: 500px !important;">
                                     <ng-container matColumnDef="UnitId">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
                                         </mat-header-cell>
@@ -97,9 +97,9 @@
                                             <button mat-icon-button (click)="onEdit(element)"
                                                 *ngIf="element.IsDeleted"><mat-icon
                                                     title="Edit Menu">edit</mat-icon></button>
-                                            <button mat-icon-button (click)="onEdit(element)"
+                                            <button mat-icon-button 
                                                 *ngIf="!element.IsDeleted"><mat-icon
-                                                    title="Edit Menu">fix</mat-icon></button>
+                                                    title="Edit Menu">highlight_off</mat-icon></button>
                                             <button mat-icon-button (click)="onDeactive(element.UnitId)"
                                                 color="warn"><mat-icon>delete_outline</mat-icon></button>
                                         </mat-cell>
