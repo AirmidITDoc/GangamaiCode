@@ -1,4 +1,4 @@
-<div class="simple page-layout inner-sidebar inner-scroll left-sidebar">
+<div class="simple page-layout inner-sidebar inner-scroll left-sidebar" dynamicTableHeight>
     <mat-toolbar class="accent" style="width: 100%;height: 40px; justify-content: space-between;">
         <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
@@ -13,6 +13,11 @@
         </div>
     </mat-toolbar>
     <div class="content">
+        <div *ngIf="isLoading123">
+            <div id="pause" class="d-flex align-items-center justify-content-center">
+                <div id="spinner"></div>
+            </div>
+        </div>
         <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm"
         class="fuse-search-sidebar">
         <div class="sidebar-content">
@@ -26,7 +31,7 @@
             <div class="sidebar-body">
                 <div class="sidebar-form">
                     <form [formGroup]="_DischargeCancelService.DischargeForm" fusePerfectScrollbar>
-                        <div fxLayout="column" fxLayoutAlign="start none">
+                        <div fxLayout="column" fxLayoutAlign="start none" fxLayoutGap="6px">
                             <mat-form-field appearance="outline">
                                 <mat-label>Enter a date range</mat-label>
                                 <mat-date-range-input [rangePicker]="picker">
@@ -34,7 +39,7 @@
                                         placeholder="Start date">
                                     <input matEndDate formControlName="end"
                                         placeholder="End date"
-                                        (dateChange)="getAdmittedPatientList_1()">
+                                        (dateChange)="getDischargPatientList()">
                                 </mat-date-range-input>
                                 <mat-datepicker-toggle matSuffix
                                     [for]="picker"></mat-datepicker-toggle>
@@ -44,61 +49,33 @@
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Reg No</mat-label>
                                 <input name="RegNo" formControlName="RegNo" matInput
-                                    (keyup)="getAdmittedPatientList_1()">
-                            </mat-form-field>
-
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>IPD No</mat-label>
-                                <input name="IPDNo" formControlName="IPDNo" matInput
-                                    (keyup)="getAdmittedPatientList_1()">
+                                    (keyup)="getDischargPatientList()">
                             </mat-form-field>
 
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>First Name</mat-label>
                                 <input name="FirstName" formControlName="FirstName" matInput
-                                    (keyup)="getAdmittedPatientList_1()">
-                            </mat-form-field>
-
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Middle Name</mat-label>
-                                <input name="MiddleName" formControlName="MiddleName" matInput
-                                    (keyup)="getAdmittedPatientList_1()">
-                            </mat-form-field>
+                                    (keyup)="getDischargPatientList()">
+                            </mat-form-field> 
 
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Last Name</mat-label>
                                 <input name="LastName" formControlName="LastName" matInput
-                                    (keyup)="getAdmittedPatientList_1()">
+                                    (keyup)="getDischargPatientList()">
                             </mat-form-field>
 
                             <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Doctor Name</mat-label>
-                                <input matAutocompletePosition="below" type="text"
-                                    placeholder="Select Doctor" matInput
-                                    formControlName="searchDoctorId"
-                                    required>
-                                <!-- <span matSuffix style="display: flex;">
-                                    <mat-icon class="mat-icon-close"
-                                        (click)="_DischargeCancelService.DischargeForm.get('searchDoctorId').setValue(''); isSearchdoctorSelected = false;">close</mat-icon>
-                                    <mat-icon class="mat-icon-close"
-                                        (click)="_DischargeCancelService.DischargeForm.get('searchDoctorId').setValue(''); isSearchdoctorSelected = false;">search</mat-icon>
-                                </span>
-                                <mat-autocomplete #autosearchDoctor="matAutocomplete"
-                                    [displayWith]="getOptionTextsearchDoctor">
-                                    <mat-option
-                                        *ngFor="let option of filteredOptionssearchDoctor | async"
-                                        [value]="option">
-                                        {{option.DoctorName}}
-                                    </mat-option>
-                                </mat-autocomplete> -->
-                            </mat-form-field>
+                                <mat-label>IPD No</mat-label>
+                                <input name="IPDNo" formControlName="IPDNo" matInput
+                                    (keyup)="getDischargPatientList()">
+                            </mat-form-field> 
 
                             <div class="action-buttons">
                                 <button mat-raised-button (click)="onClear()"
                                     matTooltip="close">
                                     <mat-icon class="cleariconbutton">close</mat-icon>
                                 </button>
-                                <button mat-raised-button (click)="getAdmittedPatientList_1()"
+                                <button mat-raised-button (click)="getDischargPatientList()"
                                     matTooltip="search">
                                     <mat-icon class="searchiconbutton">search</mat-icon>
                                 </button>
@@ -122,136 +99,105 @@
 
                     <div fxlayout="row">
                         <div style="width:100%;">
-                            <div matColumnDef="loading" style="height: 400px;"
+                            <div matColumnDef="loading" style="height: 600px;"
                                 [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur">
                                 <div class="spinner-border text-danger"></div>
                             </div>
                             <mat-table #table matSort [dataSource]="dsDischargeList"
-                            [@animateStagger]="{value:'50'}" class="table1 h-480"
-                            style="overflow: auto;"> 
+                            [@animateStagger]="{value:'50'}" style="overflow: auto;"> 
+
+                            <ng-container matColumnDef="DOA" sticky>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                    fxShow.gt-md class="w-180">Date</mat-header-cell >
+                                <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-180">
+                                    <span> {{contact.Adm_Vit_Date}} - {{contact.Adm_Vit_Time}} </span>
+                                </mat-cell>
+                            </ng-container> 
 
                             <ng-container matColumnDef="RegNo" sticky>
                                 <mat-header-cell *matHeaderCellDef mat-sort-header
-                                    class="w-90" fxShow.gt-sm>Reg
-                                    No</mat-header-cell>
+                                    class="w-100" fxShow.gt-sm>UHID No</mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm
-                                    class="w-90">
-                                    <span> {{contact.RegNo}}</span>
+                                    class="w-100">
+                                    <span> {{contact.RegNoWithPrefix}}</span>
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="PatientName" sticky>
                                 <mat-header-cell *matHeaderCellDef mat-sort-header
-                                    fxShow.gt-sm class="w-200">Patient Name
+                                    fxShow.gt-sm class="w-210">Patient Name
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm
-                                    class="w-200">
+                                    class="w-210">
                                     <span> {{contact.PatientName}}</span>
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="DOA">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header
-                                    fxShow.gt-md>Date</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-md>
-                                    <span> {{contact.DOA}} - {{contact.DOT}} </span>
                                 </mat-cell>
                             </ng-container> 
 
-                            <ng-container matColumnDef="Doctorname">
+                            <ng-container matColumnDef="Age" sticky>
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                    fxShow.gt-md class="w-160">Doctor
-                                    Name
+                                    fxShow.gt-md class="w-140">
+                                    Age
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md
-                                    class="w-160">
-                                    <span> {{contact.Doctorname}}</span>
+                                    class="w-140">
+                                   {{contact.AgeYear}}Y|{{contact.AgeMonth}}M|{{contact.AgeDay}}D 
                                 </mat-cell>
                             </ng-container>
 
-                            <ng-container matColumnDef="RefDocName">
+                            <ng-container matColumnDef="Doctorname">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                    fxShow.gt-md class="w-160">Ref Doc
+                                    fxShow.gt-md class="w-140">Doctor
                                     Name
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md
-                                    class="w-160">
-                                    <span> {{contact.RefDocName}}</span>
+                                    class="w-140">
+                                    <span> {{contact.Adm_DoctorName}}</span>
                                 </mat-cell>
-                            </ng-container>
+                            </ng-container> 
 
                             <ng-container matColumnDef="IPNo">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                    fxShow.gt-md>IPD No
+                                    fxShow.gt-md class="w-120">IPD No
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                    <span> {{contact.IPDNo}}</span>
+                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-120">
+                                    <span> {{contact.IP_OP_Number}}</span>
                                 </mat-cell>
                             </ng-container>
 
-                            <ng-container matColumnDef="PatientType">
+                            <ng-container matColumnDef="CompanyName">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                    fxShow.gt-md>PatientType
+                                    fxShow.gt-md class="w-150">Company Name
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                    <span> {{contact.PatientType}}</span>
+                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-150">
+                                    <span> {{contact.CompanyName || '-'}}</span>
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="WardName">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                    fxShow.gt-md>Ward Name
+                                    fxShow.gt-md class="w-140">Ward Name
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                    <span> {{contact.RoomName}} - {{contact.BedName}}</span>
+                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-140">
+                                    <span> {{contact.ClassName}}</span>
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="TariffName">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                    fxShow.gt-md>Traiff
-                                    Name
+                                    fxShow.gt-md class="w-140">Traiff Name
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-140">
                                     <span> {{contact.TariffName}}</span>
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="ClassName">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                    fxShow.gt-md>Class
-                                    Name
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                    <span> {{contact.ClassName}}</span>
-                                </mat-cell>
-                            </ng-container> 
-
-                            <ng-container matColumnDef="CompanyName" sticky>
-                                <mat-header-cell *matHeaderCellDef>CompanyName
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact">
-                                    {{contact.CompanyName}} 
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="RelativeName">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                    fxShow.gt-md>Relative
-                                    Name
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                    <span> {{contact.RelativeName}}</span>
                                 </mat-cell>
                             </ng-container> 
 
                             <ng-container matColumnDef="Action" stickyEnd>
                                 <mat-header-cell *matHeaderCellDef
-                                   >Action</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" class="w-100">
-                                    <button mat-icon-button
+                                class="w-80">Action</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" class="w-80">
+                                    <button mat-icon-button (click)="DischargeCancel()"
                                     matTooltip="Discharge Cancel">
-                                    <mat-icon>cancel</mat-icon>
+                                    <mat-icon>backspace</mat-icon>
                                 </button> 
                                 </mat-cell>
                             </ng-container>
@@ -268,18 +214,17 @@
                                 </mat-footer-cell>
                             </ng-container>
 
-                            <mat-header-row class="accent min-width-2200"
+                            <mat-header-row class="accent min-width-1400"
                                 *matHeaderRowDef="displayedColumns; sticky: true">
                             </mat-header-row>
                             <mat-row *matRowDef="let contact; columns: displayedColumns;"
-                                class="contact min-width-2200"
-                                [ngClass]="contact.PatientType !== 'Self' ? 'self-row' : ''"
+                                class="contact min-width-1400" 
                                 [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                             <mat-footer-row *matFooterRowDef="['loading']"
                                 [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                             </mat-footer-row>
-                            <mat-footer-row *matFooterRowDef="['noData']"
-                                [ngClass]="{'hide':!(dsDischargeList!=null && dsDischargeList.data.length==0)}"></mat-footer-row>
+                            <!-- <mat-footer-row *matFooterRowDef="['noData']"
+                                [ngClass]="{'hide':!(dsDischargeList!=null && dsDischargeList.data.length==0)}"></mat-footer-row> -->
                         </mat-table>
 
                             <!-- <mat-table #table matSort [dataSource]="dsDischargeList"
@@ -361,9 +306,8 @@
                                 </mat-footer-row>
                             </mat-table> -->
 
-                            <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10"
-                                showFirstLastButtons>
-                            </mat-paginator>
+                              <mat-paginator [pageSizeOptions]="[35, 50, 75, 100]" [pageSize]="15">
+                             </mat-paginator>
                         </div>
                     </div>
                 </div>

@@ -134,12 +134,13 @@
                                                     <span class="red-600-fg">Bill Count : {{VBillcount}}</span>
                                                 </div>
                                                 <div style="color: red" fxLayout="row" fxLayoutAlign="start center"
-                                                class="gap-4">
-                                                <mat-icon class="pill red-600 s-16">circle</mat-icon>
-                                                <span class="blue-600-fg">Cross Consultant Count : {{VCrossConscount}}</span>
-                                                
-                                            </div>
-                                                
+                                                    class="gap-4">
+                                                    <mat-icon class="pill red-600 s-16">circle</mat-icon>
+                                                    <span class="blue-600-fg">Cross Consultant Count :
+                                                        {{VCrossConscount}}</span>
+
+                                                </div>
+
                                             </div>
                                         </div>
                                         <div class="table-wrapper">
@@ -166,7 +167,7 @@
                                                                     </mat-icon>
                                                                 </div>
                                                             </div>
-                                                          
+
                                                             <div class="bill-generated" fxLayout="row"
                                                                 fxLayoutAlign="center">
                                                                 <mat-icon
@@ -197,8 +198,10 @@
                                                                     <!-- <mat-icon *ngIf="contact.CrossConsulFlag==1; else noMLC "
                                                                     matTooltip="CrossConsulFlag" class="pill green-600 s-16">cached icon
                                                                     </mat-icon>  -->
-                                                                    <mat-icon title="CrossConsulFlag" *ngIf="contact.CrossConsulFlag==1"
-                                                                    class="active-icon green-600 s-16">cached icon</mat-icon>
+                                                                    <mat-icon title="CrossConsulFlag"
+                                                                        *ngIf="contact.CrossConsulFlag==1"
+                                                                        class="active-icon green-600 s-16">cached
+                                                                        icon</mat-icon>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -282,10 +285,11 @@
 
                                                 <ng-container matColumnDef="OPDNo">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                        fxShow.gt-md  class="w-100">
+                                                        fxShow.gt-md class="w-100">
                                                         <span class="mat-header-text">OPDNo</span>
                                                     </mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md  class="w-100">
+                                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md
+                                                        class="w-100">
                                                         <span> {{contact.OPDNo}}</span>
                                                     </mat-cell>
                                                 </ng-container>
@@ -344,7 +348,7 @@
                                                         <span> {{contact.TariffName}}</span>
                                                     </mat-cell>
                                                 </ng-container>
-                                                
+
                                                 <ng-container matColumnDef="MobileNo">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                                         fxShow.gt-md>
@@ -361,8 +365,9 @@
                                                         <span class="mat-header-text">Action</span>
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" class="w-260 gap-4">
-                                                        <button mat-icon-button matTooltip="Edit" 
-                                                            *ngIf="contact.IsCancelled==0" (click)="EditRegistration(contact)">
+                                                        <button mat-icon-button matTooltip="Edit"
+                                                            *ngIf="contact.IsCancelled==0"
+                                                            (click)="EditRegistration(contact)">
                                                             <mat-icon>edit</mat-icon>
                                                         </button>
                                                         <!-- <button mat-icon-button *ngIf="contact.IsCancelled=='0' " matTooltip="Appointment Cancle" (click)="AppointmentCancle()">
@@ -398,9 +403,11 @@
                                                                 print</mat-icon>
                                                             <!-- <mat-icon>print</mat-icon> -->
                                                         </button>
-                                                        <button mat-icon-button matTooltip="Bill"  *ngIf="contact.IsCancelled==0"
+                                                        <button mat-icon-button matTooltip="Bill"
+                                                            *ngIf="contact.IsCancelled==0"
                                                             (click)="Billpayment(contact)">
-                                                            <mat-icon title="Clse Menu" [disabled]="contact.IsCancelled" class="disabled-icon">
+                                                            <mat-icon title="Clse Menu" [disabled]="contact.IsCancelled"
+                                                                class="disabled-icon">
                                                                 payment</mat-icon>
                                                         </button>
                                                         <button mat-icon-button matTooltip="CrossConsultation"
@@ -415,19 +422,22 @@
                                                             <mat-icon [disabled]="contact.IsCancelled">print</mat-icon>
                                                         </button>
                                                         <button mat-icon-button matTooltip="Send message On WhatsApp"
-                                                            *ngIf="contact.IsCancelled==0" (click)="WhatsAppAppointmentSend(contact)">
+                                                            *ngIf="contact.IsCancelled==0"
+                                                            (click)="WhatsAppAppointmentSend(contact)">
                                                             <img width="100" height="20px"
                                                                 src="assets/images/logos/WhatsApp.png">
                                                         </button>
                                                         <!-- *ngIf="contact.IsCancelled==0" -->
-                                                        <button mat-icon-button [matMenuTriggerFor]="moreMenu"  *ngIf="contact.IsCancelled==0"
-                                                            aria-label="More" (click)="$event.stopPropagation();">
+                                                        <button mat-icon-button [matMenuTriggerFor]="moreMenu"
+                                                            *ngIf="contact.IsCancelled==0" aria-label="More"
+                                                            (click)="$event.stopPropagation();">
                                                             <mat-icon class="secondary-text">more_vert</mat-icon>
                                                         </button>
                                                         <mat-menu #moreMenu="matMenu">
                                                             <ng-container
                                                                 *ngFor="let m of menuActions, let n of menuActions">
-                                                                <button mat-menu-item aria-label="remove"  *ngIf="contact.IsCancelled==0"
+                                                                <button mat-menu-item aria-label="remove"
+                                                                    *ngIf="contact.IsCancelled==0"
                                                                     (click)="getRecord(contact,m)">
                                                                     <span>{{m}}</span>
                                                                 </button>
@@ -714,29 +724,47 @@
                                                 </div>
 
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <!-- <mat-form-field appearance="outline">
-                                                        <mat-label>Birth date</mat-label>
-                                                        <input name="DateOfBirth" matInput [matDatepicker]="picker1"
-                                                            formControllName="DateOfBirth" #bday
-                                                            (keydown)="onEnterbday($event)"
-                                                            (dateChange)="onChangeDateofBirth($event.value)"
-                                                            [value]="registerObj.DateofBirth" [readonly]="true">
-                                                        <mat-datepicker-toggle matSuffix
-                                                            [for]="picker1"></mat-datepicker-toggle>
-                                                        <mat-datepicker #picker1></mat-datepicker>
-                                                    </mat-form-field> -->
-
-                                                    <mat-form-field appearance="outline">
-                                                        <input matInput [matDatepicker]="validFromPicker"
-                                                            formControllName="DateOfBirth" #bday
-                                                            [value]="registerObj.DateofBirth"
-                                                            (keydown)="onEnterbday($event)"
-                                                            (dateChange)="onChangeDateofBirth($event.value)"
-                                                            placeholder="mm/dd/yyyy">
-                                                        <mat-datepicker-toggle matSuffix
-                                                            [for]="validFromPicker"></mat-datepicker-toggle>
-                                                        <mat-datepicker #validFromPicker></mat-datepicker>
-                                                    </mat-form-field>
+                                                    <mat-button-toggle-group [(ngModel)]="dateStyle"
+                                                        (change)="OnChangeDobType($event)" aria-label="Font Style">
+                                                        <mat-button-toggle value="Date">Date</mat-button-toggle>
+                                                        <mat-button-toggle value="Day">Day</mat-button-toggle>
+                                                        <mat-button-toggle value="Month">Month</mat-button-toggle>
+                                                        <mat-button-toggle value="Year">Year</mat-button-toggle>
+                                                    </mat-button-toggle-group>
+                                                </div>
+                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <div fxLayout="row" class="gap-8">
+                                                        <mat-form-field appearance="outline" *ngIf="dateStyle=='Year'">
+                                                            <mat-label>Age (Y)</mat-label>
+                                                            <input placeholder="Age (Y)" matInput
+                                                                (keyup)="CalcDOB('Year',$event)"
+                                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
+                                                        </mat-form-field>
+                                                        <mat-form-field appearance="outline" *ngIf="dateStyle=='Month'">
+                                                            <mat-label>Age (M)</mat-label>
+                                                            <input placeholder="Age (M)" matInput
+                                                                (keyup)="CalcDOB('Month',$event)"
+                                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,2);">
+                                                        </mat-form-field>
+                                                        <mat-form-field appearance="outline" *ngIf="dateStyle=='Day'">
+                                                            <mat-label>Age (D)</mat-label>
+                                                            <input placeholder="Age (D)" matInput
+                                                                (keyup)="CalcDOB('Day',$event)"
+                                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,2);">
+                                                        </mat-form-field>
+                                                        <mat-form-field appearance="outline">
+                                                            <input matInput [matDatepicker]="validFromPicker"
+                                                                formControllName="DateOfBirth" #bday
+                                                                [value]="registerObj.DateofBirth"
+                                                                (keydown)="onEnterbday($event)"
+                                                                [disabled]="dateStyle!='Date'"
+                                                                (dateChange)="onChangeDateofBirth($event.value)"
+                                                                placeholder="mm/dd/yyyy">
+                                                            <mat-datepicker-toggle matSuffix
+                                                                [for]="validFromPicker"></mat-datepicker-toggle>
+                                                            <mat-datepicker #validFromPicker></mat-datepicker>
+                                                        </mat-form-field>
+                                                    </div>
                                                 </div>
                                                 <!-- age, month, dat -->
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -747,7 +775,7 @@
                                                                 placeholder="Age (Y)" matInput
                                                                 [(ngModel)]="registerObj.AgeYear"
                                                                 (ngModelChange)="registerObj.AgeYear = $event" required
-                                                                maxlength="3" #agey
+                                                                maxlength="3" #agey readonly
                                                                 (keyup)="ageyearcheck(registerObj.AgeYear)"
                                                                 (keydown)="onEnteragey($event,registerObj.AgeYear)"
                                                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
@@ -758,7 +786,7 @@
                                                         <mat-form-field appearance="outline">
                                                             <mat-label>Age (M)</mat-label>
                                                             <input name="AgeMonth" formControlName="AgeMonth"
-                                                                placeholder="Age (M)" matInput
+                                                                placeholder="Age (M)" matInput readonly
                                                                 [(ngModel)]="registerObj.AgeMonth"
                                                                 (ngModelChange)="registerObj.AgeMonth = $event"
                                                                 type="number" maxlength="2" #agem
@@ -772,7 +800,7 @@
                                                             <mat-label>Age (D)</mat-label>
                                                             <input name="AgeDay" formControlName="AgeDay"
                                                                 placeholder="Age (D)" matInput
-                                                                [(ngModel)]="registerObj.AgeDay"
+                                                                [(ngModel)]="registerObj.AgeDay" readonly
                                                                 (ngModelChange)="registerObj.AgeDay = $event"
                                                                 type="number" maxlength="2" #aged
                                                                 (keydown)="onEnteraged($event)"
@@ -1208,7 +1236,7 @@
                                                 </mat-form-field>
 
 
-                                                
+
                                             </div>
 
                                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">

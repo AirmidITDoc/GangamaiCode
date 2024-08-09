@@ -18,19 +18,12 @@ export class DischargeCancelService {
       RegNo: '',
       IPDNo: '',
       FirstName: '',
-      MiddleName: '',
-      LastName: '',
-      MobileNo: '',
-      searchDoctorId: '',
-      DoctorId: '0',
-      DoctorID: '0',
-      DoctorName: '',
-      WardId: '0',
-      RoomName: '',
-      PatientType: '',
-      patientstatus: '',
+      LastName: '',  
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
     });
+   }
+   public OPIPPatientList(param){
+    return this._httpClient.post('Generic/GetDataSetByProc?procName=Retrieve_OPIPPatientList',param);
    }
 }

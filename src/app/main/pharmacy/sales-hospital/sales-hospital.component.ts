@@ -3483,10 +3483,10 @@ getSearchListIP() {
       this.getBillSummary();
   }
   getOptionTextIPObj(option) { 
-    return option && option.FirstName ? option.LastName : ''; 
+    return option && option.FirstName + " " + option.LastName; 
   }
   getOptionTextOPObj(option) { 
-    return option && option.FirstName ? option.LastName : ''; 
+    return option && option.FirstName + " " + option.LastName; 
   }
   PatientInformRest(){
     this.PatientName = ''  
