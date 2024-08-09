@@ -50,6 +50,7 @@ import { CrossConsultationComponent } from './cross-consultation/cross-consultat
 // import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
 import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
 import {NgxPrintModule} from 'ngx-print';
+import { MatButtonToggleModule } from "@angular/material/button-toggle";
 
 const routes: Routes = [
     {
@@ -111,7 +112,8 @@ const routes: Routes = [
         ScrollingModule,
         MatSidenavModule,
         NgxQRCodeModule,
-        NgxPrintModule
+        NgxPrintModule,
+        MatButtonToggleModule
     ],
     providers: [DatePipe],
     entryComponents: [AppointmentComponent],
