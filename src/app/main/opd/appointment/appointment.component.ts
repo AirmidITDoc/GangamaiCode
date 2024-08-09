@@ -1627,19 +1627,26 @@ export class AppointmentComponent implements OnInit {
         this.setDropdownObjs();
 
         this.VisitFlagDisp = true;
+        let todayDate=new Date();
+        const timeDiff = Math.abs(Date.now() - this.registerObj.DateofBirth.getTime());
+        this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
+        this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - this.registerObj.DateofBirth.getMonth());
+        this.registerObj.AgeDay = Math.abs(todayDate.getDate() - this.registerObj.DateofBirth.getDate());
     }
 
     getSelectedObj(obj) {
         console.log(obj)
         this.RegOrPhoneflag = 'Entry from Registration';
-        obj.AgeDay = obj.AgeDay1.trim();
-        obj.AgeMonth = obj.AgeMonth1.trim();
-        obj.AgeYear = obj.AgeYear1.trim();
+        let todayDate=new Date();
+        const d=new Date(obj.DateofBirth);
+        const timeDiff = Math.abs(Date.now() -d.getTime());
+        obj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
+        obj.AgeMonth = Math.abs(todayDate.getMonth() - d.getMonth());
+        obj.AgeDay = Math.abs(todayDate.getDate() - d.getDate());
         this.registerObj = obj;
         this.PatientName = obj.PatientName;
         this.RegId = obj.RegId;
 
-        this.onChangeDateofBirth(this.registerObj.DateofBirth)
         this.setDropdownObjs();
 
         this.VisitFlagDisp = true;
