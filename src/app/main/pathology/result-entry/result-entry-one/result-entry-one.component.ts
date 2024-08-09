@@ -102,7 +102,7 @@ export class ResultEntryOneComponent implements OnInit {
         private _fuseSidebarService: FuseSidebarService) {
 
         if (this.data) {
-
+            console.log(this.data)
             this.selectedAdvanceObj2 = data.patientdata;
             console.log(this.selectedAdvanceObj2)
             this.OPIPID = this.selectedAdvanceObj2.OPD_IPD_ID;
@@ -234,6 +234,10 @@ export class ResultEntryOneComponent implements OnInit {
 
     }
     boldstatus = 0;
+
+    editflag(contact){
+        contact.ParaBoldFlag=contact.ParaBoldFlag
+    }
 
 
     helpItems: any[] = [];

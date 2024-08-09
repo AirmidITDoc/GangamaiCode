@@ -1,8 +1,8 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fusePerfectScrollbar
-dynamicTableHeight>
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar">
 
-<mat-toolbar class="top-header accent">
+    <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
+
             <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
                 <mat-icon>menu</mat-icon>
             </button>
@@ -14,13 +14,16 @@ dynamicTableHeight>
             </span>
 
         </div>
+
         <div fxLayout="row" fxLayoutAlign="start end">
-            <button mat-raised-button color="pine" (click)="onAdd()" fxLayoutAlign="center center">
-                Add &nbsp;<mat-icon color="Primary" title=" Add New Template ">add_to_photos</mat-icon>
+            <button mat-raised-button color="pine" style="margin-left: 1080px;" (click)="onAdd()">Add
+                <mat-icon>add_to_photos</mat-icon>
+
             </button>
         </div>
-    </mat-toolbar>
 
+
+    </mat-toolbar>
     <div class="content">
         <div class="center p-24 pb-56" fusePerfectScrollbar>
             <div class="content-card">
@@ -39,12 +42,14 @@ dynamicTableHeight>
                                         </button>
                                     </mat-form-field>
 
-                                    <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch" value="2"
-                                        fxLayoutAlign="center center">
-                                        <mat-radio-button value="2">All</mat-radio-button>
-                                        <mat-radio-button mat-fab value="0">IsActive</mat-radio-button>
-                                        <mat-radio-button mat-fab value="1">IsDeactive</mat-radio-button>
-                                    </mat-radio-group>
+                                    <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch"
+                                    (change)="onFilterChange()">
+                                    <mat-radio-button (click)="toggle(2)" [checked]="true"
+                                        value="2">All</mat-radio-button>
+                                    <mat-radio-button mat-fab value="1"
+                                        (click)="toggle(1)">IsActive</mat-radio-button>
+                                    <mat-radio-button (click)="toggle(0)" value="0">IsDeactive</mat-radio-button>
+                                </mat-radio-group>
 
                                     <button mat-raised-button (click)="onSearch()" fxLayoutAlign="center center">
                                         <mat-icon>search</mat-icon>
@@ -110,8 +115,8 @@ dynamicTableHeight>
                                     <mat-cell *matCellDef="let element">
                                         <button mat-icon-button (click)="onEdit(element)" *ngIf="element.IsActive"><mat-icon
                                                 title="Edit Menu">edit</mat-icon></button>
-                                                <button mat-icon-button (click)="onEdit(element)" *ngIf="!element.IsActive"><mat-icon
-                                                    title="Edit Menu">fix</mat-icon></button>
+                                                <button mat-icon-button  *ngIf="!element.IsActive"><mat-icon
+                                                    title="Edit Menu">highlight_off</mat-icon></button>
                                         <button mat-icon-button (click)="onDeactive(element.TestId)"
                                             color="warn"><mat-icon>delete_outline</mat-icon></button>
                                     </mat-cell>

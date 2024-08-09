@@ -176,10 +176,12 @@
                                   
                                     <ng-container matColumnDef="Flag">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                            class="w-80">Flag
+                                            class="w-80 border-right">Flag
                                         </mat-header-cell>
                                         <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.ParaBoldFlag}}
+                                            <mat-form-field appearance="legacy">
+                                            <input matInput matTooltip="Status" [(ngModel)]="contact.ParaBoldFlag" (keyup)="editflag()">
+                                        </mat-form-field>
                                         </mat-cell>
                                     </ng-container>
 

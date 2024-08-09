@@ -13,7 +13,7 @@
                 <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
                     Parameter Master
                 </span>
-                <button mat-raised-button color="pine" style="margin-left: 1080px;" (click)="onAdd()">Add
+                <button mat-raised-button color="pine" style="margin-left: 1180px;" (click)="onAdd()">Add
                     <mat-icon>add_to_photos</mat-icon>
 
                 </button>
@@ -41,13 +41,21 @@
                                         </button>
                                     </mat-form-field>
 
-                                    <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch" value="1"
+                                    <!-- <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch" value="1"
                                         fxLayoutAlign="center center">
                                         <mat-radio-button value="2">All</mat-radio-button>
                                         <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
                                         <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
-                                    </mat-radio-group>
-
+                                    </mat-radio-group> -->
+                                
+                                    <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch"
+                                    (change)="onSearch()">
+                                    <mat-radio-button (click)="toggle(2)" [checked]="true"
+                                        value="2">All</mat-radio-button>
+                                    <mat-radio-button mat-fab value="1"
+                                        (click)="toggle(1)">IsActive</mat-radio-button>
+                                    <mat-radio-button (click)="toggle(0)" value="0">IsDeactive</mat-radio-button>
+                                     </mat-radio-group>
 
                                     <button type="button" mat-raised-button class="searchButton" (click)="onSearch()"
                                         matTooltip="search">
@@ -60,7 +68,7 @@
 
                         <div fxlayout="row">
                             <div class="content-card">
-                                <div class="table-header">
+                                <div class="table-header" style="margin-left: 1480px;">
                                     <div fxLayout="row wrap" fxLayoutAlign="space-between center">
 
                                         <div class="table-header-right">
@@ -87,7 +95,7 @@
                                     </div>
 
                                     <mat-table class="table1" matSort [dataSource]="DSParameterList"
-                                        [@animateStagger]="{value:'50'}" style="overflow:auto">
+                                        [@animateStagger]="{value:'50'}" style="overflow:auto;height: 500px !important;">
 
                                         <ng-container matColumnDef="ParameterID">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide  class="w-180"
@@ -115,16 +123,16 @@
 
 
                                         <ng-container matColumnDef="PrintParameterName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide class="w-200"
                                                 fxShow.gt-sm>PrintParameterName </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-200">
                                                 {{element.PrintParameterName}} </mat-cell>
                                         </ng-container>
 
                                         <ng-container matColumnDef="UnitName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header> UnitName
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200"> UnitName
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.UnitName}}
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-200"> {{element.UnitName}}
                                             </mat-cell>
                                         </ng-container>
 

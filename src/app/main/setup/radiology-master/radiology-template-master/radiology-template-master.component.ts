@@ -61,6 +61,9 @@ export class RadiologyTemplateMasterComponent implements OnInit {
   @ViewChild('reportDiv') reportDiv: ElementRef;
   @ViewChild('tabGroup') tabGroup: MatTabGroup;
   dataSource = new MatTableDataSource<RadioPatientList>();
+  dataSource1 = new MatTableDataSource<RadioPatientList>();
+  tempList = new MatTableDataSource<RadioPatientList>();
+  currentStatus=0;
   displayedColumns: string[] = [
 
     'TemplateId',
@@ -110,6 +113,7 @@ export class RadiologyTemplateMasterComponent implements OnInit {
     }
     this._radiologytemplateService.getRadiologytemplateMasterList1(m_data).subscribe(data => {
       this.dataSource.data = data as RadioPatientList[];
+      this.dataSource1.data = data as RadioPatientList[];
       this.dataSource.data = data["Table1"] ?? [] as RadioPatientList[];
       console.log(this.dataSource.data)
       this.resultsLength = data["Table"][0]["total_row"];
@@ -215,19 +219,62 @@ export class RadiologyTemplateMasterComponent implements OnInit {
       this.getRadiologytemplateMasterList();
     });
   }
+  toggle(val: any) {
+    if (val == "2") {
+        this.currentStatus = 2;
+    } else if (val == "1") {
+        this.currentStatus = 1;
+    }
+    else {
+        this.currentStatus = 0;
 
-
+    }
+}
+  onFilterChange() {
+       
+    if (this.currentStatus == 1) {
+        this.tempList.data = []
+        this.dataSource1.data= this.dataSource.data
+        for (let item of this.dataSource1.data) {
+            if (item.IsActive) this.tempList.data.push(item)
+  
+        }
+  debugger
+        this.dataSource.data = [];
+        this.dataSource.data = this.tempList.data;
+    }
+    else if (this.currentStatus == 0) {
+        this.dataSource1.data= this.dataSource.data
+        this.tempList.data = []
+  
+        for (let item of this.dataSource1.data) {
+            if (!item.IsActive) this.tempList.data.push(item)
+  
+        }
+        this.dataSource.data = [];
+        this.dataSource.data = this.tempList.data;
+    }
+    else {
+        this.dataSource.data= this.dataSource1.data
+        this.tempList.data = this.dataSource.data;
+    }
+  
+  
+  }
 
   onDeactive(row) {
 
     Swal.fire({
-      title: 'Do you want to Change Active Status Of Paramter',
+      title: 'Confirm Status',
+      text: 'Are you sure you want to Change Status?',
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'OK',
-
-    }).then((flag) => {
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes,Change Status!'
+    }).then((result) => {
       let Query;
-      if (flag.isConfirmed) {
+      if (result.isConfirmed) {
         if (row.IsActive) {
           Query =
             "Update M_Radiology_TemplateMaster set IsActive=0 where TemplateId=" + row.TemplateId;
@@ -238,8 +285,12 @@ export class RadiologyTemplateMasterComponent implements OnInit {
         }
 
         this._radiologytemplateService.deactivateTheStatus(Query)
-          .subscribe((data) => (this.msg = data));
-        this.getRadiologytemplateMasterList();
+        .subscribe((data) => {
+         Swal.fire('Changed!', 'Template Status has been Changed.', 'success');
+          this.getRadiologytemplateMasterList();
+        }, (error) => {
+          Swal.fire('Error!', 'Failed to deactivate category.', 'error');
+        });
       }
     });
 

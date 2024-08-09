@@ -8,6 +8,7 @@ import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
+import { AuthenticationService } from "app/core/services/authentication.service";
 
 @Component({
     selector: "app-unitmaster",
@@ -28,16 +29,19 @@ export class UnitmasterComponent implements OnInit {
     PrefixMasterList: any;
     GendercmbList: any = [];
     msg: any;
-
+    currentStatus=0;
     DSUnitmasterList = new MatTableDataSource<PathunitMaster>();
+    DSUnitmasterList1 = new MatTableDataSource<PathunitMaster>();
     tempList = new MatTableDataSource<PathunitMaster>();
     @ViewChild(MatSort) sort: MatSort;
+
     @ViewChild(MatPaginator) paginator: MatPaginator;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
     constructor(
         public _unitmasterService: UnitmasterService,
         public toastr: ToastrService,
+        private accountService: AuthenticationService,
         public _matDialog: MatDialog,
     ) { }
 
@@ -62,6 +66,7 @@ export class UnitmasterComponent implements OnInit {
         };
         this._unitmasterService.getUnitMasterList(param).subscribe((Menu) => {
             this.DSUnitmasterList.data = Menu as PathunitMaster[];
+            this.DSUnitmasterList1.data = Menu as PathunitMaster[];
             this.tempList.data = this.DSUnitmasterList.data;
             console.log( this.DSUnitmasterList)
             this.DSUnitmasterList.sort = this.sort;
@@ -88,7 +93,7 @@ export class UnitmasterComponent implements OnInit {
                                     .value
                             )
                         ),
-                        addedBy: 1,
+                        addedBy: this.accountService.currentUserValue.user.id,
                     },
                 };
 
@@ -126,7 +131,7 @@ export class UnitmasterComponent implements OnInit {
                                     .value
                             )
                         ),
-                        updatedBy: 1,
+                        updatedBy:this.accountService.currentUserValue.user.id,
                     },
                 };
                 this._unitmasterService
@@ -155,60 +160,62 @@ export class UnitmasterComponent implements OnInit {
     }
         toggle(val: any) {
         if (val == "2") {
-            this._unitmasterService.currentStatus = 2;
+            this.currentStatus = 2;
         } else if(val=="1") {
-            this._unitmasterService.currentStatus = 1;
+            this.currentStatus = 1;
         }
         else{
-            this._unitmasterService.currentStatus = 0;
+            this.currentStatus = 0;
 
         }
     }
     onFilterChange(){
-        ;
-        if(this._unitmasterService.currentStatus==1){
+        debugger
+      
+        if (this.currentStatus == 1) {
             this.tempList.data = []
-            for (let item of this.DSUnitmasterList.data) {
-                if(!item.IsDeleted)this.tempList.data.push(item)
-                    
-                }
-            }
-        else if(this._unitmasterService.currentStatus==2){
-
-            this.tempList.data = []
+            this.DSUnitmasterList.data= this.DSUnitmasterList1.data
             for (let item of this.DSUnitmasterList.data) {
                 if(item.IsDeleted)this.tempList.data.push(item)
-                
             }
+      debugger
+            this.DSUnitmasterList.data = [];
+            this.DSUnitmasterList.data = this.tempList.data;
         }
-        else{
+        else if (this.currentStatus == 0) {
+            this.DSUnitmasterList.data= this.DSUnitmasterList1.data
+            this.tempList.data = []
+            for (let item of this.DSUnitmasterList.data) {
+                if (!item.IsDeleted) this.tempList.data.push(item)
+      
+            }
+            this.DSUnitmasterList.data = [];
+            this.DSUnitmasterList.data = this.tempList.data;
+        }
+        else {
+            this.DSUnitmasterList.data= this.DSUnitmasterList1.data
             this.tempList.data = this.DSUnitmasterList.data;
         }
-
-
+      
     }
     onDeactive(UnitId) {
-        if (this.DSUnitmasterList.data.find(item => item.UnitId === UnitId).IsDeleted) {
+       
             Swal.fire({
-              title: 'Already Deactivated',
-              text: 'This item is already deactivated.',
-              icon: 'info'
-            });
-            return 
-        }
-        Swal.fire({
-          title: 'Confirm Deactivation',
-          text: 'Are you sure you want to deactivate?',
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Yes, deactivate!'
-        }).then((result) => {
+                title: 'Confirm Status',
+                text: 'Are you sure you want to Change Active Status?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes,Change Status!'
+            }).then((result) => {
           if (result.isConfirmed) {
-            let Query =
-                "Update M_PathUnitMaster set Isdeleted=1 where UnitId=" +
-                UnitId;
+            debugger
+            let Query 
+            if (!this.DSUnitmasterList.data.find(item => item.UnitId === UnitId).IsDeleted){
+                 Query ="Update M_PathUnitMaster set IsDeleted=1 where UnitId=" +UnitId;}
+            else{
+             Query = "Update M_PathUnitMaster set IsDeleted=0 where UnitId=" +UnitId;}
                 this._unitmasterService.deactivateTheStatus(Query)
                 .subscribe((data) => (this.msg = data));
             this.getUnitMasterList();

@@ -188,33 +188,7 @@ export class RadiologyOrderListComponent implements OnInit {
 
   getRecord(contact): void {
     console.log(contact);
-    // let xx = {
-    //   RegNo: contact.RegNo,
-    //   PatientName: contact.PatientName,
-    //   Doctorname: contact.DoctorName,
-    //   DepartmentName: contact.DepartmentName,
-    //   AdmDateTime: contact.AdmissionTime,
-    //   OP_IP_Number: contact.OP_IP_Number,
-    //   AgeYear: contact.AgeYear,
-    //   GenderName: contact.GenderName,
-    //   RefDoctorName: contact.RefDoctorName,
-    //   PatientType: contact.PatientType,
-    //   CompanyName: contact.CompanyName,
-    //   LBL: contact.LBL,
-    //   RadReportId: contact.RadReportId,
-    //   RadTestID: contact.RadTestID, 
-    //   AdmissionID: contact.VisitId,
-    //   AdmissionDate: contact.AdmissionDate,
-    //   CategoryName: contact.CategoryName,
-    //   OPD_IPD_ID: contact.OPD_IPD_ID,
-    //   ChargeId: contact.ChargeId, 
-    //   PBillNo: contact.PBillNo,
-    //   RadDate: contact.RadDate,
-    //   ServiceName: contact.ServiceName,
-    //   TestName: contact.TestName,
-    //   OP_IP_Type: contact.OPD_IPD_Type,
-    // };
-    
+       
     this.advanceDataStored.storage = new RadiologyPrint(contact);
     const dialogRef = this._matDialog.open(ResultEntryComponent,
       {
@@ -229,9 +203,7 @@ export class RadiologyOrderListComponent implements OnInit {
   }
 
   getView(contact) {
-    debugger;
-    console.log(contact);
-   
+      
     this.advanceDataStored.storage = new RadiologyPrint(contact);
 
     const dialogRef = this._matDialog.open(RadiologyTemplateReportComponent,
@@ -331,6 +303,7 @@ MobileNo: any;
 CompanyName: any;
 RefDoctorName: any;
 Doctorname:any;
+IsActive:any;
 
   constructor(RadioPatientList) {
     this.RadDate = RadioPatientList.RadDate || '';
@@ -355,6 +328,7 @@ Doctorname:any;
     this.CompanyName = RadioPatientList.CompanyName;
     this.RefDoctorName = RadioPatientList.RefDoctorName || '';
     this.Doctorname=RadioPatientList.Doctorname || ''
+    this.IsActive=RadioPatientList.IsActive || '';
   }
 
 }

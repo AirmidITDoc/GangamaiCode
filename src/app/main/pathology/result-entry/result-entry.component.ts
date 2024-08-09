@@ -11,7 +11,7 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { MatSort } from '@angular/material/sort';
-import { ResultEntryOneComponent } from './result-entry-one/result-entry-one.component';
+import { Pthologyresult, ResultEntryOneComponent } from './result-entry-one/result-entry-one.component';
 import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
 import { PathTemplateViewComponent } from './path-template-view/path-template-view.component';
@@ -87,6 +87,10 @@ export class ResultEntryComponent implements OnInit {
     this.step = index;
   }
   SearchName: string;
+  OP_IPType: any;
+  Iscompleted: any;
+  reportIdData: any = [];
+    ServiceIdData: any = [];
 
 
   @ViewChild(MatSort) sort: MatSort;
@@ -295,6 +299,23 @@ export class ResultEntryComponent implements OnInit {
           });
 
           console.log(this.printdata)
+          data.forEach((element) => {
+            this.reportIdData.push(element.PathReportId)
+            this.ServiceIdData.push(element.ServiceId)
+          if (element.IsCompleted == "true")
+            this.Iscompleted = 1;
+        });
+
+
+          if (this.Iscompleted == 1) {
+            if (this.OP_IPType == 1)
+                this.getResultIpList();
+            else
+                this.getResultOPList();
+               
+        } else {
+            this.getResultList();
+            }
 
           const dialogRef = this._matDialog.open(ResultEntryOneComponent,
             {
@@ -304,6 +325,7 @@ export class ResultEntryComponent implements OnInit {
               data: {
                 RIdData: data,
                 patientdata: this.reportPrintObj,
+                data1: this.dataSourcetemp.data 
               }
             });
           dialogRef.afterClosed().subscribe(result => {
@@ -335,6 +357,49 @@ export class ResultEntryComponent implements OnInit {
     this.getPatientsList()
     // this.selection.clear();
   }
+
+  dataSourcetemp = new MatTableDataSource<Pthologyresult>();
+  getResultList() {
+    this.sIsLoading = 'loading-data';
+    let SelectQuery = "Select * from m_lvw_Retrieve_PathologyResult where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ")"
+    console.log(SelectQuery)
+    this._SampleService.getPathologyResultList(SelectQuery).subscribe(Visit => {
+        this.dataSourcetemp.data = Visit as Pthologyresult[];
+
+      });
+    }
+    getResultOPList() {
+      debugger
+      this.sIsLoading = 'loading-data';
+      let SelectQuery = "Select * from m_lvw_Retrieve_PathologyResultUpdate where PathReportId in(" + this.reportIdData + ")"
+      console.log(SelectQuery)
+      this._SampleService.getPathologyResultList(SelectQuery).subscribe(Visit => {
+          this.dataSourcetemp.data = Visit as Pthologyresult[];
+        console.log(this.dataSourcetemp.data)
+
+        });
+      
+      }
+
+      getResultIpList() {
+        this.sIsLoading = 'loading-data';
+        let SelectQuery = "Select * from m_lvw_Retrieve_PathologyResultIPPatientUpdate where PathReportId in(" + this.reportIdData + ")"
+        console.log(SelectQuery)
+        this._SampleService.getPathologyResultList(SelectQuery).subscribe(Visit => {
+            this.dataSourcetemp.data = Visit as Pthologyresult[];
+    
+          });
+        }
+    
+
+
+
+
+
+
+
+
+
 
   getWhatsappshareSales(contact) {
     if (!contact.IsTemplateTest) {

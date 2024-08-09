@@ -14,7 +14,7 @@
                 Radiology Template Master"}}
             </span>
             <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog"
-                style="margin-left: 1060px;">
+                style="margin-left:970px;">
                 <mat-icon>close</mat-icon>
             </button>
 
@@ -52,11 +52,11 @@
                                     </div>
                                 </div>
 
-                                <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
-
+                                <div class="footer-navigation-container">
+                                   
                                     <mat-radio-button value='true' [checked]="true" name="IsDeleted"
                                         formControlName="IsDeleted">IsActive</mat-radio-button>
-                                    <div class="modal-footer-buttons" style="padding:2px;">
+                                        <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px" style="margin-right: 10px;">
                                         <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
                                         <button class="btn btn-primary" (click)="onSubmit()"
                                             [disabled]="_radiologytemplateService.myform.invalid">Save</button>

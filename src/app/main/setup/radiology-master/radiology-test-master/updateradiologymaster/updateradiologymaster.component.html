@@ -183,9 +183,7 @@
                                             </form>
                                             <div fxLayoutAlign="end ">
 
-                                                <mat-radio-button value='true' name="IsDeleted" [checked]="true"
-                                                    formControlName="IsDeleted">IsActive</mat-radio-button>
-
+                                                
                                             </div>
 
                                         </div>
@@ -193,17 +191,18 @@
                                     </div>
                                 </div>
 
-                                <div mat-dialog-actions class="m-0 p-8" fxLayout="row" fxLayoutAlign="end center">
+                             
+                                <div class="footer-navigation-container">
                                    
-                                    <div fxLayout="row" fxLayoutAlign="end">
-                                        <div class="modal-footer-buttons" style="padding:2px;">
-                                            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                                            <button class="btn btn-primary" (click)="onSubmit()"  [disabled]="_radiologytestService.myform.invalid">Save</button>
-                                        </div>
+                                  <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px" style="margin-right: 10px;">
+                                    <mat-radio-button value='true' name="IsDeleted" [checked]="true"
+                                                    formControlName="IsDeleted">IsActive</mat-radio-button>
+
+                                        <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
+                                        <button class="btn btn-primary" (click)="onSubmit()"
+                                            [disabled]="_radiologytestService.myform.invalid">Save</button>
                                     </div>
                                 </div>
-
-
                             </form>
                         </div>
                     </div>

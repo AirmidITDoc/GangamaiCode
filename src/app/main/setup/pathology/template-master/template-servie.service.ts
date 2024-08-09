@@ -7,6 +7,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 })
 export class TemplateServieService {
   myform: FormGroup;
+  
   myformSearch: FormGroup;
   constructor(
     private _httpClient: HttpClient,

@@ -40,12 +40,14 @@
                                         </button>
                                     </mat-form-field>
 
-                                    <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch" value="2"
-                                        fxLayoutAlign="center center">
-                                        <mat-radio-button value="2">All</mat-radio-button>
-                                        <mat-radio-button mat-fab value="0">IsActive</mat-radio-button>
-                                        <mat-radio-button mat-fab value="1">IsDeactive</mat-radio-button>
-                                    </mat-radio-group>
+                                    <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch"
+                                    (change)="onFilterChange()">
+                                    <mat-radio-button (click)="toggle(2)" [checked]="true"
+                                        value="2">All</mat-radio-button>
+                                    <mat-radio-button mat-fab value="1"
+                                        (click)="toggle(1)">IsActive</mat-radio-button>
+                                    <mat-radio-button (click)="toggle(0)" value="0">IsDeactive</mat-radio-button>
+                                </mat-radio-group>
 
                                     <button mat-raised-button (click)="onSearch()" fxLayoutAlign="center center">
                                         <mat-icon>search</mat-icon>
@@ -56,7 +58,7 @@
                         </div>
                         <div fxlayout="row">
                             <div style="width: 100%;">
-                                <mat-table matSort [dataSource]="DSCategoryMasterList" [@animateStagger]="{value:'50'}" >
+                                <mat-table matSort [dataSource]="DSCategoryMasterList" [@animateStagger]="{value:'50'}" style="overflow: auto;height: 500px !important;">
                                     
                                     <ng-container matColumnDef="CategoryId">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
@@ -164,14 +166,12 @@
                                     </div>
                                 </form>
                             </div>
-                            <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
-                               
-                                <div fxLayout="row" fxLayoutAlign="end">
-                                    <div class="modal-footer-buttons" style="padding:2px;">
-                                        <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
-                                        <button class="btn btn-primary" (click)="onSubmit()"
-                                            [disabled]="_categoryService.myform.invalid">Save</button>
-                                    </div>
+                          
+                            <div class="footer-navigation-container">
+                                <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px" style="margin-right: 10px;">
+                                    <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
+                                    <button class="btn btn-primary" (click)="onSubmit()" [disabled]="_categoryService.myform.invalid"
+                                    >Save</button>
                                 </div>
                             </div>
                         </div>

@@ -1,63 +1,78 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar">
+    <!-- HEADER -->
     <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
         fxLayoutAlign.gt-xs="space-between center">
+
+        <!-- APP TITLE -->
         <div fxLayout="row" fxLayoutAlign="start center">
             <div class="logo" fxLayout="row" fxLayoutAlign="start center">
-                <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
-                    <mat-icon>menu</mat-icon>
-                </button>
-                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-                    style="color: white;">account_box
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
                 </mat-icon>
                 <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    Pathology Unit Master
+                    Unit Master
                 </span>
             </div>
         </div>
+        <!-- / APP TITLE -->
+        <!-- SEARCH -->
+        <!-- / SEARCH -->
+
     </div>
+    <!-- / HEADER -->
 
-
+    <!-- CONTENT -->
     <div class="content">
-        <div class="center p-24 pb-56" fusePerfectScrollbar>
+
+        <!-- SIDEBAR -->
+        <!-- / SIDEBAR -->
+
+        <!-- CENTER -->
+        <div class="center p-24 pb-56">
+            <!-- CONTENT -->
             <div class="content-card">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                     <div fxFlex.gt-sm="65%" fxFlex>
-                        <div fxlayout="row" style="background-color: white;
-                        padding: 5px 10px 5px 10px;">
-                            <form [formGroup]="_unitmasterService.myformSearch">
-                                <div class="dialog-content-wrapper">
-                                    <mat-form-field class="mr-sm-12" fxFlex>
-                                        <input matInput placeholder="Search --> Unit Name" autocomplete="off"
-                                            (keyup)="onSearch()" name="UnitNameSearch"
-                                            formControlName="UnitNameSearch" />
-                                        <button mat-button matSuffix mat-icon-button aria-label="Clear"
-                                            (click)="onSearchClear()" (keyup)="onSearch()">
-                                            <mat-icon>close</mat-icon>
-                                        </button>
-                                    </mat-form-field>
 
-                                    <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch"
-                                        (change)="onFilterChange()">
-                                        <mat-radio-button (click)="toggle(0)" [checked]="true"
-                                            value="0">All</mat-radio-button>
-                                        <mat-radio-button mat-fab value="1"
-                                            (click)="toggle(1)">IsActive</mat-radio-button>
-                                        <mat-radio-button (click)="toggle(2)" value="2">IsDeactive</mat-radio-button>
-                                    </mat-radio-group>
-
-
-                                    <button mat-raised-button (click)="onSearch()" fxLayoutAlign="center center">
-                                        <mat-icon>search</mat-icon>
-
+                        <div fxlayout="row" style="
+                                background-color: white;
+                                padding: 5px 10px 5px 10px;">
+                          <form [formGroup]="_unitmasterService.myformSearch">
+                            <div class="dialog-content-wrapper">
+                                <mat-form-field class="mr-sm-12" fxFlex>
+                                    <input matInput placeholder="Search --> Unit Name" autocomplete="off"
+                                        (keyup)="onSearch()" name="UnitNameSearch"
+                                        formControlName="UnitNameSearch" />
+                                    <button mat-button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)="onSearchClear()" (keyup)="onSearch()">
+                                        <mat-icon>close</mat-icon>
                                     </button>
-                                </div>
-                            </form>
+                                </mat-form-field>
+
+                                <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch"
+                                    (change)="onFilterChange()">
+                                    <mat-radio-button (click)="toggle(2)" [checked]="true"
+                                        value="2">All</mat-radio-button>
+                                    <mat-radio-button mat-fab value="1"
+                                        (click)="toggle(1)">IsActive</mat-radio-button>
+                                    <mat-radio-button (click)="toggle(0)" value="0">IsDeactive</mat-radio-button>
+                                </mat-radio-group>
+
+
+                                <button mat-raised-button (click)="onSearch()" fxLayoutAlign="center center">
+                                    <mat-icon>search</mat-icon>
+
+                                </button>
+                            </div>
+                        </form>
                         </div>
+
                         <div fxlayout="row">
                             <div style="width: 100%;">
-                                <mat-table class='table' matSort [dataSource]="tempList.data"
+                                <!-- <mat-table  matSort [dataSource]="tempList.data"
+                                    [@animateStagger]="{value:'50'}" style="height:500px !important;"> -->
+                                    <mat-table class="table1" matSort [dataSource]="DSUnitmasterList"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto;height: 500px !important;">
+ 
                                     <ng-container matColumnDef="UnitId">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
                                         </mat-header-cell>
@@ -126,7 +141,6 @@
                                     <mat-footer-row *matFooterRowDef="['noData']"
                                         [ngClass]="{'hide':!(DSUnitmasterList!=null && DSUnitmasterList.data.length==0)}"></mat-footer-row>
                                 </mat-table>
-
                                 <mat-paginator [pageSizeOptions]="[10, 15, 25, 100]" [pageSize]="10"
                                     showFirstLastButtons></mat-paginator>
                             </div>
@@ -134,7 +148,7 @@
                     </div>
                     <div fxFlex.gt-sm="35%" fxFlex style="background-color: white;">
                         <div class="dialog-content-wrapper">
-                            <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar>
+                            <div mat-dialog-content class="p-24 pb-0 m-0">
                                 <form [formGroup]="_unitmasterService.myform">
                                     <h3>{{_unitmasterService.myform.controls.UnitId.value?"Modify Unit Master":"New Unit
                                         Master"}}</h3>
@@ -158,22 +172,22 @@
                                     </div>
                                 </form>
                             </div>
-                            
-                            <div fxLayoutGap="5px">
-                      
-                                <div class="footer-navigation-container">
-                                    <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px">
-                                        <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
-                                        <button class="btn btn-primary" (click)="onSubmit()" >Save</button>
-                                    </div>
+                            <div class="footer-navigation-container">
+                                <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px" style="margin-right: 10px;">
+                                    <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
+                                    <button class="btn btn-primary" (click)="onSubmit()" [disabled]="_unitmasterService.myform.invalid"
+                                    >Save</button>
                                 </div>
-        
                             </div>
+    
                         </div>
                     </div>
 
                 </div>
             </div>
+            <!-- / CONTENT -->
         </div>
+        <!-- / CENTER -->
     </div>
+    <!-- / CONTENT-->
 </div>

@@ -156,7 +156,7 @@ export class ResultEntrytwoComponent implements OnInit {
     pathologyTemplateInsertObj['PathTemplateId']= this.otherForm.get("TemplateName").value.TemplateId || 0;
     pathologyTemplateInsertObj['PathTemplateDetailsResult']= this.otherForm.get("ResultEntry").value,
     pathologyTemplateInsertObj['TemplateResultInHTML']= this.otherForm.get("ResultEntry").value,
-    pathologyTemplateInsertObj['TestId'] = this.selectedAdvanceObj1.PathTestID || 11;
+    pathologyTemplateInsertObj['TestId'] = this.selectedAdvanceObj1.PathTestID || 0;
     // pathologyTemplateInsertObjarr.push(pathologyTemplateInsertObj);
     
     let pathologyTemplateUpdateObj = {};

@@ -53,7 +53,7 @@ export class ParametermasterComponent implements OnInit {
 
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     DSParameterList = new MatTableDataSource<PathparameterMaster>();
-
+    tempList = new MatTableDataSource<PathparameterMaster>();
     constructor(
         public _ParameterService: ParametermasterService,
         public _matDialog: MatDialog,
@@ -102,15 +102,17 @@ export class ParametermasterComponent implements OnInit {
 
 
     onDeactive(row,ParameterID) {
-      
         Swal.fire({
-            title: 'Do you want to Change Active Status Of Paramter',
-             showCancelButton: true,
-            confirmButtonText: 'OK',
-      
-          }).then((flag) => {
+            title: 'Confirm Status',
+            text: 'Are you sure you want to Change Active Status?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes,Change Status!'
+          }).then((result) => {
             let Query;
-            if (flag.isConfirmed) {
+            if (result.isConfirmed) {
                 if(row.Isdeleted){
                  Query =
                 "Update M_PathParameterMaster set Isdeleted=0 where ParameterID=" +
@@ -123,8 +125,14 @@ export class ParametermasterComponent implements OnInit {
                 }
 
                 this._ParameterService.deactivateTheStatus(Query)
-                    .subscribe((data) => (this.msg = data));
-                this.getParameterMasterList();
+                  .subscribe((data) => {
+                        // Handle success response
+                        Swal.fire('Changed!', 'Parameter Status has been Changed.', 'success');
+                       
+                      }, (error) => {
+                        // Handle error response
+                        Swal.fire('Error!', 'Failed to Change  Parameter status.', 'error');
+                      });
             }
           });
 
@@ -197,8 +205,41 @@ export class ParametermasterComponent implements OnInit {
             this.getParameterMasterList();
         });
     }
+    currentStatus=0;
+    toggle(val: any) {
+        if (val == "2") {
+            this.currentStatus = 2;
+        } else if(val=="1") {
+            this.currentStatus = 1;
+        }
+        else{
+            this.currentStatus = 0;
 
+        }
+    }
+//     onFilterChange(){
+//         ;
+//         if(this.currentStatus==1){
+//             this.tempList.data = []
+//             for (let item of this.DSParameterList.data) {
+//                 if(item.Isdeleted)this.tempList.data.push(item)
+                    
+//                 }
+//             }
+            
+//         else if(this.currentStatus==2){
+//             debugger
+//             this.tempList.data = []
+//             for (let item of this.DSParameterList.data) {
+//                 if(!item.Isdeleted)this.tempList.data.push(item)
+//             }
+//         }
+//         else{
+//             this.tempList.data = this.DSParameterList.data;
+//         }
 
+// this.getParameterMasterList()
+//     }
     
     exportParameterExcel(){
     this.sIsLoading == 'loading-data'

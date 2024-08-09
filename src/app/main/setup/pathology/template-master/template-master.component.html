@@ -42,14 +42,17 @@
                                     </button>
                                 </mat-form-field>
 
-                                <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch" value="2"
-                                    fxLayoutAlign="center center">
-                                    <mat-radio-button value="2">All</mat-radio-button>
-                                    <mat-radio-button mat-fab value="0">IsActive</mat-radio-button>
-                                    <mat-radio-button mat-fab value="1">IsDeactive</mat-radio-button>
-                                </mat-radio-group>
-
                                
+
+                                <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch"
+                                (change)="onFilterChange()">
+                                <mat-radio-button (click)="toggle(2)" [checked]="true"
+                                    value="2">All</mat-radio-button>
+                                <mat-radio-button mat-fab value="1"
+                                    (click)="toggle(1)">IsActive</mat-radio-button>
+                                <mat-radio-button (click)="toggle(0)" value="0">IsDeactive</mat-radio-button>
+                            </mat-radio-group>
+
                                 <button type="button" mat-raised-button class="searchButton" (click)="onSearch()"  matTooltip="search">
                                     <mat-icon>search</mat-icon>
                                 </button>
@@ -58,7 +61,7 @@
                         </div>
                         <div style="width: 100%;">
                             <div class="content-card">
-                                <div class="table-header">
+                                <div class="table-header" style="margin-left: 1480px;">
                                     <div fxLayout="row wrap" fxLayoutAlign="space-between center">
 
                                         <div class="table-header-right">
@@ -78,7 +81,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <mat-table matSort [dataSource]="Templatedatasource" [@animateStagger]="{value:'50'}">
+                            <mat-table matSort [dataSource]="Templatedatasource" [@animateStagger]="{value:'50'}" style="overflow: auto;height: 500px !important;">
 
                                 <ng-container matColumnDef="TemplateId">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide  class="w-180"

@@ -21,7 +21,7 @@ export class CategorymasterService {
         return this._formBuilder.group({
             CategoryId: [""],
             CategoryName: [""],
-            IsDeleted: ["false"],
+            IsDeleted: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
         });

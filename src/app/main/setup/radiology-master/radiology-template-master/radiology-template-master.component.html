@@ -1,26 +1,31 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fusePerfectScrollbar
-    dynamicTableHeight>
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar">
 
-    <mat-toolbar class="top-header accent">
-        <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
-            <button mat-icon-button class="sidebar-toggle ">
+    <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
                 <mat-icon>menu</mat-icon>
             </button>
-            <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
             </mat-icon>
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                Radiology Template List
+                Template Master
             </span>
+
         </div>
+
         <div fxLayout="row" fxLayoutAlign="start end">
-            <button mat-raised-button color="pine" (click)="onAdd()" fxLayoutAlign="center center">
-                Add &nbsp;<mat-icon color="Primary" title=" Add New Template ">add_to_photos</mat-icon>
+            <button mat-raised-button color="pine" style="margin-left: 1080px;" (click)="onAdd()">Add
+                <mat-icon>add_to_photos</mat-icon>
+
             </button>
         </div>
-    </mat-toolbar>
 
+
+    </mat-toolbar>
     <div class="content">
-        <div class="center p-24 pb-56" fusePerfectScrollbar>
+        <div class="center p-24 pb-56">
             <div class="content-card">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                     <div fxFlex.gt-sm="100%" fxFlex>
@@ -29,31 +34,34 @@
                             <form [formGroup]="_radiologytemplateService.myformSearch">
                                 <div class="dialog-content-wrapper">
                                     <mat-form-field class="mr-sm-12" fxFlex>
-                                        <input matInput placeholder="Search --> Template Name" autocomplete="off" (keyup)="onSearch()"
-                                            name="TemplateNameSearch" formControlName="TemplateNameSearch" />
+                                        <input matInput placeholder="Search --> Template Name" autocomplete="off"
+                                            (keyup)="onSearch()" name="TemplateNameSearch"
+                                            formControlName="TemplateNameSearch" />
                                         <button mat-button matSuffix mat-icon-button aria-label="Clear"
                                             (click)="onSearchClear()" (keyup)="onSearch()">
                                             <mat-icon>close</mat-icon>
                                         </button>
                                     </mat-form-field>
 
-                                    <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch" value="2"
-                                        fxLayoutAlign="center center">
-                                        <mat-radio-button value="2">All</mat-radio-button>
-                                        <mat-radio-button mat-fab value="0">IsActive</mat-radio-button>
-                                        <mat-radio-button mat-fab value="1">IsDeactive</mat-radio-button>
-                                    </mat-radio-group>
+                                    <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch"
+                                    (change)="onFilterChange()">
+                                    <mat-radio-button (click)="toggle(2)" [checked]="true"
+                                        value="2">All</mat-radio-button>
+                                    <mat-radio-button mat-fab value="1"
+                                        (click)="toggle(1)">IsActive</mat-radio-button>
+                                    <mat-radio-button (click)="toggle(0)" value="0">IsDeactive</mat-radio-button>
+                                </mat-radio-group>
 
                                     <button mat-raised-button (click)="onSearch()" fxLayoutAlign="center center">
                                         <mat-icon>search</mat-icon>
-                                        
+
                                     </button>
                                 </div>
                             </form>
                         </div>
-                        <div class="center p-12">
+                        <div style="width: 100%;">
                             <div class="content-card">
-                                <div class="table-header">
+                                <div class="table-header" style="margin-left: 1480px;">
                                     <div fxLayout="row wrap" fxLayoutAlign="space-between center">
 
                                         <div class="table-header-right">
@@ -73,96 +81,93 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="table-wrapper">
-                                    <div class="table-spinner">
-                                        <div matColumnDef="loading"
-                                            [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                                            class="backgroundBlur">
-                                            <div class="spinner-border"></div>
-                                        </div>
-                                    </div>
-                                    <mat-table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
-                                        <ng-container matColumnDef="TemplateId">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Template
-                                                Code
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.TemplateId}}
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="TemplateName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>TemplateName
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.TemplateName}}
-                                            </mat-cell>
-                                        </ng-container>
-
-
-                                        <!-- <ng-container matColumnDef="TemplateDesc">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header>TemplateDesc</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact">
-                                                {{contact.TemplateDesc}}
-                                            </mat-cell>
-                                        </ng-container> -->
-
-                                        <ng-container matColumnDef="IsActive">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                IsActive
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                <mat-icon *ngIf="element.IsActive"
-                                                    class="active-icon green-600 s-16">check_circle</mat-icon>
-                                                <mat-icon *ngIf="!element.IsActive"
-                                                    class="active-icon red-500 s-16">close</mat-icon>
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="action" stickyEnd>
-                                            <mat-header-cell *matHeaderCellDef class="table-actions"> Action
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let element">
-                                                <button mat-icon-button class="material-icons" (click)="onEdit(element)"  *ngIf="element.IsActive">
-                                                    <mat-icon title="Edit Menu">edit</mat-icon>
-                                                </button>
-                                                <button mat-icon-button (click)="onEdit(element)"
-                                                *ngIf="!element.IsActive"><mat-icon
-                                                    title="Edit Menu">fix</mat-icon></button>
-                                                 <button mat-icon-button (click)="onDeactive(element.TemplateId)"
-                                                    color="warn"><mat-icon>delete_outline</mat-icon></button>
-                                                <button mat-menu-item (click)="PrintData(element.TemplateId)" aria-label="remove">
-                                                    <mat-icon>print icon</mat-icon>
-                                                </button>
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="loading">
-                                            <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                            </mat-header-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="noData">
-                                            <mat-footer-cell *matFooterCellDef colspan="6">
-                                                no data found...
-                                            </mat-footer-cell>
-                                        </ng-container>
-
-                                        <mat-header-row class="accent"
-                                            *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                                        <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
-                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                        <mat-footer-row *matFooterRowDef="['loading']"
-                                            [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                                        </mat-footer-row>
-                                        <mat-footer-row *matFooterRowDef="['noData']"
-                                            [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
-                                    </mat-table>
-                                    <mat-paginator [pageSizeOptions]="[25, 50, 75, 100]" [pageSize]="25"
-                                    showFirstLastButtons (page)="getRadiologytemplateMasterList()">
-                                </mat-paginator>
-                                </div>
                             </div>
+                            <mat-table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
+
+
+                                <ng-container matColumnDef="TemplateId">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide class="w-180"
+                                        fxShow.gt-sm>Template Code
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-180">
+                                        {{element.TemplateId}}
+                                    </mat-cell>
+                                </ng-container>
+
+
+                                <ng-container matColumnDef="TemplateName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-480"> Template Name
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-480">
+                                        {{element.TemplateName}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <!-- <ng-container matColumnDef="TemplateDesc">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>TemplateDesc</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact">
+                                        {{contact.TemplateDesc}}
+                                    </mat-cell>
+                                </ng-container> -->
+
+                                <ng-container matColumnDef="IsActive">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                        IsActive
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                        <mat-icon *ngIf="element.IsActive"
+                                            class="active-icon green-600 s-16">check_circle</mat-icon>
+                                        <mat-icon *ngIf="!element.IsActive"
+                                            class="active-icon red-500 s-16">close</mat-icon>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="action" stickyEnd>
+                                    <mat-header-cell *matHeaderCellDef class="table-actions"> Action
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element">
+                                        <button mat-icon-button class="material-icons" (click)="onEdit(element)"
+                                            *ngIf="element.IsActive">
+                                            <mat-icon title="Edit Menu">edit</mat-icon>
+                                        </button>
+                                        <button mat-icon-button 
+                                            *ngIf="!element.IsActive"><mat-icon
+                                                title="Edit Menu">highlight_off</mat-icon></button>
+                                        <button mat-icon-button (click)="onDeactive(element.TemplateId)"
+                                            color="warn"><mat-icon>delete_outline</mat-icon></button>
+                                        <button mat-menu-item (click)="PrintData(element.TemplateId)"
+                                            aria-label="remove">
+                                            <mat-icon>print icon</mat-icon>
+                                        </button>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="loading">
+                                    <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                    </mat-header-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="noData">
+                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                        no data found...
+                                    </mat-footer-cell>
+                                </ng-container>
+
+
+                                <mat-header-row class="accent min-width-1500"
+                                    *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                                <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
+                                    [@animate]="{value:'*',params:{y:'100%'}}" class="element min-width-1500"></mat-row>
+
+                                <mat-footer-row *matFooterRowDef="['loading']"
+                                    [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
+                                <mat-footer-row *matFooterRowDef="['noData']"
+                                    [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
+
+                            </mat-table>
+                            <mat-paginator [pageSizeOptions]="[10, 15, 25, 100]" [pageSize]="12" showFirstLastButtons>
+                            </mat-paginator>
+
                         </div>
                     </div>
 

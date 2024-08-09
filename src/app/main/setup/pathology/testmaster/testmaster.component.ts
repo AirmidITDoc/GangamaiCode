@@ -57,7 +57,7 @@ export class TestmasterComponent implements OnInit {
     SearchName: string;
     isLoading = true;
     sIsLoading: string = '';
-
+    currentStatus=0;
     setStep(index: number) {
         this.step = index;
     }
@@ -75,6 +75,8 @@ export class TestmasterComponent implements OnInit {
 
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     DSTestMasterList = new MatTableDataSource<TestMaster>();
+    DSTestMasterList1 = new MatTableDataSource<TestMaster>();
+    tempList = new MatTableDataSource<TestMaster>();
 
     constructor(
         public _TestService: TestmasterService,
@@ -110,6 +112,18 @@ export class TestmasterComponent implements OnInit {
         }, 5000);
     }
 
+    toggle(val: any) {
+        if (val == "2") {
+            this.currentStatus = 2;
+        } else if (val == "1") {
+            this.currentStatus = 1;
+        }
+        else {
+            this.currentStatus = 0;
+
+        }
+    }
+
     getTestMasterList() {
         this.sIsLoading = 'loading-data';
         var m_data = {
@@ -117,6 +131,7 @@ export class TestmasterComponent implements OnInit {
         };
         this._TestService.getTestMasterList(m_data).subscribe((Menu) => {
             this.DSTestMasterList.data = Menu as TestMaster[];
+            this.DSTestMasterList1.data = Menu as TestMaster[];
             console.log(this.DSTestMasterList.data)
             this.sIsLoading = '';
             this.DSTestMasterList.sort = this.sort;
@@ -145,15 +160,17 @@ export class TestmasterComponent implements OnInit {
     }
 
     onDeactive(row, TestId) {
-
         Swal.fire({
-            title: 'Do you want to Change Active Status Of  Test',
+            title: 'Confirm Status',
+            text: 'Are you sure you want to Change Active Status?',
+            icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'OK',
-
-        }).then((flag) => {
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes,Change Status!'
+          }).then((result) => {
             let Query
-            if (flag.isConfirmed) {
+            if (result.isConfirmed) {
                 if (row.Isdeleted) {
                     Query =
                         "Update M_PathTestMaster set Isdeleted=0 where TestId=" + TestId;
@@ -163,27 +180,18 @@ export class TestmasterComponent implements OnInit {
                         "Update M_PathTestMaster set Isdeleted=1 where TestId=" + TestId;
 
                 }
-                this._TestService
-                    .deactivateTheStatus(Query)
-                    .subscribe((data) => (this.msg = data));
-                this.getTestMasterList();
+                this._TestService.deactivateTheStatus(Query)
+                .subscribe((data) => {
+                    Swal.fire('Changed!', 'Test Status has been Changed.', 'success');
+                    this.getTestMasterList();
+                  }, (error) => {
+                   Swal.fire('Error!', 'Failed to deactivate Test.', 'error');
+                  });
             }
         });
     }
 
-    //Tab-2
-
-    // getSubTestList(el) {
-    //     var m_data = {
-    //         TestId: el.TestId
-    //     };
-
-    //     this._TestService.getSubTestList(m_data).subscribe((Menu) => {
-    //         this.DSTestList.data = Menu as TestList[];
-    //         this.DSTestList.sort = this.sort;
-    //         this.DSTestList.paginator = this.paginator;
-    //     });
-    // }
+    
     getParameterTestList(el) {
         var m_data = {
             TestId: el.TestId
@@ -214,7 +222,37 @@ export class TestmasterComponent implements OnInit {
         this._TestService.AddParameterFrom.reset();
     }
 
-   
+    onFilterChange() {
+       
+        if (this.currentStatus == 1) {
+            this.tempList.data = []
+            this.DSTestMasterList.data= this.DSTestMasterList1.data
+            for (let item of this.DSTestMasterList.data) {
+                if (item.Isdeleted) this.tempList.data.push(item)
+
+            }
+
+            this.DSTestMasterList.data = [];
+            this.DSTestMasterList.data = this.tempList.data;
+        }
+        else if (this.currentStatus == 0) {
+            this.DSTestMasterList.data= this.DSTestMasterList1.data
+            this.tempList.data = []
+
+            for (let item of this.DSTestMasterList1.data) {
+                if (!item.Isdeleted) this.tempList.data.push(item)
+
+            }
+            this.DSTestMasterList.data = [];
+            this.DSTestMasterList.data = this.tempList.data;
+        }
+        else {
+            this.DSTestMasterList.data= this.DSTestMasterList1.data
+            this.tempList.data = this.DSTestMasterList.data;
+        }
+
+
+    }
     // parameter filter
     private filterParametername() {
         if (!this.Parametercmb) {
@@ -242,22 +280,6 @@ export class TestmasterComponent implements OnInit {
             //console.log(this.Parametercmb);
         });
     }
-    // getParameterNameCombobox() {
-    //     this._TestService.getParameterMasterCombo().subscribe((data) => {
-    //     this.Parametercmb = data;
-    //     this.filteredParametername.next(this.Parametercmb.slice());
-    //     console.log(this.Parametercmb);
-    //     });
-    // }
-
-    // getNewSubTestList() {
-    //     this._TestService.getNewSubTestList().subscribe((data) => {
-    //         this.Subtestcmb = data;
-    //         // console.log(this.Subtestcmb)
-    //         this.filteredSubtest.next(this.Subtestcmb.slice());
-    //     });
-    // }
-    // Service name filter
    
 
     selectedValue: string = '';

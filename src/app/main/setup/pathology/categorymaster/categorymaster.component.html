@@ -27,7 +27,7 @@
         <!-- / SIDEBAR -->
 
         <!-- CENTER -->
-        <div class="center p-24 pb-56" fusePerfectScrollbar>
+        <div class="center p-24 pb-56">
             <!-- CONTENT -->
             <div class="content-card">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
@@ -50,11 +50,11 @@
 
                                 <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch"
                                     (change)="onFilterChange()">
-                                    <mat-radio-button (click)="toggle(0)" [checked]="true"
-                                        value="0">All</mat-radio-button>
+                                    <mat-radio-button (click)="toggle(2)" [checked]="true"
+                                        value="2">All</mat-radio-button>
                                     <mat-radio-button mat-fab value="1"
                                         (click)="toggle(1)">IsActive</mat-radio-button>
-                                    <mat-radio-button (click)="toggle(2)" value="2">IsDeactive</mat-radio-button>
+                                    <mat-radio-button (click)="toggle(0)" value="0">IsDeactive</mat-radio-button>
                                 </mat-radio-group>
 
 
@@ -67,8 +67,11 @@
 
                         <div fxlayout="row">
                             <div style="width: 100%;">
-                                <mat-table  matSort [dataSource]="tempList.data"
-                                    [@animateStagger]="{value:'50'}" style="overflow:auto;height:500px !important;">
+                                <!-- <mat-table  matSort [dataSource]="tempList.data"
+                                    [@animateStagger]="{value:'50'}" style="height:500px !important;"> -->
+                                    <mat-table class="table1" matSort [dataSource]="DSCategoryMasterList"
+                                    [@animateStagger]="{value:'50'}" style="overflow:auto;height:500px;">
+
                                     <ng-container matColumnDef="CategoryId">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-150">Code
                                         </mat-header-cell>
@@ -162,8 +165,8 @@
                                     </div>
 
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                        <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
-                                            <mat-radio-button value='false' class="mr-sm-12"
+                                        <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='true'>
+                                            <mat-radio-button value='true' class="mr-sm-12"
                                                 fxFlex>IsActive</mat-radio-button>
 
                                         </mat-radio-group>
@@ -171,7 +174,7 @@
                                 </form>
                             </div>
                             <div class="footer-navigation-container">
-                                <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px">
+                                <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px" style="margin-right: 10px;">
                                     <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
                                     <button class="btn btn-primary" (click)="onSubmit()" [disabled]="_categorymasterService.myform.invalid"
                                     >Save</button>

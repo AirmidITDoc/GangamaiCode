@@ -34,7 +34,7 @@
                                 <div class="dialog-content-wrapper">
                                     <mat-form-field class="mr-sm-12" fxFlex>
                                         <input matInput placeholder="Search --> Test Name" autocomplete="off"
-                                            (keyup)="onSearch()" name="TestNameSearch"
+                                            (keyup)="onFilterChange()" name="TestNameSearch"
                                             formControlName="TestNameSearch" />
                                         <button mat-button matSuffix mat-icon-button aria-label="Clear"
                                             (click)="onSearch()">
@@ -42,12 +42,14 @@
                                         </button>
                                     </mat-form-field>
 
-                                    <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch" value="2"
-                                        fxLayoutAlign="center center">
-                                        <mat-radio-button value="2">All</mat-radio-button>
-                                        <mat-radio-button mat-fab value="0">IsActive</mat-radio-button>
-                                        <mat-radio-button mat-fab value="1">IsDeactive</mat-radio-button>
-                                    </mat-radio-group>
+                                    <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch"
+                                    (change)="onFilterChange()">
+                                    <mat-radio-button (click)="toggle(2)" [checked]="true"
+                                        value="2">All</mat-radio-button>
+                                    <mat-radio-button mat-fab value="1"
+                                        (click)="toggle(1)">IsActive</mat-radio-button>
+                                    <mat-radio-button (click)="toggle(0)" value="0">IsDeactive</mat-radio-button>
+                                </mat-radio-group>
 
 
                                     <button type="button" mat-raised-button class="searchButton" (click)="onSearch()"
@@ -71,7 +73,7 @@
                                                         value="true" name="IsSubTest"
                                                         (change)="getSubTestMasterList()">IsSub
                                                         Test</mat-checkbox>
-                                                    <button type="button" mat-icon-button style="float: right;">
+                                                    <button type="button" mat-icon-button style="margin-left: 1380px;">
                                                         <img width="32" height="10px" (click)="exportReportPdf()"
                                                             src="assets/images/svg/pdf-svg.svg">
                                                     </button>
@@ -85,7 +87,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <mat-table matSort [dataSource]="DSTestMasterList" [@animateStagger]="{value:'50'}">
+                            <mat-table matSort [dataSource]="DSTestMasterList" [@animateStagger]="{value:'50'}" style="overflow: auto;height: 500px !important;">
 
                                 <ng-container matColumnDef="IsTemplateTest">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header> IsTemplateTest

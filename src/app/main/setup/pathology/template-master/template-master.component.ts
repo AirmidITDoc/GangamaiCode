@@ -32,12 +32,14 @@ export class TemplateMasterComponent implements OnInit {
   isLoading = true;
   sIsLoading: string = '';
   TemplateList: any = [];
-
+  currentStatus = 0;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatAccordion) accordion: MatAccordion;
 
   Templatedatasource = new MatTableDataSource<TemplateMaster>();
+  Templatedatasource1 = new MatTableDataSource<TemplateMaster>();
+  tempList= new MatTableDataSource<TemplateMaster>();
   constructor(
     public _TemplateServieService: TemplateServieService,
     public _matDialog: MatDialog,
@@ -58,6 +60,7 @@ export class TemplateMasterComponent implements OnInit {
     ;
     this._TemplateServieService.getTemplateMasterList(m_data).subscribe((Menu) => {
       this.Templatedatasource.data = Menu as TemplateMaster[];
+      this.Templatedatasource1.data = Menu as TemplateMaster[];
       this.isLoading = false;
       this.Templatedatasource.sort = this.sort;
       this.Templatedatasource.paginator = this.paginator;
@@ -82,7 +85,50 @@ export class TemplateMasterComponent implements OnInit {
     });
   }
 
+  toggle(val: any) {
+    if (val == "2") {
+        this.currentStatus = 2;
+    } else if(val=="1") {
+        this.currentStatus = 1;
+    }
+    else{
+        this.currentStatus = 0;
 
+    }
+}
+
+
+  onFilterChange(){
+    debugger
+            
+    if (this.currentStatus == 1) {
+      this.tempList.data = []
+      this.Templatedatasource.data= this.Templatedatasource1.data
+      for (let item of this.Templatedatasource.data) {
+          if (item.IsDeleted) this.tempList.data.push(item)
+
+      }
+
+      this.Templatedatasource.data = [];
+      this.Templatedatasource.data = this.tempList.data;
+  }
+  else if (this.currentStatus == 0) {
+      this.Templatedatasource.data= this.Templatedatasource1.data
+      this.tempList.data = []
+
+      for (let item of this.Templatedatasource.data) {
+          if (!item.IsDeleted) this.tempList.data.push(item)
+
+      }
+      this.Templatedatasource.data = [];
+      this.Templatedatasource.data = this.tempList.data;
+  }
+  else {
+      this.Templatedatasource.data= this.Templatedatasource1.data
+      this.tempList.data = this.Templatedatasource.data;
+  }
+
+   }
   onEdit(row) {
     console.log(row);
 
@@ -116,13 +162,16 @@ export class TemplateMasterComponent implements OnInit {
   onDeactive(row, PTemplateId) {
 
     Swal.fire({
-      title: 'Do you want to Deactive Template',
+      title: 'Confirm Status',
+      text: 'Are you sure you want to deactivate?',
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'OK',
-
-    }).then((flag) => {
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes,Change Status!'
+    }).then((result) => {
       let Query
-      if (flag.isConfirmed) {
+      if (result.isConfirmed) {
         if (row.Isdeleted) {
           Query =
             "Update M_TemplateMaster set IsDeleted=0 where TemplateId=" +
@@ -138,14 +187,14 @@ export class TemplateMasterComponent implements OnInit {
           .deactivateTheStatus(Query)
           .subscribe((data) => {
             if (data) {
-             this.toastr.success('Record Deactivated Successfully.', 'Saved !', {
+             this.toastr.success('Record  Status has been Changed Successfully.', 'Saved !', {
                toastClass: 'tostr-tost custom-toast-success',
              });
              
              this.onClear();
              
            } else {
-             this.toastr.error('Template Data not Deactivated !, Please check API error..', 'Error !', {
+             this.toastr.error('Template Data  Status has been Changed !, Please check API error..', 'Error !', {
                toastClass: 'tostr-tost custom-toast-error',
              });
            }
