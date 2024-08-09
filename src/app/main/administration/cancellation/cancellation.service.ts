@@ -24,7 +24,13 @@ export class CancellationService {
 
     })
   }
-  public getSalesList(Param) {
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_SalesBillList", Param);
+  public getIpBillList(param) {
+    return this._httpClient.post("Generic/GetDataSetByProc?procName=m_Rtrv_BrowseIPDBill", param) 
+  }
+  public getOPDBillsList(param) {
+    return this._httpClient.post("Generic/GetDataSetByProc?procName=m_Rtrv_BrowseOPDBill_Pagi", param) 
+  }
+  public SaveCancelBill(param) {
+    return this._httpClient.post("Administration/Billcancellation", param) 
   }
 }

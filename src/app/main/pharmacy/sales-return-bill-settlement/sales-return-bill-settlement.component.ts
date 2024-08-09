@@ -311,8 +311,8 @@ export class SalesReturnBillSettlementComponent implements OnInit {
     PatientHeaderObj['Date'] = formattedDate;
     PatientHeaderObj['PatientName'] = this.PatientName;
     PatientHeaderObj['OPD_IPD_Id'] = contact.OP_IP_ID;
-    PatientHeaderObj['AdvanceAmount'] = contact.BalanceAmount; 
-    PatientHeaderObj['NetPayAmount'] = contact.BalanceAmount;
+    PatientHeaderObj['AdvanceAmount'] = Math.round(contact.BalanceAmount); 
+    PatientHeaderObj['NetPayAmount'] =Math.round(contact.BalanceAmount); 
     PatientHeaderObj['BillNo'] = contact.SalesId;
     PatientHeaderObj['IPDNo'] = this.IPDNo;
     PatientHeaderObj['RegNo'] = this.RegNo; 
@@ -342,7 +342,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
          UpdateAdvanceDetailarr1 = result.submitDataAdvancePay; 
 
         let UpdateAdvanceDetailarr = [];
-       0;
+      
         if (result.submitDataAdvancePay.length > 0) {
           result.submitDataAdvancePay.forEach((element) => {
             let update_T_PHAdvanceDetailObj = {};
@@ -398,9 +398,9 @@ export class SalesReturnBillSettlementComponent implements OnInit {
         });
         this.isLoading123 = false; 
       } 
-    
+      this.isLoading123 = false; 
     });
-    
+  
   }
   keyPressCharater(event) {
     var inp = String.fromCharCode(event.keyCode);

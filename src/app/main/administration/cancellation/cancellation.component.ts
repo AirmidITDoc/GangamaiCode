@@ -8,6 +8,8 @@ import { MatSort } from '@angular/material/sort';
 import { DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-cancellation',
@@ -19,13 +21,13 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 export class CancellationComponent implements OnInit {
   displayedColumns:string[] = [
    
+    'BillDate',
+    'PBillNo',
     'RegNo',
     'PatientName',
     'BillAmt',
     'ConAmt',
-    'NetpayableAmt',
-    'BillDate',
-    'PBillNo',
+    'NetpayableAmt', 
     'action',
   ];
   
@@ -37,6 +39,8 @@ export class CancellationComponent implements OnInit {
   
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  private _IpBillBrowseListService: any;
+  private _BrowseOPDBillsService: any;
 
   constructor(
     public _CancellationService:CancellationService,
@@ -47,7 +51,8 @@ export class CancellationComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getSalesList();
+    this.getIpdBillList();
+    this.getOPDBillsList();
   }
   
   toggleSidebar(name): void {
@@ -58,37 +63,185 @@ export class CancellationComponent implements OnInit {
     // console.log('dateTimeObj==', dateTimeObj);
     this.dateTimeObj = dateTimeObj;
   }
-  getSalesList() { 
-    this.sIsLoading = 'loading-data';
-    var vdata = {
-      F_Name: this._CancellationService.UserFormGroup.get('FirstName').value || '%',
-      L_Name: this._CancellationService.UserFormGroup.get('LastName').value || '%',
-      From_Dt: this.datePipe.transform(this._CancellationService.UserFormGroup.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      To_Dt: this.datePipe.transform(this._CancellationService.UserFormGroup.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      Reg_No: this._CancellationService.UserFormGroup.get('RegNo').value || 0,
-      SalesNo: this._CancellationService.UserFormGroup.get('SalesNo').value || 0,
-      OP_IP_Type: this._CancellationService.UserFormGroup.get('OP_IP_Type').value,
-      StoreId:  this._loggedService.currentUserValue.user.storeId || 0,
-      IPNo:  0 
+ 
+  getSearchList(){
+    if(this._CancellationService.UserFormGroup.get('OP_IP_Type').value  == '1'){
+      this.getIpdBillList();
+    }else{
+      this.getOPDBillsList();
     }
-    //console.log(vdata); 
-    setTimeout(() => {
-    this.sIsLoading = '';
-      this.sIsLoading = '';
-      this._CancellationService.getSalesList(vdata).subscribe(data => { 
-        this.dsCancellation.data = data as CancellationList[];
-        console.log(this.dsCancellation.data);
-        this.dsCancellation.sort = this.sort;
-        this.dsCancellation.paginator = this.paginator; 
-        this.sIsLoading = this.dsCancellation.data.length == 0 ? 'no-data' : '';
-        this.sIsLoading = ''; 
-      },
-        error => {
-          this.sIsLoading = '';
-        });
-    }, 1000); 
-  } 
+  }
+  resultsLength = 0;
+  getOPDBillsList() {
+    this.sIsLoading = 'loading-data';
+    var D_data = {
+      "F_Name":  this._CancellationService.UserFormGroup.get('FirstName').value || '%',
+      "L_Name": this._CancellationService.UserFormGroup.get('LastName').value || '%',
+      "From_Dt": this.datePipe.transform(this._CancellationService.UserFormGroup.get('startdate').value, "MM-dd-yyyy") || '01/01/1900',
+      "To_Dt ": this.datePipe.transform(this._CancellationService.UserFormGroup.get('enddate').value, "MM-dd-yyyy") || '01/01/1900',
+      "Reg_No": this._CancellationService.UserFormGroup.get('RegNo').value || 0,
+      "PBillNo": this._CancellationService.UserFormGroup.get('SalesNo').value + '%' || "%",
+      "Start":(this.paginator?.pageIndex??0),
+      "Length":(this.paginator?.pageSize??35) 
+    }
+    this._CancellationService.getOPDBillsList(D_data).subscribe(Visit => { 
+      this.dsCancellation.data = Visit as CancellationList[];
+      console.log(this.dsCancellation.data);
+      this.dsCancellation.data = Visit["Table1"] ?? [] as CancellationList[];
+      console.log(this.dsCancellation.data)
+      this.resultsLength = Visit["Table"][0]["total_row"];
+      this.sIsLoading = this.dsCancellation.data.length == 0 ? 'no-data' : '';
+    },
+      error => {
+        this.sIsLoading = '';
+      });
+  }
+  
+  getIpdBillList() { 
+    this.sIsLoading = 'loading-data';
+    var D_data = {
+      "F_Name":  this._CancellationService.UserFormGroup.get('FirstName').value || '%',
+      "L_Name": this._CancellationService.UserFormGroup.get('LastName').value || '%',
+      "From_Dt": this.datePipe.transform(this._CancellationService.UserFormGroup.get('startdate').value, "MM-dd-yyyy") || '01/01/1900',
+      "To_Dt ": this.datePipe.transform(this._CancellationService.UserFormGroup.get('enddate').value, "MM-dd-yyyy") || '01/01/1900',
+      "Reg_No": this._CancellationService.UserFormGroup.get('RegNo').value || 0,
+      "PBillNo": this._CancellationService.UserFormGroup.get('SalesNo').value + '%' || "%",
+      "Start":(this.paginator?.pageIndex??0),
+      "Length":(this.paginator?.pageSize??35) 
+    }
+    console.log(D_data);
+    this._CancellationService.getIpBillList(D_data).subscribe(Visit => {
+      this.dsCancellation.data = Visit as CancellationList[]; 
+      console.log(this.dsCancellation.data)
+      this.dsCancellation.data = Visit["Table1"] ?? [] as CancellationList[];
+      console.log(this.dsCancellation.data)
+      this.resultsLength = Visit["Table"][0]["total_row"];
+      this.sIsLoading = this.dsCancellation.data.length == 0 ? 'no-data' : '';
+ 
+    },
+      error => {
+        this.sIsLoading = '';
+      });
+  }
+  isLoading123:boolean=false;
+  BillCancel(contact){
+ 
+    Swal.fire({
+      title: 'Do you want to cancel the Final Bill ',
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Cancel it!" 
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {  
+        this.isLoading123 = true;
+        let billCancellationParamObj = {};
+        billCancellationParamObj['oP_IP_type'] = contact.OPD_IPD_Type;
+        billCancellationParamObj['billNo'] = contact.BillNo || 0;
 
+        let SubmitDate ={
+          "billCancellationParam":billCancellationParamObj
+        }
+        this._CancellationService.SaveCancelBill(SubmitDate).subscribe(response => {
+          if (response) {
+            Swal.fire('Congratulations !', 'Bill Cancel Successfully !', 'success').then((result) => {
+              if (result.isConfirmed) { 
+                this.getSearchList(); 
+                this.isLoading123 = false;
+              }
+            });
+          } else {
+            Swal.fire('Error !', 'Discharge  not saved', 'error');
+            this.isLoading123 = false;
+          } 
+          this.isLoading123 = false;
+        });  
+      }else{
+        this.getSearchList(); 
+      }
+    })
+  }
+  getRecord(contact, m): void {
+    if(this._CancellationService.UserFormGroup.get('OP_IP_Type').value  == '1'){
+      if (!contact.InterimOrFinal){
+        this.viewgetBillReportPdf(contact.BillNo)
+      } else{
+        this.viewgetInterimBillReportPdf(contact.BillNo)
+      }
+    }else{
+      this.viewgetOPBillReportPdf(contact)
+    }  
+  }
+  viewgetBillReportPdf(BillNo) { 
+    setTimeout(() => {
+      // this.SpinLoading =true;  
+      this._IpBillBrowseListService.getIpFinalBillReceipt(
+        BillNo
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "IP Bill  Viewer"
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.SpinLoading = false; 
+        });
+      });
+
+    }, 100);
+  }
+  viewgetInterimBillReportPdf(BillNo) {
+    setTimeout(() => {
+      this._IpBillBrowseListService.getIpInterimBillReceipt(
+        BillNo
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "IP Interim Bill  Viewer"
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+        });
+      });
+
+    }, 100);
+  }
+  viewgetOPBillReportPdf(contact) { 
+    setTimeout(() => {
+      // this.SpinLoading =true; 
+      this._BrowseOPDBillsService.getOpBillReceipt(
+        contact.BillNo
+      ).subscribe(res => {
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "OP BILL Viewer"
+            }
+          });
+        matDialog.afterClosed().subscribe(result => {  
+        });
+      });
+
+    }, 100);
+  }
+ 
 }
 export class CancellationList{
   RegNo:any;
