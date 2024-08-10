@@ -277,17 +277,19 @@ export class RadiologyTemplateMasterComponent implements OnInit {
       if (result.isConfirmed) {
         if (row.IsActive) {
           Query =
-            "Update M_Radiology_TemplateMaster set IsActive=0 where TemplateId=" + row.TemplateId;
+            "Update M_Radiology_TemplateMaster set IsActive=0 where TemplateId="+ row.TemplateId;
           console.log(Query);
         } else {
           Query =
-            "Update M_Radiology_TemplateMaster set IsActive=1 where TemplateId=" + row.TemplateId;
+            "Update M_Radiology_TemplateMaster set IsActive=1 where TemplateId="+ row.TemplateId;
         }
-
+        console.log(Query)
         this._radiologytemplateService.deactivateTheStatus(Query)
         .subscribe((data) => {
+          if(data)
          Swal.fire('Changed!', 'Template Status has been Changed.', 'success');
           this.getRadiologytemplateMasterList();
+          
         }, (error) => {
           Swal.fire('Error!', 'Failed to deactivate category.', 'error');
         });

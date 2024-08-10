@@ -82,7 +82,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <mat-table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
+                            <mat-table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" style="height: 500px !important;">
 
 
                                 <ng-container matColumnDef="TemplateId">
@@ -133,9 +133,9 @@
                                         <button mat-icon-button 
                                             *ngIf="!element.IsActive"><mat-icon
                                                 title="Edit Menu">highlight_off</mat-icon></button>
-                                        <button mat-icon-button (click)="onDeactive(element.TemplateId)"
+                                        <button mat-icon-button (click)="onDeactive(element)"
                                             color="warn"><mat-icon>delete_outline</mat-icon></button>
-                                        <button mat-menu-item (click)="PrintData(element.TemplateId)"
+                                        <button mat-menu-item (click)="PrintData(element)"
                                             aria-label="remove">
                                             <mat-icon>print icon</mat-icon>
                                         </button>

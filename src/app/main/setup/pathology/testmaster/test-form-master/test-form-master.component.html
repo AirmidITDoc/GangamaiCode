@@ -115,8 +115,7 @@
                                                     </button>
                                                 </mat-form-field>
                                                 <mat-checkbox formControlName="IsSubTest" [(ngModel)]="isChecked"
-                                                    (change)="getSubTestMasterList()" value="true"
-                                                    name="IsSubTest">IsSub
+                                                    (change)="onSearch()" value="true" name="IsSubTest">IsSub
                                                     Test</mat-checkbox>
                                             </div>
 
@@ -136,7 +135,7 @@
 
                                                             <ng-container matColumnDef="ParameterName">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                                                    Parameter Values
+                                                                    Parameter Values dddddddd
                                                                 </mat-header-cell>
                                                                 <mat-cell *matCellDef="let element" fxShow.gt-sm
                                                                     (click)="onAdd(element)">
@@ -174,7 +173,7 @@
 
                                                         </mat-table>
                                                         <mat-table #table class="table1" matSort *ngIf="isTemplate"
-                                                            [dataSource]="subTestList.data"
+                                                            [dataSource]="TemplateList.data"
                                                             [@animateStagger]="{value:'50'}"
                                                             style="overflow:auto; width: 100%;">
 

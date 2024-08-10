@@ -294,6 +294,7 @@ export class PathparameterMaster {
             this.ParameterID = PathparameterMaster.ParameterID || "";
             this.ParameterShortName = PathparameterMaster.ParameterShortName || "";
             this.ParameterName = PathparameterMaster.ParameterName || "";
+            this.MethodName = PathparameterMaster.MethodName || "";
             this.PrintParameterName =PathparameterMaster.PrintParameterName || "";
             this.UnitId = PathparameterMaster.UnitId || "";
             this.IsNumeric = PathparameterMaster.IsNumeric || "false";

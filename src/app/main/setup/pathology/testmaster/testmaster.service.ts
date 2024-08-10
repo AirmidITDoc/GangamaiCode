@@ -49,7 +49,8 @@ export class TestmasterService {
             parametertxt: [""],
             PTemplateId: [""],
             IsSubTest: ["true"],
-            Status:[1]
+            Status:[1],
+            ParameterNameSearch:[""]
         });
     }
 
@@ -119,11 +120,8 @@ export class TestmasterService {
         );
     }
     // new Subtest list  Master Combobox List
-    public getNewSubTestList() {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Retrieve_PathSubTestListForCombo",
-            {}
-        );
+    public getNewSubTestList(emp) {
+        return this._httpClient.post("Generic/GetByProc?procName=m_Retrieve_PathSubTestListForCombo",emp);
     }
     // Parameter Master Combobox List
     public getParameterMasterCombo() {

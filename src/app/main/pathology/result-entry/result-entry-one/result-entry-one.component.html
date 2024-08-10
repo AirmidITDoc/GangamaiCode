@@ -159,14 +159,14 @@
                                                     [disabled]="contact.Formula" [(ngModel)]="contact.ResultValue">
                                             </mat-form-field>
                                             <mat-form-field appearance="legacy" *ngIf="contact.IsHelpShown" style="width: 100%;">
-                                                <input type="text" matInput id="helpText_{{contact.ParameterId}}" [matAutocomplete]="auto" (keyup)="filterHelp($event)">
+                                                <input type="text" matInput id="helpText_{{contact.ParameterId}}" [matAutocomplete]="auto" (keyup)="filterHelp($event)" multiple>
                                                 <mat-autocomplete #auto="matAutocomplete" (optionSelected)='onSelectHelp($event.option.value,contact)'>
                                                   <mat-option *ngFor="let option of helpItems" [value]="option.ParameterValues">
                                                     {{option.ParameterValues}}
                                                   </mat-option>
                                                 </mat-autocomplete>
                                               </mat-form-field>
-                                            
+                                              <!-- (click)="AddData(txt.value)" -->
                                             <!-- <button [matMenuTriggerFor]="addMenu" #languageMenuTrigger="matMenuTrigger"
                                                 style="visibility: hidden;"></button> -->
                                                <img width="20px;" height="20px;" src="assets/images/logos/help.jpeg" *ngIf=" contact.ParaIsNumeric ==0"  matTooltip="Use Help Value">

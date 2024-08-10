@@ -46,7 +46,7 @@
                                         value="2">All</mat-radio-button>
                                     <mat-radio-button mat-fab value="1"
                                         (click)="toggle(1)">IsActive</mat-radio-button>
-                                    <mat-radio-button (click)="toggle(0)" value="0">IsDeactive</mat-radio-button>
+                                    <mat-radio-button (click)="toggle(0)" value="0">Deactive</mat-radio-button>
                                 </mat-radio-group>
 
                                     <button mat-raised-button (click)="onSearch()" fxLayoutAlign="center center">
@@ -75,13 +75,13 @@
                                     </ng-container>
 
 
-                                    <ng-container matColumnDef="IsDeleted">
+                                    <ng-container matColumnDef="IsActive">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm> IsActive
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <mat-icon *ngIf="!element.Isdeleted"
+                                            <mat-icon *ngIf="element.IsActive"
                                                 class="active-icon green-600 s-16">check_circle</mat-icon>
-                                            <mat-icon *ngIf="element.Isdeleted"
+                                            <mat-icon *ngIf="!element.IsActive"
                                                 class="active-icon red-500 s-16">close</mat-icon>
                                         </mat-cell>
                                     </ng-container>
@@ -101,10 +101,12 @@
                                     <ng-container matColumnDef="action" stickyEnd>
                                         <mat-header-cell *matHeaderCellDef class="table-actions"> Action
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let row">
-                                            <button mat-icon-button (click)="onEdit(row)"><mat-icon
+                                        <mat-cell *matCellDef="let element">
+                                            <button mat-icon-button (click)="onEdit(element)" *ngIf="element.IsActive"><mat-icon
                                                     title="Edit Menu">edit</mat-icon></button>
-                                            <button mat-icon-button (click)="onDeactive(row.CategoryId)"
+                                                    <button mat-icon-button  *ngIf="!element.IsActive"><mat-icon
+                                                        title="Edit Menu">highlight_off</mat-icon></button>
+                                            <button mat-icon-button (click)="onDeactive(element.CategoryId)"
                                                 color="warn"><mat-icon>delete_outline</mat-icon></button>
                                         </mat-cell>
                                     </ng-container>
@@ -157,8 +159,8 @@
                                     </div>
 
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                        <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
-                                            <mat-radio-button value='false' class="mr-sm-12"
+                                        <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='true'>
+                                            <mat-radio-button value='true' class="mr-sm-12"
                                                 fxFlex>IsActive</mat-radio-button>
                                             <!-- <mat-radio-button value='true' class="mr-sm-12"
                                                 fxFlex>IsDeactive</mat-radio-button> -->
@@ -166,11 +168,11 @@
                                     </div>
                                 </form>
                             </div>
-                          
+                            <!-- [disabled]="_categoryService.myform.invalid" -->
                             <div class="footer-navigation-container">
                                 <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px" style="margin-right: 10px;">
                                     <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
-                                    <button class="btn btn-primary" (click)="onSubmit()" [disabled]="_categoryService.myform.invalid"
+                                    <button class="btn btn-primary" (click)="onSubmit()" 
                                     >Save</button>
                                 </div>
                             </div>

@@ -239,11 +239,27 @@ export class ResultEntryOneComponent implements OnInit {
         contact.ParaBoldFlag=contact.ParaBoldFlag
     }
 
+    currentval="";
+    currentvaltemp="";
+    ParameterId="";
+
+    AddData1(contact,val) {
+        debugger
+      console.warn(val);
+      if(this.currentval !="")
+      this.currentval=this.currentval+' , '+val;
+    else
+    this.currentval=this.currentval+'  '+val;
+      contact.ResultValue=this.currentval
+    }
 
     helpItems: any[] = [];
     helpFullItems: any[] = [];
     selectedParam: any;
     onKeydown(e, data) {
+debugger
+        if(this.selectedParam !=data.ParameterId)
+            this.currentval=""
         this.selectedParam = data.ParameterId;
         let SelectQuery = "SELECT ParameterValues, IsDefaultValue, ParameterId FROM dbo.M_ParameterDescriptiveMaster WHERE ParameterId = " + data.ParameterId;
         this._SampleService.getPathologyResultList(SelectQuery).subscribe(Visit => {
@@ -257,10 +273,13 @@ export class ResultEntryOneComponent implements OnInit {
             error => {
                 this.sIsLoading = '';
             });
+            
     }
     onSelectHelp(e, data) {
         this.dataSource.data.find(x => x.ParameterId == this.selectedParam).ResultValue = e;
         data["IsHelpShown"] = false;
+
+        this.AddData1(data,data.ResultValue)
     }
     filterHelp(e) {
         this.helpItems = this.helpFullItems.filter(option => option.ParameterValues.toLowerCase().indexOf(e.target.value) >= 0);
@@ -620,6 +639,8 @@ export class ResultEntryOneComponent implements OnInit {
             });
         });
     }
+
+   
 
     onClear() {
         this.otherForm.reset();

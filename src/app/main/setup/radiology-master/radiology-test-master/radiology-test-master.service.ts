@@ -72,7 +72,7 @@ export class RadiologyTestMasterService {
 
   // TemplateMaster Combobox List
   public gettemplateMasterComboList(param) {
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RadiologyTemplateMasterForComboMasterList", param)
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RadiologyTemplateMasterForComboMaster", param)
   }
   public updateRadiologyTestMaster(employee) {
     return this._httpClient.post("RadiologyMaster/RadiologyTestMasterUpdate", employee);

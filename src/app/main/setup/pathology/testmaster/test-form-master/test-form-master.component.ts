@@ -205,12 +205,21 @@ export class TestFormMasterComponent implements OnInit {
         this._TestService.myformSearch.reset({
             TestNameSearch: "",
             IsDeletedSearch: "2",
+           
         });
+
+        this._TestService.myform.reset();
         this.getParameterNameCombobox();
     }
     onSearch() {
+        debugger
+        if(this._TestService.myform.get("IsSubTest").value == !this.isChecked)
         this.getParameterNameCombobox();
+    else
+        this.getSubTestMasterList();
     }
+
+
     // parameter filter
     private filterParametername() {
         if (!this.Parametercmb) {
@@ -321,10 +330,20 @@ export class TestFormMasterComponent implements OnInit {
 
 
     getSubTestMasterList() {
-        this._TestService.getNewSubTestList().subscribe((Menu) => {
+        debugger
+        
+        var m_dat={
+            TestName:this._TestService.myform.get('ParameterNameSearch').value + "%" || '%'
+        }
+        this._TestService.getNewSubTestList(m_dat).subscribe((Menu) => {
             this.subTestList.data = Menu as TestList[];
+            this.paramterList.data=Menu as TestList[];
         });
+        // console.log(this.subTestList.data)
+        // this.paramterList.data=this.subTestList.data
     }
+       
+    
 
     list = [];
     onAddTemplate() {
@@ -414,6 +433,13 @@ export class TestFormMasterComponent implements OnInit {
         let submitData
         debugger
         if (!this.Statusflag) {
+
+            if(this.DSTestList.data.length ==0){
+                this.toastr.warning('Please select valid Test Data', 'Warning !', {
+                    toastClass: 'tostr-tost custom-toast-warning',
+                  });
+                  return;
+            }
 
             if (!this._TestService.myform.get("TestId").value) {
 
@@ -544,6 +570,14 @@ export class TestFormMasterComponent implements OnInit {
         }
         else {
             if (!this._TestService.myform.get("TestId").value) {
+
+                
+            if(this.Templatetdatasource.data.length ==0){
+                this.toastr.warning('Please select valid Template Data', 'Warning !', {
+                    toastClass: 'tostr-tost custom-toast-warning',
+                  });
+                  return;
+            }
 
                 let insertPathologyTestMaster = {};
 

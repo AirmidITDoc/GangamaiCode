@@ -30,7 +30,7 @@ export class CategoryMasterComponent implements OnInit {
         "CategoryName",
         "AddedByName",
         "UpdatedBy",
-        "IsDeleted",
+        "IsActive",
         "action",
     ];
 
@@ -162,7 +162,7 @@ export class CategoryMasterComponent implements OnInit {
           }).then((result) => {
             if (result) {
                 let Query 
-                if (!this.DSCategoryMasterList.data.find(item => item.CategoryId === CategoryId).IsDeleted){
+                if (!this.DSCategoryMasterList.data.find(item => item.CategoryId === CategoryId).IsActive){
                      Query ="Update M_Radiology_CategoryMaster set Isdeleted=1 where CategoryId=" +CategoryId;}
                 else{
                 let Query =
@@ -200,7 +200,7 @@ export class CategoryMasterComponent implements OnInit {
             this.tempList.data = []
             this.DSCategoryMasterList.data= this.DSCategoryMasterList1.data
             for (let item of this.DSCategoryMasterList.data) {
-                if (item.IsDeleted) this.tempList.data.push(item)
+                if (item.IsActive) this.tempList.data.push(item)
 
             }
 
@@ -212,7 +212,7 @@ export class CategoryMasterComponent implements OnInit {
             this.tempList.data = []
 
             for (let item of this.DSCategoryMasterList.data) {
-                if (!item.IsDeleted) this.tempList.data.push(item)
+                if (!item.IsActive) this.tempList.data.push(item)
 
             }
             this.DSCategoryMasterList.data = [];
@@ -229,7 +229,7 @@ export class CategoryMasterComponent implements OnInit {
 export class CategoryMaster {
     CategoryId: number;
     CategoryName: string;
-    IsDeleted: boolean;
+    IsActive: boolean;
     AddedBy: number;
     UpdatedBy: number;
     AddedByName: string;
@@ -243,7 +243,7 @@ export class CategoryMaster {
         {
             this.CategoryId = CategoryMaster.CategoryId || "";
             this.CategoryName = CategoryMaster.CategoryName || "";
-            this.IsDeleted = CategoryMaster.IsDeleted || "false";
+            this.IsActive = CategoryMaster.IsActive || "true";
             this.AddedBy = CategoryMaster.AddedBy || "";
             this.UpdatedBy = CategoryMaster.UpdatedBy || "";
             this.AddedByName = CategoryMaster.AddedByName || "";

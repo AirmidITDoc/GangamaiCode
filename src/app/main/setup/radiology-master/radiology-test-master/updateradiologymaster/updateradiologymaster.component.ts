@@ -210,10 +210,12 @@ getserviceNameCombobox() {
     if (this._radiologytestService.myform.valid) {
       if (!this._radiologytestService.myform.get("TestId").value) {
          let insertRadiologyTestMaster= {};
+         insertRadiologyTestMaster['testId'] = 0;
          insertRadiologyTestMaster['testName'] = this._radiologytestService.myform.get("TestName").value;
          insertRadiologyTestMaster['printTestName'] = this._radiologytestService.myform.get("PrintTestName").value;
          insertRadiologyTestMaster['categoryId'] = this._radiologytestService.myform.get("CategoryId").value.CategoryId;
          insertRadiologyTestMaster['addedBy'] = this.accountService.currentUserValue.user.id;
+         insertRadiologyTestMaster['Isdeleted'] = 1;
          insertRadiologyTestMaster['serviceId'] = this._radiologytestService.myform.get("ServiceId").value.ServiceId;
         
          let insertRadiologyTemplateTest = [];
@@ -256,6 +258,7 @@ getserviceNameCombobox() {
         updateRadiologyTestMaster['testName'] = this._radiologytestService.myform.get("TestName").value;
         updateRadiologyTestMaster['printTestName'] = this._radiologytestService.myform.get("PrintTestName").value;
         updateRadiologyTestMaster['categoryId'] = this._radiologytestService.myform.get("CategoryId").value.CategoryId;
+        updateRadiologyTestMaster['Isdeleted'] = 1;
         updateRadiologyTestMaster['updatedBy'] = this.accountService.currentUserValue.user.id;
         updateRadiologyTestMaster['serviceId'] = this._radiologytestService.myform.get("ServiceId").value.ServiceId;
        
