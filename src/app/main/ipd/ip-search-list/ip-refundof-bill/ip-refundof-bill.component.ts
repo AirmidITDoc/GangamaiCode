@@ -22,6 +22,7 @@ import { ToastrService } from 'ngx-toastr';
 import { element } from 'protractor';
 import { BrowseIpdreturnadvanceReceipt } from '../../ip-refundof-advance/ip-refundof-advance.component';
 import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
+import { map, startWith } from 'rxjs/operators';
 
 type NewType = Observable<any[]>;
 @Component({
@@ -107,6 +108,8 @@ export class IPRefundofBillComponent implements OnInit {
   PatientListfilteredOptions: any;
   isRegIdSelected: boolean = false;
   registerObj = new RegInsert({});
+  isCashCounterSelected:boolean=false;
+  filteredOptionsCashCounter:Observable<string[]>;
 
   displayedColumns1 = [
     'ServiceName',
@@ -189,10 +192,12 @@ export class IPRefundofBillComponent implements OnInit {
     // );
  
     this.getRefundofBillIPDList(); 
+    this.getCashCounterComboList();
   } 
 createSearchForm() {
   return this.formBuilder.group({
-  RegId: ['']
+  RegId: [''],
+  CashCounterID:['']
   });
 }
 refundForm(): FormGroup {
@@ -614,6 +619,30 @@ keyPressCharater(event){
     return false;
   }
 }
+CashCounterList:any=[];
+getCashCounterComboList() {
+  this._IpSearchListService.getCashcounterList().subscribe(data => {
+    this.CashCounterList = data
+    console.log(this.CashCounterList)
+    this.searchFormGroup.get('CashCounterID').setValue(this.CashCounterList[6])
+    this.filteredOptionsCashCounter = this.searchFormGroup.get('CashCounterID').valueChanges.pipe(
+      startWith(''),
+      map(value => value ? this._filterCashCounter(value) : this.CashCounterList.slice()),
+    ); 
+  });
+}
+private _filterCashCounter(value: any): string[] {
+  if (value) {
+    const filterValue = value && value.CashCounterName ? value.CashCounterName.toLowerCase() : value.toLowerCase();
+    return this.CashCounterList.filter(option => option.CashCounterName.toLowerCase().includes(filterValue));
+  } 
+} 
+getOptionTextCashCounter(option){ 
+  if (!option)
+    return '';
+  return option.CashCounterName;
+}
+
 }
 
 

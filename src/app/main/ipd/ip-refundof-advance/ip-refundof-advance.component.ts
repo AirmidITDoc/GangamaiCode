@@ -4,7 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 // import { AdvanceDetailObj } from '../ip-search-list.component';
 import { DatePipe } from '@angular/common';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -26,6 +26,7 @@ import { AdvanceDataStored } from '../advance';
 import { AdvanceDetailObj } from '../ip-search-list/ip-search-list.component';
 import { element } from 'protractor';
 import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
+import { map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-ip-refundof-advance',
@@ -62,7 +63,8 @@ export class IPRefundofAdvanceComponent implements OnInit {
   pay_balance_Data: any;
   advDetailId: any;
   AdvanceDetailID: any;
-
+  isCashCounterSelected:boolean=false;
+  filteredOptionsCashCounter:Observable<string[]>;
   vOPIPId: any;
   vRegId: any;
   Age:any;
@@ -155,7 +157,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
       BalanceAdvance: [0, Validators.required],
       AdvanceDetailID: [''],
       NewRefundAmount: ['0'],
-      Remark: ['']
+      Remark: [''],
     });
 
 
@@ -186,11 +188,13 @@ export class IPRefundofAdvanceComponent implements OnInit {
    
    // this.getRefundofAdvanceListRegIdwise();
     this.getReturndetails();
+    this.getCashCounterComboList();
   }
 
   createSearchForm() {
     return this.formBuilder.group({
-      RegId: ['']
+      RegId: [''],
+      CashCounterID:['']
     });
   }
 
@@ -580,6 +584,29 @@ export class IPRefundofAdvanceComponent implements OnInit {
     this._IpSearchListService.myRefundAdvanceForm.reset();
 
     this._matDialog.closeAll();
+  }
+  CashCounterList:any=[];
+  getCashCounterComboList() {
+    this._IpSearchListService.getCashcounterList().subscribe(data => {
+      this.CashCounterList = data
+      console.log(this.CashCounterList)
+      this.searchFormGroup.get('CashCounterID').setValue(this.CashCounterList[7])
+      this.filteredOptionsCashCounter = this.searchFormGroup.get('CashCounterID').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterCashCounter(value) : this.CashCounterList.slice()),
+      ); 
+    });
+  }
+  private _filterCashCounter(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.CashCounterName ? value.CashCounterName.toLowerCase() : value.toLowerCase();
+      return this.CashCounterList.filter(option => option.CashCounterName.toLowerCase().includes(filterValue));
+    } 
+  } 
+  getOptionTextCashCounter(option){ 
+    if (!option)
+      return '';
+    return option.CashCounterName;
   }
 }
 

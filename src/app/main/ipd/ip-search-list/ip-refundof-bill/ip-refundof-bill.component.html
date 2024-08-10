@@ -29,13 +29,12 @@
             <div class="content-card">
                 <div class="patient-search-container">
                     <form [formGroup]="searchFormGroup">
-                        <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="5px">
-
-                            <mat-form-field class=searchRegId appearance="outline"
-                                style="width:600px !important;margin-left:20px;">
+                        <div fxLayout="row" fxLayoutGap="10px">
+                    
+                            <mat-form-field class=searchRegId appearance="outline" style="width:600px !important;margin-left:20px;">
                                 <input type="text" name="RegId" formControlName="RegId"
-                                    placeholder="Patient Name (enter 2 char)/ MR No/ Mobile No " matInput
-                                    [matAutocomplete]="auto1" (input)="getSearchList()" maxlength="10">
+                                    placeholder="Patient Name (enter 2 char)/ MR No/ Mobile No " matInput [matAutocomplete]="auto1"
+                                    (input)="getSearchList()" maxlength="10">
                                 <span matSuffix style="display: flex;">
                                     <mat-icon class="mat-icon-close"
                                         (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">close</mat-icon>
@@ -51,16 +50,31 @@
                                     </mat-option>
                                 </mat-autocomplete>
                                 <!-- <mat-error *ngIf="searchFormGroup.get('ItemId').hasError('required')">
-                          Required field cannot be left blank
-                        </mat-error> -->
+                                              Required field cannot be left blank
+                                            </mat-error> -->
                             </mat-form-field>
-
+                            <mat-form-field appearance="outline" fxFlex="22%">
+                                <mat-label>Cash Counter</mat-label>
+                                <input matAutocompletePosition="below" type="text" placeholder="Select Cash Counter" matInput
+                                    formControlName="CashCounterID" [matAutocomplete]="autoSearchCashCounter" #CashCounterName>
+                                <span matSuffix style="display: flex;">
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="searchFormGroup.get('CashCounterID').setValue(''); isCashCounterSelected = false;">close</mat-icon>
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="searchFormGroup.get('CashCounterID').setValue(''); isCashCounterSelected = false;">search</mat-icon>
+                                </span>
+                                <mat-autocomplete #autoSearchCashCounter="matAutocomplete" [displayWith]="getOptionTextCashCounter">
+                                    <mat-option *ngFor="let option of filteredOptionsCashCounter| async" [value]="option">
+                                        {{option.CashCounterName}}
+                                    </mat-option>
+                                </mat-autocomplete>
+                            </mat-form-field>
                             <!-- <span style="margin-right: 40px;">
-                                <app-common-date [screenFrom]="screenFromString"
-                                    (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
-                            </span> -->
+                                                    <app-common-date [screenFrom]="screenFromString"
+                                                        (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                                                </span> -->
                         </div>
-                      
+                    
                     </form>
                 </div>
                 <div fxLayout="column" class="ip-refund-box gap-12">

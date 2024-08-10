@@ -51,6 +51,23 @@
                                 <!-- <mat-error *ngIf="searchFormGroup.get('ItemId').hasError('required')">
                                                                                           Required field cannot be left blank
                                                                                         </mat-error> -->
+                            </mat-form-field>&nbsp;
+
+                            <mat-form-field appearance="outline" fxFlex="22%">
+                                <mat-label>Cash Counter</mat-label>
+                                <input matAutocompletePosition="below" type="text" placeholder="Select Cash Counter" matInput
+                                    formControlName="CashCounterID" [matAutocomplete]="autoSearchCashCounter" #CashCounterName>
+                                <span matSuffix style="display: flex;">
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="searchFormGroup.get('CashCounterID').setValue(''); isCashCounterSelected = false;">close</mat-icon>
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="searchFormGroup.get('CashCounterID').setValue(''); isCashCounterSelected = false;">search</mat-icon>
+                                </span>
+                                <mat-autocomplete #autoSearchCashCounter="matAutocomplete" [displayWith]="getOptionTextCashCounter">
+                                    <mat-option *ngFor="let option of filteredOptionsCashCounter| async" [value]="option">
+                                        {{option.CashCounterName}}
+                                    </mat-option>
+                                </mat-autocomplete>
                             </mat-form-field>
                         </form>
 

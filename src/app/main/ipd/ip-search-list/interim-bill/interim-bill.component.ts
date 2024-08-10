@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReportPrintObj } from '../../ip-bill-browse-list/ip-bill-browse-list.component';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { AdvanceDetailObj, ChargesList } from '../ip-search-list.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { IPSearchListService } from '../ip-search-list.service';
@@ -20,6 +20,7 @@ import { Cal_DiscAmount } from '../ip-billing/ip-billing.component';
 import { ToastrService } from 'ngx-toastr';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 import { IPpaymentWithadvanceComponent } from '../../ip-settlement/ippayment-withadvance/ippayment-withadvance.component';
+import { map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-interim-bill',
@@ -69,13 +70,13 @@ export class InterimBillComponent implements OnInit {
   FinalAmountpay = 0;
   b_disAmount :any;
   formDiscPersc: any;
-
+  filteredOptionsCashCounter: Observable<string[]>;
   Consession: boolean = true;
   percentag: boolean = true;
   ConShow: boolean = false;
   onlineflag: boolean = false;
   vMobileNo:any;
-
+  isCashCounterSelected:boolean=false;
   CashCounterList: any = [];
   ConcessionReasonList: any = [];
   displayedColumns = [
@@ -178,7 +179,8 @@ export class InterimBillComponent implements OnInit {
       GenerateBill: ['0'],
       CashCounterId: 0,
       paymode: ['cashpay'],
-      UPINO: ['']
+      UPINO: [''],
+      CashCounterID:['']
     });
   }
 
@@ -193,7 +195,24 @@ export class InterimBillComponent implements OnInit {
   getCashCounterComboList() {
     this._IpSearchListService.getCashcounterList().subscribe(data => {
       this.CashCounterList = data
+      console.log(this.CashCounterList)
+      this.InterimFormGroup.get('CashCounterID').setValue(this.CashCounterList[3])
+      this.filteredOptionsCashCounter = this.InterimFormGroup.get('CashCounterID').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterCashCounter(value) : this.CashCounterList.slice()),
+      ); 
     });
+  }
+  private _filterCashCounter(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.CashCounterName ? value.CashCounterName.toLowerCase() : value.toLowerCase();
+      return this.CashCounterList.filter(option => option.CashCounterName.toLowerCase().includes(filterValue));
+    } 
+  } 
+  getOptionTextCashCounter(option){ 
+    if (!option)
+      return '';
+    return option.CashCounterName;
   }
 
   // getNetAmount() {
@@ -812,8 +831,7 @@ export class InterimBillComponent implements OnInit {
     }
   }
 
-  calculatePersc() {
-debugger
+  calculatePersc() { 
     if (this.InterimFormGroup.get("discPer").value > 0) {
       let discAmt = Math.round((this.vTotalBillAmt * parseInt(this.formDiscPersc)) / 100);
       this.b_disAmount = discAmt;
@@ -890,12 +908,8 @@ debugger
           }
         });
     });
-  }
-
-
-
-  getDateTime(dateTimeObj) {
-
+  } 
+  getDateTime(dateTimeObj) { 
     this.dateTimeObj = dateTimeObj;
   }
 

@@ -196,7 +196,7 @@
                     <div fxFlex.gt-sm="100%" fxFlex>
 
 
-                        <mat-table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" class="h-300">
+                        <mat-table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" class="h-250">
 
                             <ng-container matColumnDef="Date">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Date
@@ -367,12 +367,32 @@
                                                 Advance Amount is required</mat-error>
                                         </mat-form-field>
                                         <!-- <mat-checkbox aria-label="Cash Payment" formControlName="cashpay" (checked)=true
-                                    class="font-weight-600 text-primary">
-                                    Cash Payment
-                                </mat-checkbox> -->
+                                             class="font-weight-600 text-primary">
+                                           Cash Payment
+                                        </mat-checkbox> -->
                                         <!-- <button class="btn btn-danger-outline" (click)="onClose()" style="margin-left: 400px;">Close</button>
-                                <button class="btn btn-primary" (click)="onSave()"
-                                    [disabled]="AdvFormGroup.invalid">Save</button> -->
+                                          <button class="btn btn-primary" (click)="onSave()"
+                                              [disabled]="AdvFormGroup.invalid">Save</button> -->
+
+                                         <mat-form-field appearance="outline" style="width: 220px;">
+                                        <mat-label>Cash Counter</mat-label>
+                                        <input matAutocompletePosition="below" type="text" placeholder="Select Cash Counter"
+                                             matInput formControlName="CashCounterID"
+                                            [matAutocomplete]="autoSearchCashCounter" #CashCounterName>
+                                        <span matSuffix style="display: flex;">
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="AdvFormGroup.get('CashCounterID').setValue(''); isCashCounterSelected = false;">close</mat-icon>
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="AdvFormGroup.get('CashCounterID').setValue(''); isCashCounterSelected = false;">search</mat-icon>
+                                        </span>
+                                        <mat-autocomplete #autoSearchCashCounter="matAutocomplete"
+                                            [displayWith]="getOptionTextCashCounter">
+                                            <mat-option *ngFor="let option of filteredOptionsCashCounter| async"
+                                                [value]="option">
+                                                {{option.CashCounterName}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                      </mat-form-field>
                                     </div>
                                 </div>
                             </form>

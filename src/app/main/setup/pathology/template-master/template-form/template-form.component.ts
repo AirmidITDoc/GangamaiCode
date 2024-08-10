@@ -20,6 +20,7 @@ export class TemplateFormComponent implements OnInit {
     vTemplateName: any;
     vTemplateDesc: any;
     TemplateId: any;
+    vTemplateId:any;
 
     editorConfig: AngularEditorConfig = {
         // color:true,

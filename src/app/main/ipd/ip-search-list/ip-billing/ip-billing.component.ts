@@ -1300,6 +1300,7 @@ ServiceList:any=[];
   }
   TotalAdvanceamt:any=0;
   SaveBill1() { 
+ 
     if (this.dataSource.data.length > 0 && (this.vNetBillAmount > 0)) {
       this.isLoading = 'submit';
       if(this.Ipbillform.get('CreditBill').value || this.selectedAdvanceObj.CompanyId){
@@ -1380,8 +1381,9 @@ ServiceList:any=[];
         InsertBillUpdateBillNoObj['TaxAmount'] = this.Ipbillform.get('AdminAmt').value || 0;
         InsertBillUpdateBillNoObj['DiscComments'] = this.Ipbillform.get('Remark').value || '';
         InsertBillUpdateBillNoObj['CompDiscAmt'] = 0//this.InterimFormGroup.get('Remark').value || ''; 
-        let Billdetsarr = [];
+        InsertBillUpdateBillNoObj['cashCounterId'] = this.Ipbillform.get('CashCounterID').value.CashCounterId || 0;
 
+        let Billdetsarr = []; 
         this.dataSource.data.forEach((element) => {
           let BillDetailsInsertObj = {};
           BillDetailsInsertObj['BillNo'] = 0;
@@ -1505,6 +1507,7 @@ ServiceList:any=[];
     InsertBillUpdateBillNoObj['TaxAmount'] = this.Ipbillform.get('AdminAmt').value || 0;
     InsertBillUpdateBillNoObj['DiscComments'] = this.Ipbillform.get('Remark').value || '';
     InsertBillUpdateBillNoObj['CompDiscAmt'] = 0//this.InterimFormGroup.get('Remark').value || '';
+    InsertBillUpdateBillNoObj['cashCounterId'] = this.Ipbillform.get('CashCounterID').value.CashCounterId || 0;
     
     //const InsertBillUpdateBillNo = new Bill(InsertBillUpdateBillNoObj);
 
@@ -2047,8 +2050,7 @@ ServiceList:any=[];
     });
   }
 
-  onSave() {
-    debugger
+  onSave() { 
     if (this.Ipbillform.get('concessionAmt').value > 0 || this.Ipbillform.get('Percentage').value > 0) {
       if(!this.Ipbillform.get('ConcessionId').value.ConcessionId){
         this.toastr.warning('Please select ConcessionReason.', 'Warning !', {
@@ -2057,13 +2059,25 @@ ServiceList:any=[];
         return;
       }
     }
+    if (this.Ipbillform.get('CashCounterID').value) {
+      if(!this.CashCounterList.some(item => item.CashCounterName === this.Ipbillform.get('CashCounterID').value.CashCounterName)){
+        this.toastr.warning('Please Select valid Cash Counter Name', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }  
+    }
       if (this.dataSource.data.length > 0) {
         if (this.Ipbillform.get('GenerateBill').value) {
           Swal.fire({
-            title: 'Do you want to save the Final Bill ',
-
+            title: 'Do you want to generate the Final Bill ',
+            text: "You won't be able to revert this!",
+            icon: "warning",
             showCancelButton: true,
-            confirmButtonText: 'OK',
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Generate!" 
+ 
           }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
@@ -2075,9 +2089,13 @@ ServiceList:any=[];
         }
         else {
           Swal.fire({
-            title: 'Do you want to save the Draft Bill ',
+            title: 'Do you want to save the Draft Bill ', 
+            text: "You won't be able to revert this!",
+            icon: "warning",
             showCancelButton: true,
-            confirmButtonText: 'OK',
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Save!"  
 
           }).then((result) => {
             /* Read more about isConfirmed, isDenied below */

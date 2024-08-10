@@ -1,6 +1,6 @@
 import { Component, Inject, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { ChargesList } from 'app/main/opd/op-search-list/opd-search-list/opd-search-list.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { IPSearchListService } from '../ip-search-list.service';
@@ -26,6 +26,7 @@ import { AdmissionPersonlModel } from '../../Admission/admission/admission.compo
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 import { ToastrService } from 'ngx-toastr';
 import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
+import { map, startWith } from 'rxjs/operators';
 
 
 @Component({
@@ -83,6 +84,8 @@ export class IPAdvanceComponent implements OnInit {
   CashCounterList: any = [];
   PatientHeaderObj: any;
   vMobileNo:any;
+  isCashCounterSelected:boolean=false;
+  filteredOptionsCashCounter:Observable<string[]>;
 
 
   constructor(public _IpSearchListService: IPSearchListService,
@@ -105,6 +108,7 @@ export class IPAdvanceComponent implements OnInit {
       comment: [''],
       CashCounterId: [0],
       cashpay: ['1'],
+      CashCounterID:['']
     });
 
     if (this.advanceDataStored.storage) {
@@ -154,10 +158,28 @@ vAdvanceDetId:any;
 
   }
 
+  
   getCashCounterComboList() {
-    this._opappointmentService.getCashcounterList().subscribe(data => {
+    this._IpSearchListService.getCashcounterList().subscribe(data => {
       this.CashCounterList = data
+      console.log(this.CashCounterList)
+      this.AdvFormGroup.get('CashCounterID').setValue(this.CashCounterList[4])
+      this.filteredOptionsCashCounter = this.AdvFormGroup.get('CashCounterID').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterCashCounter(value) : this.CashCounterList.slice()),
+      ); 
     });
+  }
+  private _filterCashCounter(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.CashCounterName ? value.CashCounterName.toLowerCase() : value.toLowerCase();
+      return this.CashCounterList.filter(option => option.CashCounterName.toLowerCase().includes(filterValue));
+    } 
+  } 
+  getOptionTextCashCounter(option){ 
+    if (!option)
+      return '';
+    return option.CashCounterName;
   }
 
   getAdvancetotal(element) {
@@ -541,9 +563,7 @@ vAdvanceDetId:any;
       event.preventDefault();
       return false;
     }
-  }
-
-
+  } 
   viewgetAdvanceReceiptReportPdf(AdvanceID,Flag) {
     let AdvanceDetailID
     if(Flag)
@@ -618,16 +638,12 @@ vAdvanceDetId:any;
         });
     });
    }
-
-
+ 
   transform2(value: string) {
     var datePipe = new DatePipe("en-US");
     value = datePipe.transform((new Date), 'dd/MM/yyyy h:mm a');
     return value;
-  }
-
-
-
+  } 
   onClose() {
     this.dialogRef.close();
   }

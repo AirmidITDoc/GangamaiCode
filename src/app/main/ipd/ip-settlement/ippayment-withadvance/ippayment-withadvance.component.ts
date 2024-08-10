@@ -14,6 +14,7 @@ import Swal from 'sweetalert2';
 import { ConsentModule } from 'app/main/nursingstation/consent/consent.module';
 import { Console } from 'console';
 import { element } from 'protractor';
+import { DatePipe } from '@angular/common';
 // import { InvalidDataValidator } from 'app/shared/validators/invalide-validators';
 
 
@@ -115,7 +116,8 @@ private _onDestroy = new Subject<void>();
     @Inject(MAT_DIALOG_DATA) public data: any,
     private ipSearchService: IPSettlementService,
     private dialogRef: MatDialogRef<IPpaymentWithadvanceComponent>,
-    private authServie: AuthenticationService
+    private authServie: AuthenticationService,
+    public datePipe: DatePipe,
   ) {
     this.advanceData = data;
     console.log('this.advanceData===', this.advanceData);
@@ -671,17 +673,17 @@ private _onDestroy = new Subject<void>();
     else if(this.advanceData.FromName == "IP-Pharma-SETTLEMENT"){   
  
       ipPaymentInsert['BillNo'] = this.advanceData.advanceObj.BillNo; 
-      ipPaymentInsert['PaymentDate'] = this.currentDate || '01/01/1900';
-      ipPaymentInsert['PaymentTime'] = this.currentDate || '01/01/1900';
+      ipPaymentInsert['PaymentDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') 
+      ipPaymentInsert['PaymentTime'] =  this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') 
       ipPaymentInsert['CashPayAmount'] = this.cashAmt || 0;
       ipPaymentInsert['ChequePayAmount'] = this.chequeAmt || 0;
       ipPaymentInsert['ChequeNo'] = this.chequeNo || '';
       ipPaymentInsert['BankName'] =this.paymentForm.get('chequeBankNameController').value.BankName || '';// this.chequeBankName;
-      ipPaymentInsert['ChequeDate'] = this.currentDate || '01/01/1900';
+      ipPaymentInsert['ChequeDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') 
       ipPaymentInsert['CardPayAmount'] = this.cardAmt || 0;
       ipPaymentInsert['CardNo'] = this.cardNo || '';
       ipPaymentInsert['CardBankName'] = this.paymentForm.get('cardBankNameController').value.BankName || '';//this.cardBankName;
-      ipPaymentInsert['CardDate'] = this.currentDate || '01/01/1900';
+      ipPaymentInsert['CardDate'] =  this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') 
       ipPaymentInsert['AdvanceUsedAmount'] = this.advanceAmt || 0;
       ipPaymentInsert['AdvanceId'] = this.AdvanceId || 0,
       ipPaymentInsert['RefundId'] = 0;
@@ -690,15 +692,15 @@ private _onDestroy = new Subject<void>();
       ipPaymentInsert['AddBy'] = this.authServie.currentUserValue.user.id || 0;
       ipPaymentInsert['IsCancelled'] = 0;
       ipPaymentInsert['IsCancelledBy'] = 0; 
-      ipPaymentInsert['IsCancelledDate'] =this.currentDate || '01/01/1900';
+      ipPaymentInsert['IsCancelledDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') 
       ipPaymentInsert['opD_IPD_Type'] =3;
       ipPaymentInsert['NEFTPayAmount'] = this.neftAmt || 0;
       ipPaymentInsert['NEFTNo'] = this.neftNo || '';
       ipPaymentInsert['NEFTBankMaster'] = this.paymentForm.get('neftBankNameController').value.BankName || '';//this.neftBankName;
-      ipPaymentInsert['NEFTDate'] = this.currentDate || '01/01/1900';
+      ipPaymentInsert['NEFTDate'] =  this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') 
       ipPaymentInsert['PayTMAmount'] = this.paytmAmt || 0;
       ipPaymentInsert['PayTMTranNo'] = this.paytmTransNo || '';
-      ipPaymentInsert['PayTMDate'] = this.currentDate || '01/01/1900';
+      ipPaymentInsert['PayTMDate'] =  this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') 
       ipPaymentInsert['paymentId'] = 0;
     }
 

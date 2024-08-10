@@ -696,13 +696,21 @@ public updateIPDDischargSummary(employee)
   public InsertIPAddChargesNew(employee){
     return this._httpClient.post("InPatient/AddIPCharges",employee)
   }
+  // public InsertIPBilling(employee)
+  // {
+  //   return this._httpClient.post("InPatient/IPBillingInsert",employee)
+  // }
   public InsertIPBilling(employee)
   {
-    return this._httpClient.post("InPatient/IPBillingInsert",employee)
+    return this._httpClient.post("InPatient/IPBillingInsertCashCounter",employee)
   }
+  // public InsertIPBillingCredit(employee)
+  // {
+  //   return this._httpClient.post("InPatient/IPBillingCreditInsert",employee)
+  // }
   public InsertIPBillingCredit(employee)
   {
-    return this._httpClient.post("InPatient/IPBillingCreditInsert",employee)
+    return this._httpClient.post("InPatient/IPBillingCreditInsertCashCounter",employee)
   }
   public InsertIPDraftBilling(e){
     return this._httpClient.post("InPatient/InsertIPDraftBill",e)
