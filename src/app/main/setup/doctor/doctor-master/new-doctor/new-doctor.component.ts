@@ -1,13 +1,13 @@
-import { Component, Inject, OnInit, ViewEncapsulation } from "@angular/core";
+import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { FormControl } from "@angular/forms";
 import { fuseAnimations } from "@fuse/animations";
-import { ReplaySubject, Subject } from "rxjs";
+import { Observable, ReplaySubject, Subject } from "rxjs";
 import { DoctorDepartmentDet, DoctorMaster, DoctorMasterComponent } from "../doctor-master.component";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { DoctorMasterService } from "../doctor-master.service";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { NotificationServiceService } from "app/core/notification-service.service";
-import { takeUntil } from "rxjs/operators";
+import { map, startWith, takeUntil } from "rxjs/operators";
 import Swal from "sweetalert2";
 import { MatTableDataSource } from "@angular/material/table";
 import { ToastrService } from "ngx-toastr";
@@ -37,10 +37,22 @@ export class NewDoctorComponent implements OnInit {
     b_AgeYear: any = 0;
     b_AgeMonth: any = 0;
     b_AgeDay: any = 0;
+    screenFromString = 'admission-form';
+    
+    filteredOptionsPrefix: Observable<string[]>;
+    filteredDoctortype: Observable<string[]>;
+    filteredOptionsDep: Observable<string[]>;
 
 
-    deptlist: any = [];
+    isPrefixSelected: boolean = false;
+    optionsPrefix: any[] = [];
+    optionsDep: any[] = [];
+    isdoctypeSelected: boolean = false;
+    isDepartmentSelected: boolean = false;
 
+
+    // deptlist: any = [];
+    vDepartmentid:any;
     displayedColumns = [
 
         'DeptId',
@@ -50,12 +62,6 @@ export class NewDoctorComponent implements OnInit {
 
     public departmentFilterCtrl: FormControl = new FormControl();
     public filteredDepartment: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-    public prefixFilterCtrl: FormControl = new FormControl();
-    public filteredPrefix: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-    public doctortypeFilterCtrl: FormControl = new FormControl();
-    public filteredDoctortype: ReplaySubject<any> = new ReplaySubject<any>(1);
 
     private _onDestroy = new Subject<void>();
 
@@ -87,31 +93,142 @@ export class NewDoctorComponent implements OnInit {
              this._doctorService.myform.get('IsConsultant').setValue(1);
         }
 
-        this.getPrefixNameCombobox();
-        this.getGenderNameCombobox();
+        this.getPrefixList();
+        this.getGendorMasterList();
         this.getDoctortypeNameCombobox();
-        this.getDepartmentNameCombobox();
+        this.getDepartmentList();
 
-        this.prefixFilterCtrl.valueChanges
-            .pipe(takeUntil(this._onDestroy))
-            .subscribe(() => {
-                this.filterPrefix();
-            });
-
-        this.departmentFilterCtrl.valueChanges
-            .pipe(takeUntil(this._onDestroy))
-            .subscribe(() => {
-                this.filterDepartment();
-            });
-
-        this.doctortypeFilterCtrl.valueChanges
-            .pipe(takeUntil(this._onDestroy))
-            .subscribe(() => {
-                this.filterDoctortype();
-            });
-
-
+      
+    this.filteredOptionsPrefix = this._doctorService.myform.get('PrefixID').valueChanges.pipe(
+        startWith(''),
+        map(value => this._filterPrex(value)),
+  
+      );
+  
+      this.filteredDoctortype = this._doctorService.myform.get('DoctorTypeId').valueChanges.pipe(
+        startWith(''),
+        map(value => this._filterDcotype(value)),
+  
+      );
+  
+      this.filteredOptionsDep = this._doctorService.myform.get('Departmentid').valueChanges.pipe(
+        startWith(''),
+        map(value => this._filterDep(value)),
+  
+      );
     }
+
+    
+  @ViewChild('fname') fname: ElementRef;
+  @ViewChild('mname') mname: ElementRef;
+  @ViewChild('lname') lname: ElementRef;
+  @ViewChild('agey') agey: ElementRef;
+  @ViewChild('aged') aged: ElementRef;
+  @ViewChild('agem') agem: ElementRef;
+  @ViewChild('phone') phone: ElementRef;
+  @ViewChild('mobile') mobile: ElementRef;
+  @ViewChild('address') address: ElementRef;
+  @ViewChild('pan') pan: ElementRef;
+  @ViewChild('area') area: ElementRef;
+  @ViewChild('AadharCardNo') AadharCardNo: ElementRef;
+
+  @ViewChild('bday') bday: ElementRef;
+//   @ViewChild('gender') gender: MatSelect;
+  @ViewChild('mstatus') mstatus: ElementRef;
+  @ViewChild('religion') religion: ElementRef;
+  @ViewChild('city') city: ElementRef;
+
+  public onEnterprefix(event): void {
+    if (event.which === 13) {
+      this.fname.nativeElement.focus();
+    }
+  }
+  public onEnterfname(event): void {
+    if (event.which === 13) {
+      this.mname.nativeElement.focus();
+    }
+  }
+  public onEntermname(event): void {
+    if (event.which === 13) {
+      this.lname.nativeElement.focus();
+    }
+  }
+  public onEnterlname(event): void {
+    if (event.which === 13) {
+      this.agey.nativeElement.focus();
+      // if(this.mstatus) this.mstatus.focus();
+    }
+  }
+
+  
+
+  public onEnteragey(event): void {
+    if (event.which === 13) {
+      this.agem.nativeElement.focus();
+      // this.addbutton.focus();
+    }
+  }
+  public onEnteragem(event): void {
+    if (event.which === 13) {
+      this.aged.nativeElement.focus();
+    }
+  }
+  public onEnteraged(event): void {
+    if (event.which === 13) {
+      this.AadharCardNo.nativeElement.focus();
+    }
+  }
+  
+  public onEnterdoctype(event): void {
+    if (event.which === 13) {
+      this.AadharCardNo.nativeElement.focus();
+    }
+  }
+
+  public onEntermobile(event): void {
+    if (event.which === 13) {
+      this.address.nativeElement.focus();
+    }
+  }
+    
+  
+  public onEnterphone(event): void {
+    if (event.which === 13) {
+      this.address.nativeElement.focus();
+    }
+  }
+    
+
+  
+  public onEnterdept(event, value): void {
+    if (event.which === 13) {
+      if (value == undefined) {
+        this.toastr.warning('Please Enter Valid Department.', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      } 
+    //   else {
+    //     this.deptdoc.nativeElement.focus();
+    //   }
+    }
+  }
+
+
+  ageyearcheck(event) {
+    
+    if (parseInt(event) > 100) {
+      this.toastr.warning('Please Enter Valid Age.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+
+      this.agey.nativeElement.focus();
+    }
+    return;
+   
+  }
+
+
 
     // validation
     get f() {
@@ -146,132 +263,114 @@ export class NewDoctorComponent implements OnInit {
         // const toSelectReligion = this.ReligionList.find(c => c.ReligionId == this.registerObj.ReligionId);
         // this._doctorService.myform.get('ReligionId').setValue(toSelectReligion);
 
-        // const toSelectArea = this.AreaList.find(c => c.AreaId == this.registerObj.AreaId);
-        // this._doctorService.myform.get('AreaId').setValue(toSelectArea);
-
-        // const toSelectCity = this.cityList.find(c => c.CityId == this.registerObj.CityId);
-        // this._doctorService.myform.get('CityId').setValue(toSelectCity);
-
-        // const toSelectMat = this.cityList.find(c => c.CityId == this.registerObj.CityId);
-        // this._doctorService.myform.get('CityId').setValue(toSelectCity);
-
-
-        // this.onChangeGenderList(this._doctorService.myform.get('PrefixID').value);
-
-        // this.onChangeCityList(this.registerObj.CityId);
-
         this._doctorService.myform.updateValueAndValidity();
         // this.dialogRef.close();
 
     }
 
 
-    private filterPrefix() {
-        if (!this.PrefixcmbList) {
-            return;
-        }
-        // get the search keyword
-        let search = this.prefixFilterCtrl.value;
-        if (!search) {
-            this.filteredPrefix.next(this.PrefixcmbList.slice());
-            return;
-        } else {
-            search = search.toLowerCase();
-        }
-        // filter the banks
-        this.filteredPrefix.next(
-            this.PrefixcmbList.filter(
-                (bank) => bank.PrefixName.toLowerCase().indexOf(search) > -1
-            )
-        );
+
+  
+  private _filterPrex(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.PrefixName ? value.PrefixName.toLowerCase() : value.toLowerCase();
+      return this.PrefixcmbList.filter(option => option.PrefixName.toLowerCase().includes(filterValue));
     }
+  }
 
-    private filterDepartment() {
-        
-        if (!this.DepartmentcmbList) {
-            return;
-        }
-        // get the search keyword
-        let search = this.departmentFilterCtrl.value;
-        if (!search) {
-            this.filteredDepartment.next(this.DepartmentcmbList.slice());
-            return;
-        } else {
-            search = search.toLowerCase();
-        }
-        // filter
-        this.filteredDepartment.next(
-            this.DepartmentcmbList.filter(
-                (bank) => bank.DepartmentName.toLowerCase().indexOf(search) > -1
-            )
-        );
-    }
-
-    private filterDoctortype() {
-        
-        if (!this.DoctortypecmbList) {
-            return;
-        }
-        // get the search keyword
-        let search = this.doctortypeFilterCtrl.value;
-        if (!search) {
-            this.filteredDoctortype.next(this.DoctortypecmbList.slice());
-            return;
-        } else {
-            search = search.toLowerCase();
-        }
-        // filter
-        this.filteredDoctortype.next(
-            this.DoctortypecmbList.filter(
-                (bank) => bank.DoctorType.toLowerCase().indexOf(search) > -1
-            )
-        );
-    }
+  getPrefixList() {
+    
+    this._doctorService.getPrefixMasterCombo().subscribe(data => {
+      this.PrefixcmbList = data;
+      if (this.data) {
+        const ddValue = this.PrefixcmbList.filter(c => c.PrefixID == this.registerObj.PrefixID);
+        this._doctorService.myform.get('PrefixID').setValue(ddValue[0]);
+        this._doctorService.myform.updateValueAndValidity();
+        return;
+      }
+    });
+    this.onChangeGenderList(this.registerObj);
+  }
 
 
-    getPrefixNameCombobox() {
-        
-        this._doctorService.getPrefixMasterCombo().subscribe((data) => {
-            this.PrefixcmbList = data;
-            this.filteredPrefix.next(this.PrefixcmbList.slice());
-            if(this.data){
-            const ddValue = this.PrefixcmbList.find(c => c.PrefixID == this.data.registerObj.PrefixID);
-            this._doctorService.myform.get('PrefixID').setValue(ddValue);
-            this.onChangeGenderList(ddValue);
-        }
-           
-        });
+  getGendorMasterList() {
+    this._doctorService.getGenderMasterCombo().subscribe(data => {
+      this.GendercmbList = data;
+      const ddValue = this.GendercmbList.find(c => c.GenderId == this.data.registerObj.GenderId);
+      this._doctorService.myform.get('GenderId').setValue(ddValue);
+    })
+  }
 
-        // this.onChangeGenderList(this._doctorService.myform.get('PrefixID').value.PrefixID);  
-    }
 
-    getGenderNameCombobox() {
-        this._doctorService.getGenderMasterCombo().subscribe((data) => (this.GendercmbList = data));
-    }
 
     getDoctortypeNameCombobox() {
-        // this._doctorService.getDoctortypeMasterCombo().subscribe(data =>this.DoctortypecmbList =data);
-        this._doctorService.getDoctortypeMasterCombo().subscribe((data) => {
-            this.DoctortypecmbList = data;
-            this.filteredDoctortype.next(this.DoctortypecmbList.slice());
-            this._doctorService.myform
-                .get("DoctorTypeId")
-                .setValue(this.DoctortypecmbList[0]);
+    
+        this._doctorService.getDoctortypeMasterCombo().subscribe(data => {
+          this.DoctortypecmbList = data;
+          if (this.data) {
+            const ddValue = this.DoctortypecmbList.filter(c => c.DoctorTypeId == this.registerObj.DoctorTypeId);
+            this._doctorService.myform.get('DoctorTypeId').setValue(ddValue[0]);
+            this._doctorService.myform.updateValueAndValidity();
+            return;
+          }
         });
+       
+      }
+    
+      
+      private _filterDcotype(value: any): string[] {
+        if (value) {
+          const filterValue = value && value.DoctorType ? value.DoctorType.toLowerCase() : value.toLowerCase();
+          return this.DoctortypecmbList.filter(option => option.DoctorType.toLowerCase().includes(filterValue));
+        }
+      }
+    
+      getOptionTextPrefix(option) {
+        return option && option.PrefixName ? option.PrefixName : '';
+      }
+    
+      getOptionTextdoctype(option) {
+        return option && option.DoctorType ? option.DoctorType : '';
+    
+      }
+    // getDepartmentNameCombobox() {
+        
+    //     this._doctorService.getDepartmentCombobox().subscribe((data) => {
+    //         this.DepartmentcmbList = data;
+    //         console.log( this.DepartmentcmbList );
+    //         this.filteredDepartment.next(this.DepartmentcmbList.slice());
+    //         this._doctorService.myform
+    //             .get("Departmentid")
+    //             .setValue(this.DepartmentcmbList[0]);
+    //     });
+    // }
+
+
+    
+  getDepartmentList() {
+    this._doctorService.getDepartmentCombobox().subscribe(data => {
+      this.DepartmentcmbList = data;
+      this.optionsDep = this.DepartmentcmbList.slice();
+      this.filteredOptionsDep = this._doctorService.myform.get('Departmentid').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterDep(value) : this.DepartmentcmbList.slice()),
+      );
+
+    });
+  }
+
+  
+  private _filterDep(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.departmentName ? value.departmentName.toLowerCase() : value.toLowerCase();
+      return this.optionsDep.filter(option => option.departmentName.toLowerCase().includes(filterValue));
     }
 
-    getDepartmentNameCombobox() {
-        // this._doctorService.getDepartmentCombobox().subscribe(data =>this.DepartmentcmbList =data);
+  }
+  getOptionTextDep(option) {
+    return option && option.departmentName ? option.departmentName : '';
+  }
 
-        this._doctorService.getDepartmentCombobox().subscribe((data) => {
-            this.DepartmentcmbList = data;
-            console.log( this.DepartmentcmbList );
-            this.filteredDepartment.next(this.DepartmentcmbList.slice());
-            this._doctorService.myform
-                .get("Departmentid")
-                .setValue(this.DepartmentcmbList[0]);
-        });
-    }
 
     onSubmit() {
 
@@ -380,6 +479,8 @@ export class NewDoctorComponent implements OnInit {
                         mahRegNo:
                             this._doctorService.myform.get("MahRegNo").value ||
                             "0",
+                            PanCardNo:0,
+                            AadharCardNo:0,
                         mahRegDate:"2023-08-30T06:08:46.971Z",
                             // this._doctorService.myform.get("MahRegDate")
                             //     .value || "01/01/1900",
@@ -533,6 +634,8 @@ export class NewDoctorComponent implements OnInit {
                         MahRegDate:
                             this._doctorService.myform.get("MahRegDate")
                                 .value || "01/01/1900", //"01/01/2018",
+                                PanCardNo:0,
+                                AadharCardNo:0,
                         // RefDocHospitalName:
                         //     this._doctorService.myform
                         //         .get("RefDocHospitalName")
@@ -550,22 +653,14 @@ export class NewDoctorComponent implements OnInit {
                 };
 
                 console.log(m_dataUpdate);
-                this._doctorService
-                    .doctortMasterUpdate(m_dataUpdate)
+                this._doctorService.doctortMasterUpdate(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
                         if (data) {
                             this.toastr.success('Record updated Successfully.', 'updated !', {
                                 toastClass: 'tostr-tost custom-toast-success',
                               });
-                            // Swal.fire(
-                            //     "Updated !",
-                            //     "Record updated Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //     }
-                            // });
+                         
                         } else {
                             this.toastr.error('Doctor Master Data not updated !, Please check API error..', 'Error !', {
                                 toastClass: 'tostr-tost custom-toast-error',
@@ -591,20 +686,35 @@ export class NewDoctorComponent implements OnInit {
         this.dialogRef.close();
     }
 
+    // onChangeDateofBirth(DateOfBirth) {
+    //     if (DateOfBirth) {
+    //         const todayDate = new Date();
+    //         const dob = new Date(DateOfBirth);
+    //         const timeDiff = Math.abs(Date.now() - dob.getTime());
+    //         this.b_AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
+    //         this.b_AgeMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
+    //         this.b_AgeDay = Math.abs(todayDate.getDate() - dob.getDate());
+    //         //   this.registerObj.DateofBirth = DateOfBirth;
+    //         //   this._doctorService.myform.get('DateOfBirth').setValue(DateOfBirth);
+    //     }
+
+    // }
+
     onChangeDateofBirth(DateOfBirth) {
+   
         if (DateOfBirth) {
-            const todayDate = new Date();
-            const dob = new Date(DateOfBirth);
-            const timeDiff = Math.abs(Date.now() - dob.getTime());
-            this.b_AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
-            this.b_AgeMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
-            this.b_AgeDay = Math.abs(todayDate.getDate() - dob.getDate());
-            //   this.registerObj.DateofBirth = DateOfBirth;
-            //   this._doctorService.myform.get('DateOfBirth').setValue(DateOfBirth);
+          const todayDate = new Date();
+          const dob = new Date(DateOfBirth);
+          const timeDiff = Math.abs(Date.now() - dob.getTime());
+          this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
+          this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
+          this.registerObj.AgeDay = Math.abs(todayDate.getDate() - dob.getDate());
+          this.registerObj.DateofBirth = DateOfBirth;
+          this._doctorService.myform.get('DateOfBirth').setValue(DateOfBirth);
         }
-
-    }
-
+    
+      }
+    
     onChangeGenderList(prefixObj) {
         
         if (prefixObj) {
@@ -618,10 +728,9 @@ export class NewDoctorComponent implements OnInit {
                 });
         }
     }
-
+    deptlist =[];
     SaveEnter(element) {
-        
-        this.isLoading = 'save';
+      this.isLoading = 'save';
         this.dataSource.data = [];
         this.deptlist =this.DeptList;
         this.deptlist.push(
@@ -631,7 +740,8 @@ export class NewDoctorComponent implements OnInit {
 
             });
         this.dataSource.data = this.deptlist;
-       console.log(this.deptlist);
+
+       
     }
 
     deleteTableRow(element) {
@@ -644,7 +754,13 @@ export class NewDoctorComponent implements OnInit {
         Swal.fire('Success !', 'List Row Deleted Successfully', 'success');
       }
     
-}
+      dateTimeObj: any;
+      getDateTime(dateTimeObj) {
+        this.dateTimeObj = dateTimeObj;
+      }
+     
+  }
+
 
 
 export class DepartmenttList {

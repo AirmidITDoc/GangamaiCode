@@ -21,7 +21,7 @@ export class DoctortypeMasterComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    displayedColumns: string[] = ["Id", "DoctorType","IsDeleted", "action"];
+    displayedColumns: string[] = ["Id", "DoctorType","IsActive", "action"];
 
     DSDoctorTypeMasterList = new MatTableDataSource<DoctortypeMaster>();
 
@@ -49,16 +49,7 @@ export class DoctortypeMasterComponent implements OnInit {
         this._doctortypeService.getDoctortypeMasterList(vdata).subscribe((Menu) => {
              this.DSDoctorTypeMasterList.data = Menu as DoctortypeMaster[];
             });
-        // var m = {
-        //     DoctorType: this._doctortypeService.myformSearch.get('DoctorTypeSearch').value.trim() || "%"
-        // };
-        // console.log(m);
-        //      this._doctortypeService.getDoctortypeMasterList(m).subscribe((Menu) => {
-        //     this.DSDoctorTypeMasterList.data = Menu as DoctortypeMaster[];
-        //     this.DSDoctorTypeMasterList.sort = this.sort;
-        //     this.DSDoctorTypeMasterList.paginator = this.paginator;
-        // });
-        // console.log(this.DSDoctorTypeMasterList);
+       
     }
   
 
@@ -94,14 +85,7 @@ export class DoctortypeMasterComponent implements OnInit {
                                 toastClass: 'tostr-tost custom-toast-success',
                               });
                               this.getDoctortypeMasterList();
-                            // Swal.fire(
-                            //     "Saved !",
-                            //     "Record saved Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //     }
-                            // });
+                           
                         } else {
                             this.toastr.error('DoctorType Master Master Data not saved !, Please check API error..', 'Error !', {
                                 toastClass: 'tostr-tost custom-toast-error',
@@ -137,14 +121,7 @@ export class DoctortypeMasterComponent implements OnInit {
                                 toastClass: 'tostr-tost custom-toast-success',
                               });
                               this.getDoctortypeMasterList();
-                            // Swal.fire(
-                            //     "Updated !",
-                            //     "Record updated Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //     }
-                            // });
+                           
                         } else {
                             this.toastr.error('DoctorType Master Data not updated !, Please check API error..', 'Error !', {
                                 toastClass: 'tostr-tost custom-toast-error',

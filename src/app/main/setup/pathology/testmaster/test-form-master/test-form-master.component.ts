@@ -337,10 +337,25 @@ export class TestFormMasterComponent implements OnInit {
         }
         this._TestService.getNewSubTestList(m_dat).subscribe((Menu) => {
             this.subTestList.data = Menu as TestList[];
-            this.paramterList.data=Menu as TestList[];
+          
         });
-        // console.log(this.subTestList.data)
-        // this.paramterList.data=this.subTestList.data
+
+        if(this.subTestList.data.length > 0){
+            this.paramterList.data=[];
+            debugger
+            this.paramterList.data=this.subTestList.data;
+
+        // this.subTestList.data.forEach((element) => {
+        //    let i=0;
+        //     debugger
+        //     this.paramterList.data[i]["ParameterName"]=element.TestName
+        //     i++;
+        // });
+        }
+
+        console.log(this.subTestList.data)
+        console.log(this.paramterList.data)
+      
     }
        
     
@@ -816,7 +831,7 @@ export class TestList {
     ParaMultipleRange: any;
     Formula: any;
     IsNumeric: any;
-
+    TestName:any
     /**
      * Constructor
      *
@@ -832,6 +847,7 @@ export class TestList {
             this. ParaMultipleRange = TestList. ParaMultipleRange || "";
             this. Formula = TestList. Formula || "";
             this. IsNumeric = TestList. IsNumeric || "";
+            this. TestName = TestList. TestName || "";
         }
     }
 }

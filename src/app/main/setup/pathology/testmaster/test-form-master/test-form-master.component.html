@@ -123,19 +123,19 @@
 
                                         </div>
                                         <ng-template [ngIf]="_TestService.is_subtest || _TestService.is_Test">
-
+                                            <!-- *ngIf="!isChecked" -->
                                             <div fxLayout="row" fxFlex="100%" fxLayoutAlign="6px">
                                                 <div fxLayout="column" fxFlex="30%">
-                                                    <mat-card style="height:267px;width: 100%;">
+                                                    <mat-card style="height:267px;width: 100%;overflow: auto;">
 
 
-                                                        <mat-table #table class="table1" matSort *ngIf="!isChecked"
+                                                        <mat-table  matSort 
                                                             [dataSource]="paramterList" [@animateStagger]="{value:'50'}"
                                                             style="overflow:auto; width: 100%;">
 
                                                             <ng-container matColumnDef="ParameterName">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                                                    Parameter Values dddddddd
+                                                                    Parameter Values
                                                                 </mat-header-cell>
                                                                 <mat-cell *matCellDef="let element" fxShow.gt-sm
                                                                     (click)="onAdd(element)">

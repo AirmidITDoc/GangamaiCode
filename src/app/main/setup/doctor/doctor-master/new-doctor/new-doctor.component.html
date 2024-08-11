@@ -1,338 +1,391 @@
-<div class="dialog-content-wrapper">
-  <mat-toolbar matDialogTitle class="mat-accent m-0">
-    <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center"
-      style="background-color: rgb(18, 87, 134) !important;">
-      <h3>{{_doctorService.myform.controls.DoctorId.value?"Modify Doctor Master":"New
-        Doctor Master"}}</h3>
-      <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog">
-        <mat-icon>close</mat-icon>
-      </button>
-    </mat-toolbar-row>
-  </mat-toolbar>
-</div>
+<div class="modal-wrapper grid-container">
+  <!-- Modal header -->
+  <div class="modal-header accent">
+    <div class="modal-header-content">
+      <div class="modal-header-title">
+        <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Doctor Master</span>
+      </div>
+      <div class="modal-header-right">
 
-<div style="margin-top: 10px;">
-<form [formGroup]="_doctorService.myform">
-  <input type="hidden" name="DoctorId" formControlName="DoctorId">
-
-
-  <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" >
-
-
-    <mat-form-field appearance="outline" fxFlex>
-      <mat-label>Prefix</mat-label>
-      <mat-select formControlName="PrefixID" placeholder="Bank" #singleSelect
-        (selectionChange)="onChangeGenderList($event.value)" required>
-        <mat-option>
-          <ngx-mat-select-search [formControl]="prefixFilterCtrl" [placeholderLabel]="'Search'"
-            [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-        </mat-option>
-        <mat-option *ngFor="let element of filteredPrefix | async" [value]="element">
-          {{element.PrefixName}}
-        </mat-option>
-      </mat-select>
-
-    </mat-form-field>
-
-    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-      <input name="FirstName" formControlName="FirstName" placeholder="Enter FirstName "
-        [ngClass]="{ 'is-invalid': submitted && f.FirstName.errors }" matInput required>
-      <span class="error" *ngIf="f.FirstName.invalid && f.FirstName.touched">First Name is required Enter only
-        Alphabets</span>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-      <input name="MiddleName" formControlName="MiddleName" placeholder="Enter MiddleName "
-        [ngClass]="{ 'is-invalid': submitted && f.MiddleName.errors }" matInput>
-      <span class="error" *ngIf="f.MiddleName.invalid && f.MiddleName.touched">Middle Name is required Enter only
-        Alphabets</span>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-      <input name="LastName" formControlName="LastName" placeholder="Enter LastName "
-        [ngClass]="{ 'is-invalid': submitted && f.LastName.errors }" matInput required>
-      <span class="error" *ngIf="f.LastName.invalid && f.LastName.touched">Last Name is required Enter only
-        Alphabets</span>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline" fxFlex>
-      <mat-label>Gender</mat-label>
-      <mat-select formControlName="GenderId" required>
-        <mat-option></mat-option>
-        <mat-option *ngFor="let m of GendercmbList" [value]="m">
-          {{m.GenderName}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-
-  </div>
-  <div>
-    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-      <input name="Address" formControlName="Address" placeholder="Enter Address " matInput>
-      <mat-error>Please enter Address </mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-      <input name="City" formControlName="City" placeholder="Select City Name"
-        [ngClass]="{ 'is-invalid': submitted && f.City.errors }" matInput>
-      <span class="error" *ngIf="f.City.invalid && f.City.touched">City Name is required Enter only Alphabets</span>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-      <input name="Pin" formControlName="Pin" matInput [ngClass]="{ 'is-invalid': submitted && f.Pin.errors }"
-        placeholder="Enter Pin">
-      <span class="error" *ngIf="f.Pin.invalid && f.Pin.touched">Pin is required Enter only 6 Number</span>
-    </mat-form-field>
-
-  </div>
-
-  <div>
-  
-
-    <mat-form-field appearance="outline" fxFlex>
-      <mat-label>Birth date</mat-label>
-      <input name="DateofBirth" matInput [matDatepicker]="picker" formControllName="DateofBirth"
-        (dateChange)="onChangeDateofBirth($event.value)" [value]="registerObj.DateofBirth">
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-
-    </mat-form-field>
-
-    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-      <input name="AgeYear" formControlName="AgeYear" matInput
-        [ngClass]="{ 'is-invalid': submitted && f.AgeYear.errors }" placeholder="Enter AgeYear" [(ngModel)]="b_AgeYear">
-      <span class="error" *ngIf="f.AgeYear.invalid && f.AgeYear.touched">AgeYear required Enter only 4 Number</span>
-    </mat-form-field>
-    &nbsp;&nbsp;&nbsp;
-
-    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-      <input name="AgeMonth" formControlName="AgeMonth" matInput
-        [ngClass]="{ 'is-invalid': submitted && f.AgeMonth.errors }" placeholder="Enter AgeMonth" [(ngModel)]="b_AgeMonth">
-      <span class="error" *ngIf="f.AgeMonth.invalid && f.AgeMonth.touched">AgeMonth required Enter only 1-12
-        Number</span>
-    </mat-form-field>
-    &nbsp;&nbsp;&nbsp;
-
-    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-      <input name="AgeDay" formControlName="AgeDay" matInput [ngClass]="{ 'is-invalid': submitted && f.AgeDay.errors }"
-        placeholder="Enter AgeDay" [(ngModel)]="b_AgeDay">
-      <span class="error" *ngIf="f.AgeDay.invalid && f.AgeDay.touched">AgeDay required Enter only 1-31 Number</span>
-    </mat-form-field>
-
-  </div>
-
-  <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-
-    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-      <input name="Phone" formControlName="Phone" matInput [ngClass]="{ 'is-invalid': submitted && f.Phone.errors }"
-        placeholder="Enter Phone">
-      <span class="error" *ngIf="f.Phone.invalid && f.Phone.touched">Phone required Enter only Digits
-      </span>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-      <input name="Mobile" formControlName="Mobile" matInput required
-        [ngClass]="{ 'is-invalid': submitted && f.Mobile.errors }" placeholder="Enter MobileNo.">
-      <span class="error" *ngIf="f.Mobile.invalid && f.Mobile.touched">Mobile required only 10 Digits</span>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-      <input name="Education" formControlName="Education" matInput
-        [ngClass]="{ 'is-invalid': submitted && f.Education.errors }" placeholder="Enter Education">
-      <span class="error" *ngIf="f.Education.invalid && f.Education.touched">Education required Enter only
-        Alphabets</span>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-      <input name="PassportNo" formControlName="PassportNo" matInput
-        [ngClass]="{ 'is-invalid': submitted && f.PassportNo.errors }" placeholder="Enter PassportNo.">
-      <span class="error" *ngIf="f.Education.invalid && f.Education.touched">PassportNo required Valid Formate</span>
-    </mat-form-field>
-    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-      <input name="ESINO" formControlName="ESINO" matInput placeholder="Enter ESINO">
-      <mat-error>Please enter ESINO </mat-error>
-    </mat-form-field>
-  </div>
-  <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-
-
-    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-      <input name="RegNo" size="20" formControlName="RegNo" matInput placeholder="Enter RegNo">
-      <mat-error>Please enter RegNo </mat-error>
-    </mat-form-field>
-
-
-    <mat-form-field appearance="outline" fxFlex>
-      <mat-label>Reg date</mat-label>
-      <input name="RegDate" matInput [matDatepicker]="picker1" formControllName="RegDate"
-        [value]="registerObj.RegDate">
-      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-      <mat-datepicker #picker1></mat-datepicker>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-      <input name="MahRegNo" formControlName="MahRegNo" matInput placeholder="Enter MahRegNo">
-      <mat-error>Please enter MahRegNo </mat-error>
-    </mat-form-field>
-
-  
-    <mat-form-field appearance="outline" fxFlex>
-      <mat-label>MahReg date</mat-label>
-      <input name="MahRegDate" matInput [matDatepicker]="picker2" formControllName="MahRegDate"
-        [value]="registerObj.MahRegDate">
-      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-      <mat-datepicker #picker2></mat-datepicker>
-    </mat-form-field>
-
-  </div>
-
-
-  <div>
-    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-      <input name="RefDocHospitalName" formControlName="RefDocHospitalName" matInput
-        [ngClass]="{ 'is-invalid': submitted && f.RefDocHospitalName.errors }" placeholder="Enter RefDocHospitalName">
-      <span class="error" *ngIf="f.RefDocHospitalName.invalid && f.RefDocHospitalName.touched">RefDocHospital Name is
-        required Enter only Alphabets</span>
-    </mat-form-field>
-
-
-    <mat-form-field appearance="outline" fxFlex>
-      <mat-label>DoctorType</mat-label>
-      <mat-select formControlName="DoctorTypeId" placeholder="Bank" #singleSelect>
-        <mat-option>
-          <ngx-mat-select-search [formControl]="doctortypeFilterCtrl" [placeholderLabel]="'Search'"
-            [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-        </mat-option>
-        <mat-option *ngFor="let element of filteredDoctortype | async" [value]="element">
-          {{element.DoctorType}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-
-
-  </div>
-
-  <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-    <div class="child-1" fxFlex="30%">
-      <!-- <mat-form-field appearance="outline" fxFlex>
-              <mat-select placeholder="DepartmentName" #txt  formControlName="DepartmentId" multiple>
-               <mat-option *ngFor="let M of DepartmentcmbList" [value]="M.DepartmentId">
-                      {{M.DepartmentName}}
-                  </mat-option>
-              </mat-select>
-               </mat-form-field> -->
-
-      <mat-form-field appearance="outline" fxFlex>
-        <mat-label>Department</mat-label>
-        <mat-select formControlName="Departmentid" placeholder="Bank" #singleSelect required
-          (selectionChange)="SaveEnter($event.value)">
-          <mat-option>
-            <ngx-mat-select-search [formControl]="departmentFilterCtrl" [placeholderLabel]="'Search'"
-              [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-          </mat-option>
-          <mat-option *ngFor="let element of filteredDepartment | async" [value]="element">
-            {{element.departmentName}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-<!-- 
-      <button mat-raised-button color="primary" type="submit" (click)="SaveEnter($event.value)"
-      >Add Selected Values</button>
-    <button mat-raised-button color="warn" (click)="onClear()">Clear</button> -->
-
-    </div>
-    &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
-   
-    <div>
-      <!-- <section class="example-section">
-              <mat-checkbox class="example-margin" name="IsConsultant" formControlName="IsConsultant" value='true'>IsConsultant</mat-checkbox>
-              </section> -->
-      <!-- <section class="example-section"> -->
-        <mat-slide-toggle class="example-margin" name="IsConsultant" formControlName="IsConsultant" style="margin-right: 10px;">
-          IsConsultant
-        </mat-slide-toggle>
-      <!-- </section> -->
-    <!-- </div> -->
-
-   
-      <!-- <section class="example-section"> -->
-        <mat-slide-toggle class="example-margin" name="IsRefDoc" formControlName="IsRefDoc" style="margin-right: 10px;">
-          IsRefDoctor
-        </mat-slide-toggle>
-      <!-- </section> -->
-      <mat-checkbox aria-label="Is Active" formControlName="isActive" (checked)=true
-      style="font-weight: bold;">
-      IsActive
-    </mat-checkbox>
-    </div>
-
-  </div>
-
-  <hr>
-  
-
-  <mat-table #table matSort [dataSource]="dataSource" class="table2" [@animateStagger]="{value:'50'}" style="height:150px !important;overflow: auto;width: 500px;">
-
-    <ng-container matColumnDef="DeptId">
-      <mat-header-cell *matHeaderCellDef mat-sort-header style="margin-right: 5px;">Dept Id</mat-header-cell>
-      <mat-cell *matCellDef="let contact">
-        {{contact.DeptId}}
-      </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="DeptName">
-      <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-        Dept Name
-      </mat-header-cell>
-      <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-        {{contact.DeptName}}
-      </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="action" stickyEnd>
-      <mat-header-cell *matHeaderCellDef style="color: white;">
-          Action
-      </mat-header-cell>
-      <mat-cell *matCellDef="let row">
-       <button mat-icon-button (click)="deleteTableRow(row)"
-              color="warn">
-              <mat-icon>delete_outline</mat-icon>
+        <div fxLayout="row" fxLayoutALign="end start">
+          <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
+          </app-common-date>
+          <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
           </button>
-      </mat-cell>
-  </ng-container>
 
-    <ng-container matColumnDef="loading">
-      <mat-footer-cell *matFooterCellDef colspan="6">
-        loading data...
-      </mat-footer-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="noData">
-      <mat-footer-cell *matFooterCellDef colspan="6">
-        <!-- <mat-spinner  class="spinner" [diameter]="35"
-      [color]="blue"></mat-spinner> -->
-        <span>No Data Found</span>
-      </mat-footer-cell>
-    </ng-container>
-
-    <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
-    </mat-header-row>
-    <mat-row *matRowDef="let contact; columns: displayedColumns;"
-      [ngClass]="{'row-yellow': contact.ServiceName == 'CBC'}" [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-    <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource!=null}">
-    </mat-footer-row>
-    <mat-footer-row *matFooterRowDef="['noData']"
-      [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
-    </mat-footer-row>
-  </mat-table>
-</form>
-</div>
-<div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
-  <div class="button-row">
-    <button mat-raised-button color="primary" type="submit" (click)="onSubmit()"
-    >Save</button>
-    <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
-<!--   [disabled]="_doctorService.myform.invalid" -->
+        </div>
+      </div>
+    </div>
   </div>
+
+  <!-- Modal body -->
+  <div class="modal-body" fusePerfectScrollbar>
+    <div class="modal-body-container">
+      <form [formGroup]="_doctorService.myform">
+        <div fxLayout="column" class="gap-12">
+          <div class="modal-card-container">
+            <mat-card>
+              <div class="form-container mat-form-field-auto">
+                <div fxLayout="row wrap" fxLayoutGap="12px grid">
+
+                  <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>Prefix</mat-label>
+                      <input matAutocompletePosition="below" type="text" placeholder="Select Prefix" matInput
+                        (keydown)="onEnterprefix($event)" formControlName="PrefixID" [matAutocomplete]="autoPrefix"
+                        required>
+                      <span matSuffix style="display: flex;">
+                        <mat-icon class="mat-icon-close"
+                          (click)="_doctorService.myform.get('PrefixID').setValue(''); isPrefixSelected = false;">close</mat-icon>
+                        <mat-icon class="mat-icon-close"
+                          (click)="_doctorService.myform.get('PrefixID').setValue(''); isPrefixSelected = false;">search</mat-icon>
+                      </span>
+                      <mat-autocomplete #autoPrefix="matAutocomplete" [displayWith]="getOptionTextPrefix">
+                        <mat-option *ngFor="let option of filteredOptionsPrefix | async" [value]="option"
+                          (onSelectionChange)="onChangeGenderList(option)">
+                          {{option.PrefixName}}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                      <input name="FirstName" formControlName="FirstName" placeholder="Enter FirstName "
+                        [ngClass]="{ 'is-invalid': submitted && f.FirstName.errors }" matInput required>
+                      <span class="error" *ngIf="f.FirstName.invalid && f.FirstName.touched">First Name is required
+                        Enter only
+                        Alphabets</span>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                      <input name="MiddleName" formControlName="MiddleName" placeholder="Enter MiddleName "
+                        [ngClass]="{ 'is-invalid': submitted && f.MiddleName.errors }" matInput>
+                      <span class="error" *ngIf="f.MiddleName.invalid && f.MiddleName.touched">Middle Name is required
+                        Enter only
+                        Alphabets</span>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                      <input name="LastName" formControlName="LastName" placeholder="Enter LastName "
+                        [ngClass]="{ 'is-invalid': submitted && f.LastName.errors }" matInput required>
+                      <span class="error" *ngIf="f.LastName.invalid && f.LastName.touched">Last Name is required Enter
+                        only
+                        Alphabets</span>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>Gender</mat-label>
+                      <mat-select formControlName="GenderId">
+                        <mat-option></mat-option>
+                        <mat-option *ngFor="let m of GendercmbList" [value]="m">
+                          {{m.GenderName}}
+                        </mat-option>
+                      </mat-select>
+                      <mat-error
+                        *ngIf="_doctorService.myform.get('GenderId').invalid && _doctorService.myform.get('GenderId').touched">
+                        <span *ngIf="_doctorService.myform.get('GenderId').hasError('required')">
+                          Gender is required</span>
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>Birth date</mat-label>
+                      <input name="DateofBirth" matInput [matDatepicker]="picker" formControllName="DateofBirth"
+                        (dateChange)="onChangeDateofBirth($event.value)" [value]="registerObj.DateofBirth">
+                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                      <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                  <!-- age, month, dat -->
+                  <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <div fxLayout="row" class="gap-8">
+                      <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Age (Y)</mat-label>
+                        <input name="AgeYear" formControlName="AgeYear" placeholder="Age (Y)" matInput
+                          [ngModel]="registerObj.Age" (ngModelChange)="registerObj.Age = $event" required type="number"
+                          maxlength="4" #agey (keydown)="onEnteragey($event)"
+                          oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
+                        <mat-error
+                          *ngIf="_doctorService.myform.get('AgeYear').invalid && _doctorService.myform.get('AgeYear').touched">Please
+                          enter Age Year </mat-error>
+                      </mat-form-field>
+                      <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Age (M)</mat-label>
+                        <input name="AgeMonth" formControlName="AgeMonth" placeholder="Age (M)" matInput
+                          [ngModel]="registerObj.AgeMonth" (ngModelChange)="registerObj.AgeMonth = $event" type="number"
+                          maxlength="2" #agem (keydown)="onEnteragem($event)"
+                          oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,2);">
+                        <mat-error
+                          *ngIf="_doctorService.myform.get('AgeMonth').invalid && _doctorService.myform.get('AgeMonth').touched">
+                          Please enter Age Month </mat-error>
+                      </mat-form-field>
+                      <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Age (D)</mat-label>
+                        <input name="AgeDay" formControlName="AgeDay" placeholder="Age (D)" matInput
+                          [ngModel]="registerObj.AgeDay" (ngModelChange)="registerObj.AgeDay = $event" type="number"
+                          maxlength="2" #aged (keydown)="onEnteraged($event)"
+                          oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,2);">
+                        <mat-error
+                          *ngIf="_doctorService.myform.get('AgeDay').invalid && _doctorService.myform.get('AgeDay').touched">
+                          Please enter Age Day </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+                  <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>Phone Number</mat-label>
+                      <input name="Phone" formControlName="Phone" placeholder="Phone Number" matInput required #mobile
+                        (keydown)="onEnterphone($event)" [(ngModel)]="registerObj.Phone"
+                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
+                        required="required" value="9876658688">
+                      <mat-error class="error"
+                        *ngIf="_doctorService.myform.get('Phone').invalid && _doctorService.myform.get('Phone').touched">10
+                        digits Phone number is
+                        required</mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>Mobile Number</mat-label>
+                      <input name="MobileNo" formControlName="Mobile" placeholder="Mobile Number" matInput required
+                        #mobile (keydown)="onEntermobile($event)" [(ngModel)]="registerObj.Mobile"
+                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
+                        required="required" value="9876658688">
+                      <mat-error class="error"
+                        *ngIf="_doctorService.myform.get('Mobile').invalid && _doctorService.myform.get('Mobile').touched">10
+                        digits Mobile number is
+                        required</mat-error>
+                    </mat-form-field>
+
+                  </div>
+
+                  <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <mat-form-field appearance="outline" fxFlex>
+                      <input name="PassportNo" formControlName="PassportNo" matInput
+                        [ngClass]="{ 'is-invalid': submitted && f.PassportNo.errors }" placeholder="Enter PassportNo.">
+                      <span class="error" *ngIf="f.PassportNo.invalid && f.PassportNo.touched">PassportNo required Valid
+                        Formate</span>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <mat-form-field appearance="outline" fxFlex>
+                      <input name="ESINO" formControlName="ESINO" matInput placeholder="Enter ESINO">
+                      <mat-error>Please enter ESINO </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                    <mat-form-field appearance="outline" fxFlex>
+                      <input name="RegNo" size="20" formControlName="RegNo" matInput placeholder="Enter RegNo">
+                      <mat-error>Please enter RegNo </mat-error>
+                    </mat-form-field>
+
+
+                  </div>
+
+                  <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>Reg date</mat-label>
+                      <input name="RegDate" matInput [matDatepicker]="picker1" formControllName="RegDate"
+                        [value]="registerObj.RegDate">
+                      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                      <mat-datepicker #picker1></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <mat-form-field appearance="outline" fxFlex>
+                      <input name="Education" formControlName="Education" matInput
+                        [ngClass]="{ 'is-invalid': submitted && f.Education.errors }" placeholder="Enter Education">
+                      <span class="error" *ngIf="f.Education.invalid && f.Education.touched">Education required Enter
+                        only
+                        Alphabets</span>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <mat-form-field appearance="outline" fxFlex>
+                      <input name="MahRegNo" formControlName="MahRegNo" matInput placeholder="Enter MahRegNo">
+                      <mat-error>Please enter MahRegNo </mat-error>
+                    </mat-form-field>
+
+                  </div>
+
+                  <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>MahReg date</mat-label>
+                      <input name="MahRegDate" matInput [matDatepicker]="picker2" formControllName="MahRegDate"
+                        [value]="registerObj.MahRegDate">
+                      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                      <mat-datepicker #picker2></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                      <input name="RefDocHospitalName" formControlName="RefDocHospitalName" matInput
+                        [ngClass]="{ 'is-invalid': submitted && f.RefDocHospitalName.errors }"
+                        placeholder="Enter RefDocHospitalName">
+                      <span class="error"
+                        *ngIf="f.RefDocHospitalName.invalid && f.RefDocHospitalName.touched">RefDocHospital Name
+                        is
+                        required Enter only Alphabets</span>
+                    </mat-form-field>
+                  </div>
+                  <!-- Phone number -->
+                  <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>DoctorType</mat-label>
+                      <input matAutocompletePosition="below" type="text" placeholder="Select DoctorTypeId" matInput
+                        (keydown)="onEnterdoctype($event)" formControlName="DoctorTypeId"
+                        [matAutocomplete]="autoDoctorTypeId" required>
+                      <span matSuffix style="display: flex;">
+                        <mat-icon class="mat-icon-close"
+                          (click)="_doctorService.myform.get('DoctorTypeId').setValue(''); isdoctypeSelected = false;">close</mat-icon>
+                        <mat-icon class="mat-icon-close"
+                          (click)="_doctorService.myform.get('DoctorTypeId').setValue(''); isdoctypeSelected = false;">search</mat-icon>
+                      </span>
+                      <mat-autocomplete #autoDoctorTypeId="matAutocomplete" [displayWith]="getOptionTextdoctype">
+                        <mat-option *ngFor="let option of filteredDoctortype | async" [value]="option">
+                          {{option.DoctorType}}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+
+
+                    <mat-slide-toggle class="example-margin" name="IsConsultant" formControlName="IsConsultant"
+                      style="margin-right: 10px;">
+                      IsConsultant
+                    </mat-slide-toggle>
+
+                    <mat-slide-toggle class="example-margin" name="IsRefDoc" formControlName="IsRefDoc"
+                      style="margin-right: 10px;">
+                      IsRefDoctor
+                    </mat-slide-toggle>
+
+                    <mat-checkbox aria-label="Is Active" formControlName="isActive" (checked)=true
+                      style="font-weight: bold;">
+                      IsActive
+                    </mat-checkbox>
+                  </div>
+                  <!-- </div> -->
+                </div>
+                <!-- Photo capture -->
+
+              </div>
+            </mat-card>
+          </div>
+        </div>
+
+      </form>
+      <mat-card style="padding: 6px;">
+        <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+          <mat-form-field appearance="outline" fxFlex style="margin-right: 20px;">
+            <mat-label>Department</mat-label>
+            <input matAutocompletePosition="below" type="text" placeholder="Select Department"
+            [(ngModel)]="vDepartmentid" matInput #dept
+              (keydown)="onEnterdept($event,vDepartmentid.Departmentid)" formControlName="Departmentid"
+              [matAutocomplete]="autoDep" required>
+            <span matSuffix style="display: flex;">
+              <mat-icon class="mat-icon-close"
+                (click)="_doctorService.myform.get('Departmentid').setValue(''); isDepartmentSelected = false;">close</mat-icon>
+              <mat-icon class="mat-icon-close"
+                (click)="_doctorService.myform.get('Departmentid').setValue(''); isDepartmentSelected = false;">search</mat-icon>
+            </span>
+            <mat-autocomplete #autoDep="matAutocomplete" [displayWith]="getOptionTextDep">
+              <mat-option *ngFor="let option of filteredOptionsDep | async" [value]="option" (onSelectionChange)="SaveEnter(option)">
+                {{option.departmentName}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+
+          <mat-table #table matSort [dataSource]="dataSource" class="table2" [@animateStagger]="{value:'50'}"
+            style="height:130px !important;overflow: auto;width: 500px;">
+
+            <ng-container matColumnDef="DeptId">
+              <mat-header-cell *matHeaderCellDef mat-sort-header style="margin-right: 5px;">Dept Id</mat-header-cell>
+              <mat-cell *matCellDef="let contact">
+                {{contact.DeptId}}
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="DeptName">
+              <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                Dept Name
+              </mat-header-cell>
+              <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                {{contact.DeptName}}
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="action" stickyEnd>
+              <mat-header-cell *matHeaderCellDef style="color: white;">
+                Action
+              </mat-header-cell>
+              <mat-cell *matCellDef="let row">
+                <button mat-icon-button (click)="deleteTableRow(row)" color="warn">
+                  <mat-icon>delete_outline</mat-icon>
+                </button>
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="loading">
+              <mat-footer-cell *matFooterCellDef colspan="6">
+                loading data...
+              </mat-footer-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="noData">
+              <mat-footer-cell *matFooterCellDef colspan="6">
+                <!-- <mat-spinner  class="spinner" [diameter]="35"
+              [color]="blue"></mat-spinner> -->
+                <span>No Data Found</span>
+              </mat-footer-cell>
+            </ng-container>
+
+            <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+            </mat-header-row>
+            <mat-row *matRowDef="let contact; columns: displayedColumns;"
+              [ngClass]="{'row-yellow': contact.ServiceName == 'CBC'}"
+              [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+            <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource!=null}">
+            </mat-footer-row>
+            <mat-footer-row *matFooterRowDef="['noData']"
+              [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
+            </mat-footer-row>
+          </mat-table>
+        </div>
+      
+      </mat-card>
+    </div>
+  </div>
+  <div class="modal-footer p-24">
+
+    <div class="modal-footer-buttons gap-8" fxLayout="row" fxLayoutAlign="end">
+      <button class="btn btn-danger-outline" (click)="onClose()">Reset</button>
+      <button class="btn btn-primary " (click)="onSubmit()">Save</button>
+    </div>
+  </div>
+  <!-- Modal footer -->
+
 </div>
-<div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar></div>

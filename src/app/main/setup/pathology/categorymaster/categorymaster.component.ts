@@ -191,14 +191,7 @@ export class CategorymasterComponent implements OnInit {
     }
     onDeactive(CategoryId) {
 
-        // if (!this.DSCategoryMasterList.data.find(item => item.CategoryId === CategoryId).IsDeleted) {
-        //     Swal.fire({
-        //       title: 'Already Deactivated',
-        //       text: 'This item is already deactivated.',
-        //       icon: 'info'
-        //     });
-        //     return 
-        // }
+       
         Swal.fire({
             title: 'Confirm Status',
             text: 'Are you sure you want to Change Status?',
@@ -211,10 +204,10 @@ export class CategorymasterComponent implements OnInit {
             if (result.isConfirmed) {
                 let Query
                 if (!this.DSCategoryMasterList.data.find(item => item.CategoryId === CategoryId).IsDeleted) {
-                    Query = "Update M_PathCategoryMaster set IsDeleted=1 where CategoryId=" + CategoryId;
+                    Query = "Update M_PathCategoryMaster set IsDeleted=0 where CategoryId=" + CategoryId;
                 }
                 else {
-                    let Query = "Update M_PathCategoryMaster set Isdeleted=1 where CategoryId=" + CategoryId;
+                     Query = "Update M_PathCategoryMaster set Isdeleted=1 where CategoryId=" + CategoryId;
                 }
                 console.log(Query);
                 this._categorymasterService.deactivateTheStatus(Query)

@@ -199,11 +199,11 @@ onDeactive(row) {
       if (result.isConfirmed) {
           if(row.IsActive){
            Query =
-          "Update M_RadiologyTestMaster set IsActive=0 where ParameterID=" +row.Test;
+          "Update M_RadiologyTestMaster set IsActive=0 where TestId=" +row.TestId;
           console.log(Query);
           }else{
                Query =
-              "Update M_RadiologyTestMaster set IsActive=1 where ParameterID=" +row.Test;
+              "Update M_RadiologyTestMaster set IsActive=1 where TestId=" +row.TestId;
           }
 
           this._radiologytestService.deactivateTheStatus(Query)

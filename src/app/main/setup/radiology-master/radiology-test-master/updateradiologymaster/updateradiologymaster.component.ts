@@ -63,7 +63,8 @@ export class UpdateradiologymasterComponent implements OnInit {
       
       this.registerObj=this.data.Obj;
      // this.Remark = this.registerObj.Remarks;
-    this.gettemplateMasterComboList(this.registerObj.TestId);   
+     console.log(this.data)
+    this.gettemplateMasterComboList(this.registerObj);   
       console.log(this.registerObj)    
     }
 
@@ -144,7 +145,7 @@ getServiceNameCombobox() {
     this._radiologytestService.getServiceMasterCombo().subscribe((data) => {
         this.ServicecmbList = data;
         if (this.data) {
-            const toSelectId = this.ServicecmbList.find(c => c.ServiceId == this.registerObj.ServiceID);
+            const toSelectId = this.ServicecmbList.find(c => c.ServiceId == this.registerObj.ServiceId);
             this._radiologytestService.myform.get('ServiceId').setValue(toSelectId);
 
         }
@@ -264,6 +265,7 @@ getserviceNameCombobox() {
        
         let insertRadiologyTemplateTest = [];
         this.DSTestList.data.forEach((element) => {
+          debugger
          let insertRtestObj={};
          insertRtestObj['testId'] = element.TestId;
          insertRtestObj['templateId'] = element.TemplateId;
@@ -301,7 +303,7 @@ getserviceNameCombobox() {
        });
        this._matDialog.closeAll();
       }
- 
+      this._radiologytestService.myform.reset();
       }
      
   }
