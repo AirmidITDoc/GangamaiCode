@@ -65,11 +65,15 @@ const appRoutes: Routes = [
     path: "smsconfigrationtool",
     loadChildren: () => import("./smsconfuguration/smsconfuguration.module").then((m) => m.SMSConfugurationModule),
 },
+{
+  path:"DateUpdate",
+  loadChildren: () => import("./admission-date-change/admission-date-change.module").then((m)=>m.AdmissionDateChangeModule),
+ },
  
 ];
 
 @NgModule({
-  declarations: [  ],
+  declarations: [ ],
   imports: [
     RouterModule.forChild(appRoutes),
     MatToolbarModule,
