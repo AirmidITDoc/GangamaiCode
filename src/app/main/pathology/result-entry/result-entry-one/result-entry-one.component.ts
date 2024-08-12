@@ -83,8 +83,9 @@ export class ResultEntryOneComponent implements OnInit {
     Iscompleted: any;
     PathReportId: any;
     PathResultDr1: any;
-
-
+    SexId: any;
+    CheckAge: any;
+    // MaxAge:any;
     @ViewChild(MatAccordion) accordion: MatAccordion;
     @ViewChild('drawer') public drawer: MatDrawer;
     @ViewChild(MatSort) sort: MatSort;
@@ -102,11 +103,15 @@ export class ResultEntryOneComponent implements OnInit {
         private _fuseSidebarService: FuseSidebarService) {
 
         if (this.data) {
-            console.log(this.data)
+            // console.log(this.data)
             this.selectedAdvanceObj2 = data.patientdata;
             console.log(this.selectedAdvanceObj2)
             this.OPIPID = this.selectedAdvanceObj2.OPD_IPD_ID;
             this.OP_IPType = this.selectedAdvanceObj2.OPD_IPD_Type;
+            this.SexId = this.selectedAdvanceObj2.GenderId || 1;
+            if (this.selectedAdvanceObj2.AgeYear)
+                this.CheckAge = this.selectedAdvanceObj2.AgeYear.trim();
+
             this.reportIdData = [];
 
             this.data.RIdData.forEach((element) => {
@@ -117,15 +122,18 @@ export class ResultEntryOneComponent implements OnInit {
             });
 
         }
+        this.getPathresultdoctorList();
+        this.getPathresultDoctorList();
+
         if (this.Iscompleted == 1) {
             if (this.OP_IPType == 1)
                 this.getResultListIP();
             else
                 this.getResultListOP();
-               
+
         } else {
             this.getResultList(this.selectedAdvanceObj2);
-            }
+        }
 
     }
 
@@ -138,37 +146,23 @@ export class ResultEntryOneComponent implements OnInit {
             RefDoctorID: [0],
         });
 
-        this.getPathresultDoctorList();
-
-        // if (this.Iscompleted == 1) {
-        //     if (this.OP_IPType == 1)
-        //         this.getResultListIP();
-        //     else
-        //         this.getResultListOP();
-               
-        // } else {
-        //     this.getResultList(this.selectedAdvanceObj2);
-
-
-        // }
-       
-        this.getPathresultdoctorList();
         this.filteredresultdr = this.otherForm.get('PathResultDoctorId').valueChanges.pipe(
             startWith(''),
             map(value => this._filterdoc3(value)),
         );
 
-       
+
         setTimeout(function () {
             let element: HTMLElement = document.getElementById('auto_trigger') as HTMLElement;
             element.click();
         }, 1000);
 
-        if(this.dataSource.data.length>0){
-            console.log(this.dataSource.data)
-            this.setDropdownObjs();
+        // if(this.dataSource.data.length>0){
+        //     console.log(this.dataSource.data)
+        //     this.setDropdownObjs();
 
-        }
+        // }
+        // this.getPathresultDoctorList();
     }
 
     toggleSidebar(name): void {
@@ -182,7 +176,7 @@ export class ResultEntryOneComponent implements OnInit {
 
     setDropdownObjs() {
         debugger
-        this.vsuggation=this.dataSource.data[0].SuggestionNote;
+        this.vsuggation = this.dataSource.data[0].SuggestionNote;
 
         const toSelect = this.PathologyDoctorList.find(c => c.DoctorId == this.dataSource.data[0].PathResultDr1);
         this.otherForm.get('DoctorId').setValue(toSelect);
@@ -218,48 +212,48 @@ export class ResultEntryOneComponent implements OnInit {
 
         data.ParaBoldFlag = '';
         if (data.ParaIsNumeric) {
-          debugger
-            let a= parseFloat(data.ResultValue);
-            let b=parseFloat(data.MinValue);
-            let c=parseFloat(data.Maxvalue);
-                           
+            debugger
+            let a = parseFloat(data.ResultValue);
+            let b = parseFloat(data.MinValue);
+            let c = parseFloat(data.Maxvalue);
+
             if (b != null && c != null && a != null) {
                 if (a < b || a > c) {
                     data.ParaBoldFlag = 'B';
                 }
-              }
+            }
 
-         }
+        }
 
 
     }
     boldstatus = 0;
 
-    editflag(contact){
-        contact.ParaBoldFlag=contact.ParaBoldFlag
+    editflag(contact) {
+        contact.ParaBoldFlag = contact.ParaBoldFlag
     }
 
-    currentval="";
-    currentvaltemp="";
-    ParameterId="";
+    currentval = "";
+    currentvaltemp = "";
+    ParameterId = "";
 
-    AddData1(contact,val) {
+    AddData1(contact, val) {
         debugger
-      console.warn(val);
-      if(this.currentval !="")
-      this.currentval=this.currentval+' , '+val;
-    else
-    this.currentval=this.currentval+'  '+val;
-      contact.ResultValue=this.currentval
+        console.warn(val);
+        if (this.currentval != "")
+            this.currentval = this.currentval + ' , ' + val;
+        else
+            this.currentval = this.currentval + '  ' + val;
+        contact.ResultValue = this.currentval
     }
 
     helpItems: any[] = [];
     helpFullItems: any[] = [];
     selectedParam: any;
     onKeydown(e, data) {
-debugger
-        if(this.selectedParam !=data.ParameterId)
-            this.currentval=""
+
+        if (this.selectedParam != data.ParameterId)
+            this.currentval = ""
         this.selectedParam = data.ParameterId;
         let SelectQuery = "SELECT ParameterValues, IsDefaultValue, ParameterId FROM dbo.M_ParameterDescriptiveMaster WHERE ParameterId = " + data.ParameterId;
         this._SampleService.getPathologyResultList(SelectQuery).subscribe(Visit => {
@@ -273,29 +267,38 @@ debugger
             error => {
                 this.sIsLoading = '';
             });
-            
+
     }
     onSelectHelp(e, data) {
         this.dataSource.data.find(x => x.ParameterId == this.selectedParam).ResultValue = e;
         data["IsHelpShown"] = false;
 
-        this.AddData1(data,data.ResultValue)
+        this.AddData1(data, data.ResultValue)
     }
     filterHelp(e) {
         this.helpItems = this.helpFullItems.filter(option => option.ParameterValues.toLowerCase().indexOf(e.target.value) >= 0);
     }
 
+
     getResultList(advanceData) {
         this.sIsLoading = 'loading-data';
-        let SelectQuery = "Select * from m_lvw_Retrieve_PathologyResult where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ")"
+        let SelectQuery
+
+        // SelectQuery = "Select * from m_lvw_Retrieve_PathologyResult where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ")"
+        if (this.selectedAdvanceObj2.AgeYear > 0 && this.OP_IPType == 0) {
+            SelectQuery = "Select * from m_lvwRtrv_PathologyResultOPWithAge where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ") and SexId=" + this.SexId + " and MaxAge >= " + this.CheckAge + " and MinAge < " + this.CheckAge
+        }
+
+        if (this.selectedAdvanceObj2.AgeYear > 0 && this.OP_IPType == 1) {
+            SelectQuery = "Select * from m_lvwRtrv_PathologyResultIPWithAge where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ") and SexId=" + this.SexId + " and MaxAge >= " + this.CheckAge + " and MinAge < " + this.CheckAge
+        }
+
+
         console.log(SelectQuery)
         this._SampleService.getPathologyResultList(SelectQuery).subscribe(Visit => {
             this.dataSource.data = Visit as Pthologyresult[];
-            this.Pthologyresult = Visit as Pthologyresult[];
-            console.log(this.Pthologyresult)
-            
-            this.PathResultDr1 = this.Pthologyresult.PathResultDr1;
-            this.vsuggation=this.Pthologyresult.SuggestionNotes;
+            // this.Pthologyresult = Visit as Pthologyresult[];
+
             this.dataSource.sort = this.sort;
             this.dataSource.paginator = this.paginator;
             this.sIsLoading = '';
@@ -314,9 +317,9 @@ debugger
         console.log(SelectQuery);
         this._SampleService.getPathologyResultListforIP(SelectQuery).subscribe(Visit => {
             this.dataSource.data = Visit as Pthologyresult[];
-            this.Pthologyresult = Visit as Pthologyresult[];
-            this.PathResultDr1 = this.Pthologyresult.PathResultDr1;
-            this.vsuggation=this.Pthologyresult.SuggestionNotes;
+            //  this.Pthologyresult = Visit as Pthologyresult[];
+            this.PathResultDr1 = this.dataSource.data[0]["PathResultDr1"];
+            this.vsuggation = this.dataSource.data[0]["SuggestionNotes"];
             this.dataSource.sort = this.sort;
             this.dataSource.paginator = this.paginator;
             this.sIsLoading = '';
@@ -324,8 +327,8 @@ debugger
             error => {
                 this.sIsLoading = '';
             });
-            // if( this.Pthologyresult.length)
-            //     this.setDropdownObjs() 
+        this.getPathresultDoctorList();
+
     }
 
     getResultListOP() {
@@ -334,20 +337,20 @@ debugger
         console.log(SelectQuery)
         this._SampleService.getPathologyResultListforOP(SelectQuery).subscribe(Visit => {
             this.dataSource.data = Visit as Pthologyresult[];
-            this.Pthologyresult = Visit as Pthologyresult[];
+            // this.Pthologyresult = Visit as Pthologyresult[];
             this.dataSource.sort = this.sort;
             this.dataSource.paginator = this.paginator;
             this.sIsLoading = '';
+            this.PathResultDr1 = this.dataSource.data[0]["PathResultDr1"];
+            this.vsuggation = this.dataSource.data[0]["SuggestionNotes"];
+            console.log(this.PathResultDr1);
         },
             error => {
                 this.sIsLoading = '';
             });
 
-            console.log(this.dataSource.data);
-            debugger
-            if(this.dataSource.data.length > 0)
-                this.setDropdownObjs() 
-          
+        this.getPathresultDoctorList();
+
     }
 
 
@@ -387,7 +390,7 @@ debugger
             pathologyDeleteObjarray.push(pathologyDeleteObj);
         });
 
-        this.Pthologyresult.forEach((element) => {
+        this.dataSource.data.forEach((element) => {
 
             let pathologyInsertReportObj = {};
             pathologyInsertReportObj['PathReportId'] = element.PathReportId //element1.PathReportId;
@@ -407,7 +410,10 @@ debugger
             pathologyInsertReportObj['UnitName'] = element.UnitName || '';
             pathologyInsertReportObj['PatientName'] = this.selectedAdvanceObj2.PatientName || '';
             pathologyInsertReportObj['RegNo'] = this.selectedAdvanceObj2.RegNo;
+            pathologyInsertReportObj['MinValue'] = element.MinValue || 0;
+            pathologyInsertReportObj['MaxValue'] = element.Maxvalue || 0;
             pathologyInsertReportObj['SampleID'] = element.SampleID || '';
+
             pathologyInsertReportObj['ParaBoldFlag'] = element.ParaBoldFlag || '';
 
             PathInsertArry.push(pathologyInsertReportObj);
@@ -521,17 +527,8 @@ debugger
         });
     }
 
-
-    // private _filterdoc3(value: any): string[] {
-    //   if (value) {
-    //     const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
-    //     return this.optionsDoc3.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
-    //   }
-    // }
-
-
     getPathresultDoctorList() {
-     
+
         this._SampleService.getPathologyDoctorCombo().subscribe(data => {
             this.PathologyDoctorList = data;
             if (this.data) {
@@ -640,7 +637,7 @@ debugger
         });
     }
 
-   
+
 
     onClear() {
         this.otherForm.reset();
@@ -661,10 +658,21 @@ export class Pthologyresult {
     ResultValue: any;
     ParameterId: any;
     ParaBoldFlag: any;
-    SuggestionNote:any;
-    PathResultDr1:any;
-    
-    
+    SuggestionNote: any;
+    PathResultDr1: any;
+    PathReportId: any;
+    CategoryId: any;
+    TestId: any;
+    SubTestId: any;
+    UnitId: any;
+    PrintOrder: any;
+    PIsNumeric: any;
+    CategoryName: any;
+    UnitName: any;
+    MinValue: any;
+    Maxvalue: any;
+    SampleID: any;
+
     constructor(Pthologyresult) {
         this.TestName = Pthologyresult.TestName || '';
         this.SubTestName = Pthologyresult.SubTestName || '';
@@ -677,6 +685,19 @@ export class Pthologyresult {
         this.ParaBoldFlag = Pthologyresult.ParaBoldFlag || '';
         this.SuggestionNote = Pthologyresult.SuggestionNote || '';
         this.PathResultDr1 = Pthologyresult.PathResultDr1 || 0;
+
+        this.PathReportId = Pthologyresult.PathReportId || '';
+        this.CategoryId = Pthologyresult.CategoryId || '';
+        this.TestId = Pthologyresult.TestId || '';
+        this.SubTestId = Pthologyresult.SubTestId || '';
+        this.UnitId = Pthologyresult.UnitId || '';
+        this.PrintOrder = Pthologyresult.PrintOrder || '';
+        this.PIsNumeric = Pthologyresult.PIsNumeric || '';
+        this.CategoryName = Pthologyresult.CategoryName || '';
+        this.UnitName = Pthologyresult.UnitName || '';
+        this.MinValue = Pthologyresult.MinValue || '';
+        this.Maxvalue = Pthologyresult.Maxvalue || 0;
+        this.SampleID = Pthologyresult.SampleID || 0;
     }
 
 }

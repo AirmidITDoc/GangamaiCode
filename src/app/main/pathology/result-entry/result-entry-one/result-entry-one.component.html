@@ -116,11 +116,7 @@
                 <div fxFlex.gt-sm="100%" fxFlex>
                     <div fxlayout="row">
                         <div fxFlex.gt-sm="100%" fxFlex style="width: 100%;overflow:auto;">
-                            <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                                class="backgroundBlur">
-                                <div class="spinner-border text-danger"></div>
-
-                            </div>
+                            
                             <mat-card style="padding: 6px;">
                                 <mat-table matSort [dataSource]="dataSource" class="h-260"
                                     [@animateStagger]="{value:'50'}">

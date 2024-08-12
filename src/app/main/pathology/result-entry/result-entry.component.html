@@ -199,9 +199,7 @@
                                 </div>
 
                                 <div class="table-wrapper">
-                                    <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur">
-                                        <div class="spinner-border"></div>
-                                    </div>
+                                   
                                     <mat-table class="mat-table-1 h-210" #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
 
                                         <ng-container matColumnDef="OP_Ip_Type" sticky>
@@ -361,9 +359,7 @@
                                     
                                 </div> -->
                                 <div class="table-wrapper">
-                                    <!-- <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur">
-                                        <div class="spinner-border"></div>
-                                    </div> -->
+                                  
                                     <!-- *ngIf="selection.selected.length>0" -->
                                     <button mat-raised-button (click)="chkresultentry(selection.selected,true)">
                                       Result Entry
@@ -484,9 +480,7 @@
 
                                         <ng-container matColumnDef="noData">
                                             <mat-footer-cell *matFooterCellDef colspan="6">
-                                                <!-- <mat-spinner *ngIf="isLoading == 'list-loading'" class="spinner" [diameter]="35"
-                                        [color]="blue"></mat-spinner> -->
-
+                                               
                                                 <div class="spinner-border text-danger" *ngIf="isLoading == 'list-loading'" class="backgroundBlur">
                                                 </div>
                                                 <span *ngIf="isLoading == 'list-loaded'">No Data Found</span>

@@ -47,7 +47,7 @@ export class TemplateFormComponent implements OnInit {
             this.registerObj = this.data.registerObj;
             this.TemplateId = this.registerObj.TemplateId;
             this.vTemplateName = this.registerObj.TemplateName;
-            this.vTemplateDesc = this.registerObj.TemplateDesc;
+            this.vTemplateDesc = this.registerObj.TemplateDescInHTML;
             console.log(this.registerObj)
         }
     }
@@ -86,11 +86,7 @@ export class TemplateFormComponent implements OnInit {
 
                             this.onClear();
 
-                        } else {
-                            this.toastr.error('New Template Data not saved !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                            });
-                        }
+                        } 
                     });
             } else {
                 let updatePathologyTemplateMaster = {};
@@ -113,11 +109,8 @@ export class TemplateFormComponent implements OnInit {
 
                         this.onClear();
 
-                    } else {
-                        this.toastr.error('Template Data not Updated !, Please check API error..', 'Error !', {
-                            toastClass: 'tostr-tost custom-toast-error',
-                        });
                     }
+                    
                 });
             }
             this.onClose();

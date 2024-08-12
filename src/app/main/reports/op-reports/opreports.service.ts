@@ -16,14 +16,15 @@ export class OPReportsService {
         enddate: [(new Date()).toISOString()],
         UserId:'',
         DoctorId:'',
-        
         VisitId:'',
-       PaymentId:'',
+        PaymentId:'',
         RefundId:'',
         DoctorID:'',
         ServiceId:'',
         DepartmentId:'',
-        GroupId:''
+        GroupId:'',
+        CashCounterID:'',
+        OPIPType:''
         // Radio:['1']
 
       })
@@ -303,6 +304,13 @@ return this._httpClient.get("OPReport/view-OPDoctorWiseNewOldPatientReport?FromD
     return this._httpClient.get("OPReport/view-OPDailyCollectionReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&AddedById="+AddedById+"&DoctorId="+doctorId);
   }
 
+  public getcashcounterwisedailycollectionView(FromDate,ToDate,OP_IP_Type,CashCounterId,UserId){
+    return this._httpClient.get("CommanReport/view-CashCounterWiseDailyCollection?FromDate=" + FromDate+"&ToDate="+ToDate+"&OP_IP_Type="+OP_IP_Type+"&CashCounterId="+CashCounterId+"&UserId="+UserId);
+  }
+  
+  public getcashcounterwisedailycollectionsummaryView(FromDate,ToDate,OP_IP_Type,CashCounterId,UserId){
+    return this._httpClient.get("CommanReport/view-ViewCashCounterWiseDailyCollectionSummary?FromDate=" + FromDate+"&ToDate="+ToDate+"&OP_IP_Type="+OP_IP_Type+"&CashCounterId="+CashCounterId+"&UserId="+UserId);
+  }
   // OPBilling
   public getOpDailyCollectionuserwise(FromDate,ToDate,AddedById){
     return this._httpClient.get("OPReport/view-OPDailyCollectionReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&AddedById="+AddedById);
@@ -456,4 +464,9 @@ public getPurchaseorderview(FromDate,ToDate,SupplierID,ToStoreId){
   public getBillingServiceList(employee) {
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ServicesList", employee)
   }
+
+  public getCashcounterList() {
+    return this._httpClient.post("Generic/GetByProc?procName=m_RtrvCashCounterForCombo", {})
+  }
+
   }

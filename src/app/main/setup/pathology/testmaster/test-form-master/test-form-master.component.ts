@@ -117,12 +117,14 @@ export class TestFormMasterComponent implements OnInit {
             }
             
             this._TestService.populateForm(this.registerObj);
+            this.getCategoryNameCombobox();
+            this.getServiceNameCombobox();
+      
         }
 
         this.getcategoryNameCombobox();
         this.getserviceNameCombobox();
         this.getParameterNameCombobox();
-        this.getCategoryNameCombobox();
         this.getServiceNameCombobox();
         this.getTemplateList();
 

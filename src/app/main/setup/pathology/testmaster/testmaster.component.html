@@ -34,7 +34,7 @@
                                 <div class="dialog-content-wrapper">
                                     <mat-form-field class="mr-sm-12" fxFlex>
                                         <input matInput placeholder="Search --> Test Name" autocomplete="off"
-                                            (keyup)="onFilterChange()" name="TestNameSearch"
+                                            (keyup)="getTestMasterList()" name="TestNameSearch"
                                             formControlName="TestNameSearch" />
                                         <button mat-button matSuffix mat-icon-button aria-label="Clear"
                                             (click)="onSearch()">

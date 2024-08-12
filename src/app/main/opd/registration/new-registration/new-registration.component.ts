@@ -223,9 +223,9 @@ export class NewRegistrationComponent implements OnInit {
         Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
       ]],
       MiddleName: ['', [
-
-        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+        Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
       ]],
+    
       LastName: ['', [
         Validators.required,
         Validators.pattern("^[A-Za-z () ]*[a-zA-z() ]*$"),

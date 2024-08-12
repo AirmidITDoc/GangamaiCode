@@ -101,7 +101,7 @@
                                 <div fxLayout="row" fxLayoutAlign="start none">
                                     <br />
 
-                                    <mat-form-field appearance="outline" style="margin-left: 2%;">
+                                    <mat-form-field appearance="outline" style="margin-left: 2%;" fxFlex="40%">
                                         <mat-label>Enter a date range</mat-label>
                                         <mat-date-range-input [rangePicker]="picker">
                                             <input matStartDate formControlName="startdate" placeholder="Start date">
@@ -114,7 +114,7 @@
                                 </div>
                                 <div fxLayout="column" fxLayoutAlign="start none">
                                     <div *ngIf="FlagUserSelected" style="margin-left:2%;">
-                                        <mat-form-field appearance="outline" fxFlex="50%">
+                                        <mat-form-field appearance="outline" fxFlex="40%">
                                             <mat-label>User</mat-label>
                                             <input matAutocompletePosition="below" type="text" placeholder="Select User"
                                                 matInput formControlName="UserId" [matAutocomplete]="autoUser">
@@ -136,12 +136,12 @@
                                     </div>
 
                                     <div>
-                                        <mat-form-field appearance="outline" fxFlex="50%" *ngIf="FlagDoctorIDSelected"
+                                        <mat-form-field appearance="outline" fxFlex="40%" *ngIf="FlagDoctorIDSelected"
                                             style="margin-left:2%;">
                                             <mat-label>Doctor Name</mat-label>
                                             <input matAutocompletePosition="below" type="text"
                                                 placeholder="Select Doctor" matInput formControlName="DoctorID"
-                                                [matAutocomplete]="autosearchDoctor" required>
+                                                [matAutocomplete]="autosearchDoctor">
                                             <span matSuffix style="display: flex;">
                                                 <mat-icon class="mat-icon-close"
                                                     (click)="_OPReportsService.userForm.get('DoctorID').setValue(''); isSearchdoctorSelected = false;">close</mat-icon>
@@ -157,16 +157,9 @@
                                             </mat-autocomplete>
                                         </mat-form-field>
                                     </div>
+                                  
                                     <div>
-                                    <mat-form-field appearance="outline" *ngIf="FlagVisitSelected">
-                                        <mat-label>Group Id</mat-label>
-                                        <input name="GroupId" formControlName="GroupId" placeholder="GroupId"
-                                            matInput>
-
-                                    </mat-form-field>
-                                    </div>
-                                    <div>
-                                        <mat-form-field appearance="outline"  fxFlex="50%" *ngIf="FlagServiceIdSelected"   style="margin-left:2%;">
+                                        <mat-form-field appearance="outline"  fxFlex="40%" *ngIf="FlagServiceIdSelected"   style="margin-left:2%;">
                                             <input type="text" name="ServiceId" formControlName="ServiceId" 
                                                 placeholder="Service Name" matInput [matAutocomplete]="auto" id="myInput">
                                             <span matSuffix style="display: flex;">
@@ -190,12 +183,12 @@
                                     </div>
 
                                     <div>
-                                        <mat-form-field appearance="outline" fxFlex="50%" *ngIf="FlagDepartmentSelected"   style="margin-left:2%;"> 
+                                        <mat-form-field appearance="outline" fxFlex="40%" *ngIf="FlagDepartmentSelected"   style="margin-left:2%;"> 
                                             <mat-label>Department</mat-label>
                                             <input matAutocompletePosition="below" type="text" placeholder="Select Department"
                                                 [(ngModel)]="vDepartmentid" matInput #dept
                                                 (keydown)="onEnterdept($event,vDepartmentid.Departmentid)"
-                                                formControlName="Departmentid" [matAutocomplete]="autoDep" required>
+                                                formControlName="Departmentid" [matAutocomplete]="autoDep">
                                             <span matSuffix style="display: flex;">
                                                 <mat-icon class="mat-icon-close"
                                                     (click)="_OPReportsService.userForm.get('DepartmentId').setValue(''); isDepartmentSelected = false;">close</mat-icon>
@@ -209,6 +202,44 @@
                                             </mat-autocomplete>
                                         </mat-form-field>
                                     </div>
+
+                                    <div>
+                                        <mat-form-field appearance="outline" fxFlex="40%" *ngIf="FlaCashcounterSelected"   style="margin-left:2%;"> 
+                                            <mat-label>Cash Counter</mat-label>
+                                            <input matAutocompletePosition="below" type="text" placeholder="Select Cash Counter"
+                                                 matInput formControlName="CashCounterID"
+                                                [matAutocomplete]="autoSearchCashCounter" #CashCounterName >
+                                            <span matSuffix style="display: flex;">
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_OPReportsService.userForm.get('CashCounterID').setValue(''); isCashCounterSelected = false;">close</mat-icon>
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_OPReportsService.userForm.get('CashCounterID').setValue(''); isCashCounterSelected = false;">search</mat-icon>
+                                            </span>
+                                            <mat-autocomplete #autoSearchCashCounter="matAutocomplete"
+                                                [displayWith]="getOptionTextCashCounter">
+                                                <mat-option *ngFor="let option of filteredOptionsCashCounter| async"
+                                                    [value]="option">
+                                                    {{option.CashCounterName}}
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
+                                    </div>
+                                    <div>
+                                        <mat-form-field appearance="outline" *ngIf="FlagVisitSelected">
+                                            <mat-label>Group Id</mat-label>
+                                            <input name="GroupId" formControlName="GroupId" placeholder="GroupId"
+                                                matInput>
+    
+                                        </mat-form-field>
+                                        </div>
+                                        <div>
+                                            <mat-form-field appearance="outline" *ngIf="FlaOPIPTypeSelected" style="margin-left:2%;">
+                                                <mat-label>OPIP Type</mat-label>
+                                                <input name="OPIPType" formControlName="OPIPType" placeholder="OPIPType"
+                                                    matInput>
+        
+                                            </mat-form-field>
+                                        </div>
                                 </div>
                                 <div fxLayout="row" fxLayoutAlign="start none">
                                     <button class="btn btn-primary " color="accent" (click)="getPrint()"

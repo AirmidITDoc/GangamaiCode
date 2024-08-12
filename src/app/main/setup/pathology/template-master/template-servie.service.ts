@@ -65,10 +65,7 @@ public insertTemplateMaster(param) {
 
 
 public updateTemplateMaster(param) {
-    return this._httpClient.post(
-        "PathologyMaster/PathologyTemplateMasterUpdate",
-        param
-    );
+    return this._httpClient.post("PathologyMaster/PathologyTemplateMasterUpdate",param);
 }
 
 //Edit pop data

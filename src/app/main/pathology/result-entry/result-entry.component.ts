@@ -306,17 +306,6 @@ export class ResultEntryComponent implements OnInit {
             this.Iscompleted = 1;
         });
 
-
-          if (this.Iscompleted == 1) {
-            if (this.OP_IPType == 1)
-                this.getResultIpList();
-            else
-                this.getResultOPList();
-               
-        } else {
-            this.getResultList();
-            }
-
           const dialogRef = this._matDialog.open(ResultEntryOneComponent,
             {
               maxWidth: "95vw",
@@ -325,8 +314,7 @@ export class ResultEntryComponent implements OnInit {
               data: {
                 RIdData: data,
                 patientdata: this.reportPrintObj,
-                data1: this.dataSourcetemp.data 
-              }
+                 }
             });
           dialogRef.afterClosed().subscribe(result => {
             if (result) {
@@ -358,49 +346,7 @@ export class ResultEntryComponent implements OnInit {
     // this.selection.clear();
   }
 
-  dataSourcetemp = new MatTableDataSource<Pthologyresult>();
-  getResultList() {
-    this.sIsLoading = 'loading-data';
-    let SelectQuery = "Select * from m_lvw_Retrieve_PathologyResult where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ")"
-    console.log(SelectQuery)
-    this._SampleService.getPathologyResultList(SelectQuery).subscribe(Visit => {
-        this.dataSourcetemp.data = Visit as Pthologyresult[];
-
-      });
-    }
-    getResultOPList() {
-      debugger
-      this.sIsLoading = 'loading-data';
-      let SelectQuery = "Select * from m_lvw_Retrieve_PathologyResultUpdate where PathReportId in(" + this.reportIdData + ")"
-      console.log(SelectQuery)
-      this._SampleService.getPathologyResultList(SelectQuery).subscribe(Visit => {
-          this.dataSourcetemp.data = Visit as Pthologyresult[];
-        console.log(this.dataSourcetemp.data)
-
-        });
-      
-      }
-
-      getResultIpList() {
-        this.sIsLoading = 'loading-data';
-        let SelectQuery = "Select * from m_lvw_Retrieve_PathologyResultIPPatientUpdate where PathReportId in(" + this.reportIdData + ")"
-        console.log(SelectQuery)
-        this._SampleService.getPathologyResultList(SelectQuery).subscribe(Visit => {
-            this.dataSourcetemp.data = Visit as Pthologyresult[];
-    
-          });
-        }
-    
-
-
-
-
-
-
-
-
-
-
+ 
   getWhatsappshareSales(contact) {
     if (!contact.IsTemplateTest) {
       if (this.selection.selected.length == 0) {

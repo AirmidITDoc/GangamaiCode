@@ -54,7 +54,7 @@ export class ResultEntrytwoComponent implements OnInit {
  TemplateDesc:any;
   otherForm: FormGroup;
   reportIdData:any;
-  // private _matDialog: any;
+  TemplateId:any=0;
   vTemplateDesc:any="";
   OP_IPType:any;
   constructor(
@@ -76,9 +76,7 @@ export class ResultEntrytwoComponent implements OnInit {
       console.log( this.selectedAdvanceObj1)
       this.OP_IPType=this.selectedAdvanceObj1.OPD_IPD_Type
       this.reportIdData =this.selectedAdvanceObj1.PathReportID
-
-
-   // this.vTemplateDesc= this.selectedAdvanceObj.TemplateDesc;
+      this.getTemplatelist();
     }
     
    }
@@ -91,13 +89,17 @@ export class ResultEntrytwoComponent implements OnInit {
     
     });
     this.getTemplateList();
-   
-    
-    // if (this.Iscompleted == 1) {
+  
+ 
       if (this.OP_IPType == 1)
         this.getTemplatedetailIP();
       else
         this.getTemplatedetailOP();
+
+        this.filteredOptionsisTemplate = this.otherForm.get('TemplateName').valueChanges.pipe(
+          startWith(''),
+          map(value => this._filterTemplate(value)),
+      );
     }
    
 
@@ -106,8 +108,8 @@ export class ResultEntrytwoComponent implements OnInit {
       let SelectQuery = "select * from T_PathologyReportTemplateDetails  where PathReportId in(" + this.reportIdData + ")"
       console.log(SelectQuery);
       this._SampleService.getPathologyTemplateforIP(SelectQuery).subscribe(Visit => {
-        // this.Pthologyresult = Visit as Pthologyresult[];
-      
+        this.vTemplateDesc= Visit["TemplateResultInHTML"];
+      this.TemplateId=Visit["PathTemplateId"];
       },
         error => {
           this.sIsLoading = '';
@@ -119,9 +121,9 @@ export class ResultEntrytwoComponent implements OnInit {
       let SelectQuery = "select * from T_PathologyReportTemplateDetails  where PathReportId in(" + this.reportIdData + ")"
       console.log(SelectQuery)
       this._SampleService.getPathologyTemplateforOP(SelectQuery).subscribe(Visit => {
-      // this.Pthologyresult = Visit as Pthologyresult[];
-      //   console.log(this.Pthologyresult);
-      
+       
+        this.vTemplateDesc= Visit[0]["TemplateResultInHTML"];
+        this.TemplateId=Visit["PathTemplateId"];
       },
         error => {
           this.sIsLoading = '';
@@ -276,6 +278,29 @@ export class ResultEntrytwoComponent implements OnInit {
     });
   }
 
+  getTemplatelist() {
+    var mdata={
+      Id:this.selectedAdvanceObj1.ServiceId
+      
+  }
+    this._SampleService.getTemplateCombo(mdata).subscribe(data => {
+        this.TemplateList = data;
+        if (this.data) {
+          const ddValue = this.TemplateList.filter(c => c.PathTemplateId == this.TemplateId);
+          this.otherForm.get('TemplateName').setValue(ddValue[0]);
+          this.otherForm.updateValueAndValidity();
+          return;
+      }
+    });
+}
+
+private _filtertemplate(value: any): string[] {
+  if (value) {
+      const filterValue = value && value.TemplateName ? value.TemplateName.toLowerCase() : value.toLowerCase();
+      return this.TemplateList.filter(option => option.TemplateName.toLowerCase().includes(filterValue));
+  }
+}
+
   private _filterTemplate(value: any): string[] {
     if (value) {
       const filterValue = value && value.TemplateName ? value.TemplateName.toLowerCase() : value.toLowerCase();
@@ -291,8 +316,8 @@ export class ResultEntrytwoComponent implements OnInit {
   }
 
   onAddTemplate(){
-    
-    this.vTemplateDesc=this.otherForm.get('TemplateName').value.TemplateDesc || ''
+    console.log(this.otherForm.get('TemplateName').value)
+    this.vTemplateDesc=this.otherForm.get('TemplateName').value.TemplateDescInHTML || ''
     console.log(this.vTemplateDesc)
 
     // const parser = new DOMParser();

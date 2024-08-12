@@ -27,15 +27,18 @@ export class CommonReportComponent implements OnInit {
   DoctorList: any = [];
   sIsLoading: string = '';
   currentDate = new Date();
- 
-    ReportID: any;
- 
+
+  ReportID: any;
+
   filteredOptionsUser: Observable<string[]>;
   filteredOptionsDoctorMode: Observable<string[]>;
   filteredOptionsDep: Observable<string[]>;
+  filteredOptionsCashCounter: Observable<string[]>;
+
   isDepartmentSelected
   isUserSelected: boolean = false;
   isSearchdoctorSelected: boolean = false;
+  isCashCounterSelected: boolean = false;
 
   FlagUserSelected: boolean = false;
   FlagVisitSelected: boolean = false;
@@ -45,15 +48,16 @@ export class CommonReportComponent implements OnInit {
   FlaggroupIdSelected: boolean = false;
   FlagServiceIdSelected: boolean = false;
   FlagDepartmentSelected: boolean = false;
-
+  FlaOPIPTypeSelected: boolean = false;
+  FlaCashcounterSelected: boolean = false;
 
   optionsUser: any[] = [];
   optionsPaymentMode: any[] = [];
   optionsDep: any[] = [];
   PaymentMode: any;
-  DepartmentList:any=[];
+  DepartmentList: any = [];
   ReportName: any;
-  
+
   SpinLoading: boolean = false;
   AdList: boolean = false;
   FromDate: any;
@@ -63,7 +67,7 @@ export class CommonReportComponent implements OnInit {
   IsLoading: boolean = false;
   searchDoctorList: any = [];
   optionsSearchDoc: any[] = [];
-  
+  CashCounterList:any=[];
 
   displayedColumns = [
     'ReportName'
@@ -90,7 +94,8 @@ export class CommonReportComponent implements OnInit {
     this.GetUserList();
     this.getDepartmentList();
     this.getServiceListCombobox();
- 
+    this.getCashCounterComboList();
+
     this.filteredOptionsUser = this._OPReportsService.userForm.get('UserId').valueChanges.pipe(
       startWith(''),
       map(value => this._filterUser(value)),
@@ -101,10 +106,10 @@ export class CommonReportComponent implements OnInit {
   }
 
   bindReportData() {
-    
-var data={
-  ReportSection:"COMMON REPORT"
-}
+
+    var data = {
+      ReportSection: "COMMON REPORT"
+    }
     this._OPReportsService.getDataByQuery(data).subscribe(data => {
       this.dataSource.data = data as any[];
 
@@ -120,104 +125,124 @@ var data={
     this.ReportName = el.ReportName;
     this.ReportID = el.ReportId;
     if (this.ReportName == 'Doctor Wise Patient Count Report') {
-      this.FlagDoctorIDSelected=true;
-      this.FlagVisitSelected=false;
-      this.FlagPaymentIdSelected=false
-     
-    } 
+      this.FlagDoctorIDSelected = true;
+      this.FlagVisitSelected = false;
+      this.FlagPaymentIdSelected = false
+      this.FlaOPIPTypeSelected= false;
+      this.FlaCashcounterSelected=false;
+    }
     if (this.ReportName == 'Reference Doctor Wise Patient Count Report') {
-      this.FlagVisitSelected=false;
-      this.FlagPaymentIdSelected=false
-      this.FlagDoctorIDSelected=false;
+      this.FlagVisitSelected = false;
+      this.FlagPaymentIdSelected = false
+      this.FlagDoctorIDSelected = false;
       this.FlagRefundIdSelected = false;
-     
-    } 
+      this.FlaOPIPTypeSelected= false;
+      this.FlaCashcounterSelected=false;
+    }
     else if (this.ReportName == 'Concession Report') {
-      this.FlagVisitSelected=false
-      this.FlagPaymentIdSelected=false
-      this.FlagDoctorIDSelected=true;
+      this.FlagVisitSelected = false
+      this.FlagPaymentIdSelected = false
+      this.FlagDoctorIDSelected = true;
       this.FlagRefundIdSelected = false;
       this.FlagUserSelected = false;
-    } 
-    
+      this.FlaOPIPTypeSelected= false;
+      this.FlaCashcounterSelected=false;
+    }
+
     else if (this.ReportName == 'Daily Collection Report') {
       this.FlagUserSelected = true;
-      this.FlagVisitSelected=false;
+      this.FlagVisitSelected = false;
       // this.FlagPaymentSelected = false;
-      this.FlagDoctorIDSelected=true;
+      this.FlagDoctorIDSelected = true;
       this.FlagRefundIdSelected = false;
-      
+      this.FlaOPIPTypeSelected= false;
+      this.FlaCashcounterSelected=false;
 
     } else if (this.ReportName == 'Daily Collection Summary Report') {
       this.FlagUserSelected = true;
       this.FlagPaymentIdSelected = false;
-      this.FlagDoctorIDSelected=false;
+      this.FlagDoctorIDSelected = false;
       this.FlagRefundIdSelected = false;
-      this.FlagVisitSelected=false;
-    } 
+      this.FlagVisitSelected = false;
+      this.FlaOPIPTypeSelected= false;
+      this.FlaCashcounterSelected=false;
+    }
     else if (this.ReportName == 'Group wise Collection Report') {
       this.FlagUserSelected = false;
       this.FlagPaymentIdSelected = false;
-      this.FlagDoctorIDSelected=false;
+      this.FlagDoctorIDSelected = false;
       this.FlagRefundIdSelected = false;
-      this.FlagVisitSelected=false;
-
+      this.FlagVisitSelected = false;
+      this.FlaOPIPTypeSelected= false;
     } else if (this.ReportName == 'Group wise Summary Report') {
       this.FlagUserSelected = false;
       this.FlagPaymentIdSelected = false;
-      this.FlagDoctorIDSelected=false;
+      this.FlagDoctorIDSelected = false;
       this.FlagRefundIdSelected = false;
-      this.FlagVisitSelected=false;
-      
+      this.FlagVisitSelected = false;
+      this.FlaOPIPTypeSelected= false;
+      this.FlaCashcounterSelected=false;
     } else if (this.ReportName == 'Group Wise Revenue Summary Report') {
       this.FlagUserSelected = false;
       this.FlagPaymentIdSelected = false;
-      this.FlagDoctorIDSelected=false;
+      this.FlagDoctorIDSelected = false;
       this.FlagRefundIdSelected = false;
-      this.FlagVisitSelected=false;
-      
+      this.FlagVisitSelected = false;
+      this.FlaOPIPTypeSelected= false;
+      this.FlaCashcounterSelected=false;
     } else if (this.ReportName == 'Credit Report') {
       this.FlagUserSelected = false;
       this.FlagPaymentIdSelected = false;
-      this.FlagDoctorIDSelected=false;
+      this.FlagDoctorIDSelected = false;
       this.FlagRefundIdSelected = false;
-      this.FlagVisitSelected=false;
+      this.FlagVisitSelected = false;
+      this.FlaOPIPTypeSelected= false;
+      this.FlaCashcounterSelected=false;
     }
     else if (this.ReportName == 'Patient Ledger') {
       this.FlagUserSelected = false;
       this.FlagPaymentIdSelected = false;
-      this.FlagDoctorIDSelected=false;
+      this.FlagDoctorIDSelected = false;
       this.FlagRefundIdSelected = false;
-      this.FlagVisitSelected=false;
+      this.FlagVisitSelected = false;
+      this.FlaOPIPTypeSelected= false;
+      this.FlaCashcounterSelected=false;
     }
     else if (this.ReportName == 'Service Wise Report without Bill') {
       this.FlagUserSelected = false;
       this.FlagPaymentIdSelected = false;
-      this.FlagDoctorIDSelected=false;
+      this.FlagDoctorIDSelected = false;
       this.FlagRefundIdSelected = false;
-      this.FlagVisitSelected=false;
-      
-    }else if (this.ReportName == 'Service Wise Report with Bill') {
+      this.FlagVisitSelected = false;
+      this.FlaOPIPTypeSelected= false;
+      this.FlaCashcounterSelected=false;
+    } else if (this.ReportName == 'Service Wise Report with Bill') {
       this.FlagUserSelected = false;
       this.FlagPaymentIdSelected = false;
-      this.FlagDoctorIDSelected=false;
+      this.FlagDoctorIDSelected = false;
       this.FlagRefundIdSelected = false;
-      this.FlagVisitSelected=false;
+      this.FlagVisitSelected = false;
+      this.FlaOPIPTypeSelected= false;
+      this.FlaCashcounterSelected=false;
     }
     else if (this.ReportName == 'Service Wise Report') {
       this.FlagUserSelected = true;
       this.FlagPaymentIdSelected = false;
-      this.FlagDoctorIDSelected=false;
+      this.FlagDoctorIDSelected = false;
       this.FlagRefundIdSelected = false;
-      this.FlagVisitSelected=false;
-      this.FlagServiceIdSelected=false;
-      this.FlagDepartmentSelected=true;
-    }else if (this.ReportName == 'Bill Summary With TCS Report') {
+      this.FlagVisitSelected = false;
+      this.FlagServiceIdSelected = false;
+      this.FlagDepartmentSelected = true;
+      this.FlaOPIPTypeSelected= false;
+      this.FlaCashcounterSelected=false;
+    } else if (this.ReportName == 'Bill Summary With TCS Report') {
       this.FlagUserSelected = false;
       this.FlagPaymentIdSelected = false;
-      this.FlagDoctorIDSelected=false;
+      this.FlagDoctorIDSelected = false;
       this.FlagRefundIdSelected = false;
-      this.FlagVisitSelected=false;
+      this.FlagVisitSelected = false;
+      this.FlaOPIPTypeSelected= false;
+      this.FlaCashcounterSelected=false;
     }
     else if (this.ReportName == 'Ref By Patient List') {
       this.FlagPaymentIdSelected = false;
@@ -225,99 +250,137 @@ var data={
       this.FlagServiceIdSelected = false;
       this.FlagPaymentIdSelected = false;
       this.FlagUserSelected = false;
-      
-    }else if (this.ReportName == 'Cancel Charges List') {
+      this.FlaOPIPTypeSelected= false;
+      this.FlaCashcounterSelected=false;
+    } else if (this.ReportName == 'Cancel Charges List') {
       this.FlagUserSelected = false;
       this.FlagPaymentIdSelected = false;
-      this.FlagDoctorIDSelected=false;
+      this.FlagDoctorIDSelected = false;
       this.FlagRefundIdSelected = false;
-      this.FlagVisitSelected=false;
+      this.FlagVisitSelected = false;
+      this.FlaOPIPTypeSelected= false;
+      this.FlaCashcounterSelected=false;
     }
     else if (this.ReportName == 'Service Wise Report without Bill') {
       this.FlagUserSelected = false;
       this.FlagPaymentIdSelected = false;
-      this.FlagDoctorIDSelected=false;
+      this.FlagDoctorIDSelected = false;
       this.FlagRefundIdSelected = false;
-      this.FlagVisitSelected=false;
-    }else if (this.ReportName == 'Doctor and Department Wise Monthly Collection Report') {
+      this.FlagVisitSelected = false;
+      this.FlaOPIPTypeSelected= false;
+      this.FlaCashcounterSelected=false;
+    } else if (this.ReportName == 'Doctor and Department Wise Monthly Collection Report') {
       this.FlagUserSelected = false;
       this.FlagPaymentIdSelected = false;
-      this.FlagDoctorIDSelected=false;
+      this.FlagDoctorIDSelected = false;
       this.FlagRefundIdSelected = false;
-      this.FlagVisitSelected=false;
+      this.FlagVisitSelected = false;
+      this.FlaOPIPTypeSelected= false;
+      this.FlaCashcounterSelected=false;
     }
     else if (this.ReportName == 'IP Company Wise Bill Report') {
       this.FlagUserSelected = false;
       this.FlagPaymentIdSelected = false;
-      this.FlagDoctorIDSelected=false;
+      this.FlagDoctorIDSelected = false;
       this.FlagRefundIdSelected = false;
-      this.FlagVisitSelected=false;
-    }else if (this.ReportName == 'IP Company Wise Credit Report') {
+      this.FlagVisitSelected = false;
+      this.FlaOPIPTypeSelected= false;
+      this.FlaCashcounterSelected=false;
+    } else if (this.ReportName == 'IP Company Wise Credit Report') {
       this.FlagUserSelected = false;
       this.FlagPaymentIdSelected = false;
-      this.FlagDoctorIDSelected=false;
+      this.FlagDoctorIDSelected = false;
       this.FlagRefundIdSelected = false;
-      this.FlagVisitSelected=false;
-      
+      this.FlagVisitSelected = false;
+      this.FlaOPIPTypeSelected= false;
+      this.FlaCashcounterSelected=false;
     }
     else if (this.ReportName == 'IP Discharge & Bill Generation Pending Report') {
       this.FlagUserSelected = false;
       this.FlagPaymentIdSelected = false;
-      this.FlagDoctorIDSelected=false;
+      this.FlagDoctorIDSelected = false;
       this.FlagRefundIdSelected = false;
-      this.FlagVisitSelected=false;
-    }else if (this.ReportName == 'IP Bill Generation Payment Due report') {
+      this.FlagVisitSelected = false;
+      this.FlaOPIPTypeSelected= false;
+      this.FlaCashcounterSelected=false;
+    } else if (this.ReportName == 'IP Bill Generation Payment Due report') {
       this.FlagUserSelected = false;
       this.FlagPaymentIdSelected = false;
-      this.FlagDoctorIDSelected=false;
+      this.FlagDoctorIDSelected = false;
       this.FlagRefundIdSelected = false;
-      this.FlagVisitSelected=false;
+      this.FlagVisitSelected = false;
+      this.FlaOPIPTypeSelected= false;
+      this.FlaCashcounterSelected=false;
     }
     else if (this.ReportName == 'Collection Summary Report') {
       this.FlagUserSelected = false;
       this.FlagPaymentIdSelected = false;
-      this.FlagDoctorIDSelected=false;
+      this.FlagDoctorIDSelected = false;
       this.FlagRefundIdSelected = false;
-      this.FlagVisitSelected=false;
-    }else if (this.ReportName == 'Bill Summary Report for 2 Lakh Amount') {
+      this.FlagVisitSelected = false;
+      this.FlaOPIPTypeSelected= false;
+      this.FlaCashcounterSelected=false;
+    } else if (this.ReportName == 'Bill Summary Report for 2 Lakh Amount') {
       this.FlagUserSelected = false;
       this.FlagPaymentIdSelected = false;
-      this.FlagDoctorIDSelected=false;
+      this.FlagDoctorIDSelected = false;
       this.FlagRefundIdSelected = false;
-      this.FlagVisitSelected=false;
-    }else if (this.ReportName == 'Bill Summary Report OPD & IPD') {
+      this.FlagVisitSelected = false;
+      this.FlaOPIPTypeSelected= false;
+      this.FlaCashcounterSelected=false;
+    } else if (this.ReportName == 'Bill Summary Report OPD & IPD') {
       this.FlagUserSelected = false;
       this.FlagPaymentIdSelected = false;
-      this.FlagDoctorIDSelected=false;
+      this.FlagDoctorIDSelected = false;
       this.FlagRefundIdSelected = false;
-      this.FlagVisitSelected=false;
-    }else if(this.ReportName=='Doctor (Visit/Admitted) WISE GROUP REPORT'){
-      this.FlagDoctorIDSelected=true;
+      this.FlagVisitSelected = false;
+      this.FlaOPIPTypeSelected= false;
+      this.FlaCashcounterSelected=false;
+    } else if (this.ReportName == 'Doctor (Visit/Admitted) WISE GROUP REPORT') {
+      this.FlagDoctorIDSelected = true;
       this.FlagUserSelected = false;
       this.FlagPaymentIdSelected = false;
       this.FlagRefundIdSelected = false;
-      this.FlagVisitSelected=false;
+      this.FlagVisitSelected = false;
+      this.FlaOPIPTypeSelected= false;
+      this.FlaCashcounterSelected=false;
+    } else if (this.ReportName === 'Cash Counter Wise Daily Collection') {
+      this.FlagDoctorIDSelected = true;
+      this.FlagUserSelected = true;
+      this.FlagPaymentIdSelected = false;
+      this.FlagRefundIdSelected = false;
+      this.FlagVisitSelected = false;
+      this.FlaOPIPTypeSelected= true;
+      this.FlaCashcounterSelected=true;
+    } else if (this.ReportName === 'Cash Counter Wise Daily Collection Summary') {
+      this.FlagDoctorIDSelected = true;
+      this.FlagUserSelected = true;
+      this.FlagPaymentIdSelected = false;
+      this.FlagRefundIdSelected = false;
+      this.FlagVisitSelected = false;
+      this.FlaOPIPTypeSelected= true;
+      this.FlaCashcounterSelected=true;
     }
   }
 
 
   getPrint() {
-  
+
 
     if (this.ReportName == 'Doctor Wise Patient Count Report') {
       this.viewgetDocwisepatientcountReportPdf();
     }
-    else   if (this.ReportName == 'Reference Doctor Wise Patient Count Report') {
+    else if (this.ReportName == 'Reference Doctor Wise Patient Count Report') {
       this.viewgetRefDocwisepatientcountReportPdf();
-     
-    }   else if (this.ReportName == 'Concession Report') {
-      this.viewgetConcessionReportPdf();
-     
-    } 
 
-     else if (this.ReportName == 'Daily Collection Report') {
+    } else if (this.ReportName == 'Concession Report') {
+      this.viewgetConcessionReportPdf();
+
+    }
+
+    else if (this.ReportName == 'Daily Collection Report') {
       this.viewgetDailyCollectionReportPdf();
-    } 
+    }
     else if (this.ReportName == 'Daily Collection Summary Report') {
       this.viewgetDailycollsummaryReportPdf();
     } else if (this.ReportName == 'Group wise Collection Report') {
@@ -329,7 +392,7 @@ var data={
       this.ViewgetGroupwiserevenusummaryview();
     }
 
-    
+
     else if (this.ReportName == 'Credit Report') {
       this.viewgetCreditReportPdf();
     } else if (this.ReportName == 'Patient Ledger') {
@@ -374,8 +437,12 @@ var data={
     }
     else if (this.ReportName == 'Bill Summary Report OPD & IPD') {
       this.getBillsummaryforopdipdview();
-    }else if (this.ReportName == 'Doctor (Visit/Admitted) WISE GROUP REPORT') {
+    } else if (this.ReportName == 'Doctor (Visit/Admitted) WISE GROUP REPORT') {
       this.getDoctorvisitAdminwisegroupview();
+    } else if (this.ReportName == 'Cash Counter Wise Daily Collection') {
+      this.getCashcounterwisedailycollectionview();
+    } else if (this.ReportName == 'Cash Counter Wise Daily Collection Summary') {
+      this.getCashcounterwisedailycollectionsummaryview();
     }
 
 
@@ -384,747 +451,832 @@ var data={
 
 
   viewgetDocwisepatientcountReportPdf() {
-   debugger
-  
-   let DoctorID = 0;
-   if (this._OPReportsService.userForm.get('DoctorID').value)
-    DoctorID = this._OPReportsService.userForm.get('DoctorID').value.DoctorID
+    debugger
 
-   
-     setTimeout(() => {
-       this.AdList = true;
-       this._OPReportsService.getdocwisepatinetcountReport(
+    let DoctorID = 0;
+    if (this._OPReportsService.userForm.get('DoctorID').value)
+      DoctorID = this._OPReportsService.userForm.get('DoctorID').value.DoctorID
+
+
+    setTimeout(() => {
+      this.AdList = true;
+      this._OPReportsService.getdocwisepatinetcountReport(
         this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
         this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
         DoctorID
-       ).subscribe(res => {
-         const dialogRef = this._matDialog.open(PdfviewerComponent,
-           {
-             maxWidth: "85vw",
-             height: '750px',
-             width: '100%',
-             data: {
-               base64: res["base64"] as string,
-               title: "Doctor Wise Patient Count Viewer"
-             }
-           });
-         dialogRef.afterClosed().subscribe(result => {
-           this.AdList = false;
-           this.sIsLoading = '';
-         });
-       });
- 
-     }, 100);
-   }
-
-  
-
-   viewgetRefDocwisepatientcountReportPdf() {
- 
-  setTimeout(() => {
-
-  this._OPReportsService.getRefdocwisepatientcountReport(
-    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-  ).subscribe(res => {
-    const dialogRef = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Ref Dosctor wise Patient Count Viewer"
-        }
-      });
-      dialogRef.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.sIsLoading = '';
-      });
-     
-  });
- 
-  },100);
-}
-
-
-viewgetConcessionReportPdf() {
-  let OP_IP_Type=1;
-  
-  let DoctorID = 0;
-  if (this._OPReportsService.userForm.get('DoctorID').value)
-   DoctorID = this._OPReportsService.userForm.get('DoctorID').value.DoctorID
-
-  this.sIsLoading = 'loading-data';
-  setTimeout(() => {
- 
-  this._OPReportsService.getConcessionreportView(
-    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",OP_IP_Type,DoctorID
-    ).subscribe(res => {
-    const matDialog = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Concession Report Viewer"
-        }
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Doctor Wise Patient Count Viewer"
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          this.AdList = false;
+          this.sIsLoading = '';
+        });
       });
 
-      matDialog.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.sIsLoading = ' ';
-      });
-  });
- 
-  },100);
-
-}
+    }, 100);
+  }
 
 
-viewgetDailyCollectionReportPdf() {
-  debugger
- 
-  let AddedById = 0;
-  if (this._OPReportsService.userForm.get('UserId').value)
-    AddedById = this._OPReportsService.userForm.get('UserId').value.UserId
 
+  viewgetRefDocwisepatientcountReportPdf() {
 
-  let DoctorId = 0;
-  if (this._OPReportsService.userForm.get('DoctorId').value)
-    DoctorId = this._OPReportsService.userForm.get('DoctorId').value.DoctorId
+    setTimeout(() => {
 
-  this.sIsLoading = 'loading-data';
-  setTimeout(() => {
- 
-  this._OPReportsService.getCommonDailycollectionView(
-    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",AddedById,DoctorId
-    ).subscribe(res => {
-    const matDialog = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Daily Collection Report Viewer"
-        }
+      this._OPReportsService.getRefdocwisepatientcountReport(
+        this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Ref Dosctor wise Patient Count Viewer"
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.sIsLoading = '';
+        });
+
       });
 
-      matDialog.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.sIsLoading = ' ';
-      });
-  });
- 
-  },100);
-
-}
+    }, 100);
+  }
 
 
-viewgetDailycollsummaryReportPdf() {
-  this.sIsLoading = 'loading-data';
-  setTimeout(() => {
- 
-  this._OPReportsService.getDailycollsummaryView(
-    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-    ).subscribe(res => {
-    const matDialog = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Daily Collection Summary Report  Viewer"
-        }
+  viewgetConcessionReportPdf() {
+    let OP_IP_Type = 1;
+
+    let DoctorID = 0;
+    if (this._OPReportsService.userForm.get('DoctorID').value)
+      DoctorID = this._OPReportsService.userForm.get('DoctorID').value.DoctorID
+
+    this.sIsLoading = 'loading-data';
+    setTimeout(() => {
+
+      this._OPReportsService.getConcessionreportView(
+        this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900", OP_IP_Type, DoctorID
+      ).subscribe(res => {
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Concession Report Viewer"
+            }
+          });
+
+        matDialog.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.sIsLoading = ' ';
+        });
       });
 
-      matDialog.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.sIsLoading = ' ';
-      });
-  });
- 
-  },100);
+    }, 100);
 
-}
-
-viewgetGroupwisecollReportPdf() {
-  this.sIsLoading = 'loading-data';
-  setTimeout(() => {
-
-  let GroupId=this._OPReportsService.userForm.get('GroupId').value | 0
-  this._OPReportsService.getgroupwisecollView(
-    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",GroupId
-    ).subscribe(res => {
-    const matDialog = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Group wise Collection Report Viewer"
-        }
-      });
-
-      matDialog.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.sIsLoading = ' ';
-      });
-  });
- 
-  },100);
-
-}
-viewgetGroupwisesummaryReportPdf() {
-  this.sIsLoading = 'loading-data';
-  setTimeout(() => {
-    let GroupId=this._OPReportsService.userForm.get('GroupId').value | 0
-  this._OPReportsService.getgroupwisescollummaryView(
-    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",GroupId
-    ).subscribe(res => {
-    const matDialog = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Group Wise Collection Summary Viewer"
-        }
-      });
-
-      matDialog.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.sIsLoading = ' ';
-      });
-  });
- 
-  },100);
-
-}
-ViewgetGroupwiserevenusummaryview() {
-  this.sIsLoading = 'loading-data';
-  setTimeout(() => {
-  //   this.SpinLoading =true;
-  
-  this._OPReportsService.getgroupwiserevenusummaryView(
-    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-    ).subscribe(res => {
-    const matDialog = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Group Wise Revenu Summary Viewer"
-        }
-      });
-
-      matDialog.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.sIsLoading = ' ';
-      });
-  });
- 
-  },100);
-
-}
-viewgetCreditReportPdf() {
-  this.sIsLoading = 'loading-data';
-  setTimeout(() => {
-  //   this.SpinLoading =true;
- 
-  this._OPReportsService.getCreditreportView(
-    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-    ).subscribe(res => {
-    const matDialog = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Credit Report Viewer"
-        }
-      });
-
-      matDialog.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.sIsLoading = ' ';
-      });
-  });
- 
-  },100);
-
-}
-
-viewgetPatientLedgerReportPdf(){
-  this.sIsLoading = 'loading-data';
-  setTimeout(() => {
-  //   this.SpinLoading =true;
-  let VisitId
-  this._OPReportsService.getPatientledgerView(
-    VisitId,1
-    ).subscribe(res => {
-    const matDialog = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Patient Ledger Report Viewer"
-        }
-      });
-
-      matDialog.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.sIsLoading = ' ';
-      });
-  });
- 
-  },100);
-}
-
-ViewgeServicewisereportwithoutbillview(){
-  let ServiceId=this._OPReportsService.userForm.get('ServiceId').value | 0;
-  this.sIsLoading = 'loading-data';
-  setTimeout(() => {
-  //   this.SpinLoading =true;
-  let VisitId
-  this._OPReportsService.getservicewisereportwithoutbillView(ServiceId,
-    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
-    ).subscribe(res => {
-    const matDialog = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Service Wise Report Without Bill Viewer"
-        }
-      });
-
-      matDialog.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.sIsLoading = ' ';
-      });
-  });
- 
-  },100); 
-}
-getServicewisereportwithbillview(){
-  this.sIsLoading = 'loading-data';
-  setTimeout(() => {
-    let ServiceId=this._OPReportsService.userForm.get('ServiceId').value | 0
-  this._OPReportsService.getServicewisereportwithbillView(ServiceId,
-    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-    ).subscribe(res => {
-    const matDialog = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Service Wise Report Withh Bill Viewer"
-        }
-      });
-
-      matDialog.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.sIsLoading = ' ';
-      });
-  });
- 
-  },100);
-}
-viewgetServicewiseReportPdf(){
-  this.sIsLoading = 'loading-data';
-//  let GroupId=this._OPReportsService.userForm.get('GroupId').value || 0
-//   let AddedById=this._OPReportsService.userForm.get('UserId').value.UserId || 0
-//   let DoctorId=this._OPReportsService.userForm.get('DoctorID').value.DoctorID || 0
-//   let ServiceId=this._OPReportsService.userForm.get('ServiceId').value
-//   let DepartmentId=this._OPReportsService.userForm.get('DepartmentId').value.DepartmentId
-
-  
-  let ServiceId = 0;
-  if (this._OPReportsService.userForm.get('ServiceId').value)
-    ServiceId = this._OPReportsService.userForm.get('ServiceId').value.ServiceId
+  }
 
 
-  
-  setTimeout(() => {
- 
-  this._OPReportsService.getServicewisereportView(ServiceId,
-    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
-    ).subscribe(res => {
-    const matDialog = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Service Wise Report  Viewer"
-        }
-      });
+  viewgetDailyCollectionReportPdf() {
+    debugger
 
-      matDialog.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.sIsLoading = ' ';
-      });
-  });
- 
-  },100);
-}
-ViewgetBillSummwithTCSview(){
-  this.sIsLoading = 'loading-data';
-  setTimeout(() => {
- 
-  this._OPReportsService.getBillsummarywithtcsView(
-    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-    ).subscribe(res => {
-    const matDialog = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Bill Summary With TCS Viewer"
-        }
-      });
-
-      matDialog.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.sIsLoading = ' ';
-      });
-  });
- 
-  },100);
-}
+    let AddedById = 0;
+    if (this._OPReportsService.userForm.get('UserId').value)
+      AddedById = this._OPReportsService.userForm.get('UserId').value.UserId
 
 
-viewgetRefbypatientPdf(){
-  this.sIsLoading = 'loading-data';
-  setTimeout(() => {
- 
-  this._OPReportsService.getRefbypatientView(
-    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-    ).subscribe(res => {
-    const matDialog = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Ref By Patient Viewer"
-        }
+    let DoctorId = 0;
+    if (this._OPReportsService.userForm.get('DoctorId').value)
+      DoctorId = this._OPReportsService.userForm.get('DoctorId').value.DoctorId
+
+    this.sIsLoading = 'loading-data';
+    setTimeout(() => {
+
+      this._OPReportsService.getCommonDailycollectionView(
+        this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900", AddedById, DoctorId
+      ).subscribe(res => {
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Daily Collection Report Viewer"
+            }
+          });
+
+        matDialog.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.sIsLoading = ' ';
+        });
       });
 
-      matDialog.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.sIsLoading = ' ';
-      });
-  });
- 
-  },100);
-}
-viewgetCanclechargelistPdf(){
-  this.sIsLoading = 'loading-data';
-  setTimeout(() => {
- 
-  this._OPReportsService.getCanclechargesView(
-    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-    ).subscribe(res => {
-    const matDialog = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Cancle Change List Report  Viewer"
-        }
+    }, 100);
+
+  }
+
+
+  viewgetDailycollsummaryReportPdf() {
+    this.sIsLoading = 'loading-data';
+    setTimeout(() => {
+
+      this._OPReportsService.getDailycollsummaryView(
+        this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+      ).subscribe(res => {
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Daily Collection Summary Report  Viewer"
+            }
+          });
+
+        matDialog.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.sIsLoading = ' ';
+        });
       });
 
-      matDialog.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.sIsLoading = ' ';
-      });
-  });
- 
-  },100);
-}
-ViewgetDocdeptwisemonthlycollview(){
-  this.sIsLoading = 'loading-data';
-  setTimeout(() => {
- 
-  this._OPReportsService.getDoctorDeptwisemonthlycollectionView(
-    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-    ).subscribe(res => {
-    const matDialog = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Doctor Dept Wise Monthly Collection  Viewer"
-        }
+    }, 100);
+
+  }
+
+  viewgetGroupwisecollReportPdf() {
+    this.sIsLoading = 'loading-data';
+    setTimeout(() => {
+
+      let GroupId = this._OPReportsService.userForm.get('GroupId').value | 0
+      this._OPReportsService.getgroupwisecollView(
+        this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900", GroupId
+      ).subscribe(res => {
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Group wise Collection Report Viewer"
+            }
+          });
+
+        matDialog.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.sIsLoading = ' ';
+        });
       });
 
-      matDialog.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.sIsLoading = ' ';
-      });
-  });
- 
-  },100);
-}
-getIpcompanywisebill(){
-  this.sIsLoading = 'loading-data';
-  setTimeout(() => {
- 
-  this._OPReportsService.getIpcompanywisebillView(
-    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-    ).subscribe(res => {
-    const matDialog = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "IP Company Wise Bill  Viewer"
-        }
+    }, 100);
+
+  }
+  viewgetGroupwisesummaryReportPdf() {
+    this.sIsLoading = 'loading-data';
+    setTimeout(() => {
+      let GroupId = this._OPReportsService.userForm.get('GroupId').value | 0
+      this._OPReportsService.getgroupwisescollummaryView(
+        this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900", GroupId
+      ).subscribe(res => {
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Group Wise Collection Summary Viewer"
+            }
+          });
+
+        matDialog.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.sIsLoading = ' ';
+        });
       });
 
-      matDialog.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.sIsLoading = ' ';
-      });
-  });
- 
-  },100);
-}
-viewgetCompanywisecreditPdf(){
-  this.sIsLoading = 'loading-data';
-  setTimeout(() => {
- 
-  this._OPReportsService.getCompanywisecreditbillView(
-    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-    ).subscribe(res => {
-    const matDialog = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Company Wise Credit Report  Viewer"
-        }
+    }, 100);
+
+  }
+  ViewgetGroupwiserevenusummaryview() {
+    this.sIsLoading = 'loading-data';
+    setTimeout(() => {
+      //   this.SpinLoading =true;
+
+      this._OPReportsService.getgroupwiserevenusummaryView(
+        this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+      ).subscribe(res => {
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Group Wise Revenu Summary Viewer"
+            }
+          });
+
+        matDialog.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.sIsLoading = ' ';
+        });
       });
 
-      matDialog.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.sIsLoading = ' ';
-      });
-  });
- 
-  },100);
-}
+    }, 100);
 
-viewgetIpdischargebillgenependingPdf(){
-  this.sIsLoading = 'loading-data';
-  setTimeout(() => {
- 
-  this._OPReportsService.getIdischargebillgenependingView(
-    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-    ).subscribe(res => {
-    const matDialog = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Ip Discharge Bill Generated Pending  Viewer"
-        }
-      });
+  }
+  viewgetCreditReportPdf() {
+    this.sIsLoading = 'loading-data';
+    setTimeout(() => {
+      //   this.SpinLoading =true;
 
-      matDialog.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.sIsLoading = ' ';
-      });
-  });
- 
-  },100);
-}
-ViewgetIpbillgenepaymentdueview(){
-  this.sIsLoading = 'loading-data';
-  setTimeout(() => {
- 
-  this._OPReportsService.getIpbillgenepaymentdueView(
-    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-    ).subscribe(res => {
-    const matDialog = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Ip Bill Generated Pament Due  Viewer"
-        }
+      this._OPReportsService.getCreditreportView(
+        this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+      ).subscribe(res => {
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Credit Report Viewer"
+            }
+          });
+
+        matDialog.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.sIsLoading = ' ';
+        });
       });
 
-      matDialog.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.sIsLoading = ' ';
-      });
-  });
- 
-  },100);
-}
-getCollectionsummaryview(){
-  this.sIsLoading = 'loading-data';
-  setTimeout(() => {
- 
-  this._OPReportsService.getCollectionsummaryView(
-    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-    ).subscribe(res => {
-    const matDialog = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Collection Summary Viewer"
-        }
+    }, 100);
+
+  }
+
+  viewgetPatientLedgerReportPdf() {
+    this.sIsLoading = 'loading-data';
+    setTimeout(() => {
+      //   this.SpinLoading =true;
+      let VisitId
+      this._OPReportsService.getPatientledgerView(
+        VisitId, 1
+      ).subscribe(res => {
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Patient Ledger Report Viewer"
+            }
+          });
+
+        matDialog.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.sIsLoading = ' ';
+        });
       });
 
-      matDialog.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.sIsLoading = ' ';
-      });
-  });
- 
-  },100);
-}
+    }, 100);
+  }
 
-Viewgetbillgenefor2lakhamtview(){
-  this.sIsLoading = 'loading-data';
-  setTimeout(() => {
- 
-  this._OPReportsService.getBillgenefor2lakhamtView(
-    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-    ).subscribe(res => {
-    const matDialog = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Bill Generated For 2 Lakh Amt  Viewer"
-        }
-      });
+  ViewgeServicewisereportwithoutbillview() {
+    let ServiceId = this._OPReportsService.userForm.get('ServiceId').value | 0;
+    this.sIsLoading = 'loading-data';
+    setTimeout(() => {
+      //   this.SpinLoading =true;
+      let VisitId
+      this._OPReportsService.getservicewisereportwithoutbillView(ServiceId,
+        this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
+      ).subscribe(res => {
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Service Wise Report Without Bill Viewer"
+            }
+          });
 
-      matDialog.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.sIsLoading = ' ';
-      });
-  });
- 
-  },100);
-}
-
-getBillsummaryforopdipdview(){
-  this.sIsLoading = 'loading-data';
-  setTimeout(() => {
- 
-  this._OPReportsService.getBillsummaryopdipdView(
-    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-    ).subscribe(res => {
-    const matDialog = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Bill Summary for OPD IPD Viewer"
-        }
+        matDialog.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.sIsLoading = ' ';
+        });
       });
 
-      matDialog.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.sIsLoading = ' ';
-      });
-  });
- 
-  },100);
-}
+    }, 100);
+  }
+  getServicewisereportwithbillview() {
+    this.sIsLoading = 'loading-data';
+    setTimeout(() => {
+      let ServiceId = this._OPReportsService.userForm.get('ServiceId').value | 0
+      this._OPReportsService.getServicewisereportwithbillView(ServiceId,
+        this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+      ).subscribe(res => {
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Service Wise Report Withh Bill Viewer"
+            }
+          });
 
-getDoctorvisitAdminwisegroupview(){
-  this.sIsLoading = 'loading-data';
-  let DoctorId=this._OPReportsService.userForm.get('DoctorId').value.DoctorID || 0
-  setTimeout(() => {
- 
-  this._OPReportsService.getdoctorvisitadmingroupwiseView(
-    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",DoctorId
-    ).subscribe(res => {
-    const matDialog = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Doctor (Visist/Admitted )Group Wise Report Viewer"
-        }
+        matDialog.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.sIsLoading = ' ';
+        });
       });
 
-      matDialog.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.sIsLoading = ' ';
+    }, 100);
+  }
+  viewgetServicewiseReportPdf() {
+    this.sIsLoading = 'loading-data';
+    //  let GroupId=this._OPReportsService.userForm.get('GroupId').value || 0
+    //   let AddedById=this._OPReportsService.userForm.get('UserId').value.UserId || 0
+    //   let DoctorId=this._OPReportsService.userForm.get('DoctorID').value.DoctorID || 0
+    //   let ServiceId=this._OPReportsService.userForm.get('ServiceId').value
+    //   let DepartmentId=this._OPReportsService.userForm.get('DepartmentId').value.DepartmentId
+
+
+    let ServiceId = 0;
+    if (this._OPReportsService.userForm.get('ServiceId').value)
+      ServiceId = this._OPReportsService.userForm.get('ServiceId').value.ServiceId
+
+
+
+    setTimeout(() => {
+
+      this._OPReportsService.getServicewisereportView(ServiceId,
+        this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
+      ).subscribe(res => {
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Service Wise Report  Viewer"
+            }
+          });
+
+        matDialog.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.sIsLoading = ' ';
+        });
       });
-  });
- 
-  },100);
-}
+
+    }, 100);
+  }
+  ViewgetBillSummwithTCSview() {
+    this.sIsLoading = 'loading-data';
+    setTimeout(() => {
+
+      this._OPReportsService.getBillsummarywithtcsView(
+        this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+      ).subscribe(res => {
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Bill Summary With TCS Viewer"
+            }
+          });
+
+        matDialog.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.sIsLoading = ' ';
+        });
+      });
+
+    }, 100);
+  }
+
+
+  viewgetRefbypatientPdf() {
+    this.sIsLoading = 'loading-data';
+    setTimeout(() => {
+
+      this._OPReportsService.getRefbypatientView(
+        this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+      ).subscribe(res => {
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Ref By Patient Viewer"
+            }
+          });
+
+        matDialog.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.sIsLoading = ' ';
+        });
+      });
+
+    }, 100);
+  }
+  viewgetCanclechargelistPdf() {
+    this.sIsLoading = 'loading-data';
+    setTimeout(() => {
+
+      this._OPReportsService.getCanclechargesView(
+        this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+      ).subscribe(res => {
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Cancle Change List Report  Viewer"
+            }
+          });
+
+        matDialog.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.sIsLoading = ' ';
+        });
+      });
+
+    }, 100);
+  }
+  ViewgetDocdeptwisemonthlycollview() {
+    this.sIsLoading = 'loading-data';
+    setTimeout(() => {
+
+      this._OPReportsService.getDoctorDeptwisemonthlycollectionView(
+        this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+      ).subscribe(res => {
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Doctor Dept Wise Monthly Collection  Viewer"
+            }
+          });
+
+        matDialog.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.sIsLoading = ' ';
+        });
+      });
+
+    }, 100);
+  }
+  getIpcompanywisebill() {
+    this.sIsLoading = 'loading-data';
+    setTimeout(() => {
+
+      this._OPReportsService.getIpcompanywisebillView(
+        this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+      ).subscribe(res => {
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "IP Company Wise Bill  Viewer"
+            }
+          });
+
+        matDialog.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.sIsLoading = ' ';
+        });
+      });
+
+    }, 100);
+  }
+  viewgetCompanywisecreditPdf() {
+    this.sIsLoading = 'loading-data';
+    setTimeout(() => {
+
+      this._OPReportsService.getCompanywisecreditbillView(
+        this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+      ).subscribe(res => {
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Company Wise Credit Report  Viewer"
+            }
+          });
+
+        matDialog.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.sIsLoading = ' ';
+        });
+      });
+
+    }, 100);
+  }
+
+  viewgetIpdischargebillgenependingPdf() {
+    this.sIsLoading = 'loading-data';
+    setTimeout(() => {
+
+      this._OPReportsService.getIdischargebillgenependingView(
+        this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+      ).subscribe(res => {
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Ip Discharge Bill Generated Pending  Viewer"
+            }
+          });
+
+        matDialog.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.sIsLoading = ' ';
+        });
+      });
+
+    }, 100);
+  }
+  ViewgetIpbillgenepaymentdueview() {
+    this.sIsLoading = 'loading-data';
+    setTimeout(() => {
+
+      this._OPReportsService.getIpbillgenepaymentdueView(
+        this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+      ).subscribe(res => {
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Ip Bill Generated Pament Due  Viewer"
+            }
+          });
+
+        matDialog.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.sIsLoading = ' ';
+        });
+      });
+
+    }, 100);
+  }
+  getCollectionsummaryview() {
+    this.sIsLoading = 'loading-data';
+    setTimeout(() => {
+
+      this._OPReportsService.getCollectionsummaryView(
+        this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+      ).subscribe(res => {
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Collection Summary Viewer"
+            }
+          });
+
+        matDialog.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.sIsLoading = ' ';
+        });
+      });
+
+    }, 100);
+  }
+
+  Viewgetbillgenefor2lakhamtview() {
+    this.sIsLoading = 'loading-data';
+    setTimeout(() => {
+
+      this._OPReportsService.getBillgenefor2lakhamtView(
+        this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+      ).subscribe(res => {
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Bill Generated For 2 Lakh Amt  Viewer"
+            }
+          });
+
+        matDialog.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.sIsLoading = ' ';
+        });
+      });
+
+    }, 100);
+  }
+
+  getBillsummaryforopdipdview() {
+    this.sIsLoading = 'loading-data';
+    setTimeout(() => {
+
+      this._OPReportsService.getBillsummaryopdipdView(
+        this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+      ).subscribe(res => {
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Bill Summary for OPD IPD Viewer"
+            }
+          });
+
+        matDialog.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.sIsLoading = ' ';
+        });
+      });
+
+    }, 100);
+  }
+
+  getDoctorvisitAdminwisegroupview() {
+    this.sIsLoading = 'loading-data';
+    let DoctorId = this._OPReportsService.userForm.get('DoctorId').value.DoctorID || 0
+    setTimeout(() => {
+
+      this._OPReportsService.getdoctorvisitadmingroupwiseView(
+        this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900", DoctorId
+      ).subscribe(res => {
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Doctor (Visist/Admitted )Group Wise Report Viewer"
+            }
+          });
+
+        matDialog.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.sIsLoading = ' ';
+        });
+      });
+
+    }, 100);
+  }
+
+  getCashcounterwisedailycollectionsummaryview() {
+    this.sIsLoading = 'loading-data';
+    let OPIPType = 0;
+    let CashcounterId = 0;
+    let AddedById = 0;
+
+
+    if (this._OPReportsService.userForm.get('UserId').value)
+      AddedById = this._OPReportsService.userForm.get('UserId').value.UserId || 0
+
+    if (this._OPReportsService.userForm.get('CashCounterID').value)
+      CashcounterId = this._OPReportsService.userForm.get('CashCounterID').value.CashCounterId || 0
+
+    
+    if (this._OPReportsService.userForm.get('OPIPType').value)
+      OPIPType = this._OPReportsService.userForm.get('OPIPType').value || 0
+    setTimeout(() => {
+
+      this._OPReportsService.getcashcounterwisedailycollectionsummaryView(
+        this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900", OPIPType,CashcounterId,AddedById
+      ).subscribe(res => {
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Cash Counter  Wise Daily Collection SummaryReport Viewer"
+            }
+          });
+
+        matDialog.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.sIsLoading = ' ';
+        });
+      });
+
+    }, 100);
+  }
+
+  getCashcounterwisedailycollectionview() {
+    this.sIsLoading = 'loading-data';
+    let OPIPType = 0;
+    let CashcounterId = 0;
+    let AddedById = 0;
+
+    if (this._OPReportsService.userForm.get('UserId').value)
+      AddedById = this._OPReportsService.userForm.get('UserId').value.UserId || 0
+
+    if (this._OPReportsService.userForm.get('CashCounterID').value)
+      CashcounterId = this._OPReportsService.userForm.get('CashCounterID').value.CashCounterId || 0
+
+    
+    if (this._OPReportsService.userForm.get('OPIPType').value)
+      OPIPType = this._OPReportsService.userForm.get('OPIPType').value || 0
+
+
+    setTimeout(() => {
+
+      this._OPReportsService.getcashcounterwisedailycollectionView(
+        this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900", OPIPType, CashcounterId, AddedById
+      ).subscribe(res => {
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Cash Counter  Wise Daily Collection Report Viewer"
+            }
+          });
+
+        matDialog.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.sIsLoading = ' ';
+        });
+      });
+
+    }, 100);
+  }
 
   userChk(option) {
     this.UserId = option.UserID || 0;
@@ -1140,7 +1292,7 @@ getDoctorvisitAdminwisegroupview(){
     return option && option.Doctorname ? option.Doctorname : '';
   }
 
-getDoctorList() {
+  getDoctorList() {
     this._OPReportsService.getDoctorMaster().subscribe(data => {
       this.searchDoctorList = data;
       this.optionsSearchDoc = this.searchDoctorList.slice();
@@ -1166,12 +1318,12 @@ getDoctorList() {
     }
   }
 
- 
+
 
   GetUserList() {
     var data = {
-          "StoreId": this._loggedUser.currentUserValue.user.storeId
-        }
+      "StoreId": this._loggedUser.currentUserValue.user.storeId
+    }
     this._OPReportsService.getUserdetailList(data).subscribe(data => {
       this.UserList = data;
       if (this.UserId) {
@@ -1185,19 +1337,19 @@ getDoctorList() {
   filteredOptions: any;
 
   getServiceListCombobox() {
-   
-      var m_data = {
-        SrvcName: "%",
-        TariffId: 0,
-        ClassId: 0,
-      };
-      console.log(m_data)
-      
-        this._OPReportsService.getBillingServiceList(m_data).subscribe(data => {
-          this.filteredOptions = data;
-        
-        });
-           
+
+    var m_data = {
+      SrvcName: "%",
+      TariffId: 0,
+      ClassId: 0,
+    };
+    console.log(m_data)
+
+    this._OPReportsService.getBillingServiceList(m_data).subscribe(data => {
+      this.filteredOptions = data;
+
+    });
+
   }
 
   getDepartmentList() {
@@ -1220,7 +1372,23 @@ getDoctorList() {
 
   }
 
-
+  getCashCounterComboList() {
+    this._OPReportsService.getCashcounterList().subscribe(data => {
+      this.CashCounterList = data
+      console.log(this.CashCounterList)
+      this._OPReportsService.userForm.get('CashCounterID').setValue(this.CashCounterList[0])
+      this.filteredOptionsCashCounter =this._OPReportsService.userForm.get('CashCounterID').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterCashCounter(value) : this.CashCounterList.slice()),
+      ); 
+    });
+  }
+  private _filterCashCounter(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.CashCounterName ? value.CashCounterName.toLowerCase() : value.toLowerCase();
+      return this.CashCounterList.filter(option => option.CashCounterName.toLowerCase().includes(filterValue));
+    } 
+  } 
 
   getOptionTextDep(option) {
     return option && option.departmentName ? option.departmentName : '';
@@ -1234,10 +1402,15 @@ getDoctorList() {
   }
 
 
-  getSelectedObj(obj){
-    this.UserId=obj.UserId;
+  getSelectedObj(obj) {
+    this.UserId = obj.UserId;
   }
 
+  getOptionTextCashCounter(option){ 
+    if (!option)
+      return '';
+    return option.CashCounterName;
+  }
 
   getOptionTextUser(option) {
     return option && option.UserName ? option.UserName : '';

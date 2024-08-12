@@ -139,9 +139,7 @@
                                     </div>
                                 </div>
                                 <div class="table-wrapper">
-                                    <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur">
-                                        <div class="spinner-border"></div>
-                                    </div>
+                                  
                                     <mat-table #table matSort class="mat-table-1 h-210" [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
 
                                         <ng-container matColumnDef="OP_Ip_Type" sticky>

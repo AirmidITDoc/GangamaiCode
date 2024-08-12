@@ -99,7 +99,7 @@
 
                                         <ng-container matColumnDef="ParameterID">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide  class="w-180"
-                                                fxShow.gt-sm>ParameterID
+                                                fxShow.gt-sm>ParameterCode
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm  class="w-180">
                                                 {{element.ParameterID}}
@@ -140,7 +140,13 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header> IsNumeric
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                                {{element.IsNumericParameter}}
+                                                <!-- {{element.IsNumericParameter}} -->
+                                                <mat-icon *ngIf="element.IsNumericParameter== 1" matTooltip="IsNumeric">
+                                                    <img width="20px" height="20px" src="assets/images/logos/radiology.png">
+                                                </mat-icon>
+                                                <mat-icon *ngIf="element.IsNumericParameter== 0" matTooltip="IsDescriptive">
+                                                    <img width="20px" height="20px" src="assets/images/logos/pathology.png">  
+                                                </mat-icon>
                                             </mat-cell>
                                         </ng-container>
 
