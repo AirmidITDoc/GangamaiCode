@@ -715,9 +715,9 @@ public updateIPDDischargSummary(employee)
   public InsertIPDraftBilling(e){
     return this._httpClient.post("InPatient/InsertIPDraftBill",e)
   }
-  public InsertInterim (employee)
+  public InsertInterim (employee)//IPInterimBillInsert
   {
-    return this._httpClient.post("InPatient/IPInterimBillInsert",employee)
+    return this._httpClient.post("InPatient/IPInterimBillInsertWithCashCounter",employee)
   }
   public BillDiscountAfter(employee)
   {    
