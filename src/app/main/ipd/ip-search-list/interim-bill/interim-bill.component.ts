@@ -389,13 +389,27 @@ export class InterimBillComponent implements OnInit {
   onSave() {
     debugger
     if (this.InterimFormGroup.get('discPer').value > 0 || this.InterimFormGroup.get('concessionAmt').value > 0) {
-      if(!this.InterimFormGroup.get('ConcessionId').value){
+      if (!this.InterimFormGroup.get('ConcessionId').value) {
         this.toastr.warning('Please select ConcessionReason.', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
         return;
       }
+    }
+    if (!this.InterimFormGroup.get('CashCounterID').value) {
+      this.toastr.warning('Please select Cash Counter.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if(this.InterimFormGroup.get('CashCounterID').value) {
+      if (!this.CashCounterList.some(item => item.CashCounterName === this.InterimFormGroup.get('CashCounterID').value.CashCounterName)) {
+        this.toastr.warning('Please Select valid Cash Counter Name', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
       }
+    }
     this.isLoading = 'submit';
     let interimBillChargesobj = {};
     interimBillChargesobj['chargesID'] = 0// this.ChargesId;
@@ -427,7 +441,7 @@ export class InterimBillComponent implements OnInit {
       insertBillUpdateBillNo1obj['taxAmount'] =   0,
       insertBillUpdateBillNo1obj['DiscComments'] = this.InterimFormGroup.get('Remark').value || '' 
     insertBillUpdateBillNo1obj['CompDiscAmt'] = 0//this.InterimFormGroup.get('Remark').value || ''
-
+    insertBillUpdateBillNo1obj['cashCounterId'] = this.InterimFormGroup.get('CashCounterID').value.CashCounterId || 0;
 
     let billDetailsInsert = []; 
     this.dataSource.data.forEach((element) => {
