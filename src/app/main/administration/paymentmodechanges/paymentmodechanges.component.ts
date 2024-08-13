@@ -19,7 +19,7 @@ import { MatDialog } from '@angular/material/dialog';
 export class PaymentmodechangesComponent implements OnInit {
   
   displayedColumns:string[] = [
-    
+    'Type',
     'PayDate',
     'ReceiptNo',
     'BillNo',
@@ -51,9 +51,7 @@ export class PaymentmodechangesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getOPReceiptList();
-    this.getIPAdvanceList();
-    this.getIPReceiptList();
+    this.getsearchList(); 
   }
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
@@ -62,6 +60,15 @@ export class PaymentmodechangesComponent implements OnInit {
   getDateTime(dateTimeObj) {
     // console.log('dateTimeObj==', dateTimeObj);
     this.dateTimeObj = dateTimeObj;
+  }
+  getsearchList(){
+    if(this._PaymentmodechangesService.UseFormGroup.get('Radio').value == '0'){
+      this.getOPReceiptList();
+    }else if(this._PaymentmodechangesService.UseFormGroup.get('Radio').value == '1'){
+      this.getIPReceiptList();
+    }else{
+      this.getIPAdvanceList();
+    }
   }
  getOPReceiptList(){
   this.sIsLoading = 'loading-data';

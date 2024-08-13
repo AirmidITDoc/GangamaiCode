@@ -61,34 +61,35 @@ export class DischargeCancelComponent implements OnInit {
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
-  resultsLength:any=0;
+ 
   ArryList:any=[];
+  resultsLength =0;
   getDischargPatientList(){
-    debugger
-    this.sIsLoading = 'loading-data';
-    var D_data = {
-      "F_Name":  this._DischargeCancelService.DischargeForm.get('FirstName').value || '%',
-      "L_Name": this._DischargeCancelService.DischargeForm.get('LastName').value || '%',
-      "Reg_No": this._DischargeCancelService.DischargeForm.get('RegNo').value || 0, 
-      "From_Dt": this.datePipe.transform(this._DischargeCancelService.DischargeForm.get('start').value, "MM-dd-yyyy") || '01/01/1900',
-      "To_Dt ": this.datePipe.transform(this._DischargeCancelService.DischargeForm.get('end').value, "MM-dd-yyyy") || '01/01/1900',
-      "OP_IP_Type": 1,
-      "AdmDisFlag": 1,
-      "IPNumber" :  this._DischargeCancelService.DischargeForm.get('IPDNo').value ||  0
-    }
-    console.log(D_data);
-    this._DischargeCancelService.OPIPPatientList(D_data).subscribe(data => { 
-       this.ArryList = data as DischargeList[] 
-      this.dsDischargeList.data =this.ArryList.Table; 
-      console.log(this.dsDischargeList.data) 
-      this.dsDischargeList.sort = this.sort;
-      this.dsDischargeList.paginator = this.paginator; 
-      this.sIsLoading = this.dsDischargeList.data.length == 0 ? 'no-data' : ''; 
+    // debugger
+    // this.sIsLoading = 'loading-data';
+    // var D_data = {
+    //   "F_Name":  this._DischargeCancelService.DischargeForm.get('FirstName').value || '%',
+    //   "L_Name": this._DischargeCancelService.DischargeForm.get('LastName').value || '%',
+    //   "Reg_No": this._DischargeCancelService.DischargeForm.get('RegNo').value || 0, 
+    //   "From_Dt": this.datePipe.transform(this._DischargeCancelService.DischargeForm.get('start').value, "MM-dd-yyyy") || '01/01/1900',
+    //   "To_Dt ": this.datePipe.transform(this._DischargeCancelService.DischargeForm.get('end').value, "MM-dd-yyyy") || '01/01/1900',
+    //   "OP_IP_Type": 1,
+    //   "AdmDisFlag": 1,
+    //   "IPNumber" :  this._DischargeCancelService.DischargeForm.get('IPDNo').value ||  0
+    // }
+    // console.log(D_data);
+    // this._DischargeCancelService.OPIPPatientList(D_data).subscribe(data => { 
+    //    this.ArryList = data as DischargeList[] 
+    //   this.dsDischargeList.data =this.ArryList.Table; 
+    //   console.log(this.dsDischargeList.data) 
+    //   this.dsDischargeList.sort = this.sort;
+    //   this.dsDischargeList.paginator = this.paginator; 
+    // //  this.sIsLoading = this.dsDischargeList.data.length == 0 ? 'no-data' : ''; 
   
-    },
-      error => {
-        this.sIsLoading = '';
-      });
+    // },
+    //   error => {
+    //     this.sIsLoading = '';
+    //   });
   }
   isLoading123:boolean=false;
   DischargeCancel(contact){
