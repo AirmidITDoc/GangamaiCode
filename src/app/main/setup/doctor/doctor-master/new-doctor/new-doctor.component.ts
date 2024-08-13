@@ -48,8 +48,9 @@ export class NewDoctorComponent implements OnInit {
     optionsPrefix: any[] = [];
     optionsDep: any[] = [];
     isdoctypeSelected: boolean = false;
+    
     isDepartmentSelected: boolean = false;
-
+  CurrentDate=new Date();
 
     // deptlist: any = [];
     vDepartmentid:any;
@@ -308,7 +309,7 @@ export class NewDoctorComponent implements OnInit {
         this._doctorService.getDoctortypeMasterCombo().subscribe(data => {
           this.DoctortypecmbList = data;
           if (this.data) {
-            const ddValue = this.DoctortypecmbList.filter(c => c.DoctorTypeId == this.registerObj.DoctorTypeId);
+            const ddValue = this.DoctortypecmbList.filter(c => c.Id == this.registerObj.DoctorTypeId);
             this._doctorService.myform.get('DoctorTypeId').setValue(ddValue[0]);
             this._doctorService.myform.updateValueAndValidity();
             return;
@@ -360,6 +361,7 @@ export class NewDoctorComponent implements OnInit {
   }
 
   
+
   private _filterDep(value: any): string[] {
     if (value) {
       const filterValue = value && value.departmentName ? value.departmentName.toLowerCase() : value.toLowerCase();
@@ -405,7 +407,7 @@ export class NewDoctorComponent implements OnInit {
                             this._doctorService.myform
                                 .get("LastName")
                                 .value || "%",
-                        dateOfBirth: "2023-08-30T06:08:46.971Z",// this._doctorService.myform.get("DateofBirth").value || '01/0/1900',
+                        dateOfBirth:this.registerObj.DateofBirth,//this._doctorService.myform.get("DateofBirth").value || '01/0/1900',
                         address:
                             this._doctorService.myform
                                 .get("Address")
@@ -448,7 +450,7 @@ export class NewDoctorComponent implements OnInit {
                                     .value
                             )
                         ),
-                        doctorTypeId: 0, //his._doctorService.myform.get("DoctorTypeId").value,
+                        doctorTypeId: this._doctorService.myform.get("DoctorTypeId").value.Id || 0,
                         ageYear:
                             this._doctorService.myform
                                 .get("AgeYear")
@@ -473,7 +475,7 @@ export class NewDoctorComponent implements OnInit {
                             this._doctorService.myform
                                 .get("RegNo")
                                 .value || "0",
-                        regDate:"2023-08-30T06:08:46.971Z",
+                        regDate:this.registerObj.RegDate,
                             // this._doctorService.myform.get("RegDate").value ||
                             // "01/01/1900",
                         mahRegNo:
@@ -481,13 +483,13 @@ export class NewDoctorComponent implements OnInit {
                             "0",
                             PanCardNo:0,
                             AadharCardNo:0,
-                        mahRegDate:"2023-08-30T06:08:46.971Z",
+                        mahRegDate:this.registerObj.MahRegDate,
                             // this._doctorService.myform.get("MahRegDate")
                             //     .value || "01/01/1900",
                        
                                 isInHouseDoctor:true,
                                 isOnCallDoctor:true,
-                                createdBy: this.accountService.currentUserValue.user.id,
+                                Addedby: this.accountService.currentUserValue.user.id,
                                 
                                 updatedBy: this.accountService.currentUserValue.user.id,
                         // RefDocHospitalName:
@@ -507,26 +509,11 @@ export class NewDoctorComponent implements OnInit {
                             this.toastr.success('Record Saved Successfully.', 'Saved !', {
                                 toastClass: 'tostr-tost custom-toast-success',
                               });
-                            // Swal.fire(
-                            //     "Saved !",
-                            //     "Record saved Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //     }
-                            // });
-                        } else {
-                            this.toastr.error('Doctor Master Master Data not saved !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
+                         
                         }
-                    },error => {
-                        this.toastr.error('Doctor Data not saved !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
                      });
 
-                // this.notification.success("Record added successfully");
+                
             } else {
                 var data3 = [];
 
@@ -599,9 +586,7 @@ export class NewDoctorComponent implements OnInit {
                                     .value
                             )
                         ),
-                        DoctorTypeId: 0,
-                        // this._doctorService.myform.get("DoctorTypeId")
-                        //     .value,
+                        DoctorTypeId: this._doctorService.myform.get("DoctorTypeId").value.Id || 0,
                         AgeYear:
                             this._doctorService.myform
                                 .get("AgeYear")
@@ -661,18 +646,10 @@ export class NewDoctorComponent implements OnInit {
                                 toastClass: 'tostr-tost custom-toast-success',
                               });
                          
-                        } else {
-                            this.toastr.error('Doctor Master Data not updated !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                        }
-                    },error => {
-                        this.toastr.error('Doctor Data not Updated !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
+                        } 
+                      });
 
-                // this.notification.success("Record updated successfully");
+                
             }
             this.onClose();
         }
@@ -686,19 +663,7 @@ export class NewDoctorComponent implements OnInit {
         this.dialogRef.close();
     }
 
-    // onChangeDateofBirth(DateOfBirth) {
-    //     if (DateOfBirth) {
-    //         const todayDate = new Date();
-    //         const dob = new Date(DateOfBirth);
-    //         const timeDiff = Math.abs(Date.now() - dob.getTime());
-    //         this.b_AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
-    //         this.b_AgeMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
-    //         this.b_AgeDay = Math.abs(todayDate.getDate() - dob.getDate());
-    //         //   this.registerObj.DateofBirth = DateOfBirth;
-    //         //   this._doctorService.myform.get('DateOfBirth').setValue(DateOfBirth);
-    //     }
-
-    // }
+   
 
     onChangeDateofBirth(DateOfBirth) {
    
@@ -730,18 +695,24 @@ export class NewDoctorComponent implements OnInit {
     }
     deptlist =[];
     SaveEnter(element) {
-      this.isLoading = 'save';
+      // this.isLoading = 'save';
         this.dataSource.data = [];
-        this.deptlist =this.DeptList;
+      //   this.deptlist =this.DeptList;
+      //   this.deptlist.push(
+      //       {
+      //           DeptId: element.Departmentid,
+      //           DeptName: element.departmentName,
+
+      //       });
+      //   this.dataSource.data = this.deptlist;
+
         this.deptlist.push(
-            {
-                DeptId: element.Departmentid,
-                DeptName: element.departmentName,
-
-            });
-        this.dataSource.data = this.deptlist;
-
-       
+          {
+            DeptId: element.Departmentid,
+            DeptName: element.departmentName,
+          });
+          this.dataSource.data = this.deptlist;
+          return;
     }
 
     deleteTableRow(element) {

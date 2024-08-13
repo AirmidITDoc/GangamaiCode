@@ -104,6 +104,7 @@ export class DoctorMasterService {
         return this._formBuilder.group({
             DoctorNameSearch: [""],
             IsDeletedSearch: ["2"],
+            IsConsultant:["1"]
         });
     }
 
