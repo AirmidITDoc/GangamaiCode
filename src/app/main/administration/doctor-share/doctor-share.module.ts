@@ -38,64 +38,66 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { AdministrationService } from '../administration.service';
 import { DoctorShareComponent } from './doctor-share.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTabsModule } from '@angular/material/tabs';
+import { AddDoctorShareComponent } from './add-doctor-share/add-doctor-share.component';
 
 
 
-const approutes : Routes =[
+const routes: Routes = [
   {
-    path: 'certificates',
-    component: DoctorShareComponent
+      path: "**",
+      component: DoctorShareComponent,
   },
-  // {
-  //   path: 'prescription',
-  //   component: MedicalCasepaperComponent
-  // },
 ];
 
 @NgModule({
-  declarations: [DoctorShareComponent],
+  declarations: [DoctorShareComponent, AddDoctorShareComponent],
   imports: [
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatMenuModule,
-    MatRippleModule,
-    MatTableModule,
-    MatToolbarModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatCardModule,
-    MatDividerModule,
-    MatDialogModule,
-    FuseSharedModule,
-    FuseConfirmDialogModule,
-    FuseSidebarModule,
-    MatChipsModule,
-    MatProgressSpinnerModule,
-    // WebcamModule,
-    ReactiveFormsModule,
-    MatAutocompleteModule,
-    MatSidenavModule,
-    MatExpansionModule,
-    MatGridListModule,
-    MatSnackBarModule,
-    MatSlideToggleModule,
-    MatListModule,
-    SharedModule,
-    MatStepperModule,
-    NgxMatSelectSearchModule,
-    MatDatepickerModule ,
-    MatTooltipModule,
-    MatBadgeModule,
-  MatIconModule,
-  RouterModule.forChild(approutes)
+    RouterModule.forChild(routes),
+    CommonModule,
+        MatButtonModule,
+        MatCheckboxModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatMenuModule,
+        MatRippleModule,
+        MatTableModule,
+        MatToolbarModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatSelectModule,
+        MatRadioModule,
+        MatTabsModule,
+        MatCardModule,
+        MatDividerModule,
+        MatDialogModule,
+        FuseSharedModule,
+        FuseConfirmDialogModule,
+        FuseSidebarModule,
+        MatChipsModule,
+        MatProgressSpinnerModule,
+        // WebcamModule,
+        ReactiveFormsModule,
+        MatAutocompleteModule,
+        MatSidenavModule,
+        MatExpansionModule,
+        MatGridListModule,
+        MatSnackBarModule,
+        MatSlideToggleModule,
+        MatListModule,
+        SharedModule,
+        MatStepperModule,
+        NgxMatSelectSearchModule,
+        MatDatepickerModule,
+        //  NgMultiSelectDropDownModule.forRoot(),
+         MatTooltipModule
   ],
-   providers:[AdministrationService,
-    DatePipe,
-    {provide: MatDialogRef, useValue: {}},
-    NotificationServiceService]
+  providers: [
+    DatePipe, 
+  ],
+  entryComponents: [DoctorShareComponent],
 })
 export class DOctorShareModule { }

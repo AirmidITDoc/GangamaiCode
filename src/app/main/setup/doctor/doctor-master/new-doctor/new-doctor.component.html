@@ -8,8 +8,8 @@
       <div class="modal-header-right">
 
         <div fxLayout="row" fxLayoutALign="end start">
-          <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
-          </app-common-date>
+          <!-- <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
+          </app-common-date> -->
           <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
             <mat-icon>close</mat-icon>
           </button>
@@ -386,7 +386,7 @@
   <div class="modal-footer p-24">
 
     <div class="modal-footer-buttons gap-8" fxLayout="row" fxLayoutAlign="end">
-      <button class="btn btn-danger-outline" (click)="onClose()">Reset</button>
+      <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
       <button class="btn btn-primary " (click)="onSubmit()">Save</button>
     </div>
   </div>
