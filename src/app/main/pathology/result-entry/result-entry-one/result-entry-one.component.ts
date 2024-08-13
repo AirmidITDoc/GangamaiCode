@@ -103,7 +103,7 @@ export class ResultEntryOneComponent implements OnInit {
         private _fuseSidebarService: FuseSidebarService) {
 
         if (this.data) {
-            // console.log(this.data)
+            
             this.selectedAdvanceObj2 = data.patientdata;
             console.log(this.selectedAdvanceObj2)
             this.OPIPID = this.selectedAdvanceObj2.OPD_IPD_ID;
@@ -282,9 +282,10 @@ export class ResultEntryOneComponent implements OnInit {
 
     getResultList(advanceData) {
         this.sIsLoading = 'loading-data';
+        debugger
         let SelectQuery
 
-        // SelectQuery = "Select * from m_lvw_Retrieve_PathologyResult where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ")"
+                //  SelectQuery = "Select * from m_lvw_Retrieve_PathologyResult where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ")"
         if (this.selectedAdvanceObj2.AgeYear > 0 && this.OP_IPType == 0) {
             SelectQuery = "Select * from m_lvwRtrv_PathologyResultOPWithAge where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ") and SexId=" + this.SexId + " and MaxAge >= " + this.CheckAge + " and MinAge < " + this.CheckAge
         }
@@ -313,7 +314,7 @@ export class ResultEntryOneComponent implements OnInit {
 
     getResultListIP() {
         this.sIsLoading = 'loading-data';
-        let SelectQuery = "Select * from m_lvw_Retrieve_PathologyResultIPPatientUpdate where PathReportId in(" + this.reportIdData + ")"
+        let SelectQuery = "Select * from m_lvw_Retrieve_PathologyResultUpdate_IPAgeWise where PathReportId in(" + this.reportIdData + ")"
         console.log(SelectQuery);
         this._SampleService.getPathologyResultListforIP(SelectQuery).subscribe(Visit => {
             this.dataSource.data = Visit as Pthologyresult[];
@@ -333,7 +334,7 @@ export class ResultEntryOneComponent implements OnInit {
 
     getResultListOP() {
         this.sIsLoading = 'loading-data';
-        let SelectQuery = "Select * from m_lvw_Retrieve_PathologyResultUpdate where PathReportId in(" + this.reportIdData + ")"
+        let SelectQuery = "Select * from m_lvw_Retrieve_PathologyResultUpdate_OPAgeWise where PathReportId in(" + this.reportIdData + ")"
         console.log(SelectQuery)
         this._SampleService.getPathologyResultListforOP(SelectQuery).subscribe(Visit => {
             this.dataSource.data = Visit as Pthologyresult[];
@@ -391,7 +392,7 @@ export class ResultEntryOneComponent implements OnInit {
         });
 
         this.dataSource.data.forEach((element) => {
-
+debugger
             let pathologyInsertReportObj = {};
             pathologyInsertReportObj['PathReportId'] = element.PathReportId //element1.PathReportId;
             pathologyInsertReportObj['CategoryID'] = element.CategoryId || 0;
@@ -410,8 +411,8 @@ export class ResultEntryOneComponent implements OnInit {
             pathologyInsertReportObj['UnitName'] = element.UnitName || '';
             pathologyInsertReportObj['PatientName'] = this.selectedAdvanceObj2.PatientName || '';
             pathologyInsertReportObj['RegNo'] = this.selectedAdvanceObj2.RegNo;
-            pathologyInsertReportObj['MinValue'] = element.MinValue || 0;
-            pathologyInsertReportObj['MaxValue'] = element.Maxvalue || 0;
+            pathologyInsertReportObj['MinValue'] = parseFloat(element.MinValue) || 0;
+            pathologyInsertReportObj['MaxValue'] = parseFloat(element.MaxValue) || 0;
             pathologyInsertReportObj['SampleID'] = element.SampleID || '';
 
             pathologyInsertReportObj['ParaBoldFlag'] = element.ParaBoldFlag || '';
@@ -670,7 +671,7 @@ export class Pthologyresult {
     CategoryName: any;
     UnitName: any;
     MinValue: any;
-    Maxvalue: any;
+    MaxValue: any;
     SampleID: any;
 
     constructor(Pthologyresult) {
@@ -696,7 +697,7 @@ export class Pthologyresult {
         this.CategoryName = Pthologyresult.CategoryName || '';
         this.UnitName = Pthologyresult.UnitName || '';
         this.MinValue = Pthologyresult.MinValue || '';
-        this.Maxvalue = Pthologyresult.Maxvalue || 0;
+        this.MaxValue = Pthologyresult.MaxValue || 0;
         this.SampleID = Pthologyresult.SampleID || 0;
     }
 

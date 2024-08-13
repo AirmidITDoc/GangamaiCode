@@ -75,12 +75,14 @@ export class ParameterFormMasterComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        ;
+        
         this.selectedItems = [];
         this.dsParameterAgeList.data = [];
 
         this.getunitNameCombobox();
-        
+        this.getGenderNameCombobox();
+        this.getDscriptiveMasterList();
+
         if (this.data) {
             this.getUnitNameCombobox();
             this.registerObj = this.data.registerObj;
@@ -100,13 +102,12 @@ export class ParameterFormMasterComponent implements OnInit {
         );
 
 
-        this.getGenderNameCombobox();
-        this.getDscriptiveMasterList();
-
+       
 
     }
 
     getGenderNameCombobox() {
+        debugger
         this._ParameterService.getGenderMasterCombo().subscribe(data => {
             this.GendercmbList = data;
             console.log(this.GendercmbList);
