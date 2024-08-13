@@ -298,32 +298,35 @@
 
       </form>
       <mat-card style="padding: 6px;">
-        <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="33%">
+        <form [formGroup]="_doctorService.myform">
+        <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="33%" style="margin-left: 10px;">
 
-          <mat-form-field appearance="outline" fxFlex style="margin-right: 20px;">
+        
+          <mat-form-field appearance="outline" fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="33%" style="margin-right: 20px;">
             <mat-label>Department</mat-label>
             <input matAutocompletePosition="below" type="text" placeholder="Select Department"
-            [(ngModel)]="vDepartmentid" matInput #dept
-              (keydown)="onEnterdept($event,vDepartmentid.Departmentid)" formControlName="Departmentid"
-              [matAutocomplete]="autoDep" required>
+                [(ngModel)]="vDepartmentid" matInput #dept
+                (keydown)="onEnterdept($event,vDepartmentid.Departmentid)"
+                formControlName="Departmentid" [matAutocomplete]="autoDep" required>
             <span matSuffix style="display: flex;">
-              <mat-icon class="mat-icon-close"
-                (click)="_doctorService.myform.get('Departmentid').setValue(''); isDepartmentSelected = false;">close</mat-icon>
-              <mat-icon class="mat-icon-close"
-                (click)="_doctorService.myform.get('Departmentid').setValue(''); isDepartmentSelected = false;">search</mat-icon>
+                <mat-icon class="mat-icon-close"
+                    (click)="_doctorService.myform.get('Departmentid').setValue(''); isDepartmentSelected = false;">close</mat-icon>
+                <mat-icon class="mat-icon-close"
+                    (click)="_doctorService.myform.get('Departmentid').setValue(''); isDepartmentSelected = false;">search</mat-icon>
             </span>
             <mat-autocomplete #autoDep="matAutocomplete" [displayWith]="getOptionTextDep">
-              <mat-option *ngFor="let option of filteredOptionsDep | async" [value]="option" (onSelectionChange)="SaveEnter(option)">
-                {{option.departmentName}}
-              </mat-option>
+                <mat-option *ngFor="let option of filteredOptionsDep | async" [value]="option"
+                    (onSelectionChange)="SaveEnter(option)">
+                    {{option.departmentName}}
+                </mat-option>
             </mat-autocomplete>
-          </mat-form-field>
-
+        </mat-form-field>
+        
           <mat-table #table matSort [dataSource]="dataSource" class="table2" [@animateStagger]="{value:'50'}"
             style="height:130px !important;overflow: auto;width: 500px;">
 
             <ng-container matColumnDef="DeptId">
-              <mat-header-cell *matHeaderCellDef mat-sort-header style="margin-right: 5px;">Dept Id</mat-header-cell>
+              <mat-header-cell *matHeaderCellDef mat-sort-header style="margin-right: 5px;">Department Id</mat-header-cell>
               <mat-cell *matCellDef="let contact">
                 {{contact.DeptId}}
               </mat-cell>
@@ -331,7 +334,7 @@
 
             <ng-container matColumnDef="DeptName">
               <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                Dept Name
+                Department Name
               </mat-header-cell>
               <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                 {{contact.DeptName}}
@@ -374,8 +377,9 @@
               [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
             </mat-footer-row>
           </mat-table>
+        
         </div>
-      
+      </form>
       </mat-card>
     </div>
   </div>

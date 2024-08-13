@@ -46,6 +46,16 @@
 
                                   
                                     
+                                    <mat-radio-group name="IsConsultant" formControlName="IsConsultant"
+                                    (change)="onSearch()">
+                                    <mat-radio-button (click)="toggle1(2)" [checked]="true"
+                                        value="2">All</mat-radio-button>
+                                    <mat-radio-button mat-fab value="1"
+                                        (click)="toggle1(1)">IsConsultant</mat-radio-button>
+                                    <mat-radio-button (click)="toggle1(0)" value="0">IsRefDoc</mat-radio-button>
+                                     </mat-radio-group>
+
+                                       
                                     <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch"
                                     (change)="onSearch()">
                                     <mat-radio-button (click)="toggle(2)" [checked]="true"
@@ -55,6 +65,7 @@
                                     <mat-radio-button (click)="toggle(0)" value="0">IsDeactive</mat-radio-button>
                                      </mat-radio-group>
                               
+
                                     <button type="button" mat-raised-button class="searchButton" (click)="onSearch()"  matTooltip="search">
                                         <mat-icon>search</mat-icon>
                                     </button>
@@ -122,9 +133,9 @@
                                             </mat-cell>
                                         </ng-container> -->
                                      
-                                        <ng-container matColumnDef="PatientName" sticky>
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header  class="w-300"> PatientName </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm  class="w-300"> {{element.PatientName}}
+                                        <ng-container matColumnDef="DoctorName" sticky>
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header  class="w-300"> DoctorName </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm  class="w-300"> {{element.DoctorName}}
                                             </mat-cell>
                                         </ng-container>
     
@@ -287,10 +298,10 @@
                                             </mat-footer-cell>
                                         </ng-container>
 
-                                        <mat-header-row class="accent min-width-2500"
+                                        <mat-header-row class="accent min-width-3000"
                                         *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
                                         <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
-                                        class=" min-width-2500"
+                                        class=" min-width-3000"
                                             [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                         <mat-footer-row *matFooterRowDef="['loading']"
                                             [ngClass]="{'hide':DSDoctorMasterList!=null}"></mat-footer-row>

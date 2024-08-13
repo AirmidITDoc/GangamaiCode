@@ -37,7 +37,7 @@ export class DoctorMasterComponent implements OnInit {
         // "PrefixName",
         // "FirstName",
         // "MiddleName",
-        "PatientName",
+        "DoctorName",
         "DateofBirth",
         "Address",
         "City",
@@ -88,12 +88,17 @@ export class DoctorMasterComponent implements OnInit {
        this.getDoctorMasterList();
     }
     getDoctorMasterList(){
+        let Refstatus
+        if(this.currentStatus1==1)
+            Refstatus=0
+        if(this.currentStatus1==0)
+            Refstatus=1
         var vdata={ 
         "F_Name": this._doctorService.myformSearch.get('DoctorNameSearch').value.trim() + "%" || "%",
         "L_Name": this._doctorService.myform.get('LastName').value || "%",
         "FlagActive": this.currentStatus ,//this._doctorService.myform.get('isActive').value || 1,  
-        "ConsultantDoc_All": this._doctorService.myform.get('IsConsultant').value || 0,
-        "ReferDoc_All": this._doctorService.myform.get('IsRefDoc').value || 0
+        "ConsultantDoc_All":this.currentStatus1 ,//this._doctorService.myformSearch.get('IsConsultant').value || 0,
+        "ReferDoc_All": Refstatus//(this._doctorService.myformSearch.get('IsConsultant').value) || 0
         }
         console.log(vdata)
         this._doctorService.getDoctorMasterList(vdata).subscribe((data) =>{
@@ -101,7 +106,7 @@ export class DoctorMasterComponent implements OnInit {
             this.isLoading = false;
             this.DSDoctorMasterList.sort = this.sort;
             this.DSDoctorMasterList.paginator = this.paginator;
-            console.log(this.DSDoctorMasterList);
+            console.log(this.DSDoctorMasterList.data);
         },
                  (error) => (this.isLoading = false)
          );
@@ -119,6 +124,19 @@ export class DoctorMasterComponent implements OnInit {
 
         }
     }
+    currentStatus1=0;
+    toggle1(val: any) {
+        if (val == "2") {
+            this.currentStatus1 = 2;
+        } else if(val=="1") {
+            this.currentStatus1 = 1;
+        }
+        else{
+            this.currentStatus1 = 0;
+
+        }
+    }
+
     onEdit(row) {
 
         let Year,Day,Month;
@@ -166,8 +184,8 @@ export class DoctorMasterComponent implements OnInit {
             NewDoctorComponent,
 
             {
-                maxWidth: "98vw",
-                maxHeight: "100vh",
+                maxWidth: "80vw",
+                maxHeight: "90vh",
                 width: "100%",
                 height: "100%",
                 data : {
@@ -266,7 +284,7 @@ export class DoctorMaster {
     CurrentDate = new Date();
     IsDeletedSearch: number;
     Age:any;
-    PatientName:any;
+    DoctorName:any;
     IsActive:any;
     /**
      * Constructor
@@ -276,7 +294,7 @@ export class DoctorMaster {
     constructor(DoctorMaster) {
         {
             this.DoctorId = DoctorMaster.DoctorId || 0;
-            this.PatientName = DoctorMaster.PatientName || "";
+            this.DoctorName = DoctorMaster.DoctorName || "";
             this.PrefixID = DoctorMaster.PrefixID || "";
             this.FirstName = DoctorMaster.FirstName || "";
             this.MiddleName = DoctorMaster.MiddleName || "";
