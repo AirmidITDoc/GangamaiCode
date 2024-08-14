@@ -31,6 +31,8 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
 import { SharedModule } from "app/main/shared/shared.module";
 import { DoctorMasterService } from "./doctor-master.service";
+import { SignatureViewComponent } from "./signature-view/signature-view.component";
+import { NgxSignaturePadModule } from "@o.krucheniuk/ngx-signature-pad";
 
 const routes: Routes = [
     {
@@ -40,7 +42,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [DoctorMasterComponent, NewDoctorComponent],
+    declarations: [DoctorMasterComponent, NewDoctorComponent,SignatureViewComponent],
     imports: [
         RouterModule.forChild(routes),
 
@@ -72,6 +74,7 @@ const routes: Routes = [
         MatProgressSpinnerModule,
         SharedModule,
         NgxMatSelectSearchModule,
+        NgxSignaturePadModule
     ],
     providers: [DoctorMasterService],
     entryComponents: [DoctorMasterComponent],
