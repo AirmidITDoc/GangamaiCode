@@ -20,8 +20,7 @@ import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { ReactiveFormsModule } from '@angular/forms'; 
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -41,6 +40,8 @@ import { DoctorShareComponent } from './doctor-share.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
 import { AddDoctorShareComponent } from './add-doctor-share/add-doctor-share.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { ProcessDoctorShareComponent } from './process-doctor-share/process-doctor-share.component';
 
 
 
@@ -52,7 +53,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [DoctorShareComponent, AddDoctorShareComponent],
+  declarations: [DoctorShareComponent, AddDoctorShareComponent, ProcessDoctorShareComponent],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,

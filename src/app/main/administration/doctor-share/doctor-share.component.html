@@ -1,3 +1,4 @@
+
 <div class="simple page-layout inner-scroll inner-sidebar left-sidebar" dynamicTableHeight>
     <mat-toolbar style="width: 100%;height: 40px;justify-content: space-between;">
         <div fxLayout="row" fxLayoutAlign="start center">
@@ -12,6 +13,9 @@
             </span>
         </div>
         <div fxLayout="row" fxLayoutAlign="end" class="left-icon">
+            <button mat-raised-button (click)="processDocShare()" fxLayoutAlign="center center" class="py-8">
+               <span>Process Doctor Share</span>
+            </button>&nbsp;
             <button mat-raised-button (click)="NewDocShare()" fxLayoutAlign="center center" class="py-8">
                 <mat-icon>add</mat-icon> <span> Doctor Share</span>
             </button>
@@ -35,9 +39,8 @@
                                 </div>
                     
                                 <mat-form-field class=searchRegId appearance="outline" fxFlex="30%">
-                                    <input type="text" name="RegId" formControlName="RegId"
-                                        placeholder="Patient Name (enter 2 char)/ MR No/ Mobile No " matInput [matAutocomplete]="autoReg"
-                                        (input)="getSearchList()" maxlength="10">
+                                    <input type="text" name="RegId" formControlName="RegId" placeholder="Patient Name (enter 2 char)/ MR No/ Mobile No "
+                                        matInput [matAutocomplete]="autoReg" (input)="getSearchList()" maxlength="10">
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
                                             (click)="_DoctorShareService.UserFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">close</mat-icon>
@@ -53,18 +56,18 @@
                                         </mat-option>
                                     </mat-autocomplete>
                                 </mat-form-field>
-                    
+ 
                                 <mat-form-field appearance="outline" fxFlex="20%">
                                     <mat-label>Select Doctor Name</mat-label>
                                     <input type="text" name="DoctorID" formControlName="DoctorID" placeholder="Doctor Name " matInput
-                                        [matAutocomplete]="auto">
+                                        [matAutocomplete]="autoDoc">
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
                                             (click)="_DoctorShareService.UserFormGroup.get('DoctorID').setValue(''); isDoctorIDSelected = false;">close</mat-icon>
                                         <mat-icon class="mat-icon-close"
                                             (click)="_DoctorShareService.UserFormGroup.get('DoctorID').setValue(''); isDoctorIDSelected = false;">search</mat-icon>
                                     </span>
-                                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionTextDoctorName">
+                                    <mat-autocomplete #autoDoc="matAutocomplete" [displayWith]="getOptionTextDoctorName">
                                         <mat-option *ngFor="let option of DoctorListfilteredOptions | async" [value]="option">
                                             {{option.Doctorname}}
                                         </mat-option>
@@ -205,7 +208,7 @@
                                         <div class="spinner-border text-danger"></div>
                                     </div>
                     
-                                    <mat-table class="table1" matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
+                                    <mat-table class="table1" matSort [dataSource]="dsAdditionalPay" [@animateStagger]="{value:'50'}"
                                     style="overflow: auto;">
                 
                                     <ng-container matColumnDef="PBillNo">
@@ -292,7 +295,7 @@
                                         [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                                     </mat-footer-row>
                                     <mat-footer-row *matFooterRowDef="['noData']"
-                                        [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
+                                        [ngClass]="{'hide':!(dsAdditionalPay!=null && dsAdditionalPay.data.length==0)}">
                                     </mat-footer-row>
                                 </mat-table>
                                 <mat-paginator #paginator [pageSizeOptions]="[35, 50, 75, 100]" [pageSize]="35">
@@ -305,4 +308,5 @@
             </div>
         </div>
     </div>
+ 
 </div>
