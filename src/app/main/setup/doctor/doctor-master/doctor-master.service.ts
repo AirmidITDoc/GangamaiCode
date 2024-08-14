@@ -112,11 +112,8 @@ export class DoctorMasterService {
         this.createdDoctormasterForm();
     }
 
-    public getDoctorMasterList(m_data) {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_DoctorMaster_List_Dtls",
-            m_data
-        );
+    public getDoctorMasterList(Param) {
+        return this._httpClient.post("Generic/GetDataSetByProc?procName=m_Rtrv_DoctorMasterList_Pagi", Param);
     }
 
     public deactivateTheStatus(m_data) {

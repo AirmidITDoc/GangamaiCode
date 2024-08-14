@@ -34,9 +34,6 @@ export class DoctorMasterComponent implements OnInit {
 
     displayedColumns: string[] = [
         "DoctorId",
-        // "PrefixName",
-        // "FirstName",
-        // "MiddleName",
         "DoctorName",
         "DateofBirth",
         "Address",
@@ -66,7 +63,7 @@ export class DoctorMasterComponent implements OnInit {
         public _doctorService: DoctorMasterService,
         private accountService: AuthenticationService,
         public _matDialog: MatDialog
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.getDoctorMasterList();
@@ -85,53 +82,55 @@ export class DoctorMasterComponent implements OnInit {
     }
 
     onSearch() {
-       this.getDoctorMasterList();
+        this.getDoctorMasterList();
     }
-    getDoctorMasterList(){
+    resultsLength = 0;
+    getDoctorMasterList() {
         let Refstatus
-        if(this.currentStatus1==1)
-            Refstatus=0
-        if(this.currentStatus1==0)
-            Refstatus=1
-        var vdata={ 
-        "F_Name": this._doctorService.myformSearch.get('DoctorNameSearch').value.trim() + "%" || "%",
-        "L_Name": this._doctorService.myform.get('LastName').value || "%",
-        "FlagActive": this.currentStatus ,//this._doctorService.myform.get('isActive').value || 1,  
-        "ConsultantDoc_All":this.currentStatus1 ,//this._doctorService.myformSearch.get('IsConsultant').value || 0,
-        "ReferDoc_All": Refstatus//(this._doctorService.myformSearch.get('IsConsultant').value) || 0
+        if (this.currentStatus1 == 1)
+            Refstatus = 0
+        if (this.currentStatus1 == 0)
+            Refstatus = 1
+        var vdata = {
+            "F_Name": this._doctorService.myformSearch.get('DoctorNameSearch').value.trim() + "%" || "%",
+            "L_Name": this._doctorService.myform.get('LastName').value || "%",
+            "FlagActive": this.currentStatus,
+            "ConsultantDoc_All": this.currentStatus1,
+            "ReferDoc_All": Refstatus,
+            Start:(this.paginator?.pageIndex??1),
+            Length:(this.paginator?.pageSize??30),
         }
         console.log(vdata)
-        this._doctorService.getDoctorMasterList(vdata).subscribe((data) =>{
-            this.DSDoctorMasterList.data= data as DoctorMaster[];
-            this.isLoading = false;
-            this.DSDoctorMasterList.sort = this.sort;
-            this.DSDoctorMasterList.paginator = this.paginator;
-            console.log(this.DSDoctorMasterList.data);
+        this._doctorService.getDoctorMasterList(vdata).subscribe((data) => {
+            this.DSDoctorMasterList.data = data["Table1"]??[] as DoctorMaster[];
+            //  this.DSDoctorMasterList.sort = this.sort;
+             this.resultsLength= data["Table"][0]["total_row"];
+             this.sIsLoading = '';
         },
-                 (error) => (this.isLoading = false)
-         );
+            (error) => (this.isLoading = false)
+        );
     }
 
-    currentStatus=0;
+    currentStatus = 0;
     toggle(val: any) {
         if (val == "2") {
             this.currentStatus = 2;
-        } else if(val=="1") {
+        } else if (val == "1") {
             this.currentStatus = 1;
         }
-        else{
+        else {
             this.currentStatus = 0;
 
         }
     }
-    currentStatus1=0;
+    currentStatus1 = 0;
     toggle1(val: any) {
         if (val == "2") {
             this.currentStatus1 = 2;
-        } else if(val=="1") {
+        } else if (val == "1") {
             this.currentStatus1 = 1;
         }
-        else{
+        else {
             this.currentStatus1 = 0;
 
         }
@@ -139,58 +138,24 @@ export class DoctorMasterComponent implements OnInit {
 
     onEdit(row) {
 
-        let Year,Day,Month;
-        if(row.AgeYear !=null || row.AgeDay !=null || row.AgeMonth !=null){
-            Year=row.AgeYear.trim();
-            Day=row.AgeDay.trim();
-            Month=row.AgeMonth.trim();
+        let Year, Day, Month;
+        if (row.AgeYear != null || row.AgeDay != null || row.AgeMonth != null) {
+            Year = row.AgeYear.trim();
+            Day = row.AgeDay.trim();
+            Month = row.AgeMonth.trim();
         }
-        // var m_data = {
-        //     DoctorId: row.DoctorId,
-        //     PrefixID: row.PrefixID,
-        //     FirstName: row.FirstName.trim(),
-        //     MiddleName: row.MiddleName.trim(),
-        //     LastName: row.LastName.trim(),
-        //     DateofBirth: row.DateofBirth,
-        //     Address: row.Address.trim(),
-        //     City: row.City.trim(),
-        //     Pin: row.Pin,
-        //     Phone: row.Phone,
-        //     Mobile: row.Mobile.trim(),
-        //     GenderId: row.GenderId,
-        //     Education: row.Education.trim(),
-        //     IsConsultant: Boolean(JSON.stringify(row.IsConsultant)),
-        //     IsRefDoc: JSON.stringify(row.IsRefDoc),
-        //     IsDeleted: Boolean(JSON.stringify(row.IsDeleted)),
-        //     DoctorTypeId: row.DoctorTypeId,
-        //     AgeYear: Year,
-        //     AgeMonth:Month,
-        //     AgeDay: Day,
-        //     PassportNo: row.PassportNo,
-        //     ESINO: row.ESINO,
-        //     RegNo: row.RegNo,
-        //     RegDate: row.RegDate,
-        //     MahRegNo: row.MahRegNo,
-        //     MahRegDate: row.MahRegDate,
-        //     AddedBy: row.Addedby,
-        //     RefDocHospitalName: row.RefDocHospitalName,
-        //     UpdatedBy: row.UpdatedBy,
-        // };
-
         console.log(row);
         this._doctorService.populateForm(row);
-
         const dialogRef = this._matDialog.open(
             NewDoctorComponent,
-
             {
                 maxWidth: "80vw",
                 maxHeight: "90vh",
                 width: "100%",
                 height: "100%",
-                data : {
-                    registerObj : row,
-                    }
+                data: {
+                    registerObj: row,
+                }
             }
         );
 
@@ -213,11 +178,9 @@ export class DoctorMasterComponent implements OnInit {
         });
     }
 
-  
+
 
     onDeactive(row) {
-
-       
         Swal.fire({
             title: 'Confirm Status',
             text: 'Are you sure you want to Change Status?',
@@ -234,7 +197,7 @@ export class DoctorMasterComponent implements OnInit {
                     Query = "Update DoctorMaster set IsActive=0 where DoctorId=" + row.DoctorId;
                 }
                 else {
-                     Query = "Update DoctorMaster set IsActive=1 where DoctorId=" + row.DoctorId;
+                    Query = "Update DoctorMaster set IsActive=1 where DoctorId=" + row.DoctorId;
                 }
                 console.log(Query);
                 this._doctorService.deactivateTheStatus(Query)
@@ -283,9 +246,9 @@ export class DoctorMaster {
     AddedBy: String;
     CurrentDate = new Date();
     IsDeletedSearch: number;
-    Age:any;
-    DoctorName:any;
-    IsActive:any;
+    Age: any;
+    DoctorName: any;
+    IsActive: any;
     /**
      * Constructor
      *
@@ -323,7 +286,7 @@ export class DoctorMaster {
             this.MahRegDate = DoctorMaster.MahRegDate || this.CurrentDate;
             this.UpdatedBy = DoctorMaster.UpdatedBy || "";
             this.AddedBy = DoctorMaster.AddedBy || "";
-            this.IsActive= DoctorMaster.IsActive || 1;
+            this.IsActive = DoctorMaster.IsActive || 1;
             this.RefDocHospitalName = DoctorMaster.RefDocHospitalName || "";
             this.IsDeletedSearch = DoctorMaster.IsDeletedSearch || "";
         }
