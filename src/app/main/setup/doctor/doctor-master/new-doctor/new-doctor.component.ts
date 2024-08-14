@@ -14,11 +14,11 @@ import { ToastrService } from "ngx-toastr";
 import { SignatureViewComponent } from "../signature-view/signature-view.component";
 
 @Component({
-  selector: "app-new-doctor",
-  templateUrl: "./new-doctor.component.html",
-  styleUrls: ["./new-doctor.component.scss"],
-  encapsulation: ViewEncapsulation.None,
-  animations: fuseAnimations,
+    selector: "app-new-doctor",
+    templateUrl: "./new-doctor.component.html",
+    styleUrls: ["./new-doctor.component.scss"],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class NewDoctorComponent implements OnInit {
 
@@ -31,7 +31,6 @@ export class NewDoctorComponent implements OnInit {
     DoctortypecmbList: any = [];
     DepartmentcmbList: any = [];
     selectedGenderID: any;
-    DeptList: any = [];
     registerObj = new DoctorMaster({});
     docobject: DoctorDepartmentDet;
     msg: any;
@@ -52,8 +51,6 @@ export class NewDoctorComponent implements OnInit {
 
     isDepartmentSelected: boolean = false;
     CurrentDate = new Date();
-
-    // deptlist: any = [];
     vDepartmentid: any;
     displayedColumns = [
 
@@ -62,14 +59,12 @@ export class NewDoctorComponent implements OnInit {
         'action'
     ];
 
-  public departmentFilterCtrl: FormControl = new FormControl();
-  public filteredDepartment: ReplaySubject<any> = new ReplaySubject<any>(1);
+    public departmentFilterCtrl: FormControl = new FormControl();
+    public filteredDepartment: ReplaySubject<any> = new ReplaySubject<any>(1);
 
-  private _onDestroy = new Subject<void>();
+    private _onDestroy = new Subject<void>();
 
-  DeptSource = new MatTableDataSource<DepartmenttList>();
-
-    dataSource = new MatTableDataSource<DepartmenttList>();
+    DeptSource = new MatTableDataSource<DepartmenttList>();
     isAllSelected = false;
     constructor(
         public _doctorService: DoctorMasterService,
@@ -102,14 +97,16 @@ export class NewDoctorComponent implements OnInit {
 
     }
     ngOnInit(): void {
-        this.getDocDeptList();
+        this.getPrefixList();
+        this.getGendorMasterList();
+        this.getDoctortypeNameCombobox();
+        this.getDepartmentList();
 
         if (this.data) {
             this.registerObj = this.data.registerObj;
             this.b_AgeYear = this.data.registerObj.AgeYear;
             this.b_AgeDay = this.data.registerObj.AgeDay;
             this.b_AgeMonth = this.data.registerObj.AgeMonth;
-
             this.getDocDeptList();
         }
         else {
@@ -117,12 +114,6 @@ export class NewDoctorComponent implements OnInit {
             this._doctorService.myform.get('isActive').setValue(1);
             this._doctorService.myform.get('IsConsultant').setValue(1);
         }
-
-        this.getPrefixList();
-        this.getGendorMasterList();
-        this.getDoctortypeNameCombobox();
-        this.getDepartmentList();
-
 
         this.filteredOptionsPrefix = this._doctorService.myform.get('PrefixID').valueChanges.pipe(
             startWith(''),
@@ -256,10 +247,10 @@ export class NewDoctorComponent implements OnInit {
 
 
 
-  // validation
-  get f() {
-    return this._doctorService.myform.controls;
-  }
+    // validation
+    get f() {
+        return this._doctorService.myform.controls;
+    }
 
 
     getDocDeptList() {
@@ -268,9 +259,8 @@ export class NewDoctorComponent implements OnInit {
             //"DoctorId" :this.registerObj.DoctorId
         }
         this._doctorService.getDocDeptwiseList(m_data).subscribe(data => {
-            this.dataSource.data = data as DepartmenttList[];
-            this.DeptList = this.dataSource.data;
-            console.log(this.dataSource);
+            data.forEach((obj, i) => obj.selected = true)
+            this.selectedItems = data as any[];
         },
             error => {
                 // this.sIsLoading = '';
@@ -282,16 +272,16 @@ export class NewDoctorComponent implements OnInit {
         const toSelect = this.PrefixcmbList.find(c => c.PrefixID == this.registerObj.PrefixID);
         this._doctorService.myform.get('PrefixID').setValue(toSelect);
 
-    const toSelect1 = this.DepartmentcmbList.find(c => c.Departmentid == this.docobject.DepartmentId);
-    this._doctorService.myform.get('Departmentid').setValue(toSelect1);
+        const toSelect1 = this.DepartmentcmbList.find(c => c.Departmentid == this.docobject.DepartmentId);
+        this._doctorService.myform.get('Departmentid').setValue(toSelect1);
 
-    // const toSelectReligion = this.ReligionList.find(c => c.ReligionId == this.registerObj.ReligionId);
-    // this._doctorService.myform.get('ReligionId').setValue(toSelectReligion);
+        // const toSelectReligion = this.ReligionList.find(c => c.ReligionId == this.registerObj.ReligionId);
+        // this._doctorService.myform.get('ReligionId').setValue(toSelectReligion);
 
-    this._doctorService.myform.updateValueAndValidity();
-    // this.dialogRef.close();
+        this._doctorService.myform.updateValueAndValidity();
+        // this.dialogRef.close();
 
-  }
+    }
 
 
 
@@ -374,6 +364,7 @@ export class NewDoctorComponent implements OnInit {
 
     getDepartmentList() {
         this._doctorService.getDepartmentCombobox().subscribe(data => {
+            data.forEach((obj, i) => obj.selected = false)
             this.DepartmentcmbList = data;
             this.optionsDep = this.DepartmentcmbList.slice();
             this.filteredOptionsDep = this._doctorService.myform.get('Departmentid').valueChanges.pipe(
@@ -383,8 +374,21 @@ export class NewDoctorComponent implements OnInit {
 
         });
     }
+    selectedItems = [];
+    toggleSelection(item: any) {
+        item.selected = !item.selected;
+        if (item.selected) {
+            this.selectedItems.push(item);
+        } else {
+            const i = this.selectedItems.findIndex(value => value.Departmentid === item.Departmentid);
+            this.selectedItems.splice(i, 1);
+        }
 
-
+    }
+    remove(e){
+        debugger
+        this.toggleSelection(e);
+    }
 
 
     private _filterDep(value: any): string[] {
@@ -405,9 +409,9 @@ export class NewDoctorComponent implements OnInit {
 
                 var data2 = [];
 
-                this.dataSource.data.forEach((element) => {
+                this.selectedItems.forEach((element) => {
                     let DocInsertObj = {};
-                    DocInsertObj['DepartmentId'] = element.DeptId
+                    DocInsertObj['DepartmentId'] = element.Departmentid
                     DocInsertObj['DoctorId'] = 0;
                     data2.push(DocInsertObj);
                 });
@@ -540,12 +544,12 @@ export class NewDoctorComponent implements OnInit {
             } else {
                 var data3 = [];
 
-        this.dataSource.data.forEach((element) => {
-          let DocInsertObj = {};
-          DocInsertObj['DepartmentId'] = element.DeptId;
-          DocInsertObj['DoctorId'] = this._doctorService.myform.get("DoctorId").value;
-          data3.push(DocInsertObj);
-        });
+                this.selectedItems.forEach((element) => {
+                    let DocInsertObj = {};
+                    DocInsertObj['DepartmentId'] = element.Departmentid;
+                    DocInsertObj['DoctorId'] = this._doctorService.myform.get("DoctorId").value;
+                    data3.push(DocInsertObj);
+                });
 
 
                 var m_dataUpdate = {
@@ -678,13 +682,13 @@ export class NewDoctorComponent implements OnInit {
         }
     }
 
-  onClear() {
-    this._doctorService.myform.reset();
-  }
-  onClose() {
-    this._doctorService.myform.reset();
-    this.dialogRef.close();
-  }
+    onClear() {
+        this._doctorService.myform.reset();
+    }
+    onClose() {
+        this._doctorService.myform.reset();
+        this.dialogRef.close();
+    }
 
 
 
@@ -705,7 +709,6 @@ export class NewDoctorComponent implements OnInit {
     }
 
     onChangeGenderList(prefixObj) {
-
         if (prefixObj) {
             this._doctorService
                 .getGenderCombo(prefixObj.PrefixID)
@@ -717,38 +720,6 @@ export class NewDoctorComponent implements OnInit {
                 });
         }
     }
-    deptlist = [];
-    SaveEnter(element) {
-        // this.isLoading = 'save';
-        this.dataSource.data = [];
-        //   this.deptlist =this.DeptList;
-        //   this.deptlist.push(
-        //       {
-        //           DeptId: element.Departmentid,
-        //           DeptName: element.departmentName,
-
-        //       });
-        //   this.dataSource.data = this.deptlist;
-
-        this.deptlist.push(
-            {
-                DeptId: element.Departmentid,
-                DeptName: element.departmentName,
-            });
-        this.dataSource.data = this.deptlist;
-        return;
-    }
-
-    deleteTableRow(element) {
-        let index = this.deptlist.indexOf(element);
-        if (index >= 0) {
-            this.deptlist.splice(index, 1);
-            this.dataSource.data = [];
-            this.dataSource.data = this.deptlist;
-        }
-        Swal.fire('Success !', 'List Row Deleted Successfully', 'success');
-    }
-
     dateTimeObj: any;
     getDateTime(dateTimeObj) {
         this.dateTimeObj = dateTimeObj;
@@ -759,12 +730,12 @@ export class NewDoctorComponent implements OnInit {
 
 
 export class DepartmenttList {
-  DeptId: number;
-  DeptName: number;
+    DeptId: number;
+    DeptName: number;
 
 
-  constructor(DepartmenttList) {
-    this.DeptId = DepartmenttList.DeptId || '';
-    this.DeptName = DepartmenttList.DeptName || '';
-  }
+    constructor(DepartmenttList) {
+        this.DeptId = DepartmenttList.DeptId || '';
+        this.DeptName = DepartmenttList.DeptName || '';
+    }
 }

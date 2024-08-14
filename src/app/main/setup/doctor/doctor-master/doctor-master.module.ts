@@ -33,6 +33,7 @@ import { SharedModule } from "app/main/shared/shared.module";
 import { DoctorMasterService } from "./doctor-master.service";
 import { SignatureViewComponent } from "./signature-view/signature-view.component";
 import { NgxSignaturePadModule } from "@o.krucheniuk/ngx-signature-pad";
+import { MatChipsModule } from "@angular/material/chips";
 
 const routes: Routes = [
     {
@@ -42,10 +43,10 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [DoctorMasterComponent, NewDoctorComponent,SignatureViewComponent],
+    declarations: [DoctorMasterComponent, NewDoctorComponent, SignatureViewComponent],
     imports: [
         RouterModule.forChild(routes),
-
+        MatChipsModule,
         MatButtonModule,
         MatCheckboxModule,
         MatDatepickerModule,
@@ -79,4 +80,4 @@ const routes: Routes = [
     providers: [DoctorMasterService],
     entryComponents: [DoctorMasterComponent],
 })
-export class DoctorMasterModule {}
+export class DoctorMasterModule { }
