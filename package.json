@@ -38,6 +38,7 @@
     "@ngrx/store": "8.6.0",
     "@ngrx/store-devtools": "8.6.0",
     "@ngx-translate/core": "12.0.0",
+    "@o.krucheniuk/ngx-signature-pad": "0.0.7",
     "@swimlane/dragula": "3.8.0",
     "@swimlane/ngx-charts": "13.0.2",
     "@swimlane/ngx-datatable": "16.0.3",
