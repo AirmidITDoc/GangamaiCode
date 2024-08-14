@@ -42,7 +42,7 @@ export class NewDoctorComponent implements OnInit {
     filteredOptionsPrefix: Observable<string[]>;
     filteredDoctortype: Observable<string[]>;
     filteredOptionsDep: Observable<string[]>;
-
+    signature:any;
 
     isPrefixSelected: boolean = false;
     optionsPrefix: any[] = [];
@@ -66,6 +66,7 @@ export class NewDoctorComponent implements OnInit {
 
     DeptSource = new MatTableDataSource<DepartmenttList>();
     isAllSelected = false;
+    sanitizeImagePreview:any;
     constructor(
         public _doctorService: DoctorMasterService,
         private accountService: AuthenticationService,
@@ -74,24 +75,19 @@ export class NewDoctorComponent implements OnInit {
         public toastr: ToastrService,
         public dialogRef: MatDialogRef<NewDoctorComponent>
     ) { }
-    onViewSignature(ele: any, type: string) {
-        let fileType;
-        if (ele) {
-
-            const dialogRef = this.matDialog.open(SignatureViewComponent,
-                {
-                    width: '900px',
-                    height: '500px',
-                    data: {
-                        docData: type == 'img' ? ele : ele.doc,
-                        type: type == 'img' ? "image" : ele.type
-                    }
+    onViewSignature() {
+        const dialogRef = this.matDialog.open(SignatureViewComponent,
+            {
+                width: '900px',
+                height: '400px',
+                data: {
+                    
                 }
-            );
-            dialogRef.afterClosed().subscribe(result => {
-
-            });
-        }
+            }
+        );
+        dialogRef.afterClosed().subscribe(result => {
+            this.sanitizeImagePreview=result;
+        });
     }
     toggleSelectAll() {
 
@@ -385,7 +381,7 @@ export class NewDoctorComponent implements OnInit {
         }
 
     }
-    remove(e){
+    remove(e) {
         debugger
         this.toggleSelection(e);
     }

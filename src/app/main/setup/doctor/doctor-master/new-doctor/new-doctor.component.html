@@ -319,13 +319,14 @@
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <div class="photo-capture p-16 border border-radius-4 gap-12" fxLayout="column">
                                             <div class="photp-capture-image">
-                                                <!-- <img class="h-100-p w-100-p border-radius-4"
-                                [src]="sanitizeImagePreview ? sanitizeImagePreview:'/assets/images/default.jpg'" /> -->
+                                                <img class="h-100-p w-100-p border-radius-4"
+                                                    style="height:100px !important;"
+                                                    [src]="sanitizeImagePreview ? sanitizeImagePreview:'/assets/images/noimage.jpg'" />
                                             </div>
                                             <div class="photo-capture-button ">
                                                 <label
                                                     class="btn btn-primary-outline btn-hover btn-with-icon w-100-p m-0 "
-                                                    (click)="onViewSignature('camera','photo')">
+                                                    (click)="onViewSignature()">
                                                     <span class="btn-icon">
                                                         <mat-icon>camera_enhance</mat-icon>
                                                     </span>

@@ -55,4 +55,13 @@ export class SignatureViewComponent implements OnInit {
     onClose() {
         this.dialogRef.close();
     }
+    OnSubmit(){
+        debugger
+        if(this.sanitizeImagePreview){
+            this.dialogRef.close(this.sanitizeImagePreview)
+        }
+        else{
+            this.dialogRef.close(this.signaturePadElement.toDataURL());
+        }
+    }
 }
