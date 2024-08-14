@@ -81,8 +81,8 @@ export class CategoryMasterComponent implements OnInit {
             if (!this._categoryService.myform.get("CategoryId").value) {
                 var m_data = {
                     insertCategoryMaster: {
-                        categoryName: this._categoryService.myform
-                            .get("CategoryName").value.trim(),
+                        categoryName: this._categoryService.myform.get("CategoryName").value.trim(),
+                            isDeleted:this._categoryService.myform.get("IsDeleted").value ||1,
                             addedBy: this.accountService.currentUserValue.user.id,
                     },
                 };
@@ -114,6 +114,7 @@ export class CategoryMasterComponent implements OnInit {
                     updateCategoryMaster: {
                         CategoryId: this._categoryService.myform.get("CategoryId").value,
                         CategoryName: this._categoryService.myform.get("CategoryName").value,
+                        isDeleted:this._categoryService.myform.get("IsDeleted").value ||1,
                         updatedBy:this.accountService.currentUserValue.user.id,
                     },
                 };
@@ -142,15 +143,10 @@ export class CategoryMasterComponent implements OnInit {
         }
     }
     onEdit(row) {
-        var m_data = {
-            CategoryId: row.CategoryId,
-            CategoryName: row.CategoryName.trim(),
-            IsDeleted: JSON.stringify(row.Isdeleted),
-            UpdatedBy: row.UpdatedBy,
-        };
-        this._categoryService.populateForm(m_data);
+       
+        this._categoryService.populateForm(row);
     }
-    onDeactive(CategoryId) {
+    onDeactive(row) {
         Swal.fire({
             title: 'Confirm Status',
             text: 'Are you sure you want to Change Status?',
@@ -162,11 +158,11 @@ export class CategoryMasterComponent implements OnInit {
           }).then((result) => {
             if (result) {
                 let Query 
-                if (!this.DSCategoryMasterList.data.find(item => item.CategoryId === CategoryId).IsActive){
-                     Query ="Update M_Radiology_CategoryMaster set Isdeleted=1 where CategoryId=" +CategoryId;}
+                if (!this.DSCategoryMasterList.data.find(item => item.CategoryId === row.CategoryId).IsActive){
+                     Query ="Update M_Radiology_CategoryMaster set IsActive=0 where CategoryId=" + row.CategoryId;}
                 else{
                 let Query =
-                "Update M_Radiology_CategoryMaster set Isdeleted=1 where CategoryId=" +CategoryId;}
+                "Update M_Radiology_CategoryMaster set IsActive=1 where CategoryId=" +row.CategoryId;}
                     
                 console.log(Query);
                 this._categoryService.deactivateTheStatus(Query)

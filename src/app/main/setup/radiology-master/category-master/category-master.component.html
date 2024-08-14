@@ -106,7 +106,7 @@
                                                     title="Edit Menu">edit</mat-icon></button>
                                                     <button mat-icon-button  *ngIf="!element.IsActive"><mat-icon
                                                         title="Edit Menu">highlight_off</mat-icon></button>
-                                            <button mat-icon-button (click)="onDeactive(element.CategoryId)"
+                                            <button mat-icon-button (click)="onDeactive(element)"
                                                 color="warn"><mat-icon>delete_outline</mat-icon></button>
                                         </mat-cell>
                                     </ng-container>
@@ -160,7 +160,7 @@
 
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                                         <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='true'>
-                                            <mat-radio-button value='true' class="mr-sm-12"
+                                            <mat-radio-button value='true' class="mr-sm-12" 
                                                 fxFlex>IsActive</mat-radio-button>
                                             <!-- <mat-radio-button value='true' class="mr-sm-12"
                                                 fxFlex>IsDeactive</mat-radio-button> -->

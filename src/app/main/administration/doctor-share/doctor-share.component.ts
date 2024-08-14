@@ -13,6 +13,8 @@ import { fuseAnimations } from '@fuse/animations';
 import { ToastrService } from 'ngx-toastr';
 import { MatDialog } from '@angular/material/dialog';
 import { AddDoctorShareComponent } from './add-doctor-share/add-doctor-share.component';
+import { MatDrawer } from '@angular/material/sidenav';
+import { ProcessDoctorShareComponent } from './process-doctor-share/process-doctor-share.component';
 
 @Component({
   selector: 'app-doctor-share',
@@ -32,7 +34,7 @@ export class DoctorShareComponent implements OnInit {
     'PatientType', 
     'CompanyName',
   ];
- 
+  @ViewChild('drawer') public drawer: MatDrawer;
   isRegIdSelected : boolean = false;
   isDoctorIDSelected: boolean=false;
   DoctorListfilteredOptions:Observable<string[]>; 
@@ -42,6 +44,7 @@ export class DoctorShareComponent implements OnInit {
   noOptionFound:any;
   
  dataSource = new MatTableDataSource<BillListForDocShrList>();
+ dsAdditionalPay = new MatTableDataSource<BillListForDocShrList>();
 
  @ViewChild(MatSort) sort:MatSort;
  @ViewChild(MatPaginator) paginator:MatPaginator;
@@ -145,8 +148,18 @@ getOptionTextDoctorName(option) {
   NewDocShare(){
     const dialogRef = this._matDialog.open(AddDoctorShareComponent,
       { 
-        height: "85%",
+        height: "90%",
         width: '75%',
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+    });
+  }
+  processDocShare(){
+    const dialogRef = this._matDialog.open(ProcessDoctorShareComponent,
+      { 
+        height: "45%",
+        width: '40%',
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);

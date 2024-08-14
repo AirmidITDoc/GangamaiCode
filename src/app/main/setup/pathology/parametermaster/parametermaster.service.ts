@@ -95,11 +95,12 @@ export class ParametermasterService {
             "Generic/GetByProc?procName=Retrieve_UnitMasterForCombo",{});
     }
      // Gender Master Combobox List
-     public getGenderMasterCombo() {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=RetrieveGenderMasterForCombo",{}
-        );
+   
+
+    public getGenderMasterCombo() { 
+        return this._httpClient.post("Generic/GetByProc?procName=RetrieveGenderMasterForCombo",{});
     }
+
 
     public deactivateTheStatus(m_data) {
         return this._httpClient.post(

@@ -14,11 +14,11 @@ import { ToastrService } from "ngx-toastr";
 import { SignatureViewComponent } from "../signature-view/signature-view.component";
 
 @Component({
-    selector: "app-new-doctor",
-    templateUrl: "./new-doctor.component.html",
-    styleUrls: ["./new-doctor.component.scss"],
-    encapsulation: ViewEncapsulation.None,
-    animations: fuseAnimations,
+  selector: "app-new-doctor",
+  templateUrl: "./new-doctor.component.html",
+  styleUrls: ["./new-doctor.component.scss"],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations,
 })
 export class NewDoctorComponent implements OnInit {
 
@@ -62,12 +62,12 @@ export class NewDoctorComponent implements OnInit {
         'action'
     ];
 
-    public departmentFilterCtrl: FormControl = new FormControl();
-    public filteredDepartment: ReplaySubject<any> = new ReplaySubject<any>(1);
+  public departmentFilterCtrl: FormControl = new FormControl();
+  public filteredDepartment: ReplaySubject<any> = new ReplaySubject<any>(1);
 
-    private _onDestroy = new Subject<void>();
+  private _onDestroy = new Subject<void>();
 
-    DeptSource = new MatTableDataSource<DepartmenttList>();
+  DeptSource = new MatTableDataSource<DepartmenttList>();
 
     dataSource = new MatTableDataSource<DepartmenttList>();
     isAllSelected = false;
@@ -187,6 +187,7 @@ export class NewDoctorComponent implements OnInit {
 
 
 
+
     public onEnteragey(event): void {
         if (event.which === 13) {
             this.agem.nativeElement.focus();
@@ -255,10 +256,10 @@ export class NewDoctorComponent implements OnInit {
 
 
 
-    // validation
-    get f() {
-        return this._doctorService.myform.controls;
-    }
+  // validation
+  get f() {
+    return this._doctorService.myform.controls;
+  }
 
 
     getDocDeptList() {
@@ -281,16 +282,16 @@ export class NewDoctorComponent implements OnInit {
         const toSelect = this.PrefixcmbList.find(c => c.PrefixID == this.registerObj.PrefixID);
         this._doctorService.myform.get('PrefixID').setValue(toSelect);
 
-        const toSelect1 = this.DepartmentcmbList.find(c => c.Departmentid == this.docobject.DepartmentId);
-        this._doctorService.myform.get('Departmentid').setValue(toSelect1);
+    const toSelect1 = this.DepartmentcmbList.find(c => c.Departmentid == this.docobject.DepartmentId);
+    this._doctorService.myform.get('Departmentid').setValue(toSelect1);
 
-        // const toSelectReligion = this.ReligionList.find(c => c.ReligionId == this.registerObj.ReligionId);
-        // this._doctorService.myform.get('ReligionId').setValue(toSelectReligion);
+    // const toSelectReligion = this.ReligionList.find(c => c.ReligionId == this.registerObj.ReligionId);
+    // this._doctorService.myform.get('ReligionId').setValue(toSelectReligion);
 
-        this._doctorService.myform.updateValueAndValidity();
-        // this.dialogRef.close();
+    this._doctorService.myform.updateValueAndValidity();
+    // this.dialogRef.close();
 
-    }
+  }
 
 
 
@@ -382,6 +383,7 @@ export class NewDoctorComponent implements OnInit {
 
         });
     }
+
 
 
 
@@ -538,12 +540,12 @@ export class NewDoctorComponent implements OnInit {
             } else {
                 var data3 = [];
 
-                this.dataSource.data.forEach((element) => {
-                    let DocInsertObj = {};
-                    DocInsertObj['DepartmentId'] = element.DeptId;
-                    DocInsertObj['DoctorId'] = this._doctorService.myform.get("DoctorId").value;
-                    data3.push(DocInsertObj);
-                });
+        this.dataSource.data.forEach((element) => {
+          let DocInsertObj = {};
+          DocInsertObj['DepartmentId'] = element.DeptId;
+          DocInsertObj['DoctorId'] = this._doctorService.myform.get("DoctorId").value;
+          data3.push(DocInsertObj);
+        });
 
 
                 var m_dataUpdate = {
@@ -676,13 +678,14 @@ export class NewDoctorComponent implements OnInit {
         }
     }
 
-    onClear() {
-        this._doctorService.myform.reset();
-    }
-    onClose() {
-        this._doctorService.myform.reset();
-        this.dialogRef.close();
-    }
+  onClear() {
+    this._doctorService.myform.reset();
+  }
+  onClose() {
+    this._doctorService.myform.reset();
+    this.dialogRef.close();
+  }
+
 
 
 
@@ -756,12 +759,12 @@ export class NewDoctorComponent implements OnInit {
 
 
 export class DepartmenttList {
-    DeptId: number;
-    DeptName: number;
+  DeptId: number;
+  DeptName: number;
 
 
-    constructor(DepartmenttList) {
-        this.DeptId = DepartmenttList.DeptId || '';
-        this.DeptName = DepartmenttList.DeptName || '';
-    }
+  constructor(DepartmenttList) {
+    this.DeptId = DepartmenttList.DeptId || '';
+    this.DeptName = DepartmenttList.DeptName || '';
+  }
 }

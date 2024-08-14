@@ -189,8 +189,8 @@
     
                                         <ng-container matColumnDef="DoctorType">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                fxShow.gt-sm>DoctorType </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.DoctorType}}
+                                                fxShow.gt-sm class="w-300" >DoctorType </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-300"> {{element.DoctorType}}
                                             </mat-cell>
                                         </ng-container>
     
@@ -309,9 +309,9 @@
                                             [ngClass]="{'hide':!(DSDoctorMasterList!=null && DSDoctorMasterList.data.length==0)}"></mat-footer-row>
 
                                     </mat-table>
-
-                                    <mat-paginator [pageSizeOptions]="[10, 15, 25, 100]" [pageSize]="10"
-                                        showFirstLastButtons></mat-paginator>
+                                    <mat-paginator [pageSizeOptions]="[30, 50, 75, 100]" [pageSize]="30" [length]="resultsLength"
+                                    showFirstLastButtons (page)="getDoctorMasterList()">
+                                </mat-paginator>
                                 </div>
 
                             </div>
