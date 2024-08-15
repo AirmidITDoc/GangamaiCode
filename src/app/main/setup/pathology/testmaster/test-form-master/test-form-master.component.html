@@ -129,8 +129,7 @@
                                                     <mat-card style="height:267px;width: 100%;overflow: auto;">
 
 
-                                                        <mat-table  matSort 
-                                                            [dataSource]="paramterList" [@animateStagger]="{value:'50'}"
+                                                        <mat-table  matSort [dataSource]="paramterList" [@animateStagger]="{value:'50'}"
                                                             style="overflow:auto; width: 100%;">
 
                                                             <ng-container matColumnDef="ParameterName">
@@ -170,9 +169,9 @@
                                                             </ng-container>
 
 
-                                                            <mat-header-row class="accent"
+                                                            <mat-header-row class="accent" 
                                                                 *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                                                            <mat-row *matRowDef="let row; columns: displayedColumns;"
+                                                            <mat-row *matRowDef="let element; columns: displayedColumns;"
                                                                 class="element"
                                                                 [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
 

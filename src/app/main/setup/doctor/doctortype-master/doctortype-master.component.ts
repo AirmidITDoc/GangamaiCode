@@ -17,13 +17,15 @@ import { ToastrService } from "ngx-toastr";
 export class DoctortypeMasterComponent implements OnInit {
     isLoading = true;
     msg: any;
-
+    currentStatus = 2;
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
     displayedColumns: string[] = ["Id", "DoctorType","IsActive", "action"];
 
     DSDoctorTypeMasterList = new MatTableDataSource<DoctortypeMaster>();
+    DSDoctorTypeMasterList1 = new MatTableDataSource<DoctortypeMaster>();
+    tempList = new MatTableDataSource<DoctortypeMaster>();
 
     constructor(public _doctortypeService: DoctortypeMasterService,
         public toastr : ToastrService,) {}
@@ -41,13 +43,15 @@ export class DoctortypeMasterComponent implements OnInit {
         });
         this.getDoctortypeMasterList();
     }
-
+    resultsLength=0;
     getDoctortypeMasterList() {
         var vdata={
-            "DoctorType":this._doctortypeService.myformSearch.get('DoctorTypeSearch').value.trim() || "%"       
+            "DoctorType":this._doctortypeService.myformSearch.get('DoctorTypeSearch').value.trim() +"%" || "%"       
         }
         this._doctortypeService.getDoctortypeMasterList(vdata).subscribe((Menu) => {
              this.DSDoctorTypeMasterList.data = Menu as DoctortypeMaster[];
+             this.DSDoctorTypeMasterList1.data = Menu as DoctortypeMaster[];
+             this.resultsLength= this.DSDoctorTypeMasterList.data.length;
             });
        
     }
@@ -139,11 +143,88 @@ export class DoctortypeMasterComponent implements OnInit {
             this.onClear();
         }
     }
+
+    onDeactive(Id) {
+
+       
+        Swal.fire({
+            title: 'Confirm Status',
+            text: 'Are you sure you want to Change Status?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes,Change Status!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let Query
+                if (!this.DSDoctorTypeMasterList.data.find(item => item.Id === Id).IsActive) {
+                    Query = "Update DoctorTypeMaster set IsActive=0 where Id=" + Id;
+                }
+                else {
+                     Query = "Update DoctorTypeMaster set IsActive=1 where Id=" + Id;
+                }
+                console.log(Query);
+                this._doctortypeService.deactivateTheStatus(Query)
+                    .subscribe((data) => {
+                        // Handle success response
+                        Swal.fire('Changed!', 'Doctor Type Status has been Changed.', 'success');
+                        this.getDoctortypeMasterList();
+                    }, (error) => {
+                        // Handle error response
+                        Swal.fire('Error!', 'Failed to deactivate category.', 'error');
+                    });
+            }
+        });
+    }
+
+    onFilterChange() {
+       
+        if (this.currentStatus == 1) {
+            this.tempList.data = []
+            this.DSDoctorTypeMasterList.data= this.DSDoctorTypeMasterList1.data
+            for (let item of this.DSDoctorTypeMasterList.data) {
+                if (item.IsActive) this.tempList.data.push(item)
+
+            }
+
+            this.DSDoctorTypeMasterList.data = [];
+            this.DSDoctorTypeMasterList.data = this.tempList.data;
+        }
+        else if (this.currentStatus == 0) {
+            this.DSDoctorTypeMasterList.data= this.DSDoctorTypeMasterList.data
+            this.tempList.data = []
+
+            for (let item of this.DSDoctorTypeMasterList.data) {
+                if (!item.IsActive) this.tempList.data.push(item)
+
+            }
+            this.DSDoctorTypeMasterList.data = [];
+            this.DSDoctorTypeMasterList.data = this.tempList.data;
+        }
+        else {
+            this.DSDoctorTypeMasterList.data= this.DSDoctorTypeMasterList1.data
+            this.tempList.data = this.DSDoctorTypeMasterList.data;
+        }
+
+
+    }
+    toggle(val: any) {
+        if (val == "2") {
+            this.currentStatus = 2;
+        } else if (val == "1") {
+            this.currentStatus = 1;
+        }
+        else {
+            this.currentStatus = 0;
+
+        }
+    }
     onEdit(row) {
         var m_data = {
             Id: row.Id,
             DoctorType: row.DoctorType.trim(),
-            IsDeleted: JSON.stringify(row.IsDeleted),
+            IsActive: JSON.stringify(row.IsActive),
         };
         this._doctortypeService.populateForm(m_data);
     }
@@ -153,6 +234,7 @@ export class DoctortypeMaster {
     Id: number;
     DoctorType: string;
     isActive: boolean;
+    IsActive:any;
     /**
      * Constructor
      *
@@ -163,6 +245,7 @@ export class DoctortypeMaster {
             this.Id = DoctortypeMaster.Id || "";
             this.DoctorType = DoctortypeMaster.DoctorType || "";
             this.isActive = DoctortypeMaster.isActive || true;
+            this.IsActive = DoctortypeMaster.IsActive || true;
         }
     }
 }

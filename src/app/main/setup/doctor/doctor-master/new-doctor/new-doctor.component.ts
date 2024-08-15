@@ -94,7 +94,7 @@ export class NewDoctorComponent implements OnInit {
     }
     ngOnInit(): void {
         this.getPrefixList();
-        this.getGendorMasterList();
+        // this.getGendorMasterList();
         this.getDoctortypeNameCombobox();
         this.getDepartmentList();
 
@@ -255,7 +255,7 @@ export class NewDoctorComponent implements OnInit {
             //"DoctorId" :this.registerObj.DoctorId
         }
         this._doctorService.getDocDeptwiseList(m_data).subscribe(data => {
-            data.forEach((obj, i) => obj.selected = true)
+            // data.forEach((obj, i) => obj.selected = true)
             this.selectedItems = data as any[];
         },
             error => {
@@ -268,8 +268,8 @@ export class NewDoctorComponent implements OnInit {
         const toSelect = this.PrefixcmbList.find(c => c.PrefixID == this.registerObj.PrefixID);
         this._doctorService.myform.get('PrefixID').setValue(toSelect);
 
-        const toSelect1 = this.DepartmentcmbList.find(c => c.Departmentid == this.docobject.DepartmentId);
-        this._doctorService.myform.get('Departmentid').setValue(toSelect1);
+        // const toSelect1 = this.DepartmentcmbList.find(c => c.Departmentid == this.docobject.DepartmentId);
+        // this._doctorService.myform.get('Departmentid').setValue(toSelect1);
 
         // const toSelectReligion = this.ReligionList.find(c => c.ReligionId == this.registerObj.ReligionId);
         // this._doctorService.myform.get('ReligionId').setValue(toSelectReligion);
@@ -304,13 +304,13 @@ export class NewDoctorComponent implements OnInit {
     }
 
 
-    getGendorMasterList() {
-        this._doctorService.getGenderMasterCombo().subscribe(data => {
-            this.GendercmbList = data;
-            const ddValue = this.GendercmbList.find(c => c.GenderId == this.data.registerObj.GenderId);
-            this._doctorService.myform.get('GenderId').setValue(ddValue);
-        })
-    }
+    // getGendorMasterList() {
+    //     this._doctorService.getGenderCombo().subscribe(data => {
+    //         this.GendercmbList = data;
+    //         const ddValue = this.GendercmbList.find(c => c.GenderId == this.data.registerObj.GenderId);
+    //         this._doctorService.myform.get('GenderId').setValue(ddValue);
+    //     })
+    // }
 
 
 
@@ -360,7 +360,7 @@ export class NewDoctorComponent implements OnInit {
 
     getDepartmentList() {
         this._doctorService.getDepartmentCombobox().subscribe(data => {
-            data.forEach((obj, i) => obj.selected = false)
+            // data.forEach((obj, i) => obj.selected = false)
             this.DepartmentcmbList = data;
             this.optionsDep = this.DepartmentcmbList.slice();
             this.filteredOptionsDep = this._doctorService.myform.get('Departmentid').valueChanges.pipe(
