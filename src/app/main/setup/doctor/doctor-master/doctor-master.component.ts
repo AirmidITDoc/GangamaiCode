@@ -10,6 +10,8 @@ import { AuthenticationService } from "app/core/services/authentication.service"
 import { DoctorMasterService } from "./doctor-master.service";
 import { NewDoctorComponent } from "./new-doctor/new-doctor.component";
 import Swal from "sweetalert2";
+import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
+import { DatePipe } from "@angular/common";
 
 @Component({
     selector: "app-doctor-master",
@@ -19,6 +21,8 @@ import Swal from "sweetalert2";
     animations: fuseAnimations,
 })
 export class DoctorMasterComponent implements OnInit {
+
+    
     isLoading = true;
     msg: any;
     step = 0;
@@ -62,7 +66,9 @@ export class DoctorMasterComponent implements OnInit {
     constructor(
         public _doctorService: DoctorMasterService,
         private accountService: AuthenticationService,
-        public _matDialog: MatDialog
+        private _fuseSidebarService: FuseSidebarService,
+        public _matDialog: MatDialog,
+       
     ) { }
 
     ngOnInit(): void {
@@ -75,7 +81,9 @@ export class DoctorMasterComponent implements OnInit {
         });
         this.getDoctorMasterList();
     }
-
+    toggleSidebar(name): void {
+        this._fuseSidebarService.getSidebar(name).toggleOpen();
+      }
     onClear() {
         this._doctorService.myform.reset({ IsDeleted: "false" });
         this._doctorService.initializeFormGroup();
@@ -111,7 +119,7 @@ export class DoctorMasterComponent implements OnInit {
         );
     }
 
-    currentStatus = 0;
+    currentStatus = 1;
     toggle(val: any) {
         if (val == "2") {
             this.currentStatus = 2;
@@ -149,8 +157,8 @@ export class DoctorMasterComponent implements OnInit {
         const dialogRef = this._matDialog.open(
             NewDoctorComponent,
             {
-                maxWidth: "80vw",
-                maxHeight: "90vh",
+                maxWidth: "95vw",
+                maxHeight: "95vh",
                 width: "100%",
                 height: "100%",
                 data: {
@@ -167,8 +175,8 @@ export class DoctorMasterComponent implements OnInit {
 
     onAdd() {
         const dialogRef = this._matDialog.open(NewDoctorComponent, {
-            maxWidth: "80vw",
-            maxHeight: "90vh",
+            maxWidth: "95vw",
+            maxHeight: "110vh",
             width: "100%",
             height: "100%",
         });
@@ -220,14 +228,15 @@ export class DoctorMaster {
     FirstName: string;
     MiddleName: string;
     LastName: string;
-    DateofBirth: Date;
+    DateofBirth: any;
     Address: string;
     City: string;
+    CityId:any;
     Pin: string;
     Phone: string;
     Mobile: string;
     GenderId: number;
-    Education: string;
+    education: string;
     IsConsultant: boolean;
     IsRefDoc: boolean;
     IsDeleted: boolean;
@@ -236,10 +245,10 @@ export class DoctorMaster {
     AgeMonth: any;
     AgeDay: any;
     PassportNo: string;
-    ESINO: string;
-    RegNo: string;
+    esino: string;
+    REGNO: string;
     RegDate: Date;
-    MahRegNo: string;
+    mahRegNo: string;
     MahRegDate: Date;
     UpdatedBy: number;
     RefDocHospitalName: string;
@@ -249,6 +258,13 @@ export class DoctorMaster {
     Age: any;
     DoctorName: any;
     IsActive: any;
+    regNo: any;
+    MAHREGNO: any;
+    PANCARDNO: any;
+    AADHARCARDNO: any;
+    isInHouseDoctor: any;
+    Education:any;
+    ESINO:any;
     /**
      * Constructor
      *
@@ -265,12 +281,13 @@ export class DoctorMaster {
             this.DateofBirth = DoctorMaster.DateofBirth || this.CurrentDate;
             this.Address = DoctorMaster.Address || "";
             this.City = DoctorMaster.City || "";
+            this.CityId = DoctorMaster.CityId || "";
             this.Pin = DoctorMaster.Pin || "";
             this.Phone = DoctorMaster.Phone || "";
             this.Mobile = DoctorMaster.Mobile || "";
             this.GenderId = DoctorMaster.GenderId || "";
-            this.Education = DoctorMaster.Education || "";
-            this.IsConsultant = DoctorMaster.IsConsultant || "false";
+            this.education = DoctorMaster.education || "";
+            this.IsConsultant = DoctorMaster.IsConsultant || "true";
             this.IsRefDoc = DoctorMaster.IsRefDoc || "false";
             this.IsDeleted = DoctorMaster.IsDeleted || "false";
             this.DoctorTypeId = DoctorMaster.DoctorTypeId || "";
@@ -279,28 +296,33 @@ export class DoctorMaster {
             this.AgeMonth = DoctorMaster.AgeMonth || "";
             this.AgeDay = DoctorMaster.AgeDay || "";
             this.PassportNo = DoctorMaster.PassportNo || "";
-            this.ESINO = DoctorMaster.ESINO || "";
-            this.RegNo = DoctorMaster.RegNo || "";
+            this.esino = DoctorMaster.esino || "";
             this.RegDate = DoctorMaster.RegDate || this.CurrentDate;
-            this.MahRegNo = DoctorMaster.MahRegNo || "";
+            this.Education = DoctorMaster.Education || "";
             this.MahRegDate = DoctorMaster.MahRegDate || this.CurrentDate;
             this.UpdatedBy = DoctorMaster.UpdatedBy || "";
             this.AddedBy = DoctorMaster.AddedBy || "";
             this.IsActive = DoctorMaster.IsActive || 1;
             this.RefDocHospitalName = DoctorMaster.RefDocHospitalName || "";
             this.IsDeletedSearch = DoctorMaster.IsDeletedSearch || "";
+            this.REGNO= DoctorMaster.REGNO || "";
+            this.MAHREGNO= DoctorMaster.MAHREGNO || "";
+            this.PANCARDNO= DoctorMaster.PANCARDNO || "";
+            this.AADHARCARDNO= DoctorMaster.AADHARCARDNO || "";
+            this.isInHouseDoctor= DoctorMaster.isInHouseDoctor || "";
+            this.ESINO= DoctorMaster.ESINO || "";
         }
     }
 }
 
 export class DoctorDepartmentDet {
-    DoctorId: number;
-    DepartmentId: number;
+    Departmentid: any;
+    departmentName: any;
 
     constructor(DoctorDepartmentDet) {
         {
-            this.DoctorId = DoctorDepartmentDet.DoctorId || "";
-            this.DepartmentId = DoctorDepartmentDet.DepartmentId || "";
+            this.Departmentid = DoctorDepartmentDet.Departmentid || "";
+            this.departmentName = DoctorDepartmentDet.departmentName || "";
         }
     }
 }

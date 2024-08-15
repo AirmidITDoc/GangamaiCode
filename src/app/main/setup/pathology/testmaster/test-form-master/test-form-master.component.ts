@@ -26,7 +26,7 @@ import { AuthenticationService } from "app/core/services/authentication.service"
     animations: fuseAnimations,
 })
 export class TestFormMasterComponent implements OnInit {
-    displayedColumns: string[] = ['ParameterName', 'Add'];
+    displayedColumns: string[] = ['ParameterName'];
     displayedColumns2: string[] = ['Reorder', 'ParameterName','PrintParameterName', 'MethodName','UnitName', 'ParaMultipleRange','Formula','IsNumeric', 'Action'];
     displayedColumns3: string[] = ['Template Name', 'Add'];
     displayedColumns4: string[] = ['ParameterName'];

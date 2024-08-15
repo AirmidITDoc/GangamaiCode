@@ -43,9 +43,9 @@ export class DoctorMasterService {
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
                 ],
             ],
-            DateofBirth: [{ value: new Date() }],
+            DateOfBirth: [{ value: new Date() }],
             Address: [""],
-            City: ["", Validators.pattern("[a-zA-Z]+$")],
+            CityId: ["", Validators.pattern("[a-zA-Z]+$")],
             Pin: ["", [Validators.minLength(6), Validators.maxLength(6)]],
             Phone: [
                 "",
@@ -56,7 +56,7 @@ export class DoctorMasterService {
                     Validators.maxLength(15),
                 ],
             ],
-            Mobile: [
+            MobileNo: [
                 "",
                 [
                     Validators.required,
@@ -97,6 +97,9 @@ export class DoctorMasterService {
             AddedBy: [""],
             UpdatedBy: [""],
             AddedByName: [""],
+            Pancardno:[""],
+            AadharCardNo:[""],
+
         });
     }
 
@@ -130,12 +133,12 @@ export class DoctorMasterService {
         );
     }
 
-    public getGenderCombo(Id) {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Retrieve_SexMasterForCombo_Conditional",
-            { Id: Id }
-        );
-    }
+    // public getGenderCombo(Id) {
+    //     return this._httpClient.post(
+    //         "Generic/GetByProc?procName=Retrieve_SexMasterForCombo_Conditional",
+    //         { Id: Id }
+    //     );
+    // }
 
     public getPrefixMasterCombo() {
         return this._httpClient.post(
@@ -144,13 +147,10 @@ export class DoctorMasterService {
         );
     }
 
-    public getGenderMasterCombo() {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=RetrieveGenderMasterForCombo",
-            {}
-        );
-    }
-
+    public getGenderCombo(Id) {
+      return this._httpClient.post("Generic/GetByProc?procName=Retrieve_SexMasterForCombo_Conditional", { "Id": Id })
+      }
+    
     public getDoctortypeMasterCombo() {
         return this._httpClient.post(
             "Generic/GetByProc?procName=RetrieveDoctorTypeMasterForCombo",
@@ -181,7 +181,11 @@ export class DoctorMasterService {
        );
    }
 
-
+  //  city list
+  public getCityList() {
+    
+    return this._httpClient.post("Generic/GetByProc?procName=RetrieveCityMasterForCombo", {})
+  }
     populateForm(param) {
         this.myform.patchValue(param);
     }

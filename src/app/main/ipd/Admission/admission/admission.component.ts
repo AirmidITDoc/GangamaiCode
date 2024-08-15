@@ -422,20 +422,6 @@ export class AdmissionComponent implements OnInit {
     
     for (var i = 0; i < data.length; i++) {
     
-      // if (data[i].PatientOldNew == 1) {
-      //   this.VNewcount = this.VNewcount + 1;
-      // }
-      // else if (data[i].PatientOldNew == 2) {
-      //   this.VFollowupcount = this.VFollowupcount + 1;
-      // }
-      // else if (data[i].AdmissionID !== 0) {
-      //   this.VAdmissioncount = data.length;
-      // }
-      // else if (data[i].IsBillGenerated == 1) {
-      //   this.VBillcount = this.VBillcount + 1;
-      // }
-      // else
-      debugger
        if (data[i].IsOpToIPconv ==true) {
         this.VOPtoIPcount = this.VOPtoIPcount + 1;
         console.log( this.VOPtoIPcount )

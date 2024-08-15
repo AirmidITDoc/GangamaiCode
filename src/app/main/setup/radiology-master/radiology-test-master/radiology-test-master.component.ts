@@ -15,6 +15,7 @@ import { DatePipe } from '@angular/common';
 import { UpdateradiologymasterComponent } from './updateradiologymaster/updateradiologymaster.component';
 import { MatDialog } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
+import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 
 @Component({
   selector: 'app-radiology-test-master',
@@ -60,7 +61,8 @@ export class RadiologyTestMasterComponent implements OnInit {
     public _radiologytestService: RadiologyTestMasterService,
     public toastr: ToastrService,
     public _matDialog: MatDialog,
-    private accountService: AuthenticationService
+    private accountService: AuthenticationService,
+    private _fuseSidebarService: FuseSidebarService,
   ) { }
 
   ngOnInit(): void {
@@ -70,7 +72,9 @@ export class RadiologyTestMasterComponent implements OnInit {
   onSearch() {
     this.getRadiologyTestList();
   }
-
+  toggleSidebar(name): void {
+    this._fuseSidebarService.getSidebar(name).toggleOpen();
+  }
   onSearchClear() {
     this._radiologytestService.myformSearch.reset({
       TestNameSearch: "",

@@ -16,6 +16,7 @@ import { MatTabGroup } from "@angular/material/tabs";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import Swal from "sweetalert2";
 import { ExcelDownloadService } from "app/main/shared/services/excel-download.service";
+import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
 
 @Component({
     selector: "app-testmaster",
@@ -41,6 +42,7 @@ export class TestmasterComponent implements OnInit {
     displayedColumns1: string[] = [
         "ParameterName"
     ];
+    resultsLength=0;
     isChecked: boolean = false;
     isCheckednew: boolean = false;
     Parametercmb: any = [];
@@ -83,6 +85,7 @@ export class TestmasterComponent implements OnInit {
         public toastr: ToastrService,
         public _matDialog: MatDialog,
         private reportDownloadService: ExcelDownloadService,
+        private _fuseSidebarService: FuseSidebarService,
         private accountService: AuthenticationService,
     ) { }
 
@@ -97,7 +100,9 @@ export class TestmasterComponent implements OnInit {
         this.getTestMasterList();
         // this.getNewSubTestList();
     }
-
+    toggleSidebar(name): void {
+        this._fuseSidebarService.getSidebar(name).toggleOpen();
+      }
     onSearchClear() {
         this._TestService.myformSearch.reset({
             TestNameSearch: "",
@@ -129,10 +134,11 @@ export class TestmasterComponent implements OnInit {
         var m_data = {
             ServiceName: this._TestService.myformSearch.get('TestNameSearch').value + "%" || "%"
         };
-        this._TestService.getTestMasterList(m_data).subscribe((Menu) => {
-            this.DSTestMasterList.data = Menu as TestMaster[];
-            this.DSTestMasterList1.data = Menu as TestMaster[];
+        this._TestService.getTestMasterList(m_data).subscribe((data) => {
+            this.DSTestMasterList.data = data as TestMaster[];
+            this.DSTestMasterList1.data = data as TestMaster[];
             console.log(this.DSTestMasterList.data)
+            this.resultsLength= this.DSTestMasterList.data.length 
             this.sIsLoading = '';
             this.DSTestMasterList.sort = this.sort;
             this.DSTestMasterList.paginator = this.paginator;
@@ -374,6 +380,7 @@ export class TestMaster {
     SuggestionNote: string;
     FootNote: string;
     ServiceID: number;
+    ServiceName:any;
     IsTemplateTest: number;
     IsCategoryPrint: boolean;
     IsPrintTestName: boolean;
@@ -388,22 +395,23 @@ export class TestMaster {
      */
     constructor(TestMaster) {
         {
-            this.TestId = TestMaster.TestId || "";
+            this.TestId = TestMaster.TestId || 0;
             this.TestName = TestMaster.TestName || "";
             this.PrintTestName = TestMaster.PrintTestName || "";
-            this.CategoryId = TestMaster.CategoryId || "";
+            this.CategoryId = TestMaster.CategoryId || 0;
             this.IsSubTest = TestMaster.IsSubTest || "";
             this.TechniqueName = TestMaster.TechniqueName || "";
             this.MachineName = TestMaster.MachineName || "";
             this.SuggestionNote = TestMaster.SuggestionNote || "";
             this.FootNote = TestMaster.FootNote || "";
             this.Isdeleted = TestMaster.Isdeleted || "false";
-            this.ServiceID = TestMaster.ServiceID || "";
+            this.ServiceID = TestMaster.ServiceID || 0;
+            this.ServiceName= TestMaster.ServiceName || "";
             this.IsTemplateTest = TestMaster.IsTemplateTest || "";
             this.IsCategoryPrint = TestMaster.IsCategoryPrint || "false";
             this.IsPrintTestName = TestMaster.IsPrintTestName || "false";
-            this.UpdatedBy = TestMaster.UpdatedBy || "";
-            this.AddedBy = TestMaster.AddedBy || "";
+            this.UpdatedBy = TestMaster.UpdatedBy || 0;
+            this.AddedBy = TestMaster.AddedBy || 0;
             this.IsDeletedSearch = TestMaster.IsDeletedSearch || "";
         }
     }

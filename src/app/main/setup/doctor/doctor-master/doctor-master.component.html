@@ -1,25 +1,24 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fusePerfectScrollbar
-    dynamicTableHeight>
-    <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-        fxLayoutAlign.gt-xs="space-between center">
-        <div fxLayout="row" fxLayoutAlign="start center">
-            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
-                <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+<div fxlayout="row" fxFlex.gt-sm="100%" fxFlex class="page-layout" dynamicTableHeight>
+    <div class="center">
+        <mat-toolbar class="top-header accent">
+            <div fxLayout="row" class="top-header-info">
+                <button mat-icon-button class="sidebar-toggle" fxHide.gt-sm (click)="toggleSidebar('app-main')">
                     <mat-icon>menu</mat-icon>
                 </button>
-                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-                    style="color: white;">account_box
+                <mat-icon class="logo-icon " [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
                 </mat-icon>
                 <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    Doctor Master
+                    Doctor Master List
                 </span>
-                <button mat-raised-button color="pine" style="margin-left: 1180px;" (click)="onAdd()">Add
-                    <mat-icon>add_to_photos</mat-icon>
+
+            </div>
+            <div fxLayout="row" fxLayoutGap="5px">
+                <button mat-raised-button (click)="onAdd()"
+                    style="background-color: aliceblue;color: brown;">Add
 
                 </button>
             </div>
-        </div>
-    </div>
+        </mat-toolbar>
 
 
     <div class="content">
@@ -243,9 +242,9 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                                 IsConsultant </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                <mat-icon *ngIf="!element.IsConsultant"
-                                                    class="active-icon green-600 s-16">check_circle</mat-icon>
                                                 <mat-icon *ngIf="element.IsConsultant"
+                                                    class="active-icon green-600 s-16">check_circle</mat-icon>
+                                                <mat-icon *ngIf="!element.IsConsultant"
                                                     class="active-icon red-500 s-16">close</mat-icon>
                                             </mat-cell>
                                         </ng-container>
@@ -253,9 +252,9 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm> IsRefDoc
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                <mat-icon *ngIf="!element.IsRefDoc"
-                                                    class="active-icon green-600 s-16">check_circle</mat-icon>
                                                 <mat-icon *ngIf="element.IsRefDoc"
+                                                    class="active-icon green-600 s-16">check_circle</mat-icon>
+                                                <mat-icon *ngIf="!element.IsRefDoc"
                                                     class="active-icon red-500 s-16">close</mat-icon>
                                             </mat-cell>
                                         </ng-container>
@@ -278,7 +277,7 @@
                                                 Action
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let element">
-                                                <button mat-icon-button (click)="onEdit(element)"  *ngIf="!element.IsActive"><mat-icon
+                                                <button mat-icon-button (click)="onEdit(element)"  *ngIf="element.IsActive"><mat-icon
                                                         title="Edit Menu">launch</mat-icon></button>
                                                 <button mat-icon-button (click)="onDeactive(element)"
                                                     color="warn"><mat-icon>delete_outline</mat-icon></button>
@@ -300,8 +299,8 @@
 
                                         <mat-header-row class="accent min-width-3000"
                                         *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                                        <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
-                                        class=" min-width-3000"
+                                        <mat-row *matRowDef="let element; columns: displayedColumns;" class="element"
+                                        class=" min-width-3000"   [ngClass]="element.IsRefDoc == true ? 'self-row' : ''"
                                             [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                         <mat-footer-row *matFooterRowDef="['loading']"
                                             [ngClass]="{'hide':DSDoctorMasterList!=null}"></mat-footer-row>
@@ -323,4 +322,5 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>

@@ -9,6 +9,7 @@ import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import Swal from "sweetalert2";
 import { AuthenticationService } from "app/core/services/authentication.service";
+import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
 
 @Component({
     selector: "app-category-master",
@@ -38,9 +39,11 @@ export class CategoryMasterComponent implements OnInit {
     DSCategoryMasterList1 = new MatTableDataSource<CategoryMaster>();
     tempList = new MatTableDataSource<CategoryMaster>();
     currentStatus=0;
+    resultsLength=0;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     constructor(public _categoryService: CategoryMasterService,
         public _matDialog: MatDialog,
+        private _fuseSidebarService: FuseSidebarService,
         private accountService: AuthenticationService,
         public toastr : ToastrService,) {}
 
@@ -51,7 +54,9 @@ export class CategoryMasterComponent implements OnInit {
     onSearch() {
         this.getCategoryMasterList();
     }
-
+    toggleSidebar(name): void {
+        this._fuseSidebarService.getSidebar(name).toggleOpen();
+      }
     onSearchClear() {
         this._categoryService.myformSearch.reset({
             CategoryNameSearch: "",
@@ -65,6 +70,7 @@ export class CategoryMasterComponent implements OnInit {
         this._categoryService.getCategoryMasterList(m).subscribe((Menu) => {
             this.DSCategoryMasterList.data = Menu as CategoryMaster[];
             this.DSCategoryMasterList1.data = Menu as CategoryMaster[];
+            this.resultsLength= this.DSCategoryMasterList.data.length 
             this.DSCategoryMasterList.sort = this.sort;
             this.DSCategoryMasterList.paginator = this.paginator;
             console.log(this.DSCategoryMasterList.data );

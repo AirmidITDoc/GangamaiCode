@@ -306,9 +306,6 @@ export class NewRegistrationComponent implements OnInit {
   }
 
 
-
-
-
   getPatientTypeList() {
     this._registerService.getPatientTypeCombo().subscribe(data => { this.PatientTypeList = data; })
   }

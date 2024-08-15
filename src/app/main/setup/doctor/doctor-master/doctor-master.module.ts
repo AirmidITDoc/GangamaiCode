@@ -31,6 +31,9 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
 import { SharedModule } from "app/main/shared/shared.module";
 import { DoctorMasterService } from "./doctor-master.service";
+import { MatButtonToggleModule } from "@angular/material/button-toggle";
+import { MatChipsModule } from "@angular/material/chips";
+// import { MatChipInput, MatChipList } from "@angular/material/chips";
 
 const routes: Routes = [
     {
@@ -72,6 +75,10 @@ const routes: Routes = [
         MatProgressSpinnerModule,
         SharedModule,
         NgxMatSelectSearchModule,
+        MatButtonToggleModule,
+        MatChipsModule,
+        // DatePipe
+        // MatChipInput
     ],
     providers: [DoctorMasterService],
     entryComponents: [DoctorMasterComponent],

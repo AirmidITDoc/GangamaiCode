@@ -75,8 +75,8 @@ export class OPReportsService {
   public getdepartmentwisecountsummView(FromDate,ToDate){
     return this._httpClient.get("OPReport/view-DepartmentWisecountSummury?FromDate="+FromDate+"&ToDate="+ToDate);
   }
-  public getDocwisevisitCountsummaryView(FromDate,ToDate,DoctorID){
-    return this._httpClient.get("CommanReport/view-DoctorWisePatientCountReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&DoctorID="+DoctorID);
+  public getDocwisevisitCountsummaryView(FromDate,ToDate){
+    return this._httpClient.get("OPReport/view-DoctorWiseOpdCountSummary?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
   
   public getAppointmentlistwithserviceavailedView(FromDate,ToDate){

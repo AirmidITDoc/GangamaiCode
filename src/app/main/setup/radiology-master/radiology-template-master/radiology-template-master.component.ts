@@ -20,6 +20,7 @@ import { MAT_TAB_GROUP, MatTabGroup } from '@angular/material/tabs';
 import { ToastrService } from 'ngx-toastr';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import Swal from 'sweetalert2';
+import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 
 @Component({
   selector: 'app-radiology-template-master',
@@ -43,7 +44,7 @@ export class RadiologyTemplateMasterComponent implements OnInit {
   };
 
 
-
+  resultsLength=0;
   RadiologytemplateMasterList: any;
   isLoading = true;
   msg: any;
@@ -78,7 +79,7 @@ export class RadiologyTemplateMasterComponent implements OnInit {
     private accountService: AuthenticationService,
     public notification: NotificationServiceService,
     public _matDialog: MatDialog,
-
+    private _fuseSidebarService: FuseSidebarService,
     private _ActRoute: Router,
     public toastr: ToastrService,
     private advanceDataStored: AdvanceDataStored,
@@ -103,7 +104,7 @@ export class RadiologyTemplateMasterComponent implements OnInit {
     this.getRadiologytemplateMasterList();
   }
 
-  resultsLength = 0;
+  
   getRadiologytemplateMasterList() {
     this.sIsLoading = 'loading-data';
     var m_data = {
@@ -116,11 +117,13 @@ export class RadiologyTemplateMasterComponent implements OnInit {
       this.dataSource1.data = data as RadioPatientList[];
       this.dataSource.data = data["Table1"] ?? [] as RadioPatientList[];
       console.log(this.dataSource.data)
-      this.resultsLength = data["Table"][0]["total_row"];
+      this.resultsLength =  this.dataSource.data.length 
       this.sIsLoading = this.dataSource.data.length == 0 ? 'no-data' : '';
     }, error => this.isLoading = false)
   }
-
+  toggleSidebar(name): void {
+    this._fuseSidebarService.getSidebar(name).toggleOpen();
+  }
   onClear() {
     this._radiologytemplateService.myform.reset({ IsDeleted: 'false' });
     this._radiologytemplateService.initializeFormGroup();

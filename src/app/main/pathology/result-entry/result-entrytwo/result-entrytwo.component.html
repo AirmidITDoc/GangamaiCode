@@ -164,7 +164,7 @@
                     </div>
                     <div fxLayoutGap="5px">
 
-                        <angular-editor (blur)="onBlur($event)" [config]="editorConfig" style="height:300px !important;"
+                        <angular-editor (blur)="onBlur($event)" [config]="editorConfig" style="height:300px !important; white-space: pre; "
                             [(ngModel)]="vTemplateDesc" required formControlName="ResultEntry">
                             <!-- <div>
                                 <div [innerHTML]="vTemplateDesc"></div>

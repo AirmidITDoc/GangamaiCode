@@ -112,6 +112,7 @@ export class IpReportComponent implements OnInit {
     this.getWardList();
     this.getCompanyList();
     this.getDoctorList();
+
     const toSelect = this.UserList.find(c => c.UserId == this.UserId);
     this._IPReportService.userForm.get('UserId').setValue(toSelect);
 
@@ -1086,14 +1087,20 @@ viewgetIPAdvanceReportPdf() {
      },100);
   }
   getCurrentadmitwardwisechargsview(){
-    this.SpinLoading =true;
+    let DoctorId = 0;
+    if (this._IPReportService.userForm.get('DoctorId').value)
+      DoctorId = this._IPReportService.userForm.get('UserId').value.DoctorId
+    let RoomId = 0;
+    if (this._IPReportService.userForm.get('RoomId').value)
+      RoomId =  this._IPReportService.userForm.get('RoomId').value.RoomId
+    let CompanyId = 0;
+    if (this._IPReportService.userForm.get('CompanyId').value)
+      CompanyId = this._IPReportService.userForm.get('CompanyId').value.CompanyId
+
     setTimeout(() => {
-      let DoctorId=this._IPReportService.userForm.get('DoctorId').value.DoctorId || 0
-      let  WardId=this._IPReportService.userForm.get('RoomId').value.RoomId || 0
-      let CompanyId=this._IPReportService.userForm.get('CompanyId').value.CompanyId || 0
+   
       this.AdList=true;
-     this._IPReportService.getCurrAdmitwardwisechargesView(
-      DoctorId, WardId,CompanyId
+     this._IPReportService.getCurrAdmitwardwisechargesView(DoctorId,RoomId,CompanyId
        ).subscribe(res => {
        const matDialog = this._matDialog.open(PdfviewerComponent,
          {
@@ -1173,10 +1180,10 @@ viewgetIPAdvanceReportPdf() {
      },100);
   }
   viewgetCurrRefdocAdmitlistReportPdf(){
-    let DoctorId
+    let DoctorId=0
     if (this._IPReportService.userForm.get('DoctorId').value)
-      DoctorId=this._IPReportService.userForm.get('DoctorId').value || 0;
-
+      DoctorId=this._IPReportService.userForm.get('DoctorId').value.DoctorId || 0;
+    debugger
 
     this.SpinLoading =true;
     setTimeout(() => {
@@ -1244,11 +1251,11 @@ viewgetIPAdvanceReportPdf() {
   }
   viewgetDisctypecompanywisecountPdf(){
      
-    let DoctorId
+    let DoctorId=0
     if (this._IPReportService.userForm.get('DoctorId').value)
       DoctorId=this._IPReportService.userForm.get('DoctorId').value || 0;
 
-    let DischargeTypeId
+    let DischargeTypeId=0
     if (this._IPReportService.userForm.get('DischargeTypeId').value)
       DischargeTypeId=this._IPReportService.userForm.get('DischargeTypeId').value || 0;
 
@@ -1541,11 +1548,11 @@ viewgetIPAdvanceReportPdf() {
    viewgetDischaregTypewisePdf() {
     this.sIsLoading = 'loading-data';
      
-    let DoctorId
+    let DoctorId=0;
     if (this._IPReportService.userForm.get('DoctorId').value)
       DoctorId=this._IPReportService.userForm.get('DoctorId').value || 0;
 
-    let DischargeTypeId
+    let DischargeTypeId=0;
     if (this._IPReportService.userForm.get('DischargeTypeId').value)
       DischargeTypeId=this._IPReportService.userForm.get('DischargeTypeId').value || 0;
 

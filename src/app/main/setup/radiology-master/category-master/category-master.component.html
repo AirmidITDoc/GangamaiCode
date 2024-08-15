@@ -1,9 +1,7 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-    <!-- HEADER -->
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fusePerfectScrollbar
+    dynamicTableHeight>
     <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
         fxLayoutAlign.gt-xs="space-between center">
-
-        <!-- APP TITLE -->
         <div fxLayout="row" fxLayoutAlign="start center">
             <div class="logo" fxLayout="row" fxLayoutAlign="start center">
                 <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
@@ -13,29 +11,29 @@
                     style="color: white;">account_box
                 </mat-icon>
                 <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    Category Master
+                    Radiology  Category Master
                 </span>
-            </div>
-        </div> 
 
-    </div> 
-    <div class="content"> 
+            </div>
+        </div>
+    </div>
+
+
+    <div class="content">
         <div class="center p-24 pb-56" fusePerfectScrollbar>
-            <!-- CONTENT -->
             <div class="content-card">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-                    <div fxFlex.gt-sm="65%" fxFlex>
-                        <div fxlayout="row" style="
-                        background-color: white;
-                        padding: 5px 10px 5px 10px;
-                    ">
+                    <div fxFlex.gt-sm="100%" fxFlex>
+
+                        <div fxlayout="row" style="background-color: white; padding: 5px 10px 5px 10px; ">
                             <form [formGroup]="_categoryService.myformSearch">
                                 <div class="dialog-content-wrapper">
                                     <mat-form-field class="mr-sm-12" fxFlex>
-                                        <input matInput placeholder="Search --> Category Name" autocomplete="off"
-                                            name="CategoryNameSearch" formControlName="CategoryNameSearch" />
+                                        <input matInput placeholder="Search --> Template Name" autocomplete="off"
+                                            (keyup)="onSearch()" name="TemplateNameSearch"
+                                            formControlName="TemplateNameSearch" />
                                         <button mat-button matSuffix mat-icon-button aria-label="Clear"
-                                            (click)="onSearchClear()">
+                                            (click)="onSearchClear()" (keyup)="onSearch()">
                                             <mat-icon>close</mat-icon>
                                         </button>
                                     </mat-form-field>
@@ -46,20 +44,26 @@
                                         value="2">All</mat-radio-button>
                                     <mat-radio-button mat-fab value="1"
                                         (click)="toggle(1)">IsActive</mat-radio-button>
-                                    <mat-radio-button (click)="toggle(0)" value="0">Deactive</mat-radio-button>
+                                    <mat-radio-button (click)="toggle(0)" value="0">IsDeactive</mat-radio-button>
                                 </mat-radio-group>
 
                                     <button mat-raised-button (click)="onSearch()" fxLayoutAlign="center center">
                                         <mat-icon>search</mat-icon>
-                                        Search
+
                                     </button>
                                 </div>
                             </form>
                         </div>
+
+
                         <div fxlayout="row">
-                            <div style="width: 100%;">
-                                <mat-table matSort [dataSource]="DSCategoryMasterList" [@animateStagger]="{value:'50'}" style="overflow: auto;height: 500px !important;">
-                                    
+                            <div fxFlex.gt-sm="65%" fxFlex>
+
+
+                                <mat-table class="table1" matSort [dataSource]="DSCategoryMasterList"
+                                    [@animateStagger]="{value:'50'}" style="overflow:auto;height: 500px !important;">
+
+
                                     <ng-container matColumnDef="CategoryId">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
                                         </mat-header-cell>
@@ -123,67 +127,81 @@
                                         </mat-footer-cell>
                                     </ng-container>
 
-                                    <mat-header-row class="accent"
+                                    <ng-container matColumnDef="loading">
+                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                        </mat-header-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="noData">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            no data found...
+                                        </mat-footer-cell>
+                                    </ng-container>
+
+                                    <mat-header-row class="accent min-width-100%"
                                         *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
                                     <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
-                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                        class=" min-width-100%" [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                     <mat-footer-row *matFooterRowDef="['loading']"
                                         [ngClass]="{'hide':DSCategoryMasterList!=null}"></mat-footer-row>
                                     <mat-footer-row *matFooterRowDef="['noData']"
                                         [ngClass]="{'hide':!(DSCategoryMasterList!=null && DSCategoryMasterList.data.length==0)}"></mat-footer-row>
+
                                 </mat-table>
-
-                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
-                                    showFirstLastButtons></mat-paginator>
+                                <mat-paginator [pageSizeOptions]="[30, 50, 75, 100]" [pageSize]="30"
+                                    [length]="resultsLength" showFirstLastButtons (page)="getCategoryMasterList()">
+                                </mat-paginator>
                             </div>
-                        </div>
-                    </div>
-                    <div fxFlex.gt-sm="35%" fxFlex style="background-color: white;">
-                        <div class="dialog-content-wrapper">
-                            <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar>
-                                <form [formGroup]="_categoryService.myform">
-                                    <h3>{{_categoryService.myform.controls.CategoryId.value?"Modify Category
-                                        Master":"New Category Master"}}</h3>
+
+                            <div fxFlex.gt-sm="35%" fxFlex style="background-color: white;">
+                                <div class="dialog-content-wrapper">
+                                    <div mat-dialog-content class="p-24 pb-0 m-0">
+                                        <form [formGroup]="_categoryService.myform">
+                                            <h3>{{_categoryService.myform.controls.CategoryId.value?"Modify
+                                                Category
+                                                Master":"New Category Master"}}</h3>
 
 
-                                    <input type="hidden" name="CategoryId" formControlName="CategoryId">
+                                            <input type="hidden" name="CategoryId" formControlName="CategoryId">
 
-                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                                            <mat-label>Category Name</mat-label>
-                                            <input name="CategoryName" formControlName="CategoryName" matInput required>
-                                            <mat-error>Please enter Category Name </mat-error>
-                                        </mat-form-field>
+                                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                                <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                                    <mat-label>Category Name</mat-label>
+                                                    <input name="CategoryName" formControlName="CategoryName" matInput
+                                                        required>
+                                                    <mat-error>Please enter Category Name </mat-error>
+                                                </mat-form-field>
+                                            </div>
 
+                                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                                <mat-radio-group name="IsDeleted" formControlName="IsDeleted"
+                                                    value='true'>
+                                                    <mat-radio-button value='true' class="mr-sm-12"
+                                                        fxFlex>IsActive</mat-radio-button>
 
+                                                </mat-radio-group>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="footer-navigation-container">
+                                        <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px"
+                                            style="margin-right: 10px;">
+                                            <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
+                                            <button class="btn btn-primary" (click)="onSubmit()"
+                                                [disabled]="_categoryService.myform.invalid">Save</button>
+                                        </div>
                                     </div>
 
-                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                        <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='true'>
-                                            <mat-radio-button value='true' class="mr-sm-12" 
-                                                fxFlex>IsActive</mat-radio-button>
-                                            <!-- <mat-radio-button value='true' class="mr-sm-12"
-                                                fxFlex>IsDeactive</mat-radio-button> -->
-                                        </mat-radio-group>
-                                    </div>
-                                </form>
-                            </div>
-                            <!-- [disabled]="_categoryService.myform.invalid" -->
-                            <div class="footer-navigation-container">
-                                <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px" style="margin-right: 10px;">
-                                    <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
-                                    <button class="btn btn-primary" (click)="onSubmit()" 
-                                    >Save</button>
                                 </div>
                             </div>
                         </div>
+
+
+
                     </div>
 
                 </div>
             </div>
-            <!-- / CONTENT -->
         </div>
-        <!-- / CENTER -->
     </div>
-    <!-- / CONTENT-->
 </div>

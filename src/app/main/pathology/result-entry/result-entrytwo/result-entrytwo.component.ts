@@ -121,9 +121,10 @@ export class ResultEntrytwoComponent implements OnInit {
       let SelectQuery = "select * from T_PathologyReportTemplateDetails  where PathReportId in(" + this.reportIdData + ")"
       console.log(SelectQuery)
       this._SampleService.getPathologyTemplateforOP(SelectQuery).subscribe(Visit => {
-       
+       if(Visit){
         this.vTemplateDesc= Visit[0]["TemplateResultInHTML"];
         this.TemplateId=Visit["PathTemplateId"];
+        }
       },
         error => {
           this.sIsLoading = '';
@@ -156,8 +157,8 @@ export class ResultEntrytwoComponent implements OnInit {
         
     pathologyTemplateInsertObj['PathReportId'] = this.selectedAdvanceObj1.PathReportID ;
     pathologyTemplateInsertObj['PathTemplateId']= this.otherForm.get("TemplateName").value.TemplateId || 0;
-    pathologyTemplateInsertObj['PathTemplateDetailsResult']= this.otherForm.get("ResultEntry").value,
-    pathologyTemplateInsertObj['TemplateResultInHTML']= this.otherForm.get("ResultEntry").value,
+    pathologyTemplateInsertObj['PathTemplateDetailsResult']= this.otherForm.get("ResultEntry").value.trim(),
+    pathologyTemplateInsertObj['TemplateResultInHTML']= this.otherForm.get("ResultEntry").value.trim(),
     pathologyTemplateInsertObj['TestId'] = this.selectedAdvanceObj1.PathTestID || 0;
     // pathologyTemplateInsertObjarr.push(pathologyTemplateInsertObj);
     

@@ -11,6 +11,7 @@ import { ParameterFormMasterComponent } from "./parameter-form-master/parameter-
 import { connectableObservableDescriptor } from "rxjs/internal/observable/ConnectableObservable";
 import Swal from "sweetalert2";
 import { ExcelDownloadService } from "app/main/shared/services/excel-download.service";
+import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
 
 @Component({
     selector: "app-parametermaster",
@@ -40,7 +41,7 @@ export class ParametermasterComponent implements OnInit {
     msg: any;
     step = 0;
     SearchName: string;
-
+    resultsLength=0;
     setStep(index: number) {
         this.step = index;
     }
@@ -58,12 +59,16 @@ export class ParametermasterComponent implements OnInit {
         public _ParameterService: ParametermasterService,
         public _matDialog: MatDialog,
         private reportDownloadService: ExcelDownloadService,
+        private _fuseSidebarService: FuseSidebarService,
     ) { }
 
     ngOnInit(): void {
         this.getParameterMasterList();
     }
 
+    toggleSidebar(name): void {
+        this._fuseSidebarService.getSidebar(name).toggleOpen();
+      }
     onSearchClear() {
         this._ParameterService.myformSearch.reset({
             ParameterNameSearch: "",
@@ -86,13 +91,11 @@ export class ParametermasterComponent implements OnInit {
             IsDeleted: this._ParameterService.myformSearch.get("IsDeletedSearch").value || 0
         };
       
-        this._ParameterService.getParameterMasterList(m_data).subscribe((Menu) => {
-            this.DSParameterList.data = Menu as PathparameterMaster[];
-            console.log( this.DSParameterList.data )
-            this.isLoading = false;
+        this._ParameterService.getParameterMasterList(m_data).subscribe((data) => {
+            this.DSParameterList.data = data as PathparameterMaster[];
             this.DSParameterList.sort = this.sort;
             this.DSParameterList.paginator = this.paginator;
-            this.sIsLoading = '';
+            this.resultsLength=  this.DSParameterList.data.length; 
             console.log(this.DSParameterList.data);
         },
             error => {
@@ -177,7 +180,7 @@ export class ParametermasterComponent implements OnInit {
             this._ParameterService.populateForm(m_data);
             const dialogRef = this._matDialog.open(ParameterFormMasterComponent, {
             maxWidth: "75vw",
-            maxHeight: "80vh",
+            maxHeight: "90vh",
             width: "100%",
             height: "100%",
             data : {

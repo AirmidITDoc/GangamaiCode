@@ -139,12 +139,17 @@
                                                                 </mat-header-cell>
                                                                 <mat-cell *matCellDef="let element" fxShow.gt-sm
                                                                     (click)="onAdd(element)">
+                                                                   
+                                                                    <mat-icon (click)="onAdd(element)"
+                                                                    style="cursor:pointer;margin-right: 10px;"> add </mat-icon>
+
                                                                     {{element.ParameterName}}
                                                                 </mat-cell>
 
+                                                               
                                                             </ng-container>
 
-
+<!-- 
                                                             <ng-container matColumnDef="Add">
                                                                 <mat-header-cell *matHeaderCellDef>
                                                                     Add
@@ -156,7 +161,7 @@
                                                                         style="cursor:pointer"> add </mat-icon>
                                                                 </mat-cell>
 
-                                                            </ng-container>
+                                                            </ng-container> -->
 
                                                             <ng-container matColumnDef="loading">
                                                                 <mat-footer-cell *matFooterCellDef colspan="6">

@@ -1543,7 +1543,7 @@ viewgetDocwiseopdcountsummaryReportPdf() {
   let DoctorID=this._OPReportsService.userForm.get("DoctorID").value || 0
   this._OPReportsService.getDocwisevisitCountsummaryView(
     this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",DoctorID
+    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
     ).subscribe(res => {
     const matDialog = this._matDialog.open(PdfviewerComponent,
       {
