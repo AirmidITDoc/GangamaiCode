@@ -2721,7 +2721,7 @@ export class Admission {
   DoctorId: number;
   DoctorName: string;
   IPDNo: number;
-  DOA: Date;
+  DOA: any;
   DOT: Time;
   IsMLC: boolean;
   MotherName: string;

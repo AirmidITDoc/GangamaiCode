@@ -260,8 +260,8 @@ var data={
       this.FlagRequestIdSelected = false;
       this.FlagPaymentIdSelected = false;
       this.FlagMaterialConsumptionIdSelected=false;
-      this.FlagDischargetypeIdSelected=false;
-
+      this.FlagDischargetypeIdSelected=true;
+      this.FlagWardIdSelected=false;
     } 
     else if (this.ReportName == 'IPD Discharge Type Company Wise') {
       
@@ -274,6 +274,18 @@ var data={
       this.FlagMaterialConsumptionIdSelected=false;
       this.FlagDischargetypeIdSelected=true;
 
+    }
+    else if (this.ReportName == 'IPD Discharge Type Company Wise Count') {
+      
+      this.FlagAdmissionIdSelected=false;
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = true;
+      this.FlagAdvanceIdSelected = false;
+      this.FlagRequestIdSelected = false;
+      this.FlagPaymentIdSelected = false;
+      this.FlagMaterialConsumptionIdSelected=false;
+      this.FlagDischargetypeIdSelected=true;
+      this.FlagWardIdSelected=false;
     }  else if (this.ReportName == 'IPD RefDoctor Wise') {
       
       this.FlagAdmissionIdSelected=false
@@ -785,7 +797,13 @@ var data={
 
 
   getAdmittedPatientListview() {
-    // this.sIsLoading = 'loading-data';
+    let DoctorId=0
+    if (this._IPReportService.userForm.get('DoctorId').value)
+      DoctorId=this._IPReportService.userForm.get('DoctorId').value.DoctorId || 0;
+    let WardId=0
+    if (this._IPReportService.userForm.get('RoomId').value)
+      WardId=this._IPReportService.userForm.get('RoomId').value.RoomId || 0;
+ 
     
     setTimeout(() => {
       
@@ -793,8 +811,8 @@ var data={
     this._IPReportService.getAdmittedPatientListView(
      
       this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-      this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-      0,0,
+      this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",DoctorId
+    ,WardId
       ).subscribe(res => {
       const matDialog = this._matDialog.open(PdfviewerComponent,
         {
@@ -1214,11 +1232,11 @@ viewgetIPAdvanceReportPdf() {
   viewgetDischargeTypewiseReportPdf(){
     this.SpinLoading =true;
     
-    let DoctorId
+    let DoctorId=0
     if (this._IPReportService.userForm.get('DoctorId').value)
       DoctorId=this._IPReportService.userForm.get('DoctorId').value || 0;
 
-    let DischargeTypeId
+    let DischargeTypeId=0
     if (this._IPReportService.userForm.get('DischargeTypeId').value)
       DischargeTypeId=this._IPReportService.userForm.get('DischargeTypeId').value || 0;
 
@@ -1622,8 +1640,7 @@ viewDatewiseAdmissioncountPdf() {
 
 
 viewmonthwiseAdmissioncountPdf() {
-  // this.sIsLoading = 'loading-data';
-  
+ 
   setTimeout(() => {
     
    this.AdList=true;
@@ -1656,7 +1673,6 @@ viewmonthwiseAdmissioncountPdf() {
 
 
 viewDatewisedrwiseAdmissioncountPdf() {
-  // this.sIsLoading = 'loading-data';
   
   setTimeout(() => {
     
@@ -2165,16 +2181,12 @@ viewIPDailyCollectionPdf() {
 
 viewgetOPIPCommanReportPdf() {
   let AddUserId = 0;
-
-    if (this._IPReportService.userForm.get('UserId').value)
-      
-    AddUserId = this._IPReportService.userForm.get('UserId').value.UserId
+if (this._IPReportService.userForm.get('UserId').value)
+      AddUserId = this._IPReportService.userForm.get('UserId').value.UserId
 
     let DoctorId = 0;
-  
-    if (this._IPReportService.userForm.get('DoctorId').value)
-      
-      DoctorId = this._IPReportService.userForm.get('DoctorId').value.DoctorID
+  if (this._IPReportService.userForm.get('DoctorId').value)
+  DoctorId = this._IPReportService.userForm.get('DoctorId').value.DoctorID
 
 
   setTimeout(() => {
@@ -2207,10 +2219,6 @@ viewgetOPIPCommanReportPdf() {
 }
 
 viewgetOPIPBillSummaryReportPdf() {
-
-  let AddUserId = 0;
-  if (this._IPReportService.userForm.get('UserId').value)
-    AddUserId = this._IPReportService.userForm.get('UserId').value.UserId
 
   setTimeout(() => {
     this.sIsLoading = 'loading-data';
@@ -2308,10 +2316,6 @@ this._IPReportService.getIpBillReport(
 
 
 viewgetBillSummaryReportPdf(){
-
-let AddUserId = 0;
-if (this._IPReportService.userForm.get('UserId').value)
-AddUserId = this._IPReportService.userForm.get('UserId').value.UserId
 
 setTimeout(() => {
 this.sIsLoading = 'loading-data';
@@ -2523,9 +2527,6 @@ this._IPReportService.getIpbillgenepaymentdueView(
 
 },100);
 }
-
-
-
 
 
 

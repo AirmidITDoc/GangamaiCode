@@ -178,13 +178,13 @@
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Mobile Number</mat-label>
-                                            <input name="MobileNo" formControlName="Mobile" placeholder="Mobile Number"
+                                            <input name="MobileNo" formControlName="MobileNo" placeholder="Mobile Number"
                                                 matInput required #mobile (keydown)="onEntermobile($event)"
                                                 [(ngModel)]="registerObj.Mobile"
                                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
                                                 required="required" value="9876658688">
                                             <mat-error class="error"
-                                                *ngIf="_doctorService.myform.get('Mobile').invalid && _doctorService.myform.get('Mobile').touched">10
+                                                *ngIf="_doctorService.myform.get('MobileNo').invalid && _doctorService.myform.get('MobileNo').touched">10
                                                 digits Mobile number is
                                                 required</mat-error>
                                         </mat-form-field>

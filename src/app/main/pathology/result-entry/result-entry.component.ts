@@ -192,6 +192,7 @@ export class ResultEntryComponent implements OnInit {
   onEdit(m) {
     console.log(m)
     this.reportPrintObj = m
+    this.reportPrintObj["DOA"]=m.VATime
     
     this.PatientName = m.PatientName;
     this.OPD_IPD = m.OP_IP_No
@@ -347,7 +348,8 @@ export class ResultEntryComponent implements OnInit {
   }
 
  
-  getWhatsappshareSales(contact) {
+  getWhatsappshareResult(contact) {
+    debugger
     if (!contact.IsTemplateTest) {
       if (this.selection.selected.length == 0) {
         this.toastr.warning('CheckBox Select !', 'Warning !', {
@@ -355,9 +357,12 @@ export class ResultEntryComponent implements OnInit {
         });
         return;
       }
-    } else if (contact) {
+    }       
+    if(!contact.IsTemplateTest){
       this.whatsappresultentry();
 
+    }
+     
       if (this.Mobileno != '') {
         var m_data = {
           "insertWhatsappsmsInfo": {
@@ -375,7 +380,7 @@ export class ResultEntryComponent implements OnInit {
             "smsOutGoingID": 0
           }
         }
-
+console.log(m_data)
         this._WhatsAppEmailService.InsertWhatsappSales(m_data).subscribe(response => {
           if (response) {
             this.toastr.success('Result Sent on WhatsApp Successfully.', 'Save !', {
@@ -387,7 +392,7 @@ export class ResultEntryComponent implements OnInit {
             });
           }
         });
-      }
+      
     }
   }
 
@@ -448,7 +453,7 @@ export class ResultEntryComponent implements OnInit {
 
 
   getPrint(contact) {
-
+debugger
     
     if (contact.IsTemplateTest)
       this.viewgetPathologyTemplateReportPdf(contact)
@@ -466,13 +471,12 @@ export class ResultEntryComponent implements OnInit {
     this.selection.clear();
   }
   AdList: boolean = false;
+
   viewgetPathologyTemplateReportPdf(contact) {
+    
     setTimeout(() => {
-      this.SpinLoading = true;
-      this.AdList = true;
-      this._SampleService.getPathTempReport(
-        contact.PathReportID, contact.OPD_IPD_Type
-      ).subscribe(res => {
+     
+      this._SampleService.getPathTempReport(contact.PathReportID,contact.OPD_IPD_Type).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,
           {
             maxWidth: "85vw",

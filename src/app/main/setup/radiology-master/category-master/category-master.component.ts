@@ -31,7 +31,7 @@ export class CategoryMasterComponent implements OnInit {
         "CategoryName",
         "AddedByName",
         "UpdatedBy",
-        "IsActive",
+        "IsDeleted",
         "action",
     ];
 
@@ -78,7 +78,7 @@ export class CategoryMasterComponent implements OnInit {
     }
 
     onClear() {
-        this._categoryService.myform.reset({ IsDeleted: "false" });
+        this._categoryService.myform.reset({ IsDeleted: "true" });
         this._categoryService.initializeFormGroup();
     }
 
@@ -88,7 +88,7 @@ export class CategoryMasterComponent implements OnInit {
                 var m_data = {
                     insertCategoryMaster: {
                         categoryName: this._categoryService.myform.get("CategoryName").value.trim(),
-                            isDeleted:this._categoryService.myform.get("IsDeleted").value ||1,
+                            isDeleted:this._categoryService.myform.get("IsDeleted").value || true,
                             addedBy: this.accountService.currentUserValue.user.id,
                     },
                 };
@@ -120,7 +120,7 @@ export class CategoryMasterComponent implements OnInit {
                     updateCategoryMaster: {
                         CategoryId: this._categoryService.myform.get("CategoryId").value,
                         CategoryName: this._categoryService.myform.get("CategoryName").value,
-                        isDeleted:this._categoryService.myform.get("IsDeleted").value ||1,
+                        isDeleted:this._categoryService.myform.get("IsDeleted").value || true,
                         updatedBy:this.accountService.currentUserValue.user.id,
                     },
                 };
@@ -149,7 +149,7 @@ export class CategoryMasterComponent implements OnInit {
         }
     }
     onEdit(row) {
-       
+       debugger
         this._categoryService.populateForm(row);
     }
     onDeactive(row) {
@@ -165,10 +165,10 @@ export class CategoryMasterComponent implements OnInit {
             if (result) {
                 let Query 
                 if (!this.DSCategoryMasterList.data.find(item => item.CategoryId === row.CategoryId).IsActive){
-                     Query ="Update M_Radiology_CategoryMaster set IsActive=0 where CategoryId=" + row.CategoryId;}
+                     Query ="Update M_Radiology_CategoryMaster set IsDeleted=0 where CategoryId=" + row.CategoryId;}
                 else{
                 let Query =
-                "Update M_Radiology_CategoryMaster set IsActive=1 where CategoryId=" +row.CategoryId;}
+                "Update M_Radiology_CategoryMaster set IsDeleted=1 where CategoryId=" +row.CategoryId;}
                     
                 console.log(Query);
                 this._categoryService.deactivateTheStatus(Query)
@@ -235,7 +235,7 @@ export class CategoryMaster {
     AddedBy: number;
     UpdatedBy: number;
     AddedByName: string;
-
+    IsDeleted: boolean;
     /**
      * Constructor
      *
@@ -246,6 +246,7 @@ export class CategoryMaster {
             this.CategoryId = CategoryMaster.CategoryId || "";
             this.CategoryName = CategoryMaster.CategoryName || "";
             this.IsActive = CategoryMaster.IsActive || "true";
+            this.IsDeleted = CategoryMaster.IsDeleted || "true";
             this.AddedBy = CategoryMaster.AddedBy || "";
             this.UpdatedBy = CategoryMaster.UpdatedBy || "";
             this.AddedByName = CategoryMaster.AddedByName || "";

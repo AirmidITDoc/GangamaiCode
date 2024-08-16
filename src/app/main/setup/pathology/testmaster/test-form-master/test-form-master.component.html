@@ -129,7 +129,8 @@
                                                     <mat-card style="height:267px;width: 100%;overflow: auto;">
 
 
-                                                        <mat-table  matSort [dataSource]="paramterList" [@animateStagger]="{value:'50'}"
+                                                        <mat-table matSort [dataSource]="paramterList"
+                                                            [@animateStagger]="{value:'50'}"
                                                             style="overflow:auto; width: 100%;">
 
                                                             <ng-container matColumnDef="ParameterName">
@@ -138,17 +139,18 @@
                                                                 </mat-header-cell>
                                                                 <mat-cell *matCellDef="let element" fxShow.gt-sm
                                                                     (click)="onAdd(element)">
-                                                                   
+
                                                                     <mat-icon (click)="onAdd(element)"
-                                                                    style="cursor:pointer;margin-right: 10px;"> add </mat-icon>
+                                                                        style="cursor:pointer;margin-right: 10px;"> add
+                                                                    </mat-icon>
 
                                                                     {{element.ParameterName}}
                                                                 </mat-cell>
 
-                                                               
+
                                                             </ng-container>
 
-<!-- 
+                                                            <!-- 
                                                             <ng-container matColumnDef="Add">
                                                                 <mat-header-cell *matHeaderCellDef>
                                                                     Add
@@ -169,9 +171,10 @@
                                                             </ng-container>
 
 
-                                                            <mat-header-row class="accent" 
+                                                            <mat-header-row class="accent"
                                                                 *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                                                            <mat-row *matRowDef="let element; columns: displayedColumns;"
+                                                            <mat-row
+                                                                *matRowDef="let element; columns: displayedColumns;"
                                                                 class="element"
                                                                 [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
 
@@ -384,10 +387,10 @@
                                                                                             style="display: flex;">
                                                                                             <mat-icon
                                                                                                 class="mat-icon-close"
-                                                                                                (click)="otherForm.get('TemplateName').setValue(''); isTemplateNameSelected = false;">close</mat-icon>
+                                                                                                (click)="_TestService.mytemplateform.get('TemplateName').setValue(''); isTemplateNameSelected = false;">close</mat-icon>
                                                                                             <mat-icon
                                                                                                 class="mat-icon-close"
-                                                                                                (click)="otherForm.get('TemplateName').setValue(''); isTemplateNameSelected = false;">search</mat-icon>
+                                                                                                (click)="_TestService.mytemplateform.get('TemplateName').setValue(''); isTemplateNameSelected = false;">search</mat-icon>
                                                                                         </span>
                                                                                         <mat-autocomplete
                                                                                             #autotemp="matAutocomplete"
@@ -520,8 +523,14 @@
 
 
                                 <div fxLayoutGap="5px">
-
+                                 
                                     <div class="footer-navigation-container">
+                                        <mat-radio-group name="IsDeleted" formControlName="IsDeleted"
+                                        value='true'>
+                                        <mat-radio-button value='true' class="mr-sm-12"
+                                            fxFlex>IsActive</mat-radio-button>
+    
+                                    </mat-radio-group>
                                         <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px">
                                             <button class="btn btn-danger-outline" (click)="onClose()">Clear</button>
                                             <button class="btn btn-primary" (click)="onSubmit()">Save</button>

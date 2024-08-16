@@ -392,7 +392,7 @@ export class ResultEntryOneComponent implements OnInit {
         });
 
         this.dataSource.data.forEach((element) => {
-debugger
+
             let pathologyInsertReportObj = {};
             pathologyInsertReportObj['PathReportId'] = element.PathReportId //element1.PathReportId;
             pathologyInsertReportObj['CategoryID'] = element.CategoryId || 0;

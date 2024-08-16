@@ -81,7 +81,7 @@ export class UnitmasterComponent implements OnInit {
     }
 
     onClear() {
-        this._unitmasterService.myform.reset({ IsDeleted: "false" });
+        this._unitmasterService.myform.reset({ IsDeleted: "true" });
         this._unitmasterService.initializeFormGroup();
     }
 
@@ -255,7 +255,7 @@ export class PathunitMaster {
         {
             this.UnitId = PathunitMaster.UnitId || "";
             this.UnitName = PathunitMaster.UnitName || "";
-            this.IsDeleted = PathunitMaster.IsDeleted || "false";
+            this.IsDeleted = PathunitMaster.IsDeleted || "true";
             this.AddedBy = PathunitMaster.AddedBy || "";
             this.UpdatedBy = PathunitMaster.UpdatedBy || "";
         }

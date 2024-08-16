@@ -1083,7 +1083,11 @@ viewgetOPBillReportPdf() {
     this.sIsLoading = 'loading-data';
    
    let ItemName ='%'
- let StoreId =0
+   let StoreId =0
+
+   if (this._OPReportsService.userForm.get('StoreId').value)
+    StoreId = this._OPReportsService.userForm.get('StoreId').value.StoreId
+   
      setTimeout(() => {
        this.AdList = true;
        this._OPReportsService.getCurrentstockReport(
@@ -1110,7 +1114,11 @@ viewgetOPBillReportPdf() {
 
    viewCurrentstockdatewisePdf() {
     this.sIsLoading = 'loading-data';
-   let StoreId =0;
+    let StoreId =0
+
+    if (this._OPReportsService.userForm.get('StoreId').value)
+     StoreId = this._OPReportsService.userForm.get('StoreId').value.StoreId
+    
      setTimeout(() => {
        this.AdList = true;
        this._OPReportsService.getCurrentstockdatewiseReport(

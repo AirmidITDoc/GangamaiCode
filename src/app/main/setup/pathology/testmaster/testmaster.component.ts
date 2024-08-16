@@ -412,7 +412,7 @@ export class TestMaster {
             this.IsPrintTestName = TestMaster.IsPrintTestName || "false";
             this.UpdatedBy = TestMaster.UpdatedBy || 0;
             this.AddedBy = TestMaster.AddedBy || 0;
-            this.IsDeletedSearch = TestMaster.IsDeletedSearch || "";
+            this.IsDeletedSearch = TestMaster.IsDeletedSearch || "true";
         }
     }
 }

@@ -24,7 +24,9 @@ export class OPReportsService {
         DepartmentId:'',
         GroupId:'',
         CashCounterID:'',
-        OPIPType:''
+        OPIPType:'',
+        SupplierName:'',
+        StoreId:''
         // Radio:['1']
 
       })
@@ -461,12 +463,32 @@ public getPurchaseorderview(FromDate,ToDate,SupplierID,ToStoreId){
   }
   
 
+  public getStockadjustmentview(FromDate,todate,StoreId){
+    return this._httpClient.get("InventoryReports/view-StockAdjustmentReport?FromDate="+FromDate+"&todate="+todate+"&StoreId="+StoreId);
+  }
+
   public getBillingServiceList(employee) {
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ServicesList", employee)
+  }
+
+  
+  
+  public getSupplierwisedebitcardnoteview(FromDate,todate,SupplierId,StoreId){
+    return this._httpClient.get("InventoryReports/view-SupplierWiseDebitCreditNote?FromDate="+FromDate+"&todate="+todate+"&SupplierId="+SupplierId+"&StoreId="+StoreId);
   }
 
   public getCashcounterList() {
     return this._httpClient.post("Generic/GetByProc?procName=m_RtrvCashCounterForCombo", {})
   }
+  
+  public getpurchasewisesummaryview(FromDate,ToDate){
+    return this._httpClient.get("InventoryReports/view-PurchaseWiseGRNSummary?FromDate="+FromDate+"&ToDate="+ToDate);
+  }
+  getStoreList(){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ToStoreName",{})
+  }
 
+  public getSupplierList(param){
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_SupplierName_list", param);
+  }
   }

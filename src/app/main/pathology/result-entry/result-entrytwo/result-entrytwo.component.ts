@@ -108,7 +108,7 @@ export class ResultEntrytwoComponent implements OnInit {
       let SelectQuery = "select * from T_PathologyReportTemplateDetails  where PathReportId in(" + this.reportIdData + ")"
       console.log(SelectQuery);
       this._SampleService.getPathologyTemplateforIP(SelectQuery).subscribe(Visit => {
-        this.vTemplateDesc= Visit["TemplateResultInHTML"];
+        this.vTemplateDesc= Visit[0]["TemplateResultInHTML"];
       this.TemplateId=Visit["PathTemplateId"];
       },
         error => {
@@ -213,11 +213,8 @@ export class ResultEntrytwoComponent implements OnInit {
 
   
   viewgetPathologyTemplateReportPdf(PathReportID) {
-    
-    this._SampleService.getPathologyTempReport(
-      PathReportID,this.selectedAdvanceObj1.OPD_IPD_Type
-      
-      ).subscribe(res => {
+    debugger
+    this._SampleService.getPathologyTempReport(PathReportID,this.selectedAdvanceObj1.OPD_IPD_Type).subscribe(res => {
       const dialogRef = this._matDialog.open(PdfviewerComponent,
         {
           maxWidth: "85vw",
