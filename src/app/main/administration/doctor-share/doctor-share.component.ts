@@ -25,6 +25,7 @@ import { ProcessDoctorShareComponent } from './process-doctor-share/process-doct
 })
 export class DoctorShareComponent implements OnInit {
   displayedColumns:string[] = [ 
+    'button',
     'PBillNo',
     'PatientName',
     'TotalAmt',
@@ -57,53 +58,19 @@ export class DoctorShareComponent implements OnInit {
 
   ngOnInit(): void { 
     this.getDoctorNameCombobox();  
-  }
 
-  getSearchList() {
-    var m_data = {
-      "Keyword": `${this._DoctorShareService.UserFormGroup.get('RegId').value}`
-    }
-    this._DoctorShareService.getPatientVisitedListSearch(m_data).subscribe(data => {
-      this.PatientListfilteredOptions = data;
-      console.log(this.PatientListfilteredOptions)
-      if (this.PatientListfilteredOptions.length == 0) {
-        this.noOptionFound = true;
-      } else {
-        this.noOptionFound = false;
-      }
-    });
 
+    const today = new Date();
+    const oneMonthAgo = new Date();
+    oneMonthAgo.setMonth(today.getMonth() - 1);
+
+    this._DoctorShareService.UserFormGroup.patchValue({
+      startdate :oneMonthAgo
+    }); 
+
+    this.getBillListForDoctorList();
   }
-  getSelectedObj1(obj) {
-    console.log(obj)
-    this.dataSource.data = [];
-    // this.registerObj = obj;
-    // this.PatientName = obj.FirstName + " " + obj.LastName;
-    // this.RegId = obj.RegId;
-    // this.Doctorname = obj.DoctorName;
-    // this.VisitDate = this.datePipe.transform(obj.VisitDate, 'dd/MM/yyyy hh:mm a');
-    // this.CompanyName = obj.CompanyName;
-    // this.Tarrifname = obj.TariffName;
-    // this.DepartmentName = obj.DepartmentName;
-    // this.RegNo = obj.RegNo;
-    // this.vOPIPId = obj.VisitId;
-    // this.vOPDNo = obj.OPDNo;
-    // this.vTariffId = obj.TariffId;
-    // this.vClassId = obj.ClassId;
-    // this.AgeYear = obj.AgeYear;
-    // this.AgeMonth = obj.AgeMonth;
-    // this.vClassName = obj.ClassName;
-    // this.AgeDay = obj.AgeDay;
-    // this.GenderName = obj.GenderName;
-    // this.RefDocName = obj.RefDoctorName
-    // this.BedName = obj.BedName;
-    // this.PatientType = obj.PatientType;
-  } 
-  getOptionText1(option) {
-    if (!option)
-      return '';
-    return option.FirstName + ' ' + option.MiddleName + ' ' + option.LastName; 
-  }  
+ 
 // Doctorname Combobox sidebar
 getDoctorNameCombobox() {
   this._DoctorShareService.getAdmittedDoctorCombo().subscribe(data => {
@@ -132,6 +99,7 @@ getOptionTextDoctorName(option) {
       "ToDate" : this.datePipe.transform(this._DoctorShareService.UserFormGroup.get("enddate").value,"MM-dd-yyyy") || "01/01/1900",
       "DoctorId":this._DoctorShareService.UserFormGroup.get('DoctorID').value.DoctorId || 0,
       "PBillNo":this._DoctorShareService.UserFormGroup.get("PbillNo").value || 0,
+      'OP_IP_TYpe':this._DoctorShareService.UserFormGroup.get("OP_IP_Type").value || 0,
     }
     console.log(m_data);
     this._DoctorShareService.getBillListForDocShrList(m_data).subscribe(Visit => {
@@ -158,14 +126,32 @@ getOptionTextDoctorName(option) {
   processDocShare(){
     const dialogRef = this._matDialog.open(ProcessDoctorShareComponent,
       { 
-        height: "45%",
-        width: '40%',
+        height: "35%",
+        width: '35%',
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
     });
   }
   onClear() {  
+  }
+  keyPressAlphanumeric(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
+  keyPressCharater(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/^\d*\.?\d*$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
   }
 }
 

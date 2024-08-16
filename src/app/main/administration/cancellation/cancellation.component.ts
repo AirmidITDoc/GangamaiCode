@@ -126,6 +126,9 @@ export class CancellationComponent implements OnInit {
         this.sIsLoading = '';
       });
   }
+  BillDate(){
+    Swal.fire('Api Error !', 'Bill Date Update!')
+  }
   isLoading123:boolean=false;
   BillCancel(contact){
  

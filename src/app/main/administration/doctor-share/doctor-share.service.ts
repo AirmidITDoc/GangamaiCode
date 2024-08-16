@@ -69,6 +69,9 @@ export class DoctorShareService {
   public getClassList(employee) {
     return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_BillingClassName",employee) 
   }
+  public getGroupList() {
+    return this._httpClient.post("Generic/GetByProc?procName=RetrieveGroupMasterForCombo",{}) 
+  }
   public InsertDocShare(employee) {
     return this._httpClient.post("Administration/InsertDoctorShareMaster",employee) 
   }

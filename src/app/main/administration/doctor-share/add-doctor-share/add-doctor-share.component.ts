@@ -21,6 +21,7 @@ import { AnyNaptrRecord } from 'dns';
 })
 export class AddDoctorShareComponent implements OnInit {
   displayedColumns:string[] = [ 
+    'button',
     'DoctorName',
     'ServiceName',
     'Share',
@@ -43,6 +44,12 @@ export class AddDoctorShareComponent implements OnInit {
   filterdService:Observable<string[]>;
   noOptionFound:any;
   doctorNameCmbList1:any=[];
+  GroupList:any=[];
+  isGroupnameSelected:boolean=false;
+  GroupListfilteredOptions:Observable<string[]>;
+  doctorShareId:any;
+  ClassList:any=[];
+
   dataSource = new MatTableDataSource<BillListForDocShrList>();
   @ViewChild(MatSort) sort:MatSort;
   @ViewChild(MatPaginator) paginator:MatPaginator;
@@ -55,11 +62,11 @@ export class AddDoctorShareComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.getAddDoctorList();
     this.getDoctorNameCombobox();
     this.getClassNameCombobox(); 
-    this.getDoctorNameList(); 
-    this.getAddDoctorList();
-    //this.getServiceListCombobox();
+    this.getDoctorNameList();  
+    this.getGroupListCombobox();
   }
 
   getDoctorNameList() {
@@ -101,14 +108,20 @@ export class AddDoctorShareComponent implements OnInit {
   getOptionTextDoctorName(option) {
     return option && option.Doctorname;
   } 
-  doctorShareId:any;
-  getAddDoctorList() { 
+
+  searchdoctorID:any=0;
+  getAddDoctorList() {  
+    if(this._DoctorShareService.DocFormGroup.get('DoctorName').value){
+      this.searchdoctorID = this._DoctorShareService.DocFormGroup.get('DoctorName').value.DoctorId || 0;
+    }else{
+      this.searchdoctorID = 0;
+    }
     this.sIsLoading = 'loading-data';
     var m_data = { 
-      "DoctorId" : this._DoctorShareService.DocFormGroup.get('DoctorName').value.DoctorId || 0,
+      "DoctorId" :  this.searchdoctorID,
       "ShrTypeSerOrGrp":this._DoctorShareService.DocFormGroup.get('Type').value
     } 
-   // console.log(m_data);
+    console.log(m_data);
     this._DoctorShareService.getDocShrList(m_data).subscribe(Visit => {
       this.dataSource.data = Visit as BillListForDocShrList[];
       //console.log(this.dataSource.data);
@@ -155,7 +168,7 @@ export class AddDoctorShareComponent implements OnInit {
     return option && option.ServiceName ? option.ServiceName : ''; 
   }
   
-  ClassList:any=[];
+
   getClassNameCombobox() {
     var vdata={
        'ClassName': this._DoctorShareService.DocFormGroup.get('ClassId').value || '%'
@@ -177,6 +190,27 @@ export class AddDoctorShareComponent implements OnInit {
   }
   getOptionTextClassName(option) {
     return option && option.ClassName;
+  } 
+
+
+  getGroupListCombobox() { 
+    this._DoctorShareService.getGroupList().subscribe(data => {
+      this.GroupList = data; 
+      //console.log(this.GroupList);
+      this.GroupListfilteredOptions = this._DoctorShareService.DocFormGroup.get('GroupWise').valueChanges.pipe(
+        startWith(''), 
+        map(value => value ? this._filterGroupName(value) : this.GroupList.slice()),
+      );
+    });
+  }
+  private _filterGroupName(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.GroupName ? value.GroupName.toLowerCase() : value.toLowerCase();
+      return this.GroupList.filter(option => option.GroupName.toLowerCase().includes(filterValue));
+    }
+  }
+  getOptionTextGroupName(option) {
+    return option && option.GroupName;
   } 
   ServiceName:any;
   OnEdit(contact){
@@ -212,6 +246,7 @@ export class AddDoctorShareComponent implements OnInit {
       console.log(ClassValue)
         this._DoctorShareService.DocFormGroup.get('ClassId').setValue(ClassValue)
     }
+    
  
   }
   vServicePerc:any;
@@ -363,9 +398,12 @@ export class AddDoctorShareComponent implements OnInit {
     this._matDialog.closeAll();
     this._DoctorShareService.DocFormGroup.reset();
     this.dataSource.data = [];
+    this.Reset();
+    this._DoctorShareService.DocFormGroup.get('Type').setValue('1');
   }
   Reset(){
     this._DoctorShareService.DocFormGroup.get('DoctorID').setValue('');
+    this._DoctorShareService.DocFormGroup.get('GroupWise').setValue('');
     this._DoctorShareService.DocFormGroup.get('ServiceID').setValue('');
     this._DoctorShareService.DocFormGroup.get('Percentage').setValue('');
     this._DoctorShareService.DocFormGroup.get('Amount').setValue('');
@@ -382,8 +420,8 @@ export class AddDoctorShareComponent implements OnInit {
       event.preventDefault();
       return false;
     }
-  }
-  keyPressCharater(event) {
+  } 
+  keyPressCharater(event){
     var inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
       return true;

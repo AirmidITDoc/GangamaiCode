@@ -27,7 +27,7 @@
                     <form [formGroup]="_DoctorShareService.DocFormGroup">
                         <div fxLayout="row" fxLayoutGap="6px"> 
 
-                            <mat-form-field appearance="outline" fxFlex="25%">
+                            <mat-form-field appearance="outline" fxFlex="70%">
                                 <mat-label>Select Doctor Name</mat-label>
                                 <input type="text" name="DoctorName" formControlName="DoctorName" placeholder="Doctor Name " matInput
                                     [matAutocomplete]="autodoc">
@@ -69,6 +69,16 @@
                         <mat-table class="table1" matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
                             style="overflow: auto;height: 230px;">
         
+                            <ng-container matColumnDef="button">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-60"> 
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-60">   
+                                    <mat-icon *ngIf="contact.Op_IP_Type=='0'" class="pill orange-600 s-16" matTooltip="OP">circle</mat-icon>
+                                    <mat-icon *ngIf="contact.Op_IP_Type=='1'" class="pill green s-16" matTooltip="IP">circle</mat-icon>
+                                </mat-cell>
+                            </ng-container>
+        
+
                             <ng-container matColumnDef="DoctorName">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-180">
                                     Doctor Name
@@ -87,9 +97,9 @@
                             </ng-container>
         
                             <ng-container matColumnDef="Share">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">
                                     Share % </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-80">
                                     {{contact.ServicePercentage}}
                                 </mat-cell>
                             </ng-container>
@@ -103,9 +113,9 @@
                             </ng-container>
         
                             <ng-container matColumnDef="DocShareType">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-110">
                                     DocShare Type </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-110">
                                     {{contact.DocShrTypeS}}
                                 </mat-cell>
                             </ng-container>
@@ -158,78 +168,23 @@
                    <mat-card style="padding: 5px;">
                     <form [formGroup]="_DoctorShareService.DocFormGroup">
                         <div fxLayout="column" fxLayoutGap="5px">
-                            <div fxLayout="row" fxLayoutGap="4px"> 
-                    
-                                <mat-form-field appearance="outline" fxFlex="25%">
-                                    <mat-label>Select Class Name</mat-label>
-                                    <input type="text" name="ClassId" formControlName="ClassId" placeholder="Doctor Name " matInput
-                                        [matAutocomplete]="autoClass">
-                                    <span matSuffix style="display: flex;">
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="_DoctorShareService.DocFormGroup.get('ClassId').setValue(''); isClassIdSelected = false;">close</mat-icon>
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="_DoctorShareService.DocFormGroup.get('ClassId').setValue(''); isClassIdSelected = false;">search</mat-icon>
-                                    </span>
-                                    <mat-autocomplete #autoClass="matAutocomplete" [displayWith]="getOptionTextClassName">
-                                        <mat-option *ngFor="let option of ClassListfilteredOptions | async" [value]="option">
-                                            {{option.ClassName}}
-                                        </mat-option>
-                                    </mat-autocomplete>
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline" fxFlex="25%"
-                                    *ngIf="_DoctorShareService.DocFormGroup.get('ServiceOrgrpType').value=='1'">
-                                    <mat-label>Select Service Name</mat-label>
-                                    <input type="text" name="ServiceID" formControlName="ServiceID" placeholder="Service Name " matInput
-                                        [matAutocomplete]="autoservice" (input)="getServiceListCombobox()">
-                                    <span matSuffix style="display: flex;">
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="_DoctorShareService.DocFormGroup.get('ServiceID').setValue(''); isServiceIDSelected = false;">close</mat-icon>
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="_DoctorShareService.DocFormGroup.get('ServiceID').setValue(''); isServiceIDSelected = false;">search</mat-icon>
-                                    </span>
-                                    <mat-autocomplete #autoservice="matAutocomplete" [displayWith]="getOptionTextService">
-                                        <mat-option *ngFor="let option of filterdService | async" [value]="option">
-                                            {{option.ServiceName}}
-                                        </mat-option>
-                                    </mat-autocomplete>
-                                </mat-form-field>
-                    
-                                <mat-form-field appearance="outline" fxFlex="25%"
-                                    *ngIf="_DoctorShareService.DocFormGroup.get('ServiceOrgrpType').value=='2'">
-                                    <mat-label>Select Group Name</mat-label>
-                                    <input type="text" name="GroupWise" formControlName="GroupWise" placeholder="Doctor Name " matInput
-                                        [matAutocomplete]="autogrp">
-                                    <span matSuffix style="display: flex;">
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="_DoctorShareService.DocFormGroup.get('GroupWise').setValue(''); isDoctorIDSelected = false;">close</mat-icon>
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="_DoctorShareService.DocFormGroup.get('GroupWise').setValue(''); isDoctorIDSelected = false;">search</mat-icon>
-                                    </span>
-                                    <mat-autocomplete #autogrp="matAutocomplete" [displayWith]="getOptionTextDoctorName">
-                                        <mat-option *ngFor="let option of DoctorListfilteredOptions | async" [value]="option">
-                                            {{option.Doctorname}}
-                                        </mat-option>
-                                    </mat-autocomplete>
-                                </mat-form-field>
-                    
-                                <div fxLayout="column" style="padding:5px;" fxLayoutGap="6px">
+                            <div fxLayout="row" fxLayoutGap="4px">  
+                                <div fxLayout="row" style="padding:5px;" fxLayoutGap="6px">
                                     <mat-radio-group formControlName="ServiceOrgrpType" name="ServiceOrgrpType" fxLayout="row">
                                         <mat-radio-button value="1">Service Wise</mat-radio-button>
                                         <mat-radio-button value="2">Group Wise</mat-radio-button>
                                     </mat-radio-group>
+                                    <mat-divider [vertical]="true"></mat-divider>&nbsp;
                                     <mat-radio-group formControlName="PatientType" name="PatientType" fxLayout="row">
                                         <mat-radio-button value="0">OP</mat-radio-button>
                                         <mat-radio-button value="1">IP</mat-radio-button>
                                     </mat-radio-group>
-                                </div>
-                    
-                             
+                                </div>  
                             </div>
                     
-                            <div fxLayout="row" fxLayoutGap="6px">
+                            <div fxLayout="row" fxLayoutGap="6px"> 
                     
-                                <mat-form-field appearance="outline" fxFlex="25%">
+                                <mat-form-field appearance="outline" fxFlex="22%">
                                     <mat-label>Select Doctor Name</mat-label>
                                     <input type="text" name="DoctorID" formControlName="DoctorID" placeholder="Doctor Name " matInput
                                         [matAutocomplete]="autoDoc2">
@@ -245,35 +200,89 @@
                                         </mat-option>
                                     </mat-autocomplete>
                                 </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="22%"
+                                *ngIf="_DoctorShareService.DocFormGroup.get('ServiceOrgrpType').value=='1'">
+                                <mat-label>Select Service Name</mat-label>
+                                <input type="text" name="ServiceID" formControlName="ServiceID" placeholder="Service Name " matInput
+                                    [matAutocomplete]="autoservice" (input)="getServiceListCombobox()">
+                                <span matSuffix style="display: flex;">
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="_DoctorShareService.DocFormGroup.get('ServiceID').setValue(''); isServiceIDSelected = false;">close</mat-icon>
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="_DoctorShareService.DocFormGroup.get('ServiceID').setValue(''); isServiceIDSelected = false;">search</mat-icon>
+                                </span>
+                                <mat-autocomplete #autoservice="matAutocomplete" [displayWith]="getOptionTextService">
+                                    <mat-option *ngFor="let option of filterdService | async" [value]="option">
+                                        {{option.ServiceName}}
+                                    </mat-option>
+                                </mat-autocomplete>
+                            </mat-form-field>
+                
+                            <mat-form-field appearance="outline" fxFlex="22%"
+                                *ngIf="_DoctorShareService.DocFormGroup.get('ServiceOrgrpType').value=='2'">
+                                <mat-label>Select Group Name</mat-label>
+                                <input type="text" name="GroupWise" formControlName="GroupWise" placeholder="Group Name " matInput
+                                    [matAutocomplete]="autogrp">
+                                <span matSuffix style="display: flex;">
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="_DoctorShareService.DocFormGroup.get('GroupWise').setValue(''); isGroupnameSelected = false;">close</mat-icon>
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="_DoctorShareService.DocFormGroup.get('GroupWise').setValue(''); isGroupnameSelected = false;">search</mat-icon>
+                                </span>
+                                <mat-autocomplete #autogrp="matAutocomplete" [displayWith]="getOptionTextGroupName">
+                                    <mat-option *ngFor="let option of GroupListfilteredOptions | async" [value]="option">
+                                        {{option.GroupName}}
+                                    </mat-option>
+                                </mat-autocomplete>
+                            </mat-form-field>
                     
-                                <div fxLayout="row" style="padding:15px;">
+                            <mat-form-field appearance="outline" fxFlex="22%">
+                                <mat-label>Select Class Name</mat-label>
+                                <input type="text" name="ClassId" formControlName="ClassId" placeholder="Doctor Name " matInput
+                                    [matAutocomplete]="autoClass">
+                                <span matSuffix style="display: flex;">
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="_DoctorShareService.DocFormGroup.get('ClassId').setValue(''); isClassIdSelected = false;">close</mat-icon>
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="_DoctorShareService.DocFormGroup.get('ClassId').setValue(''); isClassIdSelected = false;">search</mat-icon>
+                                </span>
+                                <mat-autocomplete #autoClass="matAutocomplete" [displayWith]="getOptionTextClassName">
+                                    <mat-option *ngFor="let option of ClassListfilteredOptions | async" [value]="option">
+                                        {{option.ClassName}}
+                                    </mat-option>
+                                </mat-autocomplete>
+                            </mat-form-field>
+
+
+                                <div fxLayout="row" style="padding:15px 5px 15px 5px;">
                                     <mat-radio-group formControlName="DocShareType" name="DocShareType" fxLayout="row">
                                         <mat-label>Doctor Share :</mat-label>&nbsp;&nbsp;
-                                        <mat-radio-button value="P">%</mat-radio-button>&nbsp;&nbsp;
+                                        <mat-radio-button value="P">%</mat-radio-button> &nbsp;
                                         <mat-radio-button value="A">Amount</mat-radio-button>
                                     </mat-radio-group>
-                                </div>
-                    
-                                <mat-form-field appearance="outline" *ngIf="_DoctorShareService.DocFormGroup.get('DocShareType').value=='P'"
-                                    fxFlex="21%">
+                                </div> 
+
+                                <mat-form-field appearance="outline" fxFlex="11%" *ngIf="_DoctorShareService.DocFormGroup.get('DocShareType').value=='P'">
                                     <mat-label>%</mat-label>
-                                    <input name="Percentage" formControlName="Percentage" matInput required type="text"
-                                        [(ngModel)]="vServicePerc" OnlyNumber (keyPress)="keyPressCharater()">
-                                </mat-form-field>
-                    
-                                <mat-form-field appearance="outline" *ngIf="_DoctorShareService.DocFormGroup.get('DocShareType').value=='A'"
-                                    fxFlex="21%">
+                                    <input name="Percentage" formControlName="Percentage" matInput [(ngModel)]="vServicePerc"
+                                    (keypress)="keyPressAlphanumeric($event)">
+                                </mat-form-field>  
+
+                                <mat-form-field appearance="outline" fxFlex="11%"  *ngIf="_DoctorShareService.DocFormGroup.get('DocShareType').value=='A'">
                                     <mat-label>Amount</mat-label>
-                                    <input name="Amount" formControlName="Amount" matInput required type="text" [(ngModel)]="vServiceAmt"
-                                        (keyPress)="keyPressCharater()"> 
-                                </mat-form-field>
+                                    <input name="Amount" formControlName="Amount" matInput [(ngModel)]="vServiceAmt"
+                                    (keypress)="keyPressAlphanumeric($event)">
+                                </mat-form-field>  
+
+ 
                             </div>
                         </div>
                     </form>
                    </mat-card>
                    
                    <div fxLayoutAlign="end">
-                    <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px" style="margin: 0px 20px 0px 50px; ">
+                    <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px" style="margin: 20px 20px 0px 50px; ">
                         <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
                         <button class="btn btn-primary"   (click)="OnSave()">Save</button>
                     </div>
