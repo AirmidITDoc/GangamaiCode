@@ -20,25 +20,35 @@ import Swal from 'sweetalert2';
   animations: fuseAnimations,
 })
 export class DischargeCancelComponent implements OnInit {
-
-  displayedColumns = [ 
-    'DOA', 
-    'RegNo',
-    'PatientName',
-    'Age',
-    'Doctorname', 
-    'IPNo',
-    'CompanyName',
-    'WardName',
-    'TariffName', 
-    'Action'
-  ];
+ 
 
   dateTimeObj:any;
   sIsLoading: string = '';
   isLoading = true;
-
-  dsDischargeList =new MatTableDataSource<DischargeList>();
+  isRegIdSelected:boolean=false;  
+  filteredOptions:any;
+  noOptionFound:any;  
+  vRegNo:any;
+  vPatientName:any; 
+  vAdmissionDate:any;
+  vMobileNo:any; 
+  vIPDNo:any; 
+  vTariffName:any;
+  vCompanyName:any; 
+  vDoctorName:any;
+  vRoomName:any;
+  vBedName:any;
+  vAge:any;
+  vGenderName:any;
+  vAdmissionTime:any;
+  vAgeMonth:any;
+  vAgeDay:any;
+  vDepartment:any;
+  vRefDocName:any;
+  vPatientType:any;
+  screenFromString = 'admission-form';
+  vCheckBox:boolean=false;
+  AdmissionId:any;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -52,48 +62,63 @@ export class DischargeCancelComponent implements OnInit {
     private _loggedService: AuthenticationService
   ) { }
 
-  ngOnInit(): void {
-    this.getDischargPatientList();
+  ngOnInit(): void { 
   }
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
+  } 
+   getSearchList() {
+    var m_data = {
+      "Keyword": `${this._DischargeCancelService.DischargeForm.get('RegID').value}%`
+    }
+    if (this._DischargeCancelService.DischargeForm.get('RegID').value.length >= 1) {
+      this._DischargeCancelService.getAdmittedpatientlist(m_data).subscribe(resData => {
+        this.filteredOptions = resData;
+        console.log(resData) 
+        if (this.filteredOptions.length == 0) {
+          this.noOptionFound = true;
+        } else {
+          this.noOptionFound = false;
+        } 
+      });
+    } 
+  } 
+  getOptionText(option) {
+    if (!option) return '';
+    return option.FirstName + ' ' + option.LastName + ' (' + option.RegNo + ')';
+  } 
+  getSelectedObj(obj){
+    console.log(obj)
+   this.vRegNo = obj.RegNo;
+   this.vPatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
+   this.vAdmissionDate = obj.AdmissionDate;
+   this.vAdmissionTime = obj.AdmissionTime;
+   this.vMobileNo = obj.MobileNo;  
+   this.vIPDNo = obj.IPDNo; 
+   this.vDoctorName = obj.DoctorName;
+   this.vTariffName =obj.TariffName
+   this.vCompanyName = obj.CompanyName 
+   this.vRoomName = obj.RoomName;
+   this.vBedName = obj.BedName
+   this.vGenderName = obj.GenderName
+   this.vAge = obj.Age  
+   this.AdmissionId = obj.AdmissionId;
   }
+  getDischargedList(event){
+    if(event.checked == true){
+      this.patientInfoReset();
+      this.vCheckBox = true;
+    }else{
+      this.patientInfoReset(); 
+      this.vCheckBox = false;
+    } 
+}
  
-  ArryList:any=[];
-  resultsLength =0;
-  getDischargPatientList(){
-    // debugger
-    // this.sIsLoading = 'loading-data';
-    // var D_data = {
-    //   "F_Name":  this._DischargeCancelService.DischargeForm.get('FirstName').value || '%',
-    //   "L_Name": this._DischargeCancelService.DischargeForm.get('LastName').value || '%',
-    //   "Reg_No": this._DischargeCancelService.DischargeForm.get('RegNo').value || 0, 
-    //   "From_Dt": this.datePipe.transform(this._DischargeCancelService.DischargeForm.get('start').value, "MM-dd-yyyy") || '01/01/1900',
-    //   "To_Dt ": this.datePipe.transform(this._DischargeCancelService.DischargeForm.get('end').value, "MM-dd-yyyy") || '01/01/1900',
-    //   "OP_IP_Type": 1,
-    //   "AdmDisFlag": 1,
-    //   "IPNumber" :  this._DischargeCancelService.DischargeForm.get('IPDNo').value ||  0
-    // }
-    // console.log(D_data);
-    // this._DischargeCancelService.OPIPPatientList(D_data).subscribe(data => { 
-    //    this.ArryList = data as DischargeList[] 
-    //   this.dsDischargeList.data =this.ArryList.Table; 
-    //   console.log(this.dsDischargeList.data) 
-    //   this.dsDischargeList.sort = this.sort;
-    //   this.dsDischargeList.paginator = this.paginator; 
-    // //  this.sIsLoading = this.dsDischargeList.data.length == 0 ? 'no-data' : ''; 
-  
-    // },
-    //   error => {
-    //     this.sIsLoading = '';
-    //   });
-  }
   isLoading123:boolean=false;
-  DischargeCancel(contact){
- 
+  DischargeCancel(){ 
     Swal.fire({
       title: 'Do you want to cancel the Discharge ',
       text: "You won't be able to revert this!",
@@ -104,59 +129,57 @@ export class DischargeCancelComponent implements OnInit {
       confirmButtonText: "Yes, Cancel it!" 
     }).then((result) => {
       /* Read more about isConfirmed, isDenied below */
-      // if (result.isConfirmed) {  
-      //   let billCancellationParamObj = {};
-      //   billCancellationParamObj['oP_IP_type'] = contact.OPD_IPD_Type;
-      //   billCancellationParamObj['billNo'] = contact.BillNo || 0;
+      if (result.isConfirmed) {  
+        let iP_DischargeCancelParam = {};
+        iP_DischargeCancelParam['admissionId'] = this.AdmissionId; 
 
-      //   let SubmitDate ={
-      //     "billCancellationParam":billCancellationParamObj
-      //   }
-      //   this._CancellationService.SaveCancelBill(SubmitDate).subscribe(response => {
-      //     if (response) {
-      //       Swal.fire('Congratulations !', 'Bill Cancel Successfully !', 'success').then((result) => {
-      //         if (result.isConfirmed) { 
-      //           this.getSearchList(); 
-      //         }
-      //       });
-      //     } else {
-      //       Swal.fire('Error !', 'Discharge  not saved', 'error');
-      //     } 
-      //   });  
-      // }else{
-      //   this.getSearchList(); 
-      // }
+        let SubmitDate ={
+          "iP_DischargeCancelParam":iP_DischargeCancelParam
+        } 
+        this._DischargeCancelService.SaveDischargeCancel(SubmitDate).subscribe(response => {
+          if (response) {
+            Swal.fire('Congratulations !', 'Discharge Cancel Successfully !', 'success').then((result) => {
+              if (result.isConfirmed) { 
+                this.getSearchList(); 
+              }
+            });
+          } else {
+            Swal.fire('Error !', 'Discharge  not saved', 'error');
+          } 
+        });  
+      } 
     })
   }
-  onClear(){
-    this._DischargeCancelService.DischargeForm.reset();
-    this._DischargeCancelService.DischargeForm.get('start').setValue(new Date())
-    this._DischargeCancelService.DischargeForm.get('end').setValue(new Date())
+  AdmisssionCancel(){
 
   }
-}
-export class DischargeList{
- 
-  DOA: any;
-  RegNo: any;
-  PatientName: string;
-  Age: any;
-  Doctorname: any;
-  IPNo:any;
-  CompanyName: string;
-  WardName: string;
-  TariffName: string;
-  constructor(DischargeList) {
-    {
-      this.DOA = DischargeList.DOA || 0;
-      this.RegNo = DischargeList.RegNo || 0;
-      this.PatientName = DischargeList.PatientName || '';
-      this.CompanyName = DischargeList.CompanyName || '';
-      this.WardName = DischargeList.WardName || '';
-      this.TariffName = DischargeList.TariffName || '';
-      this.Doctorname = DischargeList.Doctorname || '';
-      this.Age = DischargeList.Age || 0;
-      this.IPNo = DischargeList.IPNo || 0;
+  OnSave(){
+    if(this._DischargeCancelService.DischargeForm.get('IsDischarged').value == '1'){
+
+    }else{
+
     }
   }
+  onClear(){
+    this._DischargeCancelService.DischargeForm.reset(); 
+    this._DischargeCancelService.DischargeForm.get('Op_ip_id').setValue('1')
+    this.patientInfoReset();
+  }
+  patientInfoReset(){
+    this._DischargeCancelService.DischargeForm.get('RegID').setValue('')
+    this.vRegNo = '';
+    this.vPatientName ='';
+    this.vAdmissionDate = '';
+    this.vAdmissionTime = '';
+    this.vMobileNo = '';
+    this.vIPDNo ='';
+    this.vDoctorName = '';
+    this.vTariffName ='';
+    this.vCompanyName = '';
+    this.vRoomName = '';
+    this.vBedName = '';
+    this.vGenderName = '';
+    this.vAge = '';
+  }
 }
+ 

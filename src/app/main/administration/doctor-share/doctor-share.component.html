@@ -23,7 +23,7 @@
     </mat-toolbar>
 
     <div class="content"> 
-        <div class="center p-16 pb-56" style="border-radius: 4px;">
+        <div class="center  pb-56" style="border-radius: 4px;padding: 12px 12px 6px 12px;">
             <div class="content-card">
                 <div fxLayout="row" fxLayout="column" fxFlexFill fxLayoutGap="10px">  
                     <mat-card style="padding: 5px;">
@@ -31,33 +31,24 @@
                             <div fxLayout="row" fxLayoutGap="6px">
                     
                                 <div fxLayout="row" style="padding: 15px;">
-                                    <mat-radio-group formControlName="OP_IP_Type" name="Radio" (change)="getSearchList()">
-                                        <mat-radio-button value="2">ALL</mat-radio-button>
-                                        <mat-radio-button value="0">OP</mat-radio-button>
-                                        <mat-radio-button value="1">IP</mat-radio-button>
+                                    <mat-radio-group formControlName="OP_IP_Type" name="Radio" (change)="getBillListForDoctorList()">
+                                        <mat-radio-button value="2">ALL</mat-radio-button>&nbsp;
+                                        <mat-radio-button value="0">OP</mat-radio-button>&nbsp;
+                                        <mat-radio-button value="1">IP</mat-radio-button>&nbsp;
                                     </mat-radio-group>
                                 </div>
-                    
-                                <mat-form-field class=searchRegId appearance="outline" fxFlex="30%">
-                                    <input type="text" name="RegId" formControlName="RegId" placeholder="Patient Name (enter 2 char)/ MR No/ Mobile No "
-                                        matInput [matAutocomplete]="autoReg" (input)="getSearchList()" maxlength="10">
-                                    <span matSuffix style="display: flex;">
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="_DoctorShareService.UserFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">close</mat-icon>
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="_DoctorShareService.UserFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">search</mat-icon>
-                                    </span>
-                                    <mat-autocomplete #autoReg="matAutocomplete" [displayWith]="getOptionText1"
-                                        (optionSelected)='getSelectedObj1($event.option.value)'>
-                                        <mat-option *ngFor="let option of PatientListfilteredOptions" [value]="option">
-                                            {{option.RegNo}} |{{option.FirstName}} {{option.MiddleName}}
-                                            {{option.LastName}} |
-                                            {{option.MobileNo}} | {{option.DoctorName}} | {{option.OPDNo}}
-                                        </mat-option>
-                                    </mat-autocomplete>
+
+                                <mat-form-field appearance="outline" fxFlex="18%">
+                                    <mat-label>Enter a date range</mat-label>
+                                    <mat-date-range-input [rangePicker]="picker">
+                                        <input matStartDate formControlName="startdate" placeholder="Start date">
+                                        <input matEndDate formControlName="enddate" placeholder="End date" (dateChange)="getBillListForDoctorList()">
+                                    </mat-date-range-input>
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-date-range-picker #picker></mat-date-range-picker>
                                 </mat-form-field>
- 
-                                <mat-form-field appearance="outline" fxFlex="20%">
+
+                                <mat-form-field appearance="outline" fxFlex="36%">
                                     <mat-label>Select Doctor Name</mat-label>
                                     <input type="text" name="DoctorID" formControlName="DoctorID" placeholder="Doctor Name " matInput
                                         [matAutocomplete]="autoDoc">
@@ -74,21 +65,33 @@
                                     </mat-autocomplete>
                                 </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex="8%">
+                                <mat-form-field appearance="outline" fxFlex="20%">
                                     <mat-label>PBill No</mat-label>
-                                    <input name="PbillNo" formControlName="PbillNo" matInput>
-                                </mat-form-field>
+                                    <input name="PbillNo" formControlName="PbillNo" matInput (keyup)="getBillListForDoctorList()"
+                                    (keypress)="keyPressAlphanumeric($event)">
+                                </mat-form-field> 
 
-                                <mat-form-field appearance="outline" fxFlex="15%">
-                                    <mat-label>Enter a date range</mat-label>
-                                    <mat-date-range-input [rangePicker]="picker">
-                                        <input matStartDate formControlName="startdate" placeholder="Start date">
-                                        <input matEndDate formControlName="enddate" placeholder="End date" (dateChange)="getBillListForDoctorList()">
-                                    </mat-date-range-input>
-                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                    <mat-date-range-picker #picker></mat-date-range-picker>
-                                </mat-form-field>
-                                
+                              
+                    
+                                <!-- <mat-form-field class=searchRegId appearance="outline" fxFlex="30%">
+                                    <input type="text" name="RegId" formControlName="RegId" placeholder="Patient Name (enter 2 char)/ MR No/ Mobile No "
+                                        matInput [matAutocomplete]="autoReg" (input)="getSearchList()" maxlength="10">
+                                    <span matSuffix style="display: flex;">
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="_DoctorShareService.UserFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="_DoctorShareService.UserFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">search</mat-icon>
+                                    </span>
+                                    <mat-autocomplete #autoReg="matAutocomplete" [displayWith]="getOptionText1"
+                                        (optionSelected)='getSelectedObj1($event.option.value)'>
+                                        <mat-option *ngFor="let option of PatientListfilteredOptions" [value]="option">
+                                            {{option.RegNo}} |{{option.FirstName}} {{option.MiddleName}}
+                                            {{option.LastName}} |
+                                            {{option.MobileNo}} | {{option.DoctorName}} | {{option.OPDNo}}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field> -->
+  
                                 
                                 <div style="padding: 10px;"> 
                                     <button mat-raised-button class="searchButton" matTooltip="search" (click)="getBillListForDoctorList()">
@@ -109,6 +112,22 @@
                     
                                     <mat-table class="table1" matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
                                         style="overflow: auto;">
+
+                                        <ng-container matColumnDef="button">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-80"> 
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-80">  
+
+                                                <mat-icon *ngIf="contact.PatientType =='Self'" matTooltip="Patient Category Self">account_box
+                                                </mat-icon>
+                                                
+                                                <mat-icon *ngIf="contact.PatientType !='Self'" matTooltip="Patient Category Company">business
+                                                </mat-icon>
+                                                
+                                                <mat-icon *ngIf="contact.opd_ipd_type=='0'" class="pill orange-600 s-16" matTooltip="OP">circle</mat-icon>
+                                                <mat-icon *ngIf="contact.opd_ipd_type=='1'" class="pill green s-16" matTooltip="IP">circle</mat-icon>
+                                            </mat-cell>
+                                        </ng-container>
                     
                                         <ng-container matColumnDef="PBillNo">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-110">
@@ -189,7 +208,8 @@
                                         <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
                                         </mat-header-row>
                                         <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
-                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                            [@animate]="{value:'*',params:{y:'100%'}}"
+                                            [ngClass]="contact.PatientType !== 'Self' ? 'self-row' : ''"  ></mat-row>
                                         <mat-footer-row *matFooterRowDef="['loading']"
                                             [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                                         </mat-footer-row>
@@ -211,6 +231,23 @@
                                     <mat-table class="table1" matSort [dataSource]="dsAdditionalPay" [@animateStagger]="{value:'50'}"
                                     style="overflow: auto;">
                 
+                                    <ng-container matColumnDef="button">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-80"> 
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-80">  
+
+                                            <mat-icon *ngIf="contact.PatientType =='Self'" matTooltip="Patient Category Self">account_box
+                                            </mat-icon>
+                                            
+                                            <mat-icon *ngIf="contact.PatientType !='Self'" matTooltip="Patient Category Company">business
+                                            </mat-icon>
+                                            
+                                            <mat-icon *ngIf="contact.opd_ipd_type=='0'" class="pill orange-600 s-16" matTooltip="OP">circle</mat-icon>
+                                            <mat-icon *ngIf="contact.opd_ipd_type=='1'" class="pill green s-16" matTooltip="IP">circle</mat-icon>
+                                        </mat-cell>
+                                    </ng-container>
+                
+
                                     <ng-container matColumnDef="PBillNo">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-110">
                                             PBill No
@@ -303,7 +340,7 @@
                                 </div>
                             </mat-tab>
                         </mat-tab-group>
-                    </mat-card>
+                    </mat-card>  
                 </div>
             </div>
         </div>

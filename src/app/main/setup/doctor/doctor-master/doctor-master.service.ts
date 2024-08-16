@@ -45,8 +45,6 @@ export class DoctorMasterService {
             ],
             DateOfBirth: [{ value: new Date() }],
             Address: [""],
-            CityId: ["", Validators.pattern("[a-zA-Z]+$")],
-            Pin: ["", [Validators.minLength(6), Validators.maxLength(6)]],
             Phone: [
                 "",
                 [
@@ -73,15 +71,6 @@ export class DoctorMasterService {
             isActive: ['1'],
             DoctorTypeId: [""],
             DoctorType: [""],
-            AgeYear: ["", Validators.pattern("[0-9]+")],
-            AgeMonth: ["", Validators.pattern("[0-9]+")],
-            AgeDay: ["", Validators.pattern("[0-9]+")],
-            // PassportNo: [
-            //     "",
-            //     Validators.pattern(
-            //         "^[A-PR-WYa-pr-wy][1-9]\\d" + "\\s?\\d{4}[1-9]$"
-            //     ),
-            // ],
             PassportNo: [""],
             ESINO: [""],
             RegNo: [""],

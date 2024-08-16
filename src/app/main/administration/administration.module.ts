@@ -65,10 +65,6 @@ const appRoutes: Routes = [
     path: "smsconfigrationtool",
     loadChildren: () => import("./smsconfuguration/smsconfuguration.module").then((m) => m.SMSConfugurationModule),
 },
-// {
-//   path:"doctorshare",
-//   loadChildren: () => import("./admission-date-change/admission-date-change.module").then((m)=>m.AdmissionDateChangeModule),
-//  },
  
 ];
 
