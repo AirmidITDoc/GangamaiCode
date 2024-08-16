@@ -34,15 +34,12 @@ export class NewDoctorComponent implements OnInit {
     registerObj = new DoctorMaster({});
     docobject: DoctorDepartmentDet;
     msg: any;
-    b_AgeYear: any = 0;
-    b_AgeMonth: any = 0;
-    b_AgeDay: any = 0;
     screenFromString = 'admission-form';
 
     filteredOptionsPrefix: Observable<string[]>;
     filteredDoctortype: Observable<string[]>;
     filteredOptionsDep: Observable<string[]>;
-    signature:any;
+    signature: any;
 
     isPrefixSelected: boolean = false;
     optionsPrefix: any[] = [];
@@ -66,7 +63,7 @@ export class NewDoctorComponent implements OnInit {
 
     DeptSource = new MatTableDataSource<DepartmenttList>();
     isAllSelected = false;
-    sanitizeImagePreview:any;
+    sanitizeImagePreview: any;
     constructor(
         public _doctorService: DoctorMasterService,
         private accountService: AuthenticationService,
@@ -81,13 +78,13 @@ export class NewDoctorComponent implements OnInit {
                 width: '900px',
                 height: '400px',
                 data: {
-                    
+
                 }
             }
         );
         dialogRef.afterClosed().subscribe(result => {
-            this.sanitizeImagePreview=result;
-            this.signature=this.sanitizeImagePreview;
+            this.sanitizeImagePreview = result;
+            this.signature = this.sanitizeImagePreview;
         });
     }
     toggleSelectAll() {
@@ -101,9 +98,6 @@ export class NewDoctorComponent implements OnInit {
 
         if (this.data) {
             this.registerObj = this.data.registerObj;
-            this.b_AgeYear = this.data.registerObj.AgeYear;
-            this.b_AgeDay = this.data.registerObj.AgeDay;
-            this.b_AgeMonth = this.data.registerObj.AgeMonth;
             this.getDocDeptList();
         }
         else {
@@ -227,23 +221,6 @@ export class NewDoctorComponent implements OnInit {
             //   }
         }
     }
-
-
-    ageyearcheck(event) {
-
-        if (parseInt(event) > 100) {
-            this.toastr.warning('Please Enter Valid Age.', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-
-            this.agey.nativeElement.focus();
-        }
-        return;
-
-    }
-
-
-
     // validation
     get f() {
         return this._doctorService.myform.controls;
@@ -413,126 +390,44 @@ export class NewDoctorComponent implements OnInit {
                     data2.push(DocInsertObj);
                 });
                 var m_data = {
-                    insertDoctorMaster: {
-                        doctorId:
-                            "0" ||
-                            this._doctorService.myform.get("DoctorId").value,
-                        prefixID:
-                            this._doctorService.myform.get("PrefixID").value
-                                .PrefixID,
-                        firstName:
-                            this._doctorService.myform
-                                .get("FirstName")
-                                .value.trim() || "%",
-                        middleName: this._doctorService.myform
-                            .get("MiddleName")
-                            .value || "%",
-                        lastName:
-                            this._doctorService.myform
-                                .get("LastName")
-                                .value || "%",
-                        dateOfBirth: this.registerObj.DateofBirth,//this._doctorService.myform.get("DateofBirth").value || '01/0/1900',
-                        address:
-                            this._doctorService.myform
-                                .get("Address")
-                                .value || "%",
-                        city:
-                            this._doctorService.myform
-                                .get("CityId")
-                                .value || "%",
-                        pin:
-                            this._doctorService.myform
-                                .get("Pin")
-                                .value || "0",
-                        phone:
-                            this._doctorService.myform
-                                .get("Phone")
-                                .value || "0",
-                        mobile: this._doctorService.myform
-                            .get("MobileNo")
-                            .value || "%",
-                        genderId:
-                            this._doctorService.myform.get("GenderId").value.GenderId || 0,
-                        education:
-                            this._doctorService.myform
-                                .get("Education")
-                                .value.trim() || "%",
-                        isConsultant: Boolean(
-                            JSON.parse(
-                                this._doctorService.myform.get("IsConsultant")
-                                    .value
-                            )
-                        ),
-                        isRefDoc: Boolean(
-                            JSON.parse(
-                                this._doctorService.myform.get("IsRefDoc").value
-                            )
-                        ),
-                        IsActive: Boolean(
-                            JSON.parse(
-                                this._doctorService.myform.get("isActive")
-                                    .value
-                            )
-                        ),
-                        doctorTypeId: this._doctorService.myform.get("DoctorTypeId").value.Id || 0,
-                        ageYear:
-                            this._doctorService.myform
-                                .get("AgeYear")
-                                .value || "0",
-                        ageMonth:
-                            this._doctorService.myform
-                                .get("AgeMonth")
-                                .value || "0",
-                        ageDay:
-                            this._doctorService.myform
-                                .get("AgeDay")
-                                .value || "0",
-                        passportNo:
-                            this._doctorService.myform
-                                .get("PassportNo")
-                                .value || "0",
-                        esino:
-                            this._doctorService.myform
-                                .get("ESINO")
-                                .value || "0",
-                        regNo:
-                            this._doctorService.myform
-                                .get("RegNo")
-                                .value || "0",
-                        regDate: this.registerObj.RegDate,
-                        // this._doctorService.myform.get("RegDate").value ||
-                        // "01/01/1900",
-                        mahRegNo:
-                            this._doctorService.myform.get("MahRegNo").value ||
-                            "0",
-                        PanCardNo: 0,
-                        AadharCardNo: 0,
-                        mahRegDate: this.registerObj.MahRegDate,
-                        // this._doctorService.myform.get("MahRegDate")
-                        //     .value || "01/01/1900",
-
-                        isInHouseDoctor: true,
-                        isOnCallDoctor: true,
-                        Addedby: this.accountService.currentUserValue.user.id,
-
-                        updatedBy: this.accountService.currentUserValue.user.id,
-                        Signature:this.signature
-
-                    },
-                    assignDoctorDepartmentDet: data2,
+                    doctorId: "0" || this._doctorService.myform.get("DoctorId").value,
+                    prefixID: this._doctorService.myform.get("PrefixID").value.PrefixID,
+                    firstName: this._doctorService.myform.get("FirstName").value.trim() || "%",
+                    middleName: this._doctorService.myform.get("MiddleName").value || "%",
+                    lastName: this._doctorService.myform.get("LastName").value || "%",
+                    dateOfBirth: this.registerObj.DateofBirth,
+                    address: this._doctorService.myform.get("Address").value || "%",
+                    phone: this._doctorService.myform.get("Phone").value || "0",
+                    mobile: this._doctorService.myform.get("MobileNo").value || "%",
+                    genderId: this._doctorService.myform.get("GenderId").value.GenderId || 0,
+                    education: this._doctorService.myform.get("Education").value.trim() || "%",
+                    isConsultant: Boolean(JSON.parse(this._doctorService.myform.get("IsConsultant").value)),
+                    isRefDoc: Boolean(JSON.parse(this._doctorService.myform.get("IsRefDoc").value)),
+                    IsActive: Boolean(JSON.parse(this._doctorService.myform.get("isActive").value)),
+                    doctorTypeId: this._doctorService.myform.get("DoctorTypeId").value.Id || 0,
+                    passportNo: this._doctorService.myform.get("PassportNo").value || "0",
+                    esino: this._doctorService.myform.get("ESINO").value || "0",
+                    regNo: this._doctorService.myform.get("RegNo").value || "0",
+                    regDate: this.registerObj.RegDate,
+                    mahRegNo: this._doctorService.myform.get("MahRegNo").value || "0",
+                    PanCardNo: 0,
+                    AadharCardNo: 0,
+                    mahRegDate: this.registerObj.MahRegDate,
+                    isInHouseDoctor: true,
+                    isOnCallDoctor: true,
+                    Addedby: this.accountService.currentUserValue.user.id,
+                    updatedBy: this.accountService.currentUserValue.user.id,
+                    Signature: this.signature,
+                    Departments: data2
                 };
-                console.log(m_data)
-                this._doctorService
-                    .doctortMasterInsert(m_data)
-                    .subscribe((data) => {
-                        // this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                            });
+                this._doctorService.doctortMasterInsert(m_data).subscribe((data) => {
+                    if (data) {
+                        this.toastr.success('Record Saved Successfully.', 'Saved !', {
+                            toastClass: 'tostr-tost custom-toast-success',
+                        });
 
-                        }
-                    });
+                    }
+                });
 
 
             } else {
@@ -569,14 +464,6 @@ export class NewDoctorComponent implements OnInit {
                             this._doctorService.myform
                                 .get("Address")
                                 .value.trim() || "%",
-                        City:
-                            this._doctorService.myform
-                                .get("City")
-                                .value.trim() || "%",
-                        Pin:
-                            this._doctorService.myform
-                                .get("Pin")
-                                .value || "0",
                         Phone:
                             this._doctorService.myform
                                 .get("Phone")
@@ -608,17 +495,6 @@ export class NewDoctorComponent implements OnInit {
                             )
                         ),
                         DoctorTypeId: this._doctorService.myform.get("DoctorTypeId").value.Id || 0,
-                        AgeYear:
-                            this._doctorService.myform
-                                .get("AgeYear")
-                                .value || "0",
-                        AgeMonth:
-                            this._doctorService.myform
-                                .get("AgeMonth")
-                                .value || "0",
-                        AgeDay: this._doctorService.myform
-                            .get("AgeDay")
-                            .value || "0",
                         PassportNo:
                             this._doctorService.myform
                                 .get("PassportNo")
@@ -688,7 +564,7 @@ export class NewDoctorComponent implements OnInit {
 
 
     onChangeDateofBirth(DateOfBirth) {
-
+        debugger
         if (DateOfBirth) {
             const todayDate = new Date();
             const dob = new Date(DateOfBirth);
