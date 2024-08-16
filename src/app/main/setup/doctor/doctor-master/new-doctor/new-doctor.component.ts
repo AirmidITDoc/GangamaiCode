@@ -87,6 +87,7 @@ export class NewDoctorComponent implements OnInit {
         );
         dialogRef.afterClosed().subscribe(result => {
             this.sanitizeImagePreview=result;
+            this.signature=this.sanitizeImagePreview;
         });
     }
     toggleSelectAll() {
@@ -382,7 +383,6 @@ export class NewDoctorComponent implements OnInit {
 
     }
     remove(e) {
-        debugger
         this.toggleSelection(e);
     }
 
@@ -400,6 +400,7 @@ export class NewDoctorComponent implements OnInit {
 
 
     onSubmit() {
+        debugger
         if (this._doctorService.myform.valid) {
             if (!this._doctorService.myform.get("DoctorId").value) {
 
@@ -437,7 +438,7 @@ export class NewDoctorComponent implements OnInit {
                                 .value || "%",
                         city:
                             this._doctorService.myform
-                                .get("City")
+                                .get("CityId")
                                 .value || "%",
                         pin:
                             this._doctorService.myform
@@ -448,7 +449,7 @@ export class NewDoctorComponent implements OnInit {
                                 .get("Phone")
                                 .value || "0",
                         mobile: this._doctorService.myform
-                            .get("Mobile")
+                            .get("MobileNo")
                             .value || "%",
                         genderId:
                             this._doctorService.myform.get("GenderId").value.GenderId || 0,
@@ -515,10 +516,7 @@ export class NewDoctorComponent implements OnInit {
                         Addedby: this.accountService.currentUserValue.user.id,
 
                         updatedBy: this.accountService.currentUserValue.user.id,
-                        // RefDocHospitalName:
-                        //     this._doctorService.myform
-                        //         .get("RefDocHospitalName")
-                        //         .value|| "%",
+                        Signature:this.signature
 
                     },
                     assignDoctorDepartmentDet: data2,
