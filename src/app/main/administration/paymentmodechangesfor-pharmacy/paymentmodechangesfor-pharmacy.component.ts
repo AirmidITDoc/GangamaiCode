@@ -10,6 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 import { EditPaymentmodeComponent } from './edit-paymentmode/edit-paymentmode.component';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { MatDialog } from '@angular/material/dialog';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-paymentmodechangesfor-pharmacy',
@@ -160,7 +161,9 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
       this.getSalesList();
     });
   }
-   
+  BillDate(){
+    Swal.fire('Api Error !', 'Bill Date Update!')
+  }  
 
 }
 export class PaymentPharmayList {
