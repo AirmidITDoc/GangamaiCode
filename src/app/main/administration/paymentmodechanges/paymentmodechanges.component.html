@@ -234,12 +234,18 @@
                             </ng-container>
 
                             <ng-container matColumnDef="action" stickyEnd>
-                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Action
+                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;" class="w-250">Action
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let contact"> 
-                                    <button mat-icon-button matTooltip="Edit" (click)="onEdit(contact)">
+                                <mat-cell *matCellDef="let contact" class="w-250"> 
+                                    <!-- <button mat-icon-button matTooltip="Edit" (click)="onEdit(contact)">
                                         <mat-icon>edit</mat-icon>
-                                    </button>
+                                    </button> -->
+                                     
+                                    <button class="btn btn-info"  
+                                    matTooltip="Payment Date Update" (click)="BillDate()" >Payment Date Update</button>&nbsp;
+                                    <button class="btn btn-primary" (click)="onEdit(contact)" matTooltip="Payment Mode Change" style="color: white;">
+                                      Edit
+                                     </button>
                                 </mat-cell>
                             </ng-container>
 
@@ -254,9 +260,9 @@
                                 </mat-footer-cell>
                             </ng-container>
 
-                            <mat-header-row class="accent min-width-1550" *matHeaderRowDef="displayedColumns; sticky: true">
+                            <mat-header-row class="accent min-width-1750" *matHeaderRowDef="displayedColumns; sticky: true">
                             </mat-header-row>
-                            <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact min-width-1550"
+                            <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact min-width-1750"
                                 [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                             <mat-footer-row *matFooterRowDef="['loading']"
                                 [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">

@@ -30,7 +30,7 @@
                                 </mat-radio-group>
                             </div>
             
-                            <mat-form-field appearance="outline" fxFlex="50%">
+                            <mat-form-field appearance="outline" fxFlex="50%" *ngIf="!vCheckBox">
                                 <mat-label>PatientName</mat-label>
                                 <input type="text" name="RegID" formControlName="RegID" matInput required
                                     placeholder="RegNo / First Name / Last Name / Mobile No" [matAutocomplete]="auto" #RegID
@@ -43,6 +43,30 @@
                                 </span>
                                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
                                     (optionSelected)='getSelectedObj($event.option.value)'>
+                                    <mat-option *ngFor="let option of filteredOptions" [value]="option">
+                                        {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} |
+                                        {{option.RegNo}} |
+                                        {{option.MobileNo}}
+                                    </mat-option>
+                                    <mat-error *ngIf="_DischargeCancelService.DischargeForm.get('RegID').hasError('required')">
+                                        Required field cannot be left blank
+                                    </mat-error>
+                                </mat-autocomplete>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex="50%" *ngIf="vCheckBox">
+                                <mat-label>PatientName</mat-label>
+                                <input type="text" name="RegIDDischargeId" formControlName="RegID" matInput required
+                                    placeholder="RegNo / First Name / Last Name / Mobile No" [matAutocomplete]="auto" #RegID
+                                    (input)="getDischargedSearchList()">
+                                <span matSuffix style="display: flex;">
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="_DischargeCancelService.DischargeForm.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="_DischargeCancelService.DischargeForm.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
+                                </span>
+                                <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionDischargeText"
+                                    (optionSelected)='getSelectedDischargeObj($event.option.value)'>
                                     <mat-option *ngFor="let option of filteredOptions" [value]="option">
                                         {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} |
                                         {{option.RegNo}} |
@@ -192,7 +216,7 @@
                             <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
                             <button *ngIf="vCheckBox" class="btn btn-primary" style="color: white;"
                                 (click)="DischargeCancel()">Dicharge Cancel</button>
-                            <button *ngIf="!vCheckBox" class="btn btn-primary" (click)="OnSave()">Save</button>
+                            <button *ngIf="!vCheckBox" class="btn btn-primary" (click)="OnAdmDateTimeUpdate()">Save</button>
                         </div>
                     </div>
 

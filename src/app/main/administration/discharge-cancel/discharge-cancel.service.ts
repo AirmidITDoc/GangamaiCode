@@ -28,4 +28,10 @@ export class DischargeCancelService {
   public SaveDischargeCancel(employee){
     return this._httpClient.post("Administration/IPDischargeCancel", employee)
   }
+  public getDischargepatientlist(employee){
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientDischargedListSearch ", employee)
+  }
+  public getDateTimeChange(data) {
+    return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
+  }
 }

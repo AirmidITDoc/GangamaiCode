@@ -8,6 +8,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { EditPaymentmodeComponent } from '../paymentmodechangesfor-pharmacy/edit-paymentmode/edit-paymentmode.component';
 import { MatDialog } from '@angular/material/dialog';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-paymentmodechanges',
@@ -188,9 +189,11 @@ export class PaymentmodechangesComponent implements OnInit {
     this.getOPReceiptList();
     this.getIPAdvanceList();
     this.getIPReceiptList();
-  });
+  });  
 }
- 
+BillDate(){
+  Swal.fire('Api Error !', 'Bill Date Update!')
+}
          
 
 

@@ -49,7 +49,8 @@ export class DischargeCancelComponent implements OnInit {
   screenFromString = 'admission-form';
   vCheckBox:boolean=false;
   AdmissionId:any;
-
+  convertedDate: Date;
+  formattedTime:any;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   
@@ -60,16 +61,19 @@ export class DischargeCancelComponent implements OnInit {
     public datePipe: DatePipe,
     public toastr: ToastrService,
     private _loggedService: AuthenticationService
-  ) { }
+  )
+   {} 
 
   ngOnInit(): void { 
+    this._DischargeCancelService.DischargeForm.get('RegID').setValue('');
   }
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
   getDateTime(dateTimeObj) {
-    this.dateTimeObj = dateTimeObj;
+    this.dateTimeObj = dateTimeObj; 
   } 
+ 
    getSearchList() {
     var m_data = {
       "Keyword": `${this._DischargeCancelService.DischargeForm.get('RegID').value}%`
@@ -105,7 +109,7 @@ export class DischargeCancelComponent implements OnInit {
    this.vBedName = obj.BedName
    this.vGenderName = obj.GenderName
    this.vAge = obj.Age  
-   this.AdmissionId = obj.AdmissionId;
+   this.AdmissionId = obj.AdmissionID;
   }
   getDischargedList(event){
     if(event.checked == true){
@@ -115,6 +119,43 @@ export class DischargeCancelComponent implements OnInit {
       this.patientInfoReset(); 
       this.vCheckBox = false;
     } 
+}
+getDischargedSearchList() {
+  var m_data = {
+    "Keyword": `${this._DischargeCancelService.DischargeForm.get('RegID').value}%`
+  }
+  if (this._DischargeCancelService.DischargeForm.get('RegID').value.length >= 1) {
+    this._DischargeCancelService.getDischargepatientlist(m_data).subscribe(resData => {
+      this.filteredOptions = resData;
+      console.log(resData) 
+      if (this.filteredOptions.length == 0) {
+        this.noOptionFound = true;
+      } else {
+        this.noOptionFound = false;
+      } 
+    });
+  } 
+} 
+getOptionDischargeText(option) {
+  if (!option) return '';
+  return option.FirstName + ' ' + option.LastName + ' (' + option.RegNo + ')';
+} 
+getSelectedDischargeObj(obj){
+  console.log(obj)
+ this.vRegNo = obj.RegNo;
+ this.vPatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
+ this.vAdmissionDate = obj.AdmissionDate;
+ this.vAdmissionTime = obj.AdmissionTime;
+ this.vMobileNo = obj.MobileNo;  
+ this.vIPDNo = obj.IPDNo; 
+ this.vDoctorName = obj.DoctorName;
+ this.vTariffName =obj.TariffName
+ this.vCompanyName = obj.CompanyName 
+ this.vRoomName = obj.RoomName;
+ this.vBedName = obj.BedName
+ this.vGenderName = obj.GenderName
+ this.vAge = obj.Age  
+ this.AdmissionId = obj.AdmissionID;
 }
  
   isLoading123:boolean=false;
@@ -140,7 +181,7 @@ export class DischargeCancelComponent implements OnInit {
           if (response) {
             Swal.fire('Congratulations !', 'Discharge Cancel Successfully !', 'success').then((result) => {
               if (result.isConfirmed) { 
-                this.getSearchList(); 
+                this.onClear();
               }
             });
           } else {
@@ -153,12 +194,45 @@ export class DischargeCancelComponent implements OnInit {
   AdmisssionCancel(){
 
   }
-  OnSave(){
-    if(this._DischargeCancelService.DischargeForm.get('IsDischarged').value == '1'){
 
-    }else{
 
+  OnAdmDateTimeUpdate() {
+    if (this.vRegNo == '0' || this.vRegNo == '' || this.vRegNo == undefined || this.vRegNo == null) {
+      this.toastr.success('Please select patient', 'Save !', {
+        toastClass: 'tostr-tost custom-toast-success',
+      });
+      return
     }
+    const formattedDate = this.datePipe.transform(this.dateTimeObj.date,"yyyy-MM-dd 00:00:00.000");
+    // const formattedTime = this.datePipe.transform( this.formattedTime ,"yyyy-MM-dd 00:00:00.000");
+    Swal.fire({
+      title: 'Do you want to Update Admission Date & Time ',
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Update it!"
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) { 
+        let Query
+        Query = "update admission set AdmissionDate= '"+formattedDate+"', AdmissionTime= '" +formattedDate+"' where AdmissionID= " + this.AdmissionId ;
+          console.log(Query);
+        this._DischargeCancelService.getDateTimeChange(Query).subscribe(response => {
+          if (response) {
+            this.toastr.success('Admission Date & Time Updated Successfuly', 'Updated !', {
+              toastClass: 'tostr-tost custom-toast-success',
+            });
+            this.onClear();
+          } else {
+            this.toastr.error('API Error!', 'Error !', {
+              toastClass: 'tostr-tost custom-toast-error',
+            });
+          }
+        });
+      }
+    }); 
   }
   onClear(){
     this._DischargeCancelService.DischargeForm.reset(); 
@@ -166,7 +240,8 @@ export class DischargeCancelComponent implements OnInit {
     this.patientInfoReset();
   }
   patientInfoReset(){
-    this._DischargeCancelService.DischargeForm.get('RegID').setValue('')
+    this._DischargeCancelService.DischargeForm.get('RegID').setValue('');
+    this._DischargeCancelService.DischargeForm.get('RegID').reset();
     this.vRegNo = '';
     this.vPatientName ='';
     this.vAdmissionDate = '';
