@@ -76,9 +76,16 @@ export class ResultEntrytwoComponent implements OnInit {
       console.log( this.selectedAdvanceObj1)
       this.OP_IPType=this.selectedAdvanceObj1.OPD_IPD_Type
       this.reportIdData =this.selectedAdvanceObj1.PathReportID
-      this.getTemplatelist();
+      this.getTemplateList();
+  
+
+      if (this.OP_IPType == 1)
+        this.getTemplatedetailIP();
+      else
+        this.getTemplatedetailOP();
     }
-    
+    // this.getTemplatelist();
+
    }
 
   ngOnInit(): void {
@@ -88,18 +95,12 @@ export class ResultEntrytwoComponent implements OnInit {
       TemplateId:[0]
     
     });
-    this.getTemplateList();
-  
- 
-      if (this.OP_IPType == 1)
-        this.getTemplatedetailIP();
-      else
-        this.getTemplatedetailOP();
-
+   
         this.filteredOptionsisTemplate = this.otherForm.get('TemplateName').valueChanges.pipe(
           startWith(''),
           map(value => this._filterTemplate(value)),
       );
+      this.getTemplateList();
     }
    
 
@@ -109,7 +110,7 @@ export class ResultEntrytwoComponent implements OnInit {
       console.log(SelectQuery);
       this._SampleService.getPathologyTemplateforIP(SelectQuery).subscribe(Visit => {
         this.vTemplateDesc= Visit[0]["TemplateResultInHTML"];
-      this.TemplateId=Visit["PathTemplateId"];
+      this.TemplateId=Visit[0]["PathTemplateId"];
       },
         error => {
           this.sIsLoading = '';
@@ -123,7 +124,9 @@ export class ResultEntrytwoComponent implements OnInit {
       this._SampleService.getPathologyTemplateforOP(SelectQuery).subscribe(Visit => {
        if(Visit){
         this.vTemplateDesc= Visit[0]["TemplateResultInHTML"];
-        this.TemplateId=Visit["PathTemplateId"];
+        this.TemplateId=Visit[0]["PathTemplateId"];
+        console.log( this.TemplateId)
+        this.getTemplatelist();
         }
       },
         error => {
@@ -150,18 +153,15 @@ export class ResultEntrytwoComponent implements OnInit {
     let pathologyTemplateDeleteObj = {};
     pathologyTemplateDeleteObj['pathReportId'] = this.selectedAdvanceObj1.PathReportID;
     this.isLoading = 'submit';
-    // let pathologyTemplateInsertObjarr = [];
-   
-     
+    
     let pathologyTemplateInsertObj = {};
         
     pathologyTemplateInsertObj['PathReportId'] = this.selectedAdvanceObj1.PathReportID ;
     pathologyTemplateInsertObj['PathTemplateId']= this.otherForm.get("TemplateName").value.TemplateId || 0;
-    pathologyTemplateInsertObj['PathTemplateDetailsResult']= this.otherForm.get("ResultEntry").value.trim(),
-    pathologyTemplateInsertObj['TemplateResultInHTML']= this.otherForm.get("ResultEntry").value.trim(),
+    pathologyTemplateInsertObj['PathTemplateDetailsResult']= this.vTemplateDesc,//this.otherForm.get("ResultEntry").value.trim(),
+    pathologyTemplateInsertObj['TemplateResultInHTML']=this.vTemplateDesc,// this.otherForm.get("ResultEntry").value.trim(),
     pathologyTemplateInsertObj['TestId'] = this.selectedAdvanceObj1.PathTestID || 0;
-    // pathologyTemplateInsertObjarr.push(pathologyTemplateInsertObj);
-    
+   
     let pathologyTemplateUpdateObj = {};
    
     pathologyTemplateUpdateObj['PathReportID'] =this.selectedAdvanceObj1.PathReportID;
@@ -283,6 +283,7 @@ export class ResultEntrytwoComponent implements OnInit {
   }
     this._SampleService.getTemplateCombo(mdata).subscribe(data => {
         this.TemplateList = data;
+        debugger
         if (this.data) {
           const ddValue = this.TemplateList.filter(c => c.PathTemplateId == this.TemplateId);
           this.otherForm.get('TemplateName').setValue(ddValue[0]);
@@ -314,15 +315,9 @@ private _filtertemplate(value: any): string[] {
   }
 
   onAddTemplate(){
-    console.log(this.otherForm.get('TemplateName').value)
+ 
     this.vTemplateDesc=this.otherForm.get('TemplateName').value.TemplateDescInHTML || ''
-    console.log(this.vTemplateDesc)
-
-    // const parser = new DOMParser();
-    // this.vTemplateDesc = parser.parseFromString(this.otherForm.get('TemplateName').value.TemplateDesc, 'text/html');
-
-    // console.log(this.vTemplateDesc)
-
+ 
   }
 }
 

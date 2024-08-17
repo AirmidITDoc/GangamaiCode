@@ -123,7 +123,7 @@ export class ResultEntryOneComponent implements OnInit {
 
         }
         this.getPathresultdoctorList();
-        this.getPathresultDoctorList();
+        
 
         if (this.Iscompleted == 1) {
             if (this.OP_IPType == 1)
@@ -134,7 +134,7 @@ export class ResultEntryOneComponent implements OnInit {
         } else {
             this.getResultList(this.selectedAdvanceObj2);
         }
-
+       
     }
 
     ngOnInit(): void {
@@ -215,7 +215,7 @@ export class ResultEntryOneComponent implements OnInit {
             debugger
             let a = parseFloat(data.ResultValue);
             let b = parseFloat(data.MinValue);
-            let c = parseFloat(data.Maxvalue);
+            let c = parseFloat(data.MaxValue);
 
             if (b != null && c != null && a != null) {
                 if (a < b || a > c) {
@@ -320,7 +320,7 @@ export class ResultEntryOneComponent implements OnInit {
             this.dataSource.data = Visit as Pthologyresult[];
             //  this.Pthologyresult = Visit as Pthologyresult[];
             this.PathResultDr1 = this.dataSource.data[0]["PathResultDr1"];
-            this.vsuggation = this.dataSource.data[0]["SuggestionNotes"];
+            this.vsuggation = this.dataSource.data[0]["SuggestionNote"];
             this.dataSource.sort = this.sort;
             this.dataSource.paginator = this.paginator;
             this.sIsLoading = '';
@@ -328,7 +328,7 @@ export class ResultEntryOneComponent implements OnInit {
             error => {
                 this.sIsLoading = '';
             });
-        this.getPathresultDoctorList();
+        
 
     }
 
@@ -343,14 +343,14 @@ export class ResultEntryOneComponent implements OnInit {
             this.dataSource.paginator = this.paginator;
             this.sIsLoading = '';
             this.PathResultDr1 = this.dataSource.data[0]["PathResultDr1"];
-            this.vsuggation = this.dataSource.data[0]["SuggestionNotes"];
+            this.vsuggation = this.dataSource.data[0]["SuggestionNote"];
             console.log(this.PathResultDr1);
         },
             error => {
                 this.sIsLoading = '';
             });
 
-        this.getPathresultDoctorList();
+            this.getPathresultDoctorList()
 
     }
 
@@ -399,7 +399,7 @@ export class ResultEntryOneComponent implements OnInit {
             pathologyInsertReportObj['TestID'] = element.TestId || 0;
             pathologyInsertReportObj['SubTestId'] = element.SubTestId || 0;
             pathologyInsertReportObj['ParameterId'] = element.ParameterId || 0;
-            pathologyInsertReportObj['ResultValue'] = element.ResultValue || '';
+            pathologyInsertReportObj['ResultValue'] = element.ResultValue || ' ';
             pathologyInsertReportObj['UnitId'] = element.UnitId || 1;
             pathologyInsertReportObj['NormalRange'] = element.NormalRange || '';
             pathologyInsertReportObj['PrintOrder'] = element.PrintOrder || 0;
@@ -529,7 +529,7 @@ export class ResultEntryOneComponent implements OnInit {
     }
 
     getPathresultDoctorList() {
-
+debugger
         this._SampleService.getPathologyDoctorCombo().subscribe(data => {
             this.PathologyDoctorList = data;
             if (this.data) {

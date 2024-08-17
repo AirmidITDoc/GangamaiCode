@@ -417,7 +417,7 @@ console.log(m_data)
   Cancleresult(row) {
 
     Swal.fire({
-      title: 'Confirm Deactivation',
+      title: 'Confirm Result cancellation ',
           text: 'Are you sure you want to Cancel the result?',
           icon: 'warning',
           showCancelButton: true,

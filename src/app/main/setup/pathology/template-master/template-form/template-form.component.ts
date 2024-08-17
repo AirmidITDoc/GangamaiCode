@@ -67,10 +67,10 @@ export class TemplateFormComponent implements OnInit {
                 let insertPathologyTemplateMaster = {};
 
                 insertPathologyTemplateMaster['templateName'] = this._TemplateServieService.myform.get("TemplateName").value;
-                insertPathologyTemplateMaster['TemplateDescInHTML'] = this._TemplateServieService.myform.get("TemplateName").value;
-                insertPathologyTemplateMaster['templateDesc'] = this._TemplateServieService.myform.get("TemplateDesc").value;
+                insertPathologyTemplateMaster['TemplateDescInHTML'] =this.vTemplateDesc,// this._TemplateServieService.myform.get("TemplateName").value;
+                insertPathologyTemplateMaster['templateDesc'] =this.vTemplateDesc, this._TemplateServieService.myform.get("TemplateDesc").value;
                 insertPathologyTemplateMaster['addedBy'] = this.accountService.currentUserValue.user.id,
-                    insertPathologyTemplateMaster['isDeleted'] = this._TemplateServieService.myform.get("IsDeleted").value
+                    insertPathologyTemplateMaster['isDeleted'] =1// this._TemplateServieService.myform.get("IsDeleted").value
 
                 let submitData = {
                     "insertPathologyTemplateMaster": insertPathologyTemplateMaster
@@ -95,7 +95,7 @@ export class TemplateFormComponent implements OnInit {
                 updatePathologyTemplateMaster['templateDesc'] = this.vTemplateDesc;
                 updatePathologyTemplateMaster['TemplateDescInHTML'] = this.vTemplateDesc;
                 updatePathologyTemplateMaster['updatedBy'] = this.accountService.currentUserValue.user.id;
-                    updatePathologyTemplateMaster['isDeleted'] =  this._TemplateServieService.myform.get("IsDeleted").value;
+                    updatePathologyTemplateMaster['isDeleted'] = 1// this._TemplateServieService.myform.get("IsDeleted").value;
 
                 let submitData = {
                     "updatePathologyTemplateMaster": updatePathologyTemplateMaster

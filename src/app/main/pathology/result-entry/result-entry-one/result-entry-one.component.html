@@ -165,7 +165,8 @@
                                               <!-- (click)="AddData(txt.value)" -->
                                             <!-- <button [matMenuTriggerFor]="addMenu" #languageMenuTrigger="matMenuTrigger"
                                                 style="visibility: hidden;"></button> -->
-                                               <img width="20px;" height="20px;" src="assets/images/logos/help.jpeg" *ngIf=" contact.ParaIsNumeric ==0"  matTooltip="Use Help Value">
+                                                <mat-icon class="Help-Value"  *ngIf=" contact.ParaIsNumeric ==0"  matTooltip="Use Help Value" style="width: 10px;height: 10px;">circle</mat-icon>
+                                               <!-- <img width="20px;" height="20px;" src="assets/images/logos/help.jpeg" *ngIf=" contact.ParaIsNumeric ==0"  matTooltip="Use Help Value"> -->
                                         </mat-cell>
                                     </ng-container>
 
