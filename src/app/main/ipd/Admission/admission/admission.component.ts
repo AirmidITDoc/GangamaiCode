@@ -37,6 +37,7 @@ import { CompanyInformationComponent } from '../../company-information/company-i
 import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
 import { ThemeService } from 'ng2-charts';
 
+
 @Component({
   selector: 'app-admission',
   templateUrl: './admission.component.html',
@@ -2673,6 +2674,8 @@ this.getAdmittedPatientList_1()
        
       });
   }
+
+  
 }
 
 export class Admission {

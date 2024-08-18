@@ -1039,4 +1039,4 @@ public getDoseList() {
 }
 }
 
-// ultra viewer id 67229924 Password :- Airmid@123
+// Set NODE_OPTIONS="--max-old-space-size=8192"

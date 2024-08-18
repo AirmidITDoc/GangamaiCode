@@ -24,6 +24,7 @@ export class InventoryReportComponent implements OnInit {
   UserId:any=0;
   UserName:any=''
   UserList:any=[];
+  StoreList:any=[];
   filteredOptionsUser: Observable<string[]>;
   isUserSelected: boolean = false;
   FlagUserSelected: boolean = false;
@@ -34,6 +35,18 @@ export class InventoryReportComponent implements OnInit {
   sIsLoading: string = '';
   ReportID:any=0
 
+  filteredOptionsstore: Observable<string[]>;
+  filteredOptionsstore1: Observable<string[]>;
+  isSearchstoreSelected: boolean = false;
+  isSearchstore1Selected: boolean = false;
+  FlagStoreSelected: boolean = false;
+  FlagStore1Selected: boolean = false;
+  optionsSearchstore: any[] = [];
+  filteredOptionssupplier:any;
+  noOptionFoundsupplier:any;
+  isSupplierIdSelected:boolean=false;
+  FlagSupplierSelected: boolean = false;
+  FlagnonmovedaySelected: boolean = false;
   displayedColumns = [
     'ReportName'
   ];
@@ -55,7 +68,8 @@ export class InventoryReportComponent implements OnInit {
   ngOnInit(): void {
     this.bindReportData();
     this.GetUserList();
-
+    this.gePharStoreList();
+    
     this.filteredOptionsUser = this._OPReportsService.userForm.get('UserId').valueChanges.pipe(
       startWith(''),
       map(value => this._filterUser(value)),
@@ -71,6 +85,44 @@ export class InventoryReportComponent implements OnInit {
       this.dataSource.data = data as any[];
 
     });
+  }
+
+  
+  getOptionTextsearchstore1(option) {
+    return option && option.StoreName ? option.StoreName : '';
+  }
+  getOptionTextsearchstore(option) {
+    return option && option.StoreName ? option.StoreName : '';
+  }
+
+  gePharStoreList() {
+    this._OPReportsService.getStoreList().subscribe(data => {
+      this.StoreList = data;
+      this.optionsSearchstore = this.StoreList.slice();
+      this.filteredOptionsstore = this._OPReportsService.userForm.get('StoreId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterSearchstore(value) : this.StoreList.slice()),
+      );
+      this.filteredOptionsstore1 = this._OPReportsService.userForm.get('StoreId1').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterSearchstore1(value) : this.StoreList.slice()),
+      );
+    });
+  }
+
+  private _filterSearchstore(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
+      return this.optionsSearchstore.filter(option => option.StoreName.toLowerCase().includes(filterValue));
+    }
+
+  }
+  private _filterSearchstore1(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
+      return this.optionsSearchstore.filter(option => option.StoreName.toLowerCase().includes(filterValue));
+    }
+
   }
 
   ReportSelection(el) {
@@ -102,19 +154,23 @@ export class InventoryReportComponent implements OnInit {
      
     else if (this.ReportName == 'GRN Report') {
       this.FlagUserSelected = false;
-      // this.FlagPaymentIdSelected=false
-      // this.FlagRefundIdSelected = false;
-
+      this.FlagStoreSelected=true
+      this.FlagSupplierSelected = true;
+      this.FlagDoctorSelected = false;
+      this.FlagBillNoSelected=false;
     } 
     else if (this.ReportName == 'GRN Return Report') {
-      this.FlagUserSelected = true;
+      this.FlagUserSelected = false;
       this.FlagDoctorSelected = true;
       this.FlagBillNoSelected=false;
+      this.FlagStoreSelected=true
+      this.FlagSupplierSelected=true
     }
     else if (this.ReportName == 'GRN Report - NABH') {
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
       this.FlagBillNoSelected=false;
+      this.FlagStoreSelected=true
     }
     //  else if (this.ReportName == 'Monthly Purchase(GRN) Report') {
     //   this.FlagBillNoSelected = true;
@@ -123,25 +179,31 @@ export class InventoryReportComponent implements OnInit {
 
     // }
     else if (this.ReportName == 'GRN Wise Product Qty Report') {
-      this.FlagUserSelected = true;
-      this.FlagDoctorSelected = true;
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
       this.FlagBillNoSelected=false;
+      this.FlagStoreSelected=true
+      this.FlagSupplierSelected=true
     }
     else if (this.ReportName == 'GRN Purchase Report') {
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
       this.FlagBillNoSelected=false;
+      this.FlagStoreSelected=true
     }
      else if (this.ReportName == 'Supplier Wise GRN List') {
       this.FlagBillNoSelected = true;
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
-
+      this.FlagStoreSelected=true
+      this.FlagSupplierSelected=true
     }
     else if (this.ReportName == 'Issue To Department') {
-      this.FlagUserSelected = true;
-      this.FlagDoctorSelected = true;
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
       this.FlagBillNoSelected=false;
+      this.FlagStoreSelected=true
+      this.FlagStore1Selected=true
     }
     else if (this.ReportName == 'Issue To Department Item Wise') {
       this.FlagUserSelected = false;
@@ -155,14 +217,17 @@ export class InventoryReportComponent implements OnInit {
 
     }
     else if (this.ReportName == 'Purchase Order') {
-      this.FlagUserSelected = true;
-      this.FlagDoctorSelected = true;
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
       this.FlagBillNoSelected=false;
+      this.FlagStoreSelected=true
     }
     else if (this.ReportName == 'Material Consumption Monthly Summary') {
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
       this.FlagBillNoSelected=false;
+      this.FlagStore1Selected=true
+      this.FlagStoreSelected=true
     }
      else if (this.ReportName == 'Material Consumption') {
       this.FlagBillNoSelected = true;
@@ -187,7 +252,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagBillNoSelected=false;
     }
      else if (this.ReportName == 'Item Wise Supplier List') {
-      this.FlagBillNoSelected = true;
+      this.FlagBillNoSelected = false;
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
 
@@ -201,45 +266,58 @@ export class InventoryReportComponent implements OnInit {
       this.FlagBillNoSelected = false;
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
-
+      this.FlagStore1Selected=true;
+      this.FlagnonmovedaySelected=true;
     }
     else if (this.ReportName == 'Non-Moving Item Without Batch List') {
       this.FlagBillNoSelected = false;
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
-
+      this.FlagStoreSelected=true;
+      this.FlagnonmovedaySelected=true;
     }
     else if (this.ReportName == 'Patient Wise Material Consumption') {
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
       this.FlagBillNoSelected=false;
+      this.FlagStoreSelected=false;
+      this.FlagSupplierSelected=false;
     }
      else if (this.ReportName == 'Last Purchase Rate Wise Consumtion') {
       this.FlagBillNoSelected = false;
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
-
+      this.FlagStoreSelected=false;
+      this.FlagSupplierSelected=false;
     }
     else if (this.ReportName == 'Item Count') {
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
       this.FlagBillNoSelected=false;
+      this.FlagStoreSelected=true;
+      this.FlagSupplierSelected=false;
     }
      else if (this.ReportName == 'Supplier Wise Debit Credit Note') {
       this.FlagBillNoSelected = false;
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
+      this.FlagStoreSelected=true;
+      this.FlagSupplierSelected=true;
 
     }   else if (this.ReportName == 'Stock Adjustment Report') {
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
       this.FlagBillNoSelected=false;
+      this.FlagStore1Selected=false;
+      this.FlagSupplierSelected=false;
     }
      else if (this.ReportName == 'Purchase Wise GRN Summary') {
       this.FlagBillNoSelected = false;
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
-
+      this.FlagStore1Selected=false;
+      this.FlagStoreSelected=false;
+      this.FlagSupplierSelected=false;
     }
 
   }
@@ -249,7 +327,7 @@ export class InventoryReportComponent implements OnInit {
    
     if (this.ReportName == 'Item List') {
       this.viewItemListPdf();
-    } else if (this.ReportName == ' Supplier List') {
+    } else if (this.ReportName == 'Supplier List') {
       this.viewSupplierListPdf();
     } 
     else if (this.ReportName == 'Indent Report') {
@@ -318,7 +396,23 @@ export class InventoryReportComponent implements OnInit {
     
     else if (this.ReportName == 'Purchase Order') {
       this.viewgetItemwisePurchasePdf();
+    }  else if (this.ReportName == 'Purchase Wise GRN Summary') {
+      this.viewgetPurchasewisegrnsummaryPdf();
+    }  else if (this.ReportName == 'Stock Adjustment Report') {
+      this.viewgetStockadjustmentPdf();
+    }  else if (this.ReportName == 'Supplier Wise Debit Credit Note') {
+      this.viewgetSupplierwisedebitcardnotePdf();
+    } else if (this.ReportName == 'Item Wise Supplier List') {
+      this.viewgetItemwisesupplierlistPdf();
+    } else if (this.ReportName == 'Non-Moving Item Without Batch List') {
+      this.viewgetnonmoveItemwithoutbatchPdf();
+    } else if (this.ReportName == 'Last Purchase Rate Wise Consumtion') {
+      this.viewgetLastpurchasewiseconsumptionPdf();
+    }  else if (this.ReportName == 'Item Count') {
+      this.viewgetItemcountPdf();
     } 
+
+
 
   }
 
@@ -416,13 +510,16 @@ export class InventoryReportComponent implements OnInit {
 
    
    viewgetGRNReportNABHPdf() {
-    this.sIsLoading = 'loading-data';
- 
+    let StoreId =0
+
+    if (this._OPReportsService.userForm.get('StoreId').value)
+     StoreId = this._OPReportsService.userForm.get('StoreId').value.StoreId
+    
      setTimeout(() => {
      
        this._OPReportsService.getGRNReportNABH(
         this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-      this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",0
+      this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",StoreId
        ).subscribe(res => {
          const dialogRef = this._matDialog.open(PdfviewerComponent,
            {
@@ -447,12 +544,21 @@ export class InventoryReportComponent implements OnInit {
 
    viewgetGRNReturnReportPdf() {
     this.sIsLoading = 'loading-data';
- 
+    let StoreId =0
+
+    if (this._OPReportsService.userForm.get('StoreId').value)
+     StoreId = this._OPReportsService.userForm.get('StoreId').value.StoreId
+    
+    let SupplierId =0
+
+    if (this._OPReportsService.userForm.get('SupplierName').value)
+      SupplierId = this._OPReportsService.userForm.get('SupplierName').value.SupplierId
+    
      setTimeout(() => {
      
        this._OPReportsService.getGRNReturnReport(
         this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-      this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",0,0
+      this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",StoreId,SupplierId
        ).subscribe(res => {
          const dialogRef = this._matDialog.open(PdfviewerComponent,
            {
@@ -476,12 +582,22 @@ export class InventoryReportComponent implements OnInit {
    
    viewGRNwiseprodqtyPdf() {
     this.sIsLoading = 'loading-data';
- 
+    
+    let StoreId =0
+
+    if (this._OPReportsService.userForm.get('StoreId').value)
+     StoreId = this._OPReportsService.userForm.get('StoreId').value.StoreId
+    
+    let SupplierId =0
+
+    if (this._OPReportsService.userForm.get('SupplierName').value)
+      SupplierId = this._OPReportsService.userForm.get('SupplierName').value.SupplierId
+    
      setTimeout(() => {
      
        this._OPReportsService.getGRNwiseprodqtyReport(
         this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-      this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",0,0
+      this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",StoreId,SupplierId
        ).subscribe(res => {
          const dialogRef = this._matDialog.open(PdfviewerComponent,
            {
@@ -506,12 +622,16 @@ export class InventoryReportComponent implements OnInit {
 
    viewGRNpurchasereportPdf() {
     this.sIsLoading = 'loading-data';
- 
+    let StoreId =0
+
+    if (this._OPReportsService.userForm.get('StoreId').value)
+     StoreId = this._OPReportsService.userForm.get('StoreId').value.StoreId
+    
      setTimeout(() => {
      
        this._OPReportsService.getGRNpurchaseReport(
         this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-      this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",0
+      this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",StoreId
        ).subscribe(res => {
          const dialogRef = this._matDialog.open(PdfviewerComponent,
            {
@@ -537,9 +657,19 @@ export class InventoryReportComponent implements OnInit {
    viewSupplierwiseGRNreportPdf() {
     this.sIsLoading = 'loading-data';
  
+    let StoreId =0
+
+    if (this._OPReportsService.userForm.get('StoreId').value)
+     StoreId = this._OPReportsService.userForm.get('StoreId').value.StoreId
+    
+    let SupplierId =0
+
+    if (this._OPReportsService.userForm.get('SupplierName').value)
+      SupplierId = this._OPReportsService.userForm.get('SupplierName').value.SupplierId
+    
      setTimeout(() => {
      
-       this._OPReportsService.getSupplierwiseGRNReport(0,0,
+       this._OPReportsService.getSupplierwiseGRNReport(StoreId,SupplierId,
         this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
       this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
        ).subscribe(res => {
@@ -566,12 +696,21 @@ export class InventoryReportComponent implements OnInit {
 
    viewgetIssuetodeptitemwisePdf() {
     this.sIsLoading = 'loading-data';
-   let StoreId =0;
+    let StoreId =0
+
+    if (this._OPReportsService.userForm.get('StoreId').value)
+     StoreId = this._OPReportsService.userForm.get('StoreId').value.StoreId
+    
+    let StoreId1 =0
+
+    if (this._OPReportsService.userForm.get('StoreId1').value)
+      StoreId1 = this._OPReportsService.userForm.get('StoreId1').value.StoreId
+    
      setTimeout(() => {
      
        this._OPReportsService.getIssuetodeptitemwiseReport(
         this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",0,0,0
+        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",StoreId,StoreId1,0
        ).subscribe(res => {
          const dialogRef = this._matDialog.open(PdfviewerComponent,
            {
@@ -596,12 +735,17 @@ export class InventoryReportComponent implements OnInit {
 
    viewMaterialconsumptionmonthlysummaryPdf() {
     this.sIsLoading = 'loading-data';
-   let StoreId =0;
+   
+    let StoreId1 =0
+
+    if (this._OPReportsService.userForm.get('StoreId1').value)
+     StoreId1 = this._OPReportsService.userForm.get('StoreId1').value.StoreId
+    
      setTimeout(() => {
      
        this._OPReportsService.getMaterialconsumptionmonthsummaryReport(
         this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",0
+        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",StoreId1
        ).subscribe(res => {
          const dialogRef = this._matDialog.open(PdfviewerComponent,
            {
@@ -624,7 +768,11 @@ export class InventoryReportComponent implements OnInit {
 
    viewCurrentstockdatewisePdf() {
     this.sIsLoading = 'loading-data';
-   let StoreId =0;
+    let StoreId =0
+
+   if (this._OPReportsService.userForm.get('StoreId').value)
+    StoreId = this._OPReportsService.userForm.get('StoreId').value.StoreId
+   
      setTimeout(() => {
      
        this._OPReportsService.getCurrentstockdatewiseReport(
@@ -654,7 +802,11 @@ export class InventoryReportComponent implements OnInit {
    viewgetItemexpiryPdf() {
    let ExpMonth =0
    let ExpYear =0
-   let StoreID =0
+   let StoreId =0
+
+   if (this._OPReportsService.userForm.get('StoreId').value)
+    StoreId = this._OPReportsService.userForm.get('StoreId').value.StoreId
+   
 
 
     this.sIsLoading = 'loading-data';
@@ -662,7 +814,7 @@ export class InventoryReportComponent implements OnInit {
      setTimeout(() => {
      
        this._OPReportsService.getItemExpirylistReport(
-        ExpMonth,ExpYear,StoreID,
+        ExpMonth,ExpYear,StoreId,
         this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
         this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
        ).subscribe(res => {
@@ -717,10 +869,20 @@ export class InventoryReportComponent implements OnInit {
    viewNonMovingItemPdf() {
     this.sIsLoading = 'loading-data';
    let NonMovingDay =0
-    let StoreId =0
+   let StoreId =0
+
+   if (this._OPReportsService.userForm.get('StoreId').value)
+    StoreId = this._OPReportsService.userForm.get('StoreId').value.StoreId
+ 
+
+   if (this._OPReportsService.userForm.get('NonMoveday').value)
+    NonMovingDay = this._OPReportsService.userForm.get('NonMoveday').value
+   
      setTimeout(() => {
      
        this._OPReportsService.getNonmovinglistReport(
+        this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+         this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900" ,
         NonMovingDay,StoreId
        ).subscribe(res => {
          const dialogRef = this._matDialog.open(PdfviewerComponent,
@@ -742,6 +904,43 @@ export class InventoryReportComponent implements OnInit {
      }, 100);
    }
 
+   viewgetnonmoveItemwithoutbatchPdf() {
+    this.sIsLoading = 'loading-data';
+   let NonMovingDay =0
+   let StoreId =0
+
+   if (this._OPReportsService.userForm.get('StoreId').value)
+    StoreId = this._OPReportsService.userForm.get('StoreId').value.StoreId
+ 
+
+   if (this._OPReportsService.userForm.get('NonMoveday').value)
+    NonMovingDay = this._OPReportsService.userForm.get('NonMoveday').value
+   
+     setTimeout(() => {
+     
+       this._OPReportsService.getNonmovingitemwithoutbatchlistReport(
+        this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+         this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900" ,
+        NonMovingDay,StoreId
+       ).subscribe(res => {
+         const dialogRef = this._matDialog.open(PdfviewerComponent,
+           {
+             maxWidth: "85vw",
+             height: '750px',
+             width: '100%',
+             data: {
+               base64: res["base64"] as string,
+               title: "Non Moving Item Without Batch List Report  Viewer"
+             }
+           });
+         dialogRef.afterClosed().subscribe(result => {
+           
+           this.sIsLoading = '';
+         });
+       });
+ 
+     }, 100);
+   }
 
 
    viewgetIndentPdf() {
@@ -774,12 +973,22 @@ export class InventoryReportComponent implements OnInit {
  
    
    viewgetGRNReportPdf() {
-    let GRNID=0
+    let StoreId =0
+
+    if (this._OPReportsService.userForm.get('StoreId').value)
+     StoreId = this._OPReportsService.userForm.get('StoreId').value.StoreId
+    
+    let SupplierId =0
+
+    if (this._OPReportsService.userForm.get('SupplierName').value)
+      SupplierId = this._OPReportsService.userForm.get('SupplierName').value.SupplierId
+    
+
     setTimeout(() => {
       this.SpinLoading = true;
       this._OPReportsService.getGRNReportlist(
         this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",0,0
+        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",StoreId,SupplierId
       ).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,
           {
@@ -805,15 +1014,24 @@ export class InventoryReportComponent implements OnInit {
   }
 
   viewgetIssuetodeptPdf() {
-    let IssueId =0
    
+    let StoreId =0
+
+    if (this._OPReportsService.userForm.get('StoreId').value)
+     StoreId = this._OPReportsService.userForm.get('StoreId').value.StoreId
+    
+    let StoreId1 =0
+
+    if (this._OPReportsService.userForm.get('StoreId1').value)
+      StoreId1 = this._OPReportsService.userForm.get('StoreId1').value.StoreId
+    
      this.sIsLoading = 'loading-data';
     
       setTimeout(() => {
       
         this._OPReportsService.getIssuetodeptlistReport(
             this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-           this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",0,0,0
+           this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",StoreId,StoreId1,0
         ).subscribe(res => {
           const dialogRef = this._matDialog.open(PdfviewerComponent,
             {
@@ -837,12 +1055,21 @@ export class InventoryReportComponent implements OnInit {
     
    viewgetReturnfromdeptPdf() {
     this.sIsLoading = 'loading-data';
-   
+    let StoreId =0
+
+    if (this._OPReportsService.userForm.get('StoreId').value)
+     StoreId = this._OPReportsService.userForm.get('StoreId').value.StoreId
+    
+    let StoreId1 =0
+
+    if (this._OPReportsService.userForm.get('StoreId1').value)
+      StoreId1 = this._OPReportsService.userForm.get('StoreId1').value.StoreId
+    
      setTimeout(() => {
      
        this._OPReportsService.getReturnfromdeptlistReport(
         this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",0,0,
+        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",StoreId,StoreId1,
        ).subscribe(res => {
          const dialogRef = this._matDialog.open(PdfviewerComponent,
            {
@@ -892,12 +1119,21 @@ export class InventoryReportComponent implements OnInit {
  
   
   viewgetItemwisePurchasePdf() {
-    let StoreId=0
+    let StoreId =0
+
+    if (this._OPReportsService.userForm.get('StoreId').value)
+     StoreId = this._OPReportsService.userForm.get('StoreId').value.StoreId
+    
+    let SupplierId =0
+
+    if (this._OPReportsService.userForm.get('SupplierName').value)
+      SupplierId = this._OPReportsService.userForm.get('SupplierName').value.SupplierId
+    
     setTimeout(() => {
       this.SpinLoading = true;
       this._OPReportsService.getItemwisepurchaseview(
         this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-       this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900" ,0
+       this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900" ,SupplierId,StoreId
         
       ).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,
@@ -908,6 +1144,233 @@ export class InventoryReportComponent implements OnInit {
             data: {
               base64: res["base64"] as string,
               title: "Item Wise Purchase Viewer"
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+      });
+
+    }, 100);
+  }
+
+  
+
+  viewgetItemcountPdf() {
+    let ItemId=0
+    let StoreId =0
+
+    if (this._OPReportsService.userForm.get('StoreId1').value)
+     StoreId = this._OPReportsService.userForm.get('StoreId1').value.StoreId
+    
+  
+    setTimeout(() => {
+      this.SpinLoading = true;
+      this._OPReportsService.getItemcountlistview(
+        this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+       this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900" ,ItemId,StoreId
+        
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "95vw",
+            height: '850px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Item Wise Count Viewer"
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+      });
+
+    }, 100);
+  }
+  viewgetItemwisesupplierlistPdf() {
+    let ItemId=0
+    let StoreId =0
+
+    if (this._OPReportsService.userForm.get('StoreId').value)
+     StoreId = this._OPReportsService.userForm.get('StoreId').value.StoreId
+    
+    let SupplierId =0
+
+    if (this._OPReportsService.userForm.get('SupplierName').value)
+      SupplierId = this._OPReportsService.userForm.get('SupplierName').value.SupplierId
+    
+    setTimeout(() => {
+      this.SpinLoading = true;
+      this._OPReportsService.getItemwisesupplierlistview(SupplierId,StoreId,ItemId,
+        this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+       this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900" 
+        
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "95vw",
+            height: '850px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Item Wise Purchase Viewer"
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+      });
+
+    }, 100);
+  }
+
+  viewgetLastpurchasewiseconsumptionPdf() {
+    let ItemId=0
+   
+    setTimeout(() => {
+      this.SpinLoading = true;
+      this._OPReportsService.getLastpurchasewiseconsumptionview(
+        this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+       this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",ItemId, 
+        
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "95vw",
+            height: '850px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Last Purchase Wise Consumption Viewer"
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+      });
+
+    }, 100);
+  }
+  viewgetPurchasewisegrnsummaryPdf() {
+    
+    setTimeout(() => {
+      this.SpinLoading = true;
+      this._OPReportsService.getpurchasewisesummaryview(
+        this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+       this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900" 
+        
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "95vw",
+            height: '850px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Purchase Wise Summary  Viewer"
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+      });
+
+    }, 100);
+  }
+
+  
+  
+  viewgetStockadjustmentPdf() {
+    let StoreId =0
+
+    if (this._OPReportsService.userForm.get('StoreId1').value)
+     StoreId = this._OPReportsService.userForm.get('StoreId1').value.StoreId
+    
+    setTimeout(() => {
+      this.SpinLoading = true;
+      this._OPReportsService.getStockadjustmentview(
+        this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+       this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",StoreId
+        
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "95vw",
+            height: '850px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Stock Adjustment Viewer"
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+      });
+
+    }, 100);
+  }
+
+  
+  
+  viewgetSupplierwisedebitcardnotePdf() {
+    let StoreId =0
+
+    if (this._OPReportsService.userForm.get('StoreId').value)
+     StoreId = this._OPReportsService.userForm.get('StoreId').value.StoreId
+    
+    let SupplierId =0
+
+    if (this._OPReportsService.userForm.get('SupplierName').value)
+      SupplierId = this._OPReportsService.userForm.get('SupplierName').value.SupplierId
+    
+
+    setTimeout(() => {
+      this.SpinLoading = true;
+      this._OPReportsService.getSupplierwisedebitcardnoteview(
+        this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+       this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",SupplierId,StoreId
+        
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "95vw",
+            height: '850px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Supplier Wise Debit Note Viewer"
             }
           });
         dialogRef.afterClosed().subscribe(result => {
@@ -953,6 +1416,24 @@ export class InventoryReportComponent implements OnInit {
       const filterValue = value && value.UserName ? value.UserName.toLowerCase() : value.toLowerCase();
       return this.UserList.filter(option => option.UserName.toLowerCase().includes(filterValue));
     }
+  }
+
+
+  getSuppliernameList() {
+    var m_data = {
+      'SupplierName': `${this._OPReportsService.userForm.get('SupplierName').value}%`
+    }
+    this._OPReportsService.getSupplierList(m_data).subscribe(data => {
+      this.filteredOptionssupplier = data;
+      if (this.filteredOptionssupplier.length == 0) {
+        this.noOptionFoundsupplier = true;
+      } else {
+        this.noOptionFoundsupplier = false;
+      }
+    })
+  }
+  getOptionTextSupplier(option) {
+    return option && option.SupplierName ? option.SupplierName : '';
   }
   onClose(){}
 
