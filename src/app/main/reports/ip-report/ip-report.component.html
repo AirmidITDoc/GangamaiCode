@@ -192,11 +192,26 @@
 
                                         </mat-form-field>
 
+                                                                           
                                         <mat-form-field appearance="outline" *ngIf="FlagDischargetypeIdSelected" fxFlex="60%">
-                                            <mat-label>DischargeType</mat-label>
-                                            <input name="DischargeType" formControlName="DischargeTypeId"
-                                                placeholder="DischargeType" matInput>
-
+                                            <mat-label>Discharge Type Name</mat-label>
+                                            <input matAutocompletePosition="below" type="text"
+                                                placeholder="Select DischargeTypeName" matInput
+                                                formControlName="DischargeTypeId" [matAutocomplete]="autoDisctype"
+                                                 [(ngModel)]="vDescType">
+                                            <span matSuffix style="display: flex;">
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_IPReportService.userForm.get('DischargeTypeId').setValue(''); isDistypeSelected = false;">close</mat-icon>
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_IPReportService.userForm.get('DischargeTypeId').setValue(''); isDistypeSelected = false;">search</mat-icon>
+                                            </span>
+                                            <mat-autocomplete #autoDisctype="matAutocomplete"
+                                                [displayWith]="getOptionTextDisctype">
+                                                <mat-option *ngFor="let option of filteredOptionsDisctype | async"
+                                                    [value]="option">
+                                                    {{option.DischargeTypeName}}
+                                                </mat-option>
+                                            </mat-autocomplete>
                                         </mat-form-field>
                                     </div>
                                     <div style="margin-left: 2%;">

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -29,21 +29,80 @@ export class EmergencyListService {
    }
    CreateMyForm(){
     return this._frombuilder.group({
+      PrefixID:[''],
       Prefixname: [''],
-      Gender: [''],
-      FirstName:[''],
-      LastName:[''],
-      MiddleName:[''],
+      GenderId: [''],
+      FirstName: ['', [
+        Validators.required,
+        Validators.maxLength(50),
+        // Validators.pattern("^[a-zA-Z._ -]*$"),
+        Validators.pattern('^[a-zA-Z () ]*$')
+    ]],
+    MiddleName: ['', [
+    ]],
+    LastName: ['', [
+        Validators.required,
+    ]],
       Address:[''],
-      MobileNo:[''],
+      PhoneNo: ['', [Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
+      MobileNo: ['', [Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
+
       PinNo:[''],
       DepartmentName:[''],
-      DoctorName:['']
+      DoctorName:[''],
+      CityId:[''],
+      StateId:[''],
+      CountryId:[''],
+      DoctorId:[''],
+      Departmentid:[''],
+      MaritalStatusId:[''],
+      ReligionId:[''],
+      AreaId:[''],
+      AadharCardNo:[''],
+      PanCardNo:[''],
+      AgeYear:[''],
+      AgeMonth:[''],
+      AgeDay:[''],
+      DateofBirth:['']
     })
    }
 
+   public regInsert(employee)
+   {    
+     return this._httpClient.post("InPatient/IPDEmergencyRegInsert",employee);
+   }
 
+
+   public getDoctorMasterCombo(Id) {
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_DoctorWithDepartMasterForCombo_Conditional", { "Id": Id })
+  }
    public getEmergencyList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_CanteenRequestDet",Param);
   }
+
+  public getPrefixMasterCombo() {
+    return this._httpClient.post(
+        "Generic/GetByProc?procName=RetrievePrefixMasterForCombo",
+        {}
+    );
+}
+public getDepartmentCombo() {
+  return this._httpClient.post("Generic/GetByProc?procName=RetrieveDepartmentMasterForCombo", {})
+
+}
+public getGenderCombo(Id) {
+  return this._httpClient.post("Generic/GetByProc?procName=Retrieve_SexMasterForCombo_Conditional", { "Id": Id })
+  }
+  public getCityList() {
+    return this._httpClient.post("Generic/GetByProc?procName=RetrieveCityMasterForCombo", {})
+  }
+  //StateName Combobox List
+  public getStateList(CityId) {
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StateMasterForCombo_Conditional", { "Id": CityId })
+  }
+  //CountryName Combobox List
+  public getCountryList(StateId) {
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_CountryMasterForCombo_Conditional", { "Id": StateId })
+  }
+
 }

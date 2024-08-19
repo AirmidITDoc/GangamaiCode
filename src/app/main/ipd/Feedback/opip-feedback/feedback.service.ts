@@ -26,15 +26,23 @@ export class FeedbackService {
   createMyfeedbackForm(){
     return this._formbuilder.group({ 
       AdmissionId:[''],
+      PatientFeedbackId:[''],
       PatientName:[''],
       // PatientName:[''],
       Feedbackdetails:[''],
       fbone:[''],
+      FeedbackCategory:[''],
+      FeedbackRating:[''],
+      FeedbackComments:[''],
      FromDate:[new Date()],
      ToDate:[new Date()],
     })
   }
 
+  public feedbackInsert(employee)
+  {    
+    return this._httpClient.post("OutPatient/PatientFeedback",employee);
+  }
 
   public getWardList(){
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_WardMasterListForCombo",{});
@@ -42,5 +50,5 @@ export class FeedbackService {
   public getPatientList(param){
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_AdmisionList_NursingList",param);
   }
-
+  
 }

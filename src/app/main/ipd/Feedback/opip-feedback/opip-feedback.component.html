@@ -347,12 +347,23 @@
                                                                     <mat-card style="padding: 5px;">
                                                                         <mat-form-field appearance="outline"
                                                                             class="mr-sm-12" style="width:100%;">
-                                                                            <textarea name="Feedbackdetails" matInput
+                                                                            <textarea name="FeedbackComments" matInput
                                                                                 rows="10" cols="5"
                                                                                 placeholder="Enter Feedbackdetails"
-                                                                                formControlName="Feedbackdetails">
+                                                                                formControlName="FeedbackComments">
                                                                         </textarea>
                                                                         </mat-form-field>
+                                                                        <mat-form-field appearance="outline" fxFlex>
+                                                                            <mat-label>Feedback Category </mat-label>
+                                                                         <input name="FeedbackCategory" formControlName="FeedbackCategory" placeholder="FeedbackCategory" matInput  [(ngModel)]="registerObj1.FeedbackCategory">
+                                                                        </mat-form-field>
+
+                                                                        <mat-form-field appearance="outline" fxFlex>
+                                                                            <mat-label>FeedbackRating </mat-label>
+                                                                            <input name="FeedbackRating" formControlName="FeedbackRating" placeholder="FeedbackRating" matInput  [(ngModel)]="registerObj1.FeedbackRating">
+                                                                        </mat-form-field>
+
+                                                                      
                                                                     </mat-card>
                                                                 </div>
 
@@ -377,7 +388,7 @@
                     <div class="modal-footer-buttons">
                         <!-- <button class="btn btn-primary" (click)="getPrint()">Print</button> -->
                         <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                        <button class="btn btn-primary" (click)="onSave()">Save</button>
+                        <button class="btn btn-primary" (click)="onSubmit()">Save</button>
                     </div>
                 </div>
 

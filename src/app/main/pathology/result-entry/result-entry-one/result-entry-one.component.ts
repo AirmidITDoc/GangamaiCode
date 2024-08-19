@@ -85,6 +85,9 @@ export class ResultEntryOneComponent implements OnInit {
     PathResultDr1: any;
     SexId: any;
     CheckAge: any;
+    CheckAgemonth:any=0
+    CheckAgeday:any=0
+
     // MaxAge:any;
     @ViewChild(MatAccordion) accordion: MatAccordion;
     @ViewChild('drawer') public drawer: MatDrawer;
@@ -101,7 +104,7 @@ export class ResultEntryOneComponent implements OnInit {
         private configService: ConfigService,
         public toastr: ToastrService,
         private _fuseSidebarService: FuseSidebarService) {
-
+         
         if (this.data) {
             
             this.selectedAdvanceObj2 = data.patientdata;
@@ -111,6 +114,10 @@ export class ResultEntryOneComponent implements OnInit {
             this.SexId = this.selectedAdvanceObj2.GenderId || 1;
             if (this.selectedAdvanceObj2.AgeYear)
                 this.CheckAge = this.selectedAdvanceObj2.AgeYear.trim();
+            if (this.selectedAdvanceObj2.AgeMonth)
+                this.CheckAgemonth = this.selectedAdvanceObj2.AgeMonth.trim();
+            if (this.selectedAdvanceObj2.AgeDay)
+                this.CheckAgeday = this.selectedAdvanceObj2.AgeDay.trim();
 
             this.reportIdData = [];
 
@@ -157,12 +164,7 @@ export class ResultEntryOneComponent implements OnInit {
             element.click();
         }, 1000);
 
-        // if(this.dataSource.data.length>0){
-        //     console.log(this.dataSource.data)
-        //     this.setDropdownObjs();
-
-        // }
-        // this.getPathresultDoctorList();
+     
     }
 
     toggleSidebar(name): void {
@@ -287,12 +289,29 @@ export class ResultEntryOneComponent implements OnInit {
 
                 //  SelectQuery = "Select * from m_lvw_Retrieve_PathologyResult where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ")"
         if (this.selectedAdvanceObj2.AgeYear > 0 && this.OP_IPType == 0) {
-            SelectQuery = "Select * from m_lvwRtrv_PathologyResultOPWithAge where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ") and SexId=" + this.SexId + " and MaxAge >= " + this.CheckAge + " and MinAge < " + this.CheckAge
+            SelectQuery = "Select * from m_lvwRtrv_PathologyResultOPWithAge where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ") and SexId=" + this.SexId + " and MaxAge >= " + this.CheckAge + " and MinAge < " + this.CheckAge + " AND AgeType='YEAR' "
         }
 
         if (this.selectedAdvanceObj2.AgeYear > 0 && this.OP_IPType == 1) {
-            SelectQuery = "Select * from m_lvwRtrv_PathologyResultIPWithAge where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ") and SexId=" + this.SexId + " and MaxAge >= " + this.CheckAge + " and MinAge < " + this.CheckAge
+            SelectQuery = "Select * from m_lvwRtrv_PathologyResultIPWithAge where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ") and SexId=" + this.SexId + " and MaxAge >= " + this.CheckAge + " and MinAge < " + this.CheckAge + " AND AgeType='YEAR' "
         }
+
+        if (this.selectedAdvanceObj2.AgeMonth > 0 && this.OP_IPType == 0) {
+            SelectQuery = "Select * from m_lvwRtrv_PathologyResultOPWithAge where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ") and SexId=" + this.SexId + " and MaxAge >= " + this.CheckAgemonth + " and MinAge < " + this.CheckAgemonth +"AND AgeType='MONTH'"
+        }
+
+        if (this.selectedAdvanceObj2.AgeMonth > 0 && this.OP_IPType == 1) {
+            SelectQuery = "Select * from m_lvwRtrv_PathologyResultIPWithAge where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ") and SexId=" + this.SexId + " and MaxAge >= " + this.CheckAgemonth + " and MinAge < " + this.CheckAgemonth +"AND AgeType='MONTH'"
+        }
+
+        if (this.selectedAdvanceObj2.AgeDay > 0 && this.OP_IPType == 0) {
+            SelectQuery = "Select * from m_lvwRtrv_PathologyResultOPWithAge where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ") and SexId=" + this.SexId + " and MaxAge >= " + this.CheckAgeday + " and MinAge < " + this.CheckAgeday + " AND AgeType='DAY' "
+        }
+
+        if (this.selectedAdvanceObj2.AgeDay > 0 && this.OP_IPType == 1) {
+            SelectQuery = "Select * from m_lvwRtrv_PathologyResultIPWithAge where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ") and SexId=" + this.SexId + " and MaxAge >= " + this.CheckAgeday + " and MinAge < " + this.CheckAgeday + " AND AgeType='DAY' "
+        }
+
 
 
         console.log(SelectQuery)
@@ -345,12 +364,13 @@ export class ResultEntryOneComponent implements OnInit {
             this.PathResultDr1 = this.dataSource.data[0]["PathResultDr1"];
             this.vsuggation = this.dataSource.data[0]["SuggestionNote"];
             console.log(this.PathResultDr1);
+            this.getPathresultDoctorList();
         },
             error => {
                 this.sIsLoading = '';
             });
 
-            this.getPathresultDoctorList()
+           
 
     }
 

@@ -84,8 +84,7 @@ export class ResultEntrytwoComponent implements OnInit {
       else
         this.getTemplatedetailOP();
     }
-    // this.getTemplatelist();
-
+   
    }
 
   ngOnInit(): void {
@@ -100,7 +99,7 @@ export class ResultEntrytwoComponent implements OnInit {
           startWith(''),
           map(value => this._filterTemplate(value)),
       );
-      this.getTemplateList();
+      
     }
    
 
@@ -285,7 +284,7 @@ export class ResultEntrytwoComponent implements OnInit {
         this.TemplateList = data;
         debugger
         if (this.data) {
-          const ddValue = this.TemplateList.filter(c => c.PathTemplateId == this.TemplateId);
+          const ddValue = this.TemplateList.filter(c => c.TemplateId == this.TemplateId);
           this.otherForm.get('TemplateName').setValue(ddValue[0]);
           this.otherForm.updateValueAndValidity();
           return;

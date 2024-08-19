@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { RadiologyPrint } from '../radiology-order-list.component';
 import { Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
 import { FormControl } from '@angular/forms';
@@ -6,7 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { RadioloyOrderlistService } from '../radioloy-orderlist.service';
 import { NotificationServiceService } from 'app/core/notification-service.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { DatePipe } from '@angular/common';
 import { map, startWith, takeUntil } from 'rxjs/operators';
@@ -63,12 +63,9 @@ export class ResultEntryComponent implements OnInit {
   isTemplateNameSelected: boolean = false;
  filteredOptionsisTemplate: Observable<string[]>;
  vTemplateName: any = 0;
-
+ TemplateId: any = 0;
+ 
   
-  //doctor filter
-  public DoctorFilterCtrl: FormControl = new FormControl();
-  public filtereddoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
-
   private _onDestroy = new Subject<void>();
 
   dataSource = new MatTableDataSource<RadiologyPatienInsert>();
@@ -91,9 +88,9 @@ export class ResultEntryComponent implements OnInit {
   constructor(
     public _radiologytemplateService: RadioloyOrderlistService,
     private accountService: AuthenticationService,
-    // public notification: NotificationServiceService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     public _matDialog: MatDialog,
-    // public datePipe: DatePipe,
+    public datePipe: DatePipe,
     public toastr: ToastrService,
     private advanceDataStored: AdvanceDataStored,
     public dialogRef: MatDialogRef<ResultEntryComponent>,
@@ -101,6 +98,7 @@ export class ResultEntryComponent implements OnInit {
    
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
+      this.TemplateId== this.selectedAdvanceObj.TemplateId;
       console.log(this.selectedAdvanceObj )
     }
     this.getDoctorList()
@@ -114,29 +112,45 @@ export class ResultEntryComponent implements OnInit {
     }  
   }
   RefDoctorID:any;
-getUpdatetemplate(){
-  var m_data = {
-    "RadReportId": this.selectedAdvanceObj.RadReportId, 
+// getUpdatetemplate(){
+//   var m_data = {
+//     "RadReportId": this.selectedAdvanceObj.RadReportId, 
+//   }
+//   this._radiologytemplateService.getRtrvtemplate(m_data).subscribe(Visit => {
+//     this.regobj = Visit as RadiologyPatienInsert; 
+//     console.log(this.regobj); 
+//     this.vTemplateDesc = this.regobj[0].ResultEntry;
+//     this.SuggestionNotes = this.regobj[0].SuggestionNotes;
+//     this.DoctorId = this.regobj[0].RadResultDr1;
+//     this.RefDoctorID = this.regobj[0].RefDoctorID;
+//     console.log(this.RefDoctorID); 
+  
+//   }); 
+// }   
+
+getUpdatetemplate() {
+  
+  var mdata={
+  "RadReportId": this.selectedAdvanceObj.RadReportId, 
   }
-  this._radiologytemplateService.getRtrvtemplate(m_data).subscribe(Visit => {
-    this.regobj = Visit as RadiologyPatienInsert; 
-    console.log(this.regobj); 
-    this.vTemplateDesc = this.regobj[0].ResultEntry;
-    this.SuggestionNotes = this.regobj[0].SuggestionNotes;
-    this.DoctorId = this.regobj[0].RadResultDr1;
-    this.RefDoctorID = this.regobj[0].RefDoctorID;
-    console.log(this.RefDoctorID); 
-    this.Rtevdropdownvalue();
-  }); 
-}   
-Rtevdropdownvalue(){
-  debugger
-  if(this.RefDoctorID){
-     const toSelect = this.Doctorlist.find(c => c.DoctorId == this.RefDoctorID);
-     console.log(toSelect)
-     this._radiologytemplateService.myform.get('DoctorId').setValue(toSelect);
-  } 
+
+  this._radiologytemplateService.getRtrvtemplate(mdata).subscribe(data => {
+      this.TemplateList = data[0];
+      this.vTemplateDesc = this.TemplateList.ResultEntry;
+      this.SuggestionNotes = this.TemplateList.SuggestionNotes;
+      this.TemplateId= this.TemplateList.RadReportId;
+      this.DoctorId = this.TemplateList.RadResultDr1;
+      this.RefDoctorID = this.TemplateList.RefDoctorID;
+      debugger
+    //   if (this.data) {
+    //     const ddValue = this.TemplateList.filter(c => c.RadReportId== this.TemplateId);
+        this._radiologytemplateService.myform.get('TemplateName').setValue(this.TemplateId);
+        this._radiologytemplateService.myform.updateValueAndValidity();
+    //     return;
+    // }
+  });
 }
+
   getDoctorList() {
     this._radiologytemplateService.getdoctorCombo().subscribe(data => {
       this.Doctorlist = data;
@@ -163,32 +177,27 @@ Rtevdropdownvalue(){
   } 
 
   onSubmit() {
+    
+    if ((this.vTemplateName == '' || this.vTemplateName == null || this.vTemplateName == undefined)) {
+      this.toastr.warning('Please select valid Template ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if(this._radiologytemplateService.myform.get("ResultEntry").value ==''){
+      this.toastr.warning('Please Enter Result Entry ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
   
-   if ((this.vTemplateName == '' || this.vTemplateName == null || this.vTemplateName == undefined)) {
-    this.toastr.warning('Please select valid Template ', 'Warning !', {
-      toastClass: 'tostr-tost custom-toast-warning',
-    });
-    return;
-  }
-  if(this._radiologytemplateService.myform.get("TemplateId").value ==''){
-    this.toastr.warning('Please Enter Template Entry ', 'Warning !', {
-      toastClass: 'tostr-tost custom-toast-warning',
-    });
-    return;
-  }
-
-  //  console.log(this._radiologytemplateService.myform.get("ResultEntry").value)
-  //  const domParser = new DOMParser();
-  // const htmlElement = domParser.parseFromString(this._radiologytemplateService.myform.get("ResultEntry").value, 'text/html');
- 
-  //  console.log(htmlElement)
-  
+   
       if (!this.selectedAdvanceObj.RadReportId) {
         var m_data = {
           insertRadiologyTemplateMaster: {
             "RadReportID":0, 
-            "ReportDate": this._radiologytemplateService.myform.get("ReportDate").value || '11/01/2022',
-            "ReportTime": this._radiologytemplateService.myform.get("ReportTime").value || '11/01/2022',
+            "ReportDate": this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
+            "ReportTime":this.datePipe.transform(this.currentDate, "MM-dd-yyyy hh:mm"),
             "IsCompleted":'true', 
             "IsPrinted":'true', 
             "RadResultDr1": this._radiologytemplateService.myform.get("DoctorId").value.DoctorId ,
@@ -222,8 +231,8 @@ Rtevdropdownvalue(){
         var m_dataUpdate = {
           radiologyReportHeaderUpdate: {
             "RadReportID": this.selectedAdvanceObj.RadReportId || 0, 
-            "ReportDate": this.dateTimeObj.date || '11/01/2022',
-            "ReportTime":  this.dateTimeObj.time || '11/01/2022', 
+            "ReportDate": this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
+            "ReportTime":this.datePipe.transform(this.currentDate, "MM-dd-yyyy hh:mm"),
             "IsCompleted": true, 
             "IsPrinted": true, 
             "RadResultDr1": this._radiologytemplateService.myform.get("DoctorId").value.DoctorId || 0,
@@ -306,14 +315,14 @@ Rtevdropdownvalue(){
   }
 
   onEdit(row) {
-    var m_data = {
-      // "TemplateId": row.TemplateId,
-      // "TemplateName": row.TemplateName.trim(),
-      // "TemplateDesc": row.TemplateDesc.trim(),
-      // "IsDeleted": JSON.stringify(row.IsDeleted),
-      // "UpdatedBy": row.UpdatedBy,
-    }
-    this._radiologytemplateService.populateForm(m_data);
+   
+    this._radiologytemplateService.populateForm(row);
+  }
+
+  onAddTemplate(){
+ 
+    this.vTemplateDesc=this._radiologytemplateService.myform.get('TemplateName').value.TemplateDescInHTML || ''
+ 
   }
  
   onAdd() {
@@ -341,8 +350,8 @@ Rtevdropdownvalue(){
   }
 
   onClose() {
-    this._radiologytemplateService.myform.reset();
-    // this.dialogRef.close();
+    // this._radiologytemplateService.myform.reset();
+    this.dialogRef.close();
   }
 
 }

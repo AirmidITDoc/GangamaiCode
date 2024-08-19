@@ -121,6 +121,10 @@ public getDischargetypewiseView(DoctorId,FromDate,ToDate,DischargeTypeId){
   
   return this._httpClient.get("IPReport/view-IPDischargeTypeReport?DoctorId="+DoctorId+"&FromDate="+FromDate+"&ToDate="+ToDate+"&DischargeTypeId="+DischargeTypeId);
 }
+ 
+public getDischargetypeCombo() {
+  return this._httpClient.post("Generic/GetByProc?procName=Retrieve_DischargeTypeForCombo", {})
+}
 
 public getCurrRefDoctAdmitlistView(DoctorId){
   
