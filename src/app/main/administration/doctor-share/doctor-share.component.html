@@ -193,6 +193,21 @@
                                                 {{contact.CompanyName || '-'}}
                                             </mat-cell>
                                         </ng-container> 
+
+                                        <ng-container matColumnDef="Action">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">
+                                             Action</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-80">
+                                                <button mat-icon-button
+                                                (click)="viewDocShareSummaryReport(contact)"   matTooltip="Doctor Summary Report">
+                                                <mat-icon style="color: black;">print</mat-icon>
+                                            </button>
+                                            <button mat-icon-button
+                                            (click)="viewDocShareReport(contact)"   matTooltip="Doctor Share Report">
+                                            <mat-icon style="color: black;">print</mat-icon>
+                                        </button>
+                                            </mat-cell>
+                                        </ng-container> 
                     
                                         <ng-container matColumnDef="loading">
                                             <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
@@ -230,6 +245,21 @@
                     
                                     <mat-table class="table1" matSort [dataSource]="dsAdditionalPay" [@animateStagger]="{value:'50'}"
                                     style="overflow: auto;">
+
+                                    <ng-container matColumnDef="Action">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">
+                                         Action</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-80">
+                                            <button mat-icon-button
+                                            (click)="viewDocShareSummaryReport(contact)"   matTooltip="Doctor Summary Report">
+                                            <mat-icon style="color: black;">print</mat-icon>
+                                        </button>
+                                        <button mat-icon-button
+                                        (click)="viewDocShareReport(contact)"   matTooltip="Doctor Share Report">
+                                        <mat-icon style="color: black;">print</mat-icon>
+                                    </button>
+                                        </mat-cell>
+                                    </ng-container> 
                 
                                     <ng-container matColumnDef="button">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-80"> 

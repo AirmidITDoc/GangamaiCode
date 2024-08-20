@@ -80,5 +80,11 @@ export class DoctorShareService {
   }
   public SaveProcessdocShare(employee) {
     return this._httpClient.post("Administration/DoctorShareProcess",employee) 
+  } 
+  public getPdfDocShareSummaryRpt(FromDate,ToDate,DoctorId){
+    return this._httpClient.get("DoctorShareReports/viewDoctorWiseSummaryReport?FromDate=" + FromDate +"&ToDate=" + ToDate +"&DoctorId" +DoctorId);
+  }
+  public getPdfDocShareRpt(FromDate,ToDate,DoctorId){
+    return this._httpClient.get("DoctorShareReports/view-DoctorShareReport?FromDate=" + FromDate +"&ToDate=" + ToDate +"&DoctorId" +DoctorId);
   }
 }

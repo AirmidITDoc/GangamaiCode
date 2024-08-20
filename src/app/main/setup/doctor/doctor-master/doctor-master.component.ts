@@ -145,14 +145,6 @@ export class DoctorMasterComponent implements OnInit {
     }
 
     onEdit(row) {
-
-        let Year, Day, Month;
-        if (row.AgeYear != null || row.AgeDay != null || row.AgeMonth != null) {
-            Year = row.AgeYear.trim();
-            Day = row.AgeDay.trim();
-            Month = row.AgeMonth.trim();
-        }
-        console.log(row);
         this._doctorService.populateForm(row);
         const dialogRef = this._matDialog.open(
             NewDoctorComponent,
@@ -265,6 +257,7 @@ export class DoctorMaster {
     isInHouseDoctor: any;
     Education:any;
     ESINO:any;
+    Signature:string;
     /**
      * Constructor
      *
@@ -311,6 +304,7 @@ export class DoctorMaster {
             this.AADHARCARDNO= DoctorMaster.AADHARCARDNO || "";
             this.isInHouseDoctor= DoctorMaster.isInHouseDoctor || "";
             this.ESINO= DoctorMaster.ESINO || "";
+            this.Signature=DoctorMaster.Signature||"";
         }
     }
 }

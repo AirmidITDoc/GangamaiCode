@@ -161,8 +161,18 @@
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                       c
-
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Mobile Number</mat-label>
+                                            <input name="MobileNo" formControlName="MobileNo"
+                                                placeholder="Mobile Number" matInput required #mobile
+                                                (keydown)="onEntermobile($event)" [(ngModel)]="registerObj.Mobile"
+                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
+                                                required="required" value="9876658688">
+                                            <mat-error class="error"
+                                                *ngIf="_doctorService.myform.get('MobileNo').invalid && _doctorService.myform.get('MobileNo').touched">10
+                                                digits Mobile number is
+                                                required</mat-error>
+                                        </mat-form-field>
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -323,7 +333,7 @@
                             <mat-label>Department</mat-label>
                             <input matAutocompletePosition="below" type="text" placeholder="Select Department"
                                 [(ngModel)]="vDepartmentid" matInput #dept (keydown)="onEnterdept($event,vDepartmentid)"
-                                formControlName="Departmentid" [matAutocomplete]="autoDep">
+                                formControlName="DepartmentId" [matAutocomplete]="autoDep">
                             <span matSuffix style="display: flex;">
                                 <mat-icon class="mat-icon-close"
                                     (click)="_doctorService.myform.get('Departmentid').setValue(''); isDepartmentSelected = false;">close</mat-icon>
@@ -333,14 +343,14 @@
                             <mat-autocomplete #autoDep="matAutocomplete" [displayWith]="getOptionTextDep">
                                 <mat-option *ngFor="let option of filteredOptionsDep | async" [value]="option">
                                     <mat-checkbox [checked]="option.selected" (change)="toggleSelection(option)"
-                                        (click)="$event.stopPropagation()"> {{option.departmentName}}</mat-checkbox>
+                                        (click)="$event.stopPropagation()"> {{option.DepartmentName}}</mat-checkbox>
                                 </mat-option>
                             </mat-autocomplete>
                         </mat-form-field>
 
                         <mat-chip-list #chipList>
                             <mat-chip *ngFor="let item of selectedItems">
-                                {{ item.departmentName }} <mat-icon (click)="remove(item)">close</mat-icon>
+                                {{ item.DepartmentName }} <mat-icon (click)="remove(item)">close</mat-icon>
                             </mat-chip>
                         </mat-chip-list>
                     </div>

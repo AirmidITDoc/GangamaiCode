@@ -12,6 +12,8 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import Swal from 'sweetalert2';
 import { IPBrowseBillService } from 'app/main/ipd/ip-bill-browse-list/ip-browse-bill.service';
 import { BrowseOPBillService } from 'app/main/opd/browse-opbill/browse-opbill.service';
+import { ToastrService } from 'ngx-toastr';
+import { BillDateUpdateComponent } from './bill-date-update/bill-date-update.component';
 
 @Component({
   selector: 'app-cancellation',
@@ -48,6 +50,7 @@ export class CancellationComponent implements OnInit {
     private _fuseSidebarService: FuseSidebarService, 
     public datePipe: DatePipe,
     public _matDialog: MatDialog,
+    public toastr: ToastrService,
     private _loggedService: AuthenticationService,
     public _IpBillBrowseListService: IPBrowseBillService,
     public _BrowseOPDBillsService: BrowseOPBillService,
@@ -126,12 +129,11 @@ export class CancellationComponent implements OnInit {
         this.sIsLoading = '';
       });
   }
-  BillDate(){
-    Swal.fire('Api Error !', 'Bill Date Update!')
-  }
-  isLoading123:boolean=false;
-  BillCancel(contact){
+  
  
+ 
+  isLoading123:boolean=false;
+  BillCancel(contact){ 
     Swal.fire({
       title: 'Do you want to cancel the Final Bill ',
       text: "You won't be able to revert this!",
@@ -181,6 +183,20 @@ export class CancellationComponent implements OnInit {
       this.viewgetOPBillReportPdf(contact)
     }  
   }
+  Billdateupdate(contact) { 
+    const dialogRef = this._matDialog.open(BillDateUpdateComponent,
+      {
+        height: "35%",
+        width: '35%',
+        data: {
+          obj:contact.BillNo
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      this.getSearchList();
+    });
+  }
+
   viewgetBillReportPdf(BillNo) { 
     setTimeout(() => {
       // this.SpinLoading =true;  

@@ -86,8 +86,8 @@ export class DoctorMasterService {
             AddedBy: [""],
             UpdatedBy: [""],
             AddedByName: [""],
-            Pancardno:[""],
-            AadharCardNo:[""],
+            Pancardno: [""],
+            AadharCardNo: [""],
 
         });
     }
@@ -96,7 +96,7 @@ export class DoctorMasterService {
         return this._formBuilder.group({
             DoctorNameSearch: [""],
             IsDeletedSearch: ["2"],
-            IsConsultant:["1"]
+            IsConsultant: ["1"]
         });
     }
 
@@ -106,6 +106,10 @@ export class DoctorMasterService {
 
     public getDoctorMasterList(Param) {
         return this._httpClient.post("Generic/GetDataSetByProc?procName=m_Rtrv_DoctorMasterList_Pagi", Param);
+    }
+
+    public getSignature(Param) {
+        return this._httpClient.get("DoctorMaster/get-file?FileName=" + Param);
     }
 
     public deactivateTheStatus(m_data) {
@@ -137,9 +141,9 @@ export class DoctorMasterService {
     }
 
     public getGenderCombo(Id) {
-      return this._httpClient.post("Generic/GetByProc?procName=Retrieve_SexMasterForCombo_Conditional", { "Id": Id })
-      }
-    
+        return this._httpClient.post("Generic/GetByProc?procName=Retrieve_SexMasterForCombo_Conditional", { "Id": Id })
+    }
+
     public getDoctortypeMasterCombo() {
         return this._httpClient.post(
             "Generic/GetByProc?procName=RetrieveDoctorTypeMasterForCombo",
@@ -163,18 +167,18 @@ export class DoctorMasterService {
         return this._httpClient.post("DoctorMaster/DoctorUpdate", param);
     }
 
-    public getDocDeptwiseList(emp){
+    public getDocDeptwiseList(emp) {
         return this._httpClient.post(
-           "Generic/GetByProc?procName=Rtrv_M_DoctorDepartmentDet",
-          emp
-       );
-   }
+            "Generic/GetByProc?procName=Rtrv_M_DoctorDepartmentDet",
+            emp
+        );
+    }
 
-  //  city list
-  public getCityList() {
-    
-    return this._httpClient.post("Generic/GetByProc?procName=RetrieveCityMasterForCombo", {})
-  }
+    //  city list
+    public getCityList() {
+
+        return this._httpClient.post("Generic/GetByProc?procName=RetrieveCityMasterForCombo", {})
+    }
     populateForm(param) {
         this.myform.patchValue(param);
     }
