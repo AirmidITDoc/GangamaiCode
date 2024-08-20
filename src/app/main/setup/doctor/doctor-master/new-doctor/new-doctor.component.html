@@ -333,7 +333,7 @@
                             <mat-label>Department</mat-label>
                             <input matAutocompletePosition="below" type="text" placeholder="Select Department"
                                 [(ngModel)]="vDepartmentid" matInput #dept (keydown)="onEnterdept($event,vDepartmentid)"
-                                formControlName="Departmentid" [matAutocomplete]="autoDep">
+                                formControlName="DepartmentId" [matAutocomplete]="autoDep">
                             <span matSuffix style="display: flex;">
                                 <mat-icon class="mat-icon-close"
                                     (click)="_doctorService.myform.get('Departmentid').setValue(''); isDepartmentSelected = false;">close</mat-icon>
@@ -343,7 +343,7 @@
                             <mat-autocomplete #autoDep="matAutocomplete" [displayWith]="getOptionTextDep">
                                 <mat-option *ngFor="let option of filteredOptionsDep | async" [value]="option">
                                     <mat-checkbox [checked]="option.selected" (change)="toggleSelection(option)"
-                                        (click)="$event.stopPropagation()"> {{option.departmentName}}</mat-checkbox>
+                                        (click)="$event.stopPropagation()"> {{option.DepartmentName}}</mat-checkbox>
                                 </mat-option>
                             </mat-autocomplete>
                         </mat-form-field>

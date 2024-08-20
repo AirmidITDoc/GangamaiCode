@@ -105,10 +105,8 @@ export class NewDoctorComponent implements OnInit {
                 this.data.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
                 this.data.registerObj.AgeDay = Math.abs(todayDate.getDate() - dob.getDate());
             }
-            debugger
             this.registerObj = this.data.registerObj;
             this._doctorService.getSignature(this.registerObj.Signature).subscribe(data => {
-                debugger
                 this.sanitizeImagePreview=data["data"] as string;
                 this.registerObj.Signature = data["data"] as string;
             });
@@ -389,7 +387,6 @@ export class NewDoctorComponent implements OnInit {
 
 
     onSubmit() {
-        debugger
         if (this._doctorService.myform.valid) {
             var data2 = [];
             this.selectedItems.forEach((element) => {
@@ -465,7 +462,6 @@ export class NewDoctorComponent implements OnInit {
 
 
     onChangeDateofBirth(DateOfBirth) {
-        debugger
         if (DateOfBirth) {
             const todayDate = new Date();
             const dob = new Date(DateOfBirth);
