@@ -17,6 +17,7 @@ export class CommonDateComponent implements OnInit {
 
   dateLabel: string = '';
   timeLabel: string = '';
+  timeLabel2: string = '';
   dateTimeString: any;
   isTimeChanged: boolean = false;
   isDatePckrDisabled: boolean = false;
@@ -34,7 +35,7 @@ export class CommonDateComponent implements OnInit {
       // this.currentTime = this.dateTimeString[1];
       if(!this.isTimeChanged) {
         this.dateForm.get('timeController').setValue(this.now);
-        // this.dateForm.get('timeController').setValue(this.now);
+        this.dateForm.get('timeController2').setValue(this.now);
       }
     }, 1);
   }
@@ -74,6 +75,13 @@ export class CommonDateComponent implements OnInit {
       this.timeLabel = 'Discharge Time';
       this.isDatePckrDisabled = true;
     } 
+    else if (this.screenFromString == 'appointment-form') {
+        this.dateLabel = 'Admission Date';
+        this.timeLabel = 'Admission Start Time';
+        this.timeLabel2 = 'Admission End Time';
+        this.isDatePckrDisabled = false;
+        this.dateForm.get('timeController2').setValue(this.now);
+      }
     this.dateForm.get('timeController').setValue(this.now);
     setTimeout(() => {
       this.eventEmitForParent(this.dateTimeString[0], this.dateTimeString[1]);
@@ -93,6 +101,15 @@ export class CommonDateComponent implements OnInit {
       let selectedDate = new Date(this.dateForm.get('dateController').value);
       let splitDate = selectedDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
       let splitTime = this.dateForm.get('timeController').value.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+      this.isTimeChanged = true;
+      this.eventEmitForParent(splitDate[0], splitTime[1]);
+    }
+  }
+  onChangeTime2(event) {
+    if(event) {
+      let selectedDate = new Date(this.dateForm.get('dateController').value);
+      let splitDate = selectedDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+      let splitTime = this.dateForm.get('timeController2').value.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
       this.isTimeChanged = true;
       this.eventEmitForParent(splitDate[0], splitTime[1]);
     }

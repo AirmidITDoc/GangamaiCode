@@ -33,6 +33,18 @@
                 </span>
             </mat-form-field>
         </div>
+        <div class="time-field" *ngIf="screenFromString == 'appointment-form'">
+            <mat-form-field appearance="outline" class="timeField">
+                <mat-label>{{timeLabel2}}</mat-label>
+                <!-- The timepicker input -->
+                <input matTimepicker #t="matTimepicker" mode="12h" formControlName="timeController2" [readonly]="true"
+                (timeChange)="onChangeTime2($event)" [disableDialogOpenOnClick]="isDatePckrDisabled">
+                <!-- An icon for the timepicker input that will open the timepicker dialog when clicked -->
+                <span class="material-icons" matSuffix (click)="!isDatePckrDisabled ? t.showDialog() : ''">
+                    access_time
+                </span>
+            </mat-form-field>
+        </div>
     </div>
 
     

@@ -1,0 +1,126 @@
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" dynamicTableHeight>
+    <mat-toolbar class="top-header accent">
+        <div fxLayout="row" class="top-header-info">
+            <button mat-icon-button class="sidebar-toggle" fxHide.gt-sm (click)="toggleSidebar('app-main')">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                View Phone Appointment Scheduler
+            </span>
+        </div>
+
+        <!-- <div fxLayout="row" fxLayoutGap="5px" style="margin-left:10% !important; ">
+            <button mat-raised-button (click)="newPhoneAppointment()"
+                style="background-color: aliceblue;color: brown;margin-left:10% !important">New Phone Appointment
+            </button>
+        </div> -->
+
+    </mat-toolbar>
+    <!-- / HEADER -->
+    <!-- SELECTED BAR -->
+    <!-- <app-main class="accent-600" *ngIf="hasSelectedContacts" [@slideInTop]></app-main> -->
+    <!-- / SELECTED BAR -->
+    <!-- CONTENT -->
+    <div class="content">
+
+        <div class="center p-12 pb-56" fxFlexAlign="start center">
+
+            <div class="content-card" style="border-radius:4px; ">
+                <div class="col-md-4 text-right">
+                    <div class="row">
+                      <div
+                        class="col-md-6 d-md-none d-xl-flex col-xl-6 valign-center text-right"
+                      >
+                      </div>
+                      <div class="col-md-6 col-md-12 col-xl-6">
+                        <div class="btn-group m-1" role="group">
+                          <button
+                            type="button"
+                            class="btn btn-primary"
+                            mwlCalendarPreviousView
+                            [view]="view"
+                            [(viewDate)]="viewDate"
+                            [daysInWeek]="viewDays"
+                            [excludeDays]="excludeDays"
+                            [disabled]="prevBtnDisabled"
+                            (viewDateChange)="dateOrViewChanged()"
+                          >
+                            <span class="valign-center">
+                              <i title="Precedente" class="material-icons md-18"
+                                >keyboard_arrow_left</i
+                              >
+                            </span>
+                          </button>
+                          <button
+                            type="button"
+                            class="btn btn-light"
+                            mwlCalendarToday
+                            [(viewDate)]="viewDate"
+                            (viewDateChange)="dateOrViewChanged()"
+                          >
+                            <span class="valign-center">
+                              <i title="Oggi" class="material-icons md-18">today</i>
+                            </span>
+                          </button>
+                          <button
+                            type="button"
+                            class="btn btn-primary"
+                            mwlCalendarNextView
+                            [view]="view"
+                            [(viewDate)]="viewDate"
+                            [daysInWeek]="viewDays"
+                            [excludeDays]="excludeDays"
+                            [disabled]="nextBtnDisabled"
+                            (viewDateChange)="dateOrViewChanged()"
+                          >
+                            <span class="valign-center">
+                              <i title="Successivo" class="material-icons md-18"
+                                >keyboard_arrow_right</i
+                              >
+                            </span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+                  
+                <div>
+                    <calendar-scheduler-view
+                      [viewDays]="viewDays"
+                      [viewDate]="viewDate"
+                      [events]="events"
+                      [locale]="locale"
+                      [responsive]="false"
+                      [weekStartsOn]="weekStartsOn"
+                      [excludeDays]="excludeDays"
+                      [startsWithToday]="startsWithToday"
+                      [hourSegments]="hourSegments"
+                      [dayStartHour]="dayStartHour"
+                      [dayEndHour]="dayEndHour"
+                      [dayModifier]="dayModifier"
+                      [hourModifier]="hourModifier"
+                      [segmentModifier]="segmentModifier"
+                      [eventModifier]="eventModifier"
+                      [showEventActions]="true"
+                      [showSegmentHour]="true"
+                      [zoomEventOnHover]="true"
+                      (viewDaysChanged)="viewDaysChanged($event)"
+                      (dayHeaderClicked)="dayHeaderClicked($event.day)"
+                      (hourClicked)="hourClicked($event.hour)"
+                      (segmentClicked)="segmentClicked('Clicked', $event.segment)"
+                      (eventClicked)="eventClicked('Clicked', $event.event)"
+                      (eventTimesChanged)="eventTimesChanged($event)"
+                      [refresh]="refresh"
+                    >
+                    </calendar-scheduler-view>
+                </div>
+            </div>
+        </div>
+        <!-- CENTER -->
+    </div>
+    <!-- / USER -->
+    <!-- / CENTER -->
+    <!-- / CONTENT-->
+</div>

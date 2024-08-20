@@ -13,6 +13,7 @@ import { NewPhoneAppointmentComponent } from './new-phone-appointment/new-phone-
 import { GeturlService } from './geturl.service';
 import { map, startWith } from 'rxjs/operators';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-phoneappointment',
@@ -59,6 +60,7 @@ export class PhoneappointmentComponent implements OnInit {
     public _phoneAppointService: PhoneAppointListService,
     private _fuseSidebarService: FuseSidebarService,
     public _matDialog: MatDialog,
+    private router: Router,
     public datePipe: DatePipe,
     public _geturl :GeturlService
   ) { }
@@ -132,18 +134,22 @@ export class PhoneappointmentComponent implements OnInit {
       });
   }
 
-newPhoneAppointment(){
-  const dialogRef = this._matDialog.open(NewPhoneAppointmentComponent,
-    {
-      maxWidth: "85vw",
-      height: '65%',
-      width: '70%',
-    });
-  dialogRef.afterClosed().subscribe(result => {
-     console.log('The dialog was closed - Insert Action', result);
-     this.getPhoneAppointList();
-  });
+viewPhoneAppointment(){
+    this.router.navigate(['/opd/view-phone-appointment']);
 }
+
+newPhoneAppointment(){
+    const dialogRef = this._matDialog.open(NewPhoneAppointmentComponent,
+      {
+        maxWidth: "85vw",
+        height: '65%',
+        width: '70%',
+      });
+    dialogRef.afterClosed().subscribe(result => {
+       console.log('The dialog was closed - Insert Action', result);
+       this.getPhoneAppointList();
+    });
+  }
 
 CanclePhoneApp(contact){
   
