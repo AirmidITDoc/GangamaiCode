@@ -152,8 +152,8 @@
                                                 matInput>
 
                                         </mat-form-field>
-                                        <div *ngIf="FlagUserSelected" style="margin-left:2%;">
-                                        <mat-form-field appearance="outline" fxFlex="40%" *ngIf="FlagDoctorIDSelected">
+                                        <div style="margin-left:2%;">
+                                        <mat-form-field appearance="outline" fxFlex="40%" *ngIf="FlagDoctorSelected">
                                             <mat-label>Doctor Name</mat-label>
                                             <input matAutocompletePosition="below" type="text"
                                                 placeholder="Select Doctor" matInput
@@ -175,9 +175,9 @@
                                             </mat-autocomplete>
                                         </mat-form-field>
                                     </div>
-                                    <div *ngIf="FlagStoreSelected" style="margin-left:2%;">
+                                    <div  style="margin-left:2%;">
                                         <mat-form-field appearance="outline" fxFlex="40%" *ngIf="FlagStoreSelected">
-                                            <mat-label>Store Name</mat-label>
+                                            <mat-label>From Store Name</mat-label>
                                             <input matAutocompletePosition="below" type="text"
                                                 placeholder="Select Store" matInput
                                                 formControlName="StoreId"
@@ -198,7 +198,7 @@
                                             </mat-autocomplete>
                                         </mat-form-field>
                                         <mat-form-field appearance="outline" fxFlex="40%" *ngIf="FlagStore1Selected">
-                                            <mat-label>Store Name</mat-label>
+                                            <mat-label>To Store Name</mat-label>
                                             <input matAutocompletePosition="below" type="text"
                                                 placeholder="Select Store" matInput
                                                 formControlName="StoreId"
@@ -236,6 +236,27 @@
                                                 </mat-option>
                                             </mat-autocomplete>
                                         </mat-form-field>
+                                    </div>
+                                    <div *ngIf="FlagItemSelected" style="margin-left:2%;">
+                                    <mat-form-field appearance="outline" fxFlex="40%">
+                                        <mat-label>ItemName</mat-label>
+                                        <input type="text" name="ItemId" formControlName="ItemId" #itemid 
+                                            placeholder="Item Name " matInput [matAutocomplete]="auto">
+                                        <span matSuffix style="display: flex;">
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_OPReportsService.userForm.get('ItemId').setValue(''); isItemIdSelected = false;"> close </mat-icon>
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_OPReportsService.userForm.get('ItemId').setValue(''); isItemIdSelected = false;">search</mat-icon>
+                                        </span>
+                                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionItemText">
+                                            <mat-option *ngFor="let option of filteredOptionsItem" [value]="option">
+                                               {{option.ItemName}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                        <mat-error class="error" *ngIf="_OPReportsService.userForm.get('ItemId').invalid && _OPReportsService.userForm.get('ItemId').touched">
+                                            Select ItemName
+                                        </mat-error>
+                                    </mat-form-field> 
                                     </div>
                                    
                                 </div>

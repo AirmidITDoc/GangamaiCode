@@ -50,7 +50,7 @@ export class CommonReportComponent implements OnInit {
   FlagDepartmentSelected: boolean = false;
   FlaOPIPTypeSelected: boolean = false;
   FlaCashcounterSelected: boolean = false;
-
+  
   optionsUser: any[] = [];
   optionsPaymentMode: any[] = [];
   optionsDep: any[] = [];
@@ -226,15 +226,17 @@ export class CommonReportComponent implements OnInit {
       this.FlaCashcounterSelected=false;
     }
     else if (this.ReportName == 'Service Wise Report') {
-      this.FlagUserSelected = true;
+      this.FlagUserSelected = false;
       this.FlagPaymentIdSelected = false;
       this.FlagDoctorIDSelected = false;
       this.FlagRefundIdSelected = false;
       this.FlagVisitSelected = false;
-      this.FlagServiceIdSelected = false;
-      this.FlagDepartmentSelected = true;
+      this.FlagServiceIdSelected = true;
+      this.FlagDepartmentSelected = false;
       this.FlaOPIPTypeSelected= false;
       this.FlaCashcounterSelected=false;
+      
+
     } else if (this.ReportName == 'Bill Summary With TCS Report') {
       this.FlagUserSelected = false;
       this.FlagPaymentIdSelected = false;

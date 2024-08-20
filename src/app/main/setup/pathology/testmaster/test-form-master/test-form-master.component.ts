@@ -244,11 +244,8 @@ export class TestFormMasterComponent implements OnInit {
     }
 
     getParameterNameCombobox() {
-        this._TestService.getParameterMasterCombo()
-            .subscribe((data) => {
-                this.paramterList.data = data;
-                ;
-                this.Parametercmb = data;
+        this._TestService.getParameterMasterCombo().subscribe((data) => {this.paramterList.data = data;
+               this.Parametercmb = data;
             });
         // console.log(this.Parametercmb);
     }
@@ -724,10 +721,10 @@ export class TestFormMasterComponent implements OnInit {
 
     getTemplateList() {
         debugger
-        var data={
-            "Id":0
-        }
-        this._TestService.getTemplateCombo(data).subscribe(data => {
+        // var data={
+        //     "Id":0
+        // }
+        this._TestService.getTemplateCombo().subscribe(data => {
             this.TemplateList = data;
             console.log(data)
             this.optionsTemplate = this.TemplateList.slice();

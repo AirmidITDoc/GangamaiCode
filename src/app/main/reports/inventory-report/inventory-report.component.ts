@@ -39,14 +39,21 @@ export class InventoryReportComponent implements OnInit {
   filteredOptionsstore1: Observable<string[]>;
   isSearchstoreSelected: boolean = false;
   isSearchstore1Selected: boolean = false;
+  isItemIdSelected: boolean = false;
   FlagStoreSelected: boolean = false;
   FlagStore1Selected: boolean = false;
+  FlagItemSelected: boolean = false;
   optionsSearchstore: any[] = [];
   filteredOptionssupplier:any;
   noOptionFoundsupplier:any;
   isSupplierIdSelected:boolean=false;
   FlagSupplierSelected: boolean = false;
   FlagnonmovedaySelected: boolean = false;
+
+  filteredOptionsItem:any;
+
+
+
   displayedColumns = [
     'ReportName'
   ];
@@ -56,6 +63,7 @@ export class InventoryReportComponent implements OnInit {
     public _OPReportsService: OPReportsService,
     public _matDialog: MatDialog,
     private _ActRoute: Router,
+    
     public datePipe: DatePipe,
     private _loggedUser: AuthenticationService,
     private formBuilder: FormBuilder
@@ -69,7 +77,7 @@ export class InventoryReportComponent implements OnInit {
     this.bindReportData();
     this.GetUserList();
     this.gePharStoreList();
-    
+    this.getSearchItemList()
     this.filteredOptionsUser = this._OPReportsService.userForm.get('UserId').valueChanges.pipe(
       startWith(''),
       map(value => this._filterUser(value)),
@@ -130,194 +138,265 @@ export class InventoryReportComponent implements OnInit {
     this.ReportID = el.ReportId;
     //Inventory
     if (this.ReportName == 'Item List') {
-      this.FlagBillNoSelected = false;
+      
       this.FlagUserSelected = false;
+      this.FlagnonmovedaySelected = false;
       this.FlagDoctorSelected = false;
-
+      this.FlagStoreSelected = false;
+      this.FlagStore1Selected = false;
+      this.FlagSupplierSelected = false;
+      this.FlagItemSelected=false;
+     
     }else if (this.ReportName == 'Supplier List') {
-      this.FlagBillNoSelected = false;
       this.FlagUserSelected = false;
+      this.FlagnonmovedaySelected = false;
       this.FlagDoctorSelected = false;
-
+      this.FlagStoreSelected = false;
+      this.FlagStore1Selected = false;
+      this.FlagSupplierSelected = false;
+      this.FlagItemSelected=false;
     }
     else if (this.ReportName == 'Indent Report') {
       this.FlagUserSelected = false;
-    //  this.FlagPaymentSelected = false;
-    this.FlagBillNoSelected = false;
-
+      this.FlagnonmovedaySelected = false;
+      this.FlagDoctorSelected = false;
+      this.FlagStoreSelected = true;
+      this.FlagStore1Selected = true;
+      this.FlagSupplierSelected = false;
+      this.FlagItemSelected=false;
     } 
     else if (this.ReportName == 'Monthly Purchase(GRN) Report') {
-      this.FlagBillNoSelected = false;
       this.FlagUserSelected = false;
+      this.FlagnonmovedaySelected = false;
       this.FlagDoctorSelected = false;
+      this.FlagStoreSelected = false;
+      this.FlagStore1Selected = false;
+      this.FlagSupplierSelected = false;
+      this.FlagItemSelected=false;
     } 
      
     else if (this.ReportName == 'GRN Report') {
       this.FlagUserSelected = false;
-      this.FlagStoreSelected=true
-      this.FlagSupplierSelected = true;
+      this.FlagnonmovedaySelected = false;
       this.FlagDoctorSelected = false;
-      this.FlagBillNoSelected=false;
+      this.FlagStoreSelected = true;
+      this.FlagStore1Selected = false;
+      this.FlagSupplierSelected = true;
+      this.FlagItemSelected=false;
     } 
     else if (this.ReportName == 'GRN Return Report') {
       this.FlagUserSelected = false;
-      this.FlagDoctorSelected = true;
-      this.FlagBillNoSelected=false;
-      this.FlagStoreSelected=true
-      this.FlagSupplierSelected=true
+      this.FlagnonmovedaySelected = false;
+      this.FlagDoctorSelected = false;
+      this.FlagStoreSelected = false;
+      this.FlagStore1Selected = false;
+      this.FlagSupplierSelected = false;
+      this.FlagItemSelected=false;
     }
     else if (this.ReportName == 'GRN Report - NABH') {
       this.FlagUserSelected = false;
+      this.FlagnonmovedaySelected = false;
       this.FlagDoctorSelected = false;
-      this.FlagBillNoSelected=false;
-      this.FlagStoreSelected=true
+      this.FlagStoreSelected = true;
+      this.FlagStore1Selected = false;
+      this.FlagSupplierSelected = true;
+      this.FlagItemSelected=false;
     }
-    //  else if (this.ReportName == 'Monthly Purchase(GRN) Report') {
-    //   this.FlagBillNoSelected = true;
-    //   this.FlagUserSelected = false;
-    //   this.FlagDoctorSelected = false;
-
-    // }
+    
     else if (this.ReportName == 'GRN Wise Product Qty Report') {
       this.FlagUserSelected = false;
+      this.FlagnonmovedaySelected = false;
       this.FlagDoctorSelected = false;
-      this.FlagBillNoSelected=false;
-      this.FlagStoreSelected=true
-      this.FlagSupplierSelected=true
+      this.FlagStoreSelected = true;
+      this.FlagStore1Selected = false;
+      this.FlagSupplierSelected = true;
+      this.FlagItemSelected=false;
     }
     else if (this.ReportName == 'GRN Purchase Report') {
       this.FlagUserSelected = false;
+      this.FlagnonmovedaySelected = false;
       this.FlagDoctorSelected = false;
-      this.FlagBillNoSelected=false;
-      this.FlagStoreSelected=true
+      this.FlagStoreSelected = true;
+      this.FlagStore1Selected = false;
+      this.FlagSupplierSelected = false;
+      this.FlagItemSelected=false;
     }
      else if (this.ReportName == 'Supplier Wise GRN List') {
-      this.FlagBillNoSelected = true;
       this.FlagUserSelected = false;
+      this.FlagnonmovedaySelected = false;
       this.FlagDoctorSelected = false;
-      this.FlagStoreSelected=true
-      this.FlagSupplierSelected=true
+      this.FlagStoreSelected = true;
+      this.FlagStore1Selected = false;
+      this.FlagSupplierSelected = true;
+      this.FlagItemSelected=false;
     }
     else if (this.ReportName == 'Issue To Department') {
       this.FlagUserSelected = false;
+      this.FlagnonmovedaySelected = false;
       this.FlagDoctorSelected = false;
-      this.FlagBillNoSelected=false;
-      this.FlagStoreSelected=true
-      this.FlagStore1Selected=true
+      this.FlagStoreSelected = true;
+      this.FlagStore1Selected = true;
+      this.FlagSupplierSelected = false;
+      this.FlagItemSelected=false;
     }
     else if (this.ReportName == 'Issue To Department Item Wise') {
       this.FlagUserSelected = false;
+      this.FlagnonmovedaySelected = false;
       this.FlagDoctorSelected = false;
-      this.FlagBillNoSelected=false;
+      this.FlagStoreSelected = true;
+      this.FlagStore1Selected = true;
+      this.FlagSupplierSelected = false;
+      this.FlagItemSelected=false;
     }
      else if (this.ReportName == 'Return From Department') {
-      this.FlagBillNoSelected = true;
       this.FlagUserSelected = false;
+      this.FlagnonmovedaySelected = false;
       this.FlagDoctorSelected = false;
-
+      this.FlagStoreSelected = true;
+      this.FlagStore1Selected = true;
+      this.FlagSupplierSelected = false;
+      this.FlagItemSelected=false;
     }
     else if (this.ReportName == 'Purchase Order') {
       this.FlagUserSelected = false;
+      this.FlagnonmovedaySelected = false;
       this.FlagDoctorSelected = false;
-      this.FlagBillNoSelected=false;
-      this.FlagStoreSelected=true
+      this.FlagStoreSelected = true;
+      this.FlagStore1Selected = false;
+      this.FlagSupplierSelected = true;
+      this.FlagItemSelected=false;
     }
     else if (this.ReportName == 'Material Consumption Monthly Summary') {
       this.FlagUserSelected = false;
+      this.FlagnonmovedaySelected = false;
       this.FlagDoctorSelected = false;
-      this.FlagBillNoSelected=false;
-      this.FlagStore1Selected=true
-      this.FlagStoreSelected=true
+      this.FlagStoreSelected = true;
+      this.FlagStore1Selected = false;
+      this.FlagSupplierSelected = false;
+      this.FlagItemSelected=false;
     }
      else if (this.ReportName == 'Material Consumption') {
-      this.FlagBillNoSelected = true;
       this.FlagUserSelected = false;
+      this.FlagnonmovedaySelected = false;
       this.FlagDoctorSelected = false;
-
+      this.FlagStoreSelected = true;
+      this.FlagStore1Selected = false;
+      this.FlagSupplierSelected = false;
+      this.FlagItemSelected=false;
     }
     else if (this.ReportName == 'Item Expiry Report') {
       this.FlagUserSelected = false;
+      this.FlagnonmovedaySelected = false;
       this.FlagDoctorSelected = false;
-      this.FlagBillNoSelected=false;
+      this.FlagStoreSelected = true;
+      this.FlagStore1Selected = false;
+      this.FlagSupplierSelected = false;
+      this.FlagItemSelected=false;
     }
      else if (this.ReportName == 'Current Stock Report') {
       this.FlagBillNoSelected = true;
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
-
+      this.FlagItemSelected=false;
     }
     else if (this.ReportName == 'Closing Current Stock Report') {
       this.FlagUserSelected = false;
+      this.FlagnonmovedaySelected = false;
       this.FlagDoctorSelected = false;
-      this.FlagBillNoSelected=false;
+      this.FlagStoreSelected = false;
+      this.FlagStore1Selected = false;
+      this.FlagSupplierSelected = false;
+      this.FlagItemSelected=false;
     }
      else if (this.ReportName == 'Item Wise Supplier List') {
-      this.FlagBillNoSelected = false;
       this.FlagUserSelected = false;
+      this.FlagnonmovedaySelected = false;
       this.FlagDoctorSelected = false;
-
+      this.FlagStoreSelected = true;
+      this.FlagStore1Selected = false;
+      this.FlagSupplierSelected = true;
+      this.FlagItemSelected=true;
     }
     else if (this.ReportName == 'Current Stock Date Wise') {
       this.FlagUserSelected = false;
+      this.FlagnonmovedaySelected = false;
       this.FlagDoctorSelected = false;
-      this.FlagBillNoSelected=false;
+      this.FlagStoreSelected = true;
+      this.FlagStore1Selected = false;
+      this.FlagSupplierSelected = false;
+      this.FlagItemSelected=false;
     }
      else if (this.ReportName == 'Non-Moving Item List') {
-      this.FlagBillNoSelected = false;
       this.FlagUserSelected = false;
+      this.FlagnonmovedaySelected = true;
       this.FlagDoctorSelected = false;
-      this.FlagStore1Selected=true;
-      this.FlagnonmovedaySelected=true;
+      this.FlagStoreSelected = true;
+      this.FlagStore1Selected = false;
+      this.FlagSupplierSelected = false;
+      this.FlagItemSelected=false;
     }
     else if (this.ReportName == 'Non-Moving Item Without Batch List') {
-      this.FlagBillNoSelected = false;
       this.FlagUserSelected = false;
+      this.FlagnonmovedaySelected = true;
       this.FlagDoctorSelected = false;
-      this.FlagStoreSelected=true;
-      this.FlagnonmovedaySelected=true;
+      this.FlagStoreSelected = true;
+      this.FlagStore1Selected = false;
+      this.FlagSupplierSelected = false;
+      this.FlagItemSelected=false;
     }
     else if (this.ReportName == 'Patient Wise Material Consumption') {
       this.FlagUserSelected = false;
+      this.FlagnonmovedaySelected = false;
       this.FlagDoctorSelected = false;
-      this.FlagBillNoSelected=false;
-      this.FlagStoreSelected=false;
-      this.FlagSupplierSelected=false;
+      this.FlagStoreSelected = true;
+      this.FlagStore1Selected = false;
+      this.FlagSupplierSelected = false;
+      this.FlagItemSelected=false;
     }
      else if (this.ReportName == 'Last Purchase Rate Wise Consumtion') {
-      this.FlagBillNoSelected = false;
       this.FlagUserSelected = false;
+      this.FlagnonmovedaySelected = false;
       this.FlagDoctorSelected = false;
-      this.FlagStoreSelected=false;
-      this.FlagSupplierSelected=false;
+      this.FlagStoreSelected = false;
+      this.FlagStore1Selected = false;
+      this.FlagSupplierSelected = false;
+      this.FlagItemSelected=true;
     }
     else if (this.ReportName == 'Item Count') {
       this.FlagUserSelected = false;
+      this.FlagnonmovedaySelected = false;
       this.FlagDoctorSelected = false;
-      this.FlagBillNoSelected=false;
-      this.FlagStoreSelected=true;
-      this.FlagSupplierSelected=false;
+      this.FlagStoreSelected = true;
+      this.FlagStore1Selected = false;
+      this.FlagSupplierSelected = false;
+      this.FlagItemSelected=true;
     }
      else if (this.ReportName == 'Supplier Wise Debit Credit Note') {
-      this.FlagBillNoSelected = false;
       this.FlagUserSelected = false;
+      this.FlagnonmovedaySelected = false;
       this.FlagDoctorSelected = false;
-      this.FlagStoreSelected=true;
-      this.FlagSupplierSelected=true;
+      this.FlagStoreSelected = true;
+      this.FlagStore1Selected = false;
+      this.FlagSupplierSelected = true;
+      this.FlagItemSelected=false;
 
     }   else if (this.ReportName == 'Stock Adjustment Report') {
       this.FlagUserSelected = false;
+      this.FlagnonmovedaySelected = false;
       this.FlagDoctorSelected = false;
-      this.FlagBillNoSelected=false;
-      this.FlagStore1Selected=false;
-      this.FlagSupplierSelected=false;
+      this.FlagStoreSelected = true;
+      this.FlagStore1Selected = false;
+      this.FlagSupplierSelected = false;
+      this.FlagItemSelected=false;
     }
      else if (this.ReportName == 'Purchase Wise GRN Summary') {
-      this.FlagBillNoSelected = false;
       this.FlagUserSelected = false;
+      this.FlagnonmovedaySelected = false;
       this.FlagDoctorSelected = false;
-      this.FlagStore1Selected=false;
-      this.FlagStoreSelected=false;
-      this.FlagSupplierSelected=false;
+      this.FlagStoreSelected = false;
+      this.FlagStore1Selected = false;
+      this.FlagSupplierSelected = false;
+      this.FlagItemSelected=false;
     }
 
   }
@@ -1163,6 +1242,9 @@ export class InventoryReportComponent implements OnInit {
 
   viewgetItemcountPdf() {
     let ItemId=0
+    if (this._OPReportsService.userForm.get('ItemId').value)
+      ItemId = this._OPReportsService.userForm.get('ItemId').value.ItemID
+     
     let StoreId =0
 
     if (this._OPReportsService.userForm.get('StoreId1').value)
@@ -1200,6 +1282,9 @@ export class InventoryReportComponent implements OnInit {
   }
   viewgetItemwisesupplierlistPdf() {
     let ItemId=0
+    if (this._OPReportsService.userForm.get('ItemId').value)
+      ItemId = this._OPReportsService.userForm.get('ItemId').value.ItemID
+     
     let StoreId =0
 
     if (this._OPReportsService.userForm.get('StoreId').value)
@@ -1242,6 +1327,9 @@ export class InventoryReportComponent implements OnInit {
 
   viewgetLastpurchasewiseconsumptionPdf() {
     let ItemId=0
+    if (this._OPReportsService.userForm.get('ItemId').value)
+      ItemId = this._OPReportsService.userForm.get('ItemId').value.ItemID
+     
    
     setTimeout(() => {
       this.SpinLoading = true;
@@ -1417,7 +1505,25 @@ export class InventoryReportComponent implements OnInit {
       return this.UserList.filter(option => option.UserName.toLowerCase().includes(filterValue));
     }
   }
+getSearchItemList() {   
+      var m_data = {
+        "ItemName": '%',//`${this._OPReportsService.userForm.get('ItemId').value}%`,
+      //  "StoreId": this._loggedUser.currentUserValue.user.storeId
+      }
+      //console.log(m_data); 
+      this._OPReportsService.getItemlist(m_data).subscribe(data => {
+        this.filteredOptionsItem = data;
+        console.log(data)
+      });
+    }
 
+    getOptionItemText(option) {
+      return option && option.ItemName ? option.ItemName : '';
+    } 
+    getSelectedObjItem(obj) {
+     // console.log(obj)
+    //  this.ItemId = obj.ItemId;
+    }
 
   getSuppliernameList() {
     var m_data = {

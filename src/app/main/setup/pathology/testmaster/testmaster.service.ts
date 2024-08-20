@@ -152,8 +152,8 @@ export class TestmasterService {
         );
     }
     
-    getTemplateCombo(emp) {
-        return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PathTemplateMasterForComboMaster", emp)
+    getTemplateCombo() {
+        return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PathTemplateMasterForComboMaster", {})
       }
       
 

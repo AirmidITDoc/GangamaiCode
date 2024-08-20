@@ -28,7 +28,8 @@ export class OPReportsService {
         SupplierName:'',
         StoreId:'',
         StoreId1:'',
-        NonMoveday:''
+        NonMoveday:'',
+        ItemId:''
         // Radio:['1']
 
       })
@@ -355,6 +356,11 @@ return this._httpClient.get("OPReport/view-OPDoctorWiseNewOldPatientReport?FromD
 
 
   //Inventory
+
+  public getItemlist(Param){//m_Rtrv_IPDrugName,Retrieve_ItemName_BalanceQty
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_Item_Name",Param)
+  }
+
   public getCurrentstockReport(ItemName,StoreId){
     return this._httpClient.get("InventoryTransaction/view-InvCurrentStock?ItemName="+ItemName+"&ItemName="+StoreId);
   }
