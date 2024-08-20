@@ -31,7 +31,10 @@ export class DischargeCancelService {
   public getDischargepatientlist(employee){
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientDischargedListSearch ", employee)
   }
-  public getDateTimeChange(data) {
-    return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
-  }
+  // public getDateTimeChange(data) {
+  //   return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
+  // }
+  public getDateTimeChange(m_data) {
+    return this._httpClient.post("Generic/ExecByQueryStatement?query=" + m_data,{});
+}
 }

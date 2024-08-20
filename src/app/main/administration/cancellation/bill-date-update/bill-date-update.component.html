@@ -1,0 +1,47 @@
+<mat-card style="padding: 10px;height: 100%;">
+    <div class="simple page-layout inner-scroll inner-sidebar left-sidebar">
+        <mat-toolbar style="width: 100%;height: 40px;justify-content: space-between;">
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                    <mat-icon>menu</mat-icon>
+                </button>
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                    style="color: white;">account_box
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                  BIll Date & Time Update
+                </span>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+                <button mat-icon-button [mat-dialog-close]="true" tabIndex="-1" aria-label="Close dialog"
+                    (click)="onClose()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+        </mat-toolbar>
+    
+        <div class="content">
+            <div class="center p-12 pb-56" style="border-radius: 4px;">
+                <div class="content-card">
+                    <div fxLayout="row" fxLayout="column" fxFlexFill fxLayoutGap="10px">
+                        <mat-card style="padding: 5px;"> 
+                                <div fxLayout="row" fxLayoutGap="6px"> 
+                                    <mat-label>Bill Date</mat-label>
+                                    <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"
+                                    style="width: 200px;">
+                                    </app-common-date>
+     
+                                </div> 
+                        </mat-card>
+                        <div fxLayoutAlign="end">
+                            <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px" style="margin: 40px 20px 0px 50px; ">
+                                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                                <button class="btn btn-primary"   (click)="BillDate()">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </mat-card>

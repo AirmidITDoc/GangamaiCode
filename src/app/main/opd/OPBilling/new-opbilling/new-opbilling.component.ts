@@ -23,6 +23,7 @@ import { ToastrService } from 'ngx-toastr';
 import { MatSelect } from '@angular/material/select';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 import { OpPaymentComponent } from '../../op-search-list/op-payment/op-payment.component';
+import { ConfigService } from 'app/core/services/config.service';
 
 @Component({
   selector: 'app-new-opbilling',
@@ -204,7 +205,8 @@ export class NewOPBillingComponent implements OnInit {
     public _httpClient: HttpClient,
     public toastr: ToastrService,
     private formBuilder: FormBuilder,
-    public _WhatsAppEmailService: WhatsAppEmailService
+    public _WhatsAppEmailService: WhatsAppEmailService,
+    public _ConfigService : ConfigService
   ) { }
   vRegNo: any;
   ngOnInit(): void {
@@ -245,7 +247,7 @@ export class NewOPBillingComponent implements OnInit {
       .pipe(takeUntil(this._onDestroy))
       .subscribe(() => {
         this.filterDoctor();
-      });
+      }); 
   }
 
   createSearchForm() {
@@ -300,7 +302,7 @@ export class NewOPBillingComponent implements OnInit {
       BillRemark: [''],
       FinalAmt: ['', Validators.required],
       PaymentType: ['CashPay'],
-      CashCounterId: ['']
+      CashCounterID: ['']
     });
   }
   //  ===================================================================================
@@ -462,7 +464,8 @@ console.log(obj)
   savebtn:boolean=true;
   isLoading123 = false;
   onSaveOPBill2() { 
-
+    debugger 
+  
     if ((this.vOPIPId == '' || this.vOPIPId == null || this.vOPIPId == undefined)) {
       this.toastr.warning('Please select Patient', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -489,7 +492,7 @@ console.log(obj)
         });
         return;
       }
-      if (this.searchFormGroup.get('CashCounterID').value) {
+      if (this.searchFormGroup.get('CashCounterID').value) { 
         if(!this.CashCounterList.some(item => item.CashCounterName === this.searchFormGroup.get('CashCounterID').value.CashCounterName)){
           this.toastr.warning('Please Select valid Cash Counter Name', 'Warning !', {
             toastClass: 'tostr-tost custom-toast-warning',
@@ -512,8 +515,7 @@ console.log(obj)
       else {
         this.FinalAmt = this.TotalnetPaybleAmt;
         this.netPaybleAmt1 = this.TotalnetPaybleAmt;
-      }
-
+      } 
       let ConcessionId = 0; 
       if(this.BillingForm.get('ConcessionId').value)
       ConcessionId = this.BillingForm.get('ConcessionId').value.ConcessionId; 
@@ -521,7 +523,7 @@ console.log(obj)
       let ConcessionReason = '';
       if(this.BillingForm.get('ConcessionId').value)
       ConcessionReason = this.BillingForm.get('ConcessionId').value.ConcessionReason;
-
+      
       this.isLoading = 'submit'; 
       let InsertBillUpdateBillNoObj = {};
       InsertBillUpdateBillNoObj['BillNo'] = 0;
@@ -549,8 +551,11 @@ console.log(obj)
       InsertBillUpdateBillNoObj['TaxPer'] = 0;
       InsertBillUpdateBillNoObj['TaxAmount'] = 0;
       InsertBillUpdateBillNoObj['compDiscAmt'] = this.BillingForm.get('concessionAmt').value || 0;
-      InsertBillUpdateBillNoObj['compDiscAmt'] = ConcessionReason;
-      InsertBillUpdateBillNoObj['cashCounterId'] =this.searchFormGroup.get('CashCounterID').value.CashCounterId || 0
+      InsertBillUpdateBillNoObj['discComments'] = ConcessionReason;
+      InsertBillUpdateBillNoObj['cashCounterId'] =  this.searchFormGroup.get('CashCounterID').value.CashCounterId  || 0;
+
+
+
       let Billdetsarr = [];
       this.dataSource.data.forEach((element) => {
         let BillDetailsInsertObj = {};
@@ -646,11 +651,10 @@ console.log(obj)
           let vmMobileNo = this.vMobileNo;
           console.log(vmMobileNo);
           if (this.flagSubmit == true) {
-            console.log("Procced with Payment Option");
-            const insertBillUpdateBillNo = new Bill(InsertBillUpdateBillNoObj);
+            console.log("Procced with Payment Option"); 
             let submitData = {
               "chargesDetailInsert": InsertAdddetArr,
-              "insertBillupdatewithbillno": insertBillUpdateBillNo,
+              "insertBillupdatewithbillno": InsertBillUpdateBillNoObj,
               "opBillDetailsInsert": Billdetsarr,
               "opCalDiscAmountBill": opCalDiscAmountBill,
               "opInsertPayment": result.submitDataPay.ipPaymentInsert
@@ -724,11 +728,10 @@ console.log(obj)
         const ipPaymentInsert = new IpPaymentInsert(Paymentobj);
         let submitDataPay = {
           ipPaymentInsert,
-        };
-        const insertBillUpdateBillNo = new Bill(InsertBillUpdateBillNoObj);
+        }; 
         let submitData = {
           "chargesDetailInsert": InsertAdddetArr,
-          "insertBillupdatewithbillno": insertBillUpdateBillNo,
+          "insertBillupdatewithbillno": InsertBillUpdateBillNoObj,
           "opBillDetailsInsert": Billdetsarr,
           "opCalDiscAmountBill": opCalDiscAmountBill,
           "opInsertPayment": Paymentobj
@@ -763,6 +766,20 @@ console.log(obj)
   saveCreditbill() { 
     let disamt = this.BillingForm.get('concessionAmt').value;
 
+    if (!this.searchFormGroup.get('CashCounterID').value) {
+      this.toastr.warning('Select Cash Counter', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if (this.searchFormGroup.get('CashCounterID').value) { 
+      if(!this.CashCounterList.some(item => item.CashCounterName === this.searchFormGroup.get('CashCounterID').value.CashCounterName)){
+        this.toastr.warning('Please Select valid Cash Counter Name', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }  
+    }
     
     let ConcessionId = 0; 
     if(this.BillingForm.get('ConcessionId').value)
@@ -1253,16 +1270,20 @@ console.log(obj)
       return this.doctorNameCmbList.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
     }
 
-  } 
+  }
+  setcashCounter:any; 
   getCashCounterComboList() {
     this._oPSearhlistService.getCashcounterList().subscribe(data => {
       this.CashCounterList = data
       console.log(this.CashCounterList)
-      this.searchFormGroup.get('CashCounterID').setValue(this.CashCounterList[0])
+      
+      this.setcashCounter = this.CashCounterList.find(item => item.CashCounterId == this._ConfigService.configParams.OPD_Billing_CounterId)
+      this.searchFormGroup.get('CashCounterID').setValue(this.setcashCounter)
       this.filteredOptionsCashCounter = this.searchFormGroup.get('CashCounterID').valueChanges.pipe(
         startWith(''),
         map(value => value ? this._filterCashCounter(value) : this.CashCounterList.slice()),
       ); 
+     
     });
   }
   private _filterCashCounter(value: any): string[] {
@@ -1325,6 +1346,7 @@ console.log(obj)
     this.RefDocName = ''
     this.advanceDataStored.storage = [];
     this.BillingForm.get('PaymentType').setValue('CashPay');
+    this.searchFormGroup.get('CashCounterID').setValue(this.setcashCounter)
   }
 
   showNewPaymnet() {

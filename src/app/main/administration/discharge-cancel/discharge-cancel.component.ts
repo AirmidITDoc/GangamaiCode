@@ -72,6 +72,7 @@ export class DischargeCancelComponent implements OnInit {
   }
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj; 
+    console.log(this.dateTimeObj)
   } 
  
    getSearchList() {
@@ -195,16 +196,20 @@ getSelectedDischargeObj(obj){
 
   }
 
-
+  today: Date = new Date();
+  formattedDate: string;
+ 
   OnAdmDateTimeUpdate() {
     if (this.vRegNo == '0' || this.vRegNo == '' || this.vRegNo == undefined || this.vRegNo == null) {
       this.toastr.success('Please select patient', 'Save !', {
         toastClass: 'tostr-tost custom-toast-success',
       });
       return
-    }
-    const formattedDate = this.datePipe.transform(this.dateTimeObj.date,"yyyy-MM-dd 00:00:00.000");
-    // const formattedTime = this.datePipe.transform( this.formattedTime ,"yyyy-MM-dd 00:00:00.000");
+    }  
+
+    const formattedDate = this.datePipe.transform(this.dateTimeObj.date,"yyyy-MM-dd");
+    const formattedTime = formattedDate+this.dateTimeObj.time;//this.datePipe.transform(this.dateTimeObj.date,"yyyy-MM-dd")+this.dateTimeObj.time;  
+ 
     Swal.fire({
       title: 'Do you want to Update Admission Date & Time ',
       text: "You won't be able to revert this!",
@@ -214,11 +219,12 @@ getSelectedDischargeObj(obj){
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, Update it!"
     }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
+      /* Read more about isConfirmed, isDenied below */  
       if (result.isConfirmed) { 
         let Query
-        Query = "update admission set AdmissionDate= '"+formattedDate+"', AdmissionTime= '" +formattedDate+"' where AdmissionID= " + this.AdmissionId ;
-          console.log(Query);
+      Query = "update admission set AdmissionDate='"+formattedDate+"',AdmissionTime='"+formattedTime+"'where AdmissionID=" +this.AdmissionId 
+
+       console.log(Query);
         this._DischargeCancelService.getDateTimeChange(Query).subscribe(response => {
           if (response) {
             this.toastr.success('Admission Date & Time Updated Successfuly', 'Updated !', {
@@ -256,5 +262,4 @@ getSelectedDischargeObj(obj){
     this.vGenderName = '';
     this.vAge = '';
   }
-}
- 
+} 

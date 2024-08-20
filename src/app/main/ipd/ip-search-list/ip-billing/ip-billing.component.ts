@@ -33,6 +33,7 @@ import { IpPaymentwithAdvanceComponent } from '../ip-paymentwith-advance/ip-paym
 import { IPpaymentWithadvanceComponent } from '../../ip-settlement/ippayment-withadvance/ippayment-withadvance.component';
 import { PrebillDetailsComponent } from './prebill-details/prebill-details.component';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
+import { ConfigService } from 'app/core/services/config.service';
 
 
 @Component({
@@ -260,6 +261,7 @@ export class IPBillingComponent implements OnInit {
     private accountService: AuthenticationService,
     public _WhatsAppEmailService:WhatsAppEmailService,
     public toastr: ToastrService,
+    public _ConfigService : ConfigService,
     private formBuilder: FormBuilder) {
     this.showTable = false;
 
@@ -933,11 +935,15 @@ ServiceList:any=[];
       // this.Ipbillform.get('ConcessionId').setValue(this.ConcessionReasonList[1]);
     })
   } 
+  setcashCounter:any;
   getCashCounterComboList() {
     this._IpSearchListService.getCashcounterList().subscribe(data => {
       this.CashCounterList = data
       console.log(this.CashCounterList)
-      this.Ipbillform.get('CashCounterID').setValue(this.CashCounterList[3])
+
+      this.setcashCounter = this.CashCounterList.find(item => item.CashCounterId == this._ConfigService.configParams.IPD_Billing_CounterId)
+      this.Ipbillform.get('CashCounterID').setValue(this.setcashCounter) 
+
       this.filteredOptionsCashCounter = this.Ipbillform.get('CashCounterID').valueChanges.pipe(
         startWith(''),
         map(value => value ? this._filterCashCounter(value) : this.CashCounterList.slice()),
@@ -1397,9 +1403,9 @@ ServiceList:any=[];
         let AdmissionIPBillingUpdateObj = {};
         AdmissionIPBillingUpdateObj['AdmissionID'] = this.selectedAdvanceObj.AdmissionID;
 
-        const InsertBillUpdateBillNo = new Bill(InsertBillUpdateBillNoObj);
-        const Cal_DiscAmount_IPBill = new Cal_DiscAmount(Cal_DiscAmount_IPBillObj);
-        const AdmissionIPBillingUpdate = new AdmissionIPBilling(AdmissionIPBillingUpdateObj);
+        // const InsertBillUpdateBillNo = new Bill(InsertBillUpdateBillNoObj);
+        // const Cal_DiscAmount_IPBill = new Cal_DiscAmount(Cal_DiscAmount_IPBillObj);
+        // const AdmissionIPBillingUpdate = new AdmissionIPBilling(AdmissionIPBillingUpdateObj);
         //
         
         let UpdateAdvanceDetailarr1: IpPaymentInsert[] = [];
@@ -1443,10 +1449,10 @@ ServiceList:any=[];
 
         if (this.flagSubmit == true) {
           let submitData = {
-            "InsertBillUpdateBillNo": InsertBillUpdateBillNo,
+            "InsertBillUpdateBillNo": InsertBillUpdateBillNoObj,
             "BillDetailsInsert": Billdetsarr,
-            "Cal_DiscAmount_IPBill": Cal_DiscAmount_IPBill,
-            "AdmissionIPBillingUpdate": AdmissionIPBillingUpdate,
+            "Cal_DiscAmount_IPBill": Cal_DiscAmount_IPBillObj,
+            "AdmissionIPBillingUpdate": AdmissionIPBillingUpdateObj,
             "ipInsertPayment": result.submitDataPay.ipPaymentInsert,
             "ipBillBalAmount": UpdateBillBalAmtObj,
             "ipAdvanceDetailUpdate": UpdateAdvanceDetailarr,
@@ -1474,6 +1480,8 @@ ServiceList:any=[];
       }); 
     }
     }
+
+    this.Ipbillform.get('CashCounterID').setValue(this.setcashCounter) 
   }
 
   IPCreditBill(){
@@ -1577,6 +1585,7 @@ ServiceList:any=[];
     else{
       Swal.fire('check is a credit bill or not ')
     }
+    this.Ipbillform.get('CashCounterID').setValue(this.setcashCounter) 
   }
   onSaveDraft() {
     debugger
