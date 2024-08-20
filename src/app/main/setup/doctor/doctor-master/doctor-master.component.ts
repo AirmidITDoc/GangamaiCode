@@ -10,6 +10,8 @@ import { AuthenticationService } from "app/core/services/authentication.service"
 import { DoctorMasterService } from "./doctor-master.service";
 import { NewDoctorComponent } from "./new-doctor/new-doctor.component";
 import Swal from "sweetalert2";
+import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
+import { DatePipe } from "@angular/common";
 
 @Component({
     selector: "app-doctor-master",
@@ -19,6 +21,8 @@ import Swal from "sweetalert2";
     animations: fuseAnimations,
 })
 export class DoctorMasterComponent implements OnInit {
+
+    
     isLoading = true;
     msg: any;
     step = 0;
@@ -34,10 +38,7 @@ export class DoctorMasterComponent implements OnInit {
 
     displayedColumns: string[] = [
         "DoctorId",
-        // "PrefixName",
-        // "FirstName",
-        // "MiddleName",
-        "PatientName",
+        "DoctorName",
         "DateofBirth",
         "Address",
         "City",
@@ -65,8 +66,10 @@ export class DoctorMasterComponent implements OnInit {
     constructor(
         public _doctorService: DoctorMasterService,
         private accountService: AuthenticationService,
-        public _matDialog: MatDialog
-    ) {}
+        private _fuseSidebarService: FuseSidebarService,
+        public _matDialog: MatDialog,
+       
+    ) { }
 
     ngOnInit(): void {
         this.getDoctorMasterList();
@@ -78,101 +81,89 @@ export class DoctorMasterComponent implements OnInit {
         });
         this.getDoctorMasterList();
     }
-
+    toggleSidebar(name): void {
+        this._fuseSidebarService.getSidebar(name).toggleOpen();
+      }
     onClear() {
         this._doctorService.myform.reset({ IsDeleted: "false" });
         this._doctorService.initializeFormGroup();
     }
 
     onSearch() {
-       this.getDoctorMasterList();
+        this.getDoctorMasterList();
     }
-    getDoctorMasterList(){
-        var vdata={ 
-        "F_Name": this._doctorService.myformSearch.get('DoctorNameSearch').value.trim() + "%" || "%",
-        "L_Name": this._doctorService.myform.get('LastName').value || "%",
-        "FlagActive": this.currentStatus ,//this._doctorService.myform.get('isActive').value || 1,  
-        "ConsultantDoc_All": this._doctorService.myform.get('IsConsultant').value || 0,
-        "ReferDoc_All": this._doctorService.myform.get('IsRefDoc').value || 0
+    resultsLength = 0;
+    getDoctorMasterList() {
+        let Refstatus
+        if (this.currentStatus1 == 1)
+            Refstatus = 0
+        if (this.currentStatus1 == 0)
+            Refstatus = 1
+        var vdata = {
+            "F_Name": this._doctorService.myformSearch.get('DoctorNameSearch').value.trim() + "%" || "%",
+            "L_Name": this._doctorService.myform.get('LastName').value || "%",
+            "FlagActive": this.currentStatus,
+            "ConsultantDoc_All": this.currentStatus1,
+            "ReferDoc_All": Refstatus,
+            Start:(this.paginator?.pageIndex??1),
+            Length:(this.paginator?.pageSize??30),
         }
         console.log(vdata)
-        this._doctorService.getDoctorMasterList(vdata).subscribe((data) =>{
-            this.DSDoctorMasterList.data= data as DoctorMaster[];
-            this.isLoading = false;
-            this.DSDoctorMasterList.sort = this.sort;
-            this.DSDoctorMasterList.paginator = this.paginator;
-            console.log(this.DSDoctorMasterList);
+        this._doctorService.getDoctorMasterList(vdata).subscribe((data) => {
+            this.DSDoctorMasterList.data = data["Table1"]??[] as DoctorMaster[];
+            //  this.DSDoctorMasterList.sort = this.sort;
+             this.resultsLength= data["Table"][0]["total_row"];
+             this.sIsLoading = '';
         },
-                 (error) => (this.isLoading = false)
-         );
+            (error) => (this.isLoading = false)
+        );
     }
 
-    currentStatus=0;
+    currentStatus = 1;
     toggle(val: any) {
         if (val == "2") {
             this.currentStatus = 2;
-        } else if(val=="1") {
+        } else if (val == "1") {
             this.currentStatus = 1;
         }
-        else{
+        else {
             this.currentStatus = 0;
 
         }
     }
+    currentStatus1 = 0;
+    toggle1(val: any) {
+        if (val == "2") {
+            this.currentStatus1 = 2;
+        } else if (val == "1") {
+            this.currentStatus1 = 1;
+        }
+        else {
+            this.currentStatus1 = 0;
+
+        }
+    }
+
     onEdit(row) {
 
-        let Year,Day,Month;
-        if(row.AgeYear !=null || row.AgeDay !=null || row.AgeMonth !=null){
-            Year=row.AgeYear.trim();
-            Day=row.AgeDay.trim();
-            Month=row.AgeMonth.trim();
+        let Year, Day, Month;
+        if (row.AgeYear != null || row.AgeDay != null || row.AgeMonth != null) {
+            Year = row.AgeYear.trim();
+            Day = row.AgeDay.trim();
+            Month = row.AgeMonth.trim();
         }
-        // var m_data = {
-        //     DoctorId: row.DoctorId,
-        //     PrefixID: row.PrefixID,
-        //     FirstName: row.FirstName.trim(),
-        //     MiddleName: row.MiddleName.trim(),
-        //     LastName: row.LastName.trim(),
-        //     DateofBirth: row.DateofBirth,
-        //     Address: row.Address.trim(),
-        //     City: row.City.trim(),
-        //     Pin: row.Pin,
-        //     Phone: row.Phone,
-        //     Mobile: row.Mobile.trim(),
-        //     GenderId: row.GenderId,
-        //     Education: row.Education.trim(),
-        //     IsConsultant: Boolean(JSON.stringify(row.IsConsultant)),
-        //     IsRefDoc: JSON.stringify(row.IsRefDoc),
-        //     IsDeleted: Boolean(JSON.stringify(row.IsDeleted)),
-        //     DoctorTypeId: row.DoctorTypeId,
-        //     AgeYear: Year,
-        //     AgeMonth:Month,
-        //     AgeDay: Day,
-        //     PassportNo: row.PassportNo,
-        //     ESINO: row.ESINO,
-        //     RegNo: row.RegNo,
-        //     RegDate: row.RegDate,
-        //     MahRegNo: row.MahRegNo,
-        //     MahRegDate: row.MahRegDate,
-        //     AddedBy: row.Addedby,
-        //     RefDocHospitalName: row.RefDocHospitalName,
-        //     UpdatedBy: row.UpdatedBy,
-        // };
-
         console.log(row);
         this._doctorService.populateForm(row);
-
         const dialogRef = this._matDialog.open(
             NewDoctorComponent,
-
             {
-                maxWidth: "98vw",
-                maxHeight: "100vh",
+                maxWidth: "95vw",
+                maxHeight: "95vh",
                 width: "100%",
                 height: "100%",
-                data : {
-                    registerObj : row,
-                    }
+                data: {
+                    registerObj: row,
+                }
             }
         );
 
@@ -184,8 +175,8 @@ export class DoctorMasterComponent implements OnInit {
 
     onAdd() {
         const dialogRef = this._matDialog.open(NewDoctorComponent, {
-            maxWidth: "80vw",
-            maxHeight: "90vh",
+            maxWidth: "95vw",
+            maxHeight: "110vh",
             width: "100%",
             height: "100%",
         });
@@ -195,11 +186,9 @@ export class DoctorMasterComponent implements OnInit {
         });
     }
 
-  
+
 
     onDeactive(row) {
-
-       
         Swal.fire({
             title: 'Confirm Status',
             text: 'Are you sure you want to Change Status?',
@@ -216,7 +205,7 @@ export class DoctorMasterComponent implements OnInit {
                     Query = "Update DoctorMaster set IsActive=0 where DoctorId=" + row.DoctorId;
                 }
                 else {
-                     Query = "Update DoctorMaster set IsActive=1 where DoctorId=" + row.DoctorId;
+                    Query = "Update DoctorMaster set IsActive=1 where DoctorId=" + row.DoctorId;
                 }
                 console.log(Query);
                 this._doctorService.deactivateTheStatus(Query)
@@ -239,14 +228,15 @@ export class DoctorMaster {
     FirstName: string;
     MiddleName: string;
     LastName: string;
-    DateofBirth: Date;
+    DateofBirth: any;
     Address: string;
     City: string;
+    CityId:any;
     Pin: string;
     Phone: string;
     Mobile: string;
     GenderId: number;
-    Education: string;
+    education: string;
     IsConsultant: boolean;
     IsRefDoc: boolean;
     IsDeleted: boolean;
@@ -255,19 +245,26 @@ export class DoctorMaster {
     AgeMonth: any;
     AgeDay: any;
     PassportNo: string;
-    ESINO: string;
-    RegNo: string;
+    esino: string;
+    REGNO: string;
     RegDate: Date;
-    MahRegNo: string;
+    mahRegNo: string;
     MahRegDate: Date;
     UpdatedBy: number;
     RefDocHospitalName: string;
     AddedBy: String;
     CurrentDate = new Date();
     IsDeletedSearch: number;
-    Age:any;
-    PatientName:any;
-    IsActive:any;
+    Age: any;
+    DoctorName: any;
+    IsActive: any;
+    regNo: any;
+    MAHREGNO: any;
+    PANCARDNO: any;
+    AADHARCARDNO: any;
+    isInHouseDoctor: any;
+    Education:any;
+    ESINO:any;
     /**
      * Constructor
      *
@@ -276,7 +273,7 @@ export class DoctorMaster {
     constructor(DoctorMaster) {
         {
             this.DoctorId = DoctorMaster.DoctorId || 0;
-            this.PatientName = DoctorMaster.PatientName || "";
+            this.DoctorName = DoctorMaster.DoctorName || "";
             this.PrefixID = DoctorMaster.PrefixID || "";
             this.FirstName = DoctorMaster.FirstName || "";
             this.MiddleName = DoctorMaster.MiddleName || "";
@@ -284,12 +281,13 @@ export class DoctorMaster {
             this.DateofBirth = DoctorMaster.DateofBirth || this.CurrentDate;
             this.Address = DoctorMaster.Address || "";
             this.City = DoctorMaster.City || "";
+            this.CityId = DoctorMaster.CityId || "";
             this.Pin = DoctorMaster.Pin || "";
             this.Phone = DoctorMaster.Phone || "";
             this.Mobile = DoctorMaster.Mobile || "";
             this.GenderId = DoctorMaster.GenderId || "";
-            this.Education = DoctorMaster.Education || "";
-            this.IsConsultant = DoctorMaster.IsConsultant || "false";
+            this.education = DoctorMaster.education || "";
+            this.IsConsultant = DoctorMaster.IsConsultant || "true";
             this.IsRefDoc = DoctorMaster.IsRefDoc || "false";
             this.IsDeleted = DoctorMaster.IsDeleted || "false";
             this.DoctorTypeId = DoctorMaster.DoctorTypeId || "";
@@ -298,28 +296,33 @@ export class DoctorMaster {
             this.AgeMonth = DoctorMaster.AgeMonth || "";
             this.AgeDay = DoctorMaster.AgeDay || "";
             this.PassportNo = DoctorMaster.PassportNo || "";
-            this.ESINO = DoctorMaster.ESINO || "";
-            this.RegNo = DoctorMaster.RegNo || "";
+            this.esino = DoctorMaster.esino || "";
             this.RegDate = DoctorMaster.RegDate || this.CurrentDate;
-            this.MahRegNo = DoctorMaster.MahRegNo || "";
+            this.Education = DoctorMaster.Education || "";
             this.MahRegDate = DoctorMaster.MahRegDate || this.CurrentDate;
             this.UpdatedBy = DoctorMaster.UpdatedBy || "";
             this.AddedBy = DoctorMaster.AddedBy || "";
-            this.IsActive= DoctorMaster.IsActive || 1;
+            this.IsActive = DoctorMaster.IsActive || 1;
             this.RefDocHospitalName = DoctorMaster.RefDocHospitalName || "";
             this.IsDeletedSearch = DoctorMaster.IsDeletedSearch || "";
+            this.REGNO= DoctorMaster.REGNO || "";
+            this.MAHREGNO= DoctorMaster.MAHREGNO || "";
+            this.PANCARDNO= DoctorMaster.PANCARDNO || "";
+            this.AADHARCARDNO= DoctorMaster.AADHARCARDNO || "";
+            this.isInHouseDoctor= DoctorMaster.isInHouseDoctor || "";
+            this.ESINO= DoctorMaster.ESINO || "";
         }
     }
 }
 
 export class DoctorDepartmentDet {
-    DoctorId: number;
-    DepartmentId: number;
+    Departmentid: any;
+    departmentName: any;
 
     constructor(DoctorDepartmentDet) {
         {
-            this.DoctorId = DoctorDepartmentDet.DoctorId || "";
-            this.DepartmentId = DoctorDepartmentDet.DepartmentId || "";
+            this.Departmentid = DoctorDepartmentDet.Departmentid || "";
+            this.departmentName = DoctorDepartmentDet.departmentName || "";
         }
     }
 }

@@ -10,6 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 import { EditPaymentmodeComponent } from './edit-paymentmode/edit-paymentmode.component';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { MatDialog } from '@angular/material/dialog';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-paymentmodechangesfor-pharmacy',
@@ -20,7 +21,7 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class PaymentmodechangesforPharmacyComponent implements OnInit {
   displayedColumns:string[] = [
-  
+    'Type',
     'Date',
     'ReceiptNo',
     'SalesNo',
@@ -62,7 +63,14 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
   }
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
-  }     
+  }  
+  getSearchList(){
+    if(this._PaymentmodechangeforpharmacyService.userFormGroup.get('Radio').value == '1'){
+      this.getSalesList();
+    }else{
+      this.getIPPharAdvanceList();
+    } 
+  }   
   getIPPharAdvanceList(){
     this.sIsLoading = 'loading-data';
     var vdata={
@@ -75,6 +83,7 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
     }   
     this._PaymentmodechangeforpharmacyService.getIpPharAdvanceList(vdata).subscribe(data =>{
       this.dsPaymentPharmacyList.data= data as PaymentPharmayList [];
+      console.log( this.dsPaymentPharmacyList.data)
       this.dsPaymentPharmacyList.sort = this.sort;
       this.dsPaymentPharmacyList.paginator = this.paginator;
      
@@ -99,7 +108,7 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
       this.dsPaymentPharmacyList.data= data as PaymentPharmayList [];
       this.dsPaymentPharmacyList.sort = this.sort;
       this.dsPaymentPharmacyList.paginator = this.paginator;
-      //console.log(this.dsPaymentPharmacyList.data)
+      console.log(this.dsPaymentPharmacyList.data)
       this.sIsLoading = '';
     } ,
     error => {
@@ -152,7 +161,9 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
       this.getSalesList();
     });
   }
-   
+  BillDate(){
+    Swal.fire('Api Error !', 'Bill Date Update!')
+  }  
 
 }
 export class PaymentPharmayList {

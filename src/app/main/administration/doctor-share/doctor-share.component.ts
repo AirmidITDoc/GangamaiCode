@@ -1,167 +1,158 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { ReplaySubject, Subject } from 'rxjs';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { AdministrationService } from '../administration.service';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { takeUntil } from 'rxjs/operators';
+import { map, startWith, takeUntil } from 'rxjs/operators';
+import { DoctorShareService } from './doctor-share.service';
+import { fuseAnimations } from '@fuse/animations';
+import { ToastrService } from 'ngx-toastr';
+import { MatDialog } from '@angular/material/dialog';
+import { AddDoctorShareComponent } from './add-doctor-share/add-doctor-share.component';
+import { MatDrawer } from '@angular/material/sidenav';
+import { ProcessDoctorShareComponent } from './process-doctor-share/process-doctor-share.component';
 
 @Component({
   selector: 'app-doctor-share',
   templateUrl: './doctor-share.component.html',
-  styleUrls: ['./doctor-share.component.scss']
+  styleUrls: ['./doctor-share.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations,
 })
 export class DoctorShareComponent implements OnInit {
-
-  hasSelectedContacts: boolean;
-  click : boolean = false;
-  MouseEvent=true;
-  @ViewChild(MatSort) sort:MatSort;
-  @ViewChild(MatPaginator) paginator:MatPaginator;
-  doctorNameCmbList: any = [];
-  // filterForm: FormGroup;
-  // filterform: any;
-  msg: any;
-  public doctorFilterCtrl: FormControl = new FormControl();
-  public filtereddoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
-  private _onDestroy = new Subject<void>();
-
-
-
-  sIsLoading: string = '';
- dataSource = new MatTableDataSource<BillListForDocShrList>();
-  displayedColumns = [
+  displayedColumns:string[] = [ 
+    'button',
     'PBillNo',
     'PatientName',
-    //'BillNo',
-    'AdmittedDoctorName',
-    'PatientType',
-    'CompanyName',
     'TotalAmt',
-    'ConcessionAmt',
-    'NetPayableAmt',
-   
-    'IsBillShrHold',
-    
+    'ConAmt',
+    'NetAmt', 
+    'AdmittedDoctorName',
+    'PatientType', 
+    'CompanyName',
+  ];
+  @ViewChild('drawer') public drawer: MatDrawer;
+  isRegIdSelected : boolean = false;
+  isDoctorIDSelected: boolean=false;
+  DoctorListfilteredOptions:Observable<string[]>; 
+  doctorNameCmbList: any = [];   
+  sIsLoading: string = '';
+  PatientListfilteredOptions: any;
+  noOptionFound:any;
   
+ dataSource = new MatTableDataSource<BillListForDocShrList>();
+ dsAdditionalPay = new MatTableDataSource<BillListForDocShrList>();
 
-   
-   // 'action'
+ @ViewChild(MatSort) sort:MatSort;
+ @ViewChild(MatPaginator) paginator:MatPaginator;
+  constructor( 
+    public _DoctorShareService: DoctorShareService,
+    public datePipe: DatePipe, 
+    public _matDialog: MatDialog,
+    public toastr: ToastrService,
+  ) { }
 
- 
- ];
+  ngOnInit(): void { 
+    this.getDoctorNameCombobox();  
 
-  constructor(private _fuseSidebarService: FuseSidebarService,
-    public _AdministrationService: AdministrationService,
-    public datePipe: DatePipe) { }
 
-  ngOnInit(): void {
+    const today = new Date();
+    const oneMonthAgo = new Date();
+    oneMonthAgo.setMonth(today.getMonth() - 1);
+
+    this._DoctorShareService.UserFormGroup.patchValue({
+      startdate :oneMonthAgo
+    }); 
 
     this.getBillListForDoctorList();
-
-    this.getDoctorNameCombobox();
-
-    this.doctorFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterDoctor();
-      });
   }
-
-  
-  // filter for DoctorName in Sidebar
-  private filterDoctor() {
-
-    if (!this.doctorNameCmbList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.doctorFilterCtrl.value;
-    if (!search) {
-      this.filtereddoctor.next(this.doctorNameCmbList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filtereddoctor.next(
-      this.doctorNameCmbList.filter(bank => bank.DoctorName.toLowerCase().indexOf(search) > -1)
-    );
-  }
+ 
 // Doctorname Combobox sidebar
 getDoctorNameCombobox() {
-  this._AdministrationService.getAdmittedDoctorCombo().subscribe(data => {
-    this.doctorNameCmbList = data;
-    this.filtereddoctor.next(this.doctorNameCmbList.slice());
-   
-    
-    console.log(this.doctorNameCmbList.data);
-   
+  this._DoctorShareService.getAdmittedDoctorCombo().subscribe(data => {
+    this.doctorNameCmbList = data; 
+    console.log(this.doctorNameCmbList);
+    this.DoctorListfilteredOptions = this._DoctorShareService.UserFormGroup.get('DoctorID').valueChanges.pipe(
+      startWith(''), 
+      map(value => value ? this._filterwebRole(value) : this.doctorNameCmbList.slice()),
+    );
   });
 }
-
-  toggleSidebar(name): void {
-    this._fuseSidebarService.getSidebar(name).toggleOpen();
+private _filterwebRole(value: any): string[] {
+  if (value) {
+    const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
+    return this.doctorNameCmbList.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
   }
-
-
- onShow(event:MouseEvent) {
-  
-  this.click=!this.click;
-  setTimeout(() => {    
-    {       
-     this.sIsLoading = 'loading-data';
-   
-     this. getBillListForDoctorList(); 
-   }
-    
- }, 500);
-    this.MouseEvent=true;
-    this.click = true;
- 
 }
-
-onClear() {
-
-
-this._AdministrationService.myDocShrformSearch.get('DoctorId').reset();
-this._AdministrationService.myDocShrformSearch.get('PBillNo').reset();
-
-}
-
-
-
-
- getBillListForDoctorList() {
+getOptionTextDoctorName(option) {
+  return option && option.Doctorname;
+} 
  
+ getBillListForDoctorList() { 
     this.sIsLoading = 'loading-data';
-    var m_data = {
-    
-  
-      "FromDate" : this.datePipe.transform(this._AdministrationService.myDocShrformSearch.get("start").value,"MM-dd-yyyy") || "01/01/1900",
-      "ToDate" : this.datePipe.transform(this._AdministrationService.myDocShrformSearch.get("end").value,"MM-dd-yyyy") || "01/01/1900",
-      "DoctorId":this._AdministrationService.myDocShrformSearch.get("DoctorId").value || 0,
-      "PBillNo":this._AdministrationService.myDocShrformSearch.get("PBillNo").value || 0,
+    var m_data = { 
+      "FromDate" : this.datePipe.transform(this._DoctorShareService.UserFormGroup.get("startdate").value,"MM-dd-yyyy") || "01/01/1900",
+      "ToDate" : this.datePipe.transform(this._DoctorShareService.UserFormGroup.get("enddate").value,"MM-dd-yyyy") || "01/01/1900",
+      "DoctorId":this._DoctorShareService.UserFormGroup.get('DoctorID').value.DoctorId || 0,
+      "PBillNo":this._DoctorShareService.UserFormGroup.get("PbillNo").value || 0,
+      'OP_IP_TYpe':this._DoctorShareService.UserFormGroup.get("OP_IP_Type").value || 0,
     }
     console.log(m_data);
-    this._AdministrationService.getBillListForDocShrList(m_data).subscribe(Visit => {
+    this._DoctorShareService.getBillListForDocShrList(m_data).subscribe(Visit => {
       this.dataSource.data = Visit as BillListForDocShrList[];
       console.log(this.dataSource.data);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
-      this.sIsLoading = '';
-      this.click = false;
+      this.sIsLoading = ''; 
     },
       error => {
         this.sIsLoading = '';
       });
+  }  
+  NewDocShare(){
+    const dialogRef = this._matDialog.open(AddDoctorShareComponent,
+      { 
+        height: "90%",
+        width: '75%',
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+    });
   }
-  
-
+  processDocShare(){
+    const dialogRef = this._matDialog.open(ProcessDoctorShareComponent,
+      { 
+        height: "35%",
+        width: '35%',
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+    });
+  }
+  onClear() {  
+  }
+  keyPressAlphanumeric(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
+  keyPressCharater(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/^\d*\.?\d*$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
 }
 
 
@@ -169,31 +160,27 @@ export class BillListForDocShrList {
 
   PatientName: string;
   TotalAmt: number;
-  ConcessionAmt: number;
-  NetPayableAmt: number;
+  ConAmt: number;
+  NetAmt: number;
   PBillNo: number;
  // BillNo: number;
   AdmittedDoctorName: string;
   PatientType: number;
   CompanyName: string;
   IsBillShrHold: boolean;
-
  
   constructor(BillListForDocShrList) {
   
     this.PatientName= BillListForDocShrList.PatientName;
     this.TotalAmt= BillListForDocShrList.TotalAmt|| 0; 
-    this.ConcessionAmt= BillListForDocShrList.ConcessionAmt|| '0';
-    this.NetPayableAmt= BillListForDocShrList.NetPayableAmt|| 0;
+    this.ConAmt= BillListForDocShrList.ConAmt|| '0';
+    this.NetAmt= BillListForDocShrList.NetAmt|| 0;
     this.PBillNo= BillListForDocShrList.PBillNo|| 0;
     //this.BillNo= BillListForDocShrList.BillNo|| 0;
     this.AdmittedDoctorName= BillListForDocShrList.AdmittedDoctorName;
     this.PatientType= BillListForDocShrList.PatientType|| 0;
     this.CompanyName= BillListForDocShrList.CompanyName;
-    this.IsBillShrHold= BillListForDocShrList.IsBillShrHold|| 0;
- 
-  
-  }
-
+    this.IsBillShrHold= BillListForDocShrList.IsBillShrHold|| 0; 
+  } 
 } 
 

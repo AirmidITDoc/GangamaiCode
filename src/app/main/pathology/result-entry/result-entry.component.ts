@@ -192,6 +192,7 @@ export class ResultEntryComponent implements OnInit {
   onEdit(m) {
     console.log(m)
     this.reportPrintObj = m
+    this.reportPrintObj["DOA"]=m.VATime
     
     this.PatientName = m.PatientName;
     this.OPD_IPD = m.OP_IP_No
@@ -306,17 +307,6 @@ export class ResultEntryComponent implements OnInit {
             this.Iscompleted = 1;
         });
 
-
-          if (this.Iscompleted == 1) {
-            if (this.OP_IPType == 1)
-                this.getResultIpList();
-            else
-                this.getResultOPList();
-               
-        } else {
-            this.getResultList();
-            }
-
           const dialogRef = this._matDialog.open(ResultEntryOneComponent,
             {
               maxWidth: "95vw",
@@ -325,8 +315,7 @@ export class ResultEntryComponent implements OnInit {
               data: {
                 RIdData: data,
                 patientdata: this.reportPrintObj,
-                data1: this.dataSourcetemp.data 
-              }
+                 }
             });
           dialogRef.afterClosed().subscribe(result => {
             if (result) {
@@ -358,50 +347,9 @@ export class ResultEntryComponent implements OnInit {
     // this.selection.clear();
   }
 
-  dataSourcetemp = new MatTableDataSource<Pthologyresult>();
-  getResultList() {
-    this.sIsLoading = 'loading-data';
-    let SelectQuery = "Select * from m_lvw_Retrieve_PathologyResult where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ")"
-    console.log(SelectQuery)
-    this._SampleService.getPathologyResultList(SelectQuery).subscribe(Visit => {
-        this.dataSourcetemp.data = Visit as Pthologyresult[];
-
-      });
-    }
-    getResultOPList() {
-      debugger
-      this.sIsLoading = 'loading-data';
-      let SelectQuery = "Select * from m_lvw_Retrieve_PathologyResultUpdate where PathReportId in(" + this.reportIdData + ")"
-      console.log(SelectQuery)
-      this._SampleService.getPathologyResultList(SelectQuery).subscribe(Visit => {
-          this.dataSourcetemp.data = Visit as Pthologyresult[];
-        console.log(this.dataSourcetemp.data)
-
-        });
-      
-      }
-
-      getResultIpList() {
-        this.sIsLoading = 'loading-data';
-        let SelectQuery = "Select * from m_lvw_Retrieve_PathologyResultIPPatientUpdate where PathReportId in(" + this.reportIdData + ")"
-        console.log(SelectQuery)
-        this._SampleService.getPathologyResultList(SelectQuery).subscribe(Visit => {
-            this.dataSourcetemp.data = Visit as Pthologyresult[];
-    
-          });
-        }
-    
-
-
-
-
-
-
-
-
-
-
-  getWhatsappshareSales(contact) {
+ 
+  getWhatsappshareResult(contact) {
+    debugger
     if (!contact.IsTemplateTest) {
       if (this.selection.selected.length == 0) {
         this.toastr.warning('CheckBox Select !', 'Warning !', {
@@ -409,9 +357,12 @@ export class ResultEntryComponent implements OnInit {
         });
         return;
       }
-    } else if (contact) {
+    }       
+    if(!contact.IsTemplateTest){
       this.whatsappresultentry();
 
+    }
+     
       if (this.Mobileno != '') {
         var m_data = {
           "insertWhatsappsmsInfo": {
@@ -429,7 +380,7 @@ export class ResultEntryComponent implements OnInit {
             "smsOutGoingID": 0
           }
         }
-
+console.log(m_data)
         this._WhatsAppEmailService.InsertWhatsappSales(m_data).subscribe(response => {
           if (response) {
             this.toastr.success('Result Sent on WhatsApp Successfully.', 'Save !', {
@@ -441,7 +392,7 @@ export class ResultEntryComponent implements OnInit {
             });
           }
         });
-      }
+      
     }
   }
 
@@ -466,7 +417,7 @@ export class ResultEntryComponent implements OnInit {
   Cancleresult(row) {
 
     Swal.fire({
-      title: 'Confirm Deactivation',
+      title: 'Confirm Result cancellation ',
           text: 'Are you sure you want to Cancel the result?',
           icon: 'warning',
           showCancelButton: true,
@@ -502,7 +453,7 @@ export class ResultEntryComponent implements OnInit {
 
 
   getPrint(contact) {
-
+debugger
     
     if (contact.IsTemplateTest)
       this.viewgetPathologyTemplateReportPdf(contact)
@@ -520,13 +471,12 @@ export class ResultEntryComponent implements OnInit {
     this.selection.clear();
   }
   AdList: boolean = false;
+
   viewgetPathologyTemplateReportPdf(contact) {
+    
     setTimeout(() => {
-      this.SpinLoading = true;
-      this.AdList = true;
-      this._SampleService.getPathTempReport(
-        contact.PathReportID, contact.OPD_IPD_Type
-      ).subscribe(res => {
+     
+      this._SampleService.getPathTempReport(contact.PathReportID,contact.OPD_IPD_Type).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,
           {
             maxWidth: "85vw",

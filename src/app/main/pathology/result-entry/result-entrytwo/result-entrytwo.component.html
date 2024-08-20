@@ -69,7 +69,7 @@
                                         <div class="patient-col" *ngIf="selectedAdvanceObj1.PatientType == 'IP'">
                                             <span class="patient-col-key">DOA | Time</span>
                                             <span>:</span>
-                                            <span class="patient-col-value">{{selectedAdvanceObj.DOA}}</span>
+                                            <!-- <span class="patient-col-value">{{selectedAdvanceObj.DOA}}</span> -->
                                         </div>
                                         <div class="patient-col">
                                             <span class="patient-col-key">OPD/IPD No</span>
@@ -136,7 +136,7 @@
                 <form [formGroup]="otherForm" style="border: blue;">
                     <div fxFlexFill fxLayout="row">
 
-                        <mat-form-field appearance="outline">
+                        <mat-form-field appearance="outline" fxFlex="90%">
                             <mat-label>Template Name</mat-label>
                             <input matAutocompletePosition="below" type="text"  [(ngModel)]="vTemplateName"
                                 placeholder="Enter Template Name" matInput formControlName="TemplateName"
@@ -159,17 +159,15 @@
                         <span class="btn-icon">
                             <mat-icon> add </mat-icon>
                         </span>
-                    </button>
+                          </button>
 
                     </div>
                     <div fxLayoutGap="5px">
 
-                        <angular-editor (blur)="onBlur($event)" [config]="editorConfig" style="height:300px !important;"
-                            [(ngModel)]="vTemplateDesc" required formControlName="ResultEntry">
-                            <!-- <div>
-                                <div [innerHTML]="vTemplateDesc"></div>
-                            </div> -->
-                        </angular-editor>
+                        <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
+                        style="height:300px;" [(ngModel)]="vTemplateDesc" required
+                        formControlName="ResultEntry"></angular-editor>
+
 
                     </div>
                     <div fxLayoutGap="5px">

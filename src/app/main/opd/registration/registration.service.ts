@@ -52,8 +52,7 @@ export class RegistrationService {
         Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
       ]],
       MiddleName: ['', [
-  
-        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+      Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
       ]],
       LastName: ['', [
         Validators.required,

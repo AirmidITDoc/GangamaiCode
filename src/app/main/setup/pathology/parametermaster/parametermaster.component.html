@@ -1,26 +1,24 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fusePerfectScrollbar
-    dynamicTableHeight>
-    <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-        fxLayoutAlign.gt-xs="space-between center">
-        <div fxLayout="row" fxLayoutAlign="start center">
-            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
-                <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+<div fxlayout="row" fxFlex.gt-sm="100%" fxFlex class="page-layout" dynamicTableHeight>
+    <div class="center">
+        <mat-toolbar class="top-header accent">
+            <div fxLayout="row" class="top-header-info">
+                <button mat-icon-button class="sidebar-toggle" fxHide.gt-sm (click)="toggleSidebar('app-main')">
                     <mat-icon>menu</mat-icon>
                 </button>
-                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-                    style="color: white;">account_box
+                <mat-icon class="logo-icon " [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
                 </mat-icon>
                 <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    Parameter Master
+                    Parameter List
                 </span>
-                <button mat-raised-button color="pine" style="margin-left: 1180px;" (click)="onAdd()">Add
-                    <mat-icon>add_to_photos</mat-icon>
+
+            </div>
+            <div fxLayout="row" fxLayoutGap="5px">
+                <button mat-raised-button (click)="onAdd()"
+                    style="background-color: aliceblue;color: brown;">Add
 
                 </button>
             </div>
-        </div>
-    </div>
-
+        </mat-toolbar>
 
     <div class="content">
         <div class="center p-24 pb-56" fusePerfectScrollbar>
@@ -68,7 +66,7 @@
 
                         <div fxlayout="row">
                             <div class="content-card">
-                                <div class="table-header" style="margin-left: 1480px;">
+                                <!-- <div class="table-header" style="margin-left: 1480px;">
                                     <div fxLayout="row wrap" fxLayoutAlign="space-between center">
 
                                         <div class="table-header-right">
@@ -87,19 +85,19 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div style="width: 100%;">
-                                    <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                                    <!-- <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
                                         class="backgroundBlur">
                                         <div class="spinner-border text-danger" style="margin-left: 100px;"></div>
-                                    </div>
+                                    </div> -->
 
                                     <mat-table class="table1" matSort [dataSource]="DSParameterList"
                                         [@animateStagger]="{value:'50'}" style="overflow:auto;height: 500px !important;">
 
                                         <ng-container matColumnDef="ParameterID">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide  class="w-180"
-                                                fxShow.gt-sm>ParameterID
+                                                fxShow.gt-sm>ParameterCode
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm  class="w-180">
                                                 {{element.ParameterID}}
@@ -140,7 +138,13 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header> IsNumeric
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                                {{element.IsNumericParameter}}
+                                                <!-- {{element.IsNumericParameter}} -->
+                                                <mat-icon *ngIf="element.IsNumericParameter== 1" matTooltip="IsNumeric">
+                                                    <img width="20px" height="20px" src="assets/images/logos/radiology.png">
+                                                </mat-icon>
+                                                <mat-icon *ngIf="element.IsNumericParameter== 0" matTooltip="IsDescriptive">
+                                                    <img width="20px" height="20px" src="assets/images/logos/pathology.png">  
+                                                </mat-icon>
                                             </mat-cell>
                                         </ng-container>
 
@@ -200,20 +204,20 @@
                                             </mat-footer-cell>
                                         </ng-container>
 
-                                        <mat-header-row class="accent min-width-1800"
+                                        <mat-header-row class="accent min-width-2000"
                                         *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
                                         <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
-                                        class=" min-width-1800"
+                                        class=" min-width-2000" 
                                             [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                         <mat-footer-row *matFooterRowDef="['loading']"
-                                            [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
+                                            [ngClass]="{'hide':DSParameterList!=null}"></mat-footer-row>
                                         <mat-footer-row *matFooterRowDef="['noData']"
-                                            [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
+                                            [ngClass]="{'hide':!(DSParameterList!=null && DSParameterList.data.length==0)}"></mat-footer-row>
 
                                     </mat-table>
-
-                                    <mat-paginator [pageSizeOptions]="[10, 15, 25, 100]" [pageSize]="10"
-                                        showFirstLastButtons></mat-paginator>
+                                    <mat-paginator [pageSizeOptions]="[30, 50, 75, 100]" [pageSize]="30" [length]="resultsLength"
+                                    showFirstLastButtons (page)="getParameterMasterList()">
+                                </mat-paginator>
                                 </div>
 
                             </div>
@@ -225,4 +229,5 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>

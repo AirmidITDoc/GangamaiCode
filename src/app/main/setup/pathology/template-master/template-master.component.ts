@@ -10,6 +10,7 @@ import { TemplateFormComponent } from './template-form/template-form.component';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
+import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 
 @Component({
   selector: 'app-template-master',
@@ -45,12 +46,16 @@ export class TemplateMasterComponent implements OnInit {
     public _matDialog: MatDialog,
     public toastr: ToastrService,
     private reportDownloadService: ExcelDownloadService,
+    private _fuseSidebarService: FuseSidebarService,
   ) { }
 
   ngOnInit(): void {
     this.getTemplateMasterList();
   }
-
+  toggleSidebar(name): void {
+    this._fuseSidebarService.getSidebar(name).toggleOpen();
+  }
+  resultsLength=0;
   getTemplateMasterList() {
     this.sIsLoading = 'loading-data';
     var m_data = {
@@ -64,6 +69,7 @@ export class TemplateMasterComponent implements OnInit {
       this.isLoading = false;
       this.Templatedatasource.sort = this.sort;
       this.Templatedatasource.paginator = this.paginator;
+      this.resultsLength= this.Templatedatasource.data.length
       this.sIsLoading = '';
       console.log(this.Templatedatasource.data);
     },

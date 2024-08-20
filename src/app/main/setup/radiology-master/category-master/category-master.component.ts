@@ -9,6 +9,7 @@ import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import Swal from "sweetalert2";
 import { AuthenticationService } from "app/core/services/authentication.service";
+import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
 
 @Component({
     selector: "app-category-master",
@@ -30,7 +31,7 @@ export class CategoryMasterComponent implements OnInit {
         "CategoryName",
         "AddedByName",
         "UpdatedBy",
-        "IsActive",
+        "IsDeleted",
         "action",
     ];
 
@@ -38,9 +39,11 @@ export class CategoryMasterComponent implements OnInit {
     DSCategoryMasterList1 = new MatTableDataSource<CategoryMaster>();
     tempList = new MatTableDataSource<CategoryMaster>();
     currentStatus=0;
+    resultsLength=0;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     constructor(public _categoryService: CategoryMasterService,
         public _matDialog: MatDialog,
+        private _fuseSidebarService: FuseSidebarService,
         private accountService: AuthenticationService,
         public toastr : ToastrService,) {}
 
@@ -51,7 +54,9 @@ export class CategoryMasterComponent implements OnInit {
     onSearch() {
         this.getCategoryMasterList();
     }
-
+    toggleSidebar(name): void {
+        this._fuseSidebarService.getSidebar(name).toggleOpen();
+      }
     onSearchClear() {
         this._categoryService.myformSearch.reset({
             CategoryNameSearch: "",
@@ -65,6 +70,7 @@ export class CategoryMasterComponent implements OnInit {
         this._categoryService.getCategoryMasterList(m).subscribe((Menu) => {
             this.DSCategoryMasterList.data = Menu as CategoryMaster[];
             this.DSCategoryMasterList1.data = Menu as CategoryMaster[];
+            this.resultsLength= this.DSCategoryMasterList.data.length 
             this.DSCategoryMasterList.sort = this.sort;
             this.DSCategoryMasterList.paginator = this.paginator;
             console.log(this.DSCategoryMasterList.data );
@@ -72,7 +78,7 @@ export class CategoryMasterComponent implements OnInit {
     }
 
     onClear() {
-        this._categoryService.myform.reset({ IsDeleted: "false" });
+        this._categoryService.myform.reset({ IsDeleted: "true" });
         this._categoryService.initializeFormGroup();
     }
 
@@ -81,8 +87,8 @@ export class CategoryMasterComponent implements OnInit {
             if (!this._categoryService.myform.get("CategoryId").value) {
                 var m_data = {
                     insertCategoryMaster: {
-                        categoryName: this._categoryService.myform
-                            .get("CategoryName").value.trim(),
+                        categoryName: this._categoryService.myform.get("CategoryName").value.trim(),
+                            isDeleted:this._categoryService.myform.get("IsDeleted").value || true,
                             addedBy: this.accountService.currentUserValue.user.id,
                     },
                 };
@@ -114,6 +120,7 @@ export class CategoryMasterComponent implements OnInit {
                     updateCategoryMaster: {
                         CategoryId: this._categoryService.myform.get("CategoryId").value,
                         CategoryName: this._categoryService.myform.get("CategoryName").value,
+                        isDeleted:this._categoryService.myform.get("IsDeleted").value || true,
                         updatedBy:this.accountService.currentUserValue.user.id,
                     },
                 };
@@ -142,15 +149,10 @@ export class CategoryMasterComponent implements OnInit {
         }
     }
     onEdit(row) {
-        var m_data = {
-            CategoryId: row.CategoryId,
-            CategoryName: row.CategoryName.trim(),
-            IsDeleted: JSON.stringify(row.Isdeleted),
-            UpdatedBy: row.UpdatedBy,
-        };
-        this._categoryService.populateForm(m_data);
+       debugger
+        this._categoryService.populateForm(row);
     }
-    onDeactive(CategoryId) {
+    onDeactive(row) {
         Swal.fire({
             title: 'Confirm Status',
             text: 'Are you sure you want to Change Status?',
@@ -162,11 +164,11 @@ export class CategoryMasterComponent implements OnInit {
           }).then((result) => {
             if (result) {
                 let Query 
-                if (!this.DSCategoryMasterList.data.find(item => item.CategoryId === CategoryId).IsActive){
-                     Query ="Update M_Radiology_CategoryMaster set Isdeleted=1 where CategoryId=" +CategoryId;}
+                if (!this.DSCategoryMasterList.data.find(item => item.CategoryId === row.CategoryId).IsActive){
+                     Query ="Update M_Radiology_CategoryMaster set IsDeleted=0 where CategoryId=" + row.CategoryId;}
                 else{
                 let Query =
-                "Update M_Radiology_CategoryMaster set Isdeleted=1 where CategoryId=" +CategoryId;}
+                "Update M_Radiology_CategoryMaster set IsDeleted=1 where CategoryId=" +row.CategoryId;}
                     
                 console.log(Query);
                 this._categoryService.deactivateTheStatus(Query)
@@ -233,7 +235,7 @@ export class CategoryMaster {
     AddedBy: number;
     UpdatedBy: number;
     AddedByName: string;
-
+    IsDeleted: boolean;
     /**
      * Constructor
      *
@@ -244,6 +246,7 @@ export class CategoryMaster {
             this.CategoryId = CategoryMaster.CategoryId || "";
             this.CategoryName = CategoryMaster.CategoryName || "";
             this.IsActive = CategoryMaster.IsActive || "true";
+            this.IsDeleted = CategoryMaster.IsDeleted || "true";
             this.AddedBy = CategoryMaster.AddedBy || "";
             this.UpdatedBy = CategoryMaster.UpdatedBy || "";
             this.AddedByName = CategoryMaster.AddedByName || "";

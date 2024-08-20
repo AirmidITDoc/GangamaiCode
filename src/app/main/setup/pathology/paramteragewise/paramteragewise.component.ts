@@ -9,6 +9,7 @@ import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/conf
 import { ParamteragewiseService } from "./paramteragewise.service";
 import { ParamteragewiseformComponent } from "./paramteragewiseform/paramteragewiseform.component";
 import Swal from "sweetalert2";
+import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
  
 @Component({
     selector: "app-paramteragewise",
@@ -55,13 +56,17 @@ export class ParamteragewiseComponent implements OnInit {
 
     constructor(
         public _ParameterageService: ParamteragewiseService,
-        public _matDialog: MatDialog
+        public _matDialog: MatDialog,
+        private _fuseSidebarService: FuseSidebarService,
     ) { }
 
     ngOnInit(): void {
         this.getParameterMasterList();
     }
 
+    toggleSidebar(name): void {
+        this._fuseSidebarService.getSidebar(name).toggleOpen();
+      }
     onSearchClear() {
         this._ParameterageService.myformSearch.reset({
             ParameterNameSearch: "",

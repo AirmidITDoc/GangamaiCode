@@ -131,7 +131,7 @@
                                                 </mat-option>
                                             </mat-autocomplete>
                                         </mat-form-field>
-
+                                    </div>
                                         <!-- <mat-form-field appearance="outline" *ngIf="FlagVisitSelected" style="margin-left:2%;">
                                             <mat-label>Visit Id</mat-label>
                                             <input name="VisitId" formControlName="VisitId" placeholder="Visit Id"
@@ -144,16 +144,16 @@
                                             <input name="ServiceId" formControlName="ServiceId" placeholder="Service Id"
                                                 matInput>
 
-                                        </mat-form-field>
-
-                                        <mat-form-field appearance="outline" *ngIf="FlaggroupIdSelected" style="margin-left:2%;">
-                                            <mat-label>Group Id</mat-label>
-                                            <input name="GroupId" formControlName="GroupId" placeholder="Group Id"
-                                                matInput>
-
                                         </mat-form-field> -->
 
-                                        <mat-form-field appearance="outline" fxFlex="50%" *ngIf="FlagDoctorIDSelected" style="margin-left:2%;">
+                                        <mat-form-field appearance="outline" *ngIf="FlagnonmovedaySelected" style="margin-left:2%;" fxFlex="40%">
+                                            <mat-label>Non Moveing day</mat-label>
+                                            <input name="NonMoveday" formControlName="NonMoveday" placeholder="Non Moveing day"
+                                                matInput>
+
+                                        </mat-form-field>
+                                        <div *ngIf="FlagUserSelected" style="margin-left:2%;">
+                                        <mat-form-field appearance="outline" fxFlex="40%" *ngIf="FlagDoctorIDSelected">
                                             <mat-label>Doctor Name</mat-label>
                                             <input matAutocompletePosition="below" type="text"
                                                 placeholder="Select Doctor" matInput
@@ -171,6 +171,68 @@
                                                     *ngFor="let option of filteredOptionssearchDoctor | async"
                                                     [value]="option">
                                                     {{option.Doctorname}}
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
+                                    </div>
+                                    <div *ngIf="FlagStoreSelected" style="margin-left:2%;">
+                                        <mat-form-field appearance="outline" fxFlex="40%" *ngIf="FlagStoreSelected">
+                                            <mat-label>Store Name</mat-label>
+                                            <input matAutocompletePosition="below" type="text"
+                                                placeholder="Select Store" matInput
+                                                formControlName="StoreId"
+                                                [matAutocomplete]="autosearchstore">
+                                            <span matSuffix style="display: flex;">
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_OPReportsService.userForm.get('StoreId').setValue(''); isSearchstoreSelected = false;">close</mat-icon>
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_OPReportsService.userForm.get('StoreId').setValue(''); isSearchstoreSelected = false;">search</mat-icon>
+                                            </span>
+                                            <mat-autocomplete #autosearchstore="matAutocomplete"
+                                                [displayWith]="getOptionTextsearchstore">
+                                                <mat-option
+                                                    *ngFor="let option of filteredOptionsstore| async"
+                                                    [value]="option">
+                                                    {{option.StoreName}}
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex="40%" *ngIf="FlagStore1Selected">
+                                            <mat-label>Store Name</mat-label>
+                                            <input matAutocompletePosition="below" type="text"
+                                                placeholder="Select Store" matInput
+                                                formControlName="StoreId"
+                                                [matAutocomplete]="autosearchstore">
+                                            <span matSuffix style="display: flex;">
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_OPReportsService.userForm.get('StoreId1').setValue(''); isSearchstore1Selected = false;">close</mat-icon>
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_OPReportsService.userForm.get('StoreId1').setValue(''); isSearchstore1Selected = false;">search</mat-icon>
+                                            </span>
+                                            <mat-autocomplete #autosearchstore="matAutocomplete"
+                                                [displayWith]="getOptionTextsearchstore1">
+                                                <mat-option
+                                                    *ngFor="let option of filteredOptionsstore1 | async"
+                                                    [value]="option">
+                                                    {{option.StoreName}}
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
+                                    </div>
+                                    <div *ngIf="FlagSupplierSelected" style="margin-left:2%;">
+                                        <mat-form-field appearance="outline" fxFlex="40%">
+                                            <input type="text" name="SupplierName" formControlName="SupplierName" #SupplierName
+                                                placeholder="SupplierName (enter 2 char) " matInput [matAutocomplete]="SupplierIdauto"
+                                                (input)="getSuppliernameList()">
+                                            <span matSuffix style="display: flex;">
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_OPReportsService.userForm.get('SupplierName').setValue(''); isSupplierIdSelected = false;">close</mat-icon>
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_OPReportsService.userForm.get('SupplierName').setValue(''); isSupplierIdSelected = false;">search</mat-icon>
+                                            </span>
+                                            <mat-autocomplete #SupplierIdauto="matAutocomplete" [displayWith]="getOptionTextSupplier">
+                                                <mat-option *ngFor="let option of filteredOptionssupplier" [value]="option">
+                                                    {{option.SupplierName}} || {{option.SupplierId}}
                                                 </mat-option>
                                             </mat-autocomplete>
                                         </mat-form-field>

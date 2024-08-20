@@ -26,7 +26,7 @@ import { AuthenticationService } from "app/core/services/authentication.service"
     animations: fuseAnimations,
 })
 export class TestFormMasterComponent implements OnInit {
-    displayedColumns: string[] = ['ParameterName', 'Add'];
+    displayedColumns: string[] = ['ParameterName'];
     displayedColumns2: string[] = ['Reorder', 'ParameterName','PrintParameterName', 'MethodName','UnitName', 'ParaMultipleRange','Formula','IsNumeric', 'Action'];
     displayedColumns3: string[] = ['Template Name', 'Add'];
     displayedColumns4: string[] = ['ParameterName'];
@@ -117,12 +117,14 @@ export class TestFormMasterComponent implements OnInit {
             }
             
             this._TestService.populateForm(this.registerObj);
+            this.getCategoryNameCombobox();
+            this.getServiceNameCombobox();
+      
         }
 
         this.getcategoryNameCombobox();
         this.getserviceNameCombobox();
         this.getParameterNameCombobox();
-        this.getCategoryNameCombobox();
         this.getServiceNameCombobox();
         this.getTemplateList();
 
@@ -604,7 +606,7 @@ export class TestFormMasterComponent implements OnInit {
                 insertPathologyTestMaster['machineName'] = this._TestService.myform.get('MachineName').value || "";
                 insertPathologyTestMaster['suggestionNote'] = this._TestService.myform.get('SuggestionNote').value || "";
                 insertPathologyTestMaster['footNote'] = this._TestService.myform.get('FootNote').value || "";
-                insertPathologyTestMaster['isDeleted'] = this._TestService.myform.get('IsDeleted').value || "";
+                insertPathologyTestMaster['isDeleted'] = this._TestService.myform.get('IsDeleted').value || 1;
                 insertPathologyTestMaster['addedBy'] = this.accountService.currentUserValue.user.id,
                     insertPathologyTestMaster['serviceId'] = this._TestService.myform.get('ServiceID').value.ServiceId || 0;
                 insertPathologyTestMaster['isTemplateTest'] = this.Statusflag;
@@ -658,7 +660,7 @@ export class TestFormMasterComponent implements OnInit {
                 updatePathologyTestMasterobj['machineName'] = this._TestService.myform.get('MachineName').value || "";
                 updatePathologyTestMasterobj['suggestionNote'] = this._TestService.myform.get('SuggestionNote').value || "";
                 updatePathologyTestMasterobj['footNote'] = this._TestService.myform.get('FootNote').value || "";
-                updatePathologyTestMasterobj['isDeleted'] = this._TestService.myform.get('IsDeleted').value || "";
+                updatePathologyTestMasterobj['isDeleted'] = this._TestService.myform.get('IsDeleted').value || 1;
                 updatePathologyTestMasterobj['updatedBy'] = this.accountService.currentUserValue.user.id,
                     updatePathologyTestMasterobj['serviceId'] = this._TestService.myform.get('ServiceID').value.ServiceId || 0;
                 updatePathologyTestMasterobj['isTemplateTest'] = this.Statusflag;
@@ -721,9 +723,13 @@ export class TestFormMasterComponent implements OnInit {
 
 
     getTemplateList() {
-
-        this._TestService.getTemplateCombo().subscribe(data => {
+        debugger
+        var data={
+            "Id":0
+        }
+        this._TestService.getTemplateCombo(data).subscribe(data => {
             this.TemplateList = data;
+            console.log(data)
             this.optionsTemplate = this.TemplateList.slice();
             this.filteredOptionsisTemplate = this._TestService.mytemplateform.get('TemplateName').valueChanges.pipe(
                 startWith(''),

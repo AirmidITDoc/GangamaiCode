@@ -8,7 +8,7 @@
                 style="color: white;">account_box
             </mat-icon>
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
-               Discharge Cancel
+               Administration Task
             </span>
         </div>
     </mat-toolbar>
@@ -17,298 +17,213 @@
             <div id="pause" class="d-flex align-items-center justify-content-center">
                 <div id="spinner"></div>
             </div>
-        </div>
-        <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm"
-        class="fuse-search-sidebar">
-        <div class="sidebar-content">
-            <!-- SIDEBAR HEADER -->
-            <div class="accent sidebar-header">
-                <span class="search-title">Search Facility</span>
-                <!-- / USER -->
-            </div>
-            <!-- / SIDEBAR HEADER -->
-            <!-- SIDEBAR CONTENT -->
-            <div class="sidebar-body">
-                <div class="sidebar-form">
-                    <form [formGroup]="_DischargeCancelService.DischargeForm" fusePerfectScrollbar>
-                        <div fxLayout="column" fxLayoutAlign="start none" fxLayoutGap="6px">
-                            <mat-form-field appearance="outline">
-                                <mat-label>Enter a date range</mat-label>
-                                <mat-date-range-input [rangePicker]="picker">
-                                    <input matStartDate formControlName="start"
-                                        placeholder="Start date">
-                                    <input matEndDate formControlName="end"
-                                        placeholder="End date"
-                                        (dateChange)="getDischargPatientList()">
-                                </mat-date-range-input>
-                                <mat-datepicker-toggle matSuffix
-                                    [for]="picker"></mat-datepicker-toggle>
-                                <mat-date-range-picker #picker></mat-date-range-picker>
-                            </mat-form-field>
-
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Reg No</mat-label>
-                                <input name="RegNo" formControlName="RegNo" matInput
-                                    (keyup)="getDischargPatientList()">
-                            </mat-form-field>
-
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>First Name</mat-label>
-                                <input name="FirstName" formControlName="FirstName" matInput
-                                    (keyup)="getDischargPatientList()">
-                            </mat-form-field> 
-
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Last Name</mat-label>
-                                <input name="LastName" formControlName="LastName" matInput
-                                    (keyup)="getDischargPatientList()">
-                            </mat-form-field>
-
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>IPD No</mat-label>
-                                <input name="IPDNo" formControlName="IPDNo" matInput
-                                    (keyup)="getDischargPatientList()">
-                            </mat-form-field> 
-
-                            <div class="action-buttons">
-                                <button mat-raised-button (click)="onClear()"
-                                    matTooltip="close">
-                                    <mat-icon class="cleariconbutton">close</mat-icon>
-                                </button>
-                                <button mat-raised-button (click)="getDischargPatientList()"
-                                    matTooltip="search">
-                                    <mat-icon class="searchiconbutton">search</mat-icon>
-                                </button>
+        </div> 
+        <div class="center p-16 pb-56" fxFlexAlign="start center">
+            <div class="content-card" style="border-radius: 4px;">
+                <div fxFlexFill fxLayout="row" fxLayout="column" fxLayoutGap="10px">
+                    <form [formGroup]="_DischargeCancelService.DischargeForm">
+            
+                        <mat-card style="padding: 15px;" fxlayout="row">
+                            <div class="radio-container" style="padding: 15px;">
+                                <mat-radio-group formControlName="Op_ip_id" fxFlex="5%">
+                                    <mat-radio-button value="1">IP</mat-radio-button>
+                                </mat-radio-group>
                             </div>
-                            <!-- <div class="addmision-list mt-12">
-                                <button mat-raised-button class="btn btn-primary w-100-p"
-                                    (click)="getAdmittedPatientListview()" s matTooltip="search"
-                                    [disabled]="AdList">
-                                    Admission List
-                                </button>
-                            </div> -->
+            
+                            <mat-form-field appearance="outline" fxFlex="50%" *ngIf="!vCheckBox">
+                                <mat-label>PatientName</mat-label>
+                                <input type="text" name="RegID" formControlName="RegID" matInput required
+                                    placeholder="RegNo / First Name / Last Name / Mobile No" [matAutocomplete]="auto" #RegID
+                                    (input)="getSearchList()">
+                                <span matSuffix style="display: flex;">
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="_DischargeCancelService.DischargeForm.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="_DischargeCancelService.DischargeForm.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
+                                </span>
+                                <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
+                                    (optionSelected)='getSelectedObj($event.option.value)'>
+                                    <mat-option *ngFor="let option of filteredOptions" [value]="option">
+                                        {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} |
+                                        {{option.RegNo}} |
+                                        {{option.MobileNo}}
+                                    </mat-option>
+                                    <mat-error *ngIf="_DischargeCancelService.DischargeForm.get('RegID').hasError('required')">
+                                        Required field cannot be left blank
+                                    </mat-error>
+                                </mat-autocomplete>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex="50%" *ngIf="vCheckBox">
+                                <mat-label>PatientName</mat-label>
+                                <input type="text" name="RegIDDischargeId" formControlName="RegID" matInput required
+                                    placeholder="RegNo / First Name / Last Name / Mobile No" [matAutocomplete]="auto" #RegID
+                                    (input)="getDischargedSearchList()">
+                                <span matSuffix style="display: flex;">
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="_DischargeCancelService.DischargeForm.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="_DischargeCancelService.DischargeForm.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
+                                </span>
+                                <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionDischargeText"
+                                    (optionSelected)='getSelectedDischargeObj($event.option.value)'>
+                                    <mat-option *ngFor="let option of filteredOptions" [value]="option">
+                                        {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} |
+                                        {{option.RegNo}} |
+                                        {{option.MobileNo}}
+                                    </mat-option>
+                                    <mat-error *ngIf="_DischargeCancelService.DischargeForm.get('RegID').hasError('required')">
+                                        Required field cannot be left blank
+                                    </mat-error>
+                                </mat-autocomplete>
+                            </mat-form-field>
+            
+                            <div style="padding: 15px;">
+                                <mat-checkbox fxFlex="15%" [checked] value="1" formControlName="IsDischarged"
+                                    [(ngModel)]="vCheckBox" (change)="getDischargedList($event)">IsDischarged
+                                </mat-checkbox>
+                            </div>
+            
+                        </mat-card>
+                    </form>
+            
+                    <mat-card style="padding: 15px;">
+                        <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
+                            <div class="patient-info-container">
+                                <div class="patient-info-box">
+                                    <div class="patient-info-title">
+                                        <span class="h1">Patient Information</span>
+                                    </div>
+                                    <hr>
+                                    <div class="Ipd-patient-info" fxFlexFill fxLayout="row" fxLayoutAlign="space-between center"
+                                        class="patient-info">
+                                        <div class="patient-sub">
+                                            <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
+                                                fxLayoutAlign="space-between">
+                                                <div fxLayout="column" fxLayoutGap="10px">
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">UHID No
+                                                        </span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{vRegNo}}</span>
+                                                    </div>
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">Patient Name
+                                                        </span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{vPatientName}}</span>
+                                                    </div>
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">Doctor Name</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">Dr.{{vDoctorName}}</span>
+                                                    </div>
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">Department</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{vDepartment}}</span>
+                                                    </div>
+                                                </div>
+                                                <div fxLayout="column" fxLayoutGap="10px">
+            
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">DOA | Time</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{vAdmissionDate | date:'dd/MM/YYYY'}} |
+                                                            {{vAdmissionTime | date:'hh:mm a' }}
+                                                        </span>
+                                                    </div>
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">IPD No</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{vIPDNo}}</span>
+                                                    </div>
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">Age | Sex
+                                                        </span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{vAge}}Y|{{vAgeMonth}}M|{{vAgeDay}} D |
+                                                            {{vGenderName}}</span>
+                                                    </div>
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">Ref-Doctor Name
+                                                        </span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{vRefDocName}}</span>
+                                                    </div>
+            
+                                                </div>
+                                                <div fxLayout="column" fxLayoutGap="10px">
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">Ward | Bed Name
+                                                        </span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{vRoomName}} | {{vBedName}}</span>
+                                                    </div>
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">Patient Type
+                                                        </span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{vPatientType}}</span>
+                                                    </div>
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">Tarrif Name
+                                                        </span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{vTariffName}}</span>
+                                                    </div>
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">Company Name</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value"
+                                                            style="color: orange;">{{vCompanyName}}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-card>
+            
+                    <form [formGroup]="_DischargeCancelService.DischargeForm">
+                        <div fxLayout="row" fxLayoutGap="6px" *ngIf="!vCheckBox && vRegNo">
+            
+                            <!-- <mat-form-field appearance="outline" fxFlex="30%">
+                                        <mat-label>Admission Date</mat-label>
+                                        <input matInput [matDatepicker]="picker" placeholder="From date"
+                                            formControlName="startdate">
+                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker></mat-datepicker>
+                                    </mat-form-field>   -->
+                            <mat-card style="padding: 15px;">
+                                <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"
+                                    style="width: 200px;">
+                                </app-common-date>
+                            </mat-card>
+            
                         </div>
                     </form>
-                </div>
-            </div>
-        </div>
-    </fuse-sidebar>
-        <div class="center p-12 pb-56" fxFlexAlign="start center">
-            <div class="content-card" style="border-radius: 4px;">
-                <div fxFlex.gt-sm="100%" fxFlex>
-
-                    <div fxlayout="row">
-                        <div style="width:100%;">
-                            <div matColumnDef="loading" style="height: 600px;"
-                                [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur">
-                                <div class="spinner-border text-danger"></div>
-                            </div>
-                            <mat-table #table matSort [dataSource]="dsDischargeList"
-                            [@animateStagger]="{value:'50'}" style="overflow: auto;"> 
-
-                            <ng-container matColumnDef="DOA" sticky>
-                                <mat-header-cell *matHeaderCellDef mat-sort-header
-                                    fxShow.gt-md class="w-180">Date</mat-header-cell >
-                                <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-180">
-                                    <span> {{contact.Adm_Vit_Date}} - {{contact.Adm_Vit_Time}} </span>
-                                </mat-cell>
-                            </ng-container> 
-
-                            <ng-container matColumnDef="RegNo" sticky>
-                                <mat-header-cell *matHeaderCellDef mat-sort-header
-                                    class="w-100" fxShow.gt-sm>UHID No</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm
-                                    class="w-100">
-                                    <span> {{contact.RegNoWithPrefix}}</span>
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="PatientName" sticky>
-                                <mat-header-cell *matHeaderCellDef mat-sort-header
-                                    fxShow.gt-sm class="w-210">Patient Name
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm
-                                    class="w-210">
-                                    <span> {{contact.PatientName}}</span>
-                                </mat-cell>
-                            </ng-container> 
-
-                            <ng-container matColumnDef="Age" sticky>
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                    fxShow.gt-md class="w-140">
-                                    Age
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md
-                                    class="w-140">
-                                   {{contact.AgeYear}}Y|{{contact.AgeMonth}}M|{{contact.AgeDay}}D 
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="Doctorname">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                    fxShow.gt-md class="w-140">Doctor
-                                    Name
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md
-                                    class="w-140">
-                                    <span> {{contact.Adm_DoctorName}}</span>
-                                </mat-cell>
-                            </ng-container> 
-
-                            <ng-container matColumnDef="IPNo">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                    fxShow.gt-md class="w-120">IPD No
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-120">
-                                    <span> {{contact.IP_OP_Number}}</span>
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="CompanyName">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                    fxShow.gt-md class="w-150">Company Name
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-150">
-                                    <span> {{contact.CompanyName || '-'}}</span>
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="WardName">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                    fxShow.gt-md class="w-140">Ward Name
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-140">
-                                    <span> {{contact.ClassName}}</span>
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="TariffName">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                    fxShow.gt-md class="w-140">Traiff Name
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-140">
-                                    <span> {{contact.TariffName}}</span>
-                                </mat-cell>
-                            </ng-container> 
-
-                            <ng-container matColumnDef="Action" stickyEnd>
-                                <mat-header-cell *matHeaderCellDef
-                                class="w-80">Action</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" class="w-80">
-                                    <button mat-icon-button (click)="DischargeCancel()"
-                                    matTooltip="Discharge Cancel">
-                                    <mat-icon>backspace</mat-icon>
-                                </button> 
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="loading">
-                                <mat-header-cell *matFooterCellDef colspan="6"
-                                    style="display: none;">
-                                </mat-header-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="noData">
-                                <mat-footer-cell *matFooterCellDef colspan="6">
-                                    no data found...
-                                </mat-footer-cell>
-                            </ng-container>
-
-                            <mat-header-row class="accent min-width-1400"
-                                *matHeaderRowDef="displayedColumns; sticky: true">
-                            </mat-header-row>
-                            <mat-row *matRowDef="let contact; columns: displayedColumns;"
-                                class="contact min-width-1400" 
-                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                            <mat-footer-row *matFooterRowDef="['loading']"
-                                [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                            </mat-footer-row>
-                            <!-- <mat-footer-row *matFooterRowDef="['noData']"
-                                [ngClass]="{'hide':!(dsDischargeList!=null && dsDischargeList.data.length==0)}"></mat-footer-row> -->
-                        </mat-table>
-
-                            <!-- <mat-table #table matSort [dataSource]="dsDischargeList"
-                                [@animateStagger]="{value:'50'}" style="overflow: auto;">
-
-                                <ng-container matColumnDef="Action">
-                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Action
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact">
-                                        <button mat-icon-button matTooltip="Discharge Cancel" >
-                                            <mat-icon>Cancel</mat-icon>
-                                        </button>
-
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="InvoiceNo">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                        InvoiceNo
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.InvNumber}}
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="InvoiceDate">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                        InvoiceDate </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.InvDate | date: 'dd/MM/yyyy'}}
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="CustomerId">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-180">
-                                        CustomerId</mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
-                                        {{contact.CustomerId}}
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="Amount">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-180">
-                                        Amount</mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
-                                        {{contact.Amount}}
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="InvoiceRaisedId">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                        InvoiceRaisedId </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.InvoiceRaiseId}}
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="loading">
-                                    <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                    </mat-header-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="noData">
-                                    <mat-footer-cell *matFooterCellDef colspan="6">
-                                        no data found...
-                                    </mat-footer-cell>
-                                </ng-container>
-
-                                <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
-                                </mat-header-row>
-                                <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
-                                    [@animate]="{value:'*',params:{y:'100%'}}"
-                                    appHighlight></mat-row>
-                                <mat-footer-row *matFooterRowDef="['loading']"
-                                    [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                                </mat-footer-row>
-                                <mat-footer-row *matFooterRowDef="['noData']"
-                                    [ngClass]="{'hide':!(dsDischargeList!=null && dsDischargeList.data.length==0)}">
-                                </mat-footer-row>
-                            </mat-table> -->
-
-                              <mat-paginator [pageSizeOptions]="[35, 50, 75, 100]" [pageSize]="15">
-                             </mat-paginator>
+            
+                    <div fxLayoutAlign="space-between">
+                        <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px">
+                            <button *ngIf="!vCheckBox && vRegNo" class="btn btn-danger" (click)="AdmisssionCancel()"
+                                style="color: white;" [disabled]="vRegNo>0">Admission Cancel</button>
                         </div>
+            
+                        <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px" style="margin: 0px 20px 0px 50px; ">
+                            <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
+                            <button *ngIf="vCheckBox" class="btn btn-primary" style="color: white;"
+                                (click)="DischargeCancel()">Dicharge Cancel</button>
+                            <button *ngIf="!vCheckBox" class="btn btn-primary" (click)="OnAdmDateTimeUpdate()">Save</button>
+                        </div>
+                    </div>
+
+
+                    <div fxLayout="row" fxLayoutAlign=center>
+                        <span style="color: rgb(161, 158, 158);margin-top: 30px;">Note :- </span>&nbsp;
+                        <span style="color: rgb(161, 158, 158);margin-top: 30px;">User can update Admission Date & Time/Discharge Cancel</span>
                     </div>
                 </div>
             </div>

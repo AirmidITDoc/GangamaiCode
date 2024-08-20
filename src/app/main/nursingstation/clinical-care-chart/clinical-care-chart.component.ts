@@ -44,6 +44,13 @@ export class ClinicalCareChartComponent implements OnInit {
     'Employeename',
     'Action'
   ]
+  displayedPainAsse2: string[] = [
+    'givendate',
+    'giventime',
+    'Employeename',
+    'PainAssess',
+    'Action'
+  ]
   displayedVitals: string[] = [
     'date',
     'time',
@@ -117,9 +124,12 @@ export class ClinicalCareChartComponent implements OnInit {
   painLevel:any;
   additionalNotes:any;
   painLocation:any;
+  
+  currentDate = new Date(); 
 
   dsClinicalcarePatient = new MatTableDataSource<PatientList>();
   dsPainsAssessment =new MatTableDataSource<PainAssesList>();
+  dsPainsAssessment2 =new MatTableDataSource<PainAssesList>();
   dsvitalsList =new MatTableDataSource<VitalsList>();
   dsInputOutTable = new MatTableDataSource<INputOutputList>();
   dsOxygenTable = new MatTableDataSource<INputOutputList>();
@@ -140,7 +150,7 @@ export class ClinicalCareChartComponent implements OnInit {
  
   ngOnInit(): void {
     this.getwardList();
-    this.getPatientListwardWise();
+    this.getPatientListwardWise(); 
   }
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
@@ -232,8 +242,35 @@ registerObj:any;
     this.vAgeDay =obj.AgeDay;
     this.vRegNo = obj.RegNo;
   }
-  OnAdd(){
+  PainList:any=[];
+  OnAdd() {
+    if (this.vRegNo == 0 || this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
+      this.toastr.warning('Please select Patient', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      })
+      return;
+    }
     this.checkDailyWeight = true;
+    this.PainList.push(
+      {
+        givendate: this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'),
+        giventime: this.datePipe.transform(this.currentDate, 'shortTime'),
+        Employeename: this.vpatientName,
+        PainAssess: this.vDailyWeight
+      });
+    this.dsPainsAssessment2.data = this.PainList;
+    this.vDailyWeight = '';
+  }
+  deleteTableRow(element) { 
+      let index = this.PainList.indexOf(element);
+      if (index >= 0) {
+        this.PainList.splice(index, 1);
+        this.dsPainsAssessment2.data = [];
+        this.dsPainsAssessment2.data = this.PainList;
+      }
+      this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
+        toastClass: 'tostr-tost custom-toast-success',
+      });  
   }
   getDoctornote(){
    if(this.vRegNo == 0 || this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined){

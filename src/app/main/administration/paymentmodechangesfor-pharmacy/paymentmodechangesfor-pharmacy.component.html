@@ -34,7 +34,7 @@
                             <mat-label>Enter a date range</mat-label>
                             <mat-date-range-input [rangePicker]="picker">
                                 <input matStartDate formControlName="startdate" placeholder="Start date">
-                                <input matEndDate formControlName="enddate" placeholder="End date">
+                                <input matEndDate formControlName="enddate" placeholder="End date" (dateChange)="getSearchList()">
                             </mat-date-range-input>
                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                             <mat-date-range-picker #picker></mat-date-range-picker>
@@ -42,25 +42,25 @@
 
                         <mat-form-field appearance="outline">
                             <mat-label>RegNo</mat-label>
-                            <input name="RegNo" formControlName="RegNo" matInput>
+                            <input name="RegNo" formControlName="RegNo" matInput (keyup)="getSearchList()">
                         </mat-form-field>
                         <mat-form-field appearance="outline">
                             <mat-label>First Name</mat-label>
-                            <input name="FirstName" formControlName="FirstName" matInput>
+                            <input name="FirstName" formControlName="FirstName" matInput (keyup)="getSearchList()">
                         </mat-form-field>
 
                         <mat-form-field appearance="outline">
                             <mat-label>Last Name</mat-label>
-                            <input name="LastName" formControlName="LastName" matInput>
+                            <input name="LastName" formControlName="LastName" matInput (keyup)="getSearchList()">
                         </mat-form-field>
 
                         <mat-form-field appearance="outline">
                             <mat-label>Sales No</mat-label>
-                            <input name="SalesNo" formControlName="SalesNo" matInput>
+                            <input name="SalesNo" formControlName="SalesNo" matInput (keyup)="getSearchList()">
                         </mat-form-field>&nbsp;&nbsp;
 
                         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                            <mat-radio-group formControlName="Radio" name="Radio">
+                            <mat-radio-group formControlName="Radio" name="Radio" >
                                 <mat-label>Type :</mat-label>&nbsp;
                                 <mat-radio-button value="1" (click)="getSalesList()">Sales</mat-radio-button>
                                 <mat-radio-button value="2" (click)="getIPPharAdvanceList()">IP Phar Advance</mat-radio-button>
@@ -72,7 +72,7 @@
                                 <mat-icon class="cleariconbutton">close</mat-icon>
                             </button>&nbsp;&nbsp;
                             <button mat-raised-button class="searchButton" matTooltip="search">
-                                <mat-icon class="searchiconbutton" (click)="getSalesList()">search</mat-icon>
+                                <mat-icon class="searchiconbutton" (click)="getSearchList()">search</mat-icon>
                             </button>
                         </div>
 
@@ -87,6 +87,18 @@
             <div class="content-card" style="border-radius:4px; ">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
                     <div fxFlex.gt-sm="100%" fxFlex>
+                        <div class="info-badge-top pb-2 border-bottom"> 
+                            <div fxLayout="row" fxLayoutAlign="start center" class="gap-8"> 
+                                <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                    <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                                    <span>: Sales</span>
+                                </div>
+                                <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                    <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                                    <span>: IP Pharmacy Advance</span>
+                                </div>  
+                            </div>
+                        </div> 
                         <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
                             class="backgroundBlur">
                             <div class="spinner-border text-danger"></div>
@@ -95,32 +107,41 @@
                         <mat-table #table class="table1" matSort [dataSource]="dsPaymentPharmacyList" [@animateStagger]="{value:'50'}"
                             style="overflow: auto;">
 
-                            <ng-container matColumnDef="ReceiptNo">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                            <ng-container matColumnDef="Type" sticky>
+                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-60">
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" class="w-60">
+                                    <mat-icon *ngIf="!contact.RegNo" matTooltip="Sales" class="pill green-600 s-16">circle</mat-icon>
+                                    <mat-icon *ngIf="contact.RegNo" matTooltip="IP Pharmacy Advance" class="pill orange s-16">circle</mat-icon>  
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="ReceiptNo" sticky>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-90">
                                     Receipt No
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-90">
                                     {{contact.ReceiptNo}}
                                 </mat-cell>
                             </ng-container>
 
-                            <ng-container matColumnDef="Date">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                            <ng-container matColumnDef="Date" sticky>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
                                     PayDate </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
                                     {{contact.PaymentDate | date: 'dd/MM/yyyy'}}
                                 </mat-cell>
                             </ng-container>
 
-                            <ng-container matColumnDef="SalesNo">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                            <ng-container matColumnDef="SalesNo" sticky>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-90">
                                     SalesNo</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-90">
                                     {{contact.SalesNo}}
                                 </mat-cell>
                             </ng-container>
 
-                            <ng-container matColumnDef="PatientName">
+                            <ng-container matColumnDef="PatientName" sticky>
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm  class="w-200">
                                     Patient Name</mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm  class="w-200">
@@ -129,60 +150,66 @@
                             </ng-container>
 
                             <ng-container matColumnDef="PaidAmount">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">
                                     Paid Amt </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.PaidAmount}}
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130">
+                                    {{contact.PaidAmount | currency:"INR":"symbol"}}
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="CashAmt">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">
                                     Cash Amt </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.CashPayAmount}}
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130">
+                                    {{contact.CashPayAmount | currency:"INR":"symbol"}}
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="ChequeAmt">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">
                                     Cheque Amt </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.ChequePayAmount}}
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130">
+                                    {{contact.ChequePayAmount | currency:"INR":"symbol"}}
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="CardAmt">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">
                                     Card Amt </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.CardPayAmount}}
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130">
+                                    {{contact.CardPayAmount | currency:"INR":"symbol"}}
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="NeftPay">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">
                                     Neft Pay </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.NEFTPayAmount}}
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130">
+                                    {{contact.NEFTPayAmount | currency:"INR":"symbol"}}
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="PayAtm">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">
                                     PayAtm </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.PayTMAmount}}
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130">
+                                    {{contact.PayTMAmount | currency:"INR":"symbol"}}
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="action" stickyEnd>
-                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Action
+                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;" class="w-250">Action
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let contact">
-                                    <button mat-icon-button matTooltip="Print" (click)="onEdit(contact)">
+                                <mat-cell *matCellDef="let contact" class="w-250">
+                                    <!-- <button mat-icon-button matTooltip="Print" (click)="onEdit(contact)">
                                         <mat-icon>edit</mat-icon>
-                                    </button>
+                                    </button> -->
+
+                                    <button class="btn btn-info"  
+                                    matTooltip="Payment Date Update" (click)="BillDate()" >Payment Date Update</button>&nbsp;
+                                    <button class="btn btn-primary" (click)="onEdit(contact)" matTooltip="Payment Mode Change" style="color: white;">
+                                      Edit
+                                     </button>
                                 </mat-cell>
                             </ng-container>
 
@@ -197,9 +224,9 @@
                                 </mat-footer-cell>
                             </ng-container>
 
-                            <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+                            <mat-header-row class="accent min-width-1650" *matHeaderRowDef="displayedColumns; sticky: true">
                             </mat-header-row>
-                            <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                            <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact min-width-1650"
                                 [@animate]="{value:'*',params:{y:'100%'}}" 
                                 appHighlight></mat-row>
                             <mat-footer-row *matFooterRowDef="['loading']"

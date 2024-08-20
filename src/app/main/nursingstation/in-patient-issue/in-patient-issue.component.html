@@ -8,11 +8,16 @@
                     In Patient Issue :
                 </span>
                 <span style="font-weight: 400;font-size: medium;margin-right: 10px !important;"> {{StoreName}}</span>
-            </div> 
+            </div>
         </div>
     </mat-toolbar>
 
     <div class="content">
+        <div *ngIf="isLoading123">
+            <div id="pause" class="d-flex align-items-center justify-content-center">
+                <div id="spinner"></div>
+            </div>
+        </div>
         <div class="center p-12 pb-56" style="border-radius: 4px;">
             <div class="content-card">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-12">
@@ -22,17 +27,17 @@
                                 <div class="nav material2">
                                     <div fxLayout="column" fxLayoutAlign="start none">
                                         <form [formGroup]="ItemSubform" class="pt-0">
-                                            <mat-card class="header-form-card py-12" style="overflow: auto;">
+                                            <mat-card  style="overflow: auto;padding: 10px;">
                                                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
                                                     fxLayoutAlign="space-between" class="gap-8">
                                                     <div class="radio-group-left gap-8" fxLayout="row"
-                                                        fxLayoutAlign="start center">
-                                                        <mat-radio-group formControlName="PatientType" [(ngModel)]="vSelectedOption" name="paymode">
-                                                            <mat-radio-button value="IP">IP</mat-radio-button>
-                                                        </mat-radio-group>
-    
-                                                        <div> 
-                                                            <mat-form-field appearance="outline" style="width: 500px;" >
+                                                        fxLayoutAlign="start center">   
+                                                            <mat-radio-group formControlName="PatientType" fxFlex="5%">
+                                                                <mat-radio-button value="1">IP</mat-radio-button>
+                                                            </mat-radio-group>
+
+                                                        <div>
+                                                            <mat-form-field appearance="outline" style="width: 500px;">
                                                                 <input type="text" name="RegID" formControlName="RegID"
                                                                     placeholder="IP RegNo / First Name / Last Name / Mobile No"
                                                                     matInput [matAutocomplete]="auto2"
@@ -55,19 +60,18 @@
                                                                     </mat-option>
                                                                 </mat-autocomplete>
                                                             </mat-form-field>
-                                                        </div> 
+                                                        </div>
 
                                                         <div class="comman-date">
                                                             <app-common-date [screenFrom]="screenFromString"
                                                                 (dateTimeEventEmitter)="getDateTime($event)">
                                                             </app-common-date>
                                                         </div>
-      
+
                                                     </div>
-                                                
+
                                                 </div>
-                                                <div
-                                                    *ngIf="RegId>0">
+                                                <div *ngIf="RegId>0">
                                                     <div class="content-card">
                                                         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
                                                             fxLayoutGap="5px">
@@ -104,9 +108,10 @@
                                                                                         <span
                                                                                             class="patient-col-value">{{IPDNo}}</span>
                                                                                     </div>
-                                                                                    
+
                                                                                     <div class="patient-col">
-                                                                                        <span class="patient-col-key">Doctor
+                                                                                        <span
+                                                                                            class="patient-col-key">Doctor
                                                                                             Name
                                                                                         </span>
                                                                                         <span>:</span>
@@ -114,7 +119,8 @@
                                                                                             class="patient-col-value">Dr.{{DoctorName}}</span>
                                                                                     </div>
                                                                                     <div class="patient-col">
-                                                                                        <span class="patient-col-key">Tariff
+                                                                                        <span
+                                                                                            class="patient-col-key">Tariff
                                                                                             Name
                                                                                         </span>
                                                                                         <span>:</span>
@@ -130,7 +136,7 @@
                                                                                         <span class="patient-col-value"
                                                                                             style="color: #e26d14;">{{CompanyName}}</span>
                                                                                     </div>
-    
+
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -151,7 +157,7 @@
                                                     <mat-label>Barcode No</mat-label>
                                                     <input matInput placeholder="Placeholder" [(ngModel)]="vBarcode"
                                                         formControlName="Barcode" (change)="barcodeItemfetch()">
-                                                </mat-form-field> 
+                                                </mat-form-field>
 
                                                 <mat-form-field appearance="outline" class="itemclass"
                                                     style="width:60% !important;margin-left:20px;">
@@ -179,13 +185,13 @@
                                                         *ngIf="_InPatientIssueService.IndentSearchGroup.get('ItemId').hasError('required')">
                                                         Required field cannot be left blank
                                                     </mat-error>
-                                                </mat-form-field> 
+                                                </mat-form-field>
 
                                                 <mat-form-field appearance="outline" fxFlex="7%">
                                                     <mat-label>Batch No</mat-label>
                                                     <input matInput placeholder="Placeholder" [(ngModel)]="BatchNo"
                                                         formControlName="BatchNo" readonly>
-                                                </mat-form-field>  
+                                                </mat-form-field>
 
                                                 <mat-form-field appearance="outline" fxFlex="5%">
                                                     <mat-label>Qty</mat-label>
@@ -206,7 +212,7 @@
                                                     <mat-label>Total MRP</mat-label>
                                                     <input matInput placeholder="Placeholder" formControlName="TotalMrp"
                                                         required [ngModel]="TotalMRP" readonly>
-                                                </mat-form-field> 
+                                                </mat-form-field>
 
                                                 <mat-form-field appearance="outline" fxFlex="5%">
                                                     <mat-label>Disc %</mat-label>
@@ -238,17 +244,17 @@
                                                     <input matInput placeholder="Margin Amt" formControlName="MarginAmt"
                                                         [(ngModel)]="v_marginamt" readonly>
                                                 </mat-form-field>
- 
+
                                                 <div matTooltip="Select  name to enable this button!!"
                                                     [matTooltipDisabled]="!_InPatientIssueService.IndentSearchGroup.invalid"
-                                                    [matTooltipPosition]="'above'"> 
+                                                    [matTooltipPosition]="'above'">
                                                     <button (click)="OnAddUpdate($event)"
                                                         class="btn btn-primary btn-with-icon py-8" [disabled]="!add"
                                                         #addbutton>
                                                         <span class="btn-icon">
                                                             <mat-icon> add </mat-icon>
                                                         </span>
-                                                    </button> 
+                                                    </button>
                                                 </div>
                                             </div>
                                         </form>
@@ -458,13 +464,13 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="row row-container" style="width: 100%;"> 
+                                            <div class="row row-container" style="width: 100%;">
                                                 <div class="amount-section pt-16" style="width: 100%;">
-                                                    <div fxLayout="row" fxLayoutAlign="start center" class="gap-8"> 
+                                                    <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
                                                         <div class="draft-btn">
                                                             <button class="btn btn-primary" (click)="onSaveDraftBill()"
                                                                 [disabled]="ItemSubform.invalid">DraftBill</button>
-                                                        </div> 
+                                                        </div>
                                                         <mat-form-field appearance="outline" fxFlex="8%">
                                                             <mat-label>Total Amount</mat-label>
                                                             <input matInput [(ngModel)]="FinalTotalAmt"
@@ -496,7 +502,7 @@
                                                                     {{Doc.ConcessionReason}}
                                                                 </mat-option>
                                                             </mat-select>
-                                                        </mat-form-field> 
+                                                        </mat-form-field>
 
                                                         <mat-form-field appearance="outline" fxFlex="8%">
                                                             <mat-label>Net Amount</mat-label>
@@ -518,7 +524,7 @@
                                                             <mat-label>Net Amount (Round off)</mat-label>
                                                             <input matInput formControlName="roundoffAmt"
                                                                 [(ngModel)]="roundoffAmt" readonly>
-                                                        </mat-form-field> 
+                                                        </mat-form-field>
 
                                                         <mat-form-field appearance="outline" fxFlex="8%">
                                                             <mat-label> Paid By Patient</mat-label>
@@ -544,10 +550,8 @@
                                                             <mat-radio-button value="CashPay">Cash</mat-radio-button>
                                                             <mat-radio-button value="Online">Online</mat-radio-button>
                                                             <mat-radio-button
-                                                                value="PayOption">PayOption</mat-radio-button> 
+                                                                value="PayOption">PayOption</mat-radio-button>
                                                         </mat-radio-group>
-
-
 
                                                         <!-- <mat-form-field appearance="outline" fxFlex="15%"
                                                             *ngIf="isPaymentSuccess">
@@ -569,7 +573,7 @@
                                                                 (click)="payOnline()">Online</button>
                                                             <button class="btn btn-danger-outline" (click)="onClose()"
                                                                 (keydown.enter)="onF6Reset($event)">Close</button>
-                                                        </div> 
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -579,8 +583,388 @@
                             </div>
                         </div>
                     </div>
+                    <div fxFlex="20%" fxFlex.sm="30%" fxFlex.xs="100%" class="table-right">
+                        <mat-card style="height: calc(108vh - 95px - 48px);overflow: auto;">
+                            <div class="sales-table-right-box" fxLayout="column" fxLayoutGap="6px">
+                                <mat-card fxFlex style="padding: 5px;">
+                                    <div class="Sales-bill-summary px-12">
+                                        <div class="Sales-bill-summary-title py-8 border-bottom">
+                                            <span class="h3 font-weight-600">Bill Summary </span>
+                                        </div>
+                                        <div class="bil-summary-list px-4 mt-8">
+                                            <ul class="gap-4 list-basic" fxLayout="column">
+                                                <li>
+                                                    <div class="list-item">
+                                                        <span class="list-item-key">Bill Amount :</span>
+                                                        <span class="list-item-value"> {{roundoffAmt |
+                                                            currency:'INR' }}</span>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="list-item">
+                                                        <span class="list-item-key">Credit Amount :</span>
+                                                        <span class="list-item-value"> {{TotalCreditAmt | currency:'INR'}}</span>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="list-item">
+                                                        <span class="list-item-key">Advance Amount :</span>
+                                                        <span class="list-item-value">
+                                                            {{TotalAdvanceAmt | currency:'INR'}}</span>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="list-item">
+                                                        <span class="list-item-key">Adv.Balance Amount :</span>
+                                                        <span class="list-item-value"> {{TotalBalanceAmt | currency:'INR'}}</span>
+                                                    </div>
+                                                </li>
+                        
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </mat-card>
+
+
+                                  <!-- Draft Bill List -->
+                                  <mat-table class="sales-table-right" #table matSort [dataSource]="dataSource1"
+                                  [@animateStagger]="{value:'50'}">
+                                  <ng-container matColumnDef="ExtMobileNo">
+                                      <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Mobile No
+                                      </mat-header-cell>
+                                      <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                          {{contact.ExtMobileNo}}
+                                      </mat-cell>
+                                  </ng-container>
+
+                                  <ng-container matColumnDef="buttons" stickyEnd>
+                                      <mat-header-cell *matHeaderCellDef class="table-actions">Action
+                                      </mat-header-cell>
+                                      <mat-cell *matCellDef="let contact">
+                                          <ng-container class="actions">
+                                              <span class="material-icons" (click)="onAddDraftList(contact)">
+                                                  <mat-icon>add_shopping_cart</mat-icon>
+                                              </span>
+                                          </ng-container>
+                                      </mat-cell>
+                                  </ng-container>
+
+                                  <ng-container matColumnDef="loading">
+                                      <mat-header-cell *matFooterCellDef colspan="6" style="display:none;">
+                                      </mat-header-cell>
+                                  </ng-container>
+
+                                  <ng-container matColumnDef="noData">
+                                      <mat-footer-cell *matFooterCellDef colspan="6">
+
+                                          <mat-spinner *ngIf="isLoadingStr=='loading'" [diameter]='30'>
+                                          </mat-spinner>
+                                          <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
+                                      </mat-footer-cell>
+                                  </ng-container>
+                                  <!-- (click)="show($event,contact)" -->
+                                  <mat-header-row class="accent"
+                                      *matHeaderRowDef="DraftSaleDisplayedCol; sticky: true">
+                                  </mat-header-row>
+                                  <mat-row *matRowDef="let contact; columns: DraftSaleDisplayedCol;"
+                                      [ngClass]="{'row-yellow': QtyBalchk ==0}"
+                                      [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                  <!-- (click)="deleteTableRow($event,contact)"  -->
+                                  <!-- <button class="btn btn-default btn-primary" style="float:right;" (click)="deleteRow(pto)" 
+                                   (onDelete)="onDelete($event)"><i class="fa fa-trash" aria-hidden="true"></i></button> -->
+                                  <mat-footer-row *matFooterRowDef="['loading']"
+                                      [ngClass]="{'hide':dataSource1!=null}">
+                                  </mat-footer-row>
+                                  <mat-footer-row *matFooterRowDef="['noData']"
+                                      [ngClass]="{'hide':!(dataSource1!=null && dataSource1.data.length==0)}">
+                                  </mat-footer-row>
+                                  </mat-table>
+
+                                    <!-- Available Stock in Other Store -->
+                                <mat-table class="sales-table-right" #table matSort [dataSource]="dsBalAvaListStore"
+                                [@animateStagger]="{value:'50'}">
+                                <ng-container matColumnDef="StoreName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                        class="w-190">Store Name
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-190">
+                                        {{contact.StoreName}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="BalQty" stickyEnd>
+                                    <mat-header-cell *matHeaderCellDef class="table-actions">Bal Qty
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact">
+                                        {{contact.BalQty}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="loading">
+                                    <mat-header-cell *matFooterCellDef colspan="6" style="display:none;">
+                                    </mat-header-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="noData">
+                                    <mat-footer-cell *matFooterCellDef colspan="6">
+
+                                        <mat-spinner *ngIf="isLoadingStr=='loading'" [diameter]='30'>
+                                        </mat-spinner>
+                                        <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
+                                    </mat-footer-cell>
+                                </ng-container>
+                                <!-- (click)="show($event,contact)" -->
+                                <mat-header-row class="accent"
+                                    *matHeaderRowDef="DraftAvbStkListDisplayedCol; sticky: true">
+                                </mat-header-row>
+                                <mat-row *matRowDef="let contact; columns: DraftAvbStkListDisplayedCol;"
+                                    [ngClass]="{'row-yellow': QtyBalchk ==0}"
+                                    [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                <mat-footer-row *matFooterRowDef="['loading']"
+                                    [ngClass]="{'hide':dsBalAvaListStore!=null}">
+                                </mat-footer-row>
+                                <mat-footer-row *matFooterRowDef="['noData']"
+                                    [ngClass]="{'hide':!(dsBalAvaListStore!=null && dsBalAvaListStore.data.length==0)}">
+                                </mat-footer-row>
+                                </mat-table>
+                            </div>
+                        </mat-card>   
+                    </div> 
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
+</div>
+
+
+<div hidden class="bill-template-wrapper2" style="font-size: 30.25%;" #billTemplate2>
+    <!-- <div class="watermark" style="position:absolute;
+        top: 50%;
+        left: 50%;
+        opacity: 0.1;
+        z-index: 99;
+        color: black;
+        font-size: 70px;
+        transform: translate(-50%,-50%) rotate(-45deg);
+        white-space: nowrap;
+        pointer-events: none;">Shri Siddeshwar Medicals</div> -->
+    <div style="display:flex; align-items: center; margin-bottom: 10px;">
+        <!-- <span style="font-size: 8px;font-weight: 700;width: 33.33%;">(A Unit of Shri Siddeshwar Loka Kalyana Charitable
+            Trust)</span> -->
+        <h4 style="text-transform: uppercase;font-weight: 500;margin:0;width: 66.33%;text-align: center;margin-left: 100px;">{{type}} &nbsp; Tax Invoice
+        </h4>
+    </div>
+
+    <table class="table" style="width: 100%;border-collapse: collapse;">
+        <tbody>
+            <tr>
+                <td colspan="4"
+                    style="vertical-align: top;border: 1px solid black;width:40%; padding:0 10px 10px;font-size:10px;">
+                    <h3
+                        style="margin-top:0;margin-bottom:5px;color: #e26d14;text-transform: uppercase;font-size: 10px;">
+                        {{reportPrintObjList[0]?.StoreName}}</h3>
+
+                    <div>{{reportPrintObjList[0]?.StoreAddress}}</div>
+                    <!-- <div>GST No. 29ABCTS6874R1Z8</div>
+                    <div>
+                        <span style="margin-right: 20px;">D.L.No. 123456789456123</span>
+                        <span>D.L.No. 123456789456123</span>
+                    </div> -->
+                    <div>
+                        <a href="tel:08352259399"
+                            style="margin-right: 20px;">{{reportPrintObjList[0]?.HospitalMobileNo}}</a>
+                        <a href="mailto:info@jsshospitals.com">{{reportPrintObjList[0]?.HospitalEmailId}}</a>
+                    </div>
+                </td>
+                <td colspan="6" style="border: 1px solid black;width: 33.33%;vertical-align: top; padding: 0;">
+                    <table style="width: 100%;border-collapse: collapse;font-size:10px;">
+                        <!-- <tr> -->
+                        <td style="vertical-align: top;padding:0 10px 10px">
+                            Customer Id : {{reportPrintObjList[0]?.RegNo}} <br>
+                            Customer Name: {{reportPrintObjList[0]?.PatientName}} <br>
+                            Age & Gen: - <span style="margin-left: 10px;">Mob:
+                                {{reportPrintObjList[0]?.ExtMobileNo}}</span><br>
+                            Doctor Name: {{reportPrintObjList[0]?.DoctorName}}
+                        </td>
+                        <!-- </tr> -->
+                    </table>
+                </td>
+                <!-- <td>
+                </td> -->
+
+            </tr>
+            <tr>
+                <td colspan="4"
+                    style="vertical-align: top;border: 1px solid black;width:40%; padding:0 10px 10px;font-size:10px;">
+                    <div>GST No. {{reportPrintObjList[0]?.GSTIN}}</div>
+                    <div>
+                        <span style="margin-right: 20px;">D.L.No. {{reportPrintObjList[0]?.DL_NO}}</span>
+                        <!-- <span>D.L.No. {{reportPrintObjList[0]?.DL_NO}}</span> -->
+                    </div>
+                </td>
+                <td colspan="6" style="border: 1px solid black;width: 33.33%;vertical-align: top; padding: 0;">
+                    <table style="width: 100%;font-size:10px;">
+                        <!-- <tr> -->
+                        <td style="vertical-align: top;padding:0 10px 10px">
+                            Bill No: {{reportPrintObjList[0]?.SalesNo}} <span style="margin-left: 10px;">Bill Date:{{reportPrintObjList[0]?.Time | date:'dd/MM/yyyy h:mm'}} | {{reportPrintObjList[0]?.Time | date:'H:mm'}}</span><br>
+                            Mode of Payment : {{reportPrintObjList[0]?.PayMode}} <br>
+                        </td>
+                        <!-- </tr> -->
+                    </table>
+                </td>
+            </tr>
+
+            <tr style="font-size:10px;">
+                <td
+                    style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 15px;">
+                    Sr No.</td>
+                <td
+                    style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 15px;">
+                    HSN</td>
+                <td
+                    style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 15px;">
+                    MFR</td>
+                <td
+                    style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 100px;">
+                    Product Name</td>
+                <td
+                    style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 15px;">
+                    Pack</td>
+                <td
+                    style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 35px;">
+                    Batch No.</td>
+                <td
+                    style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 15px;">
+                    ExpDate</td>
+                <td
+                    style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 15px;">
+                    Qty</td>
+                <td
+                    style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 15px;">
+                    MRP</td>
+                <td
+                    style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 35px;">
+                    Amount</td>
+            </tr>
+            <tr *ngFor="let item of reportPrintObjList; let indx = index;" style="font-size:10px;">
+                <td style="border-left: 1px solid black;text-align:center;vertical-align: middle;
+                padding: 0;height: 10px;">{{indx+1}}</td>
+                <td style="border-left: 1px solid black;
+                padding: 0;height: 10px;">{{item?.HSNcode}}</td>
+                <td style="border-left: 1px solid black;
+                padding: 0;height: 10px;">{{item.ManufShortName}}</td>
+                <td style="border-left: 1px solid black;
+                padding: 0;height: 10px;">{{item?.ItemName}}</td>
+                <td style="border-left: 1px solid black;text-align: center;
+                padding: 0;height: 10px;">{{item?.ConversionFactor}}</td>
+                <td style="border-left: 1px solid black;text-align: center;
+                padding: 0;height: 10px;">{{item?.BatchNo}}</td>
+                <td style="border-left: 1px solid black;text-align: center;
+                padding: 0;height: 10px;">{{item?.BatchExpDate | date: 'MM/yyyy'}}</td>
+                <td style="border-left: 1px solid black;text-align:center;vertical-align: middle;
+                padding: 0;height: 10px;">{{item?.Qty}}</td>
+                <td style="border-left: 1px solid black;text-align:center;vertical-align: middle;
+                padding: 0;height: 10px;">{{item?.UnitMRP}}</td>
+                <td style="border-left: 1px solid black;border-right: 1px solid black;vertical-align: middle;text-align: center; 
+                padding: 3px;height: 10px;">{{item?.TotalAmount}}</td>
+            </tr>
+            <tr>
+                <td colspan="6" style="border: 1px solid black;vertical-align: top;
+                padding: 0 10px 10px;">
+                    <div style="font-weight: 400;">Terms & Conditions</div>
+                    <ul style="margin: 5px 0 0 0;
+                    font-size: 10px;
+                    padding-left: 17px;
+                    font-weight: 400;">
+                        <li>
+                            Please check the item before leaving medical.
+                        </li>
+                        <li>
+                            Please consult your doctor before consuming the medicine
+                        </li>
+                        <li>
+                            All disputes are subject to Solapur jurisdiction only
+                        </li>
+                    </ul>
+                </td>
+                <!-- <td colspan="5" style="border: 1px solid black;vertical-align: top;padding: 0;"> 
+                </td> -->
+                <td colspan="9" style="border: 1px solid black;vertical-align: top;
+                padding: 0 10px 10px;width: 300px;font-size:10px;">
+                    <div style="display:flex;align-items: center;">
+                        <span style="width:90px;display:inline-block;">Sub Total</span>
+                        <span style="margin:0 5px">:</span>
+                        <span>₹ {{reportPrintObjList[0]?.HTotalAmount}}</span>
+                    </div>
+                    <div style="display:flex;align-items: center;">
+                        <span style="width:90px;display:inline-block;">Discount</span>
+                        <span style="margin:0 5px">:</span>
+                        <span>₹ {{reportPrintObjList[0]?.DiscAmount}}</span>
+                    </div>
+                    <div style="display:flex;align-items: center;">
+                        <span style="width:90px;display:inline-block;">Total GST</span>
+                        <span style="margin:0 5px">:</span>
+                        <span>₹ {{reportPrintObjList[0]?.CGSTAmt + reportPrintObjList[0]?.SGSTAmt +
+                            reportPrintObjList[0]?.IGSTAmt}}</span>
+                    </div>
+                    <div style="display:flex;align-items: center;">
+                        <span style="width:90px;display:inline-block;">Round off</span>
+                        <span style="margin:0 5px">:</span>
+                        <span>₹ {{reportPrintObjList[0]?.RoundOff}}</span>
+                    </div>
+                   
+                    <div style="display:flex;align-items: center;font-size: 12px;font-weight: bold">
+                        <span style="display:inline-block;">Grand Total</span>
+                        <span style="margin:0 5px">:</span>
+                        <span>₹ {{reportPrintObjList[0]?.PaidAmount}}</span>
+                    </div>
+
+                    <div style="display:flex;align-items: center;font-size: 12px;font-weight: bold" *ngIf="Creditflag">
+                        <span style="display:inline-block;">Balance Amount</span>
+                        <span style="margin:0 5px">:</span>
+                        <span>₹ {{reportPrintObjList[0]?.NetAmount}}</span>
+                    </div>
+                </td>
+            </tr>
+            <!-- <tr>
+                <td colspan="9" style="border: 1px solid black;vertical-align: top;
+                padding: 5px 10px;">
+                    <div style="font-size: 15px;font-weight: bold">
+                        Your Saved Amount: {{reportPrintObjList[0]?.DiscAmount}}
+                    </div>
+                </td>
+                <td rowspan="2" style="border: 1px solid black;vertical-align: bottom;
+                padding: 5px 10px;text-align: center;">
+                
+                    <span style="font-size: 11px;opacity:.6;">For Shri Siddeshwar Medicals 24/7</span>
+                </td>
+            </tr> -->
+            <!-- <tr>
+                <td colspan="9" style="border: 1px solid black;vertical-align: top;
+                padding: 5px 10px;">
+                    Total Invoice Value in words: 
+                </td>
+            </tr> -->
+            <tr style="font-size: 10px;">
+                <td colspan="3">
+                    Billed By: {{reportPrintObjList[0]?.UserName}}
+                </td>
+                <td colspan="10" style="text-align: right;">
+                    This is Computer generated invoice hence doesn’t require signature
+                </td> 
+            </tr>
+            <tr style="font-size: 10px; "> 
+                <td colspan="3" style="padding-top: 50px;">
+                    Note :- Get Well Soon
+                 </td>
+                 <td colspan="10"   style="text-align: right;padding-top: 50px;">
+                     Pharmacist
+                 </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- <div style="font-style: italic; opacity:.6;text-align: center;font-size: 10px; margin-top: 15px;">
+        This is Computer generated invoice hence doesn’t require signature
+    </div> -->
 </div>

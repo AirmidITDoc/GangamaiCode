@@ -75,12 +75,14 @@ export class ParameterFormMasterComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        ;
+        
         this.selectedItems = [];
         this.dsParameterAgeList.data = [];
 
         this.getunitNameCombobox();
-        
+        this.getGenderNameCombobox();
+        this.getDscriptiveMasterList();
+
         if (this.data) {
             this.getUnitNameCombobox();
             this.registerObj = this.data.registerObj;
@@ -100,13 +102,12 @@ export class ParameterFormMasterComponent implements OnInit {
         );
 
 
-        this.getGenderNameCombobox();
-        this.getDscriptiveMasterList();
-
+       
 
     }
 
     getGenderNameCombobox() {
+        debugger
         this._ParameterService.getGenderMasterCombo().subscribe(data => {
             this.GendercmbList = data;
             console.log(this.GendercmbList);
@@ -398,17 +399,10 @@ export class ParameterFormMasterComponent implements OnInit {
             PathParameterMasterInsert['updatedby'] = this.accountService.currentUserValue.user.id || 1;
             m_data['pathParameterMasterUpdate'] = PathParameterMasterInsert;
 
-
-            this._ParameterService
-                .updateParameterMaster(m_data)
-                .subscribe((data) => {
-                    this.msg = data;
-                    if (data) {
+            console.log(m_data)
+            this._ParameterService.updateParameterMaster(m_data).subscribe((data) => {this.msg = data;if (data) {
                         this._ParameterService.myform.reset();
-                        // this._ParameterService.myform.get("IsDeleted").setValue(true);
-
-
-                        this.toastr.success('Record updated Successfully.', 'Updated !', {
+                       this.toastr.success('Record updated Successfully.', 'Updated !', {
                             toastClass: 'tostr-tost custom-toast-success',
                         });
                     } else {

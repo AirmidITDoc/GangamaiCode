@@ -195,6 +195,7 @@ export class RadiologyOrderListComponent implements OnInit {
         maxWidth: "90%",
         height: '95%',
         width: '100%',
+        data: contact,
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
@@ -405,6 +406,7 @@ export class RadiologyPrint {
   DepartmentName:any;
   AgeMonth:any;
   ServiceId:any;
+  TemplateId:any;
 
   constructor(RadiologyPrint) {
     this.RadDate = RadiologyPrint.RadDate || '';
@@ -443,8 +445,7 @@ export class RadiologyPrint {
     this.AgeDay = RadiologyPrint.AgeDay;
     this.ServiceName = RadiologyPrint.ServiceName;
     this.OP_IP_Type = RadiologyPrint.OP_IP_Type;
-
-
+    this.TemplateId=RadiologyPrint.TemplateId || 0;
     this.AdmissionID = RadiologyPrint.AdmissionID || '';
 
     this.Doctorname = RadiologyPrint.Doctorname || '';

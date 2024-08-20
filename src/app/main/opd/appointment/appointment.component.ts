@@ -1826,6 +1826,13 @@ export class AppointmentComponent implements OnInit {
         }
         else {
             if ((!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid)) {
+                if(this.registerObj.AgeYear !=0 || this.registerObj.AgeMonth !=0  || this.registerObj.AgeDay !=0 ){
+                    this.toastr.warning('Please Enter Valid Age.', 'Warning !', {
+                        toastClass: 'tostr-tost custom-toast-warning',
+                    });
+                    return;
+                }
+
 
                 if (this.searchFormGroup.get('regRadio').value == "registration") {
                     //if (this.vPhoneAppId == 0 && this.Regflag == false) {
@@ -1874,6 +1881,9 @@ export class AppointmentComponent implements OnInit {
             this.CompanyId = this.VisitFormGroup.get('CompanyId').value.CompanyId;
             // this.vTariffId=2;
         }
+       
+
+
 
         if (this.searchFormGroup.get('regRadio').value == "registration") {
 
@@ -2941,34 +2951,21 @@ export class AppointmentComponent implements OnInit {
     public onEnterlname(event): void {
         if (event.which === 13) {
             this.agey.nativeElement.focus();
-            // if(this.mstatus) this.mstatus.focus();
+          
         }
     }
 
 
     public onEntermstatus(event): void {
-
-        // let MaritalStatusId=this.personalFormGroup.get('MaritalStatusId').value.MaritalStatusId
         if (event.which === 13) {
-            //   console.log(MaritalStatusId)
-            //   if(MaritalStatusId==undefined || event.value== '%'){
-
-            //   }else if(MaritalStatusId==undefined || MaritalStatusId>0)
             this.mobile.nativeElement.focus();
         }
-        // this.mobile.nativeElement.focus();
 
     }
 
     public onEnterreligion(event): void {
 
-        // let ReligionId=this.personalFormGroup.get('ReligionId').value.ReligionId
         if (event.which === 13) {
-            //   console.log(ReligionId)
-            //   if(ReligionId==undefined || event.value== '%'){
-
-            //   }else if(ReligionId==undefined || ReligionId>0)
-            //   this.ptype.nativeElement.focus();
             this.ptype.nativeElement.focus();
         }
 
@@ -3125,24 +3122,6 @@ export class AppointmentComponent implements OnInit {
     }
 
 
-
-
-
-
-
-    // getVistDetailsList() {
-    //   ;
-    //   var D_data = {
-
-    //     "VisitId": 159641// this.selectedAdvanceObj.VisitId,
-    //   }
-
-    //   this._opappointmentService.getVisitedList(D_data).subscribe(Visit => {
-    //     this.dataSource1.data = Visit as CasepaperVisitDetails[];
-
-    //   })
-
-    // }
     departmentId: any;
     DosctorId: any;
     getVisitRecord(row) {

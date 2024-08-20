@@ -37,6 +37,7 @@ import { CompanyInformationComponent } from '../../company-information/company-i
 import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
 import { ThemeService } from 'ng2-charts';
 
+
 @Component({
   selector: 'app-admission',
   templateUrl: './admission.component.html',
@@ -422,20 +423,6 @@ export class AdmissionComponent implements OnInit {
     
     for (var i = 0; i < data.length; i++) {
     
-      // if (data[i].PatientOldNew == 1) {
-      //   this.VNewcount = this.VNewcount + 1;
-      // }
-      // else if (data[i].PatientOldNew == 2) {
-      //   this.VFollowupcount = this.VFollowupcount + 1;
-      // }
-      // else if (data[i].AdmissionID !== 0) {
-      //   this.VAdmissioncount = data.length;
-      // }
-      // else if (data[i].IsBillGenerated == 1) {
-      //   this.VBillcount = this.VBillcount + 1;
-      // }
-      // else
-      debugger
        if (data[i].IsOpToIPconv ==true) {
         this.VOPtoIPcount = this.VOPtoIPcount + 1;
         console.log( this.VOPtoIPcount )
@@ -2246,54 +2233,7 @@ this.getAdmittedPatientList_1()
 
   }
 
-  getViewbAdmission(contact) {
-
-    let xx = {
-
-      RegNo: contact.RegId,
-      AdmissionID: contact.AdmissionID,
-      PatientName: contact.PatientName,
-      Doctorname: contact.Doctorname,
-      AdmDateTime: contact.AdmDateTime,
-      AgeYear: contact.AgeYear,
-      ClassId: contact.ClassId,
-      TariffName: contact.TariffName,
-      TariffId: contact.TariffId,
-      HospitalAddress: contact.HospitalAddress,
-      BDate: contact.BDate,
-      BalanceAmt: contact.BalanceAmt,
-      TotalAmt: contact.TotalAmt,
-      BillDate: contact.BillDate,
-      BillNo: contact.BillNo,
-      ConcessionAmt: contact.ConcessionAmt,
-      HospitalName: contact.HospitalName,
-      NetPayableAmt: contact.NetPayableAmt,
-      OPD_IPD_ID: contact.OPD_IPD_ID,
-      OPD_IPD_Type: contact.OPD_IPD_Type,
-      PBillNo: contact.PBillNo,
-      PaidAmount: contact.PaidAmount,
-      VisitDate: contact.VisitDate,
-      TotalBillAmount: contact.TotalBillAmount,
-      TransactionType: contact.TransactionType,
-      ConsultantDocName: contact.ConsultantDocName,
-      DepartmentName: contact.DepartmentName,
-      AddedByName: contact.AddedByName,
-      NetAmount: contact.NetAmount,
-      ServiceName: contact.ServiceName,
-      Price: contact.Price,
-      Qty: contact.Qty,
-
-    };
-    this.advanceDataStored.storage = new AdmissionPersonlModel(xx);
-    const dialogRef = this._matDialog.open(AdmissionViewComponent,
-      {
-        maxWidth: "90vw",
-        maxHeight: "100vh", width: '100%', height: "100%"
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
-    });
-  }
+  
 
 
 
@@ -2734,6 +2674,8 @@ this.getAdmittedPatientList_1()
        
       });
   }
+
+  
 }
 
 export class Admission {
@@ -2782,7 +2724,7 @@ export class Admission {
   DoctorId: number;
   DoctorName: string;
   IPDNo: number;
-  DOA: Date;
+  DOA: any;
   DOT: Time;
   IsMLC: boolean;
   MotherName: string;
@@ -3137,6 +3079,7 @@ PathResultDr1:any;
 ServiceId:any;
 PathTestID:any;
 Adm_Visit_docId:any;
+TemplateResultInHTML:any;
   /**
 * Constructor
 *
@@ -3287,6 +3230,7 @@ Adm_Visit_docId:any;
       this.ServiceId=AdmissionPersonl.ServiceId || 0;
       this.PathTestID=AdmissionPersonl.PathTestID || 0
       this.Adm_Visit_docId=AdmissionPersonl.Adm_Visit_docId || 0;
+      this.TemplateResultInHTML=AdmissionPersonl.TemplateResultInHTML || ''
     }
   }
 }

@@ -10,6 +10,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import Swal from 'sweetalert2';
+import { IPBrowseBillService } from 'app/main/ipd/ip-bill-browse-list/ip-browse-bill.service';
+import { BrowseOPBillService } from 'app/main/opd/browse-opbill/browse-opbill.service';
 
 @Component({
   selector: 'app-cancellation',
@@ -39,8 +41,7 @@ export class CancellationComponent implements OnInit {
   
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  private _IpBillBrowseListService: any;
-  private _BrowseOPDBillsService: any;
+ 
 
   constructor(
     public _CancellationService:CancellationService,
@@ -48,6 +49,8 @@ export class CancellationComponent implements OnInit {
     public datePipe: DatePipe,
     public _matDialog: MatDialog,
     private _loggedService: AuthenticationService,
+    public _IpBillBrowseListService: IPBrowseBillService,
+    public _BrowseOPDBillsService: BrowseOPBillService,
   ) { }
 
   ngOnInit(): void {
@@ -122,6 +125,9 @@ export class CancellationComponent implements OnInit {
       error => {
         this.sIsLoading = '';
       });
+  }
+  BillDate(){
+    Swal.fire('Api Error !', 'Bill Date Update!')
   }
   isLoading123:boolean=false;
   BillCancel(contact){

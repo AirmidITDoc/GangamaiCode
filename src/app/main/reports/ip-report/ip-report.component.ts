@@ -57,9 +57,10 @@ export class IpReportComponent implements OnInit {
   optionsUser: any[] = [];
   optionsPaymentMode: any[] = [];
   PaymentMode: any;
- 
+  filteredOptionsDisctype: Observable<string[]>;
+  DischargeTypeList: any = [];
   ReportName: any;
-  
+  isDistypeSelected: boolean = false;
   SpinLoading: boolean = false;
   AdList: boolean = false;
   FromDate: any;
@@ -73,7 +74,7 @@ export class IpReportComponent implements OnInit {
   optionsWard: any[] = [];
   optionsCompany: any[] = [];
   CompanyList: any =[];
-
+  vDescType=0;
 
   displayedColumns = [
     'ReportName'
@@ -107,11 +108,12 @@ export class IpReportComponent implements OnInit {
       this.Reportsection='IPBilling Reports'
     this.bindReportData();
   
-    
+    this.getDischargetypelist();
     this.GetUserList();
     this.getWardList();
     this.getCompanyList();
     this.getDoctorList();
+
     const toSelect = this.UserList.find(c => c.UserId == this.UserId);
     this._IPReportService.userForm.get('UserId').setValue(toSelect);
 
@@ -259,8 +261,8 @@ var data={
       this.FlagRequestIdSelected = false;
       this.FlagPaymentIdSelected = false;
       this.FlagMaterialConsumptionIdSelected=false;
-      this.FlagDischargetypeIdSelected=false;
-
+      this.FlagDischargetypeIdSelected=true;
+      this.FlagWardIdSelected=false;
     } 
     else if (this.ReportName == 'IPD Discharge Type Company Wise') {
       
@@ -273,6 +275,18 @@ var data={
       this.FlagMaterialConsumptionIdSelected=false;
       this.FlagDischargetypeIdSelected=true;
 
+    }
+    else if (this.ReportName == 'IPD Discharge Type Company Wise Count') {
+      
+      this.FlagAdmissionIdSelected=false;
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = true;
+      this.FlagAdvanceIdSelected = false;
+      this.FlagRequestIdSelected = false;
+      this.FlagPaymentIdSelected = false;
+      this.FlagMaterialConsumptionIdSelected=false;
+      this.FlagDischargetypeIdSelected=true;
+      this.FlagWardIdSelected=false;
     }  else if (this.ReportName == 'IPD RefDoctor Wise') {
       
       this.FlagAdmissionIdSelected=false
@@ -784,7 +798,13 @@ var data={
 
 
   getAdmittedPatientListview() {
-    // this.sIsLoading = 'loading-data';
+    let DoctorId=0
+    if (this._IPReportService.userForm.get('DoctorId').value)
+      DoctorId=this._IPReportService.userForm.get('DoctorId').value.DoctorId || 0;
+    let WardId=0
+    if (this._IPReportService.userForm.get('RoomId').value)
+      WardId=this._IPReportService.userForm.get('RoomId').value.RoomId || 0;
+ 
     
     setTimeout(() => {
       
@@ -792,8 +812,8 @@ var data={
     this._IPReportService.getAdmittedPatientListView(
      
       this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-      this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-      0,0,
+      this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",DoctorId
+    ,WardId
       ).subscribe(res => {
       const matDialog = this._matDialog.open(PdfviewerComponent,
         {
@@ -1086,14 +1106,20 @@ viewgetIPAdvanceReportPdf() {
      },100);
   }
   getCurrentadmitwardwisechargsview(){
-    this.SpinLoading =true;
+    let DoctorId = 0;
+    if (this._IPReportService.userForm.get('DoctorId').value)
+      DoctorId = this._IPReportService.userForm.get('UserId').value.DoctorId
+    let RoomId = 0;
+    if (this._IPReportService.userForm.get('RoomId').value)
+      RoomId =  this._IPReportService.userForm.get('RoomId').value.RoomId
+    let CompanyId = 0;
+    if (this._IPReportService.userForm.get('CompanyId').value)
+      CompanyId = this._IPReportService.userForm.get('CompanyId').value.CompanyId
+
     setTimeout(() => {
-      let DoctorId=this._IPReportService.userForm.get('DoctorId').value.DoctorId || 0
-      let  WardId=this._IPReportService.userForm.get('RoomId').value.RoomId || 0
-      let CompanyId=this._IPReportService.userForm.get('CompanyId').value.CompanyId || 0
+   
       this.AdList=true;
-     this._IPReportService.getCurrAdmitwardwisechargesView(
-      DoctorId, WardId,CompanyId
+     this._IPReportService.getCurrAdmitwardwisechargesView(DoctorId,RoomId,CompanyId
        ).subscribe(res => {
        const matDialog = this._matDialog.open(PdfviewerComponent,
          {
@@ -1173,10 +1199,10 @@ viewgetIPAdvanceReportPdf() {
      },100);
   }
   viewgetCurrRefdocAdmitlistReportPdf(){
-    let DoctorId
+    let DoctorId=0
     if (this._IPReportService.userForm.get('DoctorId').value)
-      DoctorId=this._IPReportService.userForm.get('DoctorId').value || 0;
-
+      DoctorId=this._IPReportService.userForm.get('DoctorId').value.DoctorId || 0;
+    debugger
 
     this.SpinLoading =true;
     setTimeout(() => {
@@ -1207,13 +1233,13 @@ viewgetIPAdvanceReportPdf() {
   viewgetDischargeTypewiseReportPdf(){
     this.SpinLoading =true;
     
-    let DoctorId
+    let DoctorId=0
     if (this._IPReportService.userForm.get('DoctorId').value)
-      DoctorId=this._IPReportService.userForm.get('DoctorId').value || 0;
+      DoctorId=this._IPReportService.userForm.get('DoctorId').value.DoctorId || 0;
 
-    let DischargeTypeId
+    let DischargeTypeId=0
     if (this._IPReportService.userForm.get('DischargeTypeId').value)
-      DischargeTypeId=this._IPReportService.userForm.get('DischargeTypeId').value || 0;
+      DischargeTypeId=this._IPReportService.userForm.get('DischargeTypeId').value.DischargeTypeId || 0;
 
     setTimeout(() => {
       
@@ -1244,20 +1270,19 @@ viewgetIPAdvanceReportPdf() {
   }
   viewgetDisctypecompanywisecountPdf(){
      
-    let DoctorId
+    let DoctorId=0
     if (this._IPReportService.userForm.get('DoctorId').value)
-      DoctorId=this._IPReportService.userForm.get('DoctorId').value || 0;
+      DoctorId=this._IPReportService.userForm.get('DoctorId').value.DoctorId || 0;
 
-    let DischargeTypeId
+    let DischargeTypeId=0
     if (this._IPReportService.userForm.get('DischargeTypeId').value)
-      DischargeTypeId=this._IPReportService.userForm.get('DischargeTypeId').value || 0;
+      DischargeTypeId=this._IPReportService.userForm.get('DischargeTypeId').value.DischargeTypeId || 0;
 
 
     setTimeout(() => {
       this.SpinLoading =true;
       this.AdList=true;
      this._IPReportService.getDischargetypewisecompanycountView(
-      
        this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
        this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
        DoctorId,DischargeTypeId
@@ -1431,22 +1456,20 @@ viewgetIPAdvanceReportPdf() {
      },100);
   }
   viewgetDischargetypecompanywisePdf(){
-   
-    let DoctorId
+   debugger
+    let DoctorId=0
     if (this._IPReportService.userForm.get('DoctorId').value)
-      DoctorId=this._IPReportService.userForm.get('DoctorId').value || 0;
+      DoctorId=this._IPReportService.userForm.get('DoctorId').value.DoctorId || 0;
 
-    let DischargeTypeId
+    let DischargeTypeId=0
     if (this._IPReportService.userForm.get('DischargeTypeId').value)
-      DischargeTypeId=this._IPReportService.userForm.get('DischargeTypeId').value || 0;
-
+      DischargeTypeId=this._IPReportService.userForm.get('DischargeTypeId').value.DischargeTypeId || 0;
 
     setTimeout(() => {
       this.SpinLoading =true;
       this.AdList=true;
      this._IPReportService.getDischargetypecompanywiseView(
-      
-       this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+      this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
        this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
        DoctorId,DischargeTypeId
        ).subscribe(res => {
@@ -1473,7 +1496,7 @@ viewgetIPAdvanceReportPdf() {
   viewgetIpdcurAdmitwardwisechargesReportPdf(){
     let DoctorId = 0;
     if (this._IPReportService.userForm.get('DoctorId').value)
-      DoctorId = this._IPReportService.userForm.get('UserId').value.DoctorId
+      DoctorId = this._IPReportService.userForm.get('DoctorId').value.DoctorId
     let RoomId = 0;
     if (this._IPReportService.userForm.get('RoomId').value)
       RoomId =  this._IPReportService.userForm.get('RoomId').value.RoomId
@@ -1541,11 +1564,11 @@ viewgetIPAdvanceReportPdf() {
    viewgetDischaregTypewisePdf() {
     this.sIsLoading = 'loading-data';
      
-    let DoctorId
+    let DoctorId=0;
     if (this._IPReportService.userForm.get('DoctorId').value)
-      DoctorId=this._IPReportService.userForm.get('DoctorId').value || 0;
+      DoctorId=this._IPReportService.userForm.get('DoctorId').value.DoctorId || 0;
 
-    let DischargeTypeId
+    let DischargeTypeId=0;
     if (this._IPReportService.userForm.get('DischargeTypeId').value)
       DischargeTypeId=this._IPReportService.userForm.get('DischargeTypeId').value || 0;
 
@@ -1615,8 +1638,7 @@ viewDatewiseAdmissioncountPdf() {
 
 
 viewmonthwiseAdmissioncountPdf() {
-  // this.sIsLoading = 'loading-data';
-  
+ 
   setTimeout(() => {
     
    this.AdList=true;
@@ -1649,7 +1671,6 @@ viewmonthwiseAdmissioncountPdf() {
 
 
 viewDatewisedrwiseAdmissioncountPdf() {
-  // this.sIsLoading = 'loading-data';
   
   setTimeout(() => {
     
@@ -2158,16 +2179,12 @@ viewIPDailyCollectionPdf() {
 
 viewgetOPIPCommanReportPdf() {
   let AddUserId = 0;
-
-    if (this._IPReportService.userForm.get('UserId').value)
-      
-    AddUserId = this._IPReportService.userForm.get('UserId').value.UserId
+if (this._IPReportService.userForm.get('UserId').value)
+      AddUserId = this._IPReportService.userForm.get('UserId').value.UserId
 
     let DoctorId = 0;
-  
-    if (this._IPReportService.userForm.get('DoctorId').value)
-      
-      DoctorId = this._IPReportService.userForm.get('DoctorId').value.DoctorID
+  if (this._IPReportService.userForm.get('DoctorId').value)
+  DoctorId = this._IPReportService.userForm.get('DoctorId').value.DoctorId
 
 
   setTimeout(() => {
@@ -2200,10 +2217,6 @@ viewgetOPIPCommanReportPdf() {
 }
 
 viewgetOPIPBillSummaryReportPdf() {
-
-  let AddUserId = 0;
-  if (this._IPReportService.userForm.get('UserId').value)
-    AddUserId = this._IPReportService.userForm.get('UserId').value.UserId
 
   setTimeout(() => {
     this.sIsLoading = 'loading-data';
@@ -2301,10 +2314,6 @@ this._IPReportService.getIpBillReport(
 
 
 viewgetBillSummaryReportPdf(){
-
-let AddUserId = 0;
-if (this._IPReportService.userForm.get('UserId').value)
-AddUserId = this._IPReportService.userForm.get('UserId').value.UserId
 
 setTimeout(() => {
 this.sIsLoading = 'loading-data';
@@ -2520,8 +2529,29 @@ this._IPReportService.getIpbillgenepaymentdueView(
 
 
 
+optionsDischargeType: any[] = [];
+getDischargetypelist() {
+  this._IPReportService.getDischargetypeCombo().subscribe(data => {
+    this.DischargeTypeList = data;
+    this.optionsDischargeType = this.DischargeTypeList.slice();
+    this.filteredOptionsDisctype = this._IPReportService.userForm.get('DischargeTypeId').valueChanges.pipe(
+      startWith(''),
+      map(value => value ? this._filterDischargeType(value) : this.DischargeTypeList.slice()),
+    );
+
+  });
+}
 
 
+private _filterDischargeType(value: any): string[] {
+  if (value) {
+    const filterValue = value && value.DischargeTypeName ? value.DischargeTypeName.toLowerCase() : value.toLowerCase();
+    return this.DischargeTypeList.filter(option => option.DischargeTypeName.toLowerCase().includes(filterValue));
+  }
+}
+getOptionTextDisctype(option) {
+  return option && option.DischargeTypeName ? option.DischargeTypeName : '';
+}
 
   userChk(option) {
     this.UserId = option.UserID || 0;

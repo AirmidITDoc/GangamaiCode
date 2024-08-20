@@ -9,6 +9,7 @@ import { ToastrService } from "ngx-toastr";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { AuthenticationService } from "app/core/services/authentication.service";
+import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
 
 @Component({
     selector: "app-unitmaster",
@@ -25,7 +26,7 @@ export class UnitmasterComponent implements OnInit {
         "IsDeleted",
         "action",
     ];
-
+    resultsLength=0;
     PrefixMasterList: any;
     GendercmbList: any = [];
     msg: any;
@@ -42,12 +43,16 @@ export class UnitmasterComponent implements OnInit {
         public _unitmasterService: UnitmasterService,
         public toastr: ToastrService,
         private accountService: AuthenticationService,
+        private _fuseSidebarService: FuseSidebarService,
         public _matDialog: MatDialog,
     ) { }
 
     ngOnInit(): void {
         this.getUnitMasterList();
     }
+    toggleSidebar(name): void {
+        this._fuseSidebarService.getSidebar(name).toggleOpen();
+      }
     onSearch() {
         this.getUnitMasterList();
     }
@@ -64,18 +69,19 @@ export class UnitmasterComponent implements OnInit {
         var param = {
             UnitName: this._unitmasterService.myformSearch.get('UnitNameSearch').value + "%" || "%",
         };
-        this._unitmasterService.getUnitMasterList(param).subscribe((Menu) => {
-            this.DSUnitmasterList.data = Menu as PathunitMaster[];
-            this.DSUnitmasterList1.data = Menu as PathunitMaster[];
+        this._unitmasterService.getUnitMasterList(param).subscribe((data) => {
+            this.DSUnitmasterList.data = data as PathunitMaster[];
+            this.DSUnitmasterList1.data = data as PathunitMaster[];
             this.tempList.data = this.DSUnitmasterList.data;
             console.log( this.DSUnitmasterList)
+            this.resultsLength=  this.DSUnitmasterList.data.length
             this.DSUnitmasterList.sort = this.sort;
             this.DSUnitmasterList.paginator = this.paginator;
         });
     }
 
     onClear() {
-        this._unitmasterService.myform.reset({ IsDeleted: "false" });
+        this._unitmasterService.myform.reset({ IsDeleted: "true" });
         this._unitmasterService.initializeFormGroup();
     }
 
@@ -249,7 +255,7 @@ export class PathunitMaster {
         {
             this.UnitId = PathunitMaster.UnitId || "";
             this.UnitName = PathunitMaster.UnitName || "";
-            this.IsDeleted = PathunitMaster.IsDeleted || "false";
+            this.IsDeleted = PathunitMaster.IsDeleted || "true";
             this.AddedBy = PathunitMaster.AddedBy || "";
             this.UpdatedBy = PathunitMaster.UpdatedBy || "";
         }

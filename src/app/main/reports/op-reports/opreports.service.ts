@@ -16,14 +16,19 @@ export class OPReportsService {
         enddate: [(new Date()).toISOString()],
         UserId:'',
         DoctorId:'',
-        
         VisitId:'',
-       PaymentId:'',
+        PaymentId:'',
         RefundId:'',
         DoctorID:'',
         ServiceId:'',
         DepartmentId:'',
-        GroupId:''
+        GroupId:'',
+        CashCounterID:'',
+        OPIPType:'',
+        SupplierName:'',
+        StoreId:'',
+        StoreId1:'',
+        NonMoveday:''
         // Radio:['1']
 
       })
@@ -74,8 +79,8 @@ export class OPReportsService {
   public getdepartmentwisecountsummView(FromDate,ToDate){
     return this._httpClient.get("OPReport/view-DepartmentWisecountSummury?FromDate="+FromDate+"&ToDate="+ToDate);
   }
-  public getDocwisevisitCountsummaryView(FromDate,ToDate,DoctorID){
-    return this._httpClient.get("CommanReport/view-DoctorWisePatientCountReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&DoctorID="+DoctorID);
+  public getDocwisevisitCountsummaryView(FromDate,ToDate){
+    return this._httpClient.get("OPReport/view-DoctorWiseOpdCountSummary?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
   
   public getAppointmentlistwithserviceavailedView(FromDate,ToDate){
@@ -303,6 +308,13 @@ return this._httpClient.get("OPReport/view-OPDoctorWiseNewOldPatientReport?FromD
     return this._httpClient.get("OPReport/view-OPDailyCollectionReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&AddedById="+AddedById+"&DoctorId="+doctorId);
   }
 
+  public getcashcounterwisedailycollectionView(FromDate,ToDate,OP_IP_Type,CashCounterId,UserId){
+    return this._httpClient.get("CommanReport/view-CashCounterWiseDailyCollection?FromDate=" + FromDate+"&ToDate="+ToDate+"&OP_IP_Type="+OP_IP_Type+"&CashCounterId="+CashCounterId+"&UserId="+UserId);
+  }
+  
+  public getcashcounterwisedailycollectionsummaryView(FromDate,ToDate,OP_IP_Type,CashCounterId,UserId){
+    return this._httpClient.get("CommanReport/view-ViewCashCounterWiseDailyCollectionSummary?FromDate=" + FromDate+"&ToDate="+ToDate+"&OP_IP_Type="+OP_IP_Type+"&CashCounterId="+CashCounterId+"&UserId="+UserId);
+  }
   // OPBilling
   public getOpDailyCollectionuserwise(FromDate,ToDate,AddedById){
     return this._httpClient.get("OPReport/view-OPDailyCollectionReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&AddedById="+AddedById);
@@ -376,11 +388,20 @@ return this._httpClient.get("OPReport/view-OPDoctorWiseNewOldPatientReport?FromD
   public getGRNReportNABH(FromDate,ToDate,StoreId){
     return this._httpClient.get("InventoryReports/view-GRNReportNΑΒΗ?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId);
   }
-  public getNonmovinglistReport(NonMovingDay,StoreId){
-    return this._httpClient.get("InventoryTransaction/view-NonMovingItem?NonMovingDay="+NonMovingDay+"&StoreId="+StoreId);
+  public getNonmovinglistReport(FromDate,ToDate,NonMovingDay,StoreId){
+    return this._httpClient.get("InventoryReports/view-NonMovingItemList?FromDate="+FromDate+"&ToDate="+ToDate+"&NonMovingDay="+NonMovingDay+"&StoreId="+StoreId);
   }
-
+  public getNonmovingitemwithoutbatchlistReport(FromDate,ToDate,NonMovingDay,StoreId){
+    return this._httpClient.get("InventoryReports/view-NonMovingItemWithoutBatchList?FromDate="+FromDate+"&ToDate="+ToDate+"&NonMovingDay="+NonMovingDay+"&StoreId="+StoreId);
+  }
   
+  
+  public getItemcountlistview(FromDate,ToDate,ItemId,ToStoreId){
+    return this._httpClient.get("InventoryReports/view-ItemCount?FromDate="+FromDate+"&ToDate="+ToDate+"&ItemId="+ItemId+"&ToStoreId="+ToStoreId);
+  }
+  public getLastpurchasewiseconsumptionview(FromDate,ToDate,ItemId){
+    return this._httpClient.get("InventoryReports/view-LastPurchaseRateWiseConsumtion?FromDate="+FromDate+"&ToDate="+ToDate+"&ItemId="+ItemId);
+  }
   public getGRNReturnReport(FromDate,ToDate,StoreId,SupplierID){
     return this._httpClient.get("InventoryReports/view-GRNReturnReport?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId+"&SupplierID="+SupplierID);
   }
@@ -432,8 +453,8 @@ public getPurchaseorderview(FromDate,ToDate,SupplierID,ToStoreId){
   public getIssuetodeptReport(IssueId){
     return this._httpClient.get("InventoryTransaction/view-IssuetoDeptIssuewise?IssueId="+IssueId);
   }
-  public getMaterialconsumptionmonthsummaryReport(FromDate,ToDate,StoreId,){
-    return this._httpClient.get("InventoryReports/view-MaterialConsumptionMonthlySummary?FromDate="+FromDate+"&ToDate="+ToDate + "&StoreId="+StoreId );
+  public getMaterialconsumptionmonthsummaryReport(FromDate,ToDate,ToStoreId){
+    return this._httpClient.get("InventoryReports/view-MaterialConsumptionMonthlySummary?FromDate="+FromDate+"&ToDate="+ToDate + "&ToStoreId="+ToStoreId );
   }
   
   public getCurrentstocklistReport(FromDate,ToDate){
@@ -448,12 +469,39 @@ public getPurchaseorderview(FromDate,ToDate,SupplierID,ToStoreId){
     return this._httpClient.get("Pharmacy/view-GRNReport?GRNID=" + GRNID);
   }
 
-  public getItemwisepurchaseview(FromDate,todate,StoreId){
-    return this._httpClient.get("InventoryTransaction/view-ItemWisePurchase?FromDate="+FromDate+"&todate="+todate+"&StoreId="+StoreId);
+  public getItemwisepurchaseview(FromDate,ToDate,SupplierID,ToStoreId){
+    return this._httpClient.get("InventoryReports/view-PurchaseOrder?FromDate="+FromDate+"&ToDate="+ToDate+"&SupplierID="+SupplierID+"&ToStoreId="+ToStoreId);
   }
   
+  public getItemwisesupplierlistview(StoreId,SupplierID,ItemId,FromDate,Todate){
+    return this._httpClient.get("InventoryReports/view-ItemWiseSupplierList?StoreId="+StoreId+"&SupplierID="+SupplierID+"&ItemId="+ItemId+"&FromDate="+FromDate+"&Todate="+Todate);
+  }
+  public getStockadjustmentview(FromDate,ToDate,ToStoreId){
+    return this._httpClient.get("InventoryReports/view-StockAdjustmentReport?FromDate="+FromDate+"&ToDate="+ToDate+"&ToStoreId="+ToStoreId);
+  }
 
   public getBillingServiceList(employee) {
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ServicesList", employee)
+  }
+
+  
+  
+  public getSupplierwisedebitcardnoteview(FromDate,ToDate,SupplierId,StoreId){
+    return this._httpClient.get("InventoryReports/view-SupplierWiseDebitCreditNote?FromDate="+FromDate+"&ToDate="+ToDate+"&SupplierId="+SupplierId+"&StoreId="+StoreId);
+  }
+
+  public getCashcounterList() {
+    return this._httpClient.post("Generic/GetByProc?procName=m_RtrvCashCounterForCombo", {})
+  }
+  
+  public getpurchasewisesummaryview(FromDate,ToDate){
+    return this._httpClient.get("InventoryReports/view-PurchaseWiseGRNSummary?FromDate="+FromDate+"&ToDate="+ToDate);
+  }
+  getStoreList(){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ToStoreName",{})
+  }
+
+  public getSupplierList(param){
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_SupplierName_list", param);
   }
   }

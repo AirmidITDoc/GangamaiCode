@@ -15,15 +15,23 @@ export class DischargeCancelService {
 
    CreateDischargeForm(){
     return this._formbuilder.group({
-      RegNo: '',
-      IPDNo: '',
-      FirstName: '',
-      LastName: '',  
+      RegID: '',
+      Op_ip_id: '1',
+      IsDischarged: '', 
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
     });
    }
-   public OPIPPatientList(param){
-    return this._httpClient.post('Generic/GetDataSetByProc?procName=Retrieve_OPIPPatientList',param);
-   }
+   public getAdmittedpatientlist(employee){
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch ", employee)
+  }
+  public SaveDischargeCancel(employee){
+    return this._httpClient.post("Administration/IPDischargeCancel", employee)
+  }
+  public getDischargepatientlist(employee){
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientDischargedListSearch ", employee)
+  }
+  public getDateTimeChange(data) {
+    return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
+  }
 }

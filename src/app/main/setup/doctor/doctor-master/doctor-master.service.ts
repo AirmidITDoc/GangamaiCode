@@ -43,10 +43,8 @@ export class DoctorMasterService {
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
                 ],
             ],
-            DateofBirth: [{ value: new Date() }],
+            DateOfBirth: [{ value: new Date() }],
             Address: [""],
-            City: ["", Validators.pattern("[a-zA-Z]+$")],
-            Pin: ["", [Validators.minLength(6), Validators.maxLength(6)]],
             Phone: [
                 "",
                 [
@@ -56,7 +54,7 @@ export class DoctorMasterService {
                     Validators.maxLength(15),
                 ],
             ],
-            Mobile: [
+            MobileNo: [
                 "",
                 [
                     Validators.required,
@@ -73,15 +71,6 @@ export class DoctorMasterService {
             isActive: ['1'],
             DoctorTypeId: [""],
             DoctorType: [""],
-            AgeYear: ["", Validators.pattern("[0-9]+")],
-            AgeMonth: ["", Validators.pattern("[0-9]+")],
-            AgeDay: ["", Validators.pattern("[0-9]+")],
-            // PassportNo: [
-            //     "",
-            //     Validators.pattern(
-            //         "^[A-PR-WYa-pr-wy][1-9]\\d" + "\\s?\\d{4}[1-9]$"
-            //     ),
-            // ],
             PassportNo: [""],
             ESINO: [""],
             RegNo: [""],
@@ -97,6 +86,9 @@ export class DoctorMasterService {
             AddedBy: [""],
             UpdatedBy: [""],
             AddedByName: [""],
+            Pancardno:[""],
+            AadharCardNo:[""],
+
         });
     }
 
@@ -104,6 +96,7 @@ export class DoctorMasterService {
         return this._formBuilder.group({
             DoctorNameSearch: [""],
             IsDeletedSearch: ["2"],
+            IsConsultant:["1"]
         });
     }
 
@@ -111,11 +104,8 @@ export class DoctorMasterService {
         this.createdDoctormasterForm();
     }
 
-    public getDoctorMasterList(m_data) {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_DoctorMaster_List_Dtls",
-            m_data
-        );
+    public getDoctorMasterList(Param) {
+        return this._httpClient.post("Generic/GetDataSetByProc?procName=m_Rtrv_DoctorMasterList_Pagi", Param);
     }
 
     public deactivateTheStatus(m_data) {
@@ -132,12 +122,12 @@ export class DoctorMasterService {
         );
     }
 
-    public getGenderCombo(Id) {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Retrieve_SexMasterForCombo_Conditional",
-            { Id: Id }
-        );
-    }
+    // public getGenderCombo(Id) {
+    //     return this._httpClient.post(
+    //         "Generic/GetByProc?procName=Retrieve_SexMasterForCombo_Conditional",
+    //         { Id: Id }
+    //     );
+    // }
 
     public getPrefixMasterCombo() {
         return this._httpClient.post(
@@ -146,13 +136,10 @@ export class DoctorMasterService {
         );
     }
 
-    public getGenderMasterCombo() {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=RetrieveGenderMasterForCombo",
-            {}
-        );
-    }
-
+    public getGenderCombo(Id) {
+      return this._httpClient.post("Generic/GetByProc?procName=Retrieve_SexMasterForCombo_Conditional", { "Id": Id })
+      }
+    
     public getDoctortypeMasterCombo() {
         return this._httpClient.post(
             "Generic/GetByProc?procName=RetrieveDoctorTypeMasterForCombo",
@@ -183,7 +170,11 @@ export class DoctorMasterService {
        );
    }
 
-
+  //  city list
+  public getCityList() {
+    
+    return this._httpClient.post("Generic/GetByProc?procName=RetrieveCityMasterForCombo", {})
+  }
     populateForm(param) {
         this.myform.patchValue(param);
     }

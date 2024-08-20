@@ -1,0 +1,485 @@
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <!-- HEADER -->
+    <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center">
+        <div fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%;">
+
+            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                style="width:80% ;font-size: 20px; font-weight: 400;">
+                Patient Feedback Form
+            </span>
+            <!-- </span> -->
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+                <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
+                </app-common-date>
+                <button mat-icon-button [mat-dialog-close]="true" tabIndex="-1" aria-label="Close dialog"
+                    (click)="onClose()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <mat-drawer-container autosize fxFlex>
+
+
+        <div class="content" style="background-color: rgb(242, 245, 245);">
+            <div class="center pb-56" style="border-radius: 4px;padding: 8px 8px 8px 8px;">
+
+                <div class="example-sidenav-content">
+
+                    <form [formGroup]="_FeedbackService.MyForm">
+                        <div fxFlexFill fxLayout="column" fxLayoutGap="6px">
+
+                            <mat-card fxFlex.gt-sm="74%" fxFlex style="padding: 6px;">
+                                <div class="patient-info-sales my-8">
+                                    <div class="patient-info-title border-bottom pb-2">
+                                        <span class="h1">Patient Information</span>
+                                    </div>
+                                    <div class="Ipd-patient-info" fxFlexFill fxLayout="row"
+                                        fxLayoutAlign="space-between center" class="patient-info">
+                                        <div class="patient-sub">
+                                            <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
+                                                fxLayoutAlign="space-between">
+                                                <div fxLayout="column" fxLayoutGap="10px">
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">UHID No
+                                                        </span>
+                                                        <span>:</span>
+                                                        <span
+                                                            class="patient-col-value">{{selectedAdvanceObj.RegNo}}</span>
+                                                    </div>
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">Patient Name
+                                                        </span>
+                                                        <span>:</span>
+                                                        <span
+                                                            class="patient-col-value">{{selectedAdvanceObj.PatientName}}</span>
+                                                    </div>
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">Doctor Name</span>
+                                                        <span>:</span>
+                                                        <span
+                                                            class="patient-col-value">{{selectedAdvanceObj.Doctorname}}</span>
+                                                    </div>
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">Department</span>
+                                                        <span>:</span>
+                                                        <span
+                                                            class="patient-col-value">{{selectedAdvanceObj.DepartmentName}}</span>
+                                                    </div>
+                                                </div>
+                                                <div fxLayout="column" fxLayoutGap="10px">
+
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">DOA | Time</span>
+                                                        <span>:</span>
+                                                        <span
+                                                            class="patient-col-value">{{selectedAdvanceObj.AdmDateTime}}</span>
+                                                    </div>
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">IPD No</span>
+                                                        <span>:</span>
+                                                        <span
+                                                            class="patient-col-value">{{selectedAdvanceObj.IPDNo}}</span>
+                                                    </div>
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">Age | Sex
+                                                        </span>
+                                                        <span>:</span>
+                                                        <span
+                                                            class="patient-col-value">{{selectedAdvanceObj.AgeYear}}Y|{{selectedAdvanceObj.AgeMonth}}M|{{selectedAdvanceObj.AgeDay}}
+                                                            D | {{selectedAdvanceObj.GenderName}}</span>
+                                                    </div>
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">Ref-Doctor Name
+                                                        </span>
+                                                        <span>:</span>
+                                                        <span
+                                                            class="patient-col-value">{{selectedAdvanceObj.RefDocName}}</span>
+                                                    </div>
+
+                                                </div>
+                                                <div fxLayout="column" fxLayoutGap="10px">
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">Ward | Bed Name
+                                                        </span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{selectedAdvanceObj.RoomName}}
+                                                            | {{selectedAdvanceObj.BedName}}</span>
+                                                    </div>
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">Patient Type
+                                                        </span>
+                                                        <span>:</span>
+                                                        <span
+                                                            class="patient-col-value">{{selectedAdvanceObj.PatientType}}</span>
+                                                    </div>
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">Tarrif Name
+                                                        </span>
+                                                        <span>:</span>
+                                                        <span
+                                                            class="patient-col-value">{{selectedAdvanceObj.TariffName}}</span>
+                                                    </div>
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">Company Name</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value"
+                                                            style="color: orange;">{{selectedAdvanceObj.CompanyName}}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </mat-card>
+                            <div fxLayout="row" fxLayoutGap="4px">
+                                <div fxFlex>
+                                    <span style="font-weight: bold;">At our Hospital we appriciate all
+                                        kinds of comments,good and bad from our
+                                        patients.Ypur feedback help us decide
+                                        what to keep doing and what to do better
+                                        We welcome detailed feedback and if you
+                                        choose to include your personal
+                                        details,we are committed to responding
+                                        to ypu winin 30 days.
+                                        Thank you for taking the time to write
+                                        to us.
+                                    </span>
+                                </div>
+                            </div>
+                            <div fxLayout="row" fxLayoutGap="4px">
+                                <mat-card style="padding: 5px;">
+
+                                    <div fxFlex.gt-sm="98%" fxFlex>
+                                        <mat-tab-group style="overflow: auto;">
+                                            <mat-tab label="Please Rate Each of this">
+                                                <div class="content" style="overflow: auto;height:450px;">
+                                                    <div class="center p-12 pb-56"
+                                                        style="border-radius: 4px;overflow: auto;">
+                                                        <form [formGroup]="_FeedbackService.MyfeedbackForm"
+                                                            fusePerfectScrollbar>
+                                                            <div fxFlexFill fxLayout="column" fxLayoutGap="6px">
+
+                                                                <div fxLayout="row" fxLayoutGap="10px">
+                                                                    <div fxFlex.gt-sm="100%" fxLayout="column">
+
+                                                                        <mat-card style="padding: 5px;">
+                                                                            <div fxLayout="row" fxLayoutGap="10px">
+                                                                                <div fxLayout="column"
+                                                                                    style="font-weight: bold;">
+
+                                                                                    <div fxLayout="row"
+                                                                                        fxLayoutGap="10px"
+                                                                                        style="height: 50px;font-size: large;color: blue;">
+                                                                                        Feedback
+                                                                                        Points
+                                                                                    </div>
+                                                                                    <span
+                                                                                        style="padding: 10px;">Exceptional
+                                                                                        Staff Courtesy and
+                                                                                        Care...</span>
+
+
+                                                                                    <span
+                                                                                        style="padding: 10px;">Efficient
+                                                                                        Appointment
+                                                                                        Scheduling and
+                                                                                        Management ...</span>
+                                                                                    <span style="padding: 10px;">
+                                                                                        Quality of Medical Treatment
+                                                                                        and
+                                                                                        Diagnosis ...</span>
+                                                                                    <span
+                                                                                        style="padding: 10px;">Efficient
+                                                                                        Appointment
+                                                                                        Scheduling and
+                                                                                        Management ...</span>
+                                                                                    <span style="padding: 10px;">Clean
+                                                                                        and Comfortable
+                                                                                        Facilities
+                                                                                        ...</span>
+                                                                                    <span
+                                                                                        style="padding: 10px;">Effective
+                                                                                        Communication
+                                                                                        Regarding
+                                                                                        Billing and Costs ...</span>
+                                                                                    <span style="padding: 10px;">Timely
+                                                                                        Follow-Up and
+                                                                                        Post-Treatment
+                                                                                        Care ...</span>
+                                                                                    <span
+                                                                                        style="padding: 10px;">Responsive
+                                                                                        and User-Friendly
+                                                                                        Online
+                                                                                        Presence ...</span>
+
+
+                                                                                    <span style="padding: 10px;">How
+                                                                                        likely will you
+                                                                                        recommended our
+                                                                                        medical business to friend or
+                                                                                        family
+                                                                                    </span>
+                                                                                    <span style="padding: 10px;">Do you
+                                                                                        have any suggestion for
+                                                                                        improvement regarding speed or
+                                                                                        efficeiency in our healthcare
+                                                                                        service
+                                                                                    </span>
+
+                                                                                </div>
+                                                                                <div fxLayout="column" fxFlex>
+                                                                                    <div fxLayout="row"
+                                                                                        fxLayoutAlign="space-between"
+                                                                                        style="margin-right: 10px;height: 50px;"
+                                                                                        fxFlex>
+                                                                                        <div fxLayout="column">
+                                                                                            <span
+                                                                                                style="margin-right: 5px;margin-left: 0px;">Excellent</span>
+                                                                                            <img width="45"
+                                                                                                height="15px"
+                                                                                                src="assets/images/logos/61.png"
+                                                                                                style="margin: 0px 5px 0px 0px;"
+                                                                                                matTooltip="No Pain">
+                                                                                        </div>
+                                                                                        <div fxLayout="column">
+                                                                                            <span
+                                                                                                style="margin: 0px 15px 0px 15px;">Good</span>
+                                                                                            <img width="45"
+                                                                                                height="15px"
+                                                                                                src="assets/images/logos/5.jpeg"
+                                                                                                style="margin: 0px 15px 0px 15px;"
+                                                                                                matTooltip="Mild Pain">
+                                                                                        </div>
+                                                                                        <div fxLayout="column">
+                                                                                            <span
+                                                                                                style="margin-right: 12px;">Average</span>
+                                                                                            <img width="45"
+                                                                                                height="15px"
+                                                                                                src="assets/images/logos/4.jpeg"
+                                                                                                style="margin: 0px 15px 0px 15px;"
+                                                                                                matTooltip="Moderate Pain">
+
+                                                                                        </div>
+                                                                                        <div fxLayout="column">
+                                                                                            <span
+                                                                                                style="margin-right: 5px;">Poor
+                                                                                            </span>
+                                                                                            <img width="45"
+                                                                                                height="15px"
+                                                                                                src="assets/images/logos/3.jpeg"
+                                                                                                style="margin-right: 10px;"
+                                                                                                matTooltip="Severe Pain">
+
+                                                                                        </div>
+                                                                                        <div fxLayout="column">
+                                                                                            <span
+                                                                                                style="margin-right: 0px;">Very
+                                                                                                Poor</span>
+                                                                                            <img width="45"
+                                                                                                height="15px"
+                                                                                                src="assets/images/logos/2.jpeg"
+                                                                                                style="margin: 0px 15px 0px 15px;"
+                                                                                                matTooltip="Very Server Pain">
+
+                                                                                        </div>
+                                                                                        <div fxLayout="column">
+                                                                                            <span>Worst</span>
+                                                                                            <img width="45"
+                                                                                                height="15px"
+                                                                                                src="assets/images/logos/1.jpeg"
+                                                                                                style="padding-top: 0px;"
+                                                                                                matTooltip="Worst Pain">
+                                                                                        </div>
+
+                                                                                    </div>
+                                                                                    <div fxLayout="row"
+                                                                                        fxLayoutAlign="space-between"
+                                                                                        style="margin-right: 10px;"
+                                                                                        fxFlex>
+                                                                                        <span style="padding: 10px;"
+                                                                                            fxFlex="50%">
+                                                                                            <!-- (change)="onChangeReg($event)" -->
+                                                                                            <mat-radio-group
+                                                                                                aria-label="Select an option"
+                                                                                                formControlName="fbone"
+                                                                                                name="fbone">
+                                                                                                <mat-radio-button
+                                                                                                    value="1">
+                                                                                                </mat-radio-button>
+                                                                                                <mat-radio-button
+                                                                                                    value="2"></mat-radio-button>
+                                                                                                <mat-radio-button
+                                                                                                    value="3">
+                                                                                                </mat-radio-button>
+                                                                                                <mat-radio-button
+                                                                                                    value="4"></mat-radio-button>
+                                                                                                <mat-radio-button
+                                                                                                    value="5"></mat-radio-button>
+                                                                                            </mat-radio-group>
+                                                                                        </span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+
+                                                                        </mat-card>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </mat-tab>
+
+                                            <!-- //seconds tab -->
+                                            <mat-tab label="Please describe your feedback">
+                                                <div class="content" style="overflow: auto;height:350px;">
+                                                    <div class="center p-12 pb-56" style="border-radius: 4px;">
+                                                        <form [formGroup]="_FeedbackService.MyfeedbackForm">
+                                                            <div fxFlexFill fxLayout="column" fxLayoutGap="8px">
+
+                                                                <div fxFlex.gt-sm="100%" fxFlex>
+                                                                    <mat-card style="padding: 5px;">
+                                                                        <mat-form-field appearance="outline"
+                                                                            class="mr-sm-12" style="width:100%;">
+                                                                            <textarea name="FeedbackComments" matInput
+                                                                                rows="10" cols="5"
+                                                                                placeholder="Enter Feedbackdetails"
+                                                                                formControlName="FeedbackComments">
+                                                                        </textarea>
+                                                                        </mat-form-field>
+                                                                        <mat-form-field appearance="outline" fxFlex>
+                                                                            <mat-label>Feedback Category </mat-label>
+                                                                         <input name="FeedbackCategory" formControlName="FeedbackCategory" placeholder="FeedbackCategory" matInput  [(ngModel)]="registerObj1.FeedbackCategory">
+                                                                        </mat-form-field>
+
+                                                                        <mat-form-field appearance="outline" fxFlex>
+                                                                            <mat-label>FeedbackRating </mat-label>
+                                                                            <input name="FeedbackRating" formControlName="FeedbackRating" placeholder="FeedbackRating" matInput  [(ngModel)]="registerObj1.FeedbackRating">
+                                                                        </mat-form-field>
+
+                                                                      
+                                                                    </mat-card>
+                                                                </div>
+
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </mat-tab>
+
+                                        </mat-tab-group>
+                                    </div>
+                                </mat-card>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+            <div class="modal-footer" style="margin-left: 1000px;">
+                <div class="footer-navigation-container">
+                    <div class="modal-footer-buttons">
+                        <!-- <button class="btn btn-primary" (click)="getPrint()">Print</button> -->
+                        <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                        <button class="btn btn-primary" (click)="onSubmit()">Save</button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <mat-drawer #drawer class="example-sidenav" mode="side" opened
+            style="margin-left: 0px;width: 350px;background-color: rgb(238, 245, 245);">
+            <div class="sidebar-content p-12">
+                <form [formGroup]="_FeedbackService.MyForm">
+                    <div fxFlexFill fxLayout="column" fxLayoutGap="4px">
+                        <mat-form-field appearance="outline" fxFlex>
+                            <input type="text" name="WardName" formControlName="WardName" placeholder="search Ward Name"
+                                matInput [matAutocomplete]="autofeedWard" required>
+                            <span matSuffix style="display: flex;">
+                                <mat-icon class="mat-icon-close" (click)="getwardWisePatList()">close</mat-icon>
+                                <mat-icon class="mat-icon-close" (click)="getwardWisePatList()">search</mat-icon>
+                            </span>
+                            <mat-autocomplete #autofeedWard="matAutocomplete" [displayWith]="getOptionTextWardName"
+                                (optionSelected)='getSelectedObjward($event.option.value)'>
+                                <mat-option *ngFor="let option of wardListfilteredOptions | async" [value]="option">
+                                    {{option.WardName}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="24%">
+                            <input type="text" name="RegID" formControlName="RegID"
+                                placeholder="Search First Name / Last Name " matInput>
+                            <span matSuffix style="display: flex;">
+                                <mat-icon class="mat-icon-close"
+                                    (click)="_FeedbackService.MyForm.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                                <mat-icon class="mat-icon-close"
+                                    (click)="_FeedbackService.MyForm.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
+                            </span>
+                        </mat-form-field>
+
+                        <mat-card style="padding: 6px;" fxFlex.gt-sm="100%" fxFlex>
+                            <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                                class="backgroundBlur" style="height: 50%;width: 250px;">
+                                <div class="spinner-border text-danger"></div>
+                            </div>
+                            <mat-table class="table2" matSort [dataSource]="dsPatientlist"
+                                [@animateStagger]="{value:'50'}" style="overflow: auto;height:575px;">
+
+                                <ng-container matColumnDef="patientId">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
+                                        class="w-100">
+                                        Bed No </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-100">
+                                        {{element.BedName}} </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="PatientName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                        PatientName </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                        {{element.PatientName}} </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="loading">
+                                    <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                    </mat-header-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="noData">
+                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                        no data found...
+                                    </mat-footer-cell>
+                                </ng-container>
+
+                                <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+                                </mat-header-row>
+                                <mat-row *matRowDef="let row; columns: displayedColumns;"
+                                    [@animate]="{value:'*',params:{y:'100%'}}" (click)="getpatientDet(row)"></mat-row>
+                                <mat-footer-row *matFooterRowDef="['loading']"
+                                    [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                </mat-footer-row>
+                                <mat-footer-row *matFooterRowDef="['noData']"
+                                    [ngClass]="{'hide':!(dsPatientlist!=null && dsPatientlist.data.length==0)}">
+                                </mat-footer-row>
+                            </mat-table>
+                            <mat-paginator #wardpaginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10"
+                                showFirstLastButtons>
+                            </mat-paginator>
+                        </mat-card>
+                    </div>
+                </form>
+            </div>
+        </mat-drawer>
+    </mat-drawer-container>
+</div>

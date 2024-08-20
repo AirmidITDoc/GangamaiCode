@@ -56,6 +56,7 @@ import { DischargeSummaryComponent } from './discharge-summary/discharge-summary
 import { IpPaymentwithAdvanceComponent } from './ip-paymentwith-advance/ip-paymentwith-advance.component';
 import { PrebillDetailsComponent } from './ip-billing/prebill-details/prebill-details.component';
 import { DiscountAfterFinalBillComponent } from './discount-after-final-bill/discount-after-final-bill.component';
+import { OPIPFeedbackComponent } from '../Feedback/opip-feedback/opip-feedback.component';
 
 
 
@@ -83,7 +84,8 @@ const routes: Routes = [
       DischargeSummaryComponent,
       IpPaymentwithAdvanceComponent,
       PrebillDetailsComponent,
-      DiscountAfterFinalBillComponent
+      DiscountAfterFinalBillComponent,
+      OPIPFeedbackComponent
     ],
     imports: [
         RouterModule.forChild(routes),

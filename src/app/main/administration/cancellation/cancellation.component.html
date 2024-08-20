@@ -116,63 +116,63 @@
                             </ng-container>
 
                             <ng-container matColumnDef="PaidAmount">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
                                     Paid Amt </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
                                     {{contact.PaidAmt | currency:"INR":"symbol"}}
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="BillAmt">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
                                     Bill Amt </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
                                     {{contact.NetPayableAmt | currency:"INR":"symbol"}}
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="ConAmt">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
                                     Discount Amt </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
                                     {{contact.ConcessionAmt | currency:"INR":"symbol"}}
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="NetpayableAmt">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
                                     Net Amt</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
                                     {{contact.NetPayableAmt | currency:"INR":"symbol"}}
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="BillDate">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-110">
                                     Bill Date</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-110">
                                     {{contact.BillDate | date: 'dd/MM/yyyy'}}
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="PBillNo">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-110">
                                     PBill No</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-110">
                                     {{contact.PBillNo}}
                                 </mat-cell>
                             </ng-container> 
 
                             <ng-container matColumnDef="action" stickyEnd>
-                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Action
+                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;" class="w-250">Action
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let contact">
-                                    <!-- <button mat-icon-button class="material-icons" (click)="getRecord(contact)" matTooltip="Print Final Bill">
-                                        <mat-icon> print </mat-icon>
-                                    </button> -->
-                                    <button mat-icon-button class="material-icons" (click)="BillCancel(contact)" matTooltip="Cancle Bill">
-                                        <mat-icon> backspace </mat-icon>
-                                    </button>
+                                <mat-cell *matCellDef="let contact" class="w-250"> 
+                                  
+                                    <button class="btn btn-primary" (click)="BillDate(contact)" 
+                                    matTooltip="Bill Date Update">Bill Date Update</button>&nbsp;
+                                    <button class="btn btn-danger" (click)="BillCancel(contact)" matTooltip="Cancle Bill" style="color: white;">
+                                        Bill Cancel
+                                     </button>
                                 </mat-cell>
                             </ng-container>
 

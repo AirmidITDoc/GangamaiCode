@@ -27,6 +27,7 @@ import { CompanyInformationComponent } from '../company-information/company-info
 import { NewCasepaperComponent } from 'app/main/opd/new-casepaper/new-casepaper.component';
 import { IPRefundofAdvanceComponent } from '../ip-refundof-advance/ip-refundof-advance.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { OPIPFeedbackComponent } from '../Feedback/opip-feedback/opip-feedback.component';
 
 
 
@@ -111,6 +112,7 @@ export class IPSearchListComponent implements OnInit {
     else if (this._ActRoute.url == '/ipd/discharge') {
       this.menuActions.push('Discharge');
       this.menuActions.push('Discharge Summary');
+      this.menuActions.push('Patient Feedback');
     }
     else if (this._ActRoute.url == '/ipd/dischargesummary') {
       this.menuActions.push('Discharge');
@@ -513,6 +515,58 @@ export class IPSearchListComponent implements OnInit {
         });
 
       }
+    }  else if (m == "Patient Feedback") {
+      console.log(contact);
+      if (!contact.IsDischarged) {
+
+
+        this.advanceDataStored.storage = new AdvanceDetailObj(contact);
+        this._IpSearchListService.populateForm(contact);
+        const dialogRef = this._matDialog.open(OPIPFeedbackComponent,
+          {
+           maxWidth: "95vw",
+          maxHeight: "115vh", width: '100%', height: "100%",
+            data: {
+              Obj: contact
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          console.log('The dialog was closed - Insert Action', result);
+          this.getAdmittedPatientList();
+        });
+      } else {
+        console.log(contact)
+        Swal.fire({
+          title: 'Patient feedBack Edit',
+          // showDenyButton: true,
+          showCancelButton: true,
+          confirmButtonText: 'OK',
+
+        }).then((result) => {
+
+          if (result.isConfirmed) {
+
+            this.advanceDataStored.storage = new AdvanceDetailObj(contact);
+            this._IpSearchListService.populateForm(contact);
+            const dialogRef = this._matDialog.open(OPIPFeedbackComponent,
+              {
+                maxWidth: "95vw",
+                maxHeight: "115vh", width: '100%', height: "100%",
+                  data: {
+                    Obj: contact
+                  }
+              });
+            dialogRef.afterClosed().subscribe(result => {
+              console.log('The dialog was closed - Insert Action', result);
+
+            });
+          }
+          else {
+
+          }
+        });
+
+      }
     }
     else if (m == "Bed Transfer") {
       console.log(" This is for BedTransfer pop : " + m);
@@ -675,7 +729,7 @@ export class IPSearchListComponent implements OnInit {
     });
   }
 
-
+  
 }
 
 

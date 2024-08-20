@@ -49,7 +49,9 @@ export class DoctortypeMasterService {
     public doctorTypeMasterUpdate(param) {
         return this._httpClient.post("DoctorMaster/DoctorTypeUpdate", param);
     }
-
+    public deactivateTheStatus(m_data) {
+        return this._httpClient.post("Generic/ExecByQueryStatement?query=" + m_data,{});
+    }
     populateForm(param) {
         this.myform.patchValue(param);
     }

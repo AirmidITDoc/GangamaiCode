@@ -54,7 +54,7 @@ export class ResultEntrytwoComponent implements OnInit {
  TemplateDesc:any;
   otherForm: FormGroup;
   reportIdData:any;
-  // private _matDialog: any;
+  TemplateId:any=0;
   vTemplateDesc:any="";
   OP_IPType:any;
   constructor(
@@ -76,11 +76,15 @@ export class ResultEntrytwoComponent implements OnInit {
       console.log( this.selectedAdvanceObj1)
       this.OP_IPType=this.selectedAdvanceObj1.OPD_IPD_Type
       this.reportIdData =this.selectedAdvanceObj1.PathReportID
+      this.getTemplateList();
+  
 
-
-   // this.vTemplateDesc= this.selectedAdvanceObj.TemplateDesc;
+      if (this.OP_IPType == 1)
+        this.getTemplatedetailIP();
+      else
+        this.getTemplatedetailOP();
     }
-    
+   
    }
 
   ngOnInit(): void {
@@ -90,14 +94,12 @@ export class ResultEntrytwoComponent implements OnInit {
       TemplateId:[0]
     
     });
-    this.getTemplateList();
    
-    
-    // if (this.Iscompleted == 1) {
-      if (this.OP_IPType == 1)
-        this.getTemplatedetailIP();
-      else
-        this.getTemplatedetailOP();
+        this.filteredOptionsisTemplate = this.otherForm.get('TemplateName').valueChanges.pipe(
+          startWith(''),
+          map(value => this._filterTemplate(value)),
+      );
+      
     }
    
 
@@ -106,8 +108,8 @@ export class ResultEntrytwoComponent implements OnInit {
       let SelectQuery = "select * from T_PathologyReportTemplateDetails  where PathReportId in(" + this.reportIdData + ")"
       console.log(SelectQuery);
       this._SampleService.getPathologyTemplateforIP(SelectQuery).subscribe(Visit => {
-        // this.Pthologyresult = Visit as Pthologyresult[];
-      
+        this.vTemplateDesc= Visit[0]["TemplateResultInHTML"];
+      this.TemplateId=Visit[0]["PathTemplateId"];
       },
         error => {
           this.sIsLoading = '';
@@ -119,9 +121,12 @@ export class ResultEntrytwoComponent implements OnInit {
       let SelectQuery = "select * from T_PathologyReportTemplateDetails  where PathReportId in(" + this.reportIdData + ")"
       console.log(SelectQuery)
       this._SampleService.getPathologyTemplateforOP(SelectQuery).subscribe(Visit => {
-      // this.Pthologyresult = Visit as Pthologyresult[];
-      //   console.log(this.Pthologyresult);
-      
+       if(Visit){
+        this.vTemplateDesc= Visit[0]["TemplateResultInHTML"];
+        this.TemplateId=Visit[0]["PathTemplateId"];
+        console.log( this.TemplateId)
+        this.getTemplatelist();
+        }
       },
         error => {
           this.sIsLoading = '';
@@ -147,18 +152,15 @@ export class ResultEntrytwoComponent implements OnInit {
     let pathologyTemplateDeleteObj = {};
     pathologyTemplateDeleteObj['pathReportId'] = this.selectedAdvanceObj1.PathReportID;
     this.isLoading = 'submit';
-    // let pathologyTemplateInsertObjarr = [];
-   
-     
+    
     let pathologyTemplateInsertObj = {};
         
     pathologyTemplateInsertObj['PathReportId'] = this.selectedAdvanceObj1.PathReportID ;
     pathologyTemplateInsertObj['PathTemplateId']= this.otherForm.get("TemplateName").value.TemplateId || 0;
-    pathologyTemplateInsertObj['PathTemplateDetailsResult']= this.otherForm.get("ResultEntry").value,
-    pathologyTemplateInsertObj['TemplateResultInHTML']= this.otherForm.get("ResultEntry").value,
+    pathologyTemplateInsertObj['PathTemplateDetailsResult']= this.vTemplateDesc,//this.otherForm.get("ResultEntry").value.trim(),
+    pathologyTemplateInsertObj['TemplateResultInHTML']=this.vTemplateDesc,// this.otherForm.get("ResultEntry").value.trim(),
     pathologyTemplateInsertObj['TestId'] = this.selectedAdvanceObj1.PathTestID || 0;
-    // pathologyTemplateInsertObjarr.push(pathologyTemplateInsertObj);
-    
+   
     let pathologyTemplateUpdateObj = {};
    
     pathologyTemplateUpdateObj['PathReportID'] =this.selectedAdvanceObj1.PathReportID;
@@ -210,11 +212,8 @@ export class ResultEntrytwoComponent implements OnInit {
 
   
   viewgetPathologyTemplateReportPdf(PathReportID) {
-    
-    this._SampleService.getPathologyTempReport(
-      PathReportID,this.selectedAdvanceObj1.OPD_IPD_Type
-      
-      ).subscribe(res => {
+    debugger
+    this._SampleService.getPathologyTempReport(PathReportID,this.selectedAdvanceObj1.OPD_IPD_Type).subscribe(res => {
       const dialogRef = this._matDialog.open(PdfviewerComponent,
         {
           maxWidth: "85vw",
@@ -276,6 +275,30 @@ export class ResultEntrytwoComponent implements OnInit {
     });
   }
 
+  getTemplatelist() {
+    var mdata={
+      Id:this.selectedAdvanceObj1.ServiceId
+      
+  }
+    this._SampleService.getTemplateCombo(mdata).subscribe(data => {
+        this.TemplateList = data;
+        debugger
+        if (this.data) {
+          const ddValue = this.TemplateList.filter(c => c.TemplateId == this.TemplateId);
+          this.otherForm.get('TemplateName').setValue(ddValue[0]);
+          this.otherForm.updateValueAndValidity();
+          return;
+      }
+    });
+}
+
+private _filtertemplate(value: any): string[] {
+  if (value) {
+      const filterValue = value && value.TemplateName ? value.TemplateName.toLowerCase() : value.toLowerCase();
+      return this.TemplateList.filter(option => option.TemplateName.toLowerCase().includes(filterValue));
+  }
+}
+
   private _filterTemplate(value: any): string[] {
     if (value) {
       const filterValue = value && value.TemplateName ? value.TemplateName.toLowerCase() : value.toLowerCase();
@@ -291,15 +314,9 @@ export class ResultEntrytwoComponent implements OnInit {
   }
 
   onAddTemplate(){
-    
-    this.vTemplateDesc=this.otherForm.get('TemplateName').value.TemplateDesc || ''
-    console.log(this.vTemplateDesc)
-
-    // const parser = new DOMParser();
-    // this.vTemplateDesc = parser.parseFromString(this.otherForm.get('TemplateName').value.TemplateDesc, 'text/html');
-
-    // console.log(this.vTemplateDesc)
-
+ 
+    this.vTemplateDesc=this.otherForm.get('TemplateName').value.TemplateDescInHTML || ''
+ 
   }
 }
 

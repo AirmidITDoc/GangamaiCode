@@ -12,6 +12,7 @@ import { timeStamp } from "console";
 import { forEach } from "lodash";
 import { MatAccordion } from "@angular/material/expansion";
 import { AuthenticationService } from "app/core/services/authentication.service";
+import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
 
 @Component({
     selector: "app-categorymaster",
@@ -37,30 +38,36 @@ export class CategorymasterComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatAccordion) accordion: MatAccordion;
-
+    resultsLength = 0;
 
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     constructor(
         public _categorymasterService: CategorymasterService,
         public _matDialog: MatDialog,
         private accountService: AuthenticationService,
+        private _fuseSidebarService: FuseSidebarService,
         public toastr: ToastrService,
     ) { }
 
     ngOnInit(): void {
         this.getCategoryMasterList();
     }
+
+    toggleSidebar(name): void {
+        this._fuseSidebarService.getSidebar(name).toggleOpen();
+      }
     getCategoryMasterList() {
         var param = {
             CategoryName: this._categorymasterService.myformSearch.get("CategoryNameSearch").value + "%" || "%",
 
         };
-        this._categorymasterService.getCategoryMasterList(param).subscribe((Menu) => {
-            this.DSCategoryMasterList.data = Menu as CategoryMaster[];
+        this._categorymasterService.getCategoryMasterList(param).subscribe((data) => {
+            this.DSCategoryMasterList.data = data as CategoryMaster[];
             this.tempList.data = this.DSCategoryMasterList.data;
             this.DSCategoryMasterList1.data= this.DSCategoryMasterList.data;
             this.DSCategoryMasterList.sort = this.sort;
             this.DSCategoryMasterList.paginator = this.paginator;
+            this.resultsLength= this.DSCategoryMasterList.data.length
         });
     }
 
@@ -79,7 +86,7 @@ export class CategorymasterComponent implements OnInit {
 
 
     onClear() {
-        this._categorymasterService.myform.reset({ IsDeleted: "false" });
+        this._categorymasterService.myform.reset({ IsDeleted: "true" });
         this._categorymasterService.initializeFormGroup();
     }
     toggle(val: any) {
@@ -223,13 +230,13 @@ export class CategorymasterComponent implements OnInit {
         });
     }
     onEdit(row) {
-        var m_data = {
-            CategoryId: row.CategoryId,
-            CategoryName: row.CategoryName.trim(),
-            Isdeleted: JSON.stringify(row.Isdeleted),
-            UpdatedBy: row.UpdatedBy,
-        };
-        this._categorymasterService.populateForm(m_data);
+        // var m_data = {
+        //     CategoryId: row.CategoryId,
+        //     CategoryName: row.CategoryName.trim(),
+        //     Isdeleted: JSON.stringify(row.Isdeleted),
+        //     UpdatedBy: row.UpdatedBy,
+        // };
+        this._categorymasterService.populateForm(row);
     }
 }
 
@@ -249,7 +256,7 @@ export class CategoryMaster {
         {
             this.CategoryId = CategoryMaster.CategoryId || "";
             this.CategoryName = CategoryMaster.CategoryName || "";
-            this.IsDeleted = CategoryMaster.IsDeleted || "false";
+            this.IsDeleted = CategoryMaster.IsDeleted || "true";
             this.AddedBy = CategoryMaster.AddedBy || "";
             this.UpdatedBy = CategoryMaster.UpdatedBy || "";
         }
