@@ -15,6 +15,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddDoctorShareComponent } from './add-doctor-share/add-doctor-share.component';
 import { MatDrawer } from '@angular/material/sidenav';
 import { ProcessDoctorShareComponent } from './process-doctor-share/process-doctor-share.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-doctor-share',
@@ -34,6 +35,7 @@ export class DoctorShareComponent implements OnInit {
     'AdmittedDoctorName',
     'PatientType', 
     'CompanyName',
+    'Action'
   ];
   @ViewChild('drawer') public drawer: MatDrawer;
   isRegIdSelected : boolean = false;
@@ -113,6 +115,68 @@ getOptionTextDoctorName(option) {
         this.sIsLoading = '';
       });
   }  
+
+  viewDocShareSummaryReport(el) {
+    console.log(el) 
+    debugger 
+      this.sIsLoading = 'loading-data'; 
+     let FromDate = this.datePipe.transform(this._DoctorShareService.UserFormGroup.get("startdate").value,"MM-dd-yyyy") || "01/01/1900";
+     let ToDate =  this.datePipe.transform(this._DoctorShareService.UserFormGroup.get("enddate").value,"MM-dd-yyyy") || "01/01/1900";
+     let DoctorId = this._DoctorShareService.UserFormGroup.get('DoctorID').value.DoctorId || 0;
+ 
+    console.log(FromDate)
+    console.log(ToDate)
+    console.log(DoctorId)
+      setTimeout(() => { 
+        this._DoctorShareService.getPdfDocShareSummaryRpt(FromDate,ToDate,DoctorId).subscribe(res => {
+          const dialogRef = this._matDialog.open(PdfviewerComponent,
+            {
+              maxWidth: "85vw",
+              height: '750px',
+              width: '100%',
+              data: {
+                base64: res["base64"] as string,
+                title: "Doctor Share Summary"
+              }
+            });
+          dialogRef.afterClosed().subscribe(result => { 
+            this.sIsLoading = '';
+          });
+        });
+  
+      }, 100);
+    }
+    viewDocShareReport(el) {
+      console.log(el) 
+      debugger 
+        this.sIsLoading = 'loading-data'; 
+       let FromDate = this.datePipe.transform(this._DoctorShareService.UserFormGroup.get("startdate").value,"MM-dd-yyyy") || "01/01/1900";
+       let ToDate =  this.datePipe.transform(this._DoctorShareService.UserFormGroup.get("enddate").value,"MM-dd-yyyy") || "01/01/1900";
+       let DoctorId = this._DoctorShareService.UserFormGroup.get('DoctorID').value.DoctorId || 0;
+   
+      console.log(FromDate)
+      console.log(ToDate)
+      console.log(DoctorId)
+        setTimeout(() => { 
+          this._DoctorShareService.getPdfDocShareRpt(FromDate,ToDate,DoctorId).subscribe(res => {
+            const dialogRef = this._matDialog.open(PdfviewerComponent,
+              {
+                maxWidth: "85vw",
+                height: '750px',
+                width: '100%',
+                data: {
+                  base64: res["base64"] as string,
+                  title: "Doctor Share Report"
+                }
+              });
+            dialogRef.afterClosed().subscribe(result => { 
+              this.sIsLoading = '';
+            });
+          });
+    
+        }, 100);
+      }
+  
   NewDocShare(){
     const dialogRef = this._matDialog.open(AddDoctorShareComponent,
       { 
@@ -153,6 +217,7 @@ getOptionTextDoctorName(option) {
       return false;
     }
   }
+
 }
 
 

@@ -14,7 +14,6 @@ export class ConfigService {
   }
 
   getConfigParam() {
-   
     return this.configParams;
   }
 }

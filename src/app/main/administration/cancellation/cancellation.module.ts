@@ -35,6 +35,7 @@ import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatChipsModule } from '@angular/material/chips';
+import { BillDateUpdateComponent } from './bill-date-update/bill-date-update.component';
 
 
 
@@ -46,7 +47,7 @@ const routes : Routes =[
 ];
 
 @NgModule({
-  declarations: [CancellationComponent],
+  declarations: [CancellationComponent, BillDateUpdateComponent],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,

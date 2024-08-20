@@ -7,6 +7,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 })
 export class CancellationService {
   UserFormGroup: FormGroup;
+  MyForm: FormGroup;
   constructor(
     public _formBuilder: FormBuilder,
     public _httpClient: HttpClient
@@ -33,4 +34,7 @@ export class CancellationService {
   public SaveCancelBill(param) {
     return this._httpClient.post("Administration/Billcancellation", param) 
   }
+  public getDateTimeChange(m_data) {
+    return this._httpClient.post("Generic/ExecByQueryStatement?query=" + m_data,{});
+}
 }
