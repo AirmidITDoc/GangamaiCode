@@ -27,7 +27,7 @@ import { AuthenticationService } from "app/core/services/authentication.service"
 })
 export class TestFormMasterComponent implements OnInit {
     displayedColumns: string[] = ['ParameterName'];
-    displayedColumns2: string[] = ['Reorder', 'ParameterName','PrintParameterName', 'MethodName','UnitName', 'ParaMultipleRange','Formula','IsNumeric', 'Action'];
+    displayedColumns2: string[] = ['Reorder', 'ParameterName', 'PrintParameterName', 'MethodName', 'UnitName', 'ParaMultipleRange', 'Formula', 'IsNumeric', 'Action'];
     displayedColumns3: string[] = ['Template Name', 'Add'];
     displayedColumns4: string[] = ['ParameterName'];
     displayedColumns5: string[] = ['TemplateName', 'Action'];
@@ -107,7 +107,7 @@ export class TestFormMasterComponent implements OnInit {
                 this.Statusflag = true;
                 this.fetchTemplate()
 
-            }else if(!this.registerObj.IsTemplateTest && this.registerObj.IsSubTest){
+            } else if (!this.registerObj.IsTemplateTest && this.registerObj.IsSubTest) {
                 this.Subtest = this.registerObj.IsSubTest
                 this.Statusflag = false;
                 this._TestService.is_templatetest = false;
@@ -115,11 +115,11 @@ export class TestFormMasterComponent implements OnInit {
                 this._TestService.is_Test = false;
                 this.fetchTestlist();
             }
-            
+
             this._TestService.populateForm(this.registerObj);
             this.getCategoryNameCombobox();
             this.getServiceNameCombobox();
-      
+
         }
 
         this.getcategoryNameCombobox();
@@ -149,9 +149,9 @@ export class TestFormMasterComponent implements OnInit {
 
 
     fetchTestlist() {
-      
-        var m_data={
-            "TestId":this.TestId
+
+        var m_data = {
+            "TestId": this.TestId
         }
         this._TestService.getTestListfor(m_data).subscribe(Visit => {
             console.log(Visit)
@@ -162,8 +162,8 @@ export class TestFormMasterComponent implements OnInit {
 
     fetchTemplate() {
         debugger
-        var m_data={
-            "TestId":this.TestId
+        var m_data = {
+            "TestId": this.TestId
         }
         this._TestService.getTemplateListfor(m_data).subscribe(Visit => {
             this.Templatetdatasource.data = Visit as TemplatedetailList[];
@@ -207,7 +207,7 @@ export class TestFormMasterComponent implements OnInit {
         this._TestService.myformSearch.reset({
             TestNameSearch: "",
             IsDeletedSearch: "2",
-           
+
         });
 
         this._TestService.myform.reset();
@@ -215,10 +215,10 @@ export class TestFormMasterComponent implements OnInit {
     }
     onSearch() {
         debugger
-        if(this._TestService.myform.get("IsSubTest").value == !this.isChecked)
-        this.getParameterNameCombobox();
-    else
-        this.getSubTestMasterList();
+        if (this._TestService.myform.get("IsSubTest").value == !this.isChecked)
+            this.getParameterNameCombobox();
+        else
+            this.getSubTestMasterList();
     }
 
 
@@ -244,9 +244,10 @@ export class TestFormMasterComponent implements OnInit {
     }
 
     getParameterNameCombobox() {
-        this._TestService.getParameterMasterCombo().subscribe((data) => {this.paramterList.data = data;
-               this.Parametercmb = data;
-            });
+        this._TestService.getParameterMasterCombo().subscribe((data) => {
+            this.paramterList.data = data;
+            this.Parametercmb = data;
+        });
         // console.log(this.Parametercmb);
     }
 
@@ -330,40 +331,40 @@ export class TestFormMasterComponent implements OnInit {
 
     getSubTestMasterList() {
         debugger
-        
-        var m_dat={
-            TestName:this._TestService.myform.get('ParameterNameSearch').value + "%" || '%'
+
+        var m_dat = {
+            TestName: this._TestService.myform.get('ParameterNameSearch').value + "%" || '%'
         }
         this._TestService.getNewSubTestList(m_dat).subscribe((Menu) => {
             this.subTestList.data = Menu as TestList[];
-          
+
         });
 
-        if(this.subTestList.data.length > 0){
-            this.paramterList.data=[];
+        if (this.subTestList.data.length > 0) {
+            this.paramterList.data = [];
             debugger
-            this.paramterList.data=this.subTestList.data;
+            this.paramterList.data = this.subTestList.data;
 
-        // this.subTestList.data.forEach((element) => {
-        //    let i=0;
-        //     debugger
-        //     this.paramterList.data[i]["ParameterName"]=element.TestName
-        //     i++;
-        // });
+            // this.subTestList.data.forEach((element) => {
+            //    let i=0;
+            //     debugger
+            //     this.paramterList.data[i]["ParameterName"]=element.TestName
+            //     i++;
+            // });
         }
 
         console.log(this.subTestList.data)
         console.log(this.paramterList.data)
-      
+
     }
-       
-    
+
+
 
     list = [];
     onAddTemplate() {
         this.list.push(
             {
-                TemplateId:this._TestService.mytemplateform.get("TemplateName").value.TemplateId,
+                TemplateId: this._TestService.mytemplateform.get("TemplateName").value.TemplateId,
                 TemplateName: this._TestService.mytemplateform.get("TemplateName").value.TemplateName,
             });
         this.Templatetdatasource.data = this.list
@@ -381,7 +382,7 @@ export class TestFormMasterComponent implements OnInit {
         temp.splice(temp.findIndex(item => item.ParameterName === event.ParameterName), 1);
         this.DSTestList.data = temp;
 
-        
+
     }
 
 
@@ -407,7 +408,7 @@ export class TestFormMasterComponent implements OnInit {
 
     onAdd(event) {
         console.log(event)
-      
+
         // for parameters
         this.DSTestList.data = [];
         this.ChargeList = this.dsTemparoryList.data;
@@ -433,26 +434,26 @@ export class TestFormMasterComponent implements OnInit {
 
         if ((this.ServiceID == '' || this.ServiceID == null || this.ServiceID == undefined)) {
             this.toastr.warning('Please select valid Service Name ', 'Warning !', {
-              toastClass: 'tostr-tost custom-toast-warning',
+                toastClass: 'tostr-tost custom-toast-warning',
             });
             return;
-          }
-          if ((this.vCategoryId == '' || this.vCategoryId == null || this.vCategoryId == undefined)) {
+        }
+        if ((this.vCategoryId == '' || this.vCategoryId == null || this.vCategoryId == undefined)) {
             this.toastr.warning('Please select valid Category Name ', 'Warning !', {
-              toastClass: 'tostr-tost custom-toast-warning',
+                toastClass: 'tostr-tost custom-toast-warning',
             });
             return;
-          }
+        }
 
         let submitData
-        debugger
+        
         if (!this.Statusflag) {
 
-            if(this.DSTestList.data.length ==0){
+            if (this.DSTestList.data.length == 0) {
                 this.toastr.warning('Please select valid Test Data', 'Warning !', {
                     toastClass: 'tostr-tost custom-toast-warning',
-                  });
-                  return;
+                });
+                return;
             }
 
             if (!this._TestService.myform.get("TestId").value) {
@@ -508,10 +509,6 @@ export class TestFormMasterComponent implements OnInit {
                             toastClass: 'tostr-tost custom-toast-error',
                         });
                     }
-                }, error => {
-                    this.toastr.error('New Test Master Data not saved !, Please check API error..', 'Error !', {
-                        toastClass: 'tostr-tost custom-toast-error',
-                    });
                 });
             }
             else {
@@ -567,17 +564,12 @@ export class TestFormMasterComponent implements OnInit {
                             toastClass: 'tostr-tost custom-toast-success',
                         });
                         this.onClose();
-                        // this.onClear()
-
+                     
                     } else {
                         this.toastr.error('New Test Master Data not Updated !, Please check API error..', 'Error !', {
                             toastClass: 'tostr-tost custom-toast-error',
                         });
                     }
-                }, error => {
-                    this.toastr.error('New Test Master Data not Updated !, Please check API error..', 'Error !', {
-                        toastClass: 'tostr-tost custom-toast-error',
-                    });
                 });
 
             }
@@ -585,13 +577,13 @@ export class TestFormMasterComponent implements OnInit {
         else {
             if (!this._TestService.myform.get("TestId").value) {
 
-                
-            if(this.Templatetdatasource.data.length ==0){
-                this.toastr.warning('Please select valid Template Data', 'Warning !', {
-                    toastClass: 'tostr-tost custom-toast-warning',
-                  });
-                  return;
-            }
+
+                if (this.Templatetdatasource.data.length == 0) {
+                    this.toastr.warning('Please select valid Template Data', 'Warning !', {
+                        toastClass: 'tostr-tost custom-toast-warning',
+                    });
+                    return;
+                }
 
                 let insertPathologyTestMaster = {};
 
@@ -638,12 +630,7 @@ export class TestFormMasterComponent implements OnInit {
                             toastClass: 'tostr-tost custom-toast-error',
                         });
                     }
-                },
-                    error => {
-                        this.toastr.error('New Test Master Data not saved !, Please check API error..', 'Error !', {
-                            toastClass: 'tostr-tost custom-toast-error',
-                        });
-                    });
+                });
             }
             else {
 
@@ -664,15 +651,13 @@ export class TestFormMasterComponent implements OnInit {
                 updatePathologyTestMasterobj['testId'] = this.TestId;
 
 
-                let pathTestDetailMaster = [];
+                let pathologyTemplateTest = []
 
-                this.DSTestList.data.forEach((element) => {
-                    let UpdatePathDetailsObj = {};
+                this.Templatetdatasource.data.forEach((element) => {
                     let PathDetailsObj = {};
                     PathDetailsObj['TestId'] = this.TestId;
-                    PathDetailsObj['TemplateId'] = 0;
-
-                    pathTestDetailMaster.push(PathDetailsObj);
+                    PathDetailsObj['TemplateId'] = element.TemplateId;
+                    pathologyTemplateTest.push(PathDetailsObj);
                 });
 
                 let pathTemplateDetDelete = {}
@@ -685,8 +670,7 @@ export class TestFormMasterComponent implements OnInit {
                 submitData = {
                     "updatePathologyTestMaster": updatePathologyTestMasterobj,
                     "pathTemplateDetDelete": pathTemplateDetDelete,
-                    "updatePathologyTemplateTest": updatePathologyTemplate
-
+                    "pathologyTemplateTest": pathologyTemplateTest
                 };
 
 
@@ -704,10 +688,6 @@ export class TestFormMasterComponent implements OnInit {
                             toastClass: 'tostr-tost custom-toast-error',
                         });
                     }
-                }, error => {
-                    this.toastr.error('New Test Master Data not Updated !, Please check API error..', 'Error !', {
-                        toastClass: 'tostr-tost custom-toast-error',
-                    });
                 });
 
             }
@@ -834,7 +814,7 @@ export class TestList {
     ParaMultipleRange: any;
     Formula: any;
     IsNumeric: any;
-    TestName:any
+    TestName: any
     /**
      * Constructor
      *
@@ -845,12 +825,12 @@ export class TestList {
             this.ParameterID = TestList.ParameterID || "";
             this.ParameterName = TestList.ParameterName || "";
             this.PrintParameterName = TestList.PrintParameterName || "";
-            this. MethodName = TestList. MethodName || "";
-            this. UnitName = TestList. UnitName || "";
-            this. ParaMultipleRange = TestList. ParaMultipleRange || "";
-            this. Formula = TestList. Formula || "";
-            this. IsNumeric = TestList. IsNumeric || "";
-            this. TestName = TestList. TestName || "";
+            this.MethodName = TestList.MethodName || "";
+            this.UnitName = TestList.UnitName || "";
+            this.ParaMultipleRange = TestList.ParaMultipleRange || "";
+            this.Formula = TestList.Formula || "";
+            this.IsNumeric = TestList.IsNumeric || "";
+            this.TestName = TestList.TestName || "";
         }
     }
 }

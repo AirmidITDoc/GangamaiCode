@@ -217,14 +217,13 @@ export class TestmasterComponent implements OnInit {
     }
 
     OnAdd(event) {
-        this.DSTestList.data = [];
-        this.ChargeList = this.dsTemparoryList.data;
+        // this.DSTestList.data = [];
+        // this.ChargeList = this.dsTemparoryList.data;
         this.ChargeList.push(
             {
                 TestName: this._TestService.AddParameterFrom.get('ParameterName').value.TestName || "",
             });
         this.DSTestList.data = this.ChargeList
-
         this._TestService.AddParameterFrom.reset();
     }
 
@@ -422,6 +421,7 @@ export class TestList {
     ParameterName: any;
     ParameterID: number;
     Isdeleted: any;
+    IsDeleted: any;
     /**
      * Constructor
      *
@@ -433,6 +433,7 @@ export class TestList {
             this.TestId = TestList.TestId || "";
             this.TestName = TestList.TestName || "";
             this.Isdeleted = TestList.Isdeleted || "";
+            this.IsDeleted = TestList.IsDeleted || "true";
         }
     }
 }

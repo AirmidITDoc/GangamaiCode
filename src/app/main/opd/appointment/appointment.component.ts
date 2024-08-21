@@ -571,7 +571,7 @@ export class AppointmentComponent implements OnInit {
 
     getOptionTextDep(option) {
 
-        return option && option.departmentName ? option.departmentName : '';
+        return option && option.DepartmentName ? option.DepartmentName : '';
     }
 
 
@@ -1159,7 +1159,7 @@ export class AppointmentComponent implements OnInit {
             );
             if (this.configService.configParams.DepartmentId) {
 
-                const ddValue = this.DepartmentList.filter(c => c.Departmentid == this.configService.configParams.DepartmentId);
+                const ddValue = this.DepartmentList.filter(c => c.DepartmentId == this.configService.configParams.DepartmentId);
                 this.VisitFormGroup.get('Departmentid').setValue(ddValue[0]);
                 this.OnChangeDoctorList(ddValue[0]);
                 this.VisitFormGroup.updateValueAndValidity();
@@ -1943,7 +1943,7 @@ export class AppointmentComponent implements OnInit {
             visitSave['IsCancelledBy'] = 0;
             visitSave['IsCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
                 visitSave['ClassId'] = 1; //this.VisitFormGroup.get('ClassId').value.ClassId ? this.VisitFormGroup.get('ClassId').value.ClassId : 0;
-            visitSave['DepartmentId'] = this.VisitFormGroup.get('Departmentid').value.Departmentid;
+            visitSave['DepartmentId'] = this.VisitFormGroup.get('Departmentid').value.DepartmentId;
             visitSave['PatientOldNew'] = this.Patientnewold;
             visitSave['FirstFollowupVisit'] = 0,
                 visitSave['appPurposeId'] = PurposeId; // this.VisitFormGroup.get('PurposeId').value.PurposeId || 0;
@@ -2069,7 +2069,7 @@ export class AppointmentComponent implements OnInit {
         visitUpdate['IsCancelledBy'] = 0;
         visitUpdate['IsCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
             visitUpdate['ClassId'] = 1; //this.VisitFormGroup.get('ClassId').value.ClassId ? this.VisitFormGroup.get('ClassId').value.ClassId : 0;
-        visitUpdate['DepartmentId'] = this.VisitFormGroup.get('Departmentid').value.Departmentid; //? this.VisitFormGroup.get('DepartmentId').value.DepartmentId : 0;
+        visitUpdate['DepartmentId'] = this.VisitFormGroup.get('Departmentid').value.DepartmentId; //? this.VisitFormGroup.get('DepartmentId').value.DepartmentId : 0;
         visitUpdate['PatientOldNew'] = this.Patientnewold;
         visitUpdate['FirstFollowupVisit'] = 0, // this.VisitFormGroup.get('RelativeAddress').value ? this.VisitFormGroup.get('RelativeAddress').value : '';
             visitUpdate['appPurposeId'] = PurposeId; //this.VisitFormGroup.get('PurposeId').value.PurposeId || 0; // ? this.VisitFormGroup.get('RelativeAddress').value : '';
@@ -2683,7 +2683,7 @@ export class AppointmentComponent implements OnInit {
     OnChangeDoctorList(departmentObj) {
 
         this.isDepartmentSelected = true;
-        this._opappointmentService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(
+        this._opappointmentService.getDoctorMasterCombo(departmentObj.DepartmentId).subscribe(
             data => {
                 this.DoctorList = data;
                 this.optionsDoc = this.DoctorList.slice();
