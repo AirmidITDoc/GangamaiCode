@@ -2068,14 +2068,22 @@ ServiceList:any=[];
         return;
       }
     }
-    if (this.Ipbillform.get('CashCounterID').value) {
-      if(!this.CashCounterList.some(item => item.CashCounterName === this.Ipbillform.get('CashCounterID').value.CashCounterName)){
+
+    if (!this.Ipbillform.get('CashCounterID').value) {
+      this.toastr.warning('Please select Cash Counter.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if(this.Ipbillform.get('CashCounterID').value) {
+      if (!this.CashCounterList.some(item => item.CashCounterName === this.Ipbillform.get('CashCounterID').value.CashCounterName)) {
         this.toastr.warning('Please Select valid Cash Counter Name', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
         return;
-      }  
-    }
+      }
+    } 
+ 
       if (this.dataSource.data.length > 0) {
         if (this.Ipbillform.get('GenerateBill').value) {
           Swal.fire({
