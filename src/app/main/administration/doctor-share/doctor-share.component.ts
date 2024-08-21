@@ -35,7 +35,7 @@ export class DoctorShareComponent implements OnInit {
     'AdmittedDoctorName',
     'PatientType', 
     'CompanyName',
-    'Action'
+    // 'Action'
   ];
   @ViewChild('drawer') public drawer: MatDrawer;
   isRegIdSelected : boolean = false;
@@ -116,8 +116,7 @@ getOptionTextDoctorName(option) {
       });
   }  
 
-  viewDocShareSummaryReport(el) {
-    console.log(el) 
+  viewDocShareSummaryReport() { 
     debugger 
       this.sIsLoading = 'loading-data'; 
      let FromDate = this.datePipe.transform(this._DoctorShareService.UserFormGroup.get("startdate").value,"MM-dd-yyyy") || "01/01/1900";
@@ -146,8 +145,7 @@ getOptionTextDoctorName(option) {
   
       }, 100);
     }
-    viewDocShareReport(el) {
-      console.log(el) 
+    viewDocShareReport() { 
       debugger 
         this.sIsLoading = 'loading-data'; 
        let FromDate = this.datePipe.transform(this._DoctorShareService.UserFormGroup.get("startdate").value,"MM-dd-yyyy") || "01/01/1900";

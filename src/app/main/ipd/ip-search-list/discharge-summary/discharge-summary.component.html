@@ -115,11 +115,11 @@
                                                 <div fxLayout="row" fxLayoutGap="10px">
                                                     <div fxLayout="column" fxFlex>
                                                         <div class="form-title mb-2 pb-2 border-bottom">
-                                                            <span class="h1 font-weight-600">Diagnosis</span>
+                                                            <span class="h1 font-weight-600">FINAL DIAGNOSS</span>
                                                         </div>
                                                         <div class="form-input">
                                                             <mat-form-field appearance="outline" fxFlex>
-                                                                <mat-label>Diagnosis</mat-label>
+                                                                <mat-label>FInal DIAGNOSS</mat-label>
                                                                 <textarea matInput name="Diagnosis" formControlName="Diagnosis" [(ngModel)]="vDiagnosis" cols="300"
                                                                     rows="8"></textarea>
                                                             </mat-form-field>
@@ -244,15 +244,17 @@
                                             <div fxLayout="column" class="gap-8">
                                                 <div class="card-content">
                                                     <div class="form-title mb-2 pb-2 border-bottom">
-                                                        <span class="h2 font-weight-600">TREATMENT GIVEN</span>
+                                                        <span class="h2 font-weight-600">COURSES IN THE HOSPITAL</span>
                                                     </div>
                                                     <div class="form-input">
                                                         <mat-form-field appearance="outline" fxFlex>
-                                                            <mat-label>Treatment Given</mat-label>
+                                                            <mat-label>COURSES IN THE HOSPITAL</mat-label>
+                                                            <h4 style="padding: 0px;"><b>Detail History</b></h4>
                                                             <textarea matInput name="TreatmentGiven" style="white-space: pre-wrap;"
-                                                                formControlName="TreatmentGiven"
+                                                                formControlName="TreatmentGiven"  
                                                                 [(ngModel)]="vTreatmentGiven" cols="200"
-                                                                rows="8"></textarea>
+                                                                rows="8">
+                                                            </textarea>
                                                         </mat-form-field>
                                                     </div>
                                                 </div>
@@ -305,16 +307,16 @@
                                         </mat-card>
                                     </mat-tab>
     
-                                    <mat-tab label="LIFE STYLE / FOLLOW UP">
+                                    <mat-tab label="FOLLOW UP">
                                         <mat-card class="mat-tab-card-container">
                                             <div fxLayout="column" class="gap-8">
                                                 <div class="card-content">
                                                     <div class="form-title mb-2 pb-2 border-bottom">
-                                                        <span class="h2 font-weight-600">LIFE STYLE</span>
+                                                        <span class="h2 font-weight-600">FOLLOW UP</span>
                                                     </div>
                                                     <div class="form-input" fxLayoutGap="8px grid">
                                                         <mat-form-field appearance="outline" fxFlex>
-                                                            <mat-label>LIFE STYLE</mat-label>
+                                                            <mat-label>FOLLOW UP</mat-label>
                                                             <textarea matInput name="LifeStyle" formControlName="LifeStyle"
                                                                 [(ngModel)]="vLifeStyle" cols="300"
                                                                 rows="6"></textarea>

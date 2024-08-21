@@ -363,9 +363,7 @@ export class IPBillingComponent implements OnInit {
       Validators.pattern("^[0-9]*$")],
       totalAmount: [Validators.required],
       DoctorID: [''],
-      discPer: ['', [
-        Validators.minLength(2),
-        Validators.maxLength(2)]],
+      discPer: [''],
       discAmt: [],
       discAmount: [''],
       netAmount: [''],
