@@ -51,7 +51,7 @@
                                         <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
                                             <span class="patient-col-key ">OPD | IPD No </span>
                                             <span>:</span>
-                                            <span class="patient-col-value">{{advanceData.OPD_IPD_Id}}</span>
+                                            <span class="patient-col-value">{{advanceData.IPDNo}}</span>
                                         </div>
                                         <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%" *ngIf="advanceData.DoctorName">
                                             <span class="patient-col-key ">Doctor Name</span>
@@ -158,7 +158,8 @@
                                     <!-- {{element.UsedAmount | currency:'INR'}} -->
                                     <!-- [readonly]="element.BalanceAmount == 0" -->
                                     <mat-form-field appearance="legacy">
-                                        <input matInput  type="text" [(ngModel)]="element.UsedAmount" [value]="element.UsedAmount" (keyup)="onKeyAdv(element,$event)" OnlyNumber>
+                                        <input matInput  type="text" [(ngModel)]="element.UsedAmount" [value]="element.UsedAmount"
+                                         (keyup)="onKeyAdv(element,$event)" OnlyNumber (keypress)="keyPressAlphanumeric($event)">
                                     </mat-form-field>
                                 </mat-cell>
                             </ng-container>

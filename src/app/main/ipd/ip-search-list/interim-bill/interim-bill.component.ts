@@ -21,6 +21,7 @@ import { ToastrService } from 'ngx-toastr';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 import { IPpaymentWithadvanceComponent } from '../../ip-settlement/ippayment-withadvance/ippayment-withadvance.component';
 import { map, startWith } from 'rxjs/operators';
+import { ConfigService } from 'app/core/services/config.service';
 
 @Component({
   selector: 'app-interim-bill',
@@ -109,6 +110,7 @@ export class InterimBillComponent implements OnInit {
     public dialogRef: MatDialogRef<InterimBillComponent>,
     private formBuilder: FormBuilder,
     public _WhatsAppEmailService:WhatsAppEmailService,
+    public _ConfigService : ConfigService,
     @Inject(MAT_DIALOG_DATA) public data: any) {
 
     this.InterimFormGroup = this.InterimForm();
@@ -191,12 +193,15 @@ export class InterimBillComponent implements OnInit {
     this.vNetAmount = netAmt;
     return netAmt;
   }
-
+  setcashCounter:any;
   getCashCounterComboList() {
     this._IpSearchListService.getCashcounterList().subscribe(data => {
       this.CashCounterList = data
       console.log(this.CashCounterList)
-      this.InterimFormGroup.get('CashCounterID').setValue(this.CashCounterList[3])
+
+      this.setcashCounter = this.CashCounterList.find(item => item.CashCounterId == this._ConfigService.configParams.IPD_Billing_CounterId)
+      this.InterimFormGroup.get('CashCounterID').setValue(this.setcashCounter)  
+  
       this.filteredOptionsCashCounter = this.InterimFormGroup.get('CashCounterID').valueChanges.pipe(
         startWith(''),
         map(value => value ? this._filterCashCounter(value) : this.CashCounterList.slice()),
@@ -931,6 +936,7 @@ export class InterimBillComponent implements OnInit {
 
   onClose() {
     this.dialogRef.close(); 
+    this.InterimFormGroup.get('CashCounterID').setValue(this.setcashCounter)  
   }
 }
 

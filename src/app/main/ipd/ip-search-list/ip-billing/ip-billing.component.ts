@@ -363,9 +363,7 @@ export class IPBillingComponent implements OnInit {
       Validators.pattern("^[0-9]*$")],
       totalAmount: [Validators.required],
       DoctorID: [''],
-      discPer: ['', [
-        Validators.minLength(2),
-        Validators.maxLength(2)]],
+      discPer: [''],
       discAmt: [],
       discAmount: [''],
       netAmount: [''],
@@ -2068,14 +2066,22 @@ ServiceList:any=[];
         return;
       }
     }
-    if (this.Ipbillform.get('CashCounterID').value) {
-      if(!this.CashCounterList.some(item => item.CashCounterName === this.Ipbillform.get('CashCounterID').value.CashCounterName)){
+
+    if (!this.Ipbillform.get('CashCounterID').value) {
+      this.toastr.warning('Please select Cash Counter.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if(this.Ipbillform.get('CashCounterID').value) {
+      if (!this.CashCounterList.some(item => item.CashCounterName === this.Ipbillform.get('CashCounterID').value.CashCounterName)) {
         this.toastr.warning('Please Select valid Cash Counter Name', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
         return;
-      }  
-    }
+      }
+    } 
+ 
       if (this.dataSource.data.length > 0) {
         if (this.Ipbillform.get('GenerateBill').value) {
           Swal.fire({

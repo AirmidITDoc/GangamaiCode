@@ -121,7 +121,7 @@ export class IPSettlementComponent implements OnInit {
 
     getSearchList() {
         var m_data = {
-            "Keyword": `${this.searchFormGroup.get('RegId').value}%`
+            "Keyword": `${this.searchFormGroup.get('RegId').value}`
         }
         if (this.searchFormGroup.get('RegId').value.length >= 1) {
             this._IpSearchListService.getRegistrationList(m_data).subscribe(resData => {
@@ -302,14 +302,13 @@ export class IPSettlementComponent implements OnInit {
 
         let PatientHeaderObj = {};
         PatientHeaderObj['Date'] = formattedDate;
-        PatientHeaderObj['PatientName'] = this.PatientName;
-        PatientHeaderObj['OPD_IPD_Id'] = contact.OPD_IPD_ID;
+        PatientHeaderObj['PatientName'] = this.PatientName; 
         PatientHeaderObj['AdvanceAmount'] = contact.NetPayableAmt;
         PatientHeaderObj['NetPayAmount'] = contact.NetPayableAmt;
         PatientHeaderObj['PBillNo'] = contact.PBillNo;
+        PatientHeaderObj['OPD_IPD_Id'] = contact.OPD_IPD_ID;
         PatientHeaderObj['IPDNo'] = contact.IPDNo;
-        PatientHeaderObj['RegNo'] = contact.RegNo;
-        PatientHeaderObj['RegNo'] = this.RegNo;
+        PatientHeaderObj['RegNo'] = contact.RegNo; 
 
         const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
             {
@@ -322,7 +321,7 @@ export class IPSettlementComponent implements OnInit {
                 //  }
                 data: {
                     vPatientHeaderObj: PatientHeaderObj,
-                    FromName: "IP-RefundOfAdvance",
+                    FromName: "IP-SETTLEMENT",
                     advanceObj: PatientHeaderObj,
                 }
             });
@@ -378,23 +377,18 @@ export class IPSettlementComponent implements OnInit {
                         UpdateAdvanceHeaderObj['AdvanceUsedAmount'] = 0,
                         UpdateAdvanceHeaderObj['BalanceAmount'] = 0
                 }
-
-
-
-
+ 
                 let submitData = {
                     "ipPaymentCreditUpdate": result.submitDataPay.ipPaymentInsert,
                     "updateIpBill": BillUpdateObj,
                     "iPsettlementAdvanceDetailUpdate": UpdateAdvanceDetailarr,
-                    "iPsettlementAdvanceHeaderUpdate": UpdateAdvanceHeaderObj
-
+                    "iPsettlementAdvanceHeaderUpdate": UpdateAdvanceHeaderObj 
                 };
                 console.log(submitData);
                 this._IpSearchListService.InsertIPSettlementPayment(submitData).subscribe(response => {
                     if (response) {
                         Swal.fire('Payment Done  !', 'Ip Settlemet Done Successfully !', 'success').then((result) => {
-                            if (result.isConfirmed) {
-
+                            if (result.isConfirmed) { 
                                 this.viewgetSettlementReportPdf(response, true);
                                 this._matDialog.closeAll();
                             }
