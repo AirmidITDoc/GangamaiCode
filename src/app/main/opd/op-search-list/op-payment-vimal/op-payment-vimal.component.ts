@@ -113,7 +113,7 @@ export class OpPaymentVimalComponent implements OnInit {
         });
         this.Payments.data = tmp;
         this.setPaidAmount();
-        this.balanceAmt = this.netPayAmt - this.paidAmt;
+        //this.balanceAmt = this.netPayAmt - this.paidAmt;
         // this.patientDetailsFormGrp.reset();
         // this.patientDetailsFormGrp.get('paidAmountController').setValue(this.paidAmt);
         this.patientDetailsFormGrp.get('balanceAmountController').setValue(this.balanceAmt);
