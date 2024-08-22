@@ -59,6 +59,7 @@ import { IPSettlementViewComponent } from './ip-settlement/ipsettlement-view/ips
 import { ViewBrowseIPDPaymentComponent } from './browse-ipdpayment-receipt/view-browse-ipdpayment/view-browse-ipdpayment.component';
 import { CompanyInformationComponent } from './company-information/company-information.component';
 import { OPIPFeedbackComponent } from './Feedback/opip-feedback/opip-feedback.component';
+import { CompanyListComponent } from './company-list/company-list.component';
 
 
 // import { IPPatientsearchComponent } from 'app/main/SearchDlg/ippatientsearch/ippatientsearch.component';
@@ -71,7 +72,7 @@ import { OPIPFeedbackComponent } from './Feedback/opip-feedback/opip-feedback.co
       IPRefundComponent, IPRefundofAdvanceComponent, 
      IPBrowseRefundofAdvanceComponent, IPBrowseRefundofBillComponent,
       BrowseIPAdvanceComponent, IPDSearcPatienthComponent, StockManagementComponent, IPSettlementViewComponent, 
-      ViewBrowseIPDPaymentComponent, OPIPFeedbackComponent, OPIPFeedbackComponent],
+      ViewBrowseIPDPaymentComponent, OPIPFeedbackComponent, OPIPFeedbackComponent, CompanyListComponent],
   imports: [
     CommonModule,
     MatButtonModule,

@@ -9,6 +9,7 @@ import { MatSort } from '@angular/material/sort';
 import { EditPaymentmodeComponent } from '../paymentmodechangesfor-pharmacy/edit-paymentmode/edit-paymentmode.component';
 import { MatDialog } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
+import { DateUpdateComponent } from './date-update/date-update.component';
 
 @Component({
   selector: 'app-paymentmodechanges',
@@ -191,8 +192,24 @@ export class PaymentmodechangesComponent implements OnInit {
     this.getIPReceiptList();
   });  
 }
-BillDate(){
-  Swal.fire('Api Error !', 'Bill Date Update!')
+PaymentDate(contact){ 
+    const dialogRef = this._matDialog.open(DateUpdateComponent,
+      { 
+        height: "35%",
+        width: '35%',
+        data: { 
+          obj:contact.PaymentId 
+        }, 
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+     if(this._PaymentmodechangesService.UseFormGroup.get('Radio').value == '0')
+      this.getOPReceiptList();
+    else if(this._PaymentmodechangesService.UseFormGroup.get('Radio').value == '1')
+      this.getIPReceiptList();
+    else 
+      this.getIPAdvanceList();
+    });   
 }
          
 

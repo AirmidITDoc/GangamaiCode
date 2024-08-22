@@ -32,7 +32,8 @@
                                     <span class="h2">Patient Information</span>
                                 </div>
                                 <div class="patient-info-box my-8">
-                                    <div class="patient-info-row row-gap-" fxLayout="row wrap" fxLayoutAlign="space-between">
+                                    <div class="patient-info-row row-gap-" fxLayout="row wrap"
+                                        fxLayoutAlign="space-between">
                                         <!-- <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
                                             <span class="patient-col-key ">UHID No</span>
                                             <span>:</span>
@@ -41,9 +42,11 @@
                                         <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
                                             <span class="patient-col-key ">Patient Name</span>
                                             <span>:</span>
-                                            <span class="patient-col-value">{{advanceData.RegNo}}-{{advanceData.PatientName}}</span>
-                                        </div> 
-                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%" *ngIf="advanceData.Age">
+                                            <span
+                                                class="patient-col-value">{{advanceData.RegNo}}-{{advanceData.PatientName}}</span>
+                                        </div>
+                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%"
+                                            *ngIf="advanceData.Age">
                                             <span class="patient-col-key ">Age</span>
                                             <span>:</span>
                                             <span class="patient-col-value">{{advanceData.Age}}</span>
@@ -53,17 +56,20 @@
                                             <span>:</span>
                                             <span class="patient-col-value">{{advanceData.IPDNo}}</span>
                                         </div>
-                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%" *ngIf="advanceData.DoctorName">
+                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%"
+                                            *ngIf="advanceData.DoctorName">
                                             <span class="patient-col-key ">Doctor Name</span>
                                             <span>:</span>
                                             <span class="patient-col-value">{{advanceData.DoctorName}}</span>
                                         </div>
-                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%" *ngIf="advanceData.DepartmentName">
+                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%"
+                                            *ngIf="advanceData.DepartmentName">
                                             <span class="patient-col-key ">Department Name</span>
                                             <span>:</span>
                                             <span class="patient-col-value">{{advanceData.DepartmentName}}</span>
-                                        </div> 
-                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%" *ngIf="advanceData.CompanyName">
+                                        </div>
+                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%"
+                                            *ngIf="advanceData.CompanyName">
                                             <span class="patient-col-key ">Company Name</span>
                                             <span>:</span>
                                             <span class="patient-col-value">{{advanceData.CompanyName}}</span>
@@ -73,10 +79,12 @@
                                             <span>:</span>
                                             <span class="patient-col-value">{{advanceData.PBillNo}}</span>
                                         </div>
-                                        <div class="patient-col gap-3" fxFlex="30%" fxFlex.gt-sm="30%" *ngIf="advanceData.BillTime">
+                                        <div class="patient-col gap-3" fxFlex="30%" fxFlex.gt-sm="30%"
+                                            *ngIf="advanceData.BillTime">
                                             <span class="patient-col-key">BillDate </span>
                                             <span>:</span>
-                                            <span class="patient-col-value">{{advanceData.BillTime | date:'dd/MM/YYYY'}}</span>
+                                            <span class="patient-col-value">{{advanceData.BillTime |
+                                                date:'dd/MM/YYYY'}}</span>
                                         </div>
                                         <div class="patient-col gap-3" fxFlex="30%" fxFlex.gt-sm="30%"
                                             style="color: blue;font-weight: bold;">
@@ -117,10 +125,11 @@
                                             <span class="patient-col-value gap-4" fxLayout="row">
                                                 {{Date}}
                                             </span>
-                                        </div> 
+                                        </div>
                                         <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
-                                            <mat-checkbox fxFlex="12" class="pr-4" [checked]="IsAdv" [(ngModel)]="IsAdv" (change)="OnAdvAmt($event)">Advance Amount?</mat-checkbox>
-                                        </div> 
+                                            <mat-checkbox fxFlex="12" class="pr-4" [checked]="IsAdv" [(ngModel)]="IsAdv"
+                                                (change)="OnAdvAmt($event)">Advance Amount?</mat-checkbox>
+                                        </div>
 
                                     </div>
                                 </div>
@@ -129,83 +138,86 @@
                     </div>
                     <div class="table-container" style="padding: 5px 15px 5px 15px;" *ngIf="IsAdv">
                         <mat-card style="padding: 6px;">
-                        <mat-table matSort class="h-120" [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
-                    
-                            <ng-container matColumnDef="Date">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Date
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.Date}}
-                                </mat-cell>
-                            </ng-container>
-                    
-                            <ng-container matColumnDef="AdvanceNo">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                    Advance No </mat-header-cell>
-                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                    {{element.AdvanceId}} </mat-cell>
-                            </ng-container>
-                    
-                            <ng-container matColumnDef="AdvanceAmount">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                    Advance Amount </mat-header-cell>
-                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                    {{element.AdvanceAmount | currency:'INR'}} </mat-cell>
-                            </ng-container>
-                            <ng-container matColumnDef="UsedAmount">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                    Used Amount </mat-header-cell>
-                                <mat-cell *matCellDef="let element; let i = index" fxHide fxShow.gt-sm>
-                                    <!-- {{element.UsedAmount | currency:'INR'}} -->
-                                    <!-- [readonly]="element.BalanceAmount == 0" -->
-                                    <mat-form-field appearance="legacy">
-                                        <input matInput  type="text" [(ngModel)]="element.UsedAmount" [value]="element.UsedAmount"
-                                         (keyup)="onKeyAdv(element,$event)" OnlyNumber (keypress)="keyPressAlphanumeric($event)">
-                                    </mat-form-field>
-                                </mat-cell>
-                            </ng-container>
-                            <ng-container matColumnDef="BalanceAmount">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                    Balance Amount </mat-header-cell>
-                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                    {{element.BalanceAmount | currency:'INR'}} </mat-cell>
-                            </ng-container>
-                            <ng-container matColumnDef="RefundAmount">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                    Refund Amount </mat-header-cell>
-                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                    {{element.RefundAmount | currency:'INR'}} </mat-cell>
-                            </ng-container>
-                    
-                            <ng-container matColumnDef="loading">
-                                <mat-footer-cell *matFooterCellDef colspan="6">
-                                    <mat-spinner [diameter]='30'></mat-spinner>
-                                </mat-footer-cell>
-                            </ng-container>
-                    
-                            <ng-container matColumnDef="noData">
-                                <mat-footer-cell *matFooterCellDef colspan="6">
-                                    No data found...
-                                </mat-footer-cell>
-                            </ng-container>
-                    
-                            <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
-                            </mat-header-row>
-                            <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
-                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                            <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':!(isLoading=='loading')}">
-                            </mat-footer-row>
-                            <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(isLoading=='no-data')}">
-                            </mat-footer-row>
-                        </mat-table> 
-                        <!-- <div class="net-amt">
+                            <mat-table matSort class="h-120" [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
+
+                                <ng-container matColumnDef="Date">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Date
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.Date}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="AdvanceNo">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                        Advance No </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                        {{element.AdvanceId}} </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="AdvanceAmount">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                        Advance Amount </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                        {{element.AdvanceAmount | currency:'INR'}} </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="UsedAmount">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                        Used Amount </mat-header-cell>
+                                    <mat-cell *matCellDef="let element; let i = index" fxHide fxShow.gt-sm>
+                                        <!-- {{element.UsedAmount | currency:'INR'}} -->
+                                        <!-- [readonly]="element.BalanceAmount == 0" -->
+                                        <mat-form-field appearance="legacy">
+                                            <input matInput type="text" [(ngModel)]="element.UsedAmount"
+                                                [value]="element.UsedAmount" (keyup)="onKeyAdv(element,$event)"
+                                                OnlyNumber (keypress)="keyPressAlphanumeric($event)">
+                                        </mat-form-field>
+                                    </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="BalanceAmount">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                        Balance Amount </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                        {{element.BalanceAmount | currency:'INR'}} </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="RefundAmount">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                        Refund Amount </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                        {{element.RefundAmount | currency:'INR'}} </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="loading">
+                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                        <mat-spinner [diameter]='30'></mat-spinner>
+                                    </mat-footer-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="noData">
+                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                        No data found...
+                                    </mat-footer-cell>
+                                </ng-container>
+
+                                <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+                                </mat-header-row>
+                                <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
+                                    [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                <mat-footer-row *matFooterRowDef="['loading']"
+                                    [ngClass]="{'hide':!(isLoading=='loading')}">
+                                </mat-footer-row>
+                                <mat-footer-row *matFooterRowDef="['noData']"
+                                    [ngClass]="{'hide':!(isLoading=='no-data')}">
+                                </mat-footer-row>
+                            </mat-table>
+                            <!-- <div class="net-amt">
                             <span class="net-amt-label">Total Advance Amt:</span>&nbsp;
                             <span class="net-amt-value"
                                 style="font-weight:bold;color: blue;">{{getAdvanceSum(dataSource.data) |
                                 currency:'INR' }}</span>
                         </div> -->
-                    </mat-card>
+                        </mat-card>
                         <!-- <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" showFirstLastButtons></mat-paginator> -->
-                    </div> 
+                    </div>
                     <div class="patient-info-container payment-detail">
                         <mat-card>
                             <div class="patient-info-box">
@@ -219,35 +231,46 @@
                                             fxLayoutALign="start start">
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Payment Type</mat-label>
-                                                <mat-select formControlName="paymentType1" (selectionChange)="onChangePaymentType()"
+                                                <mat-select formControlName="paymentType1"
+                                                    (selectionChange)="onChangePaymentType()"
                                                     [(ngModel)]="selectedPaymnet1" required>
                                                     <mat-option *ngFor="let ele of paymentArr1" [value]="ele.value">
                                                         {{ele.viewValue}}
                                                     </mat-option>
                                                 </mat-select>
-                                                <div *ngIf="submitted && f.paymentType1.errors" class="invalid-feedback">
-                                                    <div *ngIf="f.paymentType1.errors.required">Payment type is required</div>
+                                                <div *ngIf="submitted && f.paymentType1.errors"
+                                                    class="invalid-feedback">
+                                                    <div *ngIf="f.paymentType1.errors.required">Payment type is required
+                                                    </div>
                                                 </div>
                                             </mat-form-field>
 
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Amount</mat-label>
                                                 <input matInput formControlName="amount1" (keyup)="GetBalanceAmt()"
-                                                    [(ngModel)]="amount1" required (keypress)="keyPressAlphanumeric($event)">
+                                                    [(ngModel)]="amount1" required
+                                                    (keypress)="keyPressAlphanumeric($event)">
                                                 <div *ngIf="submitted && f.amount1.errors" class="invalid-feedback">
                                                     <div *ngIf="f.amount1.errors.required">Amount is required</div>
+                                                </div>
+                                                <div *ngIf="IsMoreAmt" class="invalid-feedback">
+                                                    <div>Entered Amount must not be greater than Net Amount. </div>
                                                 </div>
                                             </mat-form-field>
 
                                             <ng-container *ngIf="selectedPaymnet1 != 'cash'">
                                                 <mat-form-field appearance="outline" fxFlex>
                                                     <mat-label>Reference Number</mat-label>
-                                                    <input matInput formControlName="referenceNo1"  placeholder="Card Number" required 
-                                                    max="999999999999" min="100000000000" autocomplete="off" maxlength="12" minlength="4" 
-                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);"
-                                                    required="required" value="987665868822">
-                                                    <div *ngIf="submitted && f.referenceNo1.errors" class="invalid-feedback">
-                                                        <div *ngIf="f.referenceNo1.errors.required">Reference No is required</div>
+                                                    <input matInput formControlName="referenceNo1"
+                                                        placeholder="Card Number" required max="999999999999"
+                                                        min="100000000000" autocomplete="off" maxlength="12"
+                                                        minlength="4"
+                                                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);"
+                                                        required="required" value="987665868822">
+                                                    <div *ngIf="submitted && f.referenceNo1.errors"
+                                                        class="invalid-feedback">
+                                                        <div *ngIf="f.referenceNo1.errors.required">Reference No is
+                                                            required</div>
                                                     </div>
                                                 </mat-form-field>
 
@@ -271,7 +294,8 @@
                                                             {{option.BankName}}
                                                         </mat-option>
                                                     </mat-autocomplete>
-                                                    <div *ngIf="submitted && f.bankName1.errors" class="invalid-feedback">
+                                                    <div *ngIf="submitted && f.bankName1.errors"
+                                                        class="invalid-feedback">
                                                         <div *ngIf="f.bankName1.errors.required">Bank is required</div>
                                                     </div>
                                                 </mat-form-field>
@@ -285,8 +309,10 @@
                                                         [for]="datepickerReg"></mat-datepicker-toggle>
                                                     <mat-datepicker #datepickerReg>
                                                     </mat-datepicker>
-                                                    <div *ngIf="submitted && f.regDate1.errors" class="invalid-feedback">
-                                                        <div *ngIf="f.regDate1.errors.required">Registration Date is required</div>
+                                                    <div *ngIf="submitted && f.regDate1.errors"
+                                                        class="invalid-feedback">
+                                                        <div *ngIf="f.regDate1.errors.required">Registration Date is
+                                                            required</div>
                                                     </div>
                                                 </mat-form-field>
                                             </ng-container>
@@ -295,12 +321,12 @@
                                                     <button class="btn btn-primary"
                                                         [ngClass]="{'btn-disabled': ((netPayAmt-paidAmt) < amount1)}"
                                                         (click)="onAddPayment()">
-                                                        <!-- <mat-icon > add </mat-icon> --> 
+                                                        <!-- <mat-icon > add </mat-icon> -->
                                                         +
                                                     </button>
                                                 </div>
                                             </div>
-                                            
+
                                         </div>
                                         <mat-table class="sales-table" #table matSort *ngIf="Payments.data.length>0"
                                             [dataSource]="Payments" [@animateStagger]="{value:'50'}"
@@ -382,7 +408,7 @@
                                     <div fxLayout.gt-sm="row" fxLayout="column" class="gap-8">
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Paid Amount</mat-label>
-                                            <input matInput formControlName="paidAmountController" [(ngModel)]="paidAmt" 
+                                            <input matInput formControlName="paidAmountController" [(ngModel)]="paidAmt"
                                                 readonly>
                                         </mat-form-field>
                                         <mat-form-field appearance="outline" fxFlex>

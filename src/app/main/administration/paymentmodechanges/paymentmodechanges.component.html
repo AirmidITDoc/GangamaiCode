@@ -130,10 +130,10 @@
                             </ng-container>
 
                             <ng-container matColumnDef="PayDate" sticky >
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
                                     Pay Date</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
-                                    {{contact.PayDate}}
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
+                                    {{contact.PayDate}}-{{contact.PaymentTime | date:'hh:mm a'}}
                                 </mat-cell>
                             </ng-container>
 
@@ -234,15 +234,15 @@
                             </ng-container>
 
                             <ng-container matColumnDef="action" stickyEnd>
-                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;" class="w-250">Action
+                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;" class="w-200">Action
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" class="w-250"> 
+                                <mat-cell *matCellDef="let contact" class="w-200"> 
                                     <!-- <button mat-icon-button matTooltip="Edit" (click)="onEdit(contact)">
                                         <mat-icon>edit</mat-icon>
                                     </button> -->
                                      
                                     <button class="btn btn-info"  
-                                    matTooltip="Payment Date Update" (click)="BillDate()" >Payment Date Update</button>&nbsp;
+                                    matTooltip="Payment Date Update" (click)="PaymentDate(contact)" >Date Update</button>&nbsp;
                                     <button class="btn btn-primary" (click)="onEdit(contact)" matTooltip="Payment Mode Change" style="color: white;">
                                       Edit
                                      </button>
