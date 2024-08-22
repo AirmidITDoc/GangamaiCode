@@ -349,7 +349,7 @@ export class ResultEntryComponent implements OnInit {
 
  
   getWhatsappshareResult(contact) {
-    debugger
+    
     if (!contact.IsTemplateTest) {
       if (this.selection.selected.length == 0) {
         this.toastr.warning('CheckBox Select !', 'Warning !', {
@@ -453,7 +453,7 @@ console.log(m_data)
 
 
   getPrint(contact) {
-debugger
+
     
     if (contact.IsTemplateTest)
       this.viewgetPathologyTemplateReportPdf(contact)

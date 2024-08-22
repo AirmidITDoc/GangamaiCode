@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { fuseAnimations } from '@fuse/animations';
 import { SampleDetailObj, Templateprintdetail } from '../result-entry.component';
 import { Observable, Subscription } from 'rxjs';
@@ -35,8 +35,9 @@ export class ResultEntrytwoComponent implements OnInit {
     showToolbar: true,
     
   };
-
+  isresultdrSelected: boolean = false;
   vTemplateName: any = 0;
+  vPathResultDoctorId: any = 0;
   isLoading: string = '';
   msg: any;
   currentDate: Date = new Date();
@@ -47,16 +48,20 @@ export class ResultEntrytwoComponent implements OnInit {
   PathTestId: any
   TemplateList:any=[];
   optionsTemplate: any[] = [];
+  optionsDoc3: any[] = [];
+  PathologyDoctorList:any=[];
   sIsLoading: string = '';
   isTemplateNameSelected: boolean = false;
  filteredOptionsisTemplate: Observable<string[]>;
- 
+ filteredresultdr: Observable<string[]>;
  TemplateDesc:any;
   otherForm: FormGroup;
   reportIdData:any;
   TemplateId:any=0;
   vTemplateDesc:any="";
   OP_IPType:any;
+  PathResultDr1: any;
+  vsuggation: any = '';
   constructor(
     public _SampleService: ResultEntryService,
     private accountService: AuthenticationService,
@@ -77,7 +82,7 @@ export class ResultEntrytwoComponent implements OnInit {
       this.OP_IPType=this.selectedAdvanceObj1.OPD_IPD_Type
       this.reportIdData =this.selectedAdvanceObj1.PathReportID
       this.getTemplateList();
-  
+      this.getPathresultdoctorList();
 
       if (this.OP_IPType == 1)
         this.getTemplatedetailIP();
@@ -91,7 +96,9 @@ export class ResultEntrytwoComponent implements OnInit {
     this.otherForm = this.formBuilder.group({
       TemplateName:['',Validators.required],
       ResultEntry:['',Validators.required],
-      TemplateId:[0]
+      TemplateId:[0],
+      suggestionNotes:[''],
+      PathResultDoctorId:['']
     
     });
    
@@ -103,12 +110,25 @@ export class ResultEntrytwoComponent implements OnInit {
     }
    
 
+    
+    @ViewChild('PathResultDoctorId') PathResultDoctorId: ElementRef;
+   
+    public onEnterSugg(event): void {
+        if (event.which === 13) {
+            this.PathResultDoctorId.nativeElement.focus();
+        }
+    }
+
+
+
     getTemplatedetailIP() {
       this.sIsLoading = 'loading-data';
       let SelectQuery = "select * from T_PathologyReportTemplateDetails  where PathReportId in(" + this.reportIdData + ")"
       console.log(SelectQuery);
       this._SampleService.getPathologyTemplateforIP(SelectQuery).subscribe(Visit => {
         this.vTemplateDesc= Visit[0]["TemplateResultInHTML"];
+        this.PathResultDr1 = Visit[0]["PathResultDr1"];
+        this.vsuggation = Visit[0]["SuggestionNote"];
       this.TemplateId=Visit[0]["PathTemplateId"];
       },
         error => {
@@ -123,6 +143,8 @@ export class ResultEntrytwoComponent implements OnInit {
       this._SampleService.getPathologyTemplateforOP(SelectQuery).subscribe(Visit => {
        if(Visit){
         this.vTemplateDesc= Visit[0]["TemplateResultInHTML"];
+        this.PathResultDr1 = Visit[0]["PathResultDr1"];
+        this.vsuggation = Visit[0]["SuggestionNote"];
         this.TemplateId=Visit[0]["PathTemplateId"];
         console.log( this.TemplateId)
         this.getTemplatelist();
@@ -135,7 +157,12 @@ export class ResultEntrytwoComponent implements OnInit {
 
  
   onSubmit() {
-    
+    if ((this.vPathResultDoctorId == '')) {
+      this.toastr.warning('Please select valid Pathalogist', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+  }
     if ((this.vTemplateName == '' || this.vTemplateName == null || this.vTemplateName == undefined)) {
       this.toastr.warning('Please select valid Template ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -168,10 +195,10 @@ export class ResultEntrytwoComponent implements OnInit {
     pathologyTemplateUpdateObj['ReportTime'] =  this.datePipe.transform(this.currentDate, "MM-dd-yyyy hh:mm"),
     pathologyTemplateUpdateObj['IsCompleted'] = 1;
     pathologyTemplateUpdateObj['IsPrinted'] = 1;
-    pathologyTemplateUpdateObj['PathResultDr1'] = 0;
+    pathologyTemplateUpdateObj['PathResultDr1'] = this.otherForm.get('PathResultDoctorId').value.DoctorId || 0;
     pathologyTemplateUpdateObj['PathResultDr3'] = 0;
     pathologyTemplateUpdateObj['IsTemplateTest'] = 1;
-    pathologyTemplateUpdateObj['SuggestionNotes'] =  "";
+    pathologyTemplateUpdateObj['SuggestionNotes'] = this.otherForm.get('suggestionNotes').value || "";
     pathologyTemplateUpdateObj['AdmVisitDoctorID'] = 0;
     pathologyTemplateUpdateObj['RefDoctorID'] =  0;
    
@@ -212,7 +239,7 @@ export class ResultEntrytwoComponent implements OnInit {
 
   
   viewgetPathologyTemplateReportPdf(PathReportID) {
-    debugger
+    
     this._SampleService.getPathologyTempReport(PathReportID,this.selectedAdvanceObj1.OPD_IPD_Type).subscribe(res => {
       const dialogRef = this._matDialog.open(PdfviewerComponent,
         {
@@ -282,7 +309,7 @@ export class ResultEntrytwoComponent implements OnInit {
   }
     this._SampleService.getTemplateCombo(mdata).subscribe(data => {
         this.TemplateList = data;
-        debugger
+        
         if (this.data) {
           const ddValue = this.TemplateList.filter(c => c.TemplateId == this.TemplateId);
           this.otherForm.get('TemplateName').setValue(ddValue[0]);
@@ -318,6 +345,53 @@ private _filtertemplate(value: any): string[] {
     this.vTemplateDesc=this.otherForm.get('TemplateName').value.TemplateDescInHTML || ''
  
   }
+
+  getPathresultdoctorList() {
+    this._SampleService.getPathologyDoctorCombo().subscribe(data => {
+        this.PathologyDoctorList = data;
+        this.optionsDoc3 = this.PathologyDoctorList.slice();
+        this.filteredresultdr = this.otherForm.get('PathResultDoctorId').valueChanges.pipe(
+            startWith(''),
+            map(value => value ? this._filterdoc3(value) : this.PathologyDoctorList.slice()),
+        );
+    });
+}
+
+getPathresultDoctorList() {
+
+    this._SampleService.getPathologyDoctorCombo().subscribe(data => {
+        this.PathologyDoctorList = data;
+        if (this.data) {
+            
+            const ddValue = this.PathologyDoctorList.filter(c => c.DoctorId == this.PathResultDr1);
+            this.otherForm.get('PathResultDoctorId').setValue(ddValue[0]);
+            this.otherForm.updateValueAndValidity();
+            return;
+        }
+    });
+}
+private _filterdoc3(value: any): string[] {
+    if (value) {
+        const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
+        return this.PathologyDoctorList.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
+    }
+}
+
+public onEnterPathResultDoctorId(event, value): void {
+
+  if (event.which === 13) {
+      console.log(value)
+      if (value == undefined) {
+          this.toastr.warning('Please Enter Valid Pathology Doctor .', 'Warning !', {
+              toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return;
+      } 
+  }
+}
+getOptionTextresultdr(option) {
+  return option && option.Doctorname ? option.Doctorname : '';
+}
 }
 
 

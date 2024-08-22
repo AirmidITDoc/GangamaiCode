@@ -170,6 +170,37 @@
 
 
                     </div>
+                    <div fxLayout="column" fxLayout="row" fxLayout="4px">
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Comment  </mat-label>
+                            <textarea rows="1" name="suggestionNotes" formControlName="suggestionNotes" matInput
+                                [(ngModel)]="vsuggation" (keydown)="onEnterSugg($event)"></textarea>
+                            <mat-error>Please enter Comment </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Pathologist Name</mat-label>
+                            <input matAutocompletePosition="below" type="text"
+                                placeholder="Select PathResultDoctorId" #PathResultDoctorId
+                                (keydown)="onEnterPathResultDoctorId($event,vPathResultDoctorId.DoctorId)"
+                                matInput formControlName="PathResultDoctorId" [(ngModel)]="vPathResultDoctorId"
+                                [matAutocomplete]="autoResult" required>
+                            <span matSuffix style="display: flex;">
+                                <mat-icon class="mat-icon-close"
+                                    (click)="otherForm.get('PathResultDoctorId').setValue(''); isresultdrSelected = false;">close</mat-icon>
+                                <mat-icon class="mat-icon-close"
+                                    (click)="otherForm.get('PathResultDoctorId').setValue(''); isresultdrSelected = false;">search</mat-icon>
+                            </span>
+                            <mat-autocomplete #autoResult="matAutocomplete"
+                                [displayWith]="getOptionTextresultdr">
+                                <mat-option *ngFor="let option of filteredresultdr | async" [value]="option">
+                                    {{option.Doctorname}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+
+                     
+                    </div>
                     <div fxLayoutGap="5px">
                       
                         <div class="footer-navigation-container">

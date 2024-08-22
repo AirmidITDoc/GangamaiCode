@@ -246,8 +246,7 @@
                                     <input matAutocompletePosition="below" type="text"
                                         placeholder="Select PathResultDoctorId" #PathResultDoctorId
                                         (keydown)="onEnterPathResultDoctorId($event,vPathResultDoctorId.DoctorId)"
-                                        matInput (keydown)="onEnterresultdr($event)"
-                                        formControlName="PathResultDoctorId" [(ngModel)]="vPathResultDoctorId"
+                                        matInput formControlName="PathResultDoctorId" [(ngModel)]="vPathResultDoctorId"
                                         [matAutocomplete]="autoResult" required>
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
@@ -263,43 +262,7 @@
                                     </mat-autocomplete>
                                 </mat-form-field>
 
-                                <!-- <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Doctor Name</mat-label>
-                                    <input matAutocompletePosition="below" type="text" placeholder="Select DoctorId"
-                                        matInput (keydown)="onEnterDoctorId($event,vDoctorId.DoctorId)"
-                                        (keydown)="onEnterresultdr($event)" formControlName="DoctorId"
-                                        [(ngModel)]="vDoctorId" #DoctorId [matAutocomplete]="autoDoctor">
-                                    <span matSuffix style="display: flex;">
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="otherForm.get('DoctorId').setValue(''); isresultdrSelected = false;">close</mat-icon>
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="otherForm.get('DoctorId').setValue(''); isresultdrSelected = false;">search</mat-icon>
-                                    </span>
-                                    <mat-autocomplete #autoDoctor="matAutocomplete" [displayWith]="getOptionTextpath">
-                                        <mat-option *ngFor="let option of filteredpathdr | async" [value]="option">
-                                            {{option.Doctorname}}
-                                        </mat-option>
-                                    </mat-autocomplete>
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Doctor Name</mat-label>
-                                    <input matAutocompletePosition="below" type="text" placeholder="Select DoctorId"
-                                        matInput #RefDoctorID formControlName="RefDoctorID" [(ngModel)]="vRefDoctorID"
-                                        (keydown)="onEnterRefDoctorID($event,vRefDoctorID.DoctorID)"
-                                        [matAutocomplete]="autoRefdr">
-                                    <span matSuffix style="display: flex;">
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="otherForm.get('RefDoctorID').setValue(''); isresultdrSelected = false;">close</mat-icon>
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="otherForm.get('RefDoctorID').setValue(''); isresultdrSelected = false;">search</mat-icon>
-                                    </span>
-                                    <mat-autocomplete #autoRefdr="matAutocomplete" [displayWith]="getOptionTextRefdr">
-                                        <mat-option *ngFor="let option of filteredrefdr | async" [value]="option">
-                                            {{option.Doctorname}}
-                                        </mat-option>
-                                    </mat-autocomplete>
-                                </mat-form-field> -->
+                              
                             </div>
 
 

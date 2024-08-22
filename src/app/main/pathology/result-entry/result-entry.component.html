@@ -454,7 +454,7 @@
                                                 Action</mat-header-cell>
                                             <mat-cell *matCellDef="let contact">
                                                 <!-- *ngIf="contact.IsTemplateTest=='1'" (click)="chkresultentry(contact,$event,contact.select) -->
-                                                <button mat-icon-button class="material-icons"  matTooltip="Result Entry" (click)="chkresultentry(contact,false)" *ngIf="contact.IsTemplateTest">
+                                                <button mat-icon-button class="material-icons"  matTooltip="Result Entry" (click)="chkresultentry(contact,false)" *ngIf="contact.IsTemplateTest; else noMLC ">
                                                     <mat-icon title="Result Entry">description</mat-icon>
                                                 </button>
 
@@ -469,6 +469,10 @@
                                                 (click)="getWhatsappshareResult(contact)">
                                                 <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
                                             </button>
+
+                                            <ng-template #noMLC>
+                                                <span>--</span>
+                                            </ng-template>
                                             </mat-cell>
                                         </ng-container>
 

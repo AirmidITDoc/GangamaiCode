@@ -177,7 +177,7 @@ export class ResultEntryOneComponent implements OnInit {
     }
 
     setDropdownObjs() {
-        debugger
+        
         this.vsuggation = this.dataSource.data[0].SuggestionNote;
 
         const toSelect = this.PathologyDoctorList.find(c => c.DoctorId == this.dataSource.data[0].PathResultDr1);
@@ -214,7 +214,7 @@ export class ResultEntryOneComponent implements OnInit {
 
         data.ParaBoldFlag = '';
         if (data.ParaIsNumeric) {
-            debugger
+            
             let a = parseFloat(data.ResultValue);
             let b = parseFloat(data.MinValue);
             let c = parseFloat(data.MaxValue);
@@ -240,7 +240,7 @@ export class ResultEntryOneComponent implements OnInit {
     ParameterId = "";
 
     AddData1(contact, val) {
-        debugger
+        
         console.warn(val);
         if (this.currentval != "")
             this.currentval = this.currentval + ' , ' + val;
@@ -284,7 +284,7 @@ export class ResultEntryOneComponent implements OnInit {
 
     getResultList(advanceData) {
         this.sIsLoading = 'loading-data';
-        debugger
+        
         let SelectQuery
 
                 //  SelectQuery = "Select * from m_lvw_Retrieve_PathologyResult where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ")"
@@ -386,9 +386,7 @@ export class ResultEntryOneComponent implements OnInit {
         return option && option.Doctorname ? option.Doctorname : '';
     }
 
-    onEnterresultdr($event) {
-
-    }
+    nEnterresultdr
     Saveflag = 2;
     printf: boolean = true;
 
@@ -505,38 +503,7 @@ export class ResultEntryOneComponent implements OnInit {
             }
         }
     }
-    public onEnterDoctorId(event, value): void {
-
-        if (event.which === 13) {
-
-            console.log(value)
-            if (value == undefined) {
-                this.toastr.warning('Please Enter Valid DoctorId.', 'Warning !', {
-                    toastClass: 'tostr-tost custom-toast-warning',
-                });
-                return;
-            } else {
-                this.RefDoctorID.nativeElement.focus();
-            }
-        }
-
-    }
-
-    public onEnterRefDoctorID(event, value): void {
-
-        if (event.which === 13) {
-
-            console.log(value)
-            if (value == undefined) {
-                this.toastr.warning('Please Enter Referenc Doctor.', 'Warning !', {
-                    toastClass: 'tostr-tost custom-toast-warning',
-                });
-                return;
-            }
-        }
-    }
-
-
+   
     getPathresultdoctorList() {
         this._SampleService.getPathologyDoctorCombo().subscribe(data => {
             this.PathologyDoctorList = data;
@@ -549,11 +516,11 @@ export class ResultEntryOneComponent implements OnInit {
     }
 
     getPathresultDoctorList() {
-debugger
+
         this._SampleService.getPathologyDoctorCombo().subscribe(data => {
             this.PathologyDoctorList = data;
             if (this.data) {
-                debugger
+                
                 const ddValue = this.PathologyDoctorList.filter(c => c.DoctorId == this.PathResultDr1);
                 this.otherForm.get('PathResultDoctorId').setValue(ddValue[0]);
                 this.otherForm.updateValueAndValidity();
@@ -568,41 +535,41 @@ debugger
         }
     }
 
-    getDoctorList() {
-        this._SampleService.getDoctorMaster1Combo().subscribe(data => {
-            this.DoctorList = data;
-            this.optionsDoc2 = this.DoctorList.slice();
-            this.filteredpathdr = this.otherForm.get('DoctorId').valueChanges.pipe(
-                startWith(''),
-                map(value => value ? this._filterdoc2(value) : this.DoctorList.slice()),
-            );
-        });
-    }
+    // // getDoctorList() {
+    // //     this._SampleService.getDoctorMaster1Combo().subscribe(data => {
+    // //         this.DoctorList = data;
+    // //         this.optionsDoc2 = this.DoctorList.slice();
+    // //         this.filteredpathdr = this.otherForm.get('DoctorId').valueChanges.pipe(
+    // //             startWith(''),
+    // //             map(value => value ? this._filterdoc2(value) : this.DoctorList.slice()),
+    // //         );
+    // //     });
+    // // }
 
-    private _filterdoc2(value: any): string[] {
-        if (value) {
-            const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
-            return this.optionsDoc2.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
-        }
-    }
+    // private _filterdoc2(value: any): string[] {
+    //     if (value) {
+    //         const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
+    //         return this.optionsDoc2.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
+    //     }
+    // }
 
-    getRefDoctorList() {
-        this._SampleService.getDoctorMaster1Combo().subscribe(data => {
-            this.Doctor1List = data;
-            this.optionsDoc1 = this.Doctor1List.slice();
-            this.filteredrefdr = this.otherForm.get('RefDoctorID').valueChanges.pipe(
-                startWith(''),
-                map(value => value ? this._filterdoc1(value) : this.Doctor1List.slice()),
-            );
-        });
-    }
+    // getRefDoctorList() {
+    //     this._SampleService.getDoctorMaster1Combo().subscribe(data => {
+    //         this.Doctor1List = data;
+    //         this.optionsDoc1 = this.Doctor1List.slice();
+    //         this.filteredrefdr = this.otherForm.get('RefDoctorID').valueChanges.pipe(
+    //             startWith(''),
+    //             map(value => value ? this._filterdoc1(value) : this.Doctor1List.slice()),
+    //         );
+    //     });
+    // }
 
-    private _filterdoc1(value: any): string[] {
-        if (value) {
-            const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
-            return this.optionsDoc1.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
-        }
-    }
+    // private _filterdoc1(value: any): string[] {
+    //     if (value) {
+    //         const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
+    //         return this.optionsDoc1.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
+    //     }
+    // }
 
 
 
@@ -626,8 +593,7 @@ debugger
                         }
                     });
                 dialogRef.afterClosed().subscribe(result => {
-                    // this.AdList=false;
-                    // this.SpinLoading = false;
+                   
                 });
             });
 

@@ -149,18 +149,7 @@ export class TemplateMasterComponent implements OnInit {
       }
     });
     dialogRef.afterClosed().subscribe((data) => {
-      if (data) {
-        this.toastr.success('Record Updated Successfully.', 'Saved !', {
-          toastClass: 'tostr-tost custom-toast-success',
-        });
-
-        this.onClear();
-
-      } else {
-        this.toastr.error('Template Data not Updated !, Please check API error..', 'Error !', {
-          toastClass: 'tostr-tost custom-toast-error',
-        });
-      }
+     this.getTemplateMasterList();
     });
   }
 

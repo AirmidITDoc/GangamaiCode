@@ -52,7 +52,7 @@ export class ResultEntryService {
 
 
   public getPatientList(employee) {
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PathPatientList_Ptnt_Dtls", employee)
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PathPatientList_Ptnt_Dtls", employee)
   }
 
   public getPathologyResultList(query) {
@@ -136,7 +136,7 @@ export class ResultEntryService {
   }
 
   getTemplateCombo(employee) {
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_PathTemplateMasterForCombo", employee)
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PathTemplateMasterForCombo", employee)
   }
   
   
