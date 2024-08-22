@@ -95,8 +95,10 @@ export class OpPaymentVimalComponent implements OnInit {
         return this.netPayAmt > ((this.paidAmt || 0) + Number(this.amount1));
     }
     GetBalanceAmt() {
+        this.IsMoreAmt = Number(this.netPayAmt || 0) - (Number(this.paidAmt || 0) + Number(this.amount1 || 0)) < 0;
         this.balanceAmt = Number(this.netPayAmt || 0) - (Number(this.paidAmt || 0) + Number(this.amount1 || 0));
     }
+    IsMoreAmt = false;
     onAddPayment() {
         this.submitted = true;
         if (this.patientDetailsFormGrp.invalid) {
@@ -150,8 +152,8 @@ export class OpPaymentVimalComponent implements OnInit {
             if (result.isConfirmed) {
                 let tmp = this.Payments.data;
                 tmp.splice(this.Payments.data.findIndex(x => x.Id == payment.Id), 1);
-                if(payment.Id==-1)
-                    this.IsAdv=false;
+                if (payment.Id == -1)
+                    this.IsAdv = false;
                 this.Payments.data = tmp;
                 this.paidAmt = this.Payments.data.reduce(function (a, b) { return a + Number(b['Amount']); }, 0);
                 this.balanceAmt = this.netPayAmt - this.paidAmt;
@@ -283,13 +285,13 @@ export class OpPaymentVimalComponent implements OnInit {
             this.selectedPaymnet1 = 'cash';
             this.Paymentobj['TransactionType'] = 2;
         }
-        
+
         if (this.data.FromName == "IP-SETTLEMENT") {
             this.netPayAmt = this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);
             this.amount1 = this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);
             this.paidAmt = this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);
             this.PatientName = this.advanceData.PatientName;
-            this.selectedPaymnet1 = 'cash'; 
+            this.selectedPaymnet1 = 'cash';
             this.Date = this.advanceData.Date;
         }
     }
@@ -390,12 +392,12 @@ export class OpPaymentVimalComponent implements OnInit {
             Swal.fire('Please pay remaing amount, Balance Amount is ' + balamt)
             return
         }
-  
-        if(this.data.FromName == "IP-SETTLEMENT"){ 
+
+        if (this.data.FromName == "IP-SETTLEMENT") {
             this.Paymentobj['PaymentId'] = '0';
-            this.Paymentobj['billNo'] =this.data.billNo;
+            this.Paymentobj['billNo'] = this.data.billNo;
             this.Paymentobj['PaymentDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
-            this.Paymentobj['PaymentTime'] =this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
+            this.Paymentobj['PaymentTime'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
             this.Paymentobj['CashPayAmount'] = this.Payments.data.find(x => x.PaymentType == "cash")?.Amount ?? 0;
             this.Paymentobj['ChequePayAmount'] = this.Payments.data.find(x => x.PaymentType == "cheque")?.Amount ?? 0;
             this.Paymentobj['ChequeNo'] = this.Payments.data.find(x => x.PaymentType == "cheque")?.RefNo ?? 0;
@@ -412,15 +414,15 @@ export class OpPaymentVimalComponent implements OnInit {
             this.Paymentobj['Remark'] = '';
             this.Paymentobj['AddBy'] = this._loggedService.currentUserValue.user.id || 0;
             this.Paymentobj['IsCancelled'] = 'false';
-            this.Paymentobj['IsCancelledBy'] = '0'; 
+            this.Paymentobj['IsCancelledBy'] = '0';
             this.Paymentobj['IsCancelledDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
             let OP_IP_Type;
-            if(this.advanceData.FromName == "OP-SETTLEMENT"){
-              OP_IP_Type = 0;
-            }else{
-              OP_IP_Type = 1;
+            if (this.advanceData.FromName == "OP-SETTLEMENT") {
+                OP_IP_Type = 0;
+            } else {
+                OP_IP_Type = 1;
             }
-            this.Paymentobj['opD_IPD_Type'] = OP_IP_Type ;
+            this.Paymentobj['opD_IPD_Type'] = OP_IP_Type;
             this.Paymentobj['NEFTPayAmount'] = this.Payments.data.find(x => x.PaymentType == "net banking")?.Amount ?? 0;
             this.Paymentobj['NEFTNo'] = this.Payments.data.find(x => x.PaymentType == "net banking")?.RefNo ?? 0;
             this.Paymentobj['NEFTBankMaster'] = this.Payments.data.find(x => x.PaymentType == "net banking")?.BankName ?? "";
@@ -428,7 +430,7 @@ export class OpPaymentVimalComponent implements OnInit {
             this.Paymentobj['PayTMAmount'] = this.Payments.data.find(x => x.PaymentType == "upi")?.Amount ?? 0;
             this.Paymentobj['PayTMTranNo'] = this.Payments.data.find(x => x.PaymentType == "upi")?.RefNo ?? 0;
             this.Paymentobj['PayTMDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
-            this.Paymentobj['tdsAmount'] =  0; 
+            this.Paymentobj['tdsAmount'] = 0;
 
 
             let Advancesarr = [];
@@ -443,26 +445,26 @@ export class OpPaymentVimalComponent implements OnInit {
                 Advanceobj['BalanceAmount'] = element.BalanceAmount;
                 Advanceobj['RefundAmount'] = element.RefundAmount;
                 Advancesarr.push(Advanceobj);
-              });
+            });
 
 
-              const ipPaymentInsert = new IpPaymentInsert(this.Paymentobj);
-        
-              let submitDataPay = {
-                  ipPaymentInsert,
-              };
-      
-              let IsSubmit = {
-                  "submitDataPay": submitDataPay,
-                  "submitDataAdvancePay": Advancesarr,
-                  "PaidAmt": this.patientDetailsFormGrp.get('paidAmountController').value,
-                  "BalAmt" : this.patientDetailsFormGrp.get('balanceAmountController').value,
-                  "IsSubmitFlag": true, 
-                }
+            const ipPaymentInsert = new IpPaymentInsert(this.Paymentobj);
 
-                this.dialogRef.close(IsSubmit);
+            let submitDataPay = {
+                ipPaymentInsert,
+            };
+
+            let IsSubmit = {
+                "submitDataPay": submitDataPay,
+                "submitDataAdvancePay": Advancesarr,
+                "PaidAmt": this.patientDetailsFormGrp.get('paidAmountController').value,
+                "BalAmt": this.patientDetailsFormGrp.get('balanceAmountController').value,
+                "IsSubmitFlag": true,
+            }
+
+            this.dialogRef.close(IsSubmit);
         }
-        else if(this.data.FromName == "OP-RefundOfBill" || this.data.FromName == "IP-RefundOfBill" || this.data.FromName == "IP-RefundOfAdvance" || this.data.FromName == "IP-Advance"){
+        else if (this.data.FromName == "OP-RefundOfBill" || this.data.FromName == "IP-RefundOfBill" || this.data.FromName == "IP-RefundOfAdvance" || this.data.FromName == "IP-Advance") {
             this.Paymentobj['BillNo'] = this.data.billNo;
             this.Paymentobj['ReceiptNo'] = "";
             this.Paymentobj['PaymentDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
@@ -503,7 +505,7 @@ export class OpPaymentVimalComponent implements OnInit {
             this.Paymentobj['PayTMDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
             this.Paymentobj['PaidAmt'] = this.paidAmt;// this.patientDetailsFormGrp.get('paidAmountController').value +Number(this.amount1);
             this.Paymentobj['BalanceAmt'] = this.patientDetailsFormGrp.get('balanceAmountController').value;
-            this.Paymentobj['tdsAmount'] = 0; 
+            this.Paymentobj['tdsAmount'] = 0;
 
             console.log(JSON.stringify(this.Paymentobj));
 
@@ -517,7 +519,7 @@ export class OpPaymentVimalComponent implements OnInit {
             }
             console.log(IsSubmit);
             this.dialogRef.close(IsSubmit);
-        }  
+        }
     }
 
     onClose1() {
@@ -579,7 +581,7 @@ export class OpPaymentVimalComponent implements OnInit {
         }
         this.amount1 = 0;
     }
-    
+
 }
 export class PharPaymentInsert {
     PaymentId: number;
