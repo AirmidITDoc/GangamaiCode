@@ -29,7 +29,8 @@ export class OPReportsService {
         StoreId:'',
         StoreId1:'',
         NonMoveday:'',
-        ItemId:''
+        ItemId:'',
+        Id:''
         // Radio:['1']
 
       })
@@ -446,8 +447,8 @@ public getPurchaseorderview(FromDate,ToDate,SupplierID,ToStoreId){
   public getIndentwiseReport(IndentId){
     return this._httpClient.get("InventoryTransaction/view-IndentWise?IndentId="+IndentId);
   }
-  public getMaterialConsumptionlistReport(FromDate,ToDate,ToStoreId){
-    return this._httpClient.get("InventoryReports/view-MaterialConsumption?FromDate="+FromDate+"&ToDate="+ToDate + "&ToStoreId="+ToStoreId);
+  public getMaterialConsumptionlistReport(FromDate,ToDate,Id,ToStoreId){
+    return this._httpClient.get("InventoryReports/view-PatientWiseMaterialConsumption?FromDate="+FromDate+"&ToDate="+ToDate+ "&Id="+Id + "&ToStoreId="+ToStoreId);
   }
   public getMaterialConsumptionReport(MaterialConsumptionId){
     return this._httpClient.get("InPatient/view-MaterialConsumption?MaterialConsumptionId="+MaterialConsumptionId);

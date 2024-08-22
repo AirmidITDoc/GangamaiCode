@@ -49,7 +49,7 @@ export class InventoryReportComponent implements OnInit {
   isSupplierIdSelected:boolean=false;
   FlagSupplierSelected: boolean = false;
   FlagnonmovedaySelected: boolean = false;
-
+  FlagIdSelected: boolean = false;
   filteredOptionsItem:any;
 
 
@@ -146,7 +146,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagStore1Selected = false;
       this.FlagSupplierSelected = false;
       this.FlagItemSelected=false;
-     
+      this.FlagIdSelected=false;
     }else if (this.ReportName == 'Supplier List') {
       this.FlagUserSelected = false;
       this.FlagnonmovedaySelected = false;
@@ -155,6 +155,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagStore1Selected = false;
       this.FlagSupplierSelected = false;
       this.FlagItemSelected=false;
+      this.FlagIdSelected=false;
     }
     else if (this.ReportName == 'Indent Report') {
       this.FlagUserSelected = false;
@@ -164,6 +165,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagStore1Selected = true;
       this.FlagSupplierSelected = false;
       this.FlagItemSelected=false;
+      this.FlagIdSelected=false;
     } 
     else if (this.ReportName == 'Monthly Purchase(GRN) Report') {
       this.FlagUserSelected = false;
@@ -173,6 +175,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagStore1Selected = false;
       this.FlagSupplierSelected = false;
       this.FlagItemSelected=false;
+      this.FlagIdSelected=false;
     } 
      
     else if (this.ReportName == 'GRN Report') {
@@ -183,6 +186,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagStore1Selected = false;
       this.FlagSupplierSelected = true;
       this.FlagItemSelected=false;
+      this.FlagIdSelected=false;
     } 
     else if (this.ReportName == 'GRN Return Report') {
       this.FlagUserSelected = false;
@@ -192,6 +196,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagStore1Selected = false;
       this.FlagSupplierSelected = false;
       this.FlagItemSelected=false;
+      this.FlagIdSelected=false;
     }
     else if (this.ReportName == 'GRN Report - NABH') {
       this.FlagUserSelected = false;
@@ -201,6 +206,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagStore1Selected = false;
       this.FlagSupplierSelected = true;
       this.FlagItemSelected=false;
+      this.FlagIdSelected=false;
     }
     
     else if (this.ReportName == 'GRN Wise Product Qty Report') {
@@ -211,6 +217,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagStore1Selected = false;
       this.FlagSupplierSelected = true;
       this.FlagItemSelected=false;
+      this.FlagIdSelected=false;
     }
     else if (this.ReportName == 'GRN Purchase Report') {
       this.FlagUserSelected = false;
@@ -220,6 +227,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagStore1Selected = false;
       this.FlagSupplierSelected = false;
       this.FlagItemSelected=false;
+      this.FlagIdSelected=false;
     }
      else if (this.ReportName == 'Supplier Wise GRN List') {
       this.FlagUserSelected = false;
@@ -229,6 +237,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagStore1Selected = false;
       this.FlagSupplierSelected = true;
       this.FlagItemSelected=false;
+      this.FlagIdSelected=false;
     }
     else if (this.ReportName == 'Issue To Department') {
       this.FlagUserSelected = false;
@@ -237,7 +246,8 @@ export class InventoryReportComponent implements OnInit {
       this.FlagStoreSelected = true;
       this.FlagStore1Selected = true;
       this.FlagSupplierSelected = false;
-      this.FlagItemSelected=false;
+      this.FlagItemSelected=true;
+      this.FlagIdSelected=false;
     }
     else if (this.ReportName == 'Issue To Department Item Wise') {
       this.FlagUserSelected = false;
@@ -246,7 +256,8 @@ export class InventoryReportComponent implements OnInit {
       this.FlagStoreSelected = true;
       this.FlagStore1Selected = true;
       this.FlagSupplierSelected = false;
-      this.FlagItemSelected=false;
+      this.FlagItemSelected=true;
+      this.FlagIdSelected=false;
     }
      else if (this.ReportName == 'Return From Department') {
       this.FlagUserSelected = false;
@@ -256,6 +267,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagStore1Selected = true;
       this.FlagSupplierSelected = false;
       this.FlagItemSelected=false;
+      this.FlagIdSelected=false;
     }
     else if (this.ReportName == 'Purchase Order') {
       this.FlagUserSelected = false;
@@ -265,6 +277,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagStore1Selected = false;
       this.FlagSupplierSelected = true;
       this.FlagItemSelected=false;
+      this.FlagIdSelected=false;
     }
     else if (this.ReportName == 'Material Consumption Monthly Summary') {
       this.FlagUserSelected = false;
@@ -274,6 +287,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagStore1Selected = false;
       this.FlagSupplierSelected = false;
       this.FlagItemSelected=false;
+      this.FlagIdSelected=false;
     }
      else if (this.ReportName == 'Material Consumption') {
       this.FlagUserSelected = false;
@@ -283,6 +297,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagStore1Selected = false;
       this.FlagSupplierSelected = false;
       this.FlagItemSelected=false;
+      this.FlagIdSelected=false;
     }
     else if (this.ReportName == 'Item Expiry Report') {
       this.FlagUserSelected = false;
@@ -292,22 +307,16 @@ export class InventoryReportComponent implements OnInit {
       this.FlagStore1Selected = false;
       this.FlagSupplierSelected = false;
       this.FlagItemSelected=false;
+      this.FlagIdSelected=false;
     }
      else if (this.ReportName == 'Current Stock Report') {
       this.FlagBillNoSelected = true;
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
       this.FlagItemSelected=false;
+      this.FlagIdSelected=false;
     }
-    else if (this.ReportName == 'Closing Current Stock Report') {
-      this.FlagUserSelected = false;
-      this.FlagnonmovedaySelected = false;
-      this.FlagDoctorSelected = false;
-      this.FlagStoreSelected = false;
-      this.FlagStore1Selected = false;
-      this.FlagSupplierSelected = false;
-      this.FlagItemSelected=false;
-    }
+   
      else if (this.ReportName == 'Item Wise Supplier List') {
       this.FlagUserSelected = false;
       this.FlagnonmovedaySelected = false;
@@ -316,6 +325,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagStore1Selected = false;
       this.FlagSupplierSelected = true;
       this.FlagItemSelected=true;
+      this.FlagIdSelected=false;
     }
     else if (this.ReportName == 'Current Stock Date Wise') {
       this.FlagUserSelected = false;
@@ -325,6 +335,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagStore1Selected = false;
       this.FlagSupplierSelected = false;
       this.FlagItemSelected=false;
+      this.FlagIdSelected=false;
     }
      else if (this.ReportName == 'Non-Moving Item List') {
       this.FlagUserSelected = false;
@@ -334,6 +345,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagStore1Selected = false;
       this.FlagSupplierSelected = false;
       this.FlagItemSelected=false;
+      this.FlagIdSelected=false;
     }
     else if (this.ReportName == 'Non-Moving Item Without Batch List') {
       this.FlagUserSelected = false;
@@ -343,6 +355,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagStore1Selected = false;
       this.FlagSupplierSelected = false;
       this.FlagItemSelected=false;
+      this.FlagIdSelected=false;
     }
     else if (this.ReportName == 'Patient Wise Material Consumption') {
       this.FlagUserSelected = false;
@@ -352,6 +365,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagStore1Selected = false;
       this.FlagSupplierSelected = false;
       this.FlagItemSelected=false;
+      this.FlagIdSelected=true;
     }
      else if (this.ReportName == 'Last Purchase Rate Wise Consumtion') {
       this.FlagUserSelected = false;
@@ -361,6 +375,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagStore1Selected = false;
       this.FlagSupplierSelected = false;
       this.FlagItemSelected=true;
+      this.FlagIdSelected=false;
     }
     else if (this.ReportName == 'Item Count') {
       this.FlagUserSelected = false;
@@ -370,6 +385,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagStore1Selected = false;
       this.FlagSupplierSelected = false;
       this.FlagItemSelected=true;
+      this.FlagIdSelected=false;
     }
      else if (this.ReportName == 'Supplier Wise Debit Credit Note') {
       this.FlagUserSelected = false;
@@ -379,6 +395,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagStore1Selected = false;
       this.FlagSupplierSelected = true;
       this.FlagItemSelected=false;
+      this.FlagIdSelected=false;
 
     }   else if (this.ReportName == 'Stock Adjustment Report') {
       this.FlagUserSelected = false;
@@ -388,6 +405,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagStore1Selected = false;
       this.FlagSupplierSelected = false;
       this.FlagItemSelected=false;
+      this.FlagIdSelected=false;
     }
      else if (this.ReportName == 'Purchase Wise GRN Summary') {
       this.FlagUserSelected = false;
@@ -397,6 +415,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagStore1Selected = false;
       this.FlagSupplierSelected = false;
       this.FlagItemSelected=false;
+      this.FlagIdSelected=false;
     }
 
   }
@@ -1170,12 +1189,21 @@ export class InventoryReportComponent implements OnInit {
    }
    viewgetMaterialConsumptionPdf() {
     this.sIsLoading = 'loading-data';
-   let MaterialConsumptionId=0
+   let Id=0
+   if (this._OPReportsService.userForm.get('Id').value)
+    Id = this._OPReportsService.userForm.get('Id').value
+   
+   let StoreId =0
+
+    if (this._OPReportsService.userForm.get('StoreId').value)
+     StoreId = this._OPReportsService.userForm.get('StoreId').value.StoreId
+    
+
      setTimeout(() => {
      
        this._OPReportsService.getMaterialConsumptionlistReport(
         this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",0
+        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",Id,StoreId
        ).subscribe(res => {
          const dialogRef = this._matDialog.open(PdfviewerComponent,
            {
@@ -1297,7 +1325,7 @@ export class InventoryReportComponent implements OnInit {
     
     setTimeout(() => {
       this.SpinLoading = true;
-      this._OPReportsService.getItemwisesupplierlistview(SupplierId,StoreId,ItemId,
+      this._OPReportsService.getItemwisesupplierlistview(StoreId,SupplierId,ItemId,
         this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900" 
         
@@ -1309,7 +1337,7 @@ export class InventoryReportComponent implements OnInit {
             width: '100%',
             data: {
               base64: res["base64"] as string,
-              title: "Item Wise Purchase Viewer"
+              title: "Item Wise Supplier List  Viewer"
             }
           });
         dialogRef.afterClosed().subscribe(result => {

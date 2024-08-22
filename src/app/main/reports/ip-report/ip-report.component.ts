@@ -1052,8 +1052,7 @@ viewgetIPAdvanceReportPdf() {
       this.SpinLoading =true;
       this.AdList=true;
      this._IPReportService.getAdmittedPatientListCompanywiseView(
-      
-       this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+      this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
        this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
      
        ).subscribe(res => {

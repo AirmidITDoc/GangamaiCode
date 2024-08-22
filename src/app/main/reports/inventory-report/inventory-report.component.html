@@ -258,7 +258,14 @@
                                         </mat-error>
                                     </mat-form-field> 
                                     </div>
-                                   
+                                    <div *ngIf="FlagIdSelected" style="margin-left:2%;">
+                                    <mat-form-field appearance="outline" fxFlex="40%">
+                                        <mat-label>Patient Id</mat-label>
+                                        <input name="Id" formControlName="Id" placeholder="Patient Id"
+                                            matInput>
+
+                                    </mat-form-field>
+                                </div>
                                 </div>
                                 <div fxLayout="row" fxLayoutAlign="start none">
                                     <button class="btn btn-primary " color="accent" (click)="getPrint()"
