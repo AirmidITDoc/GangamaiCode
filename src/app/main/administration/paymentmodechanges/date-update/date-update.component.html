@@ -9,7 +9,7 @@
                     style="color: white;">account_box
                 </mat-icon>
                 <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
-                  BIll Date & Time Update
+                  Payment Date & Time Update
                 </span>
             </div>
             <div fxLayout="row" fxLayoutAlign="space-between center">
@@ -25,16 +25,17 @@
                 <div class="content-card">
                     <div fxLayout="row" fxLayout="column" fxFlexFill fxLayoutGap="10px">
                         <mat-card style="padding: 5px;"> 
-                                <div fxLayout="row" fxLayoutGap="6px">  
+                                <div fxLayout="column" fxLayoutGap="6px"> 
                                     <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"
                                     style="width: 200px;">
-                                    </app-common-date> 
+                                    </app-common-date>
+     
                                 </div> 
                         </mat-card>
                         <div fxLayoutAlign="end">
-                            <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px" style="margin: 40px 20px 0px 50px; ">
+                            <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px" style="margin: 20px 20px 0px 50px; ">
                                 <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                                <button class="btn btn-primary"   (click)="BillDate()">Save</button>
+                                <button class="btn btn-primary"   (click)="PaymentDate()">Save</button>
                             </div>
                         </div>
                     </div>

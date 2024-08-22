@@ -87,6 +87,12 @@ const appRoutes: Routes = [
             import("./Refund/ip-refund/ip-browse-refundof-advance/ip-browse-refundof-advance.module").then((m) => m.IPBrowseRefundofAdvanceModule),
                
         },
+        {
+            path: "companylist",
+            loadChildren: () =>
+            import("./company-list/company-list.module").then((m) => m.CompanyListModule),
+               
+        },
 
 //     {
 //         path: "viewpathologyreport", 

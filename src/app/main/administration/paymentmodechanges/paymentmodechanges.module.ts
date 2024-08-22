@@ -35,6 +35,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { DateUpdateComponent } from './date-update/date-update.component';
 
 
 const routes: Routes = [
@@ -45,7 +46,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [PaymentmodechangesComponent],
+  declarations: [PaymentmodechangesComponent, DateUpdateComponent],
   imports: [
      RouterModule.forChild(routes),
     CommonModule,

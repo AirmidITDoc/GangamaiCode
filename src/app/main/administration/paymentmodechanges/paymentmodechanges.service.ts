@@ -35,4 +35,7 @@ export class PaymentmodechangesService {
   public getIpAdvanceList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BrowseIPAdvPaymentReceipt",Param)
   }
+  public getDateTimeChange(m_data) {
+    return this._httpClient.post("Generic/ExecByQueryStatement?query=" + m_data,{});
+}
 }
