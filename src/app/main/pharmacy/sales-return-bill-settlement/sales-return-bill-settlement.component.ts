@@ -14,6 +14,7 @@ import { Validators } from '@angular/forms';
 import { IpPaymentInsert, IPpaymentWithadvanceComponent } from 'app/main/ipd/ip-settlement/ippayment-withadvance/ippayment-withadvance.component';
 import { ToastrService } from 'ngx-toastr';
 import { DiscountAfterFinalBillComponent } from './discount-after-final-bill/discount-after-final-bill.component';
+import { OpPaymentVimalComponent } from 'app/main/opd/op-search-list/op-payment-vimal/op-payment-vimal.component';
 
 @Component({
   selector: 'app-sales-return-bill-settlement',
@@ -298,8 +299,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
   isLoading123 = false;
   BalanceAm1:any= 0;
   UsedAmt1:any =0;
-  OnPayment(contact) { 
-    
+  OnPayment(contact) {  
     this.isLoading123 = true; 
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
@@ -401,6 +401,110 @@ export class SalesReturnBillSettlementComponent implements OnInit {
       this.isLoading123 = false; 
     });
   
+  }
+
+  OnPayment1(contact) {  
+    this.isLoading123 = true; 
+    const currentDate = new Date();
+    const datePipe = new DatePipe('en-US');
+    const formattedTime = datePipe.transform(currentDate, 'shortTime');
+    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+    console.log(contact)
+    let PatientHeaderObj = {}; 
+    
+    PatientHeaderObj['Date'] = formattedDate;
+    PatientHeaderObj['PatientName'] = this.PatientName;
+    PatientHeaderObj['OPD_IPD_Id'] = contact.OP_IP_ID;
+    PatientHeaderObj['AdvanceAmount'] = Math.round(contact.BalanceAmount); 
+    PatientHeaderObj['NetPayAmount'] =Math.round(contact.BalanceAmount); 
+    PatientHeaderObj['BillNo'] = contact.SalesId;
+    PatientHeaderObj['IPDNo'] = this.IPDNo;
+    PatientHeaderObj['RegNo'] = this.RegNo; 
+    PatientHeaderObj['OP_IP_Type'] = contact.OP_IP_Type; 
+    const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
+      {
+        maxWidth: "95vw",
+        height: '650px',
+        width: '85%',
+        data: {
+          vPatientHeaderObj: PatientHeaderObj,
+          FromName: "IP-Pharma-SETTLEMENT"
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result)
+
+      if (result.IsSubmitFlag == true) {
+        let updateBillobj = {};
+        updateBillobj['salesID'] = contact.SalesId;
+        updateBillobj['salRefundAmt'] =0 ;
+        updateBillobj['balanceAmount'] = result.BalAmt || 0 ;// result.submitDataPay.ipPaymentInsert.balanceAmountController //result.BalAmt;
+ 
+
+        let UpdateAdvanceDetailarr1: IpPaymentInsert[] = []; 
+    
+         UpdateAdvanceDetailarr1 = result.submitDataAdvancePay; 
+
+        let UpdateAdvanceDetailarr = [];
+      
+        if (result.submitDataAdvancePay.length > 0) {
+          result.submitDataAdvancePay.forEach((element) => {
+            let update_T_PHAdvanceDetailObj = {};
+            update_T_PHAdvanceDetailObj['AdvanceDetailID'] = element.AdvanceDetailID;
+            update_T_PHAdvanceDetailObj['UsedAmount'] = element.UsedAmount;
+            this.UsedAmt1 = (this.UsedAmt1 + element.UsedAmount);
+            update_T_PHAdvanceDetailObj['BalanceAmount'] = element.BalanceAmount;
+            this.BalanceAm1 =(this.BalanceAm1 + element.BalanceAmount);
+            UpdateAdvanceDetailarr.push(update_T_PHAdvanceDetailObj);
+          }); 
+        }
+        else {
+          let update_T_PHAdvanceDetailObj = {};
+          update_T_PHAdvanceDetailObj['AdvanceDetailID'] = 0,
+          update_T_PHAdvanceDetailObj['UsedAmount'] = 0,
+          update_T_PHAdvanceDetailObj['BalanceAmount'] = 0,
+            UpdateAdvanceDetailarr.push(update_T_PHAdvanceDetailObj);
+        }
+     
+        let update_T_PHAdvanceHeaderObj = {};
+        if (result.submitDataAdvancePay.length > 0) { 
+          update_T_PHAdvanceHeaderObj['AdvanceId'] = UpdateAdvanceDetailarr1[0]['AdvanceId'],
+          update_T_PHAdvanceHeaderObj['AdvanceUsedAmount'] =this.UsedAmt1 ,
+          update_T_PHAdvanceHeaderObj['BalanceAmount'] = this.BalanceAm1
+        }
+        else { 
+          update_T_PHAdvanceHeaderObj['AdvanceId'] = 0,
+          update_T_PHAdvanceHeaderObj['AdvanceUsedAmount'] = 0,
+          update_T_PHAdvanceHeaderObj['BalanceAmount'] = 0
+        }
+
+        let Data = {
+          "salesPaymentSettlement": result.submitDataPay.ipPaymentInsert, 
+          "update_Pharmacy_BillBalAmountSettlement": updateBillobj,
+          "update_T_PHAdvanceDetailSettlement":UpdateAdvanceDetailarr,
+          "update_T_PHAdvanceHeaderSettlement":update_T_PHAdvanceHeaderObj
+        };
+        console.log(Data);
+
+        this._SelseSettelmentservice.InsertSalessettlement(Data).subscribe(response => { 
+          if (response) {  
+            this.toastr.success('Sales Credit Payment Successfully !', 'Success', {
+              toastClass: 'tostr-tost custom-toast-error',
+            });
+            this._matDialog.closeAll();  
+            this.getIpSalesList(); 
+          }
+          else { 
+            this.toastr.error('Sales Credit Payment  not saved !', 'error', {
+              toastClass: 'tostr-tost custom-toast-error',
+            }); 
+          }
+        });
+        this.isLoading123 = false; 
+      } 
+      this.isLoading123 = false; 
+    });
+    this.isLoading123 = false; 
   }
   keyPressCharater(event) {
     var inp = String.fromCharCode(event.keyCode);

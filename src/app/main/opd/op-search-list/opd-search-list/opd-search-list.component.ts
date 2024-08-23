@@ -22,6 +22,7 @@ import { IPpaymentWithadvanceComponent } from 'app/main/ipd/ip-settlement/ippaym
 import { IpPaymentInsert } from '../op-advance-payment/op-advance-payment.component';
 import { OpPaymentComponent } from '../op-payment/op-payment.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { OpPaymentVimalComponent } from '../op-payment-vimal/op-payment-vimal.component';
 
 
 
@@ -213,6 +214,66 @@ export class OpdSearchListComponent implements OnInit {
         console.log(result)
         if (result.IsSubmitFlag == true) {
 debugger
+          this.vpaidamt = result.PaidAmt;
+          this.vbalanceamt = result.BalAmt
+
+          let updateBillobj = {};
+          updateBillobj['BillNo'] = contact.BillNo;
+          updateBillobj['BillBalAmount'] = result.BalAmt ||  this.vbalanceamt  //result.BalAmt;
+       
+          let Data = {
+            "updateBill": updateBillobj,
+            "paymentCreditUpdate": result.submitDataPay.ipPaymentInsert
+          };
+          console.log(Data)
+          this._opSearchListService.InsertOPBillingsettlement(Data).subscribe(response => {
+            if (response) {
+              Swal.fire('OP Credit Bill With Payment!', 'Credit Bill Payment Successfully !', 'success').then((result) => {
+                if (result.isConfirmed) {
+                  
+                  this.viewgetOPPayemntPdf(response,true)
+                  this._matDialog.closeAll();
+                  this.getCreditBillDetails(); 
+                }
+              });
+            }
+            else {
+              Swal.fire('Error !', 'OP Billing Payment not saved', 'error');
+            }
+          });
+        }
+      });
+  } 
+  openPaymentpopup1(contact){
+    const currentDate = new Date();
+    const datePipe = new DatePipe('en-US');
+    const formattedTime = datePipe.transform(currentDate, 'shortTime');
+    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+    console.log(contact)
+    let PatientHeaderObj = {}; 
+    PatientHeaderObj['Date'] = formattedDate;
+    PatientHeaderObj['PatientName'] = this.PatientName;
+    PatientHeaderObj['OPD_IPD_Id'] = contact.OPD_IPD_ID;
+    PatientHeaderObj['AdvanceAmount'] = contact.NetPayableAmt; 
+    PatientHeaderObj['NetPayAmount'] = contact.NetPayableAmt;
+    PatientHeaderObj['PBillNo'] = contact.PBillNo;
+    PatientHeaderObj['OPDNo'] = contact.OPDNo;
+    PatientHeaderObj['RegNo'] = this.RegNo; 
+
+    const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
+      {
+        maxWidth: "95vw",
+        height: '650px',
+        width: '85%',
+        data: {
+          vPatientHeaderObj: PatientHeaderObj,
+          FromName: "OP-SETTLEMENT"
+        }
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        console.log(result)
+        if (result.IsSubmitFlag == true) { 
           this.vpaidamt = result.PaidAmt;
           this.vbalanceamt = result.BalAmt
 

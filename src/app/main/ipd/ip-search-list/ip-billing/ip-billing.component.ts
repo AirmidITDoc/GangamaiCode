@@ -1301,6 +1301,7 @@ ServiceList:any=[];
   }
   onClose() {
     this.dialogRef.close({ result: "cancel" });
+    this.advanceDataStored.storage = [];
   }
   TotalAdvanceamt:any=0;
   SaveBill1() { 
@@ -1480,6 +1481,7 @@ ServiceList:any=[];
     }
 
     this.Ipbillform.get('CashCounterID').setValue(this.setcashCounter) 
+    this.advanceDataStored.storage = [];
   }
 
   IPCreditBill(){
@@ -1584,6 +1586,7 @@ ServiceList:any=[];
       Swal.fire('check is a credit bill or not ')
     }
     this.Ipbillform.get('CashCounterID').setValue(this.setcashCounter) 
+    this.advanceDataStored.storage = [];
   }
   onSaveDraft() {
     debugger

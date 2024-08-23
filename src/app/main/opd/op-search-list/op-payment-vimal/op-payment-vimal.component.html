@@ -54,7 +54,10 @@
                                         <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
                                             <span class="patient-col-key ">OPD | IPD No </span>
                                             <span>:</span>
-                                            <span class="patient-col-value">{{advanceData.IPDNo}}</span>
+                                            <span class="patient-col-value" *ngIf="advanceData.IPDNo">
+                                                {{advanceData.IPDNo}}</span>
+                                            <span class="patient-col-value" *ngIf="advanceData.OPDNo">
+                                                {{advanceData.OPDNo}}</span>
                                         </div>
                                         <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%"
                                             *ngIf="advanceData.DoctorName">
@@ -90,7 +93,7 @@
                                             style="color: blue;font-weight: bold;">
                                             <span class="patient-col-key">Net Amount</span>
                                             <span>:</span>
-                                            <span class="patient-col-value">{{advanceData.NetPayAmount}}</span>
+                                            <span class="patient-col-value">{{advanceData.NetPayAmount | currency:"INR":"symbol"}}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -109,7 +112,7 @@
                                             <span class="patient-col-key ">Bill Amount</span>
                                             <span>:</span>
                                             <span class="patient-col-value gap-4" fxLayout="row">
-                                                ₹ {{netPayAmt | currency:"INR":"symbol"}}
+                                                {{netPayAmt | currency:"INR":"symbol"}}
                                             </span>
                                         </div>
                                         <!-- <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">

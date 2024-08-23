@@ -212,6 +212,10 @@
                                                             (click)="openPaymentpopup(contact)" >
                                                             <mat-icon>payment</mat-icon> 
                                                         </button> 
+                                                        <button mat-icon-button  *ngIf="contact.BalanceAmt>0" matTooltip="Payment vimal"
+                                                            (click)="openPaymentpopup1(contact)" >
+                                                            <mat-icon>payment</mat-icon> 
+                                                        </button> 
                                                         <button mat-icon-button   matTooltip="Print">
                                                             <mat-icon>print</mat-icon>
                                                         </button>

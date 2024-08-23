@@ -279,6 +279,10 @@
                                                     (click)="OnPayment(contact)" >
                                                     <mat-icon>payment</mat-icon> 
                                                 </button> 
+                                                <button mat-icon-button  *ngIf="contact.BalanceAmount>0" matTooltip="Payment vimal"
+                                                    (click)="OnPayment1(contact)" >
+                                                    <mat-icon>payment</mat-icon> 
+                                                </button> 
                                                 <button mat-icon-button   matTooltip="Print">
                                                     <mat-icon>print</mat-icon>
                                                 </button>
