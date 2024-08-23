@@ -109,10 +109,7 @@
                                             </mat-form-field> -->
 
                                             <div class="sidebar-spinner mt-12" *ngIf="SpinLoading">
-                                                <span>
-                                                    Processing..... <i
-                                                        class="fa-solid fa-spinner fa-spin loading-spinner"></i>
-                                                </span>
+                                               
                                             </div>
 
                                             <div class="action-buttons">
@@ -179,12 +176,12 @@
                             </div>
                            
                             <div class="table-wrapper">
-                                <div class="table-spinner">
+                                <!-- <div class="table-spinner">
                                     <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
                                         class="backgroundBlur">
                                         <div class="spinner-border"></div>
                                     </div>
-                                </div>
+                                </div> -->
                                 <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
 
                                     <ng-container matColumnDef="UserAction" sticky>
@@ -699,13 +696,13 @@
                             <div fxLayout="column">
 
                                 <div class="table-wrapper">
-                                    <div class="table-spinner">
+                                    <!-- <div class="table-spinner">
                                         <div matColumnDef="loading"
                                             [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
                                             class="backgroundBlur">
                                             <div class="spinner-border"></div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <mat-table #table matSort [dataSource]="dataSource2"
                                         [@animateStagger]="{value:'50'}">
 

@@ -156,6 +156,14 @@
                                             </mat-cell>
                                         </ng-container>
 
+                                        
+                                        <ng-container matColumnDef="Formula">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                Formula</mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.Formula}}
+                                            </mat-cell>
+                                        </ng-container>
+                                        
                                         <ng-container matColumnDef="AddedBy">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header>
                                                 AddedBy</mat-header-cell>

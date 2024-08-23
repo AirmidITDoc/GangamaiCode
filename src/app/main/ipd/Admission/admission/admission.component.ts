@@ -617,8 +617,8 @@ export class AdmissionComponent implements OnInit {
 
   private _filterDep(value: any): string[] {
     if (value) {
-      const filterValue = value && value.departmentName ? value.departmentName.toLowerCase() : value.toLowerCase();
-      return this.optionsDep.filter(option => option.departmentName.toLowerCase().includes(filterValue));
+      const filterValue = value && value.DepartmentName ? value.DepartmentName.toLowerCase() : value.toLowerCase();
+      return this.optionsDep.filter(option => option.DepartmentName.toLowerCase().includes(filterValue));
     }
 
   }
@@ -836,7 +836,7 @@ export class AdmissionComponent implements OnInit {
   }
 
   getOptionTextDep(option) {
-    return option && option.departmentName ? option.departmentName : '';
+    return option && option.DepartmentName ? option.DepartmentName : '';
   }
 
   getOptionTextRefDoc(option) {
@@ -1342,7 +1342,7 @@ export class AdmissionComponent implements OnInit {
     this.hospitalFormGroup.get('DoctorId').reset();
 
     this.isDepartmentSelected = true;
-    this._AdmissionService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(
+    this._AdmissionService.getDoctorMasterCombo(departmentObj.DepartmentId).subscribe(
       data => {
         this.DoctorList = data;
         this.optionsDoc = this.DoctorList.slice();
@@ -1734,7 +1734,7 @@ export class AdmissionComponent implements OnInit {
         admissionNewInsert['tariffId'] = this.hospitalFormGroup.get('TariffId').value.TariffId ? this.hospitalFormGroup.get('TariffId').value.TariffId : 0;
 
         admissionNewInsert['classId'] = this.wardFormGroup.get('ClassId').value.ClassId ? this.wardFormGroup.get('ClassId').value.ClassId : 0;
-        admissionNewInsert['departmentId'] = this.hospitalFormGroup.get('Departmentid').value.Departmentid;// ? this.hospitalFormGroup.get('DepartmentId').value.DepartmentId : 0;
+        admissionNewInsert['departmentId'] = this.hospitalFormGroup.get('Departmentid').value.DepartmentId;// ? this.hospitalFormGroup.get('DepartmentId').value.DepartmentId : 0;
         admissionNewInsert['relativeName'] = this.otherFormGroup.get('RelativeName').value ? this.otherFormGroup.get('RelativeName').value : '';
         admissionNewInsert['relativeAddress'] = this.otherFormGroup.get('RelativeAddress').value ? this.otherFormGroup.get('RelativeAddress').value : '';
 
@@ -1812,7 +1812,7 @@ export class AdmissionComponent implements OnInit {
         admissionInsert['tariffId'] = this.hospitalFormGroup.get('TariffId').value.TariffId ? this.hospitalFormGroup.get('TariffId').value.TariffId : 0;
 
         admissionInsert['classId'] = this.wardFormGroup.get('ClassId').value.ClassId ? this.wardFormGroup.get('ClassId').value.ClassId : 0;
-        admissionInsert['departmentId'] = this.hospitalFormGroup.get('Departmentid').value.Departmentid;// ? this.hospitalFormGroup.get('DepartmentId').value.DepartmentId : 0;
+        admissionInsert['departmentId'] = this.hospitalFormGroup.get('Departmentid').value.DepartmentId;// ? this.hospitalFormGroup.get('DepartmentId').value.DepartmentId : 0;
         admissionInsert['relativeName'] = this.otherFormGroup.get('RelativeName').value ? this.otherFormGroup.get('RelativeName').value : '';
         admissionInsert['relativeAddress'] = this.otherFormGroup.get('RelativeAddress').value ? this.otherFormGroup.get('RelativeAddress').value : '';
 

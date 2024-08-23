@@ -67,12 +67,43 @@
                                         <mat-form-field appearance="outline" fxFlex="65%">
                                             <mat-label>Method Name</mat-label>
                                             <input name="MethodName" placeholder="Select MethodName"
-                                                formControlName="MethodName" matInput 
+                                                formControlName="MethodName" matInput
                                                 [ngClass]="{ 'is-invalid': submitted && f.MethodName.errors }">
                                             <span class="error"
                                                 *ngIf="f.MethodName.invalid && f.MethodName.touched">MethodName Enter
                                                 Only Alphabets
                                             </span>
+                                        </mat-form-field>
+                                    </div>
+                                    <div>
+
+                                        <mat-form-field appearance="outline" fxFlex="65%">
+                                            <mat-label>Formula</mat-label>
+                                            <input name="Formula" placeholder="Select Formula" formControlName="Formula"
+                                                matInput [ngClass]="{ 'is-invalid': submitted && f.Formula.errors }">
+                                            <span class="error" *ngIf="f.Formula.invalid && f.Formula.touched">Formula
+                                                required Enter only alphabets</span>
+                                        </mat-form-field>
+
+
+                                        <mat-form-field appearance="outline" fxFlex="50%">
+                                            <mat-label>UnitName</mat-label>
+                                            <input matAutocompletePosition="below" type="text"
+                                                placeholder="Select UnitName" matInput formControlName="UnitId"
+                                                [matAutocomplete]="autoUnitId" required>
+                                            <span matSuffix style="display: flex;">
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_ParameterService.myform.get('UnitId').setValue(''); isunitSelected = false;">close</mat-icon>
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_ParameterService.myform.get('UnitId').setValue(''); isunitSelected = false;">search</mat-icon>
+                                            </span>
+                                            <mat-autocomplete #autoUnitId="matAutocomplete"
+                                                [displayWith]="getOptionTextUnit">
+                                                <mat-option *ngFor="let option of filteredOptionsUnit | async"
+                                                    [value]="option">
+                                                    {{option.UnitName}}
+                                                </mat-option>
+                                            </mat-autocomplete>
                                         </mat-form-field>
                                     </div>
                                     <div fxLayoutAlign="space-between">
@@ -97,26 +128,6 @@
                                             </section>
                                         </div>
 
-                                      
-                                        <mat-form-field appearance="outline" fxFlex="50%">
-                                            <mat-label>UnitName</mat-label>
-                                            <input matAutocompletePosition="below" type="text"
-                                                placeholder="Select UnitName" matInput formControlName="UnitId"
-                                                [matAutocomplete]="autoUnitId" required>
-                                            <span matSuffix style="display: flex;">
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="_ParameterService.myform.get('UnitId').setValue(''); isunitSelected = false;">close</mat-icon>
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="_ParameterService.myform.get('UnitId').setValue(''); isunitSelected = false;">search</mat-icon>
-                                            </span>
-                                            <mat-autocomplete #autoUnitId="matAutocomplete"
-                                                [displayWith]="getOptionTextUnit">
-                                                <mat-option *ngFor="let option of filteredOptionsUnit | async"
-                                                    [value]="option">
-                                                    {{option.UnitName}}
-                                                </mat-option>
-                                            </mat-autocomplete>
-                                        </mat-form-field>
 
                                     </div>
 
@@ -432,13 +443,13 @@
 
                 </div>
                 <!-- [disabled]="_ParameterService.myform.invalid" -->
-               
+
                 <div fxLayoutGap="5px">
-                      
+
                     <div class="footer-navigation-container">
                         <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px">
                             <button class="btn btn-danger-outline" (click)="onClose()">Clear</button>
-                            <button class="btn btn-primary" (click)="onSubmit()" >Save</button>
+                            <button class="btn btn-primary" (click)="onSubmit()">Save</button>
                         </div>
                     </div>
 

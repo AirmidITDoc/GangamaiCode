@@ -31,6 +31,7 @@ export class ParametermasterComponent implements OnInit {
         "IsPrintDisSummary",
         // "MethodName",
         //"ParaMultipleRange",
+        "Formula",
         "AddedBy",
         "Isdeleted",
         "action",
@@ -155,6 +156,7 @@ export class ParametermasterComponent implements OnInit {
             IsPrintDisSummary: JSON.stringify(row.IsPrintDisSummary),
             MethodName: row.MethodName,
             ParaMultipleRange: row.ParaMultipleRange,
+            Formula: row.Formula,
         };
 
         this._ParameterService.getTableData(row.ParameterID).subscribe((data) => {
@@ -285,6 +287,7 @@ export class PathparameterMaster {
     UpdatedBy: number;
     IsPrintDisSummary: boolean;
     MethodName: string;
+    Formula: string;
     ParaMultipleRange: string;
     IsDeletedSearch: number;
     /**
@@ -298,6 +301,7 @@ export class PathparameterMaster {
             this.ParameterShortName = PathparameterMaster.ParameterShortName || "";
             this.ParameterName = PathparameterMaster.ParameterName || "";
             this.MethodName = PathparameterMaster.MethodName || "";
+            this.Formula = PathparameterMaster.Formula || "";
             this.PrintParameterName =PathparameterMaster.PrintParameterName || "";
             this.UnitId = PathparameterMaster.UnitId || "";
             this.IsNumeric = PathparameterMaster.IsNumeric || "false";

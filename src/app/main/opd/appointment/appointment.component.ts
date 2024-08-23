@@ -614,8 +614,8 @@ export class AppointmentComponent implements OnInit {
 
     private _filterDep(value: any): string[] {
         if (value) {
-            const filterValue = value && value.departmentName ? value.departmentName.toLowerCase() : value.toLowerCase();
-            return this.DepartmentList.filter(option => option.departmentName.toLowerCase().includes(filterValue));
+            const filterValue = value && value.DepartmentName ? value.DepartmentName.toLowerCase() : value.toLowerCase();
+            return this.DepartmentList.filter(option => option.DepartmentName.toLowerCase().includes(filterValue));
         }
 
     }
@@ -1152,6 +1152,7 @@ export class AppointmentComponent implements OnInit {
 
         this._opappointmentService.getDepartmentCombo().subscribe(data => {
             this.DepartmentList = data;
+            console.log(data)
             this.optionsDep = this.DepartmentList.slice();
             this.filteredOptionsDep = this.VisitFormGroup.get('Departmentid').valueChanges.pipe(
                 startWith(''),

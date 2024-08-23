@@ -61,7 +61,8 @@ export class ParametermasterService {
             MaxAge: [""],
             MinValue: [""],
             MaxValue: [""],
-            AgeType: [""]
+            AgeType: [""],
+            Formula:[""]
         });
     }
 

@@ -356,6 +356,7 @@ export class ParameterFormMasterComponent implements OnInit {
             parameterName: this._ParameterService.myform.get("ParameterName").value.trim() || "%",
             printParameterName: this._ParameterService.myform.get("PrintParameterName").value.trim() || "%",
             methodName: this._ParameterService.myform.get("MethodName").value || "%",
+            formula: this._ParameterService.myform.get("Formula").value || "%",
             unitId: this._ParameterService.myform.get("UnitId").value.UnitId || 0,
             isNumeric: this._ParameterService.is_numeric,
             isDeleted:1,// Boolean(JSON.parse(this._ParameterService.myform.get("IsDeleted").value)),
@@ -389,11 +390,7 @@ export class ParameterFormMasterComponent implements OnInit {
                     this.toastr.success('Record Saved Successfully.', 'Saved !', {
                         toastClass: 'tostr-tost custom-toast-success',
                     });
-                } else {
-                    this.toastr.error('Parameter-Form Master Data not saved !, Please check API error..', 'Error !', {
-                        toastClass: 'tostr-tost custom-toast-error',
-                    });
-                }
+                } 
             });
         } else {
             PathParameterMasterInsert['updatedby'] = this.accountService.currentUserValue.user.id || 1;
@@ -410,10 +407,6 @@ export class ParameterFormMasterComponent implements OnInit {
                             toastClass: 'tostr-tost custom-toast-error',
                         });
                     }
-                }, error => {
-                    this.toastr.error('Parameter-Form not saved !, Please check API error..', 'Error !', {
-                        toastClass: 'tostr-tost custom-toast-error',
-                    });
                 });
 
         }
