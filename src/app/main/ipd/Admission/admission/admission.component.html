@@ -652,6 +652,100 @@
                                     </mat-error>
                                 </mat-form-field>
 
+                                <div fxFlex="20%" fxFlex.xs="100%" >
+                                    <mat-button-toggle-group [(ngModel)]="dateStyle"
+                                        (change)="OnChangeDobType($event)" aria-label="Font Style">
+                                        <mat-button-toggle value="Date">Date</mat-button-toggle>
+                                        <mat-button-toggle value="Day">Day</mat-button-toggle>
+                                        <mat-button-toggle value="Month">Month</mat-button-toggle>
+                                        <mat-button-toggle value="Year">Year</mat-button-toggle>
+                                    </mat-button-toggle-group>
+                                </div>
+                                <div fxFlex="20%" fxFlex.xs="100%" *ngIf="dateStyle!='Date'">
+                                    <div fxLayout="row">
+                                        <mat-form-field appearance="outline" *ngIf="dateStyle=='Year'">
+                                            <mat-label>Age (Y)</mat-label>
+                                            <input placeholder="Age (Y)" matInput
+                                                (keyup)="CalcDOB('Year',$event)"
+                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" *ngIf="dateStyle=='Month'">
+                                            <mat-label>Age (M)</mat-label>
+                                            <input placeholder="Age (M)" matInput
+                                                (keyup)="CalcDOB('Month',$event)"
+                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,2);">
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" *ngIf="dateStyle=='Day'">
+                                            <mat-label>Age (D)</mat-label>
+                                            <input placeholder="Age (D)" matInput
+                                                (keyup)="CalcDOB('Day',$event)"
+                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,2);">
+                                        </mat-form-field>
+                                      
+                                    </div>
+                                </div>
+                                <div fxFlex="20%" fxFlex.xs="100%" *ngIf="dateStyle=='Date'">
+                                    <div fxLayout="row">
+                                        <mat-form-field appearance="outline">
+                                            <input matInput [matDatepicker]="validFromPicker"
+                                                formControllName="DateOfBirth" #bday
+                                                [value]="registerObj.DateofBirth"
+                                                (keydown)="onEnterbday($event)"
+                                                [disabled]="dateStyle!='Date'"
+                                                (dateChange)="onChangeDateofBirth($event.value)"
+                                                placeholder="mm/dd/yyyy">
+                                            <mat-datepicker-toggle matSuffix
+                                                [for]="validFromPicker"></mat-datepicker-toggle>
+                                            <mat-datepicker #validFromPicker></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <!-- age, month, dat -->
+                                <div fxFlex="40%" fxFlex.xs="100%">
+                                    <div fxLayout="row">
+                                      
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Age (Y)</mat-label>
+                                            <input name="AgeYear" formControlName="AgeYear"
+                                                placeholder="Age (Y)" matInput
+                                                [(ngModel)]="registerObj.AgeYear"
+                                                (ngModelChange)="registerObj.AgeYear = $event" required
+                                                maxlength="3" #agey readonly
+                                                (keyup)="ageyearcheck(registerObj.AgeYear)"
+                                                (keydown)="onEnteragey($event,registerObj.AgeYear)"
+                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
+                                            <mat-error
+                                                *ngIf="personalFormGroup.get('AgeYear').invalid && personalFormGroup.get('AgeYear').touched">Please
+                                                enter Age Year </mat-error>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Age (M)</mat-label>
+                                            <input name="AgeMonth" formControlName="AgeMonth"
+                                                placeholder="Age (M)" matInput readonly
+                                                [(ngModel)]="registerObj.AgeMonth"
+                                                (ngModelChange)="registerObj.AgeMonth = $event"
+                                                type="number" maxlength="2" #agem
+                                                (keydown)="onEnteragem($event)"
+                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,2);">
+                                            <mat-error
+                                                *ngIf="personalFormGroup.get('AgeMonth').invalid && personalFormGroup.get('AgeMonth').touched">
+                                                Please enter Age Month </mat-error>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Age (D)</mat-label>
+                                            <input name="AgeDay" formControlName="AgeDay"
+                                                placeholder="Age (D)" matInput
+                                                [(ngModel)]="registerObj.AgeDay" readonly
+                                                (ngModelChange)="registerObj.AgeDay = $event"
+                                                type="number" maxlength="2" #aged
+                                                (keydown)="onEnteraged($event)"
+                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,2);">
+                                            <mat-error
+                                                *ngIf="personalFormGroup.get('AgeDay').invalid && personalFormGroup.get('AgeDay').touched">
+                                                Please enter Age Day </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
 
                                 <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>Marital Name</mat-label>
@@ -694,65 +788,7 @@
                                     </mat-autocomplete>
                                 </mat-form-field>
 
-                                <!-- </div> -->
-
-                                <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px"> -->
-                                <!-- <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <mat-label>Birth date</mat-label>
-                                    <input name="DateOfBirth" matInput [matDatepicker]="picker1"
-                                        formControllName="DateOfBirth" #bday (keydown)="onEnterbday($event)"
-                                        (dateChange)="onChangeDateofBirth($event.value)"
-                                        [value]="registerObj.DateofBirth" [readonly]="true">
-                                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                                    <mat-datepicker #picker1></mat-datepicker>
-
-                                </mat-form-field> -->
-                                <mat-form-field appearance="outline">
-                                    <input matInput [matDatepicker]="validFromPicker" formControllName="DateOfBirth"
-                                        #bday [value]="registerObj.DateofBirth" (keydown)="onEnterbday($event)"
-                                        (dateChange)="onChangeDateofBirth($event.value)" placeholder="mm/dd/yyyy">
-                                    <mat-datepicker-toggle matSuffix [for]="validFromPicker"></mat-datepicker-toggle>
-                                    <mat-datepicker #validFromPicker></mat-datepicker>
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <mat-label>Age (Y)</mat-label>
-                                    <input name="AgeYear" formControlName="AgeYear" placeholder="Age (Y)" matInput
-                                        min="0" [ngModel]="registerObj.AgeYear"
-                                        (ngModelChange)="registerObj.AgeYear = $event" type="number" #agey
-                                        (keyup)="ageyearcheck(registerObj.AgeYear)"
-                                        (keydown)="onEnteragey($event,registerObj.AgeYear)" minlength="1" maxlength="4"
-                                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
-                                    <mat-error
-                                        *ngIf="personalFormGroup.get('AgeYear').invalid && personalFormGroup.get('AgeYear').touched">Please
-                                        enter Age Year </mat-error>
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <mat-label>Age (M)</mat-label>
-                                    <input name="AgeMonth" formControlName="AgeMonth" placeholder="Age (M)" matInput
-                                        min="0" #agem (keydown)="onEnteragem($event)" [ngModel]="registerObj.AgeMonth"
-                                        (keyup)="agemonthcheck(registerObj.AgeMonth)"
-                                        (ngModelChange)="registerObj.AgeMonth = $event" type="number" minlength="1"
-                                        maxlength="2"
-                                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,2);">
-                                    <mat-error
-                                        *ngIf="personalFormGroup.get('AgeMonth').invalid && personalFormGroup.get('AgeMonth').touched">
-                                        Please enter Age Month </mat-error>
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <mat-label>Age (D)</mat-label>
-                                    <input name="AgeDay" formControlName="AgeDay" placeholder="Age (D)" matInput min="0"
-                                        (keyup)="agedaycheck(registerObj.AgeDay)" minlength="1" #aged
-                                        (keydown)="onEnteraged($event)" maxlength="2" [ngModel]="registerObj.AgeDay"
-                                        (ngModelChange)="registerObj.AgeDay = $event" type="number"
-                                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,2);">
-                                    <mat-error
-                                        *ngIf="personalFormGroup.get('AgeDay').invalid && personalFormGroup.get('AgeDay').touched">
-                                        Please enter Age Day </mat-error>
-                                </mat-form-field>
-
+                             
                                 <!-- <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                       <mat-label>Pan Card No.</mat-label>
                       <input name="Pancardno" formControlName="Pancardno" placeholder="PAN Card No." #pan

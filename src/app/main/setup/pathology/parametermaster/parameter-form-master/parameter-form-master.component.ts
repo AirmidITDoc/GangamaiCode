@@ -311,7 +311,12 @@ export class ParameterFormMasterComponent implements OnInit {
         }
         console.log(invalid);
         
-        // if (this._ParameterService.myform.valid) {
+        if(this._ParameterService.myform.get("IsBold").value)
+            var BoldValue="B"
+        else
+         var BoldValue=""
+
+
         var numeric_info = [];
         var data2 = [];
         if (!this._ParameterService.is_numeric) {
@@ -356,6 +361,7 @@ export class ParameterFormMasterComponent implements OnInit {
             parameterName: this._ParameterService.myform.get("ParameterName").value.trim() || "%",
             printParameterName: this._ParameterService.myform.get("PrintParameterName").value.trim() || "%",
             methodName: this._ParameterService.myform.get("MethodName").value || "%",
+            IsBoldFlag: BoldValue, //this._ParameterService.myform.get("IsBold").value || 'B',
             formula: this._ParameterService.myform.get("Formula").value || "%",
             unitId: this._ParameterService.myform.get("UnitId").value.UnitId || 0,
             isNumeric: this._ParameterService.is_numeric,

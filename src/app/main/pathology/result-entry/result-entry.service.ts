@@ -50,7 +50,7 @@ export class ResultEntryService {
     });
   }
 
-
+  // m_Rtrv_PathPatientList_Ptnt_Dtls
   public getPatientList(employee) {
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PathPatientList_Ptnt_Dtls", employee)
   }

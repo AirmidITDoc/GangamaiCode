@@ -48,6 +48,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { CompanyInformationComponent } from '../../company-information/company-information.component';
 import { AdmissionViewComponent } from './admission-view/admission-view.component';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 const routes: Routes = [
   { 
@@ -111,7 +112,7 @@ const routes: Routes = [
     MatAutocompleteModule,
     MatChipsModule,
     MatTooltipModule,
-          
+    MatButtonToggleModule      
   ],
   providers: [
     AdmissionService,

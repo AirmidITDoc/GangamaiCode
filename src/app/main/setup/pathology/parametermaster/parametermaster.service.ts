@@ -62,7 +62,8 @@ export class ParametermasterService {
             MinValue: [""],
             MaxValue: [""],
             AgeType: [""],
-            Formula:[""]
+            Formula:[""],
+            IsBold:['0']
         });
     }
 

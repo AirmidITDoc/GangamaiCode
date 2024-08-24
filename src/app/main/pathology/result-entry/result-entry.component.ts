@@ -363,7 +363,7 @@ export class ResultEntryComponent implements OnInit {
 
     }
      
-      if (this.Mobileno != '') {
+      if (this.Mobileno != '' || this.Mobileno != '0') {
         var m_data = {
           "insertWhatsappsmsInfo": {
             "mobileNumber": this.Mobileno || 0,

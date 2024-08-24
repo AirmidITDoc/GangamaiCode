@@ -236,11 +236,12 @@
                             <div fxLayout="column" fxLayout="row" fxLayout="4px">
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Suggestion Note </mat-label>
-                                    <textarea rows="1" name="suggestionNotes" formControlName="suggestionNotes" matInput
+                                    <textarea rows="5" name="suggestionNotes" formControlName="suggestionNotes" matInput
                                         [(ngModel)]="vsuggation" (keydown)="onEnterSugg($event)"></textarea>
                                     <mat-error>Please enter Suggestion </mat-error>
                                 </mat-form-field>
-
+                            </div>
+                                <div fxLayout="column" fxLayout="row" fxLayout="4px">
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Pathologist Name</mat-label>
                                     <input matAutocompletePosition="below" type="text"
