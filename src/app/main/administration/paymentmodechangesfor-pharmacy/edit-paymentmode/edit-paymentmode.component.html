@@ -69,12 +69,21 @@
                         <mat-card fxFlex="100%" style="padding: 5px 5px 5px 15px; ">
                             <div fxLayout="row">
                                 <span class="flex-item-middle" fxFlex="17%" style="padding:10px;">
+                                   Total Paid Amount :- </span>
+                                <mat-form-field appearance="outline" fxFlex="24.5%">
+                                    <mat-label>Paid Amount</mat-label>
+                                    <input name="PaidAmount" formControlName="PaidAmount" matInput readonly [(ngModel)]="vPaidAmount">
+                                </mat-form-field>
+                            </div>
+
+                            <!-- <div fxLayout="row">
+                                <span class="flex-item-middle" fxFlex="17%" style="padding:10px;">
                                     {{label}} :- </span>
                                 <mat-form-field appearance="outline" fxFlex="24.5%">
                                     <mat-label>{{label}}</mat-label>
                                     <input name="PaidAmount" formControlName="PaidAmount" matInput readonly [(ngModel)]="vPaidAmount">
                                 </mat-form-field>
-                            </div>
+                            </div> -->
                         </mat-card>
                 
                         <mat-card fxFlex="100%" style=" padding: 10px 5px 5px 15px; ">
@@ -178,9 +187,7 @@
                                         <mat-label>Cheque Pay</mat-label> 
                                         <input name="ChequePayAmt" formControlName="ChequePayAmt" matInput required
                                             [(ngModel)]="vchequepay" #CardPayAmt (keyup)="getbalAmt()" (keydown)="onEnterCheckPayAmt($event)"
-                                            min="100000000000" autocomplete="off" maxlength="12"  minlength="4"
-                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);"
-                                            required="required" value="987665868888">
+                                       >
                                         <mat-error class="error"
                                             *ngIf="_Paymentmodesevice.paymentform.get('ChequePayAmt').invalid && _Paymentmodesevice.paymentform.get('ChequePayAmt').touched">
                                             Cheque is required
@@ -192,7 +199,10 @@
                 
                                         <input name="ChequeNo" formControlName="ChequeNo" matInput required
                                             [(ngModel)]="registerObj.ChequeNo" #ChequeNo (keydown)="onEnterChequeNo($event)"
-                                            [(ngModel)]="vchequeNo">
+                                            [(ngModel)]="vchequeNo" 
+                                            min="100000000000" autocomplete="off" maxlength="12"  minlength="4"
+                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);"
+                                            required="required" value="987665868888">
                                         <mat-error class="error"
                                             *ngIf="_Paymentmodesevice.paymentform.get('ChequeNo').invalid && _Paymentmodesevice.paymentform.get('ChequeNo').touched">
                                             Cheque is required
@@ -226,9 +236,7 @@
                                         <mat-label>NEFTPayAmount Pay</mat-label>
                                         <input name="NEFTPayAmount" formControlName="NEFTPayAmount" matInput required
                                             [(ngModel)]="vneftpay" #NEFTPayAmount (keyup)="getbalAmt()"
-                                            min="100000000000" autocomplete="off" maxlength="12"  minlength="4"
-                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);"
-                                            required="required" value="987665868888">
+                                         >
                                         <mat-error class="error"
                                             *ngIf="_Paymentmodesevice.paymentform.get('NEFTPayAmount').invalid && _Paymentmodesevice.paymentform.get('NEFTPayAmount').touched">
                                             Card is required
@@ -239,7 +247,10 @@
                                         <mat-label>NEFT No</mat-label>
                 
                                         <input name="NEFTNo" formControlName="NEFTNo" matInput [(ngModel)]="registerObj.NEFTNo"
-                                            [(ngModel)]="vNEFTNo" #NEFTNo (keydown)="onEnterNEFTNo($event)">
+                                            [(ngModel)]="vNEFTNo" #NEFTNo (keydown)="onEnterNEFTNo($event)"
+                                            min="100000000000" autocomplete="off" maxlength="12"  minlength="4"
+                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);"
+                                            required="required" value="987665868888">
                                         <mat-error class="error"
                                             *ngIf="_Paymentmodesevice.paymentform.get('NEFTNo').invalid && _Paymentmodesevice.paymentform.get('NEFTNo').touched">
                                             Cheque is required
@@ -275,9 +286,7 @@
                                         <mat-label>PayTMAmount </mat-label> 
                                         <input name="PayTMAmount" formControlName="PayTMAmount" matInput required
                                             [(ngModel)]="vpaytmpay" (keyup)="getbalAmt()" (keydown)="onEnterPayTMamt($event)"
-                                            min="100000000000" autocomplete="off" maxlength="12"  minlength="4"
-                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);"
-                                            required="required" value="987665868888">
+                                          >
                                         <mat-error class="error"
                                             *ngIf="_Paymentmodesevice.paymentform.get('PayTMAmount').invalid && _Paymentmodesevice.paymentform.get('PayTMAmount').touched">
                                             PayTMTranNo is required
@@ -289,7 +298,10 @@
                                         <mat-label>PayTMTranNo </mat-label>
                 
                                         <input name="PayTMTranNo" formControlName="PayTMTranNo" matInput required
-                                            [(ngModel)]="vPayTMTranNo" #PayTMTranNo>
+                                            [(ngModel)]="vPayTMTranNo" #PayTMTranNo
+                                            min="100000000000" autocomplete="off" maxlength="12"  minlength="4"
+                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);"
+                                            required="required" value="987665868888">
                                         <mat-error class="error"
                                             *ngIf="_Paymentmodesevice.paymentform.get('PayTMTranNo').invalid && _Paymentmodesevice.paymentform.get('PayTMTranNo').touched">
                                             PayTMTranNo is required

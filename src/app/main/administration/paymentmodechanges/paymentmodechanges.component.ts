@@ -104,8 +104,8 @@ export class PaymentmodechangesComponent implements OnInit {
     'From_Dt': this.datePipe.transform(this._PaymentmodechangesService.UseFormGroup.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
     'To_Dt':this.datePipe.transform(this._PaymentmodechangesService.UseFormGroup.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
     'Reg_No':this._PaymentmodechangesService.UseFormGroup.get('RegNo').value || 0,
-    'PBillNo':this._PaymentmodechangesService.UseFormGroup.get('BillNo').value  || 0,
-    'ReceiptNo':this._PaymentmodechangesService.UseFormGroup.get('ReceiptNo').value || 0
+    'PBillNo':this._PaymentmodechangesService.UseFormGroup.get('BillNo').value  || '%',
+    'ReceiptNo':this._PaymentmodechangesService.UseFormGroup.get('ReceiptNo').value || '%'
   }
   console.log(vdata);
   this._PaymentmodechangesService.getIpReceiptList(vdata).subscribe(data =>{
@@ -187,9 +187,12 @@ export class PaymentmodechangesComponent implements OnInit {
     });
   dialogRef.afterClosed().subscribe(result => {
     console.log('The dialog was closed - Insert Action', result);
-    this.getOPReceiptList();
-    this.getIPAdvanceList();
-    this.getIPReceiptList();
+    if(this._PaymentmodechangesService.UseFormGroup.get('Radio').value == '0')
+      this.getOPReceiptList();
+    else if(this._PaymentmodechangesService.UseFormGroup.get('Radio').value == '1')
+      this.getIPReceiptList();
+    else 
+      this.getIPAdvanceList(); 
   });  
 }
 PaymentDate(contact){ 
@@ -202,7 +205,7 @@ PaymentDate(contact){
         }, 
       });
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
+      console.log('The dialog was closed - Insert Action', result); 
      if(this._PaymentmodechangesService.UseFormGroup.get('Radio').value == '0')
       this.getOPReceiptList();
     else if(this._PaymentmodechangesService.UseFormGroup.get('Radio').value == '1')

@@ -39,8 +39,7 @@ export class EditPaymentmodeComponent implements OnInit {
   isBank1elected4: boolean = false;
   isBank3elected: boolean = false;
   BankNameList1: any = [];
-  BankNameList2: any = [];
-  BankNameList3: any = [];
+  BankNameList2: any = []; 
   BankNameList4: any = [];
   BankNameList5: any = [];
   chkcash: boolean = false;
@@ -90,22 +89,29 @@ export class EditPaymentmodeComponent implements OnInit {
       this.vpaymentId = this.registerObj.PaymentId;
       this.vnetPayAmt = this.registerObj.PaidAmount;
       this.vbalanceAmt = this.registerObj.PaidAmount;
+      this.vPaidAmount = this.registerObj.PaidAmount;
     }
+
     if (this.registerObj.CashPayAmount > 0) {
-      this.label = 'CashPayAmount'
-      this.vPaidAmount = this.registerObj.CashPayAmount;
-    } else if (this.registerObj.CardPayAmount > 0) {
-      this.label = 'CardPayAmount'
-      this.vPaidAmount = this.registerObj.CardPayAmount;
-    } else if (this.registerObj.ChequePayAmount > 0) {
-      this.label = 'ChequePayAmount'
-      this.vPaidAmount = this.registerObj.ChequePayAmount;
-    } else if (this.registerObj.NEFTPayAmount > 0) {
-      this.label = 'NEFTPayAmount'
-      this.vPaidAmount = this.registerObj.NEFTPayAmount;
-    } else if (this.registerObj.PayTMAmount > 0) {
-      this.label = 'PayTMAmount'
-      this.vPaidAmount = this.registerObj.PayTMAmount;
+      this.vCashCheckStatus = true;
+      this.vcashpay = this.registerObj.CashPayAmount; 
+      this.getbalAmt();
+    }if (this.registerObj.CardPayAmount > 0) {
+      this.vCardCheckStatus = true;
+      this.vcardpay = this.registerObj.CardPayAmount; 
+      this.getbalAmt(); 
+    }if (this.registerObj.ChequePayAmount > 0) {
+      this.vCheckCheckStatus = true;
+      this.vchequepay = this.registerObj.ChequePayAmount;
+      this.getbalAmt();
+    }if (this.registerObj.NEFTPayAmount > 0) {
+      this.vNFTPayCheckStatus = true;
+      this.vneftpay = this.registerObj.NEFTPayAmount;
+      this.getbalAmt();
+    }if (this.registerObj.PayTMAmount > 0) {
+      this.vPayTMCheckStatus = true;
+      this.vpaytmpay = this.registerObj.PayTMAmount;
+      this.getbalAmt();
     }
   }
 
@@ -278,7 +284,7 @@ export class EditPaymentmodeComponent implements OnInit {
           });
           return; 
         }
-          if(!this.BankNameList3.some(item => item.BankName ===this._Paymentmodesevice.paymentform.get('NEFTBankName').value.BankName)){
+          if(!this.BankNameList4.some(item => item.BankName ===this._Paymentmodesevice.paymentform.get('NEFTBankName').value.BankName)){
             this.toastr.warning('Please Select valid NEFT Bank Name', 'Warning !', {
               toastClass: 'tostr-tost custom-toast-warning',
             });
@@ -400,7 +406,7 @@ export class EditPaymentmodeComponent implements OnInit {
           });
           return; 
         }
-          if(!this.BankNameList3.some(item => item.BankName ===this._Paymentmodesevice.paymentform.get('NEFTBankName').value.BankName)){
+          if(!this.BankNameList4.some(item => item.BankName ===this._Paymentmodesevice.paymentform.get('NEFTBankName').value.BankName)){
             this.toastr.warning('Please Select valid NEFT Bank Name', 'Warning !', {
               toastClass: 'tostr-tost custom-toast-warning',
             });

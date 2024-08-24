@@ -20,7 +20,7 @@ export class CancellationService {
       RegNo: '',
       FirstName: '',
       LastName: '',
-      SalesNo: '',
+      PBillNo: '',
       OP_IP_Type: ['1']
 
     })
