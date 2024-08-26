@@ -302,20 +302,20 @@ export class ResultEntryOneComponent implements OnInit {
         //     SelectQuery = "Select * from m_lvwRtrv_PathologyResultIPWithAge where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ") and SexId=" + this.SexId + " and MaxAge >= " + this.CheckAgeday + " and MinAge < " + this.CheckAgeday + " AND AgeType='DAY' "
         // }
 
-
+debugger
         if (this.OP_IPType == 0) {
             if (this.selectedAdvanceObj2.AgeYear > 0)
                 SelectQuery = "Select * from m_lvwRtrv_PathologyResultOPWithAge where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ") and SexId=" + this.SexId + " and MaxAge >= " + this.CheckAge + " and MinAge < " + this.CheckAge + " AND AgeType='YEAR' "
             else if (this.selectedAdvanceObj2.AgeMonth > 0)
                  SelectQuery = "Select * from m_lvwRtrv_PathologyResultOPWithAge where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ") and SexId=" + this.SexId + " and MaxAge >= " + this.CheckAgemonth + " and MinAge < " + this.CheckAgemonth +"AND AgeType='MONTH'"
-            else if (this.selectedAdvanceObj2.AgeMonth > 0)
+            else if (this.selectedAdvanceObj2.AgeDay > 0)
                 SelectQuery = "Select * from m_lvwRtrv_PathologyResultOPWithAge where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ") and SexId=" + this.SexId + " and MaxAge >= " + this.CheckAgeday + " and MinAge < " + this.CheckAgeday + " AND AgeType='DAY' "
         } else if (this.OP_IPType == 1) {
             if (this.selectedAdvanceObj2.AgeYear > 0)
                 SelectQuery = "Select * from m_lvwRtrv_PathologyResultIPWithAge where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ") and SexId=" + this.SexId + " and MaxAge >= " + this.CheckAge + " and MinAge < " + this.CheckAge + " AND AgeType='YEAR' "
             else if (this.selectedAdvanceObj2.AgeMonth > 0)
                 SelectQuery = "Select * from m_lvwRtrv_PathologyResultIPWithAge where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ") and SexId=" + this.SexId + " and MaxAge >= " + this.CheckAgemonth + " and MinAge < " + this.CheckAgemonth + "AND AgeType='MONTH'"
-            else if (this.selectedAdvanceObj2.AgeMonth > 0)
+            else if (this.selectedAdvanceObj2.AgeDay > 0)
                 SelectQuery = "Select * from m_lvwRtrv_PathologyResultIPWithAge where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ") and SexId=" + this.SexId + " and MaxAge >= " + this.CheckAgeday + " and MinAge < " + this.CheckAgeday + " AND AgeType='DAY' "
         }
 
@@ -324,8 +324,6 @@ export class ResultEntryOneComponent implements OnInit {
         console.log(SelectQuery)
         this._SampleService.getPathologyResultList(SelectQuery).subscribe(Visit => {
             this.dataSource.data = Visit as Pthologyresult[];
-            // this.Pthologyresult = Visit as Pthologyresult[];
-
             this.dataSource.sort = this.sort;
             this.dataSource.paginator = this.paginator;
             this.sIsLoading = '';
