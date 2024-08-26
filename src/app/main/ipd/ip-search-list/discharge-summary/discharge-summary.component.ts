@@ -30,7 +30,7 @@ export class DischargeSummaryComponent implements OnInit {
     'ItemName',
     'DoseName',
     'Day',
-    'Remark',
+  //  'Remark',
     'Action'
   ]
 

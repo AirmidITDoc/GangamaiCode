@@ -285,7 +285,7 @@ export class OpPaymentVimalComponent implements OnInit {
             this.Date = this.advanceData.Date;
         }
         //Op-Settlemet
-        if (this.data.FromName == "IP-Pharma-SETTLEMENT") {
+        if (this.data.FromName == "OP-SETTLEMENT") {
             this.netPayAmt = this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);
             this.amount1 = this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);
             this.paidAmt = this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);

@@ -62,10 +62,12 @@ export class BillDateUpdateComponent implements OnInit {
             this.toastr.success('Bill Date & Time Updated Successfuly', 'Updated !', {
               toastClass: 'tostr-tost custom-toast-success',
             }); 
+            this.onClose();
           } else {
             this.toastr.error('API Error!', 'Error !', {
               toastClass: 'tostr-tost custom-toast-error',
             });
+            this.onClose();
           }
         });
       }

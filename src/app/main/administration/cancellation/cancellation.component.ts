@@ -24,7 +24,7 @@ import { BillDateUpdateComponent } from './bill-date-update/bill-date-update.com
 })
 export class CancellationComponent implements OnInit {
   displayedColumns:string[] = [
-   
+     'btn',
     'BillDate',
     'PBillNo',
     'RegNo',
@@ -57,8 +57,7 @@ export class CancellationComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getIpdBillList();
-    this.getOPDBillsList();
+    this.getSearchList(); 
   }
   
   toggleSidebar(name): void {
@@ -86,7 +85,7 @@ export class CancellationComponent implements OnInit {
       "From_Dt": this.datePipe.transform(this._CancellationService.UserFormGroup.get('startdate').value, "MM-dd-yyyy") || '01/01/1900',
       "To_Dt ": this.datePipe.transform(this._CancellationService.UserFormGroup.get('enddate').value, "MM-dd-yyyy") || '01/01/1900',
       "Reg_No": this._CancellationService.UserFormGroup.get('RegNo').value || 0,
-      "PBillNo": this._CancellationService.UserFormGroup.get('SalesNo').value + '%' || "%",
+      "PBillNo": this._CancellationService.UserFormGroup.get('PBillNo').value + '%' || "%",
       "Start":(this.paginator?.pageIndex??0),
       "Length":(this.paginator?.pageSize??35) 
     }
@@ -111,7 +110,7 @@ export class CancellationComponent implements OnInit {
       "From_Dt": this.datePipe.transform(this._CancellationService.UserFormGroup.get('startdate').value, "MM-dd-yyyy") || '01/01/1900',
       "To_Dt ": this.datePipe.transform(this._CancellationService.UserFormGroup.get('enddate').value, "MM-dd-yyyy") || '01/01/1900',
       "Reg_No": this._CancellationService.UserFormGroup.get('RegNo').value || 0,
-      "PBillNo": this._CancellationService.UserFormGroup.get('SalesNo').value + '%' || "%",
+      "PBillNo": this._CancellationService.UserFormGroup.get('PBillNo').value + '%' || "%",
       "Start":(this.paginator?.pageIndex??0),
       "Length":(this.paginator?.pageSize??35) 
     }
@@ -122,8 +121,7 @@ export class CancellationComponent implements OnInit {
       this.dsCancellation.data = Visit["Table1"] ?? [] as CancellationList[];
       console.log(this.dsCancellation.data)
       this.resultsLength = Visit["Table"][0]["total_row"];
-      this.sIsLoading = this.dsCancellation.data.length == 0 ? 'no-data' : '';
- 
+      this.sIsLoading = this.dsCancellation.data.length == 0 ? 'no-data' : ''; 
     },
       error => {
         this.sIsLoading = '';
@@ -184,6 +182,7 @@ export class CancellationComponent implements OnInit {
     }  
   }
   Billdateupdate(contact) { 
+    this.isLoading123 = true;
     const dialogRef = this._matDialog.open(BillDateUpdateComponent,
       {
         height: "35%",
@@ -194,6 +193,7 @@ export class CancellationComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result => {
       this.getSearchList();
+      this.isLoading123 = false;
     });
   }
 
