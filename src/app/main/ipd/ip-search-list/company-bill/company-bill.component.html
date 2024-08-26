@@ -1109,13 +1109,7 @@
                                             (change)="AdminStatus($event)">
                                             Admin
                                         </mat-checkbox>
-
-                                        <mat-checkbox formControlName="GenerateBill" (checked)=true>
-                                            Generate Bill
-                                        </mat-checkbox>
-                                        <mat-checkbox formControlName="CreditBill" (checked)=true>
-                                            Credit Bill
-                                        </mat-checkbox>
+ 
 
 
 
@@ -1139,8 +1133,7 @@
                                         fxLayoutAlign="end center">
                                         <div class="button-row-group">
                                             <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                                            <button class="btn btn-primary-outline"
-                                                (click)="getInterimData()">Interim</button>
+                                          
                                             <button class="btn btn-primary" (click)="onSave()"
                                                 [disabled]="Ipbillform.invalid">Save</button>
 

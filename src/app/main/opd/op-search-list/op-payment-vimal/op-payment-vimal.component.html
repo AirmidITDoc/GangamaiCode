@@ -170,12 +170,14 @@
                                         <!-- {{element.UsedAmount | currency:'INR'}} -->
                                         <!-- [readonly]="element.BalanceAmount == 0" -->
                                         <mat-form-field appearance="legacy">
-                                            <input matInput type="text" [(ngModel)]="element.UsedAmount"
+                                            <input matInput type="text" OnlyNumber [(ngModel)]="element.UsedAmount"
                                                 [value]="element.UsedAmount" (keyup)="onKeyAdv(element,$event)"
-                                                OnlyNumber (keypress)="keyPressAlphanumeric($event)">
+                                                 (keypress)="keyPressAlphanumeric($event)"
+                                                [disabled]="element.RefundAmount == element.AdvanceAmount">
                                         </mat-form-field>
                                     </mat-cell>
-                                </ng-container>
+                                </ng-container> 
+
                                 <ng-container matColumnDef="BalanceAmount">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                         Balance Amount </mat-header-cell>

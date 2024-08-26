@@ -207,20 +207,13 @@
                                                                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-90">
                                                                                             Date </mat-header-cell>
                                                                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-90">
-                                                                                            {{element.givendate}} </mat-cell>
-                                                                                    </ng-container>
-                                                                                    
-                                                                                    <ng-container matColumnDef="giventime">
-                                                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-70">
-                                                                                            Time </mat-header-cell>
-                                                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-70">
-                                                                                            {{element.giventime}} </mat-cell>
-                                                                                    </ng-container>
-                            
+                                                                                            {{element.givendate}}-{{element.giventime}} </mat-cell>
+                                                                                    </ng-container> 
+
                                                                                     <ng-container matColumnDef="PainAssess">
                                                                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                                                                             fxShow.gt-sm>
-                                                                                            Pain Assessment </mat-header-cell>
+                                                                                         Weight</mat-header-cell>
                                                                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                                                             {{element.PainAssess}} </mat-cell>
                                                                                     </ng-container>

@@ -45,8 +45,7 @@ export class ClinicalCareChartComponent implements OnInit {
     'Action'
   ]
   displayedPainAsse2: string[] = [
-    'givendate',
-    'giventime',
+    'givendate', 
     'Employeename',
     'PainAssess',
     'Action'

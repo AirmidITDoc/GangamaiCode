@@ -135,7 +135,24 @@ export class OpPaymentVimalComponent implements OnInit {
         this.SetAdvanceRow();
         this.setPaidAmount();
         this.GetBalanceAmt();
+        this.getAdvanceAmt(a,b);
     }
+    getAdvanceAmt(element, index) {  
+        debugger
+        if (element.UsedAmount > element.balamt){
+          Swal.fire(' Amount is less than Balance Amount:' + element.balamt);
+          element.UsedAmount = '';
+          element.BalanceAmount = element.balamt;
+          element.UsedAmount = '';
+        }
+      else if(element.UsedAmount > 0){
+        element.BalanceAmount = element.balamt - element.UsedAmount 
+      } else if(element.UsedAmount == '' || element.UsedAmount == null || element.UsedAmount == undefined || element.UsedAmount == '0' ){
+        element.UsedAmount = '';
+        element.BalanceAmount = element.balamt;
+      } 
+   
+      }
     getNewId() {
         return Math.max(...this.Payments.data.filter(x => x.Id > 0).map(o => o.Id), 0) + 1;
     }
@@ -596,14 +613,37 @@ export class OpPaymentVimalComponent implements OnInit {
             }
             this.ipSearchService.getAdvcanceDetailslist(Query).subscribe(data => {
                 this.dataSource.data = data as [];
+                console.log(this.dataSource.data)
+                this.calculateBalance();
                 this.SetAdvanceRow();
             },
                 (error) => {
                 });
         }
     }
-    SetAdvanceRow() {
-        let adv = this.dataSource.data.reduce(function (a, b) { return a + Number(b['UsedAmount']); }, 0);
+    advanceAmt:any=0;
+    calculateBalance() {
+        if (this.dataSource.data && this.dataSource.data.length > 0) {
+          let totalAdvanceAmt = 0;
+          let netAmtLocal = this.netPayAmt;
+          this.dataSource.data.forEach(element => {
+            if (netAmtLocal > element.BalanceAmount) {
+              element.UsedAmount = element.BalanceAmount;
+              element.BalanceAmount = element.BalanceAmount - element.UsedAmount;
+              netAmtLocal = netAmtLocal - element.UsedAmount;
+            } else if (netAmtLocal <= element.BalanceAmount) {
+              element.BalanceAmount = element.BalanceAmount - netAmtLocal;
+              element.UsedAmount = netAmtLocal;
+              netAmtLocal = netAmtLocal - element.UsedAmount;
+            }
+            totalAdvanceAmt += element.UsedAmount;
+          });
+          this.advanceAmt = totalAdvanceAmt; 
+        }
+    
+      }
+    SetAdvanceRow() { 
+        let adv = this.advanceAmt //this.dataSource.data.reduce(function (a, b) { return a + Number(b['UsedAmount']); }, 0);
         let tmp = this.Payments.data.find(x => x.Id == -1);
         if (tmp) {
             tmp.Amount = adv;
@@ -616,7 +656,7 @@ export class OpPaymentVimalComponent implements OnInit {
                 RefNo: "",
                 BankId: 0,
                 BankName: "",
-                RegDate: null
+                RegDate: new Date()
             });
             this.Payments.data = tmp1;
         }
