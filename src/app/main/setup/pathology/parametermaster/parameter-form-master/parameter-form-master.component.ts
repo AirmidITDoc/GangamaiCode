@@ -163,6 +163,7 @@ export class ParameterFormMasterComponent implements OnInit {
             this.dataSource.data = Menu as PathDescriptiveMaster[];
             this.dataSource.sort = this.sort;
             this.dataSource.paginator = this.paginator;
+            console.log(Menu)
         });
     }
     onClear() {
@@ -211,6 +212,7 @@ export class ParameterFormMasterComponent implements OnInit {
             MaxAge: this.vMaxAge || 0,
             MinValue: this.vMinValue || 0,
             MaxValue: this.vMaxValue || 0,
+            IsDeleted:1,
             AgeType: this._ParameterService.myform.value.AgeType,
         };
 
@@ -341,6 +343,7 @@ export class ParameterFormMasterComponent implements OnInit {
                 addedby: this.accountService.currentUserValue.user.id || 1,
                 ageType: "%",
                 minAge: 0,
+                IsDeleted:1,
                 maxAge: 0
             };
             this.dsParameterAgeList.data.forEach(element => {
@@ -351,7 +354,8 @@ export class ParameterFormMasterComponent implements OnInit {
                 c['maxAge'] = +element.MaxAge;
                 c['maxValue'] = element.MaxValue;
                 c['ageType'] = element.AgeType;
-                numeric_info.push(c)
+                c['IsDeleted'] = element.IsDeleted;
+              numeric_info.push(c)
             });
         }
 
@@ -520,6 +524,7 @@ export class PathParaRangeAgeMaster {
     AgeType: any;
     MinAge: any;
     MaxAge: any;
+    IsDeleted:any;
     /**
      * Constructor
      *
@@ -535,7 +540,7 @@ export class PathParaRangeAgeMaster {
             this.MaxValue = PathParaRangeAgeMaster.MaxValue || 0;
             this.MinAge = PathParaRangeAgeMaster.MinAge || 0;
             this.MaxAge = PathParaRangeAgeMaster.MaxAge || 0;
-
+            this.IsDeleted = PathParaRangeAgeMaster.IsDeleted || 1;
         }
     }
 }

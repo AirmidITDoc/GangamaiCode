@@ -216,6 +216,7 @@ export class CommonReportComponent implements OnInit {
       this.FlagVisitSelected = false;
       this.FlaOPIPTypeSelected= false;
       this.FlaCashcounterSelected=false;
+      this.FlagServiceIdSelected = true;
     } else if (this.ReportName == 'Service Wise Report with Bill') {
       this.FlagUserSelected = false;
       this.FlagPaymentIdSelected = false;
@@ -224,6 +225,7 @@ export class CommonReportComponent implements OnInit {
       this.FlagVisitSelected = false;
       this.FlaOPIPTypeSelected= false;
       this.FlaCashcounterSelected=false;
+      this.FlagServiceIdSelected = true;
     }
     else if (this.ReportName == 'Service Wise Report') {
       this.FlagUserSelected = false;
@@ -263,15 +265,7 @@ export class CommonReportComponent implements OnInit {
       this.FlaOPIPTypeSelected= false;
       this.FlaCashcounterSelected=false;
     }
-    else if (this.ReportName == 'Service Wise Report without Bill') {
-      this.FlagUserSelected = false;
-      this.FlagPaymentIdSelected = false;
-      this.FlagDoctorIDSelected = false;
-      this.FlagRefundIdSelected = false;
-      this.FlagVisitSelected = false;
-      this.FlaOPIPTypeSelected= false;
-      this.FlaCashcounterSelected=false;
-    } else if (this.ReportName == 'Doctor and Department Wise Monthly Collection Report') {
+    else if (this.ReportName == 'Doctor and Department Wise Monthly Collection Report') {
       this.FlagUserSelected = false;
       this.FlagPaymentIdSelected = false;
       this.FlagDoctorIDSelected = false;
@@ -768,7 +762,10 @@ export class CommonReportComponent implements OnInit {
   }
 
   ViewgeServicewisereportwithoutbillview() {
-    let ServiceId = this._OPReportsService.userForm.get('ServiceId').value | 0;
+    let ServiceId = 0;
+    if (this._OPReportsService.userForm.get('ServiceId').value)
+      ServiceId = this._OPReportsService.userForm.get('ServiceId').value.ServiceId
+
     this.sIsLoading = 'loading-data';
     setTimeout(() => {
       //   this.SpinLoading =true;
@@ -798,8 +795,12 @@ export class CommonReportComponent implements OnInit {
   }
   getServicewisereportwithbillview() {
     this.sIsLoading = 'loading-data';
+    let ServiceId = 0;
+    if (this._OPReportsService.userForm.get('ServiceId').value)
+      ServiceId = this._OPReportsService.userForm.get('ServiceId').value.ServiceId
+
     setTimeout(() => {
-      let ServiceId = this._OPReportsService.userForm.get('ServiceId').value | 0
+      
       this._OPReportsService.getServicewisereportwithbillView(ServiceId,
         this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
         this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
@@ -825,18 +826,9 @@ export class CommonReportComponent implements OnInit {
   }
   viewgetServicewiseReportPdf() {
     this.sIsLoading = 'loading-data';
-    //  let GroupId=this._OPReportsService.userForm.get('GroupId').value || 0
-    //   let AddedById=this._OPReportsService.userForm.get('UserId').value.UserId || 0
-    //   let DoctorId=this._OPReportsService.userForm.get('DoctorID').value.DoctorID || 0
-    //   let ServiceId=this._OPReportsService.userForm.get('ServiceId').value
-    //   let DepartmentId=this._OPReportsService.userForm.get('DepartmentId').value.DepartmentId
-
-
-    let ServiceId = 0;
+       let ServiceId = 0;
     if (this._OPReportsService.userForm.get('ServiceId').value)
       ServiceId = this._OPReportsService.userForm.get('ServiceId').value.ServiceId
-
-
 
     setTimeout(() => {
 

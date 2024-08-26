@@ -479,7 +479,7 @@
                                                 <div fxFlex.gt-sm="100%" fxFlex>
                                                     <form [formGroup]="MedicineItemForm">
                                                         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8"> 
-                                                            <mat-form-field appearance="outline" fxFlex="35%">
+                                                            <mat-form-field appearance="outline" fxFlex="50%">
                                                                 <mat-label>ItemName</mat-label>
                                                                 <input type="text" name="ItemId" formControlName="ItemId" #itemid (keydown)="onEnterItem($event)"
                                                                     placeholder="Item Name " matInput [matAutocomplete]="auto" (input)="getSearchItemList()" required>
@@ -500,7 +500,7 @@
                                                                 </mat-error>
                                                             </mat-form-field> 
 
-                                                            <mat-form-field appearance="outline" fxFlex="20%">
+                                                            <mat-form-field appearance="outline" fxFlex="15%">
                                                                 <mat-label>Dose Name</mat-label>
                                                                 <input matAutocompletePosition="below" type="text"
                                                                     placeholder="Select Dose Name" matInput formControlName="DoseId"

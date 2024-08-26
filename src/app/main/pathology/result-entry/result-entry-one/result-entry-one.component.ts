@@ -302,7 +302,7 @@ export class ResultEntryOneComponent implements OnInit {
         //     SelectQuery = "Select * from m_lvwRtrv_PathologyResultIPWithAge where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ") and SexId=" + this.SexId + " and MaxAge >= " + this.CheckAgeday + " and MinAge < " + this.CheckAgeday + " AND AgeType='DAY' "
         // }
 
-debugger
+
         if (this.OP_IPType == 0) {
             if (this.selectedAdvanceObj2.AgeYear > 0)
                 SelectQuery = "Select * from m_lvwRtrv_PathologyResultOPWithAge where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ") and SexId=" + this.SexId + " and MaxAge >= " + this.CheckAge + " and MinAge < " + this.CheckAge + " AND AgeType='YEAR' "

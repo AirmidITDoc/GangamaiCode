@@ -774,7 +774,7 @@
                                                             <input name="AgeYear" formControlName="AgeYear"
                                                                 placeholder="Age (Y)" matInput
                                                                 [(ngModel)]="registerObj.AgeYear"
-                                                                (ngModelChange)="registerObj.AgeYear = $event" required
+                                                                (ngModelChange)="registerObj.AgeYear = $event" 
                                                                 maxlength="3" #agey readonly
                                                                 (keyup)="ageyearcheck(registerObj.AgeYear)"
                                                                 (keydown)="onEnteragey($event,registerObj.AgeYear)"

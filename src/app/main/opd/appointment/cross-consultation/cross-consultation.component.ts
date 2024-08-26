@@ -129,7 +129,7 @@ export class CrossConsultationComponent implements OnInit {
 
   setDropdownObjs() {
     debugger
-    const toSelect = this.DepartmentList.find(c => c.Departmentid == this.registerObj1.DepartmentId);
+    const toSelect = this.DepartmentList.find(c => c.DepartmentId == this.registerObj1.DepartmentId);
     this.InfoFormGroup.get('Departmentid').setValue(toSelect);
 
     const toSelect1 = this.DoctorList.find(c => c.DoctorId == this.registerObj1.DoctorId);
@@ -147,7 +147,7 @@ export class CrossConsultationComponent implements OnInit {
     this._AdmissionService.getDepartmentCombo().subscribe(data => {
       this.DepartmentList = data;
       if (this.registerObj1) {
-        const ddValue = this.DepartmentList.filter(c => c.Departmentid == this.registerObj1.DepartmentId);
+        const ddValue = this.DepartmentList.filter(c => c.DepartmentId == this.registerObj1.DepartmentId);
         this.InfoFormGroup.get('Departmentid').setValue(ddValue[0]);
         //  this.OnChangeDoctorList(this.registerObj1);
         this.InfoFormGroup.updateValueAndValidity();
@@ -174,8 +174,8 @@ export class CrossConsultationComponent implements OnInit {
 
   private _filterdept(value: any): string[] {
     if (value) {
-      const filterValue = value && value.departmentName ? value.departmentName.toLowerCase() : value.toLowerCase();
-      return this.DepartmentList.filter(option => option.departmentName.toLowerCase().includes(filterValue));
+      const filterValue = value && value.DepartmentName ? value.DepartmentName.toLowerCase() : value.toLowerCase();
+      return this.DepartmentList.filter(option => option.DepartmentName.toLowerCase().includes(filterValue));
     }
   }
 
@@ -188,7 +188,7 @@ export class CrossConsultationComponent implements OnInit {
  
 
   getOptionTextDep(option) {
-    return option && option.departmentName ? option.departmentName : '';
+    return option && option.DepartmentName ? option.DepartmentName : '';
   }
 
   OnChangeDoctorList(departmentObj) {
@@ -200,7 +200,7 @@ export class CrossConsultationComponent implements OnInit {
 
     this.InfoFormGroup.get('DoctorID').reset();
     this.isDepartmentSelected = true;
-    this._AdmissionService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(
+    this._AdmissionService.getDoctorMasterCombo(departmentObj.DepartmentId).subscribe(
       data => {
         this.DoctorList = data;
         // this.InfoFormGroup.get('DoctorId').setValue(this.DoctorList[0]);      
@@ -251,7 +251,7 @@ export class CrossConsultationComponent implements OnInit {
       return;
     }
     if(this.InfoFormGroup.get('Departmentid').value){
-      if(!this.DepartmentList.some(item => item.departmentName ===this.InfoFormGroup.get('Departmentid').value.departmentName)){
+      if(!this.DepartmentList.some(item => item.DepartmentName ===this.InfoFormGroup.get('Departmentid').value.DepartmentName)){
         this.toastr.warning('Please Select valid DepartmentName', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
@@ -281,7 +281,7 @@ export class CrossConsultationComponent implements OnInit {
     crossConsult['IsCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
 
     crossConsult['ClassId'] = this.PatientHeaderObj.ClassId;
-    crossConsult['DepartmentId'] = this.InfoFormGroup.get('Departmentid').value.Departmentid; 
+    crossConsult['DepartmentId'] = this.InfoFormGroup.get('Departmentid').value.DepartmentId; 
     crossConsult['PatientOldNew'] = 1,//this.Patientnewold;
     crossConsult['FirstFollowupVisit'] = 0,
     crossConsult['appPurposeId'] = 0,

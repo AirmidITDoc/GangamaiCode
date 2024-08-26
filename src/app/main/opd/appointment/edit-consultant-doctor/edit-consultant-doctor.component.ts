@@ -109,7 +109,7 @@ filteredOptionsDoc: any;
 
   setDropdownObjs() {
     debugger
-    const toSelect = this.DepartmentList.find(c => c.Departmentid == this.registerObj1.DepartmentId);
+    const toSelect = this.DepartmentList.find(c => c.DepartmentId == this.registerObj1.DepartmentId);
     this.searchFormGroup.get('Departmentid').setValue(toSelect);
 
     const toSelect1 = this.DoctorList.find(c => c.DoctorId == this.registerObj1.DoctorId);
@@ -127,7 +127,7 @@ filteredOptionsDoc: any;
     this._OpAppointmentService.getDepartmentCombo().subscribe(data => {
       this.DepartmentList = data;
       if (this.registerObj1) {
-        const ddValue = this.DepartmentList.filter(c => c.Departmentid == this.registerObj1.DepartmentId);
+        const ddValue = this.DepartmentList.filter(c => c.DepartmentId == this.registerObj1.DepartmentId);
         this.searchFormGroup.get('Departmentid').setValue(ddValue[0]);
         //  this.OnChangeDoctorList(this.registerObj1);
         this.searchFormGroup.updateValueAndValidity();
@@ -154,8 +154,8 @@ filteredOptionsDoc: any;
 
   private _filterdept(value: any): string[] {
     if (value) {
-      const filterValue = value && value.departmentName ? value.departmentName.toLowerCase() : value.toLowerCase();
-      return this.DepartmentList.filter(option => option.departmentName.toLowerCase().includes(filterValue));
+      const filterValue = value && value.DepartmentName ? value.DepartmentName.toLowerCase() : value.toLowerCase();
+      return this.DepartmentList.filter(option => option.DepartmentName.toLowerCase().includes(filterValue));
     }
   }
 
@@ -168,7 +168,7 @@ filteredOptionsDoc: any;
  
 
   getOptionTextDep(option) {
-    return option && option.departmentName ? option.departmentName : '';
+    return option && option.DepartmentName ? option.DepartmentName : '';
   }
 
   OnChangeDoctorList(departmentObj) {
@@ -180,7 +180,7 @@ filteredOptionsDoc: any;
 
     this.searchFormGroup.get('DoctorID').reset();
     this.isDepartmentSelected = true;
-    this._OpAppointmentService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(
+    this._OpAppointmentService.getDoctorMasterCombo(departmentObj.DepartmentId).subscribe(
       data => {
         this.DoctorList = data;
         // this.searchFormGroup.get('DoctorId').setValue(this.DoctorList[0]);      
@@ -216,7 +216,7 @@ filteredOptionsDoc: any;
   onSubmit() {
     debugger
 
-    this.DepartmentId=this.searchFormGroup.get('Departmentid').value.Departmentid;
+    this.DepartmentId=this.searchFormGroup.get('Departmentid').value.DepartmentId;
     this.DoctorId = this.searchFormGroup.get('DoctorID').value.DoctorId;
     let query = '';
     if (this.data.FormName == "Appointment") {

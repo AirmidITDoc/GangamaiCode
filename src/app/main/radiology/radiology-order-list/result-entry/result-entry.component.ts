@@ -176,6 +176,9 @@ getUpdatetemplate() {
     this.vTemplateDesc=e.target.innerHTML;
   } 
 
+  
+
+
   onSubmit() {
     
     if ((this.vTemplateName == '' || this.vTemplateName == null || this.vTemplateName == undefined)) {
@@ -285,11 +288,11 @@ getUpdatetemplate() {
 
 
   getTemplateList() {
-    var mdata={
-        Id:this.selectedAdvanceObj.ServiceId
+    // var mdata={
+    //     Id:this.selectedAdvanceObj.ServiceId
 
-    }
-    this._radiologytemplateService.getTemplateCombo(mdata).subscribe(data => {
+    // }
+    this._radiologytemplateService.getTemplateCombo().subscribe(data => {
       this.TemplateList = data;
       this.optionsTemplate = this.TemplateList.slice();
       this.filteredOptionsisTemplate = this._radiologytemplateService.myform.get('TemplateName').valueChanges.pipe(

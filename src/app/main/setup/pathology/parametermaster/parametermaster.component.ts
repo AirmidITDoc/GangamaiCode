@@ -158,9 +158,8 @@ export class ParametermasterComponent implements OnInit {
             ParaMultipleRange: row.ParaMultipleRange,
             Formula: row.Formula,
         };
-
+debugger
         this._ParameterService.getTableData(row.ParameterID).subscribe((data) => {
-                ;
             if(row.IsNumericParameter==1){
                 
                 m_data['numericList'] = data;

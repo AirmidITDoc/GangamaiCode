@@ -109,20 +109,6 @@
                                             <input matInput type="datetime-local" placeholder="Visit Date / Time" formControlName="VisitDate" [ngModel]="date | date:'yyyy-MM-ddTHH:mm'" />
                                         </mat-form-field>
 
-                                        <!-- <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>Department</mat-label>
-                                            <input matAutocompletePosition="below" type="text" placeholder="Select Department" matInput #dept (keydown)="onEnterdept($event)" formControlName="Departmentid" [matAutocomplete]="autoDep1" required>
-                                            <span matSuffix style="display: flex;">
-                                                <mat-icon class="mat-icon-close" (click)="InfoFormGroup.get('Departmentid').setValue(''); isDepartmentSelected = false;">close</mat-icon>
-                                                <mat-icon class="mat-icon-close" (click)="InfoFormGroup.get('Departmentid').setValue(''); isDepartmentSelected = false;">search</mat-icon>
-                                            </span>
-                                            <mat-autocomplete #autoDep1="matAutocomplete" [displayWith]="getOptionTextDep">
-                                                <mat-option *ngFor="let option of filteredOptionsDep | async" [value]="option" (onSelectionChange)="OnChangeDoctorList(option)">
-                                                    {{option.departmentName}}
-                                                </mat-option>
-                                            </mat-autocomplete>
-                                        </mat-form-field> -->
-
 
                                         <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <mat-label>Department</mat-label>
@@ -138,7 +124,7 @@
                                             <mat-autocomplete #autoDep1="matAutocomplete" [displayWith]="getOptionTextDep">
                                                 <mat-option *ngFor="let option of filteredOptionsDep | async" [value]="option"
                                                     (onSelectionChange)="OnChangeDoctorList(option,false)">
-                                                    {{option.departmentName}}
+                                                    {{option.DepartmentName}}
                                                 </mat-option>
                                             </mat-autocomplete>
                                         </mat-form-field>

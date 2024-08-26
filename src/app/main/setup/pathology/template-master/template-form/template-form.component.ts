@@ -55,7 +55,7 @@ export class TemplateFormComponent implements OnInit {
 
     onSubmit() {
 
-debugger
+
         if ((this.vTemplateDesc == '' || this.vTemplateDesc == null || this.vTemplateDesc == undefined)) {
             this.toastr.warning('Please Enter valid Template ', 'Warning !', {
               toastClass: 'tostr-tost custom-toast-warning',
