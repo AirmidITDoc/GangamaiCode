@@ -468,7 +468,7 @@ export class TestFormMasterComponent implements OnInit {
                 insertPathologyTestMaster['machineName'] = this._TestService.myform.get('MachineName').value || "";
                 insertPathologyTestMaster['suggestionNote'] = this._TestService.myform.get('SuggestionNote').value || "";
                 insertPathologyTestMaster['footNote'] = this._TestService.myform.get('FootNote').value || "";
-                insertPathologyTestMaster['isDeleted'] = this._TestService.myform.get('IsDeleted').value || "";
+                insertPathologyTestMaster['isDeleted'] = this._TestService.myform.get('IsDeleted').value || 1;
                 insertPathologyTestMaster['addedBy'] = this.accountService.currentUserValue.user.id,
                     insertPathologyTestMaster['serviceId'] = this._TestService.myform.get('ServiceID').value.ServiceId || 0;
                 insertPathologyTestMaster['isTemplateTest'] = this.Statusflag;
@@ -519,13 +519,13 @@ export class TestFormMasterComponent implements OnInit {
                 updatePathologyTestMaster['printTestName'] = this._TestService.myform.get('PrintTestName').value || "";
                 updatePathologyTestMaster['categoryId'] = this._TestService.myform.get('CategoryId').value.CategoryId || 0;
                 updatePathologyTestMaster['isSubTest'] = this.Subtest,// this._TestService.myform.get('IsSubTest').value;
-                    updatePathologyTestMaster['techniqueName'] = this._TestService.myform.get('TechniqueName').value || "";
+                updatePathologyTestMaster['techniqueName'] = this._TestService.myform.get('TechniqueName').value || "";
                 updatePathologyTestMaster['machineName'] = this._TestService.myform.get('MachineName').value || "";
                 updatePathologyTestMaster['suggestionNote'] = this._TestService.myform.get('SuggestionNote').value || "";
                 updatePathologyTestMaster['footNote'] = this._TestService.myform.get('FootNote').value || "";
-                updatePathologyTestMaster['isDeleted'] = this._TestService.myform.get('IsDeleted').value || "";
+                updatePathologyTestMaster['isDeleted'] = this._TestService.myform.get('IsDeleted').value || 1;
                 updatePathologyTestMaster['updatedBy'] = this.accountService.currentUserValue.user.id,
-                    updatePathologyTestMaster['serviceId'] = this._TestService.myform.get('ServiceID').value.ServiceId || 0;
+                   updatePathologyTestMaster['serviceId'] = this._TestService.myform.get('ServiceID').value.ServiceId || 0;
                 updatePathologyTestMaster['isTemplateTest'] = this.Statusflag;
                 updatePathologyTestMaster['testId'] = this.TestId;
 
