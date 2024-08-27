@@ -44,6 +44,9 @@ import { PrebillDetailsComponent } from '../ip-billing/prebill-details/prebill-d
 })
 export class CompanyBillComponent implements OnInit {
  
+  vCompanyDiscAmt:any;
+
+
     // @Input() Id: any; 
     IntreamFinal: any;
     sIsLoading: string = '';
@@ -56,7 +59,6 @@ export class CompanyBillComponent implements OnInit {
     chkDiscflag: boolean = false;
     selectDate: Date = new Date();
     displayedColumns = [
-      'checkbox',
       'IsCheck',
       'ChargesDate',
       'ServiceName',
@@ -348,7 +350,8 @@ export class CompanyBillComponent implements OnInit {
         ChargeDate: [new Date()],
         Date:[new Date()],
         balanceAmt: [''],
-        ChargeClass: ['']
+        ChargeClass: [''],
+        TableClassName:['']
       });
     }
   
@@ -367,7 +370,7 @@ export class CompanyBillComponent implements OnInit {
         AdminPer: [''],
         AdminAmt: [''],
         Admincheck:[''],
-        
+        CompanyDiscAmt:['']
       });
     }
     billheaderlist:any;
@@ -429,7 +432,7 @@ export class CompanyBillComponent implements OnInit {
         this.Ipbillform.get('AdminPer').reset();
         this.Ipbillform.get('AdminAmt').reset();
         this.Ipbillform.get('FinalAmount').setValue(this.vTotalBillAmount);
-        this.CalFinalDisc();
+        this.CalFinalDisc1(); 
       }
     }
     OnDateChange(){
@@ -574,7 +577,10 @@ export class CompanyBillComponent implements OnInit {
     getOptionTextsearchDoctor(option) {
       return option && option.DoctorName ? option.DoctorName : '';
     }
-  
+    onDropdownChange(element: any) {
+      console.log('Selected Item:', element.itemName);
+      // You can also update the price or perform other actions here
+    }
   
   
     add: Boolean = false;
@@ -1006,153 +1012,158 @@ export class CompanyBillComponent implements OnInit {
     // }
   
     vGenbillflag: boolean = false 
-  
-    CalculateAdminCharge(){
-      if(this.vAdminPer > 0 && this.vAdminPer < 100 ){
-       this.vAdminAmt = Math.round((parseFloat(this.vTotalAmount) * parseFloat(this.vAdminPer))/ 100).toFixed(2);
-       let netamt = (parseFloat(this.vTotalAmount) + parseFloat(this.vAdminAmt)).toFixed(2);
-       if(this.checkdiscAmt > 0){
-        let netamt = (parseFloat(this.vTotalAmount) + parseFloat(this.vAdminAmt)).toFixed(2);
-        let finalnetamt =(parseFloat(netamt) - parseFloat(this.vDiscountAmount)).toFixed(2);
-        this.Ipbillform.get('FinalAmount').setValue(finalnetamt);
-       }else{
+
+  CalculateAdminCharge() {
+    if (this.vAdminPer > 0 && this.vAdminPer < 100) {
+      this.vAdminAmt = Math.round((parseFloat(this.vTotalAmount) * parseFloat(this.vAdminPer)) / 100).toFixed(2);
+      let netamt = (parseFloat(this.vTotalAmount) + parseFloat(this.vAdminAmt)).toFixed(2);
+      if (this.checkdiscAmt > 0) {
+        if (this.vCompanyDiscAmt > 0) {
+          let netamt = (parseFloat(this.vTotalAmount) + parseFloat(this.vAdminAmt)).toFixed(2);
+          let TotalDiscAmt = Math.round(parseFloat(this.vfDiscountAmount) + parseFloat(this.vCompanyDiscAmt)).toFixed(2);
+          this.vNetBillAmount = Math.round(parseFloat(netamt) - parseFloat(TotalDiscAmt)).toFixed(2);
+          this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
+        } else {
+          let netamt = (parseFloat(this.vTotalAmount) + parseFloat(this.vAdminAmt)).toFixed(2);
+          let finalnetamt = (parseFloat(netamt) - parseFloat(this.vDiscountAmount)).toFixed(2);
+          this.Ipbillform.get('FinalAmount').setValue(finalnetamt);
+        }
+      } else {
         let finalnetamt;
         let Percentage = this.Ipbillform.get('Percentage').value || 0;
         finalnetamt = netamt
-        this.vfDiscountAmount =((parseFloat(finalnetamt) * parseFloat(Percentage)) / 100).toFixed(2);
-        this.vNetBillAmount =Math.round(parseFloat(finalnetamt) - parseFloat(this.vfDiscountAmount)).toFixed(2);
-        this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount );
-        //this.Ipbillform.get('concessionAmt').setValue(this.vfDiscountAmount);
-       }
-      }else{
-        if(this.vAdminPer < 0 && this.vAdminPer > 100 || this.vAdminPer == 0 || this.vAdminPer == ''){
+        if (this.vCompanyDiscAmt > 0) {
+          this.vfDiscountAmount = ((parseFloat(finalnetamt) * parseFloat(Percentage)) / 100).toFixed(2);
+          let TotalDiscAmt = Math.round(parseFloat(this.vfDiscountAmount) + parseFloat(this.vCompanyDiscAmt)).toFixed(2);
+          this.vNetBillAmount = Math.round(parseFloat(finalnetamt) - parseFloat(TotalDiscAmt)).toFixed(2);
+          this.Ipbillform.get('concessionAmt').setValue(this.vfDiscountAmount);
+          this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
+        } else {
+          this.vfDiscountAmount = ((parseFloat(finalnetamt) * parseFloat(Percentage)) / 100).toFixed(2);
+          this.vNetBillAmount = Math.round(parseFloat(finalnetamt) - parseFloat(this.vfDiscountAmount)).toFixed(2);
+          this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
+        }
+
+      }
+    } else {
+      if (this.vAdminPer < 0 && this.vAdminPer > 100 || this.vAdminPer == 0 || this.vAdminPer == '') {
         this.Ipbillform.get('AdminPer').reset();
         this.Ipbillform.get('AdminAmt').reset();
         this.Ipbillform.get('FinalAmount').setValue(this.vTotalBillAmount);
-        this.CalFinalDisc();
+        this.CalFinalDisc1();
       }
-      if( this.vAdminPer > 100 ){
+      if (this.vAdminPer > 100) {
         this.toastr.warning('Please Enter Admin % less than 100 and Greater than 0.', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
         this.Ipbillform.get('AdminPer').reset();
         this.Ipbillform.get('AdminAmt').reset();
         this.Ipbillform.get('FinalAmount').setValue(this.vTotalBillAmount);
-        this.CalFinalDisc();
-      }
-      }
-    }
-    finalNetAmt:any;
-    CalFinalDisc() {
-  //debugger
-      if (this.Ipbillform.get('AdminAmt').value > 0) {
-        let Percentage = this.Ipbillform.get('Percentage').value;
-        this.finalNetAmt = ((parseFloat(this.vNetBillAmount) + parseFloat(this.vAdminAmt)))
-  
-        if (this.Ipbillform.get('Percentage').value > 0 && Percentage < 100) {
-          this.vfDiscountAmount =((parseFloat(this.finalNetAmt) * parseFloat(Percentage)) / 100).toFixed(2);
-          this.vNetBillAmount = (parseFloat(this.finalNetAmt) - parseFloat(this.vfDiscountAmount)).toFixed(2);
-          this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
-          this.Ipbillform.get('concessionAmt').setValue(this.vfDiscountAmount);
-          this.ConShow = true
-          this.Ipbillform.get('ConcessionId').reset();
-          this.Ipbillform.get('ConcessionId').setValidators([Validators.required]);
-          this.Ipbillform.get('ConcessionId').enable;
-        }
-        else if (Percentage > 100 || Percentage < 0) {
-          this.vNetBillAmount = this.finalNetAmt;
-          this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
-          this.vfDiscountAmount = '';
-          this.finaldisc.nativeElement.focus();
-          this.Ipbillform.get('concessionAmt').setValue(this.vfDiscountAmount);
-          this.toastr.warning('Please Enter Discount % less than 100 and Greater than 0.', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          return;
-        }
-        else if ((Percentage == 0 || Percentage == null || Percentage == ' ') && this.vDiscountAmount == 0) {
-          this.Ipbillform.get('ConcessionId').reset();
-          this.Ipbillform.get('ConcessionId').clearValidators();
-          this.Ipbillform.get('ConcessionId').updateValueAndValidity();
-          this.vfDiscountAmount = '';
-          this.vNetBillAmount = this.finalNetAmt;
-          this.Ipbillform.get('FinalAmount').setValue(this.vTotalBillAmount);
-          this.Ipbillform.get('concessionAmt').setValue(this.vfDiscountAmount);
-          this.ConShow = false
-        }
-        if (this.vDiscountAmount > 0) {
-          this.Ipbillform.get('ConcessionId').reset();
-          this.Ipbillform.get('ConcessionId').setValidators([Validators.required]);
-          this.Ipbillform.get('ConcessionId').enable;
-          this.Ipbillform.get('ConcessionId').updateValueAndValidity();
-          this.Consession = true;
-          this.ConShow = true;
-        }
-       
-      } else {
-        let Percentage = this.Ipbillform.get('Percentage').value;
-        if (this.Ipbillform.get('Percentage').value > 0 && Percentage < 100) {
-          this.vfDiscountAmount = Math.round((this.vNetBillAmount * parseInt(Percentage)) / 100).toFixed(2);
-          this.vNetBillAmount = Math.round(this.vTotalBillAmount - this.vfDiscountAmount).toFixed(2);
-          this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
-          this.Ipbillform.get('concessionAmt').setValue(this.vfDiscountAmount);
-          this.ConShow = true
-          this.Ipbillform.get('ConcessionId').reset();
-          this.Ipbillform.get('ConcessionId').setValidators([Validators.required]);
-          this.Ipbillform.get('ConcessionId').enable;
-        }
-        else if (Percentage > 100 || Percentage < 0) {
-  
-          this.vNetBillAmount = this.vTotalBillAmount;
-          this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
-          this.vfDiscountAmount = '';
-          this.finaldisc.nativeElement.focus();
-          this.Ipbillform.get('concessionAmt').setValue(this.vfDiscountAmount);
-          this.toastr.warning('Please Enter Discount % less than 100 and Greater than 0.', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          return;
-        }
-        else if ((Percentage == 0 || Percentage == null || Percentage == ' ') && this.vDiscountAmount == 0) {
-          this.Ipbillform.get('ConcessionId').reset();
-          this.Ipbillform.get('ConcessionId').clearValidators();
-          this.Ipbillform.get('ConcessionId').updateValueAndValidity();
-          this.vfDiscountAmount = '';
-          this.vNetBillAmount = this.vTotalBillAmount;
-          this.Ipbillform.get('FinalAmount').setValue(this.vTotalBillAmount);
-          this.Ipbillform.get('concessionAmt').setValue(this.vfDiscountAmount);
-          this.ConShow = false
-        }
-        if (this.vDiscountAmount > 0) {
-          this.Ipbillform.get('ConcessionId').reset();
-          this.Ipbillform.get('ConcessionId').setValidators([Validators.required]);
-          this.Ipbillform.get('ConcessionId').enable;
-          this.Ipbillform.get('ConcessionId').updateValueAndValidity();
-          this.Consession = true;
-          this.ConShow = true;
-        }
-        
+        this.CalFinalDisc1();
       }
     }
-    finalNetAmount:any;
-    getDiscAmtCal() {
-      debugger
-      let FinalDiscAmt = this.Ipbillform.get('concessionAmt').value || 0;
-   
-      if (this.Ipbillform.get('AdminAmt').value > 0) {
-      
-        this.finalNetAmount = ((parseFloat(this.vNetBillAmount) + parseFloat(this.vAdminAmt))) || 0;
-       if (FinalDiscAmt > this.finalNetAmount ) {
+  }
+  finalNetAmt: any;
+  finalNetAmount: any;
+  CalFinalDisc1() {
+    let CompDiscAmt = this.Ipbillform.get('CompanyDiscAmt').value || 0;
+    if (this.Ipbillform.get('AdminAmt').value > 0) {
+      let Percentage = this.Ipbillform.get('Percentage').value;
+      this.finalNetAmt = ((parseFloat(this.vNetBillAmount) + parseFloat(this.vAdminAmt)))
+
+      if (this.Ipbillform.get('Percentage').value > 0 && Percentage < 100) {
+        this.vfDiscountAmount = ((parseFloat(this.finalNetAmt) * parseFloat(Percentage)) / 100).toFixed(2);
+        let totalDiscAmt = (parseFloat(this.vfDiscountAmount) + parseFloat(CompDiscAmt)).toFixed(2);
+        this.vNetBillAmount = (parseFloat(this.finalNetAmt) - parseFloat(totalDiscAmt)).toFixed(2);
+        this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
+        this.Ipbillform.get('concessionAmt').setValue(this.vfDiscountAmount);
+        this.ConShow = true
+        this.Ipbillform.get('ConcessionId').reset();
+        this.Ipbillform.get('ConcessionId').setValidators([Validators.required]);
+        this.Ipbillform.get('ConcessionId').enable;
+      }
+      else if (Percentage > 100 || Percentage < 0) {
+        this.Ipbillform.get('FinalAmount').setValue(this.finalNetAmt);
+        this.vfDiscountAmount = '';
+        this.finaldisc.nativeElement.focus();
+        this.Ipbillform.get('concessionAmt').setValue(this.vfDiscountAmount);
+        this.toastr.warning('Please Enter Discount % less than 100 and Greater than 0.', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        this.vPercentage = '';
+        return;
+      }
+      else if ((Percentage == 0 || Percentage == null || Percentage == ' ') && this.vDiscountAmount == 0) {
+        this.Ipbillform.get('ConcessionId').reset();
+        this.Ipbillform.get('ConcessionId').clearValidators();
+        this.Ipbillform.get('ConcessionId').updateValueAndValidity();
+        this.vfDiscountAmount = '';
+        this.Ipbillform.get('FinalAmount').setValue(this.finalNetAmt);
+        this.Ipbillform.get('concessionAmt').setValue(this.vfDiscountAmount);
+        this.ConShow = false
+      }
+    }
+    else {
+      let Percentage = this.Ipbillform.get('Percentage').value;
+      if (this.Ipbillform.get('Percentage').value > 0 && Percentage < 100) {
+        this.vfDiscountAmount = Math.round((this.vNetBillAmount * parseInt(Percentage)) / 100).toFixed(2);
+        let totalDiscAmt = (parseFloat(this.vfDiscountAmount) + parseFloat(CompDiscAmt)).toFixed(2);
+        this.vNetBillAmount = (parseFloat(this.vTotalBillAmount) - parseFloat(totalDiscAmt)).toFixed(2);
+        this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
+        this.Ipbillform.get('concessionAmt').setValue(this.vfDiscountAmount);
+        this.ConShow = true
+        this.Ipbillform.get('ConcessionId').reset();
+        this.Ipbillform.get('ConcessionId').setValidators([Validators.required]);
+        this.Ipbillform.get('ConcessionId').enable;
+      }
+      else if (Percentage > 100 || Percentage < 0) {
+        this.Ipbillform.get('FinalAmount').setValue(this.vTotalBillAmount);
+        this.vfDiscountAmount = '';
+        this.finaldisc.nativeElement.focus();
+        this.Ipbillform.get('concessionAmt').setValue(this.vfDiscountAmount);
+        this.toastr.warning('Please Enter Discount % less than 100 and Greater than 0.', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        this.vPercentage = '';
+        return;
+      }
+      else if ((Percentage == 0 || Percentage == null || Percentage == ' ') && this.vDiscountAmount == 0) {
+        this.Ipbillform.get('ConcessionId').reset();
+        this.Ipbillform.get('ConcessionId').clearValidators();
+        this.Ipbillform.get('ConcessionId').updateValueAndValidity();
+        this.vfDiscountAmount = '';
+        this.vNetBillAmount = this.vTotalBillAmount;
+        this.Ipbillform.get('FinalAmount').setValue(this.vTotalBillAmount);
+        this.Ipbillform.get('concessionAmt').setValue(this.vfDiscountAmount);
+        this.ConShow = false
+      }
+    }
+  }
+
+  getDiscAmtCal1() {
+    debugger
+    let FinalDiscAmt = this.Ipbillform.get('concessionAmt').value || 0;
+    let CompDiscAmt = this.Ipbillform.get('CompanyDiscAmt').value || 0;
+
+    if (this.Ipbillform.get('AdminAmt').value > 0) {
+      this.finalNetAmount = ((parseFloat(this.vNetBillAmount) + parseFloat(this.vAdminAmt))) || 0;
+      if (FinalDiscAmt > this.finalNetAmount || CompDiscAmt > this.finalNetAmount) {
         Swal.fire('Discount Amount Should not be grather than Net Amount');
         this.vfDiscountAmount = '';
         return
       }
-  
-        if (FinalDiscAmt > 0 ) {
+      if (FinalDiscAmt > 0 || CompDiscAmt > 0) {
+        if (this.checkdiscAmt > 0) {
+          this.vNetBillAmount = (parseFloat(this.finalNetAmount) - parseFloat(CompDiscAmt)).toFixed(2);
+          this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
+          this.ConShow = true
+          this.Ipbillform.get('ConcessionId').reset();
+          this.Ipbillform.get('ConcessionId').setValidators([Validators.required]);
+          this.Ipbillform.get('ConcessionId').enable;
+        } else {
           this.vPercentage = ((parseFloat(FinalDiscAmt) / parseFloat(this.finalNetAmount)) * 100).toFixed(2);
-          this.vNetBillAmount =(parseFloat(this.finalNetAmount) - parseFloat(FinalDiscAmt)).toFixed(2);
-          console.log(this.vNetBillAmount)
-          //this.vNetBillAmount = FinalnetAmt;
+          let totalDiscAmt = (parseFloat(FinalDiscAmt) + parseFloat(CompDiscAmt)).toFixed(2);
+          this.vNetBillAmount = (parseFloat(this.finalNetAmount) - parseFloat(totalDiscAmt)).toFixed(2);
           this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
           this.Ipbillform.get('Percentage').setValue(this.vPercentage);
           this.ConShow = true
@@ -1160,66 +1171,83 @@ export class CompanyBillComponent implements OnInit {
           this.Ipbillform.get('ConcessionId').setValidators([Validators.required]);
           this.Ipbillform.get('ConcessionId').enable;
         }
-  
-        else if (FinalDiscAmt <= 0 || FinalDiscAmt == '' || FinalDiscAmt == null) {
-  
-          //this.vNetBillAmount = finalnetAmt;
-          this.Ipbillform.get('FinalAmount').setValue(this.finalNetAmount );
-         //this.vDiscountAmount = '';
-          this.vPercentage = '';
-         // this.Ipbillform.get('concessionAmt').setValue(this.vfDiscountAmount);
-          this.Ipbillform.get('Percentage').setValue(this.vPercentage);
-          this.Ipbillform.get('ConcessionId').clearValidators();
-          this.Ipbillform.get('ConcessionId').updateValueAndValidity();
-          this.Consession = false;
-          this.ConShow = false;
-        }
-       
-      } else {
-        if (FinalDiscAmt > this.vNetBillAmount) {
-          Swal.fire('Discount Amount Should not be grather than Net Amount');
-          this.vfDiscountAmount = '';
-          return
-        }
-        if (FinalDiscAmt > 0 ) {
+      }
+      else if (FinalDiscAmt <= 0 || FinalDiscAmt == '' || FinalDiscAmt == null) {
+        this.Ipbillform.get('FinalAmount').setValue(this.finalNetAmount);
+        this.vPercentage = '';
+        this.Ipbillform.get('Percentage').setValue(this.vPercentage);
+        this.Ipbillform.get('ConcessionId').clearValidators();
+        this.Ipbillform.get('ConcessionId').updateValueAndValidity();
+        this.Consession = false;
+        this.ConShow = false;
+      } else if (CompDiscAmt <= 0 || CompDiscAmt == '' || CompDiscAmt == null) {
+        this.vNetBillAmount = this.vTotalBillAmount;
+        this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
+        this.Ipbillform.get('ConcessionId').clearValidators();
+        this.Ipbillform.get('ConcessionId').updateValueAndValidity();
+        this.Consession = false;
+        this.ConShow = false;
+      }
+    }
+    else {
+      if (FinalDiscAmt > this.vNetBillAmount || CompDiscAmt > this.vNetBillAmount) {
+        Swal.fire('Discount Amount Should not be grather than Net Amount');
+        this.vfDiscountAmount = '';
+        return
+      }
+      if (FinalDiscAmt > 0 || CompDiscAmt > 0) {
+        if (this.checkdiscAmt > 0) {
+          this.vNetBillAmount = (parseFloat(this.vNetBillAmount) - parseFloat(CompDiscAmt)).toFixed(2);
+          this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
+          this.ConShow = true
+          this.Ipbillform.get('ConcessionId').reset();
+          this.Ipbillform.get('ConcessionId').setValidators([Validators.required]);
+          this.Ipbillform.get('ConcessionId').enable;
+        } else {
           this.vPercentage = (parseFloat(FinalDiscAmt) / parseFloat(this.vNetBillAmount) * 100).toFixed(2);
-          let FinalnetAmt = Math.round(this.vNetBillAmount - FinalDiscAmt).toFixed(2);
-          //this.vNetBillAmount = FinalnetAmt;
+          let totalDiscAmt = (parseFloat(FinalDiscAmt) + parseFloat(CompDiscAmt)).toFixed(2);
+          let FinalnetAmt = Math.round(parseFloat(this.vNetBillAmount) - parseFloat(totalDiscAmt)).toFixed(2);
           this.Ipbillform.get('FinalAmount').setValue(FinalnetAmt);
-          //this.Ipbillform.get('concessionAmt').setValue(this.vfDiscountAmount);
           this.ConShow = true
           this.Ipbillform.get('ConcessionId').reset();
           this.Ipbillform.get('ConcessionId').setValidators([Validators.required]);
           this.Ipbillform.get('ConcessionId').enable;
-        } 
-        else if (FinalDiscAmt <= 0 || FinalDiscAmt == '' || FinalDiscAmt == null) {  
-          this.vNetBillAmount = this.vTotalBillAmount;
-         // this.vDiscountAmount = '';
-          this.vPercentage = '';
-          this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
-          this.Ipbillform.get('ConcessionId').clearValidators();
-          this.Ipbillform.get('ConcessionId').updateValueAndValidity();
-          this.Consession = false;
-          this.ConShow = false;
-        } 
-      }
-    }
-  
-    tableElementChecked(event, element) {
-      if (event.checked) {
-        this.interimArray.push(element);
-        console.log(this.interimArray)
-      } else if (this.interimArray.length > 0) {
-        let index = this.interimArray.indexOf(element);
-        if (index !== -1) {
-          this.interimArray.splice(index, 1);
         }
       }
-    } 
-    // }
-    onOk() {
-      // this.dialogRef.close({ result: "ok" });
+      else if (FinalDiscAmt <= 0 || FinalDiscAmt == '' || FinalDiscAmt == null) {
+        this.vNetBillAmount = this.vTotalBillAmount;
+        this.vPercentage = '';
+        this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
+        this.Ipbillform.get('ConcessionId').clearValidators();
+        this.Ipbillform.get('ConcessionId').updateValueAndValidity();
+        this.Consession = false;
+        this.ConShow = false;
+      } else if (CompDiscAmt <= 0 || CompDiscAmt == '' || CompDiscAmt == null) {
+        this.vNetBillAmount = this.vTotalBillAmount;
+        this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
+        this.Ipbillform.get('ConcessionId').clearValidators();
+        this.Ipbillform.get('ConcessionId').updateValueAndValidity();
+        this.Consession = false;
+        this.ConShow = false;
+      }
     }
+  }
+
+  gettablecalculation(element, Price) {
+    console.log(element)
+    debugger 
+    if(element.Price > 0 && element.Qty > 0){ 
+    element.TotalAmt = element.Qty * element.Price
+    element.ConcessionAmount = (element.ConcessionPercentage * element.TotalAmt) / 100 ;
+    element.NetAmount =  element.TotalAmt - element.ConcessionAmount
+    }  
+    else if(element.Price == 0 || element.Price == '' || element.Qty == '' || element.Qty == 0){
+      element.TotalAmt = 0;  
+      element.ConcessionAmount =  0 ;
+      element.NetAmount =  0 ;
+    } 
+  }
+   
     onClose() {
       this.dialogRef.close({ result: "cancel" });
     }
@@ -1611,8 +1639,7 @@ export class CompanyBillComponent implements OnInit {
   
     }
   
-    calculatePersc() {
-  
+    calculatePersc() { 
       this.b_disAmount = 0;
       this.formDiscPersc = this.Serviceform.get('discPer').value;
       let netAmt = parseInt(this.b_price) * parseInt(this.b_qty);

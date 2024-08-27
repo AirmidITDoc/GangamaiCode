@@ -423,22 +423,13 @@
                 
                     <mat-tab label="Charges List">
                         <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" class="table1 mt-8"
-                            style="height: calc(100vh - 500px);">
-                
-                            <ng-container matColumnDef="checkbox" sticky>
+                            style="height: calc(100vh - 500px);">  
+
+                            <ng-container matColumnDef="IsCheck" sticky>
                                 <mat-header-cell *matHeaderCellDef mat-sort-header class="w-50">
                                     <span class="material-icons" (click)="getChargesList()">
                                         cached
-                                    </span>
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" class="w-50">
-                                    <mat-checkbox aria-label="Checked" (change)="tableElementChecked($event, contact)">
-                                    </mat-checkbox>
-                                </mat-cell>
-                            </ng-container>
-                
-                            <ng-container matColumnDef="IsCheck" sticky>
-                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-50">Status</mat-header-cell>
+                                    </span></mat-header-cell>
                                 <mat-cell *matCellDef="let contact" class="w-50">
                                     <mat-icon *ngIf="contact.IsRadiology == 1" matTooltip="IsRadiology">
                                         <img width="15px" height="8px" src="assets/images/logos/radiology.png">
@@ -468,7 +459,10 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Price
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    <span> {{contact.Price}}</span>
+                                    <mat-form-field appearance="legacy">
+                                        <input matInput [(ngModel)]="contact.Price" type="text" OnlyNumber
+                                            (keyup)="gettablecalculation(contact,contact.Price)" (keypress)="keyPressCharater($event)">
+                                    </mat-form-field>
                                 </mat-cell>
                             </ng-container>
                 
@@ -476,9 +470,13 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Qty
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    <span> {{contact.Qty}}</span>
+                                    <mat-form-field appearance="legacy">
+                                        <input matInput [(ngModel)]="contact.Qty" type="text" OnlyNumber
+                                            (keyup)="gettablecalculation(contact,contact.Qty)" (keypress)="keyPressAlphanumeric($event)">
+                                    </mat-form-field> 
                                 </mat-cell>
                             </ng-container>
+
                             <ng-container matColumnDef="TotalAmt">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Total Amt
                                 </mat-header-cell>
@@ -525,13 +523,21 @@
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                     <span> {{contact.ClassId}}</span>
                                 </mat-cell>
-                            </ng-container>
-                
+                            </ng-container> 
+
                             <ng-container matColumnDef="ClassName">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="accent">ClassName
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm  class="w-200">ClassName
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    <span> {{contact.ClassName}}</span>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200"> 
+                                   <form [formGroup]="Serviceform">
+                                    <mat-form-field style="width: 200px;">
+                                        <mat-select   [(ngModel)]="contact.ClassName" (selectionChange)="onDropdownChange(contact)"
+                                        formControlName="TableClassName" name="TableClassName">
+                                          <mat-option *ngFor="let contact of ClassList" [value]="contact">
+                                            {{contact.ClassName}}</mat-option>
+                                        </mat-select>
+                                      </mat-form-field> 
+                                    </form>
                                 </mat-cell>
                             </ng-container>
                 
@@ -1014,26 +1020,8 @@
 
                             <div class="amount-section" fxLayout="column" class="gap-12">
 
-                                <div fxLayout="row" class="gap-8">
-
-                                    <!-- <mat-checkbox (change)="Adminchange($event)" (checked)=true>
-                                                                                                    Admin Charges
-                                                                                                </mat-checkbox> -->
-                                    <!-- *ngIf="admin" -->
-                                    <!-- <mat-form-field appearance="outline" fxFlex="5%" >
-                                                                                                    <mat-label>%</mat-label>
-                                                                                                    <input matInput name="Percentage" formControlName="Percentage" placeholder="0"
-                                                                                                        (keyup)='CalAdmincharge()' type="number">
-                                                                                                </mat-form-field> -->
-                                    <!-- 
-                                                                                                <mat-form-field appearance="outline" *ngIf="admin">
-                                                                                                    <mat-label>Disc %</mat-label>
-                                                                                                    <input name="Percentage" formControlName="Percentage" placeholder="Disc (%)" (keyup)="CalAdmincharge()"
-                                                                                                     matInput  maxlength="3"  autocomplete="off" onlyNumber
-                                                                                                      oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
-                                                                                                    
-                                                                                                </mat-form-field> -->
-
+                                <div fxLayout="row" class="gap-8"> 
+                                   
                                     <mat-form-field appearance="outline" fxFlex="6%" *ngIf="isAdminDisabled">
                                         <mat-label>Admin %</mat-label>
                                         <input matInput [(ngModel)]="vAdminPer" name="AdminPer"
@@ -1041,23 +1029,29 @@
                                             (keyup)="CalculateAdminCharge()">
                                     </mat-form-field>
 
-                                    <mat-form-field appearance="outline" fxFlex="10%" *ngIf="isAdminDisabled">
+                                    <mat-form-field appearance="outline" fxFlex="8%" *ngIf="isAdminDisabled">
                                         <mat-label>Admin Amount</mat-label>
                                         <input matInput [(ngModel)]="vAdminAmt" name="AdminAmt" readonly
                                             formControlName="AdminAmt">
-                                    </mat-form-field>
+                                    </mat-form-field> 
 
                                     <mat-form-field appearance="outline" fxFlex="6%" *ngIf="ServiceDiscDisable">
                                         <mat-label>Disc %</mat-label>
                                         <input matInput placeholder="Percentage" formControlName="Percentage"
                                             [(ngModel)]="vPercentage" autocomplete="off" #finaldisc onlyNumber
-                                            (keyup)="CalFinalDisc()" (keypress)="keyPressCharater($event)">
+                                            (keyup)="CalFinalDisc1()" (keypress)="keyPressCharater($event)">
                                     </mat-form-field>
 
-                                    <mat-form-field appearance="outline" fxFlex="10%">
+                                    <mat-form-field appearance="outline" fxFlex="8%">
                                         <mat-label>Disc Amount</mat-label>
                                         <input matInput [(ngModel)]="vfDiscountAmount" name="vDiscountAmount"
-                                            formControlName="concessionAmt" (keyup)="getDiscAmtCal()">
+                                            formControlName="concessionAmt" (keyup)="getDiscAmtCal1()">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex="8%">
+                                        <mat-label>Company DiscAmt</mat-label>
+                                        <input matInput [(ngModel)]="vCompanyDiscAmt" name="CompanyDiscAmt"
+                                            formControlName="CompanyDiscAmt" (keyup)="getDiscAmtCal1()">
                                     </mat-form-field>
 
                                     <mat-form-field *ngIf="ConShow" appearance="outline" fxFlex="15%">
@@ -1108,25 +1102,7 @@
                                         <mat-checkbox formControlName="Admincheck" (checked)=true
                                             (change)="AdminStatus($event)">
                                             Admin
-                                        </mat-checkbox>
- 
-
-
-
-                                        <!-- <div class="cash-container gap-12">
-                                                                                                        <div class="net-amt-section">
-                                                                                                            <div class="net-amt">
-                                                                                                                <div class="net-amt-box">
-                                                                                                                    <span class="net-amt-label">Phar. Cash : </span>
-                                                                                                                    <span class="net-amt-value">{{vPharcash}}</span>
-                                                                                                                </div>
-                                                                                                                <div class="net-amt-box">
-                                                                                                                    <span class="net-amt-label">IP Cash : </span>
-                                                                                                                    <span class="net-amt-value">{{vIpCash}}</span>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div> -->
+                                        </mat-checkbox> 
 
                                     </div>
                                     <div class="action-content-right modal-footer" fxLayout="row"
@@ -1142,17 +1118,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- <div class="action-content-right modal-footer" fxLayout="row" fxLayoutAlign="end center">
-                                                                                    <div class="button-row-group">
-                                                                                        <button class="btn btn-danger-outline" (click)="onClose()">Cancel</button>
-                                                                                        <button class="btn btn-primary-outline" (click)="getInterimData()"
-                                                                                            [disabled]="Ipbillform.invalid">Interim</button>
-                                                                                        <button class="btn btn-primary" (click)="onSave()"
-                                                                                            [disabled]="Ipbillform.invalid">Save</button>
-                                                            
-                                                                                    </div>
-                                                                                </div> -->
+                    </div> 
                 </div>
             </form>
         </div>

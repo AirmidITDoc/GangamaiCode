@@ -257,10 +257,10 @@
     
                                         </button>                
                                         <button mat-icon-button
-                                        (click)="getfeedback(contact)"
-                                        matTooltip="NewFeedback">
-                                        <mat-icon style="color: black;">feedback</mat-icon>
-                                    </button>
+                                        (click)="getfeedback(contact)" 
+                                           matTooltip="NewFeedback">
+                                           <mat-icon style="color: black;">feedback</mat-icon>
+                                        </button>
                                     </div>
                                 </mat-cell>
                             </ng-container>
@@ -270,7 +270,7 @@
                                 <mat-cell *matCellDef="let contact" class="w-100">
                                     <div fxFlex="row" fxLayoutAlign="start center">
                                         <button class="menu-btn" mat-icon-button [matMenuTriggerFor]="moreMenu"
-                                            aria-label="More" (click)="$event.stopPropagation();">
+                                            aria-label="More" (click)="$event.stopPropagation();"  >
                                             <mat-icon class="secondary-text">more_vert</mat-icon>
                                         </button>
                                         <mat-menu #moreMenu="matMenu">

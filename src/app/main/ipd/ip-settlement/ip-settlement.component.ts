@@ -281,6 +281,7 @@ export class IPSettlementComponent implements OnInit {
 
                                 this.viewgetSettlementReportPdf(response, true);
                                 this._matDialog.closeAll();
+                                this.getCreditBillDetails();
                             }
                         });
                     } else {
@@ -368,7 +369,7 @@ export class IPSettlementComponent implements OnInit {
 
                 let UpdateAdvanceHeaderObj = {};
                 if (result.submitDataAdvancePay.length > 0) {
-                    UpdateAdvanceHeaderObj['AdvanceId'] = UpdateAdvanceDetailarr1[0]['AdvanceNo'],
+                    UpdateAdvanceHeaderObj['AdvanceId'] = UpdateAdvanceDetailarr1[0]['AdvanceId'],
                         UpdateAdvanceHeaderObj['AdvanceUsedAmount'] = UsedAmt,
                         UpdateAdvanceHeaderObj['BalanceAmount'] = BalanceAmt
                 }
@@ -391,6 +392,7 @@ export class IPSettlementComponent implements OnInit {
                             if (result.isConfirmed) { 
                                 this.viewgetSettlementReportPdf(response, true);
                                 this._matDialog.closeAll();
+                                this.getCreditBillDetails();
                             }
                         });
                     } else {

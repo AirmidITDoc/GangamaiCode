@@ -98,7 +98,7 @@ export class CompanyListComponent implements OnInit {
         this.isLoadingStr = 'loading';
         this._CompanyListService.getAdmittedPatientList_1(D_data).subscribe(data => {
           this.dataSource.data = data["Table1"] ?? [] as Admission[];
-          // console.log(this.dataSource.data)
+           console.log(this.dataSource.data)
           this.dataSource.sort = this.sort;
           this.resultsLength = data["Table"][0]["total_row"];
           this.sIsLoading = '';
@@ -143,44 +143,57 @@ export class CompanyListComponent implements OnInit {
     } 
   }
   getRecord(contact, m): void { 
-    if (m == "Company Bill") {
-      // let m_data = {
-      //   RegNo: contact.RegNo,
-      //   RegId: contact.RegID,
-      //   AdmissionID: contact.AdmissionID,
-      //   OPD_IPD_ID: contact.OPD_IPD_Id,
-      //   PatientName: contact.PatientName,
-      //   Doctorname: contact.Doctorname,
-      //   AdmDateTime: contact.AdmDateTime,
-      //   AgeYear: contact.AgeYear,
-      //   ClassId: contact.ClassId,
-      //   TariffName: contact.TariffName,
-      //   TariffId: contact.TariffId,
-      //   DoctorId: contact.DoctorId,
-      //   DOA: contact.DOA,
-      //   DOT: contact.DOT,
-      //   DoctorName: contact.DoctorName,
-      //   RoomName: contact.RoomName,
-      //   BedNo: contact.BedName,
-      //   IPDNo: contact.IPDNo,
-      //   DocNameID: contact.DocNameID,
-      //   opD_IPD_Typec: contact.opD_IPD_Type,
-      //   CompanyName: contact.CompanyName
-      // }
-
-      this.advanceDataStored.storage = new AdvanceDetailObj(contact); 
-      if (!contact.IsBillGenerated) {
-      const dialogRef = this._matDialog.open(CompanyBillComponent,
-        {
-          maxWidth: "90%",
-          width: '98%',
-          height: '95%',
+    if(contact.CompanyId){
+      if (m == "Company Bill") {
+        // let m_data = {
+        //   RegNo: contact.RegNo,
+        //   RegId: contact.RegID,
+        //   AdmissionID: contact.AdmissionID,
+        //   OPD_IPD_ID: contact.OPD_IPD_Id,
+        //   PatientName: contact.PatientName,
+        //   Doctorname: contact.Doctorname,
+        //   AdmDateTime: contact.AdmDateTime,
+        //   AgeYear: contact.AgeYear,
+        //   ClassId: contact.ClassId,
+        //   TariffName: contact.TariffName,
+        //   TariffId: contact.TariffId,
+        //   DoctorId: contact.DoctorId,
+        //   DOA: contact.DOA,
+        //   DOT: contact.DOT,
+        //   DoctorName: contact.DoctorName,
+        //   RoomName: contact.RoomName,
+        //   BedNo: contact.BedName,
+        //   IPDNo: contact.IPDNo,
+        //   DocNameID: contact.DocNameID,
+        //   opD_IPD_Typec: contact.opD_IPD_Type,
+        //   CompanyName: contact.CompanyName
+        // }
+  
+        this.advanceDataStored.storage = new AdvanceDetailObj(contact); 
+        if (!contact.IsBillGenerated) {
+        const dialogRef = this._matDialog.open(CompanyBillComponent,
+          {
+            maxWidth: "90%",
+            width: '98%',
+            height: '95%',
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          this.getAdmittedPatientList();
         });
-      dialogRef.afterClosed().subscribe(result => {
-        this.getAdmittedPatientList();
+        }else Swal.fire("Bill already Generated")
+      }
+    }
+   else{
+     // Swal.fire('Selected Patient is not company patient')
+
+      Swal.fire({
+        title: 'Selected Patient is not company patient',
+        text: "Please Select Compnay Patient!",
+        icon: "warning",  
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Ok" 
       });
-      }else Swal.fire("Bill already Generated")
-    }  
+    }
   }
  
   onClear() {
