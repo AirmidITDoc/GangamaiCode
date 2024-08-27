@@ -137,8 +137,8 @@ export class RadioloyOrderlistService {
       return this._httpClient.get("Radiology/view-RadiologyTemplateReport?RadReportId=" + RadReportId + "&OP_IP_Type=" + OP_IP_Type)
           
     }
-    getTemplateCombo(employee) {
-      return this._httpClient.post("Generic/GetByProc?procName=Retrieve_PathTemplateMasterForCombo", employee)
+    getTemplateCombo() {
+      return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RadioTemplateMasterForCombo", {})
     }
     
 }

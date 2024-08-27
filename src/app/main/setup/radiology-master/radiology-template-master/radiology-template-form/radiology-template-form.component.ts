@@ -98,7 +98,8 @@ export class RadiologyTemplateFormComponent implements OnInit {
       let insertRadiologyTemp = {};
       insertRadiologyTemp['templateName'] = this._radiologytemplateService.myform.get("TemplateName").value;
       insertRadiologyTemp['templateDesc'] = this._radiologytemplateService.myform.get("TemplateDesc").value;
-      insertRadiologyTemp['isDeleted'] = 1;
+      insertRadiologyTemp['TemplateDescInHTML'] = this._radiologytemplateService.myform.get("TemplateDesc").value;
+      insertRadiologyTemp['IsDeleted '] = 1;
       insertRadiologyTemp['addedBy'] = this.accountService.currentUserValue.user.id;
 
       let submitData = {};
@@ -129,6 +130,7 @@ export class RadiologyTemplateFormComponent implements OnInit {
       updateRadiologyTemp['templateId'] = this.registerObj.TemplateId
       updateRadiologyTemp['templateName'] = this._radiologytemplateService.myform.get("TemplateName").value;
       updateRadiologyTemp['templateDesc'] = this._radiologytemplateService.myform.get("TemplateDesc").value;
+      updateRadiologyTemp['TemplateDescInHTML'] = this._radiologytemplateService.myform.get("TemplateDesc").value;
       updateRadiologyTemp['IsDeleted'] = 1;
       updateRadiologyTemp['updatedBy'] = this.accountService.currentUserValue.user.id;
 
@@ -160,66 +162,6 @@ export class RadiologyTemplateFormComponent implements OnInit {
 
   OnPrintPop(TemplateId) { }
 
-
-  // OnPrintPop(TemplateId) {
-
-  //   var m_data = { "TemplateId": TemplateId, }
-  //   // console.log(m_data);
-  //   this._radiologytemplateService.populatePrintForm(m_data);
-  //   const dialogRef = this._matDialog.open(TemplateReportComponent,
-  //     {
-  //       maxWidth: "95vw",
-  //       maxHeight: "95vh", width: '100%', height: "100%"
-  //     });
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     console.log('The dialog was closed - Insert Action', result);
-
-  //   });
-  // }
-  printTemplate: any;
-  templateHeading: any;
-
-  PrintData(TemplateId) {
-    // debugger;
-    var D_data = {
-      "TemplateId": TemplateId,
-    }
-    this._radiologytemplateService.Print(D_data).subscribe(report => {
-      this.reportdata = report;
-      console.log(this.reportdata);
-      this.printTemplate = report[0].TemplateDesc;
-      this.templateHeading = report[0].TemplateName
-      this.print();
-    });
-  }
-
-  print() {
-    // HospitalName, HospitalAddress, AdvanceNo, PatientName
-    let popupWin, printContents;
-    // printContents =this.printTemplate; // document.getElementById('print-section').innerHTML;
-
-    popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
-    // popupWin.document.open();
-    popupWin.document.write(` <html>
-    <head><style type="text/css">`);
-    popupWin.document.write(`
-          table th, table td {
-          border:1px solid #bdbdbd;
-          padding:0.5em;
-        }
-        `);
-    popupWin.document.write(`
-    </style>
-        <title></title>
-    </head>
-    `);
-    popupWin.document.write(`
-      <div>${this.templateHeading}</div>
-    `);
-    popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
-    </html>`);
-    popupWin.document.close();
-  }
 
 }
 

@@ -149,7 +149,7 @@ export class ParametermasterService {
     public getTableData(param){
         if(this.is_numeric) {
             return this._httpClient.post(
-                "Generic/GetByProc?procName=Rtrv_PathParameterRangeWithAge",
+                "Generic/GetByProc?procName=m_Rtrv_PathParameterRangeWithAge",
                 { ParameterId: param }
             ); 
         }
