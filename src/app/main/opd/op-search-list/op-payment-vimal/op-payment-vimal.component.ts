@@ -128,6 +128,7 @@ export class OpPaymentVimalComponent implements OnInit {
         this.GetBalanceAmt();
     }
     setPaidAmount() {
+        debugger
         this.paidAmt = this.Payments.data.reduce(function (a, b) { return a + Number(b['Amount']); }, 0);
     }
     onKeyAdv(a, b) {
@@ -137,8 +138,10 @@ export class OpPaymentVimalComponent implements OnInit {
         this.GetBalanceAmt();
         this.getAdvanceAmt(a,b);
     }
+    AdvanceId:any;
     getAdvanceAmt(element, index) {  
         debugger
+        this.AdvanceId = element.AdvanceId
         if (element.UsedAmount > element.balamt){
           Swal.fire(' Amount is less than Balance Amount:' + element.balamt);
           element.UsedAmount = '';
@@ -150,8 +153,7 @@ export class OpPaymentVimalComponent implements OnInit {
       } else if(element.UsedAmount == '' || element.UsedAmount == null || element.UsedAmount == undefined || element.UsedAmount == '0' ){
         element.UsedAmount = '';
         element.BalanceAmount = element.balamt;
-      } 
-   
+      }  
       }
     getNewId() {
         return Math.max(...this.Payments.data.filter(x => x.Id > 0).map(o => o.Id), 0) + 1;
@@ -432,8 +434,8 @@ export class OpPaymentVimalComponent implements OnInit {
             this.Paymentobj['CardNo'] = this.Payments.data.find(x => x.PaymentType == "card")?.RefNo ?? 0;
             this.Paymentobj['CardBankName'] = this.Payments.data.find(x => x.PaymentType == "card")?.BankName ?? "";
             this.Paymentobj['CardDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
-            this.Paymentobj['AdvanceUsedAmount'] = 0;
-            this.Paymentobj['AdvanceId'] = 0;
+            this.Paymentobj['AdvanceUsedAmount'] = this.advanceUsedAmt || 0;
+            this.Paymentobj['AdvanceId'] =   this.AdvanceId || 0;
             this.Paymentobj['RefundId'] = 0;
             this.Paymentobj['TransactionType'] = 0;
             this.Paymentobj['Remark'] = '';
@@ -471,9 +473,8 @@ export class OpPaymentVimalComponent implements OnInit {
             this.Paymentobj['CardNo'] = this.Payments.data.find(x => x.PaymentType == "card")?.RefNo ?? 0;
             this.Paymentobj['CardBankName'] = this.Payments.data.find(x => x.PaymentType == "card")?.BankName ?? "";
             this.Paymentobj['CardDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
-            this.Paymentobj['AdvanceUsedAmount'] = 0;
-            this.Paymentobj['AdvanceId'] = 0;
-            this.Paymentobj['RefundId'] = 0;
+            this.Paymentobj['AdvanceUsedAmount'] = this.advanceUsedAmt || 0;
+            this.Paymentobj['AdvanceId'] =   this.AdvanceId || 0;
             this.Paymentobj['TransactionType'] = 4;  
             this.Paymentobj['Remark'] = '';
             this.Paymentobj['AddBy'] = this._loggedService.currentUserValue.user.id || 0;
@@ -621,7 +622,7 @@ export class OpPaymentVimalComponent implements OnInit {
                 });
         }
     }
-    advanceAmt:any=0;
+    advanceUsedAmt:any=0;
     calculateBalance() {
         if (this.dataSource.data && this.dataSource.data.length > 0) {
           let totalAdvanceAmt = 0;
@@ -638,12 +639,12 @@ export class OpPaymentVimalComponent implements OnInit {
             }
             totalAdvanceAmt += element.UsedAmount;
           });
-          this.advanceAmt = totalAdvanceAmt; 
+          this.advanceUsedAmt = totalAdvanceAmt;  
         }
     
       }
     SetAdvanceRow() { 
-        let adv = this.advanceAmt //this.dataSource.data.reduce(function (a, b) { return a + Number(b['UsedAmount']); }, 0);
+        let adv = this.dataSource.data.reduce(function (a, b) { return a + Number(b['UsedAmount']); }, 0);
         let tmp = this.Payments.data.find(x => x.Id == -1);
         if (tmp) {
             tmp.Amount = adv;
