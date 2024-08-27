@@ -39,7 +39,7 @@ export class CategorymasterService {
     }
 
     public getCategoryMasterList(param) {
-        return this._httpClient.post( "Generic/GetByProc?procName=Rtrv_PathCategoryList_by_Name",param);
+        return this._httpClient.post( "Generic/GetByProc?procName=m_Rtrv_PathCategoryList_by_Name",param);
     }
 
     public insertPathologyCategoryMaster(param) {
@@ -54,6 +54,7 @@ export class CategorymasterService {
     }
 
     populateForm(param) {
+        debugger
         this.myform.patchValue(param);
     }
 }

@@ -231,13 +231,8 @@ export class CategorymasterComponent implements OnInit {
         });
     }
     onEdit(row) {
-        // var m_data = {
-        //     CategoryId: row.CategoryId,
-        //     CategoryName: row.CategoryName.trim(),
-        //     Isdeleted: JSON.stringify(row.Isdeleted),
-        //     UpdatedBy: row.UpdatedBy,
-        // };
-        this._categorymasterService.populateForm(row);
+        row.IsDeleted=JSON.stringify(row.IsDeleted)
+               this._categorymasterService.populateForm(row);
     }
 }
 
@@ -245,8 +240,8 @@ export class CategoryMaster {
     CategoryId: number;
     CategoryName: string;
     IsDeleted: boolean;
-    AddedBy: number;
-    UpdatedBy: number;
+    CreatedBy: any;
+    ModifiedBy: any;
 
     /**
      * Constructor
@@ -258,8 +253,8 @@ export class CategoryMaster {
             this.CategoryId = CategoryMaster.CategoryId || "";
             this.CategoryName = CategoryMaster.CategoryName || "";
             this.IsDeleted = CategoryMaster.IsDeleted || "true";
-            this.AddedBy = CategoryMaster.AddedBy || "";
-            this.UpdatedBy = CategoryMaster.UpdatedBy || "";
+            this.CreatedBy = CategoryMaster.CreatedBy || "";
+            this.ModifiedBy = CategoryMaster.ModifiedBy || "";
         }
     }
 }

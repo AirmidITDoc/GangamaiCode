@@ -82,17 +82,17 @@ export class TestmasterService {
 
     // get Test Master list
     public getTestMasterList(param) {//Retrieve_PathologyTestList
-        return this._httpClient.post("Generic/GetByProc?procName=Retrieve_PathologyTestList",
+        return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PathologyTestList",
             param
         );
     }
     // get sub Test Master list
     public getSubTestMasterList(param) {
-        return this._httpClient.post("Generic/GetByProc?procName=Retrieve_PathologySubTestList",
+        return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PathologySubTestList",
             param
         );
     }
-    // retrieve sub Test Master list
+    // retrieve sub Test Master list  remain
     public getSubTestList(param) {
         return this._httpClient.post("Generic/GetByProc?procName=Retrive_PathSubTestFill",
             param
@@ -115,7 +115,7 @@ export class TestmasterService {
     // Cateogry Master Combobox List
     public getCategoryMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Retrieve_PathCategoryMasterForCombo",
+            "Generic/GetByProc?procName=m_Rtrv_PathCategoryMasterForCombo",
             {}
         );
     }
@@ -132,14 +132,14 @@ export class TestmasterService {
     }
     // get new sub Test Master list
     public getNewSubTestMasterList() {
-        return this._httpClient.post("Generic/GetByProc?procName=Retrieve_PathSubTestListForCombo",
+        return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PathSubTestListForCombo",
             {}
         );
     }
     // Template Master Combobox List
     public getTemplateMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Retrieve_PathTemplateMasterForCombo",
+            "Generic/GetByProc?procName=m_Rtrv_PathTemplateMasterForCombo",
             {}
         );
     }
@@ -147,7 +147,7 @@ export class TestmasterService {
     // Service Master Combobox List
     public getServiceMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Retrieve_PathTestListForCombo",
+            "Generic/GetByProc?procName=m_Rtrv_PathTestListForCombo",
             {}
         );
     }
@@ -181,6 +181,10 @@ export class TestmasterService {
         return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PathTemplateForUpdate", data)
       }
 
+
+    public getquerydata(data){
+        return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
+      }
 
 descriptiveList = [];
 numericList = [];

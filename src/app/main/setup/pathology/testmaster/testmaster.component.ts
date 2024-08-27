@@ -35,6 +35,7 @@ export class TestmasterComponent implements OnInit {
         "ServiceName",
         "TechniqueName",
         "MachineName",
+        "IsSubTest",
         "AddedBy",
         "Isdeleted",
         "action",
@@ -306,7 +307,7 @@ export class TestmasterComponent implements OnInit {
             });
 
         }
-
+        row.IsDeleted=JSON.stringify(row.Isdeleted)
         this._TestService.populateForm(row);
         const dialogRef = this._matDialog.open(TestFormMasterComponent, {
             maxWidth: "90vw",

@@ -87,7 +87,7 @@
                                         <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100"> AddedBy
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-100">
-                                            {{element.AddedBy}}
+                                            {{element.CreatedBy}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -176,13 +176,13 @@
                                             </div>
 
                                             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                                <mat-radio-group name="IsDeleted" formControlName="IsDeleted"
-                                                    value='true'>
+                                                <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='true'>
                                                     <mat-radio-button value='true' class="mr-sm-12"
                                                         fxFlex>IsActive</mat-radio-button>
-
                                                 </mat-radio-group>
                                             </div>
+
+                                            
                                         </form>
                                     </div>
                                     <div class="footer-navigation-container">

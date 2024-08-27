@@ -64,10 +64,10 @@
                                                 </mat-autocomplete>
                                             </mat-form-field>
 
-                                            <mat-form-field appearance="outline" style="padding-right: 10px;" fxFlex>
+                                            <mat-form-field appearance="outline" style="padding-right: 10px;" fxFlex *ngIf="serviceflag">
                                                 <mat-label>ServiceName</mat-label>
                                                 <input matAutocompletePosition="below" type="text"
-                                                    placeholder="Select Service Type" [(ngModel)]="ServiceID" required
+                                                    placeholder="Select Service Type" [(ngModel)]="ServiceID" 
                                                     matInput formControlName="ServiceID"
                                                     [matAutocomplete]="autoServiceID">
                                                 <span matSuffix style="display: flex;">

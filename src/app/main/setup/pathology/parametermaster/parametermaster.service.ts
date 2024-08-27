@@ -88,19 +88,19 @@ export class ParametermasterService {
 
     //parameter detail
     public getParameterMasterList(m_data) { 
-        return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PathParameterMaster_by_Name",
+        return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PathParameterMaster_by_Name",
             m_data);
     }
      // Unit Master Combobox List
      public getUnitMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Retrieve_UnitMasterForCombo",{});
+            "Generic/GetByProc?procName=m_Rtrv_UnitMasterForCombo",{});
     }
      // Gender Master Combobox List
    
 
     public getGenderMasterCombo() { 
-        return this._httpClient.post("Generic/GetByProc?procName=RetrieveGenderMasterForCombo",{});
+        return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_GenderMasterForCombo",{});
     }
 
 
@@ -155,7 +155,7 @@ export class ParametermasterService {
         }
         else{
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_PathDescriptiveValues_1",
+            "Generic/GetByProc?procName=m_Rtrv_PathDescriptiveValues_1",
             { ParameterId: param }
         ); 
     }
@@ -165,7 +165,7 @@ export class ParametermasterService {
 
     public getDescriptiveMasterList() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_PathParameterDescriptiveMaster_by_Name",
+            "Generic/GetByProc?procName=m_Rtrv_PathParameterDescriptiveMaster_by_Name",
             { ParameterName: "%" }
         );
     }
@@ -176,7 +176,7 @@ export class ParametermasterService {
 
     public getParameterMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_PathParameterList_by_Name",
+            "Generic/GetByProc?procName=m_Rtrv_PathParameterList_by_Name",
             {}
         );
     }

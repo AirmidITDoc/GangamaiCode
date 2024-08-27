@@ -348,7 +348,7 @@ export class ParameterFormMasterComponent implements OnInit {
             };
             this.dsParameterAgeList.data.forEach(element => {
                 let c = JSON.parse(JSON.stringify(info));
-                c['sexId'] = element.GenderName == 'Male' ? 0 : element.GenderName == 'Female' ? 1 : 2;
+                c['sexId'] = element.GenderName == 'Male' ? 1 : element.GenderName == 'Female' ? 2 : 3;
                 c['minValue'] = element.MinValue;
                 c['minAge'] = +element.MinAge;
                 c['maxAge'] = +element.MaxAge;

@@ -89,7 +89,7 @@ export class ParametermasterComponent implements OnInit {
         this.sIsLoading = 'loading-data';
         var m_data = {
             ParameterName:this._ParameterService.myformSearch.get("ParameterNameSearch").value.trim() + "%" || "%",
-            IsDeleted: this._ParameterService.myformSearch.get("IsDeletedSearch").value || 0
+            // IsDeleted: this._ParameterService.myformSearch.get("IsDeletedSearch").value || 0
         };
       
         this._ParameterService.getParameterMasterList(m_data).subscribe((data) => {
@@ -181,7 +181,7 @@ export class ParametermasterComponent implements OnInit {
             this._ParameterService.populateForm(m_data);
             const dialogRef = this._matDialog.open(ParameterFormMasterComponent, {
             maxWidth: "75vw",
-            maxHeight: "90vh",
+            maxHeight: "98vh",
             width: "100%",
             height: "100%",
             data : {

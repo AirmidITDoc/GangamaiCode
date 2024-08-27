@@ -454,9 +454,17 @@
                                                 Action</mat-header-cell>
                                             <mat-cell *matCellDef="let contact">
                                                 <!-- *ngIf="contact.IsTemplateTest=='1'" (click)="chkresultentry(contact,$event,contact.select) -->
-                                                <button mat-icon-button class="material-icons"  matTooltip="Result Entry" (click)="chkresultentry(contact,false)" *ngIf="contact.IsTemplateTest; else noMLC ">
+                                                <!-- <button mat-icon-button class="material-icons"  matTooltip="Result Entry" (click)="chkresultentry(contact,false)" *ngIf="contact.IsTemplateTest; else noMLC ">
                                                     <mat-icon title="Result Entry">description</mat-icon>
-                                                </button>
+                                                </button> -->
+
+                                                <mat-icon *ngIf="contact.IsTemplateTest == 1" title="IsTemplateTest">
+                                                    <img width="15px" height="8px" src="assets/images/logos/radiology.png" (click)="chkresultentry(contact,false)" *ngIf="contact.IsTemplateTest">
+                                                   <!-- // <mat-icon title="Result Entry">description</mat-icon> -->
+                                                </mat-icon>
+                                                <mat-icon *ngIf="contact.IsTemplateTest != 1" title="IsTest">
+                                                    <img width="15px" height="9px" src="assets/images/logos/pathology.png">  
+                                                </mat-icon>
 
                                                 <button mat-icon-button class="material-icons" (click)="Cancleresult(contact)" matTooltip="Cancel Result">
                                                     <mat-icon title="Cancel Result">delete_forever</mat-icon>
@@ -471,7 +479,7 @@
                                             </button>
 
                                             <ng-template #noMLC>
-                                                <span>----</span>
+                                                <span>------</span>
                                             </ng-template>
                                             </mat-cell>
                                         </ng-container>
