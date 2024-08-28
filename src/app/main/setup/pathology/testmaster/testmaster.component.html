@@ -1,4 +1,5 @@
-<div fxlayout="row" fxFlex.gt-sm="100%" fxFlex class="page-layout" dynamicTableHeight>
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar
+    dynamicTableHeight>
     <div class="center">
         <mat-toolbar class="top-header accent">
             <div fxLayout="row" class="top-header-info">
@@ -83,8 +84,7 @@
                                 </div>
                                 <div style="width: 100%;">
                                  
-                                    <mat-table class="table1" matSort [dataSource]="DSTestMasterList"
-                                        [@animateStagger]="{value:'50'}" style="overflow:auto;height: 500px !important;">
+                                    <mat-table matSort [dataSource]="DSTestMasterList" [@animateStagger]="{value:'50'}">
 
                                         <ng-container matColumnDef="IsTemplateTest">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header> IsTemplateTest
