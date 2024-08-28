@@ -159,6 +159,13 @@
                                     <mat-radio-button [value]="0"> IsDeactive</mat-radio-button>
                                 </mat-radio-group>
                             </div>
+                            <div>
+                                <mat-label>Template Details</mat-label>
+                                <angular-editor (blur)="onBlur($event)" [config]="editorConfig" style="height:200px;"
+                                    [(ngModel)]="Header" required
+                                    formControlName="Header"></angular-editor>
+
+                            </div>
                             <div fxLayoutAlign="end">
                                 <div class="sales-footer-buttons gap-8">
                                     <button class="btn btn-primary" (click)="onSubmit()"

@@ -175,14 +175,14 @@
                                     <div fxFlex.gt-sm="99%" fxLayoutGap="2px">
 
                                         <div fxFlex.gt-sm="99%">
-                                            <form [formGroup]="caseFormGroup">
+                                            <form [formGroup]="caseFormGroup" fxLayoutGap="5px">
                                                 <div fxLayout="row" class="gap-8">
-                                                    <mat-form-field appearance="outline" fxFlex="83%;">
+                                                    <mat-form-field appearance="outline" fxFlex="83%;" style="height: 80px;overflow: auto;">
                                                         <mat-label>ChiefComplaint</mat-label>
-                                                        <input name="ChiefComplaint" formControlName="ChiefComplaint"
+                                                        <textarea  rows="2" name="ChiefComplaint" formControlName="ChiefComplaint"
                                                             placeholder="ChiefComplaint" [(ngModel)]="ChiefComplaint"
                                                             matInput #ChiefComp
-                                                            (keydown)="onEnterChiefComplaint($event)">
+                                                            (keydown)="onEnterChiefComplaint($event)"></textarea>
                                                     </mat-form-field>
                                                    
                                                 </div>

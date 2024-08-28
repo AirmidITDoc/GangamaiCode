@@ -533,7 +533,7 @@ private _onDestroy = new Subject<void>();
       element.BalanceAmount = element.balamt;
     }
   else if(element.UsedAmount > 0){
-    element.BalanceAmount = element.AdvanceAmount - element.UsedAmount 
+    element.BalanceAmount = element.balamt - element.UsedAmount 
   } else if(element.UsedAmount == '' || element.UsedAmount == null || element.UsedAmount == undefined || element.UsedAmount == '0' ){
     element.UsedAmount = '';
     element.BalanceAmount = element.balamt;

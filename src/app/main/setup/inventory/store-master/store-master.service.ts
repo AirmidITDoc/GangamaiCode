@@ -37,6 +37,7 @@ export class StoreMasterService {
             IsDeleted: ["1"],
             UpdatedBy: [""],
             AddedByName: [""],
+            Header:[""]
         });
     }
 

@@ -342,15 +342,20 @@ export class SalesReturnBillSettlementComponent implements OnInit {
          UpdateAdvanceDetailarr1 = result.submitDataAdvancePay; 
 
         let UpdateAdvanceDetailarr = [];
-      
+        let UsedHeaderAmt =0 ;
         if (result.submitDataAdvancePay.length > 0) {
           result.submitDataAdvancePay.forEach((element) => {
-            let update_T_PHAdvanceDetailObj = {};
+            let update_T_PHAdvanceDetailObj = {}; 
+            //extra 
+            this.UsedAmt1 =  (parseInt(element.AdvanceAmount) - parseInt(element.BalanceAmount));
+            UsedHeaderAmt += this.UsedAmt1
+            //
             update_T_PHAdvanceDetailObj['AdvanceDetailID'] = element.AdvanceDetailID;
-            update_T_PHAdvanceDetailObj['UsedAmount'] = element.UsedAmount;
-            this.UsedAmt1 = (this.UsedAmt1 + element.UsedAmount);
+            update_T_PHAdvanceDetailObj['UsedAmount'] =  this.UsedAmt1 ///element.UsedAmount;
+           // this.UsedAmt1 = (parseInt(this.UsedAmt1) + parseInt(element.UsedAmount)); 
             update_T_PHAdvanceDetailObj['BalanceAmount'] = element.BalanceAmount;
-            this.BalanceAm1 =(this.BalanceAm1 + element.BalanceAmount);
+            this.BalanceAm1 =(parseInt(this.BalanceAm1) + parseInt(element.BalanceAmount));
+           
             UpdateAdvanceDetailarr.push(update_T_PHAdvanceDetailObj);
           }); 
         }
@@ -365,7 +370,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
         let update_T_PHAdvanceHeaderObj = {};
         if (result.submitDataAdvancePay.length > 0) { 
           update_T_PHAdvanceHeaderObj['AdvanceId'] = UpdateAdvanceDetailarr1[0]['AdvanceId'],
-          update_T_PHAdvanceHeaderObj['AdvanceUsedAmount'] =this.UsedAmt1 ,
+          update_T_PHAdvanceHeaderObj['AdvanceUsedAmount'] =UsedHeaderAmt ,// this.UsedAmt1
           update_T_PHAdvanceHeaderObj['BalanceAmount'] = this.BalanceAm1
         }
         else { 
@@ -389,6 +394,8 @@ export class SalesReturnBillSettlementComponent implements OnInit {
             });
             this._matDialog.closeAll();  
             this.getIpSalesList(); 
+            this.UsedAmt1 = 0;
+            this.BalanceAm1 = 0;
           }
           else { 
             this.toastr.error('Sales Credit Payment  not saved !', 'error', {
@@ -446,13 +453,17 @@ export class SalesReturnBillSettlementComponent implements OnInit {
          UpdateAdvanceDetailarr1 = result.submitDataAdvancePay; 
 
         let UpdateAdvanceDetailarr = [];
-      
+       let UsedHeaderAmt = 0;
         if (result.submitDataAdvancePay.length > 0) {
           result.submitDataAdvancePay.forEach((element) => {
             let update_T_PHAdvanceDetailObj = {};
+              //extra 
+              this.UsedAmt1 =  (parseInt(element.AdvanceAmount) - parseInt(element.BalanceAmount));
+              UsedHeaderAmt += this.UsedAmt1
+              //
             update_T_PHAdvanceDetailObj['AdvanceDetailID'] = element.AdvanceDetailID;
             update_T_PHAdvanceDetailObj['UsedAmount'] = element.UsedAmount;
-            this.UsedAmt1 = (this.UsedAmt1 + element.UsedAmount);
+           /// this.UsedAmt1 = (this.UsedAmt1 + element.UsedAmount);
             update_T_PHAdvanceDetailObj['BalanceAmount'] = element.BalanceAmount;
             this.BalanceAm1 =(this.BalanceAm1 + element.BalanceAmount);
             UpdateAdvanceDetailarr.push(update_T_PHAdvanceDetailObj);
@@ -469,7 +480,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
         let update_T_PHAdvanceHeaderObj = {};
         if (result.submitDataAdvancePay.length > 0) { 
           update_T_PHAdvanceHeaderObj['AdvanceId'] = UpdateAdvanceDetailarr1[0]['AdvanceId'],
-          update_T_PHAdvanceHeaderObj['AdvanceUsedAmount'] =this.UsedAmt1 ,
+          update_T_PHAdvanceHeaderObj['AdvanceUsedAmount'] =UsedHeaderAmt ,///this.UsedAmt1 ,
           update_T_PHAdvanceHeaderObj['BalanceAmount'] = this.BalanceAm1
         }
         else { 
@@ -493,6 +504,8 @@ export class SalesReturnBillSettlementComponent implements OnInit {
             });
             this._matDialog.closeAll();  
             this.getIpSalesList(); 
+            this.UsedAmt1 = 0;
+            this.BalanceAm1 = 0;
           }
           else { 
             this.toastr.error('Sales Credit Payment  not saved !', 'error', {

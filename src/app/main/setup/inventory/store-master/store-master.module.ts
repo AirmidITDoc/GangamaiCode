@@ -25,6 +25,8 @@ import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { StoreFormMasterComponent } from './store-form-master/store-form-master.component';
+import { AngularEditorModule } from '@kolkov/angular-editor';
+
 
 const routes: Routes = [
     {
@@ -37,7 +39,7 @@ const routes: Routes = [
     declarations: [StoreMasterComponent, StoreFormMasterComponent],
     imports: [
         RouterModule.forChild(routes),
-
+        AngularEditorModule,
         MatButtonModule,
         MatCheckboxModule,
         MatDatepickerModule,
@@ -66,4 +68,4 @@ const routes: Routes = [
     providers: [StoreMasterService],
     entryComponents: [StoreMasterComponent],
 })
-export class StoreMasterModule {}
+export class StoreMasterModule { }

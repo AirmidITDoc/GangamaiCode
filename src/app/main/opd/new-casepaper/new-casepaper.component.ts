@@ -229,6 +229,8 @@ export class NewCasepaperComponent implements OnInit {
 
   filteredOptionsDosename: Observable<string[]>;
 
+
+
   @Input() dataArray: any;
   dataSource = new MatTableDataSource<any>();
 
@@ -333,10 +335,7 @@ export class NewCasepaperComponent implements OnInit {
       startWith(''),
       map((ele: any | null) => ele ? this._filterDiagnosis(ele) : this.allDiagnosis.slice()));
 
-    this.filteredOptionsDosename = this.MedicineItemForm.get('DoseId').valueChanges.pipe(
-      startWith(''),
-      map(value => this._filterDosename(value)),
-    );
+  
 
 
     // this.getPrescriptionListFill(this.VisitId);
@@ -424,8 +423,11 @@ export class NewCasepaperComponent implements OnInit {
     this._CasepaperService.getDoseList().subscribe((data) => {
       this.doseList = data;
       console.log(this.doseList)
-    });
-    debugger
+      this.filteredOptionsDosename = this.MedicineItemForm.get('DoseId').valueChanges.pipe(
+        startWith(''), 
+        map(value => value ? this._filterDosename(value) : this.doseList.slice()),
+      );
+    }); 
   }
   getdosedetail() {
 

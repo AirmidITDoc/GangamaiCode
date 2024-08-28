@@ -139,7 +139,7 @@
                             </div>
                         </mat-card>
                     </div>
-                    <div class="table-container" style="padding: 5px 15px 5px 15px;" *ngIf="IsAdv">
+                    <div class="table-container" style="padding: 5px 5px 5px 5px;" *ngIf="IsAdv">
                         <mat-card style="padding: 6px;">
                             <mat-table matSort class="h-120" [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
 
@@ -214,12 +214,11 @@
                                     [ngClass]="{'hide':!(isLoading=='no-data')}">
                                 </mat-footer-row>
                             </mat-table>
-                            <!-- <div class="net-amt">
-                            <span class="net-amt-label">Total Advance Amt:</span>&nbsp;
-                            <span class="net-amt-value"
-                                style="font-weight:bold;color: blue;">{{getAdvanceSum(dataSource.data) |
-                                currency:'INR' }}</span>
-                        </div> -->
+                            <div class="net-amt">
+                                <span class="net-amt-label">Total UsedAmt:</span>&nbsp;
+                                <span class="net-amt-value" style="font-weight:bold;color: blue;">{{getAdvanceSum(dataSource.data) |
+                                    currency:'INR' }}</span>
+                            </div>
                         </mat-card>
                         <!-- <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" showFirstLastButtons></mat-paginator> -->
                     </div>
