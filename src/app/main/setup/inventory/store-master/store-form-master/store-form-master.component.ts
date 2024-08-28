@@ -5,6 +5,7 @@ import { StoreMasterComponent } from "../store-master.component";
 import { fuseAnimations } from "@fuse/animations";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
+import { AngularEditorConfig } from "@kolkov/angular-editor";
 
 @Component({
     selector: "app-store-form-master",
@@ -14,26 +15,42 @@ import { ToastrService } from "ngx-toastr";
     animations: fuseAnimations,
 })
 export class StoreFormMasterComponent implements OnInit {
+    Header: string;
+    editorConfig: AngularEditorConfig = {
+        // color:true,
+        editable: true,
+        spellcheck: true,
+        height: '35rem',
+        minHeight: '35rem',
+        translate: 'yes',
+        placeholder: 'Enter text here...',
+        enableToolbar: true,
+        showToolbar: true,
+
+    };
+    onBlur(e: any) {
+        this.Header = e.target.innerHTML;
+    }
     msg: any;
     Savebtn: boolean = false;
-    vshortName:any;
-    vStoreName:any;
-    vIndentPrefix:any;
-    vIndentNo:any;
-    vGrnreturnNoPrefix:any;
-    vGrnreturnNo:any;
-    vPurchasePrefix:any;
-    vPurchaseNo:any;
-    vIssueToDeptPrefix:any;
-    vIssueToDeptNo:any;
-    vGrnPrefix:any;
-    vGrnNo:any;
-    vReturnFromDeptNoPrefix:any;
-    vReturnFromDeptNo:any;
-    registerObj:any;
-    vStoreId:any;
-    vDeleted:any;
-    checkradiobtn:any;
+    vshortName: any;
+    vStoreName: any;
+    vIndentPrefix: any;
+    vIndentNo: any;
+    vGrnreturnNoPrefix: any;
+    vGrnreturnNo: any;
+    vPurchasePrefix: any;
+    vPurchaseNo: any;
+    vIssueToDeptPrefix: any;
+    vIssueToDeptNo: any;
+    vGrnPrefix: any;
+    vGrnNo: any;
+    vReturnFromDeptNoPrefix: any;
+    vReturnFromDeptNo: any;
+    registerObj: any;
+    vStoreId: any;
+    vDeleted: any;
+    checkradiobtn: any;
 
     constructor(
         public _StoreService: StoreMasterService,
@@ -44,39 +61,39 @@ export class StoreFormMasterComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-    if(this.data.Obj){
-        this.registerObj = this.data.Obj;
-        console.log(this.registerObj);
-        this.vStoreId = this.registerObj.StoreId;
-       this.vshortName = this.registerObj.StoreShortName ;
-       this.vStoreName = this.registerObj.StoreName ;
-       this.vIndentPrefix = this.registerObj.IndentPrefix ;
-       this.vIndentNo = this.registerObj.IndentNo.trim() ;
-       this.vGrnreturnNoPrefix = this.registerObj.GrnreturnNoPrefix ;
-       this.vGrnreturnNo = this.registerObj.GrnreturnNo.trim() ;
-       this.vPurchasePrefix = this.registerObj.PurchasePrefix ;
-       this.vPurchaseNo = this.registerObj.PurchaseNo.trim() ;
-       this.vIssueToDeptPrefix = this.registerObj.IssueToDeptPrefix ;
-       this.vIssueToDeptNo = this.registerObj.IssueToDeptNo.trim() ;
-       this.vGrnPrefix = this.registerObj.GrnPrefix ;
-       this.vGrnNo = this.registerObj.GrnNo.trim() ;
-       this.vReturnFromDeptNoPrefix = this.registerObj.ReturnFromDeptNoPrefix ;
-       this.vReturnFromDeptNo = this.registerObj.ReturnFromDeptNo.trim() ;
-
-       this.checkradiobtn =JSON.stringify(this.registerObj.IsDeleted);
-       if(this.checkradiobtn === 'true'){
-        this.vDeleted = 1;
-       }else{
-        this.vDeleted = 0;
-       }
-    }
+        if (this.data.Obj) {
+            this.registerObj = this.data.Obj;
+            console.log(this.registerObj);
+            this.vStoreId = this.registerObj.StoreId;
+            this.vshortName = this.registerObj.StoreShortName;
+            this.vStoreName = this.registerObj.StoreName;
+            this.vIndentPrefix = this.registerObj.IndentPrefix;
+            this.vIndentNo = this.registerObj.IndentNo.trim();
+            this.vGrnreturnNoPrefix = this.registerObj.GrnreturnNoPrefix;
+            this.vGrnreturnNo = this.registerObj.GrnreturnNo.trim();
+            this.vPurchasePrefix = this.registerObj.PurchasePrefix;
+            this.vPurchaseNo = this.registerObj.PurchaseNo.trim();
+            this.vIssueToDeptPrefix = this.registerObj.IssueToDeptPrefix;
+            this.vIssueToDeptNo = this.registerObj.IssueToDeptNo.trim();
+            this.vGrnPrefix = this.registerObj.GrnPrefix;
+            this.vGrnNo = this.registerObj.GrnNo.trim();
+            this.vReturnFromDeptNoPrefix = this.registerObj.ReturnFromDeptNoPrefix;
+            this.vReturnFromDeptNo = this.registerObj.ReturnFromDeptNo.trim();
+            this.Header = this.registerObj.Header;
+            this.checkradiobtn = JSON.stringify(this.registerObj.IsDeleted);
+            if (this.checkradiobtn === 'true') {
+                this.vDeleted = 1;
+            } else {
+                this.vDeleted = 0;
+            }
+        }
     }
     focusNext(nextElementId: string): void {
         const nextElement = this.elementRef.nativeElement.querySelector(`#${nextElementId}`);
         if (nextElement) {
-          nextElement.focus();
+            nextElement.focus();
         }
-      }
+    }
     onSubmit() {
         if ((this.vshortName == '' || this.vshortName == null || this.vshortName == undefined)) {
             this.toastr.warning('Please enter a ShortName', 'Warning !', {
@@ -181,6 +198,7 @@ export class StoreFormMasterComponent implements OnInit {
                         issueToDeptNo: this._StoreService.myform.get("IssueToDeptNo").value,
                         returnFromDeptNoPrefix: this._StoreService.myform.get("ReturnFromDeptNoPrefix").value.trim(),
                         returnFromDeptNo: this._StoreService.myform.get("ReturnFromDeptNo").value,
+                        Header: this._StoreService.myform.get("Header").value,
                         isDeleted: Boolean(JSON.parse(this._StoreService.myform.get("IsDeleted").value)),
                         addedBy: 1,
                     },
@@ -211,7 +229,20 @@ export class StoreFormMasterComponent implements OnInit {
                         storeId: this._StoreService.myform.get("StoreId").value,
                         storeShortName: this._StoreService.myform.get("StoreShortName").value.trim(),
                         storeName: this._StoreService.myform.get("StoreName").value.trim(),
+                        indentPrefix: this._StoreService.myform.get("IndentPrefix").value.trim(),
+                        indentNo: this._StoreService.myform.get("IndentNo").value,
+                        purchasePrefix: this._StoreService.myform.get("PurchasePrefix").value.trim(),
+                        purchaseNo: this._StoreService.myform.get("PurchaseNo").value,
+                        grnPrefix: this._StoreService.myform.get("GrnPrefix").value.trim(),
+                        grnNo: this._StoreService.myform.get("GrnNo").value,
+                        grnreturnNoPrefix: this._StoreService.myform.get("GrnreturnNoPrefix").value.trim(),
+                        grnreturnNo: this._StoreService.myform.get("GrnreturnNo").value,
+                        issueToDeptPrefix: this._StoreService.myform.get("IssueToDeptPrefix").value.trim(),
+                        issueToDeptNo: this._StoreService.myform.get("IssueToDeptNo").value,
+                        returnFromDeptNoPrefix: this._StoreService.myform.get("ReturnFromDeptNoPrefix").value.trim(),
+                        returnFromDeptNo: this._StoreService.myform.get("ReturnFromDeptNo").value,
                         isDeleted: Boolean(JSON.parse(this._StoreService.myform.get("IsDeleted").value)),
+                        Header: this._StoreService.myform.get("Header").value,
                         updatedBy: 1,
                     },
                 };
@@ -234,11 +265,10 @@ export class StoreFormMasterComponent implements OnInit {
                     });
                 });
             }
-            this.onClose();
         }
     }
     onEdit(row) {
-        
+
         var m_data = {
             StoreId: row.StoreId,
             StoreShortName: row.StoreShortName.trim(),
