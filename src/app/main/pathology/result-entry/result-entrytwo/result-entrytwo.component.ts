@@ -81,9 +81,11 @@ export class ResultEntrytwoComponent implements OnInit {
       console.log( this.selectedAdvanceObj1)
       this.OP_IPType=this.selectedAdvanceObj1.OPD_IPD_Type
       this.reportIdData =this.selectedAdvanceObj1.PathReportID
+      this.PathResultDr1=this.selectedAdvanceObj1.PathResultDr1
+
       this.getTemplateList();
       this.getPathresultdoctorList();
-
+      this.getPathresultDoctorList()
       if (this.OP_IPType == 1)
         this.getTemplatedetailIP();
       else
@@ -127,8 +129,8 @@ export class ResultEntrytwoComponent implements OnInit {
       console.log(SelectQuery);
       this._SampleService.getPathologyTemplateforIP(SelectQuery).subscribe(Visit => {
         this.vTemplateDesc= Visit[0]["TemplateResultInHTML"];
-        this.PathResultDr1 = Visit[0]["PathResultDr1"];
-        this.vsuggation = Visit[0]["SuggestionNote"];
+        // this.PathResultDr1 = Visit[0]["PathResultDr1"];
+        // this.vsuggation = Visit[0]["SuggestionNote"];
       this.TemplateId=Visit[0]["PathTemplateId"];
       },
         error => {
@@ -143,8 +145,8 @@ export class ResultEntrytwoComponent implements OnInit {
       this._SampleService.getPathologyTemplateforOP(SelectQuery).subscribe(Visit => {
        if(Visit){
         this.vTemplateDesc= Visit[0]["TemplateResultInHTML"];
-        this.PathResultDr1 = Visit[0]["PathResultDr1"];
-        this.vsuggation = Visit[0]["SuggestionNote"];
+        // this.PathResultDr1 = Visit[0]["PathResultDr1"];
+        // this.vsuggation = Visit[0]["SuggestionNote"];
         this.TemplateId=Visit[0]["PathTemplateId"];
         console.log( this.TemplateId)
         this.getTemplatelist();

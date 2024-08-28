@@ -178,6 +178,7 @@ export class IPBillBrowseListComponent implements OnInit {
 
     if (this._ActRoute.url == '/ipd/ipd-bill-browse-list') {
       this.menuActions.push('Print Final Bill');
+      this.menuActions.push('Print FinalBill Classwise');
       this.menuActions.push('Print FinalBill Datewise');
       this.menuActions.push('Print FinalBill WardWise');
     }
