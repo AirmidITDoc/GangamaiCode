@@ -141,7 +141,7 @@ export class OpPaymentVimalComponent implements OnInit {
     AdvanceId:any;
     getAdvanceAmt(element, index) {  
         debugger
-        this.AdvanceId = element.AdvanceId
+      
         if (element.UsedAmount > element.balamt){
           Swal.fire(' Amount is less than Balance Amount:' + element.balamt);
           element.UsedAmount = '';
@@ -434,8 +434,13 @@ export class OpPaymentVimalComponent implements OnInit {
             this.Paymentobj['CardNo'] = this.Payments.data.find(x => x.PaymentType == "card")?.RefNo ?? 0;
             this.Paymentobj['CardBankName'] = this.Payments.data.find(x => x.PaymentType == "card")?.BankName ?? "";
             this.Paymentobj['CardDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
-            this.Paymentobj['AdvanceUsedAmount'] = this.advanceUsedAmt || 0;
-            this.Paymentobj['AdvanceId'] =   this.AdvanceId || 0;
+            if(this.IsAdv){
+            this.Paymentobj['AdvanceUsedAmount'] = this.advanceUsedAmt || 0; 
+            this.Paymentobj['AdvanceId'] =   this.AdvanceId || 0; 
+            }else{
+            this.Paymentobj['AdvanceUsedAmount'] = 0;
+            this.Paymentobj['AdvanceId'] = 0;
+            } 
             this.Paymentobj['RefundId'] = 0;
             this.Paymentobj['TransactionType'] = 0;
             this.Paymentobj['Remark'] = '';
@@ -473,8 +478,13 @@ export class OpPaymentVimalComponent implements OnInit {
             this.Paymentobj['CardNo'] = this.Payments.data.find(x => x.PaymentType == "card")?.RefNo ?? 0;
             this.Paymentobj['CardBankName'] = this.Payments.data.find(x => x.PaymentType == "card")?.BankName ?? "";
             this.Paymentobj['CardDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
-            this.Paymentobj['AdvanceUsedAmount'] = this.advanceUsedAmt || 0;
-            this.Paymentobj['AdvanceId'] =   this.AdvanceId || 0;
+            if(this.IsAdv){
+                this.Paymentobj['AdvanceUsedAmount'] = this.advanceUsedAmt || 0; 
+                this.Paymentobj['AdvanceId'] =   this.AdvanceId || 0; 
+            }else{
+                this.Paymentobj['AdvanceUsedAmount'] = 0;
+                this.Paymentobj['AdvanceId'] = 0;
+            } 
             this.Paymentobj['TransactionType'] = 4;  
             this.Paymentobj['Remark'] = '';
             this.Paymentobj['AddBy'] = this._loggedService.currentUserValue.user.id || 0;
@@ -536,10 +546,10 @@ export class OpPaymentVimalComponent implements OnInit {
         }  
         console.log(JSON.stringify(this.Paymentobj));
 
-        const ipPaymentInsert = new IpPaymentInsert(this.Paymentobj);
+        //const ipPaymentInsert = new IpPaymentInsert(this.Paymentobj);
 
         let submitDataPay = {
-            ipPaymentInsert,
+            ipPaymentInsert:this.Paymentobj
         };
         let IsSubmit
         if(this.data.FromName == "IP-SETTLEMENT" || this.data.FromName == "OP-SETTLEMENT" || this.data.FromName == "IP-Pharma-SETTLEMENT"){
@@ -614,12 +624,17 @@ export class OpPaymentVimalComponent implements OnInit {
             }
             this.ipSearchService.getAdvcanceDetailslist(Query).subscribe(data => {
                 this.dataSource.data = data as [];
+                this.AdvanceId = this.dataSource.data[0].AdvanceId
                 console.log(this.dataSource.data)
                 this.calculateBalance();
                 this.SetAdvanceRow();
             },
                 (error) => {
                 });
+        }else{
+            this.Payments.data = []; 
+            this.dataSource.data = []; 
+            this.amount1 = this.netPayAmt;
         }
     }
     advanceUsedAmt:any=0;
@@ -638,10 +653,14 @@ export class OpPaymentVimalComponent implements OnInit {
               netAmtLocal = netAmtLocal - element.UsedAmount;
             }
             totalAdvanceAmt += element.UsedAmount;
-          });
-          this.advanceUsedAmt = totalAdvanceAmt;  
+          }); 
         }
-    
+      }
+      getAdvanceSum(element) {
+        let netAmt; 
+        netAmt = element.reduce((sum, { UsedAmount }) => sum += +(UsedAmount || 0), 0);
+        this.advanceUsedAmt = netAmt; 
+        return netAmt
       }
     SetAdvanceRow() { 
         let adv = this.dataSource.data.reduce(function (a, b) { return a + Number(b['UsedAmount']); }, 0);
