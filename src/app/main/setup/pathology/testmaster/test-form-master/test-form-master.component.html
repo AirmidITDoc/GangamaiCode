@@ -33,11 +33,13 @@
                                     <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column">
                                         <div fxLayout="row" fxLayoutGap="5px">
                                             <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                                <mat-label>Test Name</mat-label>
                                                 <input name="TestName" formControlName="TestName"
                                                     placeholder="Select Test Name" matInput required>
                                                 <mat-error>Please enter TestName </mat-error>
                                             </mat-form-field>
                                             <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                                <mat-label>PrintTest Name</mat-label>
                                                 <input name="PrintTestName" formControlName="PrintTestName"
                                                     placeholder="Select PrintTestName" matInput required>
                                                 <mat-error>Please enter PrintTestName </mat-error>
@@ -107,7 +109,7 @@
                                             <div *ngIf="!_TestService.is_templatetest">
                                                 <mat-form-field style="width: 22rem">
                                                     <input matInput placeholder="Search" autocomplete="off"
-                                                        name="ParameterNameSearch" (keyup)="onSearch()"
+                                                        name="ParameterNameSearch" (keyup)="onSearch()" [(ngModel)]="ParameterName" 
                                                         formControlName="ParameterNameSearch" />
                                                     <button mat-button matSuffix mat-icon-button aria-label="Clear"
                                                         (click)="onSearchClear()" (keyup)="onSearch()">
