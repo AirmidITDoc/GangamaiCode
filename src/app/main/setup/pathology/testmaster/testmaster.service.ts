@@ -124,10 +124,9 @@ export class TestmasterService {
         return this._httpClient.post("Generic/GetByProc?procName=m_Retrieve_PathSubTestListForCombo",emp);
     }
     // Parameter Master Combobox List
-    public getParameterMasterCombo() {
+    public getParameterMasterCombo(emp) {
         return this._httpClient.post(//Retrieve_PathParameterListForCombo
-            "Generic/GetByProc?procName=m_Rtrv_PathParameterList_by_Name",
-            {}
+            "Generic/GetByProc?procName=m_Rtrv_PathParameterList_by_Name",emp
         );
     }
     // get new sub Test Master list

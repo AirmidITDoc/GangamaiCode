@@ -280,7 +280,10 @@ export class TestmasterComponent implements OnInit {
         );
     }
     getParameterNameCombobox() {
-        this._TestService.getParameterMasterCombo().subscribe((data) => {
+        var m_dat = {
+            ParameterName: this._TestService.myformSearch.get('TestNameSearch').value + "%" || '%'
+        }
+        this._TestService.getParameterMasterCombo(m_dat).subscribe((data) => {
             this.Parametercmb = data;
             this.filteredParametername.next(this.Parametercmb.slice());
             //console.log(this.Parametercmb);
