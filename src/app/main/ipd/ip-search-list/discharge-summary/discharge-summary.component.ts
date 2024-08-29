@@ -419,7 +419,7 @@ export class DischargeSummaryComponent implements OnInit {
         this.add = true; 
       } 
     }
-
+bp:any=1000;
   lngAdmId: any = [];
   // ============================================================================
   getAdmissionInfo() {

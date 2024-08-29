@@ -306,7 +306,7 @@ export class IPSettlementComponent implements OnInit {
         PatientHeaderObj['PatientName'] = this.PatientName; 
         PatientHeaderObj['AdvanceAmount'] = contact.NetPayableAmt;
         PatientHeaderObj['NetPayAmount'] = contact.NetPayableAmt;
-        PatientHeaderObj['PBillNo'] = contact.PBillNo;
+        PatientHeaderObj['BillNo'] = contact.BillNo;
         PatientHeaderObj['OPD_IPD_Id'] = contact.OPD_IPD_ID;
         PatientHeaderObj['IPDNo'] = contact.IPDNo;
         PatientHeaderObj['RegNo'] = contact.RegNo; 

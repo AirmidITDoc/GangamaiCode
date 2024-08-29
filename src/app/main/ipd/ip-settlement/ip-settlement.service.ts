@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { LoaderService } from 'app/core/components/loader/loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,9 +9,11 @@ import { FormBuilder } from '@angular/forms';
 export class IPSettlementService {
 
   constructor(public _httpClient:HttpClient,
+    private _loaderService: LoaderService,
     private _formBuilder: FormBuilder) { }
 
   //Adv paymnet
+   
   public getAdvcanceDetailslist(query) {
     return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
   }
@@ -19,11 +22,16 @@ public getPaidBillList(data) {
   return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
 }
 
-public getCreditBillList(data) {
+public getCreditBillList(data,loader = true) {
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IP_Bill_List_Settlement" ,data)
 }
-public InsertIPSettlementPayment (employee){
-  // return this._httpClient.post("InPatient/IPBillingCreditInsert", employee)
+public InsertIPSettlementPayment (employee,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
    return this._httpClient.post("InPatient/IPSettlement", employee)
 }
 

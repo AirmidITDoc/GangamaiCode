@@ -577,7 +577,7 @@ export class IPSearchListComponent implements OnInit {
       const dialogRef = this._matDialog.open(BedTransferComponent,
         {
           maxWidth: "85vw",
-          maxHeight: "55vh", width: '100%', height: "100%"
+          maxHeight: "56vh", width: '100%', height: "100%"
         });
       dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed - Insert Action', result);

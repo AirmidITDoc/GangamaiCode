@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { LoaderService } from 'app/core/components/loader/loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,8 @@ export class IPSearchListService {
   
 
 constructor(public _httpClient:HttpClient,
-    private _formBuilder: FormBuilder
+    private _formBuilder: FormBuilder,
+    private _loaderService: LoaderService,
     ) {
       this.myFilterform=this.filterForm();
       this.myShowAdvanceForm = this.showAdvanceForm();
@@ -429,8 +431,10 @@ constructor(public _httpClient:HttpClient,
   return this._httpClient.post("InPatient/InsertIPPrescription",employee);
   }
   
-  public BedtransferUpdate(employee)
-  {    
+  public BedtransferUpdate(employee,loader = true){ 
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.post("InPatient/IPDBedTransfer",employee);
   }
  
@@ -559,7 +563,7 @@ public getDischaregDoctor3Combo() {
    
   //Bed Combobox List
   public getBedCombo(Id) {
-    return this._httpClient.post("Generic/GetByProc?procName=RetrieveBedMasterForCombo_Conditional",Id)
+    return this._httpClient.post("Generic/GetByProc?procName=RetrieveBedMasterForCombo_Conditional",{"Id":Id})
    }
 
  //Class Combobox List

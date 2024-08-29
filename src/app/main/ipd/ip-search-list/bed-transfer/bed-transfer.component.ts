@@ -23,34 +23,39 @@ import { ToastrService } from 'ngx-toastr';
   animations: fuseAnimations
 })
 export class BedTransferComponent implements OnInit {
-
-  submitted = false;
-
+  Bedtransfer: FormGroup;
+  dateTimeObj: any;
   isLoading: string = '';
   screenFromString = 'admission-form';
-  msg: any = [];
+  currentDate = new Date();
+  isWardSelected: boolean = false;
+  isBedSelected: boolean = false;
+  isClassIdSelected: boolean = false;
+  vWardId: any;
+  vBedId: any;
+  vClassId: any;
+
+
+  submitted = false;
+ 
   DoctorList: any = [];
   WardList: any = [];
   BedList: any = [];
   bedObj = new Bed({});
   BedClassList: any = [];
   ClassList: any = [];
-  currentDate = new Date();
 
   ClassId: any;
   BedId: any;
   RoomId: any;
-  vWardId: any;
-  vBedId: any;
-  vClassId: any;
+
+
 
   selectedAdvanceObj: AdmissionPersonlModel;
 
-  Bedtransfer: FormGroup;
 
-  isWardSelected: boolean = false;
-  isBedSelected: boolean = false;
-  isClassIdSelected: boolean = false;
+
+ 
   optionsWard: any[] = [];
   optionsRoomId: any[] = [];
   optionsBed: any[] = [];
@@ -76,67 +81,28 @@ export class BedTransferComponent implements OnInit {
     public dialogRef: MatDialogRef<IPSearchListComponent>,
     private _formBuilder: FormBuilder
   ) {
-
+    this.getWardList1(); 
     if (this.advanceDataStored.storage) {
-      debugger
+     // debugger
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       console.log(this.selectedAdvanceObj)
-      this.getWardList();
-    }
-
+    
+    } 
   }
 
   ngOnInit(): void {
     this.Bedtransfer = this.bedsaveForm();
-    this.selectedAdvanceObj = this.advanceDataStored.storage;
-    this.getDischargePatientList();
-
-    
-    this.getDoctorList();
-  
-    // this.getWardList();
-
-    if (this.selectedAdvanceObj) {
-      this.setDropdownObjs();
-      this.getBedList(this.selectedAdvanceObj);
-    }
-
-    this.filteredOptionsWard = this.Bedtransfer.get('RoomId').valueChanges.pipe(
-      startWith(''),
-      map(value => this._filterWard(value)),
-
-    );
-
-
-  
-    // this.filteredClass = this.Bedtransfer.get('ClassId').valueChanges.pipe(
-    //   startWith(''),
-    //   map(value => this._filterClass(value)),
-
-    // );
+    this.selectedAdvanceObj = this.advanceDataStored.storage; 
+    if (this.selectedAdvanceObj) { 
+      this.setDropdownObjs(); 
+    }  
+   // this.getWardList1();
   }
-
   get f() { return this._IpSearchListService.mySaveForm.controls; }
 
-  setDropdownObjs() {
-    debugger
-    const toSelect = this.WardList.find(c => c.RoomId == this.selectedAdvanceObj.RoomId);
-    this.Bedtransfer.get('RoomId').setValue(toSelect);
-
-
-    this._IpSearchListService.getBedCombo(toSelect).subscribe(data => {
-      this.BedList = data;
-      const ddValue = this.BedList.filter(c => c.BedId == this.selectedAdvanceObj.BedId);
-      this.Bedtransfer.get('BedId').setValue(ddValue[0]);
-      this.Bedtransfer.updateValueAndValidity();
-      return;
-    });
-    this.filteredOptionsBed = this.Bedtransfer.get('BedId').valueChanges.pipe(
-      startWith(''),
-      map(value => value ? this._filterBed(value) : this.BedList.slice()),
-    );
+  getDateTime(dateTimeObj) { 
+    this.dateTimeObj = dateTimeObj;
   }
-
   bedsaveForm(): FormGroup {
     return this._formBuilder.group({
       RegNo: '',
@@ -149,76 +115,48 @@ export class BedTransferComponent implements OnInit {
       Remark: '',
     });
   }
-
-  getDischargePatientList() {
-    this._IpSearchListService.getDischargePatientList().subscribe(data => {
-      this.dataSource.data = data as Discharge[];
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
-    });
-  }
-
-  getDoctorList() {
-    this._IpSearchListService.getDoctorMaster1Combo().subscribe(data => { this.DoctorList = data; })
-  }
-
-
-  getWardList() {
+  getWardList1() {
     this._IpSearchListService.getWardCombo().subscribe(data => {
       this.WardList = data;
-      if (this.selectedAdvanceObj) {
-        const ddValue = this.WardList.filter(c => c.RoomId == this.selectedAdvanceObj.WardId);
-        this.Bedtransfer.get('RoomId').setValue(ddValue[0]);
-        this.OnChangeBedList(this.selectedAdvanceObj);
-        this.Bedtransfer.updateValueAndValidity();
-        return;
-      }
+      this.optionsWard = this.WardList.slice();
+      this.filteredOptionsWard = this.Bedtransfer.get('RoomId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterWard(value) : this.WardList.slice()),
+      ); 
+      if(this.selectedAdvanceObj){
+        const ddValue1= this.WardList.filter(item => item.RoomId ==  this.selectedAdvanceObj.WardId);
+        console.log(ddValue1) 
+        this.Bedtransfer.get("RoomId").setValue(ddValue1[0]);
+      } 
     });
-  } 
-  private _filterWard(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.RoomName ? value.RoomName.toLowerCase() : value.toLowerCase();
-      return this.WardList.filter(option => option.RoomName.toLowerCase().includes(filterValue));
-    }
+    this.BedClassList.data =[];
   }
-
-  getBedList(wardObj){
-  this._IpSearchListService.getBedCombo(wardObj.RoomId).subscribe(data => {
-    this.BedList = data;
-  });
-}
-
-
+  getOptionTextWard(option) {
+    return option && option.RoomName ? option.RoomName : '';
+    
+  }
   OnChangeBedList(wardObj) {
-    debugger
-    var vdata={
-      "Id":this.selectedAdvanceObj.WardId
-    }
-    console.log(vdata)
-    this._IpSearchListService.getBedCombo(vdata).subscribe(data => {
+    console.log(wardObj); 
+    this.BedClassList=[];
+    this._IpSearchListService.getBedCombo(wardObj.RoomId).subscribe(data => {
       this.BedList = data;
-      console.log(this.BedList)
+    
       this.optionsBed = this.BedList.slice();
       this.filteredOptionsBed = this.Bedtransfer.get('BedId').valueChanges.pipe(
         startWith(''),
         map(value => value ? this._filterBed(value) : this.BedList.slice()),
       );
-      if (this.BedList) {
-        const ddValue = this.BedList.filter(c => c.BedName == this.selectedAdvanceObj.BedName);
-        this.Bedtransfer.get('BedId').setValue(ddValue[0]); 
-        this.Bedtransfer.updateValueAndValidity();
-        return;
-      }
-    });
-    // this._IpSearchListService.getBedClassCombo(wardObj.RoomId).subscribe(data => {
-    //   this.BedClassList = data;
-    //   this.Bedtransfer.get('ClassId').setValue(this.BedClassList[0]);
-    // })
-
+    }); 
+    this._IpSearchListService.getBedClassCombo(wardObj.RoomId).subscribe(data => {
+      this.BedClassList = data;
+      console.log( this.BedClassList );
+      this.Bedtransfer.get('ClassId').setValue(this.BedClassList[0]);
+    })  
 
   }
-
-
+  getOptionTextBed(option) {
+    return option && option.BedName ? option.BedName : '';
+  }
   onBedChange(value) {
     this.bedObj = value;
   }
@@ -226,20 +164,88 @@ export class BedTransferComponent implements OnInit {
     if (value) {
       const filterValue = value && value.BedName ? value.BedName.toLowerCase() : value.toLowerCase();
       return this.optionsBed.filter(option => option.BedName.toLowerCase().includes(filterValue));
-    }
-
+    } 
   }
-
-
-
-  private _filterClass(value: any): string[] {
+  private _filterWard(value: any): string[] {
     if (value) {
-      const filterValue = value && value.ClassName ? value.ClassName.toLowerCase() : value.toLowerCase();
-      return this.ClassList.filter(option => option.ClassName.toLowerCase().includes(filterValue));
+      const filterValue = value && value.RoomName ? value.RoomName.toLowerCase() : value.toLowerCase();
+      return this.WardList.filter(option => option.RoomName.toLowerCase().includes(filterValue));
     }
   }
 
+  setDropdownObjs() {  
+  
+     const ddValue1= this.WardList.filter(item => item.RoomId ==  this.selectedAdvanceObj.WardId);
+     console.log(ddValue1) 
+     this.Bedtransfer.get("RoomId").setValue(ddValue1[0]);
+ 
+     // this._IpSearchListService.getBedCombo(toSelect).subscribe(data => {
+     //   this.BedList = data;
+     //   const ddValue = this.BedList.filter(c => c.BedId == this.selectedAdvanceObj.BedId);
+     //   this.Bedtransfer.get('BedId').setValue(ddValue[0]);
+     //   this.Bedtransfer.updateValueAndValidity();
+     //   return;
+     // });
+     // this.filteredOptionsBed = this.Bedtransfer.get('BedId').valueChanges.pipe(
+     //   startWith(''),
+     //   map(value => value ? this._filterBed(value) : this.BedList.slice()),
+     // );
+   }
 
+ 
+ 
+
+  ///bed Name list
+  //OnChangeBedList1(wardObj) {
+    // debugger
+    // var vdata={
+    //   "Id":this.selectedAdvanceObj.WardId
+    // }
+    // console.log(vdata)
+    // this._IpSearchListService.getBedCombo(vdata).subscribe(data => {
+    //   this.BedList = data;
+    //   console.log(this.BedList)
+    //   this.optionsBed = this.BedList.slice();
+    //   this.filteredOptionsBed = this.Bedtransfer.get('BedId').valueChanges.pipe(
+    //     startWith(''),
+    //     map(value => value ? this._filterBed(value) : this.BedList.slice()),
+    //   );
+    //   if (this.BedList) {
+    //     const ddValue = this.BedList.filter(c => c.BedName == this.selectedAdvanceObj.BedName);
+    //     this.Bedtransfer.get('BedId').setValue(ddValue[0]); 
+    //     this.Bedtransfer.updateValueAndValidity();
+    //     return;
+    //   }
+    // });
+    // this._IpSearchListService.getBedClassCombo(wardObj.RoomId).subscribe(data => {
+    //   this.BedClassList = data;
+    //   this.Bedtransfer.get('ClassId').setValue(this.BedClassList[0]);
+    // }) 
+  //} 
+  // getDischargePatientList() {
+  //   this._IpSearchListService.getDischargePatientList().subscribe(data => {
+  //     this.dataSource.data = data as Discharge[];
+  //     this.dataSource.sort = this.sort;
+  //     this.dataSource.paginator = this.paginator;
+  //   });
+  // }
+
+  // getDoctorList() {
+  //   this._IpSearchListService.getDoctorMaster1Combo().subscribe(data => { this.DoctorList = data; })
+  // } 
+
+//   getBedList(wardObj){
+//   this._IpSearchListService.getBedCombo(wardObj.RoomId).subscribe(data => {
+//     this.BedList = data;
+//   });
+// } 
+
+  // private _filterClass(value: any): string[] {
+  //   if (value) {
+  //     const filterValue = value && value.ClassName ? value.ClassName.toLowerCase() : value.toLowerCase();
+  //     return this.ClassList.filter(option => option.ClassName.toLowerCase().includes(filterValue));
+  //   }
+  // } 
 
   // getTariffCombo(){
   //   this._IpSearchListService.getTariffCombo().subscribe(data => {
@@ -247,40 +253,18 @@ export class BedTransferComponent implements OnInit {
   //     this.Bedtransfer.get('TariffId').setValue(this.TariffList[0]);
   //   });
   // }
-  getOptionTextWard(option) {
-    return option && option.RoomName ? option.RoomName : '';
-  }
 
-  getOptionTextBed(option) {
-    return option && option.BedName ? option.BedName : '';
-  }
-  @ViewChild('bed') bed: ElementRef;
-  public onEnterward(event): void {
-    if (event.which === 13) {
-
-      this.bed.nativeElement.focus();
-    }
-
-  }
-
-  onClose() {
-    this._IpSearchListService.mySaveForm.reset();
-    this.dialogRef.close();
-  }
-
-  onEdit(row) {
-
+   
+  onEdit(row) { 
     var m_data = {
       "DischargeDate": row.DischargeDate,
       "DischargeTime": row.DischargeTime,
       "DischargeTypeId": row.DischargeTypeId,
-      "DischargedDocId": row.DischargedDocId,
-
+      "DischargedDocId": row.DischargedDocId, 
     }
     console.log(m_data);
     this._IpSearchListService.populateForm(m_data);
-  }
-
+  } 
   onBedtransfer() {
     debugger;
     if ((this.vWardId == '' || this.vWardId == null || this.vWardId == undefined)) {
@@ -351,12 +335,15 @@ export class BedTransferComponent implements OnInit {
       this.isLoading = '';
     });
 
+  } 
+  onClose() {
+    this._IpSearchListService.mySaveForm.reset();
+    this.dialogRef.close();
   }
-
-
-  dateTimeObj: any;
-  getDateTime(dateTimeObj) {
-    console.log('dateTimeObj==', dateTimeObj);
-    this.dateTimeObj = dateTimeObj;
+  @ViewChild('bed') bed: ElementRef;
+  public onEnterward(event): void {
+    if (event.which === 13) { 
+      this.bed.nativeElement.focus();
+    } 
   }
 }
