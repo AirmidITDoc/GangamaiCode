@@ -1,5 +1,4 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-   
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" dynamicTableHeight>
     <mat-toolbar style="height:50px; justify-content: space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
             <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
@@ -57,9 +56,8 @@
 
                         <div fxlayout="row">
                             <div style="width: 100%;">
-
                                 <mat-table #table matSort [dataSource]="DSStoreMasterList"
-                                    [@animateStagger]="{value:'50'}" class="mat-elevation-z8" style="overflow:auto">
+                                    [@animateStagger]="{value:'50'}" style="overflow:auto">
 
                                     <ng-container matColumnDef="StoreId">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
@@ -202,9 +200,9 @@
 
 
 
-                                    <mat-header-row class="accent"
+                                    <mat-header-row class="accent min-width-3000"
                                         *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                                    <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
+                                    <mat-row *matRowDef="let row; columns: displayedColumns;" class="element min-width-3000"
                                         [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                     <mat-footer-row *matFooterRowDef="['loading']"
                                         [ngClass]="{'hide':DSStoreMasterList!=null}"></mat-footer-row>
