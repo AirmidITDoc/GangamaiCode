@@ -32,7 +32,6 @@ export class DoctorMasterService {
             MiddleName: [
                 "",
                 [
-                    Validators.required,
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
                 ],
             ],
@@ -121,7 +120,7 @@ export class DoctorMasterService {
 
     public getDepartmentCombobox() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=RetrieveDepartmentMasterForCombo",
+            "Generic/GetByProc?procName=m_Rtrv_DepartmentListDocMasterForCombo",
             {}
         );
     }
@@ -169,11 +168,10 @@ export class DoctorMasterService {
 
     public getDocDeptwiseList(emp) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_M_DoctorDepartmentDet",
+            "Generic/GetByProc?procName=m_Rtrv_M_DoctorDepartmentDet",
             emp
         );
     }
-
     //  city list
     public getCityList() {
 

@@ -398,15 +398,15 @@ export class NewDoctorComponent implements OnInit {
             var m_data = {
                 doctorId: !this._doctorService.myform.get("DoctorId").value ? "0" : this._doctorService.myform.get("DoctorId").value || "0",
                 prefixID: this._doctorService.myform.get("PrefixID").value.PrefixID,
-                firstName: this._doctorService.myform.get("FirstName").value.trim() || "%",
-                middleName: this._doctorService.myform.get("MiddleName").value || "%",
-                lastName: this._doctorService.myform.get("LastName").value || "%",
+                firstName: this._doctorService.myform.get("FirstName").value.trim() || "",
+                middleName: this._doctorService.myform.get("MiddleName").value.trim() || "",
+                lastName: this._doctorService.myform.get("LastName").value.trim() || "",
                 dateOfBirth: this.registerObj.DateofBirth,
-                address: this._doctorService.myform.get("Address").value || "%",
+                address: this._doctorService.myform.get("Address").value || "",
                 phone: this._doctorService.myform.get("Phone").value || "0",
-                mobile: this._doctorService.myform.get("MobileNo").value || "%",
+                mobile: this._doctorService.myform.get("MobileNo").value || "",
                 genderId: this._doctorService.myform.get("GenderId").value.GenderId || 0,
-                education: this._doctorService.myform.get("Education").value.trim() || "%",
+                education: this._doctorService.myform.get("Education").value.trim() || "",
                 isConsultant: Boolean(JSON.parse(this._doctorService.myform.get("IsConsultant").value)),
                 isRefDoc: Boolean(JSON.parse(this._doctorService.myform.get("IsRefDoc").value)),
                 IsActive: Boolean(JSON.parse(this._doctorService.myform.get("isActive").value)),
@@ -423,9 +423,10 @@ export class NewDoctorComponent implements OnInit {
                 isOnCallDoctor: true,
                 Addedby: this.accountService.currentUserValue.user.id,
                 updatedBy: this.accountService.currentUserValue.user.id,
-                Signature: this.signature,
+                Signature: this.signature ||'',
                 Departments: data2
             };
+            console.log(m_data);
             if (!this._doctorService.myform.get("DoctorId").value) {
                 this._doctorService.doctortMasterInsert(m_data).subscribe((data) => {
                     if (data) {
@@ -442,7 +443,6 @@ export class NewDoctorComponent implements OnInit {
                         this.toastr.success('Record updated Successfully.', 'updated !', {
                             toastClass: 'tostr-tost custom-toast-success',
                         });
-
                     }
                     this.onClose();
                 });
