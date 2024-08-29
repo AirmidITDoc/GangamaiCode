@@ -33,33 +33,20 @@ export class BedTransferComponent implements OnInit {
   isClassIdSelected: boolean = false;
   vWardId: any;
   vBedId: any;
-  vClassId: any;
-
-
-  submitted = false;
- 
+  vClassId: any; 
+  submitted = false; 
   DoctorList: any = [];
   WardList: any = [];
   BedList: any = [];
   bedObj = new Bed({});
   BedClassList: any = [];
-  ClassList: any = [];
-
+  ClassList: any = []; 
   ClassId: any;
   BedId: any;
-  RoomId: any;
-
-
-
-  selectedAdvanceObj: AdmissionPersonlModel;
-
-
-
- 
-  optionsWard: any[] = [];
-  optionsRoomId: any[] = [];
-  optionsBed: any[] = [];
-
+  RoomId: any; 
+  selectedAdvanceObj: AdmissionPersonlModel; 
+  optionsWard: any[] = []; 
+  optionsBed: any[] = []; 
   filteredOptionsWard: Observable<string[]>;
   filteredOptionsBed: Observable<string[]>;
   filteredClass: Observable<string[]>;

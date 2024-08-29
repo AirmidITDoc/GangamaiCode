@@ -99,7 +99,16 @@ export class DischargeSummaryComponent implements OnInit {
   IsNormalDeath:any;
   vOperativeNotes:any;
   vhistory:any;
-  vClinicalFinding:any;
+  vClinicalFinding ="BP : \nP : \nR : \nSPO2 : \n\nRS : \nP/A :\nCVS : \nCNS :"
+  
+  vBp: any;
+  vP: any;
+  vR: any;
+  vSPO2: any;
+  vRS: any;
+  vPA:any;
+  vCVS:any;
+  vCNS:any;  
   dsItemList = new MatTableDataSource<MedicineItemList>();
 
   constructor(public _IpSearchListService: IPSearchListService,
@@ -123,10 +132,8 @@ export class DischargeSummaryComponent implements OnInit {
       this.registerObj = this.advanceDataStored.storage;
       this.vAdmissionId = this.selectedAdvanceObj.AdmissionID;
       console.log(this.registerObj);
-      this.getDischargeSummaryData(this.registerObj)
-      
-    }
-   
+      this.getDischargeSummaryData(this.registerObj) 
+    } 
   }
 
   ngOnInit(): void {
@@ -167,7 +174,7 @@ export class DischargeSummaryComponent implements OnInit {
  history:'',            
  Diagnosis:'',
  Investigation:'',
- ClinicalFinding:'',
+ ClinicalFinding:' ',
  OpertiveNotes:'',
  TreatmentGiven:'',
  TreatmentAdvisedAfterDischarge:'',
@@ -527,8 +534,10 @@ bp:any=1000;
     this.DischargesumForm.reset();
     this._matDialog.closeAll();
   }
+  ClinicalFInding:any;
 OnSave(){
   debugger
+ 
   let DoctorName1 = 0;
   if(this.DischargesumForm.get("DischargeDoctor1").value)
     DoctorName1 = this.DischargesumForm.get("DischargeDoctor1").value.DoctorID;

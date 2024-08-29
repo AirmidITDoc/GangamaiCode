@@ -581,7 +581,7 @@ export class IPSearchListComponent implements OnInit {
         });
       dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed - Insert Action', result);
-        // this.getAdmittedPatientList();
+         this.getAdmittedPatientList();
       });
     } else if (m == "Medical CasePaper") {
       console.log(" This is for Case Paper pop : " + m);

@@ -149,9 +149,9 @@
                                                 (click)="Bedtransfer.get('RoomId').setValue(''); isWardSelected = false;">search</mat-icon>
                                         </span>
                                         <mat-autocomplete #autoWard="matAutocomplete" [displayWith]="getOptionTextWard"
-                                        >
+                                        (optionSelected)='OnChangeBedList($event.option.value)'>
                                             <mat-option *ngFor="let option of filteredOptionsWard | async" [value]="option"
-                                            (onSelectionChange)="OnChangeBedList(option)">
+                                         >
                                                 {{option.RoomName}}
                                             </mat-option>
                                         </mat-autocomplete>
