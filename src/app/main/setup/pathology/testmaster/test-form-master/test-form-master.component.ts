@@ -33,6 +33,7 @@ export class TestFormMasterComponent implements OnInit {
     displayedColumns4: string[] = ['ParameterName'];
     displayedColumns5: string[] = ['TemplateName', 'Action'];
 
+    ParameterName:any='';
     Parametercmb: any = [];
     paraselect: any = ["new"];
     CategorycmbList: any = [];
@@ -45,8 +46,10 @@ export class TestFormMasterComponent implements OnInit {
     DSTestListtemp = new MatTableDataSource<TestList>();
     
     subTestList = new MatTableDataSource<TestList>();
+    DSsubTestListtemp= new MatTableDataSource<TestList>();
     dsTemparoryList = new MatTableDataSource<TestList>();
     DSTestMasterList = new MatTableDataSource<TestMaster>();
+
 
     Templatetdatasource = new MatTableDataSource<TemplatedetailList>();
     paramterList: any = new MatTableDataSource<TestList>();
@@ -214,18 +217,13 @@ export class TestFormMasterComponent implements OnInit {
 
 
     onSearchClear() {
-        this._TestService.myformSearch.reset({
-            TestNameSearch: "",
-            IsDeletedSearch: "2",
-
-        });
-
-        this._TestService.myform.reset();
+      
+        this.ParameterName=""
         this.getParameterNameCombobox();
     }
     onSearch() {
         debugger
-        if (this._TestService.myform.get("IsSubTest").value == !this.isChecked)
+        if (this._TestService.myform.get("IsSubTest").value != true)
             this.getParameterNameCombobox();
         else
             this.getSubTestMasterList();
@@ -254,15 +252,31 @@ export class TestFormMasterComponent implements OnInit {
     }
 
     getParameterNameCombobox() {
-        this._TestService.getParameterMasterCombo().subscribe((data) => {
+        debugger
+        var m_dat = {
+            ParameterName: this._TestService.myform.get('ParameterNameSearch').value + "%" || '%'
+        }
+        this._TestService.getParameterMasterCombo(m_dat).subscribe((data) => {
             this.paramterList.data = data;
             this.Parametercmb = data;
         });
-        // console.log(this.Parametercmb);
+        console.log(this.Parametercmb);
     }
 
 
 
+    getSubTestMasterList() {
+        
+        var m_dat = {
+            TestName: this._TestService.myform.get('ParameterNameSearch').value + "%" || '%'
+        }
+        this._TestService.getNewSubTestList(m_dat).subscribe((Menu) => {
+            this.subTestList.data = Menu as TestList[];
+            this.paramterList.data = Menu;
+        });
+console.log( this.subTestList.data )
+       
+    }
     getCategoryNameCombobox() {
 
         this._TestService.getCategoryMasterCombo().subscribe((data) => {
@@ -339,34 +353,6 @@ export class TestFormMasterComponent implements OnInit {
 
 
 
-    getSubTestMasterList() {
-        debugger
-
-        var m_dat = {
-            TestName: this._TestService.myform.get('ParameterNameSearch').value + "%" || '%'
-        }
-        this._TestService.getNewSubTestList(m_dat).subscribe((Menu) => {
-            this.subTestList.data = Menu as TestList[];
-
-        });
-
-        if (this.subTestList.data.length > 0) {
-            this.paramterList.data = [];
-            debugger
-            this.paramterList.data = this.subTestList.data;
-
-            // this.subTestList.data.forEach((element) => {
-            //    let i=0;
-            //     debugger
-            //     this.paramterList.data[i]["ParameterName"]=element.TestName
-            //     i++;
-            // });
-        }
-
-        console.log(this.subTestList.data)
-        console.log(this.paramterList.data)
-
-    }
 
 
 
@@ -415,23 +401,19 @@ export class TestFormMasterComponent implements OnInit {
 
 
     addParameter(Id) {
+        debugger
+        this.DSTestListtemp.data=[];
         let SelectQuery = "select * from lvwPathParaFill where ParameterID = " + Id
         console.log(SelectQuery)
         this._TestService.getquerydata(SelectQuery).subscribe(Visit => {
-            this.DSTestList.data = Visit as TestList[];
-
+          this.DSTestListtemp.data = Visit as TestList[];
+            console.log(this.DSTestListtemp.data)
+            if (this.DSTestListtemp.data.length > 0) {
+                debugger
+                this.addparameterdata();
+            }
         });
-
-        // if (this.DSTestListtemp.data.length > 0) {
-        //     this.ChargeList.push(
-        //         {
-        //             ParameterID: this.DSTestListtemp.data["ParameterID"],
-        //             ParameterName: this.DSTestListtemp.data["ParameterName"],
-        //         });
-        //     this.DSTestList.data = this.ChargeList;
-        //     console.log(this.DSTestList.data)
-
-        // }
+            
 
         let temp = this.paramterList.data;
         this.paramterList.data = []
@@ -439,47 +421,66 @@ export class TestFormMasterComponent implements OnInit {
         this.paramterList.data = temp;
     }
 
+    addparameterdata(){
+
+            this.ChargeList= this.DSTestList.data;
+            this.ChargeList.push(
+                {
+                    ParameterID: this.DSTestListtemp.data[0]["ParameterID"],
+                    ParameterName: this.DSTestListtemp.data[0]["ParameterName"],
+                });
+            this.DSTestList.data = this.ChargeList;
+            console.log(this.DSTestList.data)
+
+            }
+    
 
     addSubTest(Id) {
         debugger
         let SelectQuery = "select * from lvwPathSubTestFill where TestId = " + Id
         console.log(SelectQuery)
         this._TestService.getquerydata(SelectQuery).subscribe(Visit => {
-            this.DSTestListtemp.data = Visit as TestList[];
-            console.log(this.DSTestList.data)
+            this.DSsubTestListtemp.data = Visit as TestList[];
+            console.log(this.DSsubTestListtemp.data)
+            if (this.DSsubTestListtemp.data.length > 0) {
+                debugger
+                this.addsubtestdata();
+            }
         });
 
-        if (this.DSTestListtemp.data.length > 0) {
-            this.ChargeList=[];
-            this.DSTestListtemp.data.forEach((element) => {
-            
-                debugger
-                this.ChargeList.push(
-                    {
-                        ParameterID: element.ParameterId,
-                        ParameterName: element.ParameterName,
-                        SubTestID:element.TestId
-                    });
-                this.DSTestList.data = this.ChargeList;
-                console.log(this.DSTestList.data)
-            });
-           
-           
+      
             let temp = this.paramterList.data;
             this.paramterList.data = []
             temp.splice(temp.findIndex(item => item.ParameterName === this.DSTestList.data["ParameterName"]), 1);
             this.paramterList.data = temp;
-        }
-
+        
         console.log(this.DSTestList.data)
     }
+
+    addsubtestdata(){
+
+        this.ChargeList=this.DSTestList.data;
+        this.DSsubTestListtemp.data.forEach((element) => {
+        
+            debugger
+            this.ChargeList.push(
+                {
+                    ParameterID: element.ParameterId,
+                    ParameterName: element.ParameterName,
+                    SubTestID:element.TestId
+                });
+            this.DSTestList.data = this.ChargeList;
+            console.log(this.DSTestList.data)
+        });
+    }
+
         onAdd(event) {
             console.log(event)
             debugger
-            if (this._TestService.is_subtest) {
+            if (this._TestService.myform.get("IsSubTest").value) {
                 this.addSubTest(event.TestId);
 
-            } else if(this._TestService.is_Test) {
+            } else if(!this._TestService.myform.get("IsSubTest").value) {
                 this.addParameter(event.ParameterID);
             }
 
