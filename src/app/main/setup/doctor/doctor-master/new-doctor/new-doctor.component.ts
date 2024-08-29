@@ -95,8 +95,8 @@ export class NewDoctorComponent implements OnInit {
         // this.getGendorMasterList();
         this.getDoctortypeNameCombobox();
         this.getDepartmentList();
-
         if (this.data) {
+            debugger
             if (this.data.registerObj.DateofBirth) {
                 const todayDate = new Date();
                 const dob = new Date(this.data.registerObj.DateofBirth);
@@ -392,7 +392,7 @@ export class NewDoctorComponent implements OnInit {
             this.selectedItems.forEach((element) => {
                 let DocInsertObj = {};
                 DocInsertObj['DepartmentId'] = element.DepartmentId
-                DocInsertObj['DoctorId'] = 0;
+                DocInsertObj['DoctorId'] = !this._doctorService.myform.get("DoctorId").value ? "0" : this._doctorService.myform.get("DoctorId").value || "0";
                 data2.push(DocInsertObj);
             });
             var m_data = {
@@ -426,7 +426,6 @@ export class NewDoctorComponent implements OnInit {
                 Signature: this.signature ||'',
                 Departments: data2
             };
-            console.log(m_data);
             if (!this._doctorService.myform.get("DoctorId").value) {
                 this._doctorService.doctortMasterInsert(m_data).subscribe((data) => {
                     if (data) {
@@ -473,6 +472,22 @@ export class NewDoctorComponent implements OnInit {
             this._doctorService.myform.get('DateOfBirth').setValue(DateOfBirth);
         }
 
+    }
+    onChangeRegDate(RegDate) {
+        if (RegDate) {
+            this.registerObj.RegDate = new Date(RegDate);
+        }
+        else{
+            this.registerObj.RegDate =null;
+        }
+    }
+    onChangeMahRegDate(MahRegDate) {
+        if (MahRegDate) {
+            this.registerObj.MahRegDate = new Date(MahRegDate);
+        }
+        else{
+            this.registerObj.MahRegDate =null;
+        }
     }
 
     onChangeGenderList(prefixObj) {

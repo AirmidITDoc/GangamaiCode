@@ -210,6 +210,7 @@
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Reg date</mat-label>
                                             <input name="RegDate" matInput [matDatepicker]="picker1"
+                                            (dateChange)="onChangeRegDate($event.value)"
                                                 formControllName="RegDate" [value]="registerObj.RegDate">
                                             <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                                             <mat-datepicker #picker1></mat-datepicker>
@@ -241,6 +242,7 @@
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>MahReg date</mat-label>
                                             <input name="MahRegDate" matInput [matDatepicker]="picker2"
+                                            (dateChange)="onChangeMahRegDate($event.value)"
                                                 formControllName="MahRegDate" [value]="registerObj.MahRegDate">
                                             <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                                             <mat-datepicker #picker2></mat-datepicker>
