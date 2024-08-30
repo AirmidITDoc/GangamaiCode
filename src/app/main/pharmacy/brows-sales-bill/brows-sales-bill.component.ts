@@ -389,18 +389,18 @@ export class BrowsSalesBillComponent implements OnInit {
       From_Dt: this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       To_Dt: this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       Reg_No: this._BrowsSalesBillService.userForm.get('RegNo').value || 0,
-      SalesNo: this._BrowsSalesBillService.userForm.get('SalesNo').value || 0,
+      SalesNo: this._BrowsSalesBillService.userForm.get('SalesNo').value || '',
       OP_IP_Type: this._BrowsSalesBillService.userForm.get('OP_IP_Type').value,
       StoreId:  this._loggedService.currentUserValue.user.storeId || 0,
       IPNo: this._BrowsSalesBillService.userForm.get('IPNo').value || 0 
     }
-    //console.log(vdata); 
+   // console.log(vdata); 
     setTimeout(() => {
     this.sIsLoading = 'loading-data';
       this.sIsLoading = '';
       this._BrowsSalesBillService.getSalesList(vdata).subscribe(data => { 
         this.dssaleList1.data = data as SaleList[];
-        //console.log(this.dssaleList1.data);
+       // console.log(this.dssaleList1.data);
         this.dssaleList1.sort = this.sort;
         this.dssaleList1.paginator = this.paginator; 
         this.sIsLoading = this.dssaleList1.data.length == 0 ? 'no-data' : '';
@@ -572,7 +572,7 @@ export class BrowsSalesBillComponent implements OnInit {
 
 
   getPrint(el) {
-    debugger
+    //debugger
 
     var D_data = {
       "SalesID": el.SalesId,// 
@@ -592,7 +592,7 @@ export class BrowsSalesBillComponent implements OnInit {
 
 
   @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
-    debugger
+    //debugger
 
 
     if (event.keyCode === 114) {
@@ -620,7 +620,7 @@ export class BrowsSalesBillComponent implements OnInit {
 
 
   getPrint2(el) {
-    debugger
+    //debugger
     if (el.PaidType=='Credit' && el.IsRefundFlag==false) {
       this.type = "Credit"
       this.Creditflag = true;
@@ -661,7 +661,7 @@ export class BrowsSalesBillComponent implements OnInit {
     );
   }
   viewSalesPdf(el) {
-    debugger
+   // debugger
     this.sIsLoading = 'loading-data';
     setTimeout(() => {
       // this.SpinLoading =true;
@@ -1273,7 +1273,7 @@ export class BrowsSalesBillComponent implements OnInit {
   }
 
   getWhatsappshareSalesReturn(el) {
-    debugger
+   // debugger
     var m_data = {
       "insertWhatsappsmsInfo": {
         "mobileNumber": el.RegNo,
@@ -1311,7 +1311,7 @@ export class BrowsSalesBillComponent implements OnInit {
 
 
   expPrint(el, xls) {
-    debugger
+   // debugger
     var D_data = {
       "SalesID": el.SalesId,// 
       "OP_IP_Type": el.OP_IP_Type
@@ -1333,7 +1333,7 @@ export class BrowsSalesBillComponent implements OnInit {
   }
 
   onExport(reportPrintObjList, el, exprtType) {
-    debugger
+   // debugger
     // setTimeout(() => {
     //   this.expPrint(el);
     // }, 1000);
@@ -1484,7 +1484,7 @@ this.viewSalesstatement(contact);
 
  viewSalesstatement(el) {
   console.log(el) 
-  debugger
+//  debugger
   let StoreId= this._loggedService.currentUserValue.user.storeId || 0
     this.sIsLoading = 'loading-data';
     setTimeout(() => {

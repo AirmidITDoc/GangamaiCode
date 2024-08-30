@@ -504,7 +504,10 @@ public getAdmittedPatientList(employee) {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Admtd_Ptnt_Dtls", employee)
 }  
 
-public getAdmittedPatientList_1(Param) {
+public getAdmittedPatientList_1(Param,loader = true){ 
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.post("Generic/GetDataSetByProc?procName=m_rtrv_Admtd_Ptnt_Dtls", Param);
 }
 
@@ -556,9 +559,12 @@ public getDischaregDoctor3Combo() {
   }
 
    //Ward Combobox List
-   public getWardCombo() {
+   public getWardCombo(loader = true){ 
+    if (loader) {
+      this._loaderService.show();
+  }
      return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RoomMasterForCombo", {})
-   }Retrieve_RoomMasterForCombo
+   }//Retrieve_RoomMasterForCombo
   
    
   //Bed Combobox List

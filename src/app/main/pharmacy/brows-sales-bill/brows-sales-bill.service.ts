@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { LoaderService } from 'app/core/components/loader/loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,8 @@ export class BrowsSalesBillService {
 
   constructor(
     public _httpClient: HttpClient,
-    private _formBuilder: FormBuilder
+    private _formBuilder: FormBuilder,
+    private _loaderService: LoaderService,
   ) {
     this.userForm = this.SearchFilter();
     this.formReturn = this.SearchFilterReturn();
@@ -57,7 +59,10 @@ export class BrowsSalesBillService {
   }
 
 
-  public getSalesList(Param) {
+  public getSalesList(Param,loader = true){ 
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_SalesBillList", Param);
   }
   public getPdfSales(SalesId, OP_IP_Type) {
@@ -71,7 +76,10 @@ export class BrowsSalesBillService {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional", Param);
   }
 
-  public getSalesReturnList(Param) {
+  public getSalesReturnList(Param,loader = true){ 
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_SalesReturnBillList", Param);
   }
   public getSalesReturnDetList(Param) {

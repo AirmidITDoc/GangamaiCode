@@ -80,7 +80,7 @@
 
                                             <mat-form-field appearance="outline">
                                                 <mat-label>Sales No</mat-label>
-                                                <input name="LastName" formControlName="SalesNo" matInput
+                                                <input name="SalesNo" formControlName="SalesNo" matInput
                                                     (keyup)="getSalesList()">
                                             </mat-form-field>
 
@@ -152,9 +152,9 @@
 
                                             <mat-table #table matSort [dataSource]="dssaleList1" [@animateStagger]="{value:'50'}">
                                                 <ng-container matColumnDef="OP_Ip_Type" sticky>
-                                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-100">
+                                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-60">
                                                     </mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" class="w-100">
+                                                    <mat-cell *matCellDef="let contact" class="w-60">
                                                         <mat-icon *ngIf="contact.OP_IP_Type==1" matTooltip="IP" class="pill green-600 s-16">circle</mat-icon>
                                                         <mat-icon *ngIf="contact.OP_IP_Type==0" matTooltip="OP" class="pill orange s-16">circle</mat-icon>
                                                         <mat-icon *ngIf="contact.OP_IP_Type==2" matTooltip="External" class="pill blue s-16">circle</mat-icon>
@@ -200,18 +200,18 @@
                                                 </ng-container>
                                             
                                                 <ng-container matColumnDef="RegNo" sticky>
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">UHID No
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-90">UHID No
                                                     </mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-90">
                                                         {{contact.RegNo}}
                                                     </mat-cell>
                                                 </ng-container>
                                             
                                                 <ng-container matColumnDef="PatientName" sticky>
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-160">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-190">
                                                         Patient Name
                                                     </mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-160">
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-190">
                                                         {{contact.PatientName}}
                                                     </mat-cell>
                                                 </ng-container>
@@ -513,21 +513,25 @@
 
                                             <mat-form-field appearance="outline">
                                                 <mat-label>Search RegNo</mat-label>
-                                                <input name="RegNo" formControlName="RegNo" matInput>
+                                                <input name="RegNo" formControlName="RegNo" matInput
+                                                (keyup)="getSalesReturnList()">
                                             </mat-form-field>
                                             <mat-form-field appearance="outline">
                                                 <mat-label>First Name</mat-label>
-                                                <input name="FirstName" formControlName="F_Name" matInput>
+                                                <input name="FirstName" formControlName="F_Name" matInput
+                                                (keyup)="getSalesReturnList()">
                                             </mat-form-field>
 
                                             <mat-form-field appearance="outline">
                                                 <mat-label>Last Name</mat-label>
-                                                <input name="LastName" formControlName="L_Name" matInput>
+                                                <input name="LastName" formControlName="L_Name" matInput
+                                                (keyup)="getSalesReturnList()">
                                             </mat-form-field>
 
                                             <mat-form-field appearance="outline">
                                                 <mat-label>Sales No</mat-label>
-                                                <input name="LastName" formControlName="SalesNo" matInput>
+                                                <input name="LastName" formControlName="SalesNo" matInput
+                                                (keyup)="getSalesReturnList()">
                                             </mat-form-field>
 
 
