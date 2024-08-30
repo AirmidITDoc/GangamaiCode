@@ -94,7 +94,6 @@ export class NewDoctorComponent implements OnInit {
         this.getPrefixList();
         // this.getGendorMasterList();
         this.getDoctortypeNameCombobox();
-        this.getDepartmentList();
         if (this.data) {
             debugger
             if (this.data.registerObj.DateofBirth) {
@@ -107,16 +106,16 @@ export class NewDoctorComponent implements OnInit {
             }
             this.registerObj = this.data.registerObj;
             this._doctorService.getSignature(this.registerObj.Signature).subscribe(data => {
-                this.sanitizeImagePreview=data["data"] as string;
+                this.sanitizeImagePreview = data["data"] as string;
                 this.registerObj.Signature = data["data"] as string;
             });
-            this.getDocDeptList();
         }
         else {
             this._doctorService.myform.reset();
             this._doctorService.myform.get('isActive').setValue(1);
             this._doctorService.myform.get('IsConsultant').setValue(1);
         }
+        this.getDepartmentList();
 
         this.filteredOptionsPrefix = this._doctorService.myform.get('PrefixID').valueChanges.pipe(
             startWith(''),
@@ -245,6 +244,12 @@ export class NewDoctorComponent implements OnInit {
         }
         this._doctorService.getDocDeptwiseList(m_data).subscribe(data => {
             this.selectedItems = data as any[];
+            debugger
+            this.selectedItems.forEach((item: any) => {
+                var itm = this.DepartmentcmbList.find(x => x.DepartmentId == item.DepartmentId);
+                if (itm)
+                    itm.selected = true;
+            });
         },
             error => {
                 // this.sIsLoading = '';
@@ -347,9 +352,12 @@ export class NewDoctorComponent implements OnInit {
 
 
     getDepartmentList() {
+        let that = this;
         this._doctorService.getDepartmentCombobox().subscribe(data => {
             // data.forEach((obj, i) => obj.selected = false)
             this.DepartmentcmbList = data;
+            if (that.data)
+                this.getDocDeptList();
             this.optionsDep = this.DepartmentcmbList.slice();
             this.filteredOptionsDep = this._doctorService.myform.get('Departmentid').valueChanges.pipe(
                 startWith(''),
@@ -423,7 +431,7 @@ export class NewDoctorComponent implements OnInit {
                 isOnCallDoctor: true,
                 Addedby: this.accountService.currentUserValue.user.id,
                 updatedBy: this.accountService.currentUserValue.user.id,
-                Signature: this.signature ||'',
+                Signature: this.signature || '',
                 Departments: data2
             };
             if (!this._doctorService.myform.get("DoctorId").value) {
@@ -477,16 +485,16 @@ export class NewDoctorComponent implements OnInit {
         if (RegDate) {
             this.registerObj.RegDate = new Date(RegDate);
         }
-        else{
-            this.registerObj.RegDate =null;
+        else {
+            this.registerObj.RegDate = null;
         }
     }
     onChangeMahRegDate(MahRegDate) {
         if (MahRegDate) {
             this.registerObj.MahRegDate = new Date(MahRegDate);
         }
-        else{
-            this.registerObj.MahRegDate =null;
+        else {
+            this.registerObj.MahRegDate = null;
         }
     }
 
