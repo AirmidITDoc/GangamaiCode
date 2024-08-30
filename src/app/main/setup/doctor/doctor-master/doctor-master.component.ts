@@ -145,6 +145,7 @@ export class DoctorMasterComponent implements OnInit {
     }
 
     onEdit(row) {
+        console.log(row)
         this._doctorService.populateForm(row);
         const dialogRef = this._matDialog.open(
             NewDoctorComponent,
@@ -239,9 +240,11 @@ export class DoctorMaster {
     PassportNo: string;
     esino: string;
     REGNO: string;
-    RegDate: Date;
+    RegDate: any;
+    RegDate1: any;
     mahRegNo: string;
-    MahRegDate: Date;
+    MahRegDate: any;
+    MahRegDate1: any;
     UpdatedBy: number;
     RefDocHospitalName: string;
     AddedBy: String;
@@ -258,6 +261,7 @@ export class DoctorMaster {
     Education:any;
     ESINO:any;
     Signature:string;
+
     /**
      * Constructor
      *
@@ -280,8 +284,8 @@ export class DoctorMaster {
             this.Mobile = DoctorMaster.Mobile || "";
             this.GenderId = DoctorMaster.GenderId || "";
             this.education = DoctorMaster.education || "";
-            this.IsConsultant = DoctorMaster.IsConsultant || "true";
-            this.IsRefDoc = DoctorMaster.IsRefDoc || "false";
+            this.IsConsultant = DoctorMaster.IsConsultant || 1;
+            this.IsRefDoc = DoctorMaster.IsRefDoc || 0;
             this.IsDeleted = DoctorMaster.IsDeleted || "false";
             this.DoctorTypeId = DoctorMaster.DoctorTypeId || "";
             this.Age = DoctorMaster.Age || "";
@@ -291,8 +295,10 @@ export class DoctorMaster {
             this.PassportNo = DoctorMaster.PassportNo || "";
             this.esino = DoctorMaster.esino || "";
             this.RegDate = DoctorMaster.RegDate || this.CurrentDate;
+            this.RegDate1 = DoctorMaster.RegDate1 || this.CurrentDate;
             this.Education = DoctorMaster.Education || "";
             this.MahRegDate = DoctorMaster.MahRegDate || this.CurrentDate;
+            this.MahRegDate1 = DoctorMaster.MahRegDate1 || this.CurrentDate;
             this.UpdatedBy = DoctorMaster.UpdatedBy || "";
             this.AddedBy = DoctorMaster.AddedBy || "";
             this.IsActive = DoctorMaster.IsActive || 1;
@@ -305,6 +311,7 @@ export class DoctorMaster {
             this.isInHouseDoctor= DoctorMaster.isInHouseDoctor || "";
             this.ESINO= DoctorMaster.ESINO || "";
             this.Signature=DoctorMaster.Signature||"";
+          
         }
     }
 }

@@ -43,7 +43,7 @@ export class ParametermasterService {
             ],
             UnitId: [""],
             UnitName: [""],
-            IsNumeric: [""],
+            IsNumeric: ["1"],
             IsDeleted: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],

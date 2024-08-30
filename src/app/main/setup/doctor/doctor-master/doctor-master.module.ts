@@ -20,7 +20,7 @@ import { MatRadioModule } from "@angular/material/radio";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { FuseSharedModule } from "@fuse/shared.module";
 import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
-import { CommonModule } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { MatCardModule } from "@angular/material/card";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
@@ -34,6 +34,7 @@ import { DoctorMasterService } from "./doctor-master.service";
 import { SignatureViewComponent } from "./signature-view/signature-view.component";
 import { NgxSignaturePadModule } from "@o.krucheniuk/ngx-signature-pad";
 import { MatChipsModule } from "@angular/material/chips";
+import { MatButtonToggleModule } from "@angular/material/button-toggle";
 
 const routes: Routes = [
     {
@@ -75,9 +76,11 @@ const routes: Routes = [
         MatProgressSpinnerModule,
         SharedModule,
         NgxMatSelectSearchModule,
-        NgxSignaturePadModule
+        NgxSignaturePadModule,
+        MatButtonToggleModule
+        
     ],
-    providers: [DoctorMasterService],
+    providers: [DoctorMasterService,DatePipe],
     entryComponents: [DoctorMasterComponent],
 })
 export class DoctorMasterModule { }

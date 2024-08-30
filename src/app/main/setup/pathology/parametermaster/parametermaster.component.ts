@@ -181,7 +181,7 @@ export class ParametermasterComponent implements OnInit {
             this._ParameterService.populateForm(m_data);
             const dialogRef = this._matDialog.open(ParameterFormMasterComponent, {
             maxWidth: "75vw",
-            maxHeight: "98vh",
+            maxHeight: "95vh",
             width: "100%",
             height: "100%",
             data : {
@@ -200,7 +200,7 @@ export class ParametermasterComponent implements OnInit {
 
         const dialogRef = this._matDialog.open(ParameterFormMasterComponent, {
             maxWidth: "70vw",
-            maxHeight: "80vh",
+            maxHeight: "95vh",
             width: "100%",
             height: "100%",
         });
