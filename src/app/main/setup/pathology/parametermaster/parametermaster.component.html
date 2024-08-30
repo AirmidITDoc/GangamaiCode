@@ -139,10 +139,10 @@
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxShow.gt-sm>
                                                 <!-- {{element.IsNumericParameter}} -->
-                                                <mat-icon *ngIf="element.IsNumericParameter== 1" matTooltip="IsNumeric">
+                                                <mat-icon *ngIf="element.IsNumericParameter== 1" title="IsNumeric">
                                                     <img width="20px" height="20px" src="assets/images/logos/radiology.png">
                                                 </mat-icon>
-                                                <mat-icon *ngIf="element.IsNumericParameter== 0" matTooltip="IsDescriptive">
+                                                <mat-icon *ngIf="element.IsNumericParameter== 0" title="IsDescriptive">
                                                     <img width="20px" height="20px" src="assets/images/logos/pathology.png">  
                                                 </mat-icon>
                                             </mat-cell>

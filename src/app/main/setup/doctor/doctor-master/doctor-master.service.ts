@@ -22,26 +22,24 @@ export class DoctorMasterService {
             DoctorId: [""],
             PrefixID: ["", Validators.required],
             PrefixName: [""],
-            FirstName: [
-                "",
-                [
-                    Validators.required,
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
-                ],
-            ],
-            MiddleName: [
-                "",
-                [
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
-                ],
-            ],
-            LastName: [
-                "",
-                [
-                    Validators.required,
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
-                ],
-            ],
+            FirstName: ['', [
+                Validators.required,
+                Validators.maxLength(50),
+                // Validators.pattern("^[a-zA-Z._ -]*$"),
+                Validators.pattern('^[a-zA-Z () ]*$')
+            ]],
+            MiddleName: ['', [
+                Validators.required,
+                Validators.maxLength(50),
+                // Validators.pattern("^[a-zA-Z._ -]*$"),
+                Validators.pattern('^[a-zA-Z () ]*$')
+            ]],
+            LastName:['', [
+                Validators.required,
+                Validators.maxLength(50),
+                // Validators.pattern("^[a-zA-Z._ -]*$"),
+                Validators.pattern('^[a-zA-Z () ]*$')
+            ]],
             DateOfBirth: [{ value: new Date() }],
             Address: [""],
             Phone: [
@@ -65,16 +63,40 @@ export class DoctorMasterService {
             GenderId: ["", Validators.required],
             GenderName: [""],
             Education: ["", Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")],
-            IsConsultant: ['0'],
-            IsRefDoc: ['0'],
+            IsConsultant: ["1"],
+            IsRefDoc: ["0"],
             isActive: ['1'],
             DoctorTypeId: [""],
             DoctorType: [""],
             PassportNo: [""],
-            ESINO: [""],
-            RegNo: [""],
+            ESINO: [
+                "",
+                [
+                    Validators.required,
+                    //Validators.pattern("'^[a-zA-Z0-9]*$'"),
+                    Validators.minLength(10),
+                    Validators.maxLength(10),
+                ],
+            ],
+            RegNo: [
+                "",
+                [
+                    Validators.required,
+                  //  Validators.pattern("'^[a-zA-Z0-9]*$'"),
+                    Validators.minLength(10),
+                    Validators.maxLength(10),
+                ],
+            ],
             RegDate: [{ value: new Date() }],
-            MahRegNo: [""],
+            MahRegNo: [
+                "",
+                [
+                    Validators.required,
+                  //  Validators.pattern("'^[a-zA-Z0-9]*$'"),
+                    Validators.minLength(10),
+                    Validators.maxLength(10),
+                ],
+            ],
             MahRegDate: [{ value: new Date() }],
             RefDocHospitalName: [
                 "",
@@ -87,7 +109,10 @@ export class DoctorMasterService {
             AddedByName: [""],
             Pancardno: [""],
             AadharCardNo: [""],
-
+            AgeYear:[""],
+            AgeMonth:[""],
+            AgeDay:[""],
+            CityId:[""]
         });
     }
 

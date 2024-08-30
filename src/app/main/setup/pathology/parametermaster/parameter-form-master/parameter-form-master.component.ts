@@ -78,7 +78,7 @@ export class ParameterFormMasterComponent implements OnInit {
         
         this.selectedItems = [];
         this.dsParameterAgeList.data = [];
-
+        // this._ParameterService.is_numeric = true;
         this.getunitNameCombobox();
         this.getGenderNameCombobox();
         this.getDscriptiveMasterList();
@@ -86,7 +86,8 @@ export class ParameterFormMasterComponent implements OnInit {
         if (this.data) {
             this.getUnitNameCombobox();
             this.registerObj = this.data.registerObj;
-
+            debugger
+            // this._ParameterService.myform.get("IsNumeric").setValue(this.registerObj.IsNumericParameter == 1? 1: 2);
         }
         console.log(this.data)
         if (this._ParameterService.myform.get("ParameterID").value) {
@@ -343,7 +344,7 @@ export class ParameterFormMasterComponent implements OnInit {
                 addedby: this.accountService.currentUserValue.user.id || 1,
                 ageType: "%",
                 minAge: 0,
-                IsDeleted:1,
+                IsDeleted:this._ParameterService.myform.get("IsDeleted").value ||1,
                 maxAge: 0
             };
             this.dsParameterAgeList.data.forEach(element => {
@@ -352,7 +353,7 @@ export class ParameterFormMasterComponent implements OnInit {
                 c['minValue'] = element.MinValue;
                 c['minAge'] = +element.MinAge;
                 c['maxAge'] = +element.MaxAge;
-                c['maxValue'] = element.MaxValue;
+                c['MaxValue'] = element.MaxValue;
                 c['ageType'] = element.AgeType;
                 c['IsDeleted'] = element.IsDeleted;
               numeric_info.push(c)
@@ -369,7 +370,7 @@ export class ParameterFormMasterComponent implements OnInit {
             formula: this._ParameterService.myform.get("Formula").value || "%",
             unitId: this._ParameterService.myform.get("UnitId").value.UnitId || 0,
             isNumeric: this._ParameterService.is_numeric,
-            isDeleted:1,// Boolean(JSON.parse(this._ParameterService.myform.get("IsDeleted").value)),
+            isDeleted:Boolean(JSON.parse(this._ParameterService.myform.get("IsDeleted").value)),
             parameterID: this._ParameterService.myform.get("ParameterID").value || 0,
             isPrintDisSummary: Boolean(JSON.parse(this._ParameterService.myform.get("IsPrintDisSummary").value))
         }

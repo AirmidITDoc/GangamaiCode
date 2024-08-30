@@ -67,6 +67,7 @@ export class ConfigSettingParams {
     SalesCounterId:number;
     SalesReturnCounterId:number;
     SalesReceiptCounterID:number;
+    
  /**
      * Constructor
      *
