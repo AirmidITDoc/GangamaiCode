@@ -670,9 +670,29 @@ export class NewCasepaperComponent implements OnInit {
 
   createForm() {
     return this.formBuilder.group({
+      LetteHeadRadio:['NormalHead'],
+      LangaugeRadio:['English'],
+      Height: '',
+      Weight: '',
+      BMI: '',
+      BSL: '',
+      SpO2: ['', [
+        Validators.required,
+      ]],
+      Pulse: ['', [
+        Validators.required,
+      ]],
+      BP:['', [
+        Validators.required,
+      ]],
+      Temp: ['', [
+        Validators.required,
+      ]],
+      ChiefComplaint: '',
+
+
       historyContoller: '',
       PastHistoryId: '',
-      ChiefComplaint: '',
       DiagnosisId: '',
       regNoController: '',
       patientController: '',
@@ -689,38 +709,22 @@ export class NewCasepaperComponent implements OnInit {
       PastHistoryDescr: '',
       ComplaintName: '',
       Examination: '',
-      BP:['', [
-        Validators.required,
-      ]],
-      SpO2: ['', [
-        Validators.required,
-      ]],
       ConsultantDocName: '',
-      BSL: '',
-      BMI: '',
       CasePaperID: '0',
       Complaint: '',
       Diagnosis: '',
       DocName: '',
       Finding: '',
-      Height: '',
       Investigations: '',
       PastHistory: '',
       PatientName: '',
       PersonalDetails: '',
-      Pulse: ['', [
-        Validators.required,
-      ]],
       PresentHistory: '',
       RegID: '0',
       SecondDocRef: '0',
-      Temp: ['', [
-        Validators.required,
-      ]],
       VisitDate: '',
       VisitId: '0',
       VisitTime: '',
-      Weight: '',
       DrugName: '',
       TotalQty: '',
       HospitalName: '',
@@ -975,20 +979,15 @@ export class NewCasepaperComponent implements OnInit {
     this.dataSource.data = this.prescriptionData;
   }
 
-  onSave() {
-    this.dsItemList.data.forEach(element => {
-      console.log(element)
-    });
-    
+  onSave() {  
     if (this.dsItemList.data.length == 0) {
-      Swal.fire('Error !', 'Please add before save', 'error');
-    }
-    debugger;
+      Swal.fire('Error !', 'Please add prescription', 'error');
+    } 
+
+
    let insertOPDPrescriptionarray=[];
     this.dsItemList.data.forEach(element => {
-      let insertOPDPrescription = {};
-      insertOPDPrescription['daysOption3'] =  parseInt(element.Day2.toString());
-    insertOPDPrescription['ipMedID'] = 0;
+    let insertOPDPrescription = {};  
     insertOPDPrescription['opD_IPD_IP'] = this.vOPIPId;
     insertOPDPrescription['opD_IPD_Type'] = 0;
     insertOPDPrescription['date'] =this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
@@ -996,54 +995,52 @@ export class NewCasepaperComponent implements OnInit {
     insertOPDPrescription['classID'] = this.vClassId;
     insertOPDPrescription['genericId'] = 1;
     insertOPDPrescription['drugId'] = element.ItemID;
-    insertOPDPrescription['doseId'] =  element.DoseId || 0;
-   
+    insertOPDPrescription['doseId'] =  element.DoseId || 0; 
     insertOPDPrescription['days'] = element.Days || 0;
-    insertOPDPrescription['qtyPerDay'] =0,// element.Qty || 0
-    insertOPDPrescription['totalQty'] = 0,//element.Qty || 0;
-    insertOPDPrescription['instructionId'] =1,// element.Instruction || '';
+    insertOPDPrescription['instructionId'] = 0;
     insertOPDPrescription['qtyPerDay'] = 0;
     insertOPDPrescription['totalQty'] = 0;
-    insertOPDPrescription['instruction'] =  element.Instruction || 1;
-    insertOPDPrescription['remark'] = element.Instruction ;// this.myForm.get('WardName').value.RoomId || 0;
-    insertOPDPrescription['isEnglishOrIsMarathi'] = 1 || '';
-    insertOPDPrescription['pWeight'] =  this.caseFormGroup.get('Weight').value || 0;
-    insertOPDPrescription['pulse'] = this.caseFormGroup.get('Pulse').value || 0;
-    insertOPDPrescription['bp'] =  this.caseFormGroup.get('BP').value || 0;
-    insertOPDPrescription['bsl'] = this.caseFormGroup.get('BSL').value || 0;
-    insertOPDPrescription['chiefComplaint'] = '',//this.myForm.get('WardName').value.RoomId || 0;
+    insertOPDPrescription['instruction'] = element.Instruction || '';
+    insertOPDPrescription['remark'] = element.Instruction || '';
+    insertOPDPrescription['isEnglishOrIsMarathi'] = true;
+    insertOPDPrescription['pWeight'] =  this.caseFormGroup.get('Weight').value || '';
+    insertOPDPrescription['pulse'] = this.caseFormGroup.get('Pulse').value || '';
+    insertOPDPrescription['bp'] =  this.caseFormGroup.get('BP').value || '';
+    insertOPDPrescription['bsl'] = this.caseFormGroup.get('BSL').value || '';
+    insertOPDPrescription['chiefComplaint'] = this.caseFormGroup.get('ChiefComplaint').value || '';
     insertOPDPrescription['isAddBy'] = this._loggedService.currentUserValue.user.id;
-    insertOPDPrescription['spO2'] =this.caseFormGroup.get('SpO2').value || 0;
-    insertOPDPrescription['storeId'] = 1;
+    insertOPDPrescription['spO2'] =this.caseFormGroup.get('SpO2').value || '';
+    insertOPDPrescription['storeId'] =  this.accountService.currentUserValue.user.storeId ;
     insertOPDPrescription['doseOption2'] = element.DoseId1;
     insertOPDPrescription['daysOption2'] = parseInt(element.Day1.toString());
-    insertOPDPrescription['doseOption3'] =  element.DoseId2;
+    insertOPDPrescription['doseOption3'] =  element.DoseId2; 
+    insertOPDPrescription['daysOption3'] =  parseInt(element.Day2.toString());
    
-    insertOPDPrescriptionarray.push(insertOPDPrescription);
-   
-    });
+    insertOPDPrescriptionarray.push(insertOPDPrescription); 
+    }); 
+
+    let updateOPDPrescriptionObj = {};
+    updateOPDPrescriptionObj['opD_IPD_IP'] = this.vOPIPId; 
     
-    let casePaperSaveObj = {};
-    casePaperSaveObj['insertOPDPrescription'] = insertOPDPrescriptionarray;
+    let casePaperSaveObj = {
+      "insertOPDPrescription":insertOPDPrescriptionarray, 
+      "updateOPDPrescription":updateOPDPrescriptionObj
+    }
     console.log(casePaperSaveObj);
 
     this._CasepaperService.onSaveCasepaper(casePaperSaveObj).subscribe(response => {
       if (response) {
         Swal.fire('Congratulations !', 'Casepaper save Successfully !', 'success').then((result) => {
-          if (result.isConfirmed) {
-
+          if (result.isConfirmed) { 
             this.viewgetOpprescriptionReportPdf(this.vOPIPId);
             this.getWhatsappshareSales(this.vOPIPId,this.vMobileNo)
           }
         });
       } else {
         Swal.fire('Error !', 'Casepaper not saved', 'error');
-      }
-
-      
+      }  
     });
-    this.onClear()
-
+    this.onClear();
   }
 
   ngAfterViewChecked() {
@@ -1177,18 +1174,7 @@ export class NewCasepaperComponent implements OnInit {
     };
     this.advanceDataStored.storage = new SearchInforObj(xx);
 
-  }
-
-
-  keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
-    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
-      return true;
-    } else {
-      event.preventDefault();
-      return false;
-    }
-  }
+  } 
 
   Day1:any=0;
   Day2:any=0;
@@ -1416,6 +1402,38 @@ export class NewCasepaperComponent implements OnInit {
     this.PatientType = " ";
     this.BMIstatus= " ";
    }
+
+   getBMIcalculation(){
+    if(this.Height > 0 || this.Weight > 0){
+      this.BMI = ((this.Weight) / (this.Height)^2);
+    }
+    else if(this.Height <= 0){
+      this.BMI = 0;
+      Swal.fire('Please enter Height')
+    }
+    else if(this.Weight <= 0){
+      this.BMI = 0;
+      Swal.fire('Please enter Weight')
+    }
+   }
+   keyPressAlphanumeric(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
+  keyPressCharater(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/^\d*\.?\d*$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
 }
 
 
