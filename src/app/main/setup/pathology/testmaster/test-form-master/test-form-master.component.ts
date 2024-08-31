@@ -93,14 +93,13 @@ export class TestFormMasterComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: any,
         public dialogRef: MatDialogRef<TestmasterComponent>
     ) {
-        this.registerObj = this.data.registerObj;
+       
         this.getParameterNameCombobox();
     }
 
     ngOnInit(): void {
         if (this.data) {
-            debugger
-
+            this.registerObj = this.data.registerObj;
             console.log(this.registerObj);
             this.TestId = this.registerObj.TestId
             this.TemplateId = this.registerObj.TemplateId;
@@ -109,6 +108,7 @@ export class TestFormMasterComponent implements OnInit {
                 this._TestService.is_subtest = false;
                 this.Statusflag = false;
                 this._TestService.is_templatetest = false;
+                 this._TestService.myform.get("Status").setValue(1);
                 this.fetchTestlist();
 
             } else if (this.registerObj.IsTemplateTest) {
@@ -116,6 +116,7 @@ export class TestFormMasterComponent implements OnInit {
                 this._TestService.is_subtest = false;
                 this._TestService.is_Test = false;
                 this.Statusflag = true;
+                this._TestService.myform.get("Status").setValue(3);
                 this.fetchTemplate()
 
             } else if (!this.registerObj.IsTemplateTest && this.registerObj.IsSubTest) {
@@ -125,7 +126,7 @@ export class TestFormMasterComponent implements OnInit {
                 this._TestService.is_subtest = true;
                 this._TestService.is_Test = false;
                 this.serviceflag = false;
-
+                this._TestService.myform.get("Status").setValue(2);
                 this.fetchTestlist();
             }
 
@@ -137,18 +138,10 @@ export class TestFormMasterComponent implements OnInit {
 
         this.getcategoryNameCombobox();
         this.getserviceNameCombobox();
-        // this.getParameterNameCombobox();
         this.getServiceNameCombobox();
         this.getTemplateList();
 
-        // this.parameternameFilterCtrl.valueChanges
-        //     .pipe(takeUntil(this._onDestroy))
-        //     .subscribe(() => {
-        //         this.filterParametername();
-        //     });
-
-
-
+      
         this.filteredOptionsCategory = this._TestService.myform.get('CategoryId').valueChanges.pipe(
             startWith(''),
             map(value => this._filtercategory(value)),
@@ -167,21 +160,20 @@ export class TestFormMasterComponent implements OnInit {
             "TestId": this.TestId
         }
         this._TestService.getTestListfor(m_data).subscribe(Visit => {
-            console.log(Visit)
-            this.DSTestList.data = Visit as TestList[];
+          this.DSTestList.data = Visit as TestList[];
         });
-        console.log(this.DSTestList.data)
+       
     }
 
     fetchTemplate() {
-        debugger
+        
         var m_data = {
             "TestId": this.TestId
         }
         this._TestService.getTemplateListfor(m_data).subscribe(Visit => {
             this.Templatetdatasource.data = Visit as TemplatedetailList[];
         });
-        console.log(this.Templatetdatasource.data)
+      
     }
 
 
@@ -760,7 +752,7 @@ export class TestFormMasterComponent implements OnInit {
 
         }
 
-
+        this._TestService.myform.reset();
 
     }
 

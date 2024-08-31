@@ -22,7 +22,7 @@
     <!-- Modal body -->
 
 
-    <form [formGroup]="_doctorService.myform" fxLayout="column" style="padding: 0 20px;padding-top: 10px;">
+    <form [formGroup]="_doctorService.myform" fxLayout="column" style="padding: 5px 5px 0px 5px;">
         <input type="hidden" name="RegId" formControlName="RegId">
         <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
             class="top-header accent heading-container h-40 border-radius-4">
@@ -32,7 +32,7 @@
         <!-- <div style="padding: 7px;overflow-block: hover;"> -->
         <mat-card>
             <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="12px grid">
-                <div fxFlex="85%" fxFlex.xs="100%" fxFlex.sm="80%" fxLayout="row wrap" fxLayoutGap="12px grid">
+                <div fxFlex="85%" fxFlex.xs="100%" fxFlex.sm="80%" fxLayout="row wrap">
 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <mat-form-field appearance="outline" fxFlex>
@@ -304,7 +304,7 @@
         </mat-card>
     </form>
     <br>
-    <form [formGroup]="_doctorService.myform" fxLayout="column" style="padding: 0 20px;padding-top: 10px;">
+    <form [formGroup]="_doctorService.myform" fxLayout="column"  style="padding: 0px 5px 0px 5px;">
         <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
             class="top-header accent heading-container h-40 border-radius-4">
             <span style="font-size:15px;font-weight: bolder; color:white;padding:7px;">Education
@@ -312,7 +312,7 @@
         </div>
         <mat-card>
             <!-- oninput="this.value = this.value.replace(/['^[a-zA-Z0-9]*$']/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);" -->
-            <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="12px grid" style="padding: 10px 0;">
+            <div fxFlex="100" fxLayout="row wrap" >
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <mat-form-field appearance="outline" fxFlex>
                         <mat-label>ESINO</mat-label>
@@ -404,7 +404,7 @@
     </form>
     <br>
 
-    <form [formGroup]="_doctorService.myform" fxLayout="column" style="padding: 0 20px;padding-top: 10px;">
+    <form [formGroup]="_doctorService.myform" fxLayout="column"  style="padding: 0px 5px 0px 5px;">
 
         <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
             class="top-header accent heading-container h-40 border-radius-4">
