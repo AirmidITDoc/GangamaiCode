@@ -268,7 +268,7 @@
                                                         </mat-form-field>
                                                     </div>
                                                 </div>
-                                                <div class="card-content">
+                                                <div class="card-content" *ngIf="DischargesumForm.get('IsNormalOrDeath').value == 'True'">
                                                     <div class="form-title mb-2 pb-2 border-bottom">
                                                         <span class="h2 font-weight-600">TREATMENT ADVICED</span>
                                                     </div>
@@ -301,11 +301,11 @@
                                                 </mat-form-field>
                                             </div>
     
-                                            <div class="form-title mb-2 pb-2 border-bottom">
+                                            <div class="form-title mb-2 pb-2 border-bottom" *ngIf="DischargesumForm.get('IsNormalOrDeath').value == 'True'">
                                                 <span class="h2 font-weight-600">PAIN MANAGMENT TECHNIQUE</span>
                                             </div>
-                                            <div class="form-input">
-                                                <mat-form-field appearance="outline" fxFlex>
+                                            <div class="form-input" *ngIf="DischargesumForm.get('IsNormalOrDeath').value == 'True'">
+                                                <mat-form-field appearance="outline" fxFlex >
                                                     <mat-label>PAIN MANAGMENT TECHNIQUE</mat-label>
                                                     <textarea matInput name="PainManagementTechnique"
                                                         formControlName="PainManagementTechnique"
@@ -325,7 +325,7 @@
                                                         <span class="h2 font-weight-600">FOLLOW UP</span>
                                                     </div>
                                                     <div class="form-input" fxLayoutGap="8px grid">
-                                                        <mat-form-field appearance="outline" fxFlex>
+                                                        <mat-form-field appearance="outline" fxFlex *ngIf="DischargesumForm.get('IsNormalOrDeath').value == 'True'">
                                                             <mat-label>FOLLOW UP</mat-label>
                                                             <textarea matInput name="LifeStyle" formControlName="LifeStyle"
                                                                 [(ngModel)]="vLifeStyle" cols="300"
@@ -635,7 +635,7 @@
                             <mat-card>
                                 <div fxLayout="row" fxLayoutAlign="end center">
                                     <mat-radio-group name="IsNormalOrDeath" formcontrolName="IsNormalOrDeath"
-                                        aria-label="Select an option" [(ngModel)]="vIsNormalDeath">
+                                        aria-label="Select an option" [(ngModel)]="vIsNormalDeath"  >
                                         <mat-radio-button value="True" >Normal </mat-radio-button>
                                         <mat-radio-button value="false">Death Summary</mat-radio-button>
                                     </mat-radio-group>

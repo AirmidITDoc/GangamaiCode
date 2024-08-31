@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { LoaderService } from 'app/core/components/loader/loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,7 @@ export class GoodReceiptnoteService {
 
   constructor(
     public _httpClient: HttpClient,
+    private _loaderService: LoaderService,
     private _formBuilder: FormBuilder
   ) {
     this.GRNStoreForm = this.createStoreFrom();
@@ -180,17 +182,29 @@ export class GoodReceiptnoteService {
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveItemName_GRN", Param);
   }
 
-  public GRNSave(Param) {
+  public GRNSave(Param,loader = true){ 
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.post("Pharmacy/InsertGRNDirect", Param);
   }
-  public POtoGRNSave(Param) {
+  public POtoGRNSave(Param,loader = true){ 
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.post("Pharmacy/InsertGRNPurchase", Param);
   }
-  public POtoGRNUpated(Param) {
+  public POtoGRNUpated(Param,loader = true){ 
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.post("Pharmacy/UpdateGRNPurchase", Param);
   }
 
-  public GRNEdit(Param) {
+  public GRNEdit(Param,loader = true){ 
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.post("Pharmacy/updateGRN", Param);
   }
 
@@ -200,7 +214,7 @@ export class GoodReceiptnoteService {
   public getPrintGRNList(Param) {
     return this._httpClient.post("Generic/GetByProc?procName=rptPrintGRN", Param);
   }
-  public getVerifyGRN(Param) {
+  public getVerifyGRN(Param){ 
     return this._httpClient.post("Pharmacy/VerifyGRN", Param)
   }
   public getGRNreportview(GRNID) {

@@ -1204,8 +1204,15 @@ export class UpdateGRNComponent implements OnInit {
   vTotalQty:any=0
   OnSave() { 
     debugger
+    if ((this._GRNList.GRNFinalForm.get('ReceivedBy').value == '' || this._GRNList.GRNFinalForm.get('ReceivedBy').value == null ||
+    this._GRNList.GRNFinalForm.get('ReceivedBy').value == undefined)) {
+      this.toastr.warning('Please enter a Received By', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
     const checkTotalQty = this.dsItemNameList.data.some(item => item.TotalQty === this.vTotalQty && item.TotalQty == null);
-    this.isLoading123 = true;
+    //this.isLoading123 = true;
     if (!checkTotalQty) {
       if (!this.vPurchaseId) {
         if (this.data.chkNewGRN == 1) {
@@ -1246,7 +1253,7 @@ export class UpdateGRNComponent implements OnInit {
     let nowDate1 = nowDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
     this.newDateTimeObj = { date: nowDate1[0], time: nowDate1[1] };
     //
-    this.Savebtn = true;
+    //this.Savebtn = true;
     let grnSaveObj = {};
     grnSaveObj['grnDate'] = this.dateTimeObj.date;
     grnSaveObj['grnTime'] = this.dateTimeObj.time;
@@ -1377,7 +1384,7 @@ export class UpdateGRNComponent implements OnInit {
         this.toastr.success('Record PO TO GRN Saved Successfully.', 'Saved !', {
           toastClass: 'tostr-tost custom-toast-success',
         });
-        this.Savebtn = false;
+       // this.Savebtn = false;
         this._matDialog.closeAll();
         this.OnReset();
         this.viewGRNREPORTPdf(response)
@@ -1387,8 +1394,8 @@ export class UpdateGRNComponent implements OnInit {
           toastClass: 'tostr-tost custom-toast-error',
         });
       }
-      this.isLoading123=false;
-      this.sIsLoading = '';
+      //this.isLoading123=false;
+      //this.sIsLoading = '';
     }, error => {
       this.toastr.error('PO TO GRN Data not saved !, Please check API error..', 'Error !', {
         toastClass: 'tostr-tost custom-toast-error',
@@ -1413,7 +1420,7 @@ export class UpdateGRNComponent implements OnInit {
     let nowDate1 = nowDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
     this.newDateTimeObj = { date: nowDate1[0], time: nowDate1[1] };
     //
-    this.Savebtn = true;
+    //this.Savebtn = true;
     let grnSaveObj = {};
     grnSaveObj['grnDate'] = this.dateTimeObj.date;
     grnSaveObj['grnTime'] = this.dateTimeObj.time;
@@ -1550,12 +1557,12 @@ export class UpdateGRNComponent implements OnInit {
         this.toastr.success('Record PO TO GRN Updated Successfully.', 'Updated !', {
           toastClass: 'tostr-tost custom-toast-success',
         });
-        this.Savebtn = false;
+        //this.Savebtn = false;
         this._matDialog.closeAll();
         this.OnReset();
         this.viewGRNREPORTPdf(data)
-        this.isLoading123=false;
-        this.sIsLoading = '';
+        //this.isLoading123=false;
+        //this.sIsLoading = '';
       } else {
         this.toastr.error('PO TO GRN Data not Updated !, Please check error..', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
@@ -1593,7 +1600,7 @@ export class UpdateGRNComponent implements OnInit {
     let nowDate = new Date();
     let nowDate1 = nowDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
     this.newDateTimeObj = { date: nowDate1[0], time: nowDate1[1] };
-    this.Savebtn = true;
+    //this.Savebtn = true;
     let grnSaveObj = {};
     grnSaveObj['grnDate'] = this.dateTimeObj.date;
     grnSaveObj['grnTime'] = this.dateTimeObj.time;
@@ -1708,12 +1715,12 @@ export class UpdateGRNComponent implements OnInit {
         this.toastr.success('Record Saved Successfully.', 'Saved !', {
           toastClass: 'tostr-tost custom-toast-success',
         });
-        this.Savebtn = false;
+        //this.Savebtn = false;
         this._matDialog.closeAll();
         this.OnReset();
         this.viewGRNREPORTPdf(response)
-        this.isLoading123=false;
-        this.sIsLoading = '';
+        //this.isLoading123=false;
+        //this.sIsLoading = '';
       } else {
         this.toastr.error('New GRN Data not saved !, Please check API error..', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
@@ -1738,7 +1745,7 @@ export class UpdateGRNComponent implements OnInit {
       });
       return;
     }
-    this.Savebtn = true;
+    //this.Savebtn = true;
     let updateGRNHeaderObj = {};
     updateGRNHeaderObj['grnid'] = this.registerObj.GRNID;
     updateGRNHeaderObj['grnDate'] = this.dateTimeObj.date;
@@ -1859,11 +1866,11 @@ export class UpdateGRNComponent implements OnInit {
         this.toastr.success('Record Updated Successfully.', 'Updated !', {
           toastClass: 'tostr-tost custom-toast-success',
         });
-        this.Savebtn = false;
+        //this.Savebtn = false;
         this._matDialog.closeAll();
         this.OnReset()
-        this.isLoading123=false;
-        this.sIsLoading = '';
+        //this.isLoading123=false;
+        //this.sIsLoading = '';
       }
     }, error => {
       this.toastr.error('New GRN Data not Updated !, Please check API error..', 'Error !', {
