@@ -171,9 +171,9 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header> Mobile </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.Mobile}} </mat-cell>
                                         </ng-container>
-                                        <ng-container matColumnDef="Education">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header> Education </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.Education}}
+                                        <ng-container matColumnDef="Education"> 
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200"> Education </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-200"> {{element.Education}}
                                             </mat-cell>
                                         </ng-container>
     
