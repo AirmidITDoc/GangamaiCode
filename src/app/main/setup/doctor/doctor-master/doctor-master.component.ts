@@ -151,7 +151,7 @@ export class DoctorMasterComponent implements OnInit {
             NewDoctorComponent,
             {
                 maxWidth: "85vw",
-                maxHeight: "110vh",
+                maxHeight: "95vh",
                 width: "100%",
                 height: "100%",
                 data: {
@@ -169,7 +169,7 @@ export class DoctorMasterComponent implements OnInit {
     onAdd() {
         const dialogRef = this._matDialog.open(NewDoctorComponent, {
             maxWidth: "85vw",
-            maxHeight: "110vh",
+            maxHeight: "95vh",
             width: "100%",
             height: "100%",
         });
