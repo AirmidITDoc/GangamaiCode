@@ -38,7 +38,7 @@ export class CategoryMasterService {
 
     public getCategoryMasterList(emp) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_Radiology_CategoryList_by_Name",emp);
+            "Generic/GetByProc?procName=m_Rtrv_Radiology_CategoryList_by_Name",emp);
     }
     public deactivateTheStatus(m_data) {
         return this._httpClient.post("Generic/ExecByQueryStatement?query=" + m_data,{});

@@ -132,6 +132,7 @@ export class ResultEntrytwoComponent implements OnInit {
         // this.PathResultDr1 = Visit[0]["PathResultDr1"];
         // this.vsuggation = Visit[0]["SuggestionNote"];
       this.TemplateId=Visit[0]["PathTemplateId"];
+      
       },
         error => {
           this.sIsLoading = '';

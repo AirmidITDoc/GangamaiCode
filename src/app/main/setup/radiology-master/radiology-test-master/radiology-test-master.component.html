@@ -85,9 +85,9 @@
                                         [@animateStagger]="{value:'50'}" style="overflow:auto;height: 500px !important;">
 
                                         <ng-container matColumnDef="TestId">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-100">Code
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.TestId}}
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-100"> {{element.TestId}}
                                             </mat-cell>
                                         </ng-container>
         
@@ -110,9 +110,9 @@
                                         </ng-container>
         
                                         <ng-container matColumnDef="ServiceId">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header> ServiceId Name
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-300"> ServiceId Name
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.ServiceName}}
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-300"> {{element.ServiceName}}
                                             </mat-cell>
                                         </ng-container>
         

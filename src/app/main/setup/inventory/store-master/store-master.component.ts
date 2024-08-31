@@ -10,6 +10,7 @@ import { MatSort } from "@angular/material/sort";
 import { fuseAnimations } from "@fuse/animations";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
+import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
 
 @Component({
     selector: "app-store-master",
@@ -43,7 +44,7 @@ export class StoreMasterComponent implements OnInit {
     isLoading = true;
     msg: any;
     step = 0;
-
+    resultsLength=0;
     setStep(index: number) {
         this.step = index;
     }
@@ -60,6 +61,7 @@ export class StoreMasterComponent implements OnInit {
     constructor(
         public _StoreService: StoreMasterService,
         public toastr : ToastrService,
+        private _fuseSidebarService: FuseSidebarService,
         public _matDialog: MatDialog
     ) {}
 
@@ -91,6 +93,7 @@ export class StoreMasterComponent implements OnInit {
         this._StoreService.getStoreMasterList(m_data).subscribe((Menu) => {
             this.DSStoreMasterList.data = Menu as StoreMaster[];
             this.DSStoreMasterList.sort = this.sort;
+            this.resultsLength= this.DSStoreMasterList.data.length
             this.DSStoreMasterList.paginator = this.paginator;
         });
     }
@@ -117,186 +120,15 @@ export class StoreMasterComponent implements OnInit {
         });
     }
 
-    // onSubmit() {
-    //     if (this._StoreService.myform.valid) {
-    //         if (!this._StoreService.myform.get("StoreId").value) {
-    //             var m_data = {
-    //                 insertStoreMaster: {
-    //                     storeShortName: this._StoreService.myform
-    //                         .get("StoreShortName")
-    //                         .value.trim(),
-    //                     storeName: this._StoreService.myform
-    //                         .get("StoreName")
-    //                         .value.trim(),
-    //                     indentPrefix: this._StoreService.myform
-    //                         .get("IndentPrefix")
-    //                         .value.trim(),
-    //                     indentNo: this._StoreService.myform
-    //                         .get("IndentNo")
-    //                         .value.trim(),
-    //                     purchasePrefix: this._StoreService.myform
-    //                         .get("PurchasePrefix")
-    //                         .value.trim(),
-    //                     purchaseNo: this._StoreService.myform
-    //                         .get("PurchaseNo")
-    //                         .value.trim(),
-    //                     grnPrefix: this._StoreService.myform
-    //                         .get("GrnPrefix")
-    //                         .value.trim(),
-    //                     grnNo: this._StoreService.myform
-    //                         .get("GrnNo")
-    //                         .value.trim(),
-    //                     grnreturnNoPrefix: this._StoreService.myform
-    //                         .get("GrnreturnNoPrefix")
-    //                         .value.trim(),
-    //                     grnreturnNo: this._StoreService.myform
-    //                         .get("GrnreturnNo")
-    //                         .value.trim(),
-    //                     issueToDeptPrefix: this._StoreService.myform
-    //                         .get("IssueToDeptPrefix")
-    //                         .value.trim(),
-    //                     issueToDeptNo: this._StoreService.myform
-    //                         .get("IssueToDeptNo")
-    //                         .value.trim(),
-    //                     returnFromDeptNoPrefix: this._StoreService.myform
-    //                         .get("ReturnFromDeptNoPrefix")
-    //                         .value.trim(),
-    //                     returnFromDeptNo: this._StoreService.myform
-    //                         .get("ReturnFromDeptNo")
-    //                         .value.trim(),
-    //                     isDeleted: Boolean(
-    //                         JSON.parse(
-    //                             this._StoreService.myform.get("IsDeleted").value
-    //                         )
-    //                     ),
-    //                     addedBy: 1,
-    //                 },
-    //             };
-    //             // console.log(m_data);
-    //             this._StoreService
-    //                 .insertStoreMaster(m_data)
-    //                 .subscribe((data) => {
-    //                     this.msg = data;
-    //                     if (data) {
-    //                         this.toastr.success('Record Saved Successfully.', 'Saved !', {
-    //                             toastClass: 'tostr-tost custom-toast-success',
-    //                           });
-    //                     } else {
-    //                         this.toastr.error('Store Master Master Data not saved !, Please check API error..', 'Error !', {
-    //                             toastClass: 'tostr-tost custom-toast-error',
-    //                           });
-    //                     }
-    //                     this.getStoreMasterList();
-    //                 },error => {
-    //                     this.toastr.error('Store not saved !, Please check API error..', 'Error !', {
-    //                      toastClass: 'tostr-tost custom-toast-error',
-    //                    });
-    //                  });
-    //         } else {
-    //             var m_dataUpdate = {
-    //                 updateStoreMaster: {
-    //                     storeId: this._StoreService.myform.get("StoreId").value,
-    //                     storeShortName: this._StoreService.myform
-    //                         .get("StoreShortName")
-    //                         .value.trim(),
-    //                     storeName: this._StoreService.myform
-    //                         .get("StoreName")
-    //                         .value.trim(),
-    //                     // IndentPrefix: this._StoreService.myform
-    //                     //     .get("IndentPrefix")
-    //                     //     .value.trim(),
-    //                     // IndentNo: this._StoreService.myform
-    //                     //     .get("IndentNo")
-    //                     //     .value.trim(),
-    //                     // PurchasePrefix: this._StoreService.myform
-    //                     //     .get("PurchasePrefix")
-    //                     //     .value.trim(),
-    //                     // PurchaseNo: this._StoreService.myform
-    //                     //     .get("PurchaseNo")
-    //                     //     .value.trim(),
-    //                     // GrnPrefix: this._StoreService.myform
-    //                     //     .get("GrnPrefix")
-    //                     //     .value.trim(),
-    //                     // GrnNo: this._StoreService.myform
-    //                     //     .get("GrnNo")
-    //                     //     .value.trim(),
-    //                     // GrnreturnNoPrefix: this._StoreService.myform
-    //                     //     .get("GrnreturnNoPrefix")
-    //                     //     .value.trim(),
-    //                     // GrnreturnNo: this._StoreService.myform
-    //                     //     .get("GrnreturnNo")
-    //                     //     .value.trim(),
-    //                     // IssueToDeptPrefix: this._StoreService.myform
-    //                     //     .get("IssueToDeptPrefix")
-    //                     //     .value.trim(),
-    //                     // IssueToDeptNo: this._StoreService.myform
-    //                     //     .get("IssueToDeptNo")
-    //                     //     .value.trim(),
-    //                     // ReturnFromDeptNoPrefix: this._StoreService.myform
-    //                     //     .get("ReturnFromDeptNoPrefix")
-    //                     //     .value.trim(),
-    //                     // ReturnFromDeptNo: this._StoreService.myform
-    //                     //     .get("ReturnFromDeptNo")
-    //                     //     .value.trim(),
-    //                     isDeleted: Boolean(
-    //                         JSON.parse(
-    //                             this._StoreService.myform.get("IsDeleted").value
-    //                         )
-    //                     ),
-    //                     updatedBy: 1,
-    //                 },
-    //             };
-    //             this._StoreService
-    //                 .updateStoreMaster(m_dataUpdate)
-    //                 .subscribe((data) => {
-    //                     this.msg = data;
-    //                     if (data) {
-    //                         this.toastr.success('Record updated Successfully.', 'updated !', {
-    //                             toastClass: 'tostr-tost custom-toast-success',
-    //                           });
-    //                     } else {
-    //                         this.toastr.error('Store Master Master Data not updated !, Please check API error..', 'Error !', {
-    //                             toastClass: 'tostr-tost custom-toast-error',
-    //                           });
-    //                     }
-    //                     this.getStoreMasterList();
-    //                 },error => {
-    //                     this.toastr.error('Store not updated !, Please check API error..', 'Error !', {
-    //                      toastClass: 'tostr-tost custom-toast-error',
-    //                    });
-    //                  });
-    //         }
-    //         this.onClear();
-    //     }
-    // }
+  
     onEdit(row) {
-        var m_data = {
-        //     StoreId: row.StoreId,
-        //     StoreShortName: row.StoreShortName.trim(),
-        //     StoreName: row.StoreName.trim(),
-        //     IndentPrefix: row.IndentPrefix.trim(),
-        //     IndentNo: row.IndentNo.trim(),
-        //     PurchasePrefix: row.PurchasePrefix.trim(),
-        //     PurchaseNo: row.PurchaseNo.trim(),
-        //     GrnPrefix: row.GrnPrefix.trim(),
-        //     GrnNo: row.GrnNo.trim(),
-        //     GrnreturnNoPrefix: row.GrnreturnNoPrefix.trim(),
-        //     GrnreturnNo: row.GrnreturnNo.trim(),
-        //     IssueToDeptPrefix: row.IssueToDeptPrefix.trim(),
-        //     IssueToDeptNo: row.IssueToDeptNo.trim(),
-        //     ReturnFromDeptNoPrefix: row.ReturnFromDeptNoPrefix.trim(),
-        //     ReturnFromDeptNo: row.ReturnFromDeptNo.trim(),
-             IsDeleted: JSON.stringify(row.IsDeleted),
-        //     UpdatedBy: row.UpdatedBy,
-        };
-
-       // console.log(m_data);
+             row["IsDeleted"]= JSON.stringify(row.IsDeleted),
         console.log(row)
-        this._StoreService.populateForm(m_data);
+        this._StoreService.populateForm(row);
 
         const dialogRef = this._matDialog.open(StoreFormMasterComponent, {
             maxWidth: "80vw",
-            maxHeight: "80vh",
+            maxHeight: "95vh",
             width: "100%",
             height: "100%",
             data: {
@@ -309,11 +141,13 @@ export class StoreMasterComponent implements OnInit {
             this.getStoreMasterList();
         });
     }
-
+    toggleSidebar(name): void {
+        this._fuseSidebarService.getSidebar(name).toggleOpen();
+      }
     onAdd() {
         const dialogRef = this._matDialog.open(StoreFormMasterComponent, {
             maxWidth: "80vw",
-            maxHeight: "80vh",
+            maxHeight: "95vh",
             width: "100%",
             height: "100%",
         });

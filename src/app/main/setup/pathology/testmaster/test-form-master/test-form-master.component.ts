@@ -33,7 +33,7 @@ export class TestFormMasterComponent implements OnInit {
     displayedColumns4: string[] = ['ParameterName'];
     displayedColumns5: string[] = ['TemplateName', 'Action'];
 
-    ParameterName:any='';
+    ParameterName: any = '';
     Parametercmb: any = [];
     paraselect: any = ["new"];
     CategorycmbList: any = [];
@@ -44,9 +44,9 @@ export class TestFormMasterComponent implements OnInit {
     registerObj: any;
     DSTestList = new MatTableDataSource<TestList>();
     DSTestListtemp = new MatTableDataSource<TestList>();
-    
+
     subTestList = new MatTableDataSource<TestList>();
-    DSsubTestListtemp= new MatTableDataSource<TestList>();
+    DSsubTestListtemp = new MatTableDataSource<TestList>();
     dsTemparoryList = new MatTableDataSource<TestList>();
     DSTestMasterList = new MatTableDataSource<TestMaster>();
 
@@ -55,7 +55,7 @@ export class TestFormMasterComponent implements OnInit {
     paramterList: any = new MatTableDataSource<TestList>();
 
     vCategoryId: any;
-    ServiceID: any=0;
+    ServiceID: any = 0;
 
     filteredOptionsCategory: Observable<string[]>;
     optionscategory: any[] = [];
@@ -92,16 +92,19 @@ export class TestFormMasterComponent implements OnInit {
         private accountService: AuthenticationService,
         @Inject(MAT_DIALOG_DATA) public data: any,
         public dialogRef: MatDialogRef<TestmasterComponent>
-    ) { }
+    ) {
+        this.registerObj = this.data.registerObj;
+        this.getParameterNameCombobox();
+    }
 
     ngOnInit(): void {
         if (this.data) {
             debugger
-            this.registerObj = this.data.registerObj;
+
             console.log(this.registerObj);
             this.TestId = this.registerObj.TestId
             this.TemplateId = this.registerObj.TemplateId;
-
+            debugger
             if (!this.registerObj.IsTemplateTest && !this.registerObj.IsSubTest) {
                 this._TestService.is_subtest = false;
                 this.Statusflag = false;
@@ -126,7 +129,7 @@ export class TestFormMasterComponent implements OnInit {
                 this.fetchTestlist();
             }
 
-            this._TestService.populateForm(this.registerObj);
+            // this._TestService.populateForm(this.registerObj);
             this.getCategoryNameCombobox();
             this.getServiceNameCombobox();
 
@@ -134,15 +137,15 @@ export class TestFormMasterComponent implements OnInit {
 
         this.getcategoryNameCombobox();
         this.getserviceNameCombobox();
-        this.getParameterNameCombobox();
+        // this.getParameterNameCombobox();
         this.getServiceNameCombobox();
         this.getTemplateList();
 
-        this.parameternameFilterCtrl.valueChanges
-            .pipe(takeUntil(this._onDestroy))
-            .subscribe(() => {
-                this.filterParametername();
-            });
+        // this.parameternameFilterCtrl.valueChanges
+        //     .pipe(takeUntil(this._onDestroy))
+        //     .subscribe(() => {
+        //         this.filterParametername();
+        //     });
 
 
 
@@ -217,8 +220,8 @@ export class TestFormMasterComponent implements OnInit {
 
 
     onSearchClear() {
-      
-        this.ParameterName=""
+
+        this.ParameterName = ""
         this.getParameterNameCombobox();
     }
     onSearch() {
@@ -231,25 +234,25 @@ export class TestFormMasterComponent implements OnInit {
 
 
     // parameter filter
-    private filterParametername() {
-        if (!this.Parametercmb) {
-            return;
-        }
-        // get the search keyword
-        let search = this.parameternameFilterCtrl.value;
-        if (!search) {
-            this.filteredParametername.next(this.Parametercmb.slice());
-            return;
-        } else {
-            search = search.toLowerCase();
-        }
-        // filter the banks
-        this.filteredParametername.next(
-            this.Parametercmb.filter(
-                (bank) => bank.ParameterName.toLowerCase().indexOf(search) > -1
-            )
-        );
-    }
+    // private filterParametername() {
+    //     if (!this.Parametercmb) {
+    //         return;
+    //     }
+    //     // get the search keyword
+    //     let search = this.parameternameFilterCtrl.value;
+    //     if (!search) {
+    //         this.filteredParametername.next(this.Parametercmb.slice());
+    //         return;
+    //     } else {
+    //         search = search.toLowerCase();
+    //     }
+    //     // filter the banks
+    //     this.filteredParametername.next(
+    //         this.Parametercmb.filter(
+    //             (bank) => bank.ParameterName.toLowerCase().indexOf(search) > -1
+    //         )
+    //     );
+    // }
 
     getParameterNameCombobox() {
         debugger
@@ -266,7 +269,7 @@ export class TestFormMasterComponent implements OnInit {
 
 
     getSubTestMasterList() {
-        
+
         var m_dat = {
             TestName: this._TestService.myform.get('ParameterNameSearch').value + "%" || '%'
         }
@@ -274,8 +277,8 @@ export class TestFormMasterComponent implements OnInit {
             this.subTestList.data = Menu as TestList[];
             this.paramterList.data = Menu;
         });
-console.log( this.subTestList.data )
-       
+        console.log(this.subTestList.data)
+
     }
     getCategoryNameCombobox() {
 
@@ -402,18 +405,18 @@ console.log( this.subTestList.data )
 
     addParameter(Id) {
         debugger
-        this.DSTestListtemp.data=[];
+        this.DSTestListtemp.data = [];
         let SelectQuery = "select * from lvwPathParaFill where ParameterID = " + Id
         console.log(SelectQuery)
         this._TestService.getquerydata(SelectQuery).subscribe(Visit => {
-          this.DSTestListtemp.data = Visit as TestList[];
+            this.DSTestListtemp.data = Visit as TestList[];
             console.log(this.DSTestListtemp.data)
             if (this.DSTestListtemp.data.length > 0) {
                 debugger
                 this.addparameterdata();
             }
         });
-            
+
 
         let temp = this.paramterList.data;
         this.paramterList.data = []
@@ -421,19 +424,19 @@ console.log( this.subTestList.data )
         this.paramterList.data = temp;
     }
 
-    addparameterdata(){
+    addparameterdata() {
 
-            this.ChargeList= this.DSTestList.data;
-            this.ChargeList.push(
-                {
-                    ParameterID: this.DSTestListtemp.data[0]["ParameterID"],
-                    ParameterName: this.DSTestListtemp.data[0]["ParameterName"],
-                });
-            this.DSTestList.data = this.ChargeList;
-            console.log(this.DSTestList.data)
+        this.ChargeList = this.DSTestList.data;
+        this.ChargeList.push(
+            {
+                ParameterID: this.DSTestListtemp.data[0]["ParameterID"],
+                ParameterName: this.DSTestListtemp.data[0]["ParameterName"],
+            });
+        this.DSTestList.data = this.ChargeList;
+        console.log(this.DSTestList.data)
 
-            }
-    
+    }
+
 
     addSubTest(Id) {
         debugger
@@ -448,336 +451,336 @@ console.log( this.subTestList.data )
             }
         });
 
-      
-            let temp = this.paramterList.data;
-            this.paramterList.data = []
-            temp.splice(temp.findIndex(item => item.ParameterName === this.DSTestList.data["ParameterName"]), 1);
-            this.paramterList.data = temp;
-        
+
+        let temp = this.paramterList.data;
+        this.paramterList.data = []
+        temp.splice(temp.findIndex(item => item.ParameterName === this.DSTestList.data["ParameterName"]), 1);
+        this.paramterList.data = temp;
+
         console.log(this.DSTestList.data)
     }
 
-    addsubtestdata(){
+    addsubtestdata() {
 
-        this.ChargeList=this.DSTestList.data;
+        this.ChargeList = this.DSTestList.data;
         this.DSsubTestListtemp.data.forEach((element) => {
-        
+
             debugger
             this.ChargeList.push(
                 {
                     ParameterID: element.ParameterId,
                     ParameterName: element.ParameterName,
-                    SubTestID:element.TestId
+                    SubTestID: element.TestId
                 });
             this.DSTestList.data = this.ChargeList;
             console.log(this.DSTestList.data)
         });
     }
 
-        onAdd(event) {
-            console.log(event)
-            debugger
-            if (this._TestService.myform.get("IsSubTest").value) {
-                this.addSubTest(event.TestId);
+    onAdd(event) {
+        console.log(event)
+        debugger
+        if (this._TestService.myform.get("IsSubTest").value) {
+            this.addSubTest(event.TestId);
 
-            } else if(!this._TestService.myform.get("IsSubTest").value) {
-                this.addParameter(event.ParameterID);
-            }
-
+        } else if (!this._TestService.myform.get("IsSubTest").value) {
+            this.addParameter(event.ParameterID);
         }
 
-        Statusflag: any = false;
+    }
 
-        onSubmit() {
+    Statusflag: any = false;
 
-            if (this._TestService.is_subtest = false) {
-                if ((this.ServiceID == '' || this.ServiceID == null || this.ServiceID == undefined)) {
-                    this.toastr.warning('Please select valid Service Name ', 'Warning !', {
-                        toastClass: 'tostr-tost custom-toast-warning',
-                    });
-                    return;
-                }
-               
-            }else{
-                this.ServiceID=this._TestService.myform.get('ServiceID').value.ServiceId
-            }
-            if ((this.vCategoryId == '' || this.vCategoryId == null || this.vCategoryId == undefined)) {
-                this.toastr.warning('Please select valid Category Name ', 'Warning !', {
+    onSubmit() {
+
+        if (this._TestService.is_subtest = false) {
+            if ((this.ServiceID == '' || this.ServiceID == null || this.ServiceID == undefined)) {
+                this.toastr.warning('Please select valid Service Name ', 'Warning !', {
                     toastClass: 'tostr-tost custom-toast-warning',
                 });
                 return;
             }
 
-            let submitData
+        } else {
+            this.ServiceID = this._TestService.myform.get('ServiceID').value.ServiceId
+        }
+        if ((this.vCategoryId == '' || this.vCategoryId == null || this.vCategoryId == undefined)) {
+            this.toastr.warning('Please select valid Category Name ', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
 
-            if (!this.Statusflag) {
+        let submitData
 
-                if (this.DSTestList.data.length == 0) {
-                    this.toastr.warning('Please select valid Test Data', 'Warning !', {
+        if (!this.Statusflag) {
+
+            if (this.DSTestList.data.length == 0) {
+                this.toastr.warning('Please select valid Test Data', 'Warning !', {
+                    toastClass: 'tostr-tost custom-toast-warning',
+                });
+                return;
+            }
+
+            if (!this._TestService.myform.get("TestId").value) {
+
+                let insertPathologyTestMaster = {};
+
+                insertPathologyTestMaster['testName'] = this._TestService.myform.get('TestName').value || "";
+                insertPathologyTestMaster['printTestName'] = this._TestService.myform.get('PrintTestName').value || "";
+                insertPathologyTestMaster['categoryId'] = this._TestService.myform.get('CategoryId').value.CategoryId || 0;
+                insertPathologyTestMaster['isSubTest'] = this.Subtest// this._TestService.myform.get('IsSubTest').value;
+                insertPathologyTestMaster['techniqueName'] = this._TestService.myform.get('TechniqueName').value || "";
+                insertPathologyTestMaster['machineName'] = this._TestService.myform.get('MachineName').value || "";
+                insertPathologyTestMaster['suggestionNote'] = this._TestService.myform.get('SuggestionNote').value || "";
+                insertPathologyTestMaster['footNote'] = this._TestService.myform.get('FootNote').value || "";
+                insertPathologyTestMaster['isDeleted'] = this._TestService.myform.get('IsDeleted').value || 1;
+                insertPathologyTestMaster['addedBy'] = this.accountService.currentUserValue.user.id,
+                    insertPathologyTestMaster['serviceId'] = this.ServiceID,//this._TestService.myform.get('ServiceID').value.ServiceId || 0;
+                    insertPathologyTestMaster['isTemplateTest'] = this.Statusflag;
+                insertPathologyTestMaster['testId'] = 0;
+
+
+                let pathTestDetailMaster = []
+
+                this.DSTestList.data.forEach((element) => {
+                    console.log(element)
+                    let PathDetailsObj = {};
+                    PathDetailsObj['testId'] = 0;
+                    PathDetailsObj['subTestID'] = element.SubTestID || 0;
+                    PathDetailsObj['parameterID'] = element.ParameterID || 0;
+
+                    pathTestDetailMaster.push(PathDetailsObj);
+                });
+
+                console.log(pathTestDetailMaster)
+                if (!this.Statusflag) {
+
+                    submitData = {
+                        "insertPathologyTestMaster": insertPathologyTestMaster,
+                        "pathTestDetailMaster": pathTestDetailMaster
+
+                    };
+                }
+                console.log(submitData)
+                this._TestService.insertPathologyTestMaster(submitData).subscribe(response => {
+                    if (response) {
+                        this.toastr.success('Record Saved Successfully.', 'Saved !', {
+                            toastClass: 'tostr-tost custom-toast-success',
+                        });
+                        this.onClose();
+
+                    } else {
+                        this.toastr.error('New Test Master Data not saved !, Please check API error..', 'Error !', {
+                            toastClass: 'tostr-tost custom-toast-error',
+                        });
+                    }
+                });
+            }
+            else {
+
+                let updatePathologyTestMaster = {};
+
+                updatePathologyTestMaster['testName'] = this._TestService.myform.get('TestName').value || "";
+                updatePathologyTestMaster['printTestName'] = this._TestService.myform.get('PrintTestName').value || "";
+                updatePathologyTestMaster['categoryId'] = this._TestService.myform.get('CategoryId').value.CategoryId || 0;
+                updatePathologyTestMaster['isSubTest'] = this.Subtest,// this._TestService.myform.get('IsSubTest').value;
+                    updatePathologyTestMaster['techniqueName'] = this._TestService.myform.get('TechniqueName').value || "";
+                updatePathologyTestMaster['machineName'] = this._TestService.myform.get('MachineName').value || "";
+                updatePathologyTestMaster['suggestionNote'] = this._TestService.myform.get('SuggestionNote').value || "";
+                updatePathologyTestMaster['footNote'] = this._TestService.myform.get('FootNote').value || "";
+                updatePathologyTestMaster['isDeleted'] = this._TestService.myform.get('IsDeleted').value || 1;
+                updatePathologyTestMaster['updatedBy'] = this.accountService.currentUserValue.user.id,
+                    updatePathologyTestMaster['serviceId'] = this.ServiceID,// this._TestService.myform.get('ServiceID').value.ServiceId || 0;
+                    updatePathologyTestMaster['isTemplateTest'] = this.Statusflag;
+                updatePathologyTestMaster['testId'] = this.TestId;
+
+
+                let pathTestDetailMaster = [];
+                this.DSTestList.data.forEach((element) => {
+                    console.log(element)
+                    let PathDetailsObj = {};
+                    PathDetailsObj['testId'] = this.TestId;
+                    PathDetailsObj['subTestID'] = element.SubTestID || 0;
+                    PathDetailsObj['parameterID'] = element.ParameterID || 0;
+
+
+                    pathTestDetailMaster.push(PathDetailsObj);
+                });
+
+                let submitData;
+
+                if (!this.Statusflag) {
+
+                    let pathTestDetDeletesObj = {};
+                    pathTestDetDeletesObj['testId'] = this.TestId;
+
+                    submitData = {
+                        "updatePathologyTestMaster": updatePathologyTestMaster,
+                        "pathTestDetDelete": pathTestDetDeletesObj,
+                        "pathTestDetailMaster": pathTestDetailMaster
+
+                    };
+                }
+
+                console.log(submitData)
+                this._TestService.updatePathologyTestMaster(submitData).subscribe(response => {
+                    if (response) {
+                        this.toastr.success('Record Updated Successfully.', 'Saved !', {
+                            toastClass: 'tostr-tost custom-toast-success',
+                        });
+                        this.onClose();
+
+                    } else {
+                        this.toastr.error('New Test Master Data not Updated !, Please check API error..', 'Error !', {
+                            toastClass: 'tostr-tost custom-toast-error',
+                        });
+                    }
+                });
+
+            }
+        }
+        else {
+            if (!this._TestService.myform.get("TestId").value) {
+
+
+                if (this.Templatetdatasource.data.length == 0) {
+                    this.toastr.warning('Please select valid Template Data', 'Warning !', {
                         toastClass: 'tostr-tost custom-toast-warning',
                     });
                     return;
                 }
 
-                if (!this._TestService.myform.get("TestId").value) {
+                let insertPathologyTestMaster = {};
 
-                    let insertPathologyTestMaster = {};
-
-                    insertPathologyTestMaster['testName'] = this._TestService.myform.get('TestName').value || "";
-                    insertPathologyTestMaster['printTestName'] = this._TestService.myform.get('PrintTestName').value || "";
-                    insertPathologyTestMaster['categoryId'] = this._TestService.myform.get('CategoryId').value.CategoryId || 0;
-                    insertPathologyTestMaster['isSubTest'] = this.Subtest// this._TestService.myform.get('IsSubTest').value;
-                    insertPathologyTestMaster['techniqueName'] = this._TestService.myform.get('TechniqueName').value || "";
-                    insertPathologyTestMaster['machineName'] = this._TestService.myform.get('MachineName').value || "";
-                    insertPathologyTestMaster['suggestionNote'] = this._TestService.myform.get('SuggestionNote').value || "";
-                    insertPathologyTestMaster['footNote'] = this._TestService.myform.get('FootNote').value || "";
-                    insertPathologyTestMaster['isDeleted'] = this._TestService.myform.get('IsDeleted').value || 1;
-                    insertPathologyTestMaster['addedBy'] = this.accountService.currentUserValue.user.id,
-                        insertPathologyTestMaster['serviceId'] = this.ServiceID,//this._TestService.myform.get('ServiceID').value.ServiceId || 0;
+                insertPathologyTestMaster['testName'] = this._TestService.myform.get('TestName').value || "";
+                insertPathologyTestMaster['printTestName'] = this._TestService.myform.get('PrintTestName').value || "";
+                insertPathologyTestMaster['categoryId'] = this._TestService.myform.get('CategoryId').value.CategoryId || 0;
+                insertPathologyTestMaster['isSubTest'] = this.Subtest// this._TestService.myform.get('IsSubTest').value;
+                insertPathologyTestMaster['techniqueName'] = this._TestService.myform.get('TechniqueName').value || "";
+                insertPathologyTestMaster['machineName'] = this._TestService.myform.get('MachineName').value || "";
+                insertPathologyTestMaster['suggestionNote'] = this._TestService.myform.get('SuggestionNote').value || "";
+                insertPathologyTestMaster['footNote'] = this._TestService.myform.get('FootNote').value || "";
+                insertPathologyTestMaster['isDeleted'] = this._TestService.myform.get('IsDeleted').value || 1;
+                insertPathologyTestMaster['addedBy'] = this.accountService.currentUserValue.user.id,
+                    insertPathologyTestMaster['serviceId'] = this.ServiceID,//this._TestService.myform.get('ServiceID').value.ServiceId || 0;
                     insertPathologyTestMaster['isTemplateTest'] = this.Statusflag;
-                    insertPathologyTestMaster['testId'] = 0;
+                insertPathologyTestMaster['testId'] = 0;
 
 
-                    let pathTestDetailMaster = []
+                let pathologyTemplateTest = []
 
-                    this.DSTestList.data.forEach((element) => {
-                        console.log(element)
-                        let PathDetailsObj = {};
-                        PathDetailsObj['testId'] = 0;
-                        PathDetailsObj['subTestID'] = element.SubTestID || 0;
-                        PathDetailsObj['parameterID'] = element.ParameterID || 0;
+                this.Templatetdatasource.data.forEach((element) => {
+                    let PathDetailsObj = {};
+                    PathDetailsObj['TestId'] = 0;
+                    PathDetailsObj['TemplateId'] = element.TemplateId;
+                    pathologyTemplateTest.push(PathDetailsObj);
+                });
 
-                        pathTestDetailMaster.push(PathDetailsObj);
-                    });
+                submitData = {
+                    "insertPathologyTestMaster": insertPathologyTestMaster,
+                    "pathologyTemplateTest": pathologyTemplateTest
 
-                    console.log(pathTestDetailMaster)
-                    if (!this.Statusflag) {
+                };
 
-                        submitData = {
-                            "insertPathologyTestMaster": insertPathologyTestMaster,
-                            "pathTestDetailMaster": pathTestDetailMaster
+                console.log(submitData)
+                this._TestService.insertPathologyTestMaster(submitData).subscribe(response => {
+                    if (response) {
+                        this.toastr.success('Record Saved Successfully.', 'Saved !', {
+                            toastClass: 'tostr-tost custom-toast-success',
+                        });
+                        this.onClose();
 
-                        };
+                    } else {
+                        this.toastr.error('New Test Master Data not saved !, Please check API error..', 'Error !', {
+                            toastClass: 'tostr-tost custom-toast-error',
+                        });
                     }
-                    console.log(submitData)
-                    this._TestService.insertPathologyTestMaster(submitData).subscribe(response => {
-                        if (response) {
-                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                            });
-                            this.onClose();
-
-                        } else {
-                            this.toastr.error('New Test Master Data not saved !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                            });
-                        }
-                    });
-                }
-                else {
-
-                    let updatePathologyTestMaster = {};
-
-                    updatePathologyTestMaster['testName'] = this._TestService.myform.get('TestName').value || "";
-                    updatePathologyTestMaster['printTestName'] = this._TestService.myform.get('PrintTestName').value || "";
-                    updatePathologyTestMaster['categoryId'] = this._TestService.myform.get('CategoryId').value.CategoryId || 0;
-                    updatePathologyTestMaster['isSubTest'] = this.Subtest,// this._TestService.myform.get('IsSubTest').value;
-                        updatePathologyTestMaster['techniqueName'] = this._TestService.myform.get('TechniqueName').value || "";
-                    updatePathologyTestMaster['machineName'] = this._TestService.myform.get('MachineName').value || "";
-                    updatePathologyTestMaster['suggestionNote'] = this._TestService.myform.get('SuggestionNote').value || "";
-                    updatePathologyTestMaster['footNote'] = this._TestService.myform.get('FootNote').value || "";
-                    updatePathologyTestMaster['isDeleted'] = this._TestService.myform.get('IsDeleted').value || 1;
-                    updatePathologyTestMaster['updatedBy'] = this.accountService.currentUserValue.user.id,
-                        updatePathologyTestMaster['serviceId'] =this.ServiceID,// this._TestService.myform.get('ServiceID').value.ServiceId || 0;
-                    updatePathologyTestMaster['isTemplateTest'] = this.Statusflag;
-                    updatePathologyTestMaster['testId'] = this.TestId;
-
-
-                    let pathTestDetailMaster = [];
-                    this.DSTestList.data.forEach((element) => {
-                        console.log(element)
-                        let PathDetailsObj = {};
-                        PathDetailsObj['testId'] = this.TestId;
-                        PathDetailsObj['subTestID'] = element.SubTestID ||0;
-                        PathDetailsObj['parameterID'] = element.ParameterID || 0;
-
-
-                        pathTestDetailMaster.push(PathDetailsObj);
-                    });
-
-                    let submitData;
-
-                    if (!this.Statusflag) {
-
-                        let pathTestDetDeletesObj = {};
-                        pathTestDetDeletesObj['testId'] = this.TestId;
-
-                        submitData = {
-                            "updatePathologyTestMaster": updatePathologyTestMaster,
-                            "pathTestDetDelete": pathTestDetDeletesObj,
-                            "pathTestDetailMaster": pathTestDetailMaster
-
-                        };
-                    }
-
-                    console.log(submitData)
-                    this._TestService.updatePathologyTestMaster(submitData).subscribe(response => {
-                        if (response) {
-                            this.toastr.success('Record Updated Successfully.', 'Saved !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                            });
-                            this.onClose();
-
-                        } else {
-                            this.toastr.error('New Test Master Data not Updated !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                            });
-                        }
-                    });
-
-                }
+                });
             }
             else {
-                if (!this._TestService.myform.get("TestId").value) {
 
+                let updatePathologyTestMasterobj = {};
 
-                    if (this.Templatetdatasource.data.length == 0) {
-                        this.toastr.warning('Please select valid Template Data', 'Warning !', {
-                            toastClass: 'tostr-tost custom-toast-warning',
-                        });
-                        return;
-                    }
-
-                    let insertPathologyTestMaster = {};
-
-                    insertPathologyTestMaster['testName'] = this._TestService.myform.get('TestName').value || "";
-                    insertPathologyTestMaster['printTestName'] = this._TestService.myform.get('PrintTestName').value || "";
-                    insertPathologyTestMaster['categoryId'] = this._TestService.myform.get('CategoryId').value.CategoryId || 0;
-                    insertPathologyTestMaster['isSubTest'] = this.Subtest// this._TestService.myform.get('IsSubTest').value;
-                    insertPathologyTestMaster['techniqueName'] = this._TestService.myform.get('TechniqueName').value || "";
-                    insertPathologyTestMaster['machineName'] = this._TestService.myform.get('MachineName').value || "";
-                    insertPathologyTestMaster['suggestionNote'] = this._TestService.myform.get('SuggestionNote').value || "";
-                    insertPathologyTestMaster['footNote'] = this._TestService.myform.get('FootNote').value || "";
-                    insertPathologyTestMaster['isDeleted'] = this._TestService.myform.get('IsDeleted').value || 1;
-                    insertPathologyTestMaster['addedBy'] = this.accountService.currentUserValue.user.id,
-                        insertPathologyTestMaster['serviceId'] =this.ServiceID,//this._TestService.myform.get('ServiceID').value.ServiceId || 0;
-                    insertPathologyTestMaster['isTemplateTest'] = this.Statusflag;
-                    insertPathologyTestMaster['testId'] = 0;
-
-
-                    let pathologyTemplateTest = []
-
-                    this.Templatetdatasource.data.forEach((element) => {
-                        let PathDetailsObj = {};
-                        PathDetailsObj['TestId'] = 0;
-                        PathDetailsObj['TemplateId'] = element.TemplateId;
-                        pathologyTemplateTest.push(PathDetailsObj);
-                    });
-
-                    submitData = {
-                        "insertPathologyTestMaster": insertPathologyTestMaster,
-                        "pathologyTemplateTest": pathologyTemplateTest
-
-                    };
-
-                    console.log(submitData)
-                    this._TestService.insertPathologyTestMaster(submitData).subscribe(response => {
-                        if (response) {
-                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                            });
-                            this.onClose();
-
-                        } else {
-                            this.toastr.error('New Test Master Data not saved !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                            });
-                        }
-                    });
-                }
-                else {
-
-                    let updatePathologyTestMasterobj = {};
-
-                    updatePathologyTestMasterobj['testName'] = this._TestService.myform.get('TestName').value || "";
-                    updatePathologyTestMasterobj['printTestName'] = this._TestService.myform.get('PrintTestName').value || "";
-                    updatePathologyTestMasterobj['categoryId'] = this._TestService.myform.get('CategoryId').value.CategoryId || 0;
-                    updatePathologyTestMasterobj['isSubTest'] = this.Subtest,// this._TestService.myform.get('IsSubTest').value;
-                        updatePathologyTestMasterobj['techniqueName'] = this._TestService.myform.get('TechniqueName').value || "";
-                    updatePathologyTestMasterobj['machineName'] = this._TestService.myform.get('MachineName').value || "";
-                    updatePathologyTestMasterobj['suggestionNote'] = this._TestService.myform.get('SuggestionNote').value || "";
-                    updatePathologyTestMasterobj['footNote'] = this._TestService.myform.get('FootNote').value || "";
-                    updatePathologyTestMasterobj['isDeleted'] = this._TestService.myform.get('IsDeleted').value || 1;
-                    updatePathologyTestMasterobj['updatedBy'] = this.accountService.currentUserValue.user.id,
-                        updatePathologyTestMasterobj['serviceId'] =this.ServiceID,// this._TestService.myform.get('ServiceID').value.ServiceId || 0;
+                updatePathologyTestMasterobj['testName'] = this._TestService.myform.get('TestName').value || "";
+                updatePathologyTestMasterobj['printTestName'] = this._TestService.myform.get('PrintTestName').value || "";
+                updatePathologyTestMasterobj['categoryId'] = this._TestService.myform.get('CategoryId').value.CategoryId || 0;
+                updatePathologyTestMasterobj['isSubTest'] = this.Subtest,// this._TestService.myform.get('IsSubTest').value;
+                    updatePathologyTestMasterobj['techniqueName'] = this._TestService.myform.get('TechniqueName').value || "";
+                updatePathologyTestMasterobj['machineName'] = this._TestService.myform.get('MachineName').value || "";
+                updatePathologyTestMasterobj['suggestionNote'] = this._TestService.myform.get('SuggestionNote').value || "";
+                updatePathologyTestMasterobj['footNote'] = this._TestService.myform.get('FootNote').value || "";
+                updatePathologyTestMasterobj['isDeleted'] = this._TestService.myform.get('IsDeleted').value || 1;
+                updatePathologyTestMasterobj['updatedBy'] = this.accountService.currentUserValue.user.id,
+                    updatePathologyTestMasterobj['serviceId'] = this.ServiceID,// this._TestService.myform.get('ServiceID').value.ServiceId || 0;
                     updatePathologyTestMasterobj['isTemplateTest'] = this.Statusflag;
-                    updatePathologyTestMasterobj['testId'] = this.TestId;
+                updatePathologyTestMasterobj['testId'] = this.TestId;
 
 
-                    let pathologyTemplateTest = []
+                let pathologyTemplateTest = []
 
-                    this.Templatetdatasource.data.forEach((element) => {
-                        let PathDetailsObj = {};
-                        PathDetailsObj['TestId'] = this.TestId;
-                        PathDetailsObj['TemplateId'] = element.TemplateId;
-                        pathologyTemplateTest.push(PathDetailsObj);
-                    });
+                this.Templatetdatasource.data.forEach((element) => {
+                    let PathDetailsObj = {};
+                    PathDetailsObj['TestId'] = this.TestId;
+                    PathDetailsObj['TemplateId'] = element.TemplateId;
+                    pathologyTemplateTest.push(PathDetailsObj);
+                });
 
-                    let pathTemplateDetDelete = {}
-                    pathTemplateDetDelete['testId'] = this.TestId;
+                let pathTemplateDetDelete = {}
+                pathTemplateDetDelete['testId'] = this.TestId;
 
-                    let updatePathologyTemplate = {};
-                    updatePathologyTemplate['testId'] = this.TestId;
-                    updatePathologyTemplate['templateId'] = this.TemplateId;
+                let updatePathologyTemplate = {};
+                updatePathologyTemplate['testId'] = this.TestId;
+                updatePathologyTemplate['templateId'] = this.TemplateId;
 
-                    submitData = {
-                        "updatePathologyTestMaster": updatePathologyTestMasterobj,
-                        "pathTemplateDetDelete": pathTemplateDetDelete,
-                        "pathologyTemplateTest": pathologyTemplateTest
-                    };
+                submitData = {
+                    "updatePathologyTestMaster": updatePathologyTestMasterobj,
+                    "pathTemplateDetDelete": pathTemplateDetDelete,
+                    "pathologyTemplateTest": pathologyTemplateTest
+                };
 
 
-                    console.log(submitData)
-                    this._TestService.updatePathologyTestMaster(submitData).subscribe(response => {
-                        if (response) {
-                            this.toastr.success('Record Updated Successfully.', 'Saved !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                            });
-                            this.onClose();
-                            // this.onClear()
+                console.log(submitData)
+                this._TestService.updatePathologyTestMaster(submitData).subscribe(response => {
+                    if (response) {
+                        this.toastr.success('Record Updated Successfully.', 'Saved !', {
+                            toastClass: 'tostr-tost custom-toast-success',
+                        });
+                        this.onClose();
+                        // this.onClear()
 
-                        } else {
-                            this.toastr.error('New Test Master Data not Updated !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                            });
-                        }
-                    });
-
-                }
+                    } else {
+                        this.toastr.error('New Test Master Data not Updated !, Please check API error..', 'Error !', {
+                            toastClass: 'tostr-tost custom-toast-error',
+                        });
+                    }
+                });
 
             }
 
-
-
         }
 
 
-        getTemplateList() {
-            debugger
-            // var data={
-            //     "Id":0
-            // }
-            this._TestService.getTemplateCombo().subscribe(data => {
-                this.TemplateList = data;
-                console.log(data)
-                this.optionsTemplate = this.TemplateList.slice();
-                this.filteredOptionsisTemplate = this._TestService.mytemplateform.get('TemplateName').valueChanges.pipe(
-                    startWith(''),
-                    map(value => value ? this._filterTemplate(value) : this.TemplateList.slice()),
-                );
 
-            });
-        }
+    }
+
+
+    getTemplateList() {
+        debugger
+        // var data={
+        //     "Id":0
+        // }
+        this._TestService.getTemplateCombo().subscribe(data => {
+            this.TemplateList = data;
+            console.log(data)
+            this.optionsTemplate = this.TemplateList.slice();
+            this.filteredOptionsisTemplate = this._TestService.mytemplateform.get('TemplateName').valueChanges.pipe(
+                startWith(''),
+                map(value => value ? this._filterTemplate(value) : this.TemplateList.slice()),
+            );
+
+        });
+    }
 
     private _filterTemplate(value: any): string[] {
         if (value) {
@@ -879,8 +882,8 @@ export class TestList {
     IsNumeric: any;
     TestName: any
     SubTestID: any;
-    TestId:any;
-    ParameterId:any;
+    TestId: any;
+    ParameterId: any;
     /**
      * Constructor
      *

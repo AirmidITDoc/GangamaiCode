@@ -32,8 +32,6 @@
                                         [(ngModel)]="vshortName" placeholder="Select StoreShortName Name" matInput
                                         required type="text" (keyup.enter)="focusNext('StoreName')">
                                 </mat-form-field>
-                            </div>
-                            <div>
                                 <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                                     <mat-label>StoreName</mat-label>
                                     <input name="StoreName" formControlName="StoreName" placeholder="Select Store Name"
@@ -41,6 +39,7 @@
                                         (keyup.enter)="focusNext('IndentPrefix')" #StoreName>
                                 </mat-form-field>
                             </div>
+                           
 
 
                             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" aria-setsize="70">

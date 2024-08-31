@@ -67,12 +67,12 @@ export class RadiologyTestMasterService {
 
   // TemplateMaster Combobox List dropdown
   public gettemplateMasterCombo() {
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RadiologyTemplateMasterForComboMaster", {})
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_RadioTemplateMasterForComboMaster", {})
   }
 
   // TemplateMaster Combobox List
-  public gettemplateMasterComboList(param) {
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RadiologyTemplateMasterForComboMaster", param)
+  public gettemplateMasterComboList(emp) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Retrieve_RadTemplateMasterForCombo",emp)
   }
   public updateRadiologyTestMaster(employee) {
     return this._httpClient.post("RadiologyMaster/RadiologyTestMasterUpdate", employee);

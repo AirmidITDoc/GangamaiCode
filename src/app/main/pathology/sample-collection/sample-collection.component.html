@@ -224,7 +224,7 @@
                                                 <span> {{contact.WardName || '--'}}</span>
                                             </mat-cell>
                                         </ng-container>
-
+                                        <!-- *ngIf="!contact.IsSampleCollection" -->
                                         <ng-container matColumnDef="buttons" stickyEnd>
                                             <mat-header-cell *matHeaderCellDef class="table-actions" style="color: white;">
                                                 Action
@@ -232,7 +232,7 @@
 
                                             <mat-cell *matCellDef="let contact"> 
                                                 <button mat-icon-button matTooltip="Edit" (click)="getSampleRecords(contact)">
-                                                    <mat-icon title="New form" *ngIf="!contact.IsSampleCollection">edit</mat-icon>
+                                                    <mat-icon title="New form" >edit</mat-icon>
                                                 </button>
                                             </mat-cell>
                                         </ng-container> 

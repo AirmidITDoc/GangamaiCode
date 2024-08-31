@@ -49,7 +49,7 @@ export class StoreFormMasterComponent implements OnInit {
     vReturnFromDeptNo: any;
     registerObj: any;
     vStoreId: any;
-    vDeleted: any;
+    vDeleted: any=1;
     checkradiobtn: any;
 
     constructor(
@@ -61,7 +61,7 @@ export class StoreFormMasterComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        if (this.data.Obj) {
+        if (this.data) {
             this.registerObj = this.data.Obj;
             console.log(this.registerObj);
             this.vStoreId = this.registerObj.StoreId;
@@ -217,10 +217,6 @@ export class StoreFormMasterComponent implements OnInit {
                             toastClass: 'tostr-tost custom-toast-error',
                         });
                     }
-                }, error => {
-                    this.toastr.error('Store-Form not saved !, Please check API error..', 'Error !', {
-                        toastClass: 'tostr-tost custom-toast-error',
-                    });
                 });
             } else {
                 this.Savebtn = true;
@@ -259,10 +255,6 @@ export class StoreFormMasterComponent implements OnInit {
                             toastClass: 'tostr-tost custom-toast-error',
                         });
                     }
-                }, error => {
-                    this.toastr.error('Store-Form not updated !, Please check API error..', 'Error !', {
-                        toastClass: 'tostr-tost custom-toast-error',
-                    });
                 });
             }
         }

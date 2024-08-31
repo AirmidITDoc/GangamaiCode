@@ -316,7 +316,7 @@
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <mat-form-field appearance="outline" fxFlex>
                         <mat-label>ESINO</mat-label>
-                        <input name="ESINO" formControlName="ESINO" matInput placeholder="Enter ESINO" maxlength="10"
+                        <input name="ESINO" formControlName="ESINO" matInput placeholder="Enter ESINO" maxlength="10" required
                             [(ngModel)]="registerObj.ESINO">
                         <mat-error>Please enter ESINO </mat-error>
                     </mat-form-field>
@@ -343,7 +343,7 @@
                     <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Education</mat-label>
                         <input name="Education" formControlName="Education" matInput
-                            [ngClass]="{ 'is-invalid': submitted && f.Education.errors }" placeholder="Enter Education"
+                            [ngClass]="{ 'is-invalid': submitted && f.Education.errors }" placeholder="Enter Education" required
                             [(ngModel)]="registerObj.Education">
                         <span class="error" *ngIf="f.Education.invalid && f.Education.touched">Education required Enter
                             only

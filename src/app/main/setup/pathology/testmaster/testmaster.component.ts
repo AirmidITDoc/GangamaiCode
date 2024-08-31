@@ -296,20 +296,20 @@ export class TestmasterComponent implements OnInit {
 
     onEdit(row) {
 
-        if (row.IsNumericParameter == 1) {
-            this._TestService.getTestListfor(row.TestId).subscribe(Visit => {
-                row['TestList'] = Visit;
-                console.log(Visit)
+        // if (row.IsNumericParameter == 1) {
+        //     this._TestService.getTestListfor(row.TestId).subscribe(Visit => {
+        //         row['TestList'] = Visit;
+        //         console.log(Visit)
 
-            });
-        } else if (row.IsNumericParameter == 0) {
+        //     });
+        // } else if (row.IsNumericParameter == 0) {
 
-            this._TestService.getTemplateListfor(row.TestId).subscribe(Visit => {
-                row['descriptiveList'] = Visit;
-                console.log(Visit)
-            });
+        //     this._TestService.getTemplateListfor(row.TestId).subscribe(Visit => {
+        //         row['descriptiveList'] = Visit;
+        //         console.log(Visit)
+        //     });
 
-        }
+        // }
         row.IsDeleted=JSON.stringify(row.Isdeleted)
         this._TestService.populateForm(row);
         const dialogRef = this._matDialog.open(TestFormMasterComponent, {

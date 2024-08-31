@@ -99,7 +99,7 @@ export class RadiologyTemplateFormComponent implements OnInit {
       insertRadiologyTemp['templateName'] = this._radiologytemplateService.myform.get("TemplateName").value;
       insertRadiologyTemp['templateDesc'] = this._radiologytemplateService.myform.get("TemplateDesc").value;
       insertRadiologyTemp['TemplateDescInHTML'] = this._radiologytemplateService.myform.get("TemplateDesc").value;
-      insertRadiologyTemp['IsDeleted '] = 1;
+      insertRadiologyTemp['Isdeleted'] = this._radiologytemplateService.myform.get("IsDeleted").value ||1;
       insertRadiologyTemp['addedBy'] = this.accountService.currentUserValue.user.id;
 
       let submitData = {};
@@ -131,7 +131,7 @@ export class RadiologyTemplateFormComponent implements OnInit {
       updateRadiologyTemp['templateName'] = this._radiologytemplateService.myform.get("TemplateName").value;
       updateRadiologyTemp['templateDesc'] = this._radiologytemplateService.myform.get("TemplateDesc").value;
       updateRadiologyTemp['TemplateDescInHTML'] = this._radiologytemplateService.myform.get("TemplateDesc").value;
-      updateRadiologyTemp['IsDeleted'] = 1;
+      updateRadiologyTemp['Isdeleted'] = this._radiologytemplateService.myform.get("IsDeleted").value ||1;
       updateRadiologyTemp['updatedBy'] = this.accountService.currentUserValue.user.id;
 
       let submitData = {};

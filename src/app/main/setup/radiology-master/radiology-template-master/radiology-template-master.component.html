@@ -60,7 +60,7 @@
 
                         <div fxlayout="row">
                             <div class="content-card">
-                                <div class="table-header" style="margin-left: 1480px;">
+                                <div class="table-header" style="margin-left: 1280px;">
                                     <div fxLayout="row wrap" fxLayoutAlign="space-between center">
 
                                         <div class="table-header-right">
@@ -159,10 +159,10 @@
                                             </mat-footer-cell>
                                         </ng-container>
 
-                                        <mat-header-row class="accent min-width-1400"
+                                        <mat-header-row class="accent min-width-1300"
                                         *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
                                         <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
-                                        class=" min-width-1400" [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                        class=" min-width-1300" [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                         <mat-footer-row *matFooterRowDef="['loading']"
                                             [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
                                         <mat-footer-row *matFooterRowDef="['noData']"
