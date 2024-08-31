@@ -501,6 +501,7 @@ export class GoodReceiptnoteComponent implements OnInit {
         this.toastr.success('Record Verified Successfully.', 'Verified !', {
           toastClass: 'tostr-tost custom-toast-success',
         });
+        this.getGRNList();
       } else {
         this.toastr.error('Record Not Verified !, Please check error..', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',

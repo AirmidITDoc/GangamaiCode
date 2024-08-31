@@ -135,7 +135,7 @@ export class DischargeSummaryComponent implements OnInit {
       this.getDischargeSummaryData(this.registerObj) 
     } 
   }
-
+  IsDeath:any;
   ngOnInit(): void {
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
@@ -151,7 +151,14 @@ export class DischargeSummaryComponent implements OnInit {
     this.getAdmissionInfo();
     //this.getDischargeSummaryData();
     this.getdischargeIdbyadmission();
-    this.getDoseList();  
+    this.getDoseList(); 
+    
+    if(this.vIsNormalDeath == 'True'){
+      this.IsDeath = 1;
+    }else{
+      this.IsDeath = 0;
+    }
+
   }
 
   getDateTime(dateTimeObj) {
@@ -495,9 +502,11 @@ bp:any=1000;
        debugger
        if(this.IsNormalDeath == 1){
         this.vIsNormalDeath = true;
+        this.DischargesumForm.get("IsNormalOrDeath").setValue('True');
        }
        else{
         this.vIsNormalDeath = false;
+        this.DischargesumForm.get("IsNormalOrDeath").setValue('false');
        } 
     }); 
   }
@@ -734,6 +743,9 @@ viewgetDischargesummaryPdf(AdmId) {
         }
       });
   });
+}
+SetDeathOrNormal(){
+  
 }
 }
 
