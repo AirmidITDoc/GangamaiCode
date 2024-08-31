@@ -189,10 +189,9 @@ descriptiveList = [];
 numericList = [];
 
     populateForm(param) {
-        debugger;
-        this.myform.patchValue(param);
+       this.myform.patchValue(param);
        
-        this.numericList = param.TestList;
-        this.descriptiveList = param.descriptiveList;
+        // this.numericList = param.TestList;
+        // this.descriptiveList = param.descriptiveList;
     }
 }

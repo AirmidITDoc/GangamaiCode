@@ -154,7 +154,7 @@ debugger
     const dialogRef = this._matDialog.open(UpdateradiologymasterComponent,
       {
            maxWidth: "80%", 
-            width: "80%",
+            width: "95%",
             height: "85%",
       });
     dialogRef.afterClosed().subscribe(result => {
@@ -163,21 +163,22 @@ debugger
     });
   }
   onEdit(row) {
-    var m_data = {
-      "TestId": row.TestId, 
-      "TestName": row.TestName.trim(),
-      "PrintTestName":row.PrintTestName,
-      "CategoryId": row.CategoryName,
-      "ServiceId": row.ServiceName,
-      "IsDeleted": JSON.stringify(row.Isdeleted),
-      "UpdatedBy": row.UpdatedBy,
-    };
+    // var m_data = {
+    //   "TestId": row.TestId, 
+    //   "TestName": row.TestName.trim(),
+    //   "PrintTestName":row.PrintTestName,
+    //   "CategoryId": row.CategoryName,
+    //   "ServiceId": row.ServiceName,
+    //   "IsDeleted": JSON.stringify(row.Isdeleted),
+    //   "UpdatedBy": row.UpdatedBy,
+    // };
+
+    row["IsDeleted"]= JSON.stringify(row.IsActive)
     console.log(row)
-    console.log(m_data)
-    this._radiologytestService.populateForm(m_data);
+    this._radiologytestService.populateForm(row);
     const dialogRef = this._matDialog.open(UpdateradiologymasterComponent, {
       maxWidth: "80%", 
-      width: "80%",
+      width: "95%",
       height: "85%",
         data : {
             Obj : row,

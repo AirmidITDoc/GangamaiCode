@@ -303,8 +303,7 @@
                                                 Action</mat-header-cell>
                                             <mat-cell *matCellDef="let contact">
                                                 <!-- *ngIf="conatct.IsTemplateTest==0" -->
-                                                <button mat-icon-button class="material-icons" (click)="onsamplecolltion(contact)" matTooltip="Sample Collection"
-                                               >
+                                                <button mat-icon-button class="material-icons" (click)="onsamplecolltion(contact)" matTooltip="Sample Collection">
                                                     <mat-icon title="Sample Collection">description</mat-icon>
                                                 </button>
 
@@ -365,9 +364,11 @@
                                       Result Entry
                                     </button>
                                     <button mat-raised-button (click)="Printresultentry()" *ngIf="selection.selected.length>0">
-                                          Print
+                                          Print Result
                                      </button>
-
+                                     <!-- <button mat-raised-button (click)="getPrint(contact)" *ngIf="selection.selected.length>0">
+                                        Print Template
+                                      </button> -->
                                     <mat-table class="mat-table-2 h-210" #table matSort [dataSource]="dataSource1" [@animateStagger]="{value:'50'}">
                                         <ng-container matColumnDef="select">
                                             <th mat-header-cell *matHeaderCellDef>

@@ -234,7 +234,7 @@ export class RadiologyTemplateMasterComponent implements OnInit {
     }
 }
   onFilterChange() {
-       
+       debugger
     if (this.currentStatus == 1) {
         this.tempList.data = []
         this.dataSource1.data= this.dataSource.data
@@ -242,7 +242,7 @@ export class RadiologyTemplateMasterComponent implements OnInit {
             if (item.IsActive) this.tempList.data.push(item)
   
         }
-  debugger
+  
         this.dataSource.data = [];
         this.dataSource.data = this.tempList.data;
     }

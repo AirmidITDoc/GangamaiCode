@@ -14,10 +14,9 @@
                 "New Radiology Test Master"}}
             </span>
             <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog"
-                style="margin-left: 1000px;">
-                <mat-icon>close</mat-icon>
-            </button>
-
+            style="margin-left:900px;">
+            <mat-icon>close</mat-icon>
+        </button>
         </div>
     </mat-toolbar>
 
@@ -139,7 +138,7 @@
 
 
                                                 </div>
-                                                <mat-card style="height:330px;width:100%;">
+                                                <mat-card style="height:300px;width:100%;">
                                                     <mat-table  matSort [dataSource]="DSTestList"
                                                         [@animateStagger]="{value:'50'}"
                                                         style="overflow:auto; width: 100%;">

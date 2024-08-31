@@ -62,7 +62,7 @@ export class RadiologyTemplateMasterService {
   }
   public gettemplateCombo(Id)
   {
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RadTemplateMasterForCombo",{Id:1});
+    return this._httpClient.post("Generic/GetByProc?procName=m_Retrieve_RadTemplateMasterForCombo",{Id:1});
   }
   public getdoctorCombo()
   {

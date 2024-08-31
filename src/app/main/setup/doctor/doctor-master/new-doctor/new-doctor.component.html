@@ -206,7 +206,7 @@
                     <mat-form-field appearance="outline" fxFlex>
                         <mat-label>AadharCard Number</mat-label>
                         <input name="AadharCardNo" formControlName="AadharCardNo" placeholder="AadharCard Number"
-                            matInput [(ngModel)]="registerObj.AADHARCARDNO" #AadharCardNo
+                            matInput [(ngModel)]="registerObj.AADHARCARDNO" #AadharCardNo 
                             (keydown)="onEnterAadharCardNo($event)"
                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);">
                         <mat-error class="error"
@@ -276,7 +276,7 @@
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <mat-form-field appearance="outline" fxFlex>
                         <mat-label>ESINO</mat-label>
-                        <input name="ESINO" formControlName="ESINO" matInput placeholder="Enter ESINO" maxlength="10"
+                        <input name="ESINO" formControlName="ESINO" matInput placeholder="Enter ESINO" maxlength="10" required
                             [(ngModel)]="registerObj.ESINO">
                         <mat-error>Please enter ESINO </mat-error>
                     </mat-form-field>
@@ -284,7 +284,7 @@
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <mat-form-field appearance="outline" fxFlex>
                         <mat-label>RegNo</mat-label>
-                        <input name="RegNo" formControlName="RegNo" matInput placeholder="Enter RegNo"  maxlength="10"
+                        <input name="RegNo" formControlName="RegNo" matInput placeholder="Enter RegNo"  maxlength="10" required
                             [(ngModel)]="registerObj.REGNO">
                         <mat-error>Please enter RegNo </mat-error>
                     </mat-form-field>
@@ -293,7 +293,7 @@
                     <mat-form-field appearance="outline" fxFlex>
                         
                         <mat-label>Reg date</mat-label>
-                        <input name="RegDate" matInput [matDatepicker]="picker1" formControllName="RegDate"
+                        <input name="RegDate" matInput [matDatepicker]="picker1" formControllName="RegDate" required
                             [value]="registerObj.RegDate1">
                         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                         <mat-datepicker #picker1></mat-datepicker>
@@ -303,7 +303,7 @@
                     <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Education</mat-label>
                         <input name="Education" formControlName="Education" matInput
-                            [ngClass]="{ 'is-invalid': submitted && f.Education.errors }" placeholder="Enter Education"
+                            [ngClass]="{ 'is-invalid': submitted && f.Education.errors }" placeholder="Enter Education" required
                             [(ngModel)]="registerObj.Education">
                         <span class="error" *ngIf="f.Education.invalid && f.Education.touched">Education required Enter
                             only
@@ -313,7 +313,7 @@
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <mat-form-field appearance="outline" fxFlex>
                         <mat-label>MAHRegNo</mat-label>
-                        <input name="MahRegNo" formControlName="MahRegNo" matInput placeholder="Enter MahRegNo"  maxlength="10"
+                        <input name="MahRegNo" formControlName="MahRegNo" matInput placeholder="Enter MahRegNo"  maxlength="10" required
                             [(ngModel)]="registerObj.MAHREGNO">
                         <mat-error>Please enter MahRegNo </mat-error>
                     </mat-form-field>
@@ -321,7 +321,7 @@
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <mat-form-field appearance="outline" fxFlex>
                         <mat-label>MahReg date</mat-label>
-                        <input name="MahRegDate" matInput [matDatepicker]="picker2" formControllName="MahRegDate"
+                        <input name="MahRegDate" matInput [matDatepicker]="picker2" formControllName="MahRegDate" required
                             [value]="registerObj.MahRegDate1">
                         <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                         <mat-datepicker #picker2></mat-datepicker>
