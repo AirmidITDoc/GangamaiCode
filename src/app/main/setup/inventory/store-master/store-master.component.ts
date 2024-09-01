@@ -45,6 +45,9 @@ export class StoreMasterComponent implements OnInit {
     msg: any;
     step = 0;
     resultsLength=0;
+    sIsLoading: string = '';
+    currentStatus = 2;
+    
     setStep(index: number) {
         this.step = index;
     }
@@ -98,26 +101,53 @@ export class StoreMasterComponent implements OnInit {
         });
     }
 
+  
+
     onDeactive(StoreId) {
-        this.confirmDialogRef = this._matDialog.open(
-            FuseConfirmDialogComponent,
-            {
-                disableClose: false,
-            }
-        );
-        this.confirmDialogRef.componentInstance.confirmMessage =
-            "Are you sure you want to deactive?";
-        this.confirmDialogRef.afterClosed().subscribe((result) => {
-            if (result) {
-                let Query =
-                    "Update M_StoreMaster set IsDeleted=0 where StoreId=" +
-                    StoreId;
+
+       
+        Swal.fire({
+            title: 'Confirm Status',
+            text: 'Are you sure you want to Change Status?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes,Change Status!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let Query
+                if (!this.DSStoreMasterList.data.find(item => item.StoreId === StoreId).IsDeleted) {
+                    Query = "Update M_StoreMaster set IsDeleted=1 where StoreId=" + StoreId;
+                    
+                }
+                else {
+                     Query = "Update M_StoreMaster set Isdeleted=0 where StoreId=" + StoreId;
+                }
                 console.log(Query);
-                this._StoreService.deactivateTheStatus(Query).subscribe((data) => (this.msg = data));
-                this.getStoreMasterList();
+                this._StoreService.deactivateTheStatus(Query)
+                    .subscribe((data) => {
+                        // Handle success response
+                        Swal.fire('Changed!', 'Store Status has been Changed.', 'success');
+                        this.getStoreMasterList();
+                    }, (error) => {
+                        // Handle error response
+                        Swal.fire('Error!', 'Failed to deactivate category.', 'error');
+                    });
             }
-            this.confirmDialogRef = null;
         });
+    }
+
+    toggle(val: any) {
+        if (val == "2") {
+            this.currentStatus = 2;
+        } else if (val == "1") {
+            this.currentStatus = 1;
+        }
+        else {
+            this.currentStatus = 0;
+
+        }
     }
 
   
@@ -176,7 +206,7 @@ export class StoreMaster {
     IsDeleted: boolean;
     AddedBy: number;
     UpdatedBy: number;
-   
+    Header:any;
     IsDeletedSearch: number;
 
     /**
@@ -205,7 +235,7 @@ export class StoreMaster {
             this.IsDeleted = StoreMaster.IsDeleted || "false";
             this.AddedBy = StoreMaster.AddedBy || "";
             this.UpdatedBy = StoreMaster.UpdatedBy || "";
-           
+           this.Header=StoreMaster.Header || '';
             this.IsDeletedSearch = StoreMaster.IsDeletedSearch || "";
         }
     }

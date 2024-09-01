@@ -3,7 +3,7 @@
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Sample Detail Collection2</span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Sample Detail Collection</span>
             </div>
             <div class="modal-header-right">
                 <div class="comman-date-container">
@@ -132,7 +132,8 @@
                 <div class="modal-card-container table-container">
                     <mat-card>
                         <div class="table-wrapper">
-                            <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" class="h-280">
+                            <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" class="h-275"
+                            style="overflow: auto;">
                              
                                 <ng-container matColumnDef="select">
                                     <th mat-header-cell *matHeaderCellDef>
@@ -254,7 +255,7 @@
                                     </form>
                                 </div>
                                 <div>
-                                    <div fxLayout="row" fxLayoutGap="5px" style="padding: 5px 50px 0px 0px;">
+                                    <div fxLayout="row" fxLayoutGap="5px">
                                         <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
                                         <button type="button" class="btn btn-primary" (click)="onSave()">Save</button>
                                     </div>

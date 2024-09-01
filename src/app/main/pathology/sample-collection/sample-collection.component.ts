@@ -284,8 +284,8 @@ export class SampleCollectionComponent implements OnInit {
 
     const dialogRef1 = this._matDialog1.open(SampledetailtwoComponent,
       {
-        maxWidth: "90vw",
-        height: '90vh',
+        maxWidth: "70vw",
+        height: '95vh',
         width: '100%',
         data: {
          regobj:contact

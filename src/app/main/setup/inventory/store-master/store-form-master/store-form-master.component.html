@@ -145,28 +145,19 @@
                             </div>
 
                             <div>
-                                <!-- <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='1'
-                                    [(ngModel)]="vDeleted">
-                                    <mat-radio-button value='1' class="mr-sm-12"
-                                        fxFlex="10%">IsActive</mat-radio-button>
-                                    <mat-radio-button value='0' class="mr-sm-12"
-                                        fxFlex="20%">IsDeactive</mat-radio-button>
-                                </mat-radio-group> -->
-
-                                <mat-radio-group [(ngModel)]="vDeleted" formControlName="IsDeleted">
-                                    <mat-radio-button [value]="1">IsActive</mat-radio-button>
-                                    <mat-radio-button [value]="0"> IsDeactive</mat-radio-button>
-                                </mat-radio-group>
-                            </div>
-                            <div>
-                                <mat-label>Template Details</mat-label>
-                                <angular-editor (blur)="onBlur($event)" [config]="editorConfig" style="height:200px;"
+                                
+                              
+                                <mat-label style="font-size: medium;font-weight: bold;">Store Details</mat-label>
+                                <angular-editor (blur)="onBlur($event)" [config]="editorConfig" style="height:120px;"
                                     [(ngModel)]="Header" required
                                     formControlName="Header"></angular-editor>
 
                             </div>
                             <div fxLayoutAlign="end">
                                 <div class="sales-footer-buttons gap-8">
+                                    <mat-checkbox aria-label="Is Active" formControlName="IsDeleted" (checked)=true
+                                    [(ngModel)]="registerObj.IsDeleted" style="font-weight: bold;margin-right: 20px;">IsActive
+                                     </mat-checkbox>
                                     <button class="btn btn-primary" (click)="onSubmit()"
                                         [disabled]="Savebtn">Save</button>&nbsp;
                                     <button class="btn btn-danger-outline" (click)="onClear()">Reset</button>

@@ -8,6 +8,7 @@ import { MatSort } from "@angular/material/sort";
 import { MatAccordion } from "@angular/material/expansion";
 import { MatPaginator } from "@angular/material/paginator";
 import { fuseAnimations } from "@fuse/animations";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-supplier-master",
@@ -96,27 +97,40 @@ export class SupplierMasterComponent implements OnInit {
         );
     }
 
+   
+
     onDeactive(SupplierId) {
-        this.confirmDialogRef = this._matDialog.open(
-            FuseConfirmDialogComponent,
-            {
-                disableClose: false,
-            }
-        );
-        this.confirmDialogRef.componentInstance.confirmMessage =
-            "Are you sure you want to deactive?";
-        this.confirmDialogRef.afterClosed().subscribe((result) => {
-            if (result) {
-                let Query =
-                    "Update M_SupplierMaster set IsDeleted=0 where SupplierId=" +
-                    SupplierId;
+
+       
+        Swal.fire({
+            title: 'Confirm Status',
+            text: 'Are you sure you want to Change Status?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes,Change Status!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let Query
+                if (!this.DSSupplierMaster.data.find(item => item.SupplierId === SupplierId).IsDeleted) {
+                    Query = "Update M_SupplierMaster set IsDeleted=1 where SupplierId=" + SupplierId;
+                    
+                }
+                else {
+                     Query = "Update M_SupplierMaster set Isdeleted=0 where SupplierId=" + SupplierId;
+                }
                 console.log(Query);
-                this._supplierService
-                    .deactivateTheStatus(Query)
-                    .subscribe((data) => (this.msg = data));
-                this.getSupplierMasterList();
+                this._supplierService.deactivateTheStatus(Query)
+                    .subscribe((data) => {
+                        // Handle success response
+                        Swal.fire('Changed!', 'Supplier Status has been Changed.', 'success');
+                        this.getSupplierMasterList();
+                    }, (error) => {
+                        // Handle error response
+                        Swal.fire('Error!', 'Failed to deactivate category.', 'error');
+                    });
             }
-            this.confirmDialogRef = null;
         });
     }
 

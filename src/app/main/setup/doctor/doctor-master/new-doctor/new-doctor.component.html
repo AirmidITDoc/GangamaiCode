@@ -9,7 +9,7 @@
 
                 <div fxLayout="row" fxLayoutALign="end start">
                     <!-- <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
-            </app-common-date> -->
+                    </app-common-date> -->
                     <button mat-icon-button (click)="onClose()" aria-label="Close dialog">
                         <mat-icon>close</mat-icon>
                     </button>
@@ -19,11 +19,9 @@
         </div>
     </div>
 
-    <!-- Modal body -->
-
-
+    <mat-card>
     <form [formGroup]="_doctorService.myform" fxLayout="column" style="padding: 5px 5px 0px 5px;">
-        <input type="hidden" name="RegId" formControlName="RegId">
+        <input type="hidden" name="DoctorId" formControlName="DoctorId">
         <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
             class="top-header accent heading-container h-40 border-radius-4">
             <span style="font-size:15px; font-weight: bolder; color:white;padding:7px;">Personal
@@ -303,7 +301,7 @@
             </div>
         </mat-card>
     </form>
-    <br>
+    
     <form [formGroup]="_doctorService.myform" fxLayout="column"  style="padding: 0px 5px 0px 5px;">
         <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
             class="top-header accent heading-container h-40 border-radius-4">
@@ -402,7 +400,7 @@
             </div>
         </mat-card>
     </form>
-    <br>
+   
 
     <form [formGroup]="_doctorService.myform" fxLayout="column"  style="padding: 0px 5px 0px 5px;">
 
@@ -482,9 +480,11 @@
         </div>
 
     </form>
+
+
     <div class="row row-container" style="width: 100%;">
         <div class="sales-radio-buttons gap-8" fxLayout="row" fxLayoutAlign="space-between center">
-    
+
             <form [formGroup]="_doctorService.myform">
                 <div class="sales-radio-buttons gap-2" fxLayout="row">
                     <mat-slide-toggle name="IsConsultant" formControlName="IsConsultant"
@@ -501,7 +501,7 @@
                     </mat-checkbox>
                 </div>
             </form>
-    
+
             <div class="sales-footer-buttons gap-8" fxLayout="row">
                 <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
                 <button class="btn btn-primary" color="accent" (click)="onSubmit()" #savebutton>
@@ -510,7 +510,7 @@
             </div>
         </div>
     </div>
-
+</mat-card>
     <!-- Modal footer -->
 
 </div>

@@ -351,7 +351,7 @@ public documentdownloadInsert(employee,loader = true){
     if (loader) {
         this._loaderService.show();
     }
-    return this._httpClient.post("Generic/GetByProc?procName=RetrieveDepartmentMasterForCombo", {})
+    return this._httpClient.post("Generic/GetByProc?procName=m_RetrieveDepartmentMasterForCombo", {})
   }
   //Doctor Master Combobox List
   public getDoctorMasterCombo(Id,loader = true) {

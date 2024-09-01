@@ -271,7 +271,7 @@ export class AdmissionService {
   }
   //Deartment Combobox List
   public getDepartmentCombo() {
-    return this._httpClient.post("Generic/GetByProc?procName=RetrieveDepartmentMasterForCombo", {})
+    return this._httpClient.post("Generic/GetByProc?procName=m_RetrieveDepartmentMasterForCombo", {})
 
   }
   //Doctor Master Combobox List

@@ -1,7 +1,7 @@
 import { Component, ElementRef, Inject, OnInit, ViewEncapsulation } from "@angular/core";
 import { StoreMasterService } from "../store-master.service";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import { StoreMasterComponent } from "../store-master.component";
+import { StoreMaster, StoreMasterComponent } from "../store-master.component";
 import { fuseAnimations } from "@fuse/animations";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
@@ -47,11 +47,11 @@ export class StoreFormMasterComponent implements OnInit {
     vGrnNo: any;
     vReturnFromDeptNoPrefix: any;
     vReturnFromDeptNo: any;
-    registerObj: any;
+    registerObj= new StoreMaster({});
     vStoreId: any;
     vDeleted: any=1;
     checkradiobtn: any;
-
+   
     constructor(
         public _StoreService: StoreMasterService,
         public toastr: ToastrService,
@@ -80,12 +80,13 @@ export class StoreFormMasterComponent implements OnInit {
             this.vReturnFromDeptNoPrefix = this.registerObj.ReturnFromDeptNoPrefix;
             this.vReturnFromDeptNo = this.registerObj.ReturnFromDeptNo.trim();
             this.Header = this.registerObj.Header;
+            debugger
             this.checkradiobtn = JSON.stringify(this.registerObj.IsDeleted);
-            if (this.checkradiobtn === 'true') {
-                this.vDeleted = 1;
-            } else {
-                this.vDeleted = 0;
-            }
+            // if (this.checkradiobtn == "true") {
+            //     this.vDeleted = 1;
+            // } else {
+            //     this.vDeleted = 0;
+            // }
         }
     }
     focusNext(nextElementId: string): void {
@@ -94,6 +95,10 @@ export class StoreFormMasterComponent implements OnInit {
             nextElement.focus();
         }
     }
+
+
+
+
     onSubmit() {
         if ((this.vshortName == '' || this.vshortName == null || this.vshortName == undefined)) {
             this.toastr.warning('Please enter a ShortName', 'Warning !', {
@@ -179,7 +184,7 @@ export class StoreFormMasterComponent implements OnInit {
             });
             return;
         }
-        if (this._StoreService.myform.valid) {
+        // if (this._StoreService.myform.valid) {
             if (!this._StoreService.myform.get("StoreId").value) {
                 this.Savebtn = true;
                 var m_data = {
@@ -242,8 +247,9 @@ export class StoreFormMasterComponent implements OnInit {
                         updatedBy: 1,
                     },
                 };
+                console.log(m_dataUpdate);
                 this._StoreService.updateStoreMaster(m_dataUpdate).subscribe((data) => {
-                    this.msg = data;
+                  
                     if (data) {
                         this.toastr.success('Record updated Successfully.', 'updated !', {
                             toastClass: 'tostr-tost custom-toast-success',
@@ -258,7 +264,7 @@ export class StoreFormMasterComponent implements OnInit {
                 });
             }
         }
-    }
+    // }
     onEdit(row) {
 
         var m_data = {

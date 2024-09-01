@@ -211,11 +211,11 @@ export class CategorymasterComponent implements OnInit {
             if (result.isConfirmed) {
                 let Query
                 if (!this.DSCategoryMasterList.data.find(item => item.CategoryId === CategoryId).IsDeleted) {
-                    Query = "Update M_PathCategoryMaster set IsDeleted=0 where CategoryId=" + CategoryId;
+                    Query = "Update M_PathCategoryMaster set IsDeleted=1 where CategoryId=" + CategoryId;
                     
                 }
                 else {
-                     Query = "Update M_PathCategoryMaster set Isdeleted=1 where CategoryId=" + CategoryId;
+                     Query = "Update M_PathCategoryMaster set Isdeleted=0 where CategoryId=" + CategoryId;
                 }
                 console.log(Query);
                 this._categorymasterService.deactivateTheStatus(Query)

@@ -636,11 +636,7 @@ var m = {
                                 toastClass: 'tostr-tost custom-toast-error',
                               });
                         }
-                    },error => {
-                        this.toastr.error('Supplier-from not saved !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
+                    });
             } else {
                 var data3 = [];
                 this.Savebtn=true;
@@ -710,36 +706,12 @@ var m = {
                                 toastClass: 'tostr-tost custom-toast-error',
                               });
                         }
-                    },error => {
-                        this.toastr.error('Supplier-from not updated !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
+                    });
             }
             this.onClose();
         // }
     }
 
-
-    // onChangeCityList(cityId) {
-    //     if (cityId > 0) {
-    //         this._supplierService.getStateList(cityId).subscribe((data) => {
-    //             this.StatecmbList = data;
-    //             this.selectedState = this.StatecmbList[0].StateName;
-    //             this.selectedStateID = this.StatecmbList[0].StateId;
-
-    //             this._supplierService.myform
-    //                 .get("StateId")
-    //                 .setValue(this.StatecmbList[0]);
-    //             this.onChangeCountryList(this.selectedStateID);
-    //         });
-    //     } else {
-    //         this.selectedState = null;
-    //         this.selectedStateID = null;
-    //         this.selectedCountry = null;
-    //         this.selectedCountryID = null;
-    //     }
-    // }
 
     onChangeCityList(CityObj) {
         if (CityObj) {

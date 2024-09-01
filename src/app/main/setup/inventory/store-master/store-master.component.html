@@ -1,5 +1,4 @@
-<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar
-    dynamicTableHeight>
+<div fxlayout="row" fxFlex.gt-sm="100%" fxFlex class="page-layout" dynamicTableHeight>
     <div class="center">
         <mat-toolbar class="top-header accent">
             <div fxLayout="row" class="top-header-info">
@@ -9,7 +8,7 @@
                 <mat-icon class="logo-icon " [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
                 </mat-icon>
                 <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                   STORE MASTER 
+                    Store Master List
                 </span>
 
             </div>
@@ -20,6 +19,7 @@
                 </button>
             </div>
         </mat-toolbar>
+
 
     <div class="content">
         <div class="center p-24 pb-56" fusePerfectScrollbar>
@@ -39,12 +39,18 @@
                                         </button>
                                     </mat-form-field>
 
-                                    <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch" value="2"
-                                        fxLayoutAlign="center center">
-                                        <mat-radio-button value="2">All</mat-radio-button>
-                                        <mat-radio-button mat-fab value="0">IsActive</mat-radio-button>
-                                        <mat-radio-button mat-fab value="1">IsDeactive</mat-radio-button>
-                                    </mat-radio-group>
+                                  
+
+                                    <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch"
+                                    (change)="onSearch()">
+                                    <mat-radio-button (click)="toggle(2)" [checked]="true"
+                                        value="2">All</mat-radio-button>
+                                    <mat-radio-button mat-fab value="1"
+                                        (click)="toggle(1)">IsActive</mat-radio-button>
+                                    <mat-radio-button (click)="toggle(0)" value="0">IsDeactive</mat-radio-button>
+                                     </mat-radio-group>
+                              
+
 
                                     <button mat-raised-button (click)="onSearch()" fxLayoutAlign="center center">
                                         <mat-icon>search</mat-icon>
@@ -63,23 +69,30 @@
                                         <div class="table-header-right">
                                             <div class="export-buttons">
                                                 <div fxLayout="row" fxLayoutAlign="center center" class="gap-8">
-                                                    <!-- <button type="button" mat-icon-button>
-                                                        <img width="32" height="10px" (click)="exportReportPdf()"
-                                                            src="assets/images/svg/pdf-svg.svg">
-                                                    </button>
-
-                                                    <button type="button" mat-icon-button>
-                                                        <img width="32" height="10px" (click)="exportDoctorExcel()"
-                                                            src="assets/images/svg/xls-svg.svg">
-                                                    </button> -->
+                                                    <div fxLayout="row" fxLayoutAlign="center center" class="gap-8">
+                                                        <!-- <button type="button" mat-icon-button>
+                                                            <img width="32" height="10px" (click)="exportReportPdf()"
+                                                                src="assets/images/svg/pdf-svg.svg">
+                                                        </button>
+    
+                                                        <button type="button" mat-icon-button>
+                                                            <img width="32" height="10px" (click)="exportDoctorExcel()"
+                                                                src="assets/images/svg/xls-svg.svg">
+                                                        </button> -->
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div style="width: 100%;">
-                                 
-                                    <mat-table matSort [dataSource]="DSStoreMasterList" [@animateStagger]="{value:'50'}">
+                                    <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                                        class="backgroundBlur">
+                                        <div class="spinner-border text-danger" style="margin-left: 100px;"></div>
+                                    </div>
+
+                                    <mat-table class="table1" matSort [dataSource]="DSStoreMasterList"
+                                        [@animateStagger]="{value:'50'}" style="overflow:auto;height: 500px !important;">
 
                                         <ng-container matColumnDef="StoreId">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
@@ -219,10 +232,11 @@
                                             </mat-footer-cell>
                                         </ng-container>
 
-                                        <mat-header-row class="accent min-width-2200"
+                                        <mat-header-row class="accent min-width-3000"
                                         *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                                        <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
-                                        class=" min-width-2200"  [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                        <mat-row *matRowDef="let element; columns: displayedColumns;" class="element"
+                                        class=" min-width-3000"   [ngClass]="element.IsRefDoc == true ? 'self-row' : ''"
+                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                         <mat-footer-row *matFooterRowDef="['loading']"
                                             [ngClass]="{'hide':DSStoreMasterList!=null}"></mat-footer-row>
                                         <mat-footer-row *matFooterRowDef="['noData']"
@@ -243,4 +257,5 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>

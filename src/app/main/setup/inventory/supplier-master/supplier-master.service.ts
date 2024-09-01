@@ -76,11 +76,13 @@ export class SupplierMasterService {
             Pincode:[""],
             Taluka:[""],
             BankName:[""],
-            BankNo:["",[Validators.pattern("[0-9]{6,18}")]],
+            BankNo:['', [Validators.pattern("[0-9]{9,18}")]],
             BankBranch:[""],
             IFSCcode:["",[Validators.pattern("^[A-Z]{4}0[A-Z0-9]{6}$")]],
             VenderTypeId:[""],
-            OpeningBal:[""],
+            OpeningBal:['', [Validators.pattern("^[0-9]*$"),
+                Validators.minLength(10),
+                Validators.maxLength(10),]],
             CreateApproval:[true],
         });
     }
