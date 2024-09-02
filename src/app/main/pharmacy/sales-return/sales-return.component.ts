@@ -307,7 +307,8 @@ export class SalesReturnComponent implements OnInit {
   }
 
   getCellCalculation(contact, ReturnQty) {
-    this.RQty = parseInt(ReturnQty);
+    debugger
+    this.RQty = parseInt(ReturnQty) ;
     if ((parseInt(this.RQty)) > (parseInt(contact.Qty))) {
       Swal.fire("Return Qty cannot be greater than Qty")
 
@@ -356,8 +357,8 @@ export class SalesReturnComponent implements OnInit {
         contact.IsPurRate = contact.IsPurRate,
         contact.StkID = contact.StkID
     }
-    else {
-      this.RQty = parseInt(ReturnQty);
+    else if((parseInt(this.RQty)) <= (parseInt(contact.Qty))) {
+      
       this.GrossAmt = (parseFloat(contact.UnitMRP) * parseInt(this.RQty)).toFixed(2);
       this.DiscAmt = ((parseFloat(this.GrossAmt) * parseFloat(contact.DiscPer)) / 100).toFixed(2);
       this.VatAmount = ((parseFloat(contact.UnitMRP) * (parseFloat(contact.VatPer)) / 100) * parseInt(this.RQty)).toFixed(2);
@@ -402,7 +403,52 @@ export class SalesReturnComponent implements OnInit {
       // this.selectedssaleDetailList.data = this.Itemselectedlist;
 
     }
-    
+    else if(ReturnQty == '' || ReturnQty == null || ReturnQty == undefined || ReturnQty == 0 ) {
+      this.RQty = 0;
+      this.GrossAmt = (parseFloat(contact.UnitMRP) * parseInt(this.RQty)).toFixed(2);
+      this.DiscAmt = ((parseFloat(this.GrossAmt) * parseFloat(contact.DiscPer)) / 100).toFixed(2);
+      this.VatAmount = ((parseFloat(contact.UnitMRP) * (parseFloat(contact.VatPer)) / 100) * parseInt(this.RQty)).toFixed(2);
+      this.CGSTAmount = (((parseFloat(contact.UnitMRP) * (parseFloat(contact.CGSTPer))) / 100) * parseInt(this.RQty)).toFixed(2);
+      this.SGSTAmount = (((parseFloat(contact.UnitMRP) * (parseFloat(contact.SGSTPer))) / 100) * parseInt(this.RQty)).toFixed(2);
+      this.IGSTAmount = ((((parseFloat(contact.UnitMRP) * (parseFloat(contact.IGSTPer))) / 100)) * parseInt(this.RQty)).toFixed(2);
+      //this.TotalAmt = (parseFloat(contact.UnitMRP) * parseInt(this.RQty)).toFixed(2);
+      
+      this.TotalAmt = ((parseFloat(contact.UnitMRP) * parseInt(this.RQty)) - (parseFloat(this.DiscAmt))).toFixed(2);
+
+      if (parseFloat(contact.LandedPrice) > 0.0) {
+        this.LandAmt = (parseFloat(contact.LandedPrice) * parseInt(this.RQty)).toFixed(2);
+      }
+      this.PurAmt = (parseFloat(contact.PurRateWf) * parseInt(this.RQty)).toFixed(2);
+
+        contact.SalesNo = contact.SalesNo,
+        contact.SalesDetId = contact.SalesDetId,
+        contact.OP_IP_ID = contact.OP_IP_ID,
+        contact.ItemName = contact.ItemName,
+        contact.BatchNo = contact.BatchNo,
+        contact.UnitMRP = contact.UnitMRP,
+        contact.Qty = contact.Qty,
+        contact.ReturnQty = this.RQty,
+        contact.TotalAmount = this.TotalAmt,
+        contact.VatPer = contact.VatPer,
+        contact.VatAmount = this.VatAmount,
+        contact.DiscPer = contact.DiscPer,
+        contact.DiscAmount = this.DiscAmt,
+        contact.GrossAmount = this.GrossAmt,
+        contact.LandedPrice = contact.LandedPrice,
+        contact.TotalLandedAmount = this.LandAmt,
+        contact.PurRateWf = contact.PurRateWf,
+        contact.PurTotAmt = this.PurAmt,
+        contact.CGSTPer = contact.CGSTPer,
+        contact.CGSTAmount = this.CGSTAmount,
+        contact.SGSTPer = contact.SGSTPer,
+        contact.SGSTAmount = this.SGSTAmount,
+        contact.IGSTPer = contact.IGSTPer,
+        contact.IGSTAmount = this.IGSTAmount,
+        contact.IsPurRate = contact.IsPurRate,
+        contact.StkID = contact.StkID
+      // this.selectedssaleDetailList.data = this.Itemselectedlist;
+      this.RQty = '';
+    } 
   }
 
 

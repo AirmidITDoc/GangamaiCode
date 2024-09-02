@@ -96,7 +96,12 @@ export class OpPaymentVimalComponent implements OnInit {
     }
     GetBalanceAmt() {
         this.IsMoreAmt = Number(this.netPayAmt || 0) - (Number(this.paidAmt || 0) + Number(this.amount1 || 0)) < 0;
-        this.balanceAmt = Number(this.netPayAmt || 0) - (Number(this.paidAmt || 0) + Number(this.amount1 || 0));
+        this.balanceAmt = Number(this.netPayAmt || 0) - ((Number(this.paidAmt || 0) + Number(this.amount1 || 0)));
+       // this.balanceAmt = (Number(this.netPayAmt || 0) -  Number(this.amount1 || 0));
+    }
+    GetAmt(){
+        this.setPaidAmount();
+        this.GetBalanceAmt();
     }
     IsMoreAmt = false;
     onAddPayment() {

@@ -2492,6 +2492,7 @@ export class SalesHospitalComponent implements OnInit {
         }
          this.isLoading123=false;
       } 
+      this.isLoading123=false; 
     })
 
   }

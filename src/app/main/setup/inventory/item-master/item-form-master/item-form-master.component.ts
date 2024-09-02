@@ -11,7 +11,7 @@ import { ToastrService } from "ngx-toastr";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { MatSelect } from "@angular/material/select";
 import { COMMA, ENTER } from "@angular/cdk/keycodes";
-import { CasepaperVisitDetails, HistoryClass } from "app/main/opd/new-casepaper/new-casepaper.component";
+//import { CasepaperVisitDetails, HistoryClass } from "app/main/opd/new-casepaper/new-casepaper.component";
 import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
 import { DatePipe } from "@angular/common";
 import { element } from "protractor";
@@ -501,7 +501,7 @@ export class ItemFormMasterComponent implements OnInit {
 
  
 
-    casePaperData: CasepaperVisitDetails = new CasepaperVisitDetails({});
+    //casePaperData: CasepaperVisitDetails = new CasepaperVisitDetails({});
  
 
     getOptionTextManu(option) {

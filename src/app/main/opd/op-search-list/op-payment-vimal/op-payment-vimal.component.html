@@ -251,7 +251,7 @@
 
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Amount</mat-label>
-                                                <input matInput formControlName="amount1" (keyup)="GetBalanceAmt()"
+                                                <input matInput formControlName="amount1" (keyup)="GetAmt()"
                                                     [(ngModel)]="amount1" required
                                                     (keypress)="keyPressAlphanumeric($event)">
                                                 <div *ngIf="submitted && f.amount1.errors" class="invalid-feedback">
