@@ -79,5 +79,8 @@ export class IpSalesReturnService {
   public getSalesReturnCredit(){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_SalesBill_Return_Credit",{});
   }
+  public getSalesReturnPdf(SalesId,OP_IP_Type) {
+    return this._httpClient.get("Pharmacy/view-SalesTaxReturn_Report?SalesId=" + SalesId + "&OP_IP_Type=" + OP_IP_Type);
+    }
   
 }

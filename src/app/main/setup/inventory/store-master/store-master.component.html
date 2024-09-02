@@ -39,22 +39,19 @@
                                         </button>
                                     </mat-form-field>
 
-                                  
-
                                     <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch"
-                                    (change)="onSearch()">
+                                    (change)="onFilterChange()">
                                     <mat-radio-button (click)="toggle(2)" [checked]="true"
                                         value="2">All</mat-radio-button>
                                     <mat-radio-button mat-fab value="1"
                                         (click)="toggle(1)">IsActive</mat-radio-button>
                                     <mat-radio-button (click)="toggle(0)" value="0">IsDeactive</mat-radio-button>
-                                     </mat-radio-group>
-                              
+                                  </mat-radio-group>
 
 
                                     <button mat-raised-button (click)="onSearch()" fxLayoutAlign="center center">
                                         <mat-icon>search</mat-icon>
-                                        Search
+                                      
                                     </button>
                                 </div>
                             </form>
@@ -95,21 +92,21 @@
                                         [@animateStagger]="{value:'50'}" style="overflow:auto;height: 500px !important;">
 
                                         <ng-container matColumnDef="StoreId">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-150">Code
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.StoreId}}
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-150"> {{element.StoreId}}
                                             </mat-cell>
                                         </ng-container>
     
                                         <ng-container matColumnDef="StoreShortName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header> ShortName </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.StoreShortName}}
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-250"> ShortName </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-250"> {{element.StoreShortName}}
                                             </mat-cell>
                                         </ng-container>
     
                                         <ng-container matColumnDef="StoreName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header> StoreName </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.StoreName}}
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-250"> StoreName </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-250"> {{element.StoreName}}
                                             </mat-cell>
                                         </ng-container>
     
@@ -213,8 +210,10 @@
                                                 Action
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let row">
-                                                <button mat-icon-button (click)="onEdit(row)"><mat-icon
+                                                <button mat-icon-button (click)="onEdit(row)" *ngIf="row.IsDeleted"><mat-icon
                                                         title="Edit Menu">edit</mat-icon></button>
+                                                        <button mat-icon-button  *ngIf="!row.IsDeleted"><mat-icon
+                                                            title="Deactive">cancle</mat-icon></button>
                                                 <button mat-icon-button (click)="onDeactive(row.StoreId)"
                                                     color="warn"><mat-icon>delete_outline</mat-icon></button>
     

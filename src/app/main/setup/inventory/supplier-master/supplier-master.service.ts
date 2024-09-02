@@ -55,7 +55,9 @@ export class SupplierMasterService {
             TaxNature: ["", Validators.pattern("[0-9]+")],
             CurrencyId: ["", Validators.pattern("[0-9]+")],
             Octroi: ["", Validators.pattern("[0-9]+")],
-            Freight: ["", Validators.pattern("[0-9]+")],
+            Freight: ['', [Validators.pattern("^[0-9]*$"),
+                Validators.minLength(1),
+                Validators.maxLength(10),]],
             GSTNo: ["", [Validators.minLength(15),
             Validators.maxLength(15)],], //Validators.pattern("/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/")],
             PanNo: ["",Validators.pattern("[A-Z]{5}[0-9]{4}[A-Z]{1}")],
@@ -81,7 +83,7 @@ export class SupplierMasterService {
             IFSCcode:["",[Validators.pattern("^[A-Z]{4}0[A-Z0-9]{6}$")]],
             VenderTypeId:[""],
             OpeningBal:['', [Validators.pattern("^[0-9]*$"),
-                Validators.minLength(10),
+                Validators.minLength(1),
                 Validators.maxLength(10),]],
             CreateApproval:[true],
         });
@@ -105,6 +107,14 @@ export class SupplierMasterService {
         );
     }
 
+    public getStoreMasterserviceCombo(m_data) {
+        return this._httpClient.post(
+            "Generic/GetByProc?procName=m_Rtrv_StoreSupplierwise",
+            m_data
+        );
+    }
+
+    
     public deactivateTheStatus(m_data) {
         return this._httpClient.post(
             "Generic/ExecByQueryStatement?query=" + m_data,

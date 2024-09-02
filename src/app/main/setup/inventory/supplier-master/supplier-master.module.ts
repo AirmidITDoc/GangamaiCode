@@ -30,6 +30,7 @@ import { MatBadgeModule } from "@angular/material/badge";
 
 import { SupplierMasterService } from "./supplier-master.service";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
+import { MatChipsModule } from "@angular/material/chips";
 const routes: Routes = [
     {
         path: "**",
@@ -69,7 +70,8 @@ const routes: Routes = [
         NgxMatSelectSearchModule,
         MatBadgeModule,
         MatSelectModule,
-        MatDatepickerModule
+        MatDatepickerModule,
+        MatChipsModule
     ],
     providers: [SupplierMasterService],
     entryComponents: [SupplierMasterComponent],

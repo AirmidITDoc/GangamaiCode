@@ -26,6 +26,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { StoreFormMasterComponent } from './store-form-master/store-form-master.component';
 import { AngularEditorModule } from '@kolkov/angular-editor';
+import { MatAutocompleteModule } from "@angular/material/autocomplete";
 
 
 const routes: Routes = [
@@ -63,6 +64,7 @@ const routes: Routes = [
         MatCardModule,
         MatSlideToggleModule,
         MatTabsModule,
+        MatAutocompleteModule
         // MatLabel,
     ],
     providers: [StoreMasterService],

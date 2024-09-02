@@ -104,9 +104,9 @@ export class NewDoctorComponent implements OnInit {
     }
     ngOnInit(): void {
         this.getPrefixList();
-        // this.getGendorMasterList();
-        this.getDoctortypeNameCombobox();
-        if (this.data) {
+       this.getDoctortypeNameCombobox();
+       
+       if (this.data) {
             debugger
             if (this.data.registerObj.DateofBirth) {
                 const todayDate = new Date();
@@ -335,10 +335,7 @@ public onEnteraddress(event): void {
                 if (itm)
                     itm.selected = true;
             });
-        },
-            error => {
-                // this.sIsLoading = '';
-            });
+        });
     }
 
     setDropdownObjs1() {

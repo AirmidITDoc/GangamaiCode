@@ -12,6 +12,7 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import Swal from 'sweetalert2';
 import { IndentList } from '../sales/sales.component';
 import { ToastrService } from 'ngx-toastr';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-ip-sales-return',
@@ -549,7 +550,7 @@ keyPressAlphanumeric(event) {
       this.toastr.success('Record Saved Successfully.', 'Save !', {
         toastClass: 'tostr-tost custom-toast-success',
       });
-      // this.getSalesRetPrint(response);  
+       this.ViewSalesRetPdf(response);  
       this.OnReset();
       this.savebtn=false;   
     } else {
@@ -580,7 +581,7 @@ keyPressAlphanumeric(event) {
       this.toastr.success('Record Saved Successfully.', 'Save !', {
         toastClass: 'tostr-tost custom-toast-success',
       });
-      // this.getSalesRetPrint(response);
+       this.ViewSalesRetPdf(response);
       this.savebtn=false;  
       this.OnReset();
     
@@ -600,6 +601,33 @@ keyPressAlphanumeric(event) {
       this.isLoading123=false;
     }, 2000);
   }
+
+
+  ViewSalesRetPdf(SalesReturnId) {
+    
+    setTimeout(() => {
+
+      this._IpSalesRetService.getSalesReturnPdf(SalesReturnId,this.vOP_IP_Type).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Pharma Sales Return bill viewer"
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+        this.sIsLoading = ' ';
+        });
+      });
+
+    }, 100);
+  }
+
+
+
   OnReset() {
     this._IpSalesRetService.userFormGroup.reset();
     this._IpSalesRetService.IPFinalform.reset();

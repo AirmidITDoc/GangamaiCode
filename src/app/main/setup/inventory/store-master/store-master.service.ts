@@ -34,10 +34,13 @@ export class StoreMasterService {
             IssueToDeptNo: [""],
             ReturnFromDeptNoPrefix: [""],
             ReturnFromDeptNo: [""],
-            IsDeleted: ["1"],
+            IsDeleted: ["true"],
             UpdatedBy: [""],
             AddedByName: [""],
-            Header:[""]
+            Header:[""],
+            PahsalesCashCounterID:[""],
+            PahsalesrecCashCounterID:[""],
+            PahsalesreturnCashCounterID:[""],
         });
     }
 
@@ -74,6 +77,10 @@ export class StoreMasterService {
         return this._httpClient.post("Inventory/StoreMasterUpdate", param);
     }
 
+      // Get CashCounter List 
+  public getCashcounterList() {
+    return this._httpClient.post("Generic/GetByProc?procName=m_RtrvCashCounterForCombo", {})
+  }
     populateForm(param) {
         this.myform.patchValue(param);
     }

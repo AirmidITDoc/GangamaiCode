@@ -22,7 +22,8 @@ export class SupplierMasterComponent implements OnInit {
     msg: any;
     step = 0;
     SearchName: string;
-
+     currentStatus = 2;
+     
     setStep(index: number) {
         this.step = index;
     }
@@ -51,6 +52,8 @@ export class SupplierMasterComponent implements OnInit {
     ];
 
     DSSupplierMaster = new MatTableDataSource<SupplierMaster>();
+    DSSupplierMaster1 = new MatTableDataSource<SupplierMaster>();
+    tempList = new MatTableDataSource<SupplierMaster>();
 
     constructor(
         public _supplierService: SupplierMasterService,
@@ -88,6 +91,7 @@ export class SupplierMasterComponent implements OnInit {
         this._supplierService.getSupplierMasterList(m_data).subscribe(
             (Menu) => {
                 this.DSSupplierMaster.data = Menu as SupplierMaster[];
+                this.DSSupplierMaster1.data = Menu as SupplierMaster[];
                 this.isLoading = false;
                 this.DSSupplierMaster.sort = this.sort;
                 this.DSSupplierMaster.paginator = this.paginator;
@@ -97,7 +101,18 @@ export class SupplierMasterComponent implements OnInit {
         );
     }
 
-   
+    toggle(val: any) {
+        if (val == "2") {
+            this.currentStatus = 2;
+        } else if (val == "1") {
+            this.currentStatus = 1;
+        }
+        else {
+            this.currentStatus = 0;
+
+        }
+    }
+
 
     onDeactive(SupplierId) {
 
@@ -197,6 +212,41 @@ export class SupplierMasterComponent implements OnInit {
             this.getSupplierMasterList();
         });
     }
+
+
+    onFilterChange() {
+       
+        if (this.currentStatus == 1) {
+            this.tempList.data = []
+            this.DSSupplierMaster.data= this.DSSupplierMaster1.data
+            for (let item of this.DSSupplierMaster.data) {
+                if (item.IsDeleted) this.tempList.data.push(item)
+
+            }
+
+            this.DSSupplierMaster.data = [];
+            this.DSSupplierMaster.data = this.tempList.data;
+        }
+        else if (this.currentStatus == 0) {
+            this.DSSupplierMaster.data= this.DSSupplierMaster1.data
+            this.tempList.data = []
+
+            for (let item of this.DSSupplierMaster.data) {
+                if (!item.IsDeleted) this.tempList.data.push(item)
+
+            }
+            this.DSSupplierMaster.data = [];
+            this.DSSupplierMaster.data = this.tempList.data;
+        }
+        else {
+            this.DSSupplierMaster.data= this.DSSupplierMaster1.data
+            this.tempList.data = this.DSSupplierMaster.data;
+        }
+
+
+    }
+
+
 }
 export class SupplierMaster {
     SupplierId: Number;
@@ -207,7 +257,7 @@ export class SupplierMaster {
     StateId: Number;
     CountryId: Number;
     CreditPeriod: String;
-    Mobile: String;
+    Mobile: any;
     Phone: String;
     Fax: String;
     Email: String;

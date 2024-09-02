@@ -60,6 +60,9 @@ export class StoreMasterComponent implements OnInit {
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
     DSStoreMasterList = new MatTableDataSource<StoreMaster>();
+    DSStoreMasterList1 = new MatTableDataSource<StoreMaster>();
+    tempList = new MatTableDataSource<StoreMaster>();
+    
 
     constructor(
         public _StoreService: StoreMasterService,
@@ -95,6 +98,7 @@ export class StoreMasterComponent implements OnInit {
         };
         this._StoreService.getStoreMasterList(m_data).subscribe((Menu) => {
             this.DSStoreMasterList.data = Menu as StoreMaster[];
+            this.DSStoreMasterList1.data = Menu as StoreMaster[];
             this.DSStoreMasterList.sort = this.sort;
             this.resultsLength= this.DSStoreMasterList.data.length
             this.DSStoreMasterList.paginator = this.paginator;
@@ -186,6 +190,39 @@ export class StoreMasterComponent implements OnInit {
             this.getStoreMasterList();
         });
     }
+
+                
+    onFilterChange() {
+       
+        if (this.currentStatus == 1) {
+            this.tempList.data = []
+            this.DSStoreMasterList.data= this.DSStoreMasterList1.data
+            for (let item of this.DSStoreMasterList.data) {
+                if (item.IsDeleted) this.tempList.data.push(item)
+
+            }
+
+            this.DSStoreMasterList.data = [];
+            this.DSStoreMasterList.data = this.tempList.data;
+        }
+        else if (this.currentStatus == 0) {
+            this.DSStoreMasterList.data= this.DSStoreMasterList1.data
+            this.tempList.data = []
+
+            for (let item of this.DSStoreMasterList.data) {
+                if (!item.IsDeleted) this.tempList.data.push(item)
+
+            }
+            this.DSStoreMasterList.data = [];
+            this.DSStoreMasterList.data = this.tempList.data;
+        }
+        else {
+            this.DSStoreMasterList.data= this.DSStoreMasterList1.data
+            this.tempList.data = this.DSStoreMasterList.data;
+        }
+
+
+    }
 }
 export class StoreMaster {
     StoreId: number;
@@ -232,7 +269,7 @@ export class StoreMaster {
             this.ReturnFromDeptNoPrefix =
                 StoreMaster.ReturnFromDeptNoPrefix || "";
             this.ReturnFromDeptNo = StoreMaster.ReturnFromDeptNo || "";
-            this.IsDeleted = StoreMaster.IsDeleted || "false";
+            this.IsDeleted = StoreMaster.IsDeleted || "true";
             this.AddedBy = StoreMaster.AddedBy || "";
             this.UpdatedBy = StoreMaster.UpdatedBy || "";
            this.Header=StoreMaster.Header || '';

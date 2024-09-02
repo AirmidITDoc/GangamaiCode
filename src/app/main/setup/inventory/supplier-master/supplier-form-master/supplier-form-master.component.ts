@@ -94,6 +94,7 @@ export class SupplierFormMasterComponent implements OnInit {
   vIfsccode:any;
   vOpeningBal:any;
   VsupplierId:any=0;
+  vCreditPeriod:any;
     private _onDestroy = new Subject<void>();
 
     constructor(
@@ -103,13 +104,7 @@ export class SupplierFormMasterComponent implements OnInit {
         private _loggedService: AuthenticationService,
         public dialogRef: MatDialogRef<SupplierMasterComponent>
     ) {
-      // this.getSupplierTypeMasterList();
-      // this.getModeofpaymentCombobox();
-      // this.getTermofpaymentCombobox();
-      // this.getCountryNameCombobox();
-      // this.getBankNameList1();
-      // // this.getCityNameCombobox();
-      // this.getStoreNameCombobox();
+   
     }
 
   ngOnInit(): void {
@@ -117,11 +112,9 @@ export class SupplierFormMasterComponent implements OnInit {
     this.getModeofpaymentCombobox();
     this.getTermofpaymentCombobox();
     this.getCountryNameCombobox();
-    this.getBankNameList1();
+    this.getBankNameList();
     this.getCityNameCombobox();
-    this.getStoreNameCombobox();
-    this.getVenderNameCombobox();
-
+   
 
     if (this.data) {
       this.registerObj = this.data.registerObj;
@@ -135,7 +128,6 @@ export class SupplierFormMasterComponent implements OnInit {
       this.vAddress = this.data.registerObj.Address;
       this.vPincode = (this.registerObj.PinCode)
       this.vEmail=this.data.registerObj.Email.trim();
-      this.vMobile= this.data.registerObj.Mobile.trim();
       this.registerObj.Phone = this.data.registerObj.Phone.trim();
       this.vchkactive = (this.registerObj.IsDeleted)
       this.vGSTNo=this.data.registerObj.GSTNo1;
@@ -152,26 +144,16 @@ export class SupplierFormMasterComponent implements OnInit {
       this.vBankNo=this.data.registerObj.BankNo;
       this.vTaxNature=this.data.registerObj.TaxNature;
 
+      this.getStoreNameCombobox();
       
-      
-      // this.setDropdownObjs1();
-    }
     
-   
+    }
+    this.getStoreList();
+       this.filteredOptionsStore = this._supplierService.myform.get('StoreId').valueChanges.pipe(
+            startWith(''),
+            map(value => this._filterStore(value)),
 
-    // this.filteredOptionsSuppliertype = this._supplierService.myform.get('SupplierType').valueChanges.pipe(
-    //   startWith(''),
-    //   map(value => this._filterSupplierType(value)),
-    // );
-
-   
-
-
-  
-  
-
-  
-
+        );
   }
 
 
@@ -185,15 +167,17 @@ export class SupplierFormMasterComponent implements OnInit {
             .subscribe((data) => (this.CountrycmbList = data));
     }
 
-  
-    getBankNameList1() {
-        this._supplierService.getBankMasterCombo().subscribe(data => {
-          this.BankNameList1 = data;  
-          this.filteredOptionsBank1 = this._supplierService.myform.get('BankName').valueChanges.pipe(
-            map(value => value ? this._filterBank(value) : this.BankNameList1.slice()),
-          );
-         
-        
+    getBankNameList() {
+     
+          this._supplierService.getBankMasterCombo().subscribe(data => {
+            this.BankNameList1 = data;
+            this.optionsBank1= this.BankNameList1.slice();
+            this.filteredOptionsBank1 = this._supplierService.myform.get('BankName').valueChanges.pipe(
+              startWith(''),
+              map(value => value ? this._filterBankname(value) : this.BankNameList1.slice()),
+            );
+      
+          });
           if (this.data) {
             const ddValue = this.BankNameList1.filter(c => c.BankId == this.data.registerObj.BankId);
             this._supplierService.myform.get('BankName').setValue(ddValue[0]);
@@ -201,22 +185,37 @@ export class SupplierFormMasterComponent implements OnInit {
             return;
           } 
           
-        });
-      }
+        }
+    
+         
+  private _filterBankname(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.BankName ? value.BankName.toLowerCase() : value.toLowerCase();
 
-      // getBankNameList1() {
-      
-      //   this._supplierService.getBankMasterCombo().subscribe(data => {
-      //     this.BankNameList1 = data;
-      //     if (this.data) {
-      //       const ddValue = this.BankNameList1.filter(c => c.BankId == this.data.registerObj.BankId);
-      //       this._supplierService.myform.get('BankName').setValue(ddValue[0]);
-      //      this._supplierService.myform.updateValueAndValidity();
-      //       return;
-      //     } 
-      //   });
-        
-      // }
+      return this.optionsBank1.filter(option => option.NaBankNameme.toLowerCase().includes(filterValue));
+    }
+
+  }
+
+  
+  
+    // getBankNameList1() {
+    //     this._supplierService.getBankMasterCombo().subscribe(data => {
+    //       this.BankNameList1 = data;  
+    //       this.filteredOptionsBank1 = this._supplierService.myform.get('BankName').valueChanges.pipe(
+    //         map(value => value ? this._filterBank(value) : this.BankNameList1.slice()),
+    //       );
+    //      if (this.data) {
+    //         const ddValue = this.BankNameList1.filter(c => c.BankId == this.data.registerObj.BankId);
+    //         this._supplierService.myform.get('BankName').setValue(ddValue[0]);
+    //         this._supplierService.myform.updateValueAndValidity();
+    //         return;
+    //       } 
+          
+    //     });
+    //   }
+
+     
      
 
       getOptionTextBank1(option){
@@ -421,15 +420,22 @@ var m = {
 
      
     
+  // private _filterStore(value: any): string[] {
+  //   if (value) {
+  //     const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
+  //     return this.StorecmbList.filter(option => option.StoreName.toLowerCase().includes(filterValue));
+  //   }
+
+  // }
+ 
   private _filterStore(value: any): string[] {
     if (value) {
-      const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
-
-      return this.StorecmbList.filter(option => option.StoreName.toLowerCase().includes(filterValue));
+        const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
+        return this.optionsStore.filter(option => option.StoreName.toLowerCase().includes(filterValue));
     }
 
-  }
- 
+}
+
   private _filtervender(value: any): string[] {
     if (value) {
       const filterValue = value && value.VenderTypeName ? value.VenderTypeName.toLowerCase() : value.toLowerCase();
@@ -443,25 +449,72 @@ var m = {
 
  
 
-    getStoreNameCombobox() {
+    // getStoreNameCombobox() {
       
+    //   this._supplierService.getStoreMasterCombo().subscribe(data => {
+    //     this.StorecmbList = data;
+    //     this.filteredOptionsStore = this._supplierService.myform.get('StoreId').valueChanges.pipe( 
+    //       map(value => value ? this._filterStore(value) : this.StorecmbList.slice()),
+    //     );
+    //     // this.optionsStore = this.StorecmbList.slice();
+    //     if (this.data) {
+    //       debugger
+    //       this.data.registerObj.StoreId=this._loggedService.currentUserValue.user.storeId
+    //       const ddValue = this.StorecmbList.filter(c => c.StoreId == this.data.registerObj.StoreId);
+    //       this._supplierService.myform.get('StoreId').setValue(ddValue[0]);
+    //      this._supplierService.myform.updateValueAndValidity();
+    //       return;
+    //     } 
+        
+    //   });
+    // }
+
+  
+    
+    getStoreList() {
+      let that = this;
       this._supplierService.getStoreMasterCombo().subscribe(data => {
         this.StorecmbList = data;
-        this.filteredOptionsStore = this._supplierService.myform.get('StoreId').valueChanges.pipe( 
-          map(value => value ? this._filterStore(value) : this.StorecmbList.slice()),
-        );
-        // this.optionsStore = this.StorecmbList.slice();
-        if (this.data) {
-          debugger
-          this.data.registerObj.StoreId=this._loggedService.currentUserValue.user.storeId
-          const ddValue = this.StorecmbList.filter(c => c.StoreId == this.data.registerObj.StoreId);
-          this._supplierService.myform.get('StoreId').setValue(ddValue[0]);
-         this._supplierService.myform.updateValueAndValidity();
-          return;
-        } 
-        
+          if (that.data)
+              this.getStoreNameCombobox();
+          this.optionsStore = this.StorecmbList.slice();
+          this.filteredOptionsStore = this._supplierService.myform.get('StoreId').valueChanges.pipe(
+              startWith(''),
+              map(value => value ? this._filterStore(value) : this.StorecmbList.slice()),
+          );
+
       });
-    }
+  }
+
+    getStoreNameCombobox() {
+      debugger
+      var m_data={
+        SupplierId:this.registerObj.SupplierId
+      }
+      this._supplierService.getStoreMasterserviceCombo(m_data).subscribe(data => {
+       this.selectedItems= data as SupplierMaster[];
+        console.log(this.selectedItems)
+        this.selectedItems.forEach((item: any) => {
+              var itm = this.StorecmbList.find(x => x.StoreId == item.StoreId);
+              if (itm)
+                  itm.selected = true;
+          });
+      });
+  }
+  selectedItems = [];
+  toggleSelection(item: any) {
+      item.selected = !item.selected;
+      if (item.selected) {
+          this.selectedItems.push(item);
+      } else {
+          const i = this.selectedItems.findIndex(value => value.StorecmbList === item.StoreId);
+          this.selectedItems.splice(i, 1);
+      }
+
+  }
+  remove(e) {
+      this.toggleSelection(e);
+  }
 
     getOptionTextStore(option) {
 
@@ -543,7 +596,7 @@ var m = {
       });
       return;
   }
-  if ((this.vStoreId == undefined || this.vStoreId == undefined || this.vStoreId == undefined)) {
+  if (this.selectedItems.length==0) {
     this.toastr.warning('Please select Store.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
     });
@@ -568,19 +621,17 @@ var m = {
 
 
             if (!this._supplierService.myform.get("SupplierId").value) {
-              this.Savebtn=true;
+            
+              
                 var data2 = [];
-                // for (var val of this._supplierService.myform.get("StoreId")
-                //     .value) {
-                  debugger
-                    var data = {
-                        storeId: this._supplierService.myform.get("StoreId").value.storeId, 
-                        supplierId: 0,
-                    };
-                    data2.push(data);
-                // }
-                console.log(data2);
-                debugger
+                this.selectedItems.forEach((element) => {
+                    let deptInsertObj = {};
+                    deptInsertObj['StoreId'] = element.StoreId
+                    deptInsertObj['SupplierId'] = !this._supplierService.myform.get("SupplierId").value ? "0" : this._supplierService.myform.get("SupplierId").value || "0";
+                    data2.push(deptInsertObj);
+                });
+
+
                 var m_data = {
                  
                     insertSupplierMaster: {
@@ -621,10 +672,10 @@ var m = {
                     },
                     insertAssignSupplierToStore: data2,
                 };
+               
+             
                 console.log(m_data);
-                this._supplierService
-                    .insertSupplierMaster(m_data)
-                    .subscribe((data) => {
+                this._supplierService.insertSupplierMaster(m_data).subscribe((data) => {
                         this.msg = data;
                         if (data) {
                             this.toastr.success('Record Saved Successfully.', 'Saved !', {
@@ -638,16 +689,14 @@ var m = {
                         }
                     });
             } else {
+              
                 var data3 = [];
-                this.Savebtn=true;
-                // for (var val of this._supplierService.myform.get("StoreId")
-                //     .value) {
-                    var data4 = {
-                      storeId:  this._supplierService.myform.get("StoreId").value.storeId, 
-                      supplierId: this._supplierService.myform.get("SupplierId").value || 0,
-                    };
-                    data3.push(data4);
-                // }
+                this.selectedItems.forEach((element) => {
+                    let deptInsertObj = {};
+                    deptInsertObj['StoreId'] = element.StoreId
+                    deptInsertObj['SupplierId'] = !this._supplierService.myform.get("SupplierId").value ? "0" : this._supplierService.myform.get("SupplierId").value || "0";
+                    data3.push(deptInsertObj);
+                });
                 console.log(data3);
                 var m_dataUpdate = {
                     updateSupplierMaster: {
@@ -783,42 +832,26 @@ var m = {
 
   @ViewChild('MSM') MSM: ElementRef;
   @ViewChild('Taluka') Taluka: ElementRef;
-  // @ViewChild('VenderTypeId') VenderTypeId: MatSelect;
+  @ViewChild('creditp') creditp: ElementRef;
 
   @ViewChild('VenderTypeId') VenderTypeId: ElementRef;
   @ViewChild('OpeningBal') OpeningBal: ElementRef;
+
   @ViewChild('addbutton') addbutton: ElementRef;
 
-  public onEnterSuppliername(event): void {
-    if (event.which === 13) {
-      this.suppliertype.nativeElement.focus();
-     
-    }
-  }
   public onEnterSuppliertype(event): void {
     
     if (event.which === 13) {
-      this.Address.nativeElement.focus();
+      this.suppliername.nativeElement.focus();
     }
   }
 
-  public onEnterAddress(event): void {
-    if (event.which === 13) {
-       this.Pincode.nativeElement.focus();
-    }
-  }
-  public onEnterPincode(event): void {
-    if (event.which === 13) {
-      this.Contactperson.nativeElement.focus();
-    }
-  }
-
-  public onEnterContactperson(event): void {
+  public onEnterSuppliername(event): void {
     if (event.which === 13) {
       this.mobile.nativeElement.focus();
+     
     }
   }
-
   public onEntermobile(event): void {
     if (event.which === 13) {
       this.phone.nativeElement.focus();
@@ -826,20 +859,40 @@ var m = {
   }
   public onEnterphone(event): void {
     if (event.which === 13) {
-      this.Taluka.nativeElement.focus();
+      this.Address.nativeElement.focus();
     }
   }
 
+  public onEnterAddress(event): void {
+    if (event.which === 13) {
+       this.Taluka.nativeElement.focus();
+    }
+  }
+
+  
   public onEnterTaluka(event): void {
     if (event.which === 13) {
        this.city.nativeElement.focus();
     }
   }
+
+  
+  
   public onEnterCity(event): void {
     if (event.which === 13) {
-      this.Fax.nativeElement.focus();
+      this.Pan.nativeElement.focus();
     }
   }
+
+  public onEnterPan(event): void {
+    if (event.which === 13) {
+       this.Fax.nativeElement.focus();
+    }
+  }
+  
+ 
+  
+
 
   public onEnterfax(event): void {
     if (event.which === 13) {
@@ -853,6 +906,12 @@ var m = {
   }
 
   public onEnterFright(event): void {
+    if (event.which === 13) {
+       this.creditp.nativeElement.focus();
+    }
+  }
+  
+  public onEnterCreditPeriod(event): void {
     if (event.which === 13) {
        this.Modeofpay.nativeElement.focus();
     }
@@ -876,15 +935,11 @@ var m = {
 
   public onEnterGst(event): void {
     if (event.which === 13) {
-    this.Pan.nativeElement.focus();
+    this.Licno.nativeElement.focus();
   }
 }
 
-public onEnterPan(event): void {
-  if (event.which === 13) {
-     this.Licno.nativeElement.focus();
-  }
-}
+
 public onEnterLicno(event): void {
   if (event.which === 13) {
     this.Expdate.nativeElement.focus();
@@ -923,7 +978,7 @@ if (event.which === 13) {
 public onEnterIfsc(event): void {
   debugger
 if (event.which === 13) {
-  this.Store.nativeElement.focus();
+  this.OpeningBal.nativeElement.focus();
   // if (this.Store) this.Store.focus();
 
 }
@@ -938,34 +993,36 @@ public onEnterVender(event): void {
 
   public onEnterOpeningBal(event): void {
     if (event.which === 13) {
-      // this.save=true;
-      this.addbutton.nativeElement.focus();
-      // if (this.Store) this.Store.focus();
-      
+      this.Store.nativeElement.focus();
     }
     }
 save:boolean=false;
 public onEnterStore(event): void {
   debugger
   if (event.which === 13) {
-    //  this.MSM.nativeElement.focus();
-    this.VenderTypeId.nativeElement.focus();
+    // this.save=true;
+    this.addbutton.nativeElement.focus();
+    // if (this.Store) this.Store.focus();
+    
   }
   }
  
+
+  public onEnterPincode(event): void {
+    if (event.which === 13) {
+      this.Contactperson.nativeElement.focus();
+    }
+  }
+
+  public onEnterContactperson(event): void {
+    if (event.which === 13) {
+      this.mobile.nativeElement.focus();
+    }
+  }
+
   // @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
 
-  // public onEnterIfsc(event): void {
-  // if (event.which === 13) {
-  //   if (event.which === 13) {
-  //     this.save=true;
-  // this.addbutton.focus();
-  // }
-  // }
-  // }
-  
-
-   
+    
     onClear() {
         this._supplierService.myform.reset();
     }

@@ -26,22 +26,9 @@
             <span style="font-size:15px; font-weight: bolder; color:white;padding:7px;">Personal
                 Details</span>
         </div>
-        <!-- <div style="padding: 7px;overflow-block: hover;"> -->
+       
         <mat-card>
             <div fxFlex="100" fxLayout="row wrap">
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                        <mat-label>Supplier Name</mat-label>
-                        <input name="SupplierName" placeholder="EnterSupplierName" formControlName="SupplierName"
-                            matInput required (keydown)="onEnterSuppliername($event)" #suppliername
-                            [(ngModel)]="vSupplierName">
-                        <!-- <span class="error" *ngIf="f.SupplierName.invalid && f.SupplierName.touched">SupplierName is required only
-                        Alphabets</span> -->
-                    </mat-form-field>
-                    <!-- [ngClass]="{ 'is-invalid': submitted && f.SupplierType.errors }" -->
-
-
-                </div>
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Supplier Type</mat-label>
@@ -63,6 +50,20 @@
                 </div>
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                        <mat-label>Supplier Name</mat-label>
+                        <input name="SupplierName" placeholder="EnterSupplierName" formControlName="SupplierName"
+                            matInput required (keydown)="onEnterSuppliername($event)" #suppliername
+                            [(ngModel)]="vSupplierName">
+                        <!-- <span class="error" *ngIf="f.SupplierName.invalid && f.SupplierName.touched">SupplierName is required only
+                        Alphabets</span> -->
+                    </mat-form-field>
+                    <!-- [ngClass]="{ 'is-invalid': submitted && f.SupplierType.errors }" -->
+
+
+                </div>
+                
+                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                         <mat-label>Mobile Number</mat-label>
                         <input name="Mobile" formControlName="Mobile" placeholder="Mobile Number" matInput required
                             [(ngModel)]="vMobile" #mobile (keydown)="onEntermobile($event)"
@@ -78,7 +79,7 @@
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                         <mat-label>Phone Number</mat-label>
-                        <input name="Phone" formControlName="Mobile" placeholder="Phone Number" matInput required
+                        <input name="Phone" formControlName="Phone" placeholder="Phone Number" matInput required
                             [(ngModel)]="registerObj.Phone" #phone (keydown)="onEnterphone($event)"
                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
                             type="number" value="Mobile.length">
@@ -96,7 +97,14 @@
                         <mat-label>Address</mat-label>
                         <input name="Address" placeholder="EnterAddress" formControlName="Address" matInput
                             (keydown)="onEnterAddress($event)" #Address required [(ngModel)]="vAddress">
-                        <mat-error>Please enter Address </mat-error>
+                        <!-- <mat-error>Please enter Address </mat-error> -->
+                    </mat-form-field>
+                </div>
+                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                        <mat-label>Taluka</mat-label>
+                        <input name="Taluka" placeholder="Enter Taluka" formControlName="Taluka" matInput
+                            (keydown)="onEnterTaluka($event)" #Taluka>
                     </mat-form-field>
                 </div>
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -119,13 +127,7 @@
                         </mat-autocomplete>
                     </mat-form-field>
                 </div>
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                        <mat-label>Taluka</mat-label>
-                        <input name="Taluka" placeholder="Enter Taluka" formControlName="Taluka" matInput
-                            (keydown)="onEnterTaluka($event)" #Taluka>
-                    </mat-form-field>
-                </div>
+               
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                         <mat-label>State Name</mat-label>
@@ -201,12 +203,23 @@
                         <input name="Freight" placeholder="Enter Freight" formControlName="Freight" matInput
                             (keydown)="onEnterFright($event)" #Fright [(ngModel)]="vFreight">
                     </mat-form-field>
+
+                    <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                        <mat-label>OpeningBal</mat-label>
+                        <input name="BankNo" formControlName="OpeningBal" placeholder="Enter OpeningBal" matInput
+                             [(ngModel)]="vOpeningBal" #OpeningBal (keydown)="onEnterOpeningBal($event)"
+                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,10);">
+                        <mat-error class="error"
+                            *ngIf="_supplierService.myform.get('OpeningBal').invalid && _supplierService.myform.get('OpeningBal').touched">Only
+                            digits number is
+                            required</mat-error>
+                    </mat-form-field> -->
                 </div>
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                        <mat-label>Freight</mat-label>
-                        <input name="Freight" placeholder="Enter Freight" formControlName="Freight" matInput
-                            (keydown)="onEnterFright($event)" #Fright [(ngModel)]="vFreight">
+                        <mat-label>CreditPeriod</mat-label>
+                        <input name="CreditPeriod" placeholder="Enter CreditPeriod" formControlName="CreditPeriod" matInput
+                            (keydown)="onEnterCreditPeriod($event)" #creditp [(ngModel)]="vCreditPeriod">
                     </mat-form-field>
                 </div>
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -307,11 +320,29 @@
         <mat-card>
             <div fxFlex="100" fxLayout="row wrap">
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                    <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                         <mat-label>Bank Name</mat-label>
                         <input matAutocompletePosition="below" type="text" placeholder="Select BankName" matInput
                             formControlName="BankName" [matAutocomplete]="autoBank1" [(ngModel)]="vBankName"
                             (keydown)="onEnterBankname($event)" #Bankname>
+                        <span matSuffix style="display: flex;">
+                            <mat-icon class="mat-icon-close"
+                                (click)="_supplierService.myform.get('BankName').setValue(''); isBank1elected = false;">close</mat-icon>
+                            <mat-icon class="mat-icon-close"
+                                (click)="_supplierService.myform.get('BankName').setValue(''); isBank1elected = false;">search</mat-icon>
+                        </span>
+                        <mat-autocomplete #autoBank1="matAutocomplete" [displayWith]="filteredOptionsBank1">
+                            <mat-option *ngFor="let option of filteredOptionsBank1 | async" [value]="option">
+                                {{option.BankName}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field> -->
+
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Bank Name</mat-label>
+                        <input matAutocompletePosition="below" type="text" placeholder="Select BankName" matInput
+                            formControlName="BankName" [matAutocomplete]="autoBank1"
+                            [(ngModel)]="vBankName" (keydown)="onEnterBankname($event)" #Bankname>
                         <span matSuffix style="display: flex;">
                             <mat-icon class="mat-icon-close"
                                 (click)="_supplierService.myform.get('BankName').setValue(''); isBank1elected = false;">close</mat-icon>
@@ -324,7 +355,6 @@
                             </mat-option>
                         </mat-autocomplete>
                     </mat-form-field>
-
                 </div>
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
@@ -377,26 +407,51 @@
 
             <div fxFlex="100" fxLayout="row wrap">
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+
                     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                        <mat-label>OpeningBal</mat-label>
+                        <input name="BankNo" formControlName="OpeningBal" placeholder="Enter OpeningBal" matInput
+                             [(ngModel)]="vOpeningBal" #OpeningBal (keydown)="onEnterOpeningBal($event)"
+                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,10);">
+                        <mat-error class="error"
+                            *ngIf="_supplierService.myform.get('OpeningBal').invalid && _supplierService.myform.get('OpeningBal').touched">Only
+                            digits number is
+                            required</mat-error>
+                    </mat-form-field>
+                </div>
+                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                 
+                    <!-- data-toggle="dropup" -->
+                    <mat-form-field appearance="outline" fxFlex class="dropup">
                         <mat-label>Store Name</mat-label>
-                        <input matAutocompletePosition="below" type="text" placeholder="Select StoreId" matInput
-                            formControlName="StoreId" [matAutocomplete]="autoStore2" required
-                            (keydown)="onEnterStore($event)" #Store [(ngModel)]="vStoreId">
+                        <input matAutocompletePosition="up" type="text" placeholder="Select Store" 
+                            [(ngModel)]="vStoreId" matInput #Store
+                            (keydown)="onEnterStore($event)" formControlName="StoreId"
+                            [matAutocomplete]="autoStore2">
                         <span matSuffix style="display: flex;">
                             <mat-icon class="mat-icon-close"
                                 (click)="_supplierService.myform.get('StoreId').setValue(''); isStoreSelected = false;">close</mat-icon>
                             <mat-icon class="mat-icon-close"
                                 (click)="_supplierService.myform.get('StoreId').setValue(''); isStoreSelected = false;">search</mat-icon>
                         </span>
-                        <mat-autocomplete #autoStore2="matAutocomplete" [displayWith]="getOptionTextStore">
-                            <mat-option *ngFor="let option of filteredOptionsStore | async" [value]="option">
-                                {{option.StoreName}}
+                        <mat-autocomplete #autoStore2="matAutocomplete" [displayWith]="getOptionTextStore" >
+                            <mat-option *ngFor="let option of filteredOptionsStore | async" [value]="option" >
+                                <mat-checkbox [checked]="option.selected" (change)="toggleSelection(option)"
+                                    (click)="$event.stopPropagation()"> {{option.StoreName}}</mat-checkbox>
                             </mat-option>
                         </mat-autocomplete>
                     </mat-form-field>
+                   
 
                 </div>
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <mat-chip-list #chipList>
+                        <mat-chip *ngFor="let item of selectedItems">
+                            {{ item.StoreName }} <mat-icon (click)="remove(item)">close</mat-icon>
+                        </mat-chip>
+                    </mat-chip-list>
+                </div>
+                <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                         <mat-label>Vender Type Name</mat-label>
                         <input matAutocompletePosition="below" type="text" placeholder="Select VenderTypeId" matInput
@@ -416,20 +471,8 @@
                     </mat-form-field>
 
 
-                </div>
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                        <mat-label>OpeningBal</mat-label>
-                        <input name="BankNo" formControlName="OpeningBal" placeholder="Enter OpeningBal" matInput
-                             [(ngModel)]="vOpeningBal" #mobile (keydown)="onEnterOpeningBal($event)"
-                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,10);">
-                        <mat-error class="error"
-                            *ngIf="_supplierService.myform.get('OpeningBal').invalid && _supplierService.myform.get('OpeningBal').touched">Only
-                            digits number is
-                            required</mat-error>
-                    </mat-form-field>
-                </div>
+                </div> -->
+               
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <mat-form-field appearance="outline" *ngIf="msmflag" class="mr-sm-12" fxFlex>
                         <input name="MSMNo" placeholder="Select MSMNo" formControlName="MSMNo" matInput>
@@ -460,7 +503,7 @@
 
             <div class="sales-footer-buttons gap-8" fxLayout="row">
                 <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                <button class="btn btn-primary" color="accent" (click)="onSubmit()">
+                <button class="btn btn-primary" color="accent" (click)="onSubmit()"  [disabled]="Savebtn">
                     <span>Save</span>
                 </button>
             </div>
