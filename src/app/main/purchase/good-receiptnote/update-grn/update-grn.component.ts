@@ -391,7 +391,7 @@ export class UpdateGRNComponent implements OnInit {
   getGRNItemDetailList(el) {
     this.sIsLoading = 'loading-data';
     var Param = {
-      "GRNID": el.GRNID,
+      "GRNID": el.GRNID
     }
     console.log(Param);
     this._GRNList.getGrnItemDetailList(Param).subscribe(data => {
@@ -401,6 +401,7 @@ export class UpdateGRNComponent implements OnInit {
       this.sIsLoading = '';
       this.PoID = this.dsItemNameList.data[0].PurchaseId
       console.log(this.dsItemNameList);
+     
       console.log(this.PoID);
     },
       error => {
@@ -520,7 +521,7 @@ export class UpdateGRNComponent implements OnInit {
           IsVerifiedDatetime: "01/01/1900",
           StkID: 0
         });
-
+        console.log(this.chargeslist)
         setTimeout(() => {
           this.dsItemNameList.data = this.chargeslist;
           this.loading = false;
@@ -615,15 +616,15 @@ export class UpdateGRNComponent implements OnInit {
         //total amt
         contact.TotalAmount = (contact.ReceiveQty * contact.Rate);
         //disc
-        contact.DiscAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.DiscPercentage)) / 100);
+        contact.DiscAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.DiscPercentage.toFixed(2))) / 100).toFixed(2);
         let TotalAmt = (parseFloat(contact.TotalAmount) - parseFloat(contact.DiscAmount));
         //Gst
-        contact.VatPercentage = (parseFloat(contact.CGSTPer) + parseFloat(contact.SGSTPer) + parseFloat(contact.IGSTPer))
+        contact.VatPercentage = (parseFloat(contact.CGSTPer) + parseFloat(contact.SGSTPer) + parseFloat(contact.IGSTPer)).toFixed(2)
         contact.CGSTAmt = (((TotalAmt) * parseFloat(contact.CGSTPer)) / 100);
         contact.SGSTAmt = (((TotalAmt) * parseFloat(contact.SGSTPer)) / 100);
         contact.IGSTAmt = (((TotalAmt) * parseFloat(contact.IGSTPer)) / 100);
         //contact.VatAmount = ((contact.CGSTAmt) + (contact.SGSTAmt) + (contact.IGSTAmt));
-        contact.VatAmount = (((TotalAmt) * parseFloat(contact.VatPercentage)) / 100);
+        contact.VatAmount = (((TotalAmt) * parseFloat(contact.VatPercentage)) / 100).toFixed(2);
         contact.NetAmount = ((TotalAmt) + parseFloat(contact.VatAmount));
 
       }

@@ -254,6 +254,13 @@ debugger
       this.selectedPaymnet1 = 'cash';
       this.Paymentobj['TransactionType'] = 2;
     }
+    else if (this.data.FromName == "Phar-SupplierPay") {
+      this.netPayAmt = this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);
+      this.amount1 = this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);
+      this.PatientName = this.advanceData.PatientName;
+      this.selectedPaymnet1 = 'cash';
+      this.Paymentobj['TransactionType'] = 2;
+    }
   }
 
   ngOnInit(): void {
