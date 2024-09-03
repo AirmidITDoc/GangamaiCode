@@ -11,6 +11,8 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { SupplierPaymentListComponent } from './supplier-payment-list/supplier-payment-list.component';
 import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-new/op-payment-new.component';
+import { OPAdvancePaymentComponent } from 'app/main/opd/op-search-list/op-advance-payment/op-advance-payment.component';
+import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
 
 @Component({
   selector: 'app-supplier-payment-status',
@@ -105,49 +107,70 @@ export class SupplierPaymentStatusComponent implements OnInit {
       error => {
         this.sIsLoading = '';
       });
-  }
-  SelectedArray: any = [];
+  } 
+  vSupplierName:any;
+  vInvoiceNo:any;
+  GrnNumber:any;
   tableElementChecked(event, element) {
+    this.vSupplierName = element.SupplierName;
+    this.vInvoiceNo =  element.InvoiceNo;
+    this.GrnNumber =  element.GrnNumber;
     if (event.checked) {
       console.log(element) 
       this.vNetAmount += element.NetAmount
       this.vPaidAmount += element.PaidAmount
-      this.vBalanceAmount += element.BalAmount
-      // this.SelectedArray.push(element);
+      this.vBalanceAmount += element.BalAmount 
     }
     else{
       this.vNetAmount -= element.NetAmount
       this.vPaidAmount -= element.PaidAmount
       this.vBalanceAmount -= element.BalAmount
-    }
-    //console.log(this.SelectedArray) 
+    } 
   }
   vNetAmount:any=0;
   vPaidAmount:any=0;
   vBalanceAmount:any=0;
+  CurrentDate = new Date()
   OnSave(){
     if ((this.vBalanceAmount < 0)) {
       this.toastr.warning('Please select Check Box', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
-    } 
-    let SupplierPayDetailsObj = {};
-    SupplierPayDetailsObj['NetAmount'] = this.vNetAmount;
-    SupplierPayDetailsObj['PaidAmount'] = this.vPaidAmount;
-    SupplierPayDetailsObj['BalAmount'] = this.vBalanceAmount; 
-    // this.isLoading123=false;
-    const dialogRef = this._matDialog.open(OpPaymentNewComponent,
-      {
-        data: {
-          vPatientHeaderObj: SupplierPayDetailsObj,
-          FromName: "Phar-SupplierPay"
-        }
-      });
+    }   
+      let PatientHeaderObj = {};
+      // PatientHeaderObj['Date'] = this.datePipe.transform(this.CurrentDate ,'dd/MM/YYYY') || '01/01/1900' 
+      // PatientHeaderObj['SupplierName'] = this.vSupplierName;
+      // PatientHeaderObj['InvoiceNo'] = this.vInvoiceNo;
+      // PatientHeaderObj['GrnNumber'] = this.GrnNumber; 
+      // PatientHeaderObj['NetPayAmount'] = this._SupplierPaymentStatusService.SearchFormGroup.get('NetAmount').value || 0;
+ 
+
+        PatientHeaderObj['Date'] = this.datePipe.transform(this.CurrentDate ,'dd/MM/YYYY') || '01/01/1900' 
+        // PatientHeaderObj['PatientName'] = this.PatientName;
+        // PatientHeaderObj['RegNo'] = this.RegNo;
+        // PatientHeaderObj['DoctorName'] = this.Doctorname;
+        // PatientHeaderObj['CompanyName'] = this.CompanyName;
+        // PatientHeaderObj['DepartmentName'] = this.DepartmentName; 
+        PatientHeaderObj['NetPayAmount'] =  this._SupplierPaymentStatusService.SearchFormGroup.get('NetAmount').value || 0;
+  
+    
+          const dialogRef = this._matDialog.open(OpPaymentComponent,
+            {
+              maxWidth: "80vw",
+              height: '650px',
+              width: '80%',
+              data: {
+                vPatientHeaderObj: PatientHeaderObj,
+                FromName: "Phar-SupplierPay",
+                advanceObj: PatientHeaderObj,
+              }
+            });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(result)
   });
+
 }
   onClear(){
 
@@ -170,6 +193,9 @@ export class SupplierPaymentStatusComponent implements OnInit {
       console.log('The dialog was closed - Insert Action', result);
        //console.log(result)  
     });
+  }
+  getSupplierPaymentReport(){
+    
   }
 }
 

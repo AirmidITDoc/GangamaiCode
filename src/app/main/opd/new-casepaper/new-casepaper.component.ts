@@ -22,6 +22,7 @@ import { ToastrService } from 'ngx-toastr';
 import { MedicineItemList } from 'app/main/ipd/ip-search-list/discharge-summary/discharge-summary.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
+import { ConfigService } from 'app/core/services/config.service';
 
 @Component({
   selector: 'app-new-casepaper',
@@ -112,7 +113,16 @@ export class NewCasepaperComponent implements OnInit {
   dateTimeObj: any;
   vMobileNo: any = 0;
   doseresults: any[] = [];
-
+  vDepartmentid:any;
+  isDepartmentSelected:boolean=false;
+  DepartmentList: any = [];
+  filteredOptionsDep: Observable<string[]>;
+  filteredOptionsDoc: Observable<string[]>;
+  DoctorList: any = [];
+  isDoctorSelected: boolean = false;
+  vDoctorId: any;
+  vTemplateId:boolean=true;
+  
 
   //   dsPresList = new MatTableDataSource<PrecriptionItemList>();
   //   dsafterPresList = new MatTableDataSource<PrecriptionItemList>();
@@ -130,7 +140,8 @@ export class NewCasepaperComponent implements OnInit {
     public toastr: ToastrService,
     private _loggedService: AuthenticationService,
     public datePipe: DatePipe,
-    public _WhatsAppEmailService: WhatsAppEmailService
+    public _WhatsAppEmailService: WhatsAppEmailService,
+    private configService: ConfigService,
   ) {
     // if (this.advanceDataStored.storage) {
     //   this.selectedAdvanceObj = this.advanceDataStored.storage;
@@ -146,6 +157,7 @@ export class NewCasepaperComponent implements OnInit {
 
     // this.getDrugList();
     this.getDoseList();
+    this.getDepartmentList();
     // if (this.advanceDataStored.storage) {
     //   this.selectedAdvanceObj = this.advanceDataStored.storage;
 
@@ -179,6 +191,7 @@ export class NewCasepaperComponent implements OnInit {
     //   map((ele: any | null) => ele ? this._filterDiagnosis(ele) : this.allDiagnosis.slice())); 
 
     // this.getPrescriptionListFill(this.VisitId);
+  
   }
   createForm() {
     return this._formBuilder.group({
@@ -260,6 +273,8 @@ export class NewCasepaperComponent implements OnInit {
       DoseId: '',
       Day: '',
       Instruction: '',
+      DoctorID:'',
+      Departmentid:''
     });
   }
   createSearchForm() {
@@ -393,7 +408,56 @@ export class NewCasepaperComponent implements OnInit {
       return this.doseList.filter(option => option.DoseName.toLowerCase().includes(filterValue));
     }
   }
+//Department list
 
+getDepartmentList() { 
+  this._CasepaperService.getDepartmentCombo().subscribe(data => {
+      this.DepartmentList = data;
+      console.log(data) 
+      this.filteredOptionsDep = this.MedicineItemForm.get('Departmentid').valueChanges.pipe(
+          startWith(''),
+          map(value => value ? this._filterDep(value) : this.DepartmentList.slice()),
+      );
+      if (this.configService.configParams.DepartmentId) { 
+          const ddValue = this.DepartmentList.filter(c => c.DepartmentId == this.configService.configParams.DepartmentId);
+          this.MedicineItemForm.get('Departmentid').setValue(ddValue[0]);
+          this.OnChangeDoctorList(ddValue[0]); 
+          return;
+      }
+  }); 
+}  
+  OnChangeDoctorList(departmentObj) {
+    this.isDepartmentSelected = true;
+    this._CasepaperService.getDoctorMasterCombo(departmentObj.DepartmentId).subscribe(
+      data => {
+        this.DoctorList = data;
+        this.filteredOptionsDoc = this.MedicineItemForm.get('DoctorID').valueChanges.pipe(
+          startWith(''),
+          map(value => value ? this._filterDoc(value) : this.DoctorList.slice()),
+        );
+      })
+  }
+
+  private _filterDep(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.DepartmentName ? value.DepartmentName.toLowerCase() : value.toLowerCase();
+      return this.DepartmentList.filter(option => option.DepartmentName.toLowerCase().includes(filterValue));
+    }
+  }
+  private _filterDoc(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
+      this.isDoctorSelected = false;
+      return this.DoctorList.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
+    }
+  }
+
+getOptionTextDep(option) { 
+  return option && option.DepartmentName ? option.DepartmentName : '';
+}
+getOptionTextDoc(option) { 
+  return option && option.Doctorname ? option.Doctorname : ''; 
+}
   getdoseDetailValue1(element, event) {
     element.DoseName1 = event
     console.log(event, element)
@@ -678,12 +742,17 @@ export class NewCasepaperComponent implements OnInit {
   @ViewChild('EBMI') EBMI: ElementRef;
   @ViewChild('EBP') EBP: ElementRef;
   @ViewChild('ETemp') ETemp: ElementRef;
-
+  @ViewChild('deptdoc') deptdoc: ElementRef;
   @ViewChild('itemid') itemid: ElementRef;
   @ViewChild('dosename') dosename: ElementRef;
   @ViewChild('Day') Day: ElementRef;
   @ViewChild('Instruction') Instruction: ElementRef;
   @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
+  public onEnterdept(event): void {
+    if (event.which === 13) {
+      this.deptdoc.nativeElement.focus();
+    }
+  } 
   public onEnterHeight(event): void {
     if (event.which === 13) {
       this.EWeight.nativeElement.focus();

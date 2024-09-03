@@ -21,7 +21,14 @@ export class CasepaperService {
   public getDiagnosisList() {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_M_ComplaintMasterForCombo", {})
   }
-
+ //Deartment Combobox List
+ public getDepartmentCombo() {
+  return this._httpClient.post("Generic/GetByProc?procName=RetrieveDepartmentMasterForCombo", {})
+}
+  //Doctor Master Combobox List
+  public getDoctorMasterCombo(Id) {
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_DoctorWithDepartMasterForCombo_Conditional", { "Id": Id })
+  }
   public getDoseList() {
     return this._httpClient.post("Generic/GetByProc?procName=ps_Rtrv_DoseMasterList", {})
   }
