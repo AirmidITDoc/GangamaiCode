@@ -115,6 +115,10 @@ public getIPBILLBrowsedatewisePrint(BillNo) {
  getIPBILLdatewisePrint(BillNo){
   return this._httpClient.get("InPatient/view-IP-BillDatewiseReceipt?BillNo=" + BillNo)
  }
+ getIpFinalBillclasswiseReceipt(BillNo){
+  return this._httpClient.get("InPatient/view-IP-BillReceiptclasswise?BillNo=" + BillNo)
+ }
+ 
 
  getIpFinalBillwardwiseReceipt(BillNo){
   return this._httpClient.get("InPatient/view-IP-BillWardwiseReceipt?BillNo=" + BillNo)

@@ -12,6 +12,7 @@ import { connectableObservableDescriptor } from "rxjs/internal/observable/Connec
 import Swal from "sweetalert2";
 import { ExcelDownloadService } from "app/main/shared/services/excel-download.service";
 import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
+import { AddformulaComponent } from "./addformula/addformula.component";
 
 @Component({
     selector: "app-parametermaster",
@@ -203,6 +204,24 @@ export class ParametermasterComponent implements OnInit {
             maxHeight: "95vh",
             width: "100%",
             height: "100%",
+        });
+        dialogRef.afterClosed().subscribe((result) => {
+            console.log("The dialog was closed - Insert Action", result);
+            this.getParameterMasterList();
+        });
+    }
+
+    onaddformula(row) {
+
+        const dialogRef = this._matDialog.open(AddformulaComponent, {
+            maxWidth: "50vw",
+            maxHeight: "55vh",
+            width: "100%",
+            height: "100%",
+            data : {
+                registerObj : row,
+              }
+            
         });
         dialogRef.afterClosed().subscribe((result) => {
             console.log("The dialog was closed - Insert Action", result);

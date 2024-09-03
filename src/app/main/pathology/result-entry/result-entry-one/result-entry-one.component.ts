@@ -375,12 +375,10 @@ export class ResultEntryOneComponent implements OnInit {
                 this.sIsLoading = '';
             });
 
-
-
     }
 
 
-
+    onUpload(){}
     getOptionTextresultdr(option) {
         return option && option.Doctorname ? option.Doctorname : '';
     }

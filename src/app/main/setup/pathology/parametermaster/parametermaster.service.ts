@@ -9,6 +9,7 @@ export class ParametermasterService {
     myform: FormGroup;
     myformSearch: FormGroup;
     descform: FormGroup;
+    formulaform: FormGroup;
     is_numeric : Boolean = true;
     descriptiveList = [];
     numericList = [];
@@ -21,6 +22,8 @@ export class ParametermasterService {
         this.myformSearch = this.createSearchForm();
         this.myform = this.createParameterForm();
         this.descform=this.getmydescform();
+        this.formulaform=this.createformulaForm();
+        
     }
 
     createParameterForm(): FormGroup {
@@ -79,6 +82,17 @@ export class ParametermasterService {
         return this._formBuilder.group({
             ParameterNameSearch: [""],
             IsDeletedSearch: ["1"],
+        });
+    }
+
+    createformulaForm():FormGroup{
+        return this._formBuilder.group({
+            ParameterNameSearch: [""],
+            Formula: [""],
+            ParameterId:[""],
+            Formulapara:[""],
+            OPrator:[""],
+           
         });
     }
 
@@ -174,11 +188,8 @@ export class ParametermasterService {
         return this._httpClient.post("ParameterAgeWiseMasterSave", param);
     }
 
-    public getParameterMasterCombo() {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=m_Rtrv_PathParameterList_by_Name",
-            {}
-        );
+    public getParameterMasterCombo(param) {
+        return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PathParameterList_by_Name",param );
     }
 
     public deleteAssignParameterToDescriptive(param) {

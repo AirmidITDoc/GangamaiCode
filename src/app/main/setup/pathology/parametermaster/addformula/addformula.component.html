@@ -1,0 +1,106 @@
+<div class="modal-wrapper grid-container">
+    <!-- Modal header -->
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Formula Update </span>
+            </div>
+            <div class="modal-header-right">
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" aria-label="Close dialog" matTooltip="Close" (click)="onClose()">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            </div>
+            <!-- </div>[mat-dialog-close]="true"  -->
+        </div>
+    </div>
+    <!-- Modal body -->
+    <div>
+        <div class="modal-body-container">
+            <form [formGroup]="_ParameterService.formulaform">
+                <div fxLayout="column" class="gap-12">
+
+                    <div class="modal-card-container">
+                        <mat-card>
+                            <div fxLayout="column" class="gap-8">
+
+                                <!-- <mat-form-field appearance="outline">
+                                        <mat-label>Parameter</mat-label>
+                                        <input matAutocompletePosition="below" type="text"
+                                            placeholder="Select parameter" matInput  formControlName="ParameterId"
+                                            [matAutocomplete]="autoparameter">
+                                        <span matSuffix style="display: flex;">
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_ParameterService.formulaform.get('ParameterId').setValue(''); isparaSelected = false;">close</mat-icon>
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_ParameterService.formulaform.get('ParameterId').setValue(''); isparaSelected = false;">search</mat-icon>
+                                        </span>
+                                        <mat-autocomplete #autoparameter="matAutocomplete"
+                                            [displayWith]="getOptionTextparameter">
+                                            <mat-option
+                                                *ngFor="let option of filteredOptionsParameter | async"
+                                                [value]="option">
+                                                {{option.ParameterName}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field> -->
+
+
+                                <mat-form-field appearance="outline" fxflex="30">
+                                    <mat-label>ParameterId</mat-label>
+                                    <mat-select formControlName="ParameterId" required>
+                                        <mat-option *ngFor="let m of paramterList" [value]="m.value"
+                                            style="margin-top: 2px;">
+                                            {{ m.ParameterName }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="65%">
+                                    <mat-label>Parameter</mat-label>
+                                    <input name="Parameter" placeholder="Parameter" formControlName="Formulapara"
+                                        matInput [(ngModel)]="paraname">
+                                </mat-form-field>
+
+
+
+                                <mat-form-field appearance="outline" fxflex="30">
+                                    <mat-label>Oprator</mat-label>
+                                    <mat-select formControlName="OPrator" required
+                                        (selectionChange)="addoprator($event.value)">
+                                        <mat-option *ngFor="let Result of results" [value]="Result.viewValue"
+                                            style="margin-top: 2px;">
+                                            {{ Result.viewValue }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="65%">
+                                    <mat-label>Formula</mat-label>
+                                    <input name="Formula" placeholder="Select Formula" formControlName="Formula"
+                                        [(ngModel)]="finalformula" matInput>
+                                    <!-- <span class="error" *ngIf="f.Formula.invalid && f.Formula.touched">Formula
+                                                required Enter only alphabets</span> -->
+                                </mat-form-field>
+
+
+                            </div>
+                            <!-- [disabled]="_ParameterService.formulaform.invalid" -->
+                            <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" style="margin-left: 500px;">
+
+                                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                                <button class="btn btn-primary " color="accent" (click)="onSubmit()">
+                                    <span>Save</span>
+                                </button>
+                            </div>
+                        </mat-card>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal footer -->
+
+</div>

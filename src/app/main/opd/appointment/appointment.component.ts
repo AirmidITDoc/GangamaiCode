@@ -1149,7 +1149,7 @@ export class AppointmentComponent implements OnInit {
 
 
     getDepartmentList() {
-
+debugger
         this._opappointmentService.getDepartmentCombo().subscribe(data => {
             this.DepartmentList = data;
             console.log(data)
@@ -2682,11 +2682,12 @@ export class AppointmentComponent implements OnInit {
     }
 
     OnChangeDoctorList(departmentObj) {
-
+debugger
         this.isDepartmentSelected = true;
         this._opappointmentService.getDoctorMasterCombo(departmentObj.DepartmentId).subscribe(
             data => {
                 this.DoctorList = data;
+                console.log(data)
                 this.optionsDoc = this.DoctorList.slice();
                 this.filteredOptionsDoc = this.VisitFormGroup.get('DoctorID').valueChanges.pipe(
                     startWith(''),

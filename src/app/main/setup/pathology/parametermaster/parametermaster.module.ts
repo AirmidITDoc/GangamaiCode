@@ -26,6 +26,7 @@ import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatButtonModule } from "@angular/material/button";
 import { ParameterFormMasterComponent } from './parameter-form-master/parameter-form-master.component';
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
+import { AddformulaComponent } from './addformula/addformula.component';
 
 const routes: Routes = [
     {
@@ -35,7 +36,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [ParametermasterComponent, ParameterFormMasterComponent],
+    declarations: [ParametermasterComponent, ParameterFormMasterComponent, AddformulaComponent],
     imports: [
         RouterModule.forChild(routes),
 

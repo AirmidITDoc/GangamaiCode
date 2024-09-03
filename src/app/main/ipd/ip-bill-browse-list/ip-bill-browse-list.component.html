@@ -507,24 +507,24 @@
                                                 <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
                                             </button>
 
-                                            <button mat-icon-button class="material-icons" (click)="getRecord(contact)" matTooltip="Print Final Bill">
+                                            <!-- <button mat-icon-button class="material-icons" (click)="getRecord(contact)" matTooltip="Print Final Bill">
                                                 <mat-icon> print </mat-icon>
-                                            </button>
+                                            </button> -->
 
-                                            <!-- <div fxFlex="row" fxLayoutAlign="start">
+                                          
                                                 <button class="menu-btn" mat-icon-button [matMenuTriggerFor]="moreMenu"
-                                                    aria-label="More" (click)="$event.stopPropagation();">
-                                                    <mat-icon class="secondary-text">more_vert</mat-icon>
-                                                </button>
+                                                aria-label="More" (click)="$event.stopPropagation();">
+                                                <mat-icon class="secondary-text">more_vert</mat-icon>
+                                            </button>
                                                 <mat-menu #moreMenu="matMenu">
                                                     <ng-container *ngFor="let m of menuActions, let i=index">
                                                         <button mat-menu-item aria-label="remove"
-                                                            (click)="getRecord(contact,m)">
+                                                            (click)="getRecord1(contact,m)">
                                                             <span>{{m}}</span>
                                                         </button>
                                                     </ng-container>
                                                 </mat-menu>
-                                            </div> -->
+                                            <!-- </div>  -->
                                         </mat-cell>
                                     </ng-container>
 

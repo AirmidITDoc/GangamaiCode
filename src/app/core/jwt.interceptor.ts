@@ -30,9 +30,9 @@ export class JwtInterceptor implements HttpInterceptor {
     // if(request.url.indexOf('Gender') > -1)
     //     request = request.clone({ url: `http://192.168.2.100:8083/api/v1/${request.url}` });
     // else 
-        request = request.clone({ url: this.config.apiEndpoint +`/${request.url}` });
+       // request = request.clone({ url: this.config.apiEndpoint +`/${request.url}` });
                             // Local Link
-    // request = request.clone({ url: `http://localhost:63750/api/${request.url}` });
+    request = request.clone({ url: `http://localhost:63750/api/${request.url}` });
         //return next.handle(request);
         return next.handle(request).pipe(
             map((event: HttpEvent<any>) => {

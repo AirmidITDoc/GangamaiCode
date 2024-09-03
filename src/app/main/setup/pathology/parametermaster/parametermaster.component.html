@@ -145,6 +145,7 @@
                                                 <mat-icon *ngIf="element.IsNumericParameter== 0" title="IsDescriptive">
                                                     <img width="20px" height="20px" src="assets/images/logos/pathology.png">  
                                                 </mat-icon>
+
                                             </mat-cell>
                                         </ng-container>
 
@@ -171,7 +172,7 @@
                                             </mat-cell>
                                         </ng-container>
 
-                                        <ng-container matColumnDef="Isdeleted">
+                                        <ng-container matColumnDef="Isdeleted" stickyEnd>
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                                 IsActive
                                             </mat-header-cell>
@@ -194,6 +195,10 @@
                                                 <button mat-icon-button
                                                     *ngIf="!element.Isdeleted"><mat-icon
                                                         title="Edit Menu">highlight_off</mat-icon></button>
+                                                        <button mat-icon-button
+                                                        (click)="onaddformula(element)"
+                                                        color="warn"><mat-icon title="Add Formula">add</mat-icon></button>
+    
                                                 <button mat-icon-button
                                                     (click)="onDeactive(element,element.ParameterID)"
                                                     color="warn"><mat-icon>delete_outline</mat-icon></button>

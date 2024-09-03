@@ -177,10 +177,10 @@ export class IPBillBrowseListComponent implements OnInit {
   ngOnInit(): void {
 
     if (this._ActRoute.url == '/ipd/ipd-bill-browse-list') {
-      this.menuActions.push('Print Final Bill');
+      this.menuActions.push('Print Final Bill Classwise');
       this.menuActions.push('Print FinalBill Classwise');
-      this.menuActions.push('Print FinalBill Datewise');
-      this.menuActions.push('Print FinalBill WardWise');
+      // this.menuActions.push('Print FinalBill Datewise');
+      // this.menuActions.push('Print FinalBill WardWise');
     }
 
     this.getBrowseIPDPaymentReceiptList();
@@ -218,21 +218,28 @@ export class IPBillBrowseListComponent implements OnInit {
 
   getRecord(contact, m): void {
    
+      // if (!contact.InterimOrFinal)
+      //   this.viewgetBillReportPdf(contact.BillNo)
+      // else
+      //   this.viewgetInterimBillReportPdf(contact.BillNo)
+  
+  }
+  getRecord1(contact, m): void {
+    if (m == "Print Final Bill") 
       if (!contact.InterimOrFinal)
         this.viewgetBillReportPdf(contact.BillNo)
       else
         this.viewgetInterimBillReportPdf(contact.BillNo)
-    
-    // else if (m == "Print FinalBill Datewise") {
-    //   this.viewgetBillReportDatewisePdf(contact);
-    // }
-    // else if (m == "Print FinalBill WardWise") {
-    //   this.viewgetBillReportwardwisePdf(contact);
-    // }
-
+  
+  if (m == "Print FinalBill Classwise") 
+    this.viewgetBillReportclasswisePdf(contact)
+    if (m == "Print FinalBill Datewise") 
+      this.viewgetBillReportDatewisePdf(contact)
+      if (m == "Print FinalBill WardWise") 
+        this.viewgetBillReportwardwisePdf(contact)
   }
-
-  // SubMenu(contact) { }
+  
+  
 
   onShow(event: MouseEvent) {
 
@@ -706,7 +713,31 @@ console.log(PatientHeaderObj)
 
 
 
+  viewgetBillReportclasswisePdf(row) {
+    setTimeout(() => {
+      this.SpinLoading = true;
+      this.AdList = true;
+      this._IpBillBrowseListService.getIpFinalBillclasswiseReceipt(
+        row.BillNo
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "IP Bill Class wise Viewer"
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          this.AdList = false;
+          this.SpinLoading = false;
+        });
+      });
 
+    }, 100);
+  }
 
   viewgetBillReportwardwisePdf(row) {
     setTimeout(() => {
