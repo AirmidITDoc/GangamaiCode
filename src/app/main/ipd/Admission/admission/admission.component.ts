@@ -1629,6 +1629,15 @@ export class AdmissionComponent implements OnInit {
         return;
       }
     }
+    debugger
+    if(!this.wardFormGroup.get('BedId').value){
+      if(this.vBedId == '' || this.vBedId == null || this.vBedId == undefined || this.vBedId == 0){
+        this.toastr.warning('Please Select BedName', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }  
     if(this.wardFormGroup.get('BedId').value){
       if(!this.BedList.some(item => item.BedName ===this.wardFormGroup.get('BedId').value.BedName)){
         this.toastr.warning('Please Select valid BedName', 'Warning !', {
@@ -1655,7 +1664,7 @@ export class AdmissionComponent implements OnInit {
   }
   OnSaveAdmission() {
 
-
+ 
     if (this.patienttype != 2) {
       this.CompanyId = 0;
       this.SubCompanyId = 0;

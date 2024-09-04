@@ -576,6 +576,7 @@ export class BrowsSalesBillComponent implements OnInit {
       PatientHeaderObj['PatientName'] = contact.PatientName;
       PatientHeaderObj['RegNo'] = contact.RegNo;   
       PatientHeaderObj['OPD_IPD_Id'] =  contact.IPNO; 
+      PatientHeaderObj['billNo'] = contact.SalesId;
       PatientHeaderObj['NetPayAmount'] = Math.round(contact.BalanceAmount);  
 
         const dialogRef = this._matDialog.open(OpPaymentComponent,
@@ -599,13 +600,13 @@ export class BrowsSalesBillComponent implements OnInit {
         updateBillobj['balanceAmount'] =result.submitDataPay.ipPaymentInsert.BalanceAmt;
   
         let UpdateAdvanceDetailarr = [];
-        UpdateAdvanceDetailarr.forEach((element) => {
+        if (UpdateAdvanceDetailarr.length == 0) { 
             let update_T_PHAdvanceDetailObj = {};
             update_T_PHAdvanceDetailObj['AdvanceDetailID'] = 0,
             update_T_PHAdvanceDetailObj['UsedAmount'] = 0,
             update_T_PHAdvanceDetailObj['BalanceAmount'] = 0,
-            UpdateAdvanceDetailarr.push(update_T_PHAdvanceDetailObj);
-        });  
+            UpdateAdvanceDetailarr.push(update_T_PHAdvanceDetailObj); 
+      }
      
         let update_T_PHAdvanceHeaderObj = {}; 
           update_T_PHAdvanceHeaderObj['AdvanceId'] = 0,

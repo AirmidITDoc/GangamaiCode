@@ -334,7 +334,10 @@ debugger
 
   Paymentobj = {};
   onSubmit() {
-   
+    const currentDate = new Date();
+    const datePipe = new DatePipe('en-US');
+    const formattedTime = datePipe.transform(currentDate, 'shortTime');
+    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
     // this.Paymentobj['BillNo'] = this.data.billNo;
     // this.Paymentobj['ReceiptNo'] = '';
     // this.Paymentobj['PaymentDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
@@ -405,9 +408,9 @@ if(this.amount1 !=0 ){
 }
 else if(this.data.FromName == "OP-Pharma-SETTLEMENT"){   
  
-  this.Paymentobj['BillNo'] = this.data.billNo; 
-  this.Paymentobj['PaymentDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
-  this.Paymentobj['PaymentTime'] =this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
+  this.Paymentobj['BillNo'] = this.advanceData.billNo; 
+  this.Paymentobj['PaymentDate'] = formattedDate
+  this.Paymentobj['PaymentTime'] = formattedTime
   this.Paymentobj['CashPayAmount'] = this.Payments.data.find(x => x.PaymentType == "cash")?.Amount ?? 0;
   this.Paymentobj['ChequePayAmount'] =this.Payments.data.find(x => x.PaymentType == "cheque")?.Amount ?? 0;
   this.Paymentobj['ChequeNo'] =this.Payments.data.find(x => x.PaymentType == "cheque")?.RefNo ?? 0;
@@ -434,12 +437,14 @@ else if(this.data.FromName == "OP-Pharma-SETTLEMENT"){
   this.Paymentobj['PayTMAmount'] =this.Payments.data.find(x => x.PaymentType == "upi")?.Amount ?? 0;
   this.Paymentobj['PayTMTranNo'] = this.Payments.data.find(x => x.PaymentType == "upi")?.RefNo ?? 0;
   this.Paymentobj['PayTMDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
+  this.Paymentobj['paymentId'] = 0;
 }
-else { 
+else if(this.data.FromName == "OP-Bill" || this.data.FromName == "IP-Advance" || this.data.FromName == "OP-RefundOfBill" || 
+   this.data.FromName == "IP-RefundOfBill" || this.data.FromName == "IP-RefundOfAdvance") { 
     this.Paymentobj['BillNo'] = this.data.billNo;
     this.Paymentobj['ReceiptNo'] = "";
-    this.Paymentobj['PaymentDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
-    this.Paymentobj['PaymentTime'] =this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
+    this.Paymentobj['PaymentDate'] =formattedDate
+    this.Paymentobj['PaymentTime'] = formattedTime
     this.Paymentobj['CashPayAmount'] = this.Payments.data.find(x => x.PaymentType == "cash")?.Amount ?? 0;
     this.Paymentobj['ChequePayAmount'] =this.Payments.data.find(x => x.PaymentType == "cheque")?.Amount ?? 0;
     this.Paymentobj['ChequeNo'] =this.Payments.data.find(x => x.PaymentType == "cheque")?.RefNo ?? 0;
@@ -481,9 +486,9 @@ else {
 
     console.log(JSON.stringify(this.Paymentobj));
 
-    const ipPaymentInsert = new IpPaymentInsert(this.Paymentobj);
+   // const ipPaymentInsert = new IpPaymentInsert(this.Paymentobj);
     let submitDataPay = {
-      ipPaymentInsert,
+      ipPaymentInsert: this.Paymentobj
     };
     let IsSubmit = {
       "submitDataPay": submitDataPay,
