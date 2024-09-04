@@ -57,9 +57,21 @@ export class NewOPBillingComponent implements OnInit {
   isDoctor: boolean = false;
   Consessionres: boolean = false;
 
-  displayedColumns = [
-    // 'ChargesDate',
-
+  displayedColumns = [ 
+    'IsCheck', 
+    'ServiceName',
+    'Price',
+    'Qty',
+    'TotalAmt',
+    'DiscPer',
+    'DiscAmt',
+    'NetAmount',
+    'ChargeDoctorName',
+    'ClassName',
+    'ChargesAddedName',
+    'action'
+  ];
+  displayedColumnspackage = [ 
     'IsCheck',
     'ServiceName',
     'Price',
@@ -73,15 +85,9 @@ export class NewOPBillingComponent implements OnInit {
     'ChargesAddedName',
     'action'
   ];
-
-  tableColumns = [
-    'ServiceName',
-    'Price',
-    'Qty',
-    'action'
-  ];
-
+ 
   dataSource = new MatTableDataSource<ChargesList>();
+  dsPackageDet = new MatTableDataSource<ChargesList>();
   myControl = new FormControl();
   filteredOptions: any;
   billingServiceList = [];
@@ -355,18 +361,15 @@ export class NewOPBillingComponent implements OnInit {
     return option.ServiceName;
 
   }
-
+  vIsPackage:any;
   getSelectedObj(obj) {
 console.log(obj)  
     if (this.dataSource.data.length > 0) {
       this.dataSource.data.forEach((element) => {
-        if (obj.ServiceId == element.ServiceId) {
-
-          Swal.fire('Selected Item already added in the list ');
-
+        if (obj.ServiceId == element.ServiceId) { 
+          Swal.fire('Selected Item already added in the list '); 
           this.onClearServiceAddList();
-        }
-
+        } 
       });
 
       this.SrvcName = obj.ServiceName;
@@ -377,6 +380,7 @@ console.log(obj)
       this.serviceId = obj.ServiceId;
       this.b_isPath = obj.IsPathology;
       this.b_isRad = obj.IsRadiology;
+      this.vIsPackage = obj.IsPackage;
       this.b_CreditedtoDoctor = obj.CreditedtoDoctor;
       if (this.b_CreditedtoDoctor == true) {
         this.isDoctor = true;
@@ -402,13 +406,13 @@ console.log(obj)
       this.serviceId = obj.ServiceId;
       this.b_isPath = obj.IsPathology;
       this.b_isRad = obj.IsRadiology;
+      this.vIsPackage = obj.IsPackage;
       this.b_CreditedtoDoctor = obj.CreditedtoDoctor;
       if (this.b_CreditedtoDoctor == true) {
         this.isDoctor = true;
         this.registeredForm.get('DoctorID').reset();
         this.registeredForm.get('DoctorID').setValidators([Validators.required]);
-        this.registeredForm.get('DoctorID').enable();
-
+        this.registeredForm.get('DoctorID').enable(); 
       } else {
         this.isDoctor = false;
         this.registeredForm.get('DoctorID').reset();
@@ -416,9 +420,7 @@ console.log(obj)
         this.registeredForm.get('DoctorID').updateValueAndValidity();
         this.registeredForm.get('DoctorID').disable();
       }
-    }
-
-
+    } 
   }
   vConcessionAmt: any;
   getNetAmtSum(element) {
@@ -451,7 +453,18 @@ console.log(obj)
 
     return netAmt
   }
-
+  PacakgeList:any=[];
+getpackagedetList(){
+  var vdata={
+    'ServiceId': this.serviceId
+  }
+  console.log(vdata);
+  this._oPSearhlistService.getpackagedetList(vdata).subscribe((data)=>{
+    this.dsPackageDet.data = data as ChargesList[];
+    this.PacakgeList = this.dsPackageDet.data;
+    console.log(this.dsPackageDet.data); 
+  });
+}
   transform(value: string) {
     var datePipe = new DatePipe("en-US");
     value = datePipe.transform(value, 'dd/MM/yyyy hh:mm a');
@@ -991,6 +1004,7 @@ console.log(obj)
         ChargesDate: this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
         IsPathology: this.b_isPath,
         IsRadiology: this.b_isRad,
+        IsPackage: this.vIsPackage,
         ClassName: '',// this.selectedAdvanceObj.ClassName || '',
         ChargesAddedName: this.accountService.currentUserValue.user.id || 1,
 
@@ -1007,6 +1021,7 @@ console.log(obj)
     this.savebtn = false;
     this.ChargesDoctorname = '';
     this.DoctornewId = 0;
+    this.getpackagedetList();
   }
   finalDisc1: any = 0;
   finaldiscAmt() {
@@ -1246,6 +1261,15 @@ console.log(obj)
     //     this.BillingForm.get('concessionAmt').setValue(discamt);
     //   } 
     // } 
+  } 
+  deleteTableRowPackage(element) {
+    let index = this.PacakgeList.indexOf(element);
+    if (index >= 0) {
+      this.PacakgeList.splice(index, 1);
+      this.dsPackageDet.data = [];
+      this.dsPackageDet.data = this.PacakgeList;
+    }
+    Swal.fire('Success !', 'PacakgeList Row Deleted Successfully', 'success');  
   }
 
 

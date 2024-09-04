@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { LoaderService } from 'app/core/components/loader/loader.service';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -24,7 +25,8 @@ export class OPSearhlistService {
 
 
   constructor(public _httpClient: HttpClient,
-    private _formBuilder: FormBuilder
+    private _formBuilder: FormBuilder,
+    private _loaderService: LoaderService,
   ) {
     this.myFilterform = this.filterForm();
     this.myShowAdvanceForm = this.showAdvanceForm();
@@ -216,6 +218,13 @@ export class OPSearhlistService {
   public getAppointmentList(employee) {
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveVisitDetailsList_1", employee)
   }
+  //op bill Package details
+  public getpackagedetList(employee, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.post("Generic/GetByProc?procName=m_Retrieve_PackageDetails", employee)
+  }
 
   // Doctor Master Combobox List
   public getDoctorMasterCombo() {
@@ -387,7 +396,10 @@ public getConcessionCombo()
   public getCreditBillList(data) {
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_OP_Bill_List_Settlement", data)
   }
-  public InsertOPBillingsettlement(emp){
+  public InsertOPBillingsettlement(emp, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.post("OutPatient/OpSettlement", emp);
    }
   public getPaymentBillPrint(BillNo){
