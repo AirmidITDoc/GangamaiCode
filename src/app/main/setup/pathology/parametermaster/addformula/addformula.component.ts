@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 import { fuseAnimations } from '@fuse/animations';
 import { PathparameterMaster } from '../parametermaster.component';
 import Swal from 'sweetalert2';
+import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 interface Result {
   value: string;
   viewValue: string;
@@ -30,6 +31,8 @@ export class AddformulaComponent implements OnInit {
   registerObj: any;
   ParameterId: any;
   paranamenew:any;
+  parameterName:any;
+
   results: Result[] = [
     { value: '1', viewValue: '+'},
     { value: '2', viewValue: '-' },
@@ -57,9 +60,13 @@ export class AddformulaComponent implements OnInit {
       console.log(this.data)
     this.registerObj = this.data.registerObj;
     this.ParameterId= this.registerObj.ParameterID
+    this.parameterName= this.registerObj.ParameterName
     
     }
+    
   }
+
+
 
   getParameterNameCombobox() {
  
@@ -67,9 +74,9 @@ export class AddformulaComponent implements OnInit {
       ParameterName:this._ParameterService.myformSearch.get("ParameterNameSearch").value.trim() + "%" || "%",
      };
 
-  this._ParameterService.getParameterMasterList(m_data).subscribe((data) => {
-    this.paramterList.data = data;
-    this.optionsPara = this.paramterList.slice();
+  this._ParameterService.getParameterMasterforformulaList(m_data).subscribe((data) => {
+    this.paramterList = data;
+  this.optionsPara = this.paramterList.slice();
     this.filteredOptionsParameter = this._ParameterService.formulaform.get('ParameterId').valueChanges.pipe(
         startWith(''),
         map(value => value ? this._filterParameter(value) : this.paramterList.slice()),
@@ -91,10 +98,14 @@ private _filterParameter(value: any): string[] {
 
 getOptionTextparameter(option) {
    this.paranamenew= "{{"+option.ParameterName+"}}"
-  return option && option.ParameterName ? option.ParameterName : '';
+ return option && option.ParameterName ? option.ParameterName : '';
   
 }
-
+onChangeparaList(option){
+  this.paraname=option.ParameterName
+  this.paraname=this._ParameterService.formulaform.get("ParameterId").value.ParameterName;
+  console.log( this.paraname)
+}
 onClear() {
   this._ParameterService.formulaform.reset();
   
@@ -103,9 +114,11 @@ onSearchClear(){
   this._ParameterService.formulaform.get("ParameterNameSearch").reset('');
 }
 addoprator(event){
-  debugger
-
- this.oprator=event
+   this.oprator=event
+ 
+}
+addoprator1(){
+  
  this.paranamenew= "{{"+this.paraname+"}}"
  this.finalformula=this.finalformula+this.paranamenew + this.oprator;
 
@@ -117,11 +130,10 @@ addoprator(event){
      
       this._ParameterService.deactivateTheStatus(Query)
         .subscribe((data) => {
-              // Handle success response
-              Swal.fire('Changed!', 'Parameter Formula has been Changed.', 'success');
+           Swal.fire('Changed!', 'Parameter Formula has been Changed.', 'success');
              
             }, (error) => {
-              // Handle error response
+          
               Swal.fire('Error!', 'Failed to Formula  Parameter status.', 'error');
             });
   

@@ -92,9 +92,15 @@ export class ParametermasterService {
             ParameterId:[""],
             Formulapara:[""],
             OPrator:[""],
-           
+            parameterName:[""],
+          
         });
     }
+
+    public getStateList(CityId,loader = true) {
+      
+        return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StateMasterForCombo_Conditional", { "Id": CityId })
+      }
 
     initializeFormGroup() {
         this.createParameterForm();
@@ -191,6 +197,10 @@ export class ParametermasterService {
     public getParameterMasterCombo(param) {
         return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PathParameterList_by_Name",param );
     }
+    public getParameterMasterforformulaList(param) {
+        return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_PathParaformulaList_by_Name",param );
+    }
+    
 
     public deleteAssignParameterToDescriptive(param) {
         return this._httpClient.post("Pathology/ParameterUpdate", param);

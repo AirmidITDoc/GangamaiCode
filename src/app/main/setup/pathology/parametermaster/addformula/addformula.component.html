@@ -7,7 +7,8 @@
             </div>
             <div class="modal-header-right">
                 <div class="close-icon">
-                    <button mat-icon-button tabIndex="-1" aria-label="Close dialog" matTooltip="Close" (click)="onClose()">
+                    <button mat-icon-button tabIndex="-1" aria-label="Close dialog" matTooltip="Close"
+                        (click)="onClose()">
                         <mat-icon>close</mat-icon>
                     </button>
                 </div>
@@ -24,48 +25,45 @@
                     <div class="modal-card-container">
                         <mat-card>
                             <div fxLayout="column" class="gap-8">
-
-                                <!-- <mat-form-field appearance="outline">
-                                        <mat-label>Parameter</mat-label>
-                                        <input matAutocompletePosition="below" type="text"
-                                            placeholder="Select parameter" matInput  formControlName="ParameterId"
-                                            [matAutocomplete]="autoparameter">
-                                        <span matSuffix style="display: flex;">
-                                            <mat-icon class="mat-icon-close"
-                                                (click)="_ParameterService.formulaform.get('ParameterId').setValue(''); isparaSelected = false;">close</mat-icon>
-                                            <mat-icon class="mat-icon-close"
-                                                (click)="_ParameterService.formulaform.get('ParameterId').setValue(''); isparaSelected = false;">search</mat-icon>
-                                        </span>
-                                        <mat-autocomplete #autoparameter="matAutocomplete"
-                                            [displayWith]="getOptionTextparameter">
-                                            <mat-option
-                                                *ngFor="let option of filteredOptionsParameter | async"
-                                                [value]="option">
-                                                {{option.ParameterName}}
-                                            </mat-option>
-                                        </mat-autocomplete>
-                                    </mat-form-field> -->
-
-
-                                <mat-form-field appearance="outline" fxflex="30">
-                                    <mat-label>ParameterId</mat-label>
-                                    <mat-select formControlName="ParameterId" required>
-                                        <mat-option *ngFor="let m of paramterList" [value]="m.value"
-                                            style="margin-top: 2px;">
-                                            {{ m.ParameterName }}
+                                <mat-form-field appearance="outline" fxFlex="65%">
+                                    <mat-label>Parameter Name</mat-label>
+                                    <input name="Parameter" placeholder="Parameter" formControlName="parameterName"
+                                        matInput [(ngModel)]="parameterName">
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="column" class="gap-8">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Parameter Name</mat-label>
+                                    <input matAutocompletePosition="below" type="text" placeholder="Select Parameter"
+                                        matInput formControlName="ParameterId" [matAutocomplete]="autopara" required>
+                                    <span matSuffix style="display: flex;">
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="_ParameterService.formulaform.get('ParameterId').setValue(''); isparaSelected = false;">close</mat-icon>
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="_ParameterService.formulaform.get('ParameterId').setValue(''); isparaSelected = false;">search</mat-icon>
+                                    </span>
+                                    <mat-autocomplete #autopara="matAutocomplete"
+                                        [displayWith]="getOptionTextparameter">
+                                        <mat-option *ngFor="let option of filteredOptionsParameter | async"
+                                            [value]="option" (onSelectionChange)="onChangeparaList(option)">
+                                            {{option.ParameterName}}
                                         </mat-option>
-                                    </mat-select>
+                                    </mat-autocomplete>
                                 </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex="65%">
-                                    <mat-label>Parameter</mat-label>
+
+
+                            </div>
+                            <!--  -->
+                            <div fxLayout="row"  class="gap-8">
+
+                                <mat-form-field appearance="outline" fxFlex="50%">
+                                    <mat-label>Selected Parameter</mat-label>
                                     <input name="Parameter" placeholder="Parameter" formControlName="Formulapara"
                                         matInput [(ngModel)]="paraname">
                                 </mat-form-field>
 
-
-
-                                <mat-form-field appearance="outline" fxflex="30">
+                                <mat-form-field appearance="outline" fxFlex="40%">
                                     <mat-label>Oprator</mat-label>
                                     <mat-select formControlName="OPrator" required
                                         (selectionChange)="addoprator($event.value)">
@@ -75,8 +73,13 @@
                                         </mat-option>
                                     </mat-select>
                                 </mat-form-field>
+                                <button mat-raised-button (click)="addoprator1()"
+                                    style="background-color: aliceblue;color: brown;">+
 
-                                <mat-form-field appearance="outline" fxFlex="65%">
+                                </button>
+                            </div>
+                            <div>
+                                <mat-form-field appearance="outline" fxFlex="100%">
                                     <mat-label>Formula</mat-label>
                                     <input name="Formula" placeholder="Select Formula" formControlName="Formula"
                                         [(ngModel)]="finalformula" matInput>

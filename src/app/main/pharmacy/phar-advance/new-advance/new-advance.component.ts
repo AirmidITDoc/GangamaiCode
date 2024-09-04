@@ -356,7 +356,7 @@ viewgetIPAdvanceReportPdf(contact) {
   setTimeout(() => {
    
   this._PharAdvanceService.getViewPahrmaAdvanceReceipt(
- contact
+ contact.AdvanceDetailID
   ).subscribe(res => {
     const matDialog = this._matDialog.open(PdfviewerComponent,
       {
