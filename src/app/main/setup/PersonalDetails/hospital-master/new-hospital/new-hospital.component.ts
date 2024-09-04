@@ -22,7 +22,38 @@ export class NewHospitalComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onSubmit(){}
+//   onSubmit(){
+//     let hospitalarr = [];
+   
+
+//     let feedbackdata = {};
+//     feedbackdata['patientFeedbackId'] = 0;
+//     feedbackdata['oP_IP_ID'] =  this.registerObj.RegId;
+//     feedbackdata['oP_IP_Type'] = 0;
+//     feedbackdata['feedbackCategory'] = "cat1";
+//     feedbackdata['feedbackRating'] = "Rat1";
+//     feedbackdata['feedbackComments'] = this.feedbackFormGroup.get('commentText').value;
+//     feedbackdata['addedBy'] = 10;
+//     hospitalarr.push(feedbackdata);
+
+// // });
+    
+//     let submitDataPay = {
+//         patientFeedbackInsert:hospitalarr
+//     };
+    
+//     console.log(submitDataPay)
+//     this._opappointmentService.feedbackInsert(submitDataPay).subscribe(response => {
+//         if (response) {
+//           Swal.fire('', 'success').then((result) => {
+         
+//           });
+//         } else {
+//           Swal.fire('Error !');
+//         }
+        
+//       });
+//   }
   
 
   @ViewChild('hname') hname: ElementRef;
