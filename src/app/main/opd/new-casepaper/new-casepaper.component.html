@@ -215,6 +215,33 @@
                                                                 (keydown)="onEnterChiefComplaint($event)"></textarea>
                                                         </mat-form-field>
                                                     </div>
+
+                                                    
+                                                    <div fxLayout="row">
+                                                        <mat-form-field appearance="outline" fxFlex="30%">
+                                                            <mat-label>Service list</mat-label>
+                                                            <input matAutocompletePosition="below" type="text" placeholder="Select Service"
+                                                                [(ngModel)]="vServiceId" matInput  formControlName="Serviceid"
+                                                                [matAutocomplete]="autoDep">
+                                                            <span matSuffix style="display: flex;">
+                                                                <mat-icon class="mat-icon-close"
+                                                                    (click)="caseFormGroup.get('Serviceid').setValue(''); isServiceIdSelected = false;">close</mat-icon>
+                                                                <mat-icon class="mat-icon-close"
+                                                                    (click)="caseFormGroup.get('Serviceid').setValue(''); isServiceIdSelected = false;">search</mat-icon>
+                                                            </span>
+                                                            <mat-autocomplete #autoDep="matAutocomplete" [displayWith]="getOptionTextService">
+                                                                <mat-option *ngFor="let option of filteredOptionsService | async" [value]="option">
+                                                                    <mat-checkbox [checked]="option.selected" (change)="toggleSelection(option)"
+                                                                        (click)="$event.stopPropagation()"> {{option.ServiceName}}</mat-checkbox>
+                                                                </mat-option>
+                                                            </mat-autocomplete>
+                                                        </mat-form-field>
+                                                        <mat-chip-list #chipList>
+                                                            <mat-chip *ngFor="let item of selectedItems">
+                                                                {{ item.ServiceName }} <mat-icon (click)="remove(item)">close</mat-icon>
+                                                            </mat-chip>
+                                                        </mat-chip-list>
+                                                    </div>
                                                 </div>
                                             </form>
                                         </mat-card> 

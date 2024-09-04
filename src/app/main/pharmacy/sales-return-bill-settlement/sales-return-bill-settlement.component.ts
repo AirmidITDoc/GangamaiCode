@@ -192,7 +192,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
     this.IPDNocheck = false;
     this.registerObj = obj;
     this.PatientName = obj.FirstName + " " + obj.LastName;
-    this.RegId = obj.RegId;
+    this.RegId = obj.RegID;
     this.OP_IP_Id  = obj.VisitId;
     this.RegNo =obj.RegNo; 
     this.OPDNo = obj.OPDNo;
@@ -299,119 +299,118 @@ export class SalesReturnBillSettlementComponent implements OnInit {
   isLoading123 = false;
   BalanceAm1:any= 0;
   UsedAmt1:any =0;
-  OnPayment(contact) {  
-    this.isLoading123 = true; 
-    const currentDate = new Date();
-    const datePipe = new DatePipe('en-US');
-    const formattedTime = datePipe.transform(currentDate, 'shortTime');
-    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
-    console.log(contact)
-    let PatientHeaderObj = {}; 
+  // OnPayment(contact) {  
+  //   this.isLoading123 = true; 
+  //   const currentDate = new Date();
+  //   const datePipe = new DatePipe('en-US');
+  //   const formattedTime = datePipe.transform(currentDate, 'shortTime');
+  //   const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+  //   console.log(contact)
+  //   let PatientHeaderObj = {}; 
     
-    PatientHeaderObj['Date'] = formattedDate;
-    PatientHeaderObj['PatientName'] = this.PatientName;
-    PatientHeaderObj['OPD_IPD_Id'] = contact.OP_IP_ID;
-    PatientHeaderObj['AdvanceAmount'] = Math.round(contact.BalanceAmount); 
-    PatientHeaderObj['NetPayAmount'] =Math.round(contact.BalanceAmount); 
-    PatientHeaderObj['BillNo'] = contact.SalesId;
-    PatientHeaderObj['IPDNo'] = this.IPDNo;
-    PatientHeaderObj['RegNo'] = this.RegNo; 
-    PatientHeaderObj['OP_IP_Type'] = contact.OP_IP_Type; 
-    const dialogRef = this._matDialog.open(IPpaymentWithadvanceComponent,
-      {
-        maxWidth: "95vw",
-        height: '650px',
-        width: '85%',
-        data: {
-          advanceObj: PatientHeaderObj,
-          FromName: "IP-Pharma-SETTLEMENT"
-        }
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(result)
+  //   PatientHeaderObj['Date'] = formattedDate;
+  //   PatientHeaderObj['PatientName'] = this.PatientName;
+  //   PatientHeaderObj['OPD_IPD_Id'] = contact.OP_IP_ID;
+  //   PatientHeaderObj['AdvanceAmount'] = Math.round(contact.BalanceAmount); 
+  //   PatientHeaderObj['NetPayAmount'] =Math.round(contact.BalanceAmount); 
+  //   PatientHeaderObj['BillNo'] = contact.SalesId;
+  //   PatientHeaderObj['IPDNo'] = this.IPDNo;
+  //   PatientHeaderObj['RegNo'] = this.RegNo; 
+  //   PatientHeaderObj['OP_IP_Type'] = contact.OP_IP_Type; 
+  //   const dialogRef = this._matDialog.open(IPpaymentWithadvanceComponent,
+  //     {
+  //       maxWidth: "95vw",
+  //       height: '650px',
+  //       width: '85%',
+  //       data: {
+  //         advanceObj: PatientHeaderObj,
+  //         FromName: "IP-Pharma-SETTLEMENT"
+  //       }
+  //     });
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     console.log(result)
 
-      if (result.IsSubmitFlag == true) {
-        let updateBillobj = {};
-        updateBillobj['salesID'] = contact.SalesId;
-        updateBillobj['salRefundAmt'] =0 ;
-        updateBillobj['balanceAmount'] = result.BalAmt || 0 ;// result.submitDataPay.ipPaymentInsert.balanceAmountController //result.BalAmt;
+  //     if (result.IsSubmitFlag == true) {
+  //       let updateBillobj = {};
+  //       updateBillobj['salesID'] = contact.SalesId;
+  //       updateBillobj['salRefundAmt'] =0 ;
+  //       updateBillobj['balanceAmount'] = result.BalAmt || 0 ;// result.submitDataPay.ipPaymentInsert.balanceAmountController //result.BalAmt;
  
 
-        let UpdateAdvanceDetailarr1: IpPaymentInsert[] = []; 
+  //       let UpdateAdvanceDetailarr1: IpPaymentInsert[] = []; 
     
-         UpdateAdvanceDetailarr1 = result.submitDataAdvancePay; 
+  //        UpdateAdvanceDetailarr1 = result.submitDataAdvancePay; 
 
-        let UpdateAdvanceDetailarr = [];
-        let UsedHeaderAmt =0 ;
-        if (result.submitDataAdvancePay.length > 0) {
-          result.submitDataAdvancePay.forEach((element) => {
-            let update_T_PHAdvanceDetailObj = {}; 
-            //extra 
-            this.UsedAmt1 =  (parseInt(element.AdvanceAmount) - parseInt(element.BalanceAmount));
-            UsedHeaderAmt += this.UsedAmt1
-            //
-            update_T_PHAdvanceDetailObj['AdvanceDetailID'] = element.AdvanceDetailID;
-            update_T_PHAdvanceDetailObj['UsedAmount'] =  this.UsedAmt1 ///element.UsedAmount;
-           // this.UsedAmt1 = (parseInt(this.UsedAmt1) + parseInt(element.UsedAmount)); 
-            update_T_PHAdvanceDetailObj['BalanceAmount'] = element.BalanceAmount;
-            this.BalanceAm1 =(parseInt(this.BalanceAm1) + parseInt(element.BalanceAmount));
+  //       let UpdateAdvanceDetailarr = [];
+  //       let UsedHeaderAmt =0 ;
+  //       if (result.submitDataAdvancePay.length > 0) {
+  //         result.submitDataAdvancePay.forEach((element) => {
+  //           let update_T_PHAdvanceDetailObj = {}; 
+  //           //extra 
+  //           this.UsedAmt1 =  (parseInt(element.AdvanceAmount) - parseInt(element.BalanceAmount));
+  //           UsedHeaderAmt += this.UsedAmt1
+  //           //
+  //           update_T_PHAdvanceDetailObj['AdvanceDetailID'] = element.AdvanceDetailID;
+  //           update_T_PHAdvanceDetailObj['UsedAmount'] =  this.UsedAmt1 ///element.UsedAmount;
+  //          // this.UsedAmt1 = (parseInt(this.UsedAmt1) + parseInt(element.UsedAmount)); 
+  //           update_T_PHAdvanceDetailObj['BalanceAmount'] = element.BalanceAmount;
+  //           this.BalanceAm1 =(parseInt(this.BalanceAm1) + parseInt(element.BalanceAmount));
            
-            UpdateAdvanceDetailarr.push(update_T_PHAdvanceDetailObj);
-          }); 
-        }
-        else {
-          let update_T_PHAdvanceDetailObj = {};
-          update_T_PHAdvanceDetailObj['AdvanceDetailID'] = 0,
-          update_T_PHAdvanceDetailObj['UsedAmount'] = 0,
-          update_T_PHAdvanceDetailObj['BalanceAmount'] = 0,
-            UpdateAdvanceDetailarr.push(update_T_PHAdvanceDetailObj);
-        }
+  //           UpdateAdvanceDetailarr.push(update_T_PHAdvanceDetailObj);
+  //         }); 
+  //       }
+  //       else {
+  //         let update_T_PHAdvanceDetailObj = {};
+  //         update_T_PHAdvanceDetailObj['AdvanceDetailID'] = 0,
+  //         update_T_PHAdvanceDetailObj['UsedAmount'] = 0,
+  //         update_T_PHAdvanceDetailObj['BalanceAmount'] = 0,
+  //           UpdateAdvanceDetailarr.push(update_T_PHAdvanceDetailObj);
+  //       }
      
-        let update_T_PHAdvanceHeaderObj = {};
-        if (result.submitDataAdvancePay.length > 0) { 
-          update_T_PHAdvanceHeaderObj['AdvanceId'] = UpdateAdvanceDetailarr1[0]['AdvanceId'],
-          update_T_PHAdvanceHeaderObj['AdvanceUsedAmount'] =UsedHeaderAmt ,// this.UsedAmt1
-          update_T_PHAdvanceHeaderObj['BalanceAmount'] = this.BalanceAm1
-        }
-        else { 
-          update_T_PHAdvanceHeaderObj['AdvanceId'] = 0,
-          update_T_PHAdvanceHeaderObj['AdvanceUsedAmount'] = 0,
-          update_T_PHAdvanceHeaderObj['BalanceAmount'] = 0
-        }
+  //       let update_T_PHAdvanceHeaderObj = {};
+  //       if (result.submitDataAdvancePay.length > 0) { 
+  //         update_T_PHAdvanceHeaderObj['AdvanceId'] = UpdateAdvanceDetailarr1[0]['AdvanceId'],
+  //         update_T_PHAdvanceHeaderObj['AdvanceUsedAmount'] =UsedHeaderAmt ,// this.UsedAmt1
+  //         update_T_PHAdvanceHeaderObj['BalanceAmount'] = this.BalanceAm1
+  //       }
+  //       else { 
+  //         update_T_PHAdvanceHeaderObj['AdvanceId'] = 0,
+  //         update_T_PHAdvanceHeaderObj['AdvanceUsedAmount'] = 0,
+  //         update_T_PHAdvanceHeaderObj['BalanceAmount'] = 0
+  //       }
 
-        let Data = {
-          "salesPaymentSettlement": result.submitDataPay.ipPaymentInsert, 
-          "update_Pharmacy_BillBalAmountSettlement": updateBillobj,
-          "update_T_PHAdvanceDetailSettlement":UpdateAdvanceDetailarr,
-          "update_T_PHAdvanceHeaderSettlement":update_T_PHAdvanceHeaderObj
-        };
-        console.log(Data);
+  //       let Data = {
+  //         "salesPaymentSettlement": result.submitDataPay.ipPaymentInsert, 
+  //         "update_Pharmacy_BillBalAmountSettlement": updateBillobj,
+  //         "update_T_PHAdvanceDetailSettlement":UpdateAdvanceDetailarr,
+  //         "update_T_PHAdvanceHeaderSettlement":update_T_PHAdvanceHeaderObj
+  //       };
+  //       console.log(Data);
 
-        this._SelseSettelmentservice.InsertSalessettlement(Data).subscribe(response => { 
-          if (response) {  
-            this.toastr.success('Sales Credit Payment Successfully !', 'Success', {
-              toastClass: 'tostr-tost custom-toast-error',
-            });
-            this._matDialog.closeAll();  
-            this.getIpSalesList(); 
-            this.UsedAmt1 = 0;
-            this.BalanceAm1 = 0;
-          }
-          else { 
-            this.toastr.error('Sales Credit Payment  not saved !', 'error', {
-              toastClass: 'tostr-tost custom-toast-error',
-            }); 
-          }
-        });
-        this.isLoading123 = false; 
-      } 
-      this.isLoading123 = false; 
-    });
+  //       this._SelseSettelmentservice.InsertSalessettlement(Data).subscribe(response => { 
+  //         if (response) {  
+  //           this.toastr.success('Sales Credit Payment Successfully !', 'Success', {
+  //             toastClass: 'tostr-tost custom-toast-error',
+  //           });
+  //           this._matDialog.closeAll();  
+  //           this.getIpSalesList(); 
+  //           this.UsedAmt1 = 0;
+  //           this.BalanceAm1 = 0;
+  //         }
+  //         else { 
+  //           this.toastr.error('Sales Credit Payment  not saved !', 'error', {
+  //             toastClass: 'tostr-tost custom-toast-error',
+  //           }); 
+  //         }
+  //       });
+  //       this.isLoading123 = false; 
+  //     } 
+  //     this.isLoading123 = false; 
+  //   });
   
-  }
+  // }
 
-  OnPayment1(contact) {  
-    this.isLoading123 = true; 
+  OnPayment1(contact) {   
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
     const formattedTime = datePipe.transform(currentDate, 'shortTime');
@@ -512,12 +511,9 @@ export class SalesReturnBillSettlementComponent implements OnInit {
               toastClass: 'tostr-tost custom-toast-error',
             }); 
           }
-        });
-        this.isLoading123 = false; 
-      } 
-      this.isLoading123 = false; 
-    });
-    this.isLoading123 = false; 
+        }); 
+      }  
+    }); 
   }
   keyPressCharater(event) {
     var inp = String.fromCharCode(event.keyCode);
@@ -530,8 +526,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
   } 
   onClose() {
     this._matDialog.closeAll();
-    this.OnReset();
-    this.isLoading123 = false; 
+    this.OnReset(); 
   }
   OnReset() {
     this._SelseSettelmentservice.ItemSubform.reset(); 

@@ -118,10 +118,13 @@ export class NewCasepaperComponent implements OnInit {
   DepartmentList: any = [];
   filteredOptionsDep: Observable<string[]>;
   filteredOptionsDoc: Observable<string[]>;
+  filteredOptionsService: Observable<string[]>;
   DoctorList: any = [];
   isDoctorSelected: boolean = false;
   vDoctorId: any;
   vTemplateId:boolean=true;
+  vServiceId:any;
+  isServiceIdSelected:boolean = false;
   
 
   //   dsPresList = new MatTableDataSource<PrecriptionItemList>();
@@ -214,6 +217,7 @@ export class NewCasepaperComponent implements OnInit {
         Validators.required,
       ]],
       ChiefComplaint: '',
+      Serviceid:''
 
 
       // historyContoller: '',
@@ -437,6 +441,39 @@ getDepartmentList() {
         );
       })
   }
+  ServicecmbList:any=[];
+  optionsService:any=[];
+  getServiceList() {
+    let that = this;
+    var vdata={
+      'ServiceName':'',
+      'TariffId':1,
+      'IsPathRad':1,
+      'ClassId':1
+    }
+    // this._CasepaperService.getDepartmentCombobox().subscribe(data => { 
+    //     this.ServicecmbList = data; 
+    //     this.optionsService = this.ServicecmbList.slice();
+    //     this.filteredOptionsService = this.caseFormGroup.get('Serviceid').valueChanges.pipe(
+    //         startWith(''),
+    //         map(value => value ? this._filterDep(value) : this.ServicecmbList.slice()),
+    //     ); 
+    // });
+}
+selectedItems = [];
+toggleSelection(item: any) {
+    item.selected = !item.selected;
+    if (item.selected) {
+        this.selectedItems.push(item);
+    } else {
+        const i = this.selectedItems.findIndex(value => value.ServiceId === item.ServiceId);
+        this.selectedItems.splice(i, 1);
+    } 
+}
+remove(e) {
+    this.toggleSelection(e);
+}
+
 
   private _filterDep(value: any): string[] {
     if (value) {
@@ -451,9 +488,18 @@ getDepartmentList() {
       return this.DoctorList.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
     }
   }
+  private _filterService(value: any): string[] {
+    if (value) {
+        const filterValue = value && value.ServiceName ? value.ServiceName.toLowerCase() : value.toLowerCase();
+        return this.optionsService.filter(option => option.ServiceName.toLowerCase().includes(filterValue));
+    } 
+}
 
 getOptionTextDep(option) { 
   return option && option.DepartmentName ? option.DepartmentName : '';
+}
+getOptionTextService(option) {
+  return option && option.departmentName ? option.departmentName : '';
 }
 getOptionTextDoc(option) { 
   return option && option.Doctorname ? option.Doctorname : ''; 
