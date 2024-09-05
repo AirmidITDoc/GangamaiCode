@@ -23,6 +23,7 @@ import { MedicineItemList } from 'app/main/ipd/ip-search-list/discharge-summary/
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 import { ConfigService } from 'app/core/services/config.service';
+import { PrescriptionTemplateComponent } from './prescription-template/prescription-template.component';
 
 @Component({
   selector: 'app-new-casepaper',
@@ -156,7 +157,7 @@ export class NewCasepaperComponent implements OnInit {
   ngOnInit(): void {
     this.searchFormGroup = this.createSearchForm();
     this.caseFormGroup = this.createForm();
-    this.MedicineItemForm = this.MedicineItemform();
+    this.MedicineItemform();
 
     // this.getDrugList();
     this.getDoseList();
@@ -199,7 +200,7 @@ export class NewCasepaperComponent implements OnInit {
   createForm() {
     return this._formBuilder.group({
       LetteHeadRadio: ['NormalHead'],
-      LangaugeRadio: ['1'],
+      LangaugeRadio: ['True'],
       Height: '',
       Weight: '',
       BMI: '',
@@ -217,7 +218,8 @@ export class NewCasepaperComponent implements OnInit {
         Validators.required,
       ]],
       ChiefComplaint: '',
-      Serviceid:''
+      Serviceid:'',
+      IsPathRad:'1'
 
 
       // historyContoller: '',
@@ -271,8 +273,8 @@ export class NewCasepaperComponent implements OnInit {
       // RegNo: '0',
     });
   }
-  MedicineItemform(): FormGroup {
-    return this._formBuilder.group({
+  MedicineItemform() {
+    this.MedicineItemForm = this._formBuilder.group({ 
       ItemId: '',
       DoseId: '',
       Day: '',
@@ -285,9 +287,7 @@ export class NewCasepaperComponent implements OnInit {
     return this._formBuilder.group({
       regRadio: ['registration'],
       regRadio1: ['registration1'],
-      RegId: [''],
-      Lhaed: ['true'],
-      LangaugeRadio: ['1'],
+      RegId: [''], 
     });
   }
   getDateTime(dateTimeObj) {
@@ -308,8 +308,7 @@ export class NewCasepaperComponent implements OnInit {
       }
     });
   }
-  getSelectedObj1(obj) {
-    debugger
+  getSelectedObj1(obj) { 
     console.log(obj)
     //this.selectedAdvanceObj = obj;
     //console.log(this.selectedAdvanceObj)
@@ -338,7 +337,7 @@ export class NewCasepaperComponent implements OnInit {
     this.PatientType = obj.PatientType;
     this.vMobileNo = obj.MobileNo;
     // this.prescriptionDetails(this.VisitId);
-    // this.getVisistList();
+     this.getServiceList();
     // this.getPrescriptionListFill(this.VisitId);
   }
   getOptionText1(option) {
@@ -350,8 +349,8 @@ export class NewCasepaperComponent implements OnInit {
 
 
   getBMIcalculation() {
-    if (this.vHeight > 0 || this.vWeight > 0) {
-      this.vBMI = ((this.vWeight) / (this.vHeight) ^ 2);
+    if (this.vHeight > 0 && this.vWeight > 0) {
+      this.vBMI = Math.round((this.vWeight) / ((this.vHeight)*(this.vHeight)));
     }
     else if (this.vHeight <= 0) {
       this.vBMI = 0;
@@ -413,21 +412,16 @@ export class NewCasepaperComponent implements OnInit {
     }
   }
 //Department list
-
+optionsDep:any=[];
 getDepartmentList() { 
   this._CasepaperService.getDepartmentCombo().subscribe(data => {
       this.DepartmentList = data;
-      console.log(data) 
+      console.log(this.DepartmentList) 
+      this.optionsDep = this.DepartmentList.slice();
       this.filteredOptionsDep = this.MedicineItemForm.get('Departmentid').valueChanges.pipe(
           startWith(''),
           map(value => value ? this._filterDep(value) : this.DepartmentList.slice()),
-      );
-      if (this.configService.configParams.DepartmentId) { 
-          const ddValue = this.DepartmentList.filter(c => c.DepartmentId == this.configService.configParams.DepartmentId);
-          this.MedicineItemForm.get('Departmentid').setValue(ddValue[0]);
-          this.OnChangeDoctorList(ddValue[0]); 
-          return;
-      }
+      ); 
   }); 
 }  
   OnChangeDoctorList(departmentObj) {
@@ -444,21 +438,28 @@ getDepartmentList() {
   ServicecmbList:any=[];
   optionsService:any=[];
   getServiceList() {
-    let that = this;
-    var vdata={
-      'ServiceName':'',
-      'TariffId':1,
-      'IsPathRad':1,
-      'ClassId':1
+    if(this.vClassId == '' || this.vTariffId == '' || this.vClassId == null || this.vTariffId == null){ 
+      this.toastr.warning('Please select patient', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
     }
-    // this._CasepaperService.getDepartmentCombobox().subscribe(data => { 
-    //     this.ServicecmbList = data; 
-    //     this.optionsService = this.ServicecmbList.slice();
-    //     this.filteredOptionsService = this.caseFormGroup.get('Serviceid').valueChanges.pipe(
-    //         startWith(''),
-    //         map(value => value ? this._filterDep(value) : this.ServicecmbList.slice()),
-    //     ); 
-    // });
+    var vdata={
+      'ServiceName':'%',
+      'TariffId':this.vTariffId,
+      'IsPathRad':this.caseFormGroup.get('IsPathRad').value || 0,
+      'ClassId':this.vClassId 
+    }
+    console.log(vdata)
+    this._CasepaperService.getServiceList(vdata).subscribe(data => { 
+        this.ServicecmbList = data; 
+           console.log(this.ServicecmbList)
+        this.optionsService = this.ServicecmbList.slice();
+        this.filteredOptionsService = this.caseFormGroup.get('Serviceid').valueChanges.pipe(
+            startWith(''),
+            map(value => value ? this._filterService(value) : this.ServicecmbList.slice()),
+        ); 
+    });
 }
 selectedItems = [];
 toggleSelection(item: any) {
@@ -529,6 +530,7 @@ getOptionTextDoc(option) {
   Day1: any = 0;
   Day2: any = 0;
   onAdd() {
+    debugger
     if ((this.MedicineItemForm.get('ItemId').value == '' || this.MedicineItemForm.get('ItemId').value == null || this.MedicineItemForm.get('ItemId').value == undefined)) {
       this.toastr.warning('Please select Item', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -568,7 +570,7 @@ getOptionTextDoc(option) {
           ItemName: this.MedicineItemForm.get('ItemId').value.ItemName || '',
           DoseId: this.MedicineItemForm.get('DoseId').value.DoseId || 0,
           DoseName: this.MedicineItemForm.get('DoseId').value.DoseName || '',
-          Days: this.vDay,
+          Days: this.MedicineItemForm.get('Day').value || 0,
           DoseId1: this.MedicineItemForm.get('DoseId').value.DoseId || 0,
           DoseName1: this.MedicineItemForm.get('DoseId').value.DoseName || '',
           Day1: this.Day1,
@@ -585,13 +587,13 @@ getOptionTextDoc(option) {
       });
       return;
     }
+    // this.Chargelist=[];
+    this.getdosedetail(); 
     this.MedicineItemForm.get('ItemId').reset('');
     this.MedicineItemForm.get('DoseId').reset('');
     this.MedicineItemForm.get('Day').reset('');
     this.MedicineItemForm.get('Instruction').reset('');
     this.itemid.nativeElement.focus();
-    // this.Chargelist=[];
-    this.getdosedetail();
   }
   deleteTableRow(event, element) {
     let index = this.Chargelist.indexOf(element);
@@ -606,18 +608,25 @@ getOptionTextDoc(option) {
   }
 
   onSave() {
+    debugger
+    if(this.RegNo == '' || this.RegNo == undefined || this.RegNo == null){ 
+      this.toastr.warning('Please select patient', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
     if (this.dsItemList.data.length == 0) {
       Swal.fire('Error !', 'Please add prescription', 'error');
-    }
-
+      return
+    } 
 
     let insertOPDPrescriptionarray = [];
     this.dsItemList.data.forEach(element => {
       let insertOPDPrescription = {};
       insertOPDPrescription['opD_IPD_IP'] = this.vOPIPId;
       insertOPDPrescription['opD_IPD_Type'] = 0;
-      insertOPDPrescription['date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-        insertOPDPrescription['pTime'] = this.dateTimeObj.time;
+      insertOPDPrescription['date'] = this.dateTimeObj.date,
+      insertOPDPrescription['pTime'] = this.dateTimeObj.time;
       insertOPDPrescription['classID'] = this.vClassId;
       insertOPDPrescription['genericId'] = 1;
       insertOPDPrescription['drugId'] = element.ItemID;
@@ -694,7 +703,7 @@ getOptionTextDoc(option) {
     this.PatientType = " ";
     this.BMIstatus = " ";
     this.caseFormGroup.get('LetteHeadRadio').setValue('NormalHead');
-    this.caseFormGroup.get('LangaugeRadio').setValue('1');
+    this.caseFormGroup.get('LangaugeRadio').setValue('True');
   }
   SpinLoading: any = ""
   viewgetOpprescriptionReportPdf() {
@@ -904,6 +913,18 @@ getOptionTextDoc(option) {
 
     })
   }
+  CreateTemplate(){ 
+  const dialogRef = this._matDialog.open(PrescriptionTemplateComponent,
+    {
+      maxWidth: "70vw",
+      maxHeight: "85vh",
+      width: '100%',
+      height: "100%"
+    });
+  dialogRef.afterClosed().subscribe(result => {
+    console.log('The dialog was closed - Insert Action', result); 
+  });
+}
 
 //   subscriptions: Subscription[] = [];
 //   reportPrintObj: CasepaperVisitDetails;
@@ -1539,6 +1560,18 @@ getOptionTextDoc(option) {
 
 } 
 export class CasepaperVisitDetails {
+  ItemID:  any;
+  ItemName:  any;
+  DoseId:  any;
+  DoseName:  any;
+  Days: any;
+  DoseId1:  any;
+  DoseName1: any;
+  Day1:  any;
+  DoseId2:  any;
+  DoseName2:  any;
+  Day2:  any;
+  Instruction:  any; 
   BP: string;
   ConsultantDocName: string;
   BSL: string;
@@ -1568,12 +1601,9 @@ export class CasepaperVisitDetails {
   HospitalName: string;
   HospitalAddress: string;
   Phone: number;
-  IPPreId: number;
-  DoseName: string;
+  IPPreId: number; 
   GenderName: string;
-  PrecriptionId: number;
-  Days: number;
-  Instruction: String;
+  PrecriptionId: number; 
   TotalDayes: number;
   AgeYear: number;
   OPDNo: any;

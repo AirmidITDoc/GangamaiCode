@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { LoaderService } from 'app/core/components/loader/loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,8 @@ export class PharAdvanceService {
 
   constructor(
     public _formbuilder:FormBuilder,
-    public _httpClient:HttpClient
+    public _httpClient:HttpClient,
+    private _loaderService: LoaderService
   )
    { 
     this.SearchGroupForm = this.CreaterSearchForm();
@@ -84,13 +86,22 @@ export class PharAdvanceService {
   public getAdvanceOldList(data) {
     return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
   }
-  public InsertIpPharmaAdvance(data) {
+  public InsertIpPharmaAdvance(data,loader = true){ 
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.post("Pharmacy/Insert_PhAdvance",data)
   }
-  public UpdateIpPharmaAdvance(data) {
+  public UpdateIpPharmaAdvance(data,loader = true){ 
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.post("Pharmacy/Update_PhAdvance",data)
   }
-  public InsertRefundOfAdv(data) {
+  public InsertRefundOfAdv(data,loader = true){ 
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.post("Pharmacy/InsertPharRefundofAdvance",data)
   }
   public getPreRefundofAdvance(query) {
@@ -101,7 +112,10 @@ export class PharAdvanceService {
     return this._httpClient.get("Pharmacy/view-IP-PharmaAdvanceReceipt?AdvanceDetailID=" + AdvanceDetailID);
   }
 
-  public getViewPahrmaRefundAdvanceReceipt(RefundId){
+  public getViewPahrmaRefundAdvanceReceipt(RefundId,loader = true){ 
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("Pharmacy/view-IP-PharmaAdvanceReturnReceipt?RefundId=" + RefundId);
   }
 
