@@ -1,59 +1,113 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { HospitalService } from '../hospital.service';
 import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
+import { fuseAnimations } from '@fuse/animations';
+import { HospitalMaster } from '../hospital-master.component';
 
 @Component({
   selector: 'app-new-hospital',
   templateUrl: './new-hospital.component.html',
-  styleUrls: ['./new-hospital.component.scss']
+  styleUrls: ['./new-hospital.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations,
 })
 export class NewHospitalComponent implements OnInit {
-    registerObj: any;
-  
+    registerObj= new HospitalMaster({});
+    optionsCity: any[] = [];
+    cityList:any=[];
+    filteredOptionsCity: Observable<string[]>;
+    isCitySelected: boolean = false;
+    vCityId:any;
+    HospitalId=0;
+
   constructor( public _HospitalService: HospitalService,
     public _matDialog: MatDialog,
     private reportDownloadService: ExcelDownloadService,
     public toastr: ToastrService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<NewHospitalComponent>,
     private _fuseSidebarService: FuseSidebarService,) { }
 
   ngOnInit(): void {
+    this.getCitylist();
+    if(this.data){
+      this.registerObj=this.data.registerObj;
+     this.HospitalId=this.registerObj.HospitalId
+    }
+         
+    this.filteredOptionsCity = this._HospitalService.HospitalForm.get('CityId').valueChanges.pipe(
+        startWith(''),
+        map(value => this._filtercity(value)),
+  
+      );
   }
 
-//   onSubmit(){
-//     let hospitalarr = [];
+  onSubmit(){
+    let hospitalarr = [];
+   if(this.HospitalId==0){
+    let hospitaldata = {};
+    
+    hospitaldata['HospitalName'] =  this._HospitalService.HospitalForm.get('HospitalName').value || '';
+    hospitaldata['HospitalAddress'] =this._HospitalService.HospitalForm.get('HospitalAddress').value || '';
+    hospitaldata['City'] =this._HospitalService.HospitalForm.get('CityId').value.CityName;
+    hospitaldata['Pin'] = this._HospitalService.HospitalForm.get('Pin').value || '';
+    hospitaldata['Phone'] = this._HospitalService.HospitalForm.get('Phone').value || '';
+    hospitaldata['Email'] =this._HospitalService.HospitalForm.get('Email').value  || '';
+    hospitaldata['Website'] = this._HospitalService.HospitalForm.get('website').value  || '';
+    // hospitalarr.push(hospitaldata);
+
    
-
-//     let feedbackdata = {};
-//     feedbackdata['patientFeedbackId'] = 0;
-//     feedbackdata['oP_IP_ID'] =  this.registerObj.RegId;
-//     feedbackdata['oP_IP_Type'] = 0;
-//     feedbackdata['feedbackCategory'] = "cat1";
-//     feedbackdata['feedbackRating'] = "Rat1";
-//     feedbackdata['feedbackComments'] = this.feedbackFormGroup.get('commentText').value;
-//     feedbackdata['addedBy'] = 10;
-//     hospitalarr.push(feedbackdata);
-
-// // });
+    let submitData = {
+      hospitalMasterInsert:hospitaldata
+    };
     
-//     let submitDataPay = {
-//         patientFeedbackInsert:hospitalarr
-//     };
-    
-//     console.log(submitDataPay)
-//     this._opappointmentService.feedbackInsert(submitDataPay).subscribe(response => {
-//         if (response) {
-//           Swal.fire('', 'success').then((result) => {
+    console.log(submitData)
+    this._HospitalService.HospitalInsert(submitData).subscribe(response => {
+        if (response) {
+          Swal.fire('', 'success').then((result) => {
          
-//           });
-//         } else {
-//           Swal.fire('Error !');
-//         }
+          });
+        } else {
+          Swal.fire('Error !');
+        }
         
-//       });
-//   }
+      });
+    }else{
+      let hospitaldata = {};
+      hospitaldata['HospitalId'] = this.HospitalId;
+      hospitaldata['HospitalName'] =  this._HospitalService.HospitalForm.get('HospitalName').value || '';
+      hospitaldata['HospitalAddress'] =this._HospitalService.HospitalForm.get('HospitalAddress').value || '';
+      hospitaldata['City'] =this._HospitalService.HospitalForm.get('CityId').value.CityName;
+      hospitaldata['Pin'] = this._HospitalService.HospitalForm.get('Pin').value || '';
+      hospitaldata['Phone'] = this._HospitalService.HospitalForm.get('Phone').value || '';
+      hospitaldata['Email'] =this._HospitalService.HospitalForm.get('Email').value  || '';
+      hospitaldata['Website'] = this._HospitalService.HospitalForm.get('website').value  || '';
+      // hospitalarr.push(hospitaldata);
+  
+     
+      let submitData = {
+        hospitalMasterUpdate:hospitaldata
+      };
+      
+      console.log(submitData)
+      this._HospitalService.HospitalUpdate(submitData).subscribe(response => {
+          if (response) {
+            Swal.fire('', 'success').then((result) => {
+           
+            });
+          } else {
+            Swal.fire('Error !');
+          }
+          
+        });
+    }
+  }
   
 
   @ViewChild('hname') hname: ElementRef;
@@ -70,23 +124,16 @@ export class NewHospitalComponent implements OnInit {
     }
 }
 
-  public   onEntercity(event, value): void {
+  public   onEntercity(event): void {
 
       if (event.which === 13) {
   
-          console.log(value)
-          if (value == undefined) {
-              this.toastr.warning('Please Enter Valid Prefix.', 'Warning !', {
-                  toastClass: 'tostr-tost custom-toast-warning',
-              });
-              return;
-          } else {
               // this.fname.nativeElement.focus();
           }
       }
   
   
-  }
+  
   public onEnteraddress(event): void {
       if (event.which === 13) {
           // this.mname.nativeElement.focus();
@@ -117,5 +164,65 @@ public onEnterwebsite(event): void {
       
   }
 }
-  
+
+getcityList() {
+
+    this._HospitalService.getCityList().subscribe(data => {
+      this.cityList = data;
+      this.optionsCity = this.cityList.slice();
+      this.filteredOptionsCity = this._HospitalService.HospitalForm.get('CityId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterCity(value) : this.cityList.slice()),
+      );
+
+    });
+
+  }
+
+getCitylist() {
+    
+    this._HospitalService.getCityList().subscribe(data => {
+      this.cityList = data;
+      if (this.data) {
+        const ddValue = this.cityList.filter(c => c.CityId == this.registerObj.City);
+        this._HospitalService.HospitalForm.get('CityId').setValue(ddValue[0]);
+        this._HospitalService.HospitalForm.updateValueAndValidity();
+        return;
+      }
+    });
+   
+  }
+
+
+  getOptionTextCity(option) {
+    return option && option.CityName ? option.CityName : '';
+
+  }
+
+
+  private _filterCity(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.CityName ? value.CityName.toLowerCase() : value.toLowerCase();
+
+      return this.optionsCity.filter(option => option.CityName.toLowerCase().includes(filterValue));
+    }
+
+  }
+
+  private _filtercity(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.CityName ? value.CityName.toLowerCase() : value.toLowerCase();
+      return this.cityList.filter(option => option.CityName.toLowerCase().includes(filterValue));
+    }
+  }
+
+  get f() {
+    return this._HospitalService.HospitalForm.controls;
 }
+  onClose(){
+    this._HospitalService.HospitalForm.reset();
+    this._matDialog.closeAll();
+  }
+}
+  
+

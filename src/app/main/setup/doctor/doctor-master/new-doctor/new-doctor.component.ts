@@ -704,7 +704,7 @@ public onEnteraddress(event): void {
         return;
       }
     });
-    this.onChangeGenderList(this.registerObj);
+    
   }
 
 

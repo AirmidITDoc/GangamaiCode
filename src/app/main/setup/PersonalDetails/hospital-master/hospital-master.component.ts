@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { HospitalService } from './hospital.service';
 import { MatDialog } from '@angular/material/dialog';
 import { NewHospitalComponent } from './new-hospital/new-hospital.component';
@@ -6,24 +6,28 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatAccordion } from '@angular/material/expansion';
 import { MatSort } from '@angular/material/sort';
+import { fuseAnimations } from '@fuse/animations';
 
 
 @Component({
   selector: 'app-hospital-master',
   templateUrl: './hospital-master.component.html',
-  styleUrls: ['./hospital-master.component.scss']
+  styleUrls: ['./hospital-master.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations,
 })
 export class HospitalMasterComponent implements OnInit {
  
   resultsLength:any=0;
   displayedColumns: string[] = [
+    // "HospitalId",
     "HospitalName",
     "HospitalAddress",
     "City",
     "Pin",
     "Phone",
-    "EmailId",
-    "WebSite",
+    "EmailID",
+    "WebSiteInfo",
     "action",
 ];
 DSHospitalList=new MatTableDataSource<HospitalMaster>();
@@ -39,6 +43,8 @@ DSHospitalList=new MatTableDataSource<HospitalMaster>();
 
   ngOnInit(): void {
     this.getHospitalMaster();
+
+    
   }
 
 
@@ -51,13 +57,13 @@ DSHospitalList=new MatTableDataSource<HospitalMaster>();
     });
 }
 onSearch(){
-  
+
 }
 onAdd() {
 
   const dialogRef = this._matDialog.open(NewHospitalComponent, {
-      maxWidth: "70vw",
-      maxHeight: "65vh",
+      maxWidth: "65vw",
+      maxHeight: "75vh",
       width: "100%",
       height: "100%",
   });
@@ -67,8 +73,21 @@ onAdd() {
   });
 }
 
-onEdit(){
-
+onEdit(row){
+  this._HospitalService.populateForm(row);
+  const dialogRef = this._matDialog.open(NewHospitalComponent, {
+    maxWidth: "65vw",
+    maxHeight: "75vh",
+    width: "100%",
+    height: "100%",
+    data: {
+      registerObj: row,
+  }
+});
+dialogRef.afterClosed().subscribe((result) => {
+    console.log("The dialog was closed - Insert Action", result);
+    this.getHospitalMaster();
+});
 }
 }
 
@@ -82,7 +101,7 @@ export class HospitalMaster {
   Pin: any;
   Phone : any;
   EmailID:any;
-  Website:any;
+  WebSiteInfo:any;
   /**
    * Constructor
    *
@@ -90,7 +109,7 @@ export class HospitalMaster {
    */
   constructor(HospitalMaster) {
       {
-        this.HospitalId = HospitalMaster.HospitalId || "";
+        this.HospitalId = HospitalMaster.HospitalId || 0;
           this.HospitalName = HospitalMaster.HospitalName || "";
           this.HospitalAddress = HospitalMaster.HospitalAddress || "";
           this.City = HospitalMaster.City || "";
@@ -98,7 +117,7 @@ export class HospitalMaster {
           this.Pin = HospitalMaster.Pin || "";
           this.Phone  =HospitalMaster.Phone  || "";
           this.EmailID = HospitalMaster.EmailID || "";
-          this.Website  =HospitalMaster.Website  || "";
+          this.WebSiteInfo  =HospitalMaster.WebSiteInfo  || "";
           
       }
   }

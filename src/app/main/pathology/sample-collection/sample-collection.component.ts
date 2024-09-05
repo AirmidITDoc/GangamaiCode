@@ -70,6 +70,7 @@ export class SampleCollectionComponent implements OnInit {
 
   displayedColumns1: string[] = [  
     'IsSampleCollection',
+    'SampleNo',
     'ServiceName',
     //'IsPrinted',
     'SampleCollectionTime', 

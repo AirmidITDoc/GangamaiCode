@@ -308,6 +308,7 @@ export class PathparameterMaster {
     Formula: string;
     ParaMultipleRange: string;
     IsDeletedSearch: number;
+    
     /**
      * Constructor
      *

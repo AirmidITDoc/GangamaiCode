@@ -73,19 +73,26 @@
                                     <mat-table class="table1" matSort [dataSource]="DSHospitalList"
                                         [@animateStagger]="{value:'50'}" style="overflow:auto;height: 500px !important;">
 
-                                        <ng-container matColumnDef="HospitalId">
+                                        <!-- <ng-container matColumnDef="HospitalId">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide  class="w-180"
                                                 fxShow.gt-sm>HospitalId
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm  class="w-180">
                                                 {{element.HospitalId}}
                                             </mat-cell>
-                                        </ng-container>
+                                        </ng-container> -->
 
                                         <ng-container matColumnDef="HospitalName">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header  class="w-330"> HospitalName
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxShow.gt-sm  class="w-330"> {{element.HospitalName}}
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="HospitalAddress">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header  class="w-330"> HospitalAddress
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm  class="w-330"> {{element.HospitalAddress}}
                                             </mat-cell>
                                         </ng-container>
 
@@ -112,16 +119,16 @@
                                             </mat-cell>
                                         </ng-container>
 
-                                        <ng-container matColumnDef="EmailId">
+                                        <ng-container matColumnDef="EmailID">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200"> EmailId
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-200"> {{element.EmailId}}
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-200"> {{element.EmailID}}
                                             </mat-cell>
                                         </ng-container>
-                                        <ng-container matColumnDef="WebSite">
+                                        <ng-container matColumnDef="WebSiteInfo">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200"> WebSite
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-200"> {{element.WebSite}}
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-200"> {{element.WebSiteInfo}}
                                             </mat-cell>
                                         </ng-container>
 
@@ -152,10 +159,10 @@
                                             </mat-footer-cell>
                                         </ng-container>
 
-                                        <mat-header-row class="accent min-width-2000"
+                                        <mat-header-row class="accent min-width-1600"
                                         *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
                                         <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
-                                        class=" min-width-2000" 
+                                        class=" min-width-1600" 
                                             [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                         <mat-footer-row *matFooterRowDef="['loading']"
                                             [ngClass]="{'hide':DSHospitalList!=null}"></mat-footer-row>

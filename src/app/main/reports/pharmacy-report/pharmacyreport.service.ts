@@ -6,9 +6,9 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   providedIn: 'root'
 })
 export class PharmacyreportService {
-  UserFormGroup:FormGroup;
+  userForm:FormGroup;
   constructor( public _formBuilder:FormBuilder,
-    public _httpClient:HttpClient) {this.UserFormGroup=this.createUserFormGroup()}
+    public _httpClient:HttpClient) {this.userForm=this.createUserFormGroup()}
 
     createUserFormGroup(){
       return this._formBuilder.group({
@@ -19,8 +19,10 @@ export class PharmacyreportService {
         FirstName:'',
         LastName:'',
         BillNo:'',
-        Radio:['1']
-
+        DrugTypeId:'',
+        Radio:['1'],
+        StoreId:[''],
+        ItemId:['']
       })
     }
   public getDataByQuery(emp) {
@@ -81,6 +83,37 @@ export class PharmacyreportService {
   }
 
   
+  public getSchduleh1Book(FromDate,ToDate,DrugTypeId,StoreId){
+    return this._httpClient.get("PharmacyReport/view-SCHEDULEH1Report?FromDate=" + FromDate+"&ToDate="+ToDate+"&DrugTypeId="+DrugTypeId+"&StoreId="+StoreId);
+  }
+
+  public getSchsuleh1salesummaryBook(FromDate,ToDate,DrugTypeId,StoreId){
+    return this._httpClient.get("PharmacyReport/view-SCHEDULEH1SalesSummaryReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&SalesFromNumber="+"&DrugTypeId="+DrugTypeId+"&StoreId="+StoreId);
+  }
+  public getSalesh1drugcount(FromDate,ToDate,StoreId){
+    return this._httpClient.get("PharmacyReport/view-SalesH1DrugCountReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&SalesFromNumber="+"&StoreId="+StoreId);
+  }
+
+  public getItemwisedailysales(FromDate,ToDate,ItemId,RegNo,StoreId){
+    return this._httpClient.get("PharmacyReport/view-ItemWiseDailySalesReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&ItemId="+ItemId+"&RegNo="+RegNo+"&StoreId="+StoreId);
+  }
+
+  public getHighriskdrug(FromDate,ToDate,StoreId){
+    return this._httpClient.get("PharmacyReport/view-WardWiseHighRiskDrugList?FromDate=" + FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId);
+  }
+
+  public getPurchaseorderlist(StoreId,FromDate,ToDate){
+    return this._httpClient.get("PharmacyReport/view-PurchaseReOrderList?StoreId=" + StoreId+"&FromDate="+FromDate+"&ToDate="+ToDate);
+  }
+  public getPharmacybillsummary(StoreId,FromDate,ToDate){
+    return this._httpClient.get("PharmacyReport/view-PharmacyBillSummaryReport?StoreId=" + StoreId+"&FromDate="+FromDate+"&ToDate="+ToDate);
+  }
+  public getItemlist(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_Item_Name",Param)
+  }
+
+
+
   getStoreList(){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ToStoreName",{})
   }

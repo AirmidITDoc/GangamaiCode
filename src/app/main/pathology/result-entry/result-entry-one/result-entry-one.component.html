@@ -156,7 +156,7 @@
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" class="border-right">
                                             <mat-form-field appearance="legacy" *ngIf="!contact.IsHelpShown" style="width: 100%;"
-                                                [ngClass]="{'Result-Formula': contact.Formula !=null}">
+                                                [ngClass]="{'Result-Formula': contact.Formula !=' '}">
                                                 <input matInput autocomplete="off" (keyup)="onResultUp(contact)" 
                                                     (keydown.F2)="onKeydown($event,contact)" matTooltip="Use Help Value"
                                                     

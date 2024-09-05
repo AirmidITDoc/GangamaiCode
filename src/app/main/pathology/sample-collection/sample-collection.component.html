@@ -285,13 +285,7 @@
                                     </div> -->
                                     <mat-table class="mat-table-2 h-210" #table matSort [dataSource]="dataSource1" [@animateStagger]="{value:'50'}">
 
-                                        <ng-container matColumnDef="ServiceName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-250">TestName
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250">
-                                                <span> {{contact.ServiceName}}</span>
-                                            </mat-cell>
-                                        </ng-container>
+                                     
 
                                         <ng-container matColumnDef="IsSampleCollection">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md class="w-100">
@@ -306,15 +300,23 @@
                                                  </button>
                                             </mat-cell>
                                         </ng-container>
-
-                                        <!-- <ng-container matColumnDef="IsPrinted">
+                                        <ng-container matColumnDef="SampleNo">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
-                                                IsPrinted
+                                                SampleNo
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                                <span> {{contact.IsPrinted}}</span>
+                                                <span> {{contact.SampleNo}}</span>
                                             </mat-cell>
-                                        </ng-container> -->
+                                        </ng-container>
+                                        <ng-container matColumnDef="ServiceName">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-250">TestName
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250">
+                                                <span> {{contact.ServiceName}}</span>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                     
 
                                         <ng-container matColumnDef="SampleCollectionTime">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>

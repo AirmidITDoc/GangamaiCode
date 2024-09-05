@@ -58,7 +58,8 @@ const routes: Routes = [
         MatSnackBarModule,
         MatStepperModule,
         NgxMatSelectSearchModule,
-        MatToolbarModule
+        MatToolbarModule,
+        MatAutocompleteModule
     ],
     providers: [HospitalService],
     entryComponents: [HospitalMasterComponent],

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -21,11 +21,11 @@ myformSearch:FormGroup;
       HospitalAddress: [""],
       City:[""],
       CityId:[""],
-      Pin:[""],
-      Phone:[""],
+      Pin:["",Validators.pattern("[0-9]{7}")],
+      Phone: ['', [Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
       Email:[""],
-      website:[""]
-
+      website:[""],
+      HospitalId:[""]
     
     });
 }
@@ -38,10 +38,22 @@ createSearchForm():FormGroup{
   });
 }
 
+public HospitalInsert(param) {
+  return this._httpClient.post("PersonalDetails/HospitalSave", param);
+}
 
+public HospitalUpdate(param) {
+  return this._httpClient.post("PersonalDetails/HospitalUpdate", param);
+}
+public getCityList() {
 
+  return this._httpClient.post("Generic/GetByProc?procName=RetrieveCityMasterForCombo", {})
+}
 public getHospitalMasterList() {
       
   return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_HospitalMaster", {})
+}
+populateForm(param) {
+  this.HospitalForm.patchValue(param);
 }
 }

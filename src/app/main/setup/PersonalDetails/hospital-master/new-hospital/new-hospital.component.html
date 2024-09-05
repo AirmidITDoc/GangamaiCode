@@ -1,0 +1,151 @@
+<div class="modal-wrapper grid-container">
+    <!-- Modal header -->
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Hospital Master</span>
+            </div>
+            <div class="modal-header-right">
+
+                <div fxLayout="row" fxLayoutALign="end start">
+                    <!-- <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
+                    </app-common-date> -->
+                    <button mat-icon-button (click)="onClose()" aria-label="Close dialog">
+                        <mat-icon>close</mat-icon>
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <mat-card>
+    <form [formGroup]="_HospitalService.HospitalForm" fxLayout="column" style="padding: 5px 5px 0px 5px;">
+        <input type="hidden" name="HospitalId" formControlName="HospitalId" [(ngModel)]="HospitalId">
+        <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
+            class="top-header accent heading-container h-40 border-radius-4">
+            <span style="font-size:15px; font-weight: bolder; color:white;padding:7px;">Hospital
+                Details</span>
+        </div>
+        
+        <mat-card>
+            <div fxLayout="column" class="gap-12">
+
+                    <div fxLayout="column" class="gap-8">
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Hospital Name</mat-label>
+                            <input name="HospitalName" formControlName="HospitalName" placeholder="Hospital Name"
+                              matInput #hname (keydown)="onEnterhname($event)" required
+                                [(ngModel)]="registerObj.HospitalName">
+                          <mat-error class="error"
+                                *ngIf="_HospitalService.HospitalForm.get('HospitalName').invalid && _HospitalService.HospitalForm.get('HospitalName').touched">
+                                First
+                                Name is required Enter
+                                only
+                                Alphabets</mat-error>
+                        </mat-form-field>
+                    </div>
+                   
+                 
+                    <div fxLayout="column" class="gap-8">
+                        <mat-form-field appearance="outline" fxFlex="50%">
+                            <mat-label>HospitalAddress</mat-label>
+                            <input name="HospitalAddress" formControlName="HospitalAddress" placeholder="HospitalAddress" matInput #address
+                                (keydown)="onEnteraddress($event)" [(ngModel)]="registerObj.HospitalAddress">
+                            <mat-error
+                                *ngIf="_HospitalService.HospitalForm.get('HospitalAddress').invalid && _HospitalService.HospitalForm.get('HospitalAddress').touched">Please
+                                enter Address </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" class="gap-8">
+                        <mat-form-field appearance="outline" fxFlex="80%">
+                            <mat-label>City</mat-label>
+                            <input matAutocompletePosition="below" type="text" placeholder="Select City" matInput #city
+                                (keydown)="onEntercity($event)" formControlName="CityId" [(ngModel)]="vCityId"
+                                [matAutocomplete]="autoCity" required>
+                            <span matSuffix style="display: flex;">
+                                <mat-icon class="mat-icon-close"
+                                    (click)="_HospitalService.HospitalForm.get('CityId').setValue(''); isCitySelected = false;">close</mat-icon>
+                                <mat-icon class="mat-icon-close"
+                                    (click)="_HospitalService.HospitalForm.get('CityId').setValue(''); isCitySelected = false;">search</mat-icon>
+                            </span>
+                            <mat-autocomplete #autoCity="matAutocomplete" [displayWith]="getOptionTextCity">
+                                <mat-option *ngFor="let option of filteredOptionsCity | async" [value]="option">
+                                    {{option.CityName}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Pin</mat-label>
+                            <input name="Pin" formControlName="Pin" placeholder="First Name"
+                              matInput #pin (keydown)="onEnterpin($event)" required
+                              oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,7);"
+                                [(ngModel)]="registerObj.Pin">
+                          <mat-error class="error"
+                                *ngIf="_HospitalService.HospitalForm.get('Pin').invalid && _HospitalService.HospitalForm.get('Pin').touched">
+                                First
+                                Name is required Enter
+                                only
+                                Alphabets</mat-error>
+                        </mat-form-field>
+                    </div>
+                                    
+
+                    <div fxLayout="row" class="gap-8">
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Phone Number</mat-label>
+                            <input name="Phone" formControlName="Phone" placeholder="Phone Number" matInput
+                                required #phone (keydown)="onEntermobile($event)" [(ngModel)]="registerObj.Phone"
+                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
+                                required="required" value="9876658688">
+                            <mat-error class="error"
+                                *ngIf="_HospitalService.HospitalForm.get('Phone').invalid && _HospitalService.HospitalForm.get('Phone').touched">10
+                                digits Phone number is
+                                required</mat-error>
+                        </mat-form-field>
+
+                  
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Email</mat-label>
+                            <input name="Email" formControlName="Email" placeholder="Email Id" matInput
+                                required #email (keydown)="onEnterEmail($event)" [(ngModel)]="registerObj.EmailID" >
+                            <mat-error class="error"
+                                *ngIf="_HospitalService.HospitalForm.get('Email').invalid && _HospitalService.HospitalForm.get('Email').touched">
+                                 is
+                                required</mat-error>
+                        </mat-form-field>
+
+                    </div>
+                    <div fxLayout="column" class="gap-8">
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Website</mat-label>
+                            <input name="website" formControlName="website" placeholder="website" matInput
+                                required #phone (keydown)="onEnterwebsite($event)" [(ngModel)]="registerObj.WebSiteInfo" >
+                            <mat-error class="error"
+                                *ngIf="_HospitalService.HospitalForm.get('website').invalid && _HospitalService.HospitalForm.get('website').touched">
+                             Website is
+                                required</mat-error>
+                        </mat-form-field>
+
+                    </div>
+               
+                </div>
+               
+            
+        </mat-card>
+    </form>
+   
+    <!-- [disabled]="_HospitalService.HospitalForm" -->
+    <div fxLayout="row" fxLayoutAlign="end">
+        <div class="modal-footer-buttons" fxLayoutGap="6px" style="padding: 8px;">
+            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+            <button class="btn btn-primary" (click)="onSubmit()"
+               >Save</button>
+            
+        </div>
+    </div>
+</mat-card>
+    <!-- Modal footer -->
+
+</div>

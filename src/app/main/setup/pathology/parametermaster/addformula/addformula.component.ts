@@ -41,7 +41,8 @@ export class AddformulaComponent implements OnInit {
     { value: '5', viewValue: '%'},
     { value: '6', viewValue: '-' },
     { value: '7', viewValue: '('},
-    { value: '8', viewValue: ')' }
+    { value: '8', viewValue: ')' },
+    { value: '9', viewValue: ' ' }
   ];
 
 
@@ -61,7 +62,7 @@ export class AddformulaComponent implements OnInit {
     this.registerObj = this.data.registerObj;
     this.ParameterId= this.registerObj.ParameterID
     this.parameterName= this.registerObj.ParameterName
-    
+    this.finalformula= this.registerObj.Formula
     }
     
   }
@@ -71,7 +72,7 @@ export class AddformulaComponent implements OnInit {
   getParameterNameCombobox() {
  
   var m_data = {
-      ParameterName:this._ParameterService.myformSearch.get("ParameterNameSearch").value.trim() + "%" || "%",
+      ParameterName:this._ParameterService.formulaform.get("ParameterId").value.trim() + "%" || "%",
      };
 
   this._ParameterService.getParameterMasterforformulaList(m_data).subscribe((data) => {
@@ -102,17 +103,16 @@ getOptionTextparameter(option) {
   
 }
 onChangeparaList(option){
+  debugger
   this.paraname=option.ParameterName
-  this.paraname=this._ParameterService.formulaform.get("ParameterId").value.ParameterName;
+  // this.paraname=this._ParameterService.formulaform.get("ParameterId").value.ParameterName;
   console.log( this.paraname)
 }
 onClear() {
   this._ParameterService.formulaform.reset();
   
 }
-onSearchClear(){
-  this._ParameterService.formulaform.get("ParameterNameSearch").reset('');
-}
+
 addoprator(event){
    this.oprator=event
  
@@ -141,5 +141,6 @@ addoprator1(){
   }
   onClose(){
     this.dialogRef.close();
+    this._ParameterService.formulaform.reset();
   }
 }
