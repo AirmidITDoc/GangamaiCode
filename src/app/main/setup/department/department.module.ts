@@ -16,10 +16,17 @@ const appRoutes: Routes = [
     {
         path: "location-master",
         loadChildren: () =>
-            import("./location-master/location-master.module").then(
-                (m) => m.LocationMasterModule
+            import("../PersonalDetails/hospital-master/hospital.module").then(
+                (m) => m.HospitalModule
             ),
     },
+    // {
+    //     path: "location-master",
+    //     loadChildren: () =>
+    //         import("./location-master/location-master.module").then(
+    //             (m) => m.LocationMasterModule
+    //         ),
+    // },
     {
         path: "ward-master",
         loadChildren: () =>
@@ -54,7 +61,7 @@ const appRoutes: Routes = [
 
     {
         path: "parameterDescriptive-master",
-        loadChildren: () => import("./parameter-descriptive-master/parameter-descriptive-master.module").then((m) => m.ParameterDescriptiveMasterModule),
+        loadChildren: () => import("../PersonalDetails/hospital-master/hospital.module").then((m) => m.HospitalModule),
     },
 ];
 

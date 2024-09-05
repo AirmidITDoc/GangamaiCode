@@ -273,7 +273,7 @@
                                             Action
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact">
-                                            <button mat-icon-button matTooltip="print">
+                                            <button mat-icon-button matTooltip="print" (click)="viewgetIPAdvanceReportPdf(contact)">
                                                 <mat-icon>print</mat-icon>
                                             </button>
 

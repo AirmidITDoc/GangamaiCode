@@ -417,7 +417,7 @@ export class EditAdmissionComponent implements OnInit {
   // DocNameID
   setDropdownObjs() {
     debugger
-    const toSelect = this.DepartmentList.find(c => c.Departmentid == this.registerObj1.DepartmentId);
+    const toSelect = this.DepartmentList.find(c => c.DepartmentId == this.registerObj1.DepartmentId);
     this.hospitalFormGroup.get('Departmentid').setValue(toSelect);
   
     const toSelect11 = this.DoctorList.find(c => c.DoctorId == this.registerObj1.DocNameID);
@@ -451,7 +451,7 @@ export class EditAdmissionComponent implements OnInit {
 
 
   getOptionTextDep(option) {
-    return option && option.departmentName ? option.departmentName : '';
+    return option && option.DepartmentName ? option.DepartmentName : '';
   }
 
   getOptionTextRefDoc(option) {
@@ -526,9 +526,8 @@ export class EditAdmissionComponent implements OnInit {
     this._AdmissionService.getDepartmentCombo().subscribe(data => {
       this.DepartmentList = data;
       if (this.registerObj1) {
-        const ddValue = this.DepartmentList.filter(c => c.Departmentid == this.registerObj1.DepartmentId);
+        const ddValue = this.DepartmentList.filter(c => c.DepartmentId == this.registerObj1.DepartmentId);
         this.hospitalFormGroup.get('Departmentid').setValue(ddValue[0]);
-        //  this.OnChangeDoctorList(this.registerObj1);
         this.hospitalFormGroup.updateValueAndValidity();
         return;
       }
@@ -539,8 +538,8 @@ export class EditAdmissionComponent implements OnInit {
 
   private _filterdept(value: any): string[] {
     if (value) {
-      const filterValue = value && value.departmentName ? value.departmentName.toLowerCase() : value.toLowerCase();
-      return this.DepartmentList.filter(option => option.departmentName.toLowerCase().includes(filterValue));
+      const filterValue = value && value.DepartmentName ? value.DepartmentName.toLowerCase() : value.toLowerCase();
+      return this.DepartmentList.filter(option => option.DepartmentName.toLowerCase().includes(filterValue));
     }
   }
 
@@ -703,17 +702,13 @@ export class EditAdmissionComponent implements OnInit {
 
   OnChangeDoctorList(departmentObj) {
     debugger
-  //   if(flag)
-  //   departmentObj.DepartmentId=departmentObj.DepartmentId
-  // else
-  // departmentObj.DepartmentId=departmentObj.Departmentid
-
+  
     this.hospitalFormGroup.get('DoctorId').reset();
     this.isDepartmentSelected = true;
-    this._AdmissionService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(
+    this._AdmissionService.getDoctorMasterCombo(departmentObj.DepartmentId).subscribe(
       data => {
         this.DoctorList = data;
-        // this.hospitalFormGroup.get('DoctorId').setValue(this.DoctorList[0]);      
+     
         return;
       });
       this.filteredOptionsDoc = this.hospitalFormGroup.get('DoctorId').valueChanges.pipe(
@@ -902,7 +897,7 @@ export class EditAdmissionComponent implements OnInit {
         "HospitalId": this.registerObj1.HospitalId || 1,
         "CompanyId": this.CompanyId, //this.hospitalFormGroup.get('CompanyId').value.CompanyId || 0,
         "TariffId": this.hospitalFormGroup.get('TariffId').value.TariffId || 0,
-        "DepartmentId": this.hospitalFormGroup.get('Departmentid').value.Departmentid || 0,
+        "DepartmentId": this.hospitalFormGroup.get('Departmentid').value.DepartmentId || 0,
         "AdmittedNameID": this.hospitalFormGroup.get('DoctorId').value.DoctorId || 0,
         "RelativeName": this.otherFormGroup.get('RelativeName').value || "",
         "RelativeAddress": this.otherFormGroup.get('RelativeAddress').value || "",
