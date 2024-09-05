@@ -19,6 +19,7 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class PrescriptionComponent implements OnInit {
   displayedColumns = [
+    'Status',
     'RegNo',
     'PatientName',
     'DoctorName',

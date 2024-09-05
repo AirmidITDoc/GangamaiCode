@@ -12,6 +12,7 @@ import { element } from 'protractor';
 import Swal from 'sweetalert2';
 import { OPAdvancePaymentComponent } from 'app/main/opd/op-search-list/op-advance-payment/op-advance-payment.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
 
 
 @Component({
@@ -210,8 +211,7 @@ export class NewIPRefundAdvanceComponent implements OnInit {
   }
  
   BalanceAmount:any;
-  advanceId:any;
-  isLoading123 = false;
+  advanceId:any; 
   onSave() { 
     if(this.vRegNo  == '' || this.vRegNo == null || this.vRegNo == undefined || this.vRegNo == '0'){
       this.toastr.warning('Please select patient', 'Warning !', {
@@ -222,8 +222,7 @@ export class NewIPRefundAdvanceComponent implements OnInit {
       this.toastr.warning('Please enter refund amount', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
-    }
-      this.isLoading123 = true; 
+    } 
       this.sIsLoading = 'submit'; 
       let insertPharRefundofAdvance = {};
       insertPharRefundofAdvance['refundDate'] = this.dateTimeObj.date || '01/01/1900'
@@ -268,26 +267,46 @@ export class NewIPRefundAdvanceComponent implements OnInit {
       }); 
 
       let PatientHeaderObj = {};
-      PatientHeaderObj['Date'] = this.dateTimeObj.date || '01/01/1900'
-      PatientHeaderObj['OPD_IPD_Id'] = this.vAdmissionID;
-      PatientHeaderObj['PatientName'] =  this.vPatienName
-      PatientHeaderObj['NetPayAmount'] = this._PharAdvanceService.NewRefundForm.get('ToatalRefunfdAmt').value || 0;
-      PatientHeaderObj['BillId'] = 0;
-      PatientHeaderObj['UHIDNO'] = this.vRegNo;
-      PatientHeaderObj['DoctorName'] = this.vDoctorName;
-      PatientHeaderObj['OPD_IPD_Id'] = this.vIPDNo;
+      // PatientHeaderObj['Date'] = this.dateTimeObj.date || '01/01/1900'
+      // PatientHeaderObj['OPD_IPD_Id'] = this.vAdmissionID;
+      // PatientHeaderObj['PatientName'] =  this.vPatienName
+      // PatientHeaderObj['NetPayAmount'] = this._PharAdvanceService.NewRefundForm.get('ToatalRefunfdAmt').value || 0;
+      // PatientHeaderObj['BillId'] = 0;
+      // PatientHeaderObj['UHIDNO'] = this.vRegNo;
+      // PatientHeaderObj['DoctorName'] = this.vDoctorName;
+      // PatientHeaderObj['OPD_IPD_Id'] = this.vIPDNo;
 
-        const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
-          {
-            maxWidth: "90vw",
-            height: '640px',
-            width: '70%', 
-            data: {
-              //vPatientHeaderObj: PatientHeaderObj,
-              FromName: "IP-Pharma-Refund",
-              advanceObj: PatientHeaderObj,
-            }
-          });
+      //   const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
+      //     {
+      //       maxWidth: "90vw",
+      //       height: '640px',
+      //       width: '70%', 
+      //       data: {
+      //         //vPatientHeaderObj: PatientHeaderObj,
+      //         FromName: "IP-Pharma-Refund",
+      //         advanceObj: PatientHeaderObj,
+      //       }
+      //     });
+
+        PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+        PatientHeaderObj['PatientName'] =  this.vPatienName
+        PatientHeaderObj['RegNo'] =this.vRegNo;
+        PatientHeaderObj['DoctorName'] =this.vDoctorName;
+        PatientHeaderObj['CompanyName'] = this.vCompanyName; 
+        PatientHeaderObj['OPD_IPD_Id'] =  this.vIPDNo;
+        PatientHeaderObj['Age'] =   this.vAge ;
+        PatientHeaderObj['NetPayAmount'] =parseInt(this._PharAdvanceService.NewRefundForm.get('ToatalRefunfdAmt').value) || 0;
+          const dialogRef = this._matDialog.open(OpPaymentComponent,
+            {
+              maxWidth: "80vw",
+              height: '650px',
+              width: '80%',
+              data: {
+                vPatientHeaderObj: PatientHeaderObj,
+                FromName: "IP-Pharma-Refund",
+                advanceObj: PatientHeaderObj,
+              }
+            });
         dialogRef.afterClosed().subscribe(result => {
           console.log('==============================  Refung Amount ===========',result);
           // console.log(result.submitDataPay.ipPaymentInsert);
@@ -309,13 +328,11 @@ export class NewIPRefundAdvanceComponent implements OnInit {
               });  
                   this.viewgetRefundofAdvanceReportPdf(response);
                   this.OnReset();
-                  this._matDialog.closeAll(); 
-                  this.isLoading123 = false;
+                  this._matDialog.closeAll();  
             } else {
               this.toastr.success('IP Pharma Refund Of Advance data not Saved!', 'Error!', {
                 toastClass: 'tostr-tost custom-toast-success',
-              });   
-              this.isLoading123 = false;
+              });    
             } 
           });
 

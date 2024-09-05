@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { LoaderService } from 'app/core/components/loader/loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,6 +9,7 @@ import { FormBuilder } from '@angular/forms';
 export class CasepaperService {
 
   constructor(public _httpClient: HttpClient,
+    private _loaderService: LoaderService,
     private _formBuilder: FormBuilder) { }
 
   public getcasepaperVisitDetails(visitId) {
@@ -24,6 +26,13 @@ export class CasepaperService {
  //Deartment Combobox List
  public getDepartmentCombo() {
   return this._httpClient.post("Generic/GetByProc?procName=RetrieveDepartmentMasterForCombo", {})
+} 
+//Deartment Combobox List
+public getServiceList(param,loader = true){ 
+  if (loader) {
+    this._loaderService.show();
+}
+ return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PathRadServiceList", param)
 }
   //Doctor Master Combobox List
   public getDoctorMasterCombo(Id) {
@@ -46,7 +55,10 @@ export class CasepaperService {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_M_ExaminationMasterForCombo", {});
   }
 
-  public onSaveCasepaper(param) {
+  public onSaveCasepaper(param,loader = true){ 
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.post("OutPatient/PrescriptionInsert", param);
   }
   public getTemplate(query) {
@@ -77,7 +89,10 @@ export class CasepaperService {
   public getIpPrescriptionview(OP_IP_ID,PatientType){
     return this._httpClient.get("InPatient/view-IP_Prescription?OP_IP_ID=" + OP_IP_ID+"&PatientType="+PatientType);
   }
-  public getOpPrescriptionview(VisitId){
+  public getOpPrescriptionview(VisitId,loader = true){ 
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("OutPatient/view-OP_Prescription?VisitId=" + VisitId);
   }
   

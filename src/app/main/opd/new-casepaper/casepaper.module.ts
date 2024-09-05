@@ -43,6 +43,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatTreeModule } from '@angular/material/tree';
+import { PrescriptionTemplateComponent } from './prescription-template/prescription-template.component';
 
 
 
@@ -54,7 +55,8 @@ const routes: Routes = [
 ];
 @NgModule({
     declarations: [
-      NewCasepaperComponent
+      NewCasepaperComponent,
+      PrescriptionTemplateComponent
     ],
     imports: [
         RouterModule.forChild(routes),

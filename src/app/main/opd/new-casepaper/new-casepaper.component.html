@@ -12,6 +12,9 @@
             </span>
         </div>
         <div class="close-icon">
+            <button mat-raised-button fxLayoutAlign="center center" class="py-8" (click)="CreateTemplate()">
+                <span>Create Prescription Template</span>
+            </button>
             <!-- <app-common-date [screenFrom]="screenFromString"
                             (dateTimeEventEmitter)="getDateTime($event)"></app-common-date> -->
             <!-- <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
@@ -29,7 +32,7 @@
                 
                             <mat-form-field class=searchRegId appearance="outline" style="width:800px !important;margin-left:20px;">
                                 <input type="text" name="RegId" formControlName="RegId"
-                                    placeholder="Patient Name (enter 2 char)/ MR No/ Mobile No " matInput [matAutocomplete]="auto1"
+                                    placeholder="Patient Name (enter 2 char)/ MR No/ Mobile No " matInput [matAutocomplete]="autoReg"
                                     (input)="getSearchList()" maxlength="10">
                                 <span matSuffix style="display: flex;">
                                     <mat-icon class="mat-icon-close"
@@ -37,7 +40,7 @@
                                     <mat-icon class="mat-icon-close"
                                         (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">search</mat-icon>
                                 </span>
-                                <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getOptionText1"
+                                <mat-autocomplete #autoReg="matAutocomplete" [displayWith]="getOptionText1"
                                     (optionSelected)='getSelectedObj1($event.option.value)'>
                                     <mat-option *ngFor="let option of PatientListfilteredOptions" [value]="option">
                                         {{option.RegNo}} |{{option.FirstName}} {{option.MiddleName}}
@@ -214,28 +217,47 @@
                                                                 placeholder="ChiefComplaint" [(ngModel)]="vChiefComplaint" matInput #ChiefComp
                                                                 (keydown)="onEnterChiefComplaint($event)"></textarea>
                                                         </mat-form-field>
-                                                    </div>
+                                                    </div> 
+                                                </div>
+                                            </form>
+                                        </mat-card> 
 
-                                                    
-                                                    <div fxLayout="row">
-                                                        <mat-form-field appearance="outline" fxFlex="30%">
+                                        <mat-card fxLayout="column" style="padding: 5px;">
+                                            <form [formGroup]="caseFormGroup">
+                                                <div class="investigation-title">
+                                                    <span style="font-weight: 700;">
+                                                        Investigation
+                                                    </span>
+                                                </div>
+                                                <hr>
+                                                <div fxLayout="row" fxLayoutGap="6px">
+                                                    <div fxLayout="column" fxLayoutGap="6px" fxFlex="35%">
+                                                        <mat-radio-group aria-label="Select an option" formControlName="IsPathRad" name="IsPathRad"
+                                                            (change)="getServiceList()" fxLayoutGap="10px">
+                                                            <mat-radio-button value="1">Pathology </mat-radio-button>&nbsp;
+                                                            <mat-radio-button value="2">Radiology</mat-radio-button>&nbsp;
+                                                            <mat-radio-button value="3">Other Services</mat-radio-button>&nbsp;
+                                                        </mat-radio-group>
+                                        
+                                                        <mat-form-field appearance="outline" fxFlex>
                                                             <mat-label>Service list</mat-label>
                                                             <input matAutocompletePosition="below" type="text" placeholder="Select Service"
-                                                                [(ngModel)]="vServiceId" matInput  formControlName="Serviceid"
-                                                                [matAutocomplete]="autoDep">
+                                                                [(ngModel)]="vServiceId" matInput formControlName="Serviceid" [matAutocomplete]="autoService">
                                                             <span matSuffix style="display: flex;">
                                                                 <mat-icon class="mat-icon-close"
                                                                     (click)="caseFormGroup.get('Serviceid').setValue(''); isServiceIdSelected = false;">close</mat-icon>
                                                                 <mat-icon class="mat-icon-close"
                                                                     (click)="caseFormGroup.get('Serviceid').setValue(''); isServiceIdSelected = false;">search</mat-icon>
                                                             </span>
-                                                            <mat-autocomplete #autoDep="matAutocomplete" [displayWith]="getOptionTextService">
+                                                            <mat-autocomplete #autoService="matAutocomplete" [displayWith]="getOptionTextService">
                                                                 <mat-option *ngFor="let option of filteredOptionsService | async" [value]="option">
                                                                     <mat-checkbox [checked]="option.selected" (change)="toggleSelection(option)"
                                                                         (click)="$event.stopPropagation()"> {{option.ServiceName}}</mat-checkbox>
                                                                 </mat-option>
                                                             </mat-autocomplete>
                                                         </mat-form-field>
+                                                    </div>
+                                                    <div fxLayout="column" fxLayoutGap="6px" fxFlex="50%">
                                                         <mat-chip-list #chipList>
                                                             <mat-chip *ngFor="let item of selectedItems">
                                                                 {{ item.ServiceName }} <mat-icon (click)="remove(item)">close</mat-icon>
@@ -244,97 +266,14 @@
                                                     </div>
                                                 </div>
                                             </form>
-                                        </mat-card> 
+                                        </mat-card>
                             
                                         <mat-card style="padding: 5px;">
-                                            <div fxLayout="column" style="margin-left: 10px;">
-                                              
-                                                <form [formGroup]="MedicineItemForm">
-                                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8" fxLayoutAlign="end">
-                                                        <span style="padding: 10px 300px 0px 5px;color: brown;"><b>PRESCRIPTION DETAILS</b></span>
-
-                                                       
-                                                            <mat-form-field appearance="outline" fxFlex="20%">
-                                                                <mat-label>Department</mat-label>
-                                                                <input matAutocompletePosition="below" type="text"
-                                                                    placeholder="Select Department" matInput #dept
-                                                                    [(ngModel)]="vDepartmentid"
-                                                                    (keydown)="onEnterdept($event)"
-                                                                    formControlName="Departmentid" [matAutocomplete]="autoDep"
-                                                                    required>
-                                                                <span matSuffix style="display: flex;">
-                                                                    <mat-icon class="mat-icon-close"
-                                                                        (click)="MedicineItemForm.get('Departmentid').setValue(''); isDepartmentSelected = false;">close</mat-icon>
-                                                                    <mat-icon class="mat-icon-close"
-                                                                        (click)="MedicineItemForm.get('Departmentid').setValue(''); isDepartmentSelected = false;">search</mat-icon>
-                                                                </span>
-            
-                                                                <mat-autocomplete #autoDep="matAutocomplete"
-                                                                    [displayWith]="getOptionTextDep">
-                                                                    <mat-option *ngFor="let option of filteredOptionsDep | async"
-                                                                        [value]="option"
-                                                                        (onSelectionChange)="OnChangeDoctorList(option)">
-                                                                        {{option.DepartmentName}}
-                                                                    </mat-option>
-                                                                </mat-autocomplete>
-                                                            </mat-form-field> 
-                            
-                                                        
-                                                            <mat-form-field appearance="outline" fxFlex="20%">
-                                                                <mat-label>Doctor Name</mat-label>
-                                                                <input matAutocompletePosition="below" type="text"
-                                                                    placeholder="Pick one" matInput #deptdoc 
-                                                                    [(ngModel)]="vDoctorId" formControlName="DoctorID"
-                                                                    [matAutocomplete]="autoDoctor" required>
-                                                                <span matSuffix style="display: flex;">
-                                                                    <mat-icon class="mat-icon-close"
-                                                                        (click)="MedicineItemForm.get('DoctorID').setValue(''); isDoctorSelected = false;">close</mat-icon>
-                                                                    <mat-icon class="mat-icon-close"
-                                                                        (click)="MedicineItemForm.get('DoctorID').setValue(''); isDoctorSelected = false;">search</mat-icon>
-                                                                </span>
-            
-                                                                <mat-autocomplete #autoDoctor="matAutocomplete"
-                                                                    [displayWith]="getOptionTextDoc">
-                                                                    <mat-option *ngFor="let option of filteredOptionsDoc | async"
-                                                                        [value]="option"
-                                                                        (onSelectionChange)="isDoctorSelected = true;">
-                                                                        {{option.Doctorname }} <b>|</b> {{option.DepartmentName }}
-                                                                        <b>|</b> {{option.DoctorId
-                                                                        }}
-                                                                    </mat-option>
-                                                                </mat-autocomplete>
-                                                            </mat-form-field>  
-                             
-                                                        <mat-form-field appearance="outline" fxFlex="22%">
-                                                            <mat-label>Template List</mat-label>
-                                                            <input matAutocompletePosition="below" type="text" placeholder="Select Template"
-                                                                matInput formControlName="DoseId" [matAutocomplete]="autodose" required #dosename
-                                                                (keydown)="onEnterDose($event)" >
-                                                            <span matSuffix style="display: flex;">
-                                                                <mat-icon class="mat-icon-close"
-                                                                    (click)="MedicineItemForm.get('DoseId').setValue(''); isDoseSelected = false;">close</mat-icon>
-                                                                <mat-icon class="mat-icon-close"
-                                                                    (click)="MedicineItemForm.get('DoseId').setValue(''); isDoseSelected = false;">search</mat-icon>
-                                                            </span>
-                                                            <mat-autocomplete #autodose="matAutocomplete" [displayWith]="getOptionTextDose">
-                                                                <mat-option *ngFor="let option of filteredOptionsDosename | async" [value]="option">
-                                                                    {{option.DoseName}}
-                                                                </mat-option>
-                                                            </mat-autocomplete>
-                                                        </mat-form-field> 
-                            
-                                                        <div class="input-add-button">
-                                                            <div matTooltip="Select Drug to enable this button!!" [matTooltipPosition]="'above'">
-                                                                <button #addbutton class="btn btn-primary btn-with-icon" (click)="onAdd()" [disabled]="vTemplateId">
-                                                                    <span class="btn-icon">
-                                                                        <mat-icon> add </mat-icon>
-                                                                    </span> 
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                            <div fxLayout="column" style="margin-left: 10px;"> 
+                                                <span><b>PRESCRIPTION</b></span>
+                                                <form [formGroup]="MedicineItemForm"> 
                                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
-                                                        <mat-form-field appearance="outline" fxFlex="35%">
+                                                        <mat-form-field appearance="outline" fxFlex="30%">
                                                             <mat-label>Drug Name</mat-label>
                                                             <input type="text" name="ItemId" formControlName="ItemId" #itemid
                                                                 (keydown)="onEnterItem($event)" placeholder="Item Name " matInput
@@ -359,7 +298,7 @@
                                                             </mat-error>
                                                         </mat-form-field>
                             
-                                                        <mat-form-field appearance="outline" fxFlex="20%">
+                                                        <mat-form-field appearance="outline" fxFlex="12%">
                                                             <mat-label>Dose Name</mat-label>
                                                             <input matAutocompletePosition="below" type="text" placeholder="Select Dose Name"
                                                                 matInput formControlName="DoseId" [matAutocomplete]="autodose" required #dosename
@@ -378,7 +317,7 @@
                                                         </mat-form-field>
                             
                             
-                                                        <mat-form-field appearance="outline" fxFlex="20%">
+                                                        <mat-form-field appearance="outline" fxFlex="6%">
                                                             <mat-label>Day</mat-label>
                                                             <input type="text" OnlyNumber [(ngModel)]="vDay" name="Day" required
                                                                 (keydown)="onEnterqty($event)" formControlName="Day" matInput required #Day
@@ -389,7 +328,7 @@
                                                         <mat-form-field appearance="outline" fxFlex="20%">
                                                             <mat-label>Instruction</mat-label>
                                                             <input type="text" name="Instruction" [(ngModel)]="vInstruction"
-                                                                formControlName="Instruction" matInput #Instruction
+                                                            formControlName="Instruction" matInput #Instruction
                                                                 (keydown)="onEnterremark($event)">
                                                         </mat-form-field>
                             
@@ -402,10 +341,40 @@
                                                                     <span>Add</span>
                                                                 </button>
                                                             </div>
-                                                        </div>
+                                                        </div>&nbsp;
+
+                                                        <mat-divider [vertical]="true"></mat-divider>&nbsp;
+
+                                                        <mat-form-field appearance="outline" fxFlex="20%">
+                                                            <mat-label>Template List</mat-label>
+                                                            <input matAutocompletePosition="below" type="text" placeholder="Select Template" matInput
+                                                            formControlName="DoseId" [matAutocomplete]="autodose" required #dosename
+                                                                (keydown)="onEnterDose($event)">
+                                                            <span matSuffix style="display: flex;">
+                                                                <mat-icon class="mat-icon-close"
+                                                                    (click)="MedicineItemForm.get('DoseId').setValue(''); isDoseSelected = false;">close</mat-icon>
+                                                                <mat-icon class="mat-icon-close"
+                                                                    (click)="MedicineItemForm.get('DoseId').setValue(''); isDoseSelected = false;">search</mat-icon>
+                                                            </span>
+                                                            <mat-autocomplete #autodose="matAutocomplete" [displayWith]="getOptionTextDose">
+                                                                <mat-option *ngFor="let option of filteredOptionsDosename | async" [value]="option">
+                                                                    {{option.DoseName}}
+                                                                </mat-option>
+                                                            </mat-autocomplete>
+                                                        </mat-form-field>
+                                        
+                                                        <div class="input-add-button">
+                                                            <div matTooltip="Select Drug to enable this button!!" [matTooltipPosition]="'above'">
+                                                                <button #addbutton class="btn btn-primary btn-with-icon" (click)="onAdd()"
+                                                                    [disabled]="vTemplateId">
+                                                                    <span class="btn-icon">
+                                                                        <mat-icon> add </mat-icon>
+                                                                    </span>
+                                                                </button>
+                                                            </div>
+                                                        </div> 
                                                     </div>
-                                                </form>
-                            
+                                                </form> 
                                                 <div class="modal-card-container table-container">
                                                     <div class="table" fxFlex="100%">
                                                         <mat-table class="mat-table-1 h-230" matSort [dataSource]="dsItemList"
@@ -525,20 +494,76 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </mat-card>
+                                        </mat-card> 
+                                        
+                                        <mat-card fxLayout="column" style="padding: 5px;">
+                                            <form [formGroup]="MedicineItemForm">
+                                                <div class="consultunt-title">
+                                                    <span style="font-weight: 700;">
+                                                     Refer To Another Doctor
+                                                    </span>
+                                                </div>
+                                                <hr>
+                                                <div fxLayout="row" fxLayoutGap="6px">
+                                                    <mat-form-field appearance="outline" fxFlex="30%">
+                                                        <mat-label>Department</mat-label>
+                                                        <input matAutocompletePosition="below" type="text" placeholder="Select Department" matInput #dept
+                                                           (keydown)="onEnterdept($event)" formControlName="Departmentid"
+                                                            [matAutocomplete]="autoDep" required>
+                                                        <span matSuffix style="display: flex;">
+                                                            <mat-icon class="mat-icon-close"
+                                                                (click)="MedicineItemForm.get('Departmentid').setValue(''); isDepartmentSelected = false;">close</mat-icon>
+                                                            <mat-icon class="mat-icon-close"
+                                                                (click)="MedicineItemForm.get('Departmentid').setValue(''); isDepartmentSelected = false;">search</mat-icon>
+                                                        </span>
+                                    
+                                                        <mat-autocomplete #autoDep="matAutocomplete" [displayWith]="getOptionTextDep">
+                                                            <mat-option *ngFor="let option of filteredOptionsDep | async" [value]="option"
+                                                                (onSelectionChange)="OnChangeDoctorList(option)">
+                                                                {{option.DepartmentName}}
+                                                            </mat-option>
+                                                        </mat-autocomplete>
+                                                    </mat-form-field>
+                                    
+                                    
+                                                    <mat-form-field appearance="outline" fxFlex="30%">
+                                                        <mat-label>Doctor Name</mat-label>
+                                                        <input matAutocompletePosition="below" type="text" placeholder="Pick one" matInput #deptdoc
+                                                            [(ngModel)]="vDoctorId" formControlName="DoctorID" [matAutocomplete]="autoDoctor" required>
+                                                        <span matSuffix style="display: flex;">
+                                                            <mat-icon class="mat-icon-close"
+                                                                (click)="MedicineItemForm.get('DoctorID').setValue(''); isDoctorSelected = false;">close</mat-icon>
+                                                            <mat-icon class="mat-icon-close"
+                                                                (click)="MedicineItemForm.get('DoctorID').setValue(''); isDoctorSelected = false;">search</mat-icon>
+                                                        </span>
+                                    
+                                                        <mat-autocomplete #autoDoctor="matAutocomplete" [displayWith]="getOptionTextDoc">
+                                                            <mat-option *ngFor="let option of filteredOptionsDoc | async" [value]="option"
+                                                                (onSelectionChange)="isDoctorSelected = true;">
+                                                                {{option.Doctorname }} <b>|</b> {{option.DepartmentName }}
+                                                                <b>|</b> {{option.DoctorId
+                                                                }}
+                                                            </mat-option>
+                                                        </mat-autocomplete>
+                                                    </mat-form-field>
+                                    
+                                                   
+                                                </div>
+                                            </form>
+                                        </mat-card> 
                             
                                         <div fxLayout="row" fxLayoutAlign="space-between">
                                             <form [formGroup]="caseFormGroup" fxLayoutAlign="space-between">
                                                 <mat-radio-group aria-label="Select an option" formControlName="LetteHeadRadio"
                                                     (change)="LetterheadFilter($event)" fxLayout="row">
                                                     <mat-radio-button value="LetterHead"> Letter Head</mat-radio-button>
-                                                    <mat-radio-button value="NormalHead">Print on Letter Header</mat-radio-button>
+                                                    <mat-radio-button value="NormalHead">Print Normal</mat-radio-button>
                                                 </mat-radio-group>
                             
                                                 <mat-radio-group aria-label="Select an option" formControlName="LangaugeRadio"
                                                     (change)="onChangeLangaugeRadio($event)" fxLayout="row">
-                                                    <mat-radio-button value="0">Print In Marathi</mat-radio-button>
-                                                    <mat-radio-button value="1">Print In English</mat-radio-button>
+                                                    <mat-radio-button value="false">Print In Marathi</mat-radio-button>
+                                                    <mat-radio-button value="True">Print In English</mat-radio-button>
                                                 </mat-radio-group>
                                             </form>
                             

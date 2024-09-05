@@ -11,7 +11,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { element } from 'protractor';
 import { OPAdvancePaymentComponent } from 'app/main/opd/op-search-list/op-advance-payment/op-advance-payment.component';
 import Swal from 'sweetalert2';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component'; 
+import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
 
 @Component({
   selector: 'app-new-advance',
@@ -168,15 +169,13 @@ export class NewAdvanceComponent implements OnInit {
       event.preventDefault();
       return false;
     }
-  }
-  isLoading123 = false;
+  } 
   onSave() {
     if (this.vadvanceAmount == '' || this.vadvanceAmount == null || this.vadvanceAmount == undefined || this.vadvanceAmount == 0) {
       this.toastr.warning('Please enter advance amount', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
-    }
-    this.isLoading123 = true; 
+    } 
     if (!this.vAdvanceId) {
       let insertPHAdvanceObj = {};
       insertPHAdvanceObj['advanceID'] = 0;
@@ -215,26 +214,46 @@ export class NewAdvanceComponent implements OnInit {
 
 
       let PatientHeaderObj = {};
-      PatientHeaderObj['Date'] = this.dateTimeObj.date || '01/01/1900'
-      PatientHeaderObj['OPD_IPD_Id'] = this.vIPDNo;
-      PatientHeaderObj['PatientName'] = this.vPatienName;
-      PatientHeaderObj['UHIDNO'] = this.vRegNo;
-      PatientHeaderObj['BillId'] = 0;
-      PatientHeaderObj['DoctorName'] = this.vDoctorName;
-      PatientHeaderObj['NetPayAmount'] = this._PharAdvanceService.NewAdvanceForm.get('advanceAmt').value || 0;
+      // PatientHeaderObj['Date'] = this.dateTimeObj.date || '01/01/1900'
+      // PatientHeaderObj['OPD_IPD_Id'] = this.vIPDNo;
+      // PatientHeaderObj['PatientName'] = this.vPatienName;
+      // PatientHeaderObj['UHIDNO'] = this.vRegNo;
+      // PatientHeaderObj['BillId'] = 0;
+      // PatientHeaderObj['DoctorName'] = this.vDoctorName;
+      // PatientHeaderObj['NetPayAmount'] = this._PharAdvanceService.NewAdvanceForm.get('advanceAmt').value || 0;
 
-      const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
-        {
-          maxWidth: "90vw",
-          height: '640px',
-          width: '70%',
+      // const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
+      //   {
+      //     maxWidth: "90vw",
+      //     height: '640px',
+      //     width: '70%',
 
-          data: {
-            // vPatientHeaderObj: PatientHeaderObj,
-            FromName: "IP-Pharma-Advance",
-            advanceObj: PatientHeaderObj,
-          }
-        });
+      //     data: {
+      //       // vPatientHeaderObj: PatientHeaderObj,
+      //       FromName: "IP-Pharma-Advance",
+      //       advanceObj: PatientHeaderObj,
+      //     }
+      //   });
+
+        PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+        PatientHeaderObj['PatientName'] =  this.vPatienName;
+        PatientHeaderObj['RegNo'] =this.vRegNo;
+        PatientHeaderObj['DoctorName'] =this.vDoctorName;
+        PatientHeaderObj['CompanyName'] = this.vCompanyName; 
+        PatientHeaderObj['OPD_IPD_Id'] =  this.vIPDNo;
+        PatientHeaderObj['Age'] =   this.vAge ;
+        PatientHeaderObj['NetPayAmount'] = this._PharAdvanceService.NewAdvanceForm.get('advanceAmt').value || 0;
+          const dialogRef = this._matDialog.open(OpPaymentComponent,
+            {
+              maxWidth: "80vw",
+              height: '650px',
+              width: '80%',
+              data: {
+                vPatientHeaderObj: PatientHeaderObj,
+                FromName: "IP-Pharma-Advance",
+                advanceObj: PatientHeaderObj,
+              }
+            });
       dialogRef.afterClosed().subscribe(result => {
         console.log('==============================  Advance Amount ===========', result);
        
@@ -252,17 +271,14 @@ export class NewAdvanceComponent implements OnInit {
             });
             console.log(response)
             this.viewgetIPAdvanceReportPdf(response);
-            this._matDialog.closeAll();
-            this.isLoading123 = false;
+            this._matDialog.closeAll(); 
             this.onClose();
           } else {
             this.toastr.success('IP Pharma Advance data not Saved!', 'Error !', {
               toastClass: 'tostr-tost custom-toast-success',
-            });
-            this.isLoading123 = false;
+            }); 
           }
-        });
-        this.isLoading123 = false;
+        }); 
       }); 
 
     }
@@ -294,33 +310,52 @@ export class NewAdvanceComponent implements OnInit {
       insertPHAdvanceDetailobj['storeId'] = this._loggedService.currentUserValue.user.storeId || 0;
 
       let PatientHeaderObj = {};
-      PatientHeaderObj['Date'] = this.dateTimeObj.date || '01/01/1900'
-      PatientHeaderObj['OPD_IPD_Id'] = this.vIPDNo;
-      PatientHeaderObj['PatientName'] = this.vPatienName;
-      PatientHeaderObj['UHIDNO'] = this.vRegNo;
-      PatientHeaderObj['BillId'] = 0;
-      PatientHeaderObj['DoctorName'] = this.vDoctorName;
+      // PatientHeaderObj['Date'] = this.dateTimeObj.date || '01/01/1900'
+      // PatientHeaderObj['OPD_IPD_Id'] = this.vIPDNo;
+      // PatientHeaderObj['PatientName'] = this.vPatienName;
+      // PatientHeaderObj['UHIDNO'] = this.vRegNo;
+      // PatientHeaderObj['BillId'] = 0;
+      // PatientHeaderObj['DoctorName'] = this.vDoctorName;
+      // PatientHeaderObj['NetPayAmount'] = this._PharAdvanceService.NewAdvanceForm.get('advanceAmt').value || 0;
+
+      // const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
+      //   {
+      //     maxWidth: "90vw",
+      //     height: '640px',
+      //     width: '70%',
+
+      //     data: {
+      //       vPatientHeaderObj: PatientHeaderObj,
+      //       FromName: "IP-Pharma-Advance",
+      //       advanceObj: PatientHeaderObj,
+      //     }
+      //   });
+      PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+      PatientHeaderObj['PatientName'] =  this.vPatienName;
+      PatientHeaderObj['RegNo'] =this.vRegNo;
+      PatientHeaderObj['DoctorName'] =this.vDoctorName;
+      PatientHeaderObj['CompanyName'] = this.vCompanyName; 
+      PatientHeaderObj['OPD_IPD_Id'] =  this.vIPDNo;
+      PatientHeaderObj['Age'] =   this.vAge ;
       PatientHeaderObj['NetPayAmount'] = this._PharAdvanceService.NewAdvanceForm.get('advanceAmt').value || 0;
-
-      const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
-        {
-          maxWidth: "90vw",
-          height: '640px',
-          width: '70%',
-
-          data: {
-            vPatientHeaderObj: PatientHeaderObj,
-            FromName: "IP-Pharma-Advance",
-            advanceObj: PatientHeaderObj,
-          }
-        });
+        const dialogRef = this._matDialog.open(OpPaymentComponent,
+          {
+            maxWidth: "80vw",
+            height: '650px',
+            width: '80%',
+            data: {
+              vPatientHeaderObj: PatientHeaderObj,
+              FromName: "IP-Pharma-Advance",
+              advanceObj: PatientHeaderObj,
+            }
+          });
       dialogRef.afterClosed().subscribe(result => {
         console.log('==============================  Advance Amount ===========');
 
         let submitData = {
           "updatePHAdvance": updatePHAdvanceObj,
           "insertPHAdvanceDetail": insertPHAdvanceDetailobj,
-          "insertPHPayment": result.submitDataPay.ipPaymentInsert
+          "insertPHPayment":result.submitDataPay.ipPaymentInsert
         };
         console.log(submitData);
         this._PharAdvanceService.UpdateIpPharmaAdvance(submitData).subscribe(response => {
@@ -330,7 +365,7 @@ export class NewAdvanceComponent implements OnInit {
             }); 
                 this._matDialog.closeAll();
                 this.onClose();
-                this.viewgetIPAdvanceReportPdf(this.vAdvanceDetailID); 
+                this.viewgetIPAdvanceReportPdf(response); 
           } else {
             this.toastr.success('IP Pharma Advance data not Updated !', 'error !', {
               toastClass: 'tostr-tost custom-toast-success',
@@ -339,10 +374,7 @@ export class NewAdvanceComponent implements OnInit {
           this.isLoading = '';
         });
 
-      });
-      setTimeout(() => {
-        this.isLoading123 = false;
-      }, 2000);
+      }); 
     }
 
   }
@@ -356,7 +388,7 @@ viewgetIPAdvanceReportPdf(contact) {
   setTimeout(() => {
    
   this._PharAdvanceService.getViewPahrmaAdvanceReceipt(
- contact.AdvanceDetailID
+    contact.AdvanceDetailID
   ).subscribe(res => {
     const matDialog = this._matDialog.open(PdfviewerComponent,
       {

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { LoaderService } from 'app/core/components/loader/loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,7 @@ export class SalesService {
 
   constructor(
     public _httpClient: HttpClient,
+    private _loaderService: LoaderService,
     private _formBuilder: FormBuilder
   ) { 
     this.userFormGroup = this.IndentID();
@@ -163,10 +165,16 @@ export class SalesService {
   public getGenericNameList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_ItemGenericName",Param);
   }
-  public getPrescriptionList(Param){//Retrieve_PrescriptionListforSales
+  public getPrescriptionList(Param,loader = true){ 
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.post("Generic/GetByProc?procName=m_Retrieve_PrescriptionListforSales",Param);
   }
-  public getItemDetailList(Param){
+  public getItemDetailList(Param,loader = true){ 
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.post("Generic/GetByProc?procName=Ret_PrescriptionDet",Param);
   }
 }
