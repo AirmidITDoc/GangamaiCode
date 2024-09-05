@@ -149,6 +149,7 @@
                                     <!-- *ngIf="contact.ParaIsNumeric ==0 then 
                                             "[ngClass]="{'Result-Formula': contact.Formula !=null}" else  [ngClass]="{'Help-Value': contact.ParaIsNumeric ==0}"-->
 
+                                            <!-- [disabled]="contact.Formula" -->
                                     <ng-container matColumnDef="ResultValue" style="width:100%;font-weight: bold;">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header class="border-right">
                                             Result
@@ -158,7 +159,8 @@
                                                 [ngClass]="{'Result-Formula': contact.Formula !=null}">
                                                 <input matInput autocomplete="off" (keyup)="onResultUp(contact)" 
                                                     (keydown.F2)="onKeydown($event,contact)" matTooltip="Use Help Value"
-                                                    [disabled]="contact.Formula" [(ngModel)]="contact.ResultValue">
+                                                    
+                                                     [(ngModel)]="contact.ResultValue">
                                             </mat-form-field>
                                             <mat-form-field appearance="legacy" *ngIf="contact.IsHelpShown" style="width: 100%;">
                                                 <input type="text" matInput id="helpText_{{contact.ParameterId}}" [matAutocomplete]="auto" (keyup)="filterHelp($event)" multiple>
