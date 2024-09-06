@@ -36,7 +36,7 @@ import { BedTransferComponent } from './bed-transfer/bed-transfer.component';
 import { MatList, MatListModule } from '@angular/material/list';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
-import { MatStepperModule } from '@angular/material/stepper';
+import { MatStep, MatStepper, MatStepperModule } from '@angular/material/stepper';
 import { MatTabsModule } from '@angular/material/tabs';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
@@ -128,6 +128,8 @@ const routes: Routes = [
         MatStepperModule,
         NgxMatSelectSearchModule,
         MatDatepickerModule,
+        MatStepper,
+         MatStep,
         //  NgMultiSelectDropDownModule.forRoot(),
          MatTooltipModule
         

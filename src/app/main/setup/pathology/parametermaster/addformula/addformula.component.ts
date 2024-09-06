@@ -21,26 +21,26 @@ interface Result {
   animations: fuseAnimations,
 })
 export class AddformulaComponent implements OnInit {
-  paramterList:any=[];
+  paramterList: any = [];
   filteredOptionsParameter: Observable<string[]>;
   isparaSelected: boolean = false;
-  paraname:any=''
-  finalformula:any="";
-  oprator:any;
+  paraname: any = ''
+  finalformula: any = "";
+  oprator: any;
   optionsPara: any[] = [];
   registerObj: any;
   ParameterId: any;
-  paranamenew:any;
-  parameterName:any;
+  paranamenew: any;
+  parameterName: any;
 
   results: Result[] = [
-    { value: '1', viewValue: '+'},
+    { value: '1', viewValue: '+' },
     { value: '2', viewValue: '-' },
-    { value: '3', viewValue: '*'},
+    { value: '3', viewValue: '*' },
     { value: '4', viewValue: '/' },
-    { value: '5', viewValue: '%'},
+    { value: '5', viewValue: '%' },
     { value: '6', viewValue: '-' },
-    { value: '7', viewValue: '('},
+    { value: '7', viewValue: '(' },
     { value: '8', viewValue: ')' },
     { value: '9', viewValue: ' ' }
   ];
@@ -53,93 +53,97 @@ export class AddformulaComponent implements OnInit {
     public dialogRef: MatDialogRef<AddformulaComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public toastr: ToastrService,
-  ) { }
-
-  ngOnInit(): void {
+  ) {
     this.getParameterNameCombobox();
     if (this.data) {
       console.log(this.data)
-    this.registerObj = this.data.registerObj;
-    this.ParameterId= this.registerObj.ParameterID
-    this.parameterName= this.registerObj.ParameterName
-    this.finalformula= this.registerObj.Formula
+      this.registerObj = this.data.registerObj;
+      this.ParameterId = this.registerObj.ParameterID
+      this.parameterName = this.registerObj.ParameterName
+      this.finalformula = this.registerObj.Formula
     }
-    
+  }
+
+  ngOnInit(): void {
+
+    this.getParameterNameCombobox();
   }
 
 
 
   getParameterNameCombobox() {
- 
-  var m_data = {
-      ParameterName:this._ParameterService.formulaform.get("ParameterId").value.trim() + "%" || "%",
-     };
 
-  this._ParameterService.getParameterMasterforformulaList(m_data).subscribe((data) => {
-    this.paramterList = data;
-  this.optionsPara = this.paramterList.slice();
-    this.filteredOptionsParameter = this._ParameterService.formulaform.get('ParameterId').valueChanges.pipe(
+    var m_data = {
+      ParameterName: this._ParameterService.formulaform.get("ParameterId").value + "%" || "%",
+    };
+
+    this._ParameterService.getParameterMasterforformulaList(m_data).subscribe((data) => {
+      this.paramterList = data;
+      this.optionsPara = this.paramterList.slice();
+      this.filteredOptionsParameter = this._ParameterService.formulaform.get('ParameterId').valueChanges.pipe(
         startWith(''),
         map(value => value ? this._filterParameter(value) : this.paramterList.slice()),
-    );
+      );
 
-});
-}
+    });
+  }
 
 
-private _filterParameter(value: any): string[] {
-  if (value) {
+  private _filterParameter(value: any): string[] {
+    if (value) {
       const filterValue = value && value.ParameterName ? value.ParameterName.toLowerCase() : value.toLowerCase();
       return this.optionsPara.filter(option => option.ParameterName.toLowerCase().includes(filterValue));
+    }
+
   }
 
-}
 
 
+  getOptionTextparameter(option) {
+    if(option)
+    this.paranamenew = "{{" + option.ParameterName + "}}"
+    // this.paraname = option.ParameterName
+    return option && option.ParameterName ? option.ParameterName : '';
 
-getOptionTextparameter(option) {
-   this.paranamenew= "{{"+option.ParameterName+"}}"
- return option && option.ParameterName ? option.ParameterName : '';
-  
-}
-onChangeparaList(option){
-  debugger
-  this.paraname=option.ParameterName
-  // this.paraname=this._ParameterService.formulaform.get("ParameterId").value.ParameterName;
-  console.log( this.paraname)
-}
-onClear() {
-  this._ParameterService.formulaform.reset();
-  
-}
-
-addoprator(event){
-   this.oprator=event
- 
-}
-addoprator1(){
-  
- this.paranamenew= "{{"+this.paraname+"}}"
- this.finalformula=this.finalformula+this.paranamenew + this.oprator;
-
-}
-  onSubmit(){
-    
-      let Query = "Update M_PathParameterMaster set Formula=" +"'" +this.finalformula +"'"  + "where ParameterID=" + this.ParameterId;
-      console.log(Query);
-     
-      this._ParameterService.deactivateTheStatus(Query)
-        .subscribe((data) => {
-           Swal.fire('Changed!', 'Parameter Formula has been Changed.', 'success');
-             
-            }, (error) => {
-          
-              Swal.fire('Error!', 'Failed to Formula  Parameter status.', 'error');
-            });
-  
-            this.dialogRef.close();
   }
-  onClose(){
+  onChangeparaList(option) {
+    debugger
+    this.paraname = option.ParameterName
+    // this.paraname=this._ParameterService.formulaform.get("ParameterId").value.ParameterName;
+    console.log(this.paraname)
+  }
+  onClear() {
+    this._ParameterService.formulaform.reset();
+
+  }
+
+  addoprator(event) {
+    this.oprator = event
+
+  }
+  addoprator1() {
+
+    this.paranamenew = "{{" + this.paraname + "}}"
+    this.finalformula = this.finalformula + this.paranamenew + this.oprator;
+
+  }
+  onSubmit() {
+
+    let Query = "Update M_PathParameterMaster set Formula=" + "'" + this.finalformula + "'" + "where ParameterID=" + this.ParameterId;
+    console.log(Query);
+
+    this._ParameterService.deactivateTheStatus(Query)
+      .subscribe((data) => {
+        Swal.fire('Changed!', 'Parameter Formula has been Changed.', 'success');
+
+      }, (error) => {
+
+        Swal.fire('Error!', 'Failed to Formula  Parameter status.', 'error');
+      });
+
+    this.dialogRef.close();
+  }
+  onClose() {
     this.dialogRef.close();
     this._ParameterService.formulaform.reset();
   }

@@ -11,12 +11,12 @@
                 Service Master
             </span>
         </div>
-        <div fxLayout="row" fxLayoutAlign="start center">
-            <button mat-raised-button color="pine" (click)="onAdd()" fxLayoutAlign="center center">Add
-                <mat-icon color="Primary" title=" Add New Store ">add_to_photos</mat-icon>
-            </button>
+        <div fxLayout="row" fxLayoutGap="5px">
+                <button mat-raised-button (click)="onAdd()"
+                    style="background-color: aliceblue;color: brown;">Add
 
-        </div>
+                </button>
+            </div>
     </mat-toolbar>
     <!-- / HEADER -->
 
@@ -42,7 +42,7 @@
                             <form [formGroup]="_serviceMasterService.myformSearch">
                                 <div class="dialog-content-wrapper">
                                     <mat-form-field class="mr-sm-12" fxFlex>
-                                        <input matInput placeholder="Search --> Service Name"  (keyup.enter)="onSearch()" autocomplete="off"
+                                        <input matInput placeholder="Search --> Service Name"  (keyup)="onSearch()" autocomplete="off"
                                             name="ServiceNameSearch" formControlName="ServiceNameSearch" />
                                         <button mat-button matSuffix mat-icon-button aria-label="Clear"
                                             (click)="onSearchClear()">

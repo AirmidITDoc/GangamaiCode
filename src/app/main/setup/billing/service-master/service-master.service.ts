@@ -98,6 +98,11 @@ export class ServiceMasterService {
         );
     }
 
+    public getServicewiseClassMasterList(param) {
+        return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ServiceClassdetail",param
+        );
+    }
+
     public serviceMasterInsert(param) {
         return this._httpClient.post("Billing/ServiceSave", param);
     }

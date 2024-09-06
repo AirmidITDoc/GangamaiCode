@@ -177,7 +177,7 @@ export class IPBillBrowseListComponent implements OnInit {
   ngOnInit(): void {
 
     if (this._ActRoute.url == '/ipd/ipd-bill-browse-list') {
-      this.menuActions.push('Print Final Bill Classwise');
+      this.menuActions.push('Print Final Bill Groupwise');
       this.menuActions.push('Print FinalBill Classwise');
       // this.menuActions.push('Print FinalBill Datewise');
       // this.menuActions.push('Print FinalBill WardWise');
@@ -225,7 +225,7 @@ export class IPBillBrowseListComponent implements OnInit {
   
   }
   getRecord1(contact, m): void {
-    if (m == "Print Final Bill") 
+    if (m == "Print Final Bill Groupwise") 
       if (!contact.InterimOrFinal)
         this.viewgetBillReportPdf(contact.BillNo)
       else
@@ -233,10 +233,10 @@ export class IPBillBrowseListComponent implements OnInit {
   
   if (m == "Print FinalBill Classwise") 
     this.viewgetBillReportclasswisePdf(contact)
-    if (m == "Print FinalBill Datewise") 
-      this.viewgetBillReportDatewisePdf(contact)
-      if (m == "Print FinalBill WardWise") 
-        this.viewgetBillReportwardwisePdf(contact)
+    // if (m == "Print FinalBill Datewise") 
+    //   this.viewgetBillReportDatewisePdf(contact)
+    //   if (m == "Print FinalBill WardWise") 
+    //     this.viewgetBillReportwardwisePdf(contact)
   }
   
   

@@ -366,11 +366,13 @@ export class ServiceMasterComponent implements OnInit {
 
         const dialogRef = this._matDialog.open(ServiceMasterFormComponent, {
             maxWidth: "80vw",
-            maxHeight: "95vh",
+            maxHeight: "90vh",
             width: "100%",
-            // height: "100%",
-        });
-
+            data : {
+                registerObj : row,
+              }
+             });
+      
         dialogRef.afterClosed().subscribe((result) => {
             console.log("The dialog was closed - Insert Action", result);
             this.getServiceMasterList();
@@ -380,7 +382,7 @@ export class ServiceMasterComponent implements OnInit {
     onAdd() {
         const dialogRef = this._matDialog.open(ServiceMasterFormComponent, {
             maxWidth: "80vw",
-            maxHeight: "100vh",
+            maxHeight: "90vh",
             width: "100%",
             // height: "100%",
         });
@@ -451,6 +453,8 @@ export class Servicedetail {
     ClassId: number;
     ClassRate: number;
     EffectiveDate: Date;
+    ClassName: any;
+ 
     constructor(Servicedetail) {
         {
             this.ServiceDetailId = Servicedetail.ServiceDetailId || "";
@@ -458,6 +462,7 @@ export class Servicedetail {
             this.TariffId = Servicedetail.TariffId || "";
             this.ClassId = Servicedetail.ClassId || "";
             this.ClassRate = Servicedetail.ClassRate || "";
+            this.ClassName = Servicedetail.ClassName || "";
             this.EffectiveDate = Servicedetail.EffectiveDate || "";
         }
     }

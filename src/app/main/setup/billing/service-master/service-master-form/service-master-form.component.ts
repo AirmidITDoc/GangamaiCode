@@ -1,10 +1,10 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation, HostListener } from "@angular/core";
+import { Component, OnInit, ViewChild, ViewEncapsulation, HostListener, Inject } from "@angular/core";
 import { ServiceMasterComponent, Servicedetail } from "../service-master.component";
 import { fuseAnimations } from "@fuse/animations";
 import { MatTableDataSource } from "@angular/material/table";
 import { FormControl, Validators } from "@angular/forms";
 import { ReplaySubject, Subject } from "rxjs";
-import { MatDialogRef } from "@angular/material/dialog";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { ServiceMasterService } from "../service-master.service";
 import { MatPaginator } from "@angular/material/paginator";
 import { takeUntil } from "rxjs/operators";
@@ -33,11 +33,13 @@ import { NONE_TYPE } from "@angular/compiler";
   ClasscmbList:any=[];
   TariffcmbList:any=[];
 
+  registerObj=new Servicedetail({});
+
   butDisabled:boolean = false;
   msg:any;
   emg_amt = "";
   emg_per = "";
-  DSServicedetailList = new MatTableDataSource<NewServicedetail>();
+  DSServicedetailList = new MatTableDataSource<Servicedetail>();
   
   //tariff filter
 public tariffFilterCtrl: FormControl = new FormControl();
@@ -56,9 +58,17 @@ private _onDestroy = new Subject<void>();
 
   constructor(public _serviceMasterService: ServiceMasterService,
     public toastr : ToastrService,
-
+    @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ServiceMasterComponent>,
-    ) { }
+    ) {
+     
+      
+      if (this.data) {
+        this.getServicewiseClassMasterList();
+        this.registerObj = this.data.registerObj;
+        
+    }
+     }
 
     @ViewChild(MatSort) sort:MatSort;
     @ViewChild(MatPaginator) paginator:MatPaginator;
@@ -182,7 +192,7 @@ private _onDestroy = new Subject<void>();
     );
   }
   getGroupNameCombobox(){
-    // this._serviceService.getGroupMasterCombo().subscribe(data =>this.GroupcmbList =data);
+  
     this._serviceMasterService.getGroupMasterCombo().subscribe(data => {
       this.GroupcmbList = data;
       this.filteredGroupname.next(this.GroupcmbList.slice());
@@ -191,8 +201,7 @@ private _onDestroy = new Subject<void>();
     });
   }
   getSubgroupNameCombobox(){
-    // this._serviceService.getSubgroupMasterCombo().subscribe(data =>this.SubGroupcmbList =data);
-    
+  
     this._serviceMasterService.getSubgroupMasterCombo().subscribe(data => {
       this.SubGroupcmbList = data;
       this.filteredSubgroupname.next(this.SubGroupcmbList.slice());
@@ -201,7 +210,7 @@ private _onDestroy = new Subject<void>();
     });
   }
   getTariffNameCombobox(){
-    // this._serviceService.getTariffMasterCombo().subscribe(data =>this.TariffcmbList =data);
+    
     this._serviceMasterService.getTariffMasterCombo().subscribe(data => {
       this.TariffcmbList = data;
       this.filteredTariff.next(this.TariffcmbList.slice());     
@@ -214,13 +223,33 @@ private _onDestroy = new Subject<void>();
   getClassList() {
     this._serviceMasterService.getClassMasterList().subscribe(Menu => {
     
-      this.DSServicedetailList.data = Menu as NewServicedetail[];;
+      this.DSServicedetailList.data = Menu as Servicedetail[];;
      
       this.DSServicedetailList.sort = this.sort;
       this.DSServicedetailList.paginator = this.paginator;      
       
     });
   }
+  classratearry=[];
+  getServicewiseClassMasterList() {
+    var data={
+      ServiceId :this.data.registerObj.ServiceId
+    }
+    this._serviceMasterService.getServicewiseClassMasterList(data).subscribe(Menu => {
+      this.DSServicedetailList.data = Menu as Servicedetail[];;
+      console.log(this.DSServicedetailList.data )
+      // if(this.DSServicedetailList.data){
+      //   this.DSServicedetailList.data.forEach((element) => {
+      //     this.classratearry.push(element.ClassRate)
+      //   });
+      // }
+      // console.log(this.classratearry)
+    });
+    // if(this.classratearry)
+    //   this.DSServicedetailList.data=this.classratearry
+  }
+
+  
 
   get f() { return this._serviceMasterService.myform.controls; }
 
@@ -425,19 +454,5 @@ private _onDestroy = new Subject<void>();
 
 
 }
-export class NewServicedetail {
-  ClassName: any;
-  ClassId: number;
-  ClassRate: number;
 
-  constructor(NewServicedetail) {
-      {
-          this.ClassName = NewServicedetail.ClassName || "";
-          this.ClassId = NewServicedetail.ClassId || "";
-          this.ClassRate = NewServicedetail.ClassRate || "";
-      }
-  }
-
- 
-}
  

@@ -115,8 +115,8 @@ import { CompanyListComponent } from './company-list/company-list.component';
     NgxMatSelectSearchModule,
     MatDatepickerModule,
     //  NgMultiSelectDropDownModule.forRoot(),
-     MatTooltipModule
-    
+     MatTooltipModule,
+     
 ],
 providers: [
   IPSearchListService,
