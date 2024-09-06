@@ -213,7 +213,7 @@
                                                     <div fxLayout="row" class="gap-8">
                                                         <mat-form-field appearance="outline" fxFlex>
                                                             <mat-label>ChiefComplaint</mat-label>
-                                                            <textarea rows="4" name="ChiefComplaint" formControlName="ChiefComplaint"
+                                                            <textarea rows="6" name="ChiefComplaint" formControlName="ChiefComplaint"
                                                                 placeholder="ChiefComplaint" [(ngModel)]="vChiefComplaint" matInput #ChiefComp
                                                                 (keydown)="onEnterChiefComplaint($event)"></textarea>
                                                         </mat-form-field>
@@ -270,9 +270,15 @@
                             
                                         <mat-card style="padding: 5px;">
                                             <div fxLayout="column" style="margin-left: 10px;"> 
-                                                <span><b>PRESCRIPTION</b></span>
+                                                
                                                 <form [formGroup]="MedicineItemForm"> 
-                                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
+                                                    <div class="prescription-title">
+                                                        <span style="font-weight: 700;">
+                                                            Prescription
+                                                        </span>
+                                                    </div>
+                                                    <hr>
+                                                    <div  fxLayout="row" class="gap-8">
                                                         <mat-form-field appearance="outline" fxFlex="30%">
                                                             <mat-label>Drug Name</mat-label>
                                                             <input type="text" name="ItemId" formControlName="ItemId" #itemid
@@ -551,6 +557,40 @@
                                                 </div>
                                             </form>
                                         </mat-card> 
+
+                                        <mat-card fxLayout="column" style="padding: 5px;">
+                                            <form [formGroup]="MedicineItemForm">
+                                                <div class="consultunt-title">
+                                                    <span style="font-weight: 700;">
+                                                    Follow Up Visit Date
+                                                    </span>
+                                                </div>
+                                                <hr>
+                                                <div fxLayout="row" fxLayoutGap="6px">  
+
+                                                    <mat-form-field appearance="outline" fxFlex="10%">
+                                                        <mat-label>Days</mat-label>
+                                                        <input matInput name="FollowupDays" fomrControlName="FollowupDays"
+                                                        type="text" OnlyNumber (keypress)="keyPressAlphanumeric($event)"
+                                                        [(ngModel)]="vFollowUpDays" (ngModelChange)="onDaysChange()">
+                                                    </mat-form-field>
+
+                                                    <mat-form-field appearance="outline" fxFlex="20%">
+                                                        <input matInput [matDatepicker]="picker1" placeholder="Choose a date"
+                                                            formControlName="start">
+                                                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                                        <mat-datepicker #picker1></mat-datepicker>
+                                                    </mat-form-field> 
+
+                                                    <mat-form-field appearance="outline" fxFlex>
+                                                        <mat-label>Remark</mat-label>
+                                                        <textarea rows="1" name="Remark" formControlName="Remark"
+                                                            placeholder="Remark"  matInput  ></textarea>
+                                                    </mat-form-field>
+                                                   
+                                                </div> 
+                                            </form>
+                                        </mat-card>  
                             
                                         <div fxLayout="row" fxLayoutAlign="space-between">
                                             <form [formGroup]="caseFormGroup" fxLayoutAlign="space-between">

@@ -79,15 +79,18 @@ export class NewOPBillingComponent implements OnInit {
     'TotalAmt',
     'DiscPer',
     'DiscAmt',
-    'NetAmount',
-    'ChargeDoctorName',
-    'ClassName',
-    'ChargesAddedName',
+    'NetAmount', 
     'action'
   ];
- 
+  displayedPrescriptionColumns = [  
+    'ServiceName',
+    'Qty',
+    'Price',
+    'TotalAmt',  
+  ];
   dataSource = new MatTableDataSource<ChargesList>();
   dsPackageDet = new MatTableDataSource<ChargesList>();
+  dsprescritionList = new MatTableDataSource<ChargesList>();
   myControl = new FormControl();
   filteredOptions: any;
   billingServiceList = [];

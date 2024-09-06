@@ -776,6 +776,12 @@ public updateIPDDischargSummary(employee)
   public getAdvanceId(data) {
     return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
   }
+  public getPharmacyAmt(data) {
+    return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
+  }
+  public getCheckBalanceAmt(data) {
+    return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
+  }
 
   public getDischargeId(data){
     return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})

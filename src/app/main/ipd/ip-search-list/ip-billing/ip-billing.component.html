@@ -90,11 +90,7 @@
                                                 </mat-icon>
                                             </span>
                                         </mat-option>
-                                    </mat-autocomplete>
-                                    <!-- <mat-hint>
-                                        <span *ngIf="noOptionFound" style="color: #f44336;">No data
-                                            Found</span>
-                                    </mat-hint> -->
+                                    </mat-autocomplete> 
                                     <mat-error *ngIf="Serviceform.get('SrvcName').hasError('required')">
                                         Required field cannot be left blank
                                     </mat-error>
@@ -275,55 +271,7 @@
                             </div>
                         </form>
                     </div>
-                </div>
-            
-                
-               
-             
-                <!-- <div class="sidebar-footer">
-                    <div class="bill-summary px-12">
-                        <div class="bill-summary-title py-8 border-bottom">
-                            <span class="h3 font-weight-600">Bill Summary </span>
-                        </div>
-                        <div class="bil-summary-list px-4 mt-8">
-                            <ul class="gap-4 list-basic" fxLayout="column">
-                                <li>
-                                    <div class="list-item">
-                                        <span class="list-item-key">Bill Amount :</span>
-                                        <span class="list-item-value"> {{getNetAmtSum(dataSource.data) |
-                                            currency:'INR' }}</span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="list-item">
-                                        <span class="list-item-key">Advance Amount :</span>
-                                        <span class="list-item-value">
-                                            {{getAdvAmtSum(advancedatasource.data) | currency:'INR'
-                                            }}</span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="list-item">
-                                        <span class="list-item-key">Balance Amount :</span>
-                                        <span class="list-item-value"> {{vBalanceAmt}}</span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="list-item">
-                                        <span class="list-item-key">Payment Remain :</span>
-                                        <span class="list-item-value"> {{vpaidBalanceAmt}}</span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="list-item">
-                                        <span class="list-item-key">Pharmacy Amount :</span>
-                                        <span class="list-item-value"> {{netPaybleAmt}}</span>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div> -->
+                </div> 
             </div>
         </mat-drawer>
 
@@ -469,7 +417,7 @@
                                                 <li>
                                                     <div class="list-item">
                                                         <span class="list-item-key">Pharmacy Amount :</span>
-                                                        <span class="list-item-value"> {{netPaybleAmt | currency:'INR'}}</span>
+                                                        <span class="list-item-value"> {{PharamcyAmont | currency:'INR'}}</span>
                                                     </div>
                                                 </li>
                                             </ul>

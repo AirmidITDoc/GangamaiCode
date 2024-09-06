@@ -47,6 +47,7 @@ export class ConfigSettingParams {
     PharmacySalesReturn_CounterId: number;
     PharmacyReceipt_CounterId: number;
     ChkPharmacyDue: any;
+    chkPharmacyDue:any;
     G_IsPharmacyPaperSetting: any;
     PharmacyPrintName: String;
     G_PharmacyPaperName: String;
@@ -123,6 +124,7 @@ export class ConfigSettingParams {
         this.PharmacySalesReturn_CounterId = ConfigSettingParams.PharmacySalesReturn_CounterId;
         this.PharmacyReceipt_CounterId = ConfigSettingParams.PharmacyReceipt_CounterId;
         this.ChkPharmacyDue = ConfigSettingParams.ChkPharmacyDue;
+        this.chkPharmacyDue = ConfigSettingParams.chkPharmacyDue;
         this.G_IsPharmacyPaperSetting = ConfigSettingParams.G_IsPharmacyPaperSetting;
         this.PharmacyPrintName = ConfigSettingParams.PharmacyPrintName;
         this.G_PharmacyPaperName = ConfigSettingParams.G_PharmacyPaperName;

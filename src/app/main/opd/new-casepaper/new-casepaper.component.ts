@@ -106,7 +106,7 @@ export class NewCasepaperComponent implements OnInit {
   vSpO2: any;
   vPulse: any;
   screenFromString = 'OP-billing';
-  vChiefComplaint: any='History:\nDiagnosis:\nExamination:';
+  vChiefComplaint: any='History:\n\nDiagnosis:\n\nExamination:';
   isItemIdSelected: boolean = false;
   filteredOptionsDosename: Observable<string[]>;
   doseList: any = [];
@@ -126,10 +126,9 @@ export class NewCasepaperComponent implements OnInit {
   vTemplateId:boolean=true;
   vServiceId:any;
   isServiceIdSelected:boolean = false;
+  vFollowUpDays:number=0;
   
-
-  //   dsPresList = new MatTableDataSource<PrecriptionItemList>();
-  //   dsafterPresList = new MatTableDataSource<PrecriptionItemList>();
+ 
   dsItemList = new MatTableDataSource<MedicineItemList>();
   dataSource1 = new MatTableDataSource<CasepaperVisitDetails>();
   dsItemList1 = new MatTableDataSource<MedicineItemList>();
@@ -146,57 +145,63 @@ export class NewCasepaperComponent implements OnInit {
     public datePipe: DatePipe,
     public _WhatsAppEmailService: WhatsAppEmailService,
     private configService: ConfigService,
-  ) {
-    // if (this.advanceDataStored.storage) {
-    //   this.selectedAdvanceObj = this.advanceDataStored.storage;
-    //   console.log(this.selectedAdvanceObj);
-    //   this.VisitId=this.selectedAdvanceObj.VisitId
-    // }
-  }
+  ) {}
 
   ngOnInit(): void {
     this.searchFormGroup = this.createSearchForm();
     this.caseFormGroup = this.createForm();
-    this.MedicineItemform();
-
-    // this.getDrugList();
+    this.MedicineItemform(); 
     this.getDoseList();
-    this.getDepartmentList();
-    // if (this.advanceDataStored.storage) {
-    //   this.selectedAdvanceObj = this.advanceDataStored.storage;
-
-    //   console.log(this.selectedAdvanceObj);
-    // } else
-    //   // this.selectedAdvanceObj =AdmissionPersonlModel;
-
-
-
-    // // this.casepaperVisitDetails();
-    // // this.prescriptionDetails(this.VisitId);
-
-    // // this.getregisterList();
-    // // this.getVisistList();
-    // this.getHistoryList();
-
-    // // this.getHistoryList1();
-    // this.getDiagnosisList();
-    // this.getExaminationList();
-    // this.getComplaintList();
-
-    // this.dataSource.data = this.prescriptionData;
-    // this.addEmptyRow();
-
-    // this.filteredHistory = this.caseFormGroup.get('historyContoller').valueChanges.pipe(
-    //   startWith(''),
-    //   map((ele: any | null) => ele ? this._filterHistory(ele) : this.allHistory.slice()));
-
-    // this.filteredDiagnosis = this.caseFormGroup.get('diagnosisContoller').valueChanges.pipe(
-    //   startWith(''),
-    //   map((ele: any | null) => ele ? this._filterDiagnosis(ele) : this.allDiagnosis.slice())); 
-
-    // this.getPrescriptionListFill(this.VisitId);
+    this.getDepartmentList(); 
+   
   
+  }  
+  calculatedDate: Date | null = null;
+ vFollowupDate:Date;
+
+  calculateDate1() {
+    debugger
+   
+
+   let CurrentDate = this.MedicineItemForm.get('start').value || 0 
+  //   const FollowupDate:any;
+  //   FollowupDate.setDate(this.calculatedDate.getDate() + this.vFollowUpDays);
+
+  //   this.MedicineItemForm.get('start').setValue(FollowupDate) || 0
+
+
+
+    this.calculatedDate = new Date(this.currentDate);
+    this.calculatedDate.setDate(this.calculatedDate.getDate() + CurrentDate);
+    console.log( this.calculatedDate)
+  } 
+  addedDays:number
+  Days: number = 0;// Default to 5 days 
+  calculateDate() { 
+    this.calculatedDate = new Date(this.currentDate);
+    this.calculatedDate.setDate(this.calculatedDate.getDate() + this.Days);
+    console.log(this.Days)
+    console.log(this.vFollowUpDays)
+    console.log(this.calculatedDate) 
   }
+
+  onDaysChange() {
+    this.Days  = this.vFollowUpDays;  
+    this.calculateDate();
+  }
+
+  days: number = 0;  // Initialize days to 0
+  followUpDate: Date;
+
+  calculateFollowUpDate() {
+    const today = new Date();
+    const followUp = new Date(today);
+    followUp.setDate(today.getDate() + this.days);
+    this.followUpDate = followUp;
+    console.log('Days:', this.days);
+    console.log('Follow-Up Date:', this.followUpDate);
+  }
+
   createForm() {
     return this._formBuilder.group({
       LetteHeadRadio: ['NormalHead'],
@@ -219,58 +224,8 @@ export class NewCasepaperComponent implements OnInit {
       ]],
       ChiefComplaint: '',
       Serviceid:'',
-      IsPathRad:'1'
-
-
-      // historyContoller: '',
-      // PastHistoryId: '',
-      // DiagnosisId: '',
-      // regNoController: '',
-      // patientController: '',
-      // doctorController: '',
-      // ageController: '',
-      // visitController: '',
-      // histTextAreContrl: '',
-      // diagnosisContoller: '',
-      // diagnTextAreContrl: '',
-      // doseContoller: '',
-      // daysController: '',
-      // instructionController: '',
-      // remarkController: '',
-      // PastHistoryDescr: '',
-      // ComplaintName: '',
-      // Examination: '',
-      // ConsultantDocName: '',
-      // CasePaperID: '0',
-      // Complaint: '',
-      // Diagnosis: '',
-      // DocName: '',
-      // Finding: '',
-      // Investigations: '',
-      // PastHistory: '',
-      // PatientName: '',
-      // PersonalDetails: '',
-      // PresentHistory: '',
-      // RegID: '0',
-      // SecondDocRef: '0',
-      // VisitDate: '',
-      // VisitId: '0',
-      // VisitTime: '',
-      // DrugName: '',
-      // TotalQty: '',
-      // HospitalName: '',
-      // HospitalAddress: '',
-      // Phone: '',
-      // IPPreId: '',
-      // DoseName: '',
-      // GenderName: '',
-      // PrecriptionId: '',
-      // Days: '0',
-      // Instruction: '',
-      // TotalDayes: '0',
-      // AgeYear: '0',
-      // OPDNo: '',
-      // RegNo: '0',
+      IsPathRad:'1' 
+ 
     });
   }
   MedicineItemform() {
@@ -280,7 +235,10 @@ export class NewCasepaperComponent implements OnInit {
       Day: '',
       Instruction: '',
       DoctorID:'',
-      Departmentid:''
+      Departmentid:'',
+      FollowupDays:'',
+      start: [(new Date()).toISOString()],
+      Remark:''
     });
   }
   createSearchForm() {
@@ -704,6 +662,8 @@ getOptionTextDoc(option) {
     this.BMIstatus = " ";
     this.caseFormGroup.get('LetteHeadRadio').setValue('NormalHead');
     this.caseFormGroup.get('LangaugeRadio').setValue('True');
+    this.caseFormGroup.get('IsPathRad').setValue('1');
+    this.selectedItems = [];
   }
   SpinLoading: any = ""
   viewgetOpprescriptionReportPdf() {
@@ -917,7 +877,7 @@ getOptionTextDoc(option) {
   const dialogRef = this._matDialog.open(PrescriptionTemplateComponent,
     {
       maxWidth: "70vw",
-      maxHeight: "85vh",
+      maxHeight: "72vh",
       width: '100%',
       height: "100%"
     });
