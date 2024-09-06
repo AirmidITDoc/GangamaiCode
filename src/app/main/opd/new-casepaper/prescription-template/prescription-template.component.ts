@@ -27,10 +27,12 @@ export class PrescriptionTemplateComponent implements OnInit {
     'Instruction',
     'Action'
   ]
+  displayedTemplateColumn: string[] = [
+    'TemplateId',
+    'TemplateName' 
+  ]
 
-  TemplateForm:FormGroup;
-  dateTimeObj:any;
-  screenFromString = 'OP-Prescription'; 
+  TemplateForm:FormGroup; 
   sIsLoading: string = '';
   noOptionFound: boolean = false;
   currentDate = new Date();  
@@ -48,14 +50,10 @@ export class PrescriptionTemplateComponent implements OnInit {
   filteredOptionsDosename: Observable<string[]>;
   doseList: any = [];
   isDoseSelected: boolean = false; 
-  vTemplatename:any;
-  FormList:any=[
-    {FormId:1,FormName:'Tablet'},
-    {FormId:2,FormName:'Syrup'}
-  ]
-  
+  vTemplatename:any; 
 
   dsItemList = new MatTableDataSource<MedicineItemList>();
+  dsTemplateList = new MatTableDataSource<Templatelist>();
   
   constructor( 
     private _CasepaperService: CasepaperService, 
@@ -83,10 +81,7 @@ export class PrescriptionTemplateComponent implements OnInit {
       OP_Ip_Type:'1',
       Formname:''
     });
-  }
-  getDateTime(dateTimeObj) {
-    this.dateTimeObj = dateTimeObj;
-  }
+  } 
 
 
   //Prescription List
@@ -280,6 +275,21 @@ export class PrescriptionTemplateComponent implements OnInit {
     if (event.which === 13) {
       this.addbutton.focus;
       this.add = true;
+    }
+  }
+}
+export class Templatelist {
+  TemplateName: any;
+  TemplateId: any; 
+  /**
+  * Constructor
+  *
+  * @param Templatelist
+  */
+  constructor(Templatelist) {
+    {
+      this.TemplateName = Templatelist.TemplateName || '';
+      this.TemplateId = Templatelist.TemplateId || 0; 
     }
   }
 }

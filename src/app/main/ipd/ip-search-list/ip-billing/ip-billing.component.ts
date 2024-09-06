@@ -34,6 +34,7 @@ import { IPpaymentWithadvanceComponent } from '../../ip-settlement/ippayment-wit
 import { PrebillDetailsComponent } from './prebill-details/prebill-details.component';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 import { ConfigService } from 'app/core/services/config.service';
+import { query } from '@angular/animations';
 
 
 @Component({
@@ -157,7 +158,7 @@ export class IPBillingComponent implements OnInit {
   // ConAmt: any;
   DoctornewId: any;
   concessionAmtOfNetAmt: any = 0;
-  netPaybleAmt: any = 0;
+  PharamcyAmont: any = 0;
   // finalAmt: any;
   isExpanded: boolean = false;
   SrvcName: any;
@@ -278,7 +279,8 @@ export class IPBillingComponent implements OnInit {
       console.log(this.selectedAdvanceObj)
       this.vClassId = this.selectedAdvanceObj.ClassId
       this.ClassName = this.selectedAdvanceObj.ClassName 
-      this.vMobileNo=this.selectedAdvanceObj.MobileNo; 
+      this.vMobileNo=this.selectedAdvanceObj.MobileNo;
+      this.AdmissionId = this.selectedAdvanceObj.AdmissionID; 
     }
 
     this.myControl = new FormControl();
@@ -287,7 +289,7 @@ export class IPBillingComponent implements OnInit {
       startWith(''),
       map((value) => (value && value.length >= 1 ? this.filterStates(value) : this.billingServiceList.slice()))
     );
-
+    this.getPharmacyAmount();
     this.getBillingClasslist();
     this.getServiceListCombobox();
     this.getDoctorList();
@@ -399,16 +401,15 @@ export class IPBillingComponent implements OnInit {
   getBillheaderList() {
     this.isLoadingStr = 'loading';
     let Query = "select Isnull(AdminPer,0) as AdminPer from Admission where AdmissionId="+  this.selectedAdvanceObj.AdmissionID
-     console.log(Query);
-     debugger
+     //console.log(Query); 
     this._IpSearchListService.getBillheaderList(Query).subscribe(data => {
       this.billheaderlist = data[0].AdminPer ;
-      console.log(this.billheaderlist)
+     // console.log(this.billheaderlist)
         if(this.billheaderlist > 0){
           this.isAdminDisabled = true;
           this.Ipbillform.get('Admincheck').setValue(true)
           this.vAdminPer =this.billheaderlist
-          console.log(this.vAdminPer)
+       //   console.log(this.vAdminPer)
         }else{
           this.isAdminDisabled = false;
           this.Ipbillform.get('Admincheck').setValue(false)
@@ -507,7 +508,14 @@ export class IPBillingComponent implements OnInit {
 
   }
 
-
+getPharmacyAmount(){
+  let Query = "select isnull(Sum(BalanceAmount),0) as PhBillCredit from T_SalesHeader where OP_IP_Type=1 and OP_IP_ID=" + this.AdmissionId 
+  this._IpSearchListService.getPharmacyAmt(Query).subscribe((data) =>{
+    console.log(data)
+    this.PharamcyAmont = data[0].PhBillCredit;
+ 
+  })
+}
 ServiceList:any=[];
   getServiceListCombobox() {
     let tempObj;
@@ -747,7 +755,7 @@ ServiceList:any=[];
     this._IpSearchListService.getchargesList1(m).subscribe(data => {
       this.chargeslist1 = data as ChargesList[];
       this.dataSource1.data = this.chargeslist1;
-      console.log(this.dataSource1.data)
+     // console.log(this.dataSource1.data)
       this.isLoading = 'list-loaded';
     },
       (error) => {
@@ -764,7 +772,7 @@ ServiceList:any=[];
     // console.log(Query);
     this._IpSearchListService.getchargesList(Query).subscribe(data => {
       this.chargeslist = data as ChargesList[];
-      console.log(this.chargeslist)
+      //console.log(this.chargeslist)
       this.dataSource.data = this.chargeslist;
 
       this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
@@ -777,8 +785,7 @@ ServiceList:any=[];
 
   }
 
-  getPrevBillList() {
-    debugger
+  getPrevBillList() { 
     var D_data = {
       "IP_Id": this.selectedAdvanceObj.AdmissionID
     }
@@ -786,7 +793,7 @@ ServiceList:any=[];
       this.sIsLoading = 'loading-data';
       this._IpSearchListService.getpreviousbilldetail(D_data).subscribe(Visit => {
         this.prevbilldatasource.data = Visit as Bill[];
-         console.log(this.prevbilldatasource.data)
+        // console.log(this.prevbilldatasource.data)
       },
         error => {
           this.sIsLoading = '';
@@ -827,7 +834,7 @@ ServiceList:any=[];
       this.sIsLoading = 'loading-data';
       this._IpSearchListService.getAdvancedetail(D_data).subscribe(Visit => {
         this.advancedatasource.data = Visit as IpdAdvanceBrowseModel[];
-        console.log(this.advancedatasource.data)
+        //console.log(this.advancedatasource.data)
       },
         error => {
           this.sIsLoading = '';
@@ -842,10 +849,10 @@ ServiceList:any=[];
     this.isLoadingStr = 'loading';
     let Query = "Select * from lvwAddCharges where IsGenerated=0 and IsPackage=0 and IsCancelled =0 AND OPD_IPD_ID=" + this.selectedAdvanceObj.AdmissionID + " and OPD_IPD_Type=1 and ChargesDate ='" + this.datePipe.transform(param, "dd/MM/YYYY") + "' Order by Chargesid"
 
-    console.log(Query)
+   // console.log(Query)
     this._IpSearchListService.getchargesList(Query).subscribe(data => {
       this.chargeslist = data as ChargesList[];
-      console.log(this.chargeslist)
+     // console.log(this.chargeslist)
       this.dataSource.data = this.chargeslist;
 
       this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
@@ -937,7 +944,7 @@ ServiceList:any=[];
   getCashCounterComboList() {
     this._IpSearchListService.getCashcounterList().subscribe(data => {
       this.CashCounterList = data
-      console.log(this.CashCounterList)
+     // console.log(this.CashCounterList)
 
       this.setcashCounter = this.CashCounterList.find(item => item.CashCounterId == this._ConfigService.configParams.IPD_Billing_CounterId)
       this.Ipbillform.get('CashCounterID').setValue(this.setcashCounter) 
@@ -1076,8 +1083,7 @@ ServiceList:any=[];
     }
   }
   finalNetAmt:any;
-  CalFinalDisc() {
-//debugger
+  CalFinalDisc() { 
     if (this.Ipbillform.get('AdminAmt').value > 0) {
       let Percentage = this.Ipbillform.get('Percentage').value;
       this.finalNetAmt = ((parseFloat(this.vNetBillAmount) + parseFloat(this.vAdminAmt)))
@@ -1168,8 +1174,7 @@ ServiceList:any=[];
     }
   }
   finalNetAmount:any;
-  getDiscAmtCal() {
-    debugger
+  getDiscAmtCal() { 
     let FinalDiscAmt = this.Ipbillform.get('concessionAmt').value || 0;
  
     if (this.Ipbillform.get('AdminAmt').value > 0) {
@@ -1184,7 +1189,7 @@ ServiceList:any=[];
       if (FinalDiscAmt > 0 ) {
         this.vPercentage = ((parseFloat(FinalDiscAmt) / parseFloat(this.finalNetAmount)) * 100).toFixed(2);
         this.vNetBillAmount =(parseFloat(this.finalNetAmount) - parseFloat(FinalDiscAmt)).toFixed(2);
-        console.log(this.vNetBillAmount)
+       
         //this.vNetBillAmount = FinalnetAmt;
         this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
         this.Ipbillform.get('Percentage').setValue(this.vPercentage);
@@ -1241,7 +1246,7 @@ ServiceList:any=[];
   tableElementChecked(event, element) {
     if (event.checked) {
       this.interimArray.push(element);
-      console.log(this.interimArray)
+     // console.log(this.interimArray)
     } else if (this.interimArray.length > 0) {
       let index = this.interimArray.indexOf(element);
       if (index !== -1) {
@@ -1250,8 +1255,7 @@ ServiceList:any=[];
     }
   }
 
-  getInterimData() {
-    debugger
+  getInterimData() { 
     if (this.interimArray.length > 0) {
       let m_data = {
         AdmissionID: this.selectedAdvanceObj.AdmissionID,
@@ -1366,7 +1370,7 @@ ServiceList:any=[];
         InsertBillUpdateBillNoObj['ConcessionAmt'] = this.Ipbillform.get('concessionAmt').value || 0;
         InsertBillUpdateBillNoObj['NetPayableAmt'] = this.Ipbillform.get('FinalAmount').value || 0;
         InsertBillUpdateBillNoObj['PaidAmt'] = this.paidamt,
-        InsertBillUpdateBillNoObj['BalanceAmt'] = this.balanceamt,// this.netPaybleAmt;
+        InsertBillUpdateBillNoObj['BalanceAmt'] = this.balanceamt, 
         InsertBillUpdateBillNoObj['BillDate'] = this.dateTimeObj.date;
         InsertBillUpdateBillNoObj['OPD_IPD_Type'] = 1;
         InsertBillUpdateBillNoObj['AddedBy'] = this.accountService.currentUserValue.user.id,
@@ -1484,8 +1488,7 @@ ServiceList:any=[];
     this.advanceDataStored.storage = [];
   }
 
-  IPCreditBill(){
-    debugger
+  IPCreditBill(){ 
     if(this.Ipbillform.get('CreditBill').value){  
  
     let InsertBillUpdateBillNoObj = {};
@@ -1588,8 +1591,7 @@ ServiceList:any=[];
     this.Ipbillform.get('CashCounterID').setValue(this.setcashCounter) 
     this.advanceDataStored.storage = [];
   }
-  onSaveDraft() {
-    debugger
+  onSaveDraft() { 
     if (this.dataSource.data.length > 0 && (this.vNetBillAmount > 0)) {
       this.chargeslist = this.dataSource;
       this.isLoading = 'submit';
@@ -1828,7 +1830,7 @@ ServiceList:any=[];
   }
 
   getPreBilldet(contact) {
-    console.log(contact)
+    //console.log(contact)
     const dialogRef = this._matDialog.open(PrebillDetailsComponent,
       {
         maxWidth: "100%",
@@ -2140,8 +2142,7 @@ ServiceList:any=[];
   }
   chkprint: boolean = false;
   AdList:boolean=false;
-  viewgetIPAdvanceReportPdf(contact) {
-    debugger
+  viewgetIPAdvanceReportPdf(contact) { 
      this.chkprint=true;
     this.sIsLoading = 'loading-data';
     setTimeout(() => {
@@ -2172,8 +2173,7 @@ ServiceList:any=[];
   }
 
 // onwhatsappbill() {
-  getWhatsappshareIPFinalBill(el, vmono) {
-    debugger
+  getWhatsappshareIPFinalBill(el, vmono) { 
     
     if(vmono !='' && vmono !="0"){
     var m_data = {

@@ -15,6 +15,8 @@ import { map, startWith, takeUntil } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { ToastrService } from 'ngx-toastr';
+import { T } from '@angular/cdk/keycodes';
+import { ConfigService } from 'app/core/services/config.service';
 
 @Component({
   selector: 'app-discharge',
@@ -42,7 +44,8 @@ export class DischargeComponent implements OnInit {
   filteredOptionsDisctype: Observable<string[]>;
   DoctorNameList: any = [];
   ModeNameList: any = [];
-  dateTimeObj: any; 
+  dateTimeObj: any;
+  vAdmissionId:any; 
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -55,6 +58,7 @@ export class DischargeComponent implements OnInit {
     private advanceDataStored: AdvanceDataStored,
     public dialogRef: MatDialogRef<DischargeComponent>,
     public toastr: ToastrService,
+    public _ConfigService : ConfigService,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) { 
     this.getDoctorNameList();
@@ -72,17 +76,11 @@ export class DischargeComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.advanceDataStored.storage) { 
+      this.vAdmissionId = this.registerObj.AdmissionID;
       // this.setdropdownvalue();
       this.getRtrvDischargelist()
-    }
-
-    // this.filteredOptionsDisctype = this._IpSearchListService.mySaveForm.get('DischargeTypeId').valueChanges.pipe(
-    //   startWith(''),
-    //   map(value => this._filterDischargeType(value)),
-    // ); 
- 
-   
-    
+      this.getCheckBalanceAmt();
+    } 
   }
 
 
@@ -189,6 +187,15 @@ optionsDoctor:any[]=[];
   getOptionTextMode(option) {
     return option && option.ModeOfDischargeName ? option.ModeOfDischargeName : '';
   }
+  CheckBalanceAmt:any=0;
+  getCheckBalanceAmt(){ 
+      let Query = "select Isnull(SUM(BalanceAmount),0) as BalAmt from T_SalesHeader where BalanceAmount <>0 and OP_IP_Type=1 and OP_IP_ID=" + this.vAdmissionId
+      this._IpSearchListService.getCheckBalanceAmt(Query).subscribe((data) =>{
+        console.log(data)
+        this.CheckBalanceAmt = data[0].BalAmt; 
+        console.log(this.CheckBalanceAmt)
+      })
+  }
   vDoctorId:any;
   vDescType:any;
   onDischarge() {
@@ -225,6 +232,21 @@ optionsDoctor:any[]=[];
       return;
     }
   }
+  debugger
+  if(this._ConfigService.configParams.chkPharmacyDue == '0'){
+    console.log(this._ConfigService.configParams.chkPharmacyDue )
+    if(this.CheckBalanceAmt > 0){
+      Swal.fire({
+        title: '"Please clear all pharmacy dues ' + this.CheckBalanceAmt,
+        text: "If the pharmacy dues cannot be discharged!",
+        icon: "warning", 
+        confirmButtonColor: "#d33", 
+        confirmButtonText: "Ok" 
+      })
+      return
+    }
+  }
+
     
     let ModeOfDischarge = 0
     if(this._IpSearchListService.mySaveForm.get('ModeId').value)
