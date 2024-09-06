@@ -22,6 +22,7 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { QrcodegeneratorComponent } from 'app/main/purchase/good-receiptnote/qrcodegenerator/qrcodegenerator.component';
 import { SelectionModel } from '@angular/cdk/collections';
 import { EmailSendComponent } from 'app/main/shared/componets/email-send/email-send.component';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-good-receiptnote',
@@ -176,6 +177,77 @@ export class GoodReceiptnoteComponent implements OnInit {
     this.getToStoreSearchList();
     this.getToStoreSearchCombo();
     this.getGRNList();
+  }
+  data:[];
+  FullData:any={};
+  onFileChange(evt: any) {
+    const target: DataTransfer = <DataTransfer>(evt.target);
+    if (target.files.length !== 1) throw new Error('Cannot use multiple files');
+    const reader: FileReader = new FileReader();
+    reader.onload = (e: any) => {
+      /* read workbook */
+      const bstr: string = e.target.result;
+      const wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary' });
+
+      /* grab first sheet */
+      const wsname: string = wb.SheetNames[0];
+      const ws: XLSX.WorkSheet = wb.Sheets[wsname];
+
+      this.data = <any>(XLSX.utils.sheet_to_json(ws, { header: 1 }));
+      console.log(this.data);
+      let INetAmt=0,SgstPer=0,SgstAmt=0,CgstPer=0,CgstAmt=0;
+      for(let i=1;i<this.data.length;i++){
+        INetAmt+=parseFloat(this.data[i][this.data[0].indexOf('INetAmt')]||0);
+        SgstPer+=parseFloat(this.data[i][this.data[0].indexOf('SGSTAmt')]||0);
+        SgstAmt+=parseFloat(this.data[i][this.data[0].indexOf('SGSTPer')]||0);
+        CgstAmt+=parseFloat(this.data[i][this.data[0].indexOf('CGSTAmt')]||0);
+        CgstPer+=parseFloat(this.data[i][this.data[0].indexOf('CGSTPer')]||0);
+      }
+      this.FullData={
+        GrnNumber: this.data[1][this.data[0].indexOf('InvNo')],
+        GRNDate: this.data[1][this.data[0].indexOf('InvDate')],
+        GRNTime: null,
+        InvoiceNo: this.data[1][this.data[0].indexOf('InvNo')],
+        SupplierName: this.data[1][this.data[0].indexOf('Vendor')],
+        TotalAmount: 0,
+        TotalDiscAmount: 0,
+        TotalVATAmount: 0,
+        NetAmount: INetAmt,
+        RoundingAmt: 0,
+        DebitNote: '',
+        CreditNote: this.data[1][this.data[0].indexOf('CNote')],
+        InvDate: this.data[1][this.data[0].indexOf('InvDate')],
+        Cash_CreditType: '',
+        ReceivedBy: '',
+        IsClosed: false,
+        GSTNo: this.data[1][this.data[0].indexOf('VGSTIN')],
+        Remark: '',
+        Mobile: '',
+        Address: '',
+        Email: '',
+        Phone: '',
+        PONo: '',
+        EwayBillNo:  this.data[1][this.data[0].indexOf('EWBN')],
+        EwayBillDate: '',
+        OtherCharge: '',
+        Rate: 0,
+        CGSTPer: CgstPer,
+        SGSTPer: SgstPer,
+        CGSTAmt: CgstAmt,
+        SGSTAmt: CgstPer,
+        NetPayble: 0,
+        AddedByName: '',
+        GrandTotalAount: 0,
+        TotCGSTAmt: 0,
+        TotSGSTAmt: 0,
+    Items:[] as ItemNameList[]} as GRNList;
+    for(let i=1;i<this.data.length;i++){
+        // list here item details map...
+        this.FullData.Items.push({});
+      }
+      this.newGRNEntry(3);
+    };
+     reader.readAsBinaryString(target.files[0]);
   }
 
   toggleSidebar(name): void {
@@ -436,15 +508,15 @@ export class GoodReceiptnoteComponent implements OnInit {
     });
   }
 
-  newGRNEntry() {
-    this.chkNewGRN = 1;
+  newGRNEntry(chkNewGRN) {
     const dialogRef = this._matDialog.open(UpdateGRNComponent,
       {
         maxWidth: "100%",
         height: '95%',
         width: '95%',
         data: {
-          chkNewGRN: this.chkNewGRN
+          chkNewGRN: chkNewGRN,
+          FullData:this.FullData
         }
       });
     dialogRef.afterClosed().subscribe(result => {
