@@ -429,7 +429,7 @@ console.log(obj)
   getNetAmtSum(element) {
     let netAmt;
     let netAmt1;
-    netAmt = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
+    netAmt = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0).toFixed(2);
     this.b_TotalChargesAmount = element.reduce((sum, { TotalAmt }) => sum += +(TotalAmt || 0), 0).toFixed(2);
     this.calcDiscPersonTotal();
     this.TotalnetPaybleAmt = netAmt;
@@ -438,7 +438,7 @@ console.log(obj)
   TotalDiscAmt: any;
   getDiscAmtSum(element) {
     let netAmt;
-    netAmt = element.reduce((sum, { DiscAmt }) => sum += +(DiscAmt || 0), 0); 
+    netAmt = element.reduce((sum, { DiscAmt }) => sum += +(DiscAmt || 0), 0).toFixed(2); 
     this.b_concessionamt = netAmt
     this.vConcessionAmt = netAmt;
     this.TotalDiscAmt = netAmt;
@@ -566,7 +566,7 @@ getpackagedetList(){
       InsertBillUpdateBillNoObj['concessionAuthorizationName'] = 0;
       InsertBillUpdateBillNoObj['TaxPer'] = 0;
       InsertBillUpdateBillNoObj['TaxAmount'] = 0;
-      InsertBillUpdateBillNoObj['compDiscAmt'] = this.BillingForm.get('concessionAmt').value || 0;
+      InsertBillUpdateBillNoObj['compDiscAmt'] = Math.round(this.BillingForm.get('concessionAmt').value) || 0;
       InsertBillUpdateBillNoObj['discComments'] = ConcessionReason;
       InsertBillUpdateBillNoObj['cashCounterId'] =  this.searchFormGroup.get('CashCounterID').value.CashCounterId  || 0;
 
@@ -1144,7 +1144,7 @@ getpackagedetList(){
  
   }
   calChargeDiscAmt(){  
-    if(this.b_ChargeDisAmount > this.b_totalAmount) {
+    if(parseFloat(this.b_ChargeDisAmount) > parseFloat(this.b_totalAmount)) {
       Swal.fire("Enter Discount Amount Less than Total Amount & Greater > 0") 
       this.v_ChargeDiscPer = '';
       this.b_ChargeDisAmount = '';
