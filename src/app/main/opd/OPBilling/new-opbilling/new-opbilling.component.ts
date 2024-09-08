@@ -140,7 +140,7 @@ export class NewOPBillingComponent implements OnInit {
   selectedAdvanceObj: SearchInforObj;
   isFilteredDateDisabled: boolean = true;
   currentDate = new Date();
-
+  // vConcessionAmt=1;
   doctorNameCmbList: any = [];
   CashCounterList: any = [];
 
@@ -431,7 +431,7 @@ console.log(obj)
     let netAmt1;
     netAmt = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0).toFixed(2);
     this.b_TotalChargesAmount = element.reduce((sum, { TotalAmt }) => sum += +(TotalAmt || 0), 0).toFixed(2);
-    this.calcDiscPersonTotal();
+    this.CalcDiscPercentageonBill();
     this.TotalnetPaybleAmt = netAmt;
     return netAmt
   }
@@ -443,17 +443,16 @@ console.log(obj)
     this.vConcessionAmt = netAmt;
     this.TotalDiscAmt = netAmt;
     this.TotalnetPaybleAmt = this.b_TotalChargesAmount - this.TotalDiscAmt;
-    /// this.BillingForm.get('concessionAmt').setValue(this.b_concessionamt)
 
-    if (this.TotalDiscAmt > 0) {
-      this.conflag = false
-      this.Consessionres = true
+    // if (this.TotalDiscAmt > 0) {
+    //   this.conflag = false
+    //   this.Consessionres = true
 
-    }
-    if (this.TotalDiscAmt == 0)
-      this.conflag = true
-
-
+    // }
+    // if (this.TotalDiscAmt == 0){
+    //   this.conflag = true
+    // }
+    
     return netAmt
   }
   PacakgeList:any=[];
@@ -474,14 +473,11 @@ getpackagedetList(){
     return value;
   }
   getTotalNetAmount() {
-
     this.TotalnetPaybleAmt = this.b_TotalChargesAmount - this.vConcessionAmt;
   }
   savebtn:boolean=true;
   isLoading123 = false;
   onSaveOPBill2() { 
-    debugger 
-  
     if ((this.vOPIPId == '' || this.vOPIPId == null || this.vOPIPId == undefined)) {
       this.toastr.warning('Please select Patient', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -1029,11 +1025,11 @@ getpackagedetList(){
   finalDisc1: any = 0;
   finaldiscAmt() {
     this.vConcessionAmt += this.b_ChargeDisAmount;
-    this.finalDisc1 = this.vConcessionAmt;
-    this.finalDisc1 = this.finalDisc1
+    // this.finalDisc1 = this.vConcessionAmt;
+    // this.finalDisc1 = this.finalDisc1
     this.BillingForm.get('concessionAmt').setValue(this.vConcessionAmt);
     console.log(this.vConcessionAmt)
-    this.calcDiscPersonTotal();
+    this.CalcDiscPercentageonBill();
   }
   getWhatsappshareSales(el, vmono) {
     if (vmono != '') {
@@ -1171,79 +1167,124 @@ getpackagedetList(){
 
   finaldisc = 0;
 
-  calcDiscPersonTotal() {
-
-    let finaldiscPer = this.BillingForm.get('concesDiscPer').value || 0;
-    let FinalNetAmount = this.TotalnetPaybleAmt;
-    if (finaldiscPer > 0 && finaldiscPer < 101) {
-
-      let FinalDiscAmt = ((parseFloat(this.b_TotalChargesAmount) * parseFloat(finaldiscPer)) / 100)
-      this.vConcessionAmt = FinalDiscAmt;
-      debugger
-      this.TotalnetPaybleAmt = Math.round(parseFloat(this.b_TotalChargesAmount) - parseFloat(this.vConcessionAmt)).toFixed(2)
-      this.finaldisc = FinalDiscAmt;
+  CalcDiscPercentageonBill(){
+    let vDiscPercentage = !this.BillingForm.get("concesDiscPer").value ? "0" : this.BillingForm.get("concesDiscPer").value || "0" ; //this.BillingForm.get('concesDiscPer').value? 0 : this.BillingForm.get('concesDiscPer').value || "0";
+    let vBillAmount = this.TotalnetPaybleAmt;
+    if (vDiscPercentage > 0 && vDiscPercentage <101 || vDiscPercentage > 100){
+      if (vDiscPercentage > 100)
+      {
+        Swal.fire("Please enter discount percentage less than 100");
+        this.Consessionres = false;
+        // this.vConcessionAmt = 0;
+        // this.b_concessionDiscPer = 0;
+        this.TotalnetPaybleAmt = vBillAmount
+        this.BillingForm.get('concesDiscPer').setValue(0);
+        this.BillingForm.get('concessionAmt').setValue(0)
+        this.BillingForm.get('FinalAmt').setValue(vBillAmount);
+      }
+      let vDiscAmt = ((parseFloat(this.b_TotalChargesAmount) * parseFloat(vDiscPercentage)) / 100)
+      this.vConcessionAmt = vDiscAmt;
+      this.TotalnetPaybleAmt = Math.round(parseFloat(this.b_TotalChargesAmount) - parseFloat(this.vConcessionAmt)).toFixed(2);
       this.Consessionres = true;
-      this.BillingForm.get('concessionAmt').setValue(this.finaldisc);
+      this.BillingForm.get('concessionAmt').setValue(this.vConcessionAmt);
       this.BillingForm.get('FinalAmt').setValue(this.TotalnetPaybleAmt);
+    }else{
+      this.Consessionres = false;
+      this.vConcessionAmt = 0;
+      let vBillAmount = Math.round(parseFloat(this.b_TotalChargesAmount) - parseFloat(this.vConcessionAmt)).toFixed(2);
+      // this.BillingForm.get('concessionAmt').reset();
+      // this.BillingForm.get('concessionAmt').clearValidators();
+      this.BillingForm.get('concessionAmt').enable();
+      this.BillingForm.get('concessionAmt').updateValueAndValidity();
+      this.BillingForm.get('concessionAmt').setValue(this.b_concessionamt)
+      this.BillingForm.get('FinalAmt').setValue(vBillAmount);
     }
-    else if ((finaldiscPer > 100)) {
-      Swal.fire("Concession % Less Than 100 & Greater Than 0");
-      this.Consessionres = false;
-      this.vConcessionAmt = '';
-      this.b_concessionDiscPer = '';
-      this.TotalnetPaybleAmt = FinalNetAmount
-      this.BillingForm.get('concesDiscPer').setValue(this.b_concessionDiscPer);
-      this.BillingForm.get('concessionAmt').setValue(this.b_concessionamt)
-      this.BillingForm.get('FinalAmt').setValue(FinalNetAmount);
 
-    } else if (finaldiscPer == 0 || this.BillingForm.get('concesDiscPer').value == null || finaldiscPer == '') {
-      this.Consessionres = false;
-      this.vConcessionAmt = '';
-      this.BillingForm.get('concessionAmt').setValue(this.b_concessionamt)
-      this.BillingForm.get('FinalAmt').setValue(FinalNetAmount);
+  }
+
+  CalcDiscAmtonBill(){
+    let vDiscAmount = this.BillingForm.get('concessionAmt').value || "0";
+    let vBillAmount = this.TotalnetPaybleAmt;
+    if (vDiscAmount > 0 && vDiscAmount < vBillAmount) {
+      let vDiscPercentage = ((parseFloat(vDiscAmount) / parseFloat(this.b_TotalChargesAmount)) * 100).toFixed(2);
+      this.TotalnetPaybleAmt = Math.round(parseFloat(this.b_TotalChargesAmount) - parseFloat(vDiscAmount)).toFixed(2)
+      this.BillingForm.get('concesDiscPer').setValue(vDiscPercentage);
     }
   }
-  calcDiscAmtTotal() {
-    debugger
-    let finaldiscAmt = this.BillingForm.get('concessionAmt').value || 0;
-    let FinalNetAmount = this.TotalnetPaybleAmt;
-    if (finaldiscAmt > 0 && finaldiscAmt < FinalNetAmount) {
+  // calcDiscPersonTotal() {
+  //   let finaldiscPer = this.BillingForm.get('concesDiscPer').value || 0;
+  //   let FinalNetAmount = this.TotalnetPaybleAmt;
+  //   if (finaldiscPer > 0 && finaldiscPer < 101) {
 
-      let FInalDiscPer = ((parseFloat(finaldiscAmt) / parseFloat(this.b_TotalChargesAmount)) * 100).toFixed(2);
-      this.TotalnetPaybleAmt = Math.round(parseFloat(this.b_TotalChargesAmount) - parseFloat(finaldiscAmt)).toFixed(2)
+  //     let FinalDiscAmt = ((parseFloat(this.b_TotalChargesAmount) * parseFloat(finaldiscPer)) / 100)
+  //     this.vConcessionAmt = FinalDiscAmt;
+  //     this.TotalnetPaybleAmt = Math.round(parseFloat(this.b_TotalChargesAmount) - parseFloat(this.vConcessionAmt)).toFixed(2)
+  //     this.finaldisc = FinalDiscAmt;
+  //     this.Consessionres = true;
+  //     this.BillingForm.get('concessionAmt').setValue(this.finaldisc);
+  //     this.BillingForm.get('FinalAmt').setValue(this.TotalnetPaybleAmt);
+  //   }
+  //   else if ((finaldiscPer > 100)) {
+  //     Swal.fire("Concession % Less Than 100 & Greater Than 0");
+  //     this.Consessionres = false;
+  //     this.vConcessionAmt = '';
+  //     this.b_concessionDiscPer = '';
+  //     this.TotalnetPaybleAmt = FinalNetAmount
+  //     this.BillingForm.get('concesDiscPer').setValue(this.b_concessionDiscPer);
+  //     this.BillingForm.get('concessionAmt').setValue(this.b_concessionamt)
+  //     this.BillingForm.get('FinalAmt').setValue(FinalNetAmount);
 
-      this.BillingForm.get('ConcessionId').reset();
-      this.BillingForm.get('ConcessionId').setValidators([Validators.required]);
-      this.BillingForm.get('ConcessionId').enable();
-      this.Consessionres = true;
-      this.BillingForm.get('concesDiscPer').setValue(FInalDiscPer)
-      this.BillingForm.get('FinalAmt').setValue(this.TotalnetPaybleAmt);
-    }
-    else if ((finaldiscAmt > FinalNetAmount)) {
-      Swal.fire("ConcessionAmt  Less Than NetAmount Greater Than 0");
-      this.Consessionres = false;
-      this.b_concessionDiscPer = '';
-      this.vConcessionAmt = '';
-      this.TotalnetPaybleAmt = FinalNetAmount
-      this.BillingForm.get('concesDiscPer').setValue(this.b_concessionDiscPer)
-      this.BillingForm.get('concessionAmt').setValue(this.vConcessionAmt)
-      this.BillingForm.get('FinalAmt').setValue(FinalNetAmount);
-      this.BillingForm.get('ConcessionId').reset();
-      this.BillingForm.get('ConcessionId').clearValidators();
+  //   } else if (finaldiscPer == 0 || this.BillingForm.get('concesDiscPer').value == null || finaldiscPer == '') {
+  //     this.Consessionres = false;
+  //     this.vConcessionAmt = '';
+  //     this.BillingForm.get('concessionAmt').reset();
+  //     this.BillingForm.get('concessionAmt').clearValidators();
+  //     this.BillingForm.get('concessionAmt').enable();
+  //     this.BillingForm.get('concessionAmt').updateValueAndValidity();
+  //     this.BillingForm.get('concessionAmt').setValue(this.b_concessionamt)
+  //     this.BillingForm.get('FinalAmt').setValue(FinalNetAmount);
+  //   }
+  // }
+  // calcDiscAmtTotal() {
+  //   let finaldiscAmt = this.BillingForm.get('concessionAmt').value || 0;
+  //   let FinalNetAmount = this.TotalnetPaybleAmt;
+  //   if (finaldiscAmt > 0 && finaldiscAmt < FinalNetAmount) {
 
-    } else if (finaldiscAmt == 0 || finaldiscAmt == null || finaldiscAmt == ''  || this.b_TotalChargesAmount == 0) {
-      this.Consessionres = false;
-      this.b_concessionDiscPer = '';
-      this.BillingForm.get('concesDiscPer').setValue(this.b_concessionDiscPer)
-      this.BillingForm.get('FinalAmt').setValue(FinalNetAmount);
-      this.BillingForm.get('ConcessionId').reset();
-      this.BillingForm.get('ConcessionId').clearValidators();
-      this.BillingForm.get('ConcessionId').updateValueAndValidity();
+  //     let FInalDiscPer = ((parseFloat(finaldiscAmt) / parseFloat(this.b_TotalChargesAmount)) * 100).toFixed(2);
+  //     this.TotalnetPaybleAmt = Math.round(parseFloat(this.b_TotalChargesAmount) - parseFloat(finaldiscAmt)).toFixed(2)
 
-    }
+  //     this.BillingForm.get('ConcessionId').reset();
+  //     this.BillingForm.get('ConcessionId').setValidators([Validators.required]);
+  //     this.BillingForm.get('ConcessionId').enable();
+  //     this.Consessionres = true;
+  //     this.BillingForm.get('concesDiscPer').setValue(FInalDiscPer)
+  //     this.BillingForm.get('FinalAmt').setValue(this.TotalnetPaybleAmt);
+  //   }
+  //   else if ((finaldiscAmt > FinalNetAmount)) {
+  //     Swal.fire("ConcessionAmt  Less Than NetAmount Greater Than 0");
+  //     this.Consessionres = false;
+  //     this.b_concessionDiscPer = '';
+  //     this.vConcessionAmt = '';
+  //     this.TotalnetPaybleAmt = FinalNetAmount
+  //     this.BillingForm.get('concesDiscPer').setValue(this.b_concessionDiscPer)
+  //     this.BillingForm.get('concessionAmt').setValue(this.vConcessionAmt)
+  //     this.BillingForm.get('FinalAmt').setValue(FinalNetAmount);
+  //     this.BillingForm.get('ConcessionId').reset();
+  //     this.BillingForm.get('ConcessionId').clearValidators();
+
+  //   } else if (finaldiscAmt == 0 || finaldiscAmt == null || finaldiscAmt == ''  || this.b_TotalChargesAmount == 0) {
+  //     this.Consessionres = false;
+  //     this.b_concessionDiscPer = '';
+  //     this.BillingForm.get('concesDiscPer').setValue(this.b_concessionDiscPer)
+  //     this.BillingForm.get('FinalAmt').setValue(FinalNetAmount);
+  //     this.BillingForm.get('ConcessionId').reset();
+  //     this.BillingForm.get('ConcessionId').clearValidators();
+  //     this.BillingForm.get('ConcessionId').updateValueAndValidity();
+
+  //   }
     
 
-  }
+  // }
 
   chkdelte: any;
   deleteTableRow(element) {

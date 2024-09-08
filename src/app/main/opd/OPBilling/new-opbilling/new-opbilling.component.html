@@ -630,7 +630,7 @@
                             <mat-card style="padding: 5px;" >
                                 <div class="prescription-title">
                                     <span style="font-weight: 700;">
-                                        Prescription List
+                                        Service List
                                     </span>
                                 </div>
                                 <hr>
@@ -728,20 +728,22 @@
                                                             Percentage is Number</mat-error>
                                                     </mat-form-field> -->
             
-            
-                                        <mat-form-field appearance="outline" *ngIf="conflag" fxFlex>
+                                                    <!-- *ngIf="conflag" -->
+                                        <mat-form-field appearance="outline"  fxFlex>
                                             <mat-label>Disc %</mat-label>
                                             <input matInput placeholder="Percentage" formControlName="concesDiscPer"
                                                 [(ngModel)]="b_concessionDiscPer" autocomplete="off" #disper id="Percentage"
-                                                (keyup)="calcDiscPersonTotal()" type="text" onlyNumber
-                                                (keypress)="keyPressCharater($event)" [disabled]="v_ChargeDiscPer > 0">
+                                                (keyup)="CalcDiscPercentageonBill()" type="text" onlyNumber
+                                                (keypress)="keyPressCharater($event)">
                                         </mat-form-field> 
-            
+                                        <!-- [readonly]="TotalDiscAmt > 0" -->
+                                        <!-- onlyNumber -->
+                                        <!-- (keypress)="keyPressCharater($event)" -->
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Disc Amt</mat-label>
                                             <input matInput name="concessionAmt" formControlName="concessionAmt" type="text"
-                                                onlyNumber autocomplete="off" (keypress)="keyPressCharater($event)"
-                                                (keyup)="calcDiscAmtTotal()" [readonly]="TotalDiscAmt > 0">
+                                                 autocomplete="off" onlyNumber [(ngModel)]="vConcessionAmt"
+                                                (keyup)="CalcDiscAmtonBill()" >
                                         </mat-form-field>
             
                                         <mat-form-field appearance="outline" fxFlex *ngIf="Consessionres">
