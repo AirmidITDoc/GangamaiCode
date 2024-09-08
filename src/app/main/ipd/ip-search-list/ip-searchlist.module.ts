@@ -125,7 +125,7 @@ const routes: Routes = [
         MatSlideToggleModule,
         MatListModule,
         SharedModule,
-        // MatStepperModule,
+        MatStepperModule,
         NgxMatSelectSearchModule,
         MatDatepickerModule,
         // MatStepper,
