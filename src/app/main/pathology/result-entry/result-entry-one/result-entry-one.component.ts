@@ -111,7 +111,7 @@ export class ResultEntryOneComponent implements OnInit {
             console.log(this.selectedAdvanceObj2)
             this.OPIPID = this.selectedAdvanceObj2.OPD_IPD_ID;
             this.OP_IPType = this.selectedAdvanceObj2.OPD_IPD_Type;
-            this.SexId = this.selectedAdvanceObj2.GenderId || 1;
+            this.SexId = this.selectedAdvanceObj2.GenderId;
             if (this.selectedAdvanceObj2.AgeYear)
                 this.CheckAge = this.selectedAdvanceObj2.AgeYear.trim();
             if (this.selectedAdvanceObj2.AgeMonth)
@@ -159,10 +159,10 @@ export class ResultEntryOneComponent implements OnInit {
         );
 
 
-        setTimeout(function () {
-            let element: HTMLElement = document.getElementById('auto_trigger') as HTMLElement;
-            element.click();
-        }, 1000);
+        // setTimeout(function () {
+        //     let element: HTMLElement = document.getElementById('auto_trigger') as HTMLElement;
+        //     element.click();
+        // }, 1000);
 
 
     }

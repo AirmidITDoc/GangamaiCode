@@ -238,6 +238,7 @@ export class ResultEntryComponent implements OnInit {
             this.dataSource1.data = Visit as SampleList[];
             this.dataSource1.sort = this.sort;
             this.dataSource1.paginator = this.paginator;
+            console.log(this.dataSource1.data);
             this.sIsLoading = '';
             this.click = false;
         },
@@ -749,7 +750,7 @@ export class SampleDetailObj {
     RefDocName: any;
     ServiceId: any;
     ChargeId: any;
-
+    GenderId:any;
     /**
     * Constructor
     *
@@ -799,7 +800,7 @@ export class SampleDetailObj {
             this.PathTestID = SampleDetailObj.PathTestID || 0;
             this.ServiceId = SampleDetailObj.ServiceId || 0;
             this.ChargeId = SampleDetailObj.ChargeId || 0
-
+            this.GenderId = SampleDetailObj.GenderId || 0
         }
     }
 }

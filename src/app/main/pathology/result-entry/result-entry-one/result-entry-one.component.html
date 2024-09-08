@@ -196,7 +196,7 @@
                                             NormalRange
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="border-right">
-                                            {{contact.NormalRange}}
+                                            {{contact?.NormalRange}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -206,7 +206,7 @@
                                             Formula
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="border-right">
-                                            {{contact.Formula}}
+                                            {{contact?.Formula}}
                                         </mat-cell>
                                     </ng-container>
 
