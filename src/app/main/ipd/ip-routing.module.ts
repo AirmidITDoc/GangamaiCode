@@ -95,9 +95,9 @@ const appRoutes: Routes = [
         },
 
 //     {
-//         path: "viewpathologyreport", 
+//         path: "companylist", 
 //         loadChildren: () =>
-//            import("./pathology-view-report/pathology-view-report.module").then((m) => m.PathologyViewReportModule),
+//            import("./Feedback/opip-feedback/feedback.module").then((m) => m.FeedbackModule),
 //    }
 
 ];

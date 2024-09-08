@@ -36,6 +36,8 @@ import { connectableObservableDescriptor } from 'rxjs/internal/observable/Connec
 import { CompanyInformationComponent } from '../../company-information/company-information.component';
 import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
 import { ThemeService } from 'ng2-charts';
+import { AdvanceDetailObj } from '../../ip-search-list/ip-search-list.component';
+import { OPIPFeedbackComponent } from '../../Feedback/opip-feedback/opip-feedback.component';
 
 
 @Component({
@@ -2709,6 +2711,25 @@ this.getAdmittedPatientList_1()
       this.registerObj.AgeDay = Math.abs(todayDate.getDate() - this.registerObj.DateofBirth.getDate());
   }
   
+  feedback(contact){
+    
+        this.advanceDataStored.storage = new AdvanceDetailObj(contact);
+        this._AdmissionService.populateForm(contact);
+        const dialogRef = this._matDialog.open(OPIPFeedbackComponent,
+          {
+           maxWidth: "95vw",
+          maxHeight: "115vh", width: '100%', height: "100%",
+            data: {
+              Obj: contact
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          console.log('The dialog was closed - Insert Action', result);
+          
+        });
+      
+       
+  }
 }
 
 export class Admission {

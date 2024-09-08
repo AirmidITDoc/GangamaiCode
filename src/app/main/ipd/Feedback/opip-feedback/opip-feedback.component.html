@@ -155,7 +155,45 @@
 
                                     <div fxFlex.gt-sm="98%" fxFlex>
                                         <mat-tab-group style="overflow: auto;">
-                                            <mat-tab label="Please Rate Each of this">
+                                            <mat-tab>
+                                                
+                                                <mat-horizontal-stepper [linear]="isLinear" #stepper="matHorizontalStepper">
+                                                  <mat-step [stepControl]="firstFormGroup">
+                                                    <form [formGroup]="firstFormGroup">
+                                                      <ng-template matStepLabel>Fill out your name</ng-template>
+                                                      <mat-form-field>
+                                                        <input matInput placeholder="Last name, First name" formControlName="firstCtrl" required>
+                                                      </mat-form-field>
+                                                      <div>
+                                                        <button mat-button matStepperNext>Next</button>
+                                                      </div>
+                                                    </form>
+                                                  </mat-step>
+                                                  <mat-step [stepControl]="secondFormGroup">
+                                                    <form [formGroup]="secondFormGroup">
+                                                      <ng-template matStepLabel>Fill out your address</ng-template>
+                                                      <mat-form-field>
+                                                        <input matInput placeholder="Address" formControlName="secondCtrl" required>
+                                                      </mat-form-field>
+                                                      <div>
+                                                        <button mat-button matStepperPrevious>Back</button>
+                                                        <button mat-button matStepperNext>Next</button>
+                                                      </div>
+                                                    </form>
+                                                  </mat-step>
+                                                  <mat-step>
+                                                    <ng-template matStepLabel>Done</ng-template>
+                                                    You are now done.
+                                                    <div>
+                                                      <button mat-button matStepperPrevious>Back</button>
+                                                      <button mat-button (click)="stepper.reset()">Reset</button>
+                                                    </div>
+                                                  </mat-step>
+                                                </mat-horizontal-stepper>
+                                                
+                                          
+                                            </mat-tab>
+                                            <!-- <mat-tab label="Please Rate Each of this">
                                                 <div class="content" style="overflow: auto;height:450px;">
                                                     <div class="center p-12 pb-56"
                                                         style="border-radius: 4px;overflow: auto;">
@@ -303,7 +341,7 @@
                                                                                         <span style="padding: 10px;"
                                                                                             fxFlex="50%">
                                                                                             <!-- (change)="onChangeReg($event)" -->
-                                                                                            <mat-radio-group
+                                            <!-- <mat-radio-group
                                                                                                 aria-label="Select an option"
                                                                                                 formControlName="fbone"
                                                                                                 name="fbone">
@@ -333,11 +371,11 @@
                                                             </div>
                                                         </form>
                                                     </div>
-                                                </div>
-                                            </mat-tab>
+                                                </div> -->
+                                            <!-- </mat-tab> -->
 
                                             <!-- //seconds tab -->
-                                            <mat-tab label="Please describe your feedback">
+                                            <!-- <mat-tab label="Please describe your feedback">
                                                 <div class="content" style="overflow: auto;height:350px;">
                                                     <div class="center p-12 pb-56" style="border-radius: 4px;">
                                                         <form [formGroup]="_FeedbackService.MyfeedbackForm">
@@ -371,7 +409,7 @@
                                                         </form>
                                                     </div>
                                                 </div>
-                                            </mat-tab>
+                                            </mat-tab> -->
 
                                         </mat-tab-group>
                                     </div>

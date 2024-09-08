@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AdvanceDataStored } from '../../advance';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
@@ -14,6 +14,8 @@ import { AdmissionPersonlModel } from '../../Admission/admission/admission.compo
 import { MatSliderChange } from '@angular/material/slider';
 import { fuseAnimations } from '@fuse/animations';
 import Swal from 'sweetalert2';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatHorizontalStepper } from '@angular/material/stepper';
 
 @Component({
   selector: 'app-opip-feedback',
@@ -21,6 +23,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./opip-feedback.component.scss'],
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations
+  
 })
 export class OPIPFeedbackComponent implements OnInit {
   isLoading: String = '';
@@ -48,6 +51,11 @@ export class OPIPFeedbackComponent implements OnInit {
   AdmissionID:any=0;
   OPD_IPD_Type:any=0;
 
+  isEditable = false;
+
+  
+@ViewChild('stepper') stepper: MatHorizontalStepper;
+
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('wardpaginator', { static: true }) public wardpaginator: MatPaginator;
   @ViewChild('Outputpaginator', { static: true }) public Outputpaginator: MatPaginator; 
@@ -55,6 +63,9 @@ export class OPIPFeedbackComponent implements OnInit {
     'patientId',
     'PatientName' 
   ]  
+  isLinear = false;
+  firstFormGroup: FormGroup;
+  secondFormGroup: FormGroup;
 
 
   constructor( public _FeedbackService:FeedbackService,
@@ -63,9 +74,16 @@ export class OPIPFeedbackComponent implements OnInit {
     private dialogRef: MatDialogRef<OPIPFeedbackComponent>,
     public toastr: ToastrService,
     private accountService: AuthenticationService,
+    private _formBuilder: FormBuilder,
     private advanceDataStored: AdvanceDataStored) { }
 
   ngOnInit(): void {
+    this.firstFormGroup = this._formBuilder.group({
+      firstCtrl: ['', Validators.required]
+    });
+    this.secondFormGroup = this._formBuilder.group({
+      secondCtrl: ['', Validators.required]
+    });
     this.getwardList();
     this.getPatientListwardWise(); 
     if (this.advanceDataStored.storage) {
