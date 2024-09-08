@@ -28,66 +28,34 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { DischargeComponent } from './discharge/discharge.component';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { BedTransferComponent } from './bed-transfer/bed-transfer.component';
-
-import { MatList, MatListModule } from '@angular/material/list';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-
-import { MatHorizontalStepper, MatStep, MatStepper, MatStepperModule } from '@angular/material/stepper';
+import { OPIPFeedbackComponent } from './opip-feedback.component';
 import { MatTabsModule } from '@angular/material/tabs';
-import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-
-import { ReactiveFormsModule } from '@angular/forms';
 import { MatChipsModule } from '@angular/material/chips';
+import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from 'app/main/shared/shared.module';
+import { MatStep, MatStepper, MatStepperModule } from '@angular/material/stepper';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { IPSearchListComponent } from './ip-search-list.component';
-import { IPSearchListService } from './ip-search-list.service';
-import { IPAdvanceComponent } from './ip-advance/ip-advance.component';
-import { IPAdvancePaymentComponent } from './ip-advance-payment/ip-advance-payment.component';
-// import { IPRefundofAdvanceComponent } from './ip-refundof-advance/ip-refundof-advance.component';
-import { IPRefundofBillComponent } from './ip-refundof-bill/ip-refundof-bill.component';
-import { IPBillingComponent } from './ip-billing/ip-billing.component';
-import { InterimBillComponent } from './interim-bill/interim-bill.component';
-import { DischargeSummaryComponent } from './discharge-summary/discharge-summary.component';
-import { IpPaymentwithAdvanceComponent } from './ip-paymentwith-advance/ip-paymentwith-advance.component';
-import { PrebillDetailsComponent } from './ip-billing/prebill-details/prebill-details.component';
-import { DiscountAfterFinalBillComponent } from './discount-after-final-bill/discount-after-final-bill.component';
-import { OPIPFeedbackComponent } from '../Feedback/opip-feedback/opip-feedback.component';
-import { CompanyBillComponent } from './company-bill/company-bill.component';
-
+import { IPSearchListService } from '../../ip-search-list/ip-search-list.service';
+import { MatListModule } from '@angular/material/list';
+import { FeedbackService } from './feedback.service';
 
 
 const routes: Routes = [
     {
         path: 'new-appointment',
-        component:IPSearchListComponent,
+        component:OPIPFeedbackComponent,
     },{
         path: '**',
-        component: IPSearchListComponent,
+        component: OPIPFeedbackComponent,
     }
 
 ];
 @NgModule({
     declarations: [
-      IPSearchListComponent,
-      BedTransferComponent,
-      DischargeComponent,
-      IPAdvanceComponent,
-      IPAdvancePaymentComponent,
-      //IPRefundofAdvanceComponent,
-      IPRefundofBillComponent,
-      IPBillingComponent,
-      InterimBillComponent,
-      DischargeSummaryComponent,
-      IpPaymentwithAdvanceComponent,
-      PrebillDetailsComponent,
-      DiscountAfterFinalBillComponent,
-      OPIPFeedbackComponent,
-      CompanyBillComponent
+      OPIPFeedbackComponent
     ],
     imports: [
         RouterModule.forChild(routes),
@@ -121,28 +89,28 @@ const routes: Routes = [
         MatSidenavModule,
         MatExpansionModule,
         MatGridListModule,
-        MatSnackBarModule,
+       
         MatSlideToggleModule,
         MatListModule,
         SharedModule,
-        // MatStepperModule,
+        MatStepperModule,
         NgxMatSelectSearchModule,
         MatDatepickerModule,
-        // MatStepper,
-        //  MatStep,
-        //  NgMultiSelectDropDownModule.forRoot(),
+        MatStepper,
+         MatStep,
+     
          MatTooltipModule,
         //  MatHorizontalStepper
         
     ],
     providers: [
-      IPSearchListService,
+      FeedbackService,
         DatePipe
         // NotificationServiceService
     ],
     entryComponents: [
-      IPSearchListComponent
+      OPIPFeedbackComponent
         // NotificationServiceService
     ]
 })
-export class IPSearchlistModule { }
+export class FeedbackModule { }

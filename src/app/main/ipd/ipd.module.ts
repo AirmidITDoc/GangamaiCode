@@ -58,7 +58,6 @@ import { StockManagementComponent } from './stock-management/stock-management.co
 import { IPSettlementViewComponent } from './ip-settlement/ipsettlement-view/ipsettlement-view.component';
 import { ViewBrowseIPDPaymentComponent } from './browse-ipdpayment-receipt/view-browse-ipdpayment/view-browse-ipdpayment.component';
 import { CompanyInformationComponent } from './company-information/company-information.component';
-import { OPIPFeedbackComponent } from './Feedback/opip-feedback/opip-feedback.component';
 import { CompanyListComponent } from './company-list/company-list.component';
 
 
@@ -66,13 +65,7 @@ import { CompanyListComponent } from './company-list/company-list.component';
 
 
 @NgModule({
-  declarations: [IPBillBrowseListComponent, 
-    IPSearchListComponent, IPBillBrowseListComponent, BedTransferComponent,
-     DischargeComponent, IPAdvanceComponent, IPAdvancePaymentComponent, 
-      IPRefundComponent, IPRefundofAdvanceComponent, 
-     IPBrowseRefundofAdvanceComponent, IPBrowseRefundofBillComponent,
-      BrowseIPAdvanceComponent, IPDSearcPatienthComponent, StockManagementComponent, IPSettlementViewComponent, 
-      ViewBrowseIPDPaymentComponent, OPIPFeedbackComponent, OPIPFeedbackComponent, CompanyListComponent],
+  declarations: [],
   imports: [
     CommonModule,
     MatButtonModule,
@@ -110,9 +103,9 @@ import { CompanyListComponent } from './company-list/company-list.component';
     MatSlideToggleModule,
     MatListModule,
     SharedModule,
-    MatStepperModule,
+    // MatStepperModule,
     MatSpinner,
-    NgxMatSelectSearchModule,
+    // NgxMatSelectSearchModule,
     MatDatepickerModule,
     //  NgMultiSelectDropDownModule.forRoot(),
      MatTooltipModule,
@@ -120,12 +113,12 @@ import { CompanyListComponent } from './company-list/company-list.component';
 ],
 providers: [
   IPSearchListService,
-    DatePipe,
-    NotificationServiceService
+    DatePipe
+    // NotificationServiceService
 ],
 entryComponents: [
-  IPSearchListComponent,
-    NotificationServiceService
+  IPSearchListComponent
+    // NotificationServiceService
 ]
 })
 export class IpdModule { }

@@ -225,6 +225,7 @@ export class IPBillBrowseListComponent implements OnInit {
   
   }
   getRecord1(contact, m): void {
+    debugger
     if (m == "Print Final Bill Groupwise") 
       if (!contact.InterimOrFinal)
         this.viewgetBillReportPdf(contact.BillNo)

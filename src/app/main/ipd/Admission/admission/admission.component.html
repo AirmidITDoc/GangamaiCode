@@ -119,6 +119,8 @@
                                                             [disabled]="AdList">
                                                            print Admission List
                                                         </button>
+                                                       
+                                                        
                                                     </div>
                                                 </div>
                                             </form>
@@ -249,7 +251,10 @@
                                                                     matTooltip="Print MLC paper" (click)="getMLCdetailview(contact.AdmissionID)">
                                                                     <mat-icon>print</mat-icon>
                                                                 </button>
-
+                                                                <!-- <button mat-icon-button
+                                                                (click)="feedback(contact)"  matTooltip="Feedback">
+                                                               Feedback
+                                                            </button> -->
                                                                 <ng-template #noMLC>
                                                                     <span>--</span>
                                                                 </ng-template>

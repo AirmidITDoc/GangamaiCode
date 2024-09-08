@@ -42,7 +42,8 @@ export class AddformulaComponent implements OnInit {
     { value: '6', viewValue: '-' },
     { value: '7', viewValue: '(' },
     { value: '8', viewValue: ')' },
-    { value: '9', viewValue: ' ' }
+    { value: '9', viewValue: ' ' },
+    { value: '9', viewValue: '^' }
   ];
 
 
@@ -100,9 +101,9 @@ export class AddformulaComponent implements OnInit {
 
 
   getOptionTextparameter(option) {
-    if(option)
+    if(option){
     this.paranamenew = "{{" + option.ParameterName + "}}"
-    // this.paraname = option.ParameterName
+     this.paraname = option.ParameterName}
     return option && option.ParameterName ? option.ParameterName : '';
 
   }
@@ -122,7 +123,7 @@ export class AddformulaComponent implements OnInit {
 
   }
   addoprator1() {
-
+    this.paraname=this._ParameterService.formulaform.get("ParameterId").value.ParameterName
     this.paranamenew = "{{" + this.paraname + "}}"
     this.finalformula = this.finalformula + this.paranamenew + this.oprator;
 

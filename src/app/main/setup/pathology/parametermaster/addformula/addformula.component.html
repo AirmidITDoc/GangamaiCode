@@ -45,12 +45,12 @@
                                     <mat-autocomplete #autopara="matAutocomplete"
                                         [displayWith]="getOptionTextparameter">
                                         <mat-option *ngFor="let option of filteredOptionsParameter | async"
-                                            [value]="option" (onSelectionChange)="onChangeparaList(option)">
+                                            [value]="option" >
                                             {{option.ParameterName}}
                                         </mat-option>
                                     </mat-autocomplete>
                                 </mat-form-field>
-
+                                <!-- (onSelectionChange)="onChangeparaList(option)" -->
 
 
                             </div>
