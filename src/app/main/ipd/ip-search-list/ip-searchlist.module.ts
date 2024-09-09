@@ -86,7 +86,7 @@ const routes: Routes = [
       IpPaymentwithAdvanceComponent,
       PrebillDetailsComponent,
       DiscountAfterFinalBillComponent,
-      OPIPFeedbackComponent,
+      // OPIPFeedbackComponent,
       CompanyBillComponent
     ],
     imports: [

@@ -493,59 +493,57 @@ export class IPSearchListComponent implements OnInit {
 
       }
     } 
-    //  else if (m == "Patient Feedback") {
-    //   console.log(contact);
-    //   if (!contact.IsDischarged) {
+     else if (m == "Patient Feedback") {
+      console.log(contact);
+      if (!contact.IsDischarged) {
 
 
-    //     this.advanceDataStored.storage = new AdvanceDetailObj(contact);
-    //     this._IpSearchListService.populateForm(contact);
-    //     const dialogRef = this._matDialog.open(OPIPFeedbackComponent,
-    //       {
-    //        maxWidth: "95vw",
-    //       maxHeight: "115vh", width: '100%', height: "100%",
-    //         data: {
-    //           Obj: contact
-    //         }
-    //       });
-    //     dialogRef.afterClosed().subscribe(result => {
-    //       console.log('The dialog was closed - Insert Action', result);
-    //       this.getAdmittedPatientList();
-    //     });
-    //   } else {
-    //     console.log(contact)
-    //     Swal.fire({
-    //       title: 'Patient feedBack Edit',
-    //       // showDenyButton: true,
-    //       showCancelButton: true,
-    //       confirmButtonText: 'OK',
+        this.advanceDataStored.storage = new AdvanceDetailObj(contact);
+        this._IpSearchListService.populateForm(contact);
+        const dialogRef = this._matDialog.open(OPIPFeedbackComponent,
+          {
+           maxWidth: "95vw",
+          maxHeight: "115vh", width: '100%', height: "100%",
+            data: {
+              Obj: contact
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          console.log('The dialog was closed - Insert Action', result);
+          this.getAdmittedPatientList();
+        });
+      } else {
+        console.log(contact)
+        Swal.fire({
+          title: 'Patient feedBack Edit',
+          // showDenyButton: true,
+          showCancelButton: true,
+          confirmButtonText: 'OK',
 
-    //     }).then((result) => {
+        }).then((result) => {
 
-    //       if (result.isConfirmed) {
+          if (result.isConfirmed) {
 
-    //         this.advanceDataStored.storage = new AdvanceDetailObj(contact);
-    //         this._IpSearchListService.populateForm(contact);
-    //         const dialogRef = this._matDialog.open(OPIPFeedbackComponent,
-    //           {
-    //             maxWidth: "95vw",
-    //             maxHeight: "115vh", width: '100%', height: "100%",
-    //               data: {
-    //                 Obj: contact
-    //               }
-    //           });
-    //         dialogRef.afterClosed().subscribe(result => {
-    //           console.log('The dialog was closed - Insert Action', result);
+            this.advanceDataStored.storage = new AdvanceDetailObj(contact);
+            this._IpSearchListService.populateForm(contact);
+            const dialogRef = this._matDialog.open(OPIPFeedbackComponent,
+              {
+                maxWidth: "95vw",
+                maxHeight: "115vh", width: '100%', height: "100%",
+                  data: {
+                    Obj: contact
+                  }
+              });
+            dialogRef.afterClosed().subscribe(result => {
+              console.log('The dialog was closed - Insert Action', result);
 
-    //         });
-    //       }
-    //       else {
+            });
+          }
+         
+        });
 
-    //       }
-    //     });
-
-    //   }
-    // }
+      }
+    }
     else if (m == "Bed Transfer") {
       console.log(" This is for BedTransfer pop : " + m);
 

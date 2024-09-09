@@ -377,10 +377,10 @@ private _onDestroy = new Subject<void>();
        });
      });       
       }
-      this.ngOnInit();
+      // this.ngOnInit();
     }
   
-
+this.dialogRef.close();
     
   }
   

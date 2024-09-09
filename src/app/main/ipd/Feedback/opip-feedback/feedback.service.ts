@@ -10,19 +10,11 @@ export class FeedbackService {
   MyfeedbackForm:FormGroup;
   constructor(   public _formbuilder:FormBuilder,
     public _httpClient:HttpClient) {
-    this.MyForm = this.createMyForm();
+    
     this.MyfeedbackForm = this.createMyfeedbackForm();
    }
 
-  createMyForm(){
-    return this._formbuilder.group({ 
-      WardName:[''],
-      RegID:['']
-     // FromDate:[new Date()],
-     // ToDate:[new Date()],
-    })
-  }
-  
+
   createMyfeedbackForm(){
     return this._formbuilder.group({ 
       AdmissionId:[''],
@@ -33,6 +25,7 @@ export class FeedbackService {
       fbone:[''],
       FeedbackCategory:[''],
       FeedbackRating:[''],
+      FeedbackResult:[1],
       FeedbackComments:[''],
      FromDate:[new Date()],
      ToDate:[new Date()],
@@ -50,5 +43,13 @@ export class FeedbackService {
   public getPatientList(param){
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_AdmisionList_NursingList",param);
   }
-  
+  public getquestionList(){
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_m_Feedbackquestion",{});
+  }
+  public getPatientVisitedListSearch(employee) {//m_Rtrv_PatientVisitedListSearch
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientVisitedListSearch", employee)
+  }
+  public getAdmittedPatientList(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch", employee)
+  }
 }

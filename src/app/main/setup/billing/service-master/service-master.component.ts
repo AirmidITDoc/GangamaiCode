@@ -94,9 +94,9 @@ export class ServiceMasterComponent implements OnInit {
                 //this.DSServiceMasterList.data = Menu as ServiceMaster[];
                 this.isLoading = false;
                 this.DSServiceMasterList.sort = this.sort;
-                this.DSServiceMasterList.sort = this.sort;
+                this.DSServiceMasterList.paginator = this.paginator;
                 this.resultsLength= data["Table"][0]["total_row"];
-                // --this.DSServiceMasterList.paginator = this.paginator;
+                
                console.log(this.DSServiceMasterList.data);
                debugger;
             },

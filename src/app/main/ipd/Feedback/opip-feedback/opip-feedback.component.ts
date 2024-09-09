@@ -26,6 +26,17 @@ import { MatHorizontalStepper } from '@angular/material/stepper';
   
 })
 export class OPIPFeedbackComponent implements OnInit {
+
+  Feedbackpatientform: FormGroup;
+  firstFormGroup: FormGroup;
+  secondFormGroup: FormGroup;
+  thirdFormGroup: FormGroup;
+  fourthFormGroup: FormGroup;
+  fiveFormGroup: FormGroup;
+  sixFormGroup: FormGroup;
+  Feedbackform: FormGroup;
+
+
   isLoading: String = '';
   sIsLoading: string = ""; 
 
@@ -34,6 +45,7 @@ export class OPIPFeedbackComponent implements OnInit {
   vWardId:any;
   WardList:any=[];
   PatientList:any=[];
+  feedbackquest:any=[];
   registerObj1 = new PatientList({});
   vDepartmentName:any;
   vpatientName:any;
@@ -50,10 +62,36 @@ export class OPIPFeedbackComponent implements OnInit {
   RegID:any=0;
   AdmissionID:any=0;
   OPD_IPD_Type:any=0;
-
+  FeedbackResult:any;
   isEditable = false;
+  opflag:boolean=true;
+  ipflag:boolean=false;
+  pharmaflag:boolean=false;
 
   
+  vSelectedOption:any;
+  OP_IP_Id: any = 0;
+  OP_IPType: any = 2;
+  RegId:any;
+  vCondition:boolean=false;
+  vConditionExt:boolean=false;
+  vConditionIP:boolean=false;
+  PatientListfilteredOptionsOP: any;
+  PatientListfilteredOptionsIP: any;
+  filteredOptions: any;
+  noOptionFound: boolean = false;
+  RegNo:any;
+  IPDNo:any; 
+  TariffName:any;
+  CompanyName:any;
+  Age:any;
+  OPDNo:any;
+  DoctorNamecheck:boolean=false;
+  IPDNocheck:boolean=false;
+  OPDNoCheck:boolean=false;
+  PatientName:any;
+  DoctorName:any;
+
 @ViewChild('stepper') stepper: MatHorizontalStepper;
 
   @ViewChild(MatSort) sort: MatSort;
@@ -64,14 +102,12 @@ export class OPIPFeedbackComponent implements OnInit {
     'PatientName' 
   ]  
   isLinear = false;
-  firstFormGroup: FormGroup;
-  secondFormGroup: FormGroup;
 
 
   constructor( public _FeedbackService:FeedbackService,
     public datePipe: DatePipe,
     public _matDialog: MatDialog,
-    private dialogRef: MatDialogRef<OPIPFeedbackComponent>,
+    // private dialogRef: MatDialogRef<OPIPFeedbackComponent>,
     public toastr: ToastrService,
     private accountService: AuthenticationService,
     private _formBuilder: FormBuilder,
@@ -84,73 +120,186 @@ export class OPIPFeedbackComponent implements OnInit {
     this.secondFormGroup = this._formBuilder.group({
       secondCtrl: ['', Validators.required]
     });
-    this.getwardList();
-    this.getPatientListwardWise(); 
-    if (this.advanceDataStored.storage) {
-      
-       this.selectedAdvanceObj = this.advanceDataStored.storage;
-       this.RegID= this.selectedAdvanceObj.RegID; 
-       this.AdmissionID= this.selectedAdvanceObj.AdmissionID; 
-       this.OPD_IPD_Type= this.selectedAdvanceObj.opD_IPD_Type; 
-          console.log( this.selectedAdvanceObj)
-         
-     }
-  }
-
-
-  getwardList(){
-    this._FeedbackService.getWardList().subscribe((data) =>{
-      this.WardList = data;
-      console.log(this.WardList)
-      this.wardListfilteredOptions = this._FeedbackService.MyForm.get('WardName').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterWardname(value) : this.WardList.slice()),
-      ); 
+    this.thirdFormGroup = this._formBuilder.group({
+      thirdCtrl: ['', Validators.required]
     });
-  }
-  private _filterWardname(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.WardName ? value.WardName.toLowerCase() : value.toLowerCase();
-      return this.WardList.filter(option => option.WardName.toLowerCase().includes(filterValue));
-    }
-  } 
-  getOptionTextWardName(option) {
-    if (!option) return '';
-    return option.WardName ;
-  }
-  getSelectedObjward(obj) {
-    this.vWardId = obj.WardId  
-    this.getPatientListwardWise();
-  } 
-  getwardWisePatList(){
-    this._FeedbackService.MyForm.get('WardName').setValue('');
-      this.vWardId = '';
-      this.getPatientListwardWise(); 
-  }
-  getPatientListwardWise(){
-   this.sIsLoading = ''
-    var vdata={
-      'WardId':  this.vWardId || 0,
-      'DoctorId': 0
-    }
-    console.log(vdata)
-    this._FeedbackService.getPatientList(vdata).subscribe((data) =>{
-      this.dsPatientlist.data = data as PatientList[];
-      this.dsPatientlist.sort = this.sort;  
-      this.dsPatientlist.paginator = this.wardpaginator; 
-      console.log(this.dsPatientlist.data); 
-    },
-  error =>{
-    this.sIsLoading = ''; 
-  }); 
+    this.fourthFormGroup = this._formBuilder.group({
+      fourthCtrl: ['', Validators.required]
+    });
+    this.fiveFormGroup = this._formBuilder.group({
+      fiveCtrl: ['', Validators.required]
+    });
+    this.sixFormGroup = this._formBuilder.group({
+      sixCtrl: ['', Validators.required]
+    });
+    this.vSelectedOption = 'OP';
+    //  this.vCondition = true
+
+
+    this.getpatientsearchform();
+    this.getfeedbackform();
+    // this.getwardList();
+    this.getfeedbackquestionList();
+    // this.getPatientListwardWise(); 
+    // if (this.advanceDataStored.storage) {
+      
+    //    this.selectedAdvanceObj = this.advanceDataStored.storage;
+    //    this.RegID= this.selectedAdvanceObj.RegID; 
+    //    this.AdmissionID= this.selectedAdvanceObj.AdmissionID; 
+    //    this.OPD_IPD_Type= this.selectedAdvanceObj.opD_IPD_Type; 
+    //       console.log( this.selectedAdvanceObj)
+         
+    //  }
   }
 
-  onSave(){}
+
+  getpatientsearchform() {
+  this.Feedbackpatientform = this._formBuilder.group({
+    PatientType: ['OP'],
+    PatientName: '',
+    RegID:'',
+  });
+}
+
+getfeedbackform() {
+  this.Feedbackform = this._formBuilder.group({
+    // PatientType: ['OP'],
+    // PatientName: '',
+    // RegID:'',
+  });
+}
+
+
+onChangePatientType(event) {
+  debugger
+  if (event.value == 'OP') {
+    this.OP_IPType = 0;
+    this.vSelectedOption = 'OP';
+    // this.vCondition = true
+    this.opflag=true;
+    this.ipflag=false;
+    this.pharmaflag=false;
+    this.RegId = "";
+  }
+  else if (event.value == 'IP') {
+    this.OP_IPType = 1;
+    this.RegId = "";
+    this.vSelectedOption = 'IP';
+    // this.vConditionIP = true
+    this.opflag=false;
+    this.ipflag=true;
+    this.pharmaflag=false;
+  } else {
+    this.vSelectedOption = 'External';
+    // this.vConditionExt = true
+    this.opflag=false;
+    this.ipflag=false;
+    this.pharmaflag=true;
+    this.OP_IPType = 2;
+  }
+}
+
+
+getSearchListIP() {
+  var m_data = {
+    "Keyword": `${this.Feedbackpatientform.get('RegID').value}%`
+  }
+  if (this.Feedbackpatientform.get('PatientType').value == 'OP'){
+    if (this.Feedbackpatientform.get('RegID').value.length >= 1) {
+      this._FeedbackService.getPatientVisitedListSearch(m_data).subscribe(resData => {
+        this.filteredOptions = resData;
+        this.PatientListfilteredOptionsOP = resData;
+         console.log(resData);
+        if (this.filteredOptions.length == 0) {
+          this.noOptionFound = true;
+        } else {
+          this.noOptionFound = false;
+        } 
+      });
+    }
+  }else if (this.Feedbackpatientform.get('PatientType').value == 'IP') {
+    if (this.Feedbackpatientform.get('RegID').value.length >= 1) {
+      this._FeedbackService.getAdmittedPatientList(m_data).subscribe(resData => {
+        this.filteredOptions = resData;
+        // console.log(resData);
+        this.PatientListfilteredOptionsIP = resData;
+        if (this.filteredOptions.length == 0) {
+          this.noOptionFound = true;
+        } else {
+          this.noOptionFound = false;
+        }
+      });
+    }
+  }
+ 
+//  this.PatientInformRest();
+}
+
+
+getSelectedObjRegIP(obj) {
+  let IsDischarged = 0;
+  IsDischarged = obj.IsDischarged 
+  if(IsDischarged == 1){
+    Swal.fire('Selected Patient is already discharged');
+    //this.PatientInformRest();
+    this.RegId = ''
+  }
+  else{
+    console.log(obj)
+    this.DoctorNamecheck = true;
+    this.IPDNocheck = true;
+    this.OPDNoCheck = false;
+    this.registerObj = obj;
+    this.PatientName = obj.FirstName + ' ' + obj.LastName;
+    this.RegId = obj.RegID;
+    this.OP_IP_Id = this.registerObj.AdmissionID;
+    this.IPDNo = obj.IPDNo;
+    this.RegNo =obj.RegNo;
+    this.DoctorName = obj.DoctorName;
+    this.TariffName =obj.TariffName
+    this.CompanyName = obj.CompanyName;
+    this.Age = obj.Age;
+  } 
+  
+}
+
+getSelectedObjOP(obj) { 
+    console.log(obj)
+    this.OPDNoCheck = true;
+    this.DoctorNamecheck = false;
+    this.IPDNocheck = false;
+    this.registerObj = obj;
+    this.RegId = obj.RegId;
+    this.PatientName = obj.FirstName + " " + obj.LastName; 
+    this.OP_IP_Id  = obj.VisitId;
+    this.RegNo =obj.RegNo; 
+    this.OPDNo = obj.OPDNo;
+    this.CompanyName = obj.CompanyName;
+    this.TariffName = obj.TariffName; 
+    
+}
+
+
+getOptionTextIPObj(option) { 
+  return option && option.FirstName + " " + option.LastName; 
+}
+getOptionTextOPObj(option) { 
+  return option && option.FirstName + " " + option.LastName; 
+}
+
+getfeedbackquestionList(){
+  this._FeedbackService.getquestionList().subscribe((data) =>{
+    this.feedbackquest = data;
+    console.log(this.feedbackquest)
+   
+  });
+}
+ 
 
   onClose() {
-    this.dialogRef.close();
+    // this.dialogRef.close();
   }
-  getPrint(){}
+ 
 registerObj:any;
   getpatientDet(obj){ 
     debugger

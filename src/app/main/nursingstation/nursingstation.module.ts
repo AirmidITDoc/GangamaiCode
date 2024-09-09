@@ -64,6 +64,10 @@ const approtes: Routes = [
   path:"inpatientissue",
   loadChildren: () => import("./in-patient-issue/in-patient-issue.module").then((m)=>m.InPatientIssueModule), 
 },
+{
+  path:"feedback",
+  loadChildren: () => import("../ipd/Feedback/opip-feedback/feedback.module").then((m)=>m.FeedbackModule), 
+},
 
  
 

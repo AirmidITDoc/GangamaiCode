@@ -35,12 +35,12 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatChipsModule } from '@angular/material/chips';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from 'app/main/shared/shared.module';
-import { MatStep, MatStepper, MatStepperModule } from '@angular/material/stepper';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { IPSearchListService } from '../../ip-search-list/ip-search-list.service';
 import { MatListModule } from '@angular/material/list';
 import { FeedbackService } from './feedback.service';
+import { MatStep, MatStepper, MatStepperModule } from '@angular/material/stepper';
 
 
 const routes: Routes = [
@@ -96,10 +96,9 @@ const routes: Routes = [
         MatStepperModule,
         NgxMatSelectSearchModule,
         MatDatepickerModule,
-        MatStepper,
-         MatStep,
-     
-         MatTooltipModule,
+        // MatStepper,
+        //  MatStep,
+     MatTooltipModule
         //  MatHorizontalStepper
         
     ],
