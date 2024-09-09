@@ -724,7 +724,7 @@
                                                 (keyup)="CalcDiscAmtonBill()" >
                                         </mat-form-field>
             
-                                        <mat-form-field appearance="outline" fxFlex *ngIf="Consessionres">
+                                        <mat-form-field appearance="outline" fxFlex *ngIf="vFinalConcessionAmt  !== '' ||  vFinalConcessionAmt !== 0 ">
                                             <mat-label>Concession Reason Type</mat-label>
                                             <mat-select formControlName="ConcessionId">
                                                 <mat-option *ngFor="let Doc of ConcessionReasonList" [value]="Doc">
