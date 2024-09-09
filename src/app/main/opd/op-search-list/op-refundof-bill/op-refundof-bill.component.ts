@@ -437,9 +437,9 @@ getBillingClassCombo(){
   });
 }
 getAdmittedDoctorCombo(){
-  this._OpSearchListService.getAdmittedDoctorCombo().subscribe(data => {
-    this.doctorNameCmbList = data
-  });
+  // this._OpSearchListService.getAdmittedDoctorCombo().subscribe(data => {
+  //   this.doctorNameCmbList = data
+  // });
 }
 updatedVal(e) {
   if (e && e.length >= 2) {

@@ -654,11 +654,11 @@ onSave() {
       this.myserviceForm.get('BillingClassId').setValue(this.BillingClassCmbList[0]);
     });
   }
-  getAdmittedDoctorCombo() {
-    this._OpSearchListService.getAdmittedDoctorCombo().subscribe(data => {
-      this.doctorNameCmbList = data
-    });
-  }
+  // getAdmittedDoctorCombo() {
+  //   this._OpSearchListService.getAdmittedDoctorCombo().subscribe(data => {
+  //     this.doctorNameCmbList = data
+  //   });
+  // }
   updatedVal(e) {
     if (e && e.length >= 2) {
       this.showAutocomplete = true;

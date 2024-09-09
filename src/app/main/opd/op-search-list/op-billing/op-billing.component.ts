@@ -213,7 +213,7 @@ export class OPBillingComponent implements OnInit {
     }
 
     this.getServiceListCombobox();
-    this.getAdmittedDoctorCombo();
+    //this.getAdmittedDoctorCombo();
     this.getCashCounterComboList();
     this.getConcessionReasonList();
 
@@ -1009,12 +1009,12 @@ export class OPBillingComponent implements OnInit {
   }
 
 
-  getAdmittedDoctorCombo() {
-    this._oPSearhlistService.getAdmittedDoctorCombo().subscribe(data => {
-      this.doctorNameCmbList = data;
-      this.filteredDoctor.next(this.doctorNameCmbList.slice());
-    })
-  }
+  // getAdmittedDoctorCombo() {
+  //   this._oPSearhlistService.getAdmittedDoctorCombo().subscribe(data => {
+  //     this.doctorNameCmbList = data;
+  //     this.filteredDoctor.next(this.doctorNameCmbList.slice());
+  //   })
+  // }
   private _filterdoc3(value: any): string[] {
     if (value) {
       const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();

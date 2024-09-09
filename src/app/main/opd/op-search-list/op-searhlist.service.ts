@@ -289,10 +289,9 @@ public getConcessionCombo()
   }
 
   // Admitted Doctor Master Combobox List
-  public getAdmittedDoctorCombo() {
-    return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
-  }
-
+  public getAdmittedDoctorCombo(param) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_DoctorListMasterForCombo",param)
+  } 
   public getserviceCombo() {
     return this._httpClient.post("Generic/GetByProc?procName=ps_Retrieve_ServiceMasterForCombo", {})
   }
