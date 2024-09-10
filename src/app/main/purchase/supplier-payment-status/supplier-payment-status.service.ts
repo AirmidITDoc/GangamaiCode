@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { LoaderService } from 'app/core/components/loader/loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,8 @@ export class SupplierPaymentStatusService {
   SupplierListForm :FormGroup;
   constructor(
     public _httpClient:HttpClient,
-    public _formbuilder:FormBuilder
+    public _formbuilder:FormBuilder,
+    private _loaderService:LoaderService
   )
    { 
     this.SearchFormGroup = this.CreateSearchForm();
@@ -36,13 +38,25 @@ export class SupplierPaymentStatusService {
     });
    }
 
-   public getSupplierSearchList(param) {
+   public getSupplierSearchList(param ,loader = true){ 
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_SupplierName_list", param);
   }
   public getLoggedStoreList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
   }
-  public getSupplierPayStatusList(param) {
+  public getSupplierPayStatusList(param ,loader = true){ 
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_GRNList_ForAccount_payment", param);
+  }
+  public InsertSupplierPay(param ,loader = true){ 
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.post("Pharmacy/InsertSupplierPayment", param);
   }
 }

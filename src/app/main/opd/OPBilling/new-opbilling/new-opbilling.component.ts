@@ -667,8 +667,11 @@ getNetAmtSum(element) {
   this.vFinalTotalAmt = element.reduce((sum, { TotalAmt }) => sum += +(TotalAmt || 0), 0).toFixed(2);  
   return  this.vFinalnetPaybleAmt ;
 }  
+vserviceDiscPerFlag:any;
 getDiscAmtSum(element) {  
   let FinalDiscAmt = element.reduce((sum, { DiscAmt }) => sum += +(DiscAmt || 0), 0).toFixed(2); 
+   this.vserviceDiscPerFlag = element.reduce((sum, { DiscPer }) => sum += +(DiscPer || 0), 0).toFixed(2); 
+   
   if(FinalDiscAmt > 0){ 
     this.BillingForm.get('FinalconcessionAmt').setValue(FinalDiscAmt);
     this.BillingForm.get('FinalNetAmt').setValue(this.vFinalnetPaybleAmt);  
@@ -727,26 +730,26 @@ getDiscAmtSum(element) {
       this.vFinalnetPaybleAmt = this.vFinalTotalAmt;  
       this.BillingForm.get('FinalNetAmt').setValue(this.vFinalnetPaybleAmt) 
     }
+    this.getConcessionChek();
   }
 
 ServiceDiscper:any = 0;
 getConcessionChek(){ 
   let Discper = 0;
   if(this.vFinalConcessionAmt > 0){
-    this.Consessionres = true;
+    this.Consessionres = true; 
   }else{
-    this.Consessionres = false;
+    this.Consessionres = false; 
   }
-  Discper = parseInt(this.VchargeDiscPer) || 0;
-  this.ServiceDiscper += Discper;
-  if(this.ServiceDiscper > 0){
+  if(parseInt(this.vserviceDiscPerFlag) > 0){
     this.BillDiscPer = false;
   }else{
     this.BillDiscPer = true;
   } 
+  
 }
   onSaveOPBill2() { 
-
+debugger
     if ((this.vOPIPId == '' || this.vOPIPId == null || this.vOPIPId == undefined)) {
       this.toastr.warning('Please select Patient', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -809,7 +812,7 @@ getConcessionChek(){
       InsertBillUpdateBillNoObj['BillNo'] = 0;
       InsertBillUpdateBillNoObj['OPD_IPD_ID'] = this.vOPIPId;
       InsertBillUpdateBillNoObj['TotalAmt'] = this.BillingForm.get('FinalTotalAmt').value || 0;
-      InsertBillUpdateBillNoObj['FinalconcessionAmt'] = parseFloat(this.BillingForm.get('FinalconcessionAmt').value) || 0
+      InsertBillUpdateBillNoObj['concessionAmt'] = parseFloat(this.BillingForm.get('FinalconcessionAmt').value) || 0
       InsertBillUpdateBillNoObj['NetPayableAmt'] = this.BillingForm.get('FinalNetAmt').value || 0;
       InsertBillUpdateBillNoObj['PaidAmt'] = 0;//this.BillingForm.get('FinalNetAmt').value;
       InsertBillUpdateBillNoObj['BalanceAmt'] = 0;
@@ -1079,7 +1082,7 @@ getConcessionChek(){
     InsertBillUpdateBillNoObj['BillNo'] = 0;
     InsertBillUpdateBillNoObj['OPD_IPD_ID'] = this.vOPIPId;
     InsertBillUpdateBillNoObj['TotalAmt'] = this.BillingForm.get('FinalTotalAmt').value;
-    InsertBillUpdateBillNoObj['FinalconcessionAmt'] =this.BillingForm.get('FinalconcessionAmt').value || 0
+    InsertBillUpdateBillNoObj['concessionAmt'] =this.BillingForm.get('FinalconcessionAmt').value || 0
     InsertBillUpdateBillNoObj['NetPayableAmt'] = parseFloat(this.BillingForm.get('FinalNetAmt').value) || 0;
     InsertBillUpdateBillNoObj['PaidAmt'] = 0//this.BillingForm.get('FinalNetAmt').value;
     InsertBillUpdateBillNoObj['BalanceAmt'] = 0;

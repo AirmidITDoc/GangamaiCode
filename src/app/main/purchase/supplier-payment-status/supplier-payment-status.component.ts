@@ -13,6 +13,8 @@ import { SupplierPaymentListComponent } from './supplier-payment-list/supplier-p
 import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-new/op-payment-new.component';
 import { OPAdvancePaymentComponent } from 'app/main/opd/op-search-list/op-advance-payment/op-advance-payment.component';
 import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
+import { element } from 'protractor';
+import { error } from 'console';
 
 @Component({
   selector: 'app-supplier-payment-status',
@@ -24,8 +26,8 @@ import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-pa
 export class SupplierPaymentStatusComponent implements OnInit {
   displayedColumns = [
     'CheckBox',
-    'GRNReturnNo',
-    'GRNReturnDate',
+    'GRNNo',
+    'GRNDate',
     'SupplierName',
     'InvoiceNo',
     'NetAmount',
@@ -41,6 +43,14 @@ export class SupplierPaymentStatusComponent implements OnInit {
   filteredSupplier:any;
   noOptionFound:any;
   sIsLoading:string='';
+  vSupplierName:any;
+  vInvoiceNo:any;
+  GRNID:any;
+  SelectedList:any=[];
+  vNetAmount:any=0;
+  vPaidAmount:any=0;
+  vBalanceAmount:any=0;
+  CurrentDate = new Date()
 
   dsSupplierpayList =new MatTableDataSource<SupplierPayStatusList>();
   @ViewChild(MatSort) sort: MatSort;
@@ -108,15 +118,14 @@ export class SupplierPaymentStatusComponent implements OnInit {
         this.sIsLoading = '';
       });
   } 
-  vSupplierName:any;
-  vInvoiceNo:any;
-  GrnNumber:any;
+
   tableElementChecked(event, element) {
     this.vSupplierName = element.SupplierName;
     this.vInvoiceNo =  element.InvoiceNo;
-    this.GrnNumber =  element.GrnNumber;
+    this.GRNID =  element.GRNID;
     if (event.checked) {
       console.log(element) 
+      this.SelectedList.push(element)
       this.vNetAmount += element.NetAmount
       this.vPaidAmount += element.PaidAmount
       this.vBalanceAmount += element.BalAmount 
@@ -125,53 +134,85 @@ export class SupplierPaymentStatusComponent implements OnInit {
       this.vNetAmount -= element.NetAmount
       this.vPaidAmount -= element.PaidAmount
       this.vBalanceAmount -= element.BalAmount
-    } 
+    }
+    console.log(this.SelectedList) 
   }
-  vNetAmount:any=0;
-  vPaidAmount:any=0;
-  vBalanceAmount:any=0;
-  CurrentDate = new Date()
-  OnSave(){
+
+  OnSave() {
     if ((this.vBalanceAmount < 0)) {
       this.toastr.warning('Please select Check Box', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
-    }   
-      let PatientHeaderObj = {};
-      // PatientHeaderObj['Date'] = this.datePipe.transform(this.CurrentDate ,'dd/MM/YYYY') || '01/01/1900' 
-      // PatientHeaderObj['SupplierName'] = this.vSupplierName;
-      // PatientHeaderObj['InvoiceNo'] = this.vInvoiceNo;
-      // PatientHeaderObj['GrnNumber'] = this.GrnNumber; 
-      // PatientHeaderObj['NetPayAmount'] = this._SupplierPaymentStatusService.SearchFormGroup.get('NetAmount').value || 0;
- 
+    }
 
-        PatientHeaderObj['Date'] = this.datePipe.transform(this.CurrentDate ,'dd/MM/YYYY') || '01/01/1900' 
-        // PatientHeaderObj['PatientName'] = this.PatientName;
-        // PatientHeaderObj['RegNo'] = this.RegNo;
-        // PatientHeaderObj['DoctorName'] = this.Doctorname;
-        // PatientHeaderObj['CompanyName'] = this.CompanyName;
-        // PatientHeaderObj['DepartmentName'] = this.DepartmentName; 
-        PatientHeaderObj['NetPayAmount'] =  this._SupplierPaymentStatusService.SearchFormGroup.get('NetAmount').value || 0;
-  
-    
-          const dialogRef = this._matDialog.open(OpPaymentComponent,
-            {
-              maxWidth: "80vw",
-              height: '650px',
-              width: '80%',
-              data: {
-                vPatientHeaderObj: PatientHeaderObj,
-                FromName: "Phar-SupplierPay",
-                advanceObj: PatientHeaderObj,
-              }
-            });
+    let grnHeaderPayStatus = [];
+    this.SelectedList.forEach((element) => {
+      let grnHeaderPayStatusObj = {};
+      grnHeaderPayStatusObj['grnId'] = element.GRNID || 0;
+      grnHeaderPayStatusObj['paidAmount'] = this.vPaidAmount || 0;
+      grnHeaderPayStatusObj['balAmount'] =  this.vBalanceAmount  || 0;
+      grnHeaderPayStatus.push(grnHeaderPayStatusObj);
+    });
+
+    let SupPayDetPayStatus = [];
+    this.SelectedList.forEach((element) => {
+      let SupPayDetPayStatusObj = {};
+      SupPayDetPayStatusObj['supPayId'] = 0
+      SupPayDetPayStatusObj['supGrnId'] = element.GRNID || 0;
+      SupPayDetPayStatus.push(SupPayDetPayStatusObj);
+    });
+
+    let PatientHeaderObj = {};
+    PatientHeaderObj['Date'] = this.datePipe.transform(this.CurrentDate, 'dd/MM/YYYY') || '01/01/1900' 
+    PatientHeaderObj['GRNID'] = this.GRNID; 
+    PatientHeaderObj['NetPayAmount'] = this._SupplierPaymentStatusService.SearchFormGroup.get('NetAmount').value || 0;
+
+
+    const dialogRef = this._matDialog.open(OpPaymentComponent,
+      {
+        maxWidth: "80vw",
+        height: '650px',
+        width: '80%',
+        data: {
+          vPatientHeaderObj: PatientHeaderObj,
+          FromName: "Phar-SupplierPay",
+          advanceObj: PatientHeaderObj,
+        }
+      });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(result)
-  });
 
-}
+      let submitData = {
+        'tgrnHeaderPayStatus': grnHeaderPayStatus,
+        'tSupPayDetPayStatus': SupPayDetPayStatus,
+        'tgrNsupppayInsert': result.submitDataPay.ipPaymentInsert
+      }
+      console.log(submitData)
+      this._SupplierPaymentStatusService.InsertSupplierPay(submitData).subscribe((response) => {
+        if (response) {
+          this.toastr.success('Supplier payment Successfuly', 'Saved', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return;
+        }
+        else {
+          this.toastr.warning('Supplier payment Not Saved', 'Error', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return;
+        }
+      },
+        error => {
+          this.toastr.warning('Please Check Api Error', 'Error', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return;
+        }
+      );
+    });
+  }
   onClear(){
 
   }
@@ -200,26 +241,28 @@ export class SupplierPaymentStatusComponent implements OnInit {
 }
 
 export class SupplierPayStatusList{
-  GRNReturnNo: any;
+  GRNNo: any;
   SupplierName: string;
-  GRNReturnDate: number;
+  GRNDate: number;
   InvoiceNo: number;
   NetAmount: any;
   PaidAmount: any;
   BalAmount: any;
   InvDate:any;
   Mobile:any;
+  GRNID:any;
 constructor(SupplierPayStatusList){
   {
-    this.GRNReturnNo = SupplierPayStatusList.GRNReturnNo || 0;
+    this.GRNNo = SupplierPayStatusList.GRNNo || 0;
     this.SupplierName = SupplierPayStatusList.SupplierName || '';
-    this.GRNReturnDate = SupplierPayStatusList.GRNReturnDate || 0;
+    this.GRNDate = SupplierPayStatusList.GRNDate || 0;
     this.InvoiceNo = SupplierPayStatusList.InvoiceNo || 0;
     this.NetAmount = SupplierPayStatusList.NetAmount || 0;
     this.PaidAmount = SupplierPayStatusList.PaidAmount || 0;
     this.BalAmount = SupplierPayStatusList.BalAmount || '';
     this.InvDate = SupplierPayStatusList.InvDate || '';
     this.Mobile = SupplierPayStatusList.Mobile || 0;
+    this.GRNID = SupplierPayStatusList.GRNID || 0;
   }
 }
 }
