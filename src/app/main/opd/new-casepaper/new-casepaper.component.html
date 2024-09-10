@@ -569,15 +569,15 @@
                                                 <div fxLayout="row" fxLayoutGap="6px">  
 
                                                     <mat-form-field appearance="outline" fxFlex="10%">
-                                                        <mat-label>Days</mat-label>
-                                                        <input matInput name="FollowupDays" fomrControlName="FollowupDays"
-                                                        type="text" OnlyNumber (keypress)="keyPressAlphanumeric($event)"
-                                                        [(ngModel)]="vFollowUpDays" (ngModelChange)="onDaysChange()">
+                                                        <mat-label>Follow Up Days</mat-label>
+                                                        <input  name="Days" formControlName="Days"
+                                                            placeholder="Days"  matInput  [(ngModel)]="vDays"
+                                                            (keyup)="onDaysChange()">
                                                     </mat-form-field>
 
                                                     <mat-form-field appearance="outline" fxFlex="20%">
                                                         <input matInput [matDatepicker]="picker1" placeholder="Choose a date"
-                                                            formControlName="start">
+                                                            formControlName="start" [(ngModel)]="specificDate">
                                                         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                                                         <mat-datepicker #picker1></mat-datepicker>
                                                     </mat-form-field> 
@@ -590,7 +590,7 @@
                                                    
                                                 </div> 
                                             </form>
-                                        </mat-card>  
+                                        </mat-card>    
                             
                                         <div fxLayout="row" fxLayoutAlign="space-between">
                                             <form [formGroup]="caseFormGroup" fxLayoutAlign="space-between">

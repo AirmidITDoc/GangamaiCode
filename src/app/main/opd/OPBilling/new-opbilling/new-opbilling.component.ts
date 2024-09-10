@@ -724,13 +724,14 @@ getDiscAmtSum(element) {
         this.vFinalconcessionDiscPer = ((parseFloat(finalDiscAmt) / parseFloat(this.vFinalTotalAmt)) * 100).toFixed(2); 
         this.vFinalnetPaybleAmt = Math.round(parseFloat(this.vFinalTotalAmt) - parseFloat(finalDiscAmt)).toFixed(2);
         this.BillingForm.get('FinalNetAmt').setValue(this.vFinalnetPaybleAmt) 
+        this.Consessionres = true; 
       }
     } else {
       this.vFinalconcessionDiscPer = '';
       this.vFinalnetPaybleAmt = this.vFinalTotalAmt;  
       this.BillingForm.get('FinalNetAmt').setValue(this.vFinalnetPaybleAmt) 
+      this.getConcessionChek();
     }
-    this.getConcessionChek();
   }
 
 ServiceDiscper:any = 0;

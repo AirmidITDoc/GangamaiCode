@@ -126,7 +126,7 @@ export class NewCasepaperComponent implements OnInit {
   vTemplateId:boolean=true;
   vServiceId:any;
   isServiceIdSelected:boolean = false;
-  vFollowUpDays:number=0;
+  vFollowUpDays:any=0;
   
  
   dsItemList = new MatTableDataSource<MedicineItemList>();
@@ -152,56 +152,32 @@ export class NewCasepaperComponent implements OnInit {
     this.caseFormGroup = this.createForm();
     this.MedicineItemform(); 
     this.getDoseList();
-    this.getDepartmentList(); 
-   
-  
+    this.getDepartmentList();  
+    this.specificDate = new Date(); 
   }  
-  calculatedDate: Date | null = null;
- vFollowupDate:Date;
-
-  calculateDate1() {
-    debugger
-   
-
-   let CurrentDate = this.MedicineItemForm.get('start').value || 0 
-  //   const FollowupDate:any;
-  //   FollowupDate.setDate(this.calculatedDate.getDate() + this.vFollowUpDays);
-
-  //   this.MedicineItemForm.get('start').setValue(FollowupDate) || 0
-
-
-
-    this.calculatedDate = new Date(this.currentDate);
-    this.calculatedDate.setDate(this.calculatedDate.getDate() + CurrentDate);
-    console.log( this.calculatedDate)
-  } 
-  addedDays:number
-  Days: number = 0;// Default to 5 days 
-  calculateDate() { 
-    this.calculatedDate = new Date(this.currentDate);
-    this.calculatedDate.setDate(this.calculatedDate.getDate() + this.Days);
-    console.log(this.Days)
-    console.log(this.vFollowUpDays)
-    console.log(this.calculatedDate) 
-  }
-
+ 
+  vDays:any;
+  followUpDate: string;
+  specificDate: Date;
   onDaysChange() {
-    this.Days  = this.vFollowUpDays;  
-    this.calculateDate();
-  }
+    console.log(this.vDays) 
+    //let m = this.MedicineItemForm.get('Days').value ;
 
-  days: number = 0;  // Initialize days to 0
-  followUpDate: Date;
-
-  calculateFollowUpDate() {
-    const today = new Date();
-    const followUp = new Date(today);
-    followUp.setDate(today.getDate() + this.days);
-    this.followUpDate = followUp;
-    console.log('Days:', this.days);
-    console.log('Follow-Up Date:', this.followUpDate);
-  }
-
+    if(this.vDays > 0){
+      const today = new Date();
+      const todaydays = today.getDate() 
+      const followDays = ((todaydays) + parseInt(this.vDays))
+      console.log(followDays)
+      const followUp = new Date(); 
+      followUp.setDate((todaydays) + parseInt(this.vDays)); 
+      this.followUpDate = this.datePipe.transform(followUp.toDateString(),'MM/dd/YYYY');
+      this.specificDate = new Date(this.followUpDate);
+      console.log(this.followUpDate)
+    
+    }else{
+      this.specificDate = new Date();
+    }
+  } 
   createForm() {
     return this._formBuilder.group({
       LetteHeadRadio: ['NormalHead'],
@@ -238,7 +214,8 @@ export class NewCasepaperComponent implements OnInit {
       Departmentid:'',
       FollowupDays:'',
       start: [(new Date()).toISOString()],
-      Remark:''
+      Remark:'',
+      Days:''
     });
   }
   createSearchForm() {
