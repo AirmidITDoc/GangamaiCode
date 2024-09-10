@@ -133,13 +133,12 @@ export class NewOPBillingComponent implements OnInit {
   Consessionres: boolean = false; 
   savebtn:boolean=true;
   PatientHeaderObj: AdvanceDetailObj;
+  BillDiscPer:boolean=false;
+  vRegNo: any;
 
   dataSource = new MatTableDataSource<ChargesList>();
   dsPackageDet = new MatTableDataSource<ChargesList>();
-  dsprescritionList = new MatTableDataSource<ChargesList>();
-
-
-
+  dsprescritionList = new MatTableDataSource<ChargesList>();  
 
  
   vMobileNo: any;
@@ -152,46 +151,24 @@ export class NewOPBillingComponent implements OnInit {
   reportPrintObj: BrowseOPDBill;
   subscriptionArr: Subscription[] = [];
   printTemplate: any; 
-  reportPrintObjList: BrowseOPDBill[] = [];
-
-
-
-
-  myControl = new FormControl();
-
-  billingServiceList = [];
-  showAutocomplete = false;
-
+  reportPrintObjList: BrowseOPDBill[] = [];  
+  billingServiceList = []; 
   ConcessionReason: any;
-  FinalNetAmt: any;
-  DoctorFinalId = 'N';
-  filteredOptionsDoctor: Observable<string[]>;
-
-
-  optionsDoctor: any[] = []; 
-  b_DoctorName = '';
-  b_traiffId = ''; 
-  b_IsEditable = '';
-  b_IsDocEditable = ''; 
+  FinalNetAmt: any; 
+  filteredOptionsDoctor: Observable<string[]>;  
+  optionsDoctor: any[] = [];  
   totalamt = 0;
   TotalAmount = 0; 
   isExpanded: boolean = false;
   totalAmtOfNetAmt: any;
   interimArray: any = [];  
-  serviceName: String; 
-
-  b_FinalconcessionAmt: any; 
+  serviceName: String;  
   selectedAdvanceObj: SearchInforObj;
   isFilteredDateDisabled: boolean = true;
-  currentDate = new Date();
-  // vFinalconcessionAmt=1;
+  currentDate = new Date(); 
   doctorNameCmbList: any = [];
-  IPBillingInfor: any = [];
-
-
-
-  myShowAdvanceForm: FormGroup;
-
+  IPBillingInfor: any = [];  
+  myShowAdvanceForm: FormGroup; 
   netPaybleAmt: any;
   netPaybleAmt1: any;
 
@@ -221,7 +198,7 @@ export class NewOPBillingComponent implements OnInit {
     public _WhatsAppEmailService: WhatsAppEmailService,
     public _ConfigService : ConfigService
   ) { }
-  vRegNo: any;
+
   ngOnInit(): void {
     this.searchFormGroup = this.createSearchForm();
 
@@ -549,17 +526,18 @@ onAddCharges() {
     });
   this.isLoading = '';
   this.dataSource.data = this.chargeslist;
-  this.changeDetectorRefs.detectChanges();
-  this.onClearServiceAddList(); 
-  this.isDoctor = false;
-  this.calculateTotalAmtbyprice();
+  this.changeDetectorRefs.detectChanges(); 
+  this.isDoctor = false; 
   this.Servicename.nativeElement.focus();
-  this.add = false;
-  this.finaldiscAmt();
+  this.add = false; 
   this.savebtn = false;
   this.ChargesDoctorname = '';
   this.DoctornewId = 0;
-  this.getpackagedetList();
+  this.getConcessionChek();
+  this.calculateTotalAmtbyprice();
+  this.finaldiscAmt(); 
+  this.getpackagedetList(); 
+  this.onClearServiceAddList(); 
 
 }
 onClearServiceAddList() { 
@@ -575,13 +553,13 @@ onClearServiceAddList() {
   this.registeredForm.reset();
 }
 vchargewisetotaldiscAmt: any = 0;
-finaldiscAmt() {
+finaldiscAmt() { 
   this.vchargewisetotaldiscAmt += this.vchargeDisAmount;  
   this.vFinalConcessionAmt = this.vchargewisetotaldiscAmt;
   console.log(this.vFinalConcessionAmt)
   this.CalcDiscPercentageonBill();
 }
-chkdelte: any;
+  chkdelte: any;
   deleteTableRow(element) {
     console.log(element)
     let index = this.chargeslist.indexOf(element);
@@ -598,50 +576,51 @@ chkdelte: any;
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
         this.CalcDiscPercentageonBill();
-        if(element.IsPackage == '1'){
+        if (element.IsPackage == '1') {
           this.serviceId = 0;
           this.getpackagedetList();
+        } 
+        if( this.dataSource.data.length == 0){
+          this.ServiceDiscper = 0;
+          this.vFinalconcessionDiscPer = '';
         }
       }
     });
   }
 
-deleteTableRowPackage(element) {
-  let index = this.PacakgeList.indexOf(element);
-  if (index >= 0) {
-    this.PacakgeList.splice(index, 1);
-    this.dsPackageDet.data = [];
-    this.dsPackageDet.data = this.PacakgeList;
+  deleteTableRowPackage(element) {
+    let index = this.PacakgeList.indexOf(element);
+    if (index >= 0) {
+      this.PacakgeList.splice(index, 1);
+      this.dsPackageDet.data = [];
+      this.dsPackageDet.data = this.PacakgeList;
+    }
+    Swal.fire('Success !', 'PacakgeList Row Deleted Successfully', 'success');
+
   }
-  Swal.fire('Success !', 'PacakgeList Row Deleted Successfully', 'success');
-  
-}
-//package list 
-getpackagedetList(){
-  var vdata={
-    'ServiceId': this.serviceId
+  //package list 
+  getpackagedetList() {
+    var vdata = {
+      'ServiceId': this.serviceId
+    }
+    console.log(vdata);
+    this._oPSearhlistService.getpackagedetList(vdata).subscribe((data) => {
+      this.dsPackageDet.data = data as ChargesList[];
+      this.PacakgeList = this.dsPackageDet.data;
+      console.log(this.dsPackageDet.data);
+    });
   }
-  console.log(vdata);
-  this._oPSearhlistService.getpackagedetList(vdata).subscribe((data)=>{
-    this.dsPackageDet.data = data as ChargesList[];
-    this.PacakgeList = this.dsPackageDet.data;
-    console.log(this.dsPackageDet.data); 
-  });
-}
 getConcessionReasonList() {
   this._oPSearhlistService.getConcessionCombo().subscribe(data => {
     this.ConcessionReasonList = data;
   })
-}
- 
- 
+} 
   calculateTotalAmtbyprice() {
     if (this.vPrice && this.vQty) {
         this.vChargeTotalAmount = Math.round(parseInt(this.vPrice) * parseInt(this.vQty)).toString();
         this.vCahrgeNetAmount = this.vChargeTotalAmount;
     }
-  }
- 
+  } 
   // Charges Wise Disc Percentage 
 
   calculatePersc() {
@@ -652,17 +631,15 @@ getConcessionReasonList() {
         Swal.fire("Enter Discount % Less than 100 & Greater > 0")
         this.vchargeDisAmount = '';
         this.registeredForm.get('ChargeDiscPer').setValue('') 
-        this.vCahrgeNetAmount = this.vChargeTotalAmount;
-        this.Consessionres = false;
+        this.vCahrgeNetAmount = this.vChargeTotalAmount; 
       } else {
         this.vchargeDisAmount = ((parseFloat(this.vChargeTotalAmount) * parseFloat(ServiceDiscper)) / 100).toFixed(2);
-        this.Consessionres = true;
+ 
         this.vCahrgeNetAmount = (parseFloat(this.vChargeTotalAmount) - parseFloat(this.vchargeDisAmount)).toFixed(2); 
       }
     } else {
       this.vCahrgeNetAmount = this.vChargeTotalAmount;
-      this.vchargeDisAmount = '';
-      this.Consessionres = false;
+      this.vchargeDisAmount = ''; 
       this.registeredForm.get('ChargeDiscPer').setValue('') 
     }
   }
@@ -674,111 +651,100 @@ getConcessionReasonList() {
         Swal.fire("Enter Discount Amt Less than Toatal Amt & Greater > 0")
         this.VchargeDiscPer = '';
         this.vchargeDisAmount = '';
-        this.vCahrgeNetAmount = this.vChargeTotalAmount;
-        this.Consessionres = false;
+        this.vCahrgeNetAmount = this.vChargeTotalAmount; 
       } else {
-        this.VchargeDiscPer = ((parseFloat(ServiceDiscAmt) / parseFloat(this.vChargeTotalAmount)) * 100).toFixed(2);  
-        this.Consessionres = true;
-        this.vCahrgeNetAmount = (parseFloat(this.vChargeTotalAmount) - parseFloat(this.vchargeDisAmount)).toFixed(2);
-
+        this.VchargeDiscPer = ((parseFloat(ServiceDiscAmt) / parseFloat(this.vChargeTotalAmount)) * 100).toFixed(2);   
+        this.vCahrgeNetAmount = (parseFloat(this.vChargeTotalAmount) - parseFloat(this.vchargeDisAmount)).toFixed(2); 
       }
     } else {
       this.vCahrgeNetAmount = this.vChargeTotalAmount;
       this.VchargeDiscPer = '';
-      this.vchargeDisAmount = '';
-      this.Consessionres = false;
+      this.vchargeDisAmount = ''; 
     } 
   }
-
 getNetAmtSum(element) { 
-  this.vFinalnetPaybleAmt = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0).toFixed(2); 
- 
-  this.vFinalTotalAmt = element.reduce((sum, { TotalAmt }) => sum += +(TotalAmt || 0), 0).toFixed(2); 
-  let FinalDiscAmt = element.reduce((sum, { DiscAmt }) => sum += +(DiscAmt || 0), 0).toFixed(2);
+  this.vFinalnetPaybleAmt = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0).toFixed(2);  
+  this.vFinalTotalAmt = element.reduce((sum, { TotalAmt }) => sum += +(TotalAmt || 0), 0).toFixed(2);  
+  return  this.vFinalnetPaybleAmt ;
+}  
+getDiscAmtSum(element) {  
+  let FinalDiscAmt = element.reduce((sum, { DiscAmt }) => sum += +(DiscAmt || 0), 0).toFixed(2); 
   if(FinalDiscAmt > 0){ 
-    this.BillingForm.get('FinalNetAmt').setValue(this.vFinalnetPaybleAmt); 
+    this.BillingForm.get('FinalconcessionAmt').setValue(FinalDiscAmt);
+    this.BillingForm.get('FinalNetAmt').setValue(this.vFinalnetPaybleAmt);  
+    this.getConcessionChek();
   } else{
+    this.BillingForm.get('FinalconcessionAmt').clearValidators();
+    this.vFinalConcessionAmt = ''; 
     this.BillingForm.get('FinalNetAmt').clearValidators();
     this.vFinalnetPaybleAmt = this.vFinalTotalAmt ; 
-  }
-
-  return  this.vFinalnetPaybleAmt ;
-} 
-getDiscAmtSum(element) {  
-let FinalDiscAmt = element.reduce((sum, { DiscAmt }) => sum += +(DiscAmt || 0), 0).toFixed(2);
-if(FinalDiscAmt > 0){ 
-  this.BillingForm.get('FinalconcessionAmt').setValue(FinalDiscAmt);
-  this.Consessionres = true;
-} else{
-  this.BillingForm.get('FinalconcessionAmt').clearValidators();
-  this.vFinalConcessionAmt = '';
-  this.Consessionres = false;
-}
-
-  return FinalDiscAmt
-}
+  }  
  
+  return  FinalDiscAmt;
+}  
 
-  CalcDiscPercentageonBill() {
-    debugger
+  CalcDiscPercentageonBill() { 
     // let finalDiscPer = !this.BillingForm.get("FinalconcessionPer").value ? "0" : this.BillingForm.get("FinalconcessionPer").value || "0" ; //this.BillingForm.get('FinalconcessionPer').value? 0 : this.BillingForm.get('FinalconcessionPer').value || "0";
     let finalDiscPer = this.BillingForm.get("FinalconcessionPer").value || 0;
     if (finalDiscPer > 0 && finalDiscPer < 100 || finalDiscPer > 100) {
       if (finalDiscPer > 100) {
-        Swal.fire("Please enter discount percentage less than 100"); 
-        this.BillingForm.get('ConcessionId').clearValidators();
-        this.Consessionres = false;
+        Swal.fire("Please enter discount percentage less than 100");
         this.vFinalConcessionAmt = '';
         this.vFinalnetPaybleAmt = this.vFinalTotalAmt;
         this.BillingForm.get('FinalconcessionAmt').setValue(this.vFinalConcessionAmt)
-        this.BillingForm.get('FinalNetAmt').setValue(this.vFinalnetPaybleAmt) 
-   
+        this.BillingForm.get('FinalNetAmt').setValue(this.vFinalnetPaybleAmt)
       } else {
         this.vFinalConcessionAmt = Math.round((parseFloat(this.vFinalTotalAmt) * parseFloat(finalDiscPer)) / 100);
         this.vFinalnetPaybleAmt = Math.round(parseFloat(this.vFinalTotalAmt) - parseFloat(this.vFinalConcessionAmt)).toFixed(2);
-        this.Consessionres = true;
         this.BillingForm.get('FinalconcessionAmt').setValue(this.vFinalConcessionAmt)
-        this.BillingForm.get('FinalNetAmt').setValue(this.vFinalnetPaybleAmt) 
+        this.BillingForm.get('FinalNetAmt').setValue(this.vFinalnetPaybleAmt)
       }
     } else {
-      this.BillingForm.get('ConcessionId').clearValidators();
-      this.Consessionres = false;
       this.vFinalConcessionAmt = '';
       this.vFinalnetPaybleAmt = this.vFinalTotalAmt;
       this.BillingForm.get('FinalconcessionAmt').setValue(this.vFinalConcessionAmt)
       this.BillingForm.get('FinalNetAmt').setValue(this.vFinalnetPaybleAmt)
-    
     }
+    this.getConcessionChek();
   }
 
   CalcDiscAmtonBill() {
-    let finalDiscAmt = this.BillingForm.get('FinalconcessionAmt').value || 0;
-
+    let finalDiscAmt = this.BillingForm.get('FinalconcessionAmt').value || 0; 
     if (finalDiscAmt > 0 && finalDiscAmt < this.vFinalTotalAmt || finalDiscAmt > this.vFinalTotalAmt) {
       if (parseFloat(finalDiscAmt) > parseFloat(this.vFinalTotalAmt)) {
-        Swal.fire("Enter Discount Amt Less than Toatal Amt & Greater > 0")
-        this.BillingForm.get('ConcessionId').clearValidators();
+        Swal.fire("Enter Discount Amt Less than Toatal Amt & Greater > 0") 
         this.vFinalconcessionDiscPer = '';
-        this.vFinalnetPaybleAmt = this.vFinalTotalAmt;
-        this.Consessionres = false;
+        this.vFinalnetPaybleAmt = this.vFinalTotalAmt; 
         this.BillingForm.get('FinalNetAmt').setValue(this.vFinalnetPaybleAmt)
      
       } else {
-        this.vFinalconcessionDiscPer = ((parseFloat(finalDiscAmt) / parseFloat(this.vFinalTotalAmt)) * 100).toFixed(2);
-        this.Consessionres = true;
+        this.vFinalconcessionDiscPer = ((parseFloat(finalDiscAmt) / parseFloat(this.vFinalTotalAmt)) * 100).toFixed(2); 
         this.vFinalnetPaybleAmt = Math.round(parseFloat(this.vFinalTotalAmt) - parseFloat(finalDiscAmt)).toFixed(2);
         this.BillingForm.get('FinalNetAmt').setValue(this.vFinalnetPaybleAmt) 
       }
     } else {
       this.vFinalconcessionDiscPer = '';
-      this.vFinalnetPaybleAmt = this.vFinalTotalAmt;
-      this.BillingForm.get('ConcessionId').clearValidators();
-      this.Consessionres = false;
-      this.BillingForm.get('FinalNetAmt').setValue(this.vFinalnetPaybleAmt)
-  
+      this.vFinalnetPaybleAmt = this.vFinalTotalAmt;  
+      this.BillingForm.get('FinalNetAmt').setValue(this.vFinalnetPaybleAmt) 
     }
   }
 
+ServiceDiscper:any = 0;
+getConcessionChek(){ 
+  let Discper = 0;
+  if(this.vFinalConcessionAmt > 0){
+    this.Consessionres = true;
+  }else{
+    this.Consessionres = false;
+  }
+  Discper = parseInt(this.VchargeDiscPer) || 0;
+  this.ServiceDiscper += Discper;
+  if(this.ServiceDiscper > 0){
+    this.BillDiscPer = false;
+  }else{
+    this.BillDiscPer = true;
+  } 
+}
   onSaveOPBill2() { 
 
     if ((this.vOPIPId == '' || this.vOPIPId == null || this.vOPIPId == undefined)) {
@@ -1276,26 +1242,7 @@ if(FinalDiscAmt > 0){
     });
   }
 
-  onClear() {
-    this.registeredForm.reset();
-    this.BillingForm.reset();
-    this.searchFormGroup.reset();
-    this.dataSource.data = [];
-    this.chargeslist = [];
-    this.RegNo = ''
-    this.PatientName = ''
-    this.Doctorname = ''
-    this.vOPDNo = ''
-    this.AgeYear = ''
-    this.AgeMonth = ''
-    this.AgeDay = ''
-    this.GenderName = ''
-    this.DepartmentName = ''
-    this.PatientType = ''
-    this.Tarrifname = ''
-    this.CompanyName = ''
-    this.RefDocName = ''
-  }
+ 
 
   onClose() {
     this._matDialog.closeAll();
@@ -1317,6 +1264,7 @@ if(FinalDiscAmt > 0){
     this.Tarrifname = ''
     this.CompanyName = ''
     this.RefDocName = ''
+     this.ServiceDiscper = ''
     this.advanceDataStored.storage = [];
     this.BillingForm.get('PaymentType').setValue('CashPay');
     this.searchFormGroup.get('CashCounterID').setValue(this.setcashCounter)
