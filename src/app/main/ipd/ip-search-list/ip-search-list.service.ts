@@ -610,9 +610,12 @@ public updateIPDDischargSummary(employee)
  // Search Window Option
 
  // Admitted Doctor Master Combobox List
-  public getAdmittedDoctorCombo() {
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_AdmittedDoctorForCombo", {})
-  }
+  public getAdmittedDoctorCombo( param, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_DoctorListMasterForCombo",param)
+  } 
 
   //Ward Master Combobox List
   public getWardNameCombo() {
