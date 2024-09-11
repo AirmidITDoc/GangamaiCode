@@ -310,6 +310,7 @@ export class ResultEntryOneComponent implements OnInit {
             this.dataSource.data = Visit as Pthologyresult[];
             this.dataSource.sort = this.sort;
             this.dataSource.paginator = this.paginator;
+            this.vsuggation = this.dataSource.data[0]["SuggestionNote"];
             this.sIsLoading = '';
         },
             error => {
