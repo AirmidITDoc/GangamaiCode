@@ -72,9 +72,9 @@
                                         <mat-icon class="mat-icon-close"
                                             (click)="Serviceform.get('SrvcName').setValue(''); isSrvcNameSelected = false;">search</mat-icon>
                                     </span>
-                                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
+                                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="getServiceOptionText"
                                         showPanel="true" (optionsScroll)="onScroll()"
-                                        (optionSelected)='getSelectedObj($event.option.value)'>
+                                        (optionSelected)='getSelectedServiceObj($event.option.value)'>
                                         <mat-option *ngFor="let option of filteredOptions" [value]="option">
                                             {{option.ServiceName}} | {{option.Price}} |
                                             <span fxLayoutGap="4px">
@@ -102,7 +102,7 @@
                                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
                                         <mat-form-field appearance="outline">
                                             <mat-label>Price</mat-label>
-                                            <input matInput [(ngModel)]="b_price" name="bPrice" #price
+                                            <input matInput [(ngModel)]="vPrice" name="bPrice" #price
                                                 (keyup)="calculateTotalAmt()" formControlName="price" required
                                                 type="text" OnlyNumber id="price" (keydown)="onEnterprice($event)"
                                                 (keypress)="keyPressCharater($event)">
@@ -116,7 +116,7 @@
 
                                         <mat-form-field appearance="outline">
                                             <mat-label>Qty</mat-label>
-                                            <input matInput [(ngModel)]="b_qty" name="bQty" #qty required type="text"
+                                            <input matInput [(ngModel)]="vQty" name="bQty" #qty required type="text"
                                                 OnlyNumber (keyup)="calculateTotalAmt()" (keydown)="onEnterqty($event)"
                                                 formControlName="qty" id="qty" required
                                                 (keypress)="keyPressAlphanumeric($event)">
@@ -130,7 +130,7 @@
                             <div fxFlex="100%">
                                 <mat-form-field appearance="outline">
                                     <mat-label>TotalAmt</mat-label>
-                                    <input matInput [(ngModel)]="b_totalAmount" name="bTotalAmt" readonly
+                                    <input matInput [(ngModel)]="vserviceTotalAmt" name="bTotalAmt" readonly
                                         formControlName="totalAmount" required>
                                     <mat-error
                                         *ngIf="Serviceform.get('totalAmount').invalid && Serviceform.get('totalAmount').touched">
@@ -143,7 +143,7 @@
                                     <input matAutocompletePosition="below" type="text" #doctorname
                                         [(ngModel)]="vDoctorID" placeholder="Select Doctor" matInput
                                         (keydown)="onEnterdoctor($event)" formControlName="DoctorID"
-                                        [matAutocomplete]="autosearchDoctor1">
+                                        [matAutocomplete]="autosearchDoctor1" (input)="getAdmittedDoctorCombo()">
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
                                             (click)="Serviceform.get('DoctorID').setValue(''); isDoctorSelected = false;">close</mat-icon>
@@ -151,9 +151,8 @@
                                             (click)="Serviceform.get('DoctorID').setValue(''); isDoctorSelected = false;">search</mat-icon>
                                     </span>
                                     <mat-autocomplete #autosearchDoctor1="matAutocomplete"
-                                        [displayWith]="getOptionTextsearchDoctor">
-                                        <mat-option *ngFor="let option of filteredOptionssearchDoctor | async"
-                                            [value]="option">
+                                        [displayWith]="getOptionTextDoctor">
+                                        <mat-option *ngFor="let option of filteredOptionsDoctors" [value]="option">
                                             {{option.DoctorName}}
                                         </mat-option>
                                     </mat-autocomplete>
@@ -166,8 +165,8 @@
                                         <mat-form-field appearance="outline">
                                             <mat-label>Disc %</mat-label>
                                             <input matInput placeholder="Percentage" formControlName="discPer"
-                                                [(ngModel)]="formDiscPersc" autocomplete="off" #disc
-                                                (keydown)="onEnterdiscper($event,formDiscPersc)"
+                                                [(ngModel)]="vServiceDiscPer" autocomplete="off" #disc
+                                                (keydown)="onEnterdiscper($event,vServiceDiscPer)"
                                                 (keyup)="calculatePersc()" maxlength="5" required
                                                 (keypress)="keyPressCharater($event)">
                                         </mat-form-field>
@@ -176,7 +175,7 @@
                                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
                                         <mat-form-field appearance="outline">
                                             <mat-label>Disc Amt</mat-label>
-                                            <input matInput [(ngModel)]="b_disAmount" name="bDisAmount" #discamt
+                                            <input matInput [(ngModel)]="vServiceDisAmt" name="bDisAmount" #discamt
                                                 formControlName="discAmount" type="number" id="discAmount"
                                                 (keydown)="onEnterdiscamt($event)" (keyup)="calculatechargesDiscamt()">
                                         </mat-form-field>
@@ -187,7 +186,7 @@
                             <div fxFlex="100%">
                                 <mat-form-field appearance="outline">
                                     <mat-label>NetAmount</mat-label>
-                                    <input matInput [(ngModel)]="b_netAmount" name="bNetAmount" readonly #Netamt
+                                    <input matInput [(ngModel)]="vServiceNetAmount" name="bNetAmount" readonly #Netamt
                                         (keyup)="addData()" formControlName="netAmount" required type="number"
                                         (keydown)="onEnternetAmount($event)">
                                     <mat-error
@@ -207,7 +206,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="cash-container gap-12" style="padding-top: 8px;">
+                            <!-- <div class="cash-container gap-12" style="padding-top: 8px;">
                                 <div class="net-amt-section">
                                     <div class="net-amt">
                                         <div class="net-amt-box">
@@ -220,7 +219,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </form>
                     </div>
                 </div>
@@ -372,17 +371,10 @@
                                                             currency:'INR'}}</span>
                                                     </div>
                                                 </li>
-                                                <!-- <li>
-                                                                                                                <div class="list-item">
-                                                                                                                    <span class="list-item-key">Payment Remain :</span>
-                                                                                                                    <span class="list-item-value"> {{vpaidBalanceAmt}}</span>
-                                                                                                                </div>
-                                                                                                            </li> -->
                                                 <li>
                                                     <div class="list-item">
                                                         <span class="list-item-key">Pharmacy Amount :</span>
-                                                        <span class="list-item-value"> {{netPaybleAmt |
-                                                            currency:'INR'}}</span>
+                                                        <span class="list-item-value"> {{PharmacyAmont | currency:'INR'}}</span>
                                                     </div>
                                                 </li>
                                             </ul>
@@ -529,15 +521,23 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm  class="w-200">ClassName
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200"> 
-                                   <form [formGroup]="Serviceform">
+                                   <!-- <form [formGroup]="Serviceform">
                                     <mat-form-field style="width: 200px;">
                                         <mat-select   [(ngModel)]="contact.ClassName" (selectionChange)="onDropdownChange(contact)"
                                         formControlName="TableClassName" name="TableClassName">
-                                          <mat-option *ngFor="let contact of ClassList" [value]="contact">
+                                          <mat-option *ngFor="let contact of Tableclasslist" [value]="contact">
                                             {{contact.ClassName}}</mat-option>
                                         </mat-select>
                                       </mat-form-field> 
-                                    </form>
+                                    </form> -->
+
+                                    <mat-form-field style="width: 180px;">
+                                        <mat-select [(value)]="contact.ClassName">
+                                          <mat-option *ngFor="let contact of Tableclasslist" [value]="contact">
+                                            {{contact.ClassName }}
+                                          </mat-option>
+                                        </mat-select>
+                                      </mat-form-field>
                                 </mat-cell>
                             </ng-container>
                 

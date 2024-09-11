@@ -645,10 +645,10 @@ export class IPSearchListComponent implements OnInit {
   }
 
   getAdmittedDoctorCombo() {
-    this._IpSearchListService.getAdmittedDoctorCombo().subscribe(data => {
-      this.doctorNameCmbList = data;
-      this.filtereddoctor.next(this.doctorNameCmbList.slice());
-    });
+    // this._IpSearchListService.getAdmittedDoctorCombo().subscribe(data => {
+    //   this.doctorNameCmbList = data;
+    //   this.filtereddoctor.next(this.doctorNameCmbList.slice());
+    // });
   }
 
   IsDischarge: any;
