@@ -663,7 +663,7 @@ console.log(PatientHeaderObj)
       this.sIsLoading = 'loading-data';
 
       this.AdList = true;
-      this._IpBillBrowseListService.getIpFinalBillReceipt(
+      this._IpBillBrowseListService.getIpFinalBillReceiptgroupwise(
         BillNo
       ).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,
@@ -673,7 +673,7 @@ console.log(PatientHeaderObj)
             width: '100%',
             data: {
               base64: res["base64"] as string,
-              title: "IP Bill  Viewer"
+              title: "IPD FinalBill Group wise Viewer"
             }
           });
         dialogRef.afterClosed().subscribe(result => {
@@ -728,7 +728,7 @@ console.log(PatientHeaderObj)
             width: '100%',
             data: {
               base64: res["base64"] as string,
-              title: "IP Bill Class wise Viewer"
+              title: "IPD FinalBill Class wise Viewer"
             }
           });
         dialogRef.afterClosed().subscribe(result => {

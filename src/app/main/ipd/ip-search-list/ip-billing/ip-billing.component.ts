@@ -1926,7 +1926,7 @@ ServiceList:any=[];
 
   viewgetBillReportPdf(BillNo) {
 
-    this._IpSearchListService.getIpFinalBillReceipt(
+    this._IpSearchListService.getIpFinalBillReceiptgroupwise(
       BillNo
     ).subscribe(res => {
       const dialogRef = this._matDialog.open(PdfviewerComponent,

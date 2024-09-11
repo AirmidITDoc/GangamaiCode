@@ -306,8 +306,7 @@ export class AdmissionComponent implements OnInit {
     private formBuilder: FormBuilder,
     public toastr: ToastrService,
     private advanceDataStored: AdvanceDataStored) {
-    // this.getAdmittedPatientList();
-
+    
     this.getRegSearchList();
   }
 
@@ -554,8 +553,7 @@ export class AdmissionComponent implements OnInit {
         }
       });
     }
-    // if( this.V_SearchRegList.length > 0)
-
+  
   }
 
 

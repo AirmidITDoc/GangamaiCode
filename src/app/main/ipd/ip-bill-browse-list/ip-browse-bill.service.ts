@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { LoaderService } from 'app/core/components/loader/loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class IPBrowseBillService {
   myFilterIppaymentbrowseform: FormGroup;
   myFilterIprefundbrowseform: FormGroup;
 
-  constructor(public _httpClient:HttpClient,
+  constructor(public _httpClient:HttpClient,  private _loaderService: LoaderService,
     private _formBuilder: FormBuilder) { 
       this.myFilterIpbillbrowseform=this.filterForm_IpdBrowse();
       this.myFilterIppaymentbrowseform=this.filterForm_IpdpaymentBrowse();
@@ -71,7 +72,10 @@ filterForm_IpdrefundBrowse(): FormGroup {
 //   return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_BrowseIPDBill", employee)
 // }  
 
-public getIpBillBrowseList(param) {
+public getIpBillBrowseList(param,loader = true) {
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.post("Generic/GetDataSetByProc?procName=m_Rtrv_BrowseIPDBill", param) 
 }  
 
@@ -108,17 +112,31 @@ public getIPBILLBrowsedatewisePrint(BillNo) {
     return this._httpClient.get("InPatient/view-IP-BillReceipt?BillNo=" + BillNo);
   }
   
- public getIpInterimBillReceipt (BillNo){
+ public getIpInterimBillReceipt (BillNo,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("InPatient/view-IP-InterimBillReceipt?BillNo=" + BillNo)
  }
 
  getIPBILLdatewisePrint(BillNo){
   return this._httpClient.get("InPatient/view-IP-BillDatewiseReceipt?BillNo=" + BillNo)
  }
- getIpFinalBillclasswiseReceipt(BillNo){
+ getIpFinalBillclasswiseReceipt(BillNo,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("InPatient/view-IP-BillReceiptclasswise?BillNo=" + BillNo)
  }
+ getIpFinalBillReceiptgroupwise(BillNo,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
+  return this._httpClient.get("InPatient/view-IP-BillReceiptgroupwise?BillNo=" + BillNo)
+ }
+
  
+
 
  getIpFinalBillwardwiseReceipt(BillNo){
   return this._httpClient.get("InPatient/view-IP-BillWardwiseReceipt?BillNo=" + BillNo)

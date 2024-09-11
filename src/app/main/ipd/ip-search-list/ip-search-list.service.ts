@@ -997,6 +997,14 @@ public getIpFinalBillReceipt(BillNo){
   return this._httpClient.get("InPatient/view-IP-BillReceipt?BillNo=" + BillNo);
 }
 
+getIpFinalBillReceiptgroupwise(BillNo,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
+  return this._httpClient.get("InPatient/view-IP-BillReceiptgroupwise?BillNo=" + BillNo)
+ }
+
+
 public getIpDraftBillReceipt(AdmissionID){
   return this._httpClient.get("InPatient/view-IP-DraftBillReceipt?AdmissionID=" + AdmissionID);
 }

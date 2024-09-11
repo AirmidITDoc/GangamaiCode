@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { LoaderService } from 'app/core/components/loader/loader.service';
 import { RegInsert } from 'app/main/opd/registration/registration.component';
 
 @Injectable({
@@ -18,7 +19,7 @@ export class AdmissionService {
   counter = 0;
 
   constructor(public _httpClient: HttpClient,
-    public _formBuilder: FormBuilder
+    public _formBuilder: FormBuilder,  private _loaderService: LoaderService,
   ) {
     this.myFilterform = this.filterForm();
     this.mySaveForm = this.saveForm();
@@ -202,7 +203,10 @@ export class AdmissionService {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Admtd_Ptnt_Dtls", employee)
   }
 
-  public getAdmittedPatientList_1(Param) {
+  public getAdmittedPatientList_1(Param,loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.post("Generic/GetDataSetByProc?procName=m_rtrv_Admtd_Ptnt_Dtls", Param);
   }
 
