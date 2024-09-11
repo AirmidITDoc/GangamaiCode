@@ -84,9 +84,15 @@ const appRoutes: Routes = [
                 (m) => m.InventoryModule
             ),
     },
-
+    {
+        path: "doctorshare",
+        loadChildren: () =>
+            import("./ip-report/ipreort.module").then(
+                (m) => m.IPReortModule
+            ),
+    },
    ];
-
+   
 @NgModule({
     declarations: [],
     imports: [

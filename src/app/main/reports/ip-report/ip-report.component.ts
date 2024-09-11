@@ -98,7 +98,7 @@ export class IpReportComponent implements OnInit {
 
 
   ngOnInit(): void {
-
+debugger
         
     if (this._ActRoute.url == "/reports/ipreport") 
       this.Reportsection='IP Reports'
@@ -106,6 +106,10 @@ export class IpReportComponent implements OnInit {
     this.Reportsection='IPD MIS REPORT'
     if (this._ActRoute.url == "/reports/ipbillingreport") 
       this.Reportsection='IPBilling Reports'
+     if (this._ActRoute.url =="/reports/doctorshare") 
+      this.Reportsection='DoctorShare Report'
+
+
     this.bindReportData();
   
     this.getDischargetypelist();
@@ -465,6 +469,26 @@ var data={
   else if (this.ReportName == 'Company wise Credit Report Summary') {
     this.FlagDoctorSelected = false;
     this.FlagUserSelected = false;
+   
+  } 
+  debugger
+  // Doctor share?
+    if (this.ReportName == 'DoctorShareReport') {
+    this.FlagDoctorSelected = true;
+    this.FlagUserSelected = false;
+
+  } else if (this.ReportName == 'DoctorWiseSummaryReport') {
+    this.FlagDoctorSelected = true;
+    this.FlagUserSelected = false;
+
+  } else if (this.ReportName == 'Consultant Doctor ShareDetails') {
+    this.FlagUserSelected = false;
+    this.FlagDoctorSelected = true;
+
+  }
+  else if (this.ReportName == 'DoctorShare List WithCharges	') {
+    this.FlagDoctorSelected = true;
+    this.FlagUserSelected = false;
 
   }
 
@@ -483,49 +507,25 @@ var data={
    
   }  else if (this.ReportName == 'Bill Summary Report') {
     this.FlagUserSelected = true;
-    // this.FlagDoctorSelected = false;
-    // this.FlagAdvanceDetailIDSelected=false;
-    // this.FlagBillSelected=false;
-    // this.FlagRefundIdSelected=false;
-  } 
+   } 
   if (this.ReportName == 'Credit Report') {
     this.FlagUserSelected = false;
-    // this.FlagDoctorSelected = false;
-    // this.FlagAdvanceDetailIDSelected=false;
-    // this.FlagBillSelected=false;
-    // this.FlagRefundIdSelected=false;
-
-  } else if (this.ReportName == 'Refund of Advance Report') {
+     } else if (this.ReportName == 'Refund of Advance Report') {
     this.FlagUserSelected = false;
-    // this.FlagDoctorSelected = false;
-    // this.FlagRefundIdSelected=false;
-    // this.FlagAdvanceDetailIDSelected=false;
-    // this.FlagBillSelected=false;
+   
   } else if (this.ReportName == 'Refund of Bill Report') {
     this.FlagUserSelected = false;
-    // this.FlagDoctorSelected = false;
-    // this.FlagRefundIdSelected=false;
-    // this.FlagAdvanceDetailIDSelected=false;
-    // this.FlagBillSelected=false;
+   
   } 
   else if (this.ReportName == 'IP Daily Collection Report') {
     this.FlagUserSelected = true;
-    // this.FlagDoctorSelected = false;
-    // this.FlagRefundIdSelected=false;
-    // this.FlagAdvanceDetailIDSelected=false;
-    // this.FlagBillSelected=false;
+   
   } else if (this.ReportName == 'IP Discharge & Bill Generation Pending Report') {
     this.FlagUserSelected = false;
-    // this.FlagDoctorSelected = false;
-    // this.FlagRefundIdSelected=false;
-    // this.FlagAdvanceDetailIDSelected=false;
-    // this.FlagBillSelected=false;
+   
   } else if (this.ReportName == 'IP Bill Generation Payment Due report') {
     this.FlagUserSelected = false;
-    // this.FlagDoctorSelected = false;
-    // this.FlagRefundIdSelected=false;
-    // this.FlagAdvanceDetailIDSelected=false;
-    // this.FlagBillSelected=false;
+   
   } 
 
   
@@ -711,7 +711,7 @@ var data={
     else if (this.ReportName == ' IPD Discharge Type Wise') {
       this.viewgetDischaregTypewisePdf();
     }
-   
+    debugger
 
     //IPMIS
     if (this.ReportName == 'Date wise Admission Count') {
@@ -792,6 +792,17 @@ var data={
       this.viewgetIpdischargebillgenependingPdf();
     }else if (this.ReportName == 'IP Bill Generation Payment Due report') {
       this.ViewgetIpbillgenepaymentdueview();
+    }else
+  if (this.ReportName == 'DoctorShareReport') {
+      this.viewgetDoctorShareReportPdf();
+    } 
+    else if (this.ReportName == 'Consultant Doctor ShareDetails') {
+      this.viewgetConsultantDoctorShareDetailsPdf();
+    } else if (this.ReportName == 'DoctorWiseSummaryReport') {
+      this.viewgetDoctorWiseSummaryReportReportPdf();
+    }
+    else if (this.ReportName == 'DoctorShare List WithCharges	') {
+      this.viewgetDoctorSharewithchargesReportPdf();
     }
   }
 
@@ -2525,7 +2536,136 @@ this._IPReportService.getIpbillgenepaymentdueView(
 },100);
 }
 
+//Doc share
 
+viewgetDoctorShareReportPdf(){
+  let DoctorId = 0;
+  if (this._IPReportService.userForm.get('DoctorId').value)
+    DoctorId = this._IPReportService.userForm.get('DoctorId').value.DoctorId
+ 
+  setTimeout(() => {
+    this.SpinLoading =true;
+    this.AdList=true;
+   this._IPReportService.getDoctorShareReportView(
+    this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+    this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+         DoctorId
+     ).subscribe(res => {
+     const matDialog = this._matDialog.open(PdfviewerComponent,
+       {
+         maxWidth: "85vw",
+         height: '750px',
+         width: '100%',
+         data: {
+           base64: res["base64"] as string,
+           title: "Doctor Share  Viewer"
+         }
+       });
+
+       matDialog.afterClosed().subscribe(result => {
+         this.AdList=false;
+         this.sIsLoading = ' ';
+       });
+   });
+  
+   },100);
+}
+viewgetConsultantDoctorShareDetailsPdf(){
+  let DoctorId = 0;
+  if (this._IPReportService.userForm.get('DoctorId').value)
+    DoctorId = this._IPReportService.userForm.get('DoctorId').value.DoctorId
+ 
+  setTimeout(() => {
+    this.SpinLoading =true;
+    this.AdList=true;
+   this._IPReportService.getConDoctorSharesReportView(
+    this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+    this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+         DoctorId
+     ).subscribe(res => {
+     const matDialog = this._matDialog.open(PdfviewerComponent,
+       {
+         maxWidth: "85vw",
+         height: '750px',
+         width: '100%',
+         data: {
+           base64: res["base64"] as string,
+           title: "Consultant Doctor Share Details Viewer"
+         }
+       });
+
+       matDialog.afterClosed().subscribe(result => {
+         this.AdList=false;
+         this.sIsLoading = ' ';
+       });
+   });
+  
+   },100);
+}
+viewgetDoctorWiseSummaryReportReportPdf(){
+  let DoctorId = 0;
+  if (this._IPReportService.userForm.get('DoctorId').value)
+    DoctorId = this._IPReportService.userForm.get('DoctorId').value.DoctorId
+ 
+  setTimeout(() => {
+    this.SpinLoading =true;
+    this.AdList=true;
+   this._IPReportService.getDoctorSharesummaryReportView(
+    this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+    this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+         DoctorId
+     ).subscribe(res => {
+     const matDialog = this._matDialog.open(PdfviewerComponent,
+       {
+         maxWidth: "85vw",
+         height: '750px',
+         width: '100%',
+         data: {
+           base64: res["base64"] as string,
+           title: "Doctor wise Summary Report Viewer"
+         }
+       });
+
+       matDialog.afterClosed().subscribe(result => {
+         this.AdList=false;
+         this.sIsLoading = ' ';
+       });
+   });
+  
+   },100);
+}
+viewgetDoctorSharewithchargesReportPdf(){
+  let DoctorId = 0;
+  if (this._IPReportService.userForm.get('DoctorId').value)
+    DoctorId = this._IPReportService.userForm.get('DoctorId').value.DoctorId
+ 
+  setTimeout(() => {
+    this.SpinLoading =true;
+    this.AdList=true;
+   this._IPReportService.getDoctorShareListWithChargesview(
+    this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+    this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+         DoctorId
+     ).subscribe(res => {
+     const matDialog = this._matDialog.open(PdfviewerComponent,
+       {
+         maxWidth: "85vw",
+         height: '750px',
+         width: '100%',
+         data: {
+           base64: res["base64"] as string,
+           title: "Doctor Share with Charges  Viewer"
+         }
+       });
+
+       matDialog.afterClosed().subscribe(result => {
+         this.AdList=false;
+         this.sIsLoading = ' ';
+       });
+   });
+  
+   },100);
+}
 
 
 optionsDischargeType: any[] = [];

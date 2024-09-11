@@ -303,5 +303,23 @@ public getRefundofAdvanceview(FromDate,ToDate){
   return this._httpClient.get("IPReport/view-RefundofAdvanceReport?FromDate=" + FromDate + "&ToDate="+ToDate);
 }
 
+// /doc share
 
+
+public getDoctorShareReportView(FromDate,ToDate,DoctorId){
+  
+  return this._httpClient.get("DoctorShareReports/view-DoctorShareReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&DoctorId="+DoctorId);
+}
+
+public getDoctorSharesummaryReportView(FromDate,ToDate,DoctorId){
+  
+  return this._httpClient.get("DoctorShareReports/viewDoctorWiseSummaryReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&DoctorId="+DoctorId);
+}
+public getConDoctorSharesReportView(FromDate,ToDate,DoctorId){
+  return this._httpClient.get("DoctorShareReports/ViewConDoctorShareDetails?FromDate="+FromDate + "&ToDate="+ToDate+"&DoctorId="+DoctorId);
+}
+
+public getDoctorShareListWithChargesview(FromDate,ToDate,DoctorId){
+  return this._httpClient.get("DoctorShareReports/ViewDoctorShareListWithCharges?FromDate=" + FromDate + "&ToDate="+ToDate+"&DoctorId="+DoctorId);
+}
 }
