@@ -167,7 +167,7 @@ export class TemplateMasterComponent implements OnInit {
     }).then((result) => {
       let Query
       if (result.isConfirmed) {
-        if (row.Isdeleted) {
+        if (row.IsDeleted) {
           Query =
             "Update M_TemplateMaster set IsDeleted=0 where TemplateId=" +
             PTemplateId;

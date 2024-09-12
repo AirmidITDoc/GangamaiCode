@@ -610,7 +610,7 @@ public updateIPDDischargSummary(employee)
  // Search Window Option
 
  // Admitted Doctor Master Combobox List
-  public getAdmittedDoctorCombo( param, loader = true) {
+  public getAdmittedDoctorCombo(param,loader = true) {
     if (loader) {
       this._loaderService.show();
   } 

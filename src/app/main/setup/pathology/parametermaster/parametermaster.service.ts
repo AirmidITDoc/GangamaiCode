@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { LoaderService } from "app/core/components/loader/loader.service";
 
 @Injectable({
     providedIn: "root",
@@ -17,7 +18,8 @@ export class ParametermasterService {
 
     constructor(
         private _httpClient: HttpClient,
-        private _formBuilder: FormBuilder
+        private _formBuilder: FormBuilder,
+        private _loaderService: LoaderService,
     ) {
         this.myformSearch = this.createSearchForm();
         this.myform = this.createParameterForm();
@@ -107,7 +109,10 @@ export class ParametermasterService {
     }
 
     //parameter detail
-    public getParameterMasterList(m_data) { 
+    public getParameterMasterList(m_data,loader = true) { 
+        if (loader) {
+            this._loaderService.show();
+        }
         return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PathParameterMaster_by_Name",
             m_data);
     }
@@ -197,7 +202,10 @@ export class ParametermasterService {
     public getParameterMasterCombo(param) {
         return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PathParameterList_by_Name",param );
     }
-    public getParameterMasterforformulaList(param) {
+    public getParameterMasterforformulaList(param,loader = true) {
+        if (loader) {
+            this._loaderService.show();
+        }
         return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_PathParaformulaList_by_Name",param );
     }
     

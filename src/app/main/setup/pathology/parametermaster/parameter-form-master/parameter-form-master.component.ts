@@ -319,6 +319,10 @@ export class ParameterFormMasterComponent implements OnInit {
         else
          var BoldValue=""
 
+         if(this._ParameterService.is_numeric)
+            var is_numeric="1"
+        else
+         var is_numeric="0"
 
         var numeric_info = [];
         var data2 = [];
@@ -369,7 +373,7 @@ export class ParameterFormMasterComponent implements OnInit {
             IsBoldFlag: BoldValue, //this._ParameterService.myform.get("IsBold").value || 'B',
             formula: this._ParameterService.myform.get("Formula").value || "%",
             unitId: this._ParameterService.myform.get("UnitId").value.UnitId || 0,
-            isNumeric: this._ParameterService.is_numeric,
+            isNumeric: is_numeric,
             isDeleted:Boolean(JSON.parse(this._ParameterService.myform.get("IsDeleted").value)),
             parameterID: this._ParameterService.myform.get("ParameterID").value || 0,
             isPrintDisSummary: Boolean(JSON.parse(this._ParameterService.myform.get("IsPrintDisSummary").value))

@@ -236,8 +236,8 @@ private _onDestroy = new Subject<void>();
       ServiceId :this.data.registerObj.ServiceId
     }
     this._serviceMasterService.getServicewiseClassMasterList(data).subscribe(Menu => {
-      this.DSServicedetailList.data = Menu as Servicedetail[];;
-      console.log(this.DSServicedetailList.data )
+      this.DSServicedetailList.data = Menu as Servicedetail[];
+      console.log(this.DSServicedetailList.data)
       // if(this.DSServicedetailList.data){
       //   this.DSServicedetailList.data.forEach((element) => {
       //     this.classratearry.push(element.ClassRate)

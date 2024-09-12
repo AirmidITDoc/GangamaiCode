@@ -145,6 +145,7 @@ export class ParametermasterComponent implements OnInit {
     }
 
     onEdit(row) {
+        console.log()
         var m_data = {
             ParameterID: row.ParameterID,
             ParameterShortName: row.ParameterShortName.trim(),
@@ -323,7 +324,7 @@ export class PathparameterMaster {
             this.Formula = PathparameterMaster.Formula || "";
             this.PrintParameterName =PathparameterMaster.PrintParameterName || "";
             this.UnitId = PathparameterMaster.UnitId || "";
-            this.IsNumeric = PathparameterMaster.IsNumeric || "false";
+            this.IsNumeric = PathparameterMaster.IsNumeric || "1";
             this.Isdeleted = PathparameterMaster.Isdeleted || "";
             this.AddedBy = PathparameterMaster.AddedBy || "";
             this.UpdatedBy = PathparameterMaster.UpdatedBy || "";

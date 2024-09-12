@@ -110,7 +110,7 @@ export class AddformulaComponent implements OnInit {
   onChangeparaList(option) {
     debugger
     this.paraname = option.ParameterName
-    // this.paraname=this._ParameterService.formulaform.get("ParameterId").value.ParameterName;
+     this.paraname=this._ParameterService.formulaform.get("ParameterId").value.ParameterName;
     console.log(this.paraname)
   }
   onClear() {
@@ -123,6 +123,7 @@ export class AddformulaComponent implements OnInit {
 
   }
   addoprator1() {
+    debugger
     this.paraname=this._ParameterService.formulaform.get("ParameterId").value.ParameterName
     this.paranamenew = "{{" + this.paraname + "}}"
     this.finalformula = this.finalformula + this.paranamenew + this.oprator;

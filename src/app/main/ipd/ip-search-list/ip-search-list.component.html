@@ -317,8 +317,8 @@
 
                             <ng-container matColumnDef="noData">
                                 <mat-footer-cell *matFooterCellDef colspan="6">
-                                    <mat-spinner style="float:left;" *ngIf="isLoadingStr=='loading'" [diameter]='30'>
-                                    </mat-spinner>
+                                    <!-- <mat-spinner style="float:left;" *ngIf="isLoadingStr=='loading'" [diameter]='30'>
+                                    </mat-spinner> -->
                                     <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
                                 </mat-footer-cell>
                             </ng-container>

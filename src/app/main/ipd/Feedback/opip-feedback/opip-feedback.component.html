@@ -9,7 +9,7 @@
                 <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
                 </mat-icon>
                 <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    Feedback 
+                    Feedback
                 </span>
 
             </div>
@@ -29,586 +29,1378 @@
         <!-- / SIDEBAR -->
 
         <!-- CENTER -->
-        <div  fusePerfectScrollbar>
+        <div fusePerfectScrollbar>
             <!-- CONTENT -->
 
             <div class="content-card">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-2">
                     <div fxFlex="100%" fxFlex.sm="100%" fxFlex.xs="100%" class="table-left">
-                        <div  fxFlexAlign="start center">
+                        <div fxFlexAlign="start center">
                             <div class="content-card" style="border-radius:4px; ">
-                                <div class="nav material2">
-                                    <div fxLayout="column" fxLayoutAlign="start none">
-                                        <form [formGroup]="Feedbackpatientform" class="pt-0">
-                                            <mat-card class="header-form-card py-12" style="overflow: auto;">
-                                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
-                                                    fxLayoutAlign="space-between" class="gap-8">
-                                                    <div class="radio-group-left gap-8" fxLayout="row"
-                                                        fxLayoutAlign="start center">
-                                                        <mat-radio-group aria-label="Select an option"
-                                                            formControlName="PatientType" [(ngModel)]="vSelectedOption"
-                                                            (change)="onChangePatientType($event)"
-                                                            (blur)="onChangePatientType($event)" fxLayout="row">
-                                                            <mat-radio-button value="OP"
-                                                                [disabled]="vCondition">OP</mat-radio-button>
-                                                            <mat-radio-button value="IP"
-                                                                [disabled]="vConditionIP">IP</mat-radio-button>
-                                                            <mat-radio-button value="External"
-                                                                [disabled]="vConditionExt">External</mat-radio-button>
-                                                        </mat-radio-group>
-
-                                                        <div>
-                                                            <mat-form-field appearance="outline" style="width: 500px;"
-                                                                *ngIf="Feedbackpatientform.get('PatientType').value != 'IP' && Feedbackpatientform.get('PatientType').value != 'External'">
-                                                                <input type="text" name="RegID" formControlName="RegID"
-                                                                    placeholder="OP-RegNo / First Name / Last Name / Mobile No"
-                                                                    matInput [matAutocomplete]="auto1"
-                                                                    (input)="getSearchListIP()">
-                                                                <span matSuffix style="display: flex;">
-                                                                    <mat-icon class="mat-icon-close"
-                                                                        (click)="Feedbackpatientform.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
-                                                                    <mat-icon class="mat-icon-close"
-                                                                        (click)="Feedbackpatientform.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
-                                                                </span>
-                                                                <mat-autocomplete #auto1="matAutocomplete"
-                                                                    [displayWith]="getOptionTextOPObj"
-                                                                    (optionSelected)='getSelectedObjOP($event.option.value)'>
-                                                                    <mat-option
-                                                                        *ngFor="let option of PatientListfilteredOptionsOP"
-                                                                        [value]="option">
-                                                                        {{option.FirstName}} {{option.MiddleName}}
-                                                                        {{option.LastName}} | {{option.RegNo}} |
-                                                                        {{option.MobileNo}}
-                                                                    </mat-option>
-                                                                </mat-autocomplete>
-
-                                                            </mat-form-field>
 
 
-                                                            <mat-form-field appearance="outline" style="width: 500px;"
-                                                                *ngIf="Feedbackpatientform.get('PatientType').value != 'OP' && Feedbackpatientform.get('PatientType').value != 'External'">
-                                                                <input type="text" name="RegID" formControlName="RegID"
-                                                                    placeholder="IP RegNo / First Name / Last Name / Mobile No"
-                                                                    matInput [matAutocomplete]="auto2"
-                                                                    (input)="getSearchListIP()">
-                                                                <span matSuffix style="display: flex;">
-                                                                    <mat-icon class="mat-icon-close"
-                                                                        (click)="Feedbackpatientform.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
-                                                                    <mat-icon class="mat-icon-close"
-                                                                        (click)="Feedbackpatientform.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
-                                                                </span>
-                                                                <mat-autocomplete #auto2="matAutocomplete"
-                                                                    [displayWith]="getOptionTextIPObj"
-                                                                    (optionSelected)='getSelectedObjRegIP($event.option.value)'>
-                                                                    <mat-option
-                                                                        *ngFor="let option of PatientListfilteredOptionsIP"
-                                                                        [value]="option">
-                                                                        {{option.FirstName}} {{option.MiddleName}}
-                                                                        {{option.LastName}} | {{option.RegNo}} |
-                                                                        {{option.MobileNo}}
-                                                                    </mat-option>
-                                                                </mat-autocomplete>
-                                                            </mat-form-field>
-                                                        </div>
-                                                        <!-- <mat-form-field appearance="outline"
-                                                            *ngIf="Feedbackpatientform.get('PatientType').value == 'External'"
-                                                            fxFlex="60%">
-                                                            <mat-label>Mobile Number</mat-label>
-                                                            <input name="MobileNo" formControlName="MobileNo"
-                                                                placeholder="Mobile Number" matInput required
-                                                                [(ngModel)]="MobileNo" max="9999999999" min="1000000000"
-                                                                autocomplete="off" maxlength="10"
-                                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
-                                                                required="required" value="9876658688"
-                                                                (keydown.enter)="onEntermobileno($event)"
-                                                                (blur)="onEntermobileno($event)">
-                                                            <mat-error class="error"
-                                                                *ngIf="Feedbackpatientform.get('MobileNo').invalid && Feedbackpatientform.get('MobileNo').touched">10
-                                                                digits Mobile number is
-                                                                required</mat-error>
-                                                        </mat-form-field> -->
+                                <div fxLayout="column" fxLayoutAlign="start none">
+                                    <form [formGroup]="Feedbackpatientform" class="pt-0">
+                                        <mat-card class="header-form-card py-12" style="overflow: auto;">
+                                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
+                                                fxLayoutAlign="space-between" class="gap-2">
+                                                <div class="radio-group-left gap-8" fxLayout="row"
+                                                    fxLayoutAlign="start center">
+                                                    <mat-radio-group aria-label="Select an option"
+                                                        formControlName="PatientType" [(ngModel)]="vSelectedOption"
+                                                        (change)="onChangePatientType($event)"
+                                                        (blur)="onChangePatientType($event)" fxLayout="row">
+                                                        <mat-radio-button value="OP"
+                                                            [disabled]="vCondition">OP</mat-radio-button>
+                                                        <mat-radio-button value="IP"
+                                                            [disabled]="vConditionIP">IP</mat-radio-button>
+                                                        <!-- <lablevalue="External"
+                                                                [disabled]="vConditionExt">Pharmacy</lable> -->
+                                                    </mat-radio-group>
 
-                                                        <!-- <mat-form-field appearance="outline"
-                                                            *ngIf="Feedbackpatientform.get('PatientType').value == 'External'">
-                                                            <mat-label>Patient Name</mat-label>
-                                                            <input matInput placeholder="PatientName"
-                                                                formControlName="PatientName" [(ngModel)]="PatientName"
-                                                                required (keydown)="onEnterpatientname($event)"
-                                                                #patientname type="text">
-                                                        </mat-form-field> -->
+                                                    <div>
+                                                        <mat-form-field appearance="outline" style="width: 500px;"
+                                                            *ngIf="Feedbackpatientform.get('PatientType').value != 'IP' && Feedbackpatientform.get('PatientType').value != 'External'">
+                                                            <input type="text" name="RegID" formControlName="RegID"
+                                                                placeholder="OP-RegNo / First Name / Last Name / Mobile No"
+                                                                matInput [matAutocomplete]="auto1"
+                                                                (input)="getSearchListIP()">
+                                                            <span matSuffix style="display: flex;">
+                                                                <mat-icon class="mat-icon-close"
+                                                                    (click)="Feedbackpatientform.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                                                                <mat-icon class="mat-icon-close"
+                                                                    (click)="Feedbackpatientform.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
+                                                            </span>
+                                                            <mat-autocomplete #auto1="matAutocomplete"
+                                                                [displayWith]="getOptionTextOPObj"
+                                                                (optionSelected)='getSelectedObjOP($event.option.value)'>
+                                                                <mat-option
+                                                                    *ngFor="let option of PatientListfilteredOptionsOP"
+                                                                    [value]="option">
+                                                                    {{option.FirstName}} {{option.MiddleName}}
+                                                                    {{option.LastName}} | {{option.RegNo}} |
+                                                                    {{option.MobileNo}}
+                                                                </mat-option>
+                                                            </mat-autocomplete>
+
+                                                        </mat-form-field>
 
 
+                                                        <mat-form-field appearance="outline" style="width: 500px;"
+                                                            *ngIf="Feedbackpatientform.get('PatientType').value != 'OP' && Feedbackpatientform.get('PatientType').value != 'External'">
+                                                            <input type="text" name="RegID" formControlName="RegID"
+                                                                placeholder="IP RegNo / First Name / Last Name / Mobile No"
+                                                                matInput [matAutocomplete]="auto2"
+                                                                (input)="getSearchListIP()">
+                                                            <span matSuffix style="display: flex;">
+                                                                <mat-icon class="mat-icon-close"
+                                                                    (click)="Feedbackpatientform.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                                                                <mat-icon class="mat-icon-close"
+                                                                    (click)="Feedbackpatientform.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
+                                                            </span>
+                                                            <mat-autocomplete #auto2="matAutocomplete"
+                                                                [displayWith]="getOptionTextIPObj"
+                                                                (optionSelected)='getSelectedObjRegIP($event.option.value)'>
+                                                                <mat-option
+                                                                    *ngFor="let option of PatientListfilteredOptionsIP"
+                                                                    [value]="option">
+                                                                    {{option.FirstName}} {{option.MiddleName}}
+                                                                    {{option.LastName}} | {{option.RegNo}} |
+                                                                    {{option.MobileNo}}
+                                                                </mat-option>
+                                                            </mat-autocomplete>
+                                                        </mat-form-field>
                                                     </div>
-                                                    <div class="comman-date">
-                                                        <app-common-date [screenFrom]="screenFromString"
-                                                            (dateTimeEventEmitter)="getDateTime($event)">
-                                                        </app-common-date>
-                                                    </div>
+
+
+
                                                 </div>
-                                                <div *ngIf="Feedbackpatientform.get('PatientType').value != 'External' && RegId != ''">
-                                                    <div class="content-wrapper p-12 h-100-p" fxLayout="column" fxLayoutAlign="space-between">
-                                                        <div class="example-sidenav-content" style="padding-left: 10px;">
-                                            
-                                                            <div class="filter-div mb-4" fxLayout="row" fxLayoutAlign="space-between center">
-                                                            
-                                                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
-                                                                    <div fxFlex.gt-sm="100%" fxFlex>
-                                                                        <div fxlayout="row" fxLayoutGap="5px">
-                                                                            <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 6px;">
-                                                                                <div class="patient-info-sales my-8">
-                                                                                    <div class="sales-patient-info-title">
-                                                                                        <span style="font-weight: 700;">
-                                                                                            Patient Information
-                                                                                        </span>
-                                                                                    </div>
-                                                                                    <hr>
-                                                                                    <div class="Ipd-patient-info" fxFlexFill fxLayout="row" fxLayoutAlign="space-between center"
-                                                                                        class="patient-info">
-                                                                                        <div class="patient-sub">
-                                                                                            <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
-                                                                                                fxLayoutAlign="space-between">
-                                                                                                <div fxLayout="column" fxLayoutGap="6px">
-                                                                                                    <div class="patient-col">
-                                                                                                        <span class="patient-col-key">UHID No
-                                                                                                        </span>
-                                                                                                        <span>:</span>
-                                                                                                        <span
-                                                                                                            class="patient-col-value">{{RegNo}}</span>
-                                                                                                    </div>
-                                                                                                    <div class="patient-col">
-                                                                                                        <span class="patient-col-key">Patient Name
-                                                                                                        </span>
-                                                                                                        <span>:</span>
-                                                                                                        <span
-                                                                                                            class="patient-col-value">{{PatientName}}</span>
-                                                                                                    </div>
+                                                <div class="comman-date">
+                                                    <app-common-date [screenFrom]="screenFromString"
+                                                        (dateTimeEventEmitter)="getDateTime($event)">
+                                                    </app-common-date>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <!-- *ngIf="Feedbackpatientform.get('PatientType').value != 'External' && RegId != ''"> -->
+                                                <div class="content-wrapper p-12 h-70-p" fxLayout="column"
+                                                    fxLayoutAlign="space-between">
+                                                    <div class="example-sidenav-content" style="padding-left: 10px;">
+
+                                                        <div class="filter-div mb-4" fxLayout="row"
+                                                            fxLayoutAlign="space-between center">
+
+                                                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
+                                                                fxLayoutGap="5px">
+                                                                <div fxFlex.gt-sm="100%" fxFlex>
+                                                                    <div fxlayout="row" fxLayoutGap="5px">
+                                                                        <mat-card fxFlex.gt-sm="100%" fxFlex
+                                                                            style="padding: 6px;">
+                                                                            <div class="patient-info-sales my-8">
+                                                                                <div class="sales-patient-info-title">
+                                                                                    <span style="font-weight: 700;">
+                                                                                        Patient Information
+                                                                                    </span>
+                                                                                </div>
+                                                                                <hr>
+                                                                                <div class="Ipd-patient-info" fxFlexFill
+                                                                                    fxLayout="row"
+                                                                                    fxLayoutAlign="space-between center"
+                                                                                    class="patient-info">
+                                                                                    <div class="patient-sub">
+                                                                                        <div class="patient-info-row patient-info-1-111 pt-8"
+                                                                                            fxLayout="row"
+                                                                                            fxLayoutAlign="space-between">
+                                                                                            <div fxLayout="column"
+                                                                                                fxLayoutGap="6px">
+                                                                                                <div
+                                                                                                    class="patient-col">
+                                                                                                    <span
+                                                                                                        class="patient-col-key">UHID
+                                                                                                        No
+                                                                                                    </span>
+                                                                                                    <span>:</span>
+                                                                                                    <span
+                                                                                                        class="patient-col-value">{{RegNo}}</span>
                                                                                                 </div>
-                                                                                                <div fxLayout="column" fxLayoutGap="6px">
-                                                                                                    <div class="patient-col">
-                                                                                                        <span class="patient-col-key">Doctor Name</span>
-                                                                                                        <span>:</span>
-                                                                                                        <span class="patient-col-value">{{DoctorName}}</span>
-                                                                                                    </div>
-                                                                                                    <div class="patient-col">
-                                                                                                        <span class="patient-col-key">Department</span>
-                                                                                                        <span>:</span>
-                                                                                                        <!-- <span class="patient-col-value">{{DepartmentName}}</span> -->
-                                                                                                    </div>
+                                                                                                <div
+                                                                                                    class="patient-col">
+                                                                                                    <span
+                                                                                                        class="patient-col-key">Patient
+                                                                                                        Name
+                                                                                                    </span>
+                                                                                                    <span>:</span>
+                                                                                                    <span
+                                                                                                        class="patient-col-value">{{PatientName}}</span>
                                                                                                 </div>
-                                                                                                <div fxLayout="column" fxLayoutGap="6px">
-                                                                                                    
-                                                                                                    <div class="patient-col">
-                                                                                                        <span class="patient-col-key">DOA | Time</span>
-                                                                                                        <span>:</span>
-                                                                                                        <!-- <span class="patient-col-value">{{AdmDateTime}}</span> -->
-                                                                                                    </div>
-                                                                                                    <div class="patient-col">
-                                                                                                        <span class="patient-col-key">IPD No</span>
-                                                                                                        <span>:</span>
-                                                                                                        <span class="patient-col-value">{{OPDNo}}</span>
-                                                                                                    </div>
-                                                                                                  
-                                                                                                                                                                                                     
+                                                                                            </div>
+                                                                                            <div fxLayout="column"
+                                                                                                fxLayoutGap="6px">
+                                                                                                <div
+                                                                                                    class="patient-col">
+                                                                                                    <span
+                                                                                                        class="patient-col-key">Doctor
+                                                                                                        Name</span>
+                                                                                                    <span>:</span>
+                                                                                                    <span
+                                                                                                        class="patient-col-value">{{DoctorName}}</span>
                                                                                                 </div>
-                                                                                                <div fxLayout="column" fxLayoutGap="6px">
-                                                                                                  
-                                                                                                    <div class="patient-col">
-                                                                                                        <span class="patient-col-key">Tarrif Name
-                                                                                                        </span>
-                                                                                                        <span>:</span>
-                                                                                                        <span class="patient-col-value">{{TariffName}}</span>
-                                                                                                    </div>
-                                                                                                    <div class="patient-col" >
-                                                                                                        <span class="patient-col-key">Company Name</span>
-                                                                                                        <span>:</span>
-                                                                                                        <span class="patient-col-value" style="color: orange;">{{CompanyName}}</span>
-                                                                                                    </div>
+                                                                                                <div
+                                                                                                    class="patient-col">
+                                                                                                    <span
+                                                                                                        class="patient-col-key">Department</span>
+                                                                                                    <span>:</span>
+                                                                                                    <!-- <span class="patient-col-value">{{DepartmentName}}</span> -->
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div fxLayout="column"
+                                                                                                fxLayoutGap="6px">
+
+                                                                                                <div
+                                                                                                    class="patient-col">
+                                                                                                    <span
+                                                                                                        class="patient-col-key">DOA
+                                                                                                        | Time</span>
+                                                                                                    <span>:</span>
+                                                                                                    <!-- <span class="patient-col-value">{{AdmDateTime}}</span> -->
+                                                                                                </div>
+                                                                                                <div
+                                                                                                    class="patient-col">
+                                                                                                    <span
+                                                                                                        class="patient-col-key">IPD
+                                                                                                        No</span>
+                                                                                                    <span>:</span>
+                                                                                                    <span
+                                                                                                        class="patient-col-value">{{OPDNo}}</span>
+                                                                                                </div>
+
+
+                                                                                            </div>
+                                                                                            <div fxLayout="column"
+                                                                                                fxLayoutGap="6px">
+
+                                                                                                <div
+                                                                                                    class="patient-col">
+                                                                                                    <span
+                                                                                                        class="patient-col-key">Tarrif
+                                                                                                        Name
+                                                                                                    </span>
+                                                                                                    <span>:</span>
+                                                                                                    <span
+                                                                                                        class="patient-col-value">{{TariffName}}</span>
+                                                                                                </div>
+                                                                                                <div
+                                                                                                    class="patient-col">
+                                                                                                    <span
+                                                                                                        class="patient-col-key">Company
+                                                                                                        Name</span>
+                                                                                                    <span>:</span>
+                                                                                                    <span
+                                                                                                        class="patient-col-value"
+                                                                                                        style="color: orange;">{{CompanyName}}</span>
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
-                                                                            </mat-card>
-                                                                           
-                                                                        </div>
-                                                                    </div> 
-                                                                </div> 
+                                                                            </div>
+                                                                        </mat-card>
+
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                            
                                                         </div>
-                                            
-                                                      
+
                                                     </div>
+
+
                                                 </div>
-                                            </mat-card>
-                                        </form>
+                                            </div>
+                                        </mat-card>
+                                    </form>
 
-                                    </div>
                                 </div>
 
-                                <div class="example-sidenav-content">
 
-                                    <mat-card style="padding: 5px;">
 
-                                        <div fxFlex.gt-sm="98%" fxFlex *ngIf="opflag">
-                                            <mat-tab-group style="overflow: auto;">
-                                                <mat-tab label="Please Rate Each of this OP Department..">
-                                                    <mat-horizontal-stepper [linear]="isLinear"
-                                                        #stepper="matHorizontalStepper">
-                                                        <mat-step [stepControl]="firstFormGroup">
-                                                            <form [formGroup]="firstFormGroup">
-                                                                <ng-template matStepLabel style="color: blue;font-size: medium;">How the Hospital
-                                                                    Services?</ng-template>
-                                                                <mat-form-field>
-                                                                    <input matInput style="color: blue;font-size: medium;"
-                                                                        placeholder="How the Hospital Services?"
-                                                                        formControlName="firstCtrl" required>
-                                                                </mat-form-field>
-                                                                <div>
-                                                                    <button mat-button matStepperNext>Next</button>
-                                                                </div>
-                                                            </form>
-                                                        </mat-step>
-                                                        <mat-step [stepControl]="secondFormGroup">
-                                                            <form [formGroup]="secondFormGroup">
-                                                                <ng-template matStepLabel>Exceptional Staff Courtesy and
-                                                                    Care...</ng-template>
-                                                                <mat-form-field>
-                                                                    <input matInput
-                                                                        placeholder="Exceptional Staff Courtesy and Care..."
-                                                                        formControlName="secondCtrl" required>
-                                                                </mat-form-field>
-                                                                <div>
-                                                                    <button mat-button matStepperPrevious>Back</button>
-                                                                    <button mat-button matStepperNext>Next</button>
-                                                                </div>
-                                                            </form>
-                                                        </mat-step>
-                                                        <mat-step [stepControl]="thirdFormGroup">
-                                                            <form [formGroup]="thirdFormGroup">
-                                                                <ng-template matStepLabel>Responsive and User-Friendly
-                                                                    Online Presence ...</ng-template>
-                                                                <mat-form-field>
-                                                                    <input matInput
-                                                                        placeholder="Responsive and User-Friendly Online Presence ..."
-                                                                        formControlName="thirdCtrl" required>
-                                                                </mat-form-field>
-                                                                <div>
-                                                                    <button mat-button matStepperPrevious>Back</button>
-                                                                    <button mat-button matStepperNext>Next</button>
-                                                                </div>
-                                                            </form>
-                                                        </mat-step>
-                                                        <mat-step [stepControl]="fourthFormGroup">
-                                                            <form [formGroup]="fourthFormGroup">
-                                                                <ng-template matStepLabel>Effective Communication
-                                                                    Regarding Billing and Costs ...</ng-template>
-                                                                <mat-form-field>
-                                                                    <input matInput
-                                                                        placeholder="Effective Communication Regarding Billing and Costs ..."
-                                                                        formControlName="fourthCtrl" required>
-                                                                </mat-form-field>
-                                                                <div>
-                                                                    <button mat-button matStepperPrevious>Back</button>
-                                                                    <button mat-button matStepperNext>Next</button>
-                                                                </div>
-                                                            </form>
-                                                        </mat-step>
-                                                        <mat-step>
-                                                            <ng-template matStepLabel>Done</ng-template>
-                                                            You are now done.
-                                                            <div>
-                                                                <button mat-button matStepperPrevious>Back</button>
-                                                                <button mat-button
-                                                                    (click)="stepper.reset()">Reset</button>
+
+                                <mat-card style="padding: 5px;">
+
+                                    <div fxFlex.gt-sm="98%" fxFlex="100%" *ngIf="opflag">
+                                        <mat-tab-group style="overflow: auto;">
+
+                                            <mat-tab label="Please Rate Each of this OP Department..">
+                                                <mat-horizontal-stepper [linear]="isLinear"
+                                                    #stepper="matHorizontalStepper">
+                                                    <mat-step [stepControl]="firstFormGroup" style="width:20%">
+                                                        <form [formGroup]="firstFormGroup">
+                                                            <ng-template matStepLabel ></ng-template>
+                                                                
+                                                            <mat-form-field style="width: 100%;">
+                                                                <mat-lable style="font-size: medium;color: blue;width: 100%;">How
+                                                                    the Hospital
+                                                                    Services?</mat-lable>
+                                                                <input matInput 
+                                                                    formControlName="firstCtrl" required>
+                                                            </mat-form-field>
+                                                            <div style="padding-top:80px;">
+                                                                <mat-card
+                                                                    style="width:100%;font-size: medium;font-weight: bold;">
+                                                                    <div fxLayout="column" fxFlex>
+                                                                        <div fxLayout="row"
+                                                                            fxLayoutAlign="space-between"
+                                                                            style="margin-right: 10px;height: 50px;padding-left: 100px;"
+                                                                            fxFlex>
+
+                                                                            <lable value="1">Excellent <img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/61.png"
+                                                                                    (click)="fetchresult(1)"
+                                                                                    style="margin: 0px 5px 0px 0px;"
+                                                                                    value="11" matTooltip="No Pain">
+                                                                            </lable>
+                                                                            <lable value="2">Good<img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/5.jpeg"
+                                                                                    (click)="fetchresult(2)"
+                                                                                    style="margin: 0px 15px 0px 15px;"
+                                                                                    matTooltip="Mild Pain"></lable>
+                                                                            <lable value="3">Average <img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/4.jpeg"
+                                                                                    (click)="fetchresult(3)"
+                                                                                    style="margin: 0px 15px 0px 15px;"
+                                                                                    matTooltip="Moderate Pain">
+                                                                            </lable>
+                                                                            <lable value="4">Poor <img width="45"
+                                                                                    height="15px"
+                                                                                    (click)="fetchresult(4)"
+                                                                                    src="assets/images/logos/3.jpeg"
+                                                                                    style="margin-right: 10px;"
+                                                                                    matTooltip="Severe Pain">
+                                                                            </lable>
+                                                                            <lable value="5">Worst <img width="45"
+                                                                                    height="15px"
+                                                                                    (click)="fetchresult(5)"
+                                                                                    src="assets/images/logos/1.jpeg"
+                                                                                    style="padding-top: 0px;"
+                                                                                    matTooltip="Worst Pain"></lable>
+
+
+
+                                                                        </div>
+                                                                    </div>
+                                                                    <button mat-button matStepperNext
+                                                                        style="border: blue;border-radius: 50%;background-color: #4456f5;margin-left: 20%;color: bisque;">Next
+                                                                        -></button>
+                                                                </mat-card>
+
                                                             </div>
-                                                        </mat-step>
-                                                    </mat-horizontal-stepper>
-                                                </mat-tab>
-                                             
-                                            </mat-tab-group>
-                                        </div>
-                                        <!-- //Ip part -->
-                                        <div fxFlex.gt-sm="98%" fxFlex *ngIf="ipflag">
-                                            <mat-tab-group style="overflow: auto;">
-                                               
-                                                <mat-tab label="Please Rate Each of this IP Department..">
-                                                    <mat-horizontal-stepper [linear]="isLinear"
-                                                        #stepper="matHorizontalStepper">
-                                                        <mat-step [stepControl]="firstFormGroup">
-                                                            <form [formGroup]="firstFormGroup">
-                                                                <ng-template matStepLabel>How the Hospital
-                                                                    Services?</ng-template>
-                                                                <mat-form-field>
-                                                                    <input matInput
-                                                                        placeholder="How the Hospital Services?"
-                                                                        formControlName="firstCtrl" required>
-                                                                </mat-form-field>
-                                                                <div>
-                                                                    <button mat-button matStepperNext>Next</button>
-                                                                </div>
-                                                            </form>
-                                                        </mat-step>
-                                                        <mat-step [stepControl]="secondFormGroup">
-                                                            <form [formGroup]="secondFormGroup">
-                                                                <ng-template matStepLabel>Exceptional Staff Courtesy and
-                                                                    Care...</ng-template>
-                                                                <mat-form-field>
-                                                                    <input matInput
-                                                                        placeholder="Exceptional Staff Courtesy and Care..."
-                                                                        formControlName="secondCtrl" required>
-                                                                </mat-form-field>
-                                                                <div>
-                                                                    <button mat-button matStepperPrevious>Back</button>
-                                                                    <button mat-button matStepperNext>Next</button>
-                                                                </div>
-                                                            </form>
-                                                        </mat-step>
-                                                        <mat-step [stepControl]="thirdFormGroup">
-                                                            <form [formGroup]="thirdFormGroup">
-                                                                <ng-template matStepLabel>Efficient Appointment
-                                                                    Scheduling and Management ...</ng-template>
-                                                                <mat-form-field>
-                                                                    <input matInput
-                                                                        placeholder="Efficient Appointment Scheduling and Management ..."
-                                                                        formControlName="thirdCtrl" required>
-                                                                </mat-form-field>
-                                                                <div>
-                                                                    <button mat-button matStepperPrevious>Back</button>
-                                                                    <button mat-button matStepperNext>Next</button>
-                                                                </div>
-                                                            </form>
-                                                        </mat-step>
-                                                        <mat-step [stepControl]="fourthFormGroup">
-                                                            <form [formGroup]="fourthFormGroup">
-                                                                <ng-template matStepLabel>Effective Communication
-                                                                    Regarding Billing and Costs ...</ng-template>
-                                                                <mat-form-field>
-                                                                    <input matInput
-                                                                        placeholder="Effective Communication Regarding Billing and Costs ..."
-                                                                        formControlName="fourthCtrl" required>
-                                                                </mat-form-field>
-                                                                <div>
-                                                                    <button mat-button matStepperPrevious>Back</button>
-                                                                    <button mat-button matStepperNext>Next</button>
-                                                                </div>
-                                                            </form>
-                                                        </mat-step>
-                                                        <mat-step [stepControl]="fiveFormGroup">
-                                                            <form [formGroup]="fiveFormGroup">
-                                                                <ng-template matStepLabel>How the Lab Services?
-                                                                    ...</ng-template>
-                                                                <mat-form-field>
-                                                                    <input matInput
-                                                                        placeholder="How the Lab Services? ..."
-                                                                        formControlName="fiveCtrl" required>
-                                                                </mat-form-field>
-                                                                <div>
-                                                                    <button mat-button matStepperPrevious>Back</button>
-                                                                    <button mat-button matStepperNext>Next</button>
-                                                                </div>
-                                                            </form>
-                                                        </mat-step>
-                                                        <mat-step [stepControl]="sixFormGroup">
-                                                            <form [formGroup]="sixFormGroup">
-                                                                <ng-template matStepLabel>Do you have any suggestion for
+                                                        </form>
+                                                    </mat-step>
+                                                    <mat-step [stepControl]="secondFormGroup">
+                                                        <form [formGroup]="secondFormGroup">
+                                                            <ng-template matStepLabel></ng-template>
+                                                            <mat-form-field>
+                                                                <mat-lable style="font-size: medium;color: blue;width: 100%;">Exceptional Staff Courtesy and
+                                                                    Care...</mat-lable>
+                                                                <input matInput
+                                                                    formControlName="secondCtrl" required>
+                                                            </mat-form-field>
+                                                            <div style="padding-top:80px;">
+                                                                <mat-card
+                                                                    style="width: 100%;font-size: medium;font-weight: bold;">
+                                                                    <div fxLayout="column" fxFlex>
+                                                                        <div fxLayout="row"
+                                                                            fxLayoutAlign="space-between"
+                                                                            style="margin-right: 10px;height: 50px;padding-left: 100px;"
+                                                                            fxFlex>
+
+
+                                                                            <lable value="1">Excellent <img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/61.png"
+                                                                                    (click)="fetchresult(1)"
+                                                                                    style="margin: 0px 5px 0px 0px;"
+                                                                                    value="11" matTooltip="No Pain">
+                                                                            </lable>
+                                                                            <lable value="2">Good<img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/5.jpeg"
+                                                                                    (click)="fetchresult(2)"
+                                                                                    style="margin: 0px 15px 0px 15px;"
+                                                                                    matTooltip="Mild Pain"></lable>
+                                                                            <lable value="3">Average <img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/4.jpeg"
+                                                                                    (click)="fetchresult(3)"
+                                                                                    style="margin: 0px 15px 0px 15px;"
+                                                                                    matTooltip="Moderate Pain">
+                                                                            </lable>
+                                                                            <lable value="4">Poor <img width="45"
+                                                                                    height="15px"
+                                                                                    (click)="fetchresult(4)"
+                                                                                    src="assets/images/logos/3.jpeg"
+                                                                                    style="margin-right: 10px;"
+                                                                                    matTooltip="Severe Pain">
+                                                                            </lable>
+                                                                            <lable value="5">Worst <img width="45"
+                                                                                    height="15px"
+                                                                                    (click)="fetchresult(5)"
+                                                                                    src="assets/images/logos/1.jpeg"
+                                                                                    style="padding-top: 0px;"
+                                                                                    matTooltip="Worst Pain"></lable>
+
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <button mat-button matStepperPrevious
+                                                                        style="border: blue;border-radius: 50%;background-color: #4456f5;margin-left: 20%;color: bisque;">Back
+                                                                    </button>
+                                                                    <button mat-button matStepperNext
+                                                                        style="border: blue;border-radius: 50%;background-color: #4456f5;margin-left: 2%;color: bisque;">Next
+                                                                        -></button>
+                                                                </mat-card>
+
+                                                            </div>
+                                                        </form>
+                                                    </mat-step>
+                                                    <mat-step [stepControl]="thirdFormGroup">
+                                                        <form [formGroup]="thirdFormGroup">
+                                                            <ng-template matStepLabel></ng-template>
+                                                            <mat-form-field>
+                                                                <mat-lable style="font-size: medium;color: blue;">Responsive
+                                                                    and User-Friendly
+                                                                    Online Presence ...</mat-lable>
+                                                                <input matInput
+                                                                    formControlName="thirdCtrl" required>
+                                                            </mat-form-field>
+                                                            <div style="padding-top:80px;">
+                                                                <mat-card
+                                                                    style="width: 100%;font-size: medium;font-weight: bold;">
+                                                                    <div fxLayout="column" fxFlex>
+                                                                        <div fxLayout="row"
+                                                                            fxLayoutAlign="space-between"
+                                                                            style="margin-right: 10px;height: 50px;padding-left: 100px;"
+                                                                            fxFlex>
+
+
+                                                                            <lable value="1">Excellent <img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/61.png"
+                                                                                    (click)="fetchresult(1)"
+                                                                                    style="margin: 0px 5px 0px 0px;"
+                                                                                    value="11" matTooltip="No Pain">
+                                                                            </lable>
+                                                                            <lable value="2">Good<img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/5.jpeg"
+                                                                                    (click)="fetchresult(2)"
+                                                                                    style="margin: 0px 15px 0px 15px;"
+                                                                                    matTooltip="Mild Pain"></lable>
+                                                                            <lable value="3">Average <img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/4.jpeg"
+                                                                                    (click)="fetchresult(3)"
+                                                                                    style="margin: 0px 15px 0px 15px;"
+                                                                                    matTooltip="Moderate Pain">
+                                                                            </lable>
+                                                                            <lable value="4">Poor <img width="45"
+                                                                                    height="15px"
+                                                                                    (click)="fetchresult(4)"
+                                                                                    src="assets/images/logos/3.jpeg"
+                                                                                    style="margin-right: 10px;"
+                                                                                    matTooltip="Severe Pain">
+                                                                            </lable>
+                                                                            <lable value="5">Worst <img width="45"
+                                                                                    height="15px"
+                                                                                    (click)="fetchresult(5)"
+                                                                                    src="assets/images/logos/1.jpeg"
+                                                                                    style="padding-top: 0px;"
+                                                                                    matTooltip="Worst Pain"></lable>
+
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <button mat-button matStepperPrevious
+                                                                        style="border: blue;border-radius: 50%;background-color: #4456f5;margin-left: 20%;color: bisque;">Back
+                                                                    </button>
+                                                                    <button mat-button matStepperNext
+                                                                        style="border: blue;border-radius: 50%;background-color: #4456f5;margin-left: 2%;color: bisque;">Next
+                                                                        -></button>
+                                                                </mat-card>
+
+                                                            </div>
+                                                        </form>
+                                                    </mat-step>
+                                                    <mat-step [stepControl]="fourthFormGroup">
+                                                        <form [formGroup]="fourthFormGroup">
+                                                            <ng-template matStepLabel></ng-template>
+                                                            <mat-form-field>
+                                                                <mat-lable style="font-size: medium;color: blue;">Effective
+                                                                    Communication
+                                                                    Regarding Billing and Costs ...</mat-lable>
+                                                                <input matInput
+                                                                    formControlName="fourthCtrl" required>
+                                                            </mat-form-field>
+                                                            <div style="padding-top:80px;">
+                                                                <mat-card
+                                                                    style="width: 100%;font-size: medium;font-weight: bold;">
+                                                                    <div fxLayout="column" fxFlex>
+                                                                        <div fxLayout="row"
+                                                                            fxLayoutAlign="space-between"
+                                                                            style="margin-right: 10px;height: 50px;padding-left: 100px;"
+                                                                            fxFlex>
+
+
+                                                                            <lable value="1">Excellent <img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/61.png"
+                                                                                    (click)="fetchresult(1)"
+                                                                                    style="margin: 0px 5px 0px 0px;"
+                                                                                    value="11" matTooltip="No Pain">
+                                                                            </lable>
+                                                                            <lable value="2">Good<img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/5.jpeg"
+                                                                                    (click)="fetchresult(2)"
+                                                                                    style="margin: 0px 15px 0px 15px;"
+                                                                                    matTooltip="Mild Pain"></lable>
+                                                                            <lable value="3">Average <img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/4.jpeg"
+                                                                                    (click)="fetchresult(3)"
+                                                                                    style="margin: 0px 15px 0px 15px;"
+                                                                                    matTooltip="Moderate Pain">
+                                                                            </lable>
+                                                                            <lable value="4">Poor <img width="45"
+                                                                                    height="15px"
+                                                                                    (click)="fetchresult(4)"
+                                                                                    src="assets/images/logos/3.jpeg"
+                                                                                    style="margin-right: 10px;"
+                                                                                    matTooltip="Severe Pain">
+                                                                            </lable>
+                                                                            <lable value="5">Worst <img width="45"
+                                                                                    height="15px"
+                                                                                    (click)="fetchresult(5)"
+                                                                                    src="assets/images/logos/1.jpeg"
+                                                                                    style="padding-top: 0px;"
+                                                                                    matTooltip="Worst Pain"></lable>
+
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <button mat-button matStepperPrevious
+                                                                        style="border: blue;border-radius: 50%;background-color: #4456f5;margin-left: 20%;color: bisque;">Back
+                                                                    </button>
+                                                                    <button mat-button matStepperNext
+                                                                        style="border: blue;border-radius: 50%;background-color: #4456f5;margin-left: 2%;color: bisque;">Next
+                                                                        -></button>
+                                                                </mat-card>
+
+                                                            </div>
+                                                        </form>
+                                                    </mat-step>
+                                                    <mat-step [stepControl]="fiveFormGroup">
+                                                        <form [formGroup]="fiveFormGroup">
+                                                            <ng-template matStepLabel></ng-template>
+                                                            <mat-form-field>
+                                                                <mat-lable style="font-size: medium;color: blue;">How the Lab Services?
+                                                                    ...</mat-lable>
+                                                                <input matInput 
+                                                                    formControlName="fiveCtrl" required>
+                                                            </mat-form-field>
+                                                            <div style="padding-top:80px;">
+                                                                <mat-card
+                                                                    style="width: 100%;font-size: medium;font-weight: bold;">
+                                                                    <div fxLayout="column" fxFlex>
+                                                                        <div fxLayout="row"
+                                                                            fxLayoutAlign="space-between"
+                                                                            style="margin-right: 10px;height: 50px;padding-left: 100px;"
+                                                                            fxFlex>
+
+
+                                                                            <lable value="1">Excellent <img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/61.png"
+                                                                                    (click)="fetchresult(1)"
+                                                                                    style="margin: 0px 5px 0px 0px;"
+                                                                                    value="11" matTooltip="No Pain">
+                                                                            </lable>
+                                                                            <lable value="2">Good<img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/5.jpeg"
+                                                                                    (click)="fetchresult(2)"
+                                                                                    style="margin: 0px 15px 0px 15px;"
+                                                                                    matTooltip="Mild Pain"></lable>
+                                                                            <lable value="3">Average <img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/4.jpeg"
+                                                                                    (click)="fetchresult(3)"
+                                                                                    style="margin: 0px 15px 0px 15px;"
+                                                                                    matTooltip="Moderate Pain">
+                                                                            </lable>
+                                                                            <lable value="4">Poor <img width="45"
+                                                                                    height="15px"
+                                                                                    (click)="fetchresult(4)"
+                                                                                    src="assets/images/logos/3.jpeg"
+                                                                                    style="margin-right: 10px;"
+                                                                                    matTooltip="Severe Pain">
+                                                                            </lable>
+                                                                            <lable value="5">Worst <img width="45"
+                                                                                    height="15px"
+                                                                                    (click)="fetchresult(5)"
+                                                                                    src="assets/images/logos/1.jpeg"
+                                                                                    style="padding-top: 0px;"
+                                                                                    matTooltip="Worst Pain"></lable>
+
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <button mat-button matStepperPrevious
+                                                                        style="border: blue;border-radius: 50%;background-color: #4456f5;margin-left: 20%;color: bisque;">Back
+                                                                    </button>
+                                                                    <button mat-button matStepperNext
+                                                                        style="border: blue;border-radius: 50%;background-color: #4456f5;margin-left: 2%;color: bisque;">Next
+                                                                        -></button>
+                                                                </mat-card>
+
+                                                            </div>
+                                                        </form>
+                                                    </mat-step>
+                                                    <mat-step [stepControl]="sixFormGroup">
+                                                        <form [formGroup]="sixFormGroup">
+                                                            <ng-template matStepLabel></ng-template>
+                                                            <mat-form-field>
+                                                                <mat-lable style="font-size: medium;color: blue;">Do you have any suggestion for
                                                                     improvement regarding speed or in our
-                                                                    ...</ng-template>
-                                                                <mat-form-field>
-                                                                    <input matInput
-                                                                        placeholder="Do you have any suggestion for improvement regarding speed or in our  ..."
-                                                                        formControlName="sixCtrl" required>
-                                                                </mat-form-field>
-                                                                <div>
-                                                                    <button mat-button matStepperPrevious>Back</button>
-                                                                    <button mat-button matStepperNext>Next</button>
-                                                                </div>
-                                                            </form>
-                                                        </mat-step>
-                                                        <mat-step>
-                                                            <ng-template matStepLabel>Done</ng-template>
-                                                            You are now done.
-                                                            <div>
-                                                                <button mat-button matStepperPrevious>Back</button>
-                                                                <button mat-button
-                                                                    (click)="stepper.reset()">Reset</button>
-                                                            </div>
-                                                        </mat-step>
-                                                    </mat-horizontal-stepper>
-                                                </mat-tab>
-                                              
-                                            </mat-tab-group>
-                                        </div>
-                                        <!-- //Extpart -->
-                                        <div fxFlex.gt-sm="98%" fxFlex *ngIf="pharmaflag">
-                                            <mat-tab-group style="overflow: auto;">
-                                              
-                                                <mat-tab label="Please Rate Each of this Pharmacy Department..">
-                                                    <mat-horizontal-stepper [linear]="isLinear"
-                                                        #stepper="matHorizontalStepper">
-                                                        <mat-step [stepControl]="firstFormGroup">
-                                                            <form [formGroup]="firstFormGroup">
-                                                                <ng-template matStepLabel>How the Medical
-                                                                    Services?</ng-template>
-                                                                <mat-form-field>
-                                                                    <input matInput
-                                                                        placeholder="How the Medical Services?"
-                                                                        formControlName="firstCtrl" required>
-                                                                </mat-form-field>
-                                                                <div>
-                                                                    <button mat-button matStepperNext>Next</button>
-                                                                </div>
-                                                            </form>
-                                                        </mat-step>
-                                                        <mat-step [stepControl]="secondFormGroup">
-                                                            <form [formGroup]="secondFormGroup">
-                                                                <ng-template matStepLabel>Exceptional Staff Courtesy and
-                                                                    Care...</ng-template>
-                                                                <mat-form-field>
-                                                                    <input matInput
-                                                                        placeholder="Exceptional Staff Courtesy and Care..."
-                                                                        formControlName="secondCtrl" required>
-                                                                </mat-form-field>
-                                                                <div>
-                                                                    <button mat-button matStepperPrevious>Back</button>
-                                                                    <button mat-button matStepperNext>Next</button>
-                                                                </div>
-                                                            </form>
-                                                        </mat-step>
-                                                        <mat-step [stepControl]="thirdFormGroup">
-                                                            <form [formGroup]="thirdFormGroup">
-                                                                <ng-template matStepLabel>How likely will you
-                                                                    recommended our medical business to
-                                                                    friend</ng-template>
-                                                                <mat-form-field>
-                                                                    <input matInput
-                                                                        placeholder="How likely will you recommended our medical business to friend"
-                                                                        formControlName="thirdCtrl" required>
-                                                                </mat-form-field>
-                                                                <div>
-                                                                    <button mat-button matStepperPrevious>Back</button>
-                                                                    <button mat-button matStepperNext>Next</button>
-                                                                </div>
-                                                            </form>
-                                                        </mat-step>
-                                                        <mat-step [stepControl]="fourthFormGroup">
-                                                            <form [formGroup]="fourthFormGroup">
-                                                                <ng-template matStepLabel>Do you have any suggestion for
-                                                                    improvement regarding speed or in our </ng-template>
-                                                                <mat-form-field>
-                                                                    <input matInput
-                                                                        placeholder="Do you have any suggestion for improvement regarding speed or in our "
-                                                                        formControlName="fourthCtrl" required>
-                                                                </mat-form-field>
-                                                                <div>
-                                                                    <button mat-button matStepperPrevious>Back</button>
-                                                                    <button mat-button matStepperNext>Next</button>
-                                                                </div>
-                                                            </form>
-                                                        </mat-step>
-                                                        <mat-step>
-                                                            <ng-template matStepLabel>Done</ng-template>
-                                                            You are now done.
-                                                            <div>
-                                                                <button mat-button matStepperPrevious>Back</button>
-                                                                <button mat-button
-                                                                    (click)="stepper.reset()">Reset</button>
-                                                            </div>
-                                                        </mat-step>
-                                                    </mat-horizontal-stepper>
-                                                </mat-tab>
-                                            </mat-tab-group>
-                                        </div>
-                                    </mat-card>
+                                                                    ...</mat-lable>
+                                                                <input matInput
+                                                                    formControlName="sixCtrl" required>
+                                                            </mat-form-field>
+                                                            <div style="padding-top:80px;">
+                                                                <mat-card
+                                                                    style="width: 100%;font-size: medium;font-weight: bold;">
+                                                                    <div fxLayout="column" fxFlex>
+                                                                        <div fxLayout="row"
+                                                                            fxLayoutAlign="space-between"
+                                                                            style="margin-right: 10px;height: 50px;padding-left: 100px;"
+                                                                            fxFlex>
 
-                                </div>
+
+                                                                            <lable value="1">Excellent <img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/61.png"
+                                                                                    (click)="fetchresult(1)"
+                                                                                    style="margin: 0px 5px 0px 0px;"
+                                                                                    value="11" matTooltip="No Pain">
+                                                                            </lable>
+                                                                            <lable value="2">Good<img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/5.jpeg"
+                                                                                    (click)="fetchresult(2)"
+                                                                                    style="margin: 0px 15px 0px 15px;"
+                                                                                    matTooltip="Mild Pain"></lable>
+                                                                            <lable value="3">Average <img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/4.jpeg"
+                                                                                    (click)="fetchresult(3)"
+                                                                                    style="margin: 0px 15px 0px 15px;"
+                                                                                    matTooltip="Moderate Pain">
+                                                                            </lable>
+                                                                            <lable value="4">Poor <img width="45"
+                                                                                    height="15px"
+                                                                                    (click)="fetchresult(4)"
+                                                                                    src="assets/images/logos/3.jpeg"
+                                                                                    style="margin-right: 10px;"
+                                                                                    matTooltip="Severe Pain">
+                                                                            </lable>
+                                                                            <lable value="5">Worst <img width="45"
+                                                                                    height="15px"
+                                                                                    (click)="fetchresult(5)"
+                                                                                    src="assets/images/logos/1.jpeg"
+                                                                                    style="padding-top: 0px;"
+                                                                                    matTooltip="Worst Pain"></lable>
+
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <button mat-button matStepperPrevious
+                                                                        style="border: blue;border-radius: 50%;background-color: #4456f5;margin-left: 20%;color: bisque;">Back
+                                                                    </button>
+                                                                    <button mat-button matStepperNext
+                                                                        style="border: blue;border-radius: 50%;background-color: #4456f5;margin-left: 2%;color: bisque;">Next
+                                                                        -></button>
+                                                                </mat-card>
+
+                                                            </div>
+                                                        </form>
+                                                    </mat-step>
+                                                    <mat-step>
+                                                        <ng-template matStepLabel>Done</ng-template>
+                                                        You are now done.
+                                                        <div>
+                                                            <button mat-button matStepperPrevious>Back</button>
+                                                            <button mat-button (click)="stepper.reset()">Reset</button>
+                                                        </div>
+                                                    </mat-step>
+                                                </mat-horizontal-stepper>
+                                            </mat-tab>
+
+                                        </mat-tab-group>
+                                    </div>
+                                    <!-- //Ip part -->
+                                    <div fxFlex.gt-sm="98%" fxFlex *ngIf="ipflag">
+                                        <mat-tab-group style="overflow: auto;">
+
+                                            <mat-tab label="Please Rate Each of this IP Department..">
+                                                <mat-horizontal-stepper [linear]="isLinear"
+                                                    #stepper="matHorizontalStepper">
+                                                    <mat-step [stepControl]="firstFormGroup">
+                                                        <form [formGroup]="firstFormGroup">
+                                                            <ng-template matStepLabel></ng-template>
+                                                            <mat-form-field style="width: 100%;">
+                                                                <mat-lable style="font-size: medium;color: blue;">How the Hospital
+                                                                    Services...</mat-lable>
+                                                                <input matInput 
+                                                                    formControlName="firstCtrl" required>
+                                                            </mat-form-field>
+                                                            <div style="padding-top:80px;">
+                                                                <mat-card
+                                                                    style="width:100%;font-size: medium;font-weight: bold;">
+                                                                    <div fxLayout="column" fxFlex>
+                                                                        <div fxLayout="row"
+                                                                            fxLayoutAlign="space-between"
+                                                                            style="margin-right: 10px;height: 50px;padding-left: 100px;"
+                                                                            fxFlex>
+
+                                                                            <lable value="1">Excellent <img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/61.png"
+                                                                                    (click)="fetchresult(1)"
+                                                                                    style="margin: 0px 5px 0px 0px;"
+                                                                                    value="11" matTooltip="No Pain">
+                                                                            </lable>
+                                                                            <lable value="2">Good<img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/5.jpeg"
+                                                                                    (click)="fetchresult(2)"
+                                                                                    style="margin: 0px 15px 0px 15px;"
+                                                                                    matTooltip="Mild Pain"></lable>
+                                                                            <lable value="3">Average <img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/4.jpeg"
+                                                                                    (click)="fetchresult(3)"
+                                                                                    style="margin: 0px 15px 0px 15px;"
+                                                                                    matTooltip="Moderate Pain">
+                                                                            </lable>
+                                                                            <lable value="4">Poor <img width="45"
+                                                                                    height="15px"
+                                                                                    (click)="fetchresult(4)"
+                                                                                    src="assets/images/logos/3.jpeg"
+                                                                                    style="margin-right: 10px;"
+                                                                                    matTooltip="Severe Pain">
+                                                                            </lable>
+                                                                            <lable value="5">Worst <img width="45"
+                                                                                    height="15px"
+                                                                                    (click)="fetchresult(5)"
+                                                                                    src="assets/images/logos/1.jpeg"
+                                                                                    style="padding-top: 0px;"
+                                                                                    matTooltip="Worst Pain"></lable>
+
+
+
+                                                                        </div>
+                                                                    </div>
+                                                                    <button mat-button matStepperNext
+                                                                        style="border: blue;border-radius: 50%;background-color: #4456f5;margin-left: 20%;color: bisque;">Next
+                                                                        -></button>
+                                                                </mat-card>
+
+                                                            </div>
+                                                        </form>
+                                                    </mat-step>
+                                                    <mat-step [stepControl]="secondFormGroup">
+                                                        <form [formGroup]="secondFormGroup">
+                                                            <ng-template matStepLabel></ng-template>
+                                                            <mat-form-field>
+                                                                <mat-lable style="font-size: medium;color: blue;">Exceptional Staff Courtesy and
+                                                                    Care...</mat-lable>
+                                                                <input matInput formControlName="secondCtrl" required>
+                                                            </mat-form-field>
+                                                            <div style="padding-top:80px;">
+                                                                <mat-card
+                                                                    style="width: 100%;font-size: medium;font-weight: bold;">
+                                                                    <div fxLayout="column" fxFlex>
+                                                                        <div fxLayout="row"
+                                                                            fxLayoutAlign="space-between"
+                                                                            style="margin-right: 10px;height: 50px;padding-left: 100px;"
+                                                                            fxFlex>
+
+
+                                                                            <lable value="1">Excellent <img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/61.png"
+                                                                                    (click)="fetchresult(1)"
+                                                                                    style="margin: 0px 5px 0px 0px;"
+                                                                                    value="11" matTooltip="No Pain">
+                                                                            </lable>
+                                                                            <lable value="2">Good<img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/5.jpeg"
+                                                                                    (click)="fetchresult(2)"
+                                                                                    style="margin: 0px 15px 0px 15px;"
+                                                                                    matTooltip="Mild Pain"></lable>
+                                                                            <lable value="3">Average <img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/4.jpeg"
+                                                                                    (click)="fetchresult(3)"
+                                                                                    style="margin: 0px 15px 0px 15px;"
+                                                                                    matTooltip="Moderate Pain">
+                                                                            </lable>
+                                                                            <lable value="4">Poor <img width="45"
+                                                                                    height="15px"
+                                                                                    (click)="fetchresult(4)"
+                                                                                    src="assets/images/logos/3.jpeg"
+                                                                                    style="margin-right: 10px;"
+                                                                                    matTooltip="Severe Pain">
+                                                                            </lable>
+                                                                            <lable value="5">Worst <img width="45"
+                                                                                    height="15px"
+                                                                                    (click)="fetchresult(5)"
+                                                                                    src="assets/images/logos/1.jpeg"
+                                                                                    style="padding-top: 0px;"
+                                                                                    matTooltip="Worst Pain"></lable>
+
+
+
+
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <button mat-button matStepperPrevious
+                                                                        style="border: blue;border-radius: 50%;background-color: #4456f5;margin-left: 20%;color: bisque;">Back
+                                                                    </button>
+                                                                    <button mat-button matStepperNext
+                                                                        style="border: blue;border-radius: 50%;background-color: #4456f5;margin-left: 2%;color: bisque;">Next
+                                                                        -></button>
+                                                                </mat-card>
+
+                                                            </div>
+                                                        </form>
+                                                    </mat-step>
+                                                    <mat-step [stepControl]="thirdFormGroup">
+                                                        <form [formGroup]="thirdFormGroup">
+                                                            <ng-template matStepLabel></ng-template>
+                                                            <mat-form-field>
+                                                                <mat-lable style="font-size: medium;color: blue;">Efficient Appointment
+                                                                    Scheduling and Management ...</mat-lable>
+                                                                <input matInput
+                                                                    formControlName="thirdCtrl" required>
+                                                            </mat-form-field>
+                                                            <div style="padding-top:80px;">
+                                                                <mat-card
+                                                                    style="width: 100%;font-size: medium;font-weight: bold;">
+                                                                    <div fxLayout="column" fxFlex>
+                                                                        <div fxLayout="row"
+                                                                            fxLayoutAlign="space-between"
+                                                                            style="margin-right: 10px;height: 50px;padding-left: 100px;"
+                                                                            fxFlex>
+
+
+                                                                            <lable value="1">Excellent <img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/61.png"
+                                                                                    (click)="fetchresult(1)"
+                                                                                    style="margin: 0px 5px 0px 0px;"
+                                                                                    value="11" matTooltip="No Pain">
+                                                                            </lable>
+                                                                            <lable value="2">Good<img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/5.jpeg"
+                                                                                    (click)="fetchresult(2)"
+                                                                                    style="margin: 0px 15px 0px 15px;"
+                                                                                    matTooltip="Mild Pain"></lable>
+                                                                            <lable value="3">Average <img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/4.jpeg"
+                                                                                    (click)="fetchresult(3)"
+                                                                                    style="margin: 0px 15px 0px 15px;"
+                                                                                    matTooltip="Moderate Pain">
+                                                                            </lable>
+                                                                            <lable value="4">Poor <img width="45"
+                                                                                    height="15px"
+                                                                                    (click)="fetchresult(4)"
+                                                                                    src="assets/images/logos/3.jpeg"
+                                                                                    style="margin-right: 10px;"
+                                                                                    matTooltip="Severe Pain">
+                                                                            </lable>
+                                                                            <lable value="5">Worst <img width="45"
+                                                                                    height="15px"
+                                                                                    (click)="fetchresult(5)"
+                                                                                    src="assets/images/logos/1.jpeg"
+                                                                                    style="padding-top: 0px;"
+                                                                                    matTooltip="Worst Pain"></lable>
+
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <button mat-button matStepperPrevious
+                                                                        style="border: blue;border-radius: 50%;background-color: #4456f5;margin-left: 20%;color: bisque;">Back
+                                                                    </button>
+                                                                    <button mat-button matStepperNext
+                                                                        style="border: blue;border-radius: 50%;background-color: #4456f5;margin-left: 2%;color: bisque;">Next
+                                                                        -></button>
+                                                                </mat-card>
+
+                                                            </div>
+                                                        </form>
+                                                    </mat-step>
+                                                    <mat-step [stepControl]="fourthFormGroup">
+                                                        <form [formGroup]="fourthFormGroup">
+                                                            <ng-template matStepLabel></ng-template>
+                                                            <mat-form-field>
+                                                                <mat-lable style="font-size: medium;color: blue;">Effective Communication
+                                                                    Regarding Billing and Costs ...</mat-lable>
+                                                                <input matInput 
+                                                                    formControlName="fourthCtrl" required>
+                                                            </mat-form-field>
+                                                            <div style="padding-top:80px;">
+                                                                <mat-card
+                                                                    style="width: 100%;font-size: medium;font-weight: bold;">
+                                                                    <div fxLayout="column" fxFlex>
+                                                                        <div fxLayout="row"
+                                                                            fxLayoutAlign="space-between"
+                                                                            style="margin-right: 10px;height: 50px;padding-left: 100px;"
+                                                                            fxFlex>
+
+
+                                                                            <lable value="1">Excellent <img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/61.png"
+                                                                                    (click)="fetchresult(1)"
+                                                                                    style="margin: 0px 5px 0px 0px;"
+                                                                                    value="11" matTooltip="No Pain">
+                                                                            </lable>
+                                                                            <lable value="2">Good<img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/5.jpeg"
+                                                                                    (click)="fetchresult(2)"
+                                                                                    style="margin: 0px 15px 0px 15px;"
+                                                                                    matTooltip="Mild Pain"></lable>
+                                                                            <lable value="3">Average <img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/4.jpeg"
+                                                                                    (click)="fetchresult(3)"
+                                                                                    style="margin: 0px 15px 0px 15px;"
+                                                                                    matTooltip="Moderate Pain">
+                                                                            </lable>
+                                                                            <lable value="4">Poor <img width="45"
+                                                                                    height="15px"
+                                                                                    (click)="fetchresult(4)"
+                                                                                    src="assets/images/logos/3.jpeg"
+                                                                                    style="margin-right: 10px;"
+                                                                                    matTooltip="Severe Pain">
+                                                                            </lable>
+                                                                            <lable value="5">Worst <img width="45"
+                                                                                    height="15px"
+                                                                                    (click)="fetchresult(5)"
+                                                                                    src="assets/images/logos/1.jpeg"
+                                                                                    style="padding-top: 0px;"
+                                                                                    matTooltip="Worst Pain"></lable>
+
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <button mat-button matStepperPrevious
+                                                                        style="border: blue;border-radius: 50%;background-color: #4456f5;margin-left: 20%;color: bisque;">Back
+                                                                    </button>
+                                                                    <button mat-button matStepperNext
+                                                                        style="border: blue;border-radius: 50%;background-color: #4456f5;margin-left: 2%;color: bisque;">Next
+                                                                        -></button>
+                                                                </mat-card>
+
+                                                            </div>
+                                                        </form>
+                                                    </mat-step>
+                                                    <mat-step [stepControl]="fiveFormGroup">
+                                                        <form [formGroup]="fiveFormGroup">
+                                                            <ng-template matStepLabel></ng-template>
+                                                            <mat-form-field>
+                                                                <mat-lable style="font-size: medium;color: blue;">How the Lab Services?
+                                                                    ...</mat-lable>
+                                                                <input matInput 
+                                                                    formControlName="fiveCtrl" required>
+                                                            </mat-form-field>
+                                                            <div style="padding-top:80px;">
+                                                                <mat-card
+                                                                    style="width: 100%;font-size: medium;font-weight: bold;">
+                                                                    <div fxLayout="column" fxFlex>
+                                                                        <div fxLayout="row"
+                                                                            fxLayoutAlign="space-between"
+                                                                            style="margin-right: 10px;height: 50px;padding-left: 100px;"
+                                                                            fxFlex>
+
+
+                                                                            <lable value="1">Excellent <img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/61.png"
+                                                                                    (click)="fetchresult(1)"
+                                                                                    style="margin: 0px 5px 0px 0px;"
+                                                                                    value="11" matTooltip="No Pain">
+                                                                            </lable>
+                                                                            <lable value="2">Good<img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/5.jpeg"
+                                                                                    (click)="fetchresult(2)"
+                                                                                    style="margin: 0px 15px 0px 15px;"
+                                                                                    matTooltip="Mild Pain"></lable>
+                                                                            <lable value="3">Average <img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/4.jpeg"
+                                                                                    (click)="fetchresult(3)"
+                                                                                    style="margin: 0px 15px 0px 15px;"
+                                                                                    matTooltip="Moderate Pain">
+                                                                            </lable>
+                                                                            <lable value="4">Poor <img width="45"
+                                                                                    height="15px"
+                                                                                    (click)="fetchresult(4)"
+                                                                                    src="assets/images/logos/3.jpeg"
+                                                                                    style="margin-right: 10px;"
+                                                                                    matTooltip="Severe Pain">
+                                                                            </lable>
+                                                                            <lable value="5">Worst <img width="45"
+                                                                                    height="15px"
+                                                                                    (click)="fetchresult(5)"
+                                                                                    src="assets/images/logos/1.jpeg"
+                                                                                    style="padding-top: 0px;"
+                                                                                    matTooltip="Worst Pain"></lable>
+
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <button mat-button matStepperPrevious
+                                                                        style="border: blue;border-radius: 50%;background-color: #4456f5;margin-left: 20%;color: bisque;">Back
+                                                                    </button>
+                                                                    <button mat-button matStepperNext
+                                                                        style="border: blue;border-radius: 50%;background-color: #4456f5;margin-left: 2%;color: bisque;">Next
+                                                                        -></button>
+                                                                </mat-card>
+
+                                                            </div>
+                                                        </form>
+                                                    </mat-step>
+                                                    <mat-step [stepControl]="sixFormGroup">
+                                                        <form [formGroup]="sixFormGroup">
+                                                            <ng-template matStepLabel></ng-template>
+                                                            <mat-form-field>
+                                                                <mat-lable style="font-size: medium;color: blue;">Do you have any suggestion for
+                                                                    improvement regarding speed or in our
+                                                                    ...</mat-lable>
+                                                                <input matInput formControlName="sixCtrl" required>
+                                                            </mat-form-field>
+                                                            <div style="padding-top:80px;">
+                                                                <mat-card
+                                                                    style="width: 100%;font-size: medium;font-weight: bold;">
+                                                                    <div fxLayout="column" fxFlex>
+                                                                        <div fxLayout="row"
+                                                                            fxLayoutAlign="space-between"
+                                                                            style="margin-right: 10px;height: 50px;padding-left: 100px;"
+                                                                            fxFlex>
+
+
+                                                                            <lable value="1">Excellent <img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/61.png"
+                                                                                    (click)="fetchresult(1)"
+                                                                                    style="margin: 0px 5px 0px 0px;"
+                                                                                    value="11" matTooltip="No Pain">
+                                                                            </lable>
+                                                                            <lable value="2">Good<img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/5.jpeg"
+                                                                                    (click)="fetchresult(2)"
+                                                                                    style="margin: 0px 15px 0px 15px;"
+                                                                                    matTooltip="Mild Pain"></lable>
+                                                                            <lable value="3">Average <img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/4.jpeg"
+                                                                                    (click)="fetchresult(3)"
+                                                                                    style="margin: 0px 15px 0px 15px;"
+                                                                                    matTooltip="Moderate Pain">
+                                                                            </lable>
+                                                                            <lable value="4">Poor <img width="45"
+                                                                                    height="15px"
+                                                                                    (click)="fetchresult(4)"
+                                                                                    src="assets/images/logos/3.jpeg"
+                                                                                    style="margin-right: 10px;"
+                                                                                    matTooltip="Severe Pain">
+                                                                            </lable>
+                                                                            <lable value="5">Worst <img width="45"
+                                                                                    height="15px"
+                                                                                    (click)="fetchresult(5)"
+                                                                                    src="assets/images/logos/1.jpeg"
+                                                                                    style="padding-top: 0px;"
+                                                                                    matTooltip="Worst Pain"></lable>
+
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <button mat-button matStepperPrevious
+                                                                        style="border: blue;border-radius: 50%;background-color: #4456f5;margin-left: 20%;color: bisque;">Back
+                                                                    </button>
+                                                                    <button mat-button matStepperNext
+                                                                        style="border: blue;border-radius: 50%;background-color: #4456f5;margin-left: 2%;color: bisque;">Next
+                                                                        -></button>
+                                                                </mat-card>
+
+                                                            </div>
+                                                        </form>
+                                                    </mat-step>
+                                                    <mat-step>
+                                                        <ng-template matStepLabel>Done</ng-template>
+                                                        You are now done.
+                                                        <div>
+                                                            <button mat-button matStepperPrevious>Back</button>
+                                                            <button mat-button (click)="stepper.reset()">Reset</button>
+                                                        </div>
+                                                    </mat-step>
+                                                </mat-horizontal-stepper>
+                                            </mat-tab>
+
+                                        </mat-tab-group>
+                                    </div>
+                                    <!-- //Extpart -->
+                                    <div fxFlex.gt-sm="98%" fxFlex *ngIf="pharmaflag">
+                                        <mat-tab-group style="overflow: auto;">
+
+                                            <mat-tab label="Please Rate Each of this Pharmacy Department..">
+                                                <mat-horizontal-stepper [linear]="isLinear"
+                                                    #stepper="matHorizontalStepper">
+                                                    <mat-step [stepControl]="firstFormGroup">
+                                                        <form [formGroup]="firstFormGroup">
+                                                            <ng-template matStepLabel></ng-template>
+                                                            <mat-form-field>
+                                                                <mat-lable style="font-size: medium;color: blue;">How the Medical
+                                                                    Services?</mat-lable>
+                                                                <input matInput 
+                                                                    formControlName="firstCtrl" required>
+                                                            </mat-form-field>
+                                                            <div style="padding-top:80px;">
+                                                                <mat-card
+                                                                    style="width: 100%;font-size: medium;font-weight: bold;">
+                                                                    <div fxLayout="column" fxFlex>
+                                                                        <div fxLayout="row"
+                                                                            fxLayoutAlign="space-between"
+                                                                            style="margin-right: 10px;height: 50px;padding-left: 100px;"
+                                                                            fxFlex>
+
+
+                                                                            <lable value="1">Excellent <img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/61.png"
+                                                                                    (click)="fetchresult(1)"
+                                                                                    style="margin: 0px 5px 0px 0px;"
+                                                                                    value="11" matTooltip="No Pain">
+                                                                            </lable>
+                                                                            <lable value="2">Good<img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/5.jpeg"
+                                                                                    (click)="fetchresult(2)"
+                                                                                    style="margin: 0px 15px 0px 15px;"
+                                                                                    matTooltip="Mild Pain"></lable>
+                                                                            <lable value="3">Average <img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/4.jpeg"
+                                                                                    (click)="fetchresult(3)"
+                                                                                    style="margin: 0px 15px 0px 15px;"
+                                                                                    matTooltip="Moderate Pain">
+                                                                            </lable>
+                                                                            <lable value="4">Poor <img width="45"
+                                                                                    height="15px"
+                                                                                    (click)="fetchresult(4)"
+                                                                                    src="assets/images/logos/3.jpeg"
+                                                                                    style="margin-right: 10px;"
+                                                                                    matTooltip="Severe Pain">
+                                                                            </lable>
+                                                                            <lable value="5">Worst <img width="45"
+                                                                                    height="15px"
+                                                                                    (click)="fetchresult(5)"
+                                                                                    src="assets/images/logos/1.jpeg"
+                                                                                    style="padding-top: 0px;"
+                                                                                    matTooltip="Worst Pain"></lable>
+
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <button mat-button matStepperNext
+                                                                        style="border: blue;border-radius: 50%;background-color: #4456f5;margin-left: 2%;color: bisque;">Next
+                                                                        -></button>
+                                                                </mat-card>
+
+                                                            </div>
+                                                        </form>
+                                                    </mat-step>
+                                                    <mat-step [stepControl]="secondFormGroup">
+                                                        <form [formGroup]="secondFormGroup">
+                                                            <ng-template matStepLabel></ng-template>
+                                                            <mat-form-field>
+                                                                <mat-lable style="font-size: medium;color: blue;">Exceptional Staff Courtesy and
+                                                                    Care...</mat-lable>
+                                                                <input matInput
+                                                                  formControlName="secondCtrl" required>
+                                                            </mat-form-field>
+                                                            <div style="padding-top:80px;">
+                                                                <mat-card
+                                                                    style="width: 100%;font-size: medium;font-weight: bold;">
+                                                                    <div fxLayout="column" fxFlex>
+                                                                        <div fxLayout="row"
+                                                                            fxLayoutAlign="space-between"
+                                                                            style="margin-right: 10px;height: 50px;padding-left: 100px;"
+                                                                            fxFlex>
+
+
+                                                                            <lable value="1">Excellent <img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/61.png"
+                                                                                    (click)="fetchresult(1)"
+                                                                                    style="margin: 0px 5px 0px 0px;"
+                                                                                    value="11" matTooltip="No Pain">
+                                                                            </lable>
+                                                                            <lable value="2">Good<img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/5.jpeg"
+                                                                                    (click)="fetchresult(2)"
+                                                                                    style="margin: 0px 15px 0px 15px;"
+                                                                                    matTooltip="Mild Pain"></lable>
+                                                                            <lable value="3">Average <img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/4.jpeg"
+                                                                                    (click)="fetchresult(3)"
+                                                                                    style="margin: 0px 15px 0px 15px;"
+                                                                                    matTooltip="Moderate Pain">
+                                                                            </lable>
+                                                                            <lable value="4">Poor <img width="45"
+                                                                                    height="15px"
+                                                                                    (click)="fetchresult(4)"
+                                                                                    src="assets/images/logos/3.jpeg"
+                                                                                    style="margin-right: 10px;"
+                                                                                    matTooltip="Severe Pain">
+                                                                            </lable>
+                                                                            <lable value="5">Worst <img width="45"
+                                                                                    height="15px"
+                                                                                    (click)="fetchresult(5)"
+                                                                                    src="assets/images/logos/1.jpeg"
+                                                                                    style="padding-top: 0px;"
+                                                                                    matTooltip="Worst Pain"></lable>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <button mat-button matStepperPrevious
+                                                                        style="border: blue;border-radius: 50%;background-color: #4456f5;margin-left: 20%;color: bisque;">Back
+                                                                    </button>
+                                                                    <button mat-button matStepperNext
+                                                                        style="border: blue;border-radius: 50%;background-color: #4456f5;margin-left: 2%;color: bisque;">Next
+                                                                        -></button>
+                                                                </mat-card>
+
+                                                            </div>
+                                                        </form>
+                                                    </mat-step>
+                                                    <mat-step [stepControl]="thirdFormGroup">
+                                                        <form [formGroup]="thirdFormGroup">
+                                                            <ng-template matStepLabel></ng-template>
+                                                            <mat-form-field>
+                                                                <mat-lable style="font-size: medium;color: blue;">How likely will you
+                                                                    recommended our medical business to
+                                                                    friend</mat-lable>
+                                                                <input matInput formControlName="thirdCtrl" required>
+                                                            </mat-form-field>
+                                                            <div style="padding-top:80px;">
+                                                                <mat-card
+                                                                    style="width: 100%;font-size: medium;font-weight: bold;">
+                                                                    <div fxLayout="column" fxFlex>
+                                                                        <div fxLayout="row"
+                                                                            fxLayoutAlign="space-between"
+                                                                            style="margin-right: 10px;height: 50px;padding-left: 100px;"
+                                                                            fxFlex>
+
+
+                                                                            <lable value="1">Excellent <img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/61.png"
+                                                                                    (click)="fetchresult(1)"
+                                                                                    style="margin: 0px 5px 0px 0px;"
+                                                                                    value="11" matTooltip="No Pain">
+                                                                            </lable>
+                                                                            <lable value="2">Good<img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/5.jpeg"
+                                                                                    (click)="fetchresult(2)"
+                                                                                    style="margin: 0px 15px 0px 15px;"
+                                                                                    matTooltip="Mild Pain"></lable>
+                                                                            <lable value="3">Average <img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/4.jpeg"
+                                                                                    (click)="fetchresult(3)"
+                                                                                    style="margin: 0px 15px 0px 15px;"
+                                                                                    matTooltip="Moderate Pain">
+                                                                            </lable>
+                                                                            <lable value="4">Poor <img width="45"
+                                                                                    height="15px"
+                                                                                    (click)="fetchresult(4)"
+                                                                                    src="assets/images/logos/3.jpeg"
+                                                                                    style="margin-right: 10px;"
+                                                                                    matTooltip="Severe Pain">
+                                                                            </lable>
+                                                                            <lable value="5">Worst <img width="45"
+                                                                                    height="15px"
+                                                                                    (click)="fetchresult(5)"
+                                                                                    src="assets/images/logos/1.jpeg"
+                                                                                    style="padding-top: 0px;"
+                                                                                    matTooltip="Worst Pain"></lable>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <button mat-button matStepperPrevious
+                                                                        style="border: blue;border-radius: 50%;background-color: #4456f5;margin-left: 20%;color: bisque;">Back
+                                                                    </button>
+                                                                    <button mat-button matStepperNext
+                                                                        style="border: blue;border-radius: 50%;background-color: #4456f5;margin-left: 2%;color: bisque;">Next
+                                                                        -></button>
+                                                                </mat-card>
+
+                                                            </div>
+                                                        </form>
+                                                    </mat-step>
+                                                    <mat-step [stepControl]="fourthFormGroup">
+                                                        <form [formGroup]="fourthFormGroup">
+                                                            <ng-template matStepLabel> </ng-template>
+                                                            <mat-form-field>
+                                                                <mat-lable style="font-size: medium;color: blue;">Do you have any suggestion for
+                                                                    improvement regarding speed or in our</mat-lable>
+                                                                <input matInput 
+                                                                   formControlName="fourthCtrl" required>
+                                                            </mat-form-field>
+                                                            <div style="padding-top:80px;">
+                                                                <mat-card
+                                                                    style="width: 100%;font-size: medium;font-weight: bold;">
+                                                                    <div fxLayout="column" fxFlex>
+                                                                        <div fxLayout="row"
+                                                                            fxLayoutAlign="space-between"
+                                                                            style="margin-right: 10px;height: 50px;padding-left: 100px;"
+                                                                            fxFlex>
+
+
+                                                                            <lable value="1">Excellent <img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/61.png"
+                                                                                    (click)="fetchresult(1)"
+                                                                                    style="margin: 0px 5px 0px 0px;"
+                                                                                    value="11" matTooltip="No Pain">
+                                                                            </lable>
+                                                                            <lable value="2">Good<img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/5.jpeg"
+                                                                                    (click)="fetchresult(2)"
+                                                                                    style="margin: 0px 15px 0px 15px;"
+                                                                                    matTooltip="Mild Pain"></lable>
+                                                                            <lable value="3">Average <img width="45"
+                                                                                    height="15px"
+                                                                                    src="assets/images/logos/4.jpeg"
+                                                                                    (click)="fetchresult(3)"
+                                                                                    style="margin: 0px 15px 0px 15px;"
+                                                                                    matTooltip="Moderate Pain">
+                                                                            </lable>
+                                                                            <lable value="4">Poor <img width="45"
+                                                                                    height="15px"
+                                                                                    (click)="fetchresult(4)"
+                                                                                    src="assets/images/logos/3.jpeg"
+                                                                                    style="margin-right: 10px;"
+                                                                                    matTooltip="Severe Pain">
+                                                                            </lable>
+                                                                            <lable value="5">Worst <img width="45"
+                                                                                    height="15px"
+                                                                                    (click)="fetchresult(5)"
+                                                                                    src="assets/images/logos/1.jpeg"
+                                                                                    style="padding-top: 0px;"
+                                                                                    matTooltip="Worst Pain"></lable>
+
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <button mat-button matStepperPrevious
+                                                                        style="border: blue;border-radius: 50%;background-color: #4456f5;margin-left: 20%;color: bisque;">Back
+                                                                    </button>
+                                                                    <button mat-button matStepperNext
+                                                                        style="border: blue;border-radius: 50%;background-color: #4456f5;margin-left: 2%;color: bisque;">Next
+                                                                        -></button>
+                                                                </mat-card>
+
+                                                            </div>
+                                                        </form>
+                                                    </mat-step>
+                                                    <mat-step>
+                                                        <ng-template matStepLabel>Done</ng-template>
+                                                        You are now done.
+                                                        <div>
+                                                            <button mat-button matStepperPrevious>Back</button>
+                                                            <button mat-button (click)="stepper.reset()">Reset</button>
+                                                        </div>
+                                                    </mat-step>
+                                                </mat-horizontal-stepper>
+                                            </mat-tab>
+                                        </mat-tab-group>
+                                    </div>
+                                </mat-card>
 
                                 <form [formGroup]="_FeedbackService.MyfeedbackForm">
-                                    <mat-card style="width: 100%;font-size: medium;font-weight: bold;">
-                                        <div fxLayout="column" fxFlex>
-                                            <div fxLayout="row" fxLayoutAlign="space-between"
-                                                style="margin-right: 10px;height: 50px;padding-left: 100px;" fxFlex>
-
-                                                <mat-radio-group aria-label="Select an option"
-                                                    formControlName="FeedbackResult" [(ngModel)]="FeedbackResult"
-                                                    fxLayout="row">
-                                                    <mat-radio-button value="1">Excellent <img width="45" height="15px"
-                                                            src="assets/images/logos/61.png"
-                                                            style="margin: 0px 5px 0px 0px;"
-                                                            matTooltip="No Pain"></mat-radio-button>
-                                                    <mat-radio-button value="2">Good<img width="45" height="15px"
-                                                            src="assets/images/logos/5.jpeg"
-                                                            style="margin: 0px 15px 0px 15px;"
-                                                            matTooltip="Mild Pain"></mat-radio-button>
-                                                    <mat-radio-button value="3">Average <img width="45" height="15px"
-                                                            src="assets/images/logos/4.jpeg"
-                                                            style="margin: 0px 15px 0px 15px;"
-                                                            matTooltip="Moderate Pain">
-                                                    </mat-radio-button>
-                                                    <mat-radio-button value="4">Poor <img width="45" height="15px"
-                                                            src="assets/images/logos/3.jpeg" style="margin-right: 10px;"
-                                                            matTooltip="Severe Pain">
-                                                    </mat-radio-button>
-                                                    <mat-radio-button value="5">Worst <img width="45" height="15px"
-                                                            src="assets/images/logos/1.jpeg" style="padding-top: 0px;"
-                                                            matTooltip="Worst Pain">
-                                                    </mat-radio-button>
-                                                </mat-radio-group>
-
-
-                                                <!-- <div fxLayout="column">
-                                                <span style="margin-right: 5px;margin-left: 0px;">Excellent</span>
-                                                <img width="45" height="15px" src="assets/images/logos/61.png"
-                                                    style="margin: 0px 5px 0px 0px;" matTooltip="No Pain">
-                                            </div>
-                                            <div fxLayout="column">
-                                                <span style="margin: 0px 15px 0px 15px;">Good</span>
-                                                <img width="45" height="15px" src="assets/images/logos/5.jpeg"
-                                                    style="margin: 0px 15px 0px 15px;" matTooltip="Mild Pain">
-                                            </div>
-                                            <div fxLayout="column">
-                                                <span style="margin-right: 12px;">Average</span>
-                                                <img width="45" height="15px" src="assets/images/logos/4.jpeg"
-                                                    style="margin: 0px 15px 0px 15px;" matTooltip="Moderate Pain">
-
-                                            </div>
-                                            <div fxLayout="column">
-                                                <span style="margin-right: 5px;">Poor
-                                                </span>
-                                                <img width="45" height="15px" src="assets/images/logos/3.jpeg"
-                                                    style="margin-right: 10px;" matTooltip="Severe Pain">
-
-                                            </div>
-                                            <div fxLayout="column">
-                                                <span style="margin-right: 0px;">Very
-                                                    Poor</span>
-                                                <img width="45" height="15px" src="assets/images/logos/2.jpeg"
-                                                    style="margin: 0px 15px 0px 15px;" matTooltip="Very Server Pain">
-
-                                            </div>
-                                            <div fxLayout="column">
-                                                <span>Worst</span>
-                                                <img width="45" height="15px" src="assets/images/logos/1.jpeg"
-                                                    style="padding-top: 0px;" matTooltip="Worst Pain">
-                                            </div> -->
-
-                                            </div>
-                                        </div>
-                                    </mat-card>
-
                                     <mat-card>
 
-                                        <div fxFlexFill fxLayout="column" fxLayoutGap="8px">
+                                        <div fxFlexFill fxLayout="column" fxLayoutGap="2px">
 
                                             <div fxFlex.gt-sm="100%" fxFlex>
-                                                 <mat-card style="padding: 5px;">
-                                                 <!--   <mat-form-field appearance="outline" class="mr-sm-12"
-                                                        style="width:100%;">
-                                                        <textarea name="FeedbackComments" matInput rows="1" cols="5"
-                                                            placeholder="Enter Feedbackdetails"
-                                                            formControlName="FeedbackComments">
-                                                    </textarea>
-                                                    </mat-form-field> -->
+                                                <mat-card style="padding: 5px;">
 
                                                     <mat-form-field appearance="outline" fxFlex>
                                                         <mat-label>Feedback Comments </mat-label>
@@ -616,7 +1408,7 @@
                                                             formControlName="FeedbackComments"
                                                             placeholder="FeedbackComments" matInput>
                                                     </mat-form-field>
-
+                                                    <!-- 
                                                     <mat-form-field appearance="outline" fxFlex>
                                                         <mat-label>Feedback Category </mat-label>
                                                         <input name="FeedbackCategory"
@@ -630,7 +1422,7 @@
                                                         <input name="FeedbackRating" formControlName="FeedbackRating"
                                                             placeholder="FeedbackRating" matInput
                                                             [(ngModel)]="registerObj1.FeedbackRating">
-                                                    </mat-form-field>
+                                                    </mat-form-field> -->
 
 
                                                 </mat-card>

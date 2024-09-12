@@ -115,7 +115,8 @@ export class OPIPFeedbackComponent implements OnInit {
 
   ngOnInit(): void {
     this.firstFormGroup = this._formBuilder.group({
-      firstCtrl: ['', Validators.required]
+      firstCtrl: ['', Validators.required],
+      FeedbackResult:['']
     });
     this.secondFormGroup = this._formBuilder.group({
       secondCtrl: ['', Validators.required]
@@ -199,7 +200,10 @@ onChangePatientType(event) {
   }
 }
 
-
+fetchresult(event){
+  debugger
+console.log(event)
+}
 getSearchListIP() {
   var m_data = {
     "Keyword": `${this.Feedbackpatientform.get('RegID').value}%`

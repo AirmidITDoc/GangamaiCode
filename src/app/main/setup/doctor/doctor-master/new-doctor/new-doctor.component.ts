@@ -54,7 +54,7 @@ export class NewDoctorComponent implements OnInit {
     CurrentDate = new Date();
     vDepartmentid: any;
     vCityId: any;
-    vPrefixID:any;
+    vPrefixID: any = 0
     b_AgeYear: any = 0;
     b_AgeMonth: any = 0;
     b_AgeDay: any = 0;
@@ -104,6 +104,7 @@ export class NewDoctorComponent implements OnInit {
     }
     ngOnInit(): void {
         this.getPrefixList();
+        this.getcityList();
        this.getDoctortypeNameCombobox();
        
        if (this.data) {

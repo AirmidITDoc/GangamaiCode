@@ -42,12 +42,8 @@ public getTemplateMasterList(param) {
 }
 
 
-  // Deactive the status
-  public deactivateTheStatus(param) {
-    return this._httpClient.post(
-        "Generic/ExecByQueryStatement?query=" + param,
-        {}
-    );
+public deactivateTheStatus(m_data) {
+  return this._httpClient.post("Generic/ExecByQueryStatement?query=" + m_data,{});
 }
 
 // Test Master Combobox List
