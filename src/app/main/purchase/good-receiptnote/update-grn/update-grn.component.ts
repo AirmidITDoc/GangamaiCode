@@ -593,7 +593,57 @@ export class UpdateGRNComponent implements OnInit {
             return '';
         return option.ItemName;  // + ' ' + option.Price ; //+ ' (' + option.TariffId + ')';
     }
+gstPerArray:any=[
+    {gstPer :0},
+    {gstPer :2.5},
+    {gstPer :6},
+    {gstPer :9},
+    {gstPer :14},
+]
+chckgst0:any = 0;
+chckgst2:any = 2.5;
+chckgst6:any = 6;
+chckgst9:any = 9;
+chckgst14:any = 14;
 
+chekgstper(obj){
+// const dvalue = !this.gstPerArray.some(item => item.gstPer ==  parseFloat(obj.CGSTPer))
+// const valueSgstper = !this.gstPerArray.find(item => item.gstPer ==  parseFloat(obj.CGSTPer))
+// const valueCgstper = this.gstPerArray.filter(item => item.gstPer ==  parseFloat(obj.CGSTPer))
+
+//     console.log(dvalue)
+//     console.log(valueSgstper)
+//     console.log(valueCgstper) 
+ 
+
+    // if(parseFloat(obj.CGSTPer) > 0 ){ 
+    //     if(!this.gstPerArray.filter(item => item.gstPer ==  parseFloat(obj.CGSTPer))) {
+    //         this.toastr.warning('Please enter CGST percentage as 2.5%, 6%, 9% or 14%', 'Warning !', {
+    //             toastClass: 'tostr-tost custom-toast-warning',
+    //         });
+    //         obj.CGSTPer = '';
+    //       return
+    //     } 
+    // }
+    // if(parseFloat(obj.SGSTPer) > 0){
+    //     if(!this.gstPerArray.filter(item => item.gstPer == parseFloat(obj.SGSTPer))) {
+    //         this.toastr.warning('Please enter CGST percentage as 2.5%, 6%, 9% or 14%', 'Warning !', {
+    //             toastClass: 'tostr-tost custom-toast-warning',
+    //         });
+    //         obj.SGSTPer = '';
+    //        return
+    //     } 
+    // }
+    // if(parseFloat(obj.IGSTPer) > 0){
+    //     if(!this.gstPerArray.filter(item => item.gstPer == parseFloat(obj.IGSTPer))) {
+    //         this.toastr.warning('Please enter CGST percentage as 2.5%, 6%, 9% or 14%', 'Warning !', {
+    //             toastClass: 'tostr-tost custom-toast-warning',
+    //         });
+    //         obj.IGSTPer = '';
+    //        return
+    //     } 
+    // }   
+}
     getCellCalculation(contact, ReceiveQty) {
         if (contact.PurchaseId > 0) {
             if (contact.ReceiveQty > contact.POQty) {
@@ -601,8 +651,34 @@ export class UpdateGRNComponent implements OnInit {
             } else {
                 contact.POBalQty = ((contact.POQty) - (contact.ReceiveQty))
             }
+        }  
+        if(contact.CGSTPer > 0){
+            if(!(parseFloat(contact.CGSTPer) == parseFloat(this.chckgst2) || contact.CGSTPer == this.chckgst6 || contact.CGSTPer == this.chckgst9 || contact.CGSTPer == this.chckgst14)){
+                this.toastr.warning('Please enter CGST percentage as 2.5%, 6%, 9% or 14%', 'Warning !', {
+                    toastClass: 'tostr-tost custom-toast-warning',
+                });
+                contact.CGSTPer = '';
+                return
+            }
         }
-
+        if(contact.SGSTPer > 0){
+            if(!((contact.SGSTPer).toString() == parseFloat(this.chckgst2) || contact.SGSTPer == this.chckgst6 || contact.SGSTPer == this.chckgst9 || contact.SGSTPer == this.chckgst14)){
+                this.toastr.warning('Please enter CGST percentage as 2.5%, 6%, 9% or 14%', 'Warning !', {
+                    toastClass: 'tostr-tost custom-toast-warning',
+                });
+                contact.SGSTPer = '';
+                return
+            }
+        }
+        if(contact.IGSTPer > 0){
+            if(!(parseFloat(contact.IGSTPer) == parseFloat(this.chckgst2) || contact.IGSTPer == this.chckgst6 || contact.IGSTPer == this.chckgst9 || contact.IGSTPer == this.chckgst14)){
+                this.toastr.warning('Please enter CGST percentage as 2.5%, 6%, 9% or 14%', 'Warning !', {
+                    toastClass: 'tostr-tost custom-toast-warning',
+                });
+                contact.IGSTPer = '';
+                return
+            }
+        }
 
         let freeqty = contact.FreeQty || 0;
         let R_qty = contact.ReceiveQty || 0
@@ -732,6 +808,7 @@ export class UpdateGRNComponent implements OnInit {
             contact.VatAmount = 0;
             contact.NetAmount = 0;
         }
+        this.chekgstper(contact);
     }
     calculateTotalamt() {
         let Qty = this._GRNList.userFormGroup.get('Qty').value;

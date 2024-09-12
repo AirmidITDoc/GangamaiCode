@@ -561,12 +561,12 @@ ServiceList:any=[];
         "opD_IPD_Type": 1,
         "opD_IPD_Id": this.selectedAdvanceObj.AdmissionID,
         "serviceId": this.serviceId,
-        "price": this.vPrice,
-        "qty": this.vQty,
-        "totalAmt": this.vServiceTotalAmt,
+        "price": this.vPrice || 0,
+        "qty": this.vQty || 0,
+        "totalAmt": this.vServiceTotalAmt || 0,
         "concessionPercentage": this.vServiceDiscPer || 0,
-        "concessionAmount": this.vServiceDisAmt,
-        "netAmount": this.vServiceNetAmt,
+        "concessionAmount": this.vServiceDisAmt || 0,
+        "netAmount": this.vServiceNetAmt || 0,
         "doctorId": doctorid,
         "doctorName": doctorName,
         "docPercentage": 0,
@@ -596,9 +596,7 @@ ServiceList:any=[];
         }
       });
       this.onClearServiceAddList()
-      this.chkdiscstatus();
       this.isLoading = '';
-      this.vServiceDisAmt = 0;
       this.interimArray = [];
     }
     else {
@@ -773,8 +771,7 @@ ServiceList:any=[];
         this.getChargesList();
       }
     });
-    this.onClearServiceAddList()
-    this.chkdiscstatus();
+    this.onClearServiceAddList() 
     this.itemid.nativeElement.focus();
     this.isLoading = '';
   }
@@ -834,7 +831,7 @@ ServiceList:any=[];
       } else {
         this.vServiceDisAmt = ((parseFloat(this.vServiceTotalAmt) * parseFloat(ServiceDiscper)) / 100).toFixed(2);
  
-        this.vServiceDisAmt = (parseFloat(this.vServiceTotalAmt) - parseFloat(this.vServiceDisAmt)).toFixed(2); 
+        this.vServiceNetAmt = (parseFloat(this.vServiceTotalAmt) - parseFloat(this.vServiceDisAmt)).toFixed(2); 
       }
     } else {
       this.vServiceNetAmt = this.vServiceTotalAmt;
@@ -850,7 +847,7 @@ ServiceList:any=[];
     let Netamt = parseInt(this.vServiceNetAmt); 
 
     if (ServiceDiscAmt > 0 && ServiceDiscAmt < this.vServiceTotalAmt  || ServiceDiscAmt > this.vServiceTotalAmt) {
-      if (ServiceDiscAmt > this.vServiceTotalAmt) {
+      if (parseFloat(ServiceDiscAmt) > parseFloat(this.vServiceTotalAmt)) {
         Swal.fire("Enter Discount Amt Less than Total Amt & Greater > 0")
         this.vServiceDiscPer = '';
         this.vServiceDisAmt = ' ';
@@ -873,7 +870,8 @@ ServiceList:any=[];
     let totalAmt;
     totalAmt = element.reduce((sum, { TotalAmt }) => sum += +(TotalAmt || 0), 0);
     this.vTotalAmount = totalAmt;
-    this.CalculateAdminCharge();
+    this.CalculateAdminCharge(); 
+    this.chkdiscstatus();
     return totalAmt;
   }
   //Total bill DiscAmt 
@@ -883,6 +881,7 @@ ServiceList:any=[];
     let ServiceDiscAmt = element.reduce((sum, { ConcessionAmount }) => sum += +(ConcessionAmount || 0), 0);
     if(ServiceDiscAmt > 0){
       this.vFinalDiscountAmt = ServiceDiscAmt;
+      this.Ipbillform.get('concessionAmt').setValue(this.vFinalDiscountAmt);
     }else{
       this.Ipbillform.get('concessionAmt').clearValidators();
       this.vFinalDiscountAmt = '';
@@ -909,14 +908,19 @@ ServiceList:any=[];
 //Admin Charge Check Box On 
 isAdminDisabled : boolean=false;
 AdminStatus(event){
-  if (event.checked == true)
+  if (event.checked == true){
     this.isAdminDisabled = true;
-  if (event.checked == false) {
+  }else{
     this.isAdminDisabled = false;
     this.Ipbillform.get('AdminPer').reset();
-    this.Ipbillform.get('AdminAmt').reset();
-    this.Ipbillform.get('FinalAmount').setValue(this.vTotalBillAmount);
+    this.Ipbillform.get('AdminAmt').reset();  
+  }
+  if(parseInt(this.TotalServiceDiscPer) > 0){
+    this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
+  }else{
+    this.Ipbillform.get('FinalAmount').setValue(this.vTotalAmount);
     this.CalFinalDisc();
+    this.chkdiscstatus();
   }
 }
 //Admin Charge Cal
@@ -959,25 +963,25 @@ AdminStatus(event){
 //   }
 // }
 
-CalculateAdminCharge(){
+CalculateAdminCharge(){ 
   if(this.vAdminPer > 0 && this.vAdminPer < 100 ){
     this.vAdminAmt = Math.round((parseFloat(this.vTotalAmount) * parseFloat(this.vAdminPer)) / 100).toFixed(2);
     let FinalTotalAmt = (parseFloat(this.vTotalAmount) + parseFloat(this.vAdminAmt)).toFixed(2);
 
     if (parseInt(this.TotalServiceDiscPer) > 0) {
-      let finalnetamt = (parseFloat(FinalTotalAmt) - parseFloat(this.vDiscountAmount)).toFixed(2);
+      let finalnetamt =  Math.round(parseFloat(FinalTotalAmt) - parseFloat(this.vFinalDiscountAmt)).toFixed(2);
       this.Ipbillform.get('FinalAmount').setValue(finalnetamt);
     } else {
       let Percentage = this.Ipbillform.get('Percentage').value || 0;
-      this.vFinalDiscountAmt = ((parseFloat(FinalTotalAmt) * parseFloat(Percentage)) / 100).toFixed(2);
-      this.vNetBillAmount = Math.round(parseFloat(FinalTotalAmt) - parseFloat(this.vFinalDiscountAmt)).toFixed(2);
-      this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
+      this.vFinalDiscountAmt =  Math.round((parseFloat(FinalTotalAmt) * parseFloat(Percentage)) / 100).toFixed(2);
+      this.vNetBillAmount = Math.round(parseFloat(FinalTotalAmt) - parseFloat(this.vFinalDiscountAmt)).toFixed(2); 
+      this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount); 
     }
   }else{
     if(this.vAdminPer < 0 && this.vAdminPer > 100 || this.vAdminPer == 0 || this.vAdminPer == ''){
     this.Ipbillform.get('AdminPer').reset();
     this.Ipbillform.get('AdminAmt').reset();
-    this.Ipbillform.get('FinalAmount').setValue(this.vTotalBillAmount);
+    this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
     this.CalFinalDisc();
   }
   if( this.vAdminPer > 100 ){
@@ -986,13 +990,14 @@ CalculateAdminCharge(){
     });
     this.Ipbillform.get('AdminPer').reset();
     this.Ipbillform.get('AdminAmt').reset();
-    this.Ipbillform.get('FinalAmount').setValue(this.vTotalBillAmount);
+    this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
     this.CalFinalDisc();
   }
   }
 }
 // Total Bill Disc Per cal 
   CalFinalDisc() {
+    debugger
     let BillDiscPer = this.Ipbillform.get('Percentage').value || 0;
 
     if (this.Ipbillform.get('AdminAmt').value > 0) {
@@ -1009,8 +1014,8 @@ CalculateAdminCharge(){
           this.Ipbillform.get('concessionAmt').setValue(this.vFinalDiscountAmt);
           this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount); 
         } else {
-          this.vFinalDiscountAmt = ((parseFloat(FinalTotalAmt) * parseFloat(BillDiscPer)) / 100).toFixed(2);
-          this.vNetBillAmount = (parseFloat(FinalTotalAmt) - parseFloat(this.vFinalDiscountAmt)).toFixed(2);
+          this.vFinalDiscountAmt = Math.round((parseFloat(FinalTotalAmt) * parseFloat(BillDiscPer)) / 100).toFixed(2);
+          this.vNetBillAmount = Math.round(parseFloat(FinalTotalAmt) - parseFloat(this.vFinalDiscountAmt)).toFixed(2);
           this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
           this.Ipbillform.get('concessionAmt').setValue(this.vFinalDiscountAmt);
         }
@@ -1025,6 +1030,7 @@ CalculateAdminCharge(){
         this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
         this.finaldisc.nativeElement.focus();
       }
+      this.chkdiscstatus();
     } else {
       if (BillDiscPer > 0 && BillDiscPer < 100 || BillDiscPer > 100) {
         if (BillDiscPer > 100) {
@@ -1037,8 +1043,8 @@ CalculateAdminCharge(){
           this.Ipbillform.get('concessionAmt').setValue(this.vFinalDiscountAmt);
           this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount); 
         } else {
-          this.vFinalDiscountAmt = ((parseFloat(this.vTotalAmount) * parseFloat(BillDiscPer)) / 100).toFixed(2);
-          this.vNetBillAmount = (parseFloat(this.vTotalAmount) - parseFloat(this.vFinalDiscountAmt)).toFixed(2);
+          this.vFinalDiscountAmt = Math.round((parseFloat(this.vTotalAmount) * parseFloat(BillDiscPer)) / 100).toFixed(2);
+          this.vNetBillAmount = Math.round(parseFloat(this.vTotalAmount) - parseFloat(this.vFinalDiscountAmt)).toFixed(2);
           this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
           this.Ipbillform.get('concessionAmt').setValue(this.vFinalDiscountAmt);
         }
@@ -1053,8 +1059,9 @@ CalculateAdminCharge(){
         this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
         
       }
+      this.chkdiscstatus();
     }
-    this.chkdiscstatus();
+    
   } 
   //Total Bill DiscAMt cal
   getDiscAmtCal() {
@@ -1122,8 +1129,9 @@ CalculateAdminCharge(){
     this.chkdiscstatus();
   }
  
-  chkdiscstatus() { 
-    if (this.vFinalDiscountAmt > 0) { 
+  chkdiscstatus() {  
+    let CheckDiscAmt =  this.Ipbillform.get('concessionAmt').value || 0
+    if (this.vFinalDiscountAmt > 0 || CheckDiscAmt > 0) { 
       this.ConcessionShow = true; 
     } else{ 
       this.ConcessionShow = false; 
@@ -1222,6 +1230,7 @@ CalculateAdminCharge(){
             Swal.fire('Charges cancelled !', 'Charges cancelled Successfully!', 'success').then((result) => {
               this.getChargesList();
               this.CalculateAdminCharge();
+              this.CalFinalDisc();
               this.chkdiscstatus()
             });
           } else {
@@ -1805,22 +1814,21 @@ CalculateAdminCharge(){
         this.doctorname.nativeElement.focus();
       }
       else {
-        this.disc.nativeElement.focus();
-        this.Serviceform.get('discPer').setValue(0); 
+        this.disc.nativeElement.focus(); 
       }
       //this.disc.nativeElement.focus();
     }
   } 
   public onEnterdoctor(event): void { 
     if (event.which === 13) { 
-      this.disc.nativeElement.focus();
-      this.Serviceform.get('discPer').setValue(0);
+      this.disc.nativeElement.focus(); 
     }
   }
 
-  public onEnterdiscper(event, value): void { 
-    if (event.which === 13) {
-      this.discamt.nativeElement.focus();
+  public onEnterdiscper(event,value): void { 
+    if (event.which === 13) { 
+        this.discamt.nativeElement.focus(); 
+     
       // if (!(value < 0) && !(value > 100)) {
       //   this.discamt.nativeElement.focus();
       // } else if (event.which === 13 && (parseInt(value) < 0 && parseInt(value) > 100)) {
