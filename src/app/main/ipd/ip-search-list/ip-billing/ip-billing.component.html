@@ -149,7 +149,7 @@
                                     <mat-autocomplete #autosearchDoctor1="matAutocomplete"
                                         [displayWith]="getOptionTextsearchDoctor">
                                         <mat-option *ngFor="let option of filteredOptionsDoctors " [value]="option">
-                                            {{option.DoctorName}}
+                                            {{option.Doctorname}}
                                         </mat-option>
                                     </mat-autocomplete>
                                 </mat-form-field>  
@@ -171,8 +171,9 @@
                                         <mat-form-field appearance="outline">
                                             <mat-label>Disc Amt</mat-label>
                                             <input matInput [(ngModel)]="vServiceDisAmt" name="DisAmount" #discamt
-                                                formControlName="discAmount" type="number" id="discAmount"  
-                                                (keydown)="onEnterdiscamt($event)" (keyup)="calculatechargesDiscamt()">
+                                                formControlName="discAmount" type="text" OnlyNumber id="discAmount"  required
+                                                (keydown)="onEnterdiscamt($event)" (keyup)="calculatechargesDiscamt()"
+                                                (keypress)="keyPressCharater($event)">
                                         </mat-form-field>
                                     </div>
                                 </div>

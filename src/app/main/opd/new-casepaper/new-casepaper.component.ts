@@ -640,7 +640,11 @@ getOptionTextDoc(option) {
     this.caseFormGroup.get('LetteHeadRadio').setValue('NormalHead');
     this.caseFormGroup.get('LangaugeRadio').setValue('True');
     this.caseFormGroup.get('IsPathRad').setValue('1');
+    this.MedicineItemForm.get('Remark').setValue('');
     this.selectedItems = [];
+    this.specificDate = new Date(); 
+    this.vDays = ''
+    this.vChiefComplaint ='History:\n\nDiagnosis:\n\nExamination:';
   }
   SpinLoading: any = ""
   viewgetOpprescriptionReportPdf() {

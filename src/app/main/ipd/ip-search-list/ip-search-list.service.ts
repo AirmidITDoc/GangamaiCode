@@ -659,7 +659,10 @@ public updateIPDDischargSummary(employee)
   }
 
      // Get CashCounter List 
-     public getCashcounterList() {
+     public getCashcounterList( loader = true) {
+      if (loader) {
+        this._loaderService.show();
+    } 
       return this._httpClient.post("Generic/GetByProc?procName=m_RtrvCashCounterForCombo", {})
     }
   // public getRefundofBillOPDList(employee){
@@ -696,40 +699,58 @@ public updateIPDDischargSummary(employee)
   
   
   // Insert add Charges 
-  public InsertIPAddCharges(employee){
+  public InsertIPAddCharges(employee, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  } 
     return this._httpClient.post("InPatient/AddIPCharges", employee);
   }
 
   
-  public Addchargescancle(employee){
+  public Addchargescancle(employee, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  } 
     return this._httpClient.post("InPatient/DeleteIPCharges", employee);
   }
 
 
-  public InsertIPAddChargesNew(employee){
+  public InsertIPAddChargesNew(employee, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  } 
     return this._httpClient.post("InPatient/AddIPCharges",employee)
   }
   // public InsertIPBilling(employee)
   // {
   //   return this._httpClient.post("InPatient/IPBillingInsert",employee)
   // }
-  public InsertIPBilling(employee)
-  {
+  public InsertIPBilling(employee, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  } 
     return this._httpClient.post("InPatient/IPBillingInsertCashCounter",employee)
   }
   // public InsertIPBillingCredit(employee)
   // {
   //   return this._httpClient.post("InPatient/IPBillingCreditInsert",employee)
   // }
-  public InsertIPBillingCredit(employee)
-  {
+  public InsertIPBillingCredit(employee, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  } 
     return this._httpClient.post("InPatient/IPBillingCreditInsertCashCounter",employee)
   }
-  public InsertIPDraftBilling(e){
+  public InsertIPDraftBilling(e, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  } 
     return this._httpClient.post("InPatient/InsertIPDraftBill",e)
   }
-  public InsertInterim (employee)//IPInterimBillInsert
-  {
+  public InsertInterim (employee, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  } 
     return this._httpClient.post("InPatient/IPInterimBillInsertWithCashCounter",employee)
   }
   public BillDiscountAfter(employee)

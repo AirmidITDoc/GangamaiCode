@@ -657,17 +657,20 @@ export class ItemFormMasterComponent implements OnInit {
 
     public onEnterCGST(event): void {
         if (event.which === 13) {
+            this.gstPerChecking()
             this.SGST.nativeElement.focus();
         }
     }
 
     public onEnterSGST(event): void {
         if (event.which === 13) {
+            this.gstPerChecking()
             this.IGST.nativeElement.focus();
         }
     }
     public onEnterIGST(event): void {
         if (event.which === 13) {
+            this.gstPerChecking()
             this.MinQty.nativeElement.focus();
         }
     }
@@ -791,6 +794,31 @@ export class ItemFormMasterComponent implements OnInit {
             });
             return;
         }
+        if(parseFloat(this.vCGST) > 0){
+            if(!this.gstPerArray.some(item => item.gstPer ==  parseFloat(this.vCGST ))) {
+                this.toastr.warning('Please enter CGST percentage as 2.5%, 6%, 9% or 14%', 'Warning !', {
+                    toastClass: 'tostr-tost custom-toast-warning',
+                });
+                return 
+            } 
+        }
+        if(parseFloat(this.vSGST) > 0){
+            if(!this.gstPerArray.some(item => item.gstPer == parseFloat(this.vSGST))) {
+                this.toastr.warning('Please enter SGST percentage as 2.5%, 6%, 9% or 14%', 'Warning !', {
+                    toastClass: 'tostr-tost custom-toast-warning',
+                });
+                return 
+            } 
+        } 
+        if(parseFloat(this.vIGST) > 0){ 
+            if(!this.gstPerArray.some(item => item.gstPer == parseFloat(this.vIGST))) {
+                this.toastr.warning('Please enter IGST percentage as 2.5%, 6%, 9% or 14%', 'Warning !', {
+                    toastClass: 'tostr-tost custom-toast-warning',
+                });
+                return 
+            }  
+        }
+    
         if ((this.vStoreName == undefined || this.vStoreName == undefined || this.vStoreName == undefined)) {
             this.toastr.warning('Please select StoreName.', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
@@ -1063,7 +1091,43 @@ export class ItemFormMasterComponent implements OnInit {
         this._itemService.myform.reset();
         this.dialogRef.close();
     }
-
+    gstPerArray:any=[
+        {gstPer :0},
+        {gstPer :2.5},
+        {gstPer :6},
+        {gstPer :9},
+        {gstPer :14},
+    ]
+    gstPerChecking(){
+      
+        if(parseFloat(this.vCGST) > 0){
+            if(!this.gstPerArray.some(item => item.gstPer ==  parseFloat(this.vCGST ))) {
+                this.toastr.warning('Please enter CGST percentage as 2.5%, 6%, 9% or 14%', 'Warning !', {
+                    toastClass: 'tostr-tost custom-toast-warning',
+                });
+                return
+                // this.vCGST  = '';
+            } 
+        }
+        else if(parseFloat(this.vSGST) > 0){
+            if(!this.gstPerArray.some(item => item.gstPer == parseFloat(this.vSGST))) {
+                this.toastr.warning('Please enter SGST percentage as 2.5%, 6%, 9% or 14%', 'Warning !', {
+                    toastClass: 'tostr-tost custom-toast-warning',
+                });
+                return
+                // this.vSGST = '';
+            } 
+        }else{ 
+            if(!this.gstPerArray.some(item => item.gstPer == parseFloat(this.vIGST))) {
+                this.toastr.warning('Please enter IGST percentage as 2.5%, 6%, 9% or 14%', 'Warning !', {
+                    toastClass: 'tostr-tost custom-toast-warning',
+                });
+                return
+                // this.vIGST = '';
+            }  
+        }
+           
+    }
 
 
 }
