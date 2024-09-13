@@ -18,12 +18,13 @@ import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admissio
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { PrescriptionList } from 'app/main/nursingstation/prescription/prescription.component';
 import { PrecriptionItemList } from 'app/main/nursingstation/prescription/new-prescription/new-prescription.component';
-import { ToastrService } from 'ngx-toastr';
-import { MedicineItemList } from 'app/main/ipd/ip-search-list/discharge-summary/discharge-summary.component';
+import { ToastrService } from 'ngx-toastr'; 
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 import { ConfigService } from 'app/core/services/config.service';
 import { PrescriptionTemplateComponent } from './prescription-template/prescription-template.component';
+import { MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-new-casepaper',
@@ -43,6 +44,16 @@ export class NewCasepaperComponent implements OnInit {
     'DoseName2',
     'Day2',
     'Action'
+  ]
+  displayedpreviousColumn: string[] = [
+    'ItemName',
+    'DoseName',
+    'Days',
+    'Remark',
+    'DoseName1',
+    'Day1',
+    'DoseName2',
+    'Day2', 
   ]
   displayedVisitColumns = [
     'VisitId',
@@ -127,7 +138,8 @@ export class NewCasepaperComponent implements OnInit {
   vServiceId:any;
   isServiceIdSelected:boolean = false;
   vFollowUpDays:any=0;
-  
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
  
   dsItemList = new MatTableDataSource<MedicineItemList>();
   dataSource1 = new MatTableDataSource<CasepaperVisitDetails>();
@@ -273,6 +285,7 @@ export class NewCasepaperComponent implements OnInit {
     this.vMobileNo = obj.MobileNo;
     // this.prescriptionDetails(this.VisitId);
      this.getServiceList();
+     this. getVisistList();
     // this.getPrescriptionListFill(this.VisitId);
   }
   getOptionText1(option) {
@@ -346,6 +359,7 @@ export class NewCasepaperComponent implements OnInit {
       return this.doseList.filter(option => option.DoseName.toLowerCase().includes(filterValue));
     }
   }
+
 //Department list
 optionsDep:any=[];
 getDepartmentList() { 
@@ -728,6 +742,17 @@ getOptionTextDoc(option) {
       return false;
     }
   }
+   ///[^a-zA-Z0-9]/
+  keyPressOk(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/^[0-9!@#$%^&*()_+\-=\[\]{};:"\\|,.<>\/?]*$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
+  
 
   @ViewChild('ChiefComp') ChiefComp: ElementRef;
   @ViewChild('EHeight') EHeight: ElementRef;
@@ -843,15 +868,51 @@ getOptionTextDoc(option) {
 
   }
   //Tab 2
-  getPrescriptionListFill1(visitId) {
-    debugger;
-    this._CasepaperService.RtrvPreviousprescriptionDetails(visitId).subscribe(Visit => {
-      this.dsItemList1.data = Visit as MedicineItemList[];
-
-      console.log(this.dsItemList1.data);
-
+  //get visit list 
+  SelectedObj:any;
+  getVisistList() { 
+    this.sIsLoading = 'loading';
+    var D_data = {
+      "RegId": this.RegId,
+    }
+    console.log(D_data);
+    this.sIsLoading = 'loading-data';
+    this._CasepaperService.getVisitedList(D_data).subscribe(Visit => {
+      this.dataSource1.data = Visit as CasepaperVisitDetails[];
+      console.log(this.dataSource1.data);
+      this.VisitId = this.dataSource1.data[0].VisitId;
+      console.log(this.dataSource1.data[0].VisitId)
+      this.dataSource1.sort = this.sort;
+      this.dataSource1.paginator = this.paginator;
       this.sIsLoading = '';
-
+    })
+  }
+  preHeight:any;
+  preSPO:any;
+  preWeight:any;
+  preTemp:any;
+  PreBMI:any;
+  prePulse:any;
+  preBSL:any;
+  preBP:any;
+  preCheifComplaint:any;
+  preFollowupDate:Date;
+  getPrescriptionListFill1(visitId) { 
+    this._CasepaperService.RtrvPreviousprescriptionDetails(visitId).subscribe(Visit => {
+      this.dsItemList1.data = Visit as MedicineItemList[];  
+      this.SelectedObj = this.dsItemList1.data 
+      console.log(this.dsItemList1.data);
+      console.log(this.SelectedObj);
+      this.preHeight = this.SelectedObj[0].Height;
+      this.preWeight = this.SelectedObj[0].PWeight;
+      this.PreBMI = this.SelectedObj[0].BMI;
+      this.preSPO = this.SelectedObj[0].SPO2;
+      this.preTemp = this.SelectedObj[0].Temp; 
+      this.prePulse = this.SelectedObj[0].Pulse;
+      this.preBSL = this.SelectedObj[0].BSL;
+      this.preBP = this.SelectedObj[0].BP; 
+      this.preCheifComplaint = this.SelectedObj[0].ChiefComplaint;  
+      this.sIsLoading = '';
     })
   }
   CreateTemplate(){ 
@@ -866,6 +927,7 @@ getOptionTextDoc(option) {
     console.log('The dialog was closed - Insert Action', result); 
   });
 }
+
 
 //   subscriptions: Subscription[] = [];
 //   reportPrintObj: CasepaperVisitDetails;
@@ -1365,24 +1427,7 @@ getOptionTextDoc(option) {
 //   }
  
 
-//   getVisistList() {
-//     debugger;
-//     this.sIsLoading = 'loading';
-//     var D_data = {
-      
-//       "RegId":  this.RegId,
-//     }
-//     console.log(D_data);
-//     this.sIsLoading = 'loading-data';
-//     this._CasepaperService.getVisitedList(D_data).subscribe(Visit => {
-//       this.dataSource1.data = Visit as CasepaperVisitDetails[];
 
-//       console.log(this.dataSource1.data);
-//       // this.dataSource.sort = this.sort;
-//       // this.dataSource.paginator = this.paginator;
-//       this.sIsLoading = ''; 
-//     }) 
-//   } 
 
 //   openCreatePrescriptionTemplate() {
 //     debugger;
@@ -1603,6 +1648,53 @@ export class CasepaperVisitDetails {
   }
 
 
+}
+export class MedicineItemList {
+  ItemID: any;
+  ItemId: any;
+  ItemName: string;
+  DoseName:any;
+  Days: number;
+  DoseName1:any;
+  Day1: number;
+  DoseName2:any;
+  Day2: number;
+  Instruction: any;
+  DoseId:any;
+  DoseId1:any;
+  DoseId2:any;
+  Day:any;
+  DaysOption2:any;
+  DaysOption3:any;
+  DoseNameOption2:any;
+  DoseNameOption3:any;
+  PWeight:any;
+  /**
+  * Constructor
+  *
+  * @param MedicineItemList
+  */
+  constructor(MedicineItemList) {
+    {
+      this.ItemId = MedicineItemList.ItemId || 0;
+      this.ItemID = MedicineItemList.ItemID || 0;
+      this.ItemName = MedicineItemList.ItemName || "";
+      this.PWeight = MedicineItemList.PWeight || 0;
+      this.Instruction = MedicineItemList.Instruction || '';
+      this.DoseName = MedicineItemList.DoseName || '';
+      this.Days = MedicineItemList.Days || 0;
+      this.DoseName1 = MedicineItemList.DoseName1 || '';
+      this.Day1 = MedicineItemList.Day1 || 0;
+      this.DoseName2 = MedicineItemList.DoseName2 || '';
+      this.Day2 = MedicineItemList.Day2 || 0;
+      this.DoseId1 = MedicineItemList.DoseId1 || '';
+      this.DoseId2 = MedicineItemList.DoseId2 || 0;
+      this.DaysOption2 = MedicineItemList.DaysOption2 || 0;
+      this.DaysOption3 = MedicineItemList.DaysOption3 || 0;
+      this.DoseNameOption2 = MedicineItemList.DoseNameOption2 || '';
+      this.DoseNameOption3 = MedicineItemList.DoseNameOption3 || '';
+    }
+  }
 }
 
 

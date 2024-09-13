@@ -839,8 +839,7 @@ ServiceList:any=[];
       this.vServiceDiscPer = '';
      // this.registeredForm.get('ChargeDiscPer').setValue('') 
     }
-  } 
-
+  }  
   //Service Disc Amt 
   calculatechargesDiscamt() { 
     let ServiceDiscAmt = this.Serviceform.get('discAmount').value || 0;
@@ -961,8 +960,7 @@ AdminStatus(event){
 //     this.Ipbillform.get('FinalAmount').setValue(this.vTotalBillAmount);
 //     this.CalFinalDisc();
 //   }
-// }
-
+// } 
 CalculateAdminCharge(){ 
   if(this.vAdminPer > 0 && this.vAdminPer < 100 ){
     this.vAdminAmt = Math.round((parseFloat(this.vTotalAmount) * parseFloat(this.vAdminPer)) / 100).toFixed(2);

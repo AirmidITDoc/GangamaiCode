@@ -67,10 +67,16 @@ public getServiceList(param,loader = true){
   public getOPDPrecriptionPrint(PrecriptionId) {
     return this._httpClient.post("Generic/GetByProc?procName=rptOPDPrecriptionPrint ", PrecriptionId)
   }
-  public RtrvPreviousprescriptionDetails(visistId) {
+  public RtrvPreviousprescriptionDetails(visistId,loader = true) {
+    if(loader){
+      this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=Get_PrescriptionDetailsVisitWise", { "VisitId": visistId });
   }
-  public getVisitedList(employee) {
+  public getVisitedList(employee,loader = true) {
+    if(loader){
+      this._loaderService.show();
+    }
 
     return this._httpClient.post("Generic/GetByProc?procName=rtrv_CaseparVisitDetails", employee)
   }
