@@ -2087,9 +2087,7 @@ debugger
         console.log(submissionObj);
         this._opappointmentService.appointregupdate(submissionObj).subscribe(response => {
             if (response) {
-
-
-                Swal.fire('Congratulations !', 'Registered Appoinment Saved Successfully  !', 'success').then((result) => {
+            Swal.fire('Congratulations !', 'Registered Appoinment Saved Successfully  !', 'success').then((result) => {
                     if (result.isConfirmed) {
                         this.viewgetPatientAppointmentReportPdf(response, false);
                     }

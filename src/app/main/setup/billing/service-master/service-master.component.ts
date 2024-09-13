@@ -196,15 +196,7 @@ export class ServiceMasterComponent implements OnInit {
                                 toastClass: 'tostr-tost custom-toast-success',
                               });
                               this.getServiceMasterList();
-                            // Swal.fire(
-                            //     "Saved !",
-                            //     "Record saved Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getGroupMasterList();
-                            //     }
-                            // });
+                           
                         } else {
                             this.toastr.error('Service Master Data not saved !, Please check API error..', 'Error !', {
                                 toastClass: 'tostr-tost custom-toast-error',
@@ -307,15 +299,7 @@ export class ServiceMasterComponent implements OnInit {
                                 toastClass: 'tostr-tost custom-toast-success',
                               });
                               this.getServiceMasterList();
-                            // Swal.fire(
-                            //     "Updated !",
-                            //     "Record updated Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getGroupMasterList();
-                            //     }
-                            // });
+                         
                         } else {
                             this.toastr.error('Service Master Data not updated !, Please check API error..', 'Error !', {
                                 toastClass: 'tostr-tost custom-toast-error',
@@ -384,7 +368,7 @@ export class ServiceMasterComponent implements OnInit {
             maxWidth: "80vw",
             maxHeight: "90vh",
             width: "100%",
-            // height: "100%",
+            
         });
         dialogRef.afterClosed().subscribe((result) => {
             this.getServiceMasterList();
@@ -398,22 +382,23 @@ export class ServiceMaster {
     ServiceShortDesc: string;
     ServiceName: string;
     Price: number;
-    IsEditable: boolean;
-    CreditedtoDoctor: boolean;
-    IsPathology: number;
-    IsRadiology: number;
-    IsDeleted: boolean;
+    IsEditable: any;
+    CreditedtoDoctor: any;
+    IsPathology: any;
+    IsRadiology: any;
+    IsActive: any;
     PrintOrder: number;
-    IsPackage: number;
+    IsPackage: any;
     SubGroupId: number;
     DoctorId: number;
-    IsEmergency: boolean;
+    IsEmergency: any;
     EmgAmt: number;
     EmgPer: number;
-    IsDocEditable: boolean;
+    IsDocEditable: any;
     AddedBy: number;
     UpdatedBy: number;
     AddedByName: string;
+    IsDeleted:any;
     /**
      * Constructor
      *
@@ -426,32 +411,33 @@ export class ServiceMaster {
             this.ServiceShortDesc = ServiceMaster.ServiceShortDesc || "";
             this.ServiceName = ServiceMaster.ServiceName || "";
             this.Price = ServiceMaster.Price || "";
-            this.IsEditable = ServiceMaster.IsEditable || "";
-            this.CreditedtoDoctor = ServiceMaster.CreditedtoDoctor || "";
-            this.IsPathology = ServiceMaster.IsPathology || "";
-            this.IsRadiology = ServiceMaster.IsRadiology || "";
-            this.IsDeleted = ServiceMaster.IsDeleted || "false";
+            this.IsEditable = ServiceMaster.IsEditable || 0;
+            this.CreditedtoDoctor = ServiceMaster.CreditedtoDoctor || 0;
+            this.IsPathology = ServiceMaster.IsPathology || 0;
+            this.IsRadiology = ServiceMaster.IsRadiology || 0;
+            this.IsActive = ServiceMaster.IsActive || 1;
             this.PrintOrder = ServiceMaster.PrintOrder || "";
-            this.IsPackage = ServiceMaster.IsPackage || "";
+            this.IsPackage = ServiceMaster.IsPackage || 0;
             this.SubGroupId = ServiceMaster.SubGroupId || "";
             this.DoctorId = ServiceMaster.DoctorId || "";
-            this.IsEmergency = ServiceMaster.IsEmergency || "";
+            this.IsEmergency = ServiceMaster.IsEmergency || 0;
             this.EmgAmt = ServiceMaster.EmgAmt || "";
             this.EmgPer = ServiceMaster.EmgPer || "";
             this.IsDocEditable = ServiceMaster.DoctorId || "";
             this.AddedBy = ServiceMaster.AddedBy || "";
             this.UpdatedBy = ServiceMaster.UpdatedBy || "";
             this.AddedByName = ServiceMaster.AddedByName || "";
+            this.IsDeleted = ServiceMaster.IsDeleted || "";
         }
     }
 }
 
 export class Servicedetail {
-    ServiceDetailId: number;
-    ServiceId: number;
-    TariffId: number;
-    ClassId: number;
-    ClassRate: number;
+    ServiceDetailId: any;
+    ServiceId: any;
+    TariffId: any;
+    ClassId: any;
+    ClassRate: any;
     EffectiveDate: Date;
     ClassName: any;
  

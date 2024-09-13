@@ -63,7 +63,7 @@ onAdd() {
 
   const dialogRef = this._matDialog.open(NewHospitalComponent, {
       maxWidth: "65vw",
-      maxHeight: "75vh",
+      maxHeight: "85vh",
       width: "100%",
       height: "100%",
   });
@@ -77,7 +77,7 @@ onEdit(row){
   this._HospitalService.populateForm(row);
   const dialogRef = this._matDialog.open(NewHospitalComponent, {
     maxWidth: "65vw",
-    maxHeight: "75vh",
+    maxHeight: "85vh",
     width: "100%",
     height: "100%",
     data: {
@@ -102,6 +102,8 @@ export class HospitalMaster {
   Phone : any;
   EmailID:any;
   WebSiteInfo:any;
+  Header:any;
+  IsDeleted:any;
   /**
    * Constructor
    *
@@ -118,7 +120,8 @@ export class HospitalMaster {
           this.Phone  =HospitalMaster.Phone  || "";
           this.EmailID = HospitalMaster.EmailID || "";
           this.WebSiteInfo  =HospitalMaster.WebSiteInfo  || "";
-          
+          this.Header  =HospitalMaster.Header  || "";
+          this.IsDeleted  =HospitalMaster.IsDeleted  || 1;
       }
   }
 }

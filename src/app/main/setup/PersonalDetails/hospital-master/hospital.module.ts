@@ -26,6 +26,7 @@ import { HospitalMasterComponent } from "./hospital-master.component";
 import { HospitalService } from "./hospital.service";
 import { NewHospitalComponent } from './new-hospital/new-hospital.component';
 import { MatToolbarModule } from "@angular/material/toolbar";
+import { AngularEditorModule } from "@kolkov/angular-editor";
 
 const routes: Routes = [
     {
@@ -59,7 +60,8 @@ const routes: Routes = [
         MatStepperModule,
         NgxMatSelectSearchModule,
         MatToolbarModule,
-        MatAutocompleteModule
+        MatAutocompleteModule,
+        AngularEditorModule
     ],
     providers: [HospitalService],
     entryComponents: [HospitalMasterComponent],

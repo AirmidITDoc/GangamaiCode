@@ -159,10 +159,10 @@
                                             </mat-footer-cell>
                                         </ng-container>
 
-                                        <mat-header-row class="accent min-width-1600"
+                                        <mat-header-row class="accent min-width-1800"
                                         *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
                                         <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
-                                        class=" min-width-1600" 
+                                        class=" min-width-1800" 
                                             [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                         <mat-footer-row *matFooterRowDef="['loading']"
                                             [ngClass]="{'hide':DSHospitalList!=null}"></mat-footer-row>

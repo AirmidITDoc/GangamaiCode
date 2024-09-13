@@ -32,7 +32,8 @@ export class SampleRequestComponent implements OnInit {
   dataArray = {};
   sIsLoading: string = '';
   //isSampleCollection: boolean = true;
-
+  RequestId:any=0;
+  Ispathradio=0;
 
   setStep(index: number) {
     this.step = index;
@@ -107,9 +108,9 @@ export class SampleRequestComponent implements OnInit {
   }
 
   getSampleLabOrRadRequestLists() {
-    // debugger
+  
     console.log(this._PathologyService.myformSearch.get("StatusSearch").value)
-    // this.sIsLoading = 'loading-data';
+    
     var m_data = {
 
       "FromDate": this.datePipe.transform(this._PathologyService.myformSearch.get("start").value, "MM-dd-yyyy"),
@@ -124,11 +125,11 @@ export class SampleRequestComponent implements OnInit {
       this.dataSource.data = Visit as LabOrRadRequestList[];
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
-      // this.sIsLoading = '';
+      
       this.click = false;
     },
       error => {
-        // this.sIsLoading = '';
+        
       });
   }
 
@@ -146,8 +147,7 @@ export class SampleRequestComponent implements OnInit {
   onShow(event: MouseEvent) {
     
     this.click = !this.click;
-    // this. showSpinner = true;
-
+   
     setTimeout(() => {
       {
         this.sIsLoading = 'loading-data';
@@ -163,14 +163,54 @@ export class SampleRequestComponent implements OnInit {
 
   onEdit(row, m) {
     console.log(m);
+    this.sampledetaillist(row);
+    this.RequestId=m.RequestId
+  }
+
+  toggle(val: any) {
+    if (val == "1") {
+        this.Ispathradio = 1;
+    } else if (val == "2") {
+        this.Ispathradio = 2;
+    }
+    else {
+        this.Ispathradio = 3;
+
+    }
+}
+onFilterChange(){
+  var m_data = {
+
+    "RequestId": this.RequestId,
+    "IsPathOrRad":this.Ispathradio,// parseInt(this._PathologyService.myformSearch.get("IsPathOrRad").value) || 1
+
+  }
+  setTimeout(() => {
+  
+    this._PathologyService.getSampleNursingPathRadReqDetList(m_data).subscribe(Visit => {
+      this.dataSource1.data = Visit as NursingPathRadRequestList[];
+      this.dataSource1.sort = this.sort;
+      this.dataSource1.paginator = this.paginator;
+      console.log(m_data);
+      this.sIsLoading = '';
+      this.click = false;
+
+    },
+      error => {
+        this.sIsLoading = '';
+      });
+  }, 50);
+}
+  sampledetaillist(m){
+    debugger
     var m_data = {
 
-      "RequestId": m.RequestId || 14564,
-      "IsPathOrRad": 1,
+      "RequestId": this.RequestId,
+      "IsPathOrRad": parseInt(this._PathologyService.myformSearch.get("IsPathOrRad").value) || 1
 
     }
     setTimeout(() => {
-      //  this.sIsLoading = 'loading-data';
+    
       this._PathologyService.getSampleNursingPathRadReqDetList(m_data).subscribe(Visit => {
         this.dataSource1.data = Visit as NursingPathRadRequestList[];
         this.dataSource1.sort = this.sort;
@@ -184,13 +224,7 @@ export class SampleRequestComponent implements OnInit {
           this.sIsLoading = '';
         });
     }, 50);
-
-
-    // } 
-
-
   }
-
 
   exportSamplerequstReportExcel(){
     this.sIsLoading == 'loading-data'

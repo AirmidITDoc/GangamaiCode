@@ -161,6 +161,7 @@ export class TestFormMasterComponent implements OnInit {
         }
         this._TestService.getTestListfor(m_data).subscribe(Visit => {
           this.DSTestList.data = Visit as TestList[];
+          
         });
        
     }
@@ -179,11 +180,14 @@ export class TestFormMasterComponent implements OnInit {
 
 
     drop(event: CdkDragDrop<string[]>) {
+        debugger
         this.DSTestList.data = [];
         this.ChargeList = this.dsTemparoryList.data;
         moveItemInArray(this.ChargeList, event.previousIndex, event.currentIndex);
         this.DSTestList.data = this.ChargeList;
     }
+
+
     toggle(val) {
 
         if (val == "1") {
@@ -402,6 +406,7 @@ export class TestFormMasterComponent implements OnInit {
         console.log(SelectQuery)
         this._TestService.getquerydata(SelectQuery).subscribe(Visit => {
             this.DSTestListtemp.data = Visit as TestList[];
+            this.dsTemparoryList.data = Visit as TestList[];
             console.log(this.DSTestListtemp.data)
             if (this.DSTestListtemp.data.length > 0) {
                 debugger
@@ -425,6 +430,7 @@ export class TestFormMasterComponent implements OnInit {
                 ParameterName: this.DSTestListtemp.data[0]["ParameterName"],
             });
         this.DSTestList.data = this.ChargeList;
+        this.dsTemparoryList.data = this.ChargeList;
         console.log(this.DSTestList.data)
 
     }
@@ -797,6 +803,7 @@ export class TestFormMasterComponent implements OnInit {
     }
 
     selectdrop(args) {
+        debugger
         console.log(this.selectedItems);
         this.selectedItems = this.selectedItems.concat(args);
 

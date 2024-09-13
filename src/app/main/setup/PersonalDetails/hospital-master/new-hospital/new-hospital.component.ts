@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
 import { HospitalMaster } from '../hospital-master.component';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 
 @Component({
   selector: 'app-new-hospital',
@@ -18,6 +19,23 @@ import { HospitalMaster } from '../hospital-master.component';
   animations: fuseAnimations,
 })
 export class NewHospitalComponent implements OnInit {
+  Header: string;
+  editorConfig: AngularEditorConfig = {
+      // color:true,
+      editable: true,
+      spellcheck: true,
+      height: '35rem',
+      minHeight: '35rem',
+      translate: 'yes',
+      placeholder: 'Enter text here...',
+      enableToolbar: true,
+      showToolbar: true,
+
+  };
+  onBlur(e: any) {
+      this.Header = e.target.innerHTML;
+  }
+  
     registerObj= new HospitalMaster({});
     optionsCity: any[] = [];
     cityList:any=[];
@@ -25,7 +43,7 @@ export class NewHospitalComponent implements OnInit {
     isCitySelected: boolean = false;
     vCityId:any;
     HospitalId=0;
-
+    HospitalHeader:any='';
   constructor( public _HospitalService: HospitalService,
     public _matDialog: MatDialog,
     private reportDownloadService: ExcelDownloadService,
@@ -35,10 +53,13 @@ export class NewHospitalComponent implements OnInit {
     private _fuseSidebarService: FuseSidebarService,) { }
 
   ngOnInit(): void {
-    this.getCitylist();
+    
+    this.getcityList() 
     if(this.data){
       this.registerObj=this.data.registerObj;
      this.HospitalId=this.registerObj.HospitalId
+     console.log(this.registerObj)
+     this.getCitylist();
     }
          
     this.filteredOptionsCity = this._HospitalService.HospitalForm.get('CityId').valueChanges.pipe(
@@ -60,8 +81,7 @@ export class NewHospitalComponent implements OnInit {
     hospitaldata['Phone'] = this._HospitalService.HospitalForm.get('Phone').value || '';
     hospitaldata['Email'] =this._HospitalService.HospitalForm.get('Email').value  || '';
     hospitaldata['Website'] = this._HospitalService.HospitalForm.get('website').value  || '';
-    // hospitalarr.push(hospitaldata);
-
+    hospitaldata['HospitalHeader'] = this._HospitalService.HospitalForm.get('HospitalHeader').value  || '';
    
     let submitData = {
       hospitalMasterInsert:hospitaldata
@@ -70,7 +90,7 @@ export class NewHospitalComponent implements OnInit {
     console.log(submitData)
     this._HospitalService.HospitalInsert(submitData).subscribe(response => {
         if (response) {
-          Swal.fire('', 'success').then((result) => {
+          Swal.fire('Congratulations !', 'Hospital  Saved Successfully  !', 'success').then((result) => {
          
           });
         } else {
@@ -88,6 +108,7 @@ export class NewHospitalComponent implements OnInit {
       hospitaldata['Phone'] = this._HospitalService.HospitalForm.get('Phone').value || '';
       hospitaldata['Email'] =this._HospitalService.HospitalForm.get('Email').value  || '';
       hospitaldata['Website'] = this._HospitalService.HospitalForm.get('website').value  || '';
+      hospitaldata['HospitalHeader'] = this._HospitalService.HospitalForm.get('HospitalHeader').value  || '';
       // hospitalarr.push(hospitaldata);
   
      
@@ -98,7 +119,7 @@ export class NewHospitalComponent implements OnInit {
       console.log(submitData)
       this._HospitalService.HospitalUpdate(submitData).subscribe(response => {
           if (response) {
-            Swal.fire('', 'success').then((result) => {
+            Swal.fire('Congratulations !', 'Hospital Updated Successfully  !', 'success').then((result) => {
            
             });
           } else {
@@ -107,6 +128,7 @@ export class NewHospitalComponent implements OnInit {
           
         });
     }
+    this._matDialog.closeAll();
   }
   
 
@@ -174,7 +196,7 @@ getcityList() {
         startWith(''),
         map(value => value ? this._filterCity(value) : this.cityList.slice()),
       );
-
+console.log(this.cityList)
     });
 
   }
@@ -221,6 +243,10 @@ getCitylist() {
 }
   onClose(){
     this._HospitalService.HospitalForm.reset();
+    this._matDialog.closeAll();
+  }
+
+  onClear(){
     this._matDialog.closeAll();
   }
 }

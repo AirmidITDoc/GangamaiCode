@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation, HostListener, Inject } from "@angular/core";
-import { ServiceMasterComponent, Servicedetail } from "../service-master.component";
+import { ServiceMaster, ServiceMasterComponent, Servicedetail } from "../service-master.component";
 import { fuseAnimations } from "@fuse/animations";
 import { MatTableDataSource } from "@angular/material/table";
 import { FormControl, Validators } from "@angular/forms";
@@ -33,7 +33,7 @@ import { NONE_TYPE } from "@angular/compiler";
   ClasscmbList:any=[];
   TariffcmbList:any=[];
 
-  registerObj=new Servicedetail({});
+  registerObj=new ServiceMaster({});
 
   butDisabled:boolean = false;
   msg:any;
@@ -238,12 +238,12 @@ private _onDestroy = new Subject<void>();
     this._serviceMasterService.getServicewiseClassMasterList(data).subscribe(Menu => {
       this.DSServicedetailList.data = Menu as Servicedetail[];
       console.log(this.DSServicedetailList.data)
-      // if(this.DSServicedetailList.data){
-      //   this.DSServicedetailList.data.forEach((element) => {
-      //     this.classratearry.push(element.ClassRate)
-      //   });
-      // }
-      // console.log(this.classratearry)
+      if(this.DSServicedetailList.data){
+        this.DSServicedetailList.data.forEach((element) => {
+          this.classratearry.push(element.ClassRate)
+        });
+      }
+      console.log(this.classratearry)
     });
     // if(this.classratearry)
     //   this.DSServicedetailList.data=this.classratearry

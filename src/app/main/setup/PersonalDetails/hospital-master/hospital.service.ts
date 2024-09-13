@@ -25,8 +25,8 @@ myformSearch:FormGroup;
       Phone: ['', [Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
       Email:[""],
       website:[""],
-      HospitalId:[""]
-    
+      HospitalId:[""],
+      HospitalHeader:[""]
     });
 }
 

@@ -123,7 +123,7 @@
                 <div fxFlex="100%" fxFlex.gt-sm="100%">
                     <div style="min-width: 100%;">
 
-                        <div style="max-width: 100%; overflow-x: scroll; overflow-y: hidden;">
+                        <div style="max-width:1800px; overflow-x: scroll; overflow-y: hidden;">
                             <table class="table2">
                                 <tr>
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
@@ -131,7 +131,7 @@
                                         </th>
                                         <th style="width: 100px;background-color: rgb(143, 143, 243);" class="right"
                                             *ngFor="let i of DSServicedetailList.data">
-                                            {{i.ClassName}}
+                                            {{i.ClassName}}( {{i.ClassRate}})
                                         </th>
                                     </div>
                                 </tr>
@@ -177,31 +177,31 @@
 
                         <section class="example-section" style="margin-right: 30px;">
                             <mat-checkbox class="example-margin" name="IsEditable" formControlName="IsEditable"
-                                value='true'>
+                                value='true' [(ngModel)]="registerObj.IsEditable">
                                 IsEditable</mat-checkbox>
                         </section>
 
                         <section class="example-section" style="margin-right: 30px;">
                             <mat-checkbox class="example-margin" name="IsPackage" formControlName="IsPackage"
-                                value='false'>
+                                value='false' [(ngModel)]="registerObj.IsPackage">
                                 IsPackage</mat-checkbox>
                         </section>
 
 
                         <section class="example-section" style="margin-right: 30px;">
                             <mat-checkbox class="example-margin" name="IsRadiology" formControlName="IsRadiology"
-                                value='false'>
+                                value='false'  [(ngModel)]="registerObj.IsRadiology">
                                 IsRadiology</mat-checkbox>
                         </section>
 
                         <section class="example-section" style="margin-right: 30px;">
                             <mat-checkbox class="example-margin" name="IsPathology" formControlName="IsPathology"
-                                value='false'>
+                                value='false'  [(ngModel)]="registerObj.IsPathology">
                                 IsPathology</mat-checkbox>
                         </section>
                         <section class="example-section" style="margin-right: 30px;">
                             <mat-checkbox class="example-margin" name="IsEmergency" [(ngModel)]="showEmg" value="true"
-                                formControlName="IsEmergency" (change)="emg_amt=''; emg_per=''">
+                                formControlName="IsEmergency" (change)="emg_amt=''; emg_per=''" >
                                 IsEmergency</mat-checkbox>
                         </section>
                     </div>
@@ -276,10 +276,11 @@
     <hr>
     
     <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between">
-        <section class="example-section" style="margin-left: 40px;">
-            <mat-checkbox class="example-margin" name="IsActive" formControlName="IsActive" value='true'>
-                IsActive</mat-checkbox>
-        </section>
+       
+        <mat-checkbox aria-label="Is Active" formControlName="IsActive" (checked)=true
+        [(ngModel)]="registerObj.IsActive" style="font-weight: bold;">
+        IsActive
+    </mat-checkbox>
         <div class="sales-footer-buttons gap-8" fxLayout="row">
             <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
             <button class="btn btn-primary" color="accent" (click)="onSubmit()" #savebutton>

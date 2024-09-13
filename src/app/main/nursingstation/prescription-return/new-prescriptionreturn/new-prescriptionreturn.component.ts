@@ -149,7 +149,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
   }
   getBatch() {
     this.qty.nativeElement.focus();
-    
+    debugger
     const dialogRef = this._matDialog.open(BatchpopupComponent,
       {
         maxWidth: "800px",
@@ -170,26 +170,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
       // this.MRP = result.UnitMRP;
       this.Qty = result.Qty;
       this.BalanceQty = result.Qty;
-      // this.GSTPer = result.VatPercentage;
-
-      // this.TotalMRP = this.Qty * this.MRP;
-      // this.DiscAmt = 0;
-      // this.NetAmt = this.TotalMRP;
-      // this.BalanceQty = result.BalanceQty;
-      // this.ItemObj = result;
-
-      // this.VatPer = result.VatPercentage;
-      // // console.log(this.VatPer);
-      // this.CgstPer = result.CGSTPer;
-      // this.SgstPer = result.SGSTPer;
-      // this.IgstPer = result.IGSTPer;
-
-      // this.VatAmount = result.VatPercentage;
-      // this.StockId = result.StockId
-      // this.StoreId = result.StoreId;
-      // this.LandedRate = result.LandedRate;
-      // this.PurchaseRate = result.PurchaseRate;
-      // this.UnitMRP = result.UnitMRP;
+     
     });
 
     // this.qty.nativeElement.focus();

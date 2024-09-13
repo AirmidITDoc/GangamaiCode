@@ -41,7 +41,7 @@ export class ServiceMasterService {
             IsDocEditable: ["0"],
             AddedBy: [""],
             UpdatedBy: [""],
-            IsActive:true,
+            IsActive:[true],
             ServiceDetailId: [""],
             TariffId: [""],
             ClassId: ["0"],

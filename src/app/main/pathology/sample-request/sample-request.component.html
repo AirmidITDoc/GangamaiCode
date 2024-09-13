@@ -242,8 +242,18 @@
                                 <div class="table-header">
                                     <div fxLayout="row wrap" fxLayoutAlign="space-between center">
                                         <div class="table-header-title">
-                                            <span class="h3 font-weight-600">Nursing Pathology Rad Details</span>
+                                            <span class="h3 font-weight-600">Nursing Pathology Radiology Details</span>
                                         </div>
+                                        <form [formGroup]="_PathologyService.myformSearch">
+                                            <mat-radio-group name="IsPathOrRad" formControlName="IsPathOrRad"
+                                            (change)="onFilterChange()">
+                                            <mat-radio-button (click)="toggle(0)" [checked]="true"
+                                                value="3">All</mat-radio-button>
+                                            <mat-radio-button mat-fab value="1"
+                                                (click)="toggle(1)">IsPathology</mat-radio-button>
+                                            <mat-radio-button (click)="toggle(2)" value="2">IsRadiology</mat-radio-button>
+                                          </mat-radio-group>
+                                        </form>
                                         <div class="table-header-right">
                                             <div class="export-buttons">
                                                 <div fxLayout="row" fxLayoutAlign="center center" class="gap-8">
@@ -259,11 +269,11 @@
                                         </div>
                                     </div>
                                 </div>
+
+                              
                                 <div class="table-wrapper">
-                                    <!-- <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur">
-                                        <div class="spinner-border"></div>
-                                    </div> -->
-                                    <!-- mat table -->
+                                   
+
                                     <mat-table class="h-260" #table matSort [dataSource]="dataSource1" [@animateStagger]="{value:'50'}">
                                         <ng-container matColumnDef="ReqDate">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
