@@ -12,6 +12,20 @@ import { MedicineItemList } from 'app/main/ipd/ip-search-list/discharge-summary/
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
+// interface Prescription {
+//   date: string;
+//   medication: string;
+//   dosage: string;
+// }
+
+// interface Patient {
+//   name: string;
+//   age: number;
+//   gender: string;
+//   prescriptions: Prescription[];
+// }
+
+
 @Component({
   selector: 'app-prescription-template',
   templateUrl: './prescription-template.component.html',
@@ -277,6 +291,43 @@ export class PrescriptionTemplateComponent implements OnInit {
       this.add = true;
     }
   }
+
+    // patients: Patient[] = [
+    //   {
+    //     name: "John Doe",
+    //     age: 30,
+    //     gender: "Male",
+    //     prescriptions: [
+    //       { date: "2024-08-01", medication: "Medication A", dosage: "500mg" },
+    //       { date: "2024-08-02", medication: "Medication B", dosage: "250mg" }
+    //     ]
+    //   },
+    //   {
+    //     name: "Jane Smith",
+    //     age: 25,
+    //     gender: "Female",
+    //     prescriptions: [
+    //       { date: "2024-08-01", medication: "Medication C", dosage: "100mg" }
+    //     ]
+    //   },
+    //   {
+    //     name: "Alice Johnson",
+    //     age: 40,
+    //     gender: "Female",
+    //     prescriptions: [
+    //       { date: "2024-08-02", medication: "Medication D", dosage: "200mg" }
+    //     ]
+    //   },
+    //   {
+    //     name: "Bob Brown",
+    //     age: 50,
+    //     gender: "Male",
+    //     prescriptions: [
+    //       { date: "2024-08-01", medication: "Medication E", dosage: "300mg" },
+    //       { date: "2024-08-02", medication: "Medication F", dosage: "150mg" }
+    //     ]
+    //   }
+    // ];
 }
 export class Templatelist {
   TemplateName: any;

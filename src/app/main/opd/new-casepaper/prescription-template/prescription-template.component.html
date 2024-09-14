@@ -255,3 +255,27 @@
         </div>
     </div>
 </div>
+
+
+   <!-- patient-info.component.html -->
+   <!-- <div *ngFor="let patient of patients">
+    <h2>{{ patient.name }} ({{ patient.age }} years, {{ patient.gender }})</h2>
+
+    <div *ngFor="let prescription of patient.prescriptions">
+        <h3>Prescriptions for {{ prescription.date }}</h3>
+        <table mat-table [dataSource]="[prescription]" class="mat-elevation-z8">
+            <ng-container matColumnDef="medication">
+                <th mat-header-cell *matHeaderCellDef> Medication </th>
+                <td mat-cell *matCellDef="let element"> {{ element.medication }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="dosage">
+                <th mat-header-cell *matHeaderCellDef> Dosage </th>
+                <td mat-cell *matCellDef="let element"> {{ element.dosage }} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="['medication', 'dosage']"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['medication', 'dosage'];"></tr>
+        </table>
+    </div>
+</div> -->

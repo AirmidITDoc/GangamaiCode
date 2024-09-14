@@ -274,7 +274,7 @@ export class CompanyBillComponent implements OnInit {
   
       this.myControl = new FormControl();
   
-      this.getPharmacyAmount();
+   
       this.getBillingClasslist();
       this.getServiceListCombobox(); 
       this.getChargesList();
@@ -287,6 +287,7 @@ export class CompanyBillComponent implements OnInit {
       this.calBalanceAmt();
       this.getBillheaderList();  
       this.setClassdata();  
+      this.getPharmacyAmount();
     }
   
     setClassdata() {
@@ -610,7 +611,7 @@ export class CompanyBillComponent implements OnInit {
        debugger
       this._IpSearchListService.getBillheaderList(Query).subscribe(data => {
         this.billheaderlist = data[0].AdminPer ;
-        console.log(this.billheaderlist)
+       // console.log(this.billheaderlist)
           if(this.billheaderlist > 0){
             this.isAdminDisabled = true;
             this.Ipbillform.get('Admincheck').setValue(true)
@@ -657,9 +658,9 @@ export class CompanyBillComponent implements OnInit {
 
     PharmacyAmont:any=0;
     getPharmacyAmount(){
-      let Query = "select isnull(Sum(BalanceAmount),0) as PhBillCredit from T_SalesHeader where OP_IP_Type=1 and OP_IP_ID=" + this.AdmissionId 
+      let Query = "select isnull(Sum(BalanceAmount),0) as PhBillCredit from T_SalesHeader where OP_IP_Type=1 and OP_IP_ID=" + this.selectedAdvanceObj.AdmissionID
       this._IpSearchListService.getPharmacyAmt(Query).subscribe((data) =>{
-        console.log(data)
+        //console.log(data)
         this.PharmacyAmont = data[0].PhBillCredit; 
       })
     }
@@ -830,8 +831,23 @@ export class CompanyBillComponent implements OnInit {
         (error) => {
           this.isLoading = 'list-loaded';
         });
-  
+      this.setTableClassName();
       this.chkdiscstatus();
+  
+    }
+    vTableClassName:any;
+    setTableClassName(){
+      debugger
+      const dvalue = this.Tableclasslist.filter(item => item.ClassId == this.Serviceform.get('ChargeClass').value.ClassId )
+      console.log(dvalue)
+      this.Serviceform.get('TableClassName').setValue(dvalue);
+      //       if(dvalue){
+      //   let className = dvalue[0].ClassName ;
+      //   this.vTableClassName = className;
+      //   console.log(dvalue[0].ClassName )
+      //   console.log(className)
+      //   console.log(this.vTableClassName)
+      // }
   
     }
   //Previouse Bill List
@@ -989,9 +1005,10 @@ export class CompanyBillComponent implements OnInit {
     } 
     setcashCounter:any;
     getCashCounterComboList() {
+      debugger
       this._IpSearchListService.getCashcounterList().subscribe(data => {
         this.CashCounterList = data
-        console.log(this.CashCounterList)
+        //console.log(this.CashCounterList)
   
         this.setcashCounter = this.CashCounterList.find(item => item.CashCounterId == this._ConfigService.configParams.IPD_Billing_CounterId)
         this.Ipbillform.get('CashCounterID').setValue(this.setcashCounter) 
@@ -1068,21 +1085,14 @@ export class CompanyBillComponent implements OnInit {
       // console.log(this.vAdvTotalAmount )
       if (this.vNetBillAmount > this.vAdvTotalAmount) {
         this.vBalanceAmt = 0;
-        this.vpaidBalanceAmt = parseInt(this.vNetBillAmount) - parseInt(this.vAdvTotalAmount)
-  
+        this.vpaidBalanceAmt = parseInt(this.vNetBillAmount) - parseInt(this.vAdvTotalAmount) 
       }
       return netAmt;
     }
   
   
     ServiceDiscDisable: boolean = false;
-    // Adminchange($event) {
-  
-    //   if ($event)
-    //     this.ServiceDiscDisable = true;
-    //   if (!$event)
-    //     this.ServiceDiscDisable = false;
-    // }
+ 
   
     vGenbillflag: boolean = false 
 
@@ -1619,7 +1629,7 @@ export class CompanyBillComponent implements OnInit {
     }
      //For testing 
      viewgetDraftBillReportPdf(AdmissionID) {
-      this._IpSearchListService.getIpDraftBillReceipt(
+      this._IpSearchListService.getCompanyDraftBillReceipt(
         AdmissionID
       ).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,

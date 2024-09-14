@@ -803,6 +803,9 @@ public updateIPDDischargSummary(employee)
   public getPharmacyAmt(data) {
     return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
   }
+  public getCompanyPhAmt(m_data) {
+    return this._httpClient.post("Generic/ExecByQueryStatement?query=" + m_data,{});
+}
   public getCheckBalanceAmt(data) {
     return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
   }
@@ -1029,9 +1032,20 @@ getIpFinalBillReceiptgroupwise(BillNo,loader = true){
  }
 
 
-public getIpDraftBillReceipt(AdmissionID){
+public getIpDraftBillReceipt(AdmissionID,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("InPatient/view-IP-DraftBillReceipt?AdmissionID=" + AdmissionID);
 }
+
+public getCompanyDraftBillReceipt(AdmissionID,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
+  return this._httpClient.get("IPReport/view-IPCompanyBill?AdmissionID=" + AdmissionID);
+}
+
 
 public getIpInterimBillReceipt(BillNo){
   return this._httpClient.get("InPatient/view-IP-InterimBillReceipt?BillNo=" + BillNo);
