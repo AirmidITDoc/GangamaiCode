@@ -98,7 +98,7 @@ export class CompanyListComponent implements OnInit {
         this.isLoadingStr = 'loading';
         this._CompanyListService.getAdmittedPatientList_1(D_data).subscribe(data => {
           this.dataSource.data = data["Table1"] ?? [] as Admission[];
-           console.log(this.dataSource.data)
+           //console.log(this.dataSource.data)
           this.dataSource.sort = this.sort;
           this.resultsLength = data["Table"][0]["total_row"];
           this.sIsLoading = '';

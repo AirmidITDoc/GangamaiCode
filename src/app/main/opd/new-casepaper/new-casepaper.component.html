@@ -424,7 +424,7 @@
                                                                 <mat-cell *matCellDef="let element" fxShow.gt-sm> 
                                                                     <mat-form-field appearance="legacy">
                                                                         <input matInput [(ngModel)]="element.Instruction" type="text"  
-                                                                           (keypress)="keyPressCharater($event)">
+                                                                           >
                                                                     </mat-form-field>
                                                                 </mat-cell>
                                                             </ng-container>
@@ -526,49 +526,25 @@
                                                 </div>
                                                 <hr>
                                                 <div fxLayout="row" fxLayoutGap="6px">
-                                                    <mat-form-field appearance="outline" fxFlex="30%">
-                                                        <mat-label>Department</mat-label>
-                                                        <input matAutocompletePosition="below" type="text" placeholder="Select Department" matInput #dept
-                                                           (keydown)="onEnterdept($event)" formControlName="Departmentid"
-                                                            [matAutocomplete]="autoDep" required>
-                                                        <span matSuffix style="display: flex;">
-                                                            <mat-icon class="mat-icon-close"
-                                                                (click)="MedicineItemForm.get('Departmentid').setValue(''); isDepartmentSelected = false;">close</mat-icon>
-                                                            <mat-icon class="mat-icon-close"
-                                                                (click)="MedicineItemForm.get('Departmentid').setValue(''); isDepartmentSelected = false;">search</mat-icon>
-                                                        </span>
-                                    
-                                                        <mat-autocomplete #autoDep="matAutocomplete" [displayWith]="getOptionTextDep">
-                                                            <mat-option *ngFor="let option of filteredOptionsDep | async" [value]="option"
-                                                                (onSelectionChange)="OnChangeDoctorList(option)">
-                                                                {{option.DepartmentName}}
-                                                            </mat-option>
-                                                        </mat-autocomplete>
-                                                    </mat-form-field>
-                                    
-                                    
-                                                    <mat-form-field appearance="outline" fxFlex="30%">
+                                                    <mat-form-field appearance="outline" fxFlex fxFlex="40%">
                                                         <mat-label>Doctor Name</mat-label>
-                                                        <input matAutocompletePosition="below" type="text" placeholder="Pick one" matInput #deptdoc
-                                                            [(ngModel)]="vDoctorId" formControlName="DoctorID" [matAutocomplete]="autoDoctor" required>
+                                                        <input matAutocompletePosition="below" type="text" placeholder="Select Doctor"
+                                                           matInput formControlName="DoctorID"
+                                                            [matAutocomplete]="autoSearchDoctor1" #doctorname
+                                                            (input)="getAdmittedDoctorCombo()">
                                                         <span matSuffix style="display: flex;">
                                                             <mat-icon class="mat-icon-close"
                                                                 (click)="MedicineItemForm.get('DoctorID').setValue(''); isDoctorSelected = false;">close</mat-icon>
                                                             <mat-icon class="mat-icon-close"
                                                                 (click)="MedicineItemForm.get('DoctorID').setValue(''); isDoctorSelected = false;">search</mat-icon>
                                                         </span>
-                                    
-                                                        <mat-autocomplete #autoDoctor="matAutocomplete" [displayWith]="getOptionTextDoc">
-                                                            <mat-option *ngFor="let option of filteredOptionsDoc | async" [value]="option"
-                                                                (onSelectionChange)="isDoctorSelected = true;">
-                                                                {{option.Doctorname }} <b>|</b> {{option.DepartmentName }}
-                                                                <b>|</b> {{option.DoctorId
-                                                                }}
+                                                        <mat-autocomplete #autoSearchDoctor1="matAutocomplete"
+                                                            [displayWith]="getOptionTextDoctor">
+                                                            <mat-option *ngFor="let option of filteredOptionsDoc"  [value]="option">
+                                                                {{option.Doctorname}}
                                                             </mat-option>
                                                         </mat-autocomplete>
-                                                    </mat-form-field>
-                                    
-                                                   
+                                                    </mat-form-field>  
                                                 </div>
                                             </form>
                                         </mat-card> 
@@ -638,17 +614,7 @@
                                 <div fxlayout="column">
                                     <div fxFlex.gt-sm="30%">
                                         <div fxLayout="column" fxLayoutGap="6px">
-                                            <div fxLayout="row" fxLayoutAlign="start" style="padding: 5px;">
-                                                <button mat-raised-button fxLayoutAlign="center center" class="py-8" (click)="viewgetOpprescriptionReportPdf()"
-                                                [disabled]="!dataSource1.data.length">
-                                                    <mat-icon>print</mat-icon><span>Previous Report</span>
-                                                </button>&nbsp;&nbsp;&nbsp;
-                                                <button mat-raised-button fxLayoutAlign="center center" class="py-8" 
-                                                [disabled]="!dataSource1.data.length">
-                                                    <img width="25" height="8px" src="assets/images/logos/WhatsApp.png"><span>WhatsApp</span>
-                                                </button>
-                                            </div>
-
+                                         
                                             <div fxlayout="row"> 
                                                 <div fxFlex.gt-sm="99%" fxLayoutGap="5px" fxLayout="column">
                                                     <mat-card style="padding: 6px;">
@@ -660,7 +626,7 @@
                                                         <hr>
                                                         <mat-table class="table1" matSort [dataSource]="dataSource1"
                                                             [@animateStagger]="{value:'50'}"
-                                                            style="height:350px !important;overflow: auto;">
+                                                            style="height:580px !important;overflow: auto;">
             
                                                             <ng-container matColumnDef="VisitId">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
@@ -721,7 +687,17 @@
                                     </div>
                                      <div fxFlex.gt-sm="70%">
                                         <div fxLayout="column" fxLayoutGap="6px">
-                                        
+                                            <div fxLayout="row" fxLayoutAlign="end" style="padding: 5px;">
+                                                <button mat-raised-button fxLayoutAlign="center center" class="py-8" (click)="viewgetOpprescriptionReportPdf()"
+                                                [disabled]="!dataSource1.data.length">
+                                                    <mat-icon>print</mat-icon><span>Previous Report</span>
+                                                </button>&nbsp;&nbsp;&nbsp;
+                                                <button mat-raised-button fxLayoutAlign="center center" class="py-8" 
+                                                [disabled]="!dataSource1.data.length">
+                                                    <img width="25" height="8px" src="assets/images/logos/WhatsApp.png"><span>WhatsApp</span>
+                                                </button>
+                                            </div>
+
                                             <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 6px;">
                                                 <div class="patient-info-sales my-8">
                                                     <div class="sales-patient-info-title">
@@ -808,14 +784,19 @@
                                                         ChiefComplaint
                                                     </span>
                                                 </div>
-                                                <hr>
-                                                <div fxLayout="column" fxLayoutGap="6px">
-                                                    <span class="patient-col-value">{{preCheifComplaint}}</span>
-                                                </div>
+                                                <hr> 
+                                                <div fxLayout="row" class="gap-8">
+                                                    <mat-form-field appearance="outline" fxFlex>
+                                                        <mat-label>ChiefComplaint</mat-label>
+                                                        <textarea rows="6" name="ChiefComplaint"  
+                                                            placeholder="ChiefComplaint" [(ngModel)]="preCheifComplaint" matInput #ChiefComp
+                                                            [disabled]="dsItemList1.data.length"></textarea>
+                                                    </mat-form-field>
+                                                </div> 
                                             </mat-card> 
                                         
                                             <div fxlayout="row">
-                                                <div fxFlex.gt-sm="99%" fxLayoutGap="5px"  fxlayout="column">
+                                                <div fxFlex.gt-sm="100%" fxLayoutGap="5px"  fxlayout="column">
                                                     <mat-card style="padding: 6px;">
                                                         <div class="prescription-title">
                                                             <span style="font-weight: 700;">
