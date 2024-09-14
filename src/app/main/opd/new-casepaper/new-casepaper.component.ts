@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, Inject, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, inject, Inject, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, ReplaySubject, Subject, Subscription, of } from 'rxjs';
 import { SearchInforObj } from '../op-search-list/opd-search-list/opd-search-list.component';
@@ -117,7 +117,7 @@ export class NewCasepaperComponent implements OnInit {
   vSpO2: any;
   vPulse: any;
   screenFromString = 'OP-billing';
-  vChiefComplaint: any='History:\n\nDiagnosis:\n\nExamination:';
+  vChiefComplaint: any; // ='History:\n\nDiagnosis:\n\nExamination:';
   isItemIdSelected: boolean = false;
   filteredOptionsDosename: Observable<string[]>;
   doseList: any = [];
@@ -190,6 +190,7 @@ export class NewCasepaperComponent implements OnInit {
       this.specificDate = new Date();
     }
   } 
+ 
   createForm() {
     return this._formBuilder.group({
       LetteHeadRadio: ['NormalHead'],
