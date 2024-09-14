@@ -28,6 +28,7 @@ import { MatStepperModule } from "@angular/material/stepper";
 import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { SharedModule } from "app/main/shared/shared.module";
+import { MatCardModule } from "@angular/material/card";
 
 const routes: Routes = [
     {
@@ -65,6 +66,7 @@ const routes: Routes = [
         MatAutocompleteModule,
         SharedModule,
         NgxMatSelectSearchModule,
+        MatCardModule
     ],
     providers: [ServiceMasterService],
     entryComponents: [ServiceMasterComponent],

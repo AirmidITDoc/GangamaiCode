@@ -447,7 +447,7 @@ export class Servicedetail {
             this.ServiceId = Servicedetail.ServiceId || "";
             this.TariffId = Servicedetail.TariffId || "";
             this.ClassId = Servicedetail.ClassId || "";
-            this.ClassRate = Servicedetail.ClassRate || "";
+            this.ClassRate = Servicedetail.ClassRate || 0;
             this.ClassName = Servicedetail.ClassName || "";
             this.EffectiveDate = Servicedetail.EffectiveDate || "";
         }

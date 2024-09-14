@@ -81,9 +81,9 @@ export class ServiceMasterService {
         );
     }
 
-    public getSubgroupMasterCombo() {
+    public getSubgroupMasterCombo(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_M_SubGroupMasterForCombo ", {}
+            "Generic/GetByProc?procName=m_Rtrv_SubGroupList_by_Name ", param
         );
     }
     public getTariffMasterCombo() {
