@@ -38,6 +38,14 @@ public getServiceList(param,loader = true){
   public getDoctorMasterCombo(Id) {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_DoctorWithDepartMasterForCombo_Conditional", { "Id": Id })
   }
+    // Admitted Doctor Master Combobox List
+    public getAdmittedDoctorCombo(param, loader = true) {
+      if (loader) {
+        this._loaderService.show();
+    }
+  
+      return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_DoctorListMasterForCombo",param)
+    } 
   public getDoseList() {
     return this._httpClient.post("Generic/GetByProc?procName=ps_Rtrv_DoseMasterList", {})
   }

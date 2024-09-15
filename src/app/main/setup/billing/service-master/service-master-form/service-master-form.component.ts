@@ -62,7 +62,7 @@ private _onDestroy = new Subject<void>();
     public dialogRef: MatDialogRef<ServiceMasterComponent>,
     ) {
      
-      
+      this.getClassList();
       if (this.data) {
         this.getServicewiseClassMasterList();
         this.registerObj = this.data.registerObj;
@@ -85,7 +85,8 @@ private _onDestroy = new Subject<void>();
    this.getGroupNameCombobox();
    this.getDoctorNameCombobox();
    this.getSubgroupNameCombobox();
-   this.getClassList();
+   this.getClassList()
+  //  this.getServicewiseClassMasterList();
    this.getTariffNameCombobox();
    this._serviceMasterService.myform.get('EffectiveDate').setValue(new Date());
 
@@ -201,8 +202,10 @@ private _onDestroy = new Subject<void>();
     });
   }
   getSubgroupNameCombobox(){
-  
-    this._serviceMasterService.getSubgroupMasterCombo().subscribe(data => {
+  var data={
+    SubGroupName:'%'
+  }
+    this._serviceMasterService.getSubgroupMasterCombo(data).subscribe(data => {
       this.SubGroupcmbList = data;
       this.filteredSubgroupname.next(this.SubGroupcmbList.slice());
       // this._serviceMasterService.myform.get('SubGroupId').setValue(this.SubGroupcmbList[0]);
@@ -224,29 +227,27 @@ private _onDestroy = new Subject<void>();
     this._serviceMasterService.getClassMasterList().subscribe(Menu => {
     
       this.DSServicedetailList.data = Menu as Servicedetail[];;
-     
       this.DSServicedetailList.sort = this.sort;
       this.DSServicedetailList.paginator = this.paginator;      
-      
+      console.log(this.DSServicedetailList.data)
     });
+  }
+
+  gettableclassrate(element,ClassRate){
+    console.log(element)
+    // this.DSServicedetailList[element.ClassId]["ClassRate"]=ClassRate;
   }
   classratearry=[];
   getServicewiseClassMasterList() {
     var data={
-      ServiceId :this.data.registerObj.ServiceId
+      ServiceId :this.data.registerObj.ServiceId || 0
     }
     this._serviceMasterService.getServicewiseClassMasterList(data).subscribe(Menu => {
       this.DSServicedetailList.data = Menu as Servicedetail[];
       console.log(this.DSServicedetailList.data)
-      if(this.DSServicedetailList.data){
-        this.DSServicedetailList.data.forEach((element) => {
-          this.classratearry.push(element.ClassRate)
-        });
-      }
-      console.log(this.classratearry)
+      
     });
-    // if(this.classratearry)
-    //   this.DSServicedetailList.data=this.classratearry
+    
   }
 
   
@@ -256,7 +257,7 @@ private _onDestroy = new Subject<void>();
   getDoctorNameCombobox(){
     this._serviceMasterService.getDoctorMasterCombo().subscribe(data => {
       this.DoctorcmbList =data;
-      // this._serviceMasterService.myform.get('DoctorId').setValue(this.DoctorcmbList[0]);
+   
       this._serviceMasterService.myform.get('DoctorId').setValue(this._serviceMasterService.edit_data['DoctorId']);   
     });  
   }
@@ -288,6 +289,7 @@ private _onDestroy = new Subject<void>();
         "effectiveDate":this._serviceMasterService.myform.get("EffectiveDate").value || "01/01/1900",
      }
       this.DSServicedetailList.data.forEach(element => {
+        debugger
         let c =  JSON.parse(JSON.stringify(class_det));
         c['classId'] = element.ClassId;
         c['classRate'] = element.ClassRate || 0;        
@@ -300,7 +302,6 @@ private _onDestroy = new Subject<void>();
         "serviceName": (this._serviceMasterService.myform.get("ServiceName").value).trim(),
         "price": parseInt(this._serviceMasterService.myform.get("Price").value || "0"),
         "printOrder": parseInt(this._serviceMasterService.myform.get("PrintOrder").value),
-        
         "isEditable": String(this._serviceMasterService.myform.get("IsEditable").value) == 'false' ?  false : true ,
         "creditedtoDoctor":  String (this._serviceMasterService.myform.get("CreditedtoDoctor").value) == 'false' ? false : true ,
         "isPathology": String(this._serviceMasterService.myform.get("IsPathology").value) == 'false' ? 0:1,
@@ -377,7 +378,7 @@ private _onDestroy = new Subject<void>();
        });
      });       
       }
-      // this.ngOnInit();
+     
     }
   
 this.dialogRef.close();
@@ -425,9 +426,17 @@ this.dialogRef.close();
 
 }
 
+keyPressCharater(event){
+  var inp = String.fromCharCode(event.keyCode);
+  if (/^\d*\.?\d*$/.test(inp)) {
+    return true;
+  } else {
+    event.preventDefault();
+    return false;
+  }
+}
   onClose() {
     this._serviceMasterService.myform.reset();
-
   
     this.dialogRef.close();
   }

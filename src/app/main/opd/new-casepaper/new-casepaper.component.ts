@@ -25,6 +25,8 @@ import { ConfigService } from 'app/core/services/config.service';
 import { PrescriptionTemplateComponent } from './prescription-template/prescription-template.component';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
+import { element } from 'protractor';
+import { timeStamp } from 'console';
 
 @Component({
   selector: 'app-new-casepaper',
@@ -125,11 +127,8 @@ export class NewCasepaperComponent implements OnInit {
   dateTimeObj: any;
   vMobileNo: any = 0;
   doseresults: any[] = [];
-  vDepartmentid:any;
-  isDepartmentSelected:boolean=false;
-  DepartmentList: any = [];
-  filteredOptionsDep: Observable<string[]>;
-  filteredOptionsDoc: Observable<string[]>;
+  vDepartmentid:any; 
+  filteredOptionsDoc:any;
   filteredOptionsService: Observable<string[]>;
   DoctorList: any = [];
   isDoctorSelected: boolean = false;
@@ -163,8 +162,7 @@ export class NewCasepaperComponent implements OnInit {
     this.searchFormGroup = this.createSearchForm();
     this.caseFormGroup = this.createForm();
     this.MedicineItemform(); 
-    this.getDoseList();
-    this.getDepartmentList();  
+    this.getDoseList(); 
     this.specificDate = new Date(); 
   }  
  
@@ -360,31 +358,27 @@ export class NewCasepaperComponent implements OnInit {
       return this.doseList.filter(option => option.DoseName.toLowerCase().includes(filterValue));
     }
   }
-
-//Department list
-optionsDep:any=[];
-getDepartmentList() { 
-  this._CasepaperService.getDepartmentCombo().subscribe(data => {
-      this.DepartmentList = data;
-      console.log(this.DepartmentList) 
-      this.optionsDep = this.DepartmentList.slice();
-      this.filteredOptionsDep = this.MedicineItemForm.get('Departmentid').valueChanges.pipe(
-          startWith(''),
-          map(value => value ? this._filterDep(value) : this.DepartmentList.slice()),
-      ); 
-  }); 
-}  
-  OnChangeDoctorList(departmentObj) {
-    this.isDepartmentSelected = true;
-    this._CasepaperService.getDoctorMasterCombo(departmentObj.DepartmentId).subscribe(
-      data => {
-        this.DoctorList = data;
-        this.filteredOptionsDoc = this.MedicineItemForm.get('DoctorID').valueChanges.pipe(
-          startWith(''),
-          map(value => value ? this._filterDoc(value) : this.DoctorList.slice()),
-        );
-      })
+ 
+  //Doctor list 
+  getAdmittedDoctorCombo() {
+    var vdata = {
+      "Keywords": this.MedicineItemForm.get('DoctorID').value + "%" || "%"
+    }
+    console.log(vdata)
+    this._CasepaperService.getAdmittedDoctorCombo(vdata).subscribe(data => {
+      this.filteredOptionsDoc = data;
+      console.log(this.filteredOptionsDoc)
+      if (this.filteredOptionsDoc.length == 0) {
+        this.noOptionFound = true;
+      } else {
+        this.noOptionFound = false;
+      }
+    });
   }
+  getOptionTextDoctor(option) {
+    return option && option.Doctorname ? option.Doctorname : '';
+  }
+ 
   ServicecmbList:any=[];
   optionsService:any=[];
   getServiceList() {
@@ -400,10 +394,10 @@ getDepartmentList() {
       'IsPathRad':this.caseFormGroup.get('IsPathRad').value || 0,
       'ClassId':this.vClassId 
     }
-    console.log(vdata)
+    //console.log(vdata)
     this._CasepaperService.getServiceList(vdata).subscribe(data => { 
         this.ServicecmbList = data; 
-           console.log(this.ServicecmbList)
+           //console.log(this.ServicecmbList)
         this.optionsService = this.ServicecmbList.slice();
         this.filteredOptionsService = this.caseFormGroup.get('Serviceid').valueChanges.pipe(
             startWith(''),
@@ -424,37 +418,18 @@ toggleSelection(item: any) {
 remove(e) {
     this.toggleSelection(e);
 }
-
-
-  private _filterDep(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.DepartmentName ? value.DepartmentName.toLowerCase() : value.toLowerCase();
-      return this.DepartmentList.filter(option => option.DepartmentName.toLowerCase().includes(filterValue));
-    }
-  }
-  private _filterDoc(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
-      this.isDoctorSelected = false;
-      return this.DoctorList.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
-    }
-  }
+ 
   private _filterService(value: any): string[] {
     if (value) {
         const filterValue = value && value.ServiceName ? value.ServiceName.toLowerCase() : value.toLowerCase();
         return this.optionsService.filter(option => option.ServiceName.toLowerCase().includes(filterValue));
     } 
-}
-
-getOptionTextDep(option) { 
-  return option && option.DepartmentName ? option.DepartmentName : '';
-}
+} 
+ 
 getOptionTextService(option) {
   return option && option.departmentName ? option.departmentName : '';
 }
-getOptionTextDoc(option) { 
-  return option && option.Doctorname ? option.Doctorname : ''; 
-}
+ 
   getdoseDetailValue1(element, event) {
     element.DoseName1 = event
     console.log(event, element)
@@ -570,6 +545,10 @@ getOptionTextDoc(option) {
       return
     } 
 
+    let ReferDocNameID = 0;
+    if(this.MedicineItemForm.get('DoctorID').value)
+      ReferDocNameID =  this.MedicineItemForm.get('DoctorID').value.DoctorId || 0;
+
     let insertOPDPrescriptionarray = [];
     this.dsItemList.data.forEach(element => {
       let insertOPDPrescription = {};
@@ -586,7 +565,7 @@ getOptionTextDoc(option) {
       insertOPDPrescription['qtyPerDay'] = 0;
       insertOPDPrescription['totalQty'] = 0;
       insertOPDPrescription['instruction'] = element.Instruction || '';
-      insertOPDPrescription['remark'] = element.Instruction || '';
+      insertOPDPrescription['remark'] =  this.MedicineItemForm.get('Remark').value  || '';
       insertOPDPrescription['isEnglishOrIsMarathi'] =  this.caseFormGroup.get('LangaugeRadio').value;
       insertOPDPrescription['pWeight'] = this.caseFormGroup.get('Weight').value || '';
       insertOPDPrescription['pulse'] = this.caseFormGroup.get('Pulse').value || '';
@@ -600,16 +579,26 @@ getOptionTextDoc(option) {
       insertOPDPrescription['daysOption2'] = parseInt(element.Day1.toString());
       insertOPDPrescription['doseOption3'] = element.DoseId2;
       insertOPDPrescription['daysOption3'] = parseInt(element.Day2.toString());
-
+      insertOPDPrescription['patientReferDocId'] = ReferDocNameID;
       insertOPDPrescriptionarray.push(insertOPDPrescription);
     });
-
-    let updateOPDPrescriptionObj = {};
-    updateOPDPrescriptionObj['opD_IPD_IP'] = this.vOPIPId;
+ 
+    let update_VisitFollowupDatObj= {};
+    update_VisitFollowupDatObj['visitId'] =this.VisitId || 0;
+    update_VisitFollowupDatObj['followupDate'] = this.datePipe.transform( this.MedicineItemForm.get('start').value, "MM-dd-yyyy") || "01/01/1900";
+   
+    let opRequestList = [];
+    this.selectedItems.forEach(element =>{
+      let opRequestListObj ={};
+      opRequestListObj['oP_IP_ID'] = this.vOPIPId //this.caseFormGroup.get('IsPathRad').value || 0
+      opRequestListObj['serviceId'] = element.ServiceId;
+      opRequestList.push(opRequestListObj);
+    }); 
 
     let casePaperSaveObj = {
       "insertOPDPrescription": insertOPDPrescriptionarray,
-      "updateOPDPrescription": updateOPDPrescriptionObj
+      "update_VisitFollowupDate": update_VisitFollowupDatObj,
+      "opRequestList":opRequestList
     }
     console.log(casePaperSaveObj);
 
@@ -904,6 +893,7 @@ getOptionTextDoc(option) {
       this.SelectedObj = this.dsItemList1.data 
       console.log(this.dsItemList1.data);
       console.log(this.SelectedObj);
+      if(this.dsItemList1.data.length > 0){
       this.preHeight = this.SelectedObj[0].Height;
       this.preWeight = this.SelectedObj[0].PWeight;
       this.PreBMI = this.SelectedObj[0].BMI;
@@ -913,6 +903,7 @@ getOptionTextDoc(option) {
       this.preBSL = this.SelectedObj[0].BSL;
       this.preBP = this.SelectedObj[0].BP; 
       this.preCheifComplaint = this.SelectedObj[0].ChiefComplaint;  
+      }
       this.sIsLoading = '';
     })
   }
