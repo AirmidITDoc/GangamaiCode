@@ -21,7 +21,7 @@ export class ItemClassMasterService {
         return this._formBuilder.group({
             ItemClassId: [""],
             ItemClassName: [""],
-            IsDeleted: ["false"],
+            IsDeleted: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
         });

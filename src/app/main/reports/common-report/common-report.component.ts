@@ -19,7 +19,7 @@ import { map, startWith } from 'rxjs/operators';
   animations: fuseAnimations
 })
 export class CommonReportComponent implements OnInit {
-  filteredOptionssearchDoctor: Observable<string[]>;
+  
 
 
 
@@ -27,9 +27,10 @@ export class CommonReportComponent implements OnInit {
   DoctorList: any = [];
   sIsLoading: string = '';
   currentDate = new Date();
-
+  Servicelist: any = [];
   ReportID: any;
-
+  filteredOptions: Observable<string[]>;
+  filteredOptionssearchDoctor: Observable<string[]>;
   filteredOptionsUser: Observable<string[]>;
   filteredOptionsDoctorMode: Observable<string[]>;
   filteredOptionsDep: Observable<string[]>;
@@ -54,8 +55,10 @@ export class CommonReportComponent implements OnInit {
   optionsUser: any[] = [];
   optionsPaymentMode: any[] = [];
   optionsDep: any[] = [];
+  optionsService: any[] = [];
   PaymentMode: any;
   DepartmentList: any = [];
+ServiceList: any = [];
   ReportName: any;
 
   SpinLoading: boolean = false;
@@ -1328,8 +1331,8 @@ export class CommonReportComponent implements OnInit {
       }
     });
   }
-  filteredOptions: any;
-
+  
+ 
   getServiceListCombobox() {
 
     var m_data = {
@@ -1340,17 +1343,28 @@ export class CommonReportComponent implements OnInit {
     console.log(m_data)
 
     this._OPReportsService.getBillingServiceList(m_data).subscribe(data => {
-      this.filteredOptions = data;
-
+      this.Servicelist = data;
+      this.optionsService = this.Servicelist.slice();
+      this.filteredOptions = this._OPReportsService.userForm.get('ServiceId').valueChanges.pipe(
+          startWith(''),
+          map(value => value ? this._filterService(value) : this.Servicelist.slice()),
+      );
     });
 
   }
+  private _filterService(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.ServiceName ? value.ServiceName.toLowerCase() : value.toLowerCase();
+      return this.Servicelist.filter(option => option.ServiceName.toLowerCase().includes(filterValue));
+    }
+  }
+ 
 
   getDepartmentList() {
     this._OPReportsService.getDepartmentCombo().subscribe(data => {
       this.DepartmentList = data;
       this.optionsDep = this.DepartmentList.slice();
-      this.filteredOptionsDep = this._OPReportsService.userForm.get('Departmentid').valueChanges.pipe(
+      this.filteredOptionsDep = this._OPReportsService.userForm.get('DepartmentId').valueChanges.pipe(
         startWith(''),
         map(value => value ? this._filterDep(value) : this.DepartmentList.slice()),
       );
@@ -1389,10 +1403,8 @@ export class CommonReportComponent implements OnInit {
   }
 
   getOptionText(option) {
-    if (!option)
-      return '';
-    return option.ServiceName;
-
+   
+    return option && option.ServiceName ? option.ServiceName : '';
   }
 
 

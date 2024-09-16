@@ -21,7 +21,7 @@ export class ItemTypeMasterService {
         return this._formBuilder.group({
             ItemTypeId: [""],
             ItemTypeName: [""],
-            IsDeleted: ["false"],
+            IsDeleted: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
         });
@@ -39,7 +39,7 @@ export class ItemTypeMasterService {
 
     public getItemtypeMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_ItemTypeMaster_by_Name",
+            "Generic/GetByProc?procName=m_Rtrv_ItemTypeMaster_by_Name",
             param
         );
     }

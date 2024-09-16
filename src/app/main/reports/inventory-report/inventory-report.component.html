@@ -238,7 +238,7 @@
                                         </mat-form-field>
                                     </div>
                                     <div *ngIf="FlagItemSelected" style="margin-left:2%;">
-                                    <mat-form-field appearance="outline" fxFlex="40%">
+                                    <!-- <mat-form-field appearance="outline" fxFlex="40%">
                                         <mat-label>ItemName</mat-label>
                                         <input type="text" name="ItemId" formControlName="ItemId" #itemid 
                                             placeholder="Item Name " matInput [matAutocomplete]="auto">
@@ -256,7 +256,29 @@
                                         <mat-error class="error" *ngIf="_OPReportsService.userForm.get('ItemId').invalid && _OPReportsService.userForm.get('ItemId').touched">
                                             Select ItemName
                                         </mat-error>
-                                    </mat-form-field> 
+                                    </mat-form-field>  -->
+
+
+                                    <mat-form-field appearance="outline"  fxFlex="40%">
+                                        <mat-label>Item Name</mat-label>
+                                        <input matAutocompletePosition="below" type="text"
+                                            placeholder="Select  Item Name" matInput
+                                            formControlName="ItemId" [matAutocomplete]="autoItem">
+                                        <span matSuffix style="display: flex;">
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_OPReportsService.userForm.get('ItemId').setValue(''); isItemIdSelected = false;">close</mat-icon>
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_OPReportsService.userForm.get('ItemId').setValue(''); isItemIdSelected = false;">search</mat-icon>
+                                        </span>
+                                        <mat-autocomplete #autoItem="matAutocomplete"
+                                            [displayWith]="getOptionItemText">
+                                            <mat-option *ngFor="let option of filteredOptionsItem | async"
+                                                [value]="option">
+                                                {{option.ItemName}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+
                                     </div>
                                     <div *ngIf="FlagIdSelected" style="margin-left:2%;">
                                     <mat-form-field appearance="outline" fxFlex="40%">

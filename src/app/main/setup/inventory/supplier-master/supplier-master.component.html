@@ -75,7 +75,7 @@
                         <div fxlayout="row">
                             <div style="width: 100%;">
                                 <mat-table #table matSort [dataSource]="DSSupplierMaster"
-                                    [@animateStagger]="{value:'50'}" style="overflow:auto;">
+                                    [@animateStagger]="{value:'50'}" style="overflow:auto;height: 500px !important;">
 
                                     <ng-container matColumnDef="SupplierId" sticky>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
@@ -161,7 +161,9 @@
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let row">
                                             <button mat-icon-button (click)="onEdit(row)"><mat-icon
-                                                    title="Edit Menu">edit</mat-icon></button>
+                                                    title="Edit Menu" *ngIf="element.IsDeleted">edit</mat-icon></button>
+                                                    <button mat-icon-button *ngIf="!element.IsDeleted"><mat-icon
+                                                        title="Edit Menu">highlight_off</mat-icon></button>
                                             <button mat-icon-button (click)="onDeactive(row.SupplierId)"
                                                 color="warn"><mat-icon>delete_outline</mat-icon></button>
 

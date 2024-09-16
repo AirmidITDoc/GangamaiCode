@@ -16,7 +16,7 @@ import { ToastrService } from "ngx-toastr";
 })
 export class ItemClassMasterComponent implements OnInit {
     msg: any;
-
+    resultsLength = 0;
     displayedColumns: string[] = [
         "ItemClassId",
         "ItemClassName",
@@ -59,6 +59,7 @@ export class ItemClassMasterComponent implements OnInit {
                 this.DSItemClassMasterList.data = Menu as ItemClassMaster[];
                 this.DSItemClassMasterList.sort = this.sort;
                 this.DSItemClassMasterList.paginator = this.paginator;
+                this.resultsLength= this.DSItemClassMasterList.data.length
             });
     }
 
@@ -95,26 +96,14 @@ export class ItemClassMasterComponent implements OnInit {
                                 toastClass: 'tostr-tost custom-toast-success',
                               });
                               this.getitemclassMasterList();
-                            // Swal.fire(
-                            //     "Saved !",
-                            //     "Record saved Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getitemclassMasterList();
-                            //     }
-                            // });
+                            
                         } else {
                             this.toastr.error('Item-Class Master Master Data not saved !, Please check API error..', 'Error !', {
                                 toastClass: 'tostr-tost custom-toast-error',
                               });
                         }
                         this.getitemclassMasterList();
-                    },error => {
-                        this.toastr.error('Item-Class  not saved !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
+                    });
             } else {
                 var m_dataUpdate = {
                     updateItemClassMaster: {
@@ -143,26 +132,14 @@ export class ItemClassMasterComponent implements OnInit {
                                 toastClass: 'tostr-tost custom-toast-success',
                               });
                               this.getitemclassMasterList();
-                            // Swal.fire(
-                            //     "Updated !",
-                            //     "Record updated Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getitemclassMasterList();
-                            //     }
-                            // });
+                           
                         } else {
                             this.toastr.error('Item-Class Master Master Data not updated !, Please check API error..', 'Error !', {
                                 toastClass: 'tostr-tost custom-toast-error',
                               });
                         }
                         this.getitemclassMasterList();
-                    },error => {
-                        this.toastr.error('Item-Class  not updated !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
+                    });
             }
             this.onClear();
         }
@@ -194,7 +171,7 @@ export class ItemClassMaster {
         {
             this.ItemClassId = ItemClassMaster.ItemClassId || "";
             this.ItemClassName = ItemClassMaster.ItemClassName || "";
-            this.IsDeleted = ItemClassMaster.IsDeleted || "false";
+            this.IsDeleted = ItemClassMaster.IsDeleted || "true";
             this.AddedBy = ItemClassMaster.AddedBy || "";
             this.UpdatedBy = ItemClassMaster.UpdatedBy || "";
         }

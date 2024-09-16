@@ -136,11 +136,33 @@
                                         </mat-form-field>
                                     </div>
                                     <div style="margin-left: 2%;">
-                                        <mat-form-field appearance="outline" fxFlex="60%" *ngIf="FlagDoctorSelected">
+                                        <!-- <mat-form-field appearance="outline" fxFlex="60%" *ngIf="FlagDoctorSelected">
                                             <mat-label>Doctor Name</mat-label>
                                             <input matAutocompletePosition="below" type="text"
                                                 placeholder="Select Doctor" matInput formControlName="DoctorId"
                                                 [matAutocomplete]="autosearchDoctorReport">
+                                            <span matSuffix style="display: flex;">
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_IPReportService.userForm.get('DoctorId').setValue(''); isSearchdoctorSelected = false;">close</mat-icon>
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_IPReportService.userForm.get('DoctorId').setValue(''); isSearchdoctorSelected = false;">search</mat-icon>
+                                            </span>
+                                            <mat-autocomplete #autosearchDoctorReport="matAutocomplete"
+                                                [displayWith]="getOptionTextsearchDoctor">
+                                                <mat-option *ngFor="let option of filteredOptionsDoctorMode | async"
+                                                    [value]="option">
+                                                    {{option.Doctorname}}
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field> -->
+
+
+                                        <mat-form-field appearance="outline" *ngIf="FlagDoctorSelected" fxFlex="60%">
+                                            <mat-label>Doctor Name</mat-label>
+                                            <input matAutocompletePosition="below" type="text"
+                                                placeholder="Select  Doctor Name" matInput
+                                                formControlName="DoctorId" [matAutocomplete]="autosearchDoctorReport"
+                                                 [(ngModel)]="vDescType">
                                             <span matSuffix style="display: flex;">
                                                 <mat-icon class="mat-icon-close"
                                                     (click)="_IPReportService.userForm.get('DoctorId').setValue(''); isSearchdoctorSelected = false;">close</mat-icon>

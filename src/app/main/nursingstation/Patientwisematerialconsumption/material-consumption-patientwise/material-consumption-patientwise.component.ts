@@ -169,13 +169,7 @@ export class MaterialConsumptionPatientwiseComponent implements OnInit {
     this.dateTimeObj = dateTimeObj;
   }
 
-//   getStorelist() {
-     
-//     this._NursingStationService.getStoreCombo().subscribe(data => {
-//     this.storelist = data;
-//     this.filteredstore.next(this.storelist.slice());
-//   });
-// }
+
 getOptionTextStore(option) {
   return option && option.StoreName ? option.StoreName : '';
 }
@@ -211,8 +205,7 @@ NewMaterial() {
         width: '70vw'
     });
   dialogRef.afterClosed().subscribe(result => {
-    // console.log('The dialog was closed - Insert Action', result);
-    // this.getAdmittedPatientList();
+   
   });
 }
 } 

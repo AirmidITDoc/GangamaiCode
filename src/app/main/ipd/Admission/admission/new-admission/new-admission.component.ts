@@ -895,7 +895,7 @@ export class NewAdmissionComponent implements OnInit {
     this._AdmissionService.getMaritalStatusCombo().subscribe(data => {
       this.MaritalStatusList = data;
       this.filteredMaritalstatus.next(this.MaritalStatusList.slice());
-      this.filteredMaritalstatus.next(this.MaritalStatusList.slice());
+      
     })
   }
 

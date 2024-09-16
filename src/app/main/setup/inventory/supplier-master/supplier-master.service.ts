@@ -64,7 +64,7 @@ export class SupplierMasterService {
             StoreId: ["", Validators.required],
             StoreName: [""],
             AddedBy: [""],
-            IsDeleted: ["false"],
+            IsDeleted: ["true"],
             UpdatedBy: [""],
             SupplierType:[""],
             LicNo: [""],

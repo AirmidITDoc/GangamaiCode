@@ -9,6 +9,7 @@ import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
+import { AuthenticationService } from "app/core/services/authentication.service";
 
 @Component({
     selector: "app-item-category-master",
@@ -21,7 +22,7 @@ export class ItemCategoryMasterComponent implements OnInit {
     ItemCategoryMasterList: any;
     ItemTypecmbList: any = [];
     msg: any;
-
+    resultsLength = 0;
     displayedColumns: string[] = [
         "ItemCategoryId",
         "ItemCategoryName",
@@ -42,6 +43,7 @@ export class ItemCategoryMasterComponent implements OnInit {
     private _onDestroy = new Subject<void>();
 
     constructor(public _itemcategoryService: ItemCategoryMasterService,
+        private accountService: AuthenticationService,
         public toastr : ToastrService,) {}
 
     ngOnInit(): void {
@@ -99,6 +101,7 @@ export class ItemCategoryMasterComponent implements OnInit {
                     Menu as ItemCategoryMaster[];
                 this.DSItemCategoryMasterList.sort = this.sort;
                 this.DSItemCategoryMasterList.paginator = this.paginator;
+                this.resultsLength= this.DSItemCategoryMasterList.data.length
             });
     }
 
@@ -124,8 +127,8 @@ export class ItemCategoryMasterComponent implements OnInit {
                     insertItemCategoryMaster: {
                         itemCategoryName: this._itemcategoryService.myform.get("ItemCategoryName").value.trim(),
                         isDeleted: Boolean(JSON.parse(this._itemcategoryService.myform.get("IsDeleted").value)),
-                        addedBy: 1,
-                        updatedBy: 1,
+                        addedBy:this.accountService.currentUserValue.user.id,
+                        updatedBy: this.accountService.currentUserValue.user.id,
                         itemTypeId:this._itemcategoryService.myform.get("ItemTypeID").value.ItemTypeId,
                     },
                 };
@@ -139,26 +142,14 @@ export class ItemCategoryMasterComponent implements OnInit {
                                 toastClass: 'tostr-tost custom-toast-success',
                               });
                             this.getitemcategoryMasterList();
-                            // Swal.fire(
-                            //     "Saved !",
-                            //     "Record saved Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getitemcategoryMasterList();
-                            //     }
-                            // });
+                           
                         } else {
                             this.toastr.error('Item-Category Master Master Data not saved !, Please check API error..', 'Error !', {
                                 toastClass: 'tostr-tost custom-toast-error',
                               });
                         }
                         this.getitemcategoryMasterList();
-                    },error => {
-                        this.toastr.error('Item-Category not saved !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
+                    });
             } else {
                 var m_dataUpdate = {
                     updateItemCategoryMaster: {
@@ -179,26 +170,14 @@ export class ItemCategoryMasterComponent implements OnInit {
                                 toastClass: 'tostr-tost custom-toast-success',
                               });
                             this.getitemcategoryMasterList();
-                            // Swal.fire(
-                            //     "Updated !",
-                            //     "Record updated Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getitemcategoryMasterList();
-                            //     }
-                            // });
+                            
                         } else {
                             this.toastr.error('Item-Category Master Master Data not updated !, Please check API error..', 'Error !', {
                                 toastClass: 'tostr-tost custom-toast-error',
                               });
                         }
                         this.getitemcategoryMasterList();
-                    },error => {
-                        this.toastr.error('Item-Category not updated !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
+                    });
             }
             this.onClear();
         }
@@ -210,7 +189,7 @@ export class ItemCategoryMasterComponent implements OnInit {
             ItemCategoryName: row.ItemCategoryName.trim(),
             ItemTypeID: row.ItemTypeID,
             ItemTypeName: row.ItemTypeName.trim(),
-            IsDeleted: JSON.stringify(row.IsDeleted),
+            IsActive: JSON.stringify(row.IsActive),
             UpdatedBy: row.UpdatedBy,
         };
         this._itemcategoryService.populateForm(m_data);
@@ -220,7 +199,7 @@ export class ItemCategoryMaster {
     ItemCategoryId: number;
     ItemCategoryName: string;
     ItemTypeID: number;
-    IsDeleted: boolean;
+    IsActive: boolean;
     AddedBy: number;
     UpdatedBy: number;
 
@@ -234,7 +213,7 @@ export class ItemCategoryMaster {
             this.ItemCategoryId = ItemCategoryMaster.ItemCategoryId || "";
             this.ItemCategoryName = ItemCategoryMaster.ItemCategoryName || "";
             this.ItemTypeID = ItemCategoryMaster.ItemTypeID || "";
-            this.IsDeleted = ItemCategoryMaster.IsDeleted || "false";
+            this.IsActive = ItemCategoryMaster.IsActive || "true";
             this.AddedBy = ItemCategoryMaster.AddedBy || "";
             this.UpdatedBy = ItemCategoryMaster.UpdatedBy || "";
         }

@@ -6,6 +6,7 @@ import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
+import { AuthenticationService } from "app/core/services/authentication.service";
 
 @Component({
     selector: "app-item-type-master",
@@ -16,12 +17,12 @@ import { ToastrService } from "ngx-toastr";
 })
 export class ItemTypeMasterComponent implements OnInit {
     msg: any;
-
+    resultsLength = 0;
     displayedColumns: string[] = [
         "ItemTypeId",
         "ItemTypeName",
         "AddedBy",
-        "IsDeleted",
+        "IsActive",
         "action",
     ];
 
@@ -30,6 +31,7 @@ export class ItemTypeMasterComponent implements OnInit {
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
     constructor(public _itemtypeService: ItemTypeMasterService,
+        private accountService: AuthenticationService,
         public toastr : ToastrService,) {}
 
     ngOnInit(): void {
@@ -57,6 +59,7 @@ export class ItemTypeMasterComponent implements OnInit {
             this.DSItemTypeMasterList.data = Menu as ItemTypeMaster[];
             this.DSItemTypeMasterList.sort = this.sort;
             this.DSItemTypeMasterList.paginator = this.paginator;
+            this.resultsLength= this.DSItemTypeMasterList.data.length
         });
     }
 
@@ -73,14 +76,14 @@ export class ItemTypeMasterComponent implements OnInit {
                         itemTypeName: this._itemtypeService.myform
                             .get("ItemTypeName")
                             .value.trim(),
-                        isDeleted: Boolean(
+                        IsActive: Boolean(
                             JSON.parse(
                                 this._itemtypeService.myform.get("IsDeleted")
                                     .value
                             )
                         ),
-                        addedBy: 1,
-                        updatedBy: 1,
+                        addedBy:this.accountService.currentUserValue.user.id,
+                        updatedBy: this.accountService.currentUserValue.user.id,
                     },
                 };
 
@@ -93,26 +96,14 @@ export class ItemTypeMasterComponent implements OnInit {
                                 toastClass: 'tostr-tost custom-toast-success',
                               });
                               this.getItemtypeMasterList();
-                            // Swal.fire(
-                            //     "Saved !",
-                            //     "Record saved Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getItemtypeMasterList();
-                            //     }
-                            // });
+                         
                         } else {
                             this.toastr.error('Item-Type Master Master Data not saved !, Please check API error..', 'Error !', {
                                 toastClass: 'tostr-tost custom-toast-error',
                               });
                         }
                         this.getItemtypeMasterList();
-                    },error => {
-                        this.toastr.error('Item-Type not saved !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
+                    });
             } else {
                 var m_dataUpdate = {
                     updateItemTypeMaster: {
@@ -122,13 +113,13 @@ export class ItemTypeMasterComponent implements OnInit {
                         itemTypeName: this._itemtypeService.myform
                             .get("ItemTypeName")
                             .value.trim(),
-                        isDeleted: Boolean(
+                            IsActive: Boolean(
                             JSON.parse(
                                 this._itemtypeService.myform.get("IsDeleted")
                                     .value
                             )
                         ),
-                        updatedBy: 1,
+                        updatedBy:this.accountService.currentUserValue.user.id,
                     },
                 };
 
@@ -141,26 +132,14 @@ export class ItemTypeMasterComponent implements OnInit {
                                 toastClass: 'tostr-tost custom-toast-success',
                               });
                             this.getItemtypeMasterList();
-                            // Swal.fire(
-                            //     "Updated !",
-                            //     "Record updated Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getItemtypeMasterList();
-                            //     }
-                            // });
+                           
                         } else {
                             this.toastr.error('Item-Type Master Master Data not updated !, Please check API error..', 'Error !', {
                                 toastClass: 'tostr-tost custom-toast-error',
                               });
                         }
                         this.getItemtypeMasterList();
-                    },error => {
-                        this.toastr.error('Item-Type not updated !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
+                    });
             }
             this.onClear();
         }
@@ -170,7 +149,7 @@ export class ItemTypeMasterComponent implements OnInit {
         var m_data = {
             ItemTypeId: row.ItemTypeId,
             ItemTypeName: row.ItemTypeName.trim(),
-            IsDeleted: JSON.stringify(row.IsDeleted),
+            IsActive: JSON.stringify(row.IsActive),
             UpdatedBy: row.UpdatedBy,
         };
         this._itemtypeService.populateForm(m_data);
@@ -179,7 +158,7 @@ export class ItemTypeMasterComponent implements OnInit {
 export class ItemTypeMaster {
     ItemTypeId: number;
     ItemTypeName: string;
-    IsDeleted: boolean;
+    IsActive: boolean;
     AddedBy: number;
     UpdatedBy: number;
     AddedByName: string;
@@ -193,7 +172,7 @@ export class ItemTypeMaster {
         {
             this.ItemTypeId = ItemTypeMaster.ItemTypeId || "";
             this.ItemTypeName = ItemTypeMaster.ItemTypeName || "";
-            this.IsDeleted = ItemTypeMaster.IsDeleted || "false";
+            this.IsActive = ItemTypeMaster.IsActive || "true";
             this.AddedBy = ItemTypeMaster.AddedBy || "";
             this.UpdatedBy = ItemTypeMaster.UpdatedBy || "";
         }

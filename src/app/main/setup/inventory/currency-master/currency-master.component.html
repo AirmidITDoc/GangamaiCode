@@ -1,46 +1,37 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-    <!-- HEADER -->
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fusePerfectScrollbar
+    dynamicTableHeight>
     <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
         fxLayoutAlign.gt-xs="space-between center">
-
-        <!-- APP TITLE -->
         <div fxLayout="row" fxLayoutAlign="start center">
             <div class="logo" fxLayout="row" fxLayoutAlign="start center">
-                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
+                <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                    <mat-icon>menu</mat-icon>
+                </button>
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                    style="color: white;">account_box
                 </mat-icon>
                 <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
                     Currency Master
                 </span>
+
             </div>
         </div>
-        <!-- / APP TITLE -->
-        <!-- SEARCH -->
-        <!-- / SEARCH -->
-
     </div>
-    <!-- / HEADER -->
 
-    <!-- CONTENT -->
+
     <div class="content">
-
-        <!-- SIDEBAR -->
-        <!-- / SIDEBAR -->
-
-        <!-- CENTER -->
         <div class="center p-24 pb-56" fusePerfectScrollbar>
-            <!-- CONTENT -->
             <div class="content-card">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-                    <div fxFlex.gt-sm="65%" fxFlex>
-                        <div fxlayout="row" style="
-                        background-color: white;
-                        padding: 5px 10px 5px 10px;
-                    ">
+                    <div fxFlex.gt-sm="100%" fxFlex>
+
+                        <div fxlayout="row" style="background-color: white; padding: 5px 10px 5px 10px; ">
                             <form [formGroup]="_currencyService.myformSearch">
                                 <div class="dialog-content-wrapper">
                                     <mat-form-field class="mr-sm-12" fxFlex>
                                         <input matInput placeholder="Search --> Currency Name" autocomplete="off"
-                                            name="CurrencyNameSearch" formControlName="CurrencyNameSearch" />
+                                            name="CurrencyNameSearch" formControlName="CurrencyNameSearch"
+                                            (keyup)="onSearchClear()" />
                                         <button mat-button matSuffix mat-icon-button aria-label="Clear"
                                             (click)="onSearchClear()">
                                             <mat-icon>close</mat-icon>
@@ -62,8 +53,11 @@
                             </form>
                         </div>
 
+
                         <div fxlayout="row">
-                            <div style="width: 100%;">
+                            <div fxFlex.gt-sm="65%" fxFlex>
+
+
                                 <mat-table #table matSort [dataSource]="DSCurrencyMasterList"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto">
                                     <ng-container matColumnDef="CurrencyId">
@@ -132,55 +126,62 @@
                                     <mat-footer-row *matFooterRowDef="['noData']"
                                         [ngClass]="{'hide':!(DSCurrencyMasterList!=null && DSCurrencyMasterList.data.length==0)}"></mat-footer-row>
                                 </mat-table>
-
-                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
-                                    showFirstLastButtons></mat-paginator>
+                                <mat-paginator [pageSizeOptions]="[30, 50, 75, 100]" [pageSize]="30"
+                                    [length]="resultsLength" showFirstLastButtons (page)="getCurrencyMasterList()">
+                                </mat-paginator>
                             </div>
-                        </div>
-                    </div>
 
-                    <div fxFlex.gt-sm="35%" fxFlex style="background-color: white;">
-                        <div class="dialog-content-wrapper">
-                            <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar>
-                                <form [formGroup]="_currencyService.myform">
-                                    <h3>{{_currencyService.myform.controls.CurrencyId.value?"Modify Prefix Master":"New
-                                        Prefix Master"}}</h3>
+                            <div fxFlex.gt-sm="35%" fxFlex style="background-color: white;">
+                                <div class="dialog-content-wrapper">
+                                    <div mat-dialog-content class="p-24 pb-0 m-0">
+                                        <form [formGroup]="_currencyService.myform">
+                                            <h3>{{_currencyService.myform.controls.CurrencyId.value?"Modify Prefix
+                                                Master":"New
+                                                Prefix Master"}}</h3>
 
 
-                                    <input type="hidden" name="CurrencyId" formControlName="CurrencyId">
+                                            <input type="hidden" name="CurrencyId" formControlName="CurrencyId">
 
-                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                                            <mat-label>CurrencyName Name</mat-label>
-                                            <input name="CurrencyName" formControlName="CurrencyName" matInput required>
-                                            <mat-error>Please enter Currency Name </mat-error>
-                                        </mat-form-field>
+                                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                                <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                                    <mat-label>CurrencyName Name</mat-label>
+                                                    <input name="CurrencyName" formControlName="CurrencyName" matInput
+                                                        required>
+                                                    <mat-error>Please enter Currency Name </mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                                <mat-radio-group name="IsDeleted" formControlName="IsDeleted"
+                                                    value='false'>
+                                                    <mat-radio-button value='false' class="mr-sm-12"
+                                                        fxFlex>IsActive</mat-radio-button>
+                                                    <mat-radio-button value='true' class="mr-sm-12"
+                                                        fxFlex>IsDeactive</mat-radio-button>
+                                                </mat-radio-group>
+                                            </div>
+                                        </form>
                                     </div>
-                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                        <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
-                                            <mat-radio-button value='false' class="mr-sm-12"
-                                                fxFlex>IsActive</mat-radio-button>
-                                            <mat-radio-button value='true' class="mr-sm-12"
-                                                fxFlex>IsDeactive</mat-radio-button>
-                                        </mat-radio-group>
+
+
+
+                                    <div class="footer-navigation-container"></div>
+                                    <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px"
+                                        style="margin-right: 10px;">
+                                        <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
+                                        <button class="btn btn-primary" (click)="onSubmit()"
+                                            [disabled]="_currencyService.myform.invalid">Save</button>
                                     </div>
-                                </form>
-                            </div>
-                            <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
-                                <div class="button-row">
-                                    <button mat-raised-button color="primary" type="submit" (click)="onSubmit()"
-                                        [disabled]="_currencyService.myform.invalid">Save</button>
-                                    <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
                                 </div>
+
                             </div>
                         </div>
                     </div>
+
+
 
                 </div>
+
             </div>
-            <!-- / CONTENT -->
         </div>
-        <!-- / CENTER -->
     </div>
-    <!-- / CONTENT-->
 </div>

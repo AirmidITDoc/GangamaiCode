@@ -98,7 +98,7 @@ export class IpReportComponent implements OnInit {
 
 
   ngOnInit(): void {
-debugger
+
         
     if (this._ActRoute.url == "/reports/ipreport") 
       this.Reportsection='IP Reports'
@@ -629,18 +629,20 @@ var data={
        this.optionsSearchDoc = this.DoctorList.slice();
       this.filteredOptionsDoctorMode = this._IPReportService.userForm.get('DoctorId').valueChanges.pipe(
         startWith(''),
-        map(value => value ? this._filterSearchdoc(value) : this.DoctorList.slice()),
+        map(value => value ? this._filtersearchdoc(value) : this.DoctorList.slice()),
       );
     });
   }
 
- private _filterSearchdoc(value: any): string[] {
+  private _filtersearchdoc(value: any): string[] {
     if (value) {
-      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
-      return this.optionsSearchDoc.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
+      const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
+      return this.DoctorList.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
     }
-
   }
+
+ 
+ 
   getPrint() {
 
     

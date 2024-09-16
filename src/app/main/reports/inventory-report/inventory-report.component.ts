@@ -25,6 +25,7 @@ export class InventoryReportComponent implements OnInit {
   UserName:any=''
   UserList:any=[];
   StoreList:any=[];
+  ItemList:any=[];
   filteredOptionsUser: Observable<string[]>;
   isUserSelected: boolean = false;
   FlagUserSelected: boolean = false;
@@ -44,6 +45,7 @@ export class InventoryReportComponent implements OnInit {
   FlagStore1Selected: boolean = false;
   FlagItemSelected: boolean = false;
   optionsSearchstore: any[] = [];
+  optionsSearchItem: any[] = [];
   filteredOptionssupplier:any;
   noOptionFoundsupplier:any;
   isSupplierIdSelected:boolean=false;
@@ -184,7 +186,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagDoctorSelected = false;
       this.FlagStoreSelected = true;
       this.FlagStore1Selected = false;
-      this.FlagSupplierSelected = true;
+      this.FlagSupplierSelected = false;
       this.FlagItemSelected=false;
       this.FlagIdSelected=false;
     } 
@@ -1533,16 +1535,28 @@ export class InventoryReportComponent implements OnInit {
       return this.UserList.filter(option => option.UserName.toLowerCase().includes(filterValue));
     }
   }
+
+
+  private _filtersearchItem(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.ItemName ? value.ItemName.toLowerCase() : value.toLowerCase();
+      return this.ItemList.filter(option => option.ItemName.toLowerCase().includes(filterValue));
+    }
+  }
 getSearchItemList() {   
       var m_data = {
         "ItemName": '%',//`${this._OPReportsService.userForm.get('ItemId').value}%`,
       //  "StoreId": this._loggedUser.currentUserValue.user.storeId
       }
-      //console.log(m_data); 
+    
       this._OPReportsService.getItemlist(m_data).subscribe(data => {
-        this.filteredOptionsItem = data;
-        console.log(data)
-      });
+         this.ItemList = data;
+       this.optionsSearchItem = this.ItemList.slice();
+      this.filteredOptionsItem = this._OPReportsService.userForm.get('ItemId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filtersearchItem(value) : this.ItemList.slice()),
+      );
+    });
     }
 
     getOptionItemText(option) {

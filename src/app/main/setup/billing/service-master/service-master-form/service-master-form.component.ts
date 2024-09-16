@@ -63,11 +63,7 @@ private _onDestroy = new Subject<void>();
     ) {
      
       this.getClassList();
-      if (this.data) {
-        this.getServicewiseClassMasterList();
-        this.registerObj = this.data.registerObj;
-        
-    }
+     
      }
 
     @ViewChild(MatSort) sort:MatSort;
@@ -111,7 +107,11 @@ private _onDestroy = new Subject<void>();
      this.filterTariff();
 
    });
-
+   if (this.data) {
+    this.getServicewiseClassMasterList();
+    this.registerObj = this.data.registerObj;
+    
+}
   }
   @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     const focusedElement = document.activeElement as HTMLElement;

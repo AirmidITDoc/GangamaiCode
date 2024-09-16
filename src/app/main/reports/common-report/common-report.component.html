@@ -159,7 +159,7 @@
                                     </div>
                                   
                                     <div>
-                                        <mat-form-field appearance="outline"  fxFlex="40%" *ngIf="FlagServiceIdSelected"   style="margin-left:2%;">
+                                        <!-- <mat-form-field appearance="outline"  fxFlex="40%" *ngIf="FlagServiceIdSelected"   style="margin-left:2%;">
                                             <input type="text" name="ServiceId" formControlName="ServiceId" 
                                                 placeholder="Service Name" matInput [matAutocomplete]="auto" id="myInput">
                                             <span matSuffix style="display: flex;">
@@ -179,6 +179,26 @@
                                             <mat-error *ngIf="_OPReportsService.userForm.get('ServiceId').hasError('required')">
                                                 Required field cannot be left blank
                                             </mat-error>
+                                        </mat-form-field> -->
+
+                                        <mat-form-field appearance="outline" *ngIf="FlagServiceIdSelected" fxFlex="40%" style="margin-left:2%;">
+                                            <mat-label>Service Name</mat-label>
+                                            <input matAutocompletePosition="below" type="text"
+                                                placeholder="Select  Service Name" matInput
+                                                formControlName="ServiceId" [matAutocomplete]="auto1">
+                                            <span matSuffix style="display: flex;">
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_OPReportsService.userForm.get('ServiceId').setValue(''); isServiceSelected = false;">close</mat-icon>
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_OPReportsService.userForm.get('ServiceId').setValue(''); isServiceSelected = false;">search</mat-icon>
+                                            </span>
+                                            <mat-autocomplete #auto1="matAutocomplete"
+                                                [displayWith]="getOptionText">
+                                                <mat-option *ngFor="let option of filteredOptions | async"
+                                                    [value]="option">
+                                                    {{option.ServiceName}}
+                                                </mat-option>
+                                            </mat-autocomplete>
                                         </mat-form-field>
                                     </div>
 
@@ -187,8 +207,8 @@
                                             <mat-label>Department</mat-label>
                                             <input matAutocompletePosition="below" type="text" placeholder="Select Department"
                                                 [(ngModel)]="vDepartmentid" matInput #dept
-                                                (keydown)="onEnterdept($event,vDepartmentid.Departmentid)"
-                                                formControlName="Departmentid" [matAutocomplete]="autoDep">
+                                                (keydown)="onEnterdept($event,vDepartmentid.DepartmentId)"
+                                                formControlName="DepartmentId" [matAutocomplete]="autoDep">
                                             <span matSuffix style="display: flex;">
                                                 <mat-icon class="mat-icon-close"
                                                     (click)="_OPReportsService.userForm.get('DepartmentId').setValue(''); isDepartmentSelected = false;">close</mat-icon>

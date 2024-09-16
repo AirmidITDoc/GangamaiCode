@@ -23,7 +23,7 @@ export class ItemCategoryMasterService {
             ItemCategoryName: [""],
             ItemTypeID: [""],
             ItemTypeName: [""],
-            IsDeleted: ["false"],
+            IsDeleted: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
         });

@@ -6,6 +6,7 @@ import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
+import { AuthenticationService } from "app/core/services/authentication.service";
 
 @Component({
     selector: "app-uom-master",
@@ -16,7 +17,7 @@ import { ToastrService } from "ngx-toastr";
 })
 export class UomMasterComponent implements OnInit {
     msg: any;
-
+    resultsLength:any=0;
     displayedColumns: string[] = [
         "UnitofMeasurementId",
         "UnitofMeasurementName",
@@ -30,6 +31,7 @@ export class UomMasterComponent implements OnInit {
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
     constructor(public _unitofmeasurementService: UomMasterService,
+        private accountService: AuthenticationService,
         public toastr : ToastrService,) {}
 
     ngOnInit(): void {
@@ -60,6 +62,7 @@ export class UomMasterComponent implements OnInit {
                     Menu as UnitofmeasurementMaster[];
                 this.DSUnitofmeasurementList.sort = this.sort;
                 this.DSUnitofmeasurementList.paginator = this.paginator;
+                this.resultsLength= this.DSUnitofmeasurementList.data.length
             });
     }
 
@@ -88,8 +91,8 @@ export class UomMasterComponent implements OnInit {
                                 ).value
                             )
                         ),
-                        addedBy: 1,
-                        updatedBy: 1,
+                        addedBy:this.accountService.currentUserValue.user.id,
+                        updatedBy: this.accountService.currentUserValue.user.id,
                     },
                 };
 
@@ -102,26 +105,14 @@ export class UomMasterComponent implements OnInit {
                                 toastClass: 'tostr-tost custom-toast-success',
                               });
                               this.getUnitofmeasurementMasterList();
-                            // Swal.fire(
-                            //     "Saved !",
-                            //     "Record saved Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getUnitofmeasurementMasterList();
-                            //     }
-                            // });
+                           
                         } else {
                             this.toastr.error('UOM   Master Data not saved !, Please check API error..', 'Error !', {
                                 toastClass: 'tostr-tost custom-toast-error',
                               });
                         }
                         this.getUnitofmeasurementMasterList();
-                    },error => {
-                        this.toastr.error('UOM-Type not saved !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
+                    });
             } else {
                 var m_dataUpdate = {
                     updateUnitofMeasurementMaster: {
@@ -140,7 +131,7 @@ export class UomMasterComponent implements OnInit {
                                 ).value
                             )
                         ),
-                        updatedBy: 1,
+                        updatedBy: this.accountService.currentUserValue.user.id,
                     },
                 };
 
@@ -153,26 +144,14 @@ export class UomMasterComponent implements OnInit {
                                 toastClass: 'tostr-tost custom-toast-success',
                               });
                             this.getUnitofmeasurementMasterList();
-                            // Swal.fire(
-                            //     "Updated !",
-                            //     "Record updated Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getUnitofmeasurementMasterList();
-                            //     }
-                            // });
+                           
                         } else {
                             this.toastr.error('UOM  Master Data not updated !, Please check API error..', 'Error !', {
                                 toastClass: 'tostr-tost custom-toast-error',
                               });
                         }
                         this.getUnitofmeasurementMasterList();
-                    },error => {
-                        this.toastr.error('UOM-Type not updated !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
+                    });
             }
             this.onClear();
         }
@@ -206,7 +185,7 @@ export class UnitofmeasurementMaster {
                 UnitofmeasurementMaster.UnitofMeasurementId || "";
             this.UnitofMeasurementName =
                 UnitofmeasurementMaster.UnitofMeasurementName || "";
-            this.IsDeleted = UnitofmeasurementMaster.IsDeleted || "false";
+            this.IsDeleted = UnitofmeasurementMaster.IsDeleted || "true";
             this.AddedBy = UnitofmeasurementMaster.AddedBy || "";
             this.UpdatedBy = UnitofmeasurementMaster.UpdatedBy || "";
         }

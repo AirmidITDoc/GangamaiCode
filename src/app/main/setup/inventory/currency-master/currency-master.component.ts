@@ -6,6 +6,7 @@ import { CurrencymasterService } from "./currencymaster.service";
 import { fuseAnimations } from "@fuse/animations";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
+import { AuthenticationService } from "app/core/services/authentication.service";
 
 @Component({
     selector: "app-currency-master",
@@ -17,7 +18,7 @@ import { ToastrService } from "ngx-toastr";
 export class CurrencyMasterComponent implements OnInit {
     CurrencyMasterList: any;
     msg: any;
-
+    resultsLength = 0;
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -32,6 +33,7 @@ export class CurrencyMasterComponent implements OnInit {
     DSCurrencyMasterList = new MatTableDataSource<CurrencyMaster>();
 
     constructor(public _currencyService: CurrencymasterService,
+        private accountService: AuthenticationService,
         public toastr : ToastrService,) {}
 
     ngOnInit(): void {
@@ -59,6 +61,7 @@ export class CurrencyMasterComponent implements OnInit {
             this.DSCurrencyMasterList.data = Menu as CurrencyMaster[];
             this.DSCurrencyMasterList.sort = this.sort;
             this.DSCurrencyMasterList.paginator = this.paginator;
+            this.resultsLength= this.DSCurrencyMasterList.data.length
         });
     }
 
@@ -81,8 +84,8 @@ export class CurrencyMasterComponent implements OnInit {
                                     .value
                             )
                         ),
-                        addedBy: 1,
-                        updatedBy: 1,
+                        addedBy: this.accountService.currentUserValue.user.id,
+                        updatedBy:this.accountService.currentUserValue.user.id,
                     },
                 };
                 // console.log(m_data);
@@ -95,26 +98,14 @@ export class CurrencyMasterComponent implements OnInit {
                                 toastClass: 'tostr-tost custom-toast-success',
                               });
                             this.getCurrencyMasterList();
-                            // Swal.fire(
-                            //     "Saved !",
-                            //     "Record saved Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getCurrencyMasterList();
-                            //     }
-                            // });
+                           
                         } else {
                             this.toastr.error('Currency Master Master Data not saved !, Please check API error..', 'Error !', {
                                 toastClass: 'tostr-tost custom-toast-error',
                               });
                         }
                         this.getCurrencyMasterList();
-                    },error => {
-                        this.toastr.error('Currency Data not saved !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
+                    });
             } else {
                 var m_dataUpdate = {
                     updateCurrencyMaster: {
@@ -130,7 +121,7 @@ export class CurrencyMasterComponent implements OnInit {
                                     .value
                             )
                         ),
-                        updatedBy: 1,
+                        updatedBy: this.accountService.currentUserValue.user.id,
                     },
                 };
                 this._currencyService
@@ -142,26 +133,14 @@ export class CurrencyMasterComponent implements OnInit {
                                 toastClass: 'tostr-tost custom-toast-success',
                               });
                             this.getCurrencyMasterList();
-                            // Swal.fire(
-                            //     "Updated !",
-                            //     "Record updated Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getCurrencyMasterList();
-                            //     }
-                            // });
+                           
                         } else {
                             this.toastr.error('Currency Master Master Data not updated !, Please check API error..', 'Error !', {
                                 toastClass: 'tostr-tost custom-toast-error',
                               });
                         }
                         this.getCurrencyMasterList();
-                    },error => {
-                        this.toastr.error('Currency Data not updated !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
+                    });
             }
             this.onClear();
         }

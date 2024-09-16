@@ -21,7 +21,7 @@ export class UomMasterService {
         return this._formBuilder.group({
             UnitofMeasurementId: [""],
             UnitofMeasurementName: [""],
-            IsDeleted: ["false"],
+            IsDeleted: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
         });
