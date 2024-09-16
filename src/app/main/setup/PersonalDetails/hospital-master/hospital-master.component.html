@@ -1,24 +1,35 @@
-<div fxlayout="row" fxFlex.gt-sm="100%" fxFlex class="page-layout" dynamicTableHeight>
-    <div class="center">
-        <mat-toolbar class="top-header accent">
-            <div fxLayout="row" class="top-header-info">
-                <!-- <button mat-icon-button class="sidebar-toggle" fxHide.gt-sm (click)="toggleSidebar('app-main')">
-                    <mat-icon>menu</mat-icon>
-                </button> -->
-                <mat-icon class="logo-icon " [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
-                </mat-icon>
-                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    Hospital List
-                </span>
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fusePerfectScrollbar
+    dynamicTableHeight>
+    <!-- <mat-toolbar class="top-header accent">
+        <div fxLayout="row" class="top-header-info">
+            <mat-icon class="logo-icon " [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                Hospital List
+            </span>
+        </div>
+        <div fxLayout="row" fxLayoutGap="5px">
+            <button mat-raised-button (click)="onAdd()" style="background-color: aliceblue;color: brown;">Add
+            </button>
+        </div>
+    </mat-toolbar> -->
+    <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
+        <div fxLayout="row" fxLayoutAlign="start center">
 
-            </div>
-            <div fxLayout="row" fxLayoutGap="5px">
-                <button mat-raised-button (click)="onAdd()"
-                    style="background-color: aliceblue;color: brown;">Add
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                Hospital List
+            </span>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-raised-button color="pine" (click)="onAdd()" fxLayoutAlign="center center">Add
+                <!-- <mat-icon color="Primary" title=" Add New Store ">add_to_photos</mat-icon> -->
+            </button>
 
-                </button>
-            </div>
-        </mat-toolbar>
+        </div>
+    </mat-toolbar>
 
     <div class="content">
         <div class="center p-24 pb-56" fusePerfectScrollbar>
@@ -31,8 +42,7 @@
                                 <div class="dialog-content-wrapper">
                                     <mat-form-field class="mr-sm-12" fxFlex>
                                         <input matInput placeholder="Search --> Hospital Name" autocomplete="off"
-                                            (keyup)="onSearch()" name="NameSearch"
-                                            formControlName="NameSearch" />
+                                            (keyup)="onSearch()" name="NameSearch" formControlName="NameSearch" />
                                         <!-- <button mat-button matSuffix mat-icon-button aria-label="Clear"
                                             (click)="onSearchClear()">
                                             <mat-icon>close</mat-icon>
@@ -45,7 +55,7 @@
                                         <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
                                         <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
                                     </mat-radio-group> -->
-<!--                                 
+                                    <!--                                 
                                     <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch"
                                     (change)="onSearch()">
                                     <mat-radio-button (click)="toggle(2)" [checked]="true"
@@ -65,13 +75,11 @@
 
 
                         <div fxlayout="row">
-                            <div class="content-card">
-                               
                                 <div style="width: 100%;">
-                                 
 
-                                    <mat-table class="table1" matSort [dataSource]="DSHospitalList"
-                                        [@animateStagger]="{value:'50'}" style="overflow:auto;height: 500px !important;">
+
+                                    <mat-table matSort [dataSource]="DSHospitalList"
+                                        [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
                                         <!-- <ng-container matColumnDef="HospitalId">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide  class="w-180"
@@ -83,16 +91,20 @@
                                         </ng-container> -->
 
                                         <ng-container matColumnDef="HospitalName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header  class="w-330"> HospitalName
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-330">
+                                                HospitalName
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm  class="w-330"> {{element.HospitalName}}
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-330">
+                                                {{element.HospitalName}}
                                             </mat-cell>
                                         </ng-container>
 
                                         <ng-container matColumnDef="HospitalAddress">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header  class="w-330"> HospitalAddress
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-330">
+                                                HospitalAddress
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm  class="w-330"> {{element.HospitalAddress}}
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-330">
+                                                {{element.HospitalAddress}}
                                             </mat-cell>
                                         </ng-container>
 
@@ -115,20 +127,25 @@
                                         <ng-container matColumnDef="Phone">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200"> Phone
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-200"> {{element.Phone}}
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-200">
+                                                {{element.Phone}}
                                             </mat-cell>
                                         </ng-container>
 
                                         <ng-container matColumnDef="EmailID">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200"> EmailId
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200">
+                                                EmailId
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-200"> {{element.EmailID}}
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-200">
+                                                {{element.EmailID}}
                                             </mat-cell>
                                         </ng-container>
                                         <ng-container matColumnDef="WebSiteInfo">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200"> WebSite
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200">
+                                                WebSite
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-200"> {{element.WebSiteInfo}}
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-200">
+                                                {{element.WebSiteInfo}}
                                             </mat-cell>
                                         </ng-container>
 
@@ -138,10 +155,9 @@
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let element">
                                                 <!-- *ngIf="element.Isdeleted" -->
-                                                <button mat-icon-button (click)="onEdit(element)"
-                                                  ><mat-icon
+                                                <button mat-icon-button (click)="onEdit(element)"><mat-icon
                                                         title="Edit Menu">edit</mat-icon></button>
-                                               <!-- <button mat-icon-button
+                                                <!-- <button mat-icon-button
                                                     (click)="onDeactive(element,element.ParameterID)"
                                                     color="warn"><mat-icon>delete_outline</mat-icon></button> -->
 
@@ -160,9 +176,9 @@
                                         </ng-container>
 
                                         <mat-header-row class="accent min-width-1800"
-                                        *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                                            *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
                                         <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
-                                        class=" min-width-1800" 
+                                            class=" min-width-1800"
                                             [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                         <mat-footer-row *matFooterRowDef="['loading']"
                                             [ngClass]="{'hide':DSHospitalList!=null}"></mat-footer-row>
@@ -170,19 +186,14 @@
                                             [ngClass]="{'hide':!(DSHospitalList!=null && DSHospitalList.data.length==0)}"></mat-footer-row>
 
                                     </mat-table>
-                                    <mat-paginator [pageSizeOptions]="[30, 50, 75, 100]" [pageSize]="30" [length]="resultsLength"
-                                    showFirstLastButtons (page)="getHospitalMaster()">
-                                </mat-paginator>
+                                    <mat-paginator [pageSizeOptions]="[30, 50, 75, 100]" [pageSize]="30"
+                                        [length]="resultsLength" showFirstLastButtons (page)="getHospitalMaster()">
+                                    </mat-paginator>
                                 </div>
-
-                            </div>
                         </div>
-
-
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    </div>
+</div>

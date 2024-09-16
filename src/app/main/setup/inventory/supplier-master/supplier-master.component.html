@@ -1,4 +1,5 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" dynamicTableHeight>
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fusePerfectScrollbar
+    dynamicTableHeight>
     <!-- HEADER -->
     <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
@@ -11,8 +12,7 @@
             </span>
         </div>
         <div fxLayout="row" fxLayoutGap="5px">
-            <button mat-raised-button (click)="onAdd()"
-                style="background-color: aliceblue;color: brown;">Add
+            <button mat-raised-button (click)="onAdd()" style="background-color: aliceblue;color: brown;">Add
 
             </button>
         </div>
@@ -32,46 +32,50 @@
 
 
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-                    <mat-card style="padding: 6px;">
+
                     <div fxFlex.gt-sm="100%" fxFlex>
-                        <div fxlayout="row" style="
+                        <mat-card style="padding: 6px;">
+                            <div fxlayout="row" style="
                                             background-color: white;
                                             padding: 5px 10px 10px 10px;
                                                   ">
-                            <form [formGroup]="_supplierService.myformSearch">
-                                <div class="dialog-content-wrapper">
-                                    <mat-form-field class="mr-sm-12" fxFlex>
-                                        <input matInput placeholder="Search --> Supplier Name" autocomplete="off"
-                                            name="SupplierNameSearch" formControlName="SupplierNameSearch" (keyup)="onSearch()"/>
-                                        <button mat-button matSuffix mat-icon-button aria-label="Clear"
-                                            (click)="onSearchClear()" (keyup)="onSearch()">
-                                            <mat-icon>close</mat-icon>
+                                <form [formGroup]="_supplierService.myformSearch">
+                                    <div class="dialog-content-wrapper">
+                                        <mat-form-field class="mr-sm-12" fxFlex>
+                                            <input matInput placeholder="Search --> Supplier Name" autocomplete="off"
+                                                name="SupplierNameSearch" formControlName="SupplierNameSearch"
+                                                (keyup)="onSearch()" />
+                                            <button mat-button matSuffix mat-icon-button aria-label="Clear"
+                                                (click)="onSearchClear()" (keyup)="onSearch()">
+                                                <mat-icon>close</mat-icon>
+                                            </button>
+                                        </mat-form-field>
+
+
+
+                                        <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch"
+                                            (change)="onFilterChange()">
+                                            <mat-radio-button (click)="toggle(2)" [checked]="true"
+                                                value="2">All</mat-radio-button>
+                                            <mat-radio-button mat-fab value="1"
+                                                (click)="toggle(1)">IsActive</mat-radio-button>
+                                            <mat-radio-button (click)="toggle(0)"
+                                                value="0">IsDeactive</mat-radio-button>
+                                        </mat-radio-group>
+
+                                        <button mat-raised-button (click)="onSearch()" fxLayoutAlign="center center">
+                                            <mat-icon>search</mat-icon>
+
                                         </button>
-                                    </mat-form-field>
-
-                                 
-
-                                    <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch"
-                                        (change)="onFilterChange()">
-                                        <mat-radio-button (click)="toggle(2)" [checked]="true"
-                                            value="2">All</mat-radio-button>
-                                        <mat-radio-button mat-fab value="1"
-                                            (click)="toggle(1)">IsActive</mat-radio-button>
-                                        <mat-radio-button (click)="toggle(0)" value="0">IsDeactive</mat-radio-button>
-                                    </mat-radio-group>
-
-                                    <button mat-raised-button (click)="onSearch()" fxLayoutAlign="center center">
-                                        <mat-icon>search</mat-icon>
-                                        
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </mat-card>
 
                         <div fxlayout="row">
                             <div style="width: 100%;">
                                 <mat-table #table matSort [dataSource]="DSSupplierMaster"
-                                    [@animateStagger]="{value:'50'}" style="overflow:auto;height: 100%;">
+                                    [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
                                     <ng-container matColumnDef="SupplierId" sticky>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
@@ -81,22 +85,22 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="ContactPerson" sticky>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header  > ContactPerson
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header> ContactPerson
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm  > {{element.ContactPerson}}
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.ContactPerson}}
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="SupplierName" sticky>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header  > Supplier </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm  > {{element.SupplierName}}
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header> Supplier </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.SupplierName}}
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="Address" >
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm  >Address
+                                    <ng-container matColumnDef="Address">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Address
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm > {{element.Address}}
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.Address}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -111,7 +115,7 @@
                                         <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.Mobile}} </mat-cell>
                                     </ng-container>
                                     <ng-container matColumnDef="Phone">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header > Phone </mat-header-cell>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header> Phone </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.Phone}} </mat-cell>
                                     </ng-container>
                                     <ng-container matColumnDef="Fax">
@@ -120,12 +124,12 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="Email">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header > Email </mat-header-cell>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header> Email </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.Email}} </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="GSTNo">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header  > GSTNo </mat-header-cell>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header> GSTNo </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.GSTNo}} </mat-cell>
                                     </ng-container>
                                     <ng-container matColumnDef="PanNo">
@@ -180,7 +184,8 @@
 
                                     <mat-header-row class="accent min-width-2400"
                                         *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                                    <mat-row *matRowDef="let row; columns: displayedColumns;" class="element min-width-2400"
+                                    <mat-row *matRowDef="let row; columns: displayedColumns;"
+                                        class="element min-width-2400"
                                         [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                     <mat-footer-row *matFooterRowDef="['loading']"
                                         [ngClass]="{'hide':DSSupplierMaster!=null}"></mat-footer-row>
@@ -198,7 +203,7 @@
                         </div>
                     </div>
 
-                </mat-card>
+
                 </div>
             </div>
             <!-- / CONTENT -->

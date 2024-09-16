@@ -550,7 +550,7 @@
                                                 </div>
                                                 <hr>
                                                 <div fxLayout="row" fxLayoutGap="6px">
-                                                    <mat-form-field appearance="outline" fxFlex="30%">
+                                                    <!-- <mat-form-field appearance="outline" fxFlex="30%">
                                                         <mat-label>Department</mat-label>
                                                         <input matAutocompletePosition="below" type="text" placeholder="Select Department" matInput #dept
                                                            (keydown)="onEnterdept($event)" formControlName="Departmentid"
@@ -568,7 +568,7 @@
                                                                 {{option.DepartmentName}}
                                                             </mat-option>
                                                         </mat-autocomplete>
-                                                    </mat-form-field>
+                                                    </mat-form-field> -->
                                     
                                     
                                                     <mat-form-field appearance="outline" fxFlex="30%">
@@ -582,7 +582,7 @@
                                                                 (click)="MedicineItemForm.get('DoctorID').setValue(''); isDoctorSelected = false;">search</mat-icon>
                                                         </span>
                                     
-                                                        <mat-autocomplete #autoDoctor="matAutocomplete" [displayWith]="getOptionTextDoc">
+                                                        <mat-autocomplete #autoDoctor="matAutocomplete" [displayWith]="getOptionTextDoctor">
                                                             <mat-option *ngFor="let option of filteredOptionsDoc | async" [value]="option"
                                                                 (onSelectionChange)="isDoctorSelected = true;">
                                                                 {{option.Doctorname }} <b>|</b> {{option.DepartmentName }}

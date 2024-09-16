@@ -1,4 +1,5 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" > 
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fusePerfectScrollbar
+dynamicTableHeight>
 
     <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;"  >
         <div fxLayout="row" fxLayoutAlign="start center">
@@ -54,8 +55,8 @@
                                     <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur">
                                         <div class="spinner-border"></div>
                                     </div>
-                                    <mat-table class="h-450" #table matSort [dataSource]="DSItemMasterList" [@animateStagger]="{value:'50'}"
-                                        style="overflow: auto;width:100%;">
+                                    <mat-table #table matSort [dataSource]="DSItemMasterList" [@animateStagger]="{value:'50'}"
+                                        style="overflow: auto;">
                         
                                         <ng-container matColumnDef="ItemID" sticky>
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-80">Code

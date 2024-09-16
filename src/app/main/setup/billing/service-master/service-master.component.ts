@@ -85,20 +85,13 @@ export class ServiceMasterComponent implements OnInit {
             TariffId: 0,
             GroupId: 0,
             Start:(this.paginator?.pageIndex??1),
-            Length:(this.paginator?.pageSize??20),
+            Length:(this.paginator?.pageSize??30),
         };
         this._serviceMasterService.getServiceMasterList_Pagn(param).subscribe(
             (data) => {
                 this.DSServiceMasterList.data = data["Table1"]??[] as ServiceMaster[];
-                console.log("BE data" +data)
-                //this.DSServiceMasterList.data = Menu as ServiceMaster[];
-                this.isLoading = false;
                 this.DSServiceMasterList.sort = this.sort;
-                this.DSServiceMasterList.paginator = this.paginator;
                 this.resultsLength= data["Table"][0]["total_row"];
-                
-               console.log(this.DSServiceMasterList.data);
-               debugger;
             },
             (error) => (this.isLoading = false)
         );
@@ -318,7 +311,6 @@ export class ServiceMasterComponent implements OnInit {
     }
     onEdit(row) {
         console.log(row);
-        debugger
         var m_data = {
             ServiceId: row.ServiceId,
             ServiceShortDesc: row.ServiceShortDesc.trim(),

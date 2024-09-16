@@ -1,4 +1,5 @@
-<div fxlayout="row" fxFlex.gt-sm="100%" fxFlex class="page-layout" dynamicTableHeight>
+<div fxlayout="row" fxFlex.gt-sm="100%" fxFlex class="page-layout" fusePerfectScrollbar
+dynamicTableHeight>
     <div class="center">
         <mat-toolbar class="top-header accent">
             <div fxLayout="row" class="top-header-info">
@@ -88,8 +89,8 @@
                                         <div class="spinner-border text-danger" style="margin-left: 100px;"></div>
                                     </div>
 
-                                    <mat-table class="table1" matSort [dataSource]="DSStoreMasterList"
-                                        [@animateStagger]="{value:'50'}" style="overflow:auto;height: 500px !important;">
+                                    <mat-table matSort [dataSource]="DSStoreMasterList"
+                                        [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
                                         <ng-container matColumnDef="StoreId">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-150">Code
