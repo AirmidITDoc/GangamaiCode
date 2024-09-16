@@ -23,12 +23,12 @@ export class PrescriptionComponent implements OnInit {
     'RegNo',
     'PatientName',
     'DoctorName',
-    'Date',
-    'Type',
-    'Time',
-    'CompanyName',
+    'Date', 
+    'Time', 
     'No',
     'WardName',
+    'CompanyName',
+    'Type',
     'Action'
   ];
   displayedColumns1 = [
