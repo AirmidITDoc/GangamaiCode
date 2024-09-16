@@ -1017,10 +1017,7 @@ CalculateAdminCharge(){
           this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
           this.Ipbillform.get('concessionAmt').setValue(this.vFinalDiscountAmt);
         }
-      } else {
-        this.toastr.warning('Please Enter Discount % less than 100 and Greater than 0.', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
+      } else { 
         this.Ipbillform.get('Percentage').reset();
         this.vFinalDiscountAmt = '';
         this.vNetBillAmount = FinalTotalAmt;
@@ -1030,23 +1027,19 @@ CalculateAdminCharge(){
       }
       this.chkdiscstatus();
     } else {
-      if (BillDiscPer > 0 && BillDiscPer < 100 || BillDiscPer > 100) {
-        if (BillDiscPer > 100) {
-          this.toastr.warning('Please Enter Discount % less than 100 and Greater than 0.', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          this.Ipbillform.get('Percentage').reset();
-          this.vFinalDiscountAmt = '';
-          this.vNetBillAmount = this.vTotalAmount;
-          this.Ipbillform.get('concessionAmt').setValue(this.vFinalDiscountAmt);
-          this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount); 
-        } else {
+      if (BillDiscPer > 0 && BillDiscPer < 100) { 
           this.vFinalDiscountAmt = Math.round((parseFloat(this.vTotalAmount) * parseFloat(BillDiscPer)) / 100).toFixed(2);
           this.vNetBillAmount = Math.round(parseFloat(this.vTotalAmount) - parseFloat(this.vFinalDiscountAmt)).toFixed(2);
           this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
-          this.Ipbillform.get('concessionAmt').setValue(this.vFinalDiscountAmt);
-        }
-      } else {
+          this.Ipbillform.get('concessionAmt').setValue(this.vFinalDiscountAmt); 
+      } else { 
+        this.Ipbillform.get('Percentage').reset();
+        this.vFinalDiscountAmt = '';
+        this.vNetBillAmount = this.vTotalAmount;
+        this.Ipbillform.get('concessionAmt').setValue(this.vFinalDiscountAmt);
+        this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount); 
+      }
+      if (BillDiscPer > 100) {
         this.toastr.warning('Please Enter Discount % less than 100 and Greater than 0.', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
@@ -1054,8 +1047,7 @@ CalculateAdminCharge(){
         this.vFinalDiscountAmt = '';
         this.vNetBillAmount = this.vTotalAmount;
         this.Ipbillform.get('concessionAmt').setValue(this.vFinalDiscountAmt);
-        this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
-        
+        this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount); 
       }
       this.chkdiscstatus();
     }
@@ -1134,7 +1126,7 @@ CalculateAdminCharge(){
     } else{ 
       this.ConcessionShow = false; 
     }
-    if (parseInt(this.TotalServiceDiscPer) > 0) {
+    if (parseFloat(this.TotalServiceDiscPer) > 0) {
       this.BillDiscperFlag = false; 
     }else{ 
       this.BillDiscperFlag = true; 
