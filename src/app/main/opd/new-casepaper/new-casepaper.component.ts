@@ -27,6 +27,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { element } from 'protractor';
 import { timeStamp } from 'console';
+import { PrePresciptionListComponent } from './pre-presciption-list/pre-presciption-list.component';
 
 @Component({
   selector: 'app-new-casepaper',
@@ -41,10 +42,10 @@ export class NewCasepaperComponent implements OnInit {
     'DoseName',
     'Days',
     'Remark',
-    'DoseName1',
-    'Day1',
-    'DoseName2',
-    'Day2',
+    // 'DoseName1',
+    // 'Day1',
+    // 'DoseName2',
+    // 'Day2',
     'Action'
   ]
   displayedpreviousColumn: string[] = [
@@ -119,7 +120,9 @@ export class NewCasepaperComponent implements OnInit {
   vSpO2: any;
   vPulse: any;
   screenFromString = 'OP-billing';
-  vChiefComplaint: any; // ='History:\n\nDiagnosis:\n\nExamination:';
+  vChiefComplaint: any;
+  vDiagnosis: any;
+  vExamination: any;
   isItemIdSelected: boolean = false;
   filteredOptionsDosename: Observable<string[]>;
   doseList: any = [];
@@ -137,6 +140,8 @@ export class NewCasepaperComponent implements OnInit {
   vServiceId:any;
   isServiceIdSelected:boolean = false;
   vFollowUpDays:any=0;
+
+
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
  
@@ -159,6 +164,7 @@ export class NewCasepaperComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+   
     this.searchFormGroup = this.createSearchForm();
     this.caseFormGroup = this.createForm();
     this.MedicineItemform(); 
@@ -167,11 +173,11 @@ export class NewCasepaperComponent implements OnInit {
   }  
  
   vDays:any;
+  vYears:any;
+  vMonths:any;
   followUpDate: string;
   specificDate: Date;
   onDaysChange() {
-    console.log(this.vDays) 
-    //let m = this.MedicineItemForm.get('Days').value ;
 
     if(this.vDays > 0){
       const today = new Date();
@@ -182,13 +188,36 @@ export class NewCasepaperComponent implements OnInit {
       followUp.setDate((todaydays) + parseInt(this.vDays)); 
       this.followUpDate = this.datePipe.transform(followUp.toDateString(),'MM/dd/YYYY');
       this.specificDate = new Date(this.followUpDate);
-      console.log(this.followUpDate)
-    
-    }else{
+      console.log(this.followUpDate) 
+    }
+    else if(this.vMonths > 0){
+      const today = new Date();
+      const followUp = new Date(); 
+      followUp.setMonth((today.getMonth()) + parseInt(this.vMonths)); 
+      this.followUpDate = this.datePipe.transform(followUp.toDateString(),'MM/dd/YYYY');
+      this.specificDate = new Date(this.followUpDate);
+      console.log(this.followUpDate)  
+    }
+    else if(this.vYears > 0){
+      const today = new Date();
+      const Currentyear = today.getFullYear() 
+      const followDays = ((Currentyear) + parseInt(this.vYears))
+      console.log(followDays)
+      const followUp = new Date(); 
+      followUp.setFullYear((Currentyear) + parseInt(this.vYears)); 
+      this.followUpDate = this.datePipe.transform(followUp.toDateString(),'MM/dd/YYYY');
+      this.specificDate = new Date(this.followUpDate);
+      console.log(this.followUpDate) 
+    } 
+    else{
       this.specificDate = new Date();
     }
   } 
- 
+  dateStyle:any;
+  OnChangeDobType(e) { 
+      this.dateStyle = e.value;
+      console.log(this.dateStyle )
+  }
   createForm() {
     return this._formBuilder.group({
       LetteHeadRadio: ['NormalHead'],
@@ -211,8 +240,9 @@ export class NewCasepaperComponent implements OnInit {
       ]],
       ChiefComplaint: '',
       Serviceid:'',
-      IsPathRad:'1' 
- 
+      IsPathRad:'1', 
+      Diagnosis: '',
+      Examination: '',
     });
   }
   MedicineItemform() {
@@ -224,9 +254,11 @@ export class NewCasepaperComponent implements OnInit {
       DoctorID:'',
       Departmentid:'',
       FollowupDays:'',
-      start: [(new Date()).toISOString()],
+      start: [''],
       Remark:'',
-      Days:''
+      Days:'',
+      FollowupMonths:'',
+      FollowupYears:''
     });
   }
   createSearchForm() {
@@ -417,15 +449,13 @@ toggleSelection(item: any) {
 }
 remove(e) {
     this.toggleSelection(e);
-}
- 
+} 
   private _filterService(value: any): string[] {
     if (value) {
         const filterValue = value && value.ServiceName ? value.ServiceName.toLowerCase() : value.toLowerCase();
         return this.optionsService.filter(option => option.ServiceName.toLowerCase().includes(filterValue));
     } 
-} 
- 
+}  
 getOptionTextService(option) {
   return option && option.departmentName ? option.departmentName : '';
 }
@@ -561,25 +591,33 @@ getOptionTextService(option) {
       insertOPDPrescription['drugId'] = element.ItemID;
       insertOPDPrescription['doseId'] = element.DoseId || 0;
       insertOPDPrescription['days'] = element.Days || 0;
-      insertOPDPrescription['instructionId'] = 0;
-      insertOPDPrescription['qtyPerDay'] = 0;
-      insertOPDPrescription['totalQty'] = 0;
       insertOPDPrescription['instruction'] = element.Instruction || '';
-      insertOPDPrescription['remark'] =  this.MedicineItemForm.get('Remark').value  || '';
-      insertOPDPrescription['isEnglishOrIsMarathi'] =  this.caseFormGroup.get('LangaugeRadio').value;
-      insertOPDPrescription['pWeight'] = this.caseFormGroup.get('Weight').value || '';
-      insertOPDPrescription['pulse'] = this.caseFormGroup.get('Pulse').value || '';
-      insertOPDPrescription['bp'] = this.caseFormGroup.get('BP').value || '';
-      insertOPDPrescription['bsl'] = this.caseFormGroup.get('BSL').value || '';
-      insertOPDPrescription['chiefComplaint'] = this.caseFormGroup.get('ChiefComplaint').value || '';
-      insertOPDPrescription['isAddBy'] = this._loggedService.currentUserValue.user.id;
-      insertOPDPrescription['spO2'] = this.caseFormGroup.get('SpO2').value || '';
-      insertOPDPrescription['storeId'] = this._loggedService.currentUserValue.user.storeId;
+      insertOPDPrescription['remark'] = '';
       insertOPDPrescription['doseOption2'] = element.DoseId1;
       insertOPDPrescription['daysOption2'] = parseInt(element.Day1.toString());
       insertOPDPrescription['doseOption3'] = element.DoseId2;
       insertOPDPrescription['daysOption3'] = parseInt(element.Day2.toString());
+      insertOPDPrescription['instructionId'] = 0;
+      insertOPDPrescription['qtyPerDay'] = 0;
+      insertOPDPrescription['totalQty'] = 0; 
+      insertOPDPrescription['isClosed'] = true;
+      insertOPDPrescription['isEnglishOrIsMarathi'] =  this.caseFormGroup.get('LangaugeRadio').value;
+      insertOPDPrescription['chiefComplaint'] = this.caseFormGroup.get('ChiefComplaint').value || '';
+      insertOPDPrescription['diagnosis'] = this.caseFormGroup.get('Diagnosis').value || '';
+      insertOPDPrescription['examination'] = this.caseFormGroup.get('Examination').value || '';
+      insertOPDPrescription['height'] = this.caseFormGroup.get('Height').value || '';
+      insertOPDPrescription['pWeight'] = this.caseFormGroup.get('Weight').value || '';
+      insertOPDPrescription['bmi'] = this.caseFormGroup.get('BMI').value || '';
+      insertOPDPrescription['bsl'] = this.caseFormGroup.get('BSL').value || '';
+      insertOPDPrescription['spO2'] = this.caseFormGroup.get('SpO2').value || '';
+      insertOPDPrescription['temp'] = this.caseFormGroup.get('Temp').value || '';
+      insertOPDPrescription['pulse'] = this.caseFormGroup.get('Pulse').value || '';
+      insertOPDPrescription['bp'] = this.caseFormGroup.get('BP').value || '';
+      insertOPDPrescription['storeId'] = this._loggedService.currentUserValue.user.storeId; 
       insertOPDPrescription['patientReferDocId'] = ReferDocNameID;
+      insertOPDPrescription['advice'] =  this.MedicineItemForm.get('Remark').value  || '';
+      insertOPDPrescription['isAddBy'] = this._loggedService.currentUserValue.user.id; 
+ 
       insertOPDPrescriptionarray.push(insertOPDPrescription);
     });
  
@@ -594,11 +632,15 @@ getOptionTextService(option) {
       opRequestListObj['serviceId'] = element.ServiceId;
       opRequestList.push(opRequestListObj);
     }); 
+ 
+    let delete_OPPrescriptionobj ={};
+    delete_OPPrescriptionobj['oP_IP_ID'] = this.vOPIPId ;
 
     let casePaperSaveObj = {
       "insertOPDPrescription": insertOPDPrescriptionarray,
       "update_VisitFollowupDate": update_VisitFollowupDatObj,
-      "opRequestList":opRequestList
+      "opRequestList":opRequestList,
+      "delete_OPPrescription":delete_OPPrescriptionobj
     }
     console.log(casePaperSaveObj);
 
@@ -647,8 +689,7 @@ getOptionTextService(option) {
     this.MedicineItemForm.get('Remark').setValue('');
     this.selectedItems = [];
     this.specificDate = new Date(); 
-    this.vDays = ''
-    this.vChiefComplaint ='History:\n\nDiagnosis:\n\nExamination:';
+    this.vDays = '' 
   }
   SpinLoading: any = ""
   viewgetOpprescriptionReportPdf() {
@@ -857,6 +898,7 @@ getOptionTextService(option) {
   LetterheadFilter(event) {
 
   }
+ 
   //Tab 2
   //get visit list 
   SelectedObj:any;
@@ -917,8 +959,19 @@ getOptionTextService(option) {
     });
   dialogRef.afterClosed().subscribe(result => {
     console.log('The dialog was closed - Insert Action', result); 
-  });
+  }); 
 }
+getPreviousPrescriptionlist(){ 
+  const dialogRef = this._matDialog.open(PrePresciptionListComponent,
+    {
+      maxWidth: "70vw",
+      maxHeight: "72vh",
+      width: '100%',
+      height: "100%"
+    });
+  dialogRef.afterClosed().subscribe(result => {
+    console.log('The dialog was closed - Insert Action', result); 
+  });
 
 
 //   subscriptions: Subscription[] = [];
@@ -1447,7 +1500,7 @@ getOptionTextService(option) {
 //   PrintEnglsih() {
 
 //   } 
-// } 
+ } 
 // export class HistoryClass {
 //   PastHistoryDescr: string;
 //   PastHistoryId: number;

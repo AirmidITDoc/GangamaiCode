@@ -26,7 +26,7 @@ import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 // import { MatDialogModule } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SharedModule } from 'app/main/shared/shared.module';
-
+import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { MatChipsModule } from '@angular/material/chips';
 import { NewCasepaperComponent } from './new-casepaper.component';
 import { CasepaperService } from './casepaper.service';
@@ -44,6 +44,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatTreeModule } from '@angular/material/tree';
 import { PrescriptionTemplateComponent } from './prescription-template/prescription-template.component';
+import { PrePresciptionListComponent } from './pre-presciption-list/pre-presciption-list.component';
 
 
 
@@ -56,7 +57,8 @@ const routes: Routes = [
 @NgModule({
     declarations: [
       NewCasepaperComponent,
-      PrescriptionTemplateComponent
+      PrescriptionTemplateComponent,
+      PrePresciptionListComponent
     ],
     imports: [
         RouterModule.forChild(routes),
@@ -98,7 +100,8 @@ const routes: Routes = [
         MatChipsModule,
         MatTooltipModule,
         MatTreeModule,
-        MatSliderModule
+        MatSliderModule,
+        MatButtonToggleModule
     ],
     providers: [
       CasepaperService,
