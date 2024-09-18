@@ -693,7 +693,7 @@ getOptionTextService(option) {
   }
   SpinLoading: any = ""
   viewgetOpprescriptionReportPdf() {
-   // debugger
+    debugger
     setTimeout(() => {
       this.SpinLoading = true;
       //  this.AdList=true;

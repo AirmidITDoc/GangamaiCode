@@ -71,7 +71,9 @@ export class PharmacyreportService {
     return this._httpClient.get("Sales/view-SalesReturn_Patientwise_Report?FromDate=" + FromDate+"&ToDate="+ToDate+"&SalesFromNumber="+SalesFromNumber+"&SalesToNumber="+SalesToNumber+"&StoreId="+StoreId);
   }
 
-  
+  public getDrugTypeCombo() {
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_ItemDrugTypeList", {})
+  }
 
 
   public getSalesCashBook(FromDate,ToDate,PaymentMode,StoreId){

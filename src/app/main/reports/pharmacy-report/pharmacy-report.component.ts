@@ -33,6 +33,7 @@ export class PharmacyReportComponent implements OnInit {
   StoreList: any = [];
   UserList: any = [];
   PaymentList: any = [];
+  drugtypeList: any = [];
   sIsLoading: string = '';
   currentDate = new Date();
   reportPrintObjList: Printsal[] = [];
@@ -57,11 +58,12 @@ export class PharmacyReportComponent implements OnInit {
   filteredOptionsUser: Observable<string[]>;
   filteredOptionsPaymentmode: Observable<string[]>;
   filteredOptionsItem:any;
-
+  filteredOptionsDrugtype: Observable<string[]>;
+  filteredOptionsStore: Observable<string[]>;
   isUserSelected: boolean = false;
   isPaymentSelected: boolean = false;
   isItemIdSelected: boolean = false;
-
+  isDugtypeSelected: boolean = false;
   FlagUserSelected: boolean = false;
   FlagPaymentSelected: boolean = false;
   FlagStoreSelected: boolean = false;
@@ -70,6 +72,7 @@ export class PharmacyReportComponent implements OnInit {
   FlagItemSelected: boolean = false;
   optionsUser: any[] = [];
   optionsPaymentMode: any[] = [];
+  optionsdrugtype: any[] = [];
   PaymentMode: any;
   TotalAmount: any = 0;
   TotalVatAmount: any = 0;
@@ -131,6 +134,7 @@ export class PharmacyReportComponent implements OnInit {
     this.bindReportData();
     this.GetUserList();
     this.gePharStoreList();
+    this.getDrugTypeList();
     // this.GetPaymentModeList();
     this.getSearchItemList()
     const toSelect = this.UserList.find(c => c.UserId == this.UserId);
@@ -141,10 +145,48 @@ export class PharmacyReportComponent implements OnInit {
   gePharStoreList() {
    
     this._PharmacyreportService.getStoreList().subscribe(data => {
-      this.StoreList = data;
-      // this._PharmacyreportService.userForm.get('StoreId').setValue(this.StoreList[0]);
-
+     this.StoreList = data;
+      this.filteredOptionsStore = this._PharmacyreportService.userForm.get('StoreId').valueChanges.pipe(
+          startWith(''),
+          map(value => value ? this._filterstore(value) : this.StoreList.slice()),
+      );
     });
+  }
+
+
+  private _filterstore(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
+      return this.StoreList.filter(option => option.StoreName.toLowerCase().includes(filterValue));
+    }
+  }
+
+  getOptionstoreText(option) {
+    return option && option.StoreName ? option.StoreName : '';
+  }
+
+  getOptionDrugtypeText(option) {
+    return option && option.DrugTypeName ? option.DrugTypeName : '';
+  }
+
+  
+  getDrugTypeList() {
+
+    this._PharmacyreportService.getDrugTypeCombo().subscribe(data => {
+        this.drugtypeList = data;
+        this.filteredOptionsDrugtype = this._PharmacyreportService.userForm.get('DrugTypeId').valueChanges.pipe(
+            startWith(''),
+            map(value => value ? this._filterDrugType(value) : this.drugtypeList.slice()),
+        );
+              
+    });
+
+}
+  private _filterDrugType(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.DrugTypeName ? value.DrugTypeName.toLowerCase() : value.toLowerCase();
+      return this.drugtypeList.filter(option => option.DrugTypeName.toLowerCase().includes(filterValue));
+    }
   }
 
 
@@ -730,7 +772,7 @@ var data={
 debugger
       let DrugTypeId=0;
       if (this._PharmacyreportService.userForm.get('DrugTypeId').value)
-        DrugTypeId = this._PharmacyreportService.userForm.get('DrugTypeId').value
+        DrugTypeId = this._PharmacyreportService.userForm.get('DrugTypeId').value.ItemDrugTypeId
       
       let StoreId=0;
       if (this._PharmacyreportService.userForm.get('StoreId').value)
@@ -767,7 +809,7 @@ debugger
      
       let DrugTypeId=0;
      if (this._PharmacyreportService.userForm.get('DrugTypeId').value)
-        DrugTypeId = this._PharmacyreportService.userForm.get('DrugTypeId').value
+        DrugTypeId = this._PharmacyreportService.userForm.get('DrugTypeId').value.ItemDrugTypeId
       
       let StoreId=0;
       if (this._PharmacyreportService.userForm.get('StoreId').value)
