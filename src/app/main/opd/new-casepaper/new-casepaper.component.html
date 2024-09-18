@@ -426,7 +426,7 @@
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                                                 Drug Name</mat-header-cell>
                                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                <span> {{element.ItemName}}</span>
+                                                                <span> {{element.DrugName}}</span>
                                                             </mat-cell>
                                                         </ng-container>
                         
@@ -649,6 +649,7 @@
                                                 </mat-form-field>
                         
                                                 <mat-form-field appearance="outline" fxFlex="20%">
+                                                    <mat-label>Follow Up Date</mat-label>
                                                     <input matInput [matDatepicker]="picker1" placeholder="Choose a date"
                                                         formControlName="start" [(ngModel)]="specificDate">
                                                     <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
@@ -701,7 +702,9 @@
                             </div>
                         </mat-tab>
         
-                            <mat-tab label="Previous Visit Information">
+
+                        <!-- old visit info -->
+                        <mat-tab label="Previous Visit Information">
                                 <ng-template mat-tab-label>
                                     Previous Visit Information
                                 </ng-template>
@@ -930,7 +933,7 @@
                                                                 </mat-cell>
                                                             </ng-container> 
 
-                                                        <ng-container matColumnDef="DoseName1">
+                                                        <!-- <ng-container matColumnDef="DoseName1">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                                                 fxShow.gt-md>
                                                                 DoseName1
@@ -947,9 +950,9 @@
                                                                     </mat-option>
                                                                 </mat-select>
                                                             </mat-cell>
-                                                        </ng-container>
+                                                        </ng-container> -->
 
-                                                        <ng-container matColumnDef="Day1">
+                                                        <!-- <ng-container matColumnDef="Day1">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header
                                                                 fxShow.gt-sm class="w-80">Days
                                                             </mat-header-cell>
@@ -960,9 +963,9 @@
                                                                         (keypress)="keyPressAlphanumeric($event)">
                                                                 </mat-form-field>
                                                             </mat-cell>
-                                                        </ng-container>
+                                                        </ng-container> -->
 
-                                                        <ng-container matColumnDef="DoseName2">
+                                                        <!-- <ng-container matColumnDef="DoseName2">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                                                 fxShow.gt-md>
                                                                 DoseName2
@@ -978,9 +981,9 @@
                                                                     </mat-option>
                                                                 </mat-select>
                                                             </mat-cell>
-                                                        </ng-container>
+                                                        </ng-container> -->
 
-                                                        <ng-container matColumnDef="Day2">
+                                                        <!-- <ng-container matColumnDef="Day2">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header
                                                                 fxShow.gt-sm class="w-80">Days
                                                             </mat-header-cell>
@@ -991,7 +994,7 @@
                                                                         (keypress)="keyPressAlphanumeric($event)">
                                                                 </mat-form-field>
                                                             </mat-cell>
-                                                        </ng-container>
+                                                        </ng-container> -->
 
                                                         <ng-container matColumnDef="loading">
                                                             <mat-footer-cell *matFooterCellDef colspan="6">
@@ -1046,6 +1049,253 @@
                                         </mat-card>
                                     </div>
                                 </div>
+                            </div>
+                        </mat-tab>
+
+
+
+
+                        <!-- new visit info -->
+                        <mat-tab label="Previous Visit Info">
+                            <ng-template mat-tab-label>
+                                Previous Visit Info
+                            </ng-template>
+                            <div class="center p-12"> 
+                                <mat-card style="padding: 6px;">
+                                    <div fxLayout="column" fxLayoutGap="6px"> 
+                                       
+                                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 6px;">
+                                            <div class="patient-info-sales my-8">
+                                                <div class="sales-patient-info-title" fxLayoutAlign="space-between">
+                                                    <span style="font-weight: 700;">
+                                                        Visit Information
+                                                    </span>
+                                                    <div fxLayout="row" fxLayoutAlign="end center" class="gap-8">
+                                                        <mat-icon (click)="viewgetOpprescriptionReportPdf()" mat-Tooltip="Print">print</mat-icon>
+                                                        <img width="25" height="8px" src="assets/images/logos/WhatsApp.png">
+                                                    </div>
+                                                </div>
+                                                <hr>
+                                                <div class="Ipd-patient-info" fxFlexFill fxLayout="row" fxLayoutAlign="space-between center" class="patient-info">
+                                                    <div class="patient-sub">
+                                                        <div class="patient-info-row patient-info-1-111 pt-4" fxLayout="row" fxLayoutAlign="space-between">
+                                                            <div fxLayout="column" fxLayoutGap="6px">
+                                                                <div class="patient-col">
+                                                                    <span class="patient-col-key">Height
+                                                                    </span>
+                                                                    <span>:</span>
+                                                                    <span class="patient-col-value">{{preHeight}}</span>
+                                                                </div>
+                                            
+                                                                <div class="patient-col">
+                                                                    <span class="patient-col-key">SPO2
+                                                                    </span>
+                                                                    <span>:</span>
+                                                                    <span class="patient-col-value">{{preSPO}}</span>
+                                                                </div>
+                                            
+                                            
+                                                            </div>
+                                                            <div fxLayout="column" fxLayoutGap="6px">
+                                            
+                                                                <div class="patient-col">
+                                                                    <span class="patient-col-key">Weight
+                                                                    </span>
+                                                                    <span>:</span>
+                                                                    <span class="patient-col-value">{{preWeight}}</span>
+                                                                </div>
+                                            
+                                                                <div class="patient-col">
+                                                                    <span class="patient-col-key">Temprature</span>
+                                                                    <span>:</span>
+                                                                    <span class="patient-col-value">{{preTemp}}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div fxLayout="column" fxLayoutGap="6px" style="margin-right: 100px;">
+                                            
+                                                                <div class="patient-col">
+                                                                    <span class="patient-col-key">BMI</span>
+                                                                    <span>:</span>
+                                                                    <span class="patient-col-value">{{PreBMI}}</span>
+                                                                </div>
+                                            
+                                                                <div class="patient-col">
+                                                                    <span class="patient-col-key">BSL</span>
+                                                                    <span>:</span>
+                                                                    <span class="patient-col-value">{{preBSL}}</span>
+                                                                </div>
+                                            
+                                                            </div>
+                                                            <div fxLayout="column" fxLayoutGap="6px" style="margin-right: 100px;">
+                                            
+                                                                <div class="patient-col">
+                                                                    <span class="patient-col-key">Pulse
+                                                                    </span>
+                                                                    <span>:</span>
+                                                                    <span class="patient-col-value">{{prePulse}}</span>
+                                                                </div>
+                                            
+                                                                <div class="patient-col">
+                                                                    <span class="patient-col-key">BP</span>
+                                                                    <span>:</span>
+                                                                    <span class="patient-col-value">{{preBP}}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <hr>
+                                                <div class="Ipd-patient-info" fxFlexFill fxLayout="row" fxLayoutAlign="space-between center" class="patient-info">  
+                                                    <div class="Ipd-patient-info" fxFlexFill fxLayout="row" fxLayoutAlign="space-between center"
+                                                        class="patient-info">
+                                                        <div class="patient-sub">
+                                                            <div class="patient-info-row patient-info-1-111 pt-4" fxLayout="column" fxLayoutAlign="space-between">
+                                            
+                                                                <div fxLayout="row" fxLayoutGap="6px">
+                                                                    <div class="patient-col">
+                                                                        <span class="patient-col-key">ChiefComplaint
+                                                                        </span>
+                                                                        <span>:</span>
+                                                                        <span class="patient-col-value">{{preCheifComplaint}}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div fxLayout="column" fxLayoutGap="6px" style="margin-right: 100px;">
+                                                                    <div class="patient-col">
+                                                                        <span class="patient-col-key">Diagnosis</span>
+                                                                        <span>:</span>
+                                                                        <span class="patient-col-value">{{preDiagnosis}}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div fxLayout="column" fxLayoutGap="6px" style="margin-right: 100px;">
+                                                                    <div class="patient-col">
+                                                                        <span class="patient-col-key">Examination
+                                                                        </span>
+                                                                        <span>:</span>
+                                                                        <span class="patient-col-value">{{preExamination}}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            
+                                            </div>
+                                        </mat-card>
+                                        <div fxFlex.gt-sm="99%" fxLayoutGap="5px" fxlayout="column">
+                                            <mat-card style="padding: 6px;">
+                                                <div class="prescription-title">
+                                                    <span style="font-weight: 700;">
+                                                        Prescription List
+                                                    </span>
+                                                </div>
+                                                <hr>
+                                                <mat-table class="mat-table-1 h-220" matSort [dataSource]="dsItemList1" [@animateStagger]="{value:'50'}"
+                                                    style="overflow: auto;">
+                                
+                                                    <ng-container matColumnDef="ItemName">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                            Drug Name</mat-header-cell>
+                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                            <span> {{element.DrugName}}</span>
+                                                        </mat-cell>
+                                                    </ng-container>
+                                
+                                                    <ng-container matColumnDef="DoseName">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                            Dose Name</mat-header-cell>
+                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                            <span> {{element.DoseName}}</span>
+                                                        </mat-cell>
+                                                    </ng-container>
+                                
+                                                    <ng-container matColumnDef="Days">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                            Days</mat-header-cell>
+                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                            <span> {{element.Days}}</span>
+                                                        </mat-cell>
+                                                    </ng-container>
+                                
+                                                    <ng-container matColumnDef="Remark">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                            Instruction</mat-header-cell>
+                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                            <span> {{element.Instruction}}</span>
+                                                        </mat-cell>
+                                                    </ng-container>
+                                
+                                                    <!-- <ng-container matColumnDef="DoseName1">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                                            DoseName1
+                                                        </mat-header-cell>
+                                                        <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                
+                                                            <mat-select placeholder="DoseName1"
+                                                                (selectionChange)="getdoseDetailValue1(element,$event.value)">
+                                                                <mat-option *ngFor="let Result of doseresults" [(ngModel)]="element.DoseName1"
+                                                                    [value]="Result.DoseName" [disabled]="element.DoseId>0">
+                                                                    {{ Result.DoseName }}
+                                                                </mat-option>
+                                                            </mat-select>
+                                                        </mat-cell>
+                                                    </ng-container> -->
+                                
+                                                    <!-- <ng-container matColumnDef="Day1">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">Days
+                                                        </mat-header-cell>
+                                                        <mat-cell class="w-80" *matCellDef="let element" fxShow.gt-sm>
+                                                            <mat-form-field appearance="legacy">
+                                                                <input matInput [(ngModel)]="element.Day1" (keypress)="keyPressAlphanumeric($event)">
+                                                            </mat-form-field>
+                                                        </mat-cell>
+                                                    </ng-container> -->
+                                
+                                                    <!-- <ng-container matColumnDef="DoseName2">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                                            DoseName2
+                                                        </mat-header-cell>
+                                                        <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                                            <mat-select placeholder="DoseName1"
+                                                                (selectionChange)="getdoseDetailValue2(element,$event.value)">
+                                                                <mat-option *ngFor="let Result of doseresults" [(ngModel)]="element.DoseName2"
+                                                                    [value]="Result.DoseName" disabled]="element.DoseId>0">
+                                                                    {{ Result.DoseName }}
+                                                                </mat-option>
+                                                            </mat-select>
+                                                        </mat-cell>
+                                                    </ng-container>
+                                
+                                                    <ng-container matColumnDef="Day2">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">Days
+                                                        </mat-header-cell>
+                                                        <mat-cell class="w-80" *matCellDef="let element" fxShow.gt-sm>
+                                                            <mat-form-field appearance="legacy">
+                                                                <input matInput [(ngModel)]="element.Day2" (keypress)="keyPressAlphanumeric($event)">
+                                                            </mat-form-field>
+                                                        </mat-cell>
+                                                    </ng-container> -->
+                                
+                                                    <ng-container matColumnDef="loading">
+                                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                                            loading data...
+                                                        </mat-footer-cell>
+                                                    </ng-container>
+                                
+                                                    <ng-container matColumnDef="noData">
+                                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                                            <span>No Data Found</span>
+                                                        </mat-footer-cell>
+                                                    </ng-container>
+                                
+                                                    <mat-header-row class="accent" *matHeaderRowDef="displayedpreviousColumn; sticky: true">
+                                                    </mat-header-row>
+                                                    <mat-row *matRowDef="let row; columns: displayedpreviousColumn;" class="element"
+                                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                                </mat-table>
+                                            </mat-card>
+                                        </div>
+                                    </div>
+                                </mat-card>
                             </div>
                         </mat-tab>
                     </mat-tab-group>
