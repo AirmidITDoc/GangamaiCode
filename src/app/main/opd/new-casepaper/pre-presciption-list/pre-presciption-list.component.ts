@@ -1,22 +1,15 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { fuseAnimations } from '@fuse/animations';
 import { CasepaperService } from '../casepaper.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { DatePipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { FormBuilder } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { MedicineItemList } from '../new-casepaper.component';
-
-import {LiveAnnouncer} from '@angular/cdk/a11y';
+import { element } from 'protractor';
  
-import {ChangeDetectionStrategy,    inject} from '@angular/core';
-import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MatButtonModule} from '@angular/material/button';
-import {MatChipInputEvent, MatChipsModule} from '@angular/material/chips';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatIconModule} from '@angular/material/icon';
 
 interface Prescription {
   date: string;
@@ -27,21 +20,7 @@ interface VisitDetails {
   VisitDate: string; 
   prescriptions: Prescription[];
 }
-
-export interface UserData {
-  id: number;
-  name: string;
-  age: number;
-  email: string; 
-}
-
-const ELEMENT_DATA: UserData[] = [
-  { id: 1, name: 'John Doe', age: 28, email: 'john.doe@example.com' },
-  { id: 2, name: 'Jane Smith', age: 34,  email: 'jane.smith@example.com' },
-  { id: 3, name: 'Alice Johnson', age: 45, email: 'alice.johnson@example.com' },
-  { id: 4, name: 'Bob Brown', age: 23,email: 'bob.brown@example.com' },
-];
-
+ 
 
 
 @Component({
@@ -51,19 +30,15 @@ const ELEMENT_DATA: UserData[] = [
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations
 })
-export class PrePresciptionListComponent implements OnInit {
+export class PrePresciptionListComponent implements OnInit { 
 
-  displayedColumns: string[] = ['id', 'name', 'age', 'email'];
-  dataSource = ELEMENT_DATA;
-
-  displayedItemColumn: string[] = [
+ displayedItemColumn: string[] = [
     'ItemName',
     'DoseName',
     'Days',
-    'Remark', 
-    'Action'
+    'Remark' 
   ]
-  
+  VisitId:any;
 
   dsItemList = new MatTableDataSource<MedicineItemList>();
   
@@ -74,22 +49,37 @@ export class PrePresciptionListComponent implements OnInit {
     public toastr: ToastrService,
     private _loggedService: AuthenticationService,
     public datePipe: DatePipe, 
+    public dialogRef: MatDialogRef<PrePresciptionListComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
   ) {}
 
   ngOnInit(): void {
+    if(this.data){
+      this.VisitId = this.data.Obj 
+      console.log(this.data.Obj)
+    }
     this.getPrescriptionListFill1();
   }
 
   getPrescriptionListFill1() { 
-    // var vdata ={
-    //   "visitId":194660
-    // }
-    // this._CasepaperService.RtrvPreviousprescriptionDetails(vdata).subscribe(Visit => {
-    //   this.dsItemList.data = Visit as MedicineItemList[];   
-    //   console.log(this.dsItemList.data);   
-    // })
+    var vdata ={
+      "visitId": this.VisitId
+    }
+    this._CasepaperService.RtrvPreviousprescriptionDetails(vdata).subscribe(Visit => {
+      this.dsItemList.data = Visit as MedicineItemList[];   
+      console.log(this.dsItemList.data);   
+    })
   }
-
+  CopyPresciptionList:any=[];
+  getCopyPreviouseList(){
+    if(this.dsItemList.data.length > 0){
+      this.dsItemList.data.forEach(element =>{
+        this.CopyPresciptionList.push(element)
+      }); 
+    }
+    console.log(this.CopyPresciptionList)
+    this.dialogRef.close(this.CopyPresciptionList); 
+  }
  
 
     VisitDetails: VisitDetails[] = [

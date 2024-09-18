@@ -79,7 +79,7 @@ public getServiceList(param,loader = true){
     if(loader){
       this._loaderService.show();
     }
-    return this._httpClient.post("Generic/GetByProc?procName=Get_PrescriptionDetailsVisitWise", { "VisitId": visistId });
+    return this._httpClient.post("Generic/GetByProc?procName=Get_PrescriptionDetailsVisitWise",visistId);
   }
   public getVisitedList(employee,loader = true) {
     if(loader){
@@ -109,5 +109,10 @@ public getServiceList(param,loader = true){
   }
     return this._httpClient.get("OutPatient/view-OP_Prescription?VisitId=" + VisitId);
   }
-  
+  public getRtrvVisitedList(param, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_GetVisitInfo",param)
+  } 
 }

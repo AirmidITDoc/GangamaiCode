@@ -16,7 +16,7 @@
         <div class="center p-12 pb-56" style="border-radius: 4px;">
             <div class="content-card">
                 <div fxlayout="row" fxLayout="column" fxFlexFill fxLayoutGap="10px">
-                    patient-info.component.html
+                    <!-- patient-info.component.html
                     <div *ngFor="let patient of VisitDetails">
                      
                         <h3>Visit Date {{ patient.VisitDate }}</h3>
@@ -37,47 +37,21 @@
                                 <tr mat-row *matRowDef="let row; columns: ['medication', 'dosage'];"></tr>
                             </table>
                         </div>
-                    </div>
+                    </div> -->
 
-                   
+               
 
-                    <div>
-                       
-                    <table mat-table [dataSource]="dsItemList" class="mat-elevation-z8">
-
-                        <!-- ID Column -->
-                        <ng-container matColumnDef="id">
-                          <th mat-header-cell *matHeaderCellDef> ID </th>
-                          <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-                        </ng-container>
-                      
-                        <!-- Name Column -->
-                        <ng-container matColumnDef="name">
-                          <th mat-header-cell *matHeaderCellDef> Name </th>
-                          <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-                        </ng-container>
-                      
-                        <!-- Age Column -->
-                        <ng-container matColumnDef="age">
-                          <th mat-header-cell *matHeaderCellDef> Age </th>
-                          <td mat-cell *matCellDef="let element"> {{element.age}} </td>
-                        </ng-container>
-                      
-                        <!-- Email Column -->
-                        <ng-container matColumnDef="email">
-                          <th mat-header-cell *matHeaderCellDef> Email </th>
-                          <td mat-cell *matCellDef="let element"> {{element.email}} </td>
-                        </ng-container>
-                      
-                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                      </table>
-                      </div>
-
-
-<!--                     
+                    
                     <mat-card style="padding: 6px;">
-                        <mat-table class="mat-table-1 h-230" matSort [dataSource]="prescriptions"
+                        <div class="info-badge-top pb-2 border-bottom">
+                            <div fxLayout="row" fxLayoutAlign="end center" class="gap-8">
+                                <button mat-raised-button (click)="getCopyPreviouseList()">
+                                    <mat-icon>file_copy</mat-icon>
+                                    Copy</button>
+                            </div>
+                        </div>
+
+                        <mat-table class="mat-table-1 h-230" matSort [dataSource]="dsItemList"
                         [@animateStagger]="{value:'50'}">
 
                         <ng-container matColumnDef="ItemName">
@@ -107,31 +81,17 @@
                         <ng-container matColumnDef="Remark">
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Instruction
                             </mat-header-cell>
-                            <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                <mat-form-field appearance="legacy">
-                                    <input matInput [(ngModel)]="element.Instruction" type="text">
-                                </mat-form-field>
+                            <mat-cell *matCellDef="let element" fxShow.gt-sm> 
+                                <span> {{element.Instruction}}</span> 
                             </mat-cell>
-                        </ng-container> 
-
-                        <ng-container matColumnDef="Action" stickyEnd>
-                            <mat-header-cell *matHeaderCellDef class="table-actions">Action
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let contact">
-                                <ng-container class="actions">
-                                    <mat-icon (click)="deleteTableRow($event ,contact)" color="warn">
-                                        delete
-                                    </mat-icon>
-                                </ng-container>
-                            </mat-cell>
-                        </ng-container>
+                        </ng-container>  
 
                         <mat-header-row class="accent" *matHeaderRowDef="displayedItemColumn; sticky: true">
                         </mat-header-row>
                         <mat-row *matRowDef="let row; columns: displayedItemColumn;" class="element"
                             [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                     </mat-table>
-                    </mat-card> -->
+                    </mat-card>
 
  
   
