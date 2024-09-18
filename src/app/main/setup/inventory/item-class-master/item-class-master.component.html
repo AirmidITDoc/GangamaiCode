@@ -96,12 +96,12 @@
                                     <mat-header-cell *matHeaderCellDef class="table-actions" style="color: white;">
                                         Action
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let row">
-                                        <button mat-icon-button (click)="onEdit(row)"><mat-icon
+                                    <mat-cell *matCellDef="let element">
+                                        <button mat-icon-button (click)="onEdit(element)"><mat-icon
                                                 title="Edit Menu" *ngIf="element.IsDeleted">launch</mat-icon></button>
                                                 <button mat-icon-button *ngIf="!element.IsDeleted"><mat-icon
                                                     title="Edit Menu">highlight_off</mat-icon></button>
-                                        <button mat-icon-button (click)="onDeactive(row.DischargeTypeId)"
+                                        <button mat-icon-button (click)="onDeactive(element.DischargeTypeId)"
                                             color="warn"><mat-icon>delete_outline</mat-icon></button>
                                     </mat-cell>
                                 </ng-container>

@@ -58,6 +58,7 @@ export class ItemTypeMasterComponent implements OnInit {
         this._itemtypeService.getItemtypeMasterList(param).subscribe((Menu) => {
             this.DSItemTypeMasterList.data = Menu as ItemTypeMaster[];
             this.DSItemTypeMasterList.sort = this.sort;
+            console.log(this.DSItemTypeMasterList.data )
             this.DSItemTypeMasterList.paginator = this.paginator;
             this.resultsLength= this.DSItemTypeMasterList.data.length
         });
