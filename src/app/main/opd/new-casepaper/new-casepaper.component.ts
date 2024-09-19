@@ -175,14 +175,14 @@ export class NewCasepaperComponent implements OnInit {
 
   }  
  
-  vDays:any;
+  vDays:any = 10;
   vYears:any;
   vMonths:any;
   followUpDate: string;
   specificDate: Date;
   onDaysChange() {
-
-    if(this.vDays > 0){
+ 
+    if(this.dateStyle == 'Day'){
       const today = new Date();
       const todaydays = today.getDate() 
       const followDays = ((todaydays) + parseInt(this.vDays))
@@ -193,21 +193,19 @@ export class NewCasepaperComponent implements OnInit {
       this.specificDate = new Date(this.followUpDate);
       console.log(this.followUpDate) 
     }
-    else if(this.vMonths > 0){
+    else if(this.dateStyle == 'Month'){
       const today = new Date();
       const followUp = new Date(); 
-      followUp.setMonth((today.getMonth()) + parseInt(this.vMonths)); 
+      followUp.setMonth((today.getMonth()) + parseInt(this.vDays)); 
       this.followUpDate = this.datePipe.transform(followUp.toDateString(),'MM/dd/YYYY');
       this.specificDate = new Date(this.followUpDate);
       console.log(this.followUpDate)  
     }
-    else if(this.vYears > 0){
+    else if(this.dateStyle == 'Year'){
       const today = new Date();
-      const Currentyear = today.getFullYear() 
-      const followDays = ((Currentyear) + parseInt(this.vYears))
-      console.log(followDays)
+      const Currentyear = today.getFullYear()  
       const followUp = new Date(); 
-      followUp.setFullYear((Currentyear) + parseInt(this.vYears)); 
+      followUp.setFullYear((Currentyear) + parseInt(this.vDays)); 
       this.followUpDate = this.datePipe.transform(followUp.toDateString(),'MM/dd/YYYY');
       this.specificDate = new Date(this.followUpDate);
       console.log(this.followUpDate) 
@@ -216,20 +214,11 @@ export class NewCasepaperComponent implements OnInit {
       this.specificDate = new Date();
     }
   } 
-  dateStyle:any;
+ 
+  dateStyle: string = 'Day';
   OnChangeDobType(e) { 
-      this.dateStyle = e.value;
-      if(this.dateStyle == 'Day'){
-        this.vMonths = ''
-        this.vYears = ''
-      }else if(this.dateStyle == 'Month'){
-        this.vDays = ''
-        this.vYears = ''
-      }else{
-         this.vDays = ''
-        this.vMonths = ''
-      }
-      this.specificDate = new Date();
+      this.dateStyle = e.value; 
+      this.onDaysChange();
       console.log(this.dateStyle )
   }
   createForm() {
@@ -254,7 +243,6 @@ export class NewCasepaperComponent implements OnInit {
       ]],
       ChiefComplaint: '',
       Serviceid:'',
-      IsPathRad:'1', 
       Diagnosis: '',
       Examination: '',
     });
@@ -345,6 +333,7 @@ export class NewCasepaperComponent implements OnInit {
       this._CasepaperService.RtrvPreviousprescriptionDetails(mdata).subscribe(Visit => {
       this.dsItemList.data = Visit as MedicineItemList[];  
       console.log(this.dsItemList.data)
+      if(this.dsItemList.data.length > 0){
       this.vHeight = this.dsItemList.data[0].PHeight;
       this.vWeight = this.dsItemList.data[0].PWeight;
       this.vBMI = this.dsItemList.data[0].BMI;
@@ -361,6 +350,7 @@ export class NewCasepaperComponent implements OnInit {
       this.MedicineItemForm.get('Remark').setValue(this.dsItemList.data[0].Advice)
       this.RefDocName = this.dsItemList.data[0].Doctorname
       this.getAdmittedDoctorCombo();
+      }
     });
   }
 
@@ -466,8 +456,7 @@ export class NewCasepaperComponent implements OnInit {
     }
     var vdata={
       'ServiceName':'%',
-      'TariffId':this.vTariffId,
-      'IsPathRad':this.caseFormGroup.get('IsPathRad').value || 0,
+      'TariffId':this.vTariffId, 
       'ClassId':this.vClassId 
     }
     //console.log(vdata)
@@ -616,7 +605,7 @@ getOptionTextService(option) {
       Swal.fire('Error !', 'Please add prescription', 'error');
       return
     } 
-
+    
     let ReferDocNameID = 0;
     if(this.MedicineItemForm.get('DoctorID').value)
       ReferDocNameID =  this.MedicineItemForm.get('DoctorID').value.DoctorId || 0;
@@ -670,7 +659,7 @@ getOptionTextService(option) {
     let opRequestList = [];
     this.selectedItems.forEach(element =>{
       let opRequestListObj ={};
-      opRequestListObj['oP_IP_ID'] = this.vOPIPId //this.caseFormGroup.get('IsPathRad').value || 0
+      opRequestListObj['oP_IP_ID'] = this.vOPIPId ;
       opRequestListObj['serviceId'] = element.ServiceId;
       opRequestList.push(opRequestListObj);
     }); 
@@ -727,7 +716,6 @@ getOptionTextService(option) {
     this.BMIstatus = " ";
     this.caseFormGroup.get('LetteHeadRadio').setValue('NormalHead');
     this.caseFormGroup.get('LangaugeRadio').setValue('True');
-    this.caseFormGroup.get('IsPathRad').setValue('1');
     this.MedicineItemForm.get('Remark').setValue('');
     this.selectedItems = [];
     this.specificDate = new Date(); 
@@ -1009,7 +997,7 @@ getOptionTextService(option) {
       this.SelectedObj = this.dsItemList1.data 
      // console.log(this.dsItemList1.data);
      /// console.log(this.SelectedObj);
-      if(Visit){
+      if(this.dsItemList1.data.length > 0){
       this.preHeight = this.SelectedObj[0].PHeight;
       this.preWeight = this.SelectedObj[0].PWeight;
       this.PreBMI = this.SelectedObj[0].BMI;

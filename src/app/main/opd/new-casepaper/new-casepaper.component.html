@@ -253,18 +253,18 @@
                                         <form [formGroup]="caseFormGroup">
                                             <div class="investigation-title">
                                                 <span style="font-weight: 700;">
-                                                    Investigation
+                                                  Request For Test
                                                 </span>
                                             </div>
                                             <hr>
                                             <div fxLayout="row" fxLayoutGap="6px">
                                                 <div fxLayout="column" fxLayoutGap="6px" fxFlex="35%">
-                                                    <mat-radio-group aria-label="Select an option" formControlName="IsPathRad" name="IsPathRad"
+                                                    <!-- <mat-radio-group aria-label="Select an option" formControlName="IsPathRad" name="IsPathRad"
                                                         (change)="getServiceList()" fxLayoutGap="10px">
                                                         <mat-radio-button value="1">Pathology </mat-radio-button>&nbsp;
                                                         <mat-radio-button value="2">Radiology</mat-radio-button>&nbsp;
                                                         <mat-radio-button value="3">Other Services</mat-radio-button>&nbsp;
-                                                    </mat-radio-group>
+                                                    </mat-radio-group> -->
                         
                                                     <mat-form-field appearance="outline" fxFlex>
                                                         <mat-label>Service list</mat-label>
@@ -628,13 +628,15 @@
                                                     </mat-button-toggle-group>
                                                 </div>
 
-                                                <mat-form-field appearance="outline" fxFlex="10%" *ngIf="dateStyle=='Day'">
-                                                    <mat-label>Follow Up Days</mat-label>
+                                                <mat-form-field appearance="outline" fxFlex="10%" *ngIf="dateStyle=='Day'  || dateStyle=='Month' || dateStyle=='Year'">
+                                                    <mat-label *ngIf="dateStyle=='Day'">Follow Up Days</mat-label>
+                                                    <mat-label *ngIf="dateStyle=='Month'">Follow Up Month</mat-label>
+                                                    <mat-label *ngIf="dateStyle=='Year'">Follow Up Year</mat-label>
                                                     <input name="Days" formControlName="Days" placeholder="Days" matInput [(ngModel)]="vDays"
                                                         (keyup)="onDaysChange()">
                                                 </mat-form-field>
 
-                                                <mat-form-field appearance="outline" fxFlex="10%" *ngIf="dateStyle=='Month'">
+                                                <!-- <mat-form-field appearance="outline" fxFlex="10%" *ngIf="dateStyle=='Month'">
                                                     <mat-label>Follow Up Month</mat-label>
                                                     <input name="FollowupMonths" formControlName="FollowupMonths" placeholder="Months"
                                                      matInput [(ngModel)]="vMonths"
@@ -646,7 +648,7 @@
                                                     <input name="FollowupYears" formControlName="FollowupYears" placeholder="Years" 
                                                     matInput [(ngModel)]="vYears"
                                                         (keyup)="onDaysChange()">
-                                                </mat-form-field>
+                                                </mat-form-field> -->
                         
                                                 <mat-form-field appearance="outline" fxFlex="20%">
                                                     <mat-label>Follow Up Date</mat-label>

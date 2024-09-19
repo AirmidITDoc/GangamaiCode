@@ -31,8 +31,8 @@ export class CasepaperService {
 public getServiceList(param,loader = true){ 
   if (loader) {
     this._loaderService.show();
-}
- return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PathRadServiceList", param)
+}//m_Rtrv_PathRadServiceList"
+ return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ServicesList", param)
 }
   //Doctor Master Combobox List
   public getDoctorMasterCombo(Id) {
