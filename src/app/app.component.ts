@@ -5,7 +5,7 @@ import { DOCUMENT } from '@angular/common';
 import { Platform } from '@angular/cdk/platform';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subject, Subscription, fromEvent } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { delay, takeUntil } from 'rxjs/operators';
 
 import { FuseConfigService } from '@fuse/services/config.service';
 import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
@@ -41,7 +41,7 @@ export class AppComponent implements OnInit, OnDestroy {
     offlineEvent: Observable<Event>;
     subscriptions: Subscription[] = [];
     isLoading: boolean = true;
-    configSettingParam: any=[];
+    configSettingParam: any = [];
     // Private
     private _unsubscribeAll: Subject<any>;
 
@@ -85,8 +85,9 @@ export class AppComponent implements OnInit, OnDestroy {
         private configService: ConfigService,
         private globalEvent$: SpinnerService,
         private ngxSpinner$: SpinnerService,
+        private _loading: SpinnerService,
         private router: Router,
-        private bandwidthService : BandwidthService,
+        private bandwidthService: BandwidthService,
 
     ) {
 
@@ -160,9 +161,15 @@ export class AppComponent implements OnInit, OnDestroy {
         // Set the private defaults
         this._unsubscribeAll = new Subject();
 
-        this.ConfigSettingParam();
     }
-
+    loading: boolean = false;
+    listenToLoading(): void {
+        this._loading.loadingSub
+            .pipe(delay(0)) // This prevents a ExpressionChangedAfterItHasBeenCheckedError for subsequent requests
+            .subscribe((loading) => {
+                this.loading = loading;
+            });
+    }
     // -----------------------------------------------------------------------------------------------------
     // @ Lifecycle hooks
     // -----------------------------------------------------------------------------------------------------
@@ -207,16 +214,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
                 this.document.body.classList.add(this.fuseConfig.colorTheme);
             });
-        var user = JSON.parse(localStorage.getItem("currentUser"));
-        if (user?.user?.roleId ?? 0 > 0)
-            await this.authService.getNavigationData(user.user.webRoleId);
-
-        this.globalEvent$.spinner.subscribe(x => {
-            if (x.toUpperCase() == 'SHOW') {
-                this.ngxSpinner$.show();
-            }
-            else if (x.toUpperCase() == 'HIDE') {
-                this.ngxSpinner$.hide();
+        this.authService.currentUser.subscribe((d: any) => {
+            if ((d?.UserToken ?? "") != "") {
+                this.authService.getNavigationData();
+                this.ConfigSettingParam();
             }
         });
     }
@@ -243,14 +244,14 @@ export class AppComponent implements OnInit, OnDestroy {
         this._fuseSidebarService.getSidebar(key).toggleOpen();
     }
 
-    ConfigSettingParam(){
+    ConfigSettingParam() {
         // debugger;
         this.http
-        .post(`Generic/GetByProc?procName=SS_ConfigSettingParam`, {}).subscribe(data =>{
-        this.configSettingParam = data;
-        this.configService.setCongiParam(this.configSettingParam[0]);
-        console.log(this.configSettingParam);
-        });
+            .post(`Generic/GetByProc?procName=SS_ConfigSettingParam`, {}).subscribe(data => {
+                this.configSettingParam = data;
+                this.configService.setCongiParam(this.configSettingParam[0]);
+                console.log(this.configSettingParam);
+            });
     }
 }
 

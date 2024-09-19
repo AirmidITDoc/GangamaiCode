@@ -40,7 +40,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BandwidthService } from './core/services/bandwidth.service';
 import { LoaderModule } from "./core/components/loader/loader.module";
 import { LayoutModule } from './layout/layout.module';
-
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 const appRoutes: Routes = [
     {
@@ -205,6 +205,7 @@ class PickDateAdapter extends NativeDateAdapter {
     // App modules
     LayoutModule, 
     NgxExtendedPdfViewerModule,
+    MatProgressSpinnerModule,
     ToastrModule.forRoot({ timeOut: 5000,
         positionClass: 'toast-bottom-right',
         preventDuplicates: true,

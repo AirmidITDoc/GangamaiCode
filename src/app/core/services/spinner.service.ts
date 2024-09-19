@@ -1,25 +1,26 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { LoaderState } from '../models/LoaderState';
 
 @Injectable({
     providedIn: 'root'
 })
 export class SpinnerService {
-
-    private loaderSubject = new Subject<LoaderState>();
-    loaderState = this.loaderSubject.asObservable();
-    spinner = new Subject<any>();
-
+    loadingSub: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    loadingMap: Map<string, boolean> = new Map<string, boolean>();
     constructor() { }
-
-    show() {
-        this.loaderSubject.next(<LoaderState>{ show: true });
-        this.spinner.next('show');
-    }
-
-    hide() {
-        this.loaderSubject.next(<LoaderState>{ show: false });
-        this.spinner.next('hide');
+    setLoading(loading: boolean, url: string): void {
+      if (!url) {
+        throw new Error('The request URL must be provided to the LoadingService.setLoading function');
+      }
+      if (loading === true) {
+        this.loadingMap.set(url, loading);
+        this.loadingSub.next(true);
+      }else if (loading === false && this.loadingMap.has(url)) {
+        this.loadingMap.delete(url);
+      }
+      if (this.loadingMap.size === 0) {
+        this.loadingSub.next(false);
+      }
     }
 }

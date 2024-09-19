@@ -1,18 +1,13 @@
 <div id="login" class="inner-scroll" fxLayout="row" fxLayoutAlign="start">
     <div id="login-intro" fxFlex fxHide fxShow.gt-xs>
-       <div class="logo" [@animate]="{ value: '*', params: { scale: '0.2' } }">
+        <div class="logo" [@animate]="{ value: '*', params: { scale: '0.2' } }">
             <img src="assets/images/logos/Airmid_NewLogo.jpeg" />
         </div>
-
-        <div
-            class="title"
-            [@animate]="{ value: '*', params: { delay: '50ms', y: '25px' } }"
-        >
-        Welcome to the AirMid Technologies
+        <div class="title" [@animate]="{ value: '*', params: { delay: '50ms', y: '25px' } }">
+            Welcome to the AirMid Technologies
         </div>
-
         <div class="description" [@animate]="{ value: '*', params: { delay: '100ms', y: '25px' } }">
-           We care healthcare ....
+            We care healthcare ....
         </div>
     </div>
 
@@ -22,89 +17,42 @@
             <div class="logo" fxHide.gt-xs>
                 <!-- <img src="assets/images/logos/logo_final.png" /> -->
             </div>
-
             <div class="title">LOGIN TO YOUR ACCOUNT</div>
-
             <form name="loginForm" [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate class="mat-error-fix">
                 <mat-form-field appearance="outline">
                     <mat-label>Username</mat-label>
-                    <input matInput formControlName="username" />
+                    <input matInput formControlName="Username" />
                     <mat-icon matSuffix class="secondary-text">mail</mat-icon>
-                    <mat-error *ngIf="loginForm.get('username').hasError('required')">
+                    <mat-error *ngIf="loginForm.get('Username').hasError('required')">
                         Username is required
                     </mat-error>
-                    <!-- <mat-error
-                        *ngIf="
-                            !loginForm.get('username').hasError('required') &&
-                            loginForm.get('username').hasError('username')
-                        "
-                    >
-                        Please enter a valid username
-                    </mat-error> -->
                 </mat-form-field>
-
+            
                 <mat-form-field appearance="outline">
                     <mat-label>Password</mat-label>
-                    <input matInput type="password" formControlName="password" />
+                    <input matInput type="password" formControlName="Password" />
                     <mat-icon matSuffix class="secondary-text">vpn_key</mat-icon>
                     <mat-error>
                         Password is required
                     </mat-error>
                 </mat-form-field>
-
-                <!-- <div
-                    class="remember-forgot-password"
-                    fxLayout="row"
-                    fxLayout.xs="column"
-                    fxLayoutAlign="space-between center"
-                >
-                    <mat-checkbox class="remember-me" aria-label="Remember Me">
-                        Remember Me
-                    </mat-checkbox>
-
-                    <a
-                        class="forgot-password"
-                        [routerLink]="'/pages/auth/forgot-password-2'"
-                    >
-                        Forgot Password?
-                    </a>
-                </div> -->
-
-                <button color="accent" class="btn btn-primary w-100-p" aria-label="LOGIN"
-                    [disabled]="loginForm.invalid">
+                <img [src]="captcha" />
+                <mat-icon (click)="loadCaptcha()" style="font-size: 45px;width: 40px;height: 50px;cursor: pointer;">refresh</mat-icon>
+                <mat-form-field appearance="outline" style="margin-top: 15px;">
+                    <mat-label>Captcha</mat-label>
+                    <input matInput type="text" formControlName="CaptchaCode" />
+                    <mat-error>
+                        Captcha is required
+                    </mat-error>
+                </mat-form-field>
+                <button color="accent" class="btn btn-primary w-100-p" aria-label="LOGIN">
+                    <!-- [disabled]="loginForm.invalid"> -->
                     LOGIN
                 </button>
                 <mat-error *ngIf="errorMessage !== ''">
                     {{ errorMessage }}
                 </mat-error>
             </form>
-
-            <!-- <div class="separator">
-                <span class="text">OR</span>
-            </div>
-
-            <div fxLayout="column" fxLayoutAlign="start center">
-
-                <button mat-raised-button class="google">
-                    Log in with Google
-                </button>
-
-                <button mat-raised-button class="facebook">
-                    Log in with Facebook
-                </button>
-
-            </div> -->
-
-            <!-- <div
-                class="register"
-                fxLayout="column"
-                fxLayoutAlign="center center"
-            >
-                <span class="text">Don't have an account?</span>
-                <a class="link" [routerLink]="'/auth/register'"
-                    >Create an account</a
-                >
-            </div> -->
         </div>
     </div>
 </div>
