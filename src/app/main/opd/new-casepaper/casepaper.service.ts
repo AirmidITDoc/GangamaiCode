@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { LoaderService } from 'app/core/components/loader/loader.service';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -115,4 +116,16 @@ public getServiceList(param,loader = true){
   } 
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_GetVisitInfo",param)
   } 
+
+  getVisitData(): Observable<any[]> {
+    const fakeData = [
+      { id: 1, visitorName: 'John Doe', details: 'Meeting with client', VisitDate: '2024-09-09' },
+      { id: 2, visitorName: 'Jane Smith', details: 'Project discussion', VisitDate: '2024-09-09' },
+      { id: 3, visitorName: 'Alice Johnson', details: 'Follow-up call', VisitDate: '2024-09-10' },
+      { id: 4, visitorName: 'Bob Brown', details: 'Site visit', VisitDate: '2024-09-10' },
+      { id: 3, visitorName: 'Alice Johnson', details: 'Follow-up call', VisitDate: '2024-09-11' },
+      { id: 4, visitorName: 'Bob Brown', details: 'Site visit', VisitDate: '2024-09-12' },
+    ];
+    return of(fakeData);
+  }
 }

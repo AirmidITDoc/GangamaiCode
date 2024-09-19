@@ -38,8 +38,9 @@ export class PrePresciptionListComponent implements OnInit {
     'Days',
     'Remark' 
   ]
-  VisitId:any;
-
+  RegId:any;
+  visitData: any[] = [];
+  groupedData: { [key: string]: any[] } = {}; 
   dsItemList = new MatTableDataSource<MedicineItemList>();
   
   constructor(
@@ -55,23 +56,50 @@ export class PrePresciptionListComponent implements OnInit {
 
   ngOnInit(): void {
     if(this.data){
-      this.VisitId = this.data.Obj 
+      this.RegId = this.data.Obj 
       console.log(this.data.Obj)
     }
     this.getPrescriptionListFill1();
+
+   
+      // this._CasepaperService.getVisitData().subscribe((data) => {
+      //   this.visitData = data;
+      //   this.groupByVisitDate();
+      // });
   }
 
   getPrescriptionListFill1() { 
     var vdata ={
-      "visitId": this.VisitId
+      "RegID": this.RegId
     }
-    this._CasepaperService.RtrvPreviousprescriptionDetails(vdata).subscribe(Visit => {
-      this.dsItemList.data = Visit as MedicineItemList[];   
-      console.log(this.dsItemList.data);   
+    this._CasepaperService.getRtrvVisitedList(vdata).subscribe(Visit => {
+      this.visitData = Visit as MedicineItemList[];   
+      console.log(this.dsItemList.data); 
+      this.groupByVisitDate();  
     })
   }
   CopyPresciptionList:any=[];
-  getCopyPreviouseList(){
+
+  groupByVisitDate(): void {
+    this.visitData.forEach((element) => {
+      const date = new Date(element.VisitDate).toLocaleDateString(); // Format date as needed
+      if (!this.groupedData[date]) {
+        this.groupedData[date] = [];
+      }
+      this.groupedData[date].push(element);
+    });
+  }
+
+  // groupByVisitDate(): void {
+  //   this.visitData.forEach((visit) => {
+  //     const date = new Date(visit.VisitDate).toLocaleDateString(); // Format date as needed
+  //     if (!this.groupedData[date]) {
+  //       this.groupedData[date] = [];
+  //     }
+  //     this.groupedData[date].push(visit);
+  //   });
+  // }
+   getCopyPreviouseList(){
     if(this.dsItemList.data.length > 0){
       this.dsItemList.data.forEach(element =>{
         this.CopyPresciptionList.push(element)
@@ -80,7 +108,8 @@ export class PrePresciptionListComponent implements OnInit {
     console.log(this.CopyPresciptionList)
     this.dialogRef.close(this.CopyPresciptionList); 
   }
- 
+
+
 
     VisitDetails: VisitDetails[] = [
       {
@@ -115,5 +144,5 @@ export class PrePresciptionListComponent implements OnInit {
       }
     ];
 
-   
+
 }

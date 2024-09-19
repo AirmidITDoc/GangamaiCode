@@ -53,7 +53,7 @@ export class NewCasepaperComponent implements OnInit {
     'ItemName',
     'DoseName',
     'Days',
-    'Remark',
+    'Remark'
     // 'DoseName1',
     // 'Day1',
     // 'DoseName2',
@@ -215,7 +215,7 @@ export class NewCasepaperComponent implements OnInit {
     }
   } 
  
-  dateStyle: string = 'Day';
+  dateStyle: string;
   OnChangeDobType(e) { 
       this.dateStyle = e.value; 
       this.onDaysChange();
@@ -260,7 +260,8 @@ export class NewCasepaperComponent implements OnInit {
       Remark:'',
       Days:'',
       FollowupMonths:'',
-      FollowupYears:''
+      FollowupYears:'',
+      dateStylebtn:['Day']
     });
   }
   createSearchForm() {
@@ -325,8 +326,7 @@ export class NewCasepaperComponent implements OnInit {
   }
   RefDocNameId:any;
   PrefollowUpDate:string;
-  getpreviousVisitData(obj) {
-    debugger
+  getpreviousVisitData(obj) { 
     var mdata = {
       "visitId":obj.VisitId 
     }
@@ -421,12 +421,7 @@ export class NewCasepaperComponent implements OnInit {
  
   //Doctor list 
   getAdmittedDoctorCombo() {
-    // let RefDoctorName
-    // if(this.RefDocName){
-    //   RefDoctorName = this.RefDocName
-    // }else{
-    //   RefDoctorName =  this.MedicineItemForm.get('DoctorID').value || ''
-    // }
+ 
     var vdata = {
       "Keywords": this.MedicineItemForm.get('DoctorID').value + "%" || "%"
     }
@@ -445,8 +440,8 @@ export class NewCasepaperComponent implements OnInit {
     return option && option.Doctorname ? option.Doctorname : '';
   }
  
-  ServicecmbList:any=[];
-  optionsService:any=[];
+  FilteredServicec:any;
+  NooptionsService:any;
   getServiceList() {
     if(this.vClassId == '' || this.vTariffId == '' || this.vClassId == null || this.vTariffId == null){ 
       this.toastr.warning('Please select patient', 'Warning !', {
@@ -455,39 +450,33 @@ export class NewCasepaperComponent implements OnInit {
       return;
     }
     var vdata={
-      'ServiceName':'%',
+      'SrvcName':`${this.caseFormGroup.get('Serviceid').value}%`,
       'TariffId':this.vTariffId, 
       'ClassId':this.vClassId 
     }
-    //console.log(vdata)
+    console.log(vdata)
     this._CasepaperService.getServiceList(vdata).subscribe(data => { 
-        this.ServicecmbList = data; 
-           //console.log(this.ServicecmbList)
-        this.optionsService = this.ServicecmbList.slice();
-        this.filteredOptionsService = this.caseFormGroup.get('Serviceid').valueChanges.pipe(
-            startWith(''),
-            map(value => value ? this._filterService(value) : this.ServicecmbList.slice()),
-        ); 
+        this.FilteredServicec = data; 
+          console.log(this.FilteredServicec)
+          if (this.FilteredServicec.length == 0) {
+            this.NooptionsService = true;
+          } else {
+            this.NooptionsService = false;
+          } 
     });
 }
 selectedItems = [];
-toggleSelection(item: any) {
+  toggleSelection(item: any) {
     item.selected = !item.selected;
     if (item.selected) {
-        this.selectedItems.push(item);
+      this.selectedItems.push(item);
     } else {
-        const i = this.selectedItems.findIndex(value => value.ServiceId === item.ServiceId);
-        this.selectedItems.splice(i, 1);
-    } 
-}
+      const i = this.selectedItems.findIndex(value => value.ServiceId === item.ServiceId);
+      this.selectedItems.splice(i, 1);
+    }
+  }
 remove(e) {
     this.toggleSelection(e);
-} 
-  private _filterService(value: any): string[] {
-    if (value) {
-        const filterValue = value && value.ServiceName ? value.ServiceName.toLowerCase() : value.toLowerCase();
-        return this.optionsService.filter(option => option.ServiceName.toLowerCase().includes(filterValue));
-    } 
 }  
 getOptionTextService(option) {
   return option && option.departmentName ? option.departmentName : '';
@@ -931,6 +920,8 @@ getOptionTextService(option) {
  
   //Tab 2
   // new get visit list 
+  visitData:any[]=[];
+  groupedData: { [key: string]: any[] } = {}; 
   getnewVisistList(obj) { 
     this.sIsLoading = 'loading';
     var D_data = {
@@ -939,23 +930,36 @@ getOptionTextService(option) {
     console.log(D_data);
     this.sIsLoading = 'loading-data';
     this._CasepaperService.getRtrvVisitedList(D_data).subscribe(Visit => {
-      this.dsItemList1.data = Visit as MedicineItemList[];
-      console.log(this.dsItemList1.data);
-      if(Visit){
-        this.preHeight = this.dsItemList1.data[0].PHeight;
-        this.preWeight = this.dsItemList1.data[0].PWeight;
-        this.PreBMI = this.dsItemList1.data[0].BMI;
-        this.preSPO = this.dsItemList1.data[0].SpO2;
-        this.preTemp = this.dsItemList1.data[0].Temp; 
-        this.prePulse = this.dsItemList1.data[0].Pulse;
-        this.preBSL = this.dsItemList1.data[0].BSL;
-        this.preBP = this.dsItemList1.data[0].BP; 
-        this.preCheifComplaint = this.dsItemList1.data[0].ChiefComplaint;  
-        this.preDiagnosis = this.dsItemList1.data[0].Diagnosis;  
-        this.preExamination = this.dsItemList1.data[0].Examination;    
-        }
+      this.visitData = Visit as MedicineItemList[];
+      console.log(this.visitData);
+      // if(Visit){
+      //   this.preHeight = this.dsItemList1.data[0].PHeight;
+      //   this.preWeight = this.dsItemList1.data[0].PWeight;
+      //   this.PreBMI = this.dsItemList1.data[0].BMI;
+      //   this.preSPO = this.dsItemList1.data[0].SpO2;
+      //   this.preTemp = this.dsItemList1.data[0].Temp; 
+      //   this.prePulse = this.dsItemList1.data[0].Pulse;
+      //   this.preBSL = this.dsItemList1.data[0].BSL;
+      //   this.preBP = this.dsItemList1.data[0].BP; 
+      //   this.preCheifComplaint = this.dsItemList1.data[0].ChiefComplaint;  
+      //   this.preDiagnosis = this.dsItemList1.data[0].Diagnosis;  
+      //   this.preExamination = this.dsItemList1.data[0].Examination;    
+      //   }
       this.sIsLoading = '';
+      this.groupByVisitDate();
     })
+  }
+  groupByVisitDate(): void {
+    this.visitData.forEach((element) => {
+      const date = new Date(element.VisitDate).toLocaleDateString(); // Format date as needed
+      if (!this.groupedData[date]) {
+        this.groupedData[date] = [];
+      }
+      this.groupedData[date].push(element);
+    });
+    console.log(this.groupedData.data)
+    console.log(this.groupedData)
+    console.log(this.groupedData)
   }
   SelectedObj:any;
   //old 
@@ -1028,7 +1032,13 @@ getOptionTextService(option) {
 }
 
 getPreviousPrescriptionlist(){ 
-  console.log(this.VisitId)
+  console.log(this.RegId)
+  if ((this.RegId == '' || this.RegId == '0' || this.RegId == undefined)) {
+    this.toastr.warning('Please select Patient', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  }
   const dialogRef = this._matDialog.open(PrePresciptionListComponent,
     {
       maxWidth: "70vw",
@@ -1036,7 +1046,7 @@ getPreviousPrescriptionlist(){
       width: '100%',
       height: "100%",
       data: {
-        Obj: this.VisitId
+        Obj: this.RegId
     }
     });
   dialogRef.afterClosed().subscribe(result => {
