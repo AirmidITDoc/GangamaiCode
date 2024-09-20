@@ -86,17 +86,24 @@ export class DischargeComponent implements OnInit {
 
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
+    
   }
 
  
   RtrvDischargeList:any=[];
   vComments:any;
+  IsCancelled:any;
 getRtrvDischargelist(){
-  let Query = "select DischargeId,DischargeTypeId,DischargedDocId,ModeOfDischargeid from Discharge where AdmissionID=" + this.selectedAdvanceObj.AdmissionID + " ";
+  let Query = "select IsCancelled, DischargeId,DischargeTypeId,DischargedDocId,ModeOfDischargeid from Discharge where AdmissionID=" + this.selectedAdvanceObj.AdmissionID + " ";
   console.log(Query)
   this._IpSearchListService.getDischargeId(Query).subscribe(data => {
     this.RtrvDischargeList = data ;
-    this.DischargeId = this.RtrvDischargeList[0].DischargeId || 0
+    this.IsCancelled = this.RtrvDischargeList[0].IsCancelled || 0
+    if(this.IsCancelled == '1'){
+      this.DischargeId = 0
+    }else{
+      this.DischargeId = this.RtrvDischargeList[0].DischargeId || 0
+    }
    // this.vComments = this.RtrvDischargeList.
     this.Rtevdropdownvalue();
     console.log(this.RtrvDischargeList); 
@@ -257,8 +264,8 @@ optionsDoctor:any[]=[];
         "insertIPDDischarg": {
           "dischargeId": 0,
           "admissionId": this.selectedAdvanceObj.AdmissionID,
-          "dischargeDate": this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || '01/01/1900',//this._IpSearchListService.mySaveForm.get("DischargeDate").value,// this.datePipe.transform(this._IpSearchListService.mySaveForm.get("DischargeDate").value,"yyyy-Mm-dd") || this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',,
-          "dischargeTime": this.datePipe.transform(this.currentDate, 'hh:mm:ss') || '01/01/1900',//this._IpSearchListService.mySaveForm.get("DischargeDate").value,//this.datePipe.transform(this._IpSearchListService.mySaveForm.get("DischargeDate").value,"hh-mm-ss") || this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',,
+          "dischargeDate": this.dateTimeObj.date , // this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || '01/01/1900', 
+          "dischargeTime": this.dateTimeObj.time , //this.datePipe.transform(this.currentDate, 'hh:mm:ss') || '01/01/1900', 
           "dischargeTypeId": this._IpSearchListService.mySaveForm.get("DischargeTypeId").value.DischargeTypeId || 0,
           "dischargedDocId": this._IpSearchListService.mySaveForm.get("DoctorID").value.DoctorID || 0,
           "dischargedRMOID": 0, // this._IpSearchListService.mySaveForm.get("DischargedRMOID").value,
@@ -268,8 +275,8 @@ optionsDoctor:any[]=[];
         "updateAdmission": {
           "admissionID": this.selectedAdvanceObj.AdmissionID,
           "isDischarged": 1,
-          "dischargeDate": this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || '01/01/1900',// this._IpSearchListService.mySaveForm.get("DischargeDate").value ,//this.datePipe.transform(this._IpSearchListService.mySaveForm.get("DischargeDate").value,"yyyy-Mm-dd") || this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',,
-          "dischargeTime": this.datePipe.transform(this.currentDate, 'hh:mm:ss') || '01/01/1900',// this._IpSearchListService.mySaveForm.get("DischargeDate").value,//this.datePipe.transform(this._IpSearchListService.mySaveForm.get("DischargeDate").value,"hh-mm-ss") || this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',,
+          "dischargeDate": this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || '01/01/1900',
+          "dischargeTime": this.datePipe.transform(this.currentDate, 'hh:mm:ss') || '01/01/1900', 
         },
         "dischargeBedRelease": {
           "bedId": this.selectedAdvanceObj.BedId,
@@ -299,8 +306,8 @@ optionsDoctor:any[]=[];
       var m_data1 = {
         "updateIPDDischarg": {
           "DischargeId": this.DischargeId,
-          "DischargeDate":this.dateTimeObj.date , // this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || '01/01/1900',//this.datePipe.transform(this._IpSearchListService.mySaveForm.get("DischargeDate").value,"yyyy-Mm-dd") || this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',,
-          "DischargeTime":this.dateTimeObj.time , //  this.datePipe.transform(this.currentDate, 'hh:mm:ss') || '01/01/1900',//this.datePipe.transform(this._IpSearchListService.mySaveForm.get("DischargeDate").value,"hh-mm-ss") || this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',,
+          "DischargeDate":this.dateTimeObj.date , // this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') 
+          "DischargeTime":this.dateTimeObj.time , //  this.datePipe.transform(this.currentDate, 'hh:mm:ss')  
           "DischargeTypeId": this._IpSearchListService.mySaveForm.get("DischargeTypeId").value.DischargeTypeId || 0,
           "DischargedDocId": this._IpSearchListService.mySaveForm.get("DoctorID").value.DoctorID || 0,
           "DischargedRMOID": 0, // this._IpSearchListService.mySaveForm.get("DischargedRMOID").value,
@@ -310,8 +317,8 @@ optionsDoctor:any[]=[];
         "updateAdmission": {
           "admissionID": this.selectedAdvanceObj.AdmissionID || 0,
           "isDischarged": 1,
-          "dischargeDate":this.dateTimeObj.date ,// this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || '01/01/1900',//this.datePipe.transform(this._IpSearchListService.mySaveForm.get("DischargeDate").value,"yyyy-Mm-dd") || this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',,
-          "dischargeTime":this.dateTimeObj.time , // this.datePipe.transform(this.currentDate, 'hh:mm:ss') || '01/01/1900',//this.datePipe.transform(this._IpSearchListService.mySaveForm.get("DischargeDate").value,"hh-mm-ss") || this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',,
+          "dischargeDate":this.dateTimeObj.date ,// this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')  
+          "dischargeTime":this.dateTimeObj.time , // this.datePipe.transform(this.currentDate, 'hh:mm:ss')  
         }
       }
       console.log(m_data1);

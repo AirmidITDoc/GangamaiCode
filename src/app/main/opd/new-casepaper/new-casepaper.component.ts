@@ -454,10 +454,10 @@ export class NewCasepaperComponent implements OnInit {
       'TariffId':this.vTariffId, 
       'ClassId':this.vClassId 
     }
-    console.log(vdata)
+   // console.log(vdata)
     this._CasepaperService.getServiceList(vdata).subscribe(data => { 
         this.FilteredServicec = data; 
-          console.log(this.FilteredServicec)
+         // console.log(this.FilteredServicec)
           if (this.FilteredServicec.length == 0) {
             this.NooptionsService = true;
           } else {
@@ -921,7 +921,9 @@ getOptionTextService(option) {
   //Tab 2
   // new get visit list 
   visitData:any[]=[];
-  groupedData: { [key: string]: any[] } = {}; 
+  groupedData: { [key: string]: any[] } = {};  
+  PersnalInfo: { [key: string]: any[] } = {}; 
+  // PersnalInfo:any[]= []; 
   getnewVisistList(obj) { 
     this.sIsLoading = 'loading';
     var D_data = {
@@ -949,17 +951,56 @@ getOptionTextService(option) {
       this.groupByVisitDate();
     })
   }
+ 
+  lenghtp:any=[];
   groupByVisitDate(): void {
     this.visitData.forEach((element) => {
+
       const date = new Date(element.VisitDate).toLocaleDateString(); // Format date as needed
+      console.log(date)
       if (!this.groupedData[date]) {
         this.groupedData[date] = [];
       }
       this.groupedData[date].push(element);
+
+
+      const date1 = new Date(element.VisitDate).toLocaleDateString(); // Format date as needed
+      console.log(date1)
+      if (date == date1) {
+        this.lenghtp.push(
+          [
+            this.preHeight = element.PHeight
+          ]
+        )
+      }else{
+        this.lenghtp = [];
+      }
+      
+
+
+
+
+
+
+
+
+
+
+    
+     console.log(this.lenghtp)
+    // this.groupedData[date][0].PHeight
+ 
+
+ 
+     
+      //console.log(this.groupedData) 
+      console.log(this.groupedData[date])  
+     
     });
-    console.log(this.groupedData.data)
-    console.log(this.groupedData)
-    console.log(this.groupedData)
+    
+   console.log(this.groupedData) 
+ 
+ 
   }
   SelectedObj:any;
   //old 

@@ -1749,6 +1749,8 @@ CalculateAdminCharge(){
     });
   }
   viewgetBillReportPdf(BillNo) {
+    debugger
+    console.log(BillNo)
     this._IpSearchListService.getIpFinalBillReceiptgroupwise(
       BillNo
     ).subscribe(res => {

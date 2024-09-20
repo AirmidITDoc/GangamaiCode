@@ -417,12 +417,17 @@ constructor(public _httpClient:HttpClient,
     return this._httpClient.post("InPatient/IPAdvance",employee);
   }
 
-  public DischargeInsert(employee)
-  {    
+  public DischargeInsert(employee,loader = true){ 
+    if (loader) {
+      this._loaderService.show();
+  }
   return this._httpClient.post("InPatient/InsertIPDischarge",employee);
   }
 
-  public DischargeUpdate(employee){
+  public DischargeUpdate(employee,loader = true){ 
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.post("InPatient/UpdateIPDischarge",employee);
   }
 
@@ -669,21 +674,30 @@ public updateIPDDischargSummary(employee)
   //   return this._httpClient.post("Generic/GetByProc?procName=RtrvRefundOfBillOPDList",employee)
   //   }
 
-  public InsertAdvanceHeader(employee)
-  {
+  public InsertAdvanceHeader(employee,loader = true){ 
+    if (loader) {
+      this._loaderService.show();
+  } 
     return this._httpClient.post("InPatient/IPAdvance",employee)
   }
-  public InsertAdvanceHeaderUpdate(employee){
+  public InsertAdvanceHeaderUpdate(employee,loader = true){ 
+    if (loader) {
+      this._loaderService.show();
+  }
   return this._httpClient.post("InPatient/IPAdvanceUpdate",employee) 
 
   }
 
-  public insertIPRefundOfAdvance(employee)
-  {
+  public insertIPRefundOfAdvance(employee,loader = true){ 
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.post("InPatient/InsertIPRefundofAdvance",employee)
   }
-  public insertIPRefundOfBill(employee)
-  {
+  public insertIPRefundOfBill(employee,loader = true){ 
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.post("InPatient/InsertIPRefundofBill",employee)
   }
 

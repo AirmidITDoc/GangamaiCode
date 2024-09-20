@@ -1133,10 +1133,10 @@
                                         <div fxLayout="column" fxLayoutGap="6px">
                                             <div class="patient-info-sales my-8">
                                                 <div class="sales-patient-info-title" fxLayoutAlign="space-between">
-                                                    <span style="font-weight: 700;color: blueviolet;">
+                                                    <span style="font-weight: 900;color: blueviolet;">
                                                         Visit Date : {{ date.key | date:'dd/MM/YYYY'}}
                                                     </span>
-                                                    <span style="font-weight: 700;color: blueviolet;">
+                                                    <span style="font-weight: 900;color: blueviolet;">
                                                         Visit Information
                                                     </span>
                                                     <div class="gap-8">
@@ -1145,17 +1145,19 @@
                                                     </div>
                                                 </div>
                                                 <hr>
+                                               
                                                 <div class="Ipd-patient-info" fxFlexFill fxLayout="row" fxLayoutAlign="space-between center"
                                                     class="patient-info">
                                                     <div class="patient-sub">
                                                         <div class="patient-info-row patient-info-1-111 pt-4" fxLayout="row"
-                                                            fxLayoutAlign="space-between">
+                                                            fxLayoutAlign="space-between" *ngFor="let patient for lenghtp">
+                    
                                                             <div fxLayout="column" fxLayoutGap="6px">
                                                                 <div class="patient-col">
                                                                     <span class="patient-col-key">Height
                                                                     </span>
-                                                                    <span>:</span>
-                                                                    <span class="patient-col-value">{{preHeight}}</span>
+                                                                    <span>:</span>  
+                                                                    <span class="patient-col-value">{{patient.PHeight}}</span>
                                                                 </div>
                                 
                                                                 <div class="patient-col">
@@ -1213,7 +1215,9 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                          
                                                 <hr> 
+                                                
                                                 <div class="Ipd-patient-info" fxFlexFill fxLayout="row" fxLayoutAlign="space-between center" class="patient-info">  
                                                     <div class="Ipd-patient-info" fxFlexFill fxLayout="row" fxLayoutAlign="space-between center"
                                                         class="patient-info">
@@ -1247,6 +1251,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                              
                                                 <hr>
                                             </div>
                                           

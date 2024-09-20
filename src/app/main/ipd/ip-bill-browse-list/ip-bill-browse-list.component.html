@@ -158,6 +158,10 @@
                                                     <mat-icon class="pill green s-16">circle</mat-icon>
                                                     <span >: Final Bills </span>
                                                 </div>
+                                                <div style="color: red" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                                    <mat-icon class="pill red s-16">circle</mat-icon>
+                                                    <span >: Cancelled Bills </span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -173,36 +177,31 @@
                                         <mat-cell *matCellDef="let contact">
                                             <mat-icon *ngIf="contact.PatientTypeId=='1'" matTooltip="Patient Category Self">account_box
                                             </mat-icon>
-                                            
+                                        
                                             <mat-icon *ngIf="contact.PatientTypeId !='1'" matTooltip="Patient Category Company">business
                                             </mat-icon>
                                             <mat-icon title="Intrim Bill" *ngIf="contact.InterimOrFinal=='1'" class="pill orange-600 s-16"
                                                 matTooltip="Intrim Bill">circle</mat-icon>
                                             <mat-icon title="Final Bill" *ngIf="contact.InterimOrFinal=='0'" class="pill green s-16"
-                                                matTooltip="Final Bill">circle</mat-icon>
-
-                                            <mat-icon *ngIf="contact.BalanceAmt !=0 " matTooltip="Final Discount" (click)="getFinalDisc(contact)">money
-                                            </mat-icon>
-
-                                            <!-- <button mat-icon-button *ngIf="contact.CompanyName ==''" matTooltip="Self Patient">
-                                                <mat-icon *ngIf="contact.CompanyName=='1' || contact.CompanyName=='2'" matTooltip="CompanyName"
-                                                    class="pill green-600 s-16">circle</mat-icon>
-                                            </button>
-
-                                            <button mat-icon-button *ngIf="contact.CompanyName !==''" matTooltip="Company Patient">
-                                                <mat-icon *ngIf="contact.CompanyName=='0' " matTooltip="CompanyName" class="pill orange-600 s-16">circle</mat-icon>
-                                            </button> -->
-
-                                            <mat-icon *ngIf="contact.BalanceAmt !=0 " matTooltip="Settlement" (click)="Billpayment(contact)">
-                                                payment</mat-icon>
-
-                                            <mat-icon title="Clse Menu" *ngIf="contact.IsCancelled==1" [disabled]="contact.disabled" class="disabled-icon">
-                                                close</mat-icon>
-
-                                            <mat-icon title="Refund" *ngIf="!contact.RefundAmount==0" [disabled]="contact.disabled" class="disabled-icon">
-                                                redo</mat-icon>
-                                          
-
+                                                matTooltip="Final Bill">circle</mat-icon> &nbsp; 
+                                        
+                                                <mat-icon title="Refund" *ngIf="!contact.RefundAmount==0" [disabled]="contact.disabled" class="disabled-icon">
+                                                    redo</mat-icon> 
+                                            <div *ngIf="contact.IsCancelled==0">
+                                                <button mat-icon-button class="material-icons" *ngIf="contact.BalanceAmt !=0 " matTooltip="Final Discount"
+                                                     (click)="getFinalDisc(contact)">
+                                                    <mat-icon> money </mat-icon>
+                                                </button>
+                                        
+                                                <button mat-icon-button class="material-icons" *ngIf="contact.BalanceAmt !=0 " (click)="Billpayment(contact)"
+                                                        matTooltip="Settlement">
+                                                    <mat-icon> payment </mat-icon>
+                                                </button> 
+                                            </div> 
+                                            <mat-icon title="Cancelled Bill" *ngIf="contact.IsCancelled=='1'" class="pill red s-16"
+                                            matTooltip="Cancelled Bill">circle</mat-icon> 
+                                         
+                                        
                                         </mat-cell>
                                     </ng-container>
 
@@ -480,35 +479,37 @@
                                         </mat-cell> -->
 
                                         <mat-cell *matCellDef="let contact">
-                                            <button mat-icon-button class="material-icons" (click)="getRecord(contact,'EMAIL')" matTooltip="email">
-                                                <mat-icon>email</mat-icon>
-                                            </button>
-                                            <button mat-icon-button class="material-icons" (click)="getRecord(contact,'SMS')" matTooltip="message">
-                                                <mat-icon> message </mat-icon>
-                                            </button>
+                                            <div *ngIf="contact.IsCancelled==0">
+                                                <button mat-icon-button class="material-icons" (click)="getRecord(contact,'EMAIL')" matTooltip="email">
+                                                    <mat-icon>email</mat-icon>
+                                                </button>
+                                                <button mat-icon-button class="material-icons" (click)="getRecord(contact,'SMS')" matTooltip="message">
+                                                    <mat-icon> message </mat-icon>
+                                                </button>
                                         
-                                            <button mat-icon-button matTooltip="Send Bill On WhatsApp" (click)="getWhatsappshareIPFinalBill(contact.BillNo,contact.MobileNo)">
-                                                <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
-                                            </button>
-
-                                            <!-- <button mat-icon-button class="material-icons" (click)="getRecord(contact)" matTooltip="Print Final Bill">
-                                                <mat-icon> print </mat-icon>
-                                            </button> -->
-
-                                          
-                                                <button class="menu-btn" mat-icon-button [matMenuTriggerFor]="moreMenu"
-                                                aria-label="More" (click)="$event.stopPropagation();">
-                                                <mat-icon class="secondary-text">more_vert</mat-icon>
-                                            </button>
+                                                <button mat-icon-button matTooltip="Send Bill On WhatsApp"
+                                                    (click)="getWhatsappshareIPFinalBill(contact.BillNo,contact.MobileNo)">
+                                                    <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
+                                                </button>
+                                        
+                                                <!-- <button mat-icon-button class="material-icons" (click)="getRecord(contact)" matTooltip="Print Final Bill">
+                                                                                        <mat-icon> print </mat-icon>
+                                                                                    </button> -->
+                                        
+                                        
+                                                <button class="menu-btn" mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More"
+                                                    (click)="$event.stopPropagation();">
+                                                    <mat-icon class="secondary-text">more_vert</mat-icon>
+                                                </button>
                                                 <mat-menu #moreMenu="matMenu">
                                                     <ng-container *ngFor="let m of menuActions, let i=index">
-                                                        <button mat-menu-item aria-label="remove"
-                                                            (click)="getRecord1(contact,m)">
+                                                        <button mat-menu-item aria-label="remove" (click)="getRecord1(contact,m)">
                                                             <span>{{m}}</span>
                                                         </button>
                                                     </ng-container>
                                                 </mat-menu>
-                                            <!-- </div>  -->
+                                                <!-- </div>  -->
+                                            </div>
                                         </mat-cell>
                                     </ng-container>
 
@@ -526,7 +527,7 @@
                                     <mat-header-row class="accent min-width-4000"
                                         *matHeaderRowDef="displayedColumns; sticky: true">
                                     </mat-header-row>
-                                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="min-width-4000"
+                                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="min-width-4000" 
                                     [ngClass]="contact.PatientType !== 'Self' ? 'self-row' : ''"   [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                     <mat-footer-row *matFooterRowDef="['loading']"
                                         [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
