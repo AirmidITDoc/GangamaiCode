@@ -87,7 +87,8 @@ export class ParameterFormMasterComponent implements OnInit {
             this.getUnitNameCombobox();
             this.registerObj = this.data.registerObj;
             debugger
-            // this._ParameterService.myform.get("IsNumeric").setValue(this.registerObj.IsNumericParameter == 1? 1: 2);
+           // if()
+            this._ParameterService.myform.get("IsBold").setValue(this.registerObj.IsBoldFlag == 'B'? 1: 0);
         }
         console.log(this.data)
         if (this._ParameterService.myform.get("ParameterID").value) {

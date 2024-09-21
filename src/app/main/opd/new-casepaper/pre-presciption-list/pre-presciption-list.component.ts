@@ -40,7 +40,7 @@ export class PrePresciptionListComponent implements OnInit {
   ]
   RegId:any;
   visitData: any[] = [];
-  groupedData: { [key: string]: any[] } = {}; 
+  groupedData: { [key: string]: any[]} = {}; 
   dsItemList = new MatTableDataSource<MedicineItemList>();
   
   constructor(
