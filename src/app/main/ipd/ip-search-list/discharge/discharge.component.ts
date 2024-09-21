@@ -30,7 +30,8 @@ export class DischargeComponent implements OnInit {
   isLoading: string = '';
   DischargeTypeList: any = [];
   currentDate = new Date();
-  screenFromString = 'discharge';
+  // screenFromString = 'discharge';
+  screenFromString = 'OP-billing';
   selectedAdvanceObj: AdvanceDetailObj;
   DischargeId: any;
   Today: Date = new Date();
@@ -86,7 +87,6 @@ export class DischargeComponent implements OnInit {
 
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
-    
   }
 
  

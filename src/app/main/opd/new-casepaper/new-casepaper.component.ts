@@ -34,7 +34,7 @@ interface Patient {
   PHeight: string;
   PWeight: number;
   Pulse: string;
-  VisitDate: string; // Changed to visitDate for clarity
+  VisitDate: any; // Changed to visitDate for clarity
 }
 
 @Component({
@@ -994,9 +994,9 @@ getOptionTextService(option) {
     
     //  console.log(this.groupedData[date][0]) 
     });
-    console.log(this.lenghtp)
-   console.log(this.groupedData) 
-   console.log(this.groupedData[0])   
+  //   console.log(this.lenghtp)
+  //  console.log(this.groupedData) 
+  //  console.log(this.groupedData[0])   
   }
   patients: any[] = [];
   filteredPatients: any[] = [];
@@ -1008,7 +1008,8 @@ getOptionTextService(option) {
       return patientsForDate.length > 0 ? patientsForDate[0] : null; // Get the first record for each date
     }).filter(patient => patient !== null); // Remove any null entries
   }
-
+  
+ 
   SelectedObj:any;
   //old 
   getVisistList() { 

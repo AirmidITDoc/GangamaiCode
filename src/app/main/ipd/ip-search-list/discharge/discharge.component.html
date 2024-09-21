@@ -1,15 +1,15 @@
 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
     <!-- HEADER -->
-    <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+    <!-- <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
         fxLayoutAlign.gt-xs="space-between center">
         <div fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%;">
           
             <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
                 style="width:80% ;font-size: 20px; font-weight: 400;">
                 Discharge
-                <!-- <span> RegNo - {{selectedAdvanceObj.RegNo}}</span> -->
+                
             </span>
-            <!-- </span> -->
+          
             <div fxLayout="row" fxLayoutAlign="space-between center">
                 <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
                 </app-common-date>
@@ -21,7 +21,30 @@
             </div>
         </div>
 
-    </div>
+    </div> -->
+
+    <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <button mat-icon-button class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                style="color: white;">
+                <mat-icon>account_box</mat-icon>
+            </button>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                Discharge
+            </span>  
+        </div>
+        <div fxLayout="row">
+            <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"
+            style="color: white;">
+            </app-common-date>
+            <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div> 
+    </mat-toolbar>
 
    
     <!-- / HEADER -->
