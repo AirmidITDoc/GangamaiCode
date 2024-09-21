@@ -56,8 +56,8 @@ export class LoginComponent implements OnInit {
     }
     loadCaptcha() {
         this.authenticationService.getCaptcha().subscribe((data) => {
-            this.captcha = 'data:image/jpg;base64,' + data["Data"].Img;
-            this.captchaToken = data["Data"].Token;
+            this.captcha = 'data:image/jpg;base64,' + data.img;
+            this.captchaToken = data.token;
         });
     }
     ngOnInit(): void {

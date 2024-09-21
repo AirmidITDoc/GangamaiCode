@@ -21,11 +21,22 @@ export class ApiCaller {
             httpOptions = {
                 headers: new HttpHeaders({
                     'content-type': 'application/json',
-                    'Authorization': `Bearer ${currentUser.Token}`
+                    'Authorization': `Bearer ${currentUser.token}`
                 })
             };
         };
-        return this._httpClient.get(`${this.ApiUrl}${url}`, httpOptions).pipe(catchError((err: any): any => {
+        return this._httpClient.get(`${this.ApiUrl}${url}`, httpOptions).pipe(
+            map((data: apiResponse) => {
+                if (data.statusCode == 200) {
+                    return data.data;
+                }
+                else {
+                    this.toastr.error(data.message, 'Error !', {
+                        toastClass: 'tostr-tost custom-toast-error',
+                    });
+                }
+            }),
+            catchError((err: any): any => {
             this.toastr.error(err, 'Error !', {
                 toastClass: 'tostr-tost custom-toast-error',
             });
@@ -39,16 +50,16 @@ export class ApiCaller {
             httpOptions = {
                 headers: new HttpHeaders({
                     'content-type': 'application/json',
-                    'Authorization': `Bearer ${currentUser.Token}`
+                    'Authorization': `Bearer ${currentUser.token}`
                 })
             };
         };
         return (this._httpClient.post<any>(`${this.ApiUrl}${url}`, data,httpOptions).pipe(map((data: apiResponse) => {
-            if (data.StatusCode == 200) {
-                return data.Data;
+            if (data.statusCode == 200) {
+                return data.data;
             }
             else {
-                this.toastr.error(data.Message, 'Error !', {
+                this.toastr.error(data.message, 'Error !', {
                     toastClass: 'tostr-tost custom-toast-error',
                 });
             }

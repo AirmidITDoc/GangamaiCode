@@ -215,7 +215,7 @@ export class AppComponent implements OnInit, OnDestroy {
                 this.document.body.classList.add(this.fuseConfig.colorTheme);
             });
         this.authService.currentUser.subscribe((d: any) => {
-            if ((d?.UserToken ?? "") != "") {
+            if ((d?.userToken ?? "") != "") {
                 this.authService.getNavigationData();
                 this.ConfigSettingParam();
             }
