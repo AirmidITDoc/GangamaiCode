@@ -546,11 +546,11 @@ ServiceList:any=[];
     } 
     let doctorid = 0;
     if (this.Serviceform.get("DoctorID").value)
-    doctorid = this.Serviceform.get("DoctorID").value.DoctorID;
+    doctorid = this.Serviceform.get("DoctorID").value.DoctorId;
 
     let doctorName = '';
     if (this.Serviceform.get("DoctorID").value)
-      doctorName = this.Serviceform.get("DoctorID").value.DoctorName;
+      doctorName = this.Serviceform.get("DoctorID").value.Doctorname;
 
     this.isLoading = 'save';
     if ((this.SrvcName && (parseInt(this.vPrice) > 0 || this.vPrice == '0') && this.vQty) && (parseFloat(this.vServiceNetAmt) > 0)) {

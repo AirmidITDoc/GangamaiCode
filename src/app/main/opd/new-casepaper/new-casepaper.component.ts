@@ -28,7 +28,14 @@ import { MatPaginator } from '@angular/material/paginator';
 import { element } from 'protractor';
 import { timeStamp } from 'console';
 import { PrePresciptionListComponent } from './pre-presciption-list/pre-presciption-list.component';
-import { ToasterService } from 'app/main/shared/services/toaster.service';
+import { ToasterService } from 'app/main/shared/services/toaster.service'; 
+ 
+interface Patient {
+  PHeight: string;
+  PWeight: number;
+  Pulse: string;
+  VisitDate: string; // Changed to visitDate for clarity
+}
 
 @Component({
   selector: 'app-new-casepaper',
@@ -63,6 +70,12 @@ export class NewCasepaperComponent implements OnInit {
     'VisitId',
     'VisitTime',
     'DocName'
+  ];
+
+  displayedVisitinfoColumns = [
+    'PHeight',
+    'PWeight',
+    'Pulse'
   ];
 
   isRegIdSelected: boolean = false;
@@ -332,7 +345,7 @@ export class NewCasepaperComponent implements OnInit {
     }
       this._CasepaperService.RtrvPreviousprescriptionDetails(mdata).subscribe(Visit => {
       this.dsItemList.data = Visit as MedicineItemList[];  
-      console.log(this.dsItemList.data)
+     // console.log(this.dsItemList.data)
       if(this.dsItemList.data.length > 0){
       this.vHeight = this.dsItemList.data[0].PHeight;
       this.vWeight = this.dsItemList.data[0].PWeight;
@@ -932,7 +945,8 @@ getOptionTextService(option) {
     console.log(D_data);
     this.sIsLoading = 'loading-data';
     this._CasepaperService.getRtrvVisitedList(D_data).subscribe(Visit => {
-      this.visitData = Visit as MedicineItemList[];
+      this.visitData = Visit as MedicineItemList[]; 
+     this.patients =  this.visitData
       console.log(this.visitData);
       // if(Visit){
       //   this.preHeight = this.dsItemList1.data[0].PHeight;
@@ -949,10 +963,12 @@ getOptionTextService(option) {
       //   }
       this.sIsLoading = '';
       this.groupByVisitDate();
+      this.filterFirstRecords();
     })
   }
  
-  lenghtp:any=[];
+ lenghtp:any=[];
+ reportPrintObjList: MedicineItemList[] = [];
   groupByVisitDate(): void {
     this.visitData.forEach((element) => {
 
@@ -962,46 +978,37 @@ getOptionTextService(option) {
         this.groupedData[date] = [];
       }
       this.groupedData[date].push(element);
-
-
+ 
       const date1 = new Date(element.VisitDate).toLocaleDateString(); // Format date as needed
       console.log(date1)
       if (date == date1) {
-        this.lenghtp.push(
-          [
-            this.preHeight = element.PHeight
-          ]
-        )
+        this.reportPrintObjList.push(element)
       }else{
         this.lenghtp = [];
       }
-      
-
-
-
-
-
-
-
-
-
-
-    
+        
      console.log(this.lenghtp)
-    // this.groupedData[date][0].PHeight
- 
-
- 
+    // this.groupedData[date][0].PHeight  
      
       //console.log(this.groupedData) 
-      console.log(this.groupedData[date])  
-     
-    });
     
+    //  console.log(this.groupedData[date][0]) 
+    });
+    console.log(this.lenghtp)
    console.log(this.groupedData) 
- 
- 
+   console.log(this.groupedData[0])   
   }
+  patients: any[] = [];
+  filteredPatients: any[] = [];
+  filterFirstRecords() {
+    const uniqueDates = Array.from(new Set(this.patients.map(patient => patient.VisitDate)));
+    this.filteredPatients = uniqueDates.map(date => {
+      const patientsForDate = this.patients.filter(patient => patient.VisitDate === date);
+      console.log(patientsForDate)
+      return patientsForDate.length > 0 ? patientsForDate[0] : null; // Get the first record for each date
+    }).filter(patient => patient !== null); // Remove any null entries
+  }
+
   SelectedObj:any;
   //old 
   getVisistList() { 
