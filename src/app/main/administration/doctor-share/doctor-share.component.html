@@ -71,6 +71,24 @@
                                     </mat-autocomplete>
                                 </mat-form-field>
 
+                                <mat-form-field appearance="outline" fxFlex="36%">
+                                    <mat-label>Select Group Name</mat-label>
+                                    <input type="text" name="GroupId" formControlName="GroupId" placeholder="Group Name " matInput
+                                        [matAutocomplete]="autoDoc">
+                                    <span matSuffix style="display: flex;">
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="_DoctorShareService.UserFormGroup.get('GroupId').setValue(''); isgroupIdSelected = false;">close</mat-icon>
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="_DoctorShareService.UserFormGroup.get('GroupId').setValue(''); isgroupIdSelected = false;">search</mat-icon>
+                                    </span>
+                                    <mat-autocomplete #autoDoc="matAutocomplete" [displayWith]="getOptionTextgroupName">
+                                        <mat-option *ngFor="let option of filteredOptionsGroup | async" [value]="option">
+                                            {{option.GroupName}}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+
+
                                 <mat-form-field appearance="outline" fxFlex="20%">
                                     <mat-label>PBill No</mat-label>
                                     <input name="PbillNo" formControlName="PbillNo" matInput (keyup)="getBillListForDoctorList()"
@@ -199,7 +217,13 @@
                                                 {{contact.CompanyName || '-'}}
                                             </mat-cell>
                                         </ng-container> 
-
+                                        <!-- <ng-container matColumnDef="GroupName">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">
+                                                Company Name</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130">
+                                                {{contact.GroupName || '-'}}
+                                            </mat-cell>
+                                        </ng-container>  -->
                                         <!-- <ng-container matColumnDef="Action">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">
                                              Action</mat-header-cell>

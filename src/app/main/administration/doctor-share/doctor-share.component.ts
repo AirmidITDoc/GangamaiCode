@@ -35,13 +35,17 @@ export class DoctorShareComponent implements OnInit {
     'AdmittedDoctorName',
     'PatientType', 
     'CompanyName',
+    //'groupName',
     // 'Action'
   ];
   @ViewChild('drawer') public drawer: MatDrawer;
   isRegIdSelected : boolean = false;
   isDoctorIDSelected: boolean=false;
+  isgroupIdSelected: boolean=false;
   DoctorListfilteredOptions:Observable<string[]>; 
+  filteredOptionsGroup:Observable<string[]>; 
   doctorNameCmbList: any = [];   
+  groupNameList: any = []; 
   sIsLoading: string = '';
   PatientListfilteredOptions: any;
   noOptionFound:any;
@@ -60,7 +64,7 @@ export class DoctorShareComponent implements OnInit {
 
   ngOnInit(): void { 
     this.getDoctorNameCombobox();  
-
+    this.getgroupNameCombobox();  
 
     const today = new Date();
     const oneMonthAgo = new Date();
@@ -94,6 +98,28 @@ getOptionTextDoctorName(option) {
   return option && option.Doctorname;
 } 
  
+getgroupNameCombobox() {
+  this._DoctorShareService.getAdmittedDoctorCombo().subscribe(data => {
+    this.groupNameList = data; 
+    console.log(this.groupNameList);
+    this.filteredOptionsGroup = this._DoctorShareService.UserFormGroup.get('GroupId').valueChanges.pipe(
+      startWith(''), 
+      map(value => value ? this._filtergroup(value) : this.groupNameList.slice()),
+    );
+  });
+}
+private _filtergroup(value: any): string[] {
+  if (value) {
+    const filterValue = value && value.GroupName ? value.GroupName.toLowerCase() : value.toLowerCase();
+    return this.groupNameList.filter(option => option.GroupName.toLowerCase().includes(filterValue));
+  }
+}
+getOptionTextgroupName(option) {
+  return option && option.GroupName;
+} 
+
+
+
  getBillListForDoctorList() { 
     this.sIsLoading = 'loading-data';
     var m_data = { 
@@ -231,7 +257,7 @@ export class BillListForDocShrList {
   PatientType: number;
   CompanyName: string;
   IsBillShrHold: boolean;
- 
+ GroupName:any;
   constructor(BillListForDocShrList) {
   
     this.PatientName= BillListForDocShrList.PatientName;
@@ -244,6 +270,7 @@ export class BillListForDocShrList {
     this.PatientType= BillListForDocShrList.PatientType|| 0;
     this.CompanyName= BillListForDocShrList.CompanyName;
     this.IsBillShrHold= BillListForDocShrList.IsBillShrHold|| 0; 
+    this.GroupName= BillListForDocShrList.GroupName|| ''; 
   } 
 } 
 
