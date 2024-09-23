@@ -1,0 +1,98 @@
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <!-- HEADER -->
+    <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center">
+
+        <!-- APP TITLE -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Document Managemennt
+                </span>
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+        <!-- SEARCH -->
+        <!-- / SEARCH -->
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content">
+
+        <!-- SIDEBAR -->
+        <!-- / SIDEBAR -->
+
+        <!-- CENTER -->
+        <div class="center p-24 pb-56" fusePerfectScrollbar>
+            <!-- CONTENT -->
+            <div class="content-card">
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                    <div fxFlex.gt-sm="100%" fxFlex style="background-color: white;">
+                        <div class="dialog-content-wrapper">
+                            <div mat-dialog-content class="p-24 pb-0 m-0">
+                                <form [formGroup]="_documentManagementService.myform">
+                                    <h3>New Document Type</h3>
+
+
+                                    <input type="hidden" name="Id" formControlName="Id">
+
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                             <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                            <mat-label>Parent</mat-label>
+                                            <mat-select placeholder="Select Parent" name="menu_master_detail_master_id"
+                                                formControlName="upId" required>
+                                                <mat-option [value]="0">Select </mat-option>
+                                                <mat-option *ngFor="let M of ParentDataList" [value]="M.Id">
+                                                    {{ M.DocType }}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>Please Select Menu</mat-error>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                            <mat-label>Document Type</mat-label>
+                                            <input name="DocumentType" formControlName="DocType" matInput required>
+                                            <mat-error>Please enter Prefix </mat-error>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                            <mat-label>Short Code </mat-label>
+                                            <input name="ShorCode" formControlName="ShortCode" matInput required>
+                                            <mat-error>Please enter BillNo </mat-error>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                        <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
+                                            <mat-radio-button value='false' class="mr-sm-12"
+                                                fxFlex>IsActive</mat-radio-button>
+
+                                        </mat-radio-group>
+                                    </div>
+                                </form>
+                            </div>
+                            <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+                                <div class="button-row">
+                                    <button mat-raised-button color="primary" type="submit" (click)="onSubmit()"
+                                        [disabled]="_documentManagementService.myform.invalid">Save</button>
+                                    <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- / CONTENT -->
+        </div>
+        <!-- / CENTER -->
+    </div>
+    <!-- / CONTENT-->
+</div>

@@ -1,0 +1,92 @@
+.p-sm-24 {
+    padding: 10px !important;
+}
+
+app-cash-counter-master {
+    .mat-header-row {
+        width: 900px;
+        max-width: 900px;
+        min-width: 900px;
+        font-weight: bold;
+    }
+
+    .mat-row {
+        width: 900px;
+        max-width: 900px;
+        min-width: 900px;
+    }
+
+    .mat-column-CashCounterId {
+        width: 90px;
+        max-width: 90px;
+        min-width: 90px;
+    }
+
+    .mat-column-CashCounterName {
+        width: 240px;
+        max-width: 240px;
+        min-width: 240px;
+        text-align: left;
+        justify-content: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-flex;
+        display: inline;
+        margin-right: 20px;
+        margin-top: 20px;
+    }
+
+    .mat-column-Prefix {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+    }
+
+    .mat-column-BillNo {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+    }
+
+    .mat-column-AddedByName {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+    }
+
+    .mat-column-IsDeleted {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .mat-column-action {
+        // color: white !important;
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        text-align: right;
+        justify-content: right;
+    }
+    .mat-icon-button {
+        padding: 0;
+        min-width: 0;
+        width: 40px;
+        height: 20px;
+        flex-shrink: 0;
+        line-height: 20px;
+        border-radius: 50%;
+    }
+}
+
+// .button-row button{
+//     margin: 5px;
+// }
+// .mat-radio-group{
+//     margin: 7px;
+//     margin-bottom: 10px;
+// }
