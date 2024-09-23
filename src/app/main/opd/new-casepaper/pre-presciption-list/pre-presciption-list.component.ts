@@ -8,6 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { FormBuilder } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { MedicineItemList } from '../new-casepaper.component'; 
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-pre-presciption-list',
@@ -70,12 +71,16 @@ export class PrePresciptionListComponent implements OnInit {
   }
 
   CopyPresciptionList:any=[];
+  CopyList:any=[];
   getCopyPreviouseList(date:string){ 
-    const dvalue =  this.patients.filter(patient => patient.VisitDate === date); // 
-    console.log(dvalue)
-    //     this.CopyPresciptionList.push(this.patients.filter(patient => patient.VisitDate === date))  
-    // console.log(this.CopyPresciptionList)
-    // this.dialogRef.close(this.CopyPresciptionList); 
+    this.CopyPresciptionList.date = [];
+    this.CopyList =  this.patients.filter(patient => patient.VisitDate === date); // 
+    console.log(this.CopyList)
+  //  this.CopyList.forEach(element =>{
+  //   this.CopyPresciptionList.push(element)  
+  //  }) 
+    console.log(this.CopyList)
+   this.dialogRef.close(this.CopyList); 
   }
 
   //old datewise table list function

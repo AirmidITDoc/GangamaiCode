@@ -185,6 +185,7 @@ export class NewCasepaperComponent implements OnInit {
     this.MedicineItemform(); 
     this.getDoseList(); 
     this.specificDate = new Date();  
+    this.dateStyle = 'Day'
   }  
  
   vDays:any = 10; 
@@ -225,6 +226,9 @@ export class NewCasepaperComponent implements OnInit {
     }
   }  
   dateStyle: string;
+
+  selectedOption: string = 'Day';
+ 
   OnChangeDobType(e) { 
       this.dateStyle = e.value; 
       this.onDaysChange();
@@ -994,19 +998,7 @@ getOptionTextService(option) {
       this.sIsLoading = '';
     })
   }
-
-  CreateTemplate(){ 
-  const dialogRef = this._matDialog.open(PrescriptionTemplateComponent,
-    {
-      maxWidth: "70vw",
-      maxHeight: "72vh",
-      width: '100%',
-      height: "100%"
-    });
-  dialogRef.afterClosed().subscribe(result => {
-    console.log('The dialog was closed - Insert Action', result); 
-  }); 
-}
+ 
 
 getPreviousPrescriptionlist(){ 
   console.log(this.RegId)
@@ -1031,6 +1023,7 @@ getPreviousPrescriptionlist(){
     console.log(result)
     this.dsCopyItemList.data = result
     console.log(this.dsCopyItemList.data)
+    this.dsItemList.data = [];
     this.dsCopyItemList.data.forEach(element =>{
      
       this.Chargelist.push(
@@ -1048,8 +1041,7 @@ getPreviousPrescriptionlist(){
       InstructionId: element.InstructionId || 0,
       InstructionDescription: element.InstructionDescription || '',
       Remark: element.Remark || 0,
-      DrugName: element.DrugName,
-      ItemName: element.ItemName, 
+      DrugName: element.DrugName, 
       Instruction:element.Instruction, 
       TotalQty: 0,
       QtyPerDay: 0,
@@ -1065,19 +1057,30 @@ getPreviousPrescriptionlist(){
       DoseNameOption3: element.DoseNameOption3, 
       DaysOption3: element.DaysOption3, 
      });  
-    
-     if(this.dsItemList.data.some(item=> item.DrugName == element.DrugName)){ 
-        this.toastr.success('Selected item Already added in list', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-success',
-        });
-        return
-     }
+     
      this.dsItemList.data  = this.Chargelist;
      console.log(this.Chargelist)
      console.log(this.dsItemList.data)
     });
   });
-
+}
+SaveTemplate(){
+  if (this.dsItemList.data.length == 0) {
+    Swal.fire('Error !', 'Please add prescription in table', 'error');
+    return
+  } 
+  const dialogRef = this._matDialog.open(PrescriptionTemplateComponent,
+    {
+      maxWidth: "50vw",
+      maxHeight: "40vh",
+      width: '100%',
+      height: "100%"
+    });
+  dialogRef.afterClosed().subscribe(result => {
+    console.log('The dialog was closed - Insert Action', result); 
+  }); 
+}
+ 
 
 //   subscriptions: Subscription[] = [];
 //   reportPrintObj: CasepaperVisitDetails;
@@ -1605,7 +1608,7 @@ getPreviousPrescriptionlist(){
 //   PrintEnglsih() {
 
 //   } 
- } 
+ 
 // export class HistoryClass {
 //   PastHistoryDescr: string;
 //   PastHistoryId: number;
@@ -1693,8 +1696,8 @@ getPreviousPrescriptionlist(){
 //     this.RefDoctorId = opdPrescriptionDetails.RefDoctorId || 0;
 
 //   }
-
-} 
+}
+ 
 export class CasepaperVisitDetails {
   ItemID:  any;
   ItemName:  any;
