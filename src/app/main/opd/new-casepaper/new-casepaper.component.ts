@@ -185,12 +185,9 @@ export class NewCasepaperComponent implements OnInit {
     this.MedicineItemform(); 
     this.getDoseList(); 
     this.specificDate = new Date();  
-
   }  
  
-  vDays:any = 10;
-  vYears:any;
-  vMonths:any;
+  vDays:any = 10; 
   followUpDate: string;
   specificDate: Date;
   onDaysChange() {
@@ -226,8 +223,7 @@ export class NewCasepaperComponent implements OnInit {
     else{
       this.specificDate = new Date();
     }
-  } 
- 
+  }  
   dateStyle: string;
   OnChangeDobType(e) { 
       this.dateStyle = e.value; 
@@ -714,8 +710,7 @@ getOptionTextService(option) {
     this.GenderName = " ";
     this.RefDocName = " ";
     this.BedName = " ";
-    this.PatientType = " ";
-    this.BMIstatus = " ";
+    this.PatientType = " "; 
     this.caseFormGroup.get('LetteHeadRadio').setValue('NormalHead');
     this.caseFormGroup.get('LangaugeRadio').setValue('True');
     this.MedicineItemForm.get('Remark').setValue('');
@@ -904,25 +899,7 @@ getOptionTextService(option) {
     //   this.add = true;
     // }
   }
-  BMIstatus = '';
-
-  //   getMeasures() {
-  //     debugger;
-  //  let height2= (this.caseFormGroup.get('Height').value * this.caseFormGroup.get('Height').value);
-  //     const BMI = (this.caseFormGroup.get('Weight').value  / height2 )
-
-  //     this.caseFormGroup.get('BMI').setValue(BMI.toFixed(2));
-
-  //     if(BMI < 18.4)
-  //       this.BMIstatus='Underweight'
-  //     if(BMI > 18.5 && BMI< 24.9)
-  //       this.BMIstatus='Normal'
-  //     if(BMI > 25 && BMI< 39.9)
-  //       this.BMIstatus='Overweight'
-  //     if(BMI > 40)
-  //       this.BMIstatus='Obese' 
-  //      this.BMIstatus=BMI.toFixed(2) +"( " + this.BMIstatus + ")"; 
-  //   }
+ 
 
   onChangeLangaugeRadio(event) {
 
@@ -931,85 +908,36 @@ getOptionTextService(option) {
 
   }
  
-  //Tab 2
-  // new get visit list 
-  visitData:any[]=[];
-  groupedData: { [key: string]: any[] } = {};  
-  PersnalInfo: { [key: string]: any[] } = {}; 
-  // PersnalInfo:any[]= []; 
-  getnewVisistList(obj) { 
-    this.sIsLoading = 'loading';
-    var D_data = {
-      "RegId": obj.RegID,
-    }
-    console.log(D_data);
-    this.sIsLoading = 'loading-data';
-    this._CasepaperService.getRtrvVisitedList(D_data).subscribe(Visit => {
-      this.visitData = Visit as MedicineItemList[]; 
-     this.patients =  this.visitData
-      console.log(this.visitData);
-      // if(Visit){
-      //   this.preHeight = this.dsItemList1.data[0].PHeight;
-      //   this.preWeight = this.dsItemList1.data[0].PWeight;
-      //   this.PreBMI = this.dsItemList1.data[0].BMI;
-      //   this.preSPO = this.dsItemList1.data[0].SpO2;
-      //   this.preTemp = this.dsItemList1.data[0].Temp; 
-      //   this.prePulse = this.dsItemList1.data[0].Pulse;
-      //   this.preBSL = this.dsItemList1.data[0].BSL;
-      //   this.preBP = this.dsItemList1.data[0].BP; 
-      //   this.preCheifComplaint = this.dsItemList1.data[0].ChiefComplaint;  
-      //   this.preDiagnosis = this.dsItemList1.data[0].Diagnosis;  
-      //   this.preExamination = this.dsItemList1.data[0].Examination;    
-      //   }
-      this.sIsLoading = '';
-      this.groupByVisitDate();
-      this.filterFirstRecords();
-    })
+ //datewise visit info and table data
+ patients: any[] = []; // Using 'any' type for simplicity
+ uniqueDates: string[] = [];
+ displayedColumns: string[] = ['patientName', 'age', 'gender'];
+ getnewVisistList(obj) { 
+  this.sIsLoading = 'loading';
+  var D_data = {
+    "RegId": obj.RegID,
   }
- 
- lenghtp:any=[];
- reportPrintObjList: MedicineItemList[] = [];
-  groupByVisitDate(): void {
-    this.visitData.forEach((element) => {
+   console.log(D_data);
+   this.sIsLoading = 'loading-data';
+   this._CasepaperService.getRtrvVisitedList(D_data).subscribe(Visit => {
+     this.patients = Visit as MedicineItemList[];  
+     this.extractUniqueDates();
+   });
+ } 
+ extractUniqueDates() {
+   const dates = this.patients.map(patient => patient.VisitDate);
+   this.uniqueDates = Array.from(new Set(dates));
+ } 
+ //datewise table data
+ getFirstPatientForDate(date: string) {
+   return this.patients.filter(patient => patient.VisitDate === date); //
+ } 
+ //datewise visit info date
+ getPatientsForDate(date: string) {  
+   const patientsForDate = this.patients.filter(patient => patient.VisitDate === date);
+   return patientsForDate.length > 0 ? [patientsForDate[0]] : []; // 
+ }
 
-      const date = new Date(element.VisitDate).toLocaleDateString(); // Format date as needed
-      console.log(date)
-      if (!this.groupedData[date]) {
-        this.groupedData[date] = [];
-      }
-      this.groupedData[date].push(element);
- 
-      const date1 = new Date(element.VisitDate).toLocaleDateString(); // Format date as needed
-      console.log(date1)
-      if (date == date1) {
-        this.reportPrintObjList.push(element)
-      }else{
-        this.lenghtp = [];
-      }
-        
-     console.log(this.lenghtp)
-    // this.groupedData[date][0].PHeight  
-     
-      //console.log(this.groupedData) 
-    
-    //  console.log(this.groupedData[date][0]) 
-    });
-  //   console.log(this.lenghtp)
-  //  console.log(this.groupedData) 
-  //  console.log(this.groupedData[0])   
-  }
-  patients: any[] = [];
-  filteredPatients: any[] = [];
-  filterFirstRecords() {
-    const uniqueDates = Array.from(new Set(this.patients.map(patient => patient.VisitDate)));
-    this.filteredPatients = uniqueDates.map(date => {
-      const patientsForDate = this.patients.filter(patient => patient.VisitDate === date);
-      console.log(patientsForDate)
-      return patientsForDate.length > 0 ? patientsForDate[0] : null; // Get the first record for each date
-    }).filter(patient => patient !== null); // Remove any null entries
-  }
-  
- 
   SelectedObj:any;
   //old 
   getVisistList() { 
@@ -1102,6 +1030,7 @@ getPreviousPrescriptionlist(){
     console.log('The dialog was closed - Insert Action', result); 
     console.log(result)
     this.dsCopyItemList.data = result
+    console.log(this.dsCopyItemList.data)
     this.dsCopyItemList.data.forEach(element =>{
      
       this.Chargelist.push(

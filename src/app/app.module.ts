@@ -142,6 +142,11 @@ const appRoutes: Routes = [
             import("./main/emergencymanagement/emergencymanagement.module").then((m) => m.EmergencymanagementModule),
     },
     {
+        path: "document",
+        loadChildren: () =>
+            import("./main/document/document.module").then((m) => m.DocumentModule),
+    },
+    {
         path: "ambulancemanagement",
         loadChildren: () =>
             import("./main/ambulancemanagement/ambulancemanagement.module").then((m) => m.AmbulancemanagementModule),

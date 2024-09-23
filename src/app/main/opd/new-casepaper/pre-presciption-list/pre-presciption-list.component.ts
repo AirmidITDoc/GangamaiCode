@@ -7,21 +7,7 @@ import { DatePipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { FormBuilder } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
-import { MedicineItemList } from '../new-casepaper.component';
-import { element } from 'protractor';
- 
-
-interface Prescription {
-  date: string;
-  medication: string;
-  dosage: string;
-}
-interface VisitDetails {
-  VisitDate: string; 
-  prescriptions: Prescription[];
-}
- 
-
+import { MedicineItemList } from '../new-casepaper.component'; 
 
 @Component({
   selector: 'app-pre-presciption-list',
@@ -59,90 +45,48 @@ export class PrePresciptionListComponent implements OnInit {
       this.RegId = this.data.Obj 
       console.log(this.data.Obj)
     }
-    this.getPrescriptionListFill1();
-
-   
-      // this._CasepaperService.getVisitData().subscribe((data) => {
-      //   this.visitData = data;
-      //   this.groupByVisitDate();
-      // });
+    this.getPrescriptionListFill1();  
   }
-
+//DateWise table Data 
   getPrescriptionListFill1() { 
     var vdata ={
       "RegID": this.RegId
     }
     this._CasepaperService.getRtrvVisitedList(vdata).subscribe(Visit => {
-      this.visitData = Visit as MedicineItemList[];   
-      console.log(this.dsItemList.data); 
-      this.groupByVisitDate();  
+      this.patients = Visit as MedicineItemList[];  
+      this.extractUniqueDates(); 
+      console.log(this.patients); 
+      // this.groupByVisitDate();  
     })
   }
-  CopyPresciptionList:any=[];
-
-  groupByVisitDate(): void {
-    this.visitData.forEach((element) => {
-      const date = new Date(element.VisitDate).toLocaleDateString(); // Format date as needed
-      if (!this.groupedData[date]) {
-        this.groupedData[date] = [];
-      }
-      this.groupedData[date].push(element);
-    });
+  patients: any[] = []; // Using 'any' type for simplicity
+  uniqueDates: string[] = [];   
+  extractUniqueDates() {
+    const dates = this.patients.map(patient => patient.VisitDate);
+    this.uniqueDates = Array.from(new Set(dates));
+  } 
+  getFirstPatientForDate(date: string) {
+    return this.patients.filter(patient => patient.VisitDate === date); //
   }
 
-  // groupByVisitDate(): void {
-  //   this.visitData.forEach((visit) => {
-  //     const date = new Date(visit.VisitDate).toLocaleDateString(); // Format date as needed
+  CopyPresciptionList:any=[];
+  getCopyPreviouseList(date:string){ 
+    const dvalue =  this.patients.filter(patient => patient.VisitDate === date); // 
+    console.log(dvalue)
+    //     this.CopyPresciptionList.push(this.patients.filter(patient => patient.VisitDate === date))  
+    // console.log(this.CopyPresciptionList)
+    // this.dialogRef.close(this.CopyPresciptionList); 
+  }
+
+  //old datewise table list function
+    // groupByVisitDate(): void {
+  //   this.visitData.forEach((element) => {
+  //     const date = new Date(element.VisitDate).toLocaleDateString(); // Format date as needed
   //     if (!this.groupedData[date]) {
   //       this.groupedData[date] = [];
   //     }
-  //     this.groupedData[date].push(visit);
+  //     this.groupedData[date].push(element);
   //   });
   // }
-   getCopyPreviouseList(){
-    if(this.dsItemList.data.length > 0){
-      this.dsItemList.data.forEach(element =>{
-        this.CopyPresciptionList.push(element)
-      }); 
-    }
-    console.log(this.CopyPresciptionList)
-    this.dialogRef.close(this.CopyPresciptionList); 
-  }
-
-
-
-    VisitDetails: VisitDetails[] = [
-      {
-        VisitDate: "2024-09-1",
-        
-        prescriptions: [
-          { date: "2024-08-01", medication: "Medication A", dosage: "500mg" },
-          { date: "2024-08-01", medication: "Medication B", dosage: "250mg" },
-          { date: "2024-08-01", medication: "Medication C", dosage: "100mg" }
-        ]
-      },
-      {
-        VisitDate: "2024-09-2", 
-        prescriptions: [
-          { date: "2024-08-01", medication: "Medication C", dosage: "100mg" }
-        ]
-      },
-      {
-        VisitDate: "2024-09-3",
-       
-        prescriptions: [
-          { date: "2024-08-02", medication: "Medication D", dosage: "200mg" }
-        ]
-      },
-      {
-        VisitDate: "2024-09-4",
-    
-        prescriptions: [
-          { date: "2024-08-01", medication: "Medication E", dosage: "300mg" },
-          { date: "2024-08-02", medication: "Medication F", dosage: "150mg" }
-        ]
-      }
-    ];
-
-
+ 
 }

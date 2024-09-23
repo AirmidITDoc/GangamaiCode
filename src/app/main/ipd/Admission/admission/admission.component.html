@@ -1138,13 +1138,13 @@
                                         <mat-icon class="mat-icon-close" ward
                                             (click)="wardFormGroup.get('RoomId').setValue(''); isWardSelected = false;">search</mat-icon>
                                     </span>
-                                    <mat-autocomplete #autoWard="matAutocomplete" [displayWith]="getOptionTextWard">
-                                        <mat-option *ngFor="let option of filteredOptionsWard | async" [value]="option"
-                                            (onSelectionChange)="OnChangeBedList(option)">
+                                    <mat-autocomplete #autoWard="matAutocomplete" [displayWith]="getOptionTextWard"
+                                    (optionSelected)="OnChangeBedList($event.option.value)">
+                                        <mat-option *ngFor="let option of filteredOptionsWard | async" [value]="option">
                                             {{option.RoomName}}
                                         </mat-option>
                                     </mat-autocomplete>
-                                </mat-form-field>
+                                </mat-form-field>  
 
                                 <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>Bed Name</mat-label>

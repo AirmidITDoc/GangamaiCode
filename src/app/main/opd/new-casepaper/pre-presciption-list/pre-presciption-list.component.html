@@ -18,8 +18,8 @@
                 <div fxlayout="row" fxLayout="column" fxFlexFill fxLayoutGap="10px"> 
 
                     
-                        <div *ngFor="let date of groupedData | keyvalue">
-                            <!-- <h3>{{ date.key | date:'dd/MM/YYYY'}}</h3> -->
+                        <!-- <div *ngFor="let date of groupedData | keyvalue">
+                          
                             <mat-card style="padding: 6px;" column="column">
                             <div class="consultunt-title" fxLayoutAlign="space-between">
                                 <span style="font-weight: 700;color: blueviolet;">
@@ -69,8 +69,76 @@
                                     [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                             </table>
                            </mat-card> 
-                        </div>
+                        </div> -->
                   
+
+                        <div *ngFor="let date of uniqueDates">
+                            <mat-card style="padding: 6px;">
+                                <div fxLayout="column" fxLayoutGap="6px"> 
+                                    <div fxFlex.gt-sm="100%" fxlayout="column">
+                                        <div class="visit-info-title" fxLayoutAlign="space-between">
+                                            <span style="font-weight: 900;color: blueviolet;">
+                                                Visit Date : {{ date | date: 'dd/MM/YYYY' }} 
+                                            </span> 
+                                            <mat-icon  matTooltip="Copy" (click)="getCopyPreviouseList(date)">file_copy</mat-icon>
+                                        </div>
+                                        <hr>
+                                        <table mat-table [dataSource]="getFirstPatientForDate(date)" class="mat-table-1 h-220"
+                                            [@animateStagger]="{value:'50'}" style="width: 100%;overflow: auto">
+                            
+                                            <ng-container matColumnDef="ItemName">
+                                                <mat-header-cell *matHeaderCellDef>ItemName
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let patient">
+                                                    <span> {{patient.DrugName}}</span>
+                                                </mat-cell>
+                                            </ng-container>
+                            
+                                            <ng-container matColumnDef="DoseName">
+                                                <mat-header-cell *matHeaderCellDef>DoseName
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let patient">
+                                                    <span> {{patient.DoseName}}</span>
+                                                </mat-cell>
+                                            </ng-container>
+                            
+                                            <ng-container matColumnDef="Days">
+                                                <mat-header-cell *matHeaderCellDef>Days
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let patient">
+                                                    <span> {{patient.Days}}</span>
+                                                </mat-cell>
+                                            </ng-container>
+                            
+                                            <ng-container matColumnDef="Remark">
+                                                <mat-header-cell *matHeaderCellDef>Instruction
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let patient">
+                                                    <span> {{patient.Instruction}}</span>
+                                                </mat-cell>
+                                            </ng-container>
+                            
+                                            <ng-container matColumnDef="loading">
+                                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                                    loading data...
+                                                </mat-footer-cell>
+                                            </ng-container>
+                            
+                                            <ng-container matColumnDef="noData">
+                                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                                    <span>No Data Found</span>
+                                                </mat-footer-cell>
+                                            </ng-container>
+                            
+                                            <mat-header-row class="accent" *matHeaderRowDef="displayedItemColumn; sticky: true">
+                                            </mat-header-row>
+                                            <mat-row *matRowDef="let row; columns: displayedItemColumn;" class="element"
+                                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                        </table>
+                                    </div>
+                                </div>
+                            </mat-card>
+                        </div>
                 </div>
             </div>
         </div>
