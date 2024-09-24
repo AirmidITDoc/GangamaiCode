@@ -7,6 +7,7 @@ import { ToastrService } from "ngx-toastr";
 import { GenderMasterService } from "./gender-master.service";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { gridColumn, gridRequest, gridResponseType } from "app/core/models/gridRequest";
 
 @Component({
     selector: "app-gender-master",
@@ -18,12 +19,10 @@ import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 export class GenderMasterComponent implements OnInit {
     GenderMasterList: any;
     msg: any;
-
+    displayedColumns1: gridColumn[] = [{ Data: "genderId", Name: "Gender Id", Def: "GenderId" }, { Data: "genderName", Name: "Gender Name", Def: "GenderName" }];
     displayedColumns: string[] = [
         "GenderId",
         "GenderName",
-        "IsDeleted",
-        "action",
     ];
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     DSGenderMasterList = new MatTableDataSource<GenderMaster>();
@@ -33,7 +32,7 @@ export class GenderMasterComponent implements OnInit {
     constructor(
         public _GenderService: GenderMasterService,
         public toastr: ToastrService, public _matDialog: MatDialog
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.getGenderMasterList();
@@ -51,23 +50,17 @@ export class GenderMasterComponent implements OnInit {
         this.getGenderMasterList();
     }
 
+    resultsLength = 0;
     getGenderMasterList() {
-        var Param : any = {
-            "First": 0,
-            "Rows": 10,
-            "SortField": "GenderId",
-            "SortOrder": 0,
-            "Filters" : [],
-            "ExportType": "Excel",
-            "Columns": [
-              {
-                "Data": "string",
-                "Name": "string"
-              }
-            ]
+        var Param: gridRequest = {
+            SortField: this.sort?.active ?? "GenderId", SortOrder: this.sort?.direction ?? 'asc' == 'asc' ? 0 : -1, Filters: [],
+            Columns: [],
+            First: (this.paginator?.pageIndex ?? 0),
+            Rows: (this.paginator?.pageSize ?? 12),
+            ExportType: gridResponseType.JSON
         };
         var GenderName = this._GenderService.myformSearch.get("GenderNameSearch").value.trim();
-        if(GenderName){
+        if (GenderName) {
             Param.Filters.push({
                 "FieldName": "GenderName",
                 "FieldValue": GenderName,
@@ -75,23 +68,20 @@ export class GenderMasterComponent implements OnInit {
             });
         }
         var isActive = this._GenderService.myformSearch.get("IsDeletedSearch").value;
-        if(isActive != 2){
+        if (isActive != 2) {
             Param.Filters.push({
                 "FieldName": "IsActive",
                 "FieldValue": this._GenderService.myformSearch.get("IsDeletedSearch").value,
                 "OpType": "13"
             });
-        }        
-        this._GenderService
-            .getGenderMasterList(Param)
-            .subscribe((response: any) => {
-                if (response.StatusCode == 200) {
-                    this.DSGenderMasterList.data = response.Data.Data as GenderMaster[];
-                    this.DSGenderMasterList.sort = this.sort;
-                    this.DSGenderMasterList.paginator = this.paginator;
-                    console.log(this.DSGenderMasterList.data);
-                }
-            });
+        }
+        this._GenderService.getGenderMasterList(Param).subscribe((data: any) => {
+            this.DSGenderMasterList.data = data.data as GenderMaster[];
+            this.DSGenderMasterList.sort = this.sort;
+            //this.DSGenderMasterList.paginator = this.paginator;
+            this.resultsLength = data["recordsFiltered"];
+            console.log(this.DSGenderMasterList.data);
+        });
     }
 
     onClear() {
@@ -103,10 +93,10 @@ export class GenderMasterComponent implements OnInit {
         if (this._GenderService.myform.valid) {
             if (!this._GenderService.myform.get("GenderId").value) {
                 var m_data = {
-                    GenderId: 0,
-                    GenderName: this._GenderService.myform
-                            .get("GenderName")
-                            .value.trim(),
+                    genderId: 0,
+                    genderName: this._GenderService.myform
+                        .get("GenderName")
+                        .value.trim(),
                     isActive: Boolean(
                         JSON.parse(
                             this._GenderService.myform.get("IsDeleted")
@@ -160,8 +150,8 @@ export class GenderMasterComponent implements OnInit {
                 );
             } else {
                 var m_dataUpdate = {
-                    GenderId: this._GenderService.myform.get("GenderId").value,
-                    GenderName: this._GenderService.myform
+                    genderId: this._GenderService.myform.get("GenderId").value,
+                    genderName: this._GenderService.myform
                         .get("GenderName")
                         .value.trim(),
                     isActive: Boolean(
@@ -169,7 +159,7 @@ export class GenderMasterComponent implements OnInit {
                             this._GenderService.myform.get("IsDeleted")
                                 .value
                         )
-                    ),                        
+                    ),
                 };
 
                 this._GenderService.genderMasterUpdate(this._GenderService.myform.get("GenderId").value, m_dataUpdate).subscribe(
@@ -222,49 +212,49 @@ export class GenderMasterComponent implements OnInit {
 
     onEdit(row) {
         var m_data = {
-            GenderId: row.GenderId,
-            GenderName: row.GenderName.trim(),
-            IsDeleted: JSON.stringify(row.IsActive),
+            genderId: row.GenderId,
+            genderName: row.GenderName.trim(),
+            isDeleted: JSON.stringify(row.IsActive),
         };
         this._GenderService.populateForm(m_data);
     }
     onDeactive(GenderId) {
         debugger
         this.confirmDialogRef = this._matDialog.open(
-          FuseConfirmDialogComponent,
-          {
-            disableClose: false,
-          }
+            FuseConfirmDialogComponent,
+            {
+                disableClose: false,
+            }
         );
         this.confirmDialogRef.componentInstance.confirmMessage =
-          "Are you sure you want to deactive?";
+            "Are you sure you want to deactive?";
         this.confirmDialogRef.afterClosed().subscribe((result) => {
             debugger
-          if (result) {
-            this._GenderService.deactivateTheStatus(GenderId).subscribe((data: any) => {
-                this.msg = data
-                if(data.StatusCode == 200) {
-                    this.toastr.success(
-                        "Record updated Successfully.",
-                        "updated !",
-                        {
-                            toastClass:
-                                "tostr-tost custom-toast-success",
-                        }
-                    );
-                    this.getGenderMasterList();
-                }
-            });
-          }
-          this.confirmDialogRef = null;
+            if (result) {
+                this._GenderService.deactivateTheStatus(GenderId).subscribe((data: any) => {
+                    this.msg = data
+                    if (data.StatusCode == 200) {
+                        this.toastr.success(
+                            "Record updated Successfully.",
+                            "updated !",
+                            {
+                                toastClass:
+                                    "tostr-tost custom-toast-success",
+                            }
+                        );
+                        this.getGenderMasterList();
+                    }
+                });
+            }
+            this.confirmDialogRef = null;
         });
-      }
+    }
 }
 
 export class GenderMaster {
-    GenderId: number;
-    GenderName: string;
-    IsDeleted: boolean;
+    genderId: number;
+    genderName: string;
+    isDeleted: boolean;
 
     /**
      * Constructor
@@ -273,9 +263,9 @@ export class GenderMaster {
      */
     constructor(GenderMaster) {
         {
-            this.GenderId = GenderMaster.GenderId || "";
-            this.GenderName = GenderMaster.GenderName || "";
-            this.IsDeleted = GenderMaster.IsDeleted || "true";
+            this.genderId = GenderMaster.GenderId || "";
+            this.genderName = GenderMaster.GenderName || "";
+            this.isDeleted = GenderMaster.IsDeleted || "true";
         }
     }
 }

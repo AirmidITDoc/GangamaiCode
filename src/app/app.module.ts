@@ -41,6 +41,10 @@ import { BandwidthService } from './core/services/bandwidth.service';
 import { LoaderModule } from "./core/components/loader/loader.module";
 import { LayoutModule } from './layout/layout.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { AirmidTableComponent } from './shared/airmid-table/airmid-table.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 const appRoutes: Routes = [
     {
@@ -99,12 +103,12 @@ const appRoutes: Routes = [
     {
         path: "administration",
         loadChildren: () =>
-            import("./main/administration/administration.module" ).then((m) => m.AdministrationModule),
+            import("./main/administration/administration.module").then((m) => m.AdministrationModule),
     },
     {
         path: "CanteenManagement",
         loadChildren: () =>
-            import("./main/canteenmanagement/canteenmanagement.module" ).then((m) => m.CanteenmanagementModule),
+            import("./main/canteenmanagement/canteenmanagement.module").then((m) => m.CanteenmanagementModule),
     },
     {
         path: "otmanagement",
@@ -150,7 +154,7 @@ const appRoutes: Routes = [
         path: '**',
         redirectTo: 'auth/login'
     },
-  
+
 ];
 
 
@@ -180,40 +184,46 @@ class PickDateAdapter extends NativeDateAdapter {
         AppComponent,
         PdfviewerComponent,
         InternetConnectionComponent,
+        AirmidTableComponent
     ],
     imports: [
-    BrowserModule,
-    AppConfigModule,
-    BrowserAnimationsModule,
-    HttpClientModule,
-    RouterModule.forRoot(appRoutes),
-    TranslateModule.forRoot(),
-    MatMomentDateModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    // Material
-    MatButtonModule,
-    MatIconModule,
-    MatSnackBarModule,
-    // Fuse modules
-    FuseModule.forRoot(fuseConfig),
-    FuseProgressBarModule,
-    FuseSharedModule,
-    FuseSidebarModule,
-    FuseThemeOptionsModule,
-    SharedModule,
-    // App modules
-    LayoutModule, 
-    NgxExtendedPdfViewerModule,
-    MatProgressSpinnerModule,
-    ToastrModule.forRoot({ timeOut: 5000,
-        positionClass: 'toast-bottom-right',
-        preventDuplicates: true,
-        progressBar: true,
-        progressAnimation: 'increasing',
-    }),
-    LoaderModule
-],
+        SharedModule,
+        MatTableModule,
+        MatSortModule,
+        MatPaginatorModule,
+        BrowserModule,
+        AppConfigModule,
+        BrowserAnimationsModule,
+        HttpClientModule,
+        RouterModule.forRoot(appRoutes),
+        TranslateModule.forRoot(),
+        MatMomentDateModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        // Material
+        MatButtonModule,
+        MatIconModule,
+        MatSnackBarModule,
+        // Fuse modules
+        FuseModule.forRoot(fuseConfig),
+        FuseProgressBarModule,
+        FuseSharedModule,
+        FuseSidebarModule,
+        FuseThemeOptionsModule,
+        SharedModule,
+        // App modules
+        LayoutModule,
+        NgxExtendedPdfViewerModule,
+        MatProgressSpinnerModule,
+        ToastrModule.forRoot({
+            timeOut: 5000,
+            positionClass: 'toast-bottom-right',
+            preventDuplicates: true,
+            progressBar: true,
+            progressAnimation: 'increasing',
+        }),
+        LoaderModule
+    ],
     providers: [
 
         BandwidthService,

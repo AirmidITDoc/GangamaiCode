@@ -1,7 +1,7 @@
 export class apiResponse{
-    StatusCode:number;
-    StatusText:string;
-    Message:string;
-    Data:any;
-    ExtraData:any;
+    statusCode:number;
+    statusText:string;
+    message:string;
+    data:any;
+    extraData:any;
 }

@@ -204,7 +204,7 @@ export class PurchaseOrderComponent implements OnInit {
       "IsVerify": this._PurchaseOrder.PurchaseSearchGroup.get("Status").value || 0,
       "Supplier_Id": this._PurchaseOrder.PurchaseSearchGroup.get('SupplierId').value.SupplierId || 0,
       Start:(this.paginator?.pageIndex??1),
-      Length:(this.paginator?.pageSize??10),
+      Length:(this.paginator?.pageSize??12),
       // Sort:this.sort?.active??'VisitId',
       // Order:this.sort?.direction??'asc'
     }

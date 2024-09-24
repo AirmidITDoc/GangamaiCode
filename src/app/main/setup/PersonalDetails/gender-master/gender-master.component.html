@@ -49,7 +49,8 @@
                                         <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
                                     </mat-radio-group>
 
-                                    <button mat-raised-button (click)="getGenderMasterList()" fxLayoutAlign="center center">
+                                    <button mat-raised-button (click)="getGenderMasterList()"
+                                        fxLayoutAlign="center center">
                                         <mat-icon>search</mat-icon>
                                         Search
                                     </button>
@@ -59,19 +60,17 @@
 
                         <div fxlayout="row">
                             <div style="width: 100%;">
-                                <mat-table #table matSort [dataSource]="DSGenderMasterList"
-                                    [@animateStagger]="{value:'50'}" style="overflow:auto">
-
+                                <airmid-table  matSort *ngIf="this.DSGenderMasterList.data.length>0">
                                     <ng-container matColumnDef="GenderId">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header> Code </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.GenderId}}
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.genderId}}
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="GenderName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header> Gender Name
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.GenderName}}
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.genderName}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -79,9 +78,9 @@
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm> IsActive
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <mat-icon *ngIf="element.IsActive"
-                                                class="active-icon green-600 s-16" style="color: azure;">check_circle</mat-icon>
-                                            <mat-icon *ngIf="!element.IsActive"
+                                            <mat-icon *ngIf="element.isActive" class="active-icon green-600 s-16"
+                                                style="color: azure;">check_circle</mat-icon>
+                                            <mat-icon *ngIf="!element.isActive"
                                                 class="active-icon red-500 s-16">close</mat-icon>
                                         </mat-cell>
                                     </ng-container>
@@ -91,10 +90,64 @@
                                             Action
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let row">
-                                            <button mat-icon-button (click)="onEdit(row)"  style="color:black;">
+                                            <button mat-icon-button (click)="onEdit(row)" style="color:black;">
                                                 <mat-icon title="Edit Menu">launch</mat-icon>
                                             </button>
-                                            <button mat-icon-button (click)="onDeactive(row.GenderId)" color="warn">
+                                            <button mat-icon-button (click)="onDeactive(row.genderId)" color="warn">
+                                                <mat-icon>delete_outline</mat-icon>
+                                            </button>
+                                        </mat-cell>
+                                    </ng-container>
+                                </airmid-table>
+                                <mat-table #table matSort [dataSource]="DSGenderMasterList"
+                                    (matSortChange)="getGenderMasterList()" [@animateStagger]="{value:'50'}"
+                                    style="overflow:auto">
+                                    <ng-container matColumnDef="{{column.Def}}" *ngFor="let column of displayedColumns1">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.Name}}
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element[column.Data]}}
+                                        </mat-cell>
+                                    </ng-container>
+                                    <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+                                    </mat-header-row>
+                                    <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
+                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                    <!-- <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> -->
+
+                                    <!-- <ng-container matColumnDef="GenderId">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header> Code </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.genderId}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="GenderName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header> Gender Name
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.genderName}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="IsDeleted">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm> IsActive
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            <mat-icon *ngIf="element.isActive" class="active-icon green-600 s-16"
+                                                style="color: azure;">check_circle</mat-icon>
+                                            <mat-icon *ngIf="!element.isActive"
+                                                class="active-icon red-500 s-16">close</mat-icon>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="action" stickyEnd>
+                                        <mat-header-cell *matHeaderCellDef class="table-actions">
+                                            Action
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let row">
+                                            <button mat-icon-button (click)="onEdit(row)" style="color:black;">
+                                                <mat-icon title="Edit Menu">launch</mat-icon>
+                                            </button>
+                                            <button mat-icon-button (click)="onDeactive(row.genderId)" color="warn">
                                                 <mat-icon>delete_outline</mat-icon>
                                             </button>
                                         </mat-cell>
@@ -112,10 +165,11 @@
                                         [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                     <mat-footer-row *matFooterRowDef="['loading']"
                                         [ngClass]="{'hide':DSGenderMasterList!=null}">
-                                    </mat-footer-row>
+                                    </mat-footer-row> -->
                                 </mat-table>
-                                <mat-paginator [pageSizeOptions]="[10, 15, 25, 100]" [pageSize]="10"
-                                    showFirstLastButtons></mat-paginator>
+                                <mat-paginator [pageSizeOptions]="[12, 24, 35, 100]" [pageSize]="12"
+                                    [length]="resultsLength" showFirstLastButtons
+                                    (page)="getGenderMasterList()"></mat-paginator>
                             </div>
                         </div>
                     </div>

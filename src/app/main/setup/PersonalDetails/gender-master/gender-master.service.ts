@@ -1,13 +1,15 @@
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { HttpService } from "app/core/http/http.service";
+import { gridRequest } from "app/core/models/gridRequest";
+import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable()
 export class GenderMasterService {
     myform: FormGroup;
     myformSearch: FormGroup;
     constructor(
-        private _httpClient: HttpService,
+        private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder
     ) {
         this.myform = this.createGenderForm();
@@ -42,19 +44,21 @@ export class GenderMasterService {
 
 
 
-    public getGenderMasterList(param: any, showLoader = true) {
-        return this._httpClient.post("Gender/List", param, showLoader);
+    public getGenderMasterList(param: gridRequest, showLoader = true) {
+        return this._httpClient.PostData("Gender/List", param, showLoader);
     }
 
     public genderMasterInsert(Param: any, showLoader = true) {
-        return this._httpClient.post("Gender", Param, showLoader);
+        return this._httpClient.PostData("Gender", Param, showLoader);
     }
 
     public genderMasterUpdate(id: number , Param: any, showLoader = true) {
-        return this._httpClient.put("Gender/" + id , Param, showLoader);
+        //return this._httpClient.put("Gender/" + id , Param, showLoader);
+        return this._httpClient.PostData("Gender", Param, showLoader);
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.delete("Gender?Id=" + m_data, {});
+        //return this._httpClient.delete("Gender?Id=" + m_data, {});
+        return this._httpClient.PostData("Gender", m_data);
     }
 }
