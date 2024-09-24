@@ -598,7 +598,7 @@ console.log(PatientHeaderObj)
       "From_Dt": this.datePipe.transform(this._IpBillBrowseListService.myFilterIpbillbrowseform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
       "To_Dt ": this.datePipe.transform(this._IpBillBrowseListService.myFilterIpbillbrowseform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
       "Reg_No": this._IpBillBrowseListService.myFilterIpbillbrowseform.get("RegNo").value || 0,
-      "PBillNo": this._IpBillBrowseListService.myFilterIpbillbrowseform.get("PBillNo").value + '%' || "%",
+      "PBillNo": this._IpBillBrowseListService.myFilterIpbillbrowseform.get("PBillNo").value + '' || "%",
       "Start":(this.paginator?.pageIndex??0),
       "Length":(this.paginator?.pageSize??35)
       // "IsInterimOrFinal": 2,//this._ipbillBrowseService.myFilterform.get("IsInterimOrFinal").value || "0",
@@ -876,8 +876,8 @@ console.log(PatientHeaderObj)
       "From_Dt": this.datePipe.transform(this._IpBillBrowseListService.myFilterIppaymentbrowseform.get("start").value, "MM-dd-yyyy"), //"01/01/2018",
       "To_Dt": this.datePipe.transform(this._IpBillBrowseListService.myFilterIppaymentbrowseform.get("end").value, "MM-dd-yyyy"), //"01/01/2020",
       "Reg_No": this._IpBillBrowseListService.myFilterIppaymentbrowseform.get("RegNo").value || 0,
-      "PBillNo": this._IpBillBrowseListService.myFilterIppaymentbrowseform.get("PBillNo").value  || '%',
-      "ReceiptNo": this._IpBillBrowseListService.myFilterIppaymentbrowseform.get("ReceiptNo").value || '%',
+      "PBillNo": this._IpBillBrowseListService.myFilterIppaymentbrowseform.get("PBillNo").value + '' || "%",
+      "ReceiptNo": this._IpBillBrowseListService.myFilterIppaymentbrowseform.get("ReceiptNo").value + '' || '%',
   
     }
     console.log(D_data);

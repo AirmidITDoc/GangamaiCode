@@ -186,6 +186,7 @@ export class NewCasepaperComponent implements OnInit {
     this.getDoseList(); 
     this.specificDate = new Date();  
     this.dateStyle = 'Day'
+    this.onDaysChange();
   }  
  
   vDays:any = 10; 
@@ -229,7 +230,7 @@ export class NewCasepaperComponent implements OnInit {
 
   selectedOption: string = 'Day';
  
-  OnChangeDobType(e) { 
+  OnChangeDobType(e) {  
       this.dateStyle = e.value; 
       this.onDaysChange();
       console.log(this.dateStyle )
@@ -370,7 +371,8 @@ export class NewCasepaperComponent implements OnInit {
 
   getBMIcalculation() {
     if (this.vHeight > 0 && this.vWeight > 0) {
-      this.vBMI = Math.round((this.vWeight) / ((this.vHeight)*(this.vHeight)));
+      let Height = (this.vHeight / 100)
+      this.vBMI = Math.round((this.vWeight) / ((Height)*(Height)));
     }
     else if (this.vHeight <= 0) {
       this.vBMI = 0;
@@ -647,7 +649,7 @@ getOptionTextService(option) {
       insertOPDPrescription['pulse'] = this.caseFormGroup.get('Pulse').value || '';
       insertOPDPrescription['bp'] = this.caseFormGroup.get('BP').value || '';
       insertOPDPrescription['storeId'] = this._loggedService.currentUserValue.user.storeId; 
-      insertOPDPrescription['patientReferDocId'] = ReferDocNameID;
+      insertOPDPrescription['patientReferDocId'] = ReferDocNameID || 0;
       insertOPDPrescription['advice'] =  this.MedicineItemForm.get('Remark').value  || '';
       insertOPDPrescription['isAddBy'] = this._loggedService.currentUserValue.user.id; 
  
@@ -659,12 +661,19 @@ getOptionTextService(option) {
     update_VisitFollowupDatObj['followupDate'] = this.datePipe.transform( this.MedicineItemForm.get('start').value, "MM-dd-yyyy") || "01/01/1900";
    
     let opRequestList = [];
-    this.selectedItems.forEach(element =>{
+    if(this.selectedItems.length == 0){
       let opRequestListObj ={};
       opRequestListObj['oP_IP_ID'] = this.vOPIPId ;
-      opRequestListObj['serviceId'] = element.ServiceId;
+      opRequestListObj['serviceId'] = 0
       opRequestList.push(opRequestListObj);
-    }); 
+    }else{
+      this.selectedItems.forEach(element =>{
+        let opRequestListObj ={};
+        opRequestListObj['oP_IP_ID'] = this.vOPIPId ;
+        opRequestListObj['serviceId'] = element.ServiceId;
+        opRequestList.push(opRequestListObj);
+      }); 
+    } 
  
     let delete_OPPrescriptionobj ={};
     delete_OPPrescriptionobj['oP_IP_ID'] = this.vOPIPId ;
@@ -683,13 +692,14 @@ getOptionTextService(option) {
           if (result.isConfirmed) {
             this.viewgetOpprescriptionReportPdf();
             this.getWhatsappshareSales(this.vOPIPId, this.vMobileNo)
-          }
+            this.onClear();
+          }  
         });
       } else {
         Swal.fire('Error !', 'Casepaper not saved', 'error');
       }
     });
-    this.onClear();
+  
   }
   onClear() {
     this.caseFormGroup.reset();
@@ -718,9 +728,10 @@ getOptionTextService(option) {
     this.caseFormGroup.get('LetteHeadRadio').setValue('NormalHead');
     this.caseFormGroup.get('LangaugeRadio').setValue('True');
     this.MedicineItemForm.get('Remark').setValue('');
+    this.MedicineItemForm.get('DoctorID').setValue('');
     this.selectedItems = [];
     this.specificDate = new Date(); 
-    this.vDays = '' 
+    this.vDays = 10 
   }
   SpinLoading: any = ""
   viewgetOpprescriptionReportPdf() {

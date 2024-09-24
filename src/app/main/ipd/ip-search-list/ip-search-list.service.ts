@@ -578,11 +578,17 @@ public getDischaregDoctor3Combo() {
    }
 
  //Class Combobox List
- public getClassCombo(Id) {
+ public getClassCombo(Id,loader = true){ 
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ClassName_Conditional", {"Id":Id})
 }
 //ClassName Combobox List
-public getBedClassCombo(Id) {
+public getBedClassCombo(Id,loader = true){ 
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ClassName_Conditional", {"Id":Id})
 }
 

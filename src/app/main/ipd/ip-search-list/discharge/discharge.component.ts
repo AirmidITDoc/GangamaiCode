@@ -207,6 +207,10 @@ optionsDoctor:any[]=[];
   vDescType:any;
   onDischarge() {
     this.isLoading = 'submit';
+
+    const formattedDate = this.datePipe.transform(this.dateTimeObj.date,"yyyy-MM-dd");
+    const formattedTime = formattedDate+this.dateTimeObj.time;
+
     if(this.vDoctorId == '' || this.vDoctorId == null || this.vDoctorId == undefined) {
       this.toastr.warning('Please select Doctor', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -258,14 +262,14 @@ optionsDoctor:any[]=[];
     let ModeOfDischarge = 0
     if(this._IpSearchListService.mySaveForm.get('ModeId').value)
       ModeOfDischarge = this._IpSearchListService.mySaveForm.get('ModeId').value.ModeOfDischargeId;
-     
+ 
     if (!this.DischargeId) {
       var m_data = {
         "insertIPDDischarg": {
           "dischargeId": 0,
           "admissionId": this.selectedAdvanceObj.AdmissionID,
-          "dischargeDate": this.dateTimeObj.date , // this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || '01/01/1900', 
-          "dischargeTime": this.dateTimeObj.time , //this.datePipe.transform(this.currentDate, 'hh:mm:ss') || '01/01/1900', 
+          "dischargeDate": formattedDate || '01/01/1900' , // this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || '01/01/1900', 
+          "dischargeTime": formattedTime || '01/01/1900', //this.datePipe.transform(this.currentDate, 'hh:mm:ss') || '01/01/1900', 
           "dischargeTypeId": this._IpSearchListService.mySaveForm.get("DischargeTypeId").value.DischargeTypeId || 0,
           "dischargedDocId": this._IpSearchListService.mySaveForm.get("DoctorID").value.DoctorID || 0,
           "dischargedRMOID": 0, // this._IpSearchListService.mySaveForm.get("DischargedRMOID").value,
@@ -275,8 +279,8 @@ optionsDoctor:any[]=[];
         "updateAdmission": {
           "admissionID": this.selectedAdvanceObj.AdmissionID,
           "isDischarged": 1,
-          "dischargeDate": this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || '01/01/1900',
-          "dischargeTime": this.datePipe.transform(this.currentDate, 'hh:mm:ss') || '01/01/1900', 
+          "dischargeDate":formattedDate || '01/01/1900', // this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || '01/01/1900',
+          "dischargeTime":formattedTime || '01/01/1900',//this.datePipe.transform(this.currentDate, 'hh:mm:ss') || '01/01/1900', 
         },
         "dischargeBedRelease": {
           "bedId": this.selectedAdvanceObj.BedId,
@@ -306,8 +310,8 @@ optionsDoctor:any[]=[];
       var m_data1 = {
         "updateIPDDischarg": {
           "DischargeId": this.DischargeId,
-          "DischargeDate":this.dateTimeObj.date , // this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') 
-          "DischargeTime":this.dateTimeObj.time , //  this.datePipe.transform(this.currentDate, 'hh:mm:ss')  
+          "DischargeDate":formattedDate || '01/01/1900', // this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') 
+          "DischargeTime":formattedTime || '01/01/1900', //  this.datePipe.transform(this.currentDate, 'hh:mm:ss')  
           "DischargeTypeId": this._IpSearchListService.mySaveForm.get("DischargeTypeId").value.DischargeTypeId || 0,
           "DischargedDocId": this._IpSearchListService.mySaveForm.get("DoctorID").value.DoctorID || 0,
           "DischargedRMOID": 0, // this._IpSearchListService.mySaveForm.get("DischargedRMOID").value,
@@ -317,8 +321,8 @@ optionsDoctor:any[]=[];
         "updateAdmission": {
           "admissionID": this.selectedAdvanceObj.AdmissionID || 0,
           "isDischarged": 1,
-          "dischargeDate":this.dateTimeObj.date ,// this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')  
-          "dischargeTime":this.dateTimeObj.time , // this.datePipe.transform(this.currentDate, 'hh:mm:ss')  
+          "dischargeDate":formattedDate || '01/01/1900' ,// this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')  
+          "dischargeTime":formattedTime || '01/01/1900', // this.datePipe.transform(this.currentDate, 'hh:mm:ss')  
         }
       }
       console.log(m_data1);

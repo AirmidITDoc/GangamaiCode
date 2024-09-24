@@ -134,7 +134,7 @@ export class BedTransferComponent implements OnInit {
         map(value => value ? this._filterBed(value) : this.BedList.slice()),
       );
     }); 
-    this._IpSearchListService.getBedClassCombo(wardObj.RoomId).subscribe(data => {
+    this._IpSearchListService.getBedClassCombo(wardObj.ClassID).subscribe(data => {
       this.BedClassList = data;
       console.log( this.BedClassList );
       this.Bedtransfer.get('ClassId').setValue(this.BedClassList[0]);

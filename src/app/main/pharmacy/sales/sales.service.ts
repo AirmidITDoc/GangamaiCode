@@ -79,6 +79,12 @@ export class SalesService {
   public getIndentID(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Indent_by_ID",Param);
   }
+  public getIpPrescriptionview(OP_IP_ID,PatientType,loader = true){ 
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.get("InPatient/view-IP_Prescription?OP_IP_ID=" + OP_IP_ID+"&PatientType="+PatientType);
+  }
 
 
   public getIndentList(Param){

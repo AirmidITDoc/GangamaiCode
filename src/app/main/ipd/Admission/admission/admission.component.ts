@@ -1365,7 +1365,7 @@ export class AdmissionComponent implements OnInit {
         map(value => value ? this._filterBed(value) : this.BedList.slice()),
       );
     });
-    this._AdmissionService.getBedClassCombo(wardObj.RoomId).subscribe(data => {
+    this._AdmissionService.getBedClassCombo(wardObj.ClassID).subscribe(data => {
       this.BedClassList = data;
       this.wardFormGroup.get('ClassId').setValue(this.BedClassList[0]);
     })
@@ -1629,7 +1629,7 @@ export class AdmissionComponent implements OnInit {
         return;
       }
     }
-    debugger
+  
     if(!this.wardFormGroup.get('BedId').value){
       if(this.vBedId == '' || this.vBedId == null || this.vBedId == undefined || this.vBedId == 0){
         this.toastr.warning('Please Select BedName', 'Warning !', {
@@ -1658,9 +1658,26 @@ export class AdmissionComponent implements OnInit {
    
   
     if ((!this.personalFormGroup.invalid && !this.hospitalFormGroup.invalid && !this.wardFormGroup.invalid && !this.otherFormGroup.invalid)) {
-    this.OnSaveAdmission();
+   
+      Swal.fire({
+        title: 'Do you want to Save the Admission ',
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Save!" 
+
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) { 
+         this.OnSaveAdmission();
+        }
+      }) 
+    }else{
+      this.getAdmittedPatientList_1();
     }
-    this.getAdmittedPatientList_1();
+
   }
   OnSaveAdmission() {
 
@@ -1775,18 +1792,29 @@ export class AdmissionComponent implements OnInit {
         console.log(submissionObj);
         this._AdmissionService.AdmissionNewInsert(submissionObj).subscribe(response => {
 
-          if (response) {
+          // if (response) { 
+          //   Swal.fire('Congratulations !', 'Admission save Successfully !', 'success').then((result) => {
+          //     if (result.isConfirmed) {
 
-            Swal.fire('Congratulations !', 'Admission save Successfully !', 'success').then((result) => {
-              if (result.isConfirmed) {
+          //       this.getAdmittedPatientCasepaperview(response, true);
 
+          //       this.onReset();
+          //     }
+          //   });
+          // } else {
+          //   Swal.fire('Error !', 'Admission not saved', 'error');
+          // }
+
+          if (response) { 
+            this.toastr.success('Admission save Successfully !', 'Congratulations !', {
+              toastClass: 'tostr-tost custom-toast-success',
+            });   
                 this.getAdmittedPatientCasepaperview(response, true);
-
-                this.onReset();
-              }
-            });
+                this.onReset(); 
           } else {
-            Swal.fire('Error !', 'Admission not saved', 'error');
+            this.toastr.success('Admission not saved', 'error', {
+              toastClass: 'tostr-tost custom-toast-success',
+            }); 
           }
           this.isLoading = '';
         });
@@ -1856,17 +1884,30 @@ export class AdmissionComponent implements OnInit {
         console.log(submissionObj);
         this._AdmissionService.AdmissionRegisteredInsert(submissionObj).subscribe(response => {
 
-          if (response) {
-            Swal.fire('Congratulations !', 'Admission Of Registered Patient Successfully !', 'success').then((result) => {
-              if (result.isConfirmed) {
-                this._matDialog.closeAll();
+          // if (response) {
+          //   Swal.fire('Congratulations !', 'Admission Of Registered Patient Successfully !', 'success').then((result) => {
+          //     if (result.isConfirmed) {
+          //       this._matDialog.closeAll();
                
+          //       this.getAdmittedPatientCasepaperview(response, true);
+          //       this.onReset();
+          //     }
+          //   });
+          // } else {
+          //   Swal.fire('Error !', 'Admission not saved', 'error');
+          // }
+
+          if (response) { 
+            this.toastr.success('Admission Of Registered Patient Successfully !', 'Congratulations !', {
+              toastClass: 'tostr-tost custom-toast-success',
+            });   
+                this._matDialog.closeAll();
                 this.getAdmittedPatientCasepaperview(response, true);
                 this.onReset();
-              }
-            });
           } else {
-            Swal.fire('Error !', 'Admission not saved', 'error');
+            this.toastr.success('Admission not saved', 'error', {
+              toastClass: 'tostr-tost custom-toast-success',
+            }); 
           }
           this.isLoading = '';
         });
