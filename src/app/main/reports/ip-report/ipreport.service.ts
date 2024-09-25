@@ -51,8 +51,7 @@ public getAdmittedPatientListView(FromDate,ToDate,DoctorId,WardId){
 }
 
   public getCurrentAdmittedPatientListView(DoctorId,WardId,CompanyId){
-  
-  return this._httpClient.get("InPatient/view-Admitted_PatientList?DoctorId=" + DoctorId +"&WardId="+WardId+"&CompanyId="+CompanyId);
+    return this._httpClient.get("IPReport/view-IPDCurrentAdmittedList?DoctorId=" + DoctorId +"&WardId="+WardId+"&CompanyId="+CompanyId);
 }
 public getAdmittedPatientListCompanywiseView(FromDate,ToDate){
   
