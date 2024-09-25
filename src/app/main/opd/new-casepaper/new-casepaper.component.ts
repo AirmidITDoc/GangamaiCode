@@ -187,6 +187,7 @@ export class NewCasepaperComponent implements OnInit {
     this.specificDate = new Date();  
     this.dateStyle = 'Day'
     this.onDaysChange();
+    this.getHistoryList();
   }  
  
   vDays:any = 10; 
@@ -1091,7 +1092,120 @@ SaveTemplate(){
     console.log('The dialog was closed - Insert Action', result); 
   }); 
 }
- 
+
+//chipset cheifcomplaint
+CheifComplaintControl = new FormControl();
+ExaminationControl = new FormControl();
+DiagnosisControl = new FormControl();
+filteredHistory: Observable<string[]>;
+selectable = true;
+removable = true; 
+HistoryList: any=[];
+addCheiflist:any=[];
+addDiagnolist:any=[];
+addExaminlist:any=[];
+
+addCheifcomplaint:any = 0 ;
+addDiagnosis:any = 0 ;
+addExamination:any =0;
+
+
+getHistoryList(){
+  this._CasepaperService.getcheifcomplaintList().subscribe(data =>{
+    this.HistoryList = data;
+    console.log(this.HistoryList)
+    this.filteredHistory = this.caseFormGroup.get('ChiefComplaint').valueChanges.pipe(
+      startWith(''),
+      map(value => value ? this._filter(value) : this.HistoryList.slice()),
+    ); 
+  });
+}
+private _filter(value: string): string[] {
+  const filterValue = value.toLowerCase();
+  return this.HistoryList.filter(item => item.toLowerCase().includes(filterValue));
+}
+addCheif(event: any): void {
+  this.addCheifcomplaint = 1;
+  const input = event.input;
+  const value = event.value; 
+  // Add cheif
+  if ((value || '').trim()) {
+    this.addCheiflist.push(value.trim());
+  } 
+  // Reset the input value
+  if (input) {
+    input.value = '';
+  }
+} 
+addDiagnos(event: any): void {
+  this.addDiagnosis = 1;
+  const input = event.input;
+  const value = event.value; 
+  // Add cheif
+  if ((value || '').trim()) {
+    this.addDiagnolist.push(value.trim());
+  } 
+  // Reset the input value
+  if (input) {
+    input.value = '';
+  }
+} 
+addExamina(event: any): void {
+  this.addExamination = 1;
+  const input = event.input;
+  const value = event.value; 
+  // Add cheif
+  if ((value || '').trim()) {
+    this.addExaminlist.push(value.trim());
+  } 
+  // Reset the input value
+  if (input) {
+    input.value = '';
+  }
+} 
+removeCheif(cheif: string): void {
+  if(this.addCheifcomplaint == 1){
+    const index = this.addCheiflist.indexOf(cheif);
+    if (index >= 0) {
+      this.addCheiflist.splice(index, 1);
+    }
+  }
+  else if(this.addDiagnosis == 1){
+    const index = this.addDiagnolist.indexOf(cheif);
+    if (index >= 0) {
+      this.addDiagnolist.splice(index, 1);
+    }
+  }
+  else if(this.addExamination == 1){
+    const index = this.addExaminlist.indexOf(cheif);
+    if (index >= 0) {
+      this.addExaminlist.splice(index, 1);
+    }
+  } 
+} 
+
+selected(obj): void {
+  console.log(obj) 
+  if(this.addCheifcomplaint == 1){
+    const value = obj.ChiefComplaint;
+    if ((value || '').trim()) {
+      this.addCheiflist.push(value.trim());
+    } 
+  }
+  else if(this.addDiagnosis == 1){
+    const value = obj.Diagnosis;
+    if ((value || '').trim()) {
+      this.addDiagnolist.push(value.trim());
+    } 
+  }
+  else if(this.addExamination == 1){
+    const value = obj.Examination;
+    if ((value || '').trim()) {
+      this.addExaminlist.push(value.trim());
+    } 
+  }
+
+}
 
 //   subscriptions: Subscription[] = [];
 //   reportPrintObj: CasepaperVisitDetails;
