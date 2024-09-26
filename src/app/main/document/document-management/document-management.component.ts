@@ -17,7 +17,8 @@ import { DocumentManagementService } from "./document-management.service";
 export class DocumentManagementComponent implements OnInit {
     ParentDataList: any;
     msg: any;
-
+    IsLoading: string = '';
+    docList : any = [];
     // @ViewChild(MatSort) sort: MatSort;
     // @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -40,7 +41,18 @@ export class DocumentManagementComponent implements OnInit {
         }
 
     ngOnInit(): void {
-        //this.getDocManagementList();
+        this.getConfigList();
+    }
+    getConfigList() {
+        this.IsLoading = 'loading-data';
+        
+        this._documentManagementService.documentnanagemenList().subscribe(doc => {
+          this.docList = doc;
+          this.IsLoading = '';
+        },
+          error => {
+            this.IsLoading = '';
+          });
     }
     // onSearch() {
     //     this.getDocManagementList();
@@ -153,6 +165,7 @@ export class DocumentManagementComponent implements OnInit {
                             this.toastr.success('Record updated Successfully.', 'updated !', {
                                 toastClass: 'tostr-tost custom-toast-success',
                               });
+                              this.getConfigList();
                            // this.getDocManagementList();
                             // Swal.fire(
                             //     "Updated !",

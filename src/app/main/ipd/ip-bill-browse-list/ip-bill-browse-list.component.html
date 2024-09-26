@@ -108,6 +108,23 @@
                                                 </mat-autocomplete>
                                             </mat-form-field> -->
 
+
+                                            
+                                            <mat-radio-group name="IsInterimOrFinal" formControlName="IsInterimOrFinal" fxLayout="column"
+                                                 value="0" style="padding: 6px;" class="gap-4">
+                                                <mat-label>Type:</mat-label>
+                                                <div fxLayout="row" >
+                                                <mat-radio-button value="2" class="mr-sm-12" (keyup)="onShow_IpdBrowse()">All
+                                                </mat-radio-button>&nbsp;
+                                                <mat-radio-button value="1" class="mr-sm-12"
+                                                    (keyup)=" onShow_IpdBrowse()">Interim Bills
+                                                </mat-radio-button>&nbsp;
+                                                <mat-radio-button value="0" class="mr-sm-12"
+                                                    (keyup)=" onShow_IpdBrowse()">Final Bills
+                                                </mat-radio-button>
+                                                </div>
+                                            </mat-radio-group>
+
                                            
                                             <div class="action-buttons">
                                                 <button type="button" mat-raised-button class="clearbutton"
