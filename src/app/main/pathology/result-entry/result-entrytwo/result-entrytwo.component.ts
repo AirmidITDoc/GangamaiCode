@@ -36,6 +36,7 @@ export class ResultEntrytwoComponent implements OnInit {
     
   };
   isresultdrSelected: boolean = false;
+  addflag: boolean = false;
   vTemplateName: any = 0;
   vPathResultDoctorId: any = 0;
   isLoading: string = '';
@@ -74,10 +75,10 @@ export class ResultEntrytwoComponent implements OnInit {
      public dialogRef: MatDialogRef<ResultEntrytwoComponent>,
   ) {
     dialogRef.disableClose = true;
-  
+    this.addflag=false;
     if(this.data){
       this.selectedAdvanceObj1 = this.data;
-       
+      this.addflag=true;
       console.log( this.selectedAdvanceObj1)
       this.OP_IPType=this.selectedAdvanceObj1.OPD_IPD_Type
       this.reportIdData =this.selectedAdvanceObj1.PathReportID
@@ -166,12 +167,14 @@ export class ResultEntrytwoComponent implements OnInit {
       });
       return;
   }
+  if(!this.addflag){
     if ((this.vTemplateName == '' || this.vTemplateName == null || this.vTemplateName == undefined)) {
       this.toastr.warning('Please select valid Template ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
+  }
     if(this.otherForm.get("ResultEntry").value ==''){
       this.toastr.warning('Please Enter Result Entry ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
