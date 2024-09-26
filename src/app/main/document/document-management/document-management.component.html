@@ -46,8 +46,8 @@
                                             <mat-select placeholder="Select Parent" name="menu_master_detail_master_id"
                                                 formControlName="upId" required>
                                                 <mat-option [value]="0">Select </mat-option>
-                                                <mat-option *ngFor="let M of ParentDataList" [value]="M.Id">
-                                                    {{ M.DocType }}
+                                                <mat-option *ngFor="let M of docList" [value]="M.Id">
+                                                    {{ M.ShortCode }} -  ({{ M.DocType }})
                                                 </mat-option>
                                             </mat-select>
                                             <mat-error>Please Select Menu</mat-error>
