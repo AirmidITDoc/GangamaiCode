@@ -599,6 +599,7 @@ console.log(PatientHeaderObj)
       "To_Dt ": this.datePipe.transform(this._IpBillBrowseListService.myFilterIpbillbrowseform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
       "Reg_No": this._IpBillBrowseListService.myFilterIpbillbrowseform.get("RegNo").value || 0,
       "PBillNo": this._IpBillBrowseListService.myFilterIpbillbrowseform.get("PBillNo").value + '' || "%",
+      "IsIntrimOrFinal": this._IpBillBrowseListService.myFilterIpbillbrowseform.get("IsInterimOrFinal").value || "0",
       "Start":(this.paginator?.pageIndex??0),
       "Length":(this.paginator?.pageSize??35)
       // "IsInterimOrFinal": 2,//this._ipbillBrowseService.myFilterform.get("IsInterimOrFinal").value || "0",

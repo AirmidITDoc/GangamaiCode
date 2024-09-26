@@ -2479,7 +2479,7 @@ export class SalesHospitalComponent implements OnInit {
           });
 
           this.ItemFormreset();
-          this.patientDetailsFormGrp.reset();
+          //this.patientDetailsFormGrp.reset();
           this.Formreset();
           this.ItemSubform.get('ConcessionId').reset(); 
           this.saleSelectedDatasource.data = [];
@@ -3213,7 +3213,7 @@ export class SalesHospitalComponent implements OnInit {
       "salesDraftbillDetailInsert": salesDetailInsertarr
 
     };
-    // console.log(submitData);
+     console.log(submitData);
     this._salesService.InsertSalesDraftBill(submitData).subscribe(response => {
       if (response) {
 
@@ -3241,13 +3241,14 @@ export class SalesHospitalComponent implements OnInit {
       });
     });
 
-    this.ItemFormreset();
-    this.patientDetailsFormGrp.reset();
+    this.ItemFormreset(); 
     this.Formreset();
     this.ItemSubform.get('ConcessionId').reset();
     this.PatientName = '';
     this.MobileNo = '';
     this.saleSelectedDatasource.data = [];
+    //this.patientDetailsFormGrp.reset();
+    
   }
 
   add: Boolean = false;

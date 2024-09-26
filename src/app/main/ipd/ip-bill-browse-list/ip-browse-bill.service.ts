@@ -27,7 +27,7 @@ export class IPBrowseBillService {
     RegNo: [''],
     FirstName: [''],
     LastName: [''],
-    IsInterimOrFinal:['2'],
+    IsInterimOrFinal:['0'],
     CompanyId:[''],
     start: [(new Date()).toISOString()],
     end: [(new Date()).toISOString()],
