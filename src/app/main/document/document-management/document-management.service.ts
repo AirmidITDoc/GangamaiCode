@@ -20,7 +20,7 @@ export class DocumentManagementService {
     createdocumentnanagementForm(): FormGroup {
         return this._formBuilder.group({
             Id: [""],
-            ParentId: [""],
+            UpId: [""],
             DocType: [""],
             ShortCode: [""],
             IsDeleted: ["false"],
@@ -46,12 +46,16 @@ export class DocumentManagementService {
     }
 
     public documentnanagementInsert(param) {
-        return this._httpClient.post("/Document/documentTypSave", param);
+        return this._httpClient.post("Document/DocumentTypSave", param);
     }
 
     public documentnanagementUpdate(param) {
-        return this._httpClient.post("Document/documentTypUpdate", param);
+        return this._httpClient.post("Document/DocumentTypUpdate", param);
     }
+    
+    public documentnanagemenList() {
+        return this._httpClient.post(`Generic/GetByProc?procName=Rtrv_DocTypeList`, {})
+    };
 
     populateForm(param) {
         this.myform.patchValue(param);
