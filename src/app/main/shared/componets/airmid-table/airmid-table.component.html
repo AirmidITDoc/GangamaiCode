@@ -1,8 +1,9 @@
 <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" style="overflow:auto">
     <ng-content></ng-content>
-
-    <tr mat-header-row *matHeaderRowDef="headers; sticky: true"></tr>
-    <tr mat-row *matRowDef="let row; columns: headers;"></tr>
+    <mat-header-row class="accent" *matHeaderRowDef="gridConfig.headers; sticky: true">
+    </mat-header-row>
+    <mat-row *matRowDef="let row; columns: gridConfig.headers;" class="element"
+        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
 </mat-table>
 <mat-paginator [pageSizeOptions]="[12, 24, 35, 100]" [pageSize]="12" [length]="resultsLength"
     showFirstLastButtons></mat-paginator>

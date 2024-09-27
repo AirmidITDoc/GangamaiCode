@@ -26,10 +26,14 @@ import { EmailSendComponent } from './componets/email-send/email-send.component'
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { DyanmicTableHeightDirective } from './directives/dynamic-table/dynamicTableHeight.directive';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 
 
 @NgModule({
-  declarations: [TrimPipe, CommonDateComponent,SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent,DyanmicTableHeightDirective],
+  declarations: [TrimPipe, CommonDateComponent,AirmidTableComponent,SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent,DyanmicTableHeightDirective],
   imports: [
     CommonModule,
     MatFormFieldModule,
@@ -46,7 +50,10 @@ import { DyanmicTableHeightDirective } from './directives/dynamic-table/dynamicT
     ImageCropperModule,
     MatSliderModule,
     MatIconModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule
   ],
   providers: [
     ExcelDownloadService,
@@ -59,7 +66,8 @@ import { DyanmicTableHeightDirective } from './directives/dynamic-table/dynamicT
     CommonDateComponent,
     HeaderComponent,
     PaymentModeComponent,
-    DyanmicTableHeightDirective
+    DyanmicTableHeightDirective,
+    AirmidTableComponent
   ],
   entryComponents: []
 })

@@ -41,7 +41,7 @@ import { BandwidthService } from './core/services/bandwidth.service';
 import { LoaderModule } from "./core/components/loader/loader.module";
 import { LayoutModule } from './layout/layout.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { AirmidTableComponent } from './shared/airmid-table/airmid-table.component';
+import { AirmidTableComponent } from './main/shared/componets/airmid-table/airmid-table.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -184,7 +184,7 @@ class PickDateAdapter extends NativeDateAdapter {
         AppComponent,
         PdfviewerComponent,
         InternetConnectionComponent,
-        AirmidTableComponent
+        
     ],
     imports: [
         SharedModule,
@@ -210,7 +210,6 @@ class PickDateAdapter extends NativeDateAdapter {
         FuseSharedModule,
         FuseSidebarModule,
         FuseThemeOptionsModule,
-        SharedModule,
         // App modules
         LayoutModule,
         NgxExtendedPdfViewerModule,

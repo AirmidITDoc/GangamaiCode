@@ -7,7 +7,7 @@ import { ToastrService } from "ngx-toastr";
 import { GenderMasterService } from "./gender-master.service";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
-import { gridColumn, gridRequest, gridResponseType } from "app/core/models/gridRequest";
+import { gridColumn, gridModel, gridRequest, gridResponseType } from "app/core/models/gridRequest";
 
 @Component({
     selector: "app-gender-master",
@@ -19,23 +19,36 @@ import { gridColumn, gridRequest, gridResponseType } from "app/core/models/gridR
 export class GenderMasterComponent implements OnInit {
     GenderMasterList: any;
     msg: any;
-    displayedColumns1: gridColumn[] = [{ Data: "genderId", Name: "Gender Id", Def: "GenderId" }, { Data: "genderName", Name: "Gender Name", Def: "GenderName" }];
     displayedColumns: string[] = [
         "GenderId",
         "GenderName",
+        "IsDeleted",
+        "action"
     ];
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     DSGenderMasterList = new MatTableDataSource<GenderMaster>();
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
-
+    gridConfig:gridModel={
+        apiUrl: "Gender/List", 
+        headers: [
+            "GenderId",
+            "GenderName",
+            "IsDeleted",
+            "action"
+        ], 
+        sortField: "GenderId", 
+        sortOrder: 0,
+        filters: [],
+        row: 10
+    }
     constructor(
         public _GenderService: GenderMasterService,
         public toastr: ToastrService, public _matDialog: MatDialog
     ) { }
 
     ngOnInit(): void {
-        this.getGenderMasterList();
+        //this.getGenderMasterList();
     }
 
     onSearch() {
@@ -52,6 +65,7 @@ export class GenderMasterComponent implements OnInit {
 
     resultsLength = 0;
     getGenderMasterList() {
+        
         var Param: gridRequest = {
             SortField: this.sort?.active ?? "GenderId", SortOrder: this.sort?.direction ?? 'asc' == 'asc' ? 0 : -1, Filters: [],
             Columns: [],

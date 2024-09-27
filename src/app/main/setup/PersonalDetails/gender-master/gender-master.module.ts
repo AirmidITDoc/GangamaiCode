@@ -17,6 +17,7 @@ import { FuseSharedModule } from "@fuse/shared.module";
 import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
 import { GenderMasterComponent } from "./gender-master.component";
 import { GenderMasterService } from "./gender-master.service";
+import { SharedModule } from "app/main/shared/shared.module";
 
 const routes: Routes = [
     {
@@ -29,7 +30,7 @@ const routes: Routes = [
     declarations: [GenderMasterComponent],
     imports: [
         RouterModule.forChild(routes),
-
+        SharedModule,
         MatButtonModule,
         MatCheckboxModule,
         MatFormFieldModule,
