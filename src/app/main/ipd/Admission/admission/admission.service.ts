@@ -457,11 +457,11 @@ export class AdmissionService {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_MLCType", {})
   }
 
-  public getAdmittedPatientListView(FromDate, ToDate, DoctorId, WardId) {
+ 
+  public getAdmittedPatientListView(FromDate, ToDate, DoctorId, WardId,CompanyId) {
 
-    return this._httpClient.get("InPatient/view-Admitted_PatientList?FromDate=" + FromDate + "&ToDate=" + ToDate + "&DoctorId=" + DoctorId + "&WardId=" + WardId);
+    return this._httpClient.get("IPReport/view-IPDCurrentAdmittedDoctorWiseCharges?FromDate=" + FromDate + "&ToDate=" + ToDate + "&DoctorId=" + DoctorId + "&WardId=" + WardId +"&CompanyId="+CompanyId);
   }
-
 
   public getAdmittedPatientCasepaaperView(AdmissionId) {
 

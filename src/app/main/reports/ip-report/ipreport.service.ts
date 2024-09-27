@@ -23,7 +23,10 @@ export class IPReportService {
         MaterialConsumptionId:'',
         RoomId:'',
         CompanyId:'',
-        DischargeTypeId:''
+        DischargeTypeId:'',
+        GroupId:'',
+        OPIPType:''
+
         // Radio:['1']
 
       })
@@ -50,8 +53,8 @@ public getAdmittedPatientListView(FromDate,ToDate,DoctorId,WardId){
   return this._httpClient.get("IPReport/view-IPDAdmissionList?FromDate=" + FromDate+"&ToDate="+ToDate+"&DoctorId="+DoctorId+"&WardId="+WardId);
 }
 
-  public getCurrentAdmittedPatientListView(DoctorId,WardId,CompanyId){
-    return this._httpClient.get("IPReport/view-IPDCurrentAdmittedList?DoctorId=" + DoctorId +"&WardId="+WardId+"&CompanyId="+CompanyId);
+  public getCurrentAdmittedPatientListView(FromDate,ToDate,DoctorId,WardId,CompanyId){
+    return this._httpClient.get("IPReport/view-IPDCurrentAdmittedList?FromDate="+FromDate+"&ToDate="+ToDate+ "&DoctorId="+ DoctorId +"&WardId="+WardId+"&CompanyId="+CompanyId);
 }
 public getAdmittedPatientListCompanywiseView(FromDate,ToDate){
   
@@ -59,9 +62,9 @@ public getAdmittedPatientListCompanywiseView(FromDate,ToDate){
 }
 
 
-public getCurrAdmitwardwisechargesView(DoctorId, WardId,CompanyId){
+public getCurrAdmitwardwisechargesView(FromDate,ToDate,DoctorId, WardId,CompanyId){
   
-  return this._httpClient.get("IPReport/view-IPAdmitPatientwardwisechargesReport?DoctorId=" + DoctorId+"&WardId="+WardId+"&CompanyId="+CompanyId+"&WardId="+WardId);
+  return this._httpClient.get("IPReport/view-IPDCurrentAdmittedWardWiseCharges?FromDate="+FromDate+"&ToDate="+ToDate+ "&DoctorId="+ DoctorId +"&WardId="+WardId+"&CompanyId="+CompanyId);
 }
   
 public getAdmittedPatientListCompanywisesummaryView(FromDate,ToDate){
@@ -305,20 +308,21 @@ public getRefundofAdvanceview(FromDate,ToDate){
 // /doc share
 
 
-public getDoctorShareReportView(FromDate,ToDate,DoctorId){
+public getDoctorShareReportView(Doctor_Id, GroupId, From_Dt, To_Dt, OP_IP_Type){
   
-  return this._httpClient.get("DoctorShareReports/view-DoctorShareReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&DoctorId="+DoctorId);
+  return this._httpClient.get("DoctorShareReports/view-DoctorShareReport?Doctor_Id=" + Doctor_Id+"&GroupId="+GroupId+"&From_Dt="+From_Dt+"&To_Dt="+To_Dt+"&OP_IP_Type="+OP_IP_Type);
 }
 
-public getDoctorSharesummaryReportView(FromDate,ToDate,DoctorId){
+public getDoctorSharesummaryReportView(FromDate,ToDate){
   
-  return this._httpClient.get("DoctorShareReports/viewDoctorWiseSummaryReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&DoctorId="+DoctorId);
+  return this._httpClient.get("DoctorShareReports/viewDoctorWiseSummaryReport?FromDate=" + FromDate+"&ToDate="+ToDate);
 }
-public getConDoctorSharesReportView(FromDate,ToDate,DoctorId){
-  return this._httpClient.get("DoctorShareReports/ViewConDoctorShareDetails?FromDate="+FromDate + "&ToDate="+ToDate+"&DoctorId="+DoctorId);
+public getConDoctorSharesReportView(Doctor_Id, GroupId, From_Dt, To_Dt, OP_IP_Type){
+  return this._httpClient.get("DoctorShareReports/ViewConDoctorShareDetails?Doctor_Id=" + Doctor_Id+"&GroupId="+GroupId+"&From_Dt="+From_Dt+"&To_Dt="+To_Dt+"&OP_IP_Type="+OP_IP_Type);
+  
 }
 
-public getDoctorShareListWithChargesview(FromDate,ToDate,DoctorId){
-  return this._httpClient.get("DoctorShareReports/ViewDoctorShareListWithCharges?FromDate=" + FromDate + "&ToDate="+ToDate+"&DoctorId="+DoctorId);
-}
+public getDoctorShareListWithChargesview(Doctor_Id, GroupId, From_Dt, To_Dt, OP_IP_Type){
+  return this._httpClient.get("DoctorShareReports/ViewDoctorShareListWithCharges?Doctor_Id=" + Doctor_Id+"&GroupId="+GroupId+"&From_Dt="+From_Dt+"&To_Dt="+To_Dt+"&OP_IP_Type="+OP_IP_Type);
+  }
 }

@@ -1792,19 +1792,6 @@ export class AdmissionComponent implements OnInit {
         console.log(submissionObj);
         this._AdmissionService.AdmissionNewInsert(submissionObj).subscribe(response => {
 
-          // if (response) { 
-          //   Swal.fire('Congratulations !', 'Admission save Successfully !', 'success').then((result) => {
-          //     if (result.isConfirmed) {
-
-          //       this.getAdmittedPatientCasepaperview(response, true);
-
-          //       this.onReset();
-          //     }
-          //   });
-          // } else {
-          //   Swal.fire('Error !', 'Admission not saved', 'error');
-          // }
-
           if (response) { 
             this.toastr.success('Admission save Successfully !', 'Congratulations !', {
               toastClass: 'tostr-tost custom-toast-success',
@@ -2049,7 +2036,7 @@ this.getAdmittedPatientList_1()
 
         this.datePipe.transform(this._AdmissionService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
         this.datePipe.transform(this._AdmissionService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
-        0, 0,
+        0, 0,0
       ).subscribe(res => {
         const matDialog = this._matDialog.open(PdfviewerComponent,
           {
@@ -2071,6 +2058,10 @@ this.getAdmittedPatientList_1()
     }, 100);
 
   }
+
+  
+  
+
 
   getAdmittedPatientListExcelview(){
     this.sIsLoading == 'loading-data'

@@ -49,6 +49,8 @@ export class IpReportComponent implements OnInit {
   FlagWardIdSelected: boolean = false;
   FlagCompanyIdSelected: boolean = false;
   FlagDischargetypeIdSelected: boolean = false;
+  FlagGroupSelected: boolean = false;
+  FlaOPIPTypeSelected: boolean = false;
 
   isWardSelected: boolean = false;
   isCompanyselected: boolean = false;
@@ -476,20 +478,24 @@ var data={
     if (this.ReportName == 'DoctorShareReport') {
     this.FlagDoctorSelected = true;
     this.FlagUserSelected = false;
-
+    this.FlagGroupSelected=true;
+    this.FlaOPIPTypeSelected=true;
   } else if (this.ReportName == 'DoctorWiseSummaryReport') {
     this.FlagDoctorSelected = true;
     this.FlagUserSelected = false;
-
+    this.FlagGroupSelected=false;
+    this.FlaOPIPTypeSelected=false;
   } else if (this.ReportName == 'Consultant Doctor ShareDetails') {
     this.FlagUserSelected = false;
     this.FlagDoctorSelected = true;
-
+    this.FlagGroupSelected=true;
+    this.FlaOPIPTypeSelected=true;
   }
   else if (this.ReportName == 'DoctorShare List WithCharges	') {
     this.FlagDoctorSelected = true;
     this.FlagUserSelected = false;
-
+    this.FlagGroupSelected=true;
+    this.FlaOPIPTypeSelected=true;
   }
 
 
@@ -1037,6 +1043,8 @@ viewgetIPAdvanceReportPdf() {
       this.SpinLoading =true;
       this.AdList=true;
      this._IPReportService.getCurrentAdmittedPatientListView(
+      this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+      this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
       DoctorId,RoomId,CompanyId
        ).subscribe(res => {
        const matDialog = this._matDialog.open(PdfviewerComponent,
@@ -1131,7 +1139,10 @@ viewgetIPAdvanceReportPdf() {
     setTimeout(() => {
    
       this.AdList=true;
-     this._IPReportService.getCurrAdmitwardwisechargesView(DoctorId,RoomId,CompanyId
+     this._IPReportService.getCurrAdmitwardwisechargesView( 
+      this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+      this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+      DoctorId,RoomId,CompanyId
        ).subscribe(res => {
        const matDialog = this._matDialog.open(PdfviewerComponent,
          {
@@ -2548,10 +2559,10 @@ viewgetDoctorShareReportPdf(){
   setTimeout(() => {
     this.SpinLoading =true;
     this.AdList=true;
-   this._IPReportService.getDoctorShareReportView(
+   this._IPReportService.getDoctorShareReportView(DoctorId,0,
     this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-         DoctorId
+    this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",0
+         
      ).subscribe(res => {
      const matDialog = this._matDialog.open(PdfviewerComponent,
        {
@@ -2578,12 +2589,12 @@ viewgetConsultantDoctorShareDetailsPdf(){
     DoctorId = this._IPReportService.userForm.get('DoctorId').value.DoctorId
  
   setTimeout(() => {
-    this.SpinLoading =true;
-    this.AdList=true;
-   this._IPReportService.getConDoctorSharesReportView(
+    // this.SpinLoading =true;
+    // this.AdList=true;
+   this._IPReportService.getConDoctorSharesReportView(DoctorId,0,
     this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
     this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-         DoctorId
+         0
      ).subscribe(res => {
      const matDialog = this._matDialog.open(PdfviewerComponent,
        {
@@ -2605,17 +2616,17 @@ viewgetConsultantDoctorShareDetailsPdf(){
    },100);
 }
 viewgetDoctorWiseSummaryReportReportPdf(){
-  let DoctorId = 0;
-  if (this._IPReportService.userForm.get('DoctorId').value)
-    DoctorId = this._IPReportService.userForm.get('DoctorId').value.DoctorId
+  // let DoctorId = 0;
+  // if (this._IPReportService.userForm.get('DoctorId').value)
+  //   DoctorId = this._IPReportService.userForm.get('DoctorId').value.DoctorId
  
   setTimeout(() => {
     this.SpinLoading =true;
     this.AdList=true;
    this._IPReportService.getDoctorSharesummaryReportView(
     this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-         DoctorId
+    this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
+       
      ).subscribe(res => {
      const matDialog = this._matDialog.open(PdfviewerComponent,
        {
@@ -2644,10 +2655,10 @@ viewgetDoctorSharewithchargesReportPdf(){
   setTimeout(() => {
     this.SpinLoading =true;
     this.AdList=true;
-   this._IPReportService.getDoctorShareListWithChargesview(
+   this._IPReportService.getDoctorShareListWithChargesview(DoctorId,0,
     this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-         DoctorId
+    this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",0
+         
      ).subscribe(res => {
      const matDialog = this._matDialog.open(PdfviewerComponent,
        {

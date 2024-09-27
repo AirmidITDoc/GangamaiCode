@@ -898,7 +898,7 @@ export class EditAdmissionComponent implements OnInit {
         "CompanyId": this.CompanyId, //this.hospitalFormGroup.get('CompanyId').value.CompanyId || 0,
         "TariffId": this.hospitalFormGroup.get('TariffId').value.TariffId || 0,
         "DepartmentId": this.hospitalFormGroup.get('Departmentid').value.DepartmentId || 0,
-        "AdmittedNameID": this.hospitalFormGroup.get('DoctorId').value.DoctorId || 0,
+        "RefDocNameID": this.hospitalFormGroup.get('refDoctorId').value.DoctorId || 0,
         "RelativeName": this.otherFormGroup.get('RelativeName').value || "",
         "RelativeAddress": this.otherFormGroup.get('RelativeAddress').value || "",
         "RelativePhoneNo": this.otherFormGroup.get('RelatvieMobileNo').value || "",

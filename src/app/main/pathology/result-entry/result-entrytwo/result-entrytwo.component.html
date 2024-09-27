@@ -140,7 +140,7 @@
                             <mat-label>Template Name</mat-label>
                             <input matAutocompletePosition="below" type="text"  [(ngModel)]="vTemplateName"
                                 placeholder="Enter Template Name" matInput formControlName="TemplateName"
-                                [matAutocomplete]="autotemp" [readonly]="addflag">
+                                [matAutocomplete]="autotemp" [readonly]="!otherForm.invalid">
                             <span matSuffix style="display: flex;">
                                 <mat-icon class="mat-icon-close"
                                     (click)="otherForm.get('TemplateName').setValue(''); isTemplateNameSelected = false;">close</mat-icon>

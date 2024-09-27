@@ -160,9 +160,8 @@
                                         <mat-form-field appearance="outline" *ngIf="FlagDoctorSelected" fxFlex="60%">
                                             <mat-label>Doctor Name</mat-label>
                                             <input matAutocompletePosition="below" type="text"
-                                                placeholder="Select  Doctor Name" matInput
-                                                formControlName="DoctorId" [matAutocomplete]="autosearchDoctorReport"
-                                                 [(ngModel)]="vDescType">
+                                                placeholder="Select  Doctor Name" matInput formControlName="DoctorId"
+                                                [matAutocomplete]="autosearchDoctorReport" [(ngModel)]="vDescType">
                                             <span matSuffix style="display: flex;">
                                                 <mat-icon class="mat-icon-close"
                                                     (click)="_IPReportService.userForm.get('DoctorId').setValue(''); isSearchdoctorSelected = false;">close</mat-icon>
@@ -214,13 +213,29 @@
 
                                         </mat-form-field>
 
-                                                                           
-                                        <mat-form-field appearance="outline" *ngIf="FlagDischargetypeIdSelected" fxFlex="60%">
+                                        <mat-form-field appearance="outline" *ngIf="FlagGroupSelected">
+                                            <mat-label>Group Id</mat-label>
+                                            <input name="GroupId" formControlName="GroupId" placeholder="GroupId"
+                                                matInput>
+
+                                        </mat-form-field>
+
+                                        <mat-form-field appearance="outline" *ngIf="FlaOPIPTypeSelected"
+                                            style="margin-left:2%;">
+                                            <mat-label>OPIP Type</mat-label>
+                                            <input name="OPIPType" formControlName="OPIPType" placeholder="OPIPType"
+                                                matInput>
+
+                                        </mat-form-field>
+
+
+                                        <mat-form-field appearance="outline" *ngIf="FlagDischargetypeIdSelected"
+                                            fxFlex="60%">
                                             <mat-label>Discharge Type Name</mat-label>
                                             <input matAutocompletePosition="below" type="text"
                                                 placeholder="Select DischargeTypeName" matInput
                                                 formControlName="DischargeTypeId" [matAutocomplete]="autoDisctype"
-                                                 [(ngModel)]="vDescType">
+                                                [(ngModel)]="vDescType">
                                             <span matSuffix style="display: flex;">
                                                 <mat-icon class="mat-icon-close"
                                                     (click)="_IPReportService.userForm.get('DischargeTypeId').setValue(''); isDistypeSelected = false;">close</mat-icon>
