@@ -25,7 +25,7 @@ import { AuthenticationService } from "app/core/services/authentication.service"
 export class ParameterFormMasterComponent implements OnInit {
     isPrintDisSummaryChecked: boolean = false;
 
-    ageType: string[] = ["Days", "Months", "Years"];
+    ageType: string[] = ["DAY", "MONTH", "YEAR"];
 
     displayedColumns: string[] = [
         "GenderName",
