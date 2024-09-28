@@ -1054,7 +1054,7 @@ viewgetIPAdvanceReportPdf() {
            width: '100%',
            data: {
              base64: res["base64"] as string,
-             title: "Admission List  Viewer"
+             title: "Ip Current Admitted  List  Viewer"
            }
          });
  
