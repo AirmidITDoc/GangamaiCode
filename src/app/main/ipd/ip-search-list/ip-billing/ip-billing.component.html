@@ -1154,6 +1154,33 @@
                     </mat-cell>
                 </ng-container> 
 
+                <ng-container matColumnDef="RedDate" sticky>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-160">Req.DateTime
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-160">
+                        <span> {{contact.ReqDate}}-{{contact.ReqTime}}</span>
+                    </mat-cell>
+                </ng-container> 
+
+                <ng-container matColumnDef="UserName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-90">User Name
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-90">
+                        <span> {{contact.BillingUser || '-'}}</span>
+                    </mat-cell>
+                </ng-container>  
+              
+                <ng-container matColumnDef="Action" stickyEnd>
+                    <mat-header-cell *matHeaderCellDef style="color: white;" class="w-80">
+                        Action</mat-header-cell>
+                    <mat-cell *matCellDef="let element" class="w-80">
+                        <button mat-icon-button (click)="AddList(element)"
+                            color="warn">
+                            <mat-icon>add</mat-icon>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+
                 <ng-container matColumnDef="loading">
                     <mat-footer-cell *matFooterCellDef colspan="6">
                         loading data...
@@ -1174,7 +1201,7 @@
 
                 <mat-row *matRowDef="let contact; columns: tableColumns;"
                     [ngClass]="{'row-pink': contact.IsStatus == 0}" [@animate]="{value:'*',params:{y:'100%'}}"
-                    (dblclick)="AddList(contact)"></mat-row>
+                    ></mat-row>
                 <!-- <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource1!=null}">
                 </mat-footer-row>
                 <mat-footer-row *matFooterRowDef="['noData']"

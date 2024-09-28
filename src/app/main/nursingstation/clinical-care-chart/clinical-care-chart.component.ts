@@ -24,6 +24,7 @@ import { NewPrescriptionComponent } from '../prescription/new-prescription/new-p
 import { NewRequestforlabComponent } from '../requestforlabtest/new-requestforlab/new-requestforlab.component';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
+import { LabReportsViewComponent } from './lab-reports-view/lab-reports-view.component';
 
 @Component({
   selector: 'app-clinical-care-chart',
@@ -411,6 +412,23 @@ getLabRequest(){
      }
     this.advanceDataStored.storage = new AdmissionPersonlModel(this.registerObj);
     const dialogRef = this._matDialog.open(MedicationErrorComponent,
+      {
+        maxWidth: "100%",
+        height: '95%',
+        width: '90%',  
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result); 
+    });
+  }
+  getLabReport(){
+    if(this.vRegNo == 0 || this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined){
+      this.toastr.warning('Please select Patient','Warning !',{
+        toastClass: 'tostr-tost custom-toast-warning',
+      }) 
+      return;
+     }
+    const dialogRef = this._matDialog.open(LabReportsViewComponent,
       {
         maxWidth: "100%",
         height: '95%',

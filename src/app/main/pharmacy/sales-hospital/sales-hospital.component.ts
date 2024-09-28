@@ -2190,6 +2190,10 @@ export class SalesHospitalComponent implements OnInit {
     salesDraftStatusUpdate['DSalesId'] = this.DraftID || 0;
     salesDraftStatusUpdate['IsClosed'] = 1
 
+    let salesPrescriptionStatusUpdate = {}; 
+    salesPrescriptionStatusUpdate['opipid'] =  this.IPMedID || 0;
+    salesPrescriptionStatusUpdate['isclosed'] = true || 1 
+  
     let PaymentInsertobj = {};
 
     PaymentInsertobj['BillNo'] = 0,
@@ -2230,7 +2234,8 @@ export class SalesHospitalComponent implements OnInit {
       "cal_DiscAmount_Sales": cal_DiscAmount_Sales,
       "cal_GSTAmount_Sales": cal_GSTAmount_Sales,
       "salesDraftStatusUpdate": salesDraftStatusUpdate,
-      "salesPayment": PaymentInsertobj
+      "salesPayment": PaymentInsertobj,
+      "salesPrescriptionStatusUpdate":salesPrescriptionStatusUpdate
     };
 
     console.log(submitData)
@@ -2601,6 +2606,14 @@ export class SalesHospitalComponent implements OnInit {
     let cal_GSTAmount_SalesCredit = {};
     cal_GSTAmount_SalesCredit['salesID'] = 0;
 
+    let draftStatusUpdate_SalesCredit = {}; 
+    draftStatusUpdate_SalesCredit['dSalesId'] =  0;
+    draftStatusUpdate_SalesCredit['isClosed'] = true || 1 
+
+    let prescriptionStatusUpdate_SalesCredit = {}; 
+    prescriptionStatusUpdate_SalesCredit['opipid'] =  this.IPMedID || 0;
+    prescriptionStatusUpdate_SalesCredit['isclosed'] = true || 1  
+  
     // console.log("Procced with Payment Option");
 
     let submitData = {
@@ -2608,7 +2621,9 @@ export class SalesHospitalComponent implements OnInit {
       "salesDetailInsertCredit": salesDetailInsertCreditarr,
       "updateCurStkSalesCredit": updateCurStkSalesCreditarray,
       "cal_DiscAmount_SalesCredit": cal_DiscAmount_SalesCredit,
-      "cal_GSTAmount_SalesCredit": cal_GSTAmount_SalesCredit
+      "cal_GSTAmount_SalesCredit": cal_GSTAmount_SalesCredit,
+      "draftStatusUpdate_SalesCredit":draftStatusUpdate_SalesCredit,
+      "prescriptionStatusUpdate_SalesCredit":prescriptionStatusUpdate_SalesCredit
     };
     console.log(submitData)
     let vMobileNo = this.mobileno;
@@ -3157,11 +3172,11 @@ export class SalesHospitalComponent implements OnInit {
       SalesInsert['oP_IP_Type'] = 1;
       SalesInsert['oP_IP_ID'] = this.OP_IP_Id;
     }
-    SalesInsert['totalAmount'] = this.FinalTotalAmt
+    SalesInsert['totalAmount'] = this.FinalTotalAmt || 0;
     SalesInsert['vatAmount'] = this.FinalGSTAmt || 0;//this.ItemSubform.get('FinalGSTAmt').value;
     SalesInsert['discAmount'] = this.FinalDiscAmt;
-    SalesInsert['netAmount'] = NetAmt;
-    SalesInsert['paidAmount'] = NetAmt;
+    SalesInsert['netAmount'] = NetAmt || 0;;
+    SalesInsert['paidAmount'] = NetAmt || 0;;
     SalesInsert['balanceAmount'] = 0;
     SalesInsert['concessionReasonID'] = ConcessionId || 0;
     SalesInsert['concessionAuthorizationId'] = 0;
@@ -3177,9 +3192,9 @@ export class SalesHospitalComponent implements OnInit {
     SalesInsert['creditReasonID'] = 0;
     SalesInsert['wardId'] = 0;
     SalesInsert['bedId'] = 0;
-    SalesInsert['extMobileNo'] = this.MobileNo;
-    SalesInsert['extAddress'] = this.vextAddress;
-
+    SalesInsert['extMobileNo'] = this.MobileNo || '';
+    SalesInsert['extAddress'] = this.vextAddress || '';
+    SalesInsert['isClosed'] = true;
     SalesInsert['DsalesId'] = 0;
 
     let salesDetailInsertarr = [];

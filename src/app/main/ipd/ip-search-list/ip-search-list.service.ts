@@ -735,11 +735,11 @@ public updateIPDDischargSummary(employee)
   }
 
 
-  public InsertIPAddChargesNew(employee, loader = true) {
+  public InsertIPLabReqCharges(employee, loader = true) {
     if (loader) {
       this._loaderService.show();
   } 
-    return this._httpClient.post("InPatient/AddIPCharges",employee)
+    return this._httpClient.post("InPatient/LabRequestCharges",employee)
   }
   // public InsertIPBilling(employee)
   // {

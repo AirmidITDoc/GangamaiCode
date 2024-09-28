@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { LoaderService } from 'app/core/components/loader/loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +13,10 @@ export class DashboardService {
   MonthWiseFrom:FormGroup;
   DailyUseFrom:FormGroup;
   constructor(public _httpClient: HttpClient,
-    private _formBuilder: FormBuilder
-  ) { this.UseFrom = this.createUseFrom();
+    private _formBuilder: FormBuilder, 
+    private _loaderService:LoaderService
+  )
+   { this.UseFrom = this.createUseFrom();
     this.DayWiseFrom = this.createDaywisefrom();
     this.MonthWiseFrom = this.createMonthwiseFrom();
     this.DailyUseFrom = this.CreateDailyUseForm();
@@ -199,6 +202,13 @@ export class DashboardService {
   public getIPDAppointCountList()
   {
      return this._httpClient.post("Generic/GetByProc?procName=m_DASH_IP_ADMISSION_DISCHARGE_COUNT",{})
+  }
+
+  public resetBedOccupancy(m_data, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+    }
+    return this._httpClient.post("Generic/ExecByQueryStatement?query=" + m_data, {});
   }
 }
 

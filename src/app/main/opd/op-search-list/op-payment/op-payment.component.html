@@ -26,7 +26,7 @@
             <form [formGroup]="patientDetailsFormGrp" class="mat-form-field-auto mat-error-fix">
                 <div fxLayout="column" class="gap-20">
                     <div class="patient-info-container patient-info">
-                        <mat-card>
+                        <mat-card *ngIf="!advanceData.GRNID">
                             <div class="patient-info-box">
                                 <div class="patient-info-title border-bottom pb-2">
                                     <span class="h2">Patient Information</span>
@@ -80,7 +80,7 @@
                         <mat-card>
                             <div class="patient-info-box">
                                 <div class="patient-info-title border-bottom pb-2">
-                                    <span class="h2">Patient Bill Information</span>
+                                    <span class="h2">Bill Information</span>
                                 </div>
                                 <div class="patient-info-box my-8">
                                     <div class="patient-info-row row-gap-4" fxLayout="row wrap">

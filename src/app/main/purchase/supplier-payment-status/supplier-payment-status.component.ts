@@ -67,6 +67,7 @@ export class SupplierPaymentStatusComponent implements OnInit {
 
   ngOnInit(): void {
     this.getStoreList();
+    this.getSupplierPayStatusList();
   } 
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
@@ -138,8 +139,8 @@ export class SupplierPaymentStatusComponent implements OnInit {
     console.log(this.SelectedList) 
   }
 
-  OnSave() {
-    if ((this.vBalanceAmount < 0)) {
+  OnSave() { 
+    if (this.vBalanceAmount == 0 && this.vNetAmount == 0 ) {
       this.toastr.warning('Please select Check Box', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -150,8 +151,8 @@ export class SupplierPaymentStatusComponent implements OnInit {
     this.SelectedList.forEach((element) => {
       let grnHeaderPayStatusObj = {};
       grnHeaderPayStatusObj['grnId'] = element.GRNID || 0;
-      grnHeaderPayStatusObj['paidAmount'] = this.vPaidAmount || 0;
-      grnHeaderPayStatusObj['balAmount'] =  this.vBalanceAmount  || 0;
+      grnHeaderPayStatusObj['paidAmount'] = this.vNetAmount || 0;
+      grnHeaderPayStatusObj['balAmount'] =   0 ;//this.vBalanceAmount  ||
       grnHeaderPayStatus.push(grnHeaderPayStatusObj);
     });
 
@@ -195,7 +196,7 @@ export class SupplierPaymentStatusComponent implements OnInit {
           this.toastr.success('Supplier payment Successfuly', 'Saved', {
             toastClass: 'tostr-tost custom-toast-warning',
           });
-          return;
+          this.OnReset();
         }
         else {
           this.toastr.warning('Supplier payment Not Saved', 'Error', {
@@ -221,6 +222,7 @@ export class SupplierPaymentStatusComponent implements OnInit {
     this.vNetAmount = 0;
     this.vPaidAmount = 0;
     this.vBalanceAmount = 0;
+    this.SelectedList = [];
   }
   getSupplierPaymentList() {  
     this.dsSupplierpayList.data = []; 

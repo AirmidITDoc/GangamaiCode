@@ -39,7 +39,8 @@ import { ClinicalCareChartComponent } from './clinical-care-chart.component';
 import { MatSliderModule } from '@angular/material/slider'; 
 import { FormsModule } from '@angular/forms';
 import { PhlebitisScoreComponent } from './phlebitis-score/phlebitis-score.component';
-import { MedicationErrorComponent } from './medication-error/medication-error.component'; 
+import { MedicationErrorComponent } from './medication-error/medication-error.component';
+import { LabReportsViewComponent } from './lab-reports-view/lab-reports-view.component'; 
 
 const routes: Routes = [
   {
@@ -53,7 +54,8 @@ const routes: Routes = [
   declarations: [
     ClinicalCareChartComponent,
     PhlebitisScoreComponent,
-    MedicationErrorComponent
+    MedicationErrorComponent,
+    LabReportsViewComponent
   ],
   imports: [    
         RouterModule.forChild(routes),
