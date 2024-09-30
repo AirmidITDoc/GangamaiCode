@@ -239,9 +239,9 @@ return this._httpClient.get("OPReport/view-OPDoctorWiseNewOldPatientReport?FromD
   
     return this._httpClient.get("CommanReport/view-ServicewiseReportwithbill?ServiceId="+ServiceId+"&FromDate=" + FromDate+"&ToDate="+ToDate);
   }
-  public getServicewisereportView(ServiceId,FromDate,ToDate,){
+  public getServicewisereportView(ServiceId,FromDate,ToDate,DoctorId){
   
-    return this._httpClient.get("CommanReport/view-ServiceWiseReport?ServiceId=" + ServiceId+"&FromDate="+FromDate+"&ToDate="+ToDate);
+    return this._httpClient.get("CommanReport/view-ServiceWiseReport?ServiceId=" + ServiceId+"&FromDate="+FromDate+"&ToDate="+ToDate+"&DoctorId="+DoctorId);
   }
 
   public getBillsummarywithtcsView(FromDate,ToDate){

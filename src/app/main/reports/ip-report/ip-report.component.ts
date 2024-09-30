@@ -491,7 +491,7 @@ var data={
     this.FlagGroupSelected=true;
     this.FlaOPIPTypeSelected=true;
   }
-  else if (this.ReportName == 'DoctorShare List WithCharges	') {
+  else if (this.ReportName == 'DoctorShare List WithCharges') {
     this.FlagDoctorSelected = true;
     this.FlagUserSelected = false;
     this.FlagGroupSelected=true;
@@ -809,7 +809,7 @@ var data={
     } else if (this.ReportName == 'DoctorWiseSummaryReport') {
       this.viewgetDoctorWiseSummaryReportReportPdf();
     }
-    else if (this.ReportName == 'DoctorShare List WithCharges	') {
+    else if (this.ReportName == 'DoctorShare List WithCharges') {
       this.viewgetDoctorSharewithchargesReportPdf();
     }
   }
