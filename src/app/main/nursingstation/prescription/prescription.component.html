@@ -219,10 +219,23 @@
                                         <div>
                                             <mat-table class="Tab2" matSort [dataSource]="dsprescriptiondetList" [@animateStagger]="{value:'50'}" style="overflow:auto;">
             
-                                                <ng-container matColumnDef="ItemName">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ItemName
+                                                <ng-container matColumnDef="Status">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm  class="w-90">Status
                                                     </mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-90">
+                                                        <button mat-icon-button>
+                                                            <mat-icon title="Accepted" *ngIf="contact.IsClosed==true"
+                                                                class="active-icon green-500 s-16">check_circle</mat-icon>
+                                                            <mat-icon title="Pending" *ngIf="contact.IsClosed==false"
+                                                                class="active-icon red-500 s-16">hourglass_empty</mat-icon>
+                                                        </button>
+                                                    </mat-cell>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="ItemName">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-300">ItemName
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-300">
                                                         {{contact.ItemName}}
                                                     </mat-cell>
                                                 </ng-container>

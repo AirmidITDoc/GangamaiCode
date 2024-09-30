@@ -48,6 +48,7 @@ export class PrescriptionComponent implements OnInit {
   ]
 
   dscPrescriptionDetList:string[] = [
+    'Status',
     'ItemName',
     'Qty',
     // 'TotalQty'

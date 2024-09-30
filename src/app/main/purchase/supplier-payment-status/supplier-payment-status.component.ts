@@ -197,6 +197,7 @@ export class SupplierPaymentStatusComponent implements OnInit {
             toastClass: 'tostr-tost custom-toast-warning',
           });
           this.OnReset();
+          this.getSupplierPayStatusList();
         }
         else {
           this.toastr.warning('Supplier payment Not Saved', 'Error', {
@@ -222,7 +223,10 @@ export class SupplierPaymentStatusComponent implements OnInit {
     this.vNetAmount = 0;
     this.vPaidAmount = 0;
     this.vBalanceAmount = 0;
-    this.SelectedList = [];
+    this.SelectedList.data = [];
+    this.dsSupplierpayList.data = [];
+    this._SupplierPaymentStatusService.SearchFormGroup.get('SupplierId').setValue('')
+    this._SupplierPaymentStatusService.SearchFormGroup.get('Status').setValue('0')
   }
   getSupplierPaymentList() {  
     this.dsSupplierpayList.data = []; 

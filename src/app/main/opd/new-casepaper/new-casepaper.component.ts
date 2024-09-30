@@ -350,6 +350,7 @@ export class NewCasepaperComponent implements OnInit {
     }
     this._CasepaperService.RtrvPreviousprescriptionDetails(mdata).subscribe(Visit => {
       this.dsItemList.data = Visit as MedicineItemList[];
+         this.Chargelist = Visit as MedicineItemList[];
       // console.log(this.dsItemList.data)
       if (this.dsItemList.data.length > 0) {
         this.vHeight = this.dsItemList.data[0].PHeight;
@@ -561,7 +562,7 @@ export class NewCasepaperComponent implements OnInit {
     if (!iscekDuplicate) {
       this.Chargelist.push(
         {
-          ItemID: this.MedicineItemForm.get('ItemId').value.ItemId || 0,
+          DrugId: this.MedicineItemForm.get('ItemId').value.ItemId || 0,
           DrugName: this.MedicineItemForm.get('ItemId').value.ItemName || '',
           DoseId: this.MedicineItemForm.get('DoseId').value.DoseId || 0,
           DoseName: this.MedicineItemForm.get('DoseId').value.DoseName || '',
@@ -624,18 +625,18 @@ export class NewCasepaperComponent implements OnInit {
       insertOPDPrescription['opD_IPD_IP'] = this.vOPIPId;
       insertOPDPrescription['opD_IPD_Type'] = 0;
       insertOPDPrescription['date'] = this.dateTimeObj.date,
-        insertOPDPrescription['pTime'] = this.dateTimeObj.time;
+      insertOPDPrescription['pTime'] = this.dateTimeObj.time;
       insertOPDPrescription['classID'] = this.vClassId;
       insertOPDPrescription['genericId'] = 1;
-      insertOPDPrescription['drugId'] = element.ItemID || 0;
+      insertOPDPrescription['drugId'] = element.DrugId || 0;
       insertOPDPrescription['doseId'] = element.DoseId || 0;
       insertOPDPrescription['days'] = element.Days || 0;
       insertOPDPrescription['instruction'] = element.Instruction || '';
       insertOPDPrescription['remark'] = '';
       insertOPDPrescription['doseOption2'] = element.DoseId1 || 0;
-      insertOPDPrescription['daysOption2'] = parseInt(element.Day1.toString()) || 0;
+      insertOPDPrescription['daysOption2'] = 0 ,//parseInt(element.Day1.toString()) || 0;
       insertOPDPrescription['doseOption3'] = element.DoseId2 || 0;
-      insertOPDPrescription['daysOption3'] = parseInt(element.Day2.toString()) || 0;
+      insertOPDPrescription['daysOption3'] = 0 ,///parseInt(element.Day2.toString()) || 0;
       insertOPDPrescription['instructionId'] = 0;
       insertOPDPrescription['qtyPerDay'] = 0;
       insertOPDPrescription['totalQty'] = 0;
@@ -996,7 +997,7 @@ export class NewCasepaperComponent implements OnInit {
       "visitid": contact.VisitId
     }
     this._CasepaperService.RtrvPreviousprescriptionDetails(mdata).subscribe(Visit => {
-      this.dsItemList1.data = Visit as MedicineItemList[];
+      this.dsItemList1.data = Visit as MedicineItemList[]; 
       this.SelectedObj = this.dsItemList1.data
       // console.log(this.dsItemList1.data);
       /// console.log(this.SelectedObj);
