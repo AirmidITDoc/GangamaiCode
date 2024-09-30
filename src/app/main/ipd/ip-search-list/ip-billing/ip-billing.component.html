@@ -1175,7 +1175,7 @@
                         Action</mat-header-cell>
                     <mat-cell *matCellDef="let element" class="w-80">
                         <button mat-icon-button (click)="AddList(element)"
-                            color="warn">
+                            color="warn" [disabled]="element.IsStatus == 1">
                             <mat-icon>add</mat-icon>
                         </button>
                     </mat-cell>
@@ -1200,7 +1200,7 @@
                 </mat-row> -->
 
                 <mat-row *matRowDef="let contact; columns: tableColumns;"
-                    [ngClass]="{'row-pink': contact.IsStatus == 0}" [@animate]="{value:'*',params:{y:'100%'}}"
+                    [ngClass]="{'red-row': contact.IsStatus == 1}" [@animate]="{value:'*',params:{y:'100%'}}"
                     ></mat-row>
                 <!-- <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource1!=null}">
                 </mat-footer-row>

@@ -32,16 +32,15 @@ export class RequestforlabtestComponent implements OnInit {
     'action',
   ]
 
-  displayColumns: string[] =[
+  displayColumns: string[] =[ 
+    'IsStatus', 
+    'IsComplted',
     'ReqDate',
     'ReqTime',
     'ServiceName',
     'AddedByName',
     'BillingUser',
     'AddedByDate',
-    'IsStatus',
-    'PBillNo',
-    'IsComplted'
   ]
 
   

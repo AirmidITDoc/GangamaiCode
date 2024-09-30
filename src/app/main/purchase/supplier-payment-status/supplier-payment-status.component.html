@@ -30,7 +30,7 @@
                             <mat-card style="padding: 10px;">
                             <div fxFlexFill fxLayout="column" fxLayout="row" fxLayoutGap="6px"> 
                                
-                                    <mat-form-field appearance="outline" fxFlex="14%">
+                                    <mat-form-field appearance="outline" fxFlex="15%">
                                         <mat-label>Enter a date range</mat-label>
                                         <mat-date-range-input [rangePicker]="grnPicker">
                                             <input matStartDate formControlName="start" placeholder="Start date">
@@ -41,7 +41,7 @@
                                         <mat-date-range-picker #grnPicker></mat-date-range-picker>
                                     </mat-form-field>
                             
-                                    <mat-form-field appearance="outline" fxFlex="14%">
+                                    <mat-form-field appearance="outline" fxFlex="15%">
                                         <mat-label>Store Name</mat-label>
                                         <mat-select formControlName="ToStoreId" name="ToStoreId">
                                             <mat-option></mat-option>
@@ -106,7 +106,13 @@
                                                     </span>
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" required class="w-60">
-                                                    <mat-checkbox aria-label="Checked" (change)="tableElementChecked($event, contact)">
+                                                    <mat-icon *ngIf="contact.PaidAmount" matTooltip="Paid"
+                                                    class="pill green-600 s-16">circle</mat-icon>
+                                                    <mat-icon *ngIf="!contact.PaidAmount" matTooltip="Unpaid"
+                                                    class="pill red-600 s-16">circle</mat-icon>
+
+                                                    <mat-checkbox aria-label="Checked" (change)="tableElementChecked($event, contact)"
+                                                    *ngIf="!contact.PaidAmount">
                                                     </mat-checkbox>
                                                 </mat-cell>
                                             </ng-container>

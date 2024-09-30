@@ -733,6 +733,7 @@ ServiceList:any=[];
     });
   } 
   //nursing Service List added
+ 
   AddList(m) {
     console.log(m) 
     var m_data = { 
@@ -741,7 +742,7 @@ ServiceList:any=[];
       "classId": this.Serviceform.get("ChargeClass").value.ClassId || 0 ,    // this.selectedAdvanceObj.ClassId,
       "userId": this.accountService.currentUserValue.user.id,
       "traiffId": 1, 
-      "reqDetId": m.ReqDate || '01/01/1900', 
+      "reqDetId": m.ReqDetId , 
       "chargesDate": this.datePipe.transform(this.currentDate, "MM-dd-yyyy") || '01/01/1900', // this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
     }
     console.log(m_data);
@@ -749,9 +750,11 @@ ServiceList:any=[];
       "labRequestCharges":m_data
     };  
     this._IpSearchListService.InsertIPLabReqCharges(submitData).subscribe(data => {
+      console.log(data)
       if (data) {
-        Swal.fire('Success !', 'ChargeList Row Added Successfully', 'success');
+        Swal.fire('Success !', 'ChargeList Row Added Successfully', 'success'); 
         this.getChargesList();
+        this.getRequestChargelist();  
       }
     });
     this.onClearServiceAddList() 
