@@ -458,8 +458,10 @@ export class AdmissionService {
   }
 
  
-  public getAdmittedPatientListView(FromDate, ToDate, DoctorId, WardId,CompanyId) {
-
+  public getAdmittedPatientListView(FromDate, ToDate, DoctorId, WardId,CompanyId,loader = true) {
+      if (loader) {
+        this._loaderService.show();
+    }
     return this._httpClient.get("IPReport/view-IPDCurrentAdmittedDoctorWiseCharges?FromDate=" + FromDate + "&ToDate=" + ToDate + "&DoctorId=" + DoctorId + "&WardId=" + WardId +"&CompanyId="+CompanyId);
   }
 
