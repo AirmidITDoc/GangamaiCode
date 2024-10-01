@@ -7,7 +7,7 @@ import { ToastrService } from "ngx-toastr";
 import { GenderMasterService } from "./gender-master.service";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
-import { gridColumn, gridModel, gridRequest, gridResponseType } from "app/core/models/gridRequest";
+import {  gridModel } from "app/core/models/gridRequest";
 
 @Component({
     selector: "app-gender-master",
@@ -21,19 +21,19 @@ export class GenderMasterComponent implements OnInit {
     msg: any;
     displayedColumns: string[] = [
         "GenderId",
-        "GenderName",
+        "genderName",
         "IsDeleted",
         "action"
     ];
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     DSGenderMasterList = new MatTableDataSource<GenderMaster>();
-    @ViewChild(MatSort) sort: MatSort;
-    @ViewChild(MatPaginator) paginator: MatPaginator;
+    // @ViewChild(MatSort) sort: MatSort;
+    // @ViewChild(MatPaginator) paginator: MatPaginator;
     gridConfig:gridModel={
         apiUrl: "Gender/List", 
         headers: [
             "GenderId",
-            "GenderName",
+            "genderName",
             "IsDeleted",
             "action"
         ], 
@@ -52,7 +52,7 @@ export class GenderMasterComponent implements OnInit {
     }
 
     onSearch() {
-        this.getGenderMasterList();
+       // this.getGenderMasterList();
     }
 
     onSearchClear() {
@@ -60,43 +60,43 @@ export class GenderMasterComponent implements OnInit {
             GenderNameSearch: "",
             IsDeletedSearch: "2",
         });
-        this.getGenderMasterList();
+        //this.getGenderMasterList();
     }
 
     resultsLength = 0;
-    getGenderMasterList() {
+    // getGenderMasterList() {
         
-        var Param: gridRequest = {
-            SortField: this.sort?.active ?? "GenderId", SortOrder: this.sort?.direction ?? 'asc' == 'asc' ? 0 : -1, Filters: [],
-            Columns: [],
-            First: (this.paginator?.pageIndex ?? 0),
-            Rows: (this.paginator?.pageSize ?? 12),
-            ExportType: gridResponseType.JSON
-        };
-        var GenderName = this._GenderService.myformSearch.get("GenderNameSearch").value.trim();
-        if (GenderName) {
-            Param.Filters.push({
-                "FieldName": "GenderName",
-                "FieldValue": GenderName,
-                "OpType": "13"
-            });
-        }
-        var isActive = this._GenderService.myformSearch.get("IsDeletedSearch").value;
-        if (isActive != 2) {
-            Param.Filters.push({
-                "FieldName": "IsActive",
-                "FieldValue": this._GenderService.myformSearch.get("IsDeletedSearch").value,
-                "OpType": "13"
-            });
-        }
-        this._GenderService.getGenderMasterList(Param).subscribe((data: any) => {
-            this.DSGenderMasterList.data = data.data as GenderMaster[];
-            this.DSGenderMasterList.sort = this.sort;
-            //this.DSGenderMasterList.paginator = this.paginator;
-            this.resultsLength = data["recordsFiltered"];
-            console.log(this.DSGenderMasterList.data);
-        });
-    }
+    //     var Param: gridRequest = {
+    //         SortField: this.sort?.active ?? "GenderId", SortOrder: this.sort?.direction ?? 'asc' == 'asc' ? 0 : -1, Filters: [],
+    //         Columns: [],
+    //         First: (this.paginator?.pageIndex ?? 0),
+    //         Rows: (this.paginator?.pageSize ?? 12),
+    //         ExportType: gridResponseType.JSON
+    //     };
+    //     var GenderName = this._GenderService.myformSearch.get("GenderNameSearch").value.trim();
+    //     if (GenderName) {
+    //         Param.Filters.push({
+    //             "FieldName": "GenderName",
+    //             "FieldValue": GenderName,
+    //             "OpType": "13"
+    //         });
+    //     }
+    //     var isActive = this._GenderService.myformSearch.get("IsDeletedSearch").value;
+    //     if (isActive != 2) {
+    //         Param.Filters.push({
+    //             "FieldName": "IsActive",
+    //             "FieldValue": this._GenderService.myformSearch.get("IsDeletedSearch").value,
+    //             "OpType": "13"
+    //         });
+    //     }
+    //     this._GenderService.getGenderMasterList(Param).subscribe((data: any) => {
+    //         this.DSGenderMasterList.data = data.data as GenderMaster[];
+    //         this.DSGenderMasterList.sort = this.sort;
+    //         //this.DSGenderMasterList.paginator = this.paginator;
+    //         this.resultsLength = data["recordsFiltered"];
+    //         console.log(this.DSGenderMasterList.data);
+    //     });
+    // }
 
     onClear() {
         this._GenderService.myform.reset({ IsDeleted: "false" });
@@ -131,7 +131,7 @@ export class GenderMasterComponent implements OnInit {
                                         "tostr-tost custom-toast-success",
                                 }
                             );
-                            this.getGenderMasterList();
+                            //this.getGenderMasterList();
                             // Swal.fire(
                             //     "Saved !",
                             //     "Record saved Successfully !",
@@ -150,7 +150,7 @@ export class GenderMasterComponent implements OnInit {
                                 }
                             );
                         }
-                        this.getGenderMasterList();
+                        //this.getGenderMasterList();
                     },
                     (error) => {
                         this.toastr.error(
@@ -188,7 +188,7 @@ export class GenderMasterComponent implements OnInit {
                                         "tostr-tost custom-toast-success",
                                 }
                             );
-                            this.getGenderMasterList();
+                            //this.getGenderMasterList();
                             // Swal.fire(
                             //     "Updated !",
                             //     "Record updated Successfully !",
@@ -207,7 +207,7 @@ export class GenderMasterComponent implements OnInit {
                                 }
                             );
                         }
-                        this.getGenderMasterList();
+                        //this.getGenderMasterList();
                     },
                     (error) => {
                         this.toastr.error(
@@ -256,7 +256,7 @@ export class GenderMasterComponent implements OnInit {
                                     "tostr-tost custom-toast-success",
                             }
                         );
-                        this.getGenderMasterList();
+                       // this.getGenderMasterList();
                     }
                 });
             }

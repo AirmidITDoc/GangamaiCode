@@ -49,7 +49,7 @@
                                         <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
                                     </mat-radio-group>
 
-                                    <button mat-raised-button (click)="getGenderMasterList()"
+                                    <button mat-raised-button 
                                         fxLayoutAlign="center center">
                                         <mat-icon>search</mat-icon>
                                         Search
@@ -67,8 +67,8 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="GenderName">
-                                        <mat-header-cell *matHeaderCellDef> Gender Name
+                                    <ng-container matColumnDef="genderName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header> Gender Name
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.genderName}}
                                         </mat-cell>
