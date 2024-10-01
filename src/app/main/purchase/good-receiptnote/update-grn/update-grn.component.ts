@@ -264,28 +264,83 @@ export class UpdateGRNComponent implements OnInit {
 
         datepicker.close();
     }
-
+    followUpDate: string;
     calculateLastDay(inputDate: string) {
-        // debugger
+         debugger
+        // if (inputDate && inputDate.length === 6) {
+        //     const month = +inputDate.substring(0, 2);
+        //     const year = +inputDate.substring(2, 6);
+
+        //     if (month >= 1 && month <= 12) {
+        //         const lastDay = this.getLastDayOfMonth(month, year);
+        //         this.vlastDay = `${lastDay}/${this.pad(month)}/${year}`;
+        //         this.lastDay2 = `${year}/${this.pad(month)}/${lastDay}`;
+        //         // console.log(this.vlastDay)
+
+        //         this._GRNList.userFormGroup.get('ExpDatess').setValue(this.vlastDay)
+        //         this.setFocus('Qty');
+        //     } else {
+        //         this.vlastDay = 'Invalid month';
+        //     }
+        // } else {
+        //     this.vlastDay = '';
+        // } 
+
+
+        const Months = 3
+        const CurrentDate = new Date(); 
+        const Currentmonths = new Date(); 
+        const currentMonth = Currentmonths.getMonth();
+        console.log(currentMonth)
+        const currentYear = CurrentDate.getFullYear();
+        console.log(currentYear)  
+       let  NxtMonths = ((currentMonth) + (Months));  
+
         if (inputDate && inputDate.length === 6) {
             const month = +inputDate.substring(0, 2);
-            const year = +inputDate.substring(2, 6);
+            const year = +inputDate.substring(2, 6); 
+        
+            if (year <= currentYear) {
+                if (month <= currentMonth) {
+                    Swal.fire("This item is already expired")
+                    this.vlastDay = '';
+                }else{
 
-            if (month >= 1 && month <= 12) {
-                const lastDay = this.getLastDayOfMonth(month, year);
-                this.vlastDay = `${lastDay}/${this.pad(month)}/${year}`;
-                this.lastDay2 = `${year}/${this.pad(month)}/${lastDay}`;
-                // console.log(this.vlastDay)
-
-                this._GRNList.userFormGroup.get('ExpDatess').setValue(this.vlastDay)
-                this.setFocus('Qty');
-            } else {
-                this.vlastDay = 'Invalid month';
-            }
+                    if(month < NxtMonths){
+                        Swal.fire("This item is expired in 3 Months")
+                    }
+                    if (month >= 1 && month <= 12) {
+                        const lastDay = this.getLastDayOfMonth(month, year);
+                        this.vlastDay = `${lastDay}/${this.pad(month)}/${year}`;
+                        this.lastDay2 = `${year}/${this.pad(month)}/${lastDay}`;
+                          console.log(this.vlastDay)
+                          console.log(lastDay)
+                        this._GRNList.userFormGroup.get('ExpDatess').setValue(this.vlastDay)
+                        this.setFocus('Qty');
+                    } else {
+                        this.vlastDay = 'Invalid month';
+                    }
+                }
+            } else{
+                if(month < NxtMonths){
+                    Swal.fire("This item is expired in 3 Months")
+                }
+                if (month >= 1 && month <= 12) {
+                    const lastDay = this.getLastDayOfMonth(month, year);
+                    this.vlastDay = `${lastDay}/${this.pad(month)}/${year}`;
+                    this.lastDay2 = `${year}/${this.pad(month)}/${lastDay}`;
+                      console.log(this.vlastDay)
+                      console.log(lastDay)
+                    this._GRNList.userFormGroup.get('ExpDatess').setValue(this.vlastDay)
+                    this.setFocus('Qty');
+                } else {
+                    this.vlastDay = 'Invalid month';
+                }
+            } 
         } else {
             this.vlastDay = '';
         }
-
+        NxtMonths = 0;
     }
 
     getLastDayOfMonth(month: number, year: number): number {
@@ -445,9 +500,15 @@ export class UpdateGRNComponent implements OnInit {
     isLoading123: boolean = false;
     loading: boolean = false;
     onAdd() {
-
+        debugger
         if ((this.vItemName == '' || this.vItemName == null || this.vItemName == undefined)) {
             this.toastr.warning('Please enter a ItemName', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+        if ((this.vConversionFactor == '' || this.vConversionFactor == null || this.vConversionFactor == 0)) {
+            this.toastr.warning('Please check packing is zero', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
             return;
@@ -1290,36 +1351,70 @@ chekgstper(obj){
     vTotalQty: any = 0
     OnSave() {
         debugger
-        if ((this._GRNList.GRNFinalForm.get('ReceivedBy').value == '' || this._GRNList.GRNFinalForm.get('ReceivedBy').value == null ||
+        if ((this._GRNList.userFormGroup.get('InvoiceNo').value == "" || this._GRNList.userFormGroup.get('InvoiceNo').value == null)) {
+            this.toastr.warning('Please enter a InvoiceNo', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        } 
+        if ((!this.dsItemNameList.data.length)) {
+            this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+        if (this._GRNList.GRNFinalForm.invalid) {
+            this.toastr.warning('please check from is invalid', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        } 
+        if ((this._GRNList.GRNFinalForm.get('ReceivedBy').value == "" || this._GRNList.GRNFinalForm.get('ReceivedBy').value == null ||
             this._GRNList.GRNFinalForm.get('ReceivedBy').value == undefined)) {
             this.toastr.warning('Please enter a Received By', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
             return;
         }
+
+       
         const checkTotalQty = this.dsItemNameList.data.some(item => item.TotalQty === this.vTotalQty && item.TotalQty == null);
         //this.isLoading123 = true;
         if (!checkTotalQty) {
-            if (!this.vPurchaseId) {
-                if (this.data.chkNewGRN == 1) {
-                    this.OnSavenew();
-                } else if (this.data.chkNewGRN == 2) {
-                    if (this.PoID > 0) {
-                        this.OnEditPO();
-                    }
-                    else {
-                        this.OnSaveEdit();
-                        this.viewGRNREPORTPdf(this.registerObj.GRNID)
+            Swal.fire({
+                title: 'Do you want to Save the GRN ',
+                text: "You able to edit after save this !",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, Save!"
+
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    if (!this.vPurchaseId) {
+                        if (this.data.chkNewGRN == 1) {
+                            this.OnSavenew();
+                        } else if (this.data.chkNewGRN == 2) {
+                            if (this.PoID > 0) {
+                                this.OnEditPO();
+                            }
+                            else {
+                                this.OnSaveEdit();
+                                this.viewGRNREPORTPdf(this.registerObj.GRNID)
+                            }
+                        }
+                    } else {
+                        this.OnSavePO();
                     }
                 }
-            } else {
-                this.OnSavePO();
-            }
+            })
         } else {
             this.toastr.warning('We found TotalQty column value is 0 please check', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
-        }
+        }  
     }
     Savebtn: boolean = false;
     OnSavePO() {
@@ -1339,7 +1434,7 @@ chekgstper(obj){
         let nowDate1 = nowDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
         this.newDateTimeObj = { date: nowDate1[0], time: nowDate1[1] };
         //
-        this.Savebtn = true;
+       // this.Savebtn = true;
         let grnSaveObj = {};
         grnSaveObj['grnDate'] = this.dateTimeObj.date;
         grnSaveObj['grnTime'] = this.dateTimeObj.time;
@@ -1470,7 +1565,7 @@ chekgstper(obj){
                 this.toastr.success('Record PO TO GRN Saved Successfully.', 'Saved !', {
                     toastClass: 'tostr-tost custom-toast-success',
                 });
-                this.Savebtn = false;
+               // this.Savebtn = false;
                 this._matDialog.closeAll();
                 this.OnReset();
                 this.viewGRNREPORTPdf(response)
@@ -1506,7 +1601,7 @@ chekgstper(obj){
         let nowDate1 = nowDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
         this.newDateTimeObj = { date: nowDate1[0], time: nowDate1[1] };
         //
-        this.Savebtn = true;
+       // this.Savebtn = true;
         let grnSaveObj = {};
         grnSaveObj['grnDate'] = this.dateTimeObj.date;
         grnSaveObj['grnTime'] = this.dateTimeObj.time;
@@ -1643,7 +1738,7 @@ chekgstper(obj){
                 this.toastr.success('Record PO TO GRN Updated Successfully.', 'Updated !', {
                     toastClass: 'tostr-tost custom-toast-success',
                 });
-                this.Savebtn = false;
+                //this.Savebtn = false;
                 this._matDialog.closeAll();
                 this.OnReset();
                 this.viewGRNREPORTPdf(data)
@@ -1664,29 +1759,12 @@ chekgstper(obj){
 
 
 
-    OnSavenew() {
-        if ((!this.dsItemNameList.data.length)) {
-            this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-        }
-        if (this._GRNList.GRNFinalForm.invalid) {
-            this.toastr.warning('please check from is invalid', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-        }
-        if ((this._GRNList.userFormGroup.get('InvoiceNo').value == '' || this._GRNList.userFormGroup.get('InvoiceNo').value == null)) {
-            this.toastr.warning('Please enter a InvoiceNo', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-        }
+    OnSavenew() { 
+     
         let nowDate = new Date();
         let nowDate1 = nowDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
         this.newDateTimeObj = { date: nowDate1[0], time: nowDate1[1] };
-        this.Savebtn = true;
+       // this.Savebtn = true;
         let grnSaveObj = {};
         grnSaveObj['grnDate'] = this.dateTimeObj.date;
         grnSaveObj['grnTime'] = this.dateTimeObj.time;
@@ -1801,7 +1879,7 @@ chekgstper(obj){
                 this.toastr.success('Record Saved Successfully.', 'Saved !', {
                     toastClass: 'tostr-tost custom-toast-success',
                 });
-                this.Savebtn = false;
+               // this.Savebtn = false;
                 this._matDialog.closeAll();
                 this.OnReset();
                 this.viewGRNREPORTPdf(response)
@@ -1810,28 +1888,17 @@ chekgstper(obj){
             } else {
                 this.toastr.error('New GRN Data not saved !, Please check API error..', 'Error !', {
                     toastClass: 'tostr-tost custom-toast-error',
-                });
+                }); 
             }
         }, error => {
             this.toastr.error('New GRN Data not saved !, Please check API error..', 'Error !', {
                 toastClass: 'tostr-tost custom-toast-error',
-            });
+            }); 
         });
     }
     OnSaveEdit() {
-        if ((!this.dsItemNameList.data.length)) {
-            this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-        }
-        if (this._GRNList.GRNFinalForm.invalid) {
-            this.toastr.warning('please check from is invalid', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-        }
-        this.Savebtn = true;
+     
+       // this.Savebtn = true;
         let updateGRNHeaderObj = {};
         updateGRNHeaderObj['grnid'] = this.registerObj.GRNID;
         updateGRNHeaderObj['grnDate'] = this.dateTimeObj.date;
@@ -1952,7 +2019,7 @@ chekgstper(obj){
                 this.toastr.success('Record Updated Successfully.', 'Updated !', {
                     toastClass: 'tostr-tost custom-toast-success',
                 });
-                this.Savebtn = false;
+              //  this.Savebtn = false;
                 this._matDialog.closeAll();
                 this.OnReset()
                 //this.isLoading123=false;

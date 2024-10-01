@@ -12,6 +12,7 @@ import { Subscription } from 'rxjs';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import Swal from 'sweetalert2';
 import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-requestforlabtest',
@@ -57,6 +58,7 @@ export class RequestforlabtestComponent implements OnInit {
   constructor(public _RequestforlabtestService:RequestforlabtestService,
     public datePipe: DatePipe, 
     private _matDialog:MatDialog,
+    public toastr: ToastrService,
     private _fuseSidebarService: FuseSidebarService,
     private dialog:MatDialog,
     private reportDownloadService: ExcelDownloadService,
@@ -209,6 +211,59 @@ debugger
     this.dsrequestList.data = [];
     this.sIsLoading = '';
   }
+  OPD_IP_Type:any;
+ 
+  LabReportView(contact) {
+    console.log(contact)
+    if( contact.IsTestCompted == false){
+      this.toastr.warning('Test Is Not Completed', 'warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    } 
+    // let pathologyDelete = [];
+    // contact.forEach((element) => {
+    //     this.OPD_IP_Type = element.OP_IP_Type 
+    //     let pathologyDeleteObj = {};
+    //     pathologyDeleteObj['pathReportId'] = element.PathReportID
+    //     pathologyDelete.push(pathologyDeleteObj);
+    // });
+
+    // let submitData = {
+    //     "printInsert": pathologyDelete,
+    // };
+    // console.log(submitData);
+    // this._RequestforlabtestService.PathPrintResultentryInsert(submitData).subscribe(response => {
+    //     if (response) {
+    //         this.viewgetPathologyTestReportPdf(this.OPD_IP_Type)
+    //     }
+    // }); 
+}
+viewgetPathologyTestReportPdf(OPD_IP_Type) {
+
+  setTimeout(() => {
+      this.SpinLoading = true; 
+      this._RequestforlabtestService.getPathTestReport(
+        OPD_IP_Type
+      ).subscribe(res => {
+          const dialogRef = this._matDialog.open(PdfviewerComponent,
+              {
+                  maxWidth: "85vw",
+                  height: '750px',
+                  width: '100%',
+                  data: {
+                      base64: res["base64"] as string,
+                      title: "pathology Test Report Viewer"
+                  }
+              });
+          dialogRef.afterClosed().subscribe(result => { 
+              this.SpinLoading = false;
+          });
+      });
+
+  }, 100);
+}
+
 }
 export class RequestList{
   RegNo :any;
