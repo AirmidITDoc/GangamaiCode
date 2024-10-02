@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { LoaderService } from 'app/core/components/loader/loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,6 +9,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class OPReportsService {
   userForm:FormGroup;
   constructor( public _formBuilder:FormBuilder,
+    private _loaderService: LoaderService,
     public _httpClient:HttpClient) {this.userForm=this.createUserFormGroup()}
 
     createUserFormGroup(){
@@ -47,305 +49,446 @@ export class OPReportsService {
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo",{})
   }
  
-  public getOpPaymentview(PaymentId){
+  public getOpPaymentview(PaymentId,loader = true){
     return this._httpClient.get("OutPatient/view-OP-PaymentReceipt?PaymentId=" + PaymentId);
   }
 
   
-  public getRegisteredPatientCasepaaperView(VisitId){
-  
+  public getRegisteredPatientCasepaaperView(VisitId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("OutPatient/view-PatientAppointment?VisitId=" + VisitId);
   }
 
-  public getDocwisevisitsummaryView(FromDate,ToDate){
-  
+  public getDocwisevisitsummaryView(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("OPReport/view-OPDoctorWiseVisitCountSummary?FromDate="+FromDate+"&ToDate="+ToDate);
   }
   
 //opReports
-  public getRegistrationlistReport(FromDate,ToDate){
+  public getRegistrationlistReport(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("OPReport/view-RegistrationReport ?FromDate="+FromDate+"&ToDate="+ToDate);
   }
 
-  public getAppointmentListReport(FromDate,ToDate){
+  public getAppointmentListReport(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("OPReport/view-AppointmentListReport?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
   
-  public getDoctorwisevisitView(FromDate,ToDate){
+  public getDoctorwisevisitView(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("OPReport/view-DoctorWiseVisitReport?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
-  public getRefDoctorwisevisitView(FromDate,ToDate){
+  public getRefDoctorwisevisitView(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("OPReport/view-RefDoctorWiseReport?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
   
-  public getdepartmentwisecountsummView(FromDate,ToDate){
+  public getdepartmentwisecountsummView(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("OPReport/view-DepartmentWisecountSummury?FromDate="+FromDate+"&ToDate="+ToDate);
   }
-  public getDocwisevisitCountsummaryView(FromDate,ToDate){
+  public getDocwisevisitCountsummaryView(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("OPReport/view-DoctorWiseOpdCountSummary?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
   
-  public getAppointmentlistwithserviceavailedView(FromDate,ToDate){
-  
+  public getAppointmentlistwithserviceavailedView(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("OPReport/view-OPAppoinmentListWithServiseAvailed?FromDate="+FromDate+"&ToDate="+ToDate);
   }
 
   
-  public getCrossConsultationreportView(FromDate,ToDate){
-  
+  public getCrossConsultationreportView(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("OPReport/view-CrossConsultationReport?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
 
 
-  public getDocwisenopdcollsummarytView(FromDate,ToDate){
-  
+  public getDocwisenopdcollsummarytView(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("OPReport/view-DoctorWiseOpdCollectionSummary?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
 
 
- public getDocwisenewoldpatientView(FromDate,ToDate){
+ public getDocwisenewoldpatientView(FromDate,ToDate,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
 return this._httpClient.get("OPReport/view-OPDoctorWiseNewOldPatientReport?FromDate="+FromDate+"&ToDate="+ToDate);
  }
 
   // OPD MIS 
   
-  public getdaywiseopdcountdetailReport(FromDate,ToDate){
-  
+  public getdaywiseopdcountdetailReport(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("OPReport/view-DayWiseOpdCountDetails?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
   
-  public getdaywiseopdcountsummaryReport(FromDate,ToDate){
-  
+  public getdaywiseopdcountsummaryReport(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("OPReport/view-DayWiseOpdCountSummry?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
   
 
 
-  public getDeptwiseopdcountView(FromDate,ToDate){
-  
+  public getDeptwiseopdcountView(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("OPReport/view-DepartmentWiseOPDCount?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
-  public getDeptwiseopdcountsummaryView(FromDate,ToDate){
-  
+  public getDeptwiseopdcountsummaryView(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("OPReport/view-DepartmentWiseOpdCountSummary?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
  
-  public getDrwiseopdcountdetailView(FromDate,ToDate){
-  
+  public getDrwiseopdcountdetailView(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("OPReport/view-DrWiseOPDCountDetail?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
 
-  public getDocwisenopdcolldetailtView(FromDate,ToDate){
-  
+  public getDocwisenopdcolldetailtView(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("OPReport/view-DrWiseOPDCollectionDetails?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
 
-  public getDoctorwisenopdcollsummarytView(FromDate,ToDate){
-  
+  public getDoctorwisenopdcollsummarytView(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("OPReport/view-DoctorWiseOpdCollectionSummary?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
 
-  public getDeptwiseopdcolldetailView(FromDate,ToDate){
-  
+  public getDeptwiseopdcolldetailView(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("OPReport/view-DepartmentWiseOPDCollectionDetails?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
 
-  public getDeptwiseopdcollsummaryView(FromDate,ToDate){
-  
+  public getDeptwiseopdcollsummaryView(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("OPReport/view-DepartmentWiseOpdCollectionSummary?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
 
-  public getDeptservicegroupcollsummaryView(FromDate,ToDate){
-  
+  public getDeptservicegroupcollsummaryView(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("OPReport/view-DepartmentServiceGroupWiseCollectionSummary?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
   
-  public getDeptservicegroupcolldetailView(FromDate,ToDate){
-  
+  public getDeptservicegroupcolldetailView(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("OPReport/view-DepartmentServiceGroupWiseCollectionDetails?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
   
   //common
-  public getdocwisepatinetcountReport(FromDate,ToDate,DosctorID){
-  
+  public getdocwisepatinetcountReport(FromDate,ToDate,DosctorID,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("CommanReport/view-DoctorWisePatientCountReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&DosctorID"+DosctorID);
   }
 
   
-  public getRefdocwisepatientcountReport(FromDate,ToDate){
-  
+  public getRefdocwisepatientcountReport(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("CommanReport/view-ReferenceDoctorWisePatientCountReport?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
  
   public getDepartmentCombo() {
+ 
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveDepartmentMasterForCombo", {})
 
   }
 
 
-  public getConcessionreportView(FromDate,ToDate,OP_IP_Type,DoctorID){
-  
+  public getConcessionreportView(FromDate,ToDate,OP_IP_Type,DoctorID,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("CommanReport/view-ConcessionReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&OP_IP_Type="+OP_IP_Type+"&DoctorID="+DoctorID);
   }
   
-  public getCommonDailycollectionView(FromDate,ToDate,AddedById,DoctorId){
-  
+  public getCommonDailycollectionView(FromDate,ToDate,AddedById,DoctorId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("CommanReport/view-CommanDailyCollectionReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&AddedById="+AddedById+"&DoctorId="+DoctorId);
   }
-  public getDailycollectionView(FromDate,ToDate){
-  
+  public getDailycollectionView(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("OPReport/view-DepartmentServiceGroupWiseCollectionSummary?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
   
-  public getDailycollsummaryView(FromDate,ToDate){
-  
+  public getDailycollsummaryView(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("CommanReport/view-DailyCollectionSummaryReport?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
   
-  public getgroupwisecollView(FromDate,ToDate,GroupId){
-  
+  public getgroupwisecollView(FromDate,ToDate,GroupId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("CommanReport/view-GroupwisecollectionReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&GroupId="+GroupId);
   }
   
-  public getgroupwisescollummaryView(FromDate,ToDate,GroupId){
-  
+  public getgroupwisescollummaryView(FromDate,ToDate,GroupId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("CommanReport/view-GroupwiseSummaryReport?FromDate=" + FromDate+"&ToDate="+ToDate,+"&GroupId="+GroupId);
   }
   
-  public getgroupwiserevenusummaryView(FromDate,ToDate){
-  
+  public getgroupwiserevenusummaryView(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("CommanReport/view-GroupwiseRevenueSummary?FromDate="+FromDate+"&ToDate="+ToDate);
   }
-  public getservicewisereportwithoutbillView(ServiceId,FromDate,ToDate){
-  
+  public getservicewisereportwithoutbillView(ServiceId,FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("CommanReport/view-ServiceWiseReportWithoutBill?ServiceId="+ServiceId+"&FromDate=" + FromDate+"&ToDate="+ToDate);
   }
   
   
-  public getCreditreportView(FromDate,ToDate){
-  
+  public getCreditreportView(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("CommanReport/view-CreditReport?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
   
   
-  public getPatientledgerView(FromDate,ToDate){
-  
+  public getPatientledgerView(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("OPReport/view-DepartmentServiceGroupWiseCollectionSummary?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
   
  
   
-  public getServicewisereportwithbillView(ServiceId,FromDate,ToDate){
-  
+  public getServicewisereportwithbillView(ServiceId,FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("CommanReport/view-ServicewiseReportwithbill?ServiceId="+ServiceId+"&FromDate=" + FromDate+"&ToDate="+ToDate);
   }
-  public getServicewisereportView(ServiceId,FromDate,ToDate,DoctorId){
-  
+  public getServicewisereportView(ServiceId,FromDate,ToDate,DoctorId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("CommanReport/view-ServiceWiseReport?ServiceId=" + ServiceId+"&FromDate="+FromDate+"&ToDate="+ToDate+"&DoctorId="+DoctorId);
   }
 
-  public getBillsummarywithtcsView(FromDate,ToDate){
-  
+  public getBillsummarywithtcsView(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("CommanReport/view-BillSummaryWithTCS?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
 
-  public getRefbypatientView(FromDate,ToDate){
-  
+  public getRefbypatientView(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("CommanReport/view-RefByPatientList?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
-  public getdoctorvisitadmingroupwiseView(FromDate,ToDate,DoctorId){
-  
+  public getdoctorvisitadmingroupwiseView(FromDate,ToDate,DoctorId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("CommanReport/view-DoctorVisitAdmittedWiseGroupReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&DoctorId="+DoctorId);
   }
 
 
-  public getBillsummaryopdipdView(FromDate,ToDate){
-  
+  public getBillsummaryopdipdView(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("IPReport/view-OPIPBILLSummaryReport?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
-  public getCanclechargesView(FromDate,ToDate){
-  
+  public getCanclechargesView(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("CommanReport/view-Canclechargeslist?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
-  public getDocDeptwisemonthcollectionView(FromDate,ToDate){
-  
+  public getDocDeptwisemonthcollectionView(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("OPReport/view-DepartmentServiceGroupWiseCollectionSummary?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
-  getDoctorDeptwisemonthlycollectionView(FromDate,ToDate){
-  
+  getDoctorDeptwisemonthlycollectionView(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("CommanReport/view-DoctorAndDepartmentWiseMonthlyCollectionReport?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
  
 
 
-  public getIpcompanywisebillView(FromDate,ToDate){
-  
+  public getIpcompanywisebillView(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("CommanReport/view-IPCompanyWiseBillReport?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
-  public getCompanywisecreditbillView(FromDate,ToDate){
-  
+  public getCompanywisecreditbillView(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("CommanReport/view-IPCompanyWiseCreditReport?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
-  public getIdischargebillgenependingView(FromDate,ToDate){
-  
+  public getIdischargebillgenependingView(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("CommanReport/view-IPDischargeBillGenerationPendingReport?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
-  public getIpbillgenepaymentdueView(FromDate,ToDate){
-  
+  public getIpbillgenepaymentdueView(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("CommanReport/view-IPBillGenerationPaymentDueReport?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
-  public getBillgenefor2lakhamtView(FromDate,ToDate){
-  
+  public getBillgenefor2lakhamtView(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("CommanReport/view-BillSummaryReportfor2LakhAmount?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
-  public getCollectionsummaryView(FromDate,ToDate){
-  
+  public getCollectionsummaryView(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("CommanReport/view-CollectionSummaryReport?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
-  public getBillgeneforopdipdView(FromDate,ToDate){
-  
+  public getBillgeneforopdipdView(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("IPReport/view-OPIPBILLSummaryReport?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
-  public getOpDailyCollection(FromDate,ToDate,AddedById,doctorId){
+  public getOpDailyCollection(FromDate,ToDate,AddedById,doctorId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("OPReport/view-OPDailyCollectionReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&AddedById="+AddedById+"&DoctorId="+doctorId);
   }
 
-  public getcashcounterwisedailycollectionView(FromDate,ToDate,OP_IP_Type,CashCounterId,UserId){
+  public getcashcounterwisedailycollectionView(FromDate,ToDate,OP_IP_Type,CashCounterId,UserId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("CommanReport/view-CashCounterWiseDailyCollection?FromDate=" + FromDate+"&ToDate="+ToDate+"&OP_IP_Type="+OP_IP_Type+"&CashCounterId="+CashCounterId+"&UserId="+UserId);
   }
   
-  public getcashcounterwisedailycollectionsummaryView(FromDate,ToDate,OP_IP_Type,CashCounterId,UserId){
+  public getcashcounterwisedailycollectionsummaryView(FromDate,ToDate,OP_IP_Type,CashCounterId,UserId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("CommanReport/view-ViewCashCounterWiseDailyCollectionSummary?FromDate=" + FromDate+"&ToDate="+ToDate+"&OP_IP_Type="+OP_IP_Type+"&CashCounterId="+CashCounterId+"&UserId="+UserId);
   }
   // OPBilling
-  public getOpDailyCollectionuserwise(FromDate,ToDate,AddedById){
+  public getOpDailyCollectionuserwise(FromDate,ToDate,AddedById,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("OPReport/view-OPDailyCollectionReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&AddedById="+AddedById);
   }
 
-  public getOpDailyCollectionsummary(FromDate,ToDate){
+  public getOpDailyCollectionsummary(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("OPReport/view-OPCollectionSummary?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
-  public getOpBilldetail(FromDate,ToDate,AddedById){
+  public getOpBilldetail(FromDate,ToDate,AddedById,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("OPReport/view-BillReportSummary?FromDate="+FromDate+"&ToDate="+ToDate+"&AddedById="+AddedById);
   }
-  public getOPBillSummary(FromDate,ToDate){
+  public getOPBillSummary(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("OPReport/view-BillReportSummarySummary?FromDate="+FromDate+"&ToDate="+ToDate);
   }
-  public getOPcreditlist(FromDate,ToDate){
+  public getOPcreditlist(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("OPReport/view-OpPatientCreditList?FromDate="+FromDate+"&ToDate="+ToDate);
   }
 
-  public getOPcreditbalancelist(FromDate,ToDate){
+  public getOPcreditbalancelist(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("OPReport/view-OPDBillBalanceReport?FromDate="+FromDate+"&ToDate="+ToDate);
   }
 
-  public getOpRefundofbillview(FromDate,ToDate){
+  public getOpRefundofbillview(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("OPReport/view-OPDRefundOfBill?FromDate="+FromDate+"&ToDate="+ToDate);
   }
 
 
   
-  public getDoctorMaster() {
+  public getDoctorMaster(loader = true) {
+   
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
   }
 
@@ -362,138 +505,241 @@ return this._httpClient.get("OPReport/view-OPDoctorWiseNewOldPatientReport?FromD
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_Item_Name",Param)
   }
 
-  public getCurrentstockReport(ItemName,StoreId){
+  public getCurrentstockReport(ItemName,StoreId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("InventoryTransaction/view-InvCurrentStock?ItemName="+ItemName+"&ItemName="+StoreId);
   }
-  public getCurrentstockdatewiseReport(InsertDate,StoreId,FromDate,ToDate){
+  public getCurrentstockdatewiseReport(InsertDate,StoreId,FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("InventoryTransaction/view-CurrentStockDateWise?InsertDate="+InsertDate+"&StoreId="+StoreId+"&FromDate="+FromDate+"&ToDate="+ToDate);
   }
-  public getItemExpiryReport(ExpMonth,ExpYear,StoreID){
+  public getItemExpiryReport(ExpMonth,ExpYear,StoreID,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("InventoryTransaction/view-ExpiryItemList?ExpMonth="+ExpMonth+"&ExpYear="+ExpYear+"&StoreID="+StoreID);
   }
   // Inventory
-  public getItemlistReport(FromDate,ToDate){
+  public getItemlistReport(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("InventoryReports/view-ItemList?FromDate="+FromDate+"&ToDate="+ToDate);
   }
 
   
-  public getSupplierlistReport(FromDate,ToDate){
+  public getSupplierlistReport(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("InventoryReports/view-SupplierList?FromDate="+FromDate+"&ToDate="+ToDate);
   }
-  public getIndentlistReport(FromDate,ToDate,FromStoreId,ToStoreId){
+  public getIndentlistReport(FromDate,ToDate,FromStoreId,ToStoreId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("InventoryReports/view-IndentReport?FromDate="+FromDate+"&ToDate="+ToDate+"&FromStoreId="+FromStoreId+"&ToStoreId="+ToStoreId);
   }
   
- public getMonthlypurchaseGRNReport(FromDate,ToDate){
+ public getMonthlypurchaseGRNReport(FromDate,ToDate,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
     return this._httpClient.get("InventoryReports/view-MonthlyPurchaseGRNReport?FromDate="+FromDate+"&ToDate="+ToDate);
   }
 
-  public getGRNReportlist(FromDate,ToDate,StoreId,SupplierID){
+  public getGRNReportlist(FromDate,ToDate,StoreId,SupplierID,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("InventoryReports/view-GRNReport?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId+"&SupplierID="+SupplierID);
   }
   
-  public getGRNReportNABH(FromDate,ToDate,StoreId){
+  public getGRNReportNABH(FromDate,ToDate,StoreId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("InventoryReports/view-GRNReportNΑΒΗ?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId);
   }
-  public getNonmovinglistReport(FromDate,ToDate,NonMovingDay,StoreId){
+  public getNonmovinglistReport(FromDate,ToDate,NonMovingDay,StoreId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("InventoryReports/view-NonMovingItemList?FromDate="+FromDate+"&ToDate="+ToDate+"&NonMovingDay="+NonMovingDay+"&StoreId="+StoreId);
   }
-  public getNonmovingitemwithoutbatchlistReport(FromDate,ToDate,NonMovingDay,StoreId){
+  public getNonmovingitemwithoutbatchlistReport(FromDate,ToDate,NonMovingDay,StoreId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("InventoryReports/view-NonMovingItemWithoutBatchList?FromDate="+FromDate+"&ToDate="+ToDate+"&NonMovingDay="+NonMovingDay+"&StoreId="+StoreId);
   }
   
   
-  public getItemcountlistview(FromDate,ToDate,ItemId,ToStoreId){
+  public getItemcountlistview(FromDate,ToDate,ItemId,ToStoreId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("InventoryReports/view-ItemCount?FromDate="+FromDate+"&ToDate="+ToDate+"&ItemId="+ItemId+"&ToStoreId="+ToStoreId);
   }
-  public getLastpurchasewiseconsumptionview(FromDate,ToDate,ItemId){
+  public getLastpurchasewiseconsumptionview(FromDate,ToDate,ItemId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("InventoryReports/view-LastPurchaseRateWiseConsumtion?FromDate="+FromDate+"&ToDate="+ToDate+"&ItemId="+ItemId);
   }
-  public getGRNReturnReport(FromDate,ToDate,StoreId,SupplierID){
+  public getGRNReturnReport(FromDate,ToDate,StoreId,SupplierID,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("InventoryReports/view-GRNReturnReport?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId+"&SupplierID="+SupplierID);
   }
   
-  public getGRNwiseprodqtyReport(FromDate,ToDate,StoreId,SupplierID){
+  public getGRNwiseprodqtyReport(FromDate,ToDate,StoreId,SupplierID,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("InventoryReports/view-GRNWiseProductQtyReport?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId+"&SupplierID="+SupplierID);
   }
   
 
-  public getGRNpurchaseReport(FromDate,ToDate,StoreId){
+  public getGRNpurchaseReport(FromDate,ToDate,StoreId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("InventoryReports/view-GRNPurchaseReport?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId);
   }
 
   
-  public getSupplierwiseGRNReport(StoreId,SupplierID,FromDate,ToDate){
+  public getSupplierwiseGRNReport(StoreId,SupplierID,FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("InventoryReports/view-SupplierWiseGRNList?StoreId="+StoreId +"&SupplierID="+SupplierID + "&FromDate="+FromDate +"&ToDate="+ToDate);
   }
 
-  public getIssuetodeptlistReport(FromDate,ToDate,FromStoreId,ToStoreId,ItemId){
+  public getIssuetodeptlistReport(FromDate,ToDate,FromStoreId,ToStoreId,ItemId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("InventoryReports/view-IssueToDepartment?FromDate="+FromDate+"&ToDate="+ToDate + "&FromStoreId="+FromStoreId +"&ToStoreId="+ToStoreId+"&ItemId="+ItemId);
   }
   
-  public getIssuetodeptitemwiseReport(FromDate,ToDate,FromStoreId,ToStoreId,ItemId){
+  public getIssuetodeptitemwiseReport(FromDate,ToDate,FromStoreId,ToStoreId,ItemId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("InventoryReports/view-IssueToDepartmentItemWise?FromDate="+FromDate+"&ToDate="+ToDate + "&FromStoreId="+FromStoreId +"&ToStoreId="+ToStoreId+"&ItemId="+ItemId);
   }
   
 
- public getReturnfromdeptlistReport(FromDate,ToDate,FromStoreId,ToStoreId){
+ public getReturnfromdeptlistReport(FromDate,ToDate,FromStoreId,ToStoreId,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("InventoryReports/view-ReturnFromDepartment?FromDate="+FromDate+"&ToDate="+ToDate + "&FromStoreId="+FromStoreId +"&ToStoreId="+ToStoreId);
  }
 
 
-public getPurchaseorderview(FromDate,ToDate,SupplierID,ToStoreId){
+public getPurchaseorderview(FromDate,ToDate,SupplierID,ToStoreId,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("InventoryReports/view-PurchaseOrder?FromDate="+FromDate+"&ToDate="+ToDate + "&SupplierID="+SupplierID +"&ToStoreId="+ToStoreId);
 }
-  public getIndentwiseReport(IndentId){
+  public getIndentwiseReport(IndentId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("InventoryTransaction/view-IndentWise?IndentId="+IndentId);
   }
-  public getMaterialConsumptionlistReport(FromDate,ToDate,Id,ToStoreId){
+  public getMaterialConsumptionlistReport(FromDate,ToDate,Id,ToStoreId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("InventoryReports/view-PatientWiseMaterialConsumption?FromDate="+FromDate+"&ToDate="+ToDate+ "&Id="+Id + "&ToStoreId="+ToStoreId);
   }
-  public getMaterialConsumptionReport(MaterialConsumptionId){
+  public getMaterialConsumptionReport(MaterialConsumptionId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("InPatient/view-MaterialConsumption?MaterialConsumptionId="+MaterialConsumptionId);
   }
-  public getItemExpirylistReport(ExpMonth,ExpYear,StoreID,FromDate,ToDate){
+  public getItemExpirylistReport(ExpMonth,ExpYear,StoreID,FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("InventoryReports/view-ItemExpiryReport?ExpMonth="+ExpMonth +"&ExpYear="+ExpYear + "&StoreID="+StoreID+"&FromDate="+FromDate + "&ToDate="+ToDate);
   }
   
-  public getIssuetodeptReport(IssueId){
+  public getIssuetodeptReport(IssueId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("InventoryTransaction/view-IssuetoDeptIssuewise?IssueId="+IssueId);
   }
-  public getMaterialconsumptionmonthsummaryReport(FromDate,ToDate,ToStoreId){
+  public getMaterialconsumptionmonthsummaryReport(FromDate,ToDate,ToStoreId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("InventoryReports/view-MaterialConsumptionMonthlySummary?FromDate="+FromDate+"&ToDate="+ToDate + "&ToStoreId="+ToStoreId );
   }
   
-  public getCurrentstocklistReport(FromDate,ToDate){
+  public getCurrentstocklistReport(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("InventoryReports/view-CurrentStockReport?FromDate="+FromDate+"&ToDate="+ToDate);
   }
   
 
-  public getReturnfromdeptReport(IssueId){
+  public getReturnfromdeptReport(IssueId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("InventoryReports/view-ReturnFromDepartment?IssueId="+IssueId);
   }
-  public getGRNreportview(GRNID) {
+  public getGRNreportview(GRNID,loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("Pharmacy/view-GRNReport?GRNID=" + GRNID);
   }
 
-  public getItemwisepurchaseview(FromDate,ToDate,SupplierID,ToStoreId){
+  public getItemwisepurchaseview(FromDate,ToDate,SupplierID,ToStoreId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("InventoryReports/view-PurchaseOrder?FromDate="+FromDate+"&ToDate="+ToDate+"&SupplierID="+SupplierID+"&ToStoreId="+ToStoreId);
   }
   
-  public getItemwisesupplierlistview(StoreId,SupplierID,ItemId,FromDate,Todate){
+  public getItemwisesupplierlistview(StoreId,SupplierID,ItemId,FromDate,Todate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("InventoryReports/view-ItemWiseSupplierList?StoreId="+StoreId+"&SupplierID="+SupplierID+"&ItemId="+ItemId+"&FromDate="+FromDate+"&Todate="+Todate);
   }
-  public getStockadjustmentview(FromDate,ToDate,ToStoreId){
+  public getStockadjustmentview(FromDate,ToDate,ToStoreId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("InventoryReports/view-StockAdjustmentReport?FromDate="+FromDate+"&ToDate="+ToDate+"&ToStoreId="+ToStoreId);
   }
 
   public getBillingServiceList(employee) {
+  
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ServicesList", employee)
   }
 
   
   
-  public getSupplierwisedebitcardnoteview(FromDate,ToDate,SupplierId,StoreId){
+  public getSupplierwisedebitcardnoteview(FromDate,ToDate,SupplierId,StoreId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("InventoryReports/view-SupplierWiseDebitCreditNote?FromDate="+FromDate+"&ToDate="+ToDate+"&SupplierId="+SupplierId+"&StoreId="+StoreId);
   }
 
@@ -501,7 +747,10 @@ public getPurchaseorderview(FromDate,ToDate,SupplierID,ToStoreId){
     return this._httpClient.post("Generic/GetByProc?procName=m_RtrvCashCounterForCombo", {})
   }
   
-  public getpurchasewisesummaryview(FromDate,ToDate){
+  public getpurchasewisesummaryview(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("InventoryReports/view-PurchaseWiseGRNSummary?FromDate="+FromDate+"&ToDate="+ToDate);
   }
   getStoreList(){

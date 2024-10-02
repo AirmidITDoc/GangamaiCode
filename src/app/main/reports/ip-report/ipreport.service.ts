@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { LoaderService } from 'app/core/components/loader/loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,6 +9,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class IPReportService {
   userForm:FormGroup;
   constructor( public _formBuilder:FormBuilder,
+    private _loaderService: LoaderService,
     public _httpClient:HttpClient) {this.userForm=this.createUserFormGroup()}
 
     createUserFormGroup(){
@@ -25,7 +27,7 @@ export class IPReportService {
         CompanyId:'',
         DischargeTypeId:'',
         GroupId:'',
-        OPIPType:''
+        OPIPType:["1"]
 
         // Radio:['1']
 
@@ -42,287 +44,425 @@ export class IPReportService {
   public getDoctorList(){
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo",{})
   }
+  
+  public getgroupList(){
+    return this._httpClient.post("Generic/GetByProc?procName=RetrieveGroupMasterForCombo",{})
+  }
+
   public getCompanyCombo() {
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveCompanyMasterForCombo", {})
   }
   public getWardCombo() {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RoomMasterForCombo", {})
   }
-public getAdmittedPatientListView(FromDate,ToDate,DoctorId,WardId){
+public getAdmittedPatientListView(FromDate,ToDate,DoctorId,WardId,loader = true){
   
   return this._httpClient.get("IPReport/view-IPDAdmissionList?FromDate=" + FromDate+"&ToDate="+ToDate+"&DoctorId="+DoctorId+"&WardId="+WardId);
 }
 
-  public getCurrentAdmittedPatientListView(FromDate,ToDate,DoctorId,WardId,CompanyId){
+  public getCurrentAdmittedPatientListView(FromDate,ToDate,DoctorId,WardId,CompanyId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("IPReport/view-IPDCurrentAdmittedList?FromDate="+FromDate+"&ToDate="+ToDate+ "&DoctorId="+ DoctorId +"&WardId="+WardId+"&CompanyId="+CompanyId);
 }
-public getAdmittedPatientListCompanywiseView(FromDate,ToDate){
-  
+public getAdmittedPatientListCompanywiseView(FromDate,ToDate,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("IPReport/view-CompanyWiseAdmissionCountDetail?FromDate=" + FromDate+"&ToDate="+ToDate);
 }
 
 
-public getCurrAdmitwardwisechargesView(FromDate,ToDate,DoctorId, WardId,CompanyId){
-  
+public getCurrAdmitwardwisechargesView(FromDate,ToDate,DoctorId, WardId,CompanyId,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("IPReport/view-IPDCurrentAdmittedWardWiseCharges?FromDate="+FromDate+"&ToDate="+ToDate+ "&DoctorId="+ DoctorId +"&WardId="+WardId+"&CompanyId="+CompanyId);
 }
   
-public getAdmittedPatientListCompanywisesummaryView(FromDate,ToDate){
-  
+public getAdmittedPatientListCompanywisesummaryView(FromDate,ToDate,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("IPReport/view-CompanyWiseAdmissionSummary?FromDate=" + FromDate+"&ToDate="+ToDate);
 }
 
-public getAdmittedPatientCasepaaperView(AdmissionId){
-  
+public getAdmittedPatientCasepaaperView(AdmissionId,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("InPatient/view-Admitted_PatientCasepaper?AdmissionId="+AdmissionId);
 }
 
-public getDischargedetailView(FromDate,ToDate,DischargeTypeId){
-  
+public getDischargedetailView(FromDate,ToDate,DischargeTypeId,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("IPReport/view-IPDDischargeDetails?FromDate=" + FromDate+"&ToDate="+ToDate+"&DischargeTypeId="+DischargeTypeId);
 }
-public getDischargedetailwithmarkView(FromDate,ToDate){
-  
+public getDischargedetailwithmarkView(FromDate,ToDate,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("IPReport/view-IPDDischargeReportWithMarkStatus?FromDate=" + FromDate+"&ToDate="+ToDate);
 }
-public getDischargedetailwithbillsummaryView(FromDate,ToDate,){
-  
+public getDischargedetailwithbillsummaryView(FromDate,ToDate,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("IPReport/view-IPDDischargeReportWithBillSummary?FromDate=" + FromDate+"&ToDate="+ToDate);
 }
-public getOptoIPconwithserviceavailedView(FromDate,ToDate){
-  
+public getOptoIPconwithserviceavailedView(FromDate,ToDate,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("IPReport/view-OPToIPConvertedListWithServiceAvailed?FromDate=" + FromDate+"&ToDate="+ToDate);
 }
-public getIpcurrAdmitwardwisedischargeView(DoctorId,WardId,CompanyId){
-  
+public getIpcurrAdmitwardwisedischargeView(DoctorId,WardId,CompanyId,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("IPReport/view-IPAdmitPatientwardwisechargesReport?DoctorId=" + DoctorId+ WardId+"&WardId="+"&CompanyId="+CompanyId);
 }
-public getDischargetypecompanywiseView(FromDate,ToDate,DoctorId,DischargeTypeId){
-  
+public getDischargetypecompanywiseView(FromDate,ToDate,DoctorId,DischargeTypeId,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("IPReport/view-IPDDischargeTypeCompanyWise?FromDate=" + FromDate + "&ToDate="+ToDate+"&DoctorId="+DoctorId + "&DischargeTypeId="+DischargeTypeId);
 }
 
 
 
-public getDeptwisecountsummaryView(FromDate,ToDate){
-  
+public getDeptwisecountsummaryView(FromDate,ToDate,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("IPReport/view-DepartmentWiseCountSummary?FromDate="+FromDate+"&ToDate="+ToDate);
 }
-public getRefdocwiseView(FromDate,ToDate){
-  
+public getRefdocwiseView(FromDate,ToDate,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("IPReport/view-IPDRefDoctorWise?FromDate="+FromDate+"&ToDate="+ToDate);
 }
 
-public getDischargetypewisecompanycountView(FromDate,ToDate,DoctorId,DischargeTypeId){
-  
+public getDischargetypewisecompanycountView(FromDate,ToDate,DoctorId,DischargeTypeId,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("IPReport/view-IPDDischargeTypeCompanyWiseCount?FromDate=" + FromDate +"&ToDate="+ToDate+"&DoctorId="+DoctorId+"&DischargeTypeId="+DischargeTypeId);
 }
 
 
-public getDischargetypewiseView(DoctorId,FromDate,ToDate,DischargeTypeId){
-  
+public getDischargetypewiseView(DoctorId,FromDate,ToDate,DischargeTypeId,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("IPReport/view-IPDischargeTypeReport?DoctorId="+DoctorId+"&FromDate="+FromDate+"&ToDate="+ToDate+"&DischargeTypeId="+DischargeTypeId);
 }
  
 public getDischargetypeCombo() {
+ 
   return this._httpClient.post("Generic/GetByProc?procName=Retrieve_DischargeTypeForCombo", {})
 }
 
-public getCurrRefDoctAdmitlistView(DoctorId){
+public getCurrRefDoctAdmitlistView(DoctorId,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   
   return this._httpClient.get("IPReport/view-IPCurrentrefadmittedReport?DoctorId=" + DoctorId);
 }
-public getDoctwisecountsummaryView(FromDate,ToDate){
+public getDoctwisecountsummaryView(FromDate,ToDate,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   
   return this._httpClient.get("IPReport/view-DoctorWiseCountSummary?FromDate="+FromDate+"&ToDate="+ToDate);
 }
-public getViewAdvanceReceipt(AdvanceDetailID){
+public getViewAdvanceReceipt(AdvanceDetailID,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
  return this._httpClient.get("InPatient/view-IP-AdvanceSummaryReceipt?AdvanceDetailID=" + AdvanceDetailID);
 }
 
-public getLabrequestview(RequestId){
+public getLabrequestview(RequestId,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("InPatient/view-IP-Labrequest?RequestId=" + RequestId);
 }
 
   
-public getIpPaymentReceiptView(PaymentId){
-  
+public getIpPaymentReceiptView(PaymentId,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("InPatient/view-IP-SettlementReceipt?PaymentId=" + PaymentId);
 }
 
-getMaterialconsumptionView(MaterialConsumptionId){
-  
+getMaterialconsumptionView(MaterialConsumptionId,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("InPatient/view-MaterialConsumption?MaterialConsumptionId=" + MaterialConsumptionId);
 }
-public getMaterialConsumptionReport(MaterialConsumptionId){
+public getMaterialConsumptionReport(MaterialConsumptionId,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("InPatient/view-MaterialConsumption?MaterialConsumptionId="+MaterialConsumptionId);
 }
 
-public getDischargetypewiseReport(DoctorId,FromDate,ToDate,DischargeTypeId){
+public getDischargetypewiseReport(DoctorId,FromDate,ToDate,DischargeTypeId,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("InPatient/view-MaterialConsumption?DoctorId="+DoctorId+"&FromDate="+FromDate+"&ToDate="+ToDate+"&DischargeTypeId="+DischargeTypeId);
 }
 
 
 
 //IPMIS
-public getDatewiseAdmissioncountView(FromDate,ToDate){
-  
+public getDatewiseAdmissioncountView(FromDate,ToDate,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("IPReport/view-DateWiseAdmissionCount?FromDate=" + FromDate+"&ToDate="+ToDate);
 }
 
 
-public getMonthwiseAdmissioncountView(FromDate,ToDate){
-  
+public getMonthwiseAdmissioncountView(FromDate,ToDate,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("IPReport/view-MonthWiseAdmissionCount?FromDate=" + FromDate+"&ToDate="+ToDate);
 }
 
 
-public getdatedrwiseAdmissioncountView(FromDate,ToDate){
-  
+public getdatedrwiseAdmissioncountView(FromDate,ToDate,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("IPReport/view-DateWiseDoctorWiseAdmissionCountDetail?FromDate=" + FromDate+"&ToDate="+ToDate);
 }
 
-public getdatedrwiseAdmissioncountsummaryView(FromDate,ToDate){
-  
+public getdatedrwiseAdmissioncountsummaryView(FromDate,ToDate,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("IPReport/view-DateWiseDoctorWiseAdmissionCountSummary?FromDate=" + FromDate+"&ToDate="+ToDate);
 }
 
 
-public getdatedrwisedeptwiseAdmissioncountdetailView(FromDate,ToDate){
-  
+public getdatedrwisedeptwiseAdmissioncountdetailView(FromDate,ToDate,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("IPReport/view-DateWiseDepartmentWiseAdmissionCountDetail?FromDate=" + FromDate+"&ToDate="+ToDate);
 }
-public getdatedrwisedeptwiseAdmissioncountsummaryView(FromDate,ToDate){
-  
+public getdatedrwisedeptwiseAdmissioncountsummaryView(FromDate,ToDate,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("IPReport/view-DateWiseDepartmentWiseAdmissionCountSummary?FromDate=" + FromDate+"&ToDate="+ToDate);
 }
-public getdoctorwisecolldetailView(FromDate,ToDate){
-  
+public getdoctorwisecolldetailView(FromDate,ToDate,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("IPReport/view-DrWiseCollectionDetail?FromDate=" + FromDate+"&ToDate="+ToDate);
 }
 
-public getDoctorwisecollsummaryView(FromDate,ToDate){
-  
+public getDoctorwisecollsummaryView(FromDate,ToDate,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("IPReport/view-DrWiseCollectionSummary?FromDate=" + FromDate+"&ToDate="+ToDate);
 }
-public getDeptwisecolldetailView(FromDate,ToDate){
-  
+public getDeptwisecolldetailView(FromDate,ToDate,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("IPReport/view-DepartmentWiseCollectionDetail?FromDate=" + FromDate+"&ToDate="+ToDate);
 }
 
-public getDeptwisecollsummaryView(FromDate,ToDate){
-  
+public getDeptwisecollsummaryView(FromDate,ToDate,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("IPReport/view-DepartmentWiseCollectionSummary?FromDate=" + FromDate+"&ToDate="+ToDate);
 }
 
-public getCompanywiseAdmissioncountView(FromDate,ToDate){
-  
+public getCompanywiseAdmissioncountView(FromDate,ToDate,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("IPReport/view-CompanyWiseAdmissionCountDetail?FromDate=" + FromDate+"&ToDate="+ToDate);
 }
 
 
-public getCompanywiseAdmissioncountsummaryView(FromDate,ToDate){
-  
+public getCompanywiseAdmissioncountsummaryView(FromDate,ToDate,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("IPReport/view-CompanyWiseAdmissionSummary?FromDate=" + FromDate+"&ToDate="+ToDate);
 }
 
 
-public getCompanywisebilldetailView(FromDate,ToDate){
-  
+public getCompanywisebilldetailView(FromDate,ToDate,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("IPReport/view-CompanyWiseBillDetailReport?FromDate=" + FromDate+"&ToDate="+ToDate);
 }
 
-public getCompanywisebillsummaryView(FromDate,ToDate){
-  
+public getCompanywisebillsummaryView(FromDate,ToDate,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("IPReport/view-CompanyWiseBillSummaryReport?FromDate=" + FromDate+"&ToDate="+ToDate);
 }
 
 
-public getCompanywisecreditView(FromDate,ToDate){
-  
+public getCompanywisecreditView(FromDate,ToDate,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("IPReport/view-CompanyWiseCreditReportDetail?FromDate=" + FromDate+"&ToDate="+ToDate);
 }
 
-public getCompanywisecreditsummaryView(FromDate,ToDate){
-  
+public getCompanywisecreditsummaryView(FromDate,ToDate,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("IPReport/view-CompanyWiseCreditReportSummary?FromDate=" + FromDate+"&ToDate="+ToDate);
 }
 
 // IPBilling
 
-public getIPDailyCollection(FromDate,ToDate,AddedById){
+public getIPDailyCollection(FromDate,ToDate,AddedById,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("IPReport/view-IPDailyCollectionReport?FromDate=" +  FromDate + "&ToDate=" + ToDate+"&AddedById="+AddedById);
 }
 
-public getOPIPCommanCollectionSummary(FromDate,ToDate,AddedById,DoctorId){
+public getOPIPCommanCollectionSummary(FromDate,ToDate,AddedById,DoctorId,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("IPReport/view-CommanDailyCollectionReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&AddedById="+AddedById+"&DoctorId="+DoctorId);
 }
 
 
-public getOPIPBillSummary(FromDate,ToDate){
+public getOPIPBillSummary(FromDate,ToDate,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("IPReport/view-OPIPBILLSummaryReport?FromDate=" + FromDate + "&ToDate="+ToDate);
 }
 
 
-public getCreditReceipt(FromDate,ToDate){
+public getCreditReceipt(FromDate,ToDate,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("IPReport/view-IPCreditReport?FromDate=" + FromDate + "&ToDate="+ToDate);
 }
 
-public getViewAdvanceReport(FromDate,ToDate){
+public getViewAdvanceReport(FromDate,ToDate,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("IPReport/view-IPDAdvanceReport?FromDate=" + FromDate+"&ToDate="+ToDate);
 }
-public getIpBillReport(FromDate,ToDate,AddedById,){
+public getIpBillReport(FromDate,ToDate,AddedById,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("IPReport/view-BillReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&AddedById="+AddedById);
 }
 
 
-public getIPBillSummary(FromDate,ToDate){
+public getIPBillSummary(FromDate,ToDate,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("IPReport/view-BillSummaryReport?FromDate=" + FromDate + "&ToDate="+ToDate);
 }
 
-public getRefundofbillview(FromDate,ToDate){
+public getRefundofbillview(FromDate,ToDate,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("IPReport/view-RefundofBillReport?FromDate=" + FromDate + "&ToDate="+ToDate);
 }
 
-public getIPDischargeBillgeneratependingview(FromDate,ToDate){
+public getIPDischargeBillgeneratependingview(FromDate,ToDate,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("view-IPDischargeAndBillGenerationPendingReport?FromDate=" + FromDate + "&ToDate="+ToDate);
 }
 
-public getIpbillgenepaymentdueView(FromDate,ToDate){
-  
+public getIpbillgenepaymentdueView(FromDate,ToDate,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("IPReport/view-IPBillGenerationPaymentDueReport?FromDate=" + FromDate+"&ToDate="+ToDate);
 }
 
-public getIdischargebillgenependingView(FromDate,ToDate){
-  
+public getIdischargebillgenependingView(FromDate,ToDate,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("CommanReport/view-IPDischargeBillGenerationPendingReport?FromDate=" + FromDate+"&ToDate="+ToDate);
 }
-public getBillgeneratepaymentdueview(FromDate,ToDate){
+public getBillgeneratepaymentdueview(FromDate,ToDate,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("IPReport/view-IPCreditReport?FromDate=" + FromDate + "&ToDate="+ToDate);
 }
 
-public getRefundofAdvanceview(FromDate,ToDate){
+public getRefundofAdvanceview(FromDate,ToDate,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("IPReport/view-RefundofAdvanceReport?FromDate=" + FromDate + "&ToDate="+ToDate);
 }
 
 // /doc share
 
 
-public getDoctorShareReportView(Doctor_Id, GroupId, From_Dt, To_Dt, OP_IP_Type){
-  
+public getDoctorShareReportView(Doctor_Id, GroupId, From_Dt, To_Dt, OP_IP_Type,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("DoctorShareReports/view-DoctorShareReport?Doctor_Id=" + Doctor_Id+"&GroupId="+GroupId+"&From_Dt="+From_Dt+"&To_Dt="+To_Dt+"&OP_IP_Type="+OP_IP_Type);
 }
 
-public getDoctorSharesummaryReportView(FromDate,ToDate){
-  
+public getDoctorSharesummaryReportView(FromDate,ToDate,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("DoctorShareReports/viewDoctorWiseSummaryReport?FromDate=" + FromDate+"&ToDate="+ToDate);
 }
-public getConDoctorSharesReportView(Doctor_Id, GroupId, From_Dt, To_Dt, OP_IP_Type){
+public getConDoctorSharesReportView(Doctor_Id, GroupId, From_Dt, To_Dt, OP_IP_Type,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("DoctorShareReports/ViewConDoctorShareDetails?Doctor_Id=" + Doctor_Id+"&GroupId="+GroupId+"&From_Dt="+From_Dt+"&To_Dt="+To_Dt+"&OP_IP_Type="+OP_IP_Type);
   
 }
 
-public getDoctorShareListWithChargesview(Doctor_Id, GroupId, From_Dt, To_Dt, OP_IP_Type){
+public getDoctorShareListWithChargesview(Doctor_Id, GroupId, From_Dt, To_Dt, OP_IP_Type,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("DoctorShareReports/ViewDoctorShareListWithCharges?Doctor_Id=" + Doctor_Id+"&GroupId="+GroupId+"&From_Dt="+From_Dt+"&To_Dt="+To_Dt+"&OP_IP_Type="+OP_IP_Type);
   }
 }

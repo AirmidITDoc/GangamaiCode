@@ -213,20 +213,36 @@
 
                                         </mat-form-field>
 
-                                        <mat-form-field appearance="outline" *ngIf="FlagGroupSelected">
-                                            <mat-label>Group Id</mat-label>
-                                            <input name="GroupId" formControlName="GroupId" placeholder="GroupId"
-                                                matInput>
+                                   
 
-                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" *ngIf="FlagGroupSelected"
+                                        fxFlex="60%">
+                                        <mat-label>Discharge Type Name</mat-label>
+                                        <input matAutocompletePosition="below" type="text"
+                                            placeholder="Select GroupId" matInput
+                                            formControlName="GroupId" [matAutocomplete]="autogroup">
+                                        <span matSuffix style="display: flex;">
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_IPReportService.userForm.get('GroupId').setValue(''); isgroupSelected = false;">close</mat-icon>
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_IPReportService.userForm.get('GroupId').setValue(''); isgroupSelected = false;">search</mat-icon>
+                                        </span>
+                                        <mat-autocomplete #autogroup="matAutocomplete"
+                                            [displayWith]="getOptionTextgroup">
+                                            <mat-option *ngFor="let option of filteredOptionsGroup | async"
+                                                [value]="option">
+                                                {{option.GroupName}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
 
-                                        <mat-form-field appearance="outline" *ngIf="FlaOPIPTypeSelected"
-                                            style="margin-left:2%;">
-                                            <mat-label>OPIP Type</mat-label>
-                                            <input name="OPIPType" formControlName="OPIPType" placeholder="OPIPType"
-                                                matInput>
+                                        <mat-radio-group aria-label="Select an option" formControlName="OPIPType" *ngIf="FlaOPIPTypeSelected"  style="margin-left:2%;"
+                                        name="OPIPType">
+                                        <mat-radio-button value="0">OP
+                                            </mat-radio-button>
+                                        <mat-radio-button value="1">IP</mat-radio-button>
+                                    </mat-radio-group>
 
-                                        </mat-form-field>
 
 
                                         <mat-form-field appearance="outline" *ngIf="FlagDischargetypeIdSelected"

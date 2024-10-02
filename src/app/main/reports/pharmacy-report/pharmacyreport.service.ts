@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { LoaderService } from 'app/core/components/loader/loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,6 +9,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class PharmacyreportService {
   userForm:FormGroup;
   constructor( public _formBuilder:FormBuilder,
+    private _loaderService: LoaderService,
     public _httpClient:HttpClient) {this.userForm=this.createUserFormGroup()}
 
     createUserFormGroup(){
@@ -43,31 +45,52 @@ export class PharmacyreportService {
   //   return this._httpClient.get("Sales/view-pharmacy-daily-collection?FromDate=" +  FromDate + "&ToDate=" + ToDate+"&StoreId="+StoreId+"&AddedById="+AddedById);
   // }
 
-  public getPharmacyDailyCollectionNew(FromDate,ToDate,StoreId,AddedById){
+  public getPharmacyDailyCollectionNew(FromDate,ToDate,StoreId,AddedById,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("PharmacyReport/view-PharmacyDailyCollectionReport?FromDate=" +  FromDate + "&ToDate=" + ToDate+"&StoreId="+StoreId+"&AddedById="+AddedById);
   }
   
-  public getSalesDailyCollectionSummary(FromDate,ToDate,StoreId,AddedById){
+  public getSalesDailyCollectionSummary(FromDate,ToDate,StoreId,AddedById,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("Sales/view-pharmacy-daily-collection_Summary?FromDate=" + FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId+"&AddedById="+AddedById);
   }
 
-  public getSalesDailyCollectionSummaryDayuserwise(FromDate,ToDate,StoreId,AddedById){
+  public getSalesDailyCollectionSummaryDayuserwise(FromDate,ToDate,StoreId,AddedById,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("Sales/view-PharCollectionSummaryDayanduserwise_Report?FromDate=" + FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId+"&AddedById="+AddedById);
   }
 
-  public getSalesDetail_Patientwise(FromDate,ToDate,SalesFromNumber,SalesToNumber,AddedBy,StoreId){
+  public getSalesDetail_Patientwise(FromDate,ToDate,SalesFromNumber,SalesToNumber,AddedBy,StoreId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("Sales/view-Sales_Report_PatientWiseNew?FromDate=" + FromDate + "&ToDate="+ToDate + "&SalesFromNumber="+SalesFromNumber+"&SalesToNumber="+SalesToNumber+"&AddedBy="+AddedBy+"&StoreId="+StoreId);
   }
 
-  public getSalesReturnsummary(FromDate,ToDate,SalesFromNumber,SalesToNumber,StoreId){
+  public getSalesReturnsummary(FromDate,ToDate,SalesFromNumber,SalesToNumber,StoreId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("Sales/view-SalesReturnSummary_Report?FromDate=" + FromDate+"&ToDate="+ToDate+"&SalesFromNumber="+SalesFromNumber+"&SalesToNumber="+SalesToNumber+"&StoreId="+StoreId);
   }
 
 
-  public getSalesCredit(FromDate,ToDate,SalesFromNumber,SalesToNumber,CreditReasonId,StoreId){
+  public getSalesCredit(FromDate,ToDate,SalesFromNumber,SalesToNumber,CreditReasonId,StoreId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("Sales/view-SalesCredit_Report?FromDate=" + FromDate+"&ToDate="+ToDate+"&SalesFromNumber="+SalesFromNumber+"&SalesToNumber="+SalesToNumber+"&CreditReasonId="+CreditReasonId+"&StoreId="+StoreId);
   }
-  public getSalesReturnPatientwise(FromDate,ToDate,SalesFromNumber,SalesToNumber,StoreId){
+  public getSalesReturnPatientwise(FromDate,ToDate,SalesFromNumber,SalesToNumber,StoreId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("Sales/view-SalesReturn_Patientwise_Report?FromDate=" + FromDate+"&ToDate="+ToDate+"&SalesFromNumber="+SalesFromNumber+"&SalesToNumber="+SalesToNumber+"&StoreId="+StoreId);
   }
 
@@ -76,38 +99,65 @@ export class PharmacyreportService {
   }
 
 
-  public getSalesCashBook(FromDate,ToDate,PaymentMode,StoreId){
+  public getSalesCashBook(FromDate,ToDate,PaymentMode,StoreId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("Sales/view-PharSalesCashBookReport?FromDate=" + FromDate + "&ToDate=" + ToDate + "&PaymentMode=" + PaymentMode + "&StoreId="+StoreId);
   }
 
-  public getSalesDetailSummary(FromDate,ToDate,SalesFromNumber,SalesToNumber,AddedBy,StoreId){
+  public getSalesDetailSummary(FromDate,ToDate,SalesFromNumber,SalesToNumber,AddedBy,StoreId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("Sales/view-SalesSummary_Report?FromDate=" + FromDate+"&ToDate="+ToDate+"&SalesFromNumber="+SalesFromNumber+"&SalesToNumber="+SalesToNumber+"&AddedBy="+AddedBy+"&StoreId="+StoreId);
   }
 
   
-  public getSchduleh1Book(FromDate,ToDate,DrugTypeId,StoreId){
+  public getSchduleh1Book(FromDate,ToDate,DrugTypeId,StoreId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("PharmacyReport/view-SCHEDULEH1Report?FromDate=" + FromDate+"&ToDate="+ToDate+"&DrugTypeId="+DrugTypeId+"&StoreId="+StoreId);
   }
 
-  public getSchsuleh1salesummaryBook(FromDate,ToDate,DrugTypeId,StoreId){
+  public getSchsuleh1salesummaryBook(FromDate,ToDate,DrugTypeId,StoreId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("PharmacyReport/view-SCHEDULEH1SalesSummaryReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&SalesFromNumber="+"&DrugTypeId="+DrugTypeId+"&StoreId="+StoreId);
   }
-  public getSalesh1drugcount(FromDate,ToDate,StoreId){
+  public getSalesh1drugcount(FromDate,ToDate,StoreId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("PharmacyReport/view-SalesH1DrugCountReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&SalesFromNumber="+"&StoreId="+StoreId);
   }
 
-  public getItemwisedailysales(FromDate,ToDate,ItemId,RegNo,StoreId){
+  public getItemwisedailysales(FromDate,ToDate,ItemId,RegNo,StoreId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("PharmacyReport/view-ItemWiseDailySalesReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&ItemId="+ItemId+"&RegNo="+RegNo+"&StoreId="+StoreId);
   }
 
-  public getHighriskdrug(FromDate,ToDate,StoreId){
+  public getHighriskdrug(FromDate,ToDate,StoreId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("PharmacyReport/view-WardWiseHighRiskDrugList?FromDate=" + FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId);
   }
 
-  public getPurchaseorderlist(StoreId,FromDate,ToDate){
+  public getPurchaseorderlist(StoreId,FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("PharmacyReport/view-PurchaseReOrderList?StoreId=" + StoreId+"&FromDate="+FromDate+"&ToDate="+ToDate);
   }
-  public getPharmacybillsummary(StoreId,FromDate,ToDate){
+  public getPharmacybillsummary(StoreId,FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("PharmacyReport/view-PharmacyBillSummaryReport?StoreId=" + StoreId+"&FromDate="+FromDate+"&ToDate="+ToDate);
   }
   public getItemlist(Param){

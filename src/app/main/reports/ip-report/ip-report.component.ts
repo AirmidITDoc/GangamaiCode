@@ -26,6 +26,7 @@ export class IpReportComponent implements OnInit {
  
   UserList: any = [];
   DoctorList: any = [];
+  GroupList: any = [];
   sIsLoading: string = '';
   currentDate = new Date();
   Reportsection='IP Reports';
@@ -34,6 +35,8 @@ export class IpReportComponent implements OnInit {
  
   filteredOptionsUser: Observable<string[]>;
   filteredOptionsDoctorMode: Observable<string[]>;
+  filteredOptionsGroup: Observable<string[]>;
+  isgroupSelected: boolean = false;
   isUserSelected: boolean = false;
   isSearchdoctorSelected: boolean = false;
 
@@ -72,6 +75,7 @@ export class IpReportComponent implements OnInit {
   IsLoading: boolean = false;
   searchDoctorList: any = [];
   optionsSearchDoc: any[] = [];
+  optionsSearchgroup: any[] = [];
   WardList:any=[];
   optionsWard: any[] = [];
   optionsCompany: any[] = [];
@@ -119,7 +123,7 @@ export class IpReportComponent implements OnInit {
     this.getWardList();
     this.getCompanyList();
     this.getDoctorList();
-
+    this.getgroupList();
     const toSelect = this.UserList.find(c => c.UserId == this.UserId);
     this._IPReportService.userForm.get('UserId').setValue(toSelect);
 
@@ -647,7 +651,31 @@ var data={
     }
   }
 
- 
+  
+
+  
+  getOptionTextgroup(option) {
+    return option && option.GroupName ? option.GroupName : '';
+  }
+
+  getgroupList() {
+    this._IPReportService.getgroupList().subscribe(data => {
+      this.GroupList = data;
+       this.optionsSearchgroup = this.GroupList.slice();
+      this.filteredOptionsGroup = this._IPReportService.userForm.get('GroupId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filtersearchgroup(value) : this.GroupList.slice()),
+      );
+    });
+  }
+
+  private _filtersearchgroup(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.GroupName ? value.GroupName.toLowerCase() : value.toLowerCase();
+      return this.GroupList.filter(option => option.GroupName.toLowerCase().includes(filterValue));
+    }
+  }
+
  
   getPrint() {
 
@@ -2556,10 +2584,15 @@ viewgetDoctorShareReportPdf(){
   if (this._IPReportService.userForm.get('DoctorId').value)
     DoctorId = this._IPReportService.userForm.get('DoctorId').value.DoctorId
  
+  let GroupId = 0;
+  if (this._IPReportService.userForm.get('GroupId').value)
+    DoctorId = this._IPReportService.userForm.get('GroupId').value.GroupId
+ 
+
   setTimeout(() => {
     this.SpinLoading =true;
     this.AdList=true;
-   this._IPReportService.getDoctorShareReportView(DoctorId,0,
+   this._IPReportService.getDoctorShareReportView(DoctorId,GroupId,
     this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
     this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",0
          
@@ -2588,10 +2621,15 @@ viewgetConsultantDoctorShareDetailsPdf(){
   if (this._IPReportService.userForm.get('DoctorId').value)
     DoctorId = this._IPReportService.userForm.get('DoctorId').value.DoctorId
  
+  let GroupId = 0;
+  if (this._IPReportService.userForm.get('GroupId').value)
+    DoctorId = this._IPReportService.userForm.get('GroupId').value.GroupId
+ 
+
   setTimeout(() => {
     // this.SpinLoading =true;
     // this.AdList=true;
-   this._IPReportService.getConDoctorSharesReportView(DoctorId,0,
+   this._IPReportService.getConDoctorSharesReportView(DoctorId,GroupId,
     this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
     this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
          0
@@ -2652,10 +2690,16 @@ viewgetDoctorSharewithchargesReportPdf(){
   if (this._IPReportService.userForm.get('DoctorId').value)
     DoctorId = this._IPReportService.userForm.get('DoctorId').value.DoctorId
  
+  let GroupId = 0;
+  if (this._IPReportService.userForm.get('GroupId').value)
+    DoctorId = this._IPReportService.userForm.get('GroupId').value.GroupId
+ 
+
+
   setTimeout(() => {
     this.SpinLoading =true;
     this.AdList=true;
-   this._IPReportService.getDoctorShareListWithChargesview(DoctorId,0,
+   this._IPReportService.getDoctorShareListWithChargesview(DoctorId,GroupId,
     this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
     this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",0
          

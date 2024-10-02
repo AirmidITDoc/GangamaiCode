@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { LoaderService } from 'app/core/components/loader/loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,6 +9,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class GstReportService {
   userForm:FormGroup;
   constructor(public _formBuilder:FormBuilder,
+    private _loaderService: LoaderService,
     public _httpClient:HttpClient) {this.userForm=this.createUserFormGroup();}
 
 
@@ -39,89 +41,132 @@ export class GstReportService {
     }
 
     
-  public getSalesprofitsummaryReport(FromDate,ToDate){
+  public getSalesprofitsummaryReport(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
   
     return this._httpClient.get("GSTReport/view-SalesProfitSummaryReport?FromDate="+FromDate+"&ToDate="+ToDate);
   }
 
-  public getSalesprofitbillReport(FromDate,ToDate,StoreId){
+  public getSalesprofitbillReport(FromDate,ToDate,StoreId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
   
     return this._httpClient.get("GSTReport/view-SalesProfitBillReport?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId);
   }
 
-  public getProfititemwisesummaryReport(FromDate,ToDate,StoreId){
+  public getProfititemwisesummaryReport(FromDate,ToDate,StoreId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
   
     return this._httpClient.get("GSTReport/view-SalesProfitItemWiseSummaryReport?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId);
   }
 
-  public getpurchasesupplierwiseReport(FromDate,ToDate,StoreId){
+  public getpurchasesupplierwiseReport(FromDate,ToDate,StoreId,loader = true){
   
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("GSTReport/view-PurchaseGSTReportSupplierWiseGST?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId);
   }
-  public getpurchasesupplierwisewithoutgstReport(FromDate,ToDate,StoreID){
+  public getpurchasesupplierwisewithoutgstReport(FromDate,ToDate,StoreID,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
   
     return this._httpClient.get("GSTReport/view-PurchaseGSTReportSupplierWiseWithoutGST?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreID="+StoreID);
   }
 
-  public getpurchasedatewiseReport(FromDate,ToDate,StoreId){
+  public getpurchasedatewiseReport(FromDate,ToDate,StoreId,loader = true){
   
     return this._httpClient.get("GSTReport/view-ViewPurchaseGSTReportDateWise?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId);
   }
   
-  public getpurchasegstsummaryReport(FromDate,ToDate,StoreId){
+  public getpurchasegstsummaryReport(FromDate,ToDate,StoreId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
   
     return this._httpClient.get("GSTReport/view-ViewPurchaseGSTReportSummary?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId);
   }
 
 
-  public getpurchasereturndatewiseReport(FromDate,ToDate,StoreId){
+  public getpurchasereturndatewiseReport(FromDate,ToDate,StoreId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
   
     return this._httpClient.get("GSTReport/view-PurchaseRetumGSTReportDateWise?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId);
   }
-  public getpurchasereturngstsummaryReport(FromDate,ToDate){
+  public getpurchasereturngstsummaryReport(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
   
     return this._httpClient.get("GSTReport/view-PurchaseRetumGSTReportDateWise?FromDate="+FromDate+"&ToDate="+ToDate);
   }
   
-  public getSalesGstReport(FromDate,ToDate,StoreId){
+  public getSalesGstReport(FromDate,ToDate,StoreId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
   
     return this._httpClient.get("GSTReport/view-SalesGSTReport?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId);
   }
   
-  public getSalesGstdatewiseReport(FromDate,ToDate){
+  public getSalesGstdatewiseReport(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
   
     return this._httpClient.get("GSTReport/view-SalesGSTDateWiseReport?FromDate="+FromDate+"&ToDate="+ToDate);
   }
   
-  public getSalesreturnReport(FromDate,ToDate){
+  public getSalesreturnReport(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
   
     return this._httpClient.get("GSTReport/view-SalesReturnGSTReport?FromDate="+FromDate+"&ToDate="+ToDate);
   }
 
 
-  public getSalesreturndatewiseReport(FromDate,ToDate){
-  
+  public getSalesreturndatewiseReport(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("GSTReport/view-SalesReturnGSTDateWiseReport?FromDate="+FromDate+"&ToDate="+ToDate);
   }
   
  
-  public geGSTB2cReport(FromDate,ToDate){
-  
+  public geGSTB2cReport(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("GSTReport/view-SalesReturnGSTReport?FromDate="+FromDate+"&ToDate="+ToDate);
   }
   
-  public getHSNcodewiseReport(FromDate,ToDate){
-  
+  public getHSNcodewiseReport(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("GSTReport/view-HSNCodeWiseReport?FromDate="+FromDate+"&ToDate="+ToDate);
   }
 
-  public geGSTRAZPurchaseReport(FromDate,ToDate){
-  
+  public geGSTRAZPurchaseReport(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("GSTReport/view-GSTRZAPurchaseReport?FromDate="+FromDate+"&ToDate="+ToDate);
   }
  
-  public geGSTR2ASupplierwiseReport(FromDate,ToDate){
-  
+  public geGSTR2ASupplierwiseReport(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("GSTReport/view-ViewGSTR2ASupplierWisePurchaseReport?FromDate="+FromDate+"&ToDate="+ToDate);
   }
   getStoreList(){
