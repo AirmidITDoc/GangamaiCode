@@ -1,0 +1,124 @@
+<div
+    id="contacts"
+    class="page-layout simple left-sidebar inner-sidebar inner-scroll"
+></div>
+<!-- HEADER -->
+<div
+    class="header accent p-16 p-sm-24"
+    fxLayout="column"
+    fxLayoutAlign="start"
+    fxLayout.gt-xs="row"
+    fxLayoutAlign.gt-xs="space-between center"
+>
+    <!-- APP TITLE -->
+    <div fxLayout="row" fxLayoutAlign="start center">
+        <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon
+                class="logo-icon mr-16"
+                [@animate]="{
+                    value: '*',
+                    params: { delay: '50ms', scale: '0.2' }
+                }"
+                >account_box
+            </mat-icon>
+            <span
+                class="logo-text h1"
+                [@animate]="{
+                    value: '*',
+                    params: { delay: '100ms', x: '-25px' }
+                }"
+            >
+            Patient Document Managemennt
+            </span>
+        </div>
+    </div>
+    <!-- / APP TITLE -->
+    <!-- SEARCH -->
+    <!-- / SEARCH -->
+</div>
+<!-- / HEADER -->
+
+<!-- CONTENT -->
+<div class="content">
+    <!-- SIDEBAR -->
+    <!-- / SIDEBAR -->
+
+    <!-- CENTER -->
+    <div class="center p-24 pb-56" fusePerfectScrollbar>
+        <!-- CONTENT -->
+        <div class="content-card">
+            <div
+                fxFlexFill
+                fxLayout="column"
+                fxLayout.gt-xs="row"
+                fxLayoutGap="10px"
+            >
+                <div fxFlex.gt-sm="100%" fxFlex style="background-color: white">
+                    <div class="dialog-content-wrapper">
+                        <div mat-dialog-content class="p-24 pb-0 m-0">
+                            <form [formGroup]="personalFormGroup">
+                                <mat-form-field appearance="outline" style="width:40%;margin-left:20px;">
+                                    <input type="text" name="RegId" formControlName="RegId"
+                                        placeholder="Patient Name (enter 2 char) " matInput [matAutocomplete]="auto1"
+                                        (input)="getSearchDocuploadPatientList()">
+                                    <span matSuffix style="display: flex;">
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="personalFormGroup.get('RegId').setValue(''); isRegIdSelected1 = false;">close</mat-icon>
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="personalFormGroup.get('RegId').setValue(''); isRegIdSelected1 = false;">search</mat-icon>
+                                    </span>
+                                    <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getPatientOptionText"
+                                        (optionSelected)='getPatientSelectedObj($event.option.value)'>
+                                        <mat-option *ngFor="let option of filteredOptions" [value]="option">
+                                            {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} | {{option.RegNo}} |
+                                            {{option.MobileNo}}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+                                <div class="patient-info" *ngIf="false">
+                                    <span>RegId:{{RegId}} | </span>
+                                    <span> Patient Name : {{PatientName}} | </span>
+                                    <span> VisitId: {{VisitId}} | </span>
+                                </div>
+                                <span style="margin-left: 20px;font-size: medium;font-weight: bold;color: blue;">RegId:{{RegId}} |
+                                    Patient
+                                    Name : {{PatientName}} | VisitId: {{VisitId}}
+                                </span>
+                            </form>
+                        </div>
+                        <div
+                            mat-dialog-actions
+                            class="m-0 p-16"
+                            fxLayout="row"
+                            fxLayoutAlign="end center"
+                        >
+                            <div class="button-row">
+                                <button
+                                    mat-raised-button
+                                    color="primary"
+                                    type="submit"
+                                    (click)="onSubmit()"
+                                    [disabled]="
+                                        _documentManagementService.myform
+                                            .invalid
+                                    "
+                                >
+                                    Save
+                                </button>
+                                <button
+                                    mat-raised-button
+                                    color="warn"
+                                    (click)="onClear()"
+                                >
+                                    Clear
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- / CONTENT -->
+    </div>
+    <!-- / CENTER -->
+</div>

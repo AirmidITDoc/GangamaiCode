@@ -5,7 +5,8 @@ import { MatSort } from "@angular/material/sort";
 import { fuseAnimations } from "@fuse/animations";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
-import { DocumentManagementService } from "./document-management.service";
+import { DocumentManagementService } from "../document-management.service";
+
 
 @Component({
     selector: "app-document-management",
@@ -14,7 +15,7 @@ import { DocumentManagementService } from "./document-management.service";
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations,
 })
-export class DocumentManagementComponent implements OnInit {
+export class DocumentManagementComponent     implements OnInit {
     ParentDataList: any;
     msg: any;
     IsLoading: string = '';

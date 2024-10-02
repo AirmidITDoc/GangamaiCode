@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { LoaderService } from "app/core/components/loader/loader.service";
 
 @Injectable({
     providedIn: "root",
@@ -11,6 +12,7 @@ export class DocumentManagementService {
 
     constructor(
         private _httpClient: HttpClient,
+        private _loaderService: LoaderService,
         private _formBuilder: FormBuilder
     ) {
         this.myform = this.createdocumentnanagementForm();
@@ -59,5 +61,24 @@ export class DocumentManagementService {
 
     populateForm(param) {
         this.myform.patchValue(param);
+    }
+
+    public getDocPatientRegList(employee,loader = true){
+        if (loader) {
+            this._loaderService.show();
+        }
+        return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientVisitedListSearch", employee)
+    }
+    getuploadeddocumentsList(query,loader = true){
+        if (loader) {
+            this._loaderService.show();
+        }
+        return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
+    }
+    getfile(Id,loader = true){
+        if (loader) {
+            this._loaderService.show();
+        }
+        return this._httpClient.get("Document/Patient-Doc-Files?Id="+Id)
     }
 }
