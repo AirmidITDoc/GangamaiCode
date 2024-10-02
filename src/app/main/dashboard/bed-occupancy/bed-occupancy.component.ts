@@ -28,7 +28,15 @@ export class BedOccupancyComponent implements OnInit {
     ngOnInit(): void {
         this.getWard();
     }
-
+    restBed(){
+        let Query ;
+        Query = " Update BedMaster set IsAvailible=1 where BedId in( SELECT  Bedmaster.BedId FROM dbo.RoomMaster INNER JOIN dbo.Bedmaster ON dbo.RoomMaster.RoomId = dbo.Bedmaster.RoomId LEFT OUTER JOIN dbo.lvwCurrentAdmBed ON dbo.Bedmaster.BedId = dbo.lvwCurrentAdmBed.BedId WHERE (ISNULL(dbo.lvwCurrentAdmBed.DocNameID, 0) = 0)) "
+        console.log(Query);
+        this._dashboardServices.resetBedOccupancy(Query).subscribe(data =>{ 
+           
+        });
+        this.getWard();
+    }
     getWard() {
         this._dashboardServices.getWard({}).subscribe(data => {
             this.warDataArr = data as WardDetails[];

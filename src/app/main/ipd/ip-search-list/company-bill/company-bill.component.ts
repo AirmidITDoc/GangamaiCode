@@ -960,7 +960,7 @@ export class CompanyBillComponent implements OnInit {
       let submitData = {
         "addCharges": m_data
       };
-      this._IpSearchListService.InsertIPAddChargesNew(submitData).subscribe(data => {
+      this._IpSearchListService.InsertIPAddCharges(submitData).subscribe(data => {
         if (data) {
           Swal.fire('Success !', 'ChargeList Row Added Successfully', 'success');
           this.getChargesList(); 

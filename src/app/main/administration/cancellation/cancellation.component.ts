@@ -34,12 +34,36 @@ export class CancellationComponent implements OnInit {
     'NetpayableAmt', 
     'action',
   ];
+  displayedRefundAdvColumn:string[] = [
+    'btn',
+   'BillDate',
+   'PBillNo',
+   'RegNo',
+   'PatientName',
+   'BillAmt',
+   'ConAmt',
+   'NetpayableAmt', 
+   'action',
+ ];
+ displayedRefundBillColumn:string[] = [
+  'btn',
+ 'BillDate',
+ 'PBillNo',
+ 'RegNo',
+ 'PatientName',
+ 'BillAmt',
+ 'ConAmt',
+ 'NetpayableAmt', 
+ 'action',
+];
   
 
   sIsLoading: string = '';
   isLoading = true;
 
   dsCancellation = new MatTableDataSource<CancellationList>();
+  dsRefundOfAdvList = new MatTableDataSource<CancellationList>();
+  dsRefundOfBillList = new MatTableDataSource<CancellationList>();
   
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -68,7 +92,56 @@ export class CancellationComponent implements OnInit {
     // console.log('dateTimeObj==', dateTimeObj);
     this.dateTimeObj = dateTimeObj;
   }
- 
+  getSearchRefOfBillList() { 
+    this.sIsLoading = 'loading-data';
+    // var D_data = {
+    //   "F_Name":  this._CancellationService.UserFormGroup.get('FirstName').value || '%',
+    //   "L_Name": this._CancellationService.UserFormGroup.get('LastName').value || '%',
+    //   "From_Dt": this.datePipe.transform(this._CancellationService.UserFormGroup.get('startdate').value, "MM-dd-yyyy") || '01/01/1900',
+    //   "To_Dt ": this.datePipe.transform(this._CancellationService.UserFormGroup.get('enddate').value, "MM-dd-yyyy") || '01/01/1900',
+    //   "Reg_No": this._CancellationService.UserFormGroup.get('RegNo').value || 0,
+    //   "PBillNo": this._CancellationService.UserFormGroup.get('PBillNo').value + '%' || "%",
+    //   "Start":(this.paginator?.pageIndex??0),
+    //   "Length":(this.paginator?.pageSize??35) 
+    // }
+    // console.log(D_data);
+    // this._CancellationService.getIpBillList(D_data).subscribe(Visit => {
+    //   this.dsCancellation.data = Visit as CancellationList[]; 
+    //   console.log(this.dsCancellation.data)
+    //   this.dsCancellation.data = Visit["Table1"] ?? [] as CancellationList[];
+    //   console.log(this.dsCancellation.data)
+    //   this.resultsLength = Visit["Table"][0]["total_row"];
+    //   this.sIsLoading = this.dsCancellation.data.length == 0 ? 'no-data' : ''; 
+    // },
+    //   error => {
+    //     this.sIsLoading = '';
+    //   });
+  }
+  getSearchRefOfAdvList() { 
+    this.sIsLoading = 'loading-data';
+    // var D_data = {
+    //   "F_Name":  this._CancellationService.UserFormGroup.get('FirstName').value || '%',
+    //   "L_Name": this._CancellationService.UserFormGroup.get('LastName').value || '%',
+    //   "From_Dt": this.datePipe.transform(this._CancellationService.UserFormGroup.get('startdate').value, "MM-dd-yyyy") || '01/01/1900',
+    //   "To_Dt ": this.datePipe.transform(this._CancellationService.UserFormGroup.get('enddate').value, "MM-dd-yyyy") || '01/01/1900',
+    //   "Reg_No": this._CancellationService.UserFormGroup.get('RegNo').value || 0,
+    //   "PBillNo": this._CancellationService.UserFormGroup.get('PBillNo').value + '%' || "%",
+    //   "Start":(this.paginator?.pageIndex??0),
+    //   "Length":(this.paginator?.pageSize??35) 
+    // }
+    // console.log(D_data);
+    // this._CancellationService.getIpBillList(D_data).subscribe(Visit => {
+    //   this.dsCancellation.data = Visit as CancellationList[]; 
+    //   console.log(this.dsCancellation.data)
+    //   this.dsCancellation.data = Visit["Table1"] ?? [] as CancellationList[];
+    //   console.log(this.dsCancellation.data)
+    //   this.resultsLength = Visit["Table"][0]["total_row"];
+    //   this.sIsLoading = this.dsCancellation.data.length == 0 ? 'no-data' : ''; 
+    // },
+    //   error => {
+    //     this.sIsLoading = '';
+    //   });
+  }
   getSearchList(){
     if(this._CancellationService.UserFormGroup.get('OP_IP_Type').value  == '1'){
       this.getIpdBillList();
@@ -126,10 +199,7 @@ export class CancellationComponent implements OnInit {
       error => {
         this.sIsLoading = '';
       });
-  }
-  
- 
- 
+  }  
   isLoading123:boolean=false;
   BillCancel(contact){ 
     Swal.fire({
