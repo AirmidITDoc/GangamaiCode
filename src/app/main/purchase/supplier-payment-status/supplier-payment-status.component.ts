@@ -196,7 +196,7 @@ export class SupplierPaymentStatusComponent implements OnInit {
           this.toastr.success('Supplier payment Successfuly', 'Saved', {
             toastClass: 'tostr-tost custom-toast-warning',
           });
-          this.OnReset();
+          return;
         }
         else {
           this.toastr.warning('Supplier payment Not Saved', 'Error', {
@@ -222,7 +222,6 @@ export class SupplierPaymentStatusComponent implements OnInit {
     this.vNetAmount = 0;
     this.vPaidAmount = 0;
     this.vBalanceAmount = 0;
-    this.SelectedList = [];
   }
   getSupplierPaymentList() {  
     this.dsSupplierpayList.data = []; 

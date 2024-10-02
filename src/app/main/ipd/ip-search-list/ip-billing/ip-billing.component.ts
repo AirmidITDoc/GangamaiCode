@@ -63,8 +63,11 @@ export class IPBillingComponent implements OnInit {
   ]; 
   tableColumns = [
     'RedDate',
+    'RedDate',
     'ServiceName',
     'Price',
+    'UserName',
+    'Action',
     'UserName',
     'Action'
   ]; 
@@ -733,25 +736,47 @@ ServiceList:any=[];
     });
   } 
   //nursing Service List added
+ 
   AddList(m) {
-    console.log(m) 
-    var m_data = { 
-      "opipid": m.OP_IP_ID,
-      "serviceId":  m.ServiceId,
-      "classId": this.Serviceform.get("ChargeClass").value.ClassId || 0 ,    // this.selectedAdvanceObj.ClassId,
-      "userId": this.accountService.currentUserValue.user.id,
-      "traiffId": 1, 
-      "reqDetId": m.ReqDate || '01/01/1900', 
-      "chargesDate": this.datePipe.transform(this.currentDate, "MM-dd-yyyy") || '01/01/1900', // this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
+    console.log(m)
+    var m_data = {
+      "chargeID": 0,
+      "chargesDate": this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
+      "opD_IPD_Type": 1,
+      "opD_IPD_Id": m.OP_IP_ID,
+      "serviceId": m.ServiceId,
+      "price": m.price,
+      "qty": 1,
+      "totalAmt": (m.price * 1),
+      "concessionPercentage": 0,
+      "concessionAmount": 0,
+      "netAmount": (m.price * 1),
+      "doctorId": 0,
+      "docPercentage": 0,
+      "docAmt": 0,
+      "hospitalAmt": 0,
+      "isGenerated": 0,
+      "addedBy": this.accountService.currentUserValue.user.id,
+      "isCancelled": 0,
+      "isCancelledBy": 0,
+      "isCancelledDate": "01/01/1900",
+      "isPathology": m.IsPathology,
+      "isRadiology": m.IsRadiology,
+      "isPackage": 0,
+      "packageMainChargeID": 0,
+      "isSelfOrCompanyService": false,
+      "packageId": 0,
+      "chargeTime": this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
+      "classId": this.Serviceform.get("ChargeClass").value.ClassId
     }
-    console.log(m_data);
-    let submitData = { 
-      "labRequestCharges":m_data
-    };  
-    this._IpSearchListService.InsertIPLabReqCharges(submitData).subscribe(data => {
+    let submitData = {
+      "addCharges": m_data
+    };
+    this._IpSearchListService.InsertIPAddChargesNew(submitData).subscribe(data => {
       if (data) {
-        Swal.fire('Success !', 'ChargeList Row Added Successfully', 'success');
+        Swal.fire('Success !', 'ChargeList Row Added Successfully', 'success'); 
         this.getChargesList();
+        this.getRequestChargelist();  
       }
     });
     this.onClearServiceAddList() 

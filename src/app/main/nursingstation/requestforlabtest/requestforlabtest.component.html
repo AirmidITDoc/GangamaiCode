@@ -190,6 +190,40 @@
 
                                 <mat-table class="Tab2" matSort [dataSource]="dsrequestdetList" [@animateStagger]="{value:'50'}" style="overflow: auto;">
 
+                                    <ng-container matColumnDef="IsStatus">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">IsStatus
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-80">
+                                            <button mat-icon-button>
+                                                <mat-icon matTooltip="Accepted" *ngIf="contact.IsStatus==true"
+                                                    class="active-icon green-500 s-16">check_circle</mat-icon>
+                                                <mat-icon matTooltip="Pending" *ngIf="contact.IsStatus==false"
+                                                    class="active-icon red-500 s-16">hourglass_empty</mat-icon>
+                                            </button>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="IsComplted">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-90">IsTestCompleted
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-90"> 
+                                            <button mat-icon-button>
+                                                <mat-icon matTooltip="IsTestCompleted" *ngIf="contact.IsTestCompted==true"
+                                                    class="active-icon green-500 s-16">assignment_turned_in</mat-icon>
+                                                <mat-icon matTooltip="not Completed" *ngIf="contact.IsTestCompted==false"
+                                                    class="active-icon red-500 s-16">hourglass_empty</mat-icon>
+                                            </button>
+                                            <button mat-icon-button>
+                                                <mat-icon matTooltip="Lab Report"  (click)="LabReportView(contact)"
+                                                     >remove_red_eye</mat-icon> 
+                                            </button>
+                                        </mat-cell>
+                                    </ng-container>
+                                    <ng-container matColumnDef="loading">
+                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                        </mat-header-cell>
+                                    </ng-container> 
+
                                     <ng-container matColumnDef="ReqDate">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ReqDate
                                         </mat-header-cell>
@@ -236,36 +270,8 @@
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             <span> {{contact.AddedByDate}}</span>
                                         </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="IsStatus">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>IsStatus
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            <span> {{contact.IsStatus}}</span>
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="PBillNo">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>PBillNo
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            <span> {{contact.PBillNo}}</span>
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="IsComplted">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>IsComplted
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            <span> {{contact.IsTestCompted }}</span>
-                                        </mat-cell>
-                                    </ng-container>
-                                    <ng-container matColumnDef="loading">
-                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                        </mat-header-cell>
-                                    </ng-container>
-
+                                    </ng-container> 
+                                 
                                     <ng-container matColumnDef="noData">
                                         <mat-footer-cell *matFooterCellDef colspan="6">
                                             no data found...

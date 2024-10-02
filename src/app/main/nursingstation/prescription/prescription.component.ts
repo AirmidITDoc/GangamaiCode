@@ -48,6 +48,7 @@ export class PrescriptionComponent implements OnInit {
   ]
 
   dscPrescriptionDetList:string[] = [
+    'Status',
     'ItemName',
     'Qty',
     // 'TotalQty'
@@ -210,7 +211,7 @@ export class PrescriptionComponent implements OnInit {
       this.SpinLoading =true;
     //  this.AdList=true;
     this._PrescriptionService.getIpPrescriptionview(
-      row.OP_IP_ID,row.OPD_IPD_Type
+      row.IPMedID,row.OPD_IPD_Type
       
     ).subscribe(res => {
       const dialogRef = this._matDialog.open(PdfviewerComponent,

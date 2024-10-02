@@ -233,7 +233,7 @@ ServiceList: any = [];
     else if (this.ReportName == 'Service Wise Report') {
       this.FlagUserSelected = false;
       this.FlagPaymentIdSelected = false;
-      this.FlagDoctorIDSelected = false;
+      this.FlagDoctorIDSelected = true;
       this.FlagRefundIdSelected = false;
       this.FlagVisitSelected = false;
       this.FlagServiceIdSelected = true;
@@ -833,11 +833,15 @@ ServiceList: any = [];
     if (this._OPReportsService.userForm.get('ServiceId').value)
       ServiceId = this._OPReportsService.userForm.get('ServiceId').value.ServiceId
 
+    let DoctorId=0;
+    if (this._OPReportsService.userForm.get('DoctorId').value)
+     DoctorId = this._OPReportsService.userForm.get('DoctorId').value.DoctorID || 0
+
     setTimeout(() => {
 
       this._OPReportsService.getServicewisereportView(ServiceId,
         this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
+        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",DoctorId
       ).subscribe(res => {
         const matDialog = this._matDialog.open(PdfviewerComponent,
           {
@@ -1163,7 +1167,8 @@ ServiceList: any = [];
 
   getDoctorvisitAdminwisegroupview() {
     this.sIsLoading = 'loading-data';
-    let DoctorId = this._OPReportsService.userForm.get('DoctorId').value.DoctorID || 0
+    let DoctorId=0;
+     DoctorId = this._OPReportsService.userForm.get('DoctorId').value.DoctorID || 0
     setTimeout(() => {
 
       this._OPReportsService.getdoctorvisitadmingroupwiseView(
