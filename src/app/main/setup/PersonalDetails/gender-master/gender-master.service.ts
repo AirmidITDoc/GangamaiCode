@@ -24,13 +24,13 @@ export class GenderMasterService {
 
     createGenderForm(): FormGroup {
         return this._formBuilder.group({
-            GenderId: [""],
-            GenderName: ['', [
+            genderId: [""],
+            genderName: ['', [
                 Validators.required,
                 Validators.maxLength(50),
                 Validators.pattern('^[a-zA-Z () ]*$')
               ]],
-            IsDeleted: [""],
+              isDeleted: [""],
         });
     }
 

@@ -20,28 +20,36 @@ export class GenderMasterComponent implements OnInit {
     GenderMasterList: any;
     msg: any;
     displayedColumns: string[] = [
-        "GenderId",
+        "genderId",
         "genderName",
-        "IsDeleted",
+        "isDeleted",
         "action"
     ];
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     DSGenderMasterList = new MatTableDataSource<GenderMaster>();
+
     // @ViewChild(MatSort) sort: MatSort;
     // @ViewChild(MatPaginator) paginator: MatPaginator;
     gridConfig:gridModel={
         apiUrl: "Gender/List", 
         headers: [
-            "GenderId",
+            "genderId",
             "genderName",
-            "IsDeleted",
+            "isActive",
             "action"
         ], 
-        sortField: "GenderId", 
+        columnsList: [
+            { heading: "Code", key: "genderId", sort: false, align: 'left', emptySign: 'NA' },
+            { heading: "Gender Name", key: "genderName", sort: true,  align: 'left', emptySign: 'NA' },
+            { heading: "IsDeleted", key: "isActive", type: 'status', align: "center" },
+            { heading: "Action", key: "action", align: "right", type: "action", action: [ 2, 3] } //Action 1-view, 2-Edit,3-delete
+          ],
+        sortField: "genderId", 
         sortOrder: 0,
         filters: [],
         row: 10
     }
+    
     constructor(
         public _GenderService: GenderMasterService,
         public toastr: ToastrService, public _matDialog: MatDialog
@@ -99,7 +107,7 @@ export class GenderMasterComponent implements OnInit {
     // }
 
     onClear() {
-        this._GenderService.myform.reset({ IsDeleted: "false" });
+        this._GenderService.myform.reset({ isDeleted: "false" });
         this._GenderService.initializeFormGroup();
     }
 
@@ -223,16 +231,30 @@ export class GenderMasterComponent implements OnInit {
             this.onClear();
         }
     }
-
+    changeStatus(status: any) {
+        switch (status.id) {
+          case 1:
+            //this.onEdit(status.data)
+            break;
+          case 2:
+            this.onEdit(status.data)
+            break;
+          case 5:
+            this.onDeactive(status.data.genderId);
+            break;
+          default:
+            break;
+        }
+      }
     onEdit(row) {
         var m_data = {
-            genderId: row.GenderId,
-            genderName: row.GenderName.trim(),
-            isDeleted: JSON.stringify(row.IsActive),
+            genderId: row.genderId,
+            genderName: row.genderName.trim(),
+            isDeleted: JSON.stringify(row.isActive),
         };
         this._GenderService.populateForm(m_data);
     }
-    onDeactive(GenderId) {
+    onDeactive(genderId) {
         debugger
         this.confirmDialogRef = this._matDialog.open(
             FuseConfirmDialogComponent,
@@ -245,7 +267,7 @@ export class GenderMasterComponent implements OnInit {
         this.confirmDialogRef.afterClosed().subscribe((result) => {
             debugger
             if (result) {
-                this._GenderService.deactivateTheStatus(GenderId).subscribe((data: any) => {
+                this._GenderService.deactivateTheStatus(genderId).subscribe((data: any) => {
                     this.msg = data
                     if (data.StatusCode == 200) {
                         this.toastr.success(
@@ -277,9 +299,9 @@ export class GenderMaster {
      */
     constructor(GenderMaster) {
         {
-            this.genderId = GenderMaster.GenderId || "";
-            this.genderName = GenderMaster.GenderName || "";
-            this.isDeleted = GenderMaster.IsDeleted || "true";
+            this.genderId = GenderMaster.genderId || "";
+            this.genderName = GenderMaster.genderName || "";
+            this.isDeleted = GenderMaster.isDeleted || "true";
         }
     }
 }

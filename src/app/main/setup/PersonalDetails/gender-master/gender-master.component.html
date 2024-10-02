@@ -60,21 +60,21 @@
 
                         <div fxlayout="row">
                             <div style="width: 100%;">
-                                <airmid-table [gridConfig]="gridConfig">
-                                    <ng-container matColumnDef="GenderId">
+                                <airmid-table [gridConfig]="gridConfig" (status)="changeStatus($event)">
+                                    <!-- <ng-container matColumnDef="genderId">
                                         <mat-header-cell *matHeaderCellDef> Code </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.genderId}}
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="genderName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header> Gender Name
+                                        <mat-header-cell *matHeaderCellDef > Gender Name
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.genderName}}
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="IsDeleted">
+                                    <ng-container matColumnDef="isDeleted">
                                         <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm> IsActive
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
@@ -97,7 +97,7 @@
                                                 <mat-icon>delete_outline</mat-icon>
                                             </button>
                                         </mat-cell>
-                                    </ng-container>
+                                    </ng-container> -->
                                 </airmid-table>
                                 <!-- <mat-table #table matSort [dataSource]="DSGenderMasterList"
                                     (matSortChange)="getGenderMasterList()" [@animateStagger]="{value:'50'}"
@@ -123,21 +123,20 @@
                         <div class="dialog-content-wrapper">
                             <div mat-dialog-content class="p-24 pb-0 m-0">
                                 <form [formGroup]="_GenderService.myform">
-                                    <h3>{{_GenderService.myform.controls.GenderId.value?"Modify Gender Master":"New
-                                        Gender Master"}}
+                                    <h3>{{_GenderService.myform.controls.genderId.value?"Modify Gender Master":"New Gender Master"}}
                                     </h3>
 
-                                    <input type="hidden" name="GenderId" formControlName="GenderId">
+                                    <input type="hidden" name="genderId" formControlName="genderId">
 
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                                         <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                                             <mat-label>Gender Name</mat-label>
-                                            <input name="GenderName" formControlName="GenderName" matInput required>
+                                            <input name="genderName" formControlName="genderName" matInput required>
                                             <mat-error>Please enter Gender Name only Char </mat-error>
                                         </mat-form-field>
                                     </div>
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                        <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
+                                        <mat-radio-group name="isDeleted" formControlName="isDeleted" value='false'>
                                             <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive
                                             </mat-radio-button>
                                             <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsDeactive

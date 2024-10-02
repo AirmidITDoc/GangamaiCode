@@ -1,6 +1,50 @@
-<mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" style="overflow:auto"
-    (matSortChange)="bindGridData()">
-    <ng-content></ng-content>
+<mat-table #table  matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" style="overflow:auto"
+    >
+    <!-- <ng-content></ng-content> -->
+     
+    <ng-container *ngFor="let row of gridConfig?.columnsList" [matColumnDef]="row.key">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="!row.sort">
+             <!-- <span>
+                <mat-checkbox *ngIf="row.type === 'checkbox'" (change)="$event ? masterToggle() : null"
+                  [checked]="selection.hasValue() && isAllSelected()"
+                  [indeterminate]="selection.hasValue() && !isAllSelected()">
+                </mat-checkbox>
+              </span> -->
+              {{ row?.heading }}
+        </th>
+        <td mat-cell *matCellDef="let element; let i = index" fxShow.gt-sm>
+            <ng-container [ngSwitch]="row?.type" fxShow.gt-sm>
+                <ng-container *ngSwitchCase="'customText'">
+                    <span> {{ element[row.key] ? [row.text1] : [row.text2] }}</span>
+                </ng-container>
+                <ng-container *ngSwitchCase="'status'" fxHide fxShow.gt-sm>
+                    <mat-icon *ngIf="getStatus(element[row.key])" class="active-icon green-600 s-16"
+                        style="color: azure;">check_circle</mat-icon>
+                    <mat-icon *ngIf="!getStatus(element[row.key])"
+                        class="active-icon red-500 s-16">close</mat-icon>
+                </ng-container>
+                <ng-container *ngSwitchDefault>
+                    {{ element[row.key]}}
+                </ng-container>
+                <ng-container *ngSwitchCase="'action'">
+                    <ng-container *ngFor="let sta of row.action">
+                        <button mat-icon-button *ngIf="sta == 1" 
+                            (click)="changeStatus(sta,element)" style="color:blue;">
+                            <mat-icon title="View">eyes</mat-icon>
+                        </button>
+                        <button mat-icon-button *ngIf="sta == 2" 
+                            (click)="changeStatus(sta,element)" style="color:black;">
+                            <mat-icon title="Edit Menu">launch</mat-icon>
+                        </button>
+                        <button mat-icon-button *ngIf="sta == 3"
+                            (click)="changeStatus(sta,element)" color="warn">
+                            <mat-icon>delete_outline</mat-icon>
+                        </button>
+                    </ng-container>
+                </ng-container>
+            </ng-container>
+        </td>
+    </ng-container>
     <mat-header-row class="accent" *matHeaderRowDef="gridConfig.headers; sticky: true">
     </mat-header-row>
     <mat-row *matRowDef="let row; columns: gridConfig.headers;" class="element"

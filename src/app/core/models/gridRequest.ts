@@ -4,6 +4,7 @@ export class gridRequest {
     sortField: string = "";
     sortOrder: number = 0;
     filters: gridFilter[]=[];
+    columns: []=[];
     exportType: gridResponseType=gridResponseType.JSON;
 }
 export class gridFilter{
@@ -16,6 +17,7 @@ export enum gridResponseType{
 }
 export class gridModel{
     headers: string[]=[];
+    columnsList: any[]=[];
     apiUrl:string="";
     sortField:string="";
     sortOrder:number=0;
