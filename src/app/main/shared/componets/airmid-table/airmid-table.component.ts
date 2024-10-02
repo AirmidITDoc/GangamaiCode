@@ -37,7 +37,7 @@ export class AirmidTableComponent implements OnInit {
     bindGridData() {
         var param: gridRequest = {
             sortField: this.sort?.active ?? this.gridConfig.sortField,
-            sortOrder: this.sort?.direction ?? 'asc' == 'asc' ? 0 : -1, filters: [],
+            sortOrder: this.sort?.direction ?? 'asc' == 'asc' ? 0 : -1, filters: this.gridConfig.filters,
             columns: [],
             first: (this.paginator?.pageIndex ?? 0),
             rows: (this.paginator?.pageSize ?? this.gridConfig.row),
@@ -51,6 +51,9 @@ export class AirmidTableComponent implements OnInit {
             //this.columnDefs.forEach(columnDef => this.table.addColumnDef(columnDef));
         });
         //this.sort.emit();
+    }
+    clearData(){
+        
     }
     getStatus(status: boolean){
         return status;

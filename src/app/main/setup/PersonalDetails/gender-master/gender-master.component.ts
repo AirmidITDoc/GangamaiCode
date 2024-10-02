@@ -1,13 +1,10 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatSort } from "@angular/material/sort";
-import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
 import { ToastrService } from "ngx-toastr";
 import { GenderMasterService } from "./gender-master.service";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
-import {  gridModel } from "app/core/models/gridRequest";
+import { gridModel } from "app/core/models/gridRequest";
 
 @Component({
     selector: "app-gender-master",
@@ -26,86 +23,35 @@ export class GenderMasterComponent implements OnInit {
         "action"
     ];
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
-    DSGenderMasterList = new MatTableDataSource<GenderMaster>();
-
-    // @ViewChild(MatSort) sort: MatSort;
-    // @ViewChild(MatPaginator) paginator: MatPaginator;
-    gridConfig:gridModel={
-        apiUrl: "Gender/List", 
+    gridConfig: gridModel = {
+        apiUrl: "Gender/List",
         headers: [
             "genderId",
             "genderName",
             "isActive",
             "action"
-        ], 
+        ],
         columnsList: [
             { heading: "Code", key: "genderId", sort: false, align: 'left', emptySign: 'NA' },
-            { heading: "Gender Name", key: "genderName", sort: true,  align: 'left', emptySign: 'NA' },
+            { heading: "Gender Name", key: "genderName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsDeleted", key: "isActive", type: 'status', align: "center" },
-            { heading: "Action", key: "action", align: "right", type: "action", action: [ 2, 3] } //Action 1-view, 2-Edit,3-delete
-          ],
-        sortField: "genderId", 
+            { heading: "Action", key: "action", align: "right", type: "action", action: [2, 3] } //Action 1-view, 2-Edit,3-delete
+        ],
+        sortField: "genderId",
         sortOrder: 0,
-        filters: [],
+        filters: [
+            { fieldName: "genderName", fieldValue: "", opType: "Contains" }
+        ],
         row: 10
     }
-    
+
     constructor(
         public _GenderService: GenderMasterService,
         public toastr: ToastrService, public _matDialog: MatDialog
     ) { }
 
     ngOnInit(): void {
-        //this.getGenderMasterList();
     }
-
-    onSearch() {
-       // this.getGenderMasterList();
-    }
-
-    onSearchClear() {
-        this._GenderService.myformSearch.reset({
-            GenderNameSearch: "",
-            IsDeletedSearch: "2",
-        });
-        //this.getGenderMasterList();
-    }
-
-    resultsLength = 0;
-    // getGenderMasterList() {
-        
-    //     var Param: gridRequest = {
-    //         SortField: this.sort?.active ?? "GenderId", SortOrder: this.sort?.direction ?? 'asc' == 'asc' ? 0 : -1, Filters: [],
-    //         Columns: [],
-    //         First: (this.paginator?.pageIndex ?? 0),
-    //         Rows: (this.paginator?.pageSize ?? 12),
-    //         ExportType: gridResponseType.JSON
-    //     };
-    //     var GenderName = this._GenderService.myformSearch.get("GenderNameSearch").value.trim();
-    //     if (GenderName) {
-    //         Param.Filters.push({
-    //             "FieldName": "GenderName",
-    //             "FieldValue": GenderName,
-    //             "OpType": "13"
-    //         });
-    //     }
-    //     var isActive = this._GenderService.myformSearch.get("IsDeletedSearch").value;
-    //     if (isActive != 2) {
-    //         Param.Filters.push({
-    //             "FieldName": "IsActive",
-    //             "FieldValue": this._GenderService.myformSearch.get("IsDeletedSearch").value,
-    //             "OpType": "13"
-    //         });
-    //     }
-    //     this._GenderService.getGenderMasterList(Param).subscribe((data: any) => {
-    //         this.DSGenderMasterList.data = data.data as GenderMaster[];
-    //         this.DSGenderMasterList.sort = this.sort;
-    //         //this.DSGenderMasterList.paginator = this.paginator;
-    //         this.resultsLength = data["recordsFiltered"];
-    //         console.log(this.DSGenderMasterList.data);
-    //     });
-    // }
-
     onClear() {
         this._GenderService.myform.reset({ isDeleted: "false" });
         this._GenderService.initializeFormGroup();
@@ -233,19 +179,19 @@ export class GenderMasterComponent implements OnInit {
     }
     changeStatus(status: any) {
         switch (status.id) {
-          case 1:
-            //this.onEdit(status.data)
-            break;
-          case 2:
-            this.onEdit(status.data)
-            break;
-          case 5:
-            this.onDeactive(status.data.genderId);
-            break;
-          default:
-            break;
+            case 1:
+                //this.onEdit(status.data)
+                break;
+            case 2:
+                this.onEdit(status.data)
+                break;
+            case 5:
+                this.onDeactive(status.data.genderId);
+                break;
+            default:
+                break;
         }
-      }
+    }
     onEdit(row) {
         var m_data = {
             genderId: row.genderId,
@@ -278,7 +224,7 @@ export class GenderMasterComponent implements OnInit {
                                     "tostr-tost custom-toast-success",
                             }
                         );
-                       // this.getGenderMasterList();
+                        // this.getGenderMasterList();
                     }
                 });
             }
