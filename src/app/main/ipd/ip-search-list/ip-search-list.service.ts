@@ -734,7 +734,7 @@ public updateIPDDischargSummary(employee)
     return this._httpClient.post("InPatient/DeleteIPCharges", employee);
   }
 
-
+// Insert nursing req add Charges 
   public InsertIPLabReqCharges(employee, loader = true) {
     if (loader) {
       this._loaderService.show();

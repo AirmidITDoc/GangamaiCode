@@ -14,6 +14,7 @@ import { IPBrowseBillService } from 'app/main/ipd/ip-bill-browse-list/ip-browse-
 import { BrowseOPBillService } from 'app/main/opd/browse-opbill/browse-opbill.service';
 import { ToastrService } from 'ngx-toastr';
 import { BillDateUpdateComponent } from './bill-date-update/bill-date-update.component';
+import { BrowseIpdreturnadvanceReceipt, RefundMaster } from 'app/main/opd/browse-refund-list/browse-refund-list.component';
 
 @Component({
   selector: 'app-cancellation',
@@ -34,27 +35,33 @@ export class CancellationComponent implements OnInit {
     'NetpayableAmt', 
     'action',
   ];
-  displayedRefundAdvColumn:string[] = [
-    'btn',
-   'BillDate',
-   'PBillNo',
-   'RegNo',
-   'PatientName',
-   'BillAmt',
-   'ConAmt',
-   'NetpayableAmt', 
-   'action',
+  displayedRefundAdvColumn:string[] = [ 
+      'RegNo',
+      'RefundDate',
+      'PatientName', 
+      'AdvanceAmount',
+      'AdvanceUsedAmount',
+      'BalanceAmount', 
+      'RefundAmount',
+      'PaymentDate', 
+      'CashPayAmount',
+      'ChequePayAmount',
+      'CardPayAmount',
+      'Remark',
+      'UserName',  
+       'buttons' 
  ];
- displayedRefundBillColumn:string[] = [
-  'btn',
- 'BillDate',
- 'PBillNo',
- 'RegNo',
- 'PatientName',
- 'BillAmt',
- 'ConAmt',
- 'NetpayableAmt', 
- 'action',
+ displayedRefundBillColumn:string[] = [ 
+    'RefundDate',
+    'RegNo', 
+    'PatientName', 
+    'RefundAmount',
+    'TotalAmt', 
+    'CashPayAmount',
+    'ChequePayAmount',
+    'CardPayAmount',
+    'Remark',
+    'buttons' 
 ];
   
 
@@ -62,8 +69,8 @@ export class CancellationComponent implements OnInit {
   isLoading = true;
 
   dsCancellation = new MatTableDataSource<CancellationList>();
-  dsRefundOfAdvList = new MatTableDataSource<CancellationList>();
-  dsRefundOfBillList = new MatTableDataSource<CancellationList>();
+  dsRefundOfAdvList = new MatTableDataSource<BrowseIpdreturnadvanceReceipt>();
+  dsRefundOfBillList = new MatTableDataSource<RefundMaster>();
   
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -82,6 +89,8 @@ export class CancellationComponent implements OnInit {
 
   ngOnInit(): void {
     this.getSearchList(); 
+    this.getSearchRefOfAdvList();
+    this.getSearchRefOfBillList();
   }
   
   toggleSidebar(name): void {
@@ -92,56 +101,58 @@ export class CancellationComponent implements OnInit {
     // console.log('dateTimeObj==', dateTimeObj);
     this.dateTimeObj = dateTimeObj;
   }
-  getSearchRefOfBillList() { 
-    this.sIsLoading = 'loading-data';
-    // var D_data = {
-    //   "F_Name":  this._CancellationService.UserFormGroup.get('FirstName').value || '%',
-    //   "L_Name": this._CancellationService.UserFormGroup.get('LastName').value || '%',
-    //   "From_Dt": this.datePipe.transform(this._CancellationService.UserFormGroup.get('startdate').value, "MM-dd-yyyy") || '01/01/1900',
-    //   "To_Dt ": this.datePipe.transform(this._CancellationService.UserFormGroup.get('enddate').value, "MM-dd-yyyy") || '01/01/1900',
-    //   "Reg_No": this._CancellationService.UserFormGroup.get('RegNo').value || 0,
-    //   "PBillNo": this._CancellationService.UserFormGroup.get('PBillNo').value + '%' || "%",
-    //   "Start":(this.paginator?.pageIndex??0),
-    //   "Length":(this.paginator?.pageSize??35) 
-    // }
-    // console.log(D_data);
-    // this._CancellationService.getIpBillList(D_data).subscribe(Visit => {
-    //   this.dsCancellation.data = Visit as CancellationList[]; 
-    //   console.log(this.dsCancellation.data)
-    //   this.dsCancellation.data = Visit["Table1"] ?? [] as CancellationList[];
-    //   console.log(this.dsCancellation.data)
-    //   this.resultsLength = Visit["Table"][0]["total_row"];
-    //   this.sIsLoading = this.dsCancellation.data.length == 0 ? 'no-data' : ''; 
-    // },
-    //   error => {
-    //     this.sIsLoading = '';
-    //   });
+  getSearchRefOfBillList() {  
+      this.sIsLoading = 'loading-data';
+      var D_data= {
+        "F_Name":  this._CancellationService.UserFormGroup.get("FirstName").value + '%' || "%",
+        "L_Name":  this._CancellationService.UserFormGroup.get("LastName").value + '%' || "%",
+        "From_Dt": this.datePipe.transform(this._CancellationService.UserFormGroup.get("startdate").value, "MM-dd-yyyy"), //"01/01/2018",
+        "To_Dt":   this.datePipe.transform(this._CancellationService.UserFormGroup.get("enddate").value, "MM-dd-yyyy"), //"01/01/2020",
+        "Reg_No":  this._CancellationService.UserFormGroup.get("RegNo").value || 0
+      }
+    
+      setTimeout(() => {
+        this.sIsLoading = 'loading-data';
+        console.log(D_data);
+          this._IpBillBrowseListService.getIpdRefundBillBrowseList(D_data).subscribe(Visit=> {
+          this.dsRefundOfBillList.data = Visit as RefundMaster[];
+          console.log(this.dsRefundOfBillList.data);
+          this.dsRefundOfBillList.sort= this.sort;
+          this.dsRefundOfBillList.paginator=this.paginator;
+          this.sIsLoading = ' ';  
+        },
+          error => {
+            this.sIsLoading = '';
+          });
+      }, 50); 
   }
   getSearchRefOfAdvList() { 
-    this.sIsLoading = 'loading-data';
-    // var D_data = {
-    //   "F_Name":  this._CancellationService.UserFormGroup.get('FirstName').value || '%',
-    //   "L_Name": this._CancellationService.UserFormGroup.get('LastName').value || '%',
-    //   "From_Dt": this.datePipe.transform(this._CancellationService.UserFormGroup.get('startdate').value, "MM-dd-yyyy") || '01/01/1900',
-    //   "To_Dt ": this.datePipe.transform(this._CancellationService.UserFormGroup.get('enddate').value, "MM-dd-yyyy") || '01/01/1900',
-    //   "Reg_No": this._CancellationService.UserFormGroup.get('RegNo').value || 0,
-    //   "PBillNo": this._CancellationService.UserFormGroup.get('PBillNo').value + '%' || "%",
-    //   "Start":(this.paginator?.pageIndex??0),
-    //   "Length":(this.paginator?.pageSize??35) 
-    // }
-    // console.log(D_data);
-    // this._CancellationService.getIpBillList(D_data).subscribe(Visit => {
-    //   this.dsCancellation.data = Visit as CancellationList[]; 
-    //   console.log(this.dsCancellation.data)
-    //   this.dsCancellation.data = Visit["Table1"] ?? [] as CancellationList[];
-    //   console.log(this.dsCancellation.data)
-    //   this.resultsLength = Visit["Table"][0]["total_row"];
-    //   this.sIsLoading = this.dsCancellation.data.length == 0 ? 'no-data' : ''; 
-    // },
-    //   error => {
-    //     this.sIsLoading = '';
-    //   });
+    this.sIsLoading = 'loading-data'; 
+      var D_data = {
+        "F_Name":  this._CancellationService.UserFormGroup.get("FirstName").value + '%' || "%",
+        "L_Name":  this._CancellationService.UserFormGroup.get("LastName").value + '%' || "%",
+        "From_Dt": this.datePipe.transform(this._CancellationService.UserFormGroup.get("startdate").value, "MM-dd-yyyy"), //"01/01/2018",
+        "To_Dt":   this.datePipe.transform(this._CancellationService.UserFormGroup.get("enddate").value, "MM-dd-yyyy"), //"01/01/2020",
+        "Reg_No":  this._CancellationService.UserFormGroup.get("RegNo").value || 0
+      }
+      setTimeout(() => {
+        this.sIsLoading = 'loading-data';
+        console.log(D_data);
+        this._CancellationService.getIpdreturnAdvancepaymentreceipt(D_data).subscribe(Visit => {
+          this.dsRefundOfAdvList.data = Visit as BrowseIpdreturnadvanceReceipt[];
+           console.log(this.dsRefundOfAdvList.data)
+          this.dsRefundOfAdvList.sort = this.sort;
+          this.dsRefundOfAdvList.paginator = this.paginator;
+          this.sIsLoading = ' ';
+          // this.click = false; 
+        },
+          error => {
+            this.sIsLoading = '';
+          });
+      }, 50); 
   }
+
+
   getSearchList(){
     if(this._CancellationService.UserFormGroup.get('OP_IP_Type').value  == '1'){
       this.getIpdBillList();
@@ -184,6 +195,7 @@ export class CancellationComponent implements OnInit {
       "To_Dt ": this.datePipe.transform(this._CancellationService.UserFormGroup.get('enddate').value, "MM-dd-yyyy") || '01/01/1900',
       "Reg_No": this._CancellationService.UserFormGroup.get('RegNo').value || 0,
       "PBillNo": this._CancellationService.UserFormGroup.get('PBillNo').value + '%' || "%",
+      "IsIntrimOrFinal": 2,
       "Start":(this.paginator?.pageIndex??0),
       "Length":(this.paginator?.pageSize??35) 
     }

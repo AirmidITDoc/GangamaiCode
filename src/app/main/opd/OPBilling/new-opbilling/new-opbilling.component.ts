@@ -305,6 +305,7 @@ export class NewOPBillingComponent implements OnInit {
     this.RefDocName = obj.RefDoctorName
     this.BedName = obj.BedName;
     this.PatientType = obj.PatientType;
+    this.CompanyId = obj.CompanyId;
   } 
   getOptionText1(option) {
     if (!option)
@@ -786,7 +787,7 @@ debugger
         }  
       } 
       this.savebtn = true; 
-    if (this.CompanyId !== 0 && this.CompanyId !== "") {
+    if (this.CompanyId !== 0 && this.CompanyId !== "" && this.CompanyId !== undefined) {
       this.saveCreditbill();
     }
     else if (this.CompanyId == '' || this.CompanyId == 0) { 

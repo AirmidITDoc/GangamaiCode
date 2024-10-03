@@ -229,4 +229,7 @@ export class GoodReceiptnoteService {
   public getCheckInvoiceNo(data) {
     return this._httpClient.post("Generic/GetBySelectQuery?query="+data,  {});
   }
+  public checkGSTPer(data) {
+    return this._httpClient.post("Generic/GetBySelectQuery?query="+data,  {});
+  }
 }

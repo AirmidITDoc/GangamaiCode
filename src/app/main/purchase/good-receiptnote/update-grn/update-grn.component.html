@@ -681,7 +681,7 @@
                                                     <input matInput [(ngModel)]="contact.CGSTPer"
                                                         [id]="'CGSTPer_'+index" step="0.1" type="text" OnlyNumber
                                                         [disabled]="contact.IsVerifiedUserId>0"
-                                                        (keyup)="getCellCalculation(contact,contact.CGSTPer)"
+                                                        (keyup.enter)="getCellCalculation(contact,contact.CGSTPer)"
                                                         (keydown.arrowdown)="setFocus('CGSTPer_'+(index+1))"
                                                         (keydown.arrowup)="setFocus('CGSTPer_'+(index-1))"
                                                         autocomplete="off" (keypress)="keyPressCharater($event)">
@@ -705,7 +705,7 @@
                                                     <input matInput [(ngModel)]="contact.SGSTPer"
                                                         [id]="'SGSTPer_'+index" step="0.1" type="text" OnlyNumber
                                                         [disabled]="contact.IsVerifiedUserId>0"
-                                                        (keyup)="getCellCalculation(contact,contact.SGSTPer)"
+                                                        (keyup.enter)="getCellCalculation(contact,contact.SGSTPer)"
                                                         (keydown.arrowdown)="setFocus('SGSTPer_'+(index+1))"
                                                         (keydown.arrowup)="setFocus('SGSTPer_'+(index-1))"
                                                         autocomplete="off" (keypress)="keyPressCharater($event)">
@@ -729,7 +729,7 @@
                                                     <input matInput [(ngModel)]="contact.IGSTPer"
                                                         [id]="'IGSTPer_'+index" step="0.1" type="text" OnlyNumber
                                                         [disabled]="contact.IsVerifiedUserId>0"
-                                                        (keyup)="getCellCalculation(contact,contact.IGSTPer)"
+                                                        (keyup.enter)="getCellCalculation(contact,contact.IGSTPer)"
                                                         autocomplete="off"
                                                         (keydown.arrowdown)="setFocus('IGSTPer_'+(index+1))"
                                                         (keydown.arrowup)="setFocus('IGSTPer_'+(index-1))"

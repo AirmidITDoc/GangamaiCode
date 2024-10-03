@@ -306,11 +306,10 @@
                      
                         <div class="modal-footer" style="padding: 12px;">
                                 
-                            <div class="modal-footer-buttons gap-8" fxLayout="row" fxLayoutAlign="end">
-                              
+                            <div class="modal-footer-buttons gap-8" fxLayout="row" fxLayoutAlign="end"> 
                                 <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                                <button class="btn btn-primary" (click)="GetPrescrpList()">OK</button>
-                              
+                                <button class="btn btn-primary" (click)="GetPrescrpList()"
+                                [disabled]="savebtn">OK</button> 
                             </div>
                         </div>
                     </div>

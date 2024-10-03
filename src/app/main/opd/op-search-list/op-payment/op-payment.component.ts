@@ -260,6 +260,7 @@ debugger
       this.netPayAmt = this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);
       this.amount1 = this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);
       this.PatientName = this.advanceData.PatientName;
+      this.Date = this.advanceData.Date;
       this.selectedPaymnet1 = 'cash';
     }
     else if (this.data.FromName == "OP-Pharma-SETTLEMENT") {
@@ -545,7 +546,7 @@ debugger
       this.Paymentobj['isCancelled'] = 0;
       this.Paymentobj['isCancelledBy'] = 0;
       this.Paymentobj['isCancelledDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
-      this.Paymentobj['partyReceiptNo'] = " ";
+      this.Paymentobj['partyReceiptNo'] = "0";
       this.Paymentobj['neftPayAmount'] = this.Payments.data.find(x => x.PaymentType == "net banking")?.Amount ?? 0;
       this.Paymentobj['neftNo'] = this.Payments.data.find(x => x.PaymentType == "net banking")?.RefNo ?? "";
       this.Paymentobj['neftBankMaster'] = this.Payments.data.find(x => x.PaymentType == "net banking")?.BankName ?? "";

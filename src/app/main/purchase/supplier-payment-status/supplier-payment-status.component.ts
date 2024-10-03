@@ -118,6 +118,10 @@ export class SupplierPaymentStatusComponent implements OnInit {
       error => {
         this.sIsLoading = '';
       });
+
+      this.vNetAmount = 0;
+      this.vPaidAmount = 0;
+      this.vBalanceAmount = 0;
   } 
 
   tableElementChecked(event, element) {
@@ -140,6 +144,12 @@ export class SupplierPaymentStatusComponent implements OnInit {
   }
 
   OnSave() { 
+    if (!this.dsSupplierpayList.data.length) {
+      this.toastr.warning('Please add Supplier list in table', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
     if (this.vBalanceAmount == 0 && this.vNetAmount == 0 ) {
       this.toastr.warning('Please select Check Box', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -151,8 +161,8 @@ export class SupplierPaymentStatusComponent implements OnInit {
     this.SelectedList.forEach((element) => {
       let grnHeaderPayStatusObj = {};
       grnHeaderPayStatusObj['grnId'] = element.GRNID || 0;
-      grnHeaderPayStatusObj['paidAmount'] = this.vNetAmount || 0;
-      grnHeaderPayStatusObj['balAmount'] =   0 ;//this.vBalanceAmount  ||
+      grnHeaderPayStatusObj['paidAmount'] = element.BalAmount || 0;
+      grnHeaderPayStatusObj['balAmount'] =  element.PaidAmount || 0;
       grnHeaderPayStatus.push(grnHeaderPayStatusObj);
     });
 
@@ -196,7 +206,8 @@ export class SupplierPaymentStatusComponent implements OnInit {
           this.toastr.success('Supplier payment Successfuly', 'Saved', {
             toastClass: 'tostr-tost custom-toast-warning',
           });
-          return;
+          this.getSupplierPayStatusList();
+          this.OnReset();
         }
         else {
           this.toastr.warning('Supplier payment Not Saved', 'Error', {

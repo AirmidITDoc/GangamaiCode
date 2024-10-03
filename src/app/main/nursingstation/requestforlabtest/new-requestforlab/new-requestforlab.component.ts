@@ -55,6 +55,7 @@ export class NewRequestforlabComponent implements OnInit {
   
   displayedServiceColumns: string[] = [
   'ServiceName',
+  'Action'
     // 'Price'
    
   ]
@@ -193,7 +194,7 @@ export class NewRequestforlabComponent implements OnInit {
   }
 
   getServiceListdata() {
-    // debugger
+    // debugger 
     if(this.RegNo){
       this.sIsLoading = ''
       var Param = {
