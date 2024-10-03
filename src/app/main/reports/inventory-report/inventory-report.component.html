@@ -34,10 +34,10 @@
                     <div fxlayout="column" style="width: 50%;">
                         <!-- style="width: 100%;" -->
                         <div fxFlex.gt-sm="100%" style="width: 99%;">
-                            <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                            <!-- <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
                                 class="backgroundBlur" style="height: 100%;">
                                 <div class="spinner-border text-danger"></div>
-                            </div>
+                            </div> -->
 
                             <mat-table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
                                 <ng-container matColumnDef="ReportName">

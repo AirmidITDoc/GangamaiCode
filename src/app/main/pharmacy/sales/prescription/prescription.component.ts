@@ -176,9 +176,9 @@ RegId:any;
   }
   viewgetIpprescriptionReportPdf(contact) {
     setTimeout(() => { 
-      //  this.AdList=true;
+     debugger
       this._SalesService.getIpPrescriptionview(
-        contact.OP_IP_ID, 1
+        contact.IPMedID, 1
       ).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,
           {

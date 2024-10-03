@@ -772,13 +772,13 @@ ServiceList:any=[];
     let submitData = {
       "addCharges": m_data
     };
-    this._IpSearchListService.InsertIPAddChargesNew(submitData).subscribe(data => {
-      if (data) {
-        Swal.fire('Success !', 'ChargeList Row Added Successfully', 'success'); 
-        this.getChargesList();
-        this.getRequestChargelist();  
-      }
-    });
+    // this._IpSearchListService.InsertIPAddChargesNew(submitData).subscribe(data => {
+    //   if (data) {
+    //     Swal.fire('Success !', 'ChargeList Row Added Successfully', 'success'); 
+    //     this.getChargesList();
+    //     this.getRequestChargelist();  
+    //   }
+    // });
     this.onClearServiceAddList() 
     this.itemid.nativeElement.focus();
     this.isLoading = '';

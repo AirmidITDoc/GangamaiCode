@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { LoaderService } from 'app/core/components/loader/loader.service';
 import { Observable } from 'rxjs/internal/Observable';
 
 @Injectable({
@@ -12,6 +13,7 @@ export class PrescriptionService {
   mypreretunForm: FormGroup;
   constructor(
     public _httpClient:HttpClient,
+    private _loaderService: LoaderService,
     private _formBuilder: FormBuilder
   ) { 
     this.mysearchform= this.SearchFilterFrom();
@@ -83,7 +85,10 @@ export class PrescriptionService {
     return this._httpClient.post("Generic/GetByProc?procName=ps_Rtrv_DoseMasterList", {})
   }
 
-  public getIpPrescriptionview(OP_IP_ID,PatientType){
+  public getIpPrescriptionview(OP_IP_ID,PatientType,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("InPatient/view-IP_Prescription?OP_IP_ID=" + OP_IP_ID+"&PatientType="+PatientType);
   }
 

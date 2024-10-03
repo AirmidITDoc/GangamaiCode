@@ -28,6 +28,7 @@ export class CommonReportComponent implements OnInit {
   sIsLoading: string = '';
   currentDate = new Date();
   Servicelist: any = [];
+  GroupList: any = [];
   ReportID: any;
   filteredOptions: Observable<string[]>;
   filteredOptionssearchDoctor: Observable<string[]>;
@@ -35,7 +36,7 @@ export class CommonReportComponent implements OnInit {
   filteredOptionsDoctorMode: Observable<string[]>;
   filteredOptionsDep: Observable<string[]>;
   filteredOptionsCashCounter: Observable<string[]>;
-
+  filteredOptionsGroup: Observable<string[]>;
   isDepartmentSelected
   isUserSelected: boolean = false;
   isSearchdoctorSelected: boolean = false;
@@ -51,9 +52,10 @@ export class CommonReportComponent implements OnInit {
   FlagDepartmentSelected: boolean = false;
   FlaOPIPTypeSelected: boolean = false;
   FlaCashcounterSelected: boolean = false;
-  
+  FlagGroupSelected: boolean = false;
   optionsUser: any[] = [];
   optionsPaymentMode: any[] = [];
+  optionsSearchgroup: any[] = [];
   optionsDep: any[] = [];
   optionsService: any[] = [];
   PaymentMode: any;
@@ -98,7 +100,7 @@ ServiceList: any = [];
     this.getDepartmentList();
     this.getServiceListCombobox();
     this.getCashCounterComboList();
-
+    this.getgroupList();
     this.filteredOptionsUser = this._OPReportsService.userForm.get('UserId').valueChanges.pipe(
       startWith(''),
       map(value => this._filterUser(value)),
@@ -133,6 +135,7 @@ ServiceList: any = [];
       this.FlagPaymentIdSelected = false
       this.FlaOPIPTypeSelected= false;
       this.FlaCashcounterSelected=false;
+      this.FlagGroupSelected=false;
     }
     if (this.ReportName == 'Reference Doctor Wise Patient Count Report') {
       this.FlagVisitSelected = false;
@@ -141,6 +144,7 @@ ServiceList: any = [];
       this.FlagRefundIdSelected = false;
       this.FlaOPIPTypeSelected= false;
       this.FlaCashcounterSelected=false;
+      this.FlagGroupSelected=false;
     }
     else if (this.ReportName == 'Concession Report') {
       this.FlagVisitSelected = false
@@ -150,6 +154,7 @@ ServiceList: any = [];
       this.FlagUserSelected = false;
       this.FlaOPIPTypeSelected= false;
       this.FlaCashcounterSelected=false;
+      this.FlagGroupSelected=false;
     }
 
     else if (this.ReportName == 'Daily Collection Report') {
@@ -160,7 +165,7 @@ ServiceList: any = [];
       this.FlagRefundIdSelected = false;
       this.FlaOPIPTypeSelected= false;
       this.FlaCashcounterSelected=false;
-
+      this.FlagGroupSelected=false;
     } else if (this.ReportName == 'Daily Collection Summary Report') {
       this.FlagUserSelected = true;
       this.FlagPaymentIdSelected = false;
@@ -169,6 +174,7 @@ ServiceList: any = [];
       this.FlagVisitSelected = false;
       this.FlaOPIPTypeSelected= false;
       this.FlaCashcounterSelected=false;
+      this.FlagGroupSelected=false;
     }
     else if (this.ReportName == 'Group wise Collection Report') {
       this.FlagUserSelected = false;
@@ -177,6 +183,7 @@ ServiceList: any = [];
       this.FlagRefundIdSelected = false;
       this.FlagVisitSelected = false;
       this.FlaOPIPTypeSelected= false;
+      this.FlagGroupSelected=true;
     } else if (this.ReportName == 'Group wise Summary Report') {
       this.FlagUserSelected = false;
       this.FlagPaymentIdSelected = false;
@@ -185,6 +192,7 @@ ServiceList: any = [];
       this.FlagVisitSelected = false;
       this.FlaOPIPTypeSelected= false;
       this.FlaCashcounterSelected=false;
+      this.FlagGroupSelected=true;
     } else if (this.ReportName == 'Group Wise Revenue Summary Report') {
       this.FlagUserSelected = false;
       this.FlagPaymentIdSelected = false;
@@ -193,6 +201,7 @@ ServiceList: any = [];
       this.FlagVisitSelected = false;
       this.FlaOPIPTypeSelected= false;
       this.FlaCashcounterSelected=false;
+      this.FlagGroupSelected=false;
     } else if (this.ReportName == 'Credit Report') {
       this.FlagUserSelected = false;
       this.FlagPaymentIdSelected = false;
@@ -201,6 +210,7 @@ ServiceList: any = [];
       this.FlagVisitSelected = false;
       this.FlaOPIPTypeSelected= false;
       this.FlaCashcounterSelected=false;
+      this.FlagGroupSelected=false;
     }
     else if (this.ReportName == 'Patient Ledger') {
       this.FlagUserSelected = false;
@@ -210,6 +220,7 @@ ServiceList: any = [];
       this.FlagVisitSelected = false;
       this.FlaOPIPTypeSelected= false;
       this.FlaCashcounterSelected=false;
+      this.FlagGroupSelected=false;
     }
     else if (this.ReportName == 'Service Wise Report without Bill') {
       this.FlagUserSelected = false;
@@ -229,6 +240,7 @@ ServiceList: any = [];
       this.FlaOPIPTypeSelected= false;
       this.FlaCashcounterSelected=false;
       this.FlagServiceIdSelected = true;
+      this.FlagGroupSelected=false;
     }
     else if (this.ReportName == 'Service Wise Report') {
       this.FlagUserSelected = false;
@@ -240,7 +252,7 @@ ServiceList: any = [];
       this.FlagDepartmentSelected = false;
       this.FlaOPIPTypeSelected= false;
       this.FlaCashcounterSelected=false;
-      
+      this.FlagGroupSelected=false;
 
     } else if (this.ReportName == 'Bill Summary With TCS Report') {
       this.FlagUserSelected = false;
@@ -250,6 +262,7 @@ ServiceList: any = [];
       this.FlagVisitSelected = false;
       this.FlaOPIPTypeSelected= false;
       this.FlaCashcounterSelected=false;
+      this.FlagGroupSelected=false;
     }
     else if (this.ReportName == 'Ref By Patient List') {
       this.FlagPaymentIdSelected = false;
@@ -259,6 +272,7 @@ ServiceList: any = [];
       this.FlagUserSelected = false;
       this.FlaOPIPTypeSelected= false;
       this.FlaCashcounterSelected=false;
+      this.FlagGroupSelected=false;
     } else if (this.ReportName == 'Cancel Charges List') {
       this.FlagUserSelected = false;
       this.FlagPaymentIdSelected = false;
@@ -267,6 +281,7 @@ ServiceList: any = [];
       this.FlagVisitSelected = false;
       this.FlaOPIPTypeSelected= false;
       this.FlaCashcounterSelected=false;
+      this.FlagGroupSelected=false;
     }
     else if (this.ReportName == 'Doctor and Department Wise Monthly Collection Report') {
       this.FlagUserSelected = false;
@@ -276,6 +291,7 @@ ServiceList: any = [];
       this.FlagVisitSelected = false;
       this.FlaOPIPTypeSelected= false;
       this.FlaCashcounterSelected=false;
+      this.FlagGroupSelected=false;
     }
     else if (this.ReportName == 'IP Company Wise Bill Report') {
       this.FlagUserSelected = false;
@@ -285,6 +301,7 @@ ServiceList: any = [];
       this.FlagVisitSelected = false;
       this.FlaOPIPTypeSelected= false;
       this.FlaCashcounterSelected=false;
+      this.FlagGroupSelected=false;
     } else if (this.ReportName == 'IP Company Wise Credit Report') {
       this.FlagUserSelected = false;
       this.FlagPaymentIdSelected = false;
@@ -293,6 +310,7 @@ ServiceList: any = [];
       this.FlagVisitSelected = false;
       this.FlaOPIPTypeSelected= false;
       this.FlaCashcounterSelected=false;
+      this.FlagGroupSelected=false;
     }
     else if (this.ReportName == 'IP Discharge & Bill Generation Pending Report') {
       this.FlagUserSelected = false;
@@ -302,6 +320,7 @@ ServiceList: any = [];
       this.FlagVisitSelected = false;
       this.FlaOPIPTypeSelected= false;
       this.FlaCashcounterSelected=false;
+      this.FlagGroupSelected=false;
     } else if (this.ReportName == 'IP Bill Generation Payment Due report') {
       this.FlagUserSelected = false;
       this.FlagPaymentIdSelected = false;
@@ -310,6 +329,7 @@ ServiceList: any = [];
       this.FlagVisitSelected = false;
       this.FlaOPIPTypeSelected= false;
       this.FlaCashcounterSelected=false;
+      this.FlagGroupSelected=false;
     }
     else if (this.ReportName == 'Collection Summary Report') {
       this.FlagUserSelected = false;
@@ -319,6 +339,7 @@ ServiceList: any = [];
       this.FlagVisitSelected = false;
       this.FlaOPIPTypeSelected= false;
       this.FlaCashcounterSelected=false;
+      this.FlagGroupSelected=false;
     } else if (this.ReportName == 'Bill Summary Report for 2 Lakh Amount') {
       this.FlagUserSelected = false;
       this.FlagPaymentIdSelected = false;
@@ -327,6 +348,7 @@ ServiceList: any = [];
       this.FlagVisitSelected = false;
       this.FlaOPIPTypeSelected= false;
       this.FlaCashcounterSelected=false;
+      this.FlagGroupSelected=false;
     } else if (this.ReportName == 'Bill Summary Report OPD & IPD') {
       this.FlagUserSelected = false;
       this.FlagPaymentIdSelected = false;
@@ -335,6 +357,7 @@ ServiceList: any = [];
       this.FlagVisitSelected = false;
       this.FlaOPIPTypeSelected= false;
       this.FlaCashcounterSelected=false;
+      this.FlagGroupSelected=false;
     } else if (this.ReportName == 'Doctor (Visit/Admitted) WISE GROUP REPORT') {
       this.FlagDoctorIDSelected = true;
       this.FlagUserSelected = false;
@@ -343,22 +366,25 @@ ServiceList: any = [];
       this.FlagVisitSelected = false;
       this.FlaOPIPTypeSelected= false;
       this.FlaCashcounterSelected=false;
+      this.FlagGroupSelected=false;
     } else if (this.ReportName === 'Cash Counter Wise Daily Collection') {
-      this.FlagDoctorIDSelected = true;
+      this.FlagDoctorIDSelected = false;
       this.FlagUserSelected = true;
       this.FlagPaymentIdSelected = false;
       this.FlagRefundIdSelected = false;
       this.FlagVisitSelected = false;
       this.FlaOPIPTypeSelected= true;
       this.FlaCashcounterSelected=true;
+      this.FlagGroupSelected=false;
     } else if (this.ReportName === 'Cash Counter Wise Daily Collection Summary') {
-      this.FlagDoctorIDSelected = true;
+      this.FlagDoctorIDSelected = false;
       this.FlagUserSelected = true;
       this.FlagPaymentIdSelected = false;
       this.FlagRefundIdSelected = false;
       this.FlagVisitSelected = false;
       this.FlaOPIPTypeSelected= true;
       this.FlaCashcounterSelected=true;
+      this.FlagGroupSelected=false;
     }
   }
 
@@ -622,9 +648,14 @@ ServiceList: any = [];
 
   viewgetGroupwisecollReportPdf() {
     this.sIsLoading = 'loading-data';
+    let GroupId = 0;
+    if (this._OPReportsService.userForm.get('GroupId').value)
+      GroupId = this._OPReportsService.userForm.get('GroupId').value.GroupId
+
+
+
     setTimeout(() => {
 
-      let GroupId = this._OPReportsService.userForm.get('GroupId').value | 0
       this._OPReportsService.getgroupwisecollView(
         this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
         this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900", GroupId
@@ -651,6 +682,10 @@ ServiceList: any = [];
   }
   viewgetGroupwisesummaryReportPdf() {
     this.sIsLoading = 'loading-data';
+    let GroupId = 0;
+    if (this._OPReportsService.userForm.get('GroupId').value)
+      GroupId = this._OPReportsService.userForm.get('GroupId').value.GroupId
+
     setTimeout(() => {
       let GroupId = this._OPReportsService.userForm.get('GroupId').value | 0
       this._OPReportsService.getgroupwisescollummaryView(
@@ -1212,7 +1247,7 @@ ServiceList: any = [];
     if (this._OPReportsService.userForm.get('OPIPType').value)
       OPIPType = this._OPReportsService.userForm.get('OPIPType').value || 0
     setTimeout(() => {
-
+debugger
       this._OPReportsService.getcashcounterwisedailycollectionsummaryView(
         this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
         this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900", OPIPType,CashcounterId,AddedById
@@ -1251,9 +1286,9 @@ ServiceList: any = [];
 
     
     if (this._OPReportsService.userForm.get('OPIPType').value)
-      OPIPType = this._OPReportsService.userForm.get('OPIPType').value || 0
+      OPIPType = parseInt(this._OPReportsService.userForm.get('OPIPType').value) || 0
 
-
+debugger
     setTimeout(() => {
 
       this._OPReportsService.getcashcounterwisedailycollectionView(
@@ -1338,16 +1373,39 @@ ServiceList: any = [];
   }
   
  
+  
+  getOptionTextgroup(option) {
+    return option && option.GroupName ? option.GroupName : '';
+  }
+
+  getgroupList() {
+    this._OPReportsService.getgroupList().subscribe(data => {
+      this.GroupList = data;
+       this.optionsSearchgroup = this.GroupList.slice();
+      this.filteredOptionsGroup = this._OPReportsService.userForm.get('GroupId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filtersearchgroup(value) : this.GroupList.slice()),
+      );
+    });
+  }
+
+  private _filtersearchgroup(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.GroupName ? value.GroupName.toLowerCase() : value.toLowerCase();
+      return this.GroupList.filter(option => option.GroupName.toLowerCase().includes(filterValue));
+    }
+  }
+
   getServiceListCombobox() {
 
-    var m_data = {
-      SrvcName: "%",
-      TariffId: 0,
-      ClassId: 0,
-    };
-    console.log(m_data)
+    // var m_data = {
+    //   SrvcName: "%",
+    //   TariffId: 0,
+    //   ClassId: 0,
+    // };
+    // console.log(m_data)
 
-    this._OPReportsService.getBillingServiceList(m_data).subscribe(data => {
+    this._OPReportsService.getBillingServiceList().subscribe(data => {
       this.Servicelist = data;
       this.optionsService = this.Servicelist.slice();
       this.filteredOptions = this._OPReportsService.userForm.get('ServiceId').valueChanges.pipe(

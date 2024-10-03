@@ -56,7 +56,9 @@ export class IPReportService {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RoomMasterForCombo", {})
   }
 public getAdmittedPatientListView(FromDate,ToDate,DoctorId,WardId,loader = true){
-  
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("IPReport/view-IPDAdmissionList?FromDate=" + FromDate+"&ToDate="+ToDate+"&DoctorId="+DoctorId+"&WardId="+WardId);
 }
 

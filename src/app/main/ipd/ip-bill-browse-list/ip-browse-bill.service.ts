@@ -138,21 +138,35 @@ public getIPBILLBrowsedatewisePrint(BillNo) {
  
 
 
- getIpFinalBillwardwiseReceipt(BillNo){
+ getIpFinalBillwardwiseReceipt(BillNo,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("InPatient/view-IP-BillWardwiseReceipt?BillNo=" + BillNo)
  }
 
- public getIpdRefundpaymentreceiptBrowseList(employee) {
+ public getIpdRefundpaymentreceiptBrowseList(employee,loader = true) {
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IPPaymentList", employee)
 } 
-public getIpPaymentReceiptView(PaymentId){
-  
+public getIpPaymentReceiptView(PaymentId,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("InPatient/view-IP-SettlementReceipt?PaymentId=" + PaymentId);
 }
-public getIpdRefundBillBrowseList(employee) {
+public getIpdRefundBillBrowseList(employee,loader = true) {
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IPRefundBillList", employee)
 } 
-public getRefundofbillview(RefundId){
+public getRefundofbillview(RefundId,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("InPatient/view-IP-ReturnOfBillReceipt?RefundId=" + RefundId);
 }
 }

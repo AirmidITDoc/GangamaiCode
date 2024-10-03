@@ -161,7 +161,7 @@ export class TestFormMasterComponent implements OnInit {
         }
         this._TestService.getTestListfor(m_data).subscribe(Visit => {
           this.DSTestList.data = Visit as TestList[];
-          
+          this.dsTemparoryList.data = Visit as TestList[];
         });
        
     }

@@ -1871,19 +1871,7 @@ export class AdmissionComponent implements OnInit {
         console.log(submissionObj);
         this._AdmissionService.AdmissionRegisteredInsert(submissionObj).subscribe(response => {
 
-          // if (response) {
-          //   Swal.fire('Congratulations !', 'Admission Of Registered Patient Successfully !', 'success').then((result) => {
-          //     if (result.isConfirmed) {
-          //       this._matDialog.closeAll();
-               
-          //       this.getAdmittedPatientCasepaperview(response, true);
-          //       this.onReset();
-          //     }
-          //   });
-          // } else {
-          //   Swal.fire('Error !', 'Admission not saved', 'error');
-          // }
-
+        
           if (response) { 
             this.toastr.success('Admission Of Registered Patient Successfully !', 'Congratulations !', {
               toastClass: 'tostr-tost custom-toast-success',
@@ -2073,7 +2061,7 @@ this.getAdmittedPatientList_1()
 
   getAdmittedPatientCasepaperview(AdmissionId, flag) {
     this.sIsLoading = 'loading-data';
-
+    debugger
     let AdmissionID
     if (flag) {
       AdmissionID = AdmissionId

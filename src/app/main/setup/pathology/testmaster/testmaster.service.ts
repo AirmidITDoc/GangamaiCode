@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { LoaderService } from "app/core/components/loader/loader.service";
 
 @Injectable({
     providedIn: "root",
@@ -15,6 +16,7 @@ export class TestmasterService {
     mytemplateform: FormGroup;
     constructor(
         private _httpClient: HttpClient,
+        private _loaderService: LoaderService,
         private _formBuilder: FormBuilder
     ) {
         this.myformSearch = this.createSearchForm();
@@ -81,7 +83,10 @@ export class TestmasterService {
     }
 
     // get Test Master list
-    public getTestMasterList(param) {//Retrieve_PathologyTestList
+    public getTestMasterList(param,loader = true) {//Retrieve_PathologyTestList
+        if (loader) {
+            this._loaderService.show();
+        }
         return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PathologyTestList",
             param
         );
@@ -124,7 +129,10 @@ export class TestmasterService {
         return this._httpClient.post("Generic/GetByProc?procName=m_Retrieve_PathSubTestListForCombo",emp);
     }
     // Parameter Master Combobox List
-    public getParameterMasterCombo(emp) {
+    public getParameterMasterCombo(emp,loader = true) {
+        if (loader) {
+            this._loaderService.show();
+        }
         return this._httpClient.post(//Retrieve_PathParameterListForCombo
             "Generic/GetByProc?procName=m_Rtrv_PathParameterList_by_Name1",emp);
     }

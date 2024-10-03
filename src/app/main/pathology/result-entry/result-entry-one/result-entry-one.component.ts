@@ -76,6 +76,7 @@ export class ResultEntryOneComponent implements OnInit {
     vDoctorId: any = 0;
     vRefDoctorID: any = 0;
     vsuggation: any = '';
+    vsuggationtemp: any = '';
     reportIdData: any = [];
     ServiceIdData: any = [];
     OPIPID: any = 0;
@@ -304,13 +305,25 @@ export class ResultEntryOneComponent implements OnInit {
         }
 
 
-
+var TestID=0;
         console.log(SelectQuery)
         this._SampleService.getPathologyResultList(SelectQuery).subscribe(Visit => {
             this.dataSource.data = Visit as Pthologyresult[];
             this.dataSource.sort = this.sort;
             this.dataSource.paginator = this.paginator;
-            this.vsuggation = this.dataSource.data[0]["SuggestionNote"];
+           // this.vsuggation = this.dataSource.data[0]["SuggestionNote"];
+           if (this.dataSource.data.length > 0) {
+            
+            this.dataSource.data.forEach((element) => {
+                debugger
+            
+            if (this.vsuggation == '')
+                this.vsuggation =element.SuggestionNote
+            else if (TestID != element.TestId)
+                this.vsuggation = this.vsuggation + element.SuggestionNote + "\n";
+            TestID = element.TestId
+        });
+        }
             this.sIsLoading = '';
         },
             error => {
@@ -361,7 +374,9 @@ export class ResultEntryOneComponent implements OnInit {
             });
 
     }
-
+    onReload(){
+        
+    }
 
     onUpload(){
        

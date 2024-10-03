@@ -723,9 +723,9 @@ export class InventoryReportComponent implements OnInit {
    viewGRNpurchasereportPdf() {
     this.sIsLoading = 'loading-data';
     let StoreId =0
-
+debugger
     if (this._OPReportsService.userForm.get('StoreId').value)
-     StoreId = this._OPReportsService.userForm.get('StoreId').value.StoreId
+     StoreId = this._OPReportsService.userForm.get('StoreId').value.StoreId || 0
     
      setTimeout(() => {
      
@@ -766,7 +766,7 @@ export class InventoryReportComponent implements OnInit {
 
     if (this._OPReportsService.userForm.get('SupplierName').value)
       SupplierId = this._OPReportsService.userForm.get('SupplierName').value.SupplierId
-    
+    debugger
      setTimeout(() => {
      
        this._OPReportsService.getSupplierwiseGRNReport(StoreId,SupplierId,

@@ -26,7 +26,7 @@ export class OPReportsService {
         DepartmentId:'',
         GroupId:'',
         CashCounterID:'',
-        OPIPType:'',
+        OPIPType:["1"],
         SupplierName:'',
         StoreId:'',
         StoreId1:'',
@@ -729,9 +729,11 @@ public getPurchaseorderview(FromDate,ToDate,SupplierID,ToStoreId,loader = true){
     return this._httpClient.get("InventoryReports/view-StockAdjustmentReport?FromDate="+FromDate+"&ToDate="+ToDate+"&ToStoreId="+ToStoreId);
   }
 
-  public getBillingServiceList(employee) {
-  
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ServicesList", employee)
+  public getBillingServiceList(loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ServiceMasterForCombo", {})
   }
 
   
@@ -760,4 +762,9 @@ public getPurchaseorderview(FromDate,ToDate,SupplierID,ToStoreId,loader = true){
   public getSupplierList(param){
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_SupplierName_list", param);
   }
+
+  public getgroupList(){
+    return this._httpClient.post("Generic/GetByProc?procName=RetrieveGroupMasterForCombo",{})
+  }
+
   }
