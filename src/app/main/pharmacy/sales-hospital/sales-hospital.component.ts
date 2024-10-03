@@ -3184,7 +3184,7 @@ export class SalesHospitalComponent implements OnInit {
     SalesInsert['isPrint'] = 0;
     SalesInsert['unitID'] = 1;
     SalesInsert['addedBy'] = this._loggedService.currentUserValue.user.id,
-      SalesInsert['externalPatientName'] = this.PatientName || '';
+    SalesInsert['externalPatientName'] = this.PatientName || '';
     SalesInsert['doctorName'] = this.DoctorName || '';
     SalesInsert['storeId'] = this._salesService.IndentSearchGroup.get('StoreId').value.storeid;
     SalesInsert['isPrescription'] =this.IPMedID || 0;
@@ -3194,7 +3194,7 @@ export class SalesHospitalComponent implements OnInit {
     SalesInsert['bedId'] = 0;
     SalesInsert['extMobileNo'] = this.MobileNo || '';
     SalesInsert['extAddress'] = this.vextAddress || '';
-    SalesInsert['isClosed'] = true;
+    SalesInsert['isClosed'] = false;
     SalesInsert['DsalesId'] = 0;
 
     let salesDetailInsertarr = [];

@@ -74,6 +74,7 @@ BedNo:any;
 RegNo:any;
 AddmissionId:any;
 RegId:any;
+savebtn:boolean=false;
   getPrescriptionList(){
     var Param = {
       "StoreId": this._loggedService.currentUserValue.user.storeId, 
@@ -90,10 +91,16 @@ RegId:any;
       this.dsPrescriptionList.sort = this.sort;
       this.dsPrescriptionList.paginator = this.paginator;
       this.sIsLoading = '';
+      if(this._SalesService.PrescriptionFrom.get("Status").value == '1'){
+        this.savebtn = true;
+      }else{
+        this.savebtn = false;
+      }
     },
       error => {
         this.sIsLoading = '';
       });
+      this.dsItemDetList.data = [];
   } 
   IPMedID:any;
   DoctorName:any;

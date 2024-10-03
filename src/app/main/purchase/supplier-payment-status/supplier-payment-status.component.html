@@ -33,7 +33,8 @@
                                     <mat-form-field appearance="outline" fxFlex="15%">
                                         <mat-label>Enter a date range</mat-label>
                                         <mat-date-range-input [rangePicker]="grnPicker">
-                                            <input matStartDate formControlName="start" placeholder="Start date">
+                                            <input matStartDate formControlName="start" placeholder="Start date"
+                                            (dateChange)="getSupplierPayStatusList()">
                                             <input matEndDate formControlName="end" placeholder="End date"
                                                 (dateChange)="getSupplierPayStatusList()">
                                         </mat-date-range-input>
@@ -105,12 +106,7 @@
                                                         cached
                                                     </span>
                                                 </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" required class="w-60">
-                                                    <mat-icon *ngIf="contact.PaidAmount" matTooltip="Paid"
-                                                    class="pill green-600 s-16">circle</mat-icon>
-                                                    <mat-icon *ngIf="!contact.PaidAmount" matTooltip="Unpaid"
-                                                    class="pill red-600 s-16">circle</mat-icon>
-
+                                                <mat-cell *matCellDef="let contact" required class="w-60">  
                                                     <mat-checkbox aria-label="Checked" (change)="tableElementChecked($event, contact)"
                                                     *ngIf="!contact.PaidAmount">
                                                     </mat-checkbox>

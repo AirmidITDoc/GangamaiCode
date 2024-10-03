@@ -216,11 +216,22 @@
                                  </div>
                                 <mat-table #table matSort [dataSource]="dsLabRequest2" class="h-280 fix-first-col" [@animateStagger]="{value:'50'}">
                                     <ng-container matColumnDef="ServiceName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-270">
                                             Service Name
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-270">
                                             <span> {{contact.ServiceName}}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="Action" stickyEnd>
+                                        <mat-header-cell *matHeaderCellDef style="color: white;" class="w-80">
+                                            Action</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" class="w-80">
+                                            <button mat-icon-button  (click)="onSaveEntry(contact)"
+                                                color="warn">
+                                                <mat-icon>add</mat-icon>
+                                            </button>
                                         </mat-cell>
                                     </ng-container>
 
@@ -239,7 +250,7 @@
                                     <!-- [ngClass]="{'row-yellow': contact.ServiceName == 'CBC'}" -->
                                     <mat-header-row class="accent" *matHeaderRowDef="displayedServiceColumns; sticky: true">
                                     </mat-header-row>
-                                    <mat-row *matRowDef="let contact; columns: displayedServiceColumns;" (click)="onSaveEntry(contact)" [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                    <mat-row *matRowDef="let contact; columns: displayedServiceColumns;" [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                     <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dsLabRequest2!=null}">
                                     </mat-footer-row>
                                     <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dsLabRequest2!=null && dsLabRequest2.data.length==0)}">

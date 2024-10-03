@@ -1,6 +1,7 @@
 import { HttpBackend, HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { LoaderService } from 'app/core/components/loader/loader.service';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -15,7 +16,8 @@ export class RequestforlabtestService {
   constructor(
     public _httpClient:HttpClient,
     private _FormBuilder:FormBuilder,
-    private handler: HttpBackend
+    private handler: HttpBackend,
+    private _loaderService :LoaderService
   ) { this.mySearchForm = this.SearchFilterForm();}
 
   mySearchForm:FormGroup;
@@ -36,7 +38,10 @@ export class RequestforlabtestService {
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_LabRequest_Nursing",Param)
   }//Rtrv_LabRequest_Nursing
 
-  public getRequestdetList(Param){
+  public getRequestdetList(Param,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_NursingLabRequestDetails",Param)
   }
   
@@ -49,7 +54,10 @@ export class RequestforlabtestService {
   }
 
   
-  public getServiceListDetails(Param){
+  public getServiceListDetails(Param ,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PathRadServiceList",Param);
   }
 
@@ -62,7 +70,10 @@ export class RequestforlabtestService {
  }
 
 
-  public LabRequestSave(employee) {
+  public LabRequestSave(employee,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.post("InPatient/IPPathOrRadiRequest", employee);
   }
 

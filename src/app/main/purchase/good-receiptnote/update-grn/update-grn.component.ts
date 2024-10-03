@@ -654,19 +654,7 @@ export class UpdateGRNComponent implements OnInit {
             return '';
         return option.ItemName;  // + ' ' + option.Price ; //+ ' (' + option.TariffId + ')';
     }
-gstPerArray:any=[
-    {gstPer :0},
-    {gstPer :2.5},
-    {gstPer :6},
-    {gstPer :9},
-    {gstPer :14},
-]
-chckgst0:any = 0;
-chckgst2:any = 2.5;
-chckgst6:any = 6;
-chckgst9:any = 9;
-chckgst14:any = 14;
-
+ 
 chekgstper(obj){
 // const dvalue = !this.gstPerArray.some(item => item.gstPer ==  parseFloat(obj.CGSTPer))
 // const valueSgstper = !this.gstPerArray.find(item => item.gstPer ==  parseFloat(obj.CGSTPer))
@@ -705,6 +693,19 @@ chekgstper(obj){
     //     } 
     // }   
 }
+gstPerArray:any=[
+    {gstPer :0},
+    {gstPer :2.5},
+    {gstPer :6},
+    {gstPer :9},
+    {gstPer :14},
+]
+chckgst0:any = 0;
+chckgst2:any = 2.5;
+chckgst6:any = 6;
+chckgst9:any = 9;
+chckgst14:any = 14;
+ChekGSTPer:any=[];
     getCellCalculation(contact, ReceiveQty) {
         if (contact.PurchaseId > 0) {
             if (contact.ReceiveQty > contact.POQty) {
@@ -713,6 +714,43 @@ chekgstper(obj){
                 contact.POBalQty = ((contact.POQty) - (contact.ReceiveQty))
             }
         }  
+
+        // if(contact.VatPercentage > 0 ){
+        //     let Query= "select GSTPer from ss_gstper_config"
+        //     this._GRNList.checkGSTPer(Query).subscribe(data =>{
+        //        this.ChekGSTPer = data;
+        //     })
+        //     if (contact.CGSTPer > 0) {
+        //         if (this.ChekGSTPer.filter(item => item.GSTPer != contact.CGSTPer)) {
+        //             this.toastr.warning('Please enter CGST percentage as 2.5%, 6%, 9% or 14%', 'Warning !', {
+        //                 toastClass: 'tostr-tost custom-toast-warning',
+        //             });
+        //             contact.CGSTPer = 0;
+        //             return
+        //         }
+        //     }
+        //     if (contact.SGSTPer > 0) {
+        //         if (this.ChekGSTPer.filter(item => item.GSTPer != contact.SGSTPer)) {
+        //             this.toastr.warning('Please enter CGST percentage as 2.5%, 6%, 9% or 14%', 'Warning !', {
+        //                 toastClass: 'tostr-tost custom-toast-warning',
+        //             });
+        //             contact.SGSTPer = 0;
+        //             return
+        //         }
+        //     }
+        //     if (contact.IGSTPer > 0) {
+        //         if (this.ChekGSTPer.filter(item => item.GSTPer != contact.IGSTPer)) {
+        //             this.toastr.warning('Please enter CGST percentage as 2.5%, 6%, 9% or 14%', 'Warning !', {
+        //                 toastClass: 'tostr-tost custom-toast-warning',
+        //             });
+        //             contact.IGSTPer = 0;
+        //             return
+        //         }
+        //     } 
+        // }  
+ 
+
+
         if(contact.CGSTPer > 0){
             if(!(parseFloat(contact.CGSTPer) == parseFloat(this.chckgst2) || contact.CGSTPer == this.chckgst6 || contact.CGSTPer == this.chckgst9 || contact.CGSTPer == this.chckgst14)){
                 this.toastr.warning('Please enter CGST percentage as 2.5%, 6%, 9% or 14%', 'Warning !', {
@@ -869,7 +907,7 @@ chekgstper(obj){
             contact.VatAmount = 0;
             contact.NetAmount = 0;
         }
-        this.chekgstper(contact);
+        
     }
     calculateTotalamt() {
         let Qty = this._GRNList.userFormGroup.get('Qty').value;

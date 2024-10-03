@@ -42,6 +42,7 @@ export class RequestforlabtestComponent implements OnInit {
     'AddedByName',
     'BillingUser',
     'AddedByDate',
+    'PBillNo'
   ]
 
   
@@ -215,12 +216,7 @@ debugger
  
   LabReportView(contact) {
     console.log(contact)
-    if( contact.IsTestCompted == false){
-      this.toastr.warning('Test Is Not Completed', 'warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    } 
+ 
     // let pathologyDelete = [];
     // contact.forEach((element) => {
     //     this.OPD_IP_Type = element.OP_IP_Type 
