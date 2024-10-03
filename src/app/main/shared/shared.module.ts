@@ -30,6 +30,7 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { FuseSidebarModule } from "../../../@fuse/components/sidebar/sidebar.module";
 
 
 @NgModule({
@@ -53,8 +54,9 @@ import { MatSortModule } from '@angular/material/sort';
     MatToolbarModule,
     MatTableModule,
     MatPaginatorModule,
-    MatSortModule
-  ],
+    MatSortModule,
+    FuseSidebarModule
+],
   providers: [
     ExcelDownloadService,
     SnackBarService,

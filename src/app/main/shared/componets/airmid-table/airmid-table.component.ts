@@ -52,7 +52,7 @@ export class AirmidTableComponent implements OnInit {
         });
         //this.sort.emit();
     }
-    clearData(){
+    onClear(){
         
     }
     getStatus(status: boolean){

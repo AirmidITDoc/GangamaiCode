@@ -1,10 +1,89 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+<div fusePerfectScrollbar
+    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+    dynamicTableHeight>
     <!-- HEADER -->
-    <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-        fxLayoutAlign.gt-xs="space-between center">
+
+    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center ">
 
         <!-- APP TITLE -->
-        <div fxLayout="row" fxLayoutAlign="start center">
+        <div class="top-header-info">
+            <div class="top-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Registration
+                </span>
+            </div>
+        </div>
+        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+            <!-- <app-common-date [screenFrom]="screenFromString"
+                (dateTimeEventEmitter)="getDateTime($event)"></app-common-date> -->
+            <button mat-raised-button>New
+                Registration
+            </button>
+        </div>
+    </div>
+
+
+
+    <!-- / HEADER -->
+    <!-- SELECTED BAR -->
+    <app-main class="accent-600" *ngIf="true" [@slideInTop]></app-main>
+    <!-- / SELECTED BAR -->
+    <!-- CONTENT -->
+    <div class="content">
+        <!-- SIDEBAR -->
+        <airmid-table [gridConfig]="gridConfig" (status)="changeStatus($event)">
+            <ng-container filters>
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>Gender Name</mat-label>
+                    <input matInput placeholder="Search Gender Name" autocomplete="off"
+                        [(ngModel)]="gridConfig.filters[0].fieldValue" />
+                    <button mat-button matSuffix mat-icon-button aria-label="Clear"
+                        (click)="gridConfig.filters[0].fieldValue=''">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
+
+                <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch" value="2"
+                    fxLayoutAlign="center center">
+                    <mat-radio-button value="2">All</mat-radio-button>
+                    <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
+                    <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
+                </mat-radio-group></ng-container>
+        </airmid-table>
+        <!-- / SIDEBAR -->
+        <!-- CENTER -->
+        <!-- CENTER -->
+
+        <div class="center p-12 pb-56" fxFlexAlign="start center">
+
+            <div class="content-card">
+
+
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
+                    <div fxFlex.gt-sm="100%" fxFlex>
+
+                        <div fxlayout="row">
+                            <div style="width: 100%;">
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- CENTER -->
+    </div>
+    <!-- / USER -->
+    <!-- / CENTER -->
+    <!-- / CONTENT-->
+</div>
+
+
+<!-- <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center">
+    <div fxLayout="row" fxLayoutAlign="start center">
             <div class="logo" fxLayout="row" fxLayoutAlign="start center">
                 <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
                 </mat-icon>
@@ -13,50 +92,12 @@
                 </span>
             </div>
         </div>
-        <!-- / APP TITLE -->
-        <!-- SEARCH -->
-        <!-- / SEARCH -->
-
     </div>
-    <!-- / HEADER -->
-
-    <!-- CONTENT -->
     <div class="content">
-
-        <!-- CENTER -->
         <div class="center p-24 pb-56" fusePerfectScrollbar>
-            <!-- CONTENT -->
             <div class="content-card">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                     <div fxFlex.gt-sm="65%" fxFlex>
-
-                        <!-- <div fxlayout="row" style="background-color: white;padding: 5px 10px 5px 10px;">
-                            <form [formGroup]="_GenderService.myformSearch">
-                                <div class="dialog-content-wrapper">
-                                    <mat-form-field class="mr-sm-12" fxFlex>
-                                        <input matInput placeholder="Search Gender Name" autocomplete="off"
-                                            name="GenderNameSearch" formControlName="GenderNameSearch" />
-                                        <button mat-button matSuffix mat-icon-button aria-label="Clear"
-                                            (click)="onSearchClear()">
-                                            <mat-icon>close</mat-icon>
-                                        </button>
-                                    </mat-form-field>
-
-                                    <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch" value="2"
-                                        fxLayoutAlign="center center">
-                                        <mat-radio-button value="2">All</mat-radio-button>
-                                        <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
-                                        <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
-                                    </mat-radio-group>
-
-                                    <button mat-raised-button fxLayoutAlign="center center">
-                                        <mat-icon>search</mat-icon>
-                                        Search
-                                    </button>
-                                </div>
-                            </form>
-                        </div> -->
-
                         <airmid-table [gridConfig]="gridConfig" (status)="changeStatus($event)">
                             <ng-container filters>
                                 <mat-form-field class="mr-sm-12" fxFlex>
@@ -114,9 +155,6 @@
                     </div>
                 </div>
             </div>
-            <!-- / CONTENT -->
         </div>
-        <!-- / CENTER -->
     </div>
-    <!-- / CONTENT-->
-</div>
+</div> -->

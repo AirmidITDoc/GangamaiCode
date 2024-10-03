@@ -1,4 +1,28 @@
-<div fxlayout="row" style="background-color: white;padding: 5px 10px 5px 10px;">
+<fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" class="fuse-search-sidebar">
+    <!-- SIDEBAR HEADER -->
+    <div class="sidebar-content">
+        <div class="accent sidebar-header" fxLayout="row" fxLayoutAlign="start center">
+            <span class="search-title">Search Facility</span>
+            <!-- / USER -->
+        </div>
+        <!-- / SIDEBAR HEADER -->
+        <!-- SIDEBAR CONTENT -->
+        <div class="nav material2">
+            <div fxLayout="column" fxLayoutAlign="start none">
+                <ng-content select="[filters]"></ng-content>
+                <div style="margin-top: 10px;">
+                    <button mat-raised-button (click)="onClear()" class="clearbutton" matTooltip="close">
+                        <mat-icon class="cleariconbutton">close</mat-icon>
+                    </button>&nbsp;
+                    <button mat-raised-button class="searchButton" (click)="bindGridData()" matTooltip="search">
+                        <mat-icon class="searchiconbutton">search</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</fuse-sidebar>
+<!-- <div fxlayout="row" style="background-color: white;padding: 5px 10px 5px 10px;">
     <div class="dialog-content-wrapper">
         <ng-content select="[filters]"></ng-content>
         <button mat-raised-button fxLayoutAlign="center center" (click)="bindGridData()">
@@ -6,15 +30,23 @@
             Search
         </button>
     </div>
-</div>
-<div fxlayout="row">
-    <div style="width: 100%;">
-        <mat-table #table matSort [dataSource]="dataSource" (matSortChange)="bindGridData()"
-            [@animateStagger]="{value:'50'}" style="overflow:auto">
-            <!-- <ng-content></ng-content> -->
+</div> -->
+<div class="center p-12 pb-56" fxFlexAlign="start center">
 
-            <ng-container *ngFor="let row of gridConfig?.columnsList" [matColumnDef]="row.key">
-                <!-- <th mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="!row.sort">
+    <div class="content-card">
+
+
+        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
+            <div fxFlex.gt-sm="100%" fxFlex>
+
+                <div fxlayout="row">
+                    <div style="width: 100%;">
+                        <mat-table #table matSort [dataSource]="dataSource" (matSortChange)="bindGridData()"
+                            [@animateStagger]="{value:'50'}" style="overflow:auto">
+                            <!-- <ng-content></ng-content> -->
+
+                            <ng-container *ngFor="let row of gridConfig?.columnsList" [matColumnDef]="row.key">
+                                <!-- <th mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="!row.sort">
             <span>
                 <mat-checkbox *ngIf="row.type === 'checkbox'" (change)="$event ? masterToggle() : null"
                   [checked]="selection.hasValue() && isAllSelected()"
@@ -23,47 +55,53 @@
               </span>
             {{ row?.heading }}
         </th> -->
-                <mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="!row.sort"> {{ row?.heading }}
-                </mat-header-cell>
-                <mat-cell *matCellDef="let element; let i = index" fxShow.gt-sm>
-                    <ng-container [ngSwitch]="row?.type" fxShow.gt-sm>
-                        <ng-container *ngSwitchCase="'customText'">
-                            <span> {{ element[row.key] ? [row.text1] : [row.text2] }}</span>
-                        </ng-container>
-                        <ng-container *ngSwitchCase="'status'" fxHide fxShow.gt-sm>
-                            <mat-icon *ngIf="getStatus(element[row.key])" class="active-icon green-600 s-16"
-                                style="color: azure;">check_circle</mat-icon>
-                            <mat-icon *ngIf="!getStatus(element[row.key])"
-                                class="active-icon red-500 s-16">close</mat-icon>
-                        </ng-container>
-                        <ng-container *ngSwitchDefault>
-                            {{ element[row.key]}}
-                        </ng-container>
-                        <ng-container *ngSwitchCase="'action'">
-                            <ng-container *ngFor="let sta of row.action">
-                                <button mat-icon-button *ngIf="sta == 1" (click)="changeStatus(sta,element)"
-                                    style="color:blue;">
-                                    <mat-icon title="View">eyes</mat-icon>
-                                </button>
-                                <button mat-icon-button *ngIf="sta == 2" (click)="changeStatus(sta,element)"
-                                    style="color:black;">
-                                    <mat-icon title="Edit Menu">launch</mat-icon>
-                                </button>
-                                <button mat-icon-button *ngIf="sta == 3" (click)="changeStatus(sta,element)"
-                                    color="warn">
-                                    <mat-icon>delete_outline</mat-icon>
-                                </button>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="!row.sort"> {{
+                                    row?.heading }}
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let element; let i = index" fxShow.gt-sm>
+                                    <ng-container [ngSwitch]="row?.type" fxShow.gt-sm>
+                                        <ng-container *ngSwitchCase="'customText'">
+                                            <span> {{ element[row.key] ? [row.text1] : [row.text2] }}</span>
+                                        </ng-container>
+                                        <ng-container *ngSwitchCase="'status'" fxHide fxShow.gt-sm>
+                                            <mat-icon *ngIf="getStatus(element[row.key])"
+                                                class="active-icon green-600 s-16"
+                                                style="color: azure;">check_circle</mat-icon>
+                                            <mat-icon *ngIf="!getStatus(element[row.key])"
+                                                class="active-icon red-500 s-16">close</mat-icon>
+                                        </ng-container>
+                                        <ng-container *ngSwitchDefault>
+                                            {{ element[row.key]}}
+                                        </ng-container>
+                                        <ng-container *ngSwitchCase="'action'">
+                                            <ng-container *ngFor="let sta of row.action">
+                                                <button mat-icon-button *ngIf="sta == 1"
+                                                    (click)="changeStatus(sta,element)" style="color:blue;">
+                                                    <mat-icon title="View">eyes</mat-icon>
+                                                </button>
+                                                <button mat-icon-button *ngIf="sta == 2"
+                                                    (click)="changeStatus(sta,element)" style="color:black;">
+                                                    <mat-icon title="Edit Menu">launch</mat-icon>
+                                                </button>
+                                                <button mat-icon-button *ngIf="sta == 3"
+                                                    (click)="changeStatus(sta,element)" color="warn">
+                                                    <mat-icon>delete_outline</mat-icon>
+                                                </button>
+                                            </ng-container>
+                                        </ng-container>
+                                    </ng-container>
+                                </mat-cell>
                             </ng-container>
-                        </ng-container>
-                    </ng-container>
-                </mat-cell>
-            </ng-container>
-            <mat-header-row class="accent" *matHeaderRowDef="gridConfig.headers; sticky: true">
-            </mat-header-row>
-            <mat-row *matRowDef="let row; columns: gridConfig.headers;" class="element"
-                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-        </mat-table>
-        <mat-paginator [pageSizeOptions]="[12, 24, 35, 100]" [pageSize]="12" [length]="resultsLength"
-            showFirstLastButtons (page)="bindGridData()"></mat-paginator>
+                            <mat-header-row class="accent" *matHeaderRowDef="gridConfig.headers; sticky: true">
+                            </mat-header-row>
+                            <mat-row *matRowDef="let row; columns: gridConfig.headers;" class="element"
+                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                        </mat-table>
+                        <mat-paginator [pageSizeOptions]="[12, 24, 35, 100]" [pageSize]="12" [length]="resultsLength"
+                            showFirstLastButtons (page)="bindGridData()"></mat-paginator>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
