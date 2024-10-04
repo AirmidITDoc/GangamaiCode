@@ -375,93 +375,54 @@ var TestID=0;
 
     }
     onReload(){
-        
+        this.getResultList(this.selectedAdvanceObj2);
     }
-
+ SampleNo=0;
     onUpload(){
-       
-            if ((this.vPathResultDoctorId == '')) {
-                this.toastr.warning('Please select valid Pathalogist', 'Warning !', {
-                    toastClass: 'tostr-tost custom-toast-warning',
-                });
-                return;
-            }
-    
-            this.isLoading = 'submit';
-            let PathInsertArry = [];
-            let pathologyDeleteObjarray = [];
-            let pathologyUpdateReportObjarray = [];
-    
-            this.data.RIdData.forEach((element) => {
-                let pathologyDeleteObj = {};
-                pathologyDeleteObj['pathReportID'] = element.PathReportId// element1.PathReportId;
-                pathologyDeleteObjarray.push(pathologyDeleteObj);
-            });
-    
+        this.sIsLoading = 'loading-data';
+
+        let SelectQuery
+
+        if (this.OP_IPType == 0) {
+            if (this.selectedAdvanceObj2.AgeYear > 0)
+                SelectQuery = "Select * from m_lvwRtrv_PathologyResultOPWithAge where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ") and SexId=" + this.SexId + " and MaxAge >= " + this.CheckAge + " and MinAge < " + this.CheckAge + " AND AgeType='YEAR' and RegNo = " + this.SampleNo + ""
+            else if (this.selectedAdvanceObj2.AgeMonth > 0)
+                 SelectQuery = "Select * from m_lvwRtrv_PathologyResultOPWithAge where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ") and SexId=" + this.SexId + " and MaxAge >= " + this.CheckAgemonth + " and MinAge < " + this.CheckAgemonth +"AND AgeType='MONTH' and RegNo = " + this.SampleNo + ""
+            else if (this.selectedAdvanceObj2.AgeDay > 0)
+                SelectQuery = "Select * from m_lvwRtrv_PathologyResultOPWithAge where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ") and SexId=" + this.SexId + " and MaxAge >= " + this.CheckAgeday + " and MinAge < " + this.CheckAgeday + " AND AgeType='DAY' and RegNo = " + this.SampleNo + ""
+        } else if (this.OP_IPType == 1) {
+            if (this.selectedAdvanceObj2.AgeYear > 0)
+                SelectQuery = "Select * from m_lvwRtrv_PathologyResultIPWithAge where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ") and SexId=" + this.SexId + " and MaxAge >= " + this.CheckAge + " and MinAge < " + this.CheckAge + " AND AgeType='YEAR' and RegNo = " + this.SampleNo + ""
+            else if (this.selectedAdvanceObj2.AgeMonth > 0)
+                SelectQuery = "Select * from m_lvwRtrv_PathologyResultIPWithAge where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ") and SexId=" + this.SexId + " and MaxAge >= " + this.CheckAgemonth + " and MinAge < " + this.CheckAgemonth + "AND AgeType='MONTH' and RegNo = " + this.SampleNo + ""
+            else if (this.selectedAdvanceObj2.AgeDay > 0)
+                SelectQuery = "Select * from m_lvwRtrv_PathologyResultIPWithAge where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ") and SexId=" + this.SexId + " and MaxAge >= " + this.CheckAgeday + " and MinAge < " + this.CheckAgeday + " AND AgeType='DAY' and RegNo = " + this.SampleNo + ""
+        }
+
+
+var TestID=0;
+        console.log(SelectQuery)
+        this._SampleService.getPathologyResultList(SelectQuery).subscribe(Visit => {
+            this.dataSource.data = Visit as Pthologyresult[];
+            this.dataSource.sort = this.sort;
+            this.dataSource.paginator = this.paginator;
+           // this.vsuggation = this.dataSource.data[0]["SuggestionNote"];
+           if (this.dataSource.data.length > 0) {
+            
             this.dataSource.data.forEach((element) => {
-    
-                let pathologyInsertReportObj = {};
-                pathologyInsertReportObj['PathReportId'] = element.PathReportId //element1.PathReportId;
-                pathologyInsertReportObj['CategoryID'] = element.CategoryId || 0;
-                pathologyInsertReportObj['TestID'] = element.TestId || 0;
-                pathologyInsertReportObj['SubTestId'] = element.SubTestId || 0;
-                pathologyInsertReportObj['ParameterId'] = element.ParameterId || 0;
-                pathologyInsertReportObj['ResultValue'] = element.ResultValue || ' ';
-                pathologyInsertReportObj['UnitId'] = element.UnitId || 1;
-                pathologyInsertReportObj['NormalRange'] = element.NormalRange || '';
-                pathologyInsertReportObj['PrintOrder'] = element.PrintOrder || 0;
-                pathologyInsertReportObj['PIsNumeric'] = element.PIsNumeric || 0;
-                pathologyInsertReportObj['CategoryName'] = element.CategoryName || '';
-                pathologyInsertReportObj['TestName'] = element.TestName || '';
-                pathologyInsertReportObj['SubTestName'] = element.SubTestName || '';
-                pathologyInsertReportObj['ParameterName'] = element.ParameterName || '';
-                pathologyInsertReportObj['UnitName'] = element.UnitName || '';
-                pathologyInsertReportObj['PatientName'] = this.selectedAdvanceObj2.PatientName || '';
-                pathologyInsertReportObj['RegNo'] = this.selectedAdvanceObj2.RegNo;
-                pathologyInsertReportObj['MinValue'] = parseFloat(element.MinValue) || 0;
-                pathologyInsertReportObj['MaxValue'] = parseFloat(element.MaxValue) || 0;
-                pathologyInsertReportObj['SampleID'] = element.SampleID || '';
-    
-                pathologyInsertReportObj['ParaBoldFlag'] = element.ParaBoldFlag || '';
-    
-                PathInsertArry.push(pathologyInsertReportObj);
-            });
-    
-            this.data.RIdData.forEach((element) => {
-                let pathologyUpdateReportObj = {};
-    
-                pathologyUpdateReportObj['PathReportID'] = element.PathReportId// element1.PathReportId;
-                pathologyUpdateReportObj['ReportDate'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
-                    pathologyUpdateReportObj['ReportTime'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy hh:mm"),
-                    pathologyUpdateReportObj['IsCompleted'] = true;
-                pathologyUpdateReportObj['IsPrinted'] = true;
-                pathologyUpdateReportObj['PathResultDr1'] = this.otherForm.get('PathResultDoctorId').value.DoctorId || 0;
-                pathologyUpdateReportObj['PathResultDr2'] = 0; //this.otherForm.get('DoctorId').value.DoctorId || 0;
-                pathologyUpdateReportObj['PathResultDr3'] = 0;
-                pathologyUpdateReportObj['IsTemplateTest'] = 0;
-                pathologyUpdateReportObj['SuggestionNotes'] = this.otherForm.get('suggestionNotes').value || "";
-                pathologyUpdateReportObj['AdmVisitDoctorID'] = 0; //this.otherForm.get('AdmDoctorID').value.DoctorID || 0;
-                pathologyUpdateReportObj['RefDoctorID'] = this.otherForm.get('RefDoctorID').value.DoctorID || 0;
-    
-                pathologyUpdateReportObjarray.push(pathologyUpdateReportObj);
-            });
-    
-            console.log('==============================  PathologyResult ===========');
-            let submitData = {
-                "deletepathreportheader": pathologyDeleteObjarray,
-                "insertpathreportdetail": PathInsertArry,
-                "updatepathreportheader": pathologyUpdateReportObjarray
-            };
-            console.log(submitData);
-            this._SampleService.PathResultentryInsert(submitData).subscribe(response => {
-                if (response) {
-                    Swal.fire('Congratulations !', 'Data saved Successfully !', 'success').then((result) => {
-                        this._matDialog.closeAll();
-                    });
-                } else {
-                    Swal.fire('Error !', 'Pathology Resulentry data not saved', 'error');
-                }
-                this.isLoading = '';
+                debugger
+            
+            if (this.vsuggation == '')
+                this.vsuggation =element.SuggestionNote
+            else if (TestID != element.TestId)
+                this.vsuggation = this.vsuggation + element.SuggestionNote + "\n";
+            TestID = element.TestId
+        });
+        }
+            this.sIsLoading = '';
+        },
+            error => {
+                this.sIsLoading = '';
             });
     
         }

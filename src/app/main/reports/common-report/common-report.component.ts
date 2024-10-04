@@ -863,14 +863,15 @@ ServiceList: any = [];
     }, 100);
   }
   viewgetServicewiseReportPdf() {
+    debugger
     this.sIsLoading = 'loading-data';
        let ServiceId = 0;
     if (this._OPReportsService.userForm.get('ServiceId').value)
       ServiceId = this._OPReportsService.userForm.get('ServiceId').value.ServiceId
 
     let DoctorId=0;
-    if (this._OPReportsService.userForm.get('DoctorId').value)
-     DoctorId = this._OPReportsService.userForm.get('DoctorId').value.DoctorID || 0
+    if (this._OPReportsService.userForm.get('DoctorID').value)
+     DoctorId = this._OPReportsService.userForm.get('DoctorID').value.DoctorID 
 
     setTimeout(() => {
 
