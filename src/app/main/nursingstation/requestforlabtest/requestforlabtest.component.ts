@@ -217,23 +217,23 @@ debugger
   LabReportView(contact) {
     console.log(contact)
  
-    // let pathologyDelete = [];
-    // contact.forEach((element) => {
-    //     this.OPD_IP_Type = element.OP_IP_Type 
-    //     let pathologyDeleteObj = {};
-    //     pathologyDeleteObj['pathReportId'] = element.PathReportID
-    //     pathologyDelete.push(pathologyDeleteObj);
-    // });
+    let pathologyDelete = [];
+    contact.forEach((element) => {
+        this.OPD_IP_Type = element.OP_IP_Type 
+        let pathologyDeleteObj = {};
+        pathologyDeleteObj['pathReportId'] = 106983
+        pathologyDelete.push(pathologyDeleteObj);
+    });
 
-    // let submitData = {
-    //     "printInsert": pathologyDelete,
-    // };
-    // console.log(submitData);
-    // this._RequestforlabtestService.PathPrintResultentryInsert(submitData).subscribe(response => {
-    //     if (response) {
-    //         this.viewgetPathologyTestReportPdf(this.OPD_IP_Type)
-    //     }
-    // }); 
+    let submitData = {
+        "printInsert": pathologyDelete,
+    };
+    console.log(submitData);
+    this._RequestforlabtestService.PathPrintResultentryInsert(submitData).subscribe(response => {
+        if (response) {
+            this.viewgetPathologyTestReportPdf(this.OPD_IP_Type)
+        }
+    }); 
 }
 viewgetPathologyTestReportPdf(OPD_IP_Type) {
 

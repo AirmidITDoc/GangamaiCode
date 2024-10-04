@@ -22,6 +22,142 @@
         <div class="center p-12 pb-56" style="border-radius: 4px;">
             <div class="content-card">
                 <div fxLayout="row" fxLayout="column" fxFlexFill fxLayoutGap="10px">
+                    <mat-card style="padding: 6px;">
+                        <div class="patient-info-container">
+                            <div class="patient-info-box">
+                                <div class="patient-info-title border-bottom pb-2">
+                                    <span class="h2">Patient Information</span>
+                                </div>
+                                <div class="Ipd-patient-info" fxFlexFill fxLayout="row"
+                                fxLayoutAlign="space-between center" class="patient-info">
+                                <div class="patient-sub">
+                                    <div class="patient-info-row patient-info-1-111 pt-8"
+                                        fxLayout="row" fxLayoutAlign="space-between">
+                                        <div fxLayout="column" fxLayoutGap="6px">
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">UHID No
+                                                </span>
+                                                <span>:</span>
+                                                <span
+                                                    class="patient-col-value">{{RegNo}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Patient Name
+                                                </span>
+                                                <span>:</span>
+                                                <span
+                                                    class="patient-col-value">{{PatientName}}</span>
+                                            </div> 
+                                        </div>
+                                        <div fxLayout="column" fxLayoutGap="6px">
+
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Doctor Name</span>
+                                                <span>:</span>
+                                                <span
+                                                    class="patient-col-value">{{Doctorname}}</span>
+                                            </div>
+
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Department</span>
+                                                <span>:</span>
+                                                <span
+                                                    class="patient-col-value">{{DepartmentName}}</span>
+                                            </div> 
+                                        </div>
+                                        <div fxLayout="column" fxLayoutGap="6px">
+                                            
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Age | Sex
+                                                </span>
+                                                <span>:</span>
+                                                <span
+                                                    class="patient-col-value">{{Ageyear}}Y|{{AgeMonth}}M|{{AgeDay}} D | {{GenderName}}</span>
+                                            </div>
+
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Ward | Bed Name
+                                                </span>
+                                                <span>:</span>
+                                                <span
+                                                    class="patient-col-value">{{WardName}}
+                                                    | {{BedNo}}</span>
+                                            </div>
+                                          
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </mat-card>
+
+                    <div fxFlex="100%" fxFlex>
+                        <mat-card style="padding: 5px;">
+                            <mat-table class="h-350px" matSort [dataSource]="datasource" [@animateStagger]="{value:'50'}"
+                                style="overflow: auto;">  
+                
+                                <ng-container matColumnDef="Date">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-200">
+                                        Date&TIme </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-200">
+                                        {{element.DOA}}-{{element.DOT}}</mat-cell>
+                                </ng-container>
+                
+                                <ng-container matColumnDef="TestName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-200">
+                                        TestName </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-200">
+                                        {{element.ServiceName}} </mat-cell>
+                                </ng-container>
+                
+                                <ng-container matColumnDef="PBillNo">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-100">
+                                        PBill No </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-100">
+                                        {{element.PBillNo || '-'}} </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="IsCompleted">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                        IsCompleted </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                        <button mat-icon-button>
+                                            <mat-icon matTooltip="Lab Report" (click)="LabReportView(element)"
+                                                *ngIf="element.IsCompleted==true">remove_red_eye</mat-icon>
+                                            <mat-icon matTooltip="not Completed" *ngIf="element.IsCompleted==false"
+                                                class="active-icon red-500 s-16">hourglass_empty</mat-icon>
+                                        </button>
+                                    </mat-cell>
+                                </ng-container>
+                                
+                                <ng-container matColumnDef="loading">
+                                    <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                    </mat-header-cell>
+                                </ng-container>
+                
+                                <ng-container matColumnDef="noData">
+                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                        no data found...
+                                    </mat-footer-cell>
+                                </ng-container>
+                
+                                <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+                                </mat-header-row>
+                                <mat-row *matRowDef="let row; columns: displayedColumns;"
+                                    [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                </mat-footer-row>
+                                <mat-footer-row *matFooterRowDef="['noData']"
+                                    [ngClass]="{'hide':!(datasource!=null && datasource.data.length==0)}">
+                                </mat-footer-row>
+                            </mat-table>
+                                <mat-paginator [pageSizeOptions]="[ 10, 25, 100]" [pageSize]="10"
+                                        showFirstLastButtons></mat-paginator>
+                        </mat-card>
+                    </div>
+
+
                 </div>
             </div>
         </div>

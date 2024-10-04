@@ -898,7 +898,10 @@ public updateIPDDischargSummary(employee)
     return this._httpClient.post("Generic/GetByProc?procName=ps_Retrieve_ServiceMasterForCombo", {})
   }
 
-  public InsertIPRefundBilling(employee) {
+  public InsertIPRefundBilling(employee,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.post("InPatient/InsertIPRefundofBill", employee)
   }
   public getAdvcanceDetails(query) {
@@ -1079,11 +1082,17 @@ public getAdvancedetail(Id){
   return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IPAdvanceDetails",Id);
 }
 
-public getRefundofAdvanceview(RefundId){
+public getRefundofAdvanceview(RefundId,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("InPatient/view-IP-ReturnOfAdvanceReceipt?RefundId=" + RefundId);
 }
 
-public getRefundofbillview(RefundId){
+public getRefundofbillview(RefundId,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("InPatient/view-IP-ReturnOfBillReceipt?RefundId=" + RefundId);
 }
 public getPreBillDetList(param){

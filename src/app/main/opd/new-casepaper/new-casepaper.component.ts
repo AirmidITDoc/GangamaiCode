@@ -307,6 +307,7 @@ export class NewCasepaperComponent implements OnInit {
       }
     });
   }
+  ConsultantDocId:any;
   getSelectedObj1(obj) {
     console.log(obj)
     this.registerObj = obj;
@@ -332,6 +333,7 @@ export class NewCasepaperComponent implements OnInit {
     this.BedName = obj.BedName;
     this.PatientType = obj.PatientType;
     this.vMobileNo = obj.MobileNo;
+    this.ConsultantDocId = obj.ConsultantDocId;
     this.getpreviousVisitData(obj);
     this.getnewVisistList(obj);
     this.getServiceList();
@@ -616,8 +618,13 @@ export class NewCasepaperComponent implements OnInit {
     }
 
     let ReferDocNameID = 0;
-    if (this.MedicineItemForm.get('DoctorID').value)
+    if (this.MedicineItemForm.get('DoctorID').value){
       ReferDocNameID = this.MedicineItemForm.get('DoctorID').value.DoctorId || 0;
+    }else{
+      ReferDocNameID =   this.ConsultantDocId 
+    }
+    
+
 
     let insertOPDPrescriptionarray = [];
     this.dsItemList.data.forEach(element => {
@@ -1093,7 +1100,10 @@ export class NewCasepaperComponent implements OnInit {
         maxWidth: "50vw",
         maxHeight: "40vh",
         width: '100%',
-        height: "100%"
+        height: "100%",
+        data:{
+          Obj: this.dsItemList.data
+        }
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);

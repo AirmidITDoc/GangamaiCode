@@ -308,7 +308,10 @@ public getConcessionCombo()
     return this._httpClient.post("OutPatient/OPBillingWithCreditCashCounter", employee)
   }
   
-  public InsertOPRefundBilling(employee) {
+  public InsertOPRefundBilling(employee, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.post("OutPatient/OPRefundBill", employee)
   }
 
@@ -498,7 +501,10 @@ public prescriptionDetails(visistId) {
 
 
 
-  getOprefundofbillview(RefundId){
+  getOprefundofbillview(RefundId, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.get("OutPatient/view-OPRefundofBill?RefundId="+RefundId)
   }
 

@@ -428,11 +428,15 @@ getLabRequest(){
       }) 
       return;
      }
+   // this.advanceDataStored.storage = new AdmissionPersonlModel();
     const dialogRef = this._matDialog.open(LabReportsViewComponent,
       {
-        maxWidth: "100%",
-        height: '95%',
-        width: '90%',  
+       
+        height: '85%',
+        width: '80%',  
+        data:{
+          Obj:this.registerObj
+        }
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result); 

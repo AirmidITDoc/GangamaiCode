@@ -160,5 +160,13 @@ export class ClinicalCareChartService {
     public getPatientList(param){
       return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_AdmisionList_NursingList",param);
     }
-  
+    public getLabTestList(param){
+      return this._httpClient.post("Generic/GetByProc?procName=Retrive_IP_PathologyList",param);
+    }
+    public PathPrintResultentryInsert(employee) {
+      return this._httpClient.post("Pathology/PathPrintResultentryInsert", employee);
+    }
+    public getPathTestReport(OP_IP_Type){
+      return this._httpClient.get("Pathology/view-PathReportMultiple?OP_IP_Type=" + OP_IP_Type);
+    }
 }

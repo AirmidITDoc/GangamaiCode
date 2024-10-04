@@ -70,6 +70,12 @@ public getServiceList(param,loader = true){
   }
     return this._httpClient.post("OutPatient/PrescriptionInsert", param);
   }
+  public SavePrescriptionTemplate(param,loader = true){ 
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.post("InPatient/Insert-PrescriptionTemplate", param);
+  }
   public getTemplate(query) {
     return this._httpClient.post("Generic/GetBySelectQuery?query=" + query, {})
   }
