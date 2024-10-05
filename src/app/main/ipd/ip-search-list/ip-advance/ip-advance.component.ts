@@ -275,18 +275,7 @@ vAdvanceDetId:any;
       PatientHeaderObj['OPD_IPD_Id'] =  this.selectedAdvanceObj.IPDNo;
       PatientHeaderObj['Age'] =  this.selectedAdvanceObj.AgeYear;
       PatientHeaderObj['NetPayAmount'] =  this.advanceAmount;
-        // const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
-        //   {
-        //     maxWidth: "90vw",
-        //     height: '640px',
-        //     width: '100%',
-
-        //     data: {
-        //       vPatientHeaderObj: PatientHeaderObj,
-        //       FromName: "Advance",
-        //       advanceObj: PatientHeaderObj,
-        //     }
-        //   });
+       
         const dialogRef = this._matDialog.open(OpPaymentComponent,
           {
             maxWidth: "80vw",
