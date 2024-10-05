@@ -480,7 +480,7 @@ ServiceList: any = [];
 
     let DoctorID = 0;
     if (this._OPReportsService.userForm.get('DoctorID').value)
-      DoctorID = this._OPReportsService.userForm.get('DoctorID').value.DoctorID
+      DoctorID = this._OPReportsService.userForm.get('DoctorID').value.DoctorId
 
 
     setTimeout(() => {
@@ -545,7 +545,7 @@ ServiceList: any = [];
 
     let DoctorID = 0;
     if (this._OPReportsService.userForm.get('DoctorID').value)
-      DoctorID = this._OPReportsService.userForm.get('DoctorID').value.DoctorID
+      DoctorID = this._OPReportsService.userForm.get('DoctorID').value.DoctorId
 
     this.sIsLoading = 'loading-data';
     setTimeout(() => {
@@ -871,7 +871,7 @@ ServiceList: any = [];
 
     let DoctorId=0;
     if (this._OPReportsService.userForm.get('DoctorID').value)
-     DoctorId = this._OPReportsService.userForm.get('DoctorID').value.DoctorID 
+     DoctorId = this._OPReportsService.userForm.get('DoctorID').value.DoctorId 
 
     setTimeout(() => {
 
@@ -1204,7 +1204,7 @@ ServiceList: any = [];
   getDoctorvisitAdminwisegroupview() {
     this.sIsLoading = 'loading-data';
     let DoctorId=0;
-     DoctorId = this._OPReportsService.userForm.get('DoctorId').value.DoctorID || 0
+     DoctorId = this._OPReportsService.userForm.get('DoctorId').value.DoctorId || 0
     setTimeout(() => {
 
       this._OPReportsService.getdoctorvisitadmingroupwiseView(

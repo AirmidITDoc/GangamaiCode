@@ -200,18 +200,18 @@
 
                                                         <mat-form-field appearance="outline" fxFlex="10%">
                                                             <mat-label>Min Value</mat-label>
-                                                            <input name="MinValue" placeholder="MinValue" maxlength="3"
+                                                            <input name="MinValue" placeholder="MinValue" maxlength="9"
                                                                 (keydown)="onEntermin($event,vMinValue)"
-                                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
+                                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,9);"
                                                                 [(ngModel)]="vMinValue" formControlName="MinValue"
                                                                 matInput>
                                                         </mat-form-field>
 
                                                         <mat-form-field appearance="outline" fxFlex="10%">
                                                             <mat-label>Max value</mat-label>
-                                                            <input name="MaxValue" placeholder="MaxValue" maxlength="3"
+                                                            <input name="MaxValue" placeholder="MaxValue" maxlength="9"
                                                                 (keydown)="onEntermax($event,vMaxValue)"
-                                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
+                                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,9);"
                                                                 [(ngModel)]="vMaxValue" formControlName="MaxValue"
                                                                 matInput>
                                                         </mat-form-field>

@@ -841,7 +841,7 @@ public updateIPDDischargSummary(employee)
   }
 
   public getchargesList1(data) {
-    // return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
+    
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PathRadRequestList",data)
   }
 
@@ -1112,11 +1112,16 @@ getIpDischargeReceipt(AdmId){
  }
 
  
- public InsertWhatsappAdvance(emp) {
+ public InsertWhatsappAdvance(emp,loader = true) {
+  if (loader) {
+    this._loaderService.show();
+} 
   return this._httpClient.post("WhatsappE1mail/WhatsappSalesSave", emp);
 }
- public getViewAdvanceReceipt(AdvanceDetailID){
-  // return this._httpClient.get("InPatient/view-IP-AdvanceReceipt?AdvanceDetailID=" + AdvanceDetailID);
+ public getViewAdvanceReceipt(AdvanceDetailID,loader = true){
+  if (loader) {
+    this._loaderService.show();
+} 
   return this._httpClient.get("InPatient/view-IP-AdvanceReceipt?AdvanceDetailID=" + AdvanceDetailID);
 }
 public getModenameListCombo(){
