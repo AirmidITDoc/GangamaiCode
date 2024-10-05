@@ -529,7 +529,7 @@ export class NewCasepaperComponent implements OnInit {
   Day1: any = 0;
   Day2: any = 0;
   onAdd() {
-    debugger
+
     if ((this.MedicineItemForm.get('ItemId').value == '' || this.MedicineItemForm.get('ItemId').value == null || this.MedicineItemForm.get('ItemId').value == undefined)) {
       this.toastr.warning('Please select Item', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -562,13 +562,17 @@ export class NewCasepaperComponent implements OnInit {
     }
     const iscekDuplicate = this.dsItemList.data.some(item => item.ItemID == this.ItemId)
     if (!iscekDuplicate) {
+      debugger
+      let Qty = this.MedicineItemForm.get('DoseId').value.DoseQtyPerDay || 0
       this.Chargelist.push(
-        {
+        { 
           DrugId: this.MedicineItemForm.get('ItemId').value.ItemId || 0,
           DrugName: this.MedicineItemForm.get('ItemId').value.ItemName || '',
           DoseId: this.MedicineItemForm.get('DoseId').value.DoseId || 0,
           DoseName: this.MedicineItemForm.get('DoseId').value.DoseName || '',
           Days: this.MedicineItemForm.get('Day').value || 0,
+          QtyPerDay: this.MedicineItemForm.get('DoseId').value.DoseQtyPerDay || 0, 
+          totalQty: (Qty *  this.MedicineItemForm.get('DoseId').value.DoseQtyPerDay) || 0,
           DoseId1: this.MedicineItemForm.get('DoseId').value.DoseId || 0,
           DoseName1: this.MedicineItemForm.get('DoseId').value.DoseName || '',
           Day1: this.Day1,
@@ -622,9 +626,7 @@ export class NewCasepaperComponent implements OnInit {
       ReferDocNameID = this.MedicineItemForm.get('DoctorID').value.DoctorId || 0;
     }else{
       ReferDocNameID =   this.ConsultantDocId 
-    }
-    
-
+    } 
 
     let insertOPDPrescriptionarray = [];
     this.dsItemList.data.forEach(element => {
@@ -645,8 +647,8 @@ export class NewCasepaperComponent implements OnInit {
       insertOPDPrescription['doseOption3'] = element.DoseId2 || 0;
       insertOPDPrescription['daysOption3'] = 0 ,///parseInt(element.Day2.toString()) || 0;
       insertOPDPrescription['instructionId'] = 0;
-      insertOPDPrescription['qtyPerDay'] = 0;
-      insertOPDPrescription['totalQty'] = 0;
+      insertOPDPrescription['qtyPerDay'] = element.QtyPerDay || 0;
+      insertOPDPrescription['totalQty'] = (element.QtyPerDay * element.Days) || 0;
       insertOPDPrescription['isClosed'] = true;
       insertOPDPrescription['isEnglishOrIsMarathi'] = this.caseFormGroup.get('LangaugeRadio').value;
       insertOPDPrescription['chiefComplaint'] = this.caseFormGroup.get('ChiefComplaint').value || '';
@@ -1885,6 +1887,7 @@ export class CasepaperVisitDetails {
   Address: any;
   SecondRefDoctorName: any;
   VistDateTime: any;
+  Qty:any;
 
 
   constructor(casePaperDetails) {
@@ -1980,6 +1983,7 @@ export class MedicineItemList {
   SpO2: any;
   Doctorname: any;
   FollowupDate: any;
+  QtyPerDay:any;
   /**
   * Constructor
   *
@@ -2021,6 +2025,7 @@ export class MedicineItemList {
       this.DoseOption2 = MedicineItemList.DoseOption2 || 0;
       this.DoseOption3 = MedicineItemList.DoseOption3 || 0;
       this.PWeight = MedicineItemList.PWeight || 0;
+      this.QtyPerDay = MedicineItemList.QtyPerDay || 0;
     }
   }
 }

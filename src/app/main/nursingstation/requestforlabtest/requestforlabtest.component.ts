@@ -212,36 +212,40 @@ debugger
     this.dsrequestList.data = [];
     this.sIsLoading = '';
   }
-  OPD_IP_Type:any;
- 
-  LabReportView(contact) {
-    console.log(contact)
- 
-    let pathologyDelete = [];
-    contact.forEach((element) => {
-        this.OPD_IP_Type = element.OP_IP_Type 
-        let pathologyDeleteObj = {};
-        pathologyDeleteObj['pathReportId'] = 106983
-        pathologyDelete.push(pathologyDeleteObj);
-    });
+  
+  LabDataList:any=[];
+//   LabReportView(contact) {
 
-    let submitData = {
-        "printInsert": pathologyDelete,
-    };
-    console.log(submitData);
-    this._RequestforlabtestService.PathPrintResultentryInsert(submitData).subscribe(response => {
-        if (response) {
-            this.viewgetPathologyTestReportPdf(this.OPD_IP_Type)
-        }
-    }); 
-}
-viewgetPathologyTestReportPdf(OPD_IP_Type) {
+//     console.log(contact) 
+//     this.LabDataList.push(
+//       {
+//         PathReportID :  contact.PathReportID, 
+//       });
+//       console.log(this.LabDataList)
+//     let pathologyDelete = [];
+//     this.LabDataList.forEach((element) => { 
+//         let pathologyDeleteObj = {};
+//         pathologyDeleteObj['pathReportId'] = element.PathReportID
+//         pathologyDelete.push(pathologyDeleteObj);
+//     }); 
+ 
+//     let submitData = {
+//         "printInsert": pathologyDelete,
+//     };
+//     console.log(submitData);
+//     this._RequestforlabtestService.PathPrintResultentryInsert(submitData).subscribe(response => {
+//       console.log(response);
+//         if (response) {
+//             this.viewgetPathologyTestReportPdf(contact.OP_IP_Type)
+//             this.LabDataList = [];
+//         }
+//     }); 
+// }
+viewgetPathologyTestReportPdf(contact) {
 
   setTimeout(() => {
       this.SpinLoading = true; 
-      this._RequestforlabtestService.getPathTestReport(
-        OPD_IP_Type
-      ).subscribe(res => {
+      this._RequestforlabtestService.getPathTestReport(contact.OP_IP_Type).subscribe(res => {
           const dialogRef = this._matDialog.open(PdfviewerComponent,
               {
                   maxWidth: "85vw",

@@ -94,7 +94,7 @@
 
                     <div fxFlex="100%" fxFlex>
                         <mat-card style="padding: 5px;">
-                            <mat-table class="h-350px" matSort [dataSource]="datasource" [@animateStagger]="{value:'50'}"
+                            <mat-table class="h-400px" matSort [dataSource]="datasource" [@animateStagger]="{value:'50'}"
                                 style="overflow: auto;">  
                 
                                 <ng-container matColumnDef="Date">
@@ -105,16 +105,16 @@
                                 </ng-container>
                 
                                 <ng-container matColumnDef="TestName">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-200">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-250">
                                         TestName </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-200">
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-250">
                                         {{element.ServiceName}} </mat-cell>
                                 </ng-container>
                 
                                 <ng-container matColumnDef="PBillNo">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-100">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-130">
                                         PBill No </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-100">
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-130">
                                         {{element.PBillNo || '-'}} </mat-cell>
                                 </ng-container>
 
@@ -152,7 +152,7 @@
                                     [ngClass]="{'hide':!(datasource!=null && datasource.data.length==0)}">
                                 </mat-footer-row>
                             </mat-table>
-                                <mat-paginator [pageSizeOptions]="[ 10, 25, 100]" [pageSize]="10"
+                             <mat-paginator #paginator [pageSizeOptions]="[ 10, 25, 100]" [pageSize]="10"
                                         showFirstLastButtons></mat-paginator>
                         </mat-card>
                     </div>

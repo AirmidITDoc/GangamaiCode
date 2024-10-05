@@ -35,35 +35,27 @@ export class CancellationComponent implements OnInit {
     'NetpayableAmt', 
     'action',
   ];
-  displayedRefundAdvColumn:string[] = [ 
-      'RegNo',
+  displayedRefundAdvColumn:string[] = [  
       'RefundDate',
+      'RegNo',
       'PatientName', 
       'AdvanceAmount',
       'AdvanceUsedAmount',
       'BalanceAmount', 
       'RefundAmount',
-      'PaymentDate', 
-      'CashPayAmount',
-      'ChequePayAmount',
-      'CardPayAmount',
-      'Remark',
-      'UserName',  
-       'buttons' 
+      'PaymentDate',  
+      'buttons' 
  ];
  displayedRefundBillColumn:string[] = [ 
     'RefundDate',
     'RegNo', 
     'PatientName', 
     'RefundAmount',
-    'TotalAmt', 
-    'CashPayAmount',
-    'ChequePayAmount',
-    'CardPayAmount',
-    'Remark',
+    //'TotalAmt', 
+    'PaymentDate',
+    'UserName',
     'buttons' 
-];
-  
+]; 
 
   sIsLoading: string = '';
   isLoading = true;
@@ -114,7 +106,7 @@ export class CancellationComponent implements OnInit {
       setTimeout(() => {
         this.sIsLoading = 'loading-data';
         console.log(D_data);
-          this._IpBillBrowseListService.getIpdRefundBillBrowseList(D_data).subscribe(Visit=> {
+          this._CancellationService.getIpdRefundBillBrowseList(D_data).subscribe(Visit=> {
           this.dsRefundOfBillList.data = Visit as RefundMaster[];
           console.log(this.dsRefundOfBillList.data);
           this.dsRefundOfBillList.sort= this.sort;
@@ -263,19 +255,32 @@ export class CancellationComponent implements OnInit {
       this.viewgetOPBillReportPdf(contact)
     }  
   }
-  Billdateupdate(contact) { 
-    this.isLoading123 = true;
+  Billdateupdate(contact) {  
     const dialogRef = this._matDialog.open(BillDateUpdateComponent,
       {
         height: "35%",
         width: '35%',
         data: {
-          obj:contact.BillNo
+          obj:contact
         }
       });
     dialogRef.afterClosed().subscribe(result => {
-      this.getSearchList();
-      this.isLoading123 = false;
+      this.getSearchList(); 
+    });
+  }
+
+  RefOfBillDateUpdate(contact) {  
+    const dialogRef = this._matDialog.open(BillDateUpdateComponent,
+      {
+        height: "35%",
+        width: '35%',
+        data: {
+          obj: contact
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      this.getSearchRefOfBillList();
+      this.getSearchRefOfAdvList();
     });
   }
 

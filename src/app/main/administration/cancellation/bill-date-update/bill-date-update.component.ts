@@ -17,6 +17,9 @@ export class BillDateUpdateComponent implements OnInit {
 
   dateTimeObj:any;
   BillNo:any;
+  RefundId:any;
+  resigterObj:any;
+  PaymentId:any;
   screenFromString = 'billform-form';
 
   constructor(
@@ -30,8 +33,14 @@ export class BillDateUpdateComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.data) {
-      this.BillNo = this.data.obj;
+  
+      this.resigterObj =  this.data.obj;
+      this.RefundId = this.resigterObj.RefundId;
+      this.PaymentId = this.resigterObj.PaymentId;
+      this.BillNo = this.resigterObj.BillNo;
+      console.log(this.RefundId) 
       console.log(this.BillNo) 
+      console.log(this.PaymentId) 
     }
   }
   getDateTime(dateTimeObj) {
@@ -54,7 +63,26 @@ export class BillDateUpdateComponent implements OnInit {
       /* Read more about isConfirmed, isDenied below */ 
       if (result.isConfirmed) { 
         let Query
-      Query = "update bill set BillDate='"+formattedDate+"',BillTime='"+formattedTime+"'where BillNo=" +this.BillNo 
+        if(this.BillNo){
+          Query = "update bill set BillDate='"+formattedDate+"',BillTime='"+formattedTime+"'where BillNo=" +this.BillNo 
+        }else if(this.RefundId){
+          Query = "update refund set RefundDate='"+formattedDate+"',RefundTime='"+formattedTime+"'where RefundId=" +this.RefundId 
+          if(this.PaymentId){
+            let PayQuery = "update payment set PaymentDate='"+formattedDate+"',PaymentTime='"+formattedTime+"'where PaymentId=" +this.PaymentId 
+            this._CancellationService.getDateTimeChangeReceipt(PayQuery).subscribe(response => {
+              if (response) {
+                this.toastr.success('Payment Receipt Date & Time Updated Successfuly', 'Updated !', {
+                  toastClass: 'tostr-tost custom-toast-success',
+                });  
+              } else {
+                this.toastr.error('API Error!', 'Error !', {
+                  toastClass: 'tostr-tost custom-toast-error',
+                }); 
+              }
+            });
+
+          }
+        }  
 
       console.log(Query);
         this._CancellationService.getDateTimeChange(Query).subscribe(response => {
@@ -73,7 +101,12 @@ export class BillDateUpdateComponent implements OnInit {
       }
     }); 
   }
+
+
+
   onClose(){
     this._matDialog.closeAll(); 
+    this.RefundId = '';
+    this.BillNo = '';
   }
 }

@@ -36,7 +36,10 @@ export class CancellationService {
   public SaveCancelBill(param) {
     return this._httpClient.post("Administration/Billcancellation", param) 
   }
-  public getDateTimeChange(m_data) {
+  public getDateTimeChange(m_data ,loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.post("Generic/ExecByQueryStatement?query=" + m_data,{});
 }
 public getIpdreturnAdvancepaymentreceipt(employee ,loader=true) {
@@ -44,5 +47,17 @@ public getIpdreturnAdvancepaymentreceipt(employee ,loader=true) {
     this._loaderService.show();
   }
   return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BrowseIPRefundAdvanceReceipt", employee)
+}
+public getIpdRefundBillBrowseList(employee,loader = true) {
+  if (loader) {
+    this._loaderService.show();
+}
+  return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IPRefundBillList", employee)
+} 
+public getDateTimeChangeReceipt(m_data,loader = true) {
+  if (loader) {
+    this._loaderService.show();
+}
+  return this._httpClient.post("Generic/ExecByQueryStatement?query=" + m_data,{});
 }
 }

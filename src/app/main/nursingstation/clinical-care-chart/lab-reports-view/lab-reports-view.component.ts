@@ -116,29 +116,37 @@ export class LabReportsViewComponent implements OnInit {
      this.sIsLoading = ''; 
    }); 
    }
+   
+   LabDataList:any=[];
   LabReportView(contact) {
-    console.log(contact)
- 
+    console.log(contact) 
+    this.LabDataList.push(
+      {
+        PathReportID :  contact.PathReportID, 
+      });
+      console.log(this.LabDataList)
     let pathologyDelete = [];
-    pathologyDelete['pathReportId'] = contact.PathReportID
-
+    this.LabDataList.forEach((element) => { 
+        let pathologyDeleteObj = {};
+        pathologyDeleteObj['pathReportId'] = element.PathReportID
+        pathologyDelete.push(pathologyDeleteObj);
+    }); 
+ 
     let submitData = {
         "printInsert": pathologyDelete,
     };
     console.log(submitData);
     this._ClinicalcareService.PathPrintResultentryInsert(submitData).subscribe(response => {
         if (response) {
-            this.viewgetPathologyTestReportPdf()
+            this.viewgetPathologyTestReportPdf(contact.OPD_IPD_Type)
         }
     }); 
 }
-viewgetPathologyTestReportPdf() {
+viewgetPathologyTestReportPdf(OPD_IP_Type ) {
 
   setTimeout(() => {
       this.SpinLoading = true; 
-      this._ClinicalcareService.getPathTestReport(1
-       // OPD_IP_Type
-      ).subscribe(res => {
+      this._ClinicalcareService.getPathTestReport(OPD_IP_Type).subscribe(res => {
           const dialogRef = this._matDialog.open(PdfviewerComponent,
               {
                   maxWidth: "85vw",

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { LoaderService } from 'app/core/components/loader/loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,8 @@ export class ClinicalCareChartService {
 
   constructor(
     public _formbuilder:FormBuilder,
-    public _httpClient:HttpClient
+    public _httpClient:HttpClient,
+    private _loaderService : LoaderService
   )
    { this.MyForm = this.createMyForm(),
      this.VitalsForm = this.createVitalsForm(),
@@ -166,7 +168,10 @@ export class ClinicalCareChartService {
     public PathPrintResultentryInsert(employee) {
       return this._httpClient.post("Pathology/PathPrintResultentryInsert", employee);
     }
-    public getPathTestReport(OP_IP_Type){
+    public getPathTestReport(OP_IP_Type,loader = true){
+      if(loader){
+        this._loaderService.show();
+      }
       return this._httpClient.get("Pathology/view-PathReportMultiple?OP_IP_Type=" + OP_IP_Type);
     }
 }

@@ -95,7 +95,10 @@ export class RequestforlabtestService {
   public PathPrintResultentryInsert(employee) {
     return this._httpClient.post("Pathology/PathPrintResultentryInsert", employee);
   }
-  public getPathTestReport(OP_IP_Type){
+  public getPathTestReport(OP_IP_Type,loader = true){
+    if(loader){
+      this._loaderService.show();
+    }
     return this._httpClient.get("Pathology/view-PathReportMultiple?OP_IP_Type=" + OP_IP_Type);
   }
 }
