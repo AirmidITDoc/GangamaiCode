@@ -233,6 +233,7 @@ export class RadiologyOrderListComponent implements OnInit {
  
   viewgetRadioloyTemplateReportPdf(obj) {
     debugger
+    obj.RadReportId= 94377;
     this._RadiologyOrderListService.getRadiologyTempReport(
       obj.RadReportId,0
       ).subscribe(res => {

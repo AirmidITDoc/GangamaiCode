@@ -294,7 +294,7 @@ export class ResultEntrytwoComponent implements OnInit {
 
   getTemplateList() {
     var mdata={
-        Id:this.selectedAdvanceObj1.ServiceId
+        Id: this.selectedAdvanceObj1.ServiceId
         
     }
     this._SampleService.getTemplateCombo(mdata).subscribe(data => {

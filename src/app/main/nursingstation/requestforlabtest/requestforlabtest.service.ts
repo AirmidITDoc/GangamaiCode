@@ -53,7 +53,9 @@ export class RequestforlabtestService {
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientVisitedListSearch", employee)
   }
 
-  
+  public getPathologyTempReport(PathReportId,OP_IP_Type){
+    return this._httpClient.get("Pathology/view-PathTemplate?PathReportId=" + PathReportId + "&OP_IP_Type="+OP_IP_Type);
+  }
   public getServiceListDetails(Param ,loader = true){
     if (loader) {
       this._loaderService.show();

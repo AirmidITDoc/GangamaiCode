@@ -296,7 +296,8 @@ export class ResultEntryComponent implements OnInit {
 
                     this.selection.selected.forEach(element => {
                         console.log(element)
-                        data.push({ PathReportId: element["PathReportID"].toString(), ServiceId: element["ServiceId"].toString(), IsCompleted: element["IsCompleted"].toString() });
+                        data.push({ PathReportId: element["PathReportID"].toString(), ServiceId: element["ServiceId"].toString(), IsCompleted: element["IsCompleted"].toString(),
+                            SampleNo:element["SampleNo"].toString()});
                         this.printdata.push({ PathReportId: element["PathReportID"].toString() });
                     });
 
@@ -474,7 +475,7 @@ export class ResultEntryComponent implements OnInit {
     AdList: boolean = false;
 
     viewgetPathologyTemplateReportPdf(contact) {
-
+debugger
         setTimeout(() => {
 
             this._SampleService.getPathTempReport(contact.PathReportID, contact.OPD_IPD_Type).subscribe(res => {

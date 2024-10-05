@@ -72,7 +72,7 @@ export class RadioloyOrderlistService {
     public getRtrvtemplate(employee)
     {
       
-      return this._httpClient.post("Generic/getByProc?procName=Retrive_RadiologyResultTemplate_Update",employee)
+      return this._httpClient.post("Generic/getByProc?procName=m_Rtrv_radioTemplateMasterForCombo",employee)
     }
 
 
@@ -137,8 +137,8 @@ export class RadioloyOrderlistService {
       return this._httpClient.get("Radiology/view-RadiologyTemplateReport?RadReportId=" + RadReportId + "&OP_IP_Type=" + OP_IP_Type)
           
     }
-    getTemplateCombo() {
-      return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RadioTemplateMasterForCombo", {})
+    getTemplateCombo(employee) {
+      return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_radioTemplateMasterForCombo", employee)
     }
     
 }

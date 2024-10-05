@@ -41,6 +41,7 @@ export class ResultEntryComponent implements OnInit {
   filteredrefdr: Observable<string[]>;
   optionsDoc1: any[] = [];
   msg: any;
+  vsuggation:any;
   selectedAdvanceObj: RadiologyPrint;
   public iframe: object = { enable: true };
   public height: number = 410;
@@ -100,16 +101,16 @@ export class ResultEntryComponent implements OnInit {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       this.TemplateId== this.selectedAdvanceObj.TemplateId;
       console.log(this.selectedAdvanceObj )
+      this.getUpdatetemplate(); 
     }
     this.getDoctorList()
     this.getTemplateList();
+    
    }
 
   ngOnInit(): void { 
-    //this.getTemplateList(); 
-    if (this.advanceDataStored.storage) {
-       this.getUpdatetemplate();  
-    }  
+  
+  
   }
   RefDoctorID:any;
 // getUpdatetemplate(){
@@ -128,27 +129,44 @@ export class ResultEntryComponent implements OnInit {
 //   }); 
 // }   
 
+
+
 getUpdatetemplate() {
   
-  var mdata={
-  "RadReportId": this.selectedAdvanceObj.RadReportId, 
-  }
+  // var mdata={
+  // "Id":595//this.selectedAdvanceObj.ServiceId, 
+  // }
 
-  this._radiologytemplateService.getRtrvtemplate(mdata).subscribe(data => {
-      this.TemplateList = data[0];
-      this.vTemplateDesc = this.TemplateList.ResultEntry;
+  // this._radiologytemplateService.getRtrvtemplate(mdata).subscribe(data => {
+  //     this.TemplateList = data[0];
+  //     this.vTemplateDesc = this.TemplateList.ResultEntry;
+  //     this.SuggestionNotes = this.TemplateList.SuggestionNotes;
+  //     this.TemplateId= this.TemplateList.RadReportId;
+  //     this.DoctorId = this.TemplateList.RadResultDr1;
+  //     this.RefDoctorID = this.TemplateList.RefDoctorID;
+  //     debugger
+  //   //   if (this.data) {
+  //   //     const ddValue = this.TemplateList.filter(c => c.RadReportId== this.TemplateId);
+  //       this._radiologytemplateService.myform.get('TemplateName').setValue(this.TemplateId);
+  //       this._radiologytemplateService.myform.updateValueAndValidity();
+  //   //     return;
+  //   // }
+  // });
+
+  var mdata={
+    Id: 595//this.selectedAdvanceObj.ServiceId
+
+}
+this._radiologytemplateService.getTemplateCombo(mdata).subscribe(data => {
+  this.TemplateList = data;
+  debugger
+  this.vTemplateDesc = this.TemplateList[0]["TemplateDesc"];
       this.SuggestionNotes = this.TemplateList.SuggestionNotes;
-      this.TemplateId= this.TemplateList.RadReportId;
-      this.DoctorId = this.TemplateList.RadResultDr1;
-      this.RefDoctorID = this.TemplateList.RefDoctorID;
-      debugger
-    //   if (this.data) {
-    //     const ddValue = this.TemplateList.filter(c => c.RadReportId== this.TemplateId);
-        this._radiologytemplateService.myform.get('TemplateName').setValue(this.TemplateId);
-        this._radiologytemplateService.myform.updateValueAndValidity();
-    //     return;
-    // }
-  });
+      this.TemplateId= this.TemplateList[0]["TemplateId"];
+      // this.DoctorId = this.TemplateList.RadResultDr1;
+      // this.RefDoctorID = this.TemplateList.RefDoctorID;
+ 
+});
 }
 
   getDoctorList() {
@@ -203,7 +221,7 @@ getUpdatetemplate() {
             "ReportTime":this.datePipe.transform(this.currentDate, "MM-dd-yyyy hh:mm"),
             "IsCompleted":'true', 
             "IsPrinted":'true', 
-            "RadResultDr1": this._radiologytemplateService.myform.get("DoctorId").value.DoctorId ,
+            "RadResultDr1":10005,// this._radiologytemplateService.myform.get("DoctorId").value.DoctorId || 10005,
             "RadResultDr2":0, 
             "RadResultDr3":0, 
             "SuggestionNotes": this._radiologytemplateService.myform.get("Suggatationnote").value || '',
@@ -238,7 +256,7 @@ getUpdatetemplate() {
             "ReportTime":this.datePipe.transform(this.currentDate, "MM-dd-yyyy hh:mm"),
             "IsCompleted": true, 
             "IsPrinted": true, 
-            "RadResultDr1": this._radiologytemplateService.myform.get("DoctorId").value.DoctorId || 0,
+            "RadResultDr1":10005,// this._radiologytemplateService.myform.get("DoctorId").value.DoctorId || 0,
             "RadResultDr2": 0, 
             "RadResultDr3": 0, 
             "SuggestionNotes": this._radiologytemplateService.myform.get("SuggestionNotes").value || '',
@@ -288,11 +306,11 @@ getUpdatetemplate() {
 
 
   getTemplateList() {
-    // var mdata={
-    //     Id:this.selectedAdvanceObj.ServiceId
+    var mdata={
+        Id: 595//this.selectedAdvanceObj.ServiceId
 
-    // }
-    this._radiologytemplateService.getTemplateCombo().subscribe(data => {
+    }
+    this._radiologytemplateService.getTemplateCombo(mdata).subscribe(data => {
       this.TemplateList = data;
       this.optionsTemplate = this.TemplateList.slice();
       this.filteredOptionsisTemplate = this._radiologytemplateService.myform.get('TemplateName').valueChanges.pipe(
@@ -301,7 +319,14 @@ getUpdatetemplate() {
       );
 
     });
+    if (this.data) {
+      const ddValue = this.TemplateList.filter(c => c.TemplateId == this.TemplateId);
+      this._radiologytemplateService.myform.get('TemplateName').setValue(ddValue[0]);
+      this._radiologytemplateService.myform.updateValueAndValidity();
+      return;
   }
+  }
+
 
   private _filterTemplate(value: any): string[] {
     if (value) {

@@ -242,7 +242,7 @@ debugger
 //     }); 
 // }
 viewgetPathologyTestReportPdf(contact) {
-
+debugger
   setTimeout(() => {
       this.SpinLoading = true; 
       this._RequestforlabtestService.getPathTestReport(contact.OP_IP_Type).subscribe(res => {
@@ -262,6 +262,25 @@ viewgetPathologyTestReportPdf(contact) {
       });
 
   }, 100);
+}
+
+
+
+viewgetPathologyTemplateReportPdf(contact) {
+  let PathReportID=57610
+  debugger
+  this._RequestforlabtestService.getPathologyTempReport(PathReportID,0).subscribe(res => {
+    const dialogRef = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Pathology Template Report Viewer"
+        }
+      });
+  });
 }
 
 }

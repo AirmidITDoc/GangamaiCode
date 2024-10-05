@@ -48,7 +48,7 @@ export class ResultEntryOneComponent implements OnInit {
     Doctor1List: any = [];
     otherForm: FormGroup;
     msg: any;
-
+    SampleNo=0;
     selectedAdvanceObj1: SampleDetailObj;
     selectedAdvanceObj2: AdmissionPersonlModel;
     screenFromString = 'opd-casepaper';
@@ -108,8 +108,10 @@ export class ResultEntryOneComponent implements OnInit {
 
         if (this.data) {
 
+
             this.selectedAdvanceObj2 = data.patientdata;
             console.log(this.selectedAdvanceObj2)
+            // this.SampleNo=this.selectedAdvanceObj1.Sam
             this.OPIPID = this.selectedAdvanceObj2.OPD_IPD_ID;
             this.OP_IPType = this.selectedAdvanceObj2.OPD_IPD_Type;
             this.SexId = this.selectedAdvanceObj2.GenderId;
@@ -123,6 +125,8 @@ export class ResultEntryOneComponent implements OnInit {
             this.reportIdData = [];
 
             this.data.RIdData.forEach((element) => {
+console.log(element)
+                this.SampleNo=element.SampleNo;
                 this.reportIdData.push(element.PathReportId)
                 this.ServiceIdData.push(element.ServiceId)
                 if (element.IsCompleted == "true")
@@ -198,7 +202,7 @@ export class ResultEntryOneComponent implements OnInit {
         return Keys;
     }
     onResultUp(data) {
-        debugger
+        
         let items = this.dataSource.data.filter(x => (x?.Formula ?? "").indexOf('{{' + data.ParameterShortName + '}}') > 0);
         for (let i = 0; i < items.length; i++) {
             let formula = items[i].Formula;
@@ -315,7 +319,7 @@ var TestID=0;
            if (this.dataSource.data.length > 0) {
             
             this.dataSource.data.forEach((element) => {
-                debugger
+                
             
             if (this.vsuggation == '')
                 this.vsuggation =element.SuggestionNote
@@ -377,26 +381,26 @@ var TestID=0;
     onReload(){
         this.getResultList(this.selectedAdvanceObj2);
     }
- SampleNo=0;
+ 
     onUpload(){
         this.sIsLoading = 'loading-data';
 
         let SelectQuery
-
+debugger
         if (this.OP_IPType == 0) {
             if (this.selectedAdvanceObj2.AgeYear > 0)
-                SelectQuery = "Select * from m_lvwRtrv_PathologyResultOPWithAge where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ") and SexId=" + this.SexId + " and MaxAge >= " + this.CheckAge + " and MinAge < " + this.CheckAge + " AND AgeType='YEAR' and RegNo = " + this.selectedAdvanceObj2.RegNo+""
+                SelectQuery = "Select * from lvwRtrv_PathologyResultOPWithAge_MachineUpload  where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ") and SexId=" + this.SexId + " and MaxAge >= " + this.CheckAge + " and MinAge < " + this.CheckAge + " AND AgeType='YEAR' and RegNo = " + this.SampleNo+""
             else if (this.selectedAdvanceObj2.AgeMonth > 0)
-                 SelectQuery = "Select * from m_lvwRtrv_PathologyResultOPWithAge where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ") and SexId=" + this.SexId + " and MaxAge >= " + this.CheckAgemonth + " and MinAge < " + this.CheckAgemonth +"AND AgeType='MONTH' and RegNo = " + this.selectedAdvanceObj2.RegNo + ""
+                 SelectQuery = "Select * from lvwRtrv_PathologyResultOPWithAge_MachineUpload  where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ") and SexId=" + this.SexId + " and MaxAge >= " + this.CheckAgemonth + " and MinAge < " + this.CheckAgemonth +"AND AgeType='MONTH' and RegNo = " + this.SampleNo + ""
             else if (this.selectedAdvanceObj2.AgeDay > 0)
-                SelectQuery = "Select * from m_lvwRtrv_PathologyResultOPWithAge where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ") and SexId=" + this.SexId + " and MaxAge >= " + this.CheckAgeday + " and MinAge < " + this.CheckAgeday + " AND AgeType='DAY' and RegNo = " + this.selectedAdvanceObj2.RegNo+ ""
+                SelectQuery = "Select * from lvwRtrv_PathologyResultOPWithAge_MachineUpload  where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ") and SexId=" + this.SexId + " and MaxAge >= " + this.CheckAgeday + " and MinAge < " + this.CheckAgeday + " AND AgeType='DAY' and RegNo = " + this.SampleNo+ ""
         } else if (this.OP_IPType == 1) {
             if (this.selectedAdvanceObj2.AgeYear > 0)
-                SelectQuery = "Select * from m_lvwRtrv_PathologyResultIPWithAge where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ") and SexId=" + this.SexId + " and MaxAge >= " + this.CheckAge + " and MinAge < " + this.CheckAge + " AND AgeType='YEAR' and RegNo = " + this.selectedAdvanceObj2.RegNo + ""
+                SelectQuery = "Select * from lvwRtrv_PathologyResultIPWithAge_MachineUpload  where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ") and SexId=" + this.SexId + " and MaxAge >= " + this.CheckAge + " and MinAge < " + this.CheckAge + " AND AgeType='YEAR' and RegNo = " + this.SampleNo + ""
             else if (this.selectedAdvanceObj2.AgeMonth > 0)
-                SelectQuery = "Select * from m_lvwRtrv_PathologyResultIPWithAge where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ") and SexId=" + this.SexId + " and MaxAge >= " + this.CheckAgemonth + " and MinAge < " + this.CheckAgemonth + "AND AgeType='MONTH' and RegNo = " + this.selectedAdvanceObj2.RegNo + ""
+                SelectQuery = "Select * from lvwRtrv_PathologyResultIPWithAge_MachineUpload  where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ") and SexId=" + this.SexId + " and MaxAge >= " + this.CheckAgemonth + " and MinAge < " + this.CheckAgemonth + "AND AgeType='MONTH' and RegNo = " + this.SampleNo + ""
             else if (this.selectedAdvanceObj2.AgeDay > 0)
-                SelectQuery = "Select * from m_lvwRtrv_PathologyResultIPWithAge where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ") and SexId=" + this.SexId + " and MaxAge >= " + this.CheckAgeday + " and MinAge < " + this.CheckAgeday + " AND AgeType='DAY' and RegNo = " + this.selectedAdvanceObj2.RegNo + ""
+                SelectQuery = "Select * from lvwRtrv_PathologyResultIPWithAge_MachineUpload  where opd_ipd_id=" + this.OPIPID + " and ServiceID in (" + this.ServiceIdData + ") and OPD_IPD_Type = " + this.OP_IPType + " AND IsCompleted = 0 and PathReportID in ( " + this.reportIdData + ") and SexId=" + this.SexId + " and MaxAge >= " + this.CheckAgeday + " and MinAge < " + this.CheckAgeday + " AND AgeType='DAY' and RegNo = " + this.SampleNo + ""
         }
 
 
@@ -410,9 +414,7 @@ var TestID=0;
            if (this.dataSource.data.length > 0) {
             
             this.dataSource.data.forEach((element) => {
-                debugger
-            
-            if (this.vsuggation == '')
+                if (this.vsuggation == '')
                 this.vsuggation =element.SuggestionNote
             else if (TestID != element.TestId)
                 this.vsuggation = this.vsuggation + element.SuggestionNote + "\n";
