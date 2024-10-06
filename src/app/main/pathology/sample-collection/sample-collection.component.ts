@@ -280,7 +280,8 @@ export class SampleCollectionComponent implements OnInit {
 
   getSampleRecords(contact) {
     console.log(contact)
-  
+  // if(contact.IsSampleCollection)
+  //   Swal.fire()
     this.advanceDataStored.storage = new AdvanceDetailObj(contact);
 
     const dialogRef1 = this._matDialog1.open(SampledetailtwoComponent,

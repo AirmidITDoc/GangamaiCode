@@ -173,7 +173,7 @@ this.date = now.toISOString().slice(0,16);
       let UpdateAddSampleDetailsObj = {};
       UpdateAddSampleDetailsObj['PathReportID'] = element.PathReportID,
         UpdateAddSampleDetailsObj['SampleDateTime'] = this._SampleService.sampldetailform.get('SampleDateTime').value || '01/01/1900'
-      UpdateAddSampleDetailsObj['IsSampleCollection'] = 1;// this.datePipe.transform(this._SampleService.sampldetailform.get('SampleDateTime').value, "MM-dd-yyyy"),//  
+      UpdateAddSampleDetailsObj['IsSampleCollection'] = true;// this.datePipe.transform(this._SampleService.sampldetailform.get('SampleDateTime').value, "MM-dd-yyyy"),//  
       UpdateAddSampleDetailsObj['No'] = element.SampleNo || 0;
       updatesamcollection.push(UpdateAddSampleDetailsObj);
     });
@@ -234,7 +234,7 @@ export class SampleList {
   VATime:Date;
   PathTestID: Number;
   ServiceName: String;
-  IsSampleCollection: boolean;
+  IsSampleCollection: any;
   SampleCollectionTime: Date;
   PathReportID: any; 
   SampleNo:any;
@@ -245,7 +245,7 @@ export class SampleList {
     this.VATime = SampleList.VATime || '';
     this.PathTestID = SampleList.PathTestID || 0;
     this.ServiceName = SampleList.ServiceName || '';
-    this.IsSampleCollection = SampleList.IsSampleCollection || 0;
+    this.IsSampleCollection = SampleList.IsSampleCollection || 1;
     this.SampleCollectionTime = SampleList.SampleCollectionTime || '';
     this.PathReportID = SampleList.PathReportID || 0; 
     this.SampleNo = SampleList.SampleNo || 0; 

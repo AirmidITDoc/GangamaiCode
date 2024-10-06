@@ -995,7 +995,10 @@ export class AppointmentComponent implements OnInit {
     }
 
     EditRegistration(row) {
-
+        this.registerObj = row;
+        this.registerObj["RegId"] = row.RegId;
+        this.registerObj["RegID"] = row.RegId;
+        // this.registerObj["PrefixId"] = row.PrefixID;
         this.advanceDataStored.storage = new AdvanceDetailObj(row);
         console.log(row)
 

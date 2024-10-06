@@ -143,9 +143,9 @@
                                     <mat-table #table matSort class="mat-table-1 h-210" [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
 
                                         <ng-container matColumnDef="OP_Ip_Type" sticky>
-                                            <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-80"> 
+                                            <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-180"> 
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact"  class="w-80"> 
+                                            <mat-cell *matCellDef="let contact"  class="w-180"> 
                                                     <mat-icon  *ngIf="contact.Lbl=='IP'"  title="IP"
                                                     class="pill green-600 s-16">circle</mat-icon>
                                                     <mat-icon  *ngIf="contact.LBL=='OP'"  title="OP"
@@ -155,6 +155,12 @@
                                                     </mat-icon>
                                                     
                                                     <mat-icon *ngIf="contact.CompanyName" matTooltip="Patient Category Company">business
+                                                    </mat-icon>
+
+                                                    <mat-icon *ngIf="!contact.IsSampleCollection" matTooltip="Sample Not Collected">highlight_off
+                                                    </mat-icon>
+                                                    
+                                                    <mat-icon *ngIf="contact.IsSampleCollection" matTooltip="Sample  Collected">done_outline
                                                     </mat-icon>
                                             </mat-cell>
                                         </ng-container> 
@@ -231,7 +237,7 @@
                                             </mat-header-cell>
 
                                             <mat-cell *matCellDef="let contact"> 
-                                                <button mat-icon-button matTooltip="Edit" (click)="getSampleRecords(contact)">
+                                                <button mat-icon-button matTooltip="Edit" (click)="getSampleRecords(contact)" *ngIf="!contact.IsSampleCollection">
                                                     <mat-icon title="New form" >edit</mat-icon>
                                                 </button>
                                             </mat-cell>
