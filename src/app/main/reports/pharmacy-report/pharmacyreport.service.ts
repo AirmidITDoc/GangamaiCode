@@ -169,7 +169,7 @@ export class PharmacyreportService {
     if (loader) {
       this._loaderService.show();
   }
-    return this._httpClient.get("PharmacyReport/view-PharmacyBillSummaryReport?FromDate=" + ToDate+"&ToDate="+FromDate+"&DoctorId="+DoctorId);
+    return this._httpClient.get("PharmacyReport/view-DoctorWiseProfitReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&DoctorId="+DoctorId);
   }
 
 

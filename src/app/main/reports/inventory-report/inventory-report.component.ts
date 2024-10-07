@@ -4,22 +4,72 @@ import { MatDialog } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { Router } from '@angular/router';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormControl } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { ReportDetail } from '../common-report/common-report.component';
 import { map, startWith } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { fuseAnimations } from '@fuse/animations';
+import * as _moment from 'moment';
+import { default as _rollupMoment, Moment } from 'moment';
+import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { ConcessionReasonMasterModule } from 'app/main/setup/billing/concession-reason-master/concession-reason-master.module';
 
+
+export interface MonthYear {
+  value: string;
+  viewValue: string;
+}
+
+const moment = _rollupMoment || _moment;
+
+export const MY_FORMATS = {
+  parse: {
+    dateInput: 'MM/YYYY',
+  },
+  display: {
+    dateInput: 'MM/YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
 @Component({
   selector: 'app-inventory-report',
   templateUrl: './inventory-report.component.html',
   styleUrls: ['./inventory-report.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  animations: fuseAnimations
+  animations: fuseAnimations,
+  providers: [
+
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+    },
+
+    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
+  ],
+ 
 })
 export class InventoryReportComponent implements OnInit {
+
+  monthList: MonthYear[] = [
+    {value: '1', viewValue: 'Jan'},
+    {value: '2', viewValue: 'Feb'},
+    {value: '3', viewValue: 'Mar'},
+    {value: '4', viewValue: 'Apr'},
+    {value: '5', viewValue: 'May'},
+    {value: '6', viewValue: 'Jun'},
+    {value: '7', viewValue: 'Jul'},
+    {value: '8', viewValue: 'Aug'},
+    {value: '9', viewValue: 'Sep'},
+    {value: '10', viewValue: 'Oct'},
+    {value: '11', viewValue: 'Nov'},
+    {value: '12', viewValue: 'Dec'},
+  ];
 
   UserId:any=0;
   UserName:any=''
@@ -31,6 +81,7 @@ export class InventoryReportComponent implements OnInit {
   FlagUserSelected: boolean = false;
   FlagDoctorSelected: boolean = false;
   FlagBillNoSelected: boolean = false;
+  FlagMonthSelected: boolean = false;
   ReportName: any;
   SpinLoading: boolean = false;
   sIsLoading: string = '';
@@ -86,6 +137,40 @@ export class InventoryReportComponent implements OnInit {
 
     );
   }
+vYear:any=0;
+vMonth:any=0;
+vDay:any=0;
+  Year = new FormControl(moment());
+  date = new FormControl(moment());
+
+
+  chosenYearHandler(normalizedYear: Moment) {
+    const ctrlValue = this.date.value;
+    ctrlValue.year(normalizedYear.year());
+    this.date.setValue(ctrlValue);
+    this.vYear=ctrlValue
+
+
+    this.vYear=this.datePipe.transform(ctrlValue, "yyyy")
+    console.log(this.vYear)
+  }
+
+  chosenMonthHandler(normalizedMonth: Moment) {
+    const ctrlValue = this.date.value;
+    ctrlValue.month(normalizedMonth.month());
+    this.date.setValue(ctrlValue);
+    this.vMonth=ctrlValue
+    console.log(this.vMonth)
+  }
+
+
+
+  onEntermonth(event){
+    this.vMonth=event.value
+console.log(event.value)
+  }
+
+
 
   bindReportData() {
    var data={
@@ -149,6 +234,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagSupplierSelected = false;
       this.FlagItemSelected=false;
       this.FlagIdSelected=false;
+      this.FlagMonthSelected=false;
     }else if (this.ReportName == 'Supplier List') {
       this.FlagUserSelected = false;
       this.FlagnonmovedaySelected = false;
@@ -158,6 +244,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagSupplierSelected = false;
       this.FlagItemSelected=false;
       this.FlagIdSelected=false;
+      this.FlagMonthSelected=false;
     }
     else if (this.ReportName == 'Indent Report') {
       this.FlagUserSelected = false;
@@ -168,6 +255,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagSupplierSelected = false;
       this.FlagItemSelected=false;
       this.FlagIdSelected=false;
+      this.FlagMonthSelected=false;
     } 
     else if (this.ReportName == 'Monthly Purchase(GRN) Report') {
       this.FlagUserSelected = false;
@@ -178,6 +266,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagSupplierSelected = false;
       this.FlagItemSelected=false;
       this.FlagIdSelected=false;
+      this.FlagMonthSelected=false;
     } 
      
     else if (this.ReportName == 'GRN Report') {
@@ -189,6 +278,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagSupplierSelected = false;
       this.FlagItemSelected=false;
       this.FlagIdSelected=false;
+      this.FlagMonthSelected=false;
     } 
     else if (this.ReportName == 'GRN Return Report') {
       this.FlagUserSelected = false;
@@ -199,6 +289,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagSupplierSelected = false;
       this.FlagItemSelected=false;
       this.FlagIdSelected=false;
+      this.FlagMonthSelected=false;
     }
     else if (this.ReportName == 'GRN Report - NABH') {
       this.FlagUserSelected = false;
@@ -209,6 +300,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagSupplierSelected = true;
       this.FlagItemSelected=false;
       this.FlagIdSelected=false;
+      this.FlagMonthSelected=false;
     }
     
     else if (this.ReportName == 'GRN Wise Product Qty Report') {
@@ -220,6 +312,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagSupplierSelected = true;
       this.FlagItemSelected=false;
       this.FlagIdSelected=false;
+      this.FlagMonthSelected=false;
     }
     else if (this.ReportName == 'GRN Purchase Report') {
       this.FlagUserSelected = false;
@@ -230,6 +323,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagSupplierSelected = false;
       this.FlagItemSelected=false;
       this.FlagIdSelected=false;
+      this.FlagMonthSelected=false;
     }
      else if (this.ReportName == 'Supplier Wise GRN List') {
       this.FlagUserSelected = false;
@@ -250,6 +344,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagSupplierSelected = false;
       this.FlagItemSelected=true;
       this.FlagIdSelected=false;
+      this.FlagMonthSelected=false;
     }
     else if (this.ReportName == 'Issue To Department Item Wise') {
       this.FlagUserSelected = false;
@@ -260,6 +355,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagSupplierSelected = false;
       this.FlagItemSelected=true;
       this.FlagIdSelected=false;
+      this.FlagMonthSelected=false;
     }
      else if (this.ReportName == 'Return From Department') {
       this.FlagUserSelected = false;
@@ -270,6 +366,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagSupplierSelected = false;
       this.FlagItemSelected=false;
       this.FlagIdSelected=false;
+      this.FlagMonthSelected=false;
     }
     else if (this.ReportName == 'Purchase Order') {
       this.FlagUserSelected = false;
@@ -280,6 +377,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagSupplierSelected = true;
       this.FlagItemSelected=false;
       this.FlagIdSelected=false;
+      this.FlagMonthSelected=false;
     }
     else if (this.ReportName == 'Material Consumption Monthly Summary') {
       this.FlagUserSelected = false;
@@ -290,6 +388,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagSupplierSelected = false;
       this.FlagItemSelected=false;
       this.FlagIdSelected=false;
+      this.FlagMonthSelected=false;
     }
      else if (this.ReportName == 'Material Consumption') {
       this.FlagUserSelected = false;
@@ -300,6 +399,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagSupplierSelected = false;
       this.FlagItemSelected=false;
       this.FlagIdSelected=false;
+      this.FlagMonthSelected=false;
     }
     else if (this.ReportName == 'Item Expiry Report') {
       this.FlagUserSelected = false;
@@ -310,6 +410,8 @@ export class InventoryReportComponent implements OnInit {
       this.FlagSupplierSelected = false;
       this.FlagItemSelected=false;
       this.FlagIdSelected=false;
+      this.FlagMonthSelected=true;
+     
     }
      else if (this.ReportName == 'Current Stock Report') {
       this.FlagBillNoSelected = true;
@@ -317,6 +419,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagDoctorSelected = false;
       this.FlagItemSelected=false;
       this.FlagIdSelected=false;
+      this.FlagMonthSelected=false;
     }
    
      else if (this.ReportName == 'Item Wise Supplier List') {
@@ -328,6 +431,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagSupplierSelected = true;
       this.FlagItemSelected=true;
       this.FlagIdSelected=false;
+      this.FlagMonthSelected=false;
     }
     else if (this.ReportName == 'Current Stock Date Wise') {
       this.FlagUserSelected = false;
@@ -338,6 +442,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagSupplierSelected = false;
       this.FlagItemSelected=false;
       this.FlagIdSelected=false;
+      this.FlagMonthSelected=false;
     }
      else if (this.ReportName == 'Non-Moving Item List') {
       this.FlagUserSelected = false;
@@ -348,6 +453,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagSupplierSelected = false;
       this.FlagItemSelected=false;
       this.FlagIdSelected=false;
+      this.FlagMonthSelected=false;
     }
     else if (this.ReportName == 'Non-Moving Item Without Batch List') {
       this.FlagUserSelected = false;
@@ -358,6 +464,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagSupplierSelected = false;
       this.FlagItemSelected=false;
       this.FlagIdSelected=false;
+      this.FlagMonthSelected=false;
     }
     else if (this.ReportName == 'Patient Wise Material Consumption') {
       this.FlagUserSelected = false;
@@ -368,6 +475,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagSupplierSelected = false;
       this.FlagItemSelected=false;
       this.FlagIdSelected=true;
+      this.FlagMonthSelected=false;
     }
      else if (this.ReportName == 'Last Purchase Rate Wise Consumtion') {
       this.FlagUserSelected = false;
@@ -378,6 +486,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagSupplierSelected = false;
       this.FlagItemSelected=true;
       this.FlagIdSelected=false;
+      this.FlagMonthSelected=false;
     }
     else if (this.ReportName == 'Item Count') {
       this.FlagUserSelected = false;
@@ -388,6 +497,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagSupplierSelected = false;
       this.FlagItemSelected=true;
       this.FlagIdSelected=false;
+      this.FlagMonthSelected=false;
     }
      else if (this.ReportName == 'Supplier Wise Debit Credit Note') {
       this.FlagUserSelected = false;
@@ -398,6 +508,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagSupplierSelected = true;
       this.FlagItemSelected=false;
       this.FlagIdSelected=false;
+      this.FlagMonthSelected=false;
 
     }   else if (this.ReportName == 'Stock Adjustment Report') {
       this.FlagUserSelected = false;
@@ -408,6 +519,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagSupplierSelected = false;
       this.FlagItemSelected=false;
       this.FlagIdSelected=false;
+      this.FlagMonthSelected=false;
     }
      else if (this.ReportName == 'Purchase Wise GRN Summary') {
       this.FlagUserSelected = false;
@@ -418,6 +530,7 @@ export class InventoryReportComponent implements OnInit {
       this.FlagSupplierSelected = false;
       this.FlagItemSelected=false;
       this.FlagIdSelected=false;
+      this.FlagMonthSelected=false;
     }
 
   }
@@ -900,15 +1013,14 @@ debugger
      }, 100);
    }
    viewgetItemexpiryPdf() {
-   let ExpMonth =0
-   let ExpYear =0
+    debugger
+   let ExpMonth =this.vMonth;
+   let ExpYear = this.vYear;
    let StoreId =0
 
    if (this._OPReportsService.userForm.get('StoreId').value)
-    StoreId = this._OPReportsService.userForm.get('StoreId').value.StoreId
+    StoreId = this._OPReportsService.userForm.get('Year').value.StoreId
    
-
-
     this.sIsLoading = 'loading-data';
    
      setTimeout(() => {

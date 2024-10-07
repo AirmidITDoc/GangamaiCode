@@ -32,7 +32,11 @@ export class OPReportsService {
         StoreId1:'',
         NonMoveday:'',
         ItemId:'',
-        Id:''
+        Id:'',
+
+        Month :'',
+        Year:'',
+        Day:''
         // Radio:['1']
 
       })

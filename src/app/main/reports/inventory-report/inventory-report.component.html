@@ -238,25 +238,7 @@
                                         </mat-form-field>
                                     </div>
                                     <div *ngIf="FlagItemSelected" style="margin-left:2%;">
-                                    <!-- <mat-form-field appearance="outline" fxFlex="40%">
-                                        <mat-label>ItemName</mat-label>
-                                        <input type="text" name="ItemId" formControlName="ItemId" #itemid 
-                                            placeholder="Item Name " matInput [matAutocomplete]="auto">
-                                        <span matSuffix style="display: flex;">
-                                            <mat-icon class="mat-icon-close"
-                                                (click)="_OPReportsService.userForm.get('ItemId').setValue(''); isItemIdSelected = false;"> close </mat-icon>
-                                            <mat-icon class="mat-icon-close"
-                                                (click)="_OPReportsService.userForm.get('ItemId').setValue(''); isItemIdSelected = false;">search</mat-icon>
-                                        </span>
-                                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionItemText">
-                                            <mat-option *ngFor="let option of filteredOptionsItem" [value]="option">
-                                               {{option.ItemName}}
-                                            </mat-option>
-                                        </mat-autocomplete>
-                                        <mat-error class="error" *ngIf="_OPReportsService.userForm.get('ItemId').invalid && _OPReportsService.userForm.get('ItemId').touched">
-                                            Select ItemName
-                                        </mat-error>
-                                    </mat-form-field>  -->
+                                  
 
 
                                     <mat-form-field appearance="outline"  fxFlex="40%">
@@ -280,6 +262,32 @@
                                     </mat-form-field>
 
                                     </div>
+
+                                    <div *ngIf="FlagMonthSelected" style="margin-left:2%;" fxflex="80%">
+                                        <mat-calendar
+                                        [selected]="date"
+                                        startView="multi-year"
+                                        (yearSelected)="chosenYearHandler($event)"
+                                        (monthSelected)="chosenMonthHandler($event)"
+                                      ></mat-calendar>
+
+                                          <mat-form-field appearance="outline" fxflex="30%" style="margin-left:2%;">
+                                            <mat-label>Month Name </mat-label>
+                                            <mat-select formControlName="Month" (selectionChange)="onEntermonth($event.value)">
+                                                <mat-option *ngFor="let ele of monthList" [value]="ele">
+                                                    {{ele.viewValue}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+
+                                        <mat-form-field appearance="outline" fxFlex="30%" style="margin-left:2%;">
+                                            <mat-label>Days</mat-label>
+                                            <input name="Day" formControlName="Day" placeholder="Day"
+                                                matInput>
+                                        </mat-form-field>
+                                    </div>
+
+
                                     <div *ngIf="FlagIdSelected" style="margin-left:2%;">
                                     <mat-form-field appearance="outline" fxFlex="40%">
                                         <mat-label>Patient Id</mat-label>
@@ -288,6 +296,7 @@
 
                                     </mat-form-field>
                                 </div>
+                                
                                 </div>
                                 <div fxLayout="row" fxLayoutAlign="start none">
                                     <button class="btn btn-primary " color="accent" (click)="getPrint()"
