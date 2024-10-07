@@ -12,6 +12,7 @@ import { SalesService } from '../sales.service';
 export class SalePopupComponent implements OnInit {
 
   displayedColumns: string[] = [
+    'DrugTypeName',
     'BatchNo',
     'BatchExpDate',
     'BalanceQty',

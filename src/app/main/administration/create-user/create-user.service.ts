@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { LoaderService } from 'app/core/components/loader/loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,10 @@ export class CreateUserService {
   createuserform: FormGroup;
   myformSearch: FormGroup;
 
- constructor(private _httpClient: HttpClient,private _formBuilder: FormBuilder) {
+ constructor(private _httpClient: HttpClient,
+  private _formBuilder: FormBuilder,
+  private _loaderService:LoaderService
+) {
    this.createuserform=this.createuserForm();
     this.myformSearch=this.createSearchForm();
  }
@@ -98,6 +102,11 @@ public getpasswwordupdate(data) {
 public getpasswwordChange(data) {
   return this._httpClient.post("Administration/UserChangePassword" ,data)
 }
-
+public PasswordRest(m_data,loader = true) {
+  if (loader) {
+    this._loaderService.show();
+}
+  return this._httpClient.post("Generic/ExecByQueryStatement?query=" + m_data,{});
+}
 
 }

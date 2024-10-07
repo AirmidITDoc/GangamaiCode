@@ -28,8 +28,7 @@ export class RequestforlabtestComponent implements OnInit {
     'PatientName',  
     'WardName',
     'RequestType',
-    'IsOnFileTest',
-    'IsCancelled',  
+    'IsOnFileTest', 
     'action',
   ]
 
@@ -242,6 +241,7 @@ debugger
 //     }); 
 // }
 viewgetPathologyTestReportPdf(contact) {
+ 
 debugger
   setTimeout(() => {
       this.SpinLoading = true; 
@@ -267,20 +267,43 @@ debugger
 
 
 viewgetPathologyTemplateReportPdf(contact) {
-  let PathReportID=57610
-  debugger
-  this._RequestforlabtestService.getPathologyTempReport(PathReportID,0).subscribe(res => {
-    const dialogRef = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Pathology Template Report Viewer"
-        }
+
+  if(contact.IsTemplateTest == '1'){
+    this._RequestforlabtestService.getPathologyTempReport(contact.PathReportID,contact.OP_IP_Type).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Pathology Template Report Viewer"
+          }
+        });
+    });
+  }
+  else{
+    setTimeout(() => {
+      this.SpinLoading = true; 
+      this._RequestforlabtestService.getPathTestReport(contact.OP_IP_Type).subscribe(res => {
+          const dialogRef = this._matDialog.open(PdfviewerComponent,
+              {
+                  maxWidth: "85vw",
+                  height: '750px',
+                  width: '100%',
+                  data: {
+                      base64: res["base64"] as string,
+                      title: "pathology Test Report Viewer"
+                  }
+              });
+          dialogRef.afterClosed().subscribe(result => { 
+              this.SpinLoading = false;
+          });
       });
-  });
+
+  }, 100);
+  } 
+ 
 }
 
 }

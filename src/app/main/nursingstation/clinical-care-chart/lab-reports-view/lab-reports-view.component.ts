@@ -120,27 +120,43 @@ export class LabReportsViewComponent implements OnInit {
    LabDataList:any=[];
   LabReportView(contact) {
     console.log(contact) 
-    this.LabDataList.push(
-      {
-        PathReportID :  contact.PathReportID, 
+
+    if(contact.IsTemplateTest == '1'){
+      this._ClinicalcareService.getPathologyTempReport(contact.PathReportID,contact.OP_IP_Type).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Pathology Template Report Viewer"
+            }
+          });
       });
-      console.log(this.LabDataList)
-    let pathologyDelete = [];
-    this.LabDataList.forEach((element) => { 
-        let pathologyDeleteObj = {};
-        pathologyDeleteObj['pathReportId'] = element.PathReportID
-        pathologyDelete.push(pathologyDeleteObj);
-    }); 
- 
-    let submitData = {
-        "printInsert": pathologyDelete,
-    };
-    console.log(submitData);
-    this._ClinicalcareService.PathPrintResultentryInsert(submitData).subscribe(response => {
-        if (response) {
-            this.viewgetPathologyTestReportPdf(contact.OPD_IPD_Type)
-        }
-    }); 
+    }
+    else{
+      this.LabDataList.push(
+        {
+          PathReportID :  contact.PathReportID, 
+        });
+        console.log(this.LabDataList)
+      let pathologyDelete = [];
+      this.LabDataList.forEach((element) => { 
+          let pathologyDeleteObj = {};
+          pathologyDeleteObj['pathReportId'] = element.PathReportID
+          pathologyDelete.push(pathologyDeleteObj);
+      });  
+      let submitData = {
+          "printInsert": pathologyDelete,
+      };
+      console.log(submitData);
+      this._ClinicalcareService.PathPrintResultentryInsert(submitData).subscribe(response => {
+          if (response) {
+              this.viewgetPathologyTestReportPdf(contact.OPD_IPD_Type)
+          }
+      }); 
+    } 
 }
 viewgetPathologyTestReportPdf(OPD_IP_Type ) {
 

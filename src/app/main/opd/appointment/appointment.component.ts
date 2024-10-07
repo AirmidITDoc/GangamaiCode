@@ -48,6 +48,7 @@ import { Table } from "jspdf-autotable";
 import moment, { invalid } from "moment";
 import { values } from "lodash";
 import { WhatsAppEmailService } from "app/main/shared/services/whats-app-email.service";
+import { PatientVitalInformationComponent } from "./patient-vital-information/patient-vital-information.component";
 
 export class DocData {
     doc: any;
@@ -2851,6 +2852,49 @@ debugger
         //console.log(contact)
         this.advanceDataStored.storage = new SearchInforObj(xx);
         const dialogRef = this._matDialog.open(NewOPBillingComponent,
+            {
+                maxWidth: '90%',
+                height: '95%',
+                data: {
+                    registerObj: xx,
+                },
+            });
+
+        dialogRef.afterClosed().subscribe(result => {
+            this.getVisitList1();
+        });
+
+    }
+
+    VitalInfo(contact) {
+        let xx = {
+            RegId: contact.RegId,
+            OPD_IPD_ID: contact.OPD_IPD_ID,
+            RegNo: contact.RegNoWithPrefix,
+            VisitId: contact.VisitId,
+            PatientName: contact.PatientName,
+            Doctorname: contact.Doctorname,
+            AdmDateTime: contact.AdmDateTime,
+            AgeYear: contact.AgeYear,
+            AgeMonth: contact.AgeMonth,
+            AgeDay: contact.AgeDay,
+            DepartmentName: contact.DepartmentName,
+            ClassId: contact.ClassId,
+            OPDNo: contact.OPDNo,
+            PatientType: contact.PatientType,
+            ClassName: contact.ClassName,
+            TariffName: contact.TariffName,
+            TariffId: contact.TariffId,
+            CompanyId: contact.CompanyId,
+            CompanyName: contact.CompanyName,
+            RefDocName: contact.RefDocName,
+            MobileNo: contact.MobileNo,
+            Lbl: "PatientVitalInfo"
+        };
+        console.log(xx)
+        //console.log(contact)
+        this.advanceDataStored.storage = new SearchInforObj(xx);
+        const dialogRef = this._matDialog.open(PatientVitalInformationComponent,
             {
                 maxWidth: '90%',
                 height: '95%',

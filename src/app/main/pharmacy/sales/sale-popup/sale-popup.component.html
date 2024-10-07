@@ -22,80 +22,108 @@ fxLayoutAlign.gt-xs="space-between center " style="height:40px;">
 </div>
 
 </div>
+ 
+    <div fxlayout="column" style="width: 100%;">
+      
 
-<mat-table #table [dataSource]="dataSource" class="mat-elevation-z8 sale-table" matSort [@animateStagger]="{value:'50'}"
-    style="overflow:auto;margin-top: 10px;" (click)="onTableClick()">
-    <ng-container matColumnDef="BatchNo">
-        <mat-header-cell *matHeaderCellDef> Batch No </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.BatchNo}} </mat-cell>
-    </ng-container>
+        <mat-table #table [dataSource]="dataSource" class="mat-elevation-z8 sale-table" matSort
+            [@animateStagger]="{value:'50'}" style="overflow:auto;margin-top: 10px;" (click)="onTableClick()">
+            <ng-container matColumnDef="BatchNo">
+                <mat-header-cell *matHeaderCellDef> Batch No </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.BatchNo}} </mat-cell>
+            </ng-container>
 
-    <!-- <ng-container matColumnDef="BatchExpDate">
+            <!-- <ng-container matColumnDef="BatchExpDate">
         <mat-header-cell *matHeaderCellDef> Exp Date </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.BatchExpDate | date: 'MM/yyyy'}} </mat-cell>
     </ng-container> -->
-    <!-- A TO Z NS DROP 15ML -->
-    <ng-container matColumnDef="BatchExpDate" sticky>
-        <mat-header-cell *matHeaderCellDef>BatchExpDate
-        </mat-header-cell>
-        <mat-cell *matCellDef="let element" [ngClass]="{' red-600 s-16': element.DaysFlag ==1}">
-            {{element.BatchExpDate | date: 'MM/yyyy'}} 
-        </mat-cell>
-    </ng-container>
+            <!-- A TO Z NS DROP 15ML -->
+            <ng-container matColumnDef="BatchExpDate" sticky>
+                <mat-header-cell *matHeaderCellDef>BatchExpDate
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element"  
+                [ngClass]="{'red-600 s-16': element.DaysFlag == 1 , 'green-16': element.DaysFlag ==2}">
+                    {{element.BatchExpDate | date: 'MM/yyyy'}}
+                </mat-cell>
+            </ng-container>
 
-    <ng-container matColumnDef="BalanceQty">
-        <mat-header-cell *matHeaderCellDef> Bal Qty </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.BalanceQty}} </mat-cell>
-    </ng-container>
+            <ng-container matColumnDef="BalanceQty">
+                <mat-header-cell *matHeaderCellDef> Bal Qty </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.BalanceQty}} </mat-cell>
+            </ng-container>
 
-    <ng-container matColumnDef="MRP">
-        <mat-header-cell *matHeaderCellDef> MRP </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.UnitMRP}} </mat-cell>
-    </ng-container>
+            <ng-container matColumnDef="MRP">
+                <mat-header-cell *matHeaderCellDef> MRP </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.UnitMRP}} </mat-cell>
+            </ng-container>
 
-    <ng-container matColumnDef="PurPrice">
-        <mat-header-cell *matHeaderCellDef> Pur Price </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.PurchaseRate}} </mat-cell>
-    </ng-container>
+            <ng-container matColumnDef="PurPrice">
+                <mat-header-cell *matHeaderCellDef> Pur Price </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.PurchaseRate}} </mat-cell>
+            </ng-container>
 
-    <ng-container matColumnDef="ConversionFactor">
-        <mat-header-cell *matHeaderCellDef> Packing </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.ConversionFactor}} </mat-cell>
-    </ng-container>
+            <ng-container matColumnDef="ConversionFactor">
+                <mat-header-cell *matHeaderCellDef> Packing </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.ConversionFactor}} </mat-cell>
+            </ng-container>
 
-    <ng-container matColumnDef="LandedRate">
-        <mat-header-cell *matHeaderCellDef> LandedRate </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.LandedRate}} </mat-cell>
-    </ng-container>
+            <ng-container matColumnDef="LandedRate">
+                <mat-header-cell *matHeaderCellDef> LandedRate </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.LandedRate}} </mat-cell>
+            </ng-container>
 
-    <ng-container matColumnDef="ExpDays">
-        <mat-header-cell *matHeaderCellDef> ExpDays </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.ExpDays}} </mat-cell>
-    </ng-container>
+            <ng-container matColumnDef="ExpDays">
+                <mat-header-cell *matHeaderCellDef> ExpDays </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.ExpDays}} </mat-cell>
+            </ng-container>
 
-    <ng-container matColumnDef="loading">
-        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-            <mat-spinner style="float:left;" [diameter]='30'></mat-spinner>
-        </mat-header-cell>
-    </ng-container>
+            <ng-container matColumnDef="DrugTypeName">
+                <mat-header-cell *matHeaderCellDef> DrugType</mat-header-cell>
+                <mat-cell *matCellDef="let element" [ngClass]="{'orange-600 s-16': element.DrugTypeName != '',
+                'orange-600 s-16': element.DrugTypeName != 0}">
+                     {{element.DrugTypeName}} </mat-cell>
+            </ng-container>
 
-    <ng-container matColumnDef="noData">
-        <mat-footer-cell *matFooterCellDef colspan="6">
-            <mat-spinner style="float:left;" [diameter]='30' *ngIf="isLoadingStr=='loading'"></mat-spinner>
-            <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
-        </mat-footer-cell>
-    </ng-container>
+            <ng-container matColumnDef="loading">
+                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                    <mat-spinner style="float:left;" [diameter]='30'></mat-spinner>
+                </mat-header-cell>
+            </ng-container>
 
-    <mat-header-row class="accent" *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;" [@animate]="{value:'*',params:{y:'100%'}}"
-        [ngClass]="{'highlight': selectedRowIndex == row.position}"
-        (click)="selectedRow('', row)"
-        tabindex="999"
-        (keydown.arrowdown)="arrowDownEvent(row, selectedRowIndex)"
-        (keydown.arrowup)="arrowUpEvent(row, selectedRowIndex)"
-        (keyup.enter)="selectedRow(selectedRowIndex, '')" id="ele-{{row.position}}"></mat-row>
-    <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
-    <mat-footer-row *matFooterRowDef="['noData']"
-        [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
-</mat-table>
+            <ng-container matColumnDef="noData">
+                <mat-footer-cell *matFooterCellDef colspan="6">
+                    <mat-spinner style="float:left;" [diameter]='30' *ngIf="isLoadingStr=='loading'"></mat-spinner>
+                    <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
+                </mat-footer-cell>
+            </ng-container>
+
+            <mat-header-row class="accent" *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;" [@animate]="{value:'*',params:{y:'100%'}}"
+                [ngClass]="{'highlight': selectedRowIndex == row.position}" (click)="selectedRow('', row)"
+                tabindex="999" (keydown.arrowdown)="arrowDownEvent(row, selectedRowIndex)"
+                (keydown.arrowup)="arrowUpEvent(row, selectedRowIndex)"
+                (keyup.enter)="selectedRow(selectedRowIndex, '')" id="ele-{{row.position}}"></mat-row>
+            <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
+            <mat-footer-row *matFooterRowDef="['noData']"
+                [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
+        </mat-table>
+
+        <div class="info-badge-top pb-2 border-bottom" style="padding-left: 5px;">
+            <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">  
+                <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                    <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                    <span>: HI Risk</span>
+                </div> 
+                <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                    <mat-icon class="pill red-600 s-16">circle</mat-icon>
+                    <span>: Expired </span>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                    <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                    <span>: Near To Expiry</span>
+                </div>
+            </div>
+        </div>
+    </div> 
+ 
 
