@@ -135,13 +135,7 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="IsCancelled">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm> IsCancelled
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            <span> {{contact.IsCancelled}}</span>
-                                        </mat-cell>
-                                    </ng-container>
+                                   
 
                                     <!-- <ng-container matColumnDef="AddedBy">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm> AddedBy
@@ -191,28 +185,28 @@
                                 <mat-table class="Tab2" matSort [dataSource]="dsrequestdetList" [@animateStagger]="{value:'50'}" style="overflow: auto;">
 
                                     <ng-container matColumnDef="IsStatus">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">IsStatus
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">IsBillingStatus
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-80">
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
                                             <button mat-icon-button>
-                                                <mat-icon matTooltip="Accepted" *ngIf="contact.IsStatus==true"
+                                                <mat-icon matTooltip="Bill Generated" *ngIf="contact.IsStatus==true"
                                                     class="active-icon green-500 s-16">check_circle</mat-icon>
-                                                <mat-icon matTooltip="Pending" *ngIf="contact.IsStatus==false"
+                                                <mat-icon matTooltip="Bill Not Generated" *ngIf="contact.IsStatus==false"
                                                     class="active-icon red-500 s-16">hourglass_empty</mat-icon>
                                             </button>
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="IsComplted">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-110">IsTestCompleted
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-110">IsTestStatus
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-110"> 
                                             <button mat-icon-button>
                                                 <!-- <mat-icon matTooltip="IsTestCompleted" *ngIf="contact.IsTestCompted==true"
                                                 class="active-icon green-500 s-16">assignment_turned_in</mat-icon> -->
-                                                <mat-icon matTooltip="Lab Report" (click)="viewgetPathologyTemplateReportPdf(contact)"
+                                                <mat-icon matTooltip="Lab Report Ready" (click)="viewgetPathologyTemplateReportPdf(contact)"
                                                     *ngIf="contact.IsTestCompted==true">remove_red_eye</mat-icon>
-                                                <mat-icon matTooltip="not Completed" *ngIf="contact.IsTestCompted==false"
+                                                <mat-icon matTooltip="Result Entry Not Completed" *ngIf="contact.IsTestCompted==false"
                                                     class="active-icon red-500 s-16">hourglass_empty</mat-icon>
                                             </button> 
                                         </mat-cell>

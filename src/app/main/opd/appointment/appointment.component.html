@@ -416,6 +416,13 @@
                                                             [disabled]="contact.IsCancelled">
                                                             <mat-icon>cached icon</mat-icon>
                                                         </button>
+                                                        <button mat-icon-button matTooltip="Vital Information"
+                                                        *ngIf="contact.IsCancelled==0"
+                                                        (click)="VitalInfo(contact)">
+                                                        <mat-icon  [disabled]="contact.IsCancelled"
+                                                            class="disabled-icon">
+                                                            perm_identity</mat-icon>
+                                                    </button>
                                                         <button mat-icon-button matTooltip="print i card"
                                                             (click)="printIcard(contact)"
                                                             *ngIf="contact.IsCancelled==0">

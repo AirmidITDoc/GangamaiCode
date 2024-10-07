@@ -51,6 +51,7 @@ import { CrossConsultationComponent } from './cross-consultation/cross-consultat
 import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
 import {NgxPrintModule} from 'ngx-print';
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
+import { PatientVitalInformationComponent } from './patient-vital-information/patient-vital-information.component';
 
 const routes: Routes = [
     {
@@ -70,6 +71,7 @@ const routes: Routes = [
         InfoheadDirective,
         VisitDetailsComponent,
         CrossConsultationComponent,
+        PatientVitalInformationComponent,
         
     ],
     imports: [

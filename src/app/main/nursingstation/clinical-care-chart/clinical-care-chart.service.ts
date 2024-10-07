@@ -174,4 +174,10 @@ export class ClinicalCareChartService {
       }
       return this._httpClient.get("Pathology/view-PathReportMultiple?OP_IP_Type=" + OP_IP_Type);
     }
+    public getPathologyTempReport(PathReportId,OP_IP_Type,loader = true){
+      if (loader) {
+        this._loaderService.show();
+    }
+      return this._httpClient.get("Pathology/view-PathTemplate?PathReportId=" + PathReportId + "&OP_IP_Type="+OP_IP_Type);
+    }
 }

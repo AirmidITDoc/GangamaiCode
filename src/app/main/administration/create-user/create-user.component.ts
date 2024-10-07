@@ -15,6 +15,8 @@ import { PasswordChangeComponent } from '../password-change/password-change.comp
 import { RoleTemplateMasterComponent } from '../role-template-master/role-template-master.component';
 import { MyprofileComponent } from '../myprofile/myprofile.component';
 import { UserDetailComponent } from '../user-detail/user-detail.component';
+import Swal from 'sweetalert2';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-create-user',
@@ -64,6 +66,7 @@ export class CreateUserComponent implements OnInit {
   constructor(public _UserService: CreateUserService,
     private accountService: AuthenticationService,
     // public notification:NotificationServiceService,
+    public toastr: ToastrService,
     public _matDialog: MatDialog,
     private _fuseSidebarService: FuseSidebarService,
     private advanceDataStored: AdvanceDataStored,
@@ -72,11 +75,49 @@ export class CreateUserComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.getUserList();
-
+    this.getUserList(); 
 
   }
 
+ 
+
+ Password:string;
+  PasswordView(contact) {
+    const today = new Date();
+    const Currentyear = today.getFullYear()
+    this.Password = ( contact.UserLoginName + "@" + Currentyear)
+      Swal.fire({
+        title: 'Your Password is ' + contact.password,
+        text: "Do you want to reset Your Password",
+        icon: "success",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Rest Password" 
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {  
+           let Query
+           Query = "update loginmanager set password= '" + this.Password + "' where userid= " + contact.UserId
+           console.log(Query)
+           this._UserService.PasswordRest(Query).subscribe(response => {
+            if (response) {
+              this.toastr.success('Password Updated Successfuly', 'Updated !', {
+                toastClass: 'tostr-tost custom-toast-success',
+              });  
+              this.getUserList(); 
+            } else {
+              this.toastr.error('API Error!', 'Error !', {
+                toastClass: 'tostr-tost custom-toast-error',
+              }); 
+            }
+          });
+        }else{
+          this.getUserList(); 
+        }
+      })
+ 
+  } 
 
   onEdit(row) {
     var m_data = {

@@ -1605,9 +1605,9 @@ export class SalesHospitalComponent implements OnInit {
     // setTimeout(() => this.Quantity.nativeElement.focus(), 1000);
     const dialogRef = this._matDialog.open(SalePopupComponent,
       {
-        maxWidth: "800px",
-        minWidth: '800px',
-        width: '800px',
+        maxWidth: "830px",
+        minWidth: '830px',
+        width: '830px',
         height: '380px',
         disableClose: true,
         data: {

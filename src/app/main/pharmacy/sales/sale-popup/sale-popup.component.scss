@@ -25,12 +25,17 @@ app-sale-popup{
     text-align: left;
   }
 
-  .mat-column-BatchExpDate {
-    width: 100px;
-    max-width: 100px;
-    min-width: 100px;
-    text-align: left;
-  }
+    .mat-column-BatchExpDate {
+      width: 100px;
+      max-width: 100px;
+      min-width: 100px;
+      align-items: left;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      overflow: hidden !important;
+      justify-content: left;
+    }
   
   .mat-column-BalanceQty {
     width: 100px;
@@ -61,13 +66,19 @@ app-sale-popup{
   }
 
   .mat-column-ConversionFactor {
-    width: 100px;
-    max-width: 100px;
-    min-width: 100px;
+    width: 80px;
+    max-width: 80px;
+    min-width: 80px;
+    text-align: left;
+  }
+  .mat-column-DrugTypeName {
+    width: 140px;
+    max-width: 140px;
+    min-width: 140px;
     text-align: left;
   }
   .mat-header-cell {
-    color: white !important;
+    color: white !important; 
   }
 
 // .table-row:selected {

@@ -138,7 +138,7 @@
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Doctor
                                             Name</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                            {{contact.DoctorName}}
+                                            {{contact.DoctorName || '-'}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -308,8 +308,13 @@
 
                                     <ng-container matColumnDef="action" stickyEnd>
                                         <mat-header-cell *matHeaderCellDef fxShow.gt-md> Action </mat-header-cell>
-                                        <mat-cell *matCellDef="let row">
-                                            <button mat-icon-button>
+                                        <mat-cell *matCellDef="let contact">
+                                           
+                                             <button mat-icon-button (click)="PasswordView(contact)">
+                                                <mat-icon matTooltip="View Password"
+                                                >remove_red_eye</mat-icon>
+                                            </button>
+                                            <button mat-icon-button  matTooltip="Edit"   (click)="onresultentry($event,contact)">
                                                 <mat-icon>edit</mat-icon>
                                             </button>
                                         </mat-cell>
@@ -330,7 +335,7 @@
                                     <mat-header-row class="accent"
                                         *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
                                     <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
-                                        (click)="onresultentry($event,contact)"
+                                     
                                         [@animate]="{value:'*',params:{y:'100%'}}">
                                     </mat-row>
 
