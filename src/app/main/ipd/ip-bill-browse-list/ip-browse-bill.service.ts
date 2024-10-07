@@ -128,6 +128,16 @@ public getIPBILLBrowsedatewisePrint(BillNo) {
 }
   return this._httpClient.get("InPatient/view-IP-BillReceiptclasswise?BillNo=" + BillNo)
  }
+
+ 
+
+ getIpFinalBillclasservicewiseReceipt(BillNo,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
+  return this._httpClient.get("InPatient/view-IP-BillReceiptclassServicewise?BillNo=" + BillNo)
+ }
+
  getIpFinalBillReceiptgroupwise(BillNo,loader = true){
   if (loader) {
     this._loaderService.show();

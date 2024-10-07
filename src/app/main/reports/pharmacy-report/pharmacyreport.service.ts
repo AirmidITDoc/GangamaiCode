@@ -24,7 +24,8 @@ export class PharmacyreportService {
         DrugTypeId:'',
         Radio:['1'],
         StoreId:[''],
-        ItemId:['']
+        ItemId:[''],
+        DoctorID:['']
       })
     }
   public getDataByQuery(emp) {
@@ -40,7 +41,10 @@ export class PharmacyreportService {
     return this._httpClient.post("Generic/GetByProc?procName=M_Rtrv_PaymentModeList",{})
   }
 
-
+  public getDoctorMaster(loader = true) {
+   
+    return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
+  }
   // public getPharmacyDailyCollectionNew(FromDate,ToDate,StoreId,AddedById){
   //   return this._httpClient.get("Sales/view-pharmacy-daily-collection?FromDate=" +  FromDate + "&ToDate=" + ToDate+"&StoreId="+StoreId+"&AddedById="+AddedById);
   // }
@@ -160,6 +164,16 @@ export class PharmacyreportService {
   }
     return this._httpClient.get("PharmacyReport/view-PharmacyBillSummaryReport?StoreId=" + StoreId+"&FromDate="+FromDate+"&ToDate="+ToDate);
   }
+
+  public getPharmacyDrprofit(FromDate,ToDate,DoctorId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.get("PharmacyReport/view-PharmacyBillSummaryReport?FromDate=" + ToDate+"&ToDate="+FromDate+"&DoctorId="+DoctorId);
+  }
+
+
+
   public getItemlist(Param){
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_Item_Name",Param)
   }

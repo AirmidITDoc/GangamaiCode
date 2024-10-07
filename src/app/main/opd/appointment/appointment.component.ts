@@ -2435,6 +2435,41 @@ debugger
     }
 
 
+    viewgetPatientAppointmentTemplateReportPdf(obj, Pflag) {
+
+        this.chkprint = true;
+        let VisitId;
+        if (Pflag) {
+            VisitId = obj.VisitId
+        } else {
+            VisitId = obj
+        }
+
+        setTimeout(() => {
+            this.AdList = true;
+            this._opappointmentService.getAppointmenttemplateReport(
+                VisitId
+            ).subscribe(res => {
+                const dialogRef = this._matDialog.open(PdfviewerComponent,
+                    {
+                        maxWidth: "85vw",
+                        height: '750px',
+                        width: '100%',
+                        data: {
+                            base64: res["base64"] as string,
+                            title: "Appointment  Viewer"
+                        }
+                    });
+                dialogRef.afterClosed().subscribe(result => {
+                    this.AdList = false;
+                });
+            });
+
+        }, 100);
+        this.chkprint = false;
+    }
+
+
     onImageFileChange(events: any) {
 
 

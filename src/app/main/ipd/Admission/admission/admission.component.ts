@@ -2100,6 +2100,42 @@ this.getAdmittedPatientList_1()
   }
 
   
+  
+  getAdmittedPatientCasepapertemplateview(AdmissionId, flag) {
+    this.sIsLoading = 'loading-data';
+    debugger
+    let AdmissionID
+    if (flag) {
+      AdmissionID = AdmissionId
+    } else {
+      AdmissionID = AdmissionId.AdmissionID
+    }
+
+    setTimeout(() => {
+      this.SpinLoading = true;
+      this.AdList = true;
+      this._AdmissionService.getAdmittedPatientCasepaapertemplateView(
+        AdmissionID
+      ).subscribe(res => {
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Admission Paper  Viewer"
+            }
+          });
+
+        matDialog.afterClosed().subscribe(result => {
+          this.AdList = false;
+          this.sIsLoading = ' ';
+        });
+      });
+
+    }, 100);
+  }
 
   onClear() {
     this._AdmissionService.myFilterform.reset(

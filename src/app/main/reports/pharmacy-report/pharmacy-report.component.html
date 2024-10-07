@@ -202,8 +202,6 @@
 
                                     <div fxLayout="row"  *ngIf="FlagDrugTypeIdSelected" style="margin-left:2%;"> 
                                     
-
-
                                         <mat-form-field appearance="outline" fxFlex="60%;" style="margin-right:10px;">
                                             <mat-label>Drug TYpe</mat-label>
                                             <input matAutocompletePosition="below" type="text" placeholder="Select DrugType" matInput
@@ -221,6 +219,31 @@
                                             </mat-autocomplete>
                                           </mat-form-field>
                                     </div>
+                                    <div fxLayout="row"  *ngIf="FlagDoctorIDSelected" style="margin-left:2%;"> 
+                                    
+
+                                    <mat-form-field appearance="outline" fxFlex="60%" *ngIf="FlagDoctorIDSelected"
+                                    style="margin-right:10px;">
+                                            <mat-label>Doctor Name</mat-label>
+                                            <input matAutocompletePosition="below" type="text"
+                                                placeholder="Select Doctor" matInput formControlName="DoctorID"
+                                                [matAutocomplete]="autosearchDoctor">
+                                            <span matSuffix style="display: flex;">
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_PharmacyreportService.userForm.get('DoctorID').setValue(''); isSearchdoctorSelected = false;">close</mat-icon>
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_PharmacyreportService.userForm.get('DoctorID').setValue(''); isSearchdoctorSelected = false;">search</mat-icon>
+                                            </span>
+                                            <mat-autocomplete #autosearchDoctor="matAutocomplete"
+                                                [displayWith]="getOptionTextsearchDoctor">
+                                                <mat-option *ngFor="let option of filteredOptionssearchDoctor | async"
+                                                    [value]="option">
+                                                    {{option.Doctorname}}
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
+                                    </div>
+                                        
                                     <div fxLayout="row" *ngIf="FlagRegNoSelected" style="margin-left:2%;"> 
                                     
                                     <mat-form-field appearance="outline" fxFlex="60%;">

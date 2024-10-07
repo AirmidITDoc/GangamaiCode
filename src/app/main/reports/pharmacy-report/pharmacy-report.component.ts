@@ -34,6 +34,7 @@ export class PharmacyReportComponent implements OnInit {
   UserList: any = [];
   PaymentList: any = [];
   drugtypeList: any = [];
+  searchDoctorList: any = [];
   sIsLoading: string = '';
   currentDate = new Date();
   reportPrintObjList: Printsal[] = [];
@@ -60,17 +61,21 @@ export class PharmacyReportComponent implements OnInit {
   filteredOptionsItem:any;
   filteredOptionsDrugtype: Observable<string[]>;
   filteredOptionsStore: Observable<string[]>;
+  filteredOptionssearchDoctor: Observable<string[]>;
   isUserSelected: boolean = false;
   isPaymentSelected: boolean = false;
   isItemIdSelected: boolean = false;
   isDugtypeSelected: boolean = false;
+  isSearchdoctorSelected: boolean = false;
   FlagUserSelected: boolean = false;
   FlagPaymentSelected: boolean = false;
   FlagStoreSelected: boolean = false;
   FlagRegNoSelected: boolean = false;
   FlagDrugTypeIdSelected: boolean = false;
+  
   FlagItemSelected: boolean = false;
   optionsUser: any[] = [];
+  optionsSearchDoc: any[] = [];
   optionsPaymentMode: any[] = [];
   optionsdrugtype: any[] = [];
   PaymentMode: any;
@@ -104,7 +109,7 @@ export class PharmacyReportComponent implements OnInit {
   UserId: any = 0;
   UserName: any;
   IsLoading: boolean = false;
-
+  FlagDoctorIDSelected: boolean = false;
 
   displayedColumns = [
     'ReportName'
@@ -135,6 +140,7 @@ export class PharmacyReportComponent implements OnInit {
     this.GetUserList();
     this.gePharStoreList();
     this.getDrugTypeList();
+    this.getDoctorList();
     // this.GetPaymentModeList();
     this.getSearchItemList()
     const toSelect = this.UserList.find(c => c.UserId == this.UserId);
@@ -190,6 +196,31 @@ export class PharmacyReportComponent implements OnInit {
   }
 
 
+
+  getOptionTextsearchDoctor(option) {
+    return option && option.Doctorname ? option.Doctorname : '';
+  }
+
+  getDoctorList() {
+    this._PharmacyreportService.getDoctorMaster().subscribe(data => {
+      this.searchDoctorList = data;
+      this.optionsSearchDoc = this.searchDoctorList.slice();
+      this.filteredOptionssearchDoctor = this._PharmacyreportService.userForm.get('DoctorID').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterSearchdoc(value) : this.searchDoctorList.slice()),
+      );
+    });
+  }
+
+  private _filterSearchdoc(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
+      return this.optionsSearchDoc.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
+    }
+
+  }
+
+
   bindReportData() {
     // let qry = "SELECT * FROM ReportConfigMaster WHERE IsActive=1 AND IsDeleted=0 AND ReportType=1";
 var data={
@@ -216,6 +247,7 @@ var data={
       this.FlagRegNoSelected=false;
       this.FlagDrugTypeIdSelected=false;
       this.FlagItemSelected=false;
+      this.FlagDoctorIDSelected=false;
       this.FlagStoreSelected=true;
     } else if (this.ReportName == 'Pharmacy Daily Collection Summary') {
       this.FlagUserSelected = true;
@@ -224,6 +256,7 @@ var data={
       this.FlagDrugTypeIdSelected=false;
       this.FlagItemSelected=false;
       this.FlagStoreSelected=true;
+      this.FlagDoctorIDSelected=false;
     } else if (this.ReportName == 'Sales Summary Report') {
       this.FlagUserSelected = true;
       this.FlagPaymentSelected = false;
@@ -231,6 +264,7 @@ var data={
       this.FlagDrugTypeIdSelected=false;
       this.FlagItemSelected=false;
       this.FlagStoreSelected=true;
+      this.FlagDoctorIDSelected=false;
     } else if (this.ReportName == 'Sales Patient Wise Report') {
       this.FlagUserSelected = true;
       this.FlagPaymentSelected = false;
@@ -238,6 +272,7 @@ var data={
       this.FlagDrugTypeIdSelected=false;
       this.FlagItemSelected=false;
       this.FlagStoreSelected=true;
+      this.FlagDoctorIDSelected=false;
     } else if (this.ReportName == 'Sales Return Summary Report') {
       this.FlagPaymentSelected = false;
       this.FlagUserSelected = false;
@@ -245,6 +280,7 @@ var data={
       this.FlagDrugTypeIdSelected=false;
       this.FlagItemSelected=false;
       this.FlagStoreSelected=true;
+      this.FlagDoctorIDSelected=false;
     } else if (this.ReportName == 'Sales Return PatientWise Report') {
       this.FlagPaymentSelected = false;
       this.FlagUserSelected = false;
@@ -252,6 +288,7 @@ var data={
       this.FlagDrugTypeIdSelected=false;
       this.FlagItemSelected=false;
       this.FlagStoreSelected=true;
+      this.FlagDoctorIDSelected=false;
     } else if (this.ReportName == 'Sales Credit Report') {
       this.FlagPaymentSelected = false;
       this.FlagUserSelected = false;
@@ -259,6 +296,7 @@ var data={
       this.FlagDrugTypeIdSelected=false;
       this.FlagItemSelected=false;
       this.FlagStoreSelected=true;
+      this.FlagDoctorIDSelected=false;
     } else if (this.ReportName == 'Pharmacy Daily Collection Summary Day & User Wise') {
       this.FlagUserSelected = true;
       this.FlagPaymentSelected = false;
@@ -266,6 +304,7 @@ var data={
       this.FlagDrugTypeIdSelected=false;
       this.FlagItemSelected=false;
       this.FlagStoreSelected=true;
+      this.FlagDoctorIDSelected=false;
     }
     else if (this.ReportName == 'Sales Cash Book Report') {
       this.FlagPaymentSelected = true;
@@ -274,6 +313,7 @@ var data={
       this.FlagDrugTypeIdSelected=false;
       this.FlagItemSelected=false;
       this.FlagStoreSelected=true;
+      this.FlagDoctorIDSelected=false;
     } else if (this.ReportName == 'Sales SCHEDULEH1 Report') {
       this.FlagPaymentSelected = false;
       this.FlagUserSelected = false;
@@ -281,7 +321,7 @@ var data={
       this.FlagRegNoSelected=false;
       this.FlagStoreSelected=true;
       this.FlagItemSelected=false;
-      
+      this.FlagDoctorIDSelected=false;
           } else if (this.ReportName == 'SCHEDULEH1 SalesSummary Report') {
       this.FlagPaymentSelected = false;
       this.FlagUserSelected = false;
@@ -289,7 +329,7 @@ var data={
       this.FlagRegNoSelected=false;
       this.FlagStoreSelected=true;
       this.FlagItemSelected=false;
-      
+      this.FlagDoctorIDSelected=false;
     } else if (this.ReportName == 'SalesH1 DrugCount Report') {
       this.FlagUserSelected = false;
       this.FlagPaymentSelected = false;
@@ -297,7 +337,7 @@ var data={
       this.FlagDrugTypeIdSelected=false;
       this.FlagStoreSelected=true;
       this.FlagItemSelected=false;
-      
+      this.FlagDoctorIDSelected=false;
     }
     else if (this.ReportName == 'ItemWise DailySales Report') {
       this.FlagPaymentSelected = false;
@@ -306,7 +346,7 @@ var data={
       this.FlagDrugTypeIdSelected=false;
       this.FlagStoreSelected=true;
       this.FlagItemSelected=true;
-      
+      this.FlagDoctorIDSelected=false;
     }
     else if (this.ReportName == 'WardWise HighRisk Drug Report') {
       this.FlagUserSelected = false;
@@ -315,7 +355,7 @@ var data={
       this.FlagDrugTypeIdSelected=false;
       this.FlagStoreSelected=true;
       this.FlagItemSelected=false;
-      
+      this.FlagDoctorIDSelected=false;
     }
     else if (this.ReportName == 'Purchase Re-Order List Report') {
       this.FlagPaymentSelected = false;
@@ -324,7 +364,7 @@ var data={
       this.FlagDrugTypeIdSelected=false;
       this.FlagStoreSelected=true;
       this.FlagItemSelected=false;
-      
+      this.FlagDoctorIDSelected=false;
     }else if (this.ReportName == 'Pharmacy BillSummary Report') {
       this.FlagPaymentSelected = false;
       this.FlagUserSelected = false;
@@ -332,7 +372,15 @@ var data={
       this.FlagDrugTypeIdSelected=false;
       this.FlagStoreSelected=true;
       this.FlagItemSelected=false;
-      
+      this.FlagDoctorIDSelected=false;
+    }else if(this.ReportName == 'Doctor Wise Profit Report'){
+      this.FlagPaymentSelected = false;
+      this.FlagUserSelected = false;
+      this.FlagRegNoSelected=false;
+      this.FlagDrugTypeIdSelected=false;
+      this.FlagStoreSelected=false;
+      this.FlagItemSelected=false;
+      this.FlagDoctorIDSelected=true;
     }
   }
 
@@ -451,6 +499,9 @@ var data={
     }
     else if (this.ReportName == 'Pharmacy BillSummary Report') {
       this.viewgetPharmacyBillSummaryReportPdf();
+    }
+    else if (this.ReportName == 'Doctor Wise Profit Report') {
+      this.viewgetPharmDoctorProfitDReportPdf();
     }
   }
 
@@ -1011,8 +1062,39 @@ debugger
     }, 100);
   }
 
+  
+  viewgetPharmDoctorProfitDReportPdf(){
+    setTimeout(() => {
+      this.sIsLoading = 'loading-data';
+      this.AdList = true;
+    
+      let DoctorID = 0;
+      if (this._PharmacyreportService.userForm.get('DoctorID').value)
+        DoctorID = this._PharmacyreportService.userForm.get('DoctorID').value.DoctorId
+  
+      this._PharmacyreportService.getPharmacyDrprofit(
+        this.datePipe.transform(this._PharmacyreportService.userForm.get('startdate').value, "yyyy-MM-dd") || '01/01/1900',
+        this.datePipe.transform(this._PharmacyreportService.userForm.get('enddate').value, "yyyy-MM-dd") || '01/01/1900',DoctorID
+        
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Pharmacy Doctor Profit"
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          this.AdList = false;
+          this.sIsLoading = '';
+        });
+      });
 
-
+    }, 100);
+  }
   userChk(option) {
     this.UserId = option.UserID || 0;
     this.UserName = option.UserName;

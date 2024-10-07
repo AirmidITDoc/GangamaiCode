@@ -470,7 +470,12 @@ export class AdmissionService {
     return this._httpClient.get("InPatient/view-Admitted_PatientCasepaper?AdmissionId=" + AdmissionId);
   }
 
+  public getAdmittedPatientCasepaapertemplateView(AdmissionId) {
 
+    return this._httpClient.get("InPatient/view-AdmissionTemplate?AdmissionId=" + AdmissionId);
+  }
+
+  
   public getRegIdDetailforAdmission(data) {
     return this._httpClient.post("Generic/GetBySelectQuery?query=" + data, {})
   }
