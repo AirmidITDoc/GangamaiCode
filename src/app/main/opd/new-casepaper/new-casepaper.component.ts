@@ -138,6 +138,7 @@ export class NewCasepaperComponent implements OnInit {
   vDiagnosis: any;
   vExamination: any;
   isItemIdSelected: boolean = false;
+  isTemplateSelected: boolean = false;
   filteredOptionsDosename: Observable<string[]>;
   doseList: any = [];
   isDoseSelected: boolean = false;
@@ -150,7 +151,7 @@ export class NewCasepaperComponent implements OnInit {
   DoctorList: any = [];
   isDoctorSelected: boolean = false;
   vDoctorId: any;
-  vTemplateId: boolean = true;
+  vTemplateId:any;
   vServiceId: any;
   isServiceIdSelected: boolean = false;
   vFollowUpDays: any = 0;
@@ -188,6 +189,7 @@ export class NewCasepaperComponent implements OnInit {
     this.dateStyle = 'Day'
     this.onDaysChange();
     this.getHistoryList();
+    this.getprestemplateList();
   }
 
   vDays: any = 10;
@@ -224,7 +226,8 @@ export class NewCasepaperComponent implements OnInit {
       console.log(this.followUpDate)
     }
     else {
-      this.specificDate = new Date();
+      if(this.vDays == '' || this.vDays == 0 || this.vDays == null || this.vDays == undefined)
+       this.specificDate = new Date();
     }
   }
   dateStyle: string;
@@ -279,7 +282,8 @@ export class NewCasepaperComponent implements OnInit {
       Days: '',
       FollowupMonths: '',
       FollowupYears: '',
-      dateStylebtn: ['Day']
+      dateStylebtn: ['Day'],
+      TemplateId:['']
     });
   }
   createSearchForm() {
@@ -607,7 +611,62 @@ export class NewCasepaperComponent implements OnInit {
       toastClass: 'tostr-tost custom-toast-success',
     });
   }
+  TemplateNameList:any=[];
+  filteredtemplate:Observable<string[]>
+getprestemplateList(){ 
+  this._CasepaperService.getTemplateList().subscribe(data=>{
+    this.TemplateNameList = data;
+    this.filteredtemplate = this.MedicineItemForm.get('TemplateId').valueChanges.pipe(
+      startWith(''),
+      map(value => value ? this._filterTemplatename(value) : this.TemplateNameList.slice()),
+    );
+  });
+}
+private _filterTemplatename(value: any): string[] {
+  if (value) {
+    const filterValue = value && value.PresTemplatename ? value.PresTemplatename.toLowerCase() : value.toLowerCase();
+    return this.TemplateNameList.filter(option => option.PresTemplatename.toLowerCase().includes(filterValue));
+  }
+}
+getOptionTextTemplate(option) {
+  return option && option.PresTemplatename ? option.PresTemplatename : '';
+}
 
+onTemplDetAdd(){
+    if ((this.vOPIPId == '' || this.vOPIPId == '0')) {
+    this.toastr.warning('Please select Patient', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  }
+  if (this.vTemplateId == '' || this.vTemplateId == undefined || this.vTemplateId == null) {
+    this.toastr.warning('Please select Template Name', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  }
+
+  const iscekDuplicate = this.dsItemList.data.some(item => item.Presid == this.MedicineItemForm.get('TemplateId').value.PresId )
+  if (!iscekDuplicate) {
+    var vdata ={
+      'Presid':this.MedicineItemForm.get('TemplateId').value.PresId || 0
+    }
+    console.log(vdata)
+    this._CasepaperService.getTempPrescriptionList(vdata).subscribe(data =>{
+       this.dsItemList.data = data as MedicineItemList[]; 
+       this.Chargelist = data as MedicineItemList[]; 
+       console.log(this.dsItemList.data )
+    });
+  }
+  else {
+    this.toastr.warning('Selected Template Details already added in the list ', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  }  
+  this.MedicineItemForm.get('TemplateId').reset(''); 
+
+}
   onSave() {
     debugger
     if (this.RegNo == '' || this.RegNo == undefined || this.RegNo == null) {
@@ -1984,6 +2043,7 @@ export class MedicineItemList {
   Doctorname: any;
   FollowupDate: any;
   QtyPerDay:any;
+  Presid:any;
   /**
   * Constructor
   *

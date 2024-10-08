@@ -472,24 +472,24 @@
                                                         <mat-form-field appearance="outline" fxFlex="20%">
                                                             <mat-label>Template List</mat-label>
                                                             <input matAutocompletePosition="below" type="text" placeholder="Select Template" matInput
-                                                                formControlName="DoseId" [matAutocomplete]="autodose" required #dosename
-                                                                (keydown)="onEnterDose($event)">
+                                                                formControlName="TemplateId" [matAutocomplete]="autotemplate" required [(ngModel)]="vTemplateId"
+                                                                    >
                                                             <span matSuffix style="display: flex;">
                                                                 <mat-icon class="mat-icon-close"
-                                                                    (click)="MedicineItemForm.get('DoseId').setValue(''); isDoseSelected = false;">close</mat-icon>
+                                                                    (click)="MedicineItemForm.get('TemplateId').setValue(''); isTemplateSelected = false;">close</mat-icon>
                                                                 <mat-icon class="mat-icon-close"
-                                                                    (click)="MedicineItemForm.get('DoseId').setValue(''); isDoseSelected = false;">search</mat-icon>
+                                                                    (click)="MedicineItemForm.get('TemplateId').setValue(''); isTemplateSelected = false;">search</mat-icon>
                                                             </span>
-                                                            <mat-autocomplete #autodose="matAutocomplete" [displayWith]="getOptionTextDose">
-                                                                <mat-option *ngFor="let option of filteredOptionsDosename | async" [value]="option">
-                                                                    {{option.DoseName}}
+                                                            <mat-autocomplete #autotemplate="matAutocomplete" [displayWith]="getOptionTextTemplate">
+                                                                <mat-option *ngFor="let option of filteredtemplate | async" [value]="option">
+                                                                    {{option.PresTemplatename}}
                                                                 </mat-option>
                                                             </mat-autocomplete>
                                                         </mat-form-field>
                                             
                                                         <div class="input-add-button">
                                                             <div matTooltip="Select Drug to enable this button!!" [matTooltipPosition]="'above'">
-                                                                <button #addbutton class="btn btn-primary btn-with-icon" (click)="onAdd()" [disabled]="vTemplateId">
+                                                                <button #addbutton class="btn btn-primary btn-with-icon" (click)="onTemplDetAdd()">
                                                                     <span class="btn-icon">
                                                                         <mat-icon> add </mat-icon>
                                                                     </span>
