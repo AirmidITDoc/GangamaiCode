@@ -3,7 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { gridModel, gridRequest, gridResponseType } from 'app/core/models/gridRequest';
-import { GenderMasterService } from 'app/main/setup/PersonalDetails/gender-master/gender-master.service';
+import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Component({
     selector: 'airmid-table',
@@ -12,7 +12,7 @@ import { GenderMasterService } from 'app/main/setup/PersonalDetails/gender-maste
 })
 export class AirmidTableComponent implements OnInit {
 
-    constructor(public _GenderService: GenderMasterService) { }
+    constructor(private _httpClient: ApiCaller) { }
 
     @Input() gridConfig: gridModel; // or whatever type of datasource you have
     @Output() status: EventEmitter<any> = new EventEmitter();
@@ -24,16 +24,16 @@ export class AirmidTableComponent implements OnInit {
     // @ViewChild(MatSort) set sort(sort: MatSort) {
     //     this.dataSource.sort = sort;
     // }
-    @ViewChild(MatSort,{ static: true }) sort: MatSort;
+    @ViewChild(MatSort, { static: true }) sort: MatSort;
     // ngAfterContentInit() {
     //     this.gridConfig.columnsList.forEach(columnDef => this.table.addColumnDef(columnDef));
     // }
     ngOnInit(): void {
-       
+
     }
     ngAfterViewInit() {
         this.bindGridData();
-    } 
+    }
     bindGridData() {
         var param: gridRequest = {
             sortField: this.sort?.active ?? this.gridConfig.sortField,
@@ -43,7 +43,7 @@ export class AirmidTableComponent implements OnInit {
             rows: (this.paginator?.pageSize ?? this.gridConfig.row),
             exportType: gridResponseType.JSON
         };
-        this._GenderService.getGenderMasterList(param).subscribe((data: any) => {
+        this._httpClient.PostData(this.gridConfig.apiUrl, param).subscribe((data: any) => {
             this.dataSource.data = data.data as [];
             this.dataSource.sort = this.sort;
             //this.dataSource.paginator = this.paginator;
@@ -52,16 +52,16 @@ export class AirmidTableComponent implements OnInit {
         });
         //this.sort.emit();
     }
-    onClear(){
-        
+    onClear() {
+
     }
-    getStatus(status: boolean){
+    getStatus(status: boolean) {
         return status;
     }
     changeStatus(id: number, data: any) {
         const body = {
-          id: id,
-          data: data,
+            id: id,
+            data: data,
         };
         this.status.emit(body);
     }
