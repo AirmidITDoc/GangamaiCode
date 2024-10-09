@@ -302,12 +302,22 @@ export class UpdateGRNComponent implements OnInit {
         
             if (year <= currentYear) {
                 if (month <= currentMonth) {
-                    Swal.fire("This item is already expired")
+                    Swal.fire({ 
+                        icon: "warning",
+                        title: "This item is already expired",
+                        showConfirmButton: false,
+                        timer: 2000
+                      });
                     this.vlastDay = '';
                 }else{
 
                     if(month < NxtMonths){
-                        Swal.fire("This item is expired in 3 Months")
+                        Swal.fire({ 
+                            icon: "warning",
+                            title: "This item is expired in 3 Months",
+                            showConfirmButton: false,
+                            timer: 1500
+                          }); 
                     }
                     if (month >= 1 && month <= 12) {
                         const lastDay = this.getLastDayOfMonth(month, year);
@@ -323,7 +333,12 @@ export class UpdateGRNComponent implements OnInit {
                 }
             } else{
                 if(month < NxtMonths){
-                    Swal.fire("This item is expired in 3 Months")
+                    Swal.fire({ 
+                        icon: "warning",
+                        title: "This item is expired in 3 Months",
+                        showConfirmButton: false,
+                        timer: 1500
+                      }); 
                 }
                 if (month >= 1 && month <= 12) {
                     const lastDay = this.getLastDayOfMonth(month, year);
