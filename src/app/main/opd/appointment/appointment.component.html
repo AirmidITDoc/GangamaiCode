@@ -1055,22 +1055,14 @@
                                                         </mat-checkbox>&nbsp;  
                                                     </div> 
                                                 </div>
-                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <div fxLayout="row" class="gap-8">
-                                                        <mat-form-field appearance="outline" *ngIf="Healthcardflag">
-                                                            <mat-label>Expiry In Days</mat-label>
-                                                            <input name="Days" formControlName="Days" placeholder="Days" [(ngModel)]="vDays" matInput
-                                                                (keypress)="keyPressAlphanumeric($event)">
-                                                        </mat-form-field>
-                                                    
+                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%"> 
                                                         <mat-form-field appearance="outline" *ngIf="Healthcardflag">
                                                             <mat-label>Follow Up Date</mat-label>
                                                             <input matInput [matDatepicker]="pickerHealthcard" placeholder="Choose a date" formControlName="HealthcardDate"
                                                                 [(ngModel)]="HealthCardExpDate">
                                                             <mat-datepicker-toggle matSuffix [for]="pickerHealthcard"></mat-datepicker-toggle>
                                                             <mat-datepicker #pickerHealthcard></mat-datepicker>
-                                                        </mat-form-field>
-                                                    </div>
+                                                        </mat-form-field> 
                                                 </div>
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <mat-form-field appearance="outline" *ngIf="Healthcardflag">

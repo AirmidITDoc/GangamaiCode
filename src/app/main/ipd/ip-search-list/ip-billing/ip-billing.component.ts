@@ -93,17 +93,16 @@ export class IPBillingComponent implements OnInit {
     'UserName',
     'Action'
   ];
-  PackageBillColumns = [
-    'BDate',
-    'PBillNo',
-    'TotalAmt',
-    'ConcessionAmt',
-    'NetPayableAmt',
-    'BalanceAmt',
-    'CashPayAmount',
-    'ChequePayAmount',
-    'CardPayAmount',
-    'AdvanceUsedAmount',
+  PackageBillColumns = [ 
+    'IsCheck',
+   // 'ChargesDate',
+    'ServiceName',
+    'Price',
+    'Qty',
+    'TotalAmt', 
+    'DiscAmt',
+    'NetAmount', 
+   // 'DoctorName',  
     'Action'
   ];
 
@@ -139,7 +138,7 @@ export class IPBillingComponent implements OnInit {
   dataSource1 = new MatTableDataSource<ChargesList>();
   prevbilldatasource = new MatTableDataSource<Bill>();
   advancedatasource = new MatTableDataSource<IpdAdvanceBrowseModel>();
-  PackageDatasource = new MatTableDataSource
+  PackageDatasource = new MatTableDataSource<ChargesList>();
 
   myControl = new FormControl(); 
   filteredOptions: any;
@@ -601,6 +600,7 @@ ServiceList:any=[];
       this.onClearServiceAddList()
       this.isLoading = '';
       this.interimArray = [];
+      this.getpackagedetList();
     }
     else {
       Swal.fire("Enter Proper Values !")
@@ -619,6 +619,45 @@ ServiceList:any=[];
     this.Serviceform.get('discAmount').reset();
     this.Serviceform.get('netAmount').reset();
   }
+    //package list 
+    PacakgeList:any=[];
+    getpackagedetList() {
+      debugger
+      var vdata = {
+        'ServiceId': this.serviceId
+      }
+      console.log(vdata);
+      this._IpSearchListService.getpackagedetList(vdata).subscribe((data) => {
+        this.PackageDatasource.data = data as ChargesList[];
+        this.PackageDatasource.data.forEach(element =>{
+          this.PacakgeList.push(
+            { 
+              ServiceId: element.ServiceId,
+              ServiceName: element.ServiceName,
+              Price: element.Price || 0,
+              Qty: 1,
+              TotalAmt:  0,
+              ConcessionAmt:  0,  
+              NetAmount: 0,
+              IsPathology: element.IsPathology,
+              IsRadiology: element.IsRadiology, 
+            })
+        })
+        this.PackageDatasource.data = this.PacakgeList
+        console.log(this.PacakgeList);
+        console.log(this.PackageDatasource.data);
+      });
+    }
+    deleteTableRowPackage(element) {
+      let index = this.PacakgeList.indexOf(element);
+      if (index >= 0) {
+        this.PacakgeList.splice(index, 1);
+        this.PackageDatasource.data = [];
+        this.PackageDatasource.data = this.PacakgeList;
+      }
+      Swal.fire('Success !', 'PacakgeList Row Deleted Successfully', 'success');
+  
+    }
   //Previouse bill list
   getPrevBillList() {
     var D_data = {
@@ -1204,6 +1243,11 @@ CalculateAdminCharge(){
         this._IpSearchListService.Addchargescancle(submitData).subscribe(response => {
           if (response) {
             Swal.fire('Charges cancelled !', 'Charges cancelled Successfully!', 'success').then((result) => {
+              if (contact.IsPackage == '1' && contact.ServiceId) { 
+                this.PacakgeList  = this.PacakgeList.filter(item=>  item.ServiceId !== contact.ServiceId)  
+                console.log(this.PacakgeList) 
+                this.PackageDatasource.data = this.PacakgeList; 
+              } 
               this.getChargesList();
               this.CalculateAdminCharge();
               this.CalFinalDisc();
@@ -1213,8 +1257,9 @@ CalculateAdminCharge(){
             Swal.fire('Error !', 'Charges cancelled data not saved', 'error');
           }
           this.isLoading = '';
-        });
+        });  
       }
+
     });
 
   }

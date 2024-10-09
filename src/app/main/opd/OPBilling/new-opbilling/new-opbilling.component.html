@@ -498,7 +498,7 @@
                                 <div fxFlex="100" fxLayout="row" fxLayout.gt-xs="column"> 
                                     <div class="col-md-12"> 
                                         <mat-table #table1 matSort [dataSource]="dsPackageDet" class="h-250"
-                                            [@animateStagger]="{value:'50'}" style="height:200px !important;overflow: auto;">
+                                            [@animateStagger]="{value:'50'}" style="height:230px !important;overflow: auto;">
                 
                                             <ng-container matColumnDef="action" stickyEnd>
                                                 <mat-header-cell *matHeaderCellDef style="color: white;"> Action
@@ -553,7 +553,7 @@
                                                     Total Amt
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    <span> {{contact.TotalAmt | currency:'INR' || '-'}}</span>
+                                                    <span> {{contact.TotalAmt || '-'}}</span>
                                                 </mat-cell>
                                             </ng-container>
                 
@@ -572,7 +572,7 @@
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                 
-                                                    <span> {{contact.DiscAmt | currency:'INR' || '00' }}</span>
+                                                    <span> {{contact.DiscAmt || '-' }}</span>
                                                 </mat-cell>
                                             </ng-container>
                 
@@ -581,7 +581,7 @@
                                                     NetAmt
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    <span> {{contact.NetAmount | currency:'INR' || '00'}}</span>
+                                                    <span> {{contact.NetAmount || '-'}}</span>
                                                 </mat-cell>
                                             </ng-container> 
                 

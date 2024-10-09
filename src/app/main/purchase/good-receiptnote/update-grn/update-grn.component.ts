@@ -306,7 +306,7 @@ export class UpdateGRNComponent implements OnInit {
                         icon: "warning",
                         title: "This item is already expired",
                         showConfirmButton: false,
-                        timer: 2000
+                        timer: 1500
                       });
                     this.vlastDay = '';
                 }else{
@@ -317,7 +317,7 @@ export class UpdateGRNComponent implements OnInit {
                             title: "This item is expired in 3 Months",
                             showConfirmButton: false,
                             timer: 1500
-                          }); 
+                          });  
                     }
                     if (month >= 1 && month <= 12) {
                         const lastDay = this.getLastDayOfMonth(month, year);
@@ -338,7 +338,7 @@ export class UpdateGRNComponent implements OnInit {
                         title: "This item is expired in 3 Months",
                         showConfirmButton: false,
                         timer: 1500
-                      }); 
+                      });  
                 }
                 if (month >= 1 && month <= 12) {
                     const lastDay = this.getLastDayOfMonth(month, year);
@@ -346,16 +346,17 @@ export class UpdateGRNComponent implements OnInit {
                     this.lastDay2 = `${year}/${this.pad(month)}/${lastDay}`;
                       console.log(this.vlastDay)
                       console.log(lastDay)
-                    this._GRNList.userFormGroup.get('ExpDatess').setValue(this.vlastDay)
+                   this._GRNList.userFormGroup.get('ExpDatess').setValue(this.vlastDay)
                     this.setFocus('Qty');
                 } else {
                     this.vlastDay = 'Invalid month';
                 }
             } 
         } else {
-            this.vlastDay = '';
+           // this.vlastDay = '';
+          // this._GRNList.userFormGroup.get('ExpDatess').setValue(this.vlastDay)
+           this.setFocus('Qty');
         }
-        NxtMonths = 0;
     }
 
     getLastDayOfMonth(month: number, year: number): number {
@@ -721,6 +722,7 @@ chckgst6:any = 6;
 chckgst9:any = 9;
 chckgst14:any = 14;
 ChekGSTPer:any=[];
+chkgsts:any=[];
     getCellCalculation(contact, ReceiveQty) {
         if (contact.PurchaseId > 0) {
             if (contact.ReceiveQty > contact.POQty) {
@@ -729,70 +731,77 @@ ChekGSTPer:any=[];
                 contact.POBalQty = ((contact.POQty) - (contact.ReceiveQty))
             }
         }  
-
-        // if(contact.VatPercentage > 0 ){
-        //     let Query= "select GSTPer from ss_gstper_config"
-        //     this._GRNList.checkGSTPer(Query).subscribe(data =>{
-        //        this.ChekGSTPer = data;
-        //     })
-        //     if (contact.CGSTPer > 0) {
-        //         if (this.ChekGSTPer.filter(item => item.GSTPer != contact.CGSTPer)) {
-        //             this.toastr.warning('Please enter CGST percentage as 2.5%, 6%, 9% or 14%', 'Warning !', {
-        //                 toastClass: 'tostr-tost custom-toast-warning',
-        //             });
-        //             contact.CGSTPer = 0;
-        //             return
-        //         }
-        //     }
-        //     if (contact.SGSTPer > 0) {
-        //         if (this.ChekGSTPer.filter(item => item.GSTPer != contact.SGSTPer)) {
-        //             this.toastr.warning('Please enter CGST percentage as 2.5%, 6%, 9% or 14%', 'Warning !', {
-        //                 toastClass: 'tostr-tost custom-toast-warning',
-        //             });
-        //             contact.SGSTPer = 0;
-        //             return
-        //         }
-        //     }
-        //     if (contact.IGSTPer > 0) {
-        //         if (this.ChekGSTPer.filter(item => item.GSTPer != contact.IGSTPer)) {
-        //             this.toastr.warning('Please enter CGST percentage as 2.5%, 6%, 9% or 14%', 'Warning !', {
-        //                 toastClass: 'tostr-tost custom-toast-warning',
-        //             });
-        //             contact.IGSTPer = 0;
-        //             return
-        //         }
-        //     } 
-        // }  
+debugger
+        if (contact.VatPercentage > 0) {
+            let Query = "select GSTPer from ss_gstper_config"
+            this._GRNList.checkGSTPer(Query).subscribe(data => {
+                this.ChekGSTPer = data;
+                console.log(this.ChekGSTPer)
+            })
+            if (contact.CGSTPer) {
+                const dvalue = this.ChekGSTPer.find(item => item.GSTPer == parseFloat(contact.CGSTPer))
+                console.log(dvalue)
+                if (!dvalue) {
+                    this.toastr.warning('Please enter CGST percentage as 2.5%, 6%, 9% or 14%', 'Warning !', {
+                        toastClass: 'tostr-tost custom-toast-warning',
+                    });
+                    contact.CGSTPer = 0;
+                    return
+                }
+            }
+            if (contact.SGSTPer) {
+                const dvalue1 = this.ChekGSTPer.find(item => item.GSTPer == parseFloat(contact.SGSTPer))
+                console.log(dvalue1)
+                if (dvalue1) {
+                    this.toastr.warning('Please enter CGST percentage as 2.5%, 6%, 9% or 14%', 'Warning !', {
+                        toastClass: 'tostr-tost custom-toast-warning',
+                    });
+                    contact.SGSTPer = 0;
+                    return
+                }
+            }
+            if (contact.IGSTPer) {
+                const dvalue3 = this.ChekGSTPer.find(item => item.GSTPer == parseFloat(contact.IGSTPer))
+                console.log(dvalue3)
+                if (dvalue3) {
+                    this.toastr.warning('Please enter CGST percentage as 2.5%, 6%, 9% or 14%', 'Warning !', {
+                        toastClass: 'tostr-tost custom-toast-warning',
+                    });
+                    contact.IGSTPer = 0;
+                    return
+                }
+            }
+        }  
  
 
 
-        if(contact.CGSTPer > 0){
-            if(!(parseFloat(contact.CGSTPer) == parseFloat(this.chckgst2) || contact.CGSTPer == this.chckgst6 || contact.CGSTPer == this.chckgst9 || contact.CGSTPer == this.chckgst14)){
-                this.toastr.warning('Please enter CGST percentage as 2.5%, 6%, 9% or 14%', 'Warning !', {
-                    toastClass: 'tostr-tost custom-toast-warning',
-                });
-                contact.CGSTPer = '';
-                return
-            }
-        }
-        if(contact.SGSTPer > 0){
-            if(!((contact.SGSTPer).toString() == parseFloat(this.chckgst2) || contact.SGSTPer == this.chckgst6 || contact.SGSTPer == this.chckgst9 || contact.SGSTPer == this.chckgst14)){
-                this.toastr.warning('Please enter CGST percentage as 2.5%, 6%, 9% or 14%', 'Warning !', {
-                    toastClass: 'tostr-tost custom-toast-warning',
-                });
-                contact.SGSTPer = '';
-                return
-            }
-        }
-        if(contact.IGSTPer > 0){
-            if(!(parseFloat(contact.IGSTPer) == parseFloat(this.chckgst2) || contact.IGSTPer == this.chckgst6 || contact.IGSTPer == this.chckgst9 || contact.IGSTPer == this.chckgst14)){
-                this.toastr.warning('Please enter CGST percentage as 2.5%, 6%, 9% or 14%', 'Warning !', {
-                    toastClass: 'tostr-tost custom-toast-warning',
-                });
-                contact.IGSTPer = '';
-                return
-            }
-        }
+        // if(contact.CGSTPer > 0){
+        //     if(!(parseFloat(contact.CGSTPer) == parseFloat(this.chckgst2) || contact.CGSTPer == this.chckgst6 || contact.CGSTPer == this.chckgst9 || contact.CGSTPer == this.chckgst14)){
+        //         this.toastr.warning('Please enter CGST percentage as 2.5%, 6%, 9% or 14%', 'Warning !', {
+        //             toastClass: 'tostr-tost custom-toast-warning',
+        //         });
+        //         contact.CGSTPer = '';
+        //         return
+        //     }
+        // }
+        // if(contact.SGSTPer > 0){
+        //     if(!((contact.SGSTPer).toString() == parseFloat(this.chckgst2) || contact.SGSTPer == this.chckgst6 || contact.SGSTPer == this.chckgst9 || contact.SGSTPer == this.chckgst14)){
+        //         this.toastr.warning('Please enter CGST percentage as 2.5%, 6%, 9% or 14%', 'Warning !', {
+        //             toastClass: 'tostr-tost custom-toast-warning',
+        //         });
+        //         contact.SGSTPer = '';
+        //         return
+        //     }
+        // }
+        // if(contact.IGSTPer > 0){
+        //     if(!(parseFloat(contact.IGSTPer) == parseFloat(this.chckgst2) || contact.IGSTPer == this.chckgst6 || contact.IGSTPer == this.chckgst9 || contact.IGSTPer == this.chckgst14)){
+        //         this.toastr.warning('Please enter CGST percentage as 2.5%, 6%, 9% or 14%', 'Warning !', {
+        //             toastClass: 'tostr-tost custom-toast-warning',
+        //         });
+        //         contact.IGSTPer = '';
+        //         return
+        //     }
+        // }
 
         let freeqty = contact.FreeQty || 0;
         let R_qty = contact.ReceiveQty || 0

@@ -1133,6 +1133,13 @@ public getItemlist(Param){//m_Rtrv_IPDrugName,Retrieve_ItemName_BalanceQty
 public getDoseList() {
   return this._httpClient.post("Generic/GetByProc?procName=ps_Rtrv_DoseMasterList", {})
 }
+  //IP bill Package details
+  public getpackagedetList(employee, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.post("Generic/GetByProc?procName=m_Retrieve_PackageDetails", employee)
+  }
 }
 
 // Set NODE_OPTIONS="--max-old-space-size=8192"

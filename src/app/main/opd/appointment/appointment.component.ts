@@ -2954,31 +2954,27 @@ debugger
     followUpDate:string;
     chkHealthcard(event){
         if(event.checked){
-            this.Healthcardflag = true;
-            this.vDays = 10;
-            this.onDaysChange();
+            this.Healthcardflag = true; 
         }else{
-            this.Healthcardflag = false;
-            this.vDays = 0;
-            this.vhealthCardNo = '';
+            this.Healthcardflag = false; 
         }
     }
-    onDaysChange(){
-        if (this.vDays > 0) {
-            const today = new Date();
-            const todaydays = today.getDate()
-            const followDays = ((todaydays) + parseInt(this.vDays))
-            console.log(followDays)
-            const followUp = new Date();
-            followUp.setDate((todaydays) + parseInt(this.vDays));
-            this.followUpDate = this.datePipe.transform(followUp.toDateString(), 'MM/dd/YYYY');
-            this.HealthCardExpDate = new Date(this.followUpDate);
-            console.log(this.followUpDate)
-          }else{
-            if(this.vDays == '' || this.vDays == 0 || this.vDays == null || this.vDays == undefined)
-                this.HealthCardExpDate = new Date();
-          }
-    }
+    // onDaysChange(){
+    //     if (this.vDays > 0) {
+    //         const today = new Date();
+    //         const todaydays = today.getDate()
+    //         const followDays = ((todaydays) + parseInt(this.vDays))
+    //         console.log(followDays)
+    //         const followUp = new Date();
+    //         followUp.setDate((todaydays) + parseInt(this.vDays));
+    //         this.followUpDate = this.datePipe.transform(followUp.toDateString(), 'MM/dd/YYYY');
+    //         this.HealthCardExpDate = new Date(this.followUpDate);
+    //         console.log(this.followUpDate)
+    //       }else{
+    //         if(this.vDays == '' || this.vDays == 0 || this.vDays == null || this.vDays == undefined)
+    //             this.HealthCardExpDate = new Date();
+    //       }
+    // }
     keyPressAlphanumeric(event) {
         var inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
