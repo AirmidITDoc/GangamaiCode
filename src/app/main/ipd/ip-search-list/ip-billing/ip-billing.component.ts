@@ -441,6 +441,7 @@ ServiceList:any=[];
       }); 
     }
   }
+  IsPackage:any;
   getSelectedObj(obj) { 
     console.log(obj)
     this.SrvcName = obj.ServiceName;
@@ -450,6 +451,7 @@ ServiceList:any=[];
     this.serviceId = obj.ServiceId;
     this.b_isPath = obj.IsPathology;
     this.b_isRad = obj.IsRadiology; 
+    this.IsPackage = obj.IsPackage;
 
     if (obj.CreditedtoDoctor == true) {
       this.Serviceform.get('DoctorID').reset();
@@ -584,7 +586,7 @@ ServiceList:any=[];
         "isPackage": 0,
         "packageMainChargeID": 0,
         "isSelfOrCompanyService": false,
-        "packageId": 0,
+        "packageId": this.IsPackage,
         "chargeTime":this.datePipe.transform(this.Serviceform.get('Date').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900', // this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
         "classId":this.Serviceform.get('ChargeClass').value.ClassId     // this.selectedAdvanceObj.ClassId,
       }

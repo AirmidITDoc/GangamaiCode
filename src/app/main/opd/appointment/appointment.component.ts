@@ -2954,10 +2954,14 @@ debugger
     followUpDate:string;
     chkHealthcard(event){
         if(event.checked){
-            this.Healthcardflag = true; 
+            this.Healthcardflag = true;  
+            this.personalFormGroup.get('HealthCardNo').setValidators([Validators.required]);
         }else{
             this.Healthcardflag = false; 
-        }
+            this.personalFormGroup.get('HealthCardNo').reset();
+            this.personalFormGroup.get('HealthCardNo').clearValidators();
+            this.personalFormGroup.get('HealthCardNo').updateValueAndValidity();
+        }  
     }
     // onDaysChange(){
     //     if (this.vDays > 0) {

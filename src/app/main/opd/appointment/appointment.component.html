@@ -1068,7 +1068,7 @@
                                                     <mat-form-field appearance="outline" *ngIf="Healthcardflag">
                                                         <mat-label>Health Card No.</mat-label>
                                                         <input type="text" placeholder="Enter Health Card No" matInput #healthcard [(ngModel)]="vhealthCardNo"
-                                                            formControlName="HealthCardNo" required (keypress)="keyPressAlphanumeric($event)">
+                                                            formControlName="HealthCardNo"  (keypress)="keyPressAlphanumeric($event)">
                                                     </mat-form-field>
                                                 </div>
                                                 <!-- </div> -->

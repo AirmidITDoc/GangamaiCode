@@ -87,7 +87,10 @@
                                                 </mat-icon>
                                                 <mat-icon *ngIf="option.IsPathology == true" matTooltip="IsPatholgy">
                                                     <img width="10px" height="6px" src="assets/images/logos/pathology.png">  
-                                                </mat-icon>
+                                                </mat-icon> 
+                                                <mat-icon *ngIf="option.IsPackage == true " matTooltip="IsPackage">
+                                                    <img width="10px" height="6px" src="assets/images/logos/package.png"> 
+                                                </mat-icon> 
                                             </span>
                                         </mat-option>
                                     </mat-autocomplete> 
@@ -421,7 +424,11 @@
                                     </mat-icon>
                                     <mat-icon *ngIf="contact.IsPathology == 1" matTooltip="IsPatholgy">
                                         <img width="15px" height="9px" src="assets/images/logos/pathology.png">  
-                                    </mat-icon>
+                                    </mat-icon> 
+                                    <mat-icon *ngIf="contact.IsPackage == '1'" matTooltip="IsPackage">
+                                        <img width="15px" height="9px" src="assets/images/logos/package.png"> 
+                                    </mat-icon>  
+
                                 </mat-cell>
                             </ng-container>
 
@@ -737,7 +744,7 @@
                                     </mat-icon>
                                     <mat-icon *ngIf="contact.IsPathology == 1" matTooltip="IsPatholgy">
                                         <img width="15px" height="9px" src="assets/images/logos/pathology.png">  
-                                    </mat-icon>
+                                    </mat-icon> 
                                 </mat-cell>
                             </ng-container>
 
