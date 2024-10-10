@@ -632,6 +632,21 @@ finaldiscAmt() {
       console.log(this.dsPackageDet.data);
     });
   }
+
+  gettablecalculation(element, Price) {
+    console.log(element)
+    debugger 
+    if(element.Price > 0 && element.Qty > 0){ 
+    element.TotalAmt = element.Qty * element.Price
+    element.DiscAmt = (element.ConcessionPercentage * element.TotalAmt) / 100 ;
+    element.NetAmount =  element.TotalAmt - element.DiscAmt
+    }  
+    else if(element.Price == 0 || element.Price == '' || element.Qty == '' || element.Qty == 0){
+      element.TotalAmt = 0;  
+      element.DiscAmt =  0 ;
+      element.NetAmount =  0 ;
+    } 
+  }
 getConcessionReasonList() {
   this._oPSearhlistService.getConcessionCombo().subscribe(data => {
     this.ConcessionReasonList = data;

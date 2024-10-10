@@ -265,6 +265,7 @@ export class UpdateGRNComponent implements OnInit {
         datepicker.close();
     }
     followUpDate: string;
+    NxtMonths:any=3;
     calculateLastDay(inputDate: string) {
          debugger
         // if (inputDate && inputDate.length === 6) {
@@ -296,6 +297,10 @@ export class UpdateGRNComponent implements OnInit {
         console.log(currentYear)  
        let  NxtMonths = ((currentMonth) + (Months));  
 
+       const NextExpiryDate = new Date();
+       NextExpiryDate.setMonth((CurrentDate.getMonth()) + parseInt(this.NxtMonths));
+        const newNextDate  = this.datePipe.transform(NextExpiryDate , 'dd/MM/YYYY') 
+
         if (inputDate && inputDate.length === 6) {
             const month = +inputDate.substring(0, 2);
             const year = +inputDate.substring(2, 6); 
@@ -309,24 +314,27 @@ export class UpdateGRNComponent implements OnInit {
                         timer: 1500
                       });
                     this.vlastDay = '';
-                }else{
-
-                    if(month < NxtMonths){
-                        Swal.fire({ 
-                            icon: "warning",
-                            title: "This item is expired in 3 Months",
-                            showConfirmButton: false,
-                            timer: 1500
-                          });  
-                    }
+                }else{ 
                     if (month >= 1 && month <= 12) {
                         const lastDay = this.getLastDayOfMonth(month, year);
                         this.vlastDay = `${lastDay}/${this.pad(month)}/${year}`;
                         this.lastDay2 = `${year}/${this.pad(month)}/${lastDay}`;
+                        const newuserDate  = this.datePipe.transform(this.lastDay2 , 'dd/MM/YYYY') 
+                        console.log(newuserDate)
+                        console.log(newNextDate)
                           console.log(this.vlastDay)
                           console.log(lastDay)
                         this._GRNList.userFormGroup.get('ExpDatess').setValue(this.vlastDay)
-                        this.setFocus('Qty');
+                        this.setFocus('Qty'); 
+                        if(newuserDate < newNextDate){
+                            Swal.fire({ 
+                                icon: "warning",
+                                title: "This item is expired in 3 Months",
+                                showConfirmButton: false,
+                                timer: 1500
+                              });  
+                        } 
+
                     } else {
                         this.vlastDay = 'Invalid month';
                     }
@@ -745,26 +753,26 @@ debugger
                     this.toastr.warning('Please enter CGST percentage as 2.5%, 6%, 9% or 14%', 'Warning !', {
                         toastClass: 'tostr-tost custom-toast-warning',
                     });
-                    contact.CGSTPer = 0;
+                    contact.CGSTPer = '';
                     return
                 }
             }
             if (contact.SGSTPer) {
                 const dvalue1 = this.ChekGSTPer.find(item => item.GSTPer == parseFloat(contact.SGSTPer))
                 console.log(dvalue1)
-                if (dvalue1) {
-                    this.toastr.warning('Please enter CGST percentage as 2.5%, 6%, 9% or 14%', 'Warning !', {
+                if (!dvalue1) {
+                    this.toastr.warning('Please enter SGST percentage as 2.5%, 6%, 9% or 14%', 'Warning !', {
                         toastClass: 'tostr-tost custom-toast-warning',
                     });
-                    contact.SGSTPer = 0;
+                    contact.SGSTPer = '';
                     return
                 }
             }
             if (contact.IGSTPer) {
                 const dvalue3 = this.ChekGSTPer.find(item => item.GSTPer == parseFloat(contact.IGSTPer))
                 console.log(dvalue3)
-                if (dvalue3) {
-                    this.toastr.warning('Please enter CGST percentage as 2.5%, 6%, 9% or 14%', 'Warning !', {
+                if (!dvalue3) {
+                    this.toastr.warning('Please enter IGST percentage as 2.5%, 6%, 9% or 14%', 'Warning !', {
                         toastClass: 'tostr-tost custom-toast-warning',
                     });
                     contact.IGSTPer = 0;

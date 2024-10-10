@@ -529,22 +529,27 @@
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
                                                     <span> {{contact.ServiceName}}</span>
                                                 </mat-cell>
-                                            </ng-container>
-                
+                                            </ng-container> 
+
                                             <ng-container matColumnDef="Price">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    Price
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Price
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    <span> {{contact.Price | currency:'INR' }}</span>
+                                                    <mat-form-field appearance="legacy">
+                                                        <input matInput [(ngModel)]="contact.Price" type="text" OnlyNumber
+                                                            (keyup)="gettablecalculation(contact,contact.Price)" (keypress)="keyPressCharater($event)">
+                                                    </mat-form-field>
                                                 </mat-cell>
                                             </ng-container>
-                
+                                
                                             <ng-container matColumnDef="Qty">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Qty
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    <span> {{contact.Qty || '-'}}</span>
+                                                    <mat-form-field appearance="legacy">
+                                                        <input matInput [(ngModel)]="contact.Qty" type="text" OnlyNumber
+                                                            (keyup)="gettablecalculation(contact,contact.Qty)" (keypress)="keyPressAlphanumeric($event)">
+                                                    </mat-form-field> 
                                                 </mat-cell>
                                             </ng-container>
                 

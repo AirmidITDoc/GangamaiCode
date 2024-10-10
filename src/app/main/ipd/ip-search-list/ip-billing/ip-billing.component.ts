@@ -658,6 +658,21 @@ ServiceList:any=[];
       Swal.fire('Success !', 'PacakgeList Row Deleted Successfully', 'success');
   
     }
+    //Package Table Cal
+    gettablecalculation(element, Price) {
+      console.log(element)
+      debugger 
+      if(element.Price > 0 && element.Qty > 0){ 
+      element.TotalAmt = element.Qty * element.Price
+     // element.ConcessionAmt = (element.ConcessionPercentage * element.TotalAmt) / 100 ;
+      element.NetAmount =  element.TotalAmt - element.ConcessionAmt
+      }  
+      else if(element.Price == 0 || element.Price == '' || element.Qty == '' || element.Qty == 0){
+        element.TotalAmt = 0;  
+        element.DiscAmt =  0 ;
+        element.NetAmount =  0 ;
+      } 
+    }
   //Previouse bill list
   getPrevBillList() {
     var D_data = {
