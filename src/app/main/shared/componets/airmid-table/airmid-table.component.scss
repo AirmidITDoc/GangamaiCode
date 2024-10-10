@@ -9,3 +9,15 @@
 .table-filter-wrapper {
     margin-bottom: 10px;
 }
+.mat-toolbar-row button{
+    margin-left: 10px;
+}
+.table-pagination-wrapper,.table-export-wrapper{
+    width:50%;
+}
+.table-pagination-wrapper{
+    float: right;
+}
+.mat-paginator{
+background-color: whitesmoke !important;
+}
