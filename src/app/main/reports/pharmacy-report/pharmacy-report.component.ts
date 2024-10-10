@@ -381,6 +381,30 @@ var data={
       this.FlagStoreSelected=false;
       this.FlagItemSelected=false;
       this.FlagDoctorIDSelected=true;
+    }else if(this.ReportName == 'Dr Wise Sales Report'){
+      this.FlagPaymentSelected = false;
+      this.FlagUserSelected = false;
+      this.FlagRegNoSelected=false;
+      this.FlagDrugTypeIdSelected=false;
+      this.FlagStoreSelected=true;
+      this.FlagItemSelected=false;
+      this.FlagDoctorIDSelected=true;
+    }else if(this.ReportName == 'Dr Wise Profit Detail Report'){
+      this.FlagPaymentSelected = false;
+      this.FlagUserSelected = false;
+      this.FlagRegNoSelected=false;
+      this.FlagDrugTypeIdSelected=false;
+      this.FlagStoreSelected=true;
+      this.FlagItemSelected=false;
+      this.FlagDoctorIDSelected=true;
+    }else if(this.ReportName == 'Dr Wise Profit Summary Report'){
+      this.FlagPaymentSelected = false;
+      this.FlagUserSelected = false;
+      this.FlagRegNoSelected=false;
+      this.FlagDrugTypeIdSelected=false;
+      this.FlagStoreSelected=false;
+      this.FlagItemSelected=false;
+      this.FlagDoctorIDSelected=true;
     }
   }
 
@@ -502,6 +526,15 @@ var data={
     }
     else if (this.ReportName == 'Doctor Wise Profit Report') {
       this.viewgetPharmDoctorProfitDReportPdf();
+    }
+    else if (this.ReportName == 'Dr Wise Sales Report') {
+      this.viewgetDrwisesalesReportPdf();
+    }
+    else if (this.ReportName == 'Dr Wise Profit Detail Report') {
+      this.viewgetDrwiseprofitdetailReportPdf();
+    }
+    else if (this.ReportName == 'Dr Wise Profit Summary Report') {
+      this.viewgetDrwiseprofitsummaryReportPdf();
     }
   }
 
@@ -1085,6 +1118,123 @@ debugger
             data: {
               base64: res["base64"] as string,
               title: "Pharmacy Doctor Profit"
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          this.AdList = false;
+          this.sIsLoading = '';
+        });
+      });
+
+    }, 100);
+  }
+
+     
+  
+
+  viewgetDrwisesalesReportPdf(){
+    
+    setTimeout(() => {
+      this.sIsLoading = 'loading-data';
+      this.AdList = true;
+
+      let storeId =this._loggedUser.currentUserValue.user.storeId;
+      if (this._PharmacyreportService.userForm.get('StoreId').value.StoreId)
+        storeId = this._PharmacyreportService.userForm.get('StoreId').value.StoreId
+      debugger
+      
+      let DoctorID = 0;
+      if (this._PharmacyreportService.userForm.get('DoctorID').value)
+        DoctorID = this._PharmacyreportService.userForm.get('DoctorID').value.DoctorId
+  
+      this._PharmacyreportService.getDrwisesales(
+        this.datePipe.transform(this._PharmacyreportService.userForm.get('startdate').value, "yyyy-MM-dd") || '01/01/1900',
+        this.datePipe.transform(this._PharmacyreportService.userForm.get('enddate').value, "yyyy-MM-dd") || '01/01/1900',storeId,DoctorID
+        
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Pharmacy Doctor Wise Sales Report"
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          this.AdList = false;
+          this.sIsLoading = '';
+        });
+      });
+
+    }, 100);
+  }
+
+   
+  viewgetDrwiseprofitdetailReportPdf(){
+    debugger
+    setTimeout(() => {
+      this.sIsLoading = 'loading-data';
+      this.AdList = true;
+    
+      let storeId =this._loggedUser.currentUserValue.user.storeId;
+      if (this._PharmacyreportService.userForm.get('StoreId').value.StoreId)
+        storeId = this._PharmacyreportService.userForm.get('StoreId').value.StoreId
+
+
+      let DoctorID = 0;
+      if (this._PharmacyreportService.userForm.get('DoctorID').value)
+        DoctorID = this._PharmacyreportService.userForm.get('DoctorID').value.DoctorId
+  
+      this._PharmacyreportService.getDrwiseprofitdetail(
+        this.datePipe.transform(this._PharmacyreportService.userForm.get('startdate').value, "yyyy-MM-dd") || '01/01/1900',
+        this.datePipe.transform(this._PharmacyreportService.userForm.get('enddate').value, "yyyy-MM-dd") || '01/01/1900',storeId,DoctorID
+        
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Pharmacy Doctor Profit Detail Report"
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          this.AdList = false;
+          this.sIsLoading = '';
+        });
+      });
+
+    }, 100);
+  }
+
+   
+  viewgetDrwiseprofitsummaryReportPdf(){
+    debugger
+    setTimeout(() => {
+      this.sIsLoading = 'loading-data';
+      this.AdList = true;
+    
+      let DoctorID = 0;
+      if (this._PharmacyreportService.userForm.get('DoctorID').value)
+        DoctorID = this._PharmacyreportService.userForm.get('DoctorID').value.DoctorId
+  
+      this._PharmacyreportService.getdrwiseperofitsummary(
+        this.datePipe.transform(this._PharmacyreportService.userForm.get('startdate').value, "yyyy-MM-dd") || '01/01/1900',
+        this.datePipe.transform(this._PharmacyreportService.userForm.get('enddate').value, "yyyy-MM-dd") || '01/01/1900',DoctorID
+        
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Pharmacy Doctor Profit Summary Report"
             }
           });
         dialogRef.afterClosed().subscribe(result => {

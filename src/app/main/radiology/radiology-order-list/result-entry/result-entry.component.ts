@@ -154,7 +154,7 @@ getUpdatetemplate() {
   // });
 
   var mdata={
-    Id: 595//this.selectedAdvanceObj.ServiceId
+    Id: this.selectedAdvanceObj.ServiceId
 
 }
 this._radiologytemplateService.getTemplateCombo(mdata).subscribe(data => {
@@ -307,7 +307,7 @@ this._radiologytemplateService.getTemplateCombo(mdata).subscribe(data => {
 
   getTemplateList() {
     var mdata={
-        Id: 595//this.selectedAdvanceObj.ServiceId
+        Id: this.selectedAdvanceObj.ServiceId
 
     }
     this._radiologytemplateService.getTemplateCombo(mdata).subscribe(data => {
