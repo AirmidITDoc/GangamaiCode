@@ -729,20 +729,48 @@
                         <mat-table matSort [dataSource]="PackageDatasource" [@animateStagger]="{value:'50'}"
                             class="table3 mt-8" style="height: calc(100vh - 500px);">
 
-                            <ng-container matColumnDef="BDate">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header>BDate</mat-header-cell>
-                                <mat-cell *matCellDef="let contact">
-                                    <span> {{contact.BDate}}</span>
+                            <ng-container matColumnDef="IsCheck" sticky>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-50">Status</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" class="w-50">
+                                    <mat-icon *ngIf="contact.IsRadiology == 1" matTooltip="IsRadiology">
+                                        <img width="15px" height="8px" src="assets/images/logos/radiology.png">
+                                    </mat-icon>
+                                    <mat-icon *ngIf="contact.IsPathology == 1" matTooltip="IsPatholgy">
+                                        <img width="15px" height="9px" src="assets/images/logos/pathology.png">  
+                                    </mat-icon>
                                 </mat-cell>
                             </ng-container>
 
-                            <ng-container matColumnDef="PBillNo">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>PBillNo
+                            <!-- <ng-container matColumnDef="ChargesDate">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>Date</mat-header-cell>
+                                <mat-cell *matCellDef="let contact">
+                                    <span> {{contact.BDate}}</span>
+                                </mat-cell>
+                            </ng-container>  -->
+
+                            <ng-container matColumnDef="ServiceName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Service Name
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    <span> {{contact.PBillNo}}</span>
+                                    <span> {{contact.ServiceName}}</span>
                                 </mat-cell>
                             </ng-container>
+
+                            <ng-container matColumnDef="Price">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Price
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    <span> {{contact.Price || '-'}}</span>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Qty">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Qty
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    <span> {{contact.Qty}}</span>
+                                </mat-cell>
+                            </ng-container> 
 
                             <ng-container matColumnDef="TotalAmt">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Total Amt
@@ -752,7 +780,7 @@
                                 </mat-cell>
                             </ng-container>
 
-                            <ng-container matColumnDef="ConcessionAmt">
+                            <ng-container matColumnDef="DiscAmt">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Disc Amt
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
@@ -760,70 +788,20 @@
                                 </mat-cell>
                             </ng-container>
 
-                            <ng-container matColumnDef="NetPayableAmt">
+                            <ng-container matColumnDef="NetAmount">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>NetPay Amt
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    <span> {{contact.NetPayableAmt | currency:'INR' }}</span>
+                                    <span> {{contact.NetAmount | currency:'INR' }}</span>
                                 </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="BalanceAmt">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Bal.Amt
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    <span> {{contact.BalanceAmt | currency:'INR' }}</span>
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="CashPayAmount">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Cash Pay
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    <span> {{contact.CashPayAmount}}</span>
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="ChequePayAmount">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="accent">Cheque
-                                    Pay
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    <span> {{contact.ChequePayAmount}}</span>
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="CardPayAmount">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="accent">Card
-                                    Pay
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    <span> {{contact.CardPayAmount}}</span>
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="AdvanceUsedAmount">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Adv.UsedAmt
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    <span> {{contact.AdvanceUsedAmount}}</span>
-                                </mat-cell>
-                            </ng-container>
+                            </ng-container>  
 
                             <ng-container matColumnDef="Action" stickyEnd>
                                 <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
                                 <mat-cell *matCellDef="let contact">
-                                    <button mat-icon-button  matTooltip="Details">
-                                        <mat-icon>view</mat-icon>
+                                    <button mat-icon-button (click)="deleteTableRowPackage(contact)" color="warn">
+                                        <mat-icon>delete_outline</mat-icon>
                                     </button>
-                                    <button mat-icon-button   matTooltip="Print">
-                                        <mat-icon>print</mat-icon>
-                                    </button>
-                                    <button mat-icon-button matTooltip="Send Bill On WhatsApp"
-                                    class="p-4"  >
-                                    <img width="100" height="20px"
-                                        src="assets/images/logos/WhatsApp.png">
-                                  </button>
                                 </mat-cell>
                             </ng-container>
 

@@ -24,6 +24,7 @@ import { MatSelect } from '@angular/material/select';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 import { OpPaymentComponent } from '../../op-search-list/op-payment/op-payment.component';
 import { ConfigService } from 'app/core/services/config.service';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-new-opbilling',
@@ -51,8 +52,8 @@ export class NewOPBillingComponent implements OnInit {
   displayedColumnspackage = [ 
     'IsCheck',
     'ServiceName',
-    'Price',
     'Qty',
+    'Price',
     'TotalAmt',
     'DiscPer',
     'DiscAmt',
@@ -501,6 +502,7 @@ onAddCharges() {
       console.log(this.ChargesDoctorname)
     }
   }
+  debugger
   this.isLoading = 'save';
   this.dataSource.data = [];
   this.chargeslist.push(
@@ -560,8 +562,9 @@ finaldiscAmt() {
   console.log(this.vFinalConcessionAmt)
   this.CalcDiscPercentageonBill();
 }
-  chkdelte: any;
+  chkdelte: any=[];
   deleteTableRow(element) {
+    debugger
     console.log(element)
     let index = this.chargeslist.indexOf(element);
     if (index >= 0) {
@@ -577,9 +580,10 @@ finaldiscAmt() {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
         this.CalcDiscPercentageonBill();
-        if (element.IsPackage == '1') {
-          this.serviceId = 0;
-          this.getpackagedetList();
+        if (element.IsPackage == '1' && element.ServiceId) { 
+          this.PacakgeList  = this.PacakgeList.filter(item=>  item.ServiceId !== element.ServiceId)  
+              console.log(this.PacakgeList) 
+          this.dsPackageDet.data = this.PacakgeList; 
         } 
         if( this.dataSource.data.length == 0){
           this.ServiceDiscper = 0;
@@ -601,13 +605,30 @@ finaldiscAmt() {
   }
   //package list 
   getpackagedetList() {
+    debugger
     var vdata = {
       'ServiceId': this.serviceId
     }
     console.log(vdata);
     this._oPSearhlistService.getpackagedetList(vdata).subscribe((data) => {
       this.dsPackageDet.data = data as ChargesList[];
-      this.PacakgeList = this.dsPackageDet.data;
+      this.dsPackageDet.data.forEach(element =>{
+        this.PacakgeList.push(
+          { 
+            ServiceId: element.ServiceId,
+            ServiceName: element.ServiceName,
+            Price: element.Price || 0,
+            Qty: 1,
+            TotalAmt:  0,
+            ConcessionPercentage:  0, 
+            DiscAmt: 0,
+            NetAmount: 0,
+            IsPathology: element.IsPathology,
+            IsRadiology: element.IsRadiology, 
+          })
+      })
+      this.dsPackageDet.data = this.PacakgeList
+      console.log(this.PacakgeList);
       console.log(this.dsPackageDet.data);
     });
   }

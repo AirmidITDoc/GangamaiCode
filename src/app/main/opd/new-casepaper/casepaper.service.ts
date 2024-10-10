@@ -128,5 +128,13 @@ public getServiceList(param,loader = true){
   public getcheifcomplaintList( ) { 
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_CheifcomplaintList",{})
   } 
- 
+  public getTemplateList() {
+    return this._httpClient.post("Generic/GetByProc?procName=m_RtrvPresTemplateName_List", {})
+  }
+  public getTempPrescriptionList(param, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=m_RtrvTemplate_PrescriptionList",param)
+  } 
 }
