@@ -453,11 +453,11 @@ public getDoctorSharesummaryReportView(FromDate,ToDate,loader = true){
 }
   return this._httpClient.get("DoctorShareReports/viewDoctorWiseSummaryReport?FromDate=" + FromDate+"&ToDate="+ToDate);
 }
-public getConDoctorSharesReportView(Doctor_Id, GroupId, From_Dt, To_Dt, OP_IP_Type,loader = true){
+public getConDoctorSharesReportView(FromDate, ToDate, DoctorId,OP_IP_Type,loader = true){
   if (loader) {
     this._loaderService.show();
 }
-  return this._httpClient.get("DoctorShareReports/ViewConDoctorShareDetails?Doctor_Id=" + Doctor_Id+"&GroupId="+GroupId+"&From_Dt="+From_Dt+"&To_Dt="+To_Dt+"&OP_IP_Type="+OP_IP_Type);
+  return this._httpClient.get("DoctorShareReports/ViewConDoctorShareDetails?FromDate=" + FromDate+"&ToDate="+ToDate+"&DoctorId="+DoctorId+"&OP_IP_Type="+OP_IP_Type);
   
 }
 

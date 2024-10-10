@@ -172,8 +172,29 @@ export class PharmacyreportService {
     return this._httpClient.get("PharmacyReport/view-DoctorWiseProfitReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&DoctorId="+DoctorId);
   }
 
+  
+  
+  
+  public getDrwisesales(FromDate,ToDate,StoreId,DoctorId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.get("PharmacyReport/view-DoctorWiseSalesReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId+"&DoctorId="+DoctorId);
+  }
 
-
+  public getDrwiseprofitdetail(FromDate,ToDate,StoreId,DoctorId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.get("PharmacyReport/view-PharmacySalesDoctorWiseProfitDetailsReportOPIP?FromDate=" + FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId+"&DoctorId="+DoctorId);
+  }
+  
+  public getdrwiseperofitsummary(FromDate,ToDate,DoctorId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.get("PharmacyReport/view-PharmacySalesDoctorWiseProfitDetailsReportOPIP?FromDate=" + FromDate+"&ToDate="+ToDate+"&DoctorId="+DoctorId);
+  }
   public getItemlist(Param){
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_Item_Name",Param)
   }

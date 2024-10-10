@@ -81,7 +81,7 @@ export class IpReportComponent implements OnInit {
   optionsCompany: any[] = [];
   CompanyList: any =[];
   vDescType=0;
-
+  OPIPType:any;
   displayedColumns = [
     'ReportName'
   ];
@@ -492,7 +492,7 @@ var data={
   } else if (this.ReportName == 'Consultant Doctor ShareDetails') {
     this.FlagUserSelected = false;
     this.FlagDoctorSelected = true;
-    this.FlagGroupSelected=true;
+    this.FlagGroupSelected=false;
     this.FlaOPIPTypeSelected=true;
   }
   else if (this.ReportName == 'DoctorShare List WithCharges') {
@@ -2618,21 +2618,20 @@ viewgetDoctorShareReportPdf(){
 }
 viewgetConsultantDoctorShareDetailsPdf(){
   let DoctorId = 0;
+  debugger
   if (this._IPReportService.userForm.get('DoctorId').value)
     DoctorId = this._IPReportService.userForm.get('DoctorId').value.DoctorId
  
-  let GroupId = 0;
-  if (this._IPReportService.userForm.get('GroupId').value)
-    DoctorId = this._IPReportService.userForm.get('GroupId').value.GroupId
+  this.OPIPType= parseInt(this._IPReportService.userForm.get('OPIPType').value)
  
 
   setTimeout(() => {
     // this.SpinLoading =true;
     // this.AdList=true;
-   this._IPReportService.getConDoctorSharesReportView(DoctorId,GroupId,
+   this._IPReportService.getConDoctorSharesReportView(
     this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
     this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-         0
+    DoctorId,this.OPIPType
      ).subscribe(res => {
      const matDialog = this._matDialog.open(PdfviewerComponent,
        {
