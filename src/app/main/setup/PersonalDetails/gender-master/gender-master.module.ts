@@ -18,6 +18,8 @@ import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
 import { GenderMasterComponent } from "./gender-master.component";
 import { GenderMasterService } from "./gender-master.service";
 import { SharedModule } from "app/main/shared/shared.module";
+import { NewGendermasterComponent } from './new-gendermaster/new-gendermaster.component';
+import { MatDialogModule } from "@angular/material/dialog";
 
 const routes: Routes = [
     {
@@ -27,7 +29,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [GenderMasterComponent],
+    declarations: [GenderMasterComponent, NewGendermasterComponent],
     imports: [
         RouterModule.forChild(routes),
         SharedModule,
@@ -46,6 +48,7 @@ const routes: Routes = [
         MatSnackBarModule,
         FuseSharedModule,
         FuseSidebarModule,
+        MatDialogModule,
     ],
     providers: [GenderMasterService],
     entryComponents: [GenderMasterComponent],

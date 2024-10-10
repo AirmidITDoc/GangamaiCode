@@ -1,6 +1,5 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-import { PrefixMasterComponent } from "./prefix-master.component";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatFormFieldModule } from "@angular/material/form-field";
@@ -16,7 +15,12 @@ import { MatRadioModule } from "@angular/material/radio";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { FuseSharedModule } from "@fuse/shared.module";
 import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
+
+import { SharedModule } from "app/main/shared/shared.module";
+import { PrefixMasterComponent } from "./prefix-master.component";
+import { NewPrefixComponent } from "./new-prefix/new-prefix.component";
 import { PrefixMasterService } from "./prefix-master.service";
+import { MatDialogModule } from "@angular/material/dialog";
 
 const routes: Routes = [
     {
@@ -26,10 +30,10 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [PrefixMasterComponent],
+    declarations: [PrefixMasterComponent,NewPrefixComponent],
     imports: [
         RouterModule.forChild(routes),
-
+        SharedModule,
         MatButtonModule,
         MatCheckboxModule,
         MatFormFieldModule,
@@ -45,6 +49,7 @@ const routes: Routes = [
         MatSnackBarModule,
         FuseSharedModule,
         FuseSidebarModule,
+        MatDialogModule,
     ],
     providers: [PrefixMasterService],
     entryComponents: [PrefixMasterComponent],

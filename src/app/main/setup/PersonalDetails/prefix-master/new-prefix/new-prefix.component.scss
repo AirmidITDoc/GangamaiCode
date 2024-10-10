@@ -1,33 +1,31 @@
-app-prefix-master{
+.p-sm-24 {
+    padding: 10px !important;
+}
+
+app-gender-master {
     .mat-header-row {
-        width: 800px;
-        max-width: 800px;
-        min-width: 800px;
+        width: 600px;
+        max-width: 600px;
+        min-width: 600px;
         font-weight: bold;
     }
 
     .mat-row {
-        width: 800px;
-        max-width: 800px;
-        min-width: 800px;
+        width: 600px;
+        max-width: 600px;
+        min-width: 600px;
     }
 
-    .mat-column-PrefixID {
-        width: 110px;
-        max-width: 110px;
-        min-width: 110px;
-    }
-
-    .mat-column-PrefixName {
-        width: 250px;
-        max-width: 250px;
-        min-width: 250px;
+    .mat-column-GenderId {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
     }
 
     .mat-column-GenderName {
-        width: 250px;
-        max-width: 250px;
-        min-width: 250px;
+        width: 200px;
+        max-width: 200px;
+        min-width: 200px;
     }
 
     .mat-column-IsDeleted {

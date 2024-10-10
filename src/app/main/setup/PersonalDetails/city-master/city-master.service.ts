@@ -1,15 +1,15 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { gridRequest } from "app/core/models/gridRequest";
+import { ApiCaller } from "app/core/services/apiCaller";
 
-@Injectable({
-    providedIn: "root",
-})
+@Injectable()
 export class CityMasterService {
     myform: FormGroup;
     myformSearch: FormGroup;
-    constructor(
-        private _httpClient: HttpClient,
+    constructor(   private _httpClient1: HttpClient,
+        private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder
     ) {
         this.myform = this.createCityForm();
@@ -40,39 +40,38 @@ export class CityMasterService {
         this.createCityForm();
     }
 
-    public getCityMasterList(param) {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_CityNameList_by_Name",
-            param
-        );
-    }
-
+  
     public getCityMasterCombo() {
-        return this._httpClient.post(
+        return this._httpClient1.post(
             "Generic/GetByProc?procName=Retrieve_CityMasterForCombo",
             {}
         );
     }
 
-    // public getStateMasterCombo() {
-    //     return this._httpClient.post(
-    //         "Generic/GetByProc?procName=Retrieve_StateMaster ",
-    //         {}
-    //     );
-    // }
+    
 
     public getStateList(CityId) {
-        return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StateMasterForCombo_Conditional",{"Id": CityId})
+        return this._httpClient1.post("Generic/GetByProc?procName=Retrieve_StateMasterForCombo_Conditional",{"Id": CityId})
     }
     
 
-    public cityMasterInsert(param) {
-        return this._httpClient.post("PersonalDetails/CitySave", param);
+    public getCityMasterList(param: gridRequest, showLoader = true) {
+        return this._httpClient.PostData("CityMaster/List", param, showLoader);
     }
 
-    public cityMasterUpdate(param) {
-        return this._httpClient.post("PersonalDetails/CityUpdate", param);
+    public cityMasterInsert(Param: any, showLoader = true) {
+        return this._httpClient.PostData("City", Param, showLoader);
     }
+
+    public cityMasterUpdate(id: number , Param: any, showLoader = true) {
+        return this._httpClient.PostData("City", Param, showLoader);
+    }
+
+    public deactivateTheStatus(m_data) {
+        //return this._httpClient.delete("Gender?Id=" + m_data, {});
+        return this._httpClient.PostData("City", m_data);
+    }
+
 
     populateForm(param) {
         this.myform.patchValue(param);

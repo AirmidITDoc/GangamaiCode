@@ -9,6 +9,10 @@ import { CityMasterService } from "./city-master.service";
 import { takeUntil } from "rxjs/operators";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
+import { NewCityComponent } from "./new-city/new-city.component";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
+import { gridModel } from "app/core/models/gridRequest";
 
 @Component({
     selector: "app-city-master",
@@ -18,276 +22,148 @@ import { ToastrService } from "ngx-toastr";
     animations: fuseAnimations,
 })
 export class CityMasterComponent implements OnInit {
-    CityMasterList: any;
-    StatecmbList: any = [];
+  
     msg: any;
-    CitycmbList: any = [];
-
-    //state filter
-    public stateFilterCtrl: FormControl = new FormControl();
-    public filteredState: ReplaySubject<any> = new ReplaySubject<any>(1);
-    public cityFilterCtrl: FormControl = new FormControl();
-    public filteredCity: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-
-    private _onDestroy = new Subject<void>();
+  private _onDestroy = new Subject<void>();
 
     displayedColumns: string[] = [
-        "CITYID",
-        "CITYNAME",
-        //"STATEID",
-        "STATENAME",
-        //  "COUNTRYID",
-        "COUNTRYNAME",
-        // "AddedBy",
-        "ISDELETED",
+        "CityId",
+        "CityName",
+        "StateId",
+        "IsDeleted",
         "action",
     ];
 
     DSCityMasterList = new MatTableDataSource<CityMaster>();
-    @ViewChild(MatSort) sort: MatSort;
-    @ViewChild(MatPaginator) paginator: MatPaginator;
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    gridConfig: gridModel = {
+        apiUrl: "CityMaster/List",
+        headers: [
+        "CityId",
+        "CityName",
+        "StateId",
+        "IsDeleted",
+        "action",
+        ],
+        columnsList: [
+            { heading: "Code", key: "CityId", sort: false, align: 'left', emptySign: 'NA' },
+            { heading: "City Name", key: "CityName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "State Name", key: "StateId", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "IsDeleted", key: "isActive", type: 'status', align: "center" },
+            { heading: "Action", key: "action", align: "right", type: "action", action: [2, 3] } //Action 1-view, 2-Edit,3-delete
+        ],
+        sortField: "CityId",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "CityName", fieldValue: "", opType: "Contains" }
+        ],
+        row: 10
+    }
 
-    constructor(public _cityService: CityMasterService,
+    constructor(public _cityService: CityMasterService,public _matDialog: MatDialog,
         public toastr : ToastrService,) {}
 
     ngOnInit(): void {
-        this.getCityMasterList();
-        // this.getStateNameCombobox();
-        this.getCityMasterCombo();
-       
-
-        // this.stateFilterCtrl.valueChanges
+      
+        // this.getCityMasterCombo();
+     
+        //     this.cityFilterCtrl.valueChanges
         //     .pipe(takeUntil(this._onDestroy))
         //     .subscribe(() => {
-        //         this.filterState();
+        //         this.filterCity();
         //     });
-
-            this.cityFilterCtrl.valueChanges
-            .pipe(takeUntil(this._onDestroy))
-            .subscribe(() => {
-                this.filterCity();
-            });
     }
 
-    onSearch() {
-        this.getCityMasterList();
+   
+    changeStatus(status: any) {
+        switch (status.id) {
+            case 1:
+                //this.onEdit(status.data)
+                break;
+            case 2:
+                this.onEdit(status.data)
+                break;
+            case 5:
+                this.onDeactive(status.data.genderId);
+                break;
+            default:
+                break;
+        }
     }
-
     onSearchClear() {
         this._cityService.myformSearch.reset({
             CityNameSearch: "",
             IsDeletedSearch: "2",
         });
-        this.getCityMasterList();
-    }
-    private filterCity() {
-        // debugger;
-        if (!this.CitycmbList) {
-            return;
-        }
-        // get the search keyword
-        let search = this.cityFilterCtrl.value;
-        if (!search) {
-            this.filteredCity.next(this.CitycmbList.slice());
-            return;
-        } else {
-            search = search.toLowerCase();
-        }
-        // filter
-        this.filteredCity.next(
-            this.CitycmbList.filter(
-                (bank) => bank.CityName.toLowerCase().indexOf(search) > -1
-            )
-        );     
-    }
-    getCityMasterCombo() {
-        this._cityService.getCityMasterCombo().subscribe((data) => {
-            this.CitycmbList = data;
-            this.filteredCity.next(this.CitycmbList.slice());
-                 console.log(this.CitycmbList)
-        });
-    }
-
-    onChangeCityList(CityObj) {
-
-      //  debugger
-        if (CityObj) {
-          this._cityService.getStateList(CityObj.CityId).subscribe((data: any) => {
-               this.StatecmbList = data;
-           console.log( this.StatecmbList);
-         
-           this._cityService.myform.get('StateId').setValue(this.StatecmbList[0]);  
-          });
-        
-        }
-      }
-
       
-    // private filterState() {
-    //     if (!this.StatecmbList) {
-    //         return;
-    //     }
-    //     // get the search keyword
-    //     let search = this.stateFilterCtrl.value;
-    //     if (!search) {
-    //         this.filteredState.next(this.StatecmbList.slice());
-    //         return;
-    //     } else {
-    //         search = search.toLowerCase();
-    //     }
-    //     // filter the banks
-    //     this.filteredState.next(
-    //         this.StatecmbList.filter(
-    //             (bank) => bank.StateName.toLowerCase().indexOf(search) > -1
-               
-    //         )
-    //     );
-    // }
-   
-
-    getCityMasterList() {
-        var param = {
-            CityName:
-                this._cityService.myformSearch
-                    .get("CityNameSearch")
-                    .value.trim() || "%",
-            // IsDeleted:
-            //     Boolean(
-            //         JSON.parse(
-            //             this._cityService.myform.get("IsDeletedSearch").value
-            //         )
-            //     ) || 1,
-        };
-        this._cityService.getCityMasterList(param).subscribe((Menu) => {
-            this.DSCityMasterList.data = Menu as CityMaster[];
-            this.DSCityMasterList.sort = this.sort;
-            this.DSCityMasterList.paginator = this.paginator;
-        });
     }
 
-    // getStateNameCombobox() {
-    //     this._cityService.getStateMasterCombo().subscribe((data) => {
-    //             this.StatecmbList = data
-    //         });
-    //         console.log(this.StatecmbList)
-    // }
-  
+    onDeactive(genderId) {
+        debugger
+        this.confirmDialogRef = this._matDialog.open(
+            FuseConfirmDialogComponent,
+            {
+                disableClose: false,
+            }
+        );
+        this.confirmDialogRef.componentInstance.confirmMessage =
+            "Are you sure you want to deactive?";
+        this.confirmDialogRef.afterClosed().subscribe((result) => {
+            debugger
+            if (result) {
+                this._cityService.deactivateTheStatus(genderId).subscribe((data: any) => {
+                    this.msg = data
+                    if (data.StatusCode == 200) {
+                        this.toastr.success(
+                            "Record updated Successfully.",
+                            "updated !",
+                            {
+                                toastClass:
+                                    "tostr-tost custom-toast-success",
+                            }
+                        );
+                        // this.getGenderMasterList();
+                    }
+                });
+            }
+            this.confirmDialogRef = null;
+        });
+    }
+    
+    
 
     onClear() {
         this._cityService.myform.reset({ IsDeleted: "false" });
         this._cityService.initializeFormGroup();
     }
 
-    onSubmit() {
-        if (this._cityService.myform.valid) {
-            if (!this._cityService.myform.get("CityId").value) {
-                var m_data = {
-                    cityMasterInsert: {
-                        cityName: this._cityService.myform.get("CityName").value.CityName,
-                        stateId:
-                            this._cityService.myform.get("StateId").value.StateId,
-                        addedBy: 1,
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._cityService.myform.get("IsDeleted").value
-                            )
-                        ),
-                    },
-                };
-
-                this._cityService.cityMasterInsert(m_data).subscribe((data) => {
-                    this.msg = data;
-                    if (data) {
-                        this.toastr.success('Record Saved Successfully.', 'Saved !', {
-                            toastClass: 'tostr-tost custom-toast-success',
-                          });
-                        this.getCityMasterList();
-                        // Swal.fire(
-                        //     "Saved !",
-                        //     "Record saved Successfully !",
-                        //     "success"
-                        // ).then((result) => {
-                        //     if (result.isConfirmed) {
-                        //         this.getCityMasterList();
-                        //     }
-                        // });
-                    } else {
-                        this.toastr.error('City Master Data not saved !, Please check API error..', 'Error !', {
-                            toastClass: 'tostr-tost custom-toast-error',
-                          });
-                    }
-                    this.getCityMasterList();
-                },error => {
-                    this.toastr.error('City Data not saved !, Please check API error..', 'Error !', {
-                     toastClass: 'tostr-tost custom-toast-error',
-                   });
-                 } );
-            } else {
-                var m_dataUpdate = {
-                    cityMasterUpdate: {
-                        cityId: this._cityService.myform.get("CityId").value,
-                        cityName: this._cityService.myform.get("CityName").value.CityName,
-                        stateId:
-                            this._cityService.myform.get("StateId").value
-                                .StateId,
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._cityService.myform.get("IsDeleted").value
-                            )
-                        ),
-                        updatedBy: 1,
-                    },
-                };
-
-                this._cityService
-                    .cityMasterUpdate(m_dataUpdate)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record updated Successfully.', 'updated !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                              this.getCityMasterList();
-                            // Swal.fire(
-                            //     "Updated !",
-                            //     "Record updated Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getCityMasterList();
-                            //     }
-                            // });
-                        } else {
-                            this.toastr.error('City Master Data not updated !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                        }
-                        this.getCityMasterList();
-                    },error => {
-                        this.toastr.error('City Data not Updated !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     } );
-            }
-            this.onClear();
-        }
-    }
-
+    
     onEdit(row) {
         var m_data = {
             CityId: row.CITYID,
             CityName: row.CITYNAME,
             StateId: row.STATEID,
             StateName: row.STATENAME,
-            // CountryId: row.COUNTRYID,
-            //  CountryName: row.COUNTRYNAME,
             IsDeleted: JSON.stringify(row.ISDELETED),
             UpdatedBy: row.UpdatedBy,
         };
         console.log(row);
         this._cityService.populateForm(m_data);
     }
+
+    
+    newCityMaster(){
+        const dialogRef = this._matDialog.open(NewCityComponent,
+          {
+            maxWidth: "85vw",
+            height: '65%',
+            width: '70%',
+          });
+        dialogRef.afterClosed().subscribe(result => {
+           console.log('The dialog was closed - Insert Action', result);
+           
+        });
+      }
 }
 
 export class CityMaster {

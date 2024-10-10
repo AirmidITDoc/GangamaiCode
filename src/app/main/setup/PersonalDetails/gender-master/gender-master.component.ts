@@ -5,6 +5,7 @@ import { GenderMasterService } from "./gender-master.service";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { gridModel } from "app/core/models/gridRequest";
+import { NewGendermasterComponent } from "./new-gendermaster/new-gendermaster.component";
 
 @Component({
     selector: "app-gender-master",
@@ -230,6 +231,19 @@ export class GenderMasterComponent implements OnInit {
             }
             this.confirmDialogRef = null;
         });
+    }
+
+    newgendermaster(){
+        const dialogRef = this._matDialog.open(NewGendermasterComponent,
+            {
+              maxWidth: "45vw",
+              height: '35%',
+              width: '70%',
+            });
+          dialogRef.afterClosed().subscribe(result => {
+             console.log('The dialog was closed - Insert Action', result);
+             
+          });
     }
 }
 

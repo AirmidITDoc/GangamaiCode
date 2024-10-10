@@ -1,12 +1,11 @@
 <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" class="fuse-search-sidebar">
     <!-- SIDEBAR HEADER -->
     <div class="sidebar-content">
-        <div class="accent sidebar-header" fxLayout="row" fxLayoutAlign="start center">
+        <!-- <div class="accent sidebar-header" fxLayout="row" fxLayoutAlign="start center">
             <span class="search-title">Search Facility</span>
-            <!-- / USER -->
+            
         </div>
-        <!-- / SIDEBAR HEADER -->
-        <!-- SIDEBAR CONTENT -->
+       
         <div class="nav material2">
             <div fxLayout="column" fxLayoutAlign="start none">
                 <ng-content select="[filters]"></ng-content>
@@ -19,7 +18,7 @@
                     </button>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </fuse-sidebar>
 <!-- <div fxlayout="row" style="background-color: white;padding: 5px 10px 5px 10px;">
@@ -92,9 +91,9 @@
                                     </ng-container>
                                 </mat-cell>
                             </ng-container>
-                            <mat-header-row class="accent" *matHeaderRowDef="gridConfig.headers; sticky: true">
+                            <mat-header-row class="accent" class="accent min-width-1900" *matHeaderRowDef="gridConfig.headers; sticky: true">
                             </mat-header-row>
-                            <mat-row *matRowDef="let row; columns: gridConfig.headers;" class="element"
+                            <mat-row *matRowDef="let row; columns: gridConfig.headers;" class="element" class="min-width-1900"
                                 [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                         </mat-table>
                         <mat-paginator [pageSizeOptions]="[12, 24, 35, 100]" [pageSize]="12" [length]="resultsLength"

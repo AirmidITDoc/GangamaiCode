@@ -1,16 +1,17 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { gridRequest } from "app/core/models/gridRequest";
+import { ApiCaller } from "app/core/services/apiCaller";
 
-@Injectable({
-    providedIn: "root",
-})
+@Injectable()
 export class PrefixMasterService {
     myform: FormGroup;
     myformSearch: FormGroup;
 
     constructor(
-        private _httpClient: HttpClient,
+     
+        private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder
     ) {
         this.myform = this.createPrefixForm();
@@ -38,29 +39,27 @@ export class PrefixMasterService {
     initializeFormGroup() {
         this.createPrefixForm();
     }
-    // get Perfix Master list
-    public getPrefixMasterList(Param) {
-        return this._httpClient.post("Generic/GetByProc?procName=Rtrv_DB_PrefixMaster_by_Name", Param);
+  
+
+    public getPrefixMasterList(param: gridRequest, showLoader = true) {
+        return this._httpClient.PostData("Prefix/List", param, showLoader);
     }
 
-    // Gender Master Combobox List
-    public getGenderMasterCombo() {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=RetrieveGenderMasterForCombo",
-            {}
-        );
+    public insertPrefixMaster(Param: any, showLoader = true) {
+        return this._httpClient.PostData("Prefix", Param, showLoader);
     }
 
-    // Insert Perfix Master
-    public insertPrefixMaster(Param) {
-        return this._httpClient.post("PersonalDetails/PrefixSave", Param);
-    }
-
-    // Update Perfix Master
-    public updatePrefixMaster(Param) {
-        return this._httpClient.post("PersonalDetails/PrefixUpdate", Param);
+    public updatePrefixMaster(id: number , Param: any, showLoader = true) {
+        
+        return this._httpClient.PostData("Prefix", Param, showLoader);
     }
     populateForm(param) {
         this.myform.patchValue(param);
+    }
+
+
+    public deactivateTheStatus(m_data) {
+        //return this._httpClient.delete("Gender?Id=" + m_data, {});
+        return this._httpClient.PostData("Prefix", m_data);
     }
 }
