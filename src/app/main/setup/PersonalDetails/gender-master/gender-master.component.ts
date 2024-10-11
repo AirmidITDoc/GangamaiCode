@@ -6,7 +6,7 @@ import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/conf
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { gridModel } from "app/core/models/gridRequest";
 import { NewGendermasterComponent } from "./new-gendermaster/new-gendermaster.component";
-import { gridActions } from "app/core/models/tableActions";
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 
 @Component({
     selector: "app-gender-master",
@@ -36,9 +36,9 @@ export class GenderMasterComponent implements OnInit {
         columnsList: [
             { heading: "Code", key: "genderId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Gender Name", key: "genderName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsDeleted", key: "isActive", type: 'status', align: "center" },
+            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
-                heading: "Action", key: "action", align: "right", type: "action", action: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, action: [
                     {
                         action: gridActions.Edit, callback: (data: any) => {
                             debugger
