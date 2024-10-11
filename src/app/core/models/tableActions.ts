@@ -1,9 +1,9 @@
 export enum gridActions{
-    Add=1,
-    Edit=2,
-    Delete=3,
-    View=4,
-    Print=5
+    add=1,
+    edit=2,
+    delete=3,
+    view=4,
+    print=5
 }
 export enum gridColumnTypes{
     default=1,

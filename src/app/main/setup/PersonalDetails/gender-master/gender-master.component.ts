@@ -40,11 +40,11 @@ export class GenderMasterComponent implements OnInit {
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, action: [
                     {
-                        action: gridActions.Edit, callback: (data: any) => {
+                        action: gridActions.edit, callback: (data: any) => {
                             debugger
                         }
                     }, {
-                        action: gridActions.Delete, callback: (data: any) => {
+                        action: gridActions.delete, callback: (data: any) => {
                             debugger
                         }
                     }]

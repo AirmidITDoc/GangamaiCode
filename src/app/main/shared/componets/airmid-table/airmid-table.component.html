@@ -47,15 +47,15 @@
                                         </ng-container>
                                         <ng-container *ngSwitchCase="GridColumnType.action">
                                             <ng-container *ngFor="let sta of row.action">
-                                                <button mat-icon-button *ngIf="sta.action == GridAction.View"
+                                                <button mat-icon-button *ngIf="sta.action == GridAction.view"
                                                     (click)="sta.callback(element)" style="color:blue;">
                                                     <mat-icon title="View">eyes</mat-icon>
                                                 </button>
-                                                <button mat-icon-button *ngIf="sta.action == GridAction.Edit"
+                                                <button mat-icon-button *ngIf="sta.action == GridAction.edit"
                                                     (click)="sta.callback(element)" style="color:black;">
                                                     <mat-icon title="Edit Menu">launch</mat-icon>
                                                 </button>
-                                                <button mat-icon-button *ngIf="sta.action == GridAction.Delete"
+                                                <button mat-icon-button *ngIf="sta.action == GridAction.delete"
                                                     (click)="sta.callback(element)" color="warn">
                                                     <mat-icon>delete_outline</mat-icon>
                                                 </button>
