@@ -34,7 +34,7 @@ export class GenderMasterComponent implements OnInit {
             "action"
         ],
         columnsList: [
-            { heading: "Code", key: "genderId", sort: false, align: 'left', emptySign: 'NA' },
+            { heading: "Code", key: "genderId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Gender Name", key: "genderName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsDeleted", key: "isActive", type: 'status', align: "center" },
             {

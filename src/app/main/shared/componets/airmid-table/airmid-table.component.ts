@@ -63,11 +63,4 @@ export class AirmidTableComponent implements OnInit {
     getStatus(status: boolean) {
         return status;
     }
-    changeStatus(id: number, data: any) {
-        const body = {
-            id: id,
-            data: data,
-        };
-        this.status.emit(body);
-    }
 }
