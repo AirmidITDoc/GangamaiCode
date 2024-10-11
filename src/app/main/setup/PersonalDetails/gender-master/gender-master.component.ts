@@ -6,6 +6,7 @@ import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/conf
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { gridModel } from "app/core/models/gridRequest";
 import { NewGendermasterComponent } from "./new-gendermaster/new-gendermaster.component";
+import { gridActions } from "app/core/models/tableActions";
 
 @Component({
     selector: "app-gender-master",
@@ -36,7 +37,18 @@ export class GenderMasterComponent implements OnInit {
             { heading: "Code", key: "genderId", sort: false, align: 'left', emptySign: 'NA' },
             { heading: "Gender Name", key: "genderName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsDeleted", key: "isActive", type: 'status', align: "center" },
-            { heading: "Action", key: "action", align: "right", type: "action", action: [2, 3] } //Action 1-view, 2-Edit,3-delete
+            {
+                heading: "Action", key: "action", align: "right", type: "action", action: [
+                    {
+                        action: gridActions.Edit, callback: (data: any) => {
+                            debugger
+                        }
+                    }, {
+                        action: gridActions.Delete, callback: (data: any) => {
+                            debugger
+                        }
+                    }]
+            } //Action 1-view, 2-Edit,3-delete
         ],
         sortField: "genderId",
         sortOrder: 0,
@@ -234,17 +246,17 @@ export class GenderMasterComponent implements OnInit {
         });
     }
 
-    newgendermaster(){
+    newgendermaster() {
         const dialogRef = this._matDialog.open(NewGendermasterComponent,
             {
-              maxWidth: "45vw",
-              height: '35%',
-              width: '70%',
+                maxWidth: "45vw",
+                height: '35%',
+                width: '70%',
             });
-          dialogRef.afterClosed().subscribe(result => {
-             console.log('The dialog was closed - Insert Action', result);
-             
-          });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
+
+        });
     }
 }
 

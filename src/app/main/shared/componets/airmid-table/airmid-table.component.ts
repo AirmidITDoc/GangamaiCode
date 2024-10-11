@@ -3,6 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { gridModel, gridRequest, gridResponseType } from 'app/core/models/gridRequest';
+import { gridActions } from 'app/core/models/tableActions';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Component({
@@ -34,6 +35,10 @@ export class AirmidTableComponent implements OnInit {
     ngAfterViewInit() {
         this.bindGridData();
     }
+    public get GridAction() {
+        return gridActions; 
+      }
+      
     bindGridData() {
         var param: gridRequest = {
             sortField: this.sort?.active ?? this.gridConfig.sortField,
