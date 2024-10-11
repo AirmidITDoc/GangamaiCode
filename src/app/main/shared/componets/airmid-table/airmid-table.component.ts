@@ -30,9 +30,6 @@ export class AirmidTableComponent implements OnInit {
     //     this.gridConfig.columnsList.forEach(columnDef => this.table.addColumnDef(columnDef));
     // }
     ngOnInit(): void {
-
-    }
-    ngAfterViewInit() {
         this.bindGridData();
     }
     public get GridAction() {

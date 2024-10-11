@@ -25,7 +25,7 @@
                 <div fxlayout="row">
                     <div style="width: 100%;">
                         <mat-table #table matSort [dataSource]="dataSource" (matSortChange)="bindGridData()"
-                            [@animateStagger]="{value:'50'}" style="overflow:auto">
+                            style="overflow:auto">
                             <ng-container *ngFor="let row of gridConfig?.columnsList" [matColumnDef]="row.key">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="!row.sort"> {{
                                     row?.heading }}
@@ -46,7 +46,7 @@
                                             {{ element[row.key]}}
                                         </ng-container>
                                         <ng-container *ngSwitchCase="GridColumnType.action">
-                                            <ng-container *ngFor="let sta of row.action">
+                                            <ng-container *ngFor="let sta of row.actions">
                                                 <button mat-icon-button *ngIf="sta.action == GridAction.view"
                                                     (click)="sta.callback(element)" style="color:blue;">
                                                     <mat-icon title="View">eyes</mat-icon>
@@ -66,8 +66,7 @@
                             </ng-container>
                             <mat-header-row class="accent" *matHeaderRowDef="gridConfig.headers; sticky: true">
                             </mat-header-row>
-                            <mat-row *matRowDef="let row; columns: gridConfig.headers;" class="element"
-                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                            <mat-row *matRowDef="let row; columns: gridConfig.headers;" class="element"></mat-row>
                         </mat-table>
                         <mat-toolbar>
                             <mat-toolbar-row>
