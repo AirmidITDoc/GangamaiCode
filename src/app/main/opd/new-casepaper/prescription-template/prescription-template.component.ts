@@ -73,7 +73,7 @@ chargelist:any=[];
       TemplateName:'', 
     });
   } 
-  
+  savebtn:boolean=false;
   onSave(){
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
@@ -86,6 +86,7 @@ chargelist:any=[];
       });
       return;
     }  
+    this.savebtn = true;
     let insert_TemplateHObj = {};
     insert_TemplateHObj['presId'] = 0;
     insert_TemplateHObj['presTemplateName'] = this.TemplateForm.get('TemplateName').value || '';
@@ -126,21 +127,26 @@ chargelist:any=[];
         this.toastr.success('Record Successfuly saved','Saved !',{
           toastClass: 'tostr-tost custom-toast-success',
         })
+        this.onClose();
+        this.savebtn = false;
       }else{
         this.toastr.error('Record not saved','Error !',{
           toastClass: 'tostr-tost custom-toast-error',
         })
+         this.savebtn = true;
       }
     },error =>{
       this.toastr.error('Please Check Api Error','Error !',{
         toastClass: 'tostr-tost custom-toast-error',
       })
+      this.savebtn = true;
     }
   );
 
   }
   onClose(){
-    this._matDialog.closeAll();
+    this.vTemplatename = '';
+    this._matDialog.closeAll(); 
   }
 
   onClear(){

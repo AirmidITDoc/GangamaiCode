@@ -2,6 +2,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { LoaderService } from 'app/core/components/loader/loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,8 @@ NewUseForm:FormGroup;
    
   constructor(
     public _httpClient:HttpClient,
-    public _formbuilder:FormBuilder
+    public _formbuilder:FormBuilder,
+    private _loaderService : LoaderService
   ) 
   {this.UseFormGroup=this.createuseFormGroup() ,
   this.NewUseForm=this.createNewUseForm(),
@@ -51,17 +53,26 @@ CreateStorForm() {
   public getLoggedStoreList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
   }
-  public getItemNameList(Param) {
+  public getItemNameList(Param,loader = true){
+    if(loader){
+      this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveItemName_GRN", Param);
   }
   public getOpeningBalList(Param) {
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_OpeningItemList", Param);
   }
-  public getOpeningBalItemDetList(Param) {
+  public getOpeningBalItemDetList(Param,loader = true){
+    if(loader){
+      this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_OpeningItemDet", Param);
   }
   
-  public InsertOpeningBalSave(Param){
+  public InsertOpeningBalSave(Param,loader = true){
+    if(loader){
+      this._loaderService.show();
+    }
     return this._httpClient.post("Inventory/OpeningTransactionSave", Param)
   }
 }

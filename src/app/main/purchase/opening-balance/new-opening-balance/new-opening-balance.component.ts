@@ -234,18 +234,26 @@ vExpDate1:any='';
     let openingBalanceParamInsertdetail = [];
     this.dsItemNameList.data.forEach((element) => {
       debugger
+      
+      if (element.ExpDate && element.ExpDate.length === 10) {
+        const day = +element.ExpDate.substring(0, 2);
+        const month = +element.ExpDate.substring(3, 5);
+        const year = +element.ExpDate.substring(6, 10);
+
+        this.vExpDate = `${year}/${this.pad(month)}/${day}`;
+    }
       let openingBalanceParamInsertObj = {};
       openingBalanceParamInsertObj['storeId'] = this._loggedService.currentUserValue.user.storeId;
       openingBalanceParamInsertObj['openingDate'] = this.dateTimeObj.date;
       openingBalanceParamInsertObj['openingTime'] = this.dateTimeObj.time;
       openingBalanceParamInsertObj['openingDocNo'] = 0;
-      openingBalanceParamInsertObj['itemId'] = this.vItemId || 0,
-      openingBalanceParamInsertObj['batchNo'] = this.vBatchNo || ''
-      openingBalanceParamInsertObj['batchExpDate'] = this.vExpDate1 || '01/01/1900',
-      openingBalanceParamInsertObj['perUnitPurRate'] = this.vRatePerUnit || 0
-      openingBalanceParamInsertObj['perUnitMrp'] = this.vMRP || 0
-      openingBalanceParamInsertObj['vatPer'] = this.vGST || 0
-      openingBalanceParamInsertObj['balQty'] = this.vBalQty || 0
+      openingBalanceParamInsertObj['itemId'] = element.ItemID|| 0,
+      openingBalanceParamInsertObj['batchNo'] = element.BatchNo || '',
+      openingBalanceParamInsertObj['batchExpDate'] = this.vExpDate  || '01/01/1900',
+      openingBalanceParamInsertObj['perUnitPurRate'] = element.PerRate || 0
+      openingBalanceParamInsertObj['perUnitMrp'] = element.UnitMRP || 0
+      openingBalanceParamInsertObj['vatPer'] = element.GST || 0
+      openingBalanceParamInsertObj['balQty'] = element.BalQty || 0
       openingBalanceParamInsertObj['addedby'] = this._loggedService.currentUserValue.user.id,
       openingBalanceParamInsertObj['updatedby'] = 0;
       openingBalanceParamInsertObj['openingId'] = 0;
@@ -264,19 +272,19 @@ vExpDate1:any='';
     console.log(submitData);
     this._OpeningBalanceService.InsertOpeningBalSave(submitData).subscribe(response => {
       if (response) {
-        this.toastr.success('Record Opening Balance Data Saved Successfully.', 'Saved !', {
+        this.toastr.success('Record Saved Successfully.', 'Saved !', {
           toastClass: 'tostr-tost custom-toast-success',
         });
         this.OnReset();
         this._matDialog.closeAll();
         this.Savebtn = false;
       } else {
-        this.toastr.error(' Opening Balance Data not Saved !, Please check error..', 'Error !', {
+        this.toastr.error('Record Data not Saved !, Please check error..', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
         });
       }
     }, error => {
-      this.toastr.error(' Opening Balance Data not Saved !, Please check API error..', 'Error !', {
+      this.toastr.error(' Record Data not Saved !, Please check API error..', 'Error !', {
         toastClass: 'tostr-tost custom-toast-error',
       });
     });
@@ -363,7 +371,7 @@ export class dsItemNameList {
   ItemID: any;
   ItemName: string;
   BatchNo: number;
-  ExpDate: number;
+  ExpDate: any;
   BalQty: number;
   PerRate: number;
   UnitMRP: number;

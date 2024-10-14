@@ -29,7 +29,7 @@
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Template Name</mat-label>
                                     <input name="TemplateName" formControlName="TemplateName" placeholder="Template Name"
-                                        [(ngModel)]="vTemplatename" matInput type="text">
+                                        [(ngModel)]="vTemplatename" matInput type="text" required>
                                 </mat-form-field>  
                             </div>
                         </mat-card>
@@ -38,7 +38,7 @@
                     <div style="padding: 8px;" fxLayoutAlign="end">
                         <div class="sales-footer-buttons gap-6" fxLayout="row">
                             <button class="btn btn-danger-outline" (click)="onClear()">Close</button>
-                            <button class="btn btn-primary " (click)="onSave()">Save</button>
+                            <button class="btn btn-primary " (click)="onSave()" [disabled]="savebtn">Save</button>
                         </div>
                     </div>
                 </div>
