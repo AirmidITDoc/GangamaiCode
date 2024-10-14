@@ -746,7 +746,7 @@ debugger
                 this.ChekGSTPer = data;
                 console.log(this.ChekGSTPer)
             })
-            if (contact.CGSTPer) {
+            if (parseFloat(contact.CGSTPer) >= 2.5 ) {
                 const dvalue = this.ChekGSTPer.find(item => item.GSTPer == parseFloat(contact.CGSTPer))
                 console.log(dvalue)
                 if (!dvalue) {
@@ -757,7 +757,7 @@ debugger
                     return
                 }
             }
-            if (contact.SGSTPer) {
+            if (parseFloat(contact.SGSTPer) >= 2.5) {
                 const dvalue1 = this.ChekGSTPer.find(item => item.GSTPer == parseFloat(contact.SGSTPer))
                 console.log(dvalue1)
                 if (!dvalue1) {
@@ -768,7 +768,7 @@ debugger
                     return
                 }
             }
-            if (contact.IGSTPer) {
+            if (parseFloat(contact.IGSTPer) >= 2.5) {
                 const dvalue3 = this.ChekGSTPer.find(item => item.GSTPer == parseFloat(contact.IGSTPer))
                 console.log(dvalue3)
                 if (!dvalue3) {

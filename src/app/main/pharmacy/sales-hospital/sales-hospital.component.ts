@@ -3192,7 +3192,7 @@ export class SalesHospitalComponent implements OnInit {
     SalesInsert['creditReasonID'] = 0;
     SalesInsert['wardId'] = 0;
     SalesInsert['bedId'] = 0;
-    SalesInsert['extMobileNo'] = this.MobileNo || '';
+    SalesInsert['extMobileNo'] = this.MobileNo || this.OP_IP_MobileNo || '';
     SalesInsert['extAddress'] = this.vextAddress || '';
     SalesInsert['isClosed'] = false;
     SalesInsert['DsalesId'] = 0;
@@ -3453,6 +3453,7 @@ getSearchListIP() {
   TariffName:any;
   CompanyName:any;
   Age:any;
+  OP_IP_MobileNo:any;
   getSelectedObjRegIP(obj) {
     let IsDischarged = 0;
     IsDischarged = obj.IsDischarged 
@@ -3476,6 +3477,7 @@ getSearchListIP() {
       this.TariffName =obj.TariffName
       this.CompanyName = obj.CompanyName;
       this.Age = obj.Age;
+      this.OP_IP_MobileNo = obj.MobileNo;
     } 
     this.getBillSummary();
   }
@@ -3497,6 +3499,7 @@ getSearchListIP() {
       this.OPDNo = obj.OPDNo;
       this.CompanyName = obj.CompanyName;
       this.TariffName = obj.TariffName; 
+      this.OP_IP_MobileNo = obj.MobileNo;
       this.getBillSummary();
   }
   getOptionTextIPObj(option) { 

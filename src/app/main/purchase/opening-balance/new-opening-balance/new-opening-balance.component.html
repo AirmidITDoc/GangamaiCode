@@ -113,12 +113,14 @@
                                     <input name="RatePerUnit" formControlName="RatePerUnit" matInput required
                                     type="text" OnlyNumber [(ngModel)]="vRatePerUnit" #RatePerUnit (keydown)="onEnterRatePerUnit($event)"
                                     (keypress)="keyPressCharater($event)" (keyup)="CheckValidation()">
-                                </mat-form-field>  
+                                </mat-form-field>&nbsp;&nbsp;
 
+                               <div >
                                 <button type="button" class="btn btn-primary"  #addbutton  
                                     (click)="Onadd()">
                                     <mat-icon>add</mat-icon>
                                 </button>
+                               </div>
 
                             </div>
                            

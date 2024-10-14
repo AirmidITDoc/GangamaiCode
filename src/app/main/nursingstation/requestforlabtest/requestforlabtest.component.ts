@@ -86,7 +86,7 @@ export class RequestforlabtestComponent implements OnInit {
     })
   }
   getRequestdetList(Param){
-    debugger
+    // debugger
     var vdata={
       RequestId: Param.RequestId
     }
@@ -137,7 +137,7 @@ export class RequestforlabtestComponent implements OnInit {
       }
       Swal.fire('Success !', 'ItemList Row Deleted Successfully', 'success');
 
-debugger
+// debugger
       let query = "update T_HLabRequest set IsCancelled=1 where RequestId=" + element.RequestId + "";
       this._RequestforlabtestService.Canclerequest(query).subscribe((resData: any) => {
         
@@ -242,7 +242,7 @@ debugger
 // }
 viewgetPathologyTestReportPdf(contact) {
  
-debugger
+
   setTimeout(() => {
       this.SpinLoading = true; 
       this._RequestforlabtestService.getPathTestReport(contact.OP_IP_Type).subscribe(res => {
@@ -267,8 +267,8 @@ debugger
 
 
 viewgetPathologyTemplateReportPdf(contact) {
-
-  if(contact.IsTemplateTest == '1'){
+  debugger
+  // if(contact.IsTemplateTest == '1'){
     this._RequestforlabtestService.getPathologyTempReport(contact.PathReportID,contact.OP_IP_Type).subscribe(res => {
       const dialogRef = this._matDialog.open(PdfviewerComponent,
         {
@@ -281,31 +281,52 @@ viewgetPathologyTemplateReportPdf(contact) {
           }
         });
     });
-  }
-  else{
-    setTimeout(() => {
-      this.SpinLoading = true; 
-      this._RequestforlabtestService.getPathTestReport(contact.OP_IP_Type).subscribe(res => {
-          const dialogRef = this._matDialog.open(PdfviewerComponent,
-              {
-                  maxWidth: "85vw",
-                  height: '750px',
-                  width: '100%',
-                  data: {
-                      base64: res["base64"] as string,
-                      title: "pathology Test Report Viewer"
-                  }
-              });
-          dialogRef.afterClosed().subscribe(result => { 
-              this.SpinLoading = false;
-          });
-      });
-
-  }, 100);
-  } 
- 
+  // }
+  // else{
+  //   this.LabDataList.push(
+  //     {
+  //       PathReportID :  contact.PathReportID, 
+  //     });
+  //     console.log(this.LabDataList)
+  //   let pathologyDelete = [];
+  //   this.LabDataList.forEach((element) => { 
+  //       let pathologyDeleteObj = {};
+  //       pathologyDeleteObj['pathReportId'] = element.PathReportID
+  //       pathologyDelete.push(pathologyDeleteObj);
+  //   });  
+  //   let submitData = {
+  //       "printInsert": pathologyDelete,
+  //   };
+  //   console.log(submitData);
+  //   this._RequestforlabtestService.PathPrintResultentryInsert(submitData).subscribe(response => {
+  //       if (response) {
+  //           this.viewgetPathologyTestReportPdf1(contact.OP_IP_Type)
+  //       }
+  //   }); 
+  // } 
 }
+viewgetPathologyTestReportPdf1(OP_IP_Type) {
 
+setTimeout(() => {
+    this.SpinLoading = true; 
+    this._RequestforlabtestService.getPathTestReport(OP_IP_Type).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+            {
+                maxWidth: "85vw",
+                height: '750px',
+                width: '100%',
+                data: {
+                    base64: res["base64"] as string,
+                    title: "pathology Test Report Viewer"
+                }
+            });
+        dialogRef.afterClosed().subscribe(result => { 
+            this.SpinLoading = false;
+        });
+    });
+
+}, 100);
+}
 }
 export class RequestList{
   RegNo :any;
