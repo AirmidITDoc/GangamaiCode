@@ -2406,7 +2406,7 @@ debugger
 
 
     viewgetPatientAppointmentReportPdf(obj, Pflag) {
-
+debugger
         this.chkprint = true;
         let VisitId;
         if (Pflag) {
@@ -2441,7 +2441,7 @@ debugger
 
 
     viewgetPatientAppointmentTemplateReportPdf(obj, Pflag) {
-
+debugger
         this.chkprint = true;
         let VisitId;
         if (Pflag) {

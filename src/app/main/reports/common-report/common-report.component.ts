@@ -1360,7 +1360,7 @@ debugger
 
   GetUserList() {
     var data = {
-      "StoreId": this._loggedUser.currentUserValue.user.storeId
+      "StoreId": 0,// this._loggedUser.currentUserValue.user.storeId
     }
     this._OPReportsService.getUserdetailList(data).subscribe(data => {
       this.UserList = data;
