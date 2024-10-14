@@ -23,4 +23,7 @@ export class gridModel{
     sortOrder:number=0;
     filters:gridFilter[]=[];
     row:number=10;
+    mode?: string = "";
+    apiType?: string = "Master";
+    responseTag?: string = "";
 }

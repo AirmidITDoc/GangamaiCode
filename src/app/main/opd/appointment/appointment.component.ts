@@ -48,6 +48,8 @@ import { Table } from "jspdf-autotable";
 import moment, { invalid } from "moment";
 import { values } from "lodash";
 import { WhatsAppEmailService } from "app/main/shared/services/whats-app-email.service";
+import { gridModel } from "app/core/models/gridRequest";
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 
 export class DocData {
     doc: any;
@@ -299,21 +301,85 @@ export class AppointmentComponent implements OnInit {
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
 
-    displayedColumns = [
+    displayedColumns: string[] = [
         "PatientOldNew",
         "RegNoWithPrefix",
         "PatientName",
+        'DepartmentName',
         "DVisitDate",
         "OPDNo",
-        'DepartmentName',
         "Doctorname",
         "RefDocName",
         "PatientType",
-        'TariffName',
         "CompanyName",
+        'TariffName',
         'MobileNo',
-        "action",
+        "action"
     ];
+    gridConfig: gridModel = {
+        apiUrl: "Common",
+        headers: [
+            "PatientOldNew",
+            "RegNoWithPrefix",
+            "PatientName",
+            'DepartmentName',
+            "DVisitDate",
+            "OPDNo",
+            "Doctorname",
+            "RefDocName",
+            "PatientType",
+            "CompanyName",
+            'TariffName',
+            'MobileNo',
+            "action"
+        ],
+        columnsList: [
+            { heading: "Patient", key: "PatientOldNew", sort: false, align: 'left', emptySign: 'NA' },
+            { heading: "UHID", key: "RegNoWithPrefix", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Patient Name", key: "PatientName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Department Name", key: "DepartmentName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Date", key: "DVisitDate", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "OPDNo", key: "OPDNo", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Doctor Name", key: "Doctorname", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Ref Doc Name", key: "RefDocName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Patient Type", key: "PatientType", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Company Name", key: "CompanyName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Tariff Name", key: "TariffName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "MobileNo", key: "MobileNo", sort: true, align: 'left', emptySign: 'NA' },
+            {
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                        }
+                    }, {
+                        action: gridActions.delete, callback: (data: any) => {
+                        }
+                    }]
+            }
+        ],
+        sortField: "PatientOldNew",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "From_Dt", fieldValue: this.datePipe.transform(this._AppointmentSreviceService.myFilterform.get("startdate").value, "yyyy-MM-dd") || "01/01/1900", opType: "13" },
+            { fieldName: "To_Dt", fieldValue: this.datePipe.transform(this._AppointmentSreviceService.myFilterform.get("enddate").value, "yyyy-MM-dd") || "01/01/1900", opType: "13" },
+            { fieldName: "Reg_No", fieldValue: "", opType: "13" },
+            { fieldName: "F_Name", fieldValue: "", opType: "13" },
+            { fieldName: "L_Name", fieldValue: "", opType: "13" },
+            { fieldName: "Doctor_Id", fieldValue: "", opType: "13" },
+
+
+            { fieldName: "IsMark", fieldValue: "", opType: "13" },
+            { fieldName: "Start", fieldValue: "", opType: "13" },
+            { fieldName: "Length", fieldValue: "", opType: "13" },
+            { fieldName: "Sort", fieldValue: "", opType: "13" },
+            { fieldName: "Order", fieldValue: "", opType: "13" }
+        ],
+        row: 10,
+        mode: "OPVisit",
+        apiType: "dynamic",
+        responseTag: "Table1"
+    }
+
 
     dataSource = new MatTableDataSource<VisitMaster>();
     dataSource1 = new MatTableDataSource<CasepaperVisitDetails>();
@@ -363,12 +429,25 @@ export class AppointmentComponent implements OnInit {
         private changeDetectorRefs: ChangeDetectorRef,
         public _WhatsAppEmailService: WhatsAppEmailService
     ) {
-        this.getVisitList1();
+        //this.getVisitList1();
     }
 
-
+    changeStatus(status: any) {
+        switch (status.id) {
+            case 1:
+                //this.onEdit(status.data)
+                break;
+            case 2:
+                this.onEdit(status.data)
+                break;
+            case 5:
+                //this.onDeactive(status.data.genderId);
+                break;
+            default:
+                break;
+        }
+    }
     ngOnInit(): void {
-
         this.personalFormGroup = this.createPesonalForm();
         this.personalFormGroup.markAsUntouched();
         this.VisitFormGroup = this.createVisitdetailForm();
@@ -1149,7 +1228,6 @@ export class AppointmentComponent implements OnInit {
 
 
     getDepartmentList() {
-debugger
         this._opappointmentService.getDepartmentCombo().subscribe(data => {
             this.DepartmentList = data;
             console.log(data)
@@ -1250,44 +1328,42 @@ debugger
 
 
     getVisitList1() {
-        debugger
+        // console.log(this._AppointmentSreviceService.myFilterform.get("DoctorId").value)
+        // var D_data = {
+        //     F_Name: this._AppointmentSreviceService.myFilterform.get("FirstName").value.trim() + "%" || "%",
+        //     L_Name: this._AppointmentSreviceService.myFilterform.get("LastName").value.trim() + "%" || "%",
+        //     Reg_No: this._AppointmentSreviceService.myFilterform.get("RegNo").value || 0,
+        //     Doctor_Id: this._AppointmentSreviceService.myFilterform.get("DoctorId").value.DoctorId || 0,
+        //     From_Dt: this.datePipe.transform(this._AppointmentSreviceService.myFilterform.get("startdate").value, "yyyy-MM-dd 00:00:00.000") || "01/01/1900",
+        //     To_Dt: this.datePipe.transform(this._AppointmentSreviceService.myFilterform.get("enddate").value, "yyyy-MM-dd 00:00:00.000") || "01/01/1900",
+        //     IsMark: this._AppointmentSreviceService.myFilterform.get("IsMark").value || 0,
+        //     Start: (this.paginator?.pageIndex ?? 0),
+        //     Length: (this.paginator?.pageSize ?? 10),
+        //     Sort: this.sort?.active ?? 'VisitId',
+        //     Order: this.sort?.direction ?? 'desc'
+        // };
+        // console.log(D_data)
+        // setTimeout(() => {
 
-        console.log(this._AppointmentSreviceService.myFilterform.get("DoctorId").value)
-        var D_data = {
-            F_Name: this._AppointmentSreviceService.myFilterform.get("FirstName").value.trim() + "%" || "%",
-            L_Name: this._AppointmentSreviceService.myFilterform.get("LastName").value.trim() + "%" || "%",
-            Reg_No: this._AppointmentSreviceService.myFilterform.get("RegNo").value || 0,
-            Doctor_Id: this._AppointmentSreviceService.myFilterform.get("DoctorId").value.DoctorId || 0,
-            From_Dt: this.datePipe.transform(this._AppointmentSreviceService.myFilterform.get("startdate").value, "yyyy-MM-dd 00:00:00.000") || "01/01/1900",
-            To_Dt: this.datePipe.transform(this._AppointmentSreviceService.myFilterform.get("enddate").value, "yyyy-MM-dd 00:00:00.000") || "01/01/1900",
-            IsMark: this._AppointmentSreviceService.myFilterform.get("IsMark").value || 0,
-            Start: (this.paginator?.pageIndex ?? 0),
-            Length: (this.paginator?.pageSize ?? 10),
-            Sort: this.sort?.active ?? 'VisitId',
-            Order: this.sort?.direction ?? 'desc'
-        };
-        console.log(D_data)
-        setTimeout(() => {
+        //     this._AppointmentSreviceService.getAppointmentList(D_data).subscribe(
+        //         (Visit) => {
+        //             this.dataSource.data = Visit["Table1"] ?? [] as VisitMaster[];
+        //             console.log(this.dataSource.data)
+        //             if (this.dataSource.data.length > 0) {
+        //                 this.Appointdetail(this.dataSource.data);
+        //             }
+        //             this.dataSource.sort = this.sort;
+        //             this.resultsLength = Visit["Table"][0]["total_row"];
+        //             // this.dataSource.paginator = this.paginator;
+        //             this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
+        //         },
+        //         (error) => {
+        //             // this.isLoading = 'list-loaded';
+        //         }
+        //     );
+        // }, 1000);
 
-            this._AppointmentSreviceService.getAppointmentList(D_data).subscribe(
-                (Visit) => {
-                    this.dataSource.data = Visit["Table1"] ?? [] as VisitMaster[];
-                    console.log(this.dataSource.data)
-                    if (this.dataSource.data.length > 0) {
-                        this.Appointdetail(this.dataSource.data);
-                    }
-                    this.dataSource.sort = this.sort;
-                    this.resultsLength = Visit["Table"][0]["total_row"];
-                    // this.dataSource.paginator = this.paginator;
-                    this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
-                },
-                (error) => {
-                    // this.isLoading = 'list-loaded';
-                }
-            );
-        }, 1000);
-
-        console.log(this.dataSource.data)
+        // console.log(this.dataSource.data)
     }
 
     Vtotalcount = 0;
@@ -1904,7 +1980,6 @@ debugger
             registrationSave['address'] = this.registerObj.Address || '';
             registrationSave['City'] = this.personalFormGroup.get('CityId').value.CityName || '';
             registrationSave['pinNo'] = '123';
-            debugger
             registrationSave['dateOfBirth'] = this.datePipe.transform(this.registerObj.DateofBirth, "MM-dd-yyyy"), //this.personalFormGroup.get('DateofBirth').value.DateofBirth;
                 registrationSave['age'] = this.registerObj.AgeYear;
             registrationSave['genderID'] = this.personalFormGroup.get('GenderId').value.GenderId;
@@ -2680,7 +2755,6 @@ debugger
     }
 
     OnChangeDoctorList(departmentObj) {
-debugger
         this.isDepartmentSelected = true;
         this._opappointmentService.getDoctorMasterCombo(departmentObj.DepartmentId).subscribe(
             data => {
