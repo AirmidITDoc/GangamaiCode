@@ -28,15 +28,15 @@ export class gridModel {
     responseTag?: string = "";
 }
 export enum OperatorComparer {
-    Contains,
-    StartsWith,
-    EndsWith,
-    Equals,
-    GreaterThan,
-    GreaterThanOrEqual,
-    LessThan,
-    LessThanOrEqual,
-    NotEqual,
-    InClause,
-    DateRange
+    Contains='Contains',
+    StartsWith='StartsWith',
+    EndsWith='EndsWith',
+    Equals='Equals',
+    GreaterThan='GreaterThan',
+    GreaterThanOrEqual='GreaterThanOrEqual',
+    LessThan='LessThan',
+    LessThanOrEqual='LessThanOrEqual',
+    NotEqual='NotEqual',
+    InClause='InClause',
+    DateRange='DateRange'
 }
