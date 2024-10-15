@@ -4,7 +4,7 @@ import { ToastrService } from "ngx-toastr";
 import { GenderMasterService } from "./gender-master.service";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
-import { gridModel } from "app/core/models/gridRequest";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { NewGendermasterComponent } from "./new-gendermaster/new-gendermaster.component";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 
@@ -53,8 +53,8 @@ export class GenderMasterComponent implements OnInit {
         sortField: "genderId",
         sortOrder: 0,
         filters: [
-            { fieldName: "genderName", fieldValue: "", opType: "Contains" },
-            { fieldName: "isActive", fieldValue: "", opType: "equals" }
+            { fieldName: "genderName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ],
         row: 10
     }

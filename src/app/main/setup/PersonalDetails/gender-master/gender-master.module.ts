@@ -20,6 +20,7 @@ import { GenderMasterService } from "./gender-master.service";
 import { SharedModule } from "app/main/shared/shared.module";
 import { NewGendermasterComponent } from './new-gendermaster/new-gendermaster.component';
 import { MatDialogModule } from "@angular/material/dialog";
+import { DatePipe } from "@angular/common";
 
 const routes: Routes = [
     {
@@ -50,7 +51,7 @@ const routes: Routes = [
         FuseSidebarModule,
         MatDialogModule,
     ],
-    providers: [GenderMasterService],
+    providers: [GenderMasterService,DatePipe],
     entryComponents: [GenderMasterComponent],
 })
 export class GenderMasterModule {}
