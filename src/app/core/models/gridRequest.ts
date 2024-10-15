@@ -16,7 +16,6 @@ export enum gridResponseType {
     JSON = 1, Excel = 2, Pdf = 3
 }
 export class gridModel {
-    headers: string[] = [];
     columnsList: any[] = [];
     apiUrl: string = "";
     sortField: string = "";

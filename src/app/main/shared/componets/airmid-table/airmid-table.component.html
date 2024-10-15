@@ -64,9 +64,9 @@
                                     </ng-container>
                                 </mat-cell>
                             </ng-container>
-                            <mat-header-row class="accent" *matHeaderRowDef="gridConfig.headers; sticky: true">
+                            <mat-header-row class="accent" *matHeaderRowDef="Headers; sticky: true">
                             </mat-header-row>
-                            <mat-row *matRowDef="let row; columns: gridConfig.headers;" class="element"></mat-row>
+                            <mat-row *matRowDef="let row; columns: Headers;" class="element"></mat-row>
                         </mat-table>
                         <mat-toolbar>
                             <mat-toolbar-row>

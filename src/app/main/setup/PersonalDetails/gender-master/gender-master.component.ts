@@ -18,21 +18,9 @@ import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 export class GenderMasterComponent implements OnInit {
     GenderMasterList: any;
     msg: any;
-    displayedColumns: string[] = [
-        "genderId",
-        "genderName",
-        "isDeleted",
-        "action"
-    ];
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     gridConfig: gridModel = {
         apiUrl: "Gender/List",
-        headers: [
-            "genderId",
-            "genderName",
-            "isActive",
-            "action"
-        ],
         columnsList: [
             { heading: "Code", key: "genderId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Gender Name", key: "genderName", sort: true, align: 'left', emptySign: 'NA' },

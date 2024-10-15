@@ -38,13 +38,6 @@ export class CityMasterComponent implements OnInit {
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     gridConfig: gridModel = {
         apiUrl: "CityMaster/List",
-        headers: [
-        "CityId",
-        "CityName",
-        "StateId",
-        "IsDeleted",
-        "action",
-        ],
         columnsList: [
             { heading: "Code", key: "CityId", sort: false, align: 'left', emptySign: 'NA' },
             { heading: "City Name", key: "CityName", sort: true, align: 'left', emptySign: 'NA' },

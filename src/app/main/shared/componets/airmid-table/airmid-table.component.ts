@@ -14,7 +14,8 @@ import { ApiCaller } from 'app/core/services/apiCaller';
 })
 export class AirmidTableComponent implements OnInit {
 
-    constructor(private _httpClient: ApiCaller,public datePipe: DatePipe) { }
+    constructor(private _httpClient: ApiCaller, public datePipe: DatePipe) {
+    }
 
     @Input() gridConfig: gridModel; // or whatever type of datasource you have
     @Output() status: EventEmitter<any> = new EventEmitter();
@@ -30,6 +31,7 @@ export class AirmidTableComponent implements OnInit {
     // ngAfterContentInit() {
     //     this.gridConfig.columnsList.forEach(columnDef => this.table.addColumnDef(columnDef));
     // }
+    headers = [];
     ngOnInit(): void {
         this.bindGridData();
     }
@@ -39,7 +41,10 @@ export class AirmidTableComponent implements OnInit {
     public get GridColumnType() {
         return gridColumnTypes;
     }
-    bindGridData(){
+    public get Headers(){
+        return this.gridConfig.columnsList.map(x => x.key.replaceAll(' ', ''));
+    }
+    bindGridData() {
         var param: gridRequest = {
             sortField: this.sort?.active ?? this.gridConfig.sortField,
             sortOrder: this.sort?.direction ?? 'asc' == 'asc' ? 0 : -1, filters: this.gridConfig.filters,
