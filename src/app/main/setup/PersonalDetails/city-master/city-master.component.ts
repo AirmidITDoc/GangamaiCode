@@ -12,7 +12,7 @@ import { ToastrService } from "ngx-toastr";
 import { NewCityComponent } from "./new-city/new-city.component";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
-import { gridModel } from "app/core/models/gridRequest";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 
 @Component({
     selector: "app-city-master",
@@ -55,7 +55,7 @@ export class CityMasterComponent implements OnInit {
         sortField: "CityId",
         sortOrder: 0,
         filters: [
-            { fieldName: "CityName", fieldValue: "", opType: "Contains" }
+            { fieldName: "CityName", fieldValue: "", opType: OperatorComparer.Contains }
         ],
         row: 10
     }

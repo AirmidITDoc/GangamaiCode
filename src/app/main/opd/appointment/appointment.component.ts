@@ -48,7 +48,7 @@ import { Table } from "jspdf-autotable";
 import moment, { invalid } from "moment";
 import { values } from "lodash";
 import { WhatsAppEmailService } from "app/main/shared/services/whats-app-email.service";
-import { gridModel } from "app/core/models/gridRequest";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 
 export class DocData {
@@ -89,7 +89,7 @@ export class AppointmentComponent implements OnInit {
             d.setFullYear(d.getFullYear() - Number(e.target.value));
             this.registerObj.DateofBirth = d;
         }
-        let todayDate=new Date();
+        let todayDate = new Date();
         const timeDiff = Math.abs(Date.now() - this.registerObj.DateofBirth.getTime());
         this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
         this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - this.registerObj.DateofBirth.getMonth());
@@ -360,24 +360,19 @@ export class AppointmentComponent implements OnInit {
         sortField: "PatientOldNew",
         sortOrder: 0,
         filters: [
-            { fieldName: "From_Dt", fieldValue: this.datePipe.transform(this._AppointmentSreviceService.myFilterform.get("startdate").value, "yyyy-MM-dd") || "01/01/1900", opType: "13" },
-            { fieldName: "To_Dt", fieldValue: this.datePipe.transform(this._AppointmentSreviceService.myFilterform.get("enddate").value, "yyyy-MM-dd") || "01/01/1900", opType: "13" },
-            { fieldName: "Reg_No", fieldValue: "", opType: "13" },
-            { fieldName: "F_Name", fieldValue: "", opType: "13" },
-            { fieldName: "L_Name", fieldValue: "", opType: "13" },
-            { fieldName: "Doctor_Id", fieldValue: "", opType: "13" },
-
-
-            { fieldName: "IsMark", fieldValue: "", opType: "13" },
-            { fieldName: "Start", fieldValue: "", opType: "13" },
-            { fieldName: "Length", fieldValue: "", opType: "13" },
-            { fieldName: "Sort", fieldValue: "", opType: "13" },
-            { fieldName: "Order", fieldValue: "", opType: "13" }
+            { fieldName: "From_Dt", fieldValue: this.datePipe.transform(this._AppointmentSreviceService.myFilterform.get("startdate").value, "yyyy-MM-dd") || "01/01/1900", opType: OperatorComparer.GreaterThanOrEqual },
+            { fieldName: "To_Dt", fieldValue: this.datePipe.transform(this._AppointmentSreviceService.myFilterform.get("enddate").value, "yyyy-MM-dd") || "01/01/1900", opType: OperatorComparer.LessThan },
+            { fieldName: "Reg_No", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "F_Name", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "L_Name", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "Doctor_Id", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "IsMark", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "Start", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "Length", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "Sort", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "Order", fieldValue: "", opType: OperatorComparer.Contains }
         ],
-        row: 10,
-        mode: "OPVisit",
-        apiType: "dynamic",
-        responseTag: "Table1"
+        row: 10
     }
 
 
@@ -517,7 +512,7 @@ export class AppointmentComponent implements OnInit {
             map(value => this._filterTariffId(value)),
 
         );
-        this.CalcDOB('',null);
+        this.CalcDOB('', null);
     }
 
 
@@ -1704,7 +1699,7 @@ export class AppointmentComponent implements OnInit {
         this.setDropdownObjs();
 
         this.VisitFlagDisp = true;
-        let todayDate=new Date();
+        let todayDate = new Date();
         const timeDiff = Math.abs(Date.now() - this.registerObj.DateofBirth.getTime());
         this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
         this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - this.registerObj.DateofBirth.getMonth());
@@ -1714,9 +1709,9 @@ export class AppointmentComponent implements OnInit {
     getSelectedObj(obj) {
         console.log(obj)
         this.RegOrPhoneflag = 'Entry from Registration';
-        let todayDate=new Date();
-        const d=new Date(obj.DateofBirth);
-        const timeDiff = Math.abs(Date.now() -d.getTime());
+        let todayDate = new Date();
+        const d = new Date(obj.DateofBirth);
+        const timeDiff = Math.abs(Date.now() - d.getTime());
         obj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
         obj.AgeMonth = Math.abs(todayDate.getMonth() - d.getMonth());
         obj.AgeDay = Math.abs(todayDate.getDate() - d.getDate());
@@ -1903,7 +1898,7 @@ export class AppointmentComponent implements OnInit {
         }
         else {
             if ((!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid)) {
-                if(this.registerObj.AgeYear !=0 || this.registerObj.AgeMonth !=0  || this.registerObj.AgeDay !=0 ){
+                if (this.registerObj.AgeYear != 0 || this.registerObj.AgeMonth != 0 || this.registerObj.AgeDay != 0) {
                     this.toastr.warning('Please Enter Valid Age.', 'Warning !', {
                         toastClass: 'tostr-tost custom-toast-warning',
                     });
@@ -1958,7 +1953,7 @@ export class AppointmentComponent implements OnInit {
             this.CompanyId = this.VisitFormGroup.get('CompanyId').value.CompanyId;
             // this.vTariffId=2;
         }
-       
+
 
 
 
@@ -2162,7 +2157,7 @@ export class AppointmentComponent implements OnInit {
         console.log(submissionObj);
         this._opappointmentService.appointregupdate(submissionObj).subscribe(response => {
             if (response) {
-            Swal.fire('Congratulations !', 'Registered Appoinment Saved Successfully  !', 'success').then((result) => {
+                Swal.fire('Congratulations !', 'Registered Appoinment Saved Successfully  !', 'success').then((result) => {
                     if (result.isConfirmed) {
                         this.viewgetPatientAppointmentReportPdf(response, false);
                     }
@@ -3025,7 +3020,7 @@ export class AppointmentComponent implements OnInit {
     public onEnterlname(event): void {
         if (event.which === 13) {
             this.agey.nativeElement.focus();
-          
+
         }
     }
 

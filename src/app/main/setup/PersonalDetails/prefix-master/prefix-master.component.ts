@@ -9,7 +9,7 @@ import { ToastrService } from "ngx-toastr";
 import { NewPrefixComponent } from "./new-prefix/new-prefix.component";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
-import { gridModel } from "app/core/models/gridRequest";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 
 
 @Component({
@@ -49,7 +49,7 @@ export class PrefixMasterComponent implements OnInit {
         sortField: "PrefixID",
         sortOrder: 0,
         filters: [
-            { fieldName: "PrefixName", fieldValue: "", opType: "Contains" }
+            { fieldName: "PrefixName", fieldValue: "", opType: OperatorComparer.Contains }
         ],
         row: 10
     }
