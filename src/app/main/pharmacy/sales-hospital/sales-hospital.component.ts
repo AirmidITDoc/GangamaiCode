@@ -2436,6 +2436,10 @@ export class SalesHospitalComponent implements OnInit {
           salesDraftStatusUpdate['DSalesId'] = this.DraftID || 0;
           salesDraftStatusUpdate['IsClosed'] = 1
 
+          let salesPrescriptionStatusUpdate = {}; 
+          salesPrescriptionStatusUpdate['opipid'] =  this.IPMedID || 0;
+          salesPrescriptionStatusUpdate['isclosed'] = true || 1 
+
           let submitData = {
             "salesInsert": SalesInsert,
             "salesDetailInsert": salesDetailInsertarr,
@@ -2443,7 +2447,8 @@ export class SalesHospitalComponent implements OnInit {
             "cal_DiscAmount_Sales": cal_DiscAmount_Sales,
             "cal_GSTAmount_Sales": cal_GSTAmount_Sales,
             "salesDraftStatusUpdate": salesDraftStatusUpdate,
-            "salesPayment": result.submitDataPay.ipPaymentInsert
+            "salesPayment": result.submitDataPay.ipPaymentInsert, 
+            "salesPrescriptionStatusUpdate":salesPrescriptionStatusUpdate
           };
           
           let vMobileNo = this.MobileNo;
