@@ -326,28 +326,28 @@ export class UpdateGRNComponent implements OnInit {
                           console.log(lastDay)
                         this._GRNList.userFormGroup.get('ExpDatess').setValue(this.vlastDay)
                         this.setFocus('Qty'); 
-                        if(newuserDate < newNextDate){
-                            Swal.fire({ 
-                                icon: "warning",
-                                title: "This item is expired in 3 Months",
-                                showConfirmButton: false,
-                                timer: 1500
-                              });  
-                        } 
+                        // if(newuserDate < newNextDate){
+                        //     Swal.fire({ 
+                        //         icon: "warning",
+                        //         title: "This item is expired in 3 Months",
+                        //         showConfirmButton: false,
+                        //         timer: 1500
+                        //       });  
+                        // } 
 
                     } else {
                         this.vlastDay = 'Invalid month';
                     }
                 }
             } else{
-                if(month < NxtMonths){
-                    Swal.fire({ 
-                        icon: "warning",
-                        title: "This item is expired in 3 Months",
-                        showConfirmButton: false,
-                        timer: 1500
-                      });  
-                }
+                // if(month < NxtMonths){
+                //     Swal.fire({ 
+                //         icon: "warning",
+                //         title: "This item is expired in 3 Months",
+                //         showConfirmButton: false,
+                //         timer: 1500
+                //       });  
+                // }
                 if (month >= 1 && month <= 12) {
                     const lastDay = this.getLastDayOfMonth(month, year);
                     this.vlastDay = `${lastDay}/${this.pad(month)}/${year}`;
