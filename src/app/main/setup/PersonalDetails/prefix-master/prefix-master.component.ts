@@ -33,16 +33,17 @@ export class PrefixMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "Prefix/List",
         columnsList: [
-            { heading: "Code", key: "PrefixID", sort: false, align: 'left', emptySign: 'NA' },
-            { heading: "Prefix Name", key: "PrefixName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Gender Name", key: "GenderName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Code", key: "prefixId", sort: false, align: 'left', emptySign: 'NA' },
+            { heading: "Prefix Name", key: "prefixName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Gender Name", key: "genderName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsDeleted", key: "isActive", type: 'status', align: "center" },
             { heading: "Action", key: "action", align: "right", type: "action", action: [2, 3] } //Action 1-view, 2-Edit,3-delete
         ],
         sortField: "PrefixID",
         sortOrder: 0,
         filters: [
-            { fieldName: "PrefixName", fieldValue: "", opType: OperatorComparer.Contains }
+            { fieldName: "PrefixName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ],
         row: 25
     }
