@@ -357,7 +357,7 @@ export class AppointmentComponent implements OnInit {
             { fieldName: "Sort", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "Order", fieldValue: "", opType: OperatorComparer.Contains }
         ],
-        row: 10
+        row: 25
     }
 
 
