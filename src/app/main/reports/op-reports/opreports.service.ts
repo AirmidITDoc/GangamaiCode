@@ -33,7 +33,6 @@ export class OPReportsService {
         NonMoveday:'',
         ItemId:'',
         Id:'',
-
         Month :'',
         Year:'',
         Day:''
@@ -539,11 +538,11 @@ return this._httpClient.get("OPReport/view-OPDoctorWiseNewOldPatientReport?FromD
   }
 
   
-  public getSupplierlistReport(FromDate,ToDate,loader = true){
+  public getSupplierlistReport(SupplierName,StoreID,FromDate,ToDate,loader = true){
     if (loader) {
       this._loaderService.show();
   }
-    return this._httpClient.get("InventoryReports/view-SupplierList?FromDate="+FromDate+"&ToDate="+ToDate);
+    return this._httpClient.get("InventoryReports/view-SupplierList?SupplierName="+SupplierName+"&StoreID="+StoreID+"&FromDate="+FromDate+"&ToDate="+ToDate);
   }
   public getIndentlistReport(FromDate,ToDate,FromStoreId,ToStoreId,loader = true){
     if (loader) {

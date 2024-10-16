@@ -847,7 +847,7 @@ var data={
 
     }, 100);
   }
-/////////
+
   
   viewgetSCHEDULEH1ReportPdf(){
     setTimeout(() => {

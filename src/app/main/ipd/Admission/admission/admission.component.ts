@@ -2942,7 +2942,7 @@ export class Admission {
       this.SubCompanyId = Admission.SubCompanyId || 0;
       this.AdmittedDoctorName = Admission.AdmittedDoctorName || ''
       this.PatientTypeId = Admission.PatientTypeId || ''
-      this.IsOpToIPconv = Admission.IsOpToIPconv || '';
+      this.IsOpToIPconv = Admission.IsOpToIPconv || 0;
     }
   }
 }
@@ -3268,7 +3268,7 @@ TemplateResultInHTML:any;
       this.RefDocName = AdmissionPersonl.RefDocName || '';
       this.RelativePhoneNo = AdmissionPersonl.RelativePhoneNo || '';
       this.DepartmentId=AdmissionPersonl.DepartmentId || 0;
-      this.IsOpToIPconv=AdmissionPersonl.IsOpToIPconv || '';
+      this.IsOpToIPconv=AdmissionPersonl.IsOpToIPconv || 0;
       this.RelativeName=AdmissionPersonl.RelativeName || '';
       this.RelativeAddress=AdmissionPersonl.RelativeAddress || ''
       this.ClassName=AdmissionPersonl.ClassName || ''

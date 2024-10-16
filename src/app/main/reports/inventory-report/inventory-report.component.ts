@@ -241,7 +241,7 @@ console.log(event.value)
       this.FlagDoctorSelected = false;
       this.FlagStoreSelected = false;
       this.FlagStore1Selected = false;
-      this.FlagSupplierSelected = false;
+      this.FlagSupplierSelected = true;
       this.FlagItemSelected=false;
       this.FlagIdSelected=false;
       this.FlagMonthSelected=false;
@@ -665,10 +665,22 @@ console.log(event.value)
   
   
   viewSupplierListPdf() {
+
+    let SupplierName =''
+
+    if (this._OPReportsService.userForm.get('SupplierName').value)
+      SupplierName = this._OPReportsService.userForm.get('SupplierName').value.SupplierName
+    
+    let StoreId =0
+
+    if (this._OPReportsService.userForm.get('StoreId').value)
+     StoreId = this._OPReportsService.userForm.get('StoreId').value.StoreId
+    
+    
     this.sIsLoading = 'loading-data';
     setTimeout(() => {
    
-    this._OPReportsService.getSupplierlistReport(
+    this._OPReportsService.getSupplierlistReport(SupplierName,StoreId,
       this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
       this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
       ).subscribe(res => {
@@ -1019,7 +1031,7 @@ debugger
    let StoreId =0
 
    if (this._OPReportsService.userForm.get('StoreId').value)
-    StoreId = this._OPReportsService.userForm.get('Year').value.StoreId
+    StoreId = this._OPReportsService.userForm.get('StoreId').value.StoreId
    
     this.sIsLoading = 'loading-data';
    
@@ -1537,10 +1549,14 @@ debugger
   
   
   viewgetStockadjustmentPdf() {
+    debugger
     let StoreId =0
+    // let SupplierName=''
+    // if (this._OPReportsService.userForm.get('SupplierName').value)
+    //   SupplierName = this._OPReportsService.userForm.get('SupplierName').value.SupplierName
 
-    if (this._OPReportsService.userForm.get('StoreId1').value)
-     StoreId = this._OPReportsService.userForm.get('StoreId1').value.StoreId
+    if (this._OPReportsService.userForm.get('StoreId').value)
+      StoreId = this._OPReportsService.userForm.get('StoreId').value.StoreId
     
     setTimeout(() => {
       this.SpinLoading = true;

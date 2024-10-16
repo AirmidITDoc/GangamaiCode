@@ -126,7 +126,7 @@ export class EditAdmissionComponent implements OnInit {
   vRelativeName: any;
   vRelativeAddress: any;
   vRelatvieMobileNo: any;
-  vRelationshipId: any;
+  vRelationshipId: any=0;
   vadmittedDoctor1: any = 0;
   vadmittedDoctor2: any = 0;
   vrefDoctorId: any = 0;
@@ -854,11 +854,16 @@ export class EditAdmissionComponent implements OnInit {
         });
         return;
       }
-    } debugger
-    if (this.otherFormGroup.get('RelationshipId').value) {
-      this.vRelationshipId = this.otherFormGroup.get('RelationshipId').value.RelationshipId;
-
+    } 
+     if (this.otherFormGroup.get('RelationshipId').value) {
+      if (!this.RelationshipList.some(item => item.RelationshipId === this.otherFormGroup.get('RelationshipId').value.RelationshipId)) {
+        this.toastr.warning('Please Select valid RelationshipId', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
     }
+   
     if (this.hospitalFormGroup.get('admittedDoctor1').value) {
       this.vadmittedDoctor1 = this.hospitalFormGroup.get('admittedDoctor1').value.DoctorId;
       console.log(this.vadmittedDoctor1)
@@ -903,7 +908,7 @@ export class EditAdmissionComponent implements OnInit {
         "RelativeName": this.otherFormGroup.get('RelativeName').value || "",
         "RelativeAddress": this.otherFormGroup.get('RelativeAddress').value || "",
         "RelativePhoneNo": this.otherFormGroup.get('RelatvieMobileNo').value || "",
-        "RelationshipId": this.vRelationshipId,// this.otherFormGroup.get('RelationshipId').value.RelationshipId || 0,
+        "RelationshipId":  this.otherFormGroup.get('RelationshipId').value.RelationshipId || 0,
         "IsMLC": this.otherFormGroup.get('IsMLC').value || 0,
         "MotherName": '',// this.hospitalFormGroup.get('SubCompanyId').value.SubCompanyId || 0,
         "AdmittedDoctor1": this.vadmittedDoctor1,//this.hospitalFormGroup.get('admittedDoctor1').value.DoctorID || 0,
@@ -912,7 +917,7 @@ export class EditAdmissionComponent implements OnInit {
         "RefByName": 0,// this.hospitalFormGroup.get('SubCompanyId').value.SubCompanyId || 0,
         "isUpdatedBy": this.accountService.currentUserValue.user.id,
         "SubTpaComId": this.SubCompanyId,// this.hospitalFormGroup.get('SubCompanyId').value.SubCompanyId || 0,
-        "isOpToIPConv": 0
+        "isOpToIPConv":this.otherFormGroup.get('OPIPChange').value || 0,
       }
 
     }

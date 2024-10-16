@@ -30,6 +30,7 @@ export class OpReportsComponent implements OnInit {
  
   filteredOptionsUser: Observable<string[]>;
   filteredOptionsDoctorMode: Observable<string[]>;
+  filteredOptionssearchDoctor: Observable<string[]>;
   isUserSelected: boolean = false;
   isSearchdoctorSelected: boolean = false;
 
@@ -37,7 +38,7 @@ export class OpReportsComponent implements OnInit {
   FlagVisitSelected: boolean = false;
   FlagPaymentIdSelected: boolean = false;
   FlagRefundIdSelected: boolean = false;
-
+  FlagDoctorIDSelected: boolean = false;
   optionsUser: any[] = [];
   optionsPaymentMode: any[] = [];
   PaymentMode: any;
@@ -91,7 +92,7 @@ FlagBillNoSelected: boolean = false;
       this.Reportsection='OP Billing'
     this.bindReportData();
     this.GetUserList();
-
+    this.getDoctorList();
     this.filteredOptionsUser = this._OPReportsService.userForm.get('UserId').valueChanges.pipe(
       startWith(''),
       map(value => this._filterUser(value)),
@@ -121,49 +122,59 @@ var data={
     if (this.ReportName == 'Registration Report') {
       this.FlagVisitSelected=false
       this.FlagPaymentIdSelected=false
+      this.FlagDoctorIDSelected=false;
       } 
     if (this.ReportName == 'AppoitnmentList Report') {
       this.FlagVisitSelected=false
       this.FlagPaymentIdSelected=false
+      this.FlagDoctorIDSelected=true;
       } 
    else if (this.ReportName == 'DoctorWise Visit Report') {
       this.FlagUserSelected = false;
+      this.FlagDoctorIDSelected=false;
       // this.FlagPaymentSelected = false;
 
     } else if (this.ReportName == 'c') {
       this.FlagUserSelected = true;
+      this.FlagDoctorIDSelected=false;
       // this.FlagPaymentSelected = false;
 
     } 
     else if (this.ReportName == 'Department Wise count summury') {
       // this.FlagPaymentSelected = false;
       this.FlagUserSelected = false;
+      this.FlagDoctorIDSelected=false;
 
     } else if (this.ReportName == 'DoctorWise Visit Count Summary') {
       // this.FlagPaymentSelected = false;
       this.FlagUserSelected = false;
+      this.FlagDoctorIDSelected=false;
     } else if (this.ReportName == 'Reference doctor wise Report') {
       // this.FlagPaymentSelected = false;
       this.FlagUserSelected = false;
+      this.FlagDoctorIDSelected=false;
     }else if (this.ReportName == 'Department Wise Count Summary') {
       // this.FlagPaymentSelected = false;
       this.FlagUserSelected = false;
+      this.FlagDoctorIDSelected=false;
     }else if (this.ReportName == 'DoctorWise Visit Count Summary') {
       // this.FlagPaymentSelected = false;
       this.FlagUserSelected = false;
+      this.FlagDoctorIDSelected=false;
     }else if (this.ReportName == 'Appointment List with Service Availed') {
       // this.FlagPaymentSelected = false;
       this.FlagUserSelected = false;
-
+      this.FlagDoctorIDSelected=false;
     } else if (this.ReportName == 'Cross Consultation Report') {
       this.FlagUserSelected = false;
+      this.FlagDoctorIDSelected=false;
       // this.FlagPaymentSelected = false;
 
     }
     else if (this.ReportName == 'Doctor Wise new and Old Patient Report') {
       // this.FlagPaymentSelected = true;
       this.FlagUserSelected = false;
-
+      this.FlagDoctorIDSelected=false;
     } 
 
     //op Billing
@@ -572,6 +583,12 @@ var data={
 
 
   viewgetAppointmentlistReportPdf() {
+
+    let DoctorID = 0;
+    if (this._OPReportsService.userForm.get('DoctorID').value)
+      DoctorID = this._OPReportsService.userForm.get('DoctorID').value.DoctorId
+
+
     this.sIsLoading = 'loading-data';
      setTimeout(() => {
        this.AdList = true;
@@ -1458,6 +1475,29 @@ getDeptservicegroupwisecollsummaryview(){
   // getOptionTextUser(option) {
   //   return option && option.UserName ? option.UserName : '';
   // }
+
+  getOptionTextsearchDoctor(option) {
+    return option && option.Doctorname ? option.Doctorname : '';
+  }
+
+  getDoctorList() {
+    this._OPReportsService.getDoctorMaster().subscribe(data => {
+      this.searchDoctorList = data;
+      this.optionsSearchDoc = this.searchDoctorList.slice();
+      this.filteredOptionssearchDoctor = this._OPReportsService.userForm.get('DoctorID').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterSearchdoc(value) : this.searchDoctorList.slice()),
+      );
+    });
+  }
+
+  private _filterSearchdoc(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
+      return this.optionsSearchDoc.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
+    }
+
+  }
 
 
   onClose() { }
