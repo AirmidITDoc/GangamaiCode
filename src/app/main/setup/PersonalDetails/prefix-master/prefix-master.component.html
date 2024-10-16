@@ -1,87 +1,39 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" dynamicTableHeight>
-    <mat-toolbar class="top-header accent">
-        <div fxLayout="row" class="top-header-info">
-            <!-- <button mat-icon-button class="sidebar-toggle" fxHide.gt-sm (click)="toggleSidebar('app-main')">
-                <mat-icon>menu</mat-icon>
-            </button>
-            <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
-            </mat-icon> -->
-            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
-                Prefix List
-            </span>
+<div fusePerfectScrollbar
+    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+    dynamicTableHeight>
+    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center ">
+        <div class="top-header-info">
+            <div class="top-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Prefix
+                </span>
+            </div>
         </div>
-
-        <div fxLayout="row" fxLayoutGap="5px" style="margin-left:10% !important; ">
-           
-            <button mat-raised-button (click)="NewPrefix()"
-                style="background-color: aliceblue;color: brown;margin-left:10% !important">New Prefix
+        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+            <button mat-raised-button (click)="NewPrefix()">New Prefix
             </button>
         </div>
+    </div>
+    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+        <airmid-table [gridConfig]="gridConfig" (status)="changeStatus($event)" class="content">
+            <ng-container filters>
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>Prefix Name</mat-label>
+                    <input matInput placeholder="Search Prefix Name" autocomplete="off"
+                        [(ngModel)]="gridConfig.filters[0].fieldValue" />
+                    <button mat-button matSuffix mat-icon-button aria-label="Clear"
+                        (click)="gridConfig.filters[0].fieldValue=''">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
 
-    </mat-toolbar>
-
-    <div class="content">
-        <!-- SIDEBAR -->
-        <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" class="fuse-search-sidebar">
-            <!-- SIDEBAR HEADER -->
-            <div class="sidebar-content">
-
-                <div class="accent sidebar-header" fxLayout="row" fxLayoutAlign="start center">
-                    <span class="search-title">Search Facility</span>
-                    <!-- / USER -->
-                </div>
-                <div class="nav material2">
-                    <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>Prefix Name</mat-label>
-                        <input matInput placeholder="Search Prefix Name" autocomplete="off"
-                            [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                        <button mat-button matSuffix mat-icon-button aria-label="Clear"
-                            (click)="gridConfig.filters[0].fieldValue=''">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </mat-form-field>
-                </div>
-                <div class="nav material2">
-                    <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch" value="2"
-                    fxLayoutAlign="center center">
-                    <mat-radio-button value="2">All</mat-radio-button>
+                <mat-radio-group value="" [(ngModel)]="gridConfig.filters[1].fieldValue" fxLayoutAlign="center center">
+                    <mat-radio-button value="">All</mat-radio-button>
                     <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
                     <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
                 </mat-radio-group>
-                </div>
-            </div>
-        </fuse-sidebar>
-      
-
-        <div class="center p-12 pb-56" fxFlexAlign="start center">
-
-            <div class="content-card" style="border-radius:4px; ">
-
-
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
-                    <div fxFlex.gt-sm="100%" fxFlex>
-
-                        <div fxlayout="row">
-                            <airmid-table [gridConfig]="gridConfig" (status)="changeStatus($event)">
-                                <!-- <ng-container filters> -->
-                                    <!-- <mat-form-field appearance="outline" fxFlex>
-                                        <mat-label>Gender Name</mat-label>
-                                        <input matInput placeholder="Search Gender Name" autocomplete="off"
-                                            [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                                        <button mat-button matSuffix mat-icon-button aria-label="Clear"
-                                            (click)="gridConfig.filters[0].fieldValue=''">
-                                            <mat-icon>close</mat-icon>
-                                        </button>
-                                    </mat-form-field> -->
-                    
-                                   <!-- </ng-container> -->
-                            </airmid-table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- CENTER -->
+            </ng-container>
+        </airmid-table>
     </div>
-  
 </div>

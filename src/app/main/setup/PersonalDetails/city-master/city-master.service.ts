@@ -54,11 +54,9 @@ export class CityMasterService {
         return this._httpClient1.post("Generic/GetByProc?procName=Retrieve_StateMasterForCombo_Conditional",{"Id": CityId})
     }
     
-
     public getCityMasterList(param: gridRequest, showLoader = true) {
         return this._httpClient.PostData("CityMaster/List", param, showLoader);
     }
-
     public cityMasterInsert(Param: any, showLoader = true) {
         return this._httpClient.PostData("City", Param, showLoader);
     }

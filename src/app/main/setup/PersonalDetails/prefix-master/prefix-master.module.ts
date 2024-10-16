@@ -21,6 +21,7 @@ import { PrefixMasterComponent } from "./prefix-master.component";
 import { NewPrefixComponent } from "./new-prefix/new-prefix.component";
 import { PrefixMasterService } from "./prefix-master.service";
 import { MatDialogModule } from "@angular/material/dialog";
+import { DatePipe } from "@angular/common";
 
 const routes: Routes = [
     {
@@ -51,7 +52,7 @@ const routes: Routes = [
         FuseSidebarModule,
         MatDialogModule,
     ],
-    providers: [PrefixMasterService],
+    providers: [PrefixMasterService,DatePipe],
     entryComponents: [PrefixMasterComponent],
 })
 export class PrefixMasterModule {}

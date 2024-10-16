@@ -13,6 +13,7 @@ import { NewCityComponent } from "./new-city/new-city.component";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 
 @Component({
     selector: "app-city-master",
@@ -26,29 +27,32 @@ export class CityMasterComponent implements OnInit {
     msg: any;
   private _onDestroy = new Subject<void>();
 
-    displayedColumns: string[] = [
-        "CityId",
-        "CityName",
-        "StateId",
-        "IsDeleted",
-        "action",
-    ];
-
-    DSCityMasterList = new MatTableDataSource<CityMaster>();
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+   
     gridConfig: gridModel = {
         apiUrl: "CityMaster/List",
         columnsList: [
-            { heading: "Code", key: "CityId", sort: false, align: 'left', emptySign: 'NA' },
+            { heading: "Code", key: "CityId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "City Name", key: "CityName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "State Name", key: "StateId", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "IsDeleted", key: "isActive", type: 'status', align: "center" },
-            { heading: "Action", key: "action", align: "right", type: "action", action: [2, 3] } //Action 1-view, 2-Edit,3-delete
+            { heading: "IsDeleted", key: "IsActive", type: gridColumnTypes.status, align: "center" },
+            {
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            debugger
+                        }
+                    }, {
+                        action: gridActions.delete, callback: (data: any) => {
+                            debugger
+                        }
+                    }]
+            } //Action 1-view, 2-Edit,3-delete
         ],
         sortField: "CityId",
         sortOrder: 0,
         filters: [
-            { fieldName: "CityName", fieldValue: "", opType: OperatorComparer.Contains }
+            { fieldName: "CityName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "IsActive", fieldValue: "", opType: OperatorComparer.Equals }
         ],
         row: 10
     }
@@ -163,12 +167,12 @@ export class CityMaster {
     CityId: number;
     CityName: string;
     StateId: number;
-    StateName: string;
-    CountryId: number;
-    CountryName: string;
+   // StateName: string;
+    // CountryId: number;
+    // CountryName: string;
     IsDeleted: boolean;
-    AddedBy: number;
-    UpdatedBy: number;
+    // AddedBy: number;
+    // UpdatedBy: number;
 
     /**
      * Constructor
@@ -180,12 +184,12 @@ export class CityMaster {
             this.CityId = CityMaster.CityId || "";
             this.CityName = CityMaster.CityName || "";
             this.StateId = CityMaster.StateId || "";
-            this.StateName = CityMaster.StateName || "";
-            this.CountryId = CityMaster.CountryId || "";
-            this.CountryName = CityMaster.CountryName || "";
+            // this.StateName = CityMaster.StateName || "";
+            // this.CountryId = CityMaster.CountryId || "";
+            // this.CountryName = CityMaster.CountryName || "";
             this.IsDeleted = CityMaster.IsDeleted || "false";
-            this.AddedBy = CityMaster.AddedBy || "";
-            this.UpdatedBy = CityMaster.UpdatedBy || "";
+            // this.AddedBy = CityMaster.AddedBy || "";
+            // this.UpdatedBy = CityMaster.UpdatedBy || "";
         }
     }
 }

@@ -22,27 +22,22 @@ import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 export class PrefixMasterComponent implements OnInit {
     PrefixMasterList: any;
     msg: any;
-    displayedColumns: string[] = [
-        "PrefixID",
-        "PrefixName",
-        "GenderName",
-        "IsDeleted",
-        "action"
-    ];
+   
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     gridConfig: gridModel = {
         apiUrl: "Prefix/List",
         columnsList: [
             { heading: "Code", key: "PrefixID", sort: false, align: 'left', emptySign: 'NA' },
             { heading: "Prefix Name", key: "PrefixName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Gender Name", key: "GenderName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsDeleted", key: "isActive", type: 'status', align: "center" },
+            { heading: "Gender Name", key: "SexID", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsActive", key: "isActive", type: 'status', align: "center" },
             { heading: "Action", key: "action", align: "right", type: "action", action: [2, 3] } //Action 1-view, 2-Edit,3-delete
         ],
         sortField: "PrefixID",
         sortOrder: 0,
         filters: [
-            { fieldName: "PrefixName", fieldValue: "", opType: OperatorComparer.Contains }
+            { fieldName: "PrefixName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ],
         row: 10
     }
@@ -133,10 +128,8 @@ export class PrefixMaster {
     PrefixID: number;
     PrefixName: string;
     SexID: number;
-    IsDeleted: boolean;
-    AddedBy: number;
-    UpdatedBy: number;
-
+    IsActive: boolean;
+   
     /**
      * Constructor
      *
@@ -147,9 +140,8 @@ export class PrefixMaster {
             this.PrefixID = PrefixMaster.PrefixID || 0;
             this.PrefixName = PrefixMaster.PrefixName || "";
             this.SexID = PrefixMaster.SexID || 0;
-            this.IsDeleted = PrefixMaster.IsDeleted || "false";
-            this.AddedBy = PrefixMaster.AddedBy || 0;
-            this.UpdatedBy = PrefixMaster.UpdatedBy || 0;
+            this.IsActive = PrefixMaster.IsActive || "false";
+          
         }
     }
 }

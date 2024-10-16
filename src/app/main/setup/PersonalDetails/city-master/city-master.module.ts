@@ -20,6 +20,7 @@ import { CityMasterComponent } from "./city-master.component";
 import { NewCityComponent } from "./new-city/new-city.component";
 import { CityMasterService } from "./city-master.service";
 import { MatDialogModule } from "@angular/material/dialog";
+import { DatePipe } from "@angular/common";
 
 const routes: Routes = [
     {
@@ -50,7 +51,7 @@ const routes: Routes = [
         FuseSidebarModule,
         MatDialogModule,
     ],
-    providers: [CityMasterService],
+    providers: [CityMasterService,DatePipe],
     entryComponents: [CityMasterComponent],
 })
 export class CityMasterModule {}
