@@ -21,7 +21,7 @@ export class gridModel {
     sortField: string = "";
     sortOrder: number = 0;
     filters: gridFilter[] = [];
-    row: number = 10;
+    row: number = 25;
 }
 export enum OperatorComparer {
     Contains='Contains',

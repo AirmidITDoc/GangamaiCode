@@ -1,5 +1,4 @@
 <div class="modal-wrapper grid-container">
-    
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
@@ -7,24 +6,18 @@
             </div>
             <div class="modal-header-right">
                 <div class="close-icon">
-                    <!-- <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                        matTooltip="Close">
                         <mat-icon>close</mat-icon>
-                    </button> -->
+                    </button>
                 </div>
             </div>
         </div>
     </div>
-  
-    
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
             <form [formGroup]="_GenderMasterService.myform">
-                <h3>{{_GenderMasterService.myform.controls.genderId.value?"Modify Gender Master":"New
-                    Gender Master"}}
-                </h3>
-
                 <input type="hidden" name="genderId" formControlName="genderId">
-
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                         <mat-label>Gender Name</mat-label>
@@ -41,7 +34,6 @@
                     </mat-radio-group>
                 </div>
             </form>
-               
         </div>
         <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
             <div class="button-row">
@@ -50,9 +42,5 @@
                 <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
             </div>
         </div>
-       
     </div>
-  
-    
-    
-  </div>
+</div>

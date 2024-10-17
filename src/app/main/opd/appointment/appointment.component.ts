@@ -318,21 +318,6 @@ export class AppointmentComponent implements OnInit {
     ];
     gridConfig: gridModel = {
         apiUrl: "Common",
-        headers: [
-            "PatientOldNew",
-            "RegNoWithPrefix",
-            "PatientName",
-            'DepartmentName',
-            "DVisitDate",
-            "OPDNo",
-            "Doctorname",
-            "RefDocName",
-            "PatientType",
-            "CompanyName",
-            'TariffName',
-            'MobileNo',
-            "action"
-        ],
         columnsList: [
             { heading: "Patient", key: "PatientOldNew", sort: false, align: 'left', emptySign: 'NA' },
             { heading: "UHID", key: "RegNoWithPrefix", sort: true, align: 'left', emptySign: 'NA' },
@@ -372,7 +357,7 @@ export class AppointmentComponent implements OnInit {
             { fieldName: "Sort", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "Order", fieldValue: "", opType: OperatorComparer.Contains }
         ],
-        row: 10
+        row: 25
     }
 
 

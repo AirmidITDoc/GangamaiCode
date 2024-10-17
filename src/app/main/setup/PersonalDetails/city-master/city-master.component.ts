@@ -54,7 +54,7 @@ export class CityMasterComponent implements OnInit {
             { fieldName: "CityName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "IsActive", fieldValue: "", opType: OperatorComparer.Equals }
         ],
-        row: 10
+        row: 25
     }
 
     constructor(public _cityService: CityMasterService,public _matDialog: MatDialog,
