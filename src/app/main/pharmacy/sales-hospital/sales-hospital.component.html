@@ -1211,18 +1211,11 @@
                                 <!-- Draft Bill List -->
                                 <mat-table class="sales-table-right" #table matSort [dataSource]="dataSource1"
                                     [@animateStagger]="{value:'50'}">
-                                    <ng-container matColumnDef="ExtMobileNo">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Mobile No
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.ExtMobileNo}}
-                                        </mat-cell>
-                                    </ng-container>
 
                                     <ng-container matColumnDef="buttons" stickyEnd>
-                                        <mat-header-cell *matHeaderCellDef class="table-actions">Action
+                                        <mat-header-cell *matHeaderCellDef class="table-actions" class="w-50">
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact">
+                                        <mat-cell *matCellDef="let contact" class="w-50">
                                             <ng-container class="actions">
                                                 <span class="material-icons" (click)="onAddDraftList(contact)">
                                                     <mat-icon>add_shopping_cart</mat-icon>
@@ -1230,6 +1223,46 @@
                                             </ng-container>
                                         </mat-cell>
                                     </ng-container>
+
+                                    <ng-container matColumnDef="UHIDNo">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">UHID No
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-80">
+                                            {{contact.RegNo || '-'}}
+                                        </mat-cell>
+                                    </ng-container> 
+
+                                    <ng-container matColumnDef="PatientName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">PatientName
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
+                                            {{contact.PatientName || '-'}}
+                                        </mat-cell>
+                                    </ng-container> 
+
+                                    <ng-container matColumnDef="NetAmount">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">NetAmt
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
+                                            {{contact.NetAmount || '-'}}
+                                        </mat-cell>
+                                    </ng-container> 
+
+                                    <ng-container matColumnDef="ExtMobileNo">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">Mobile No
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130">
+                                            {{contact.ExtMobileNo || '-'}}
+                                        </mat-cell>
+                                    </ng-container> 
+
+                                    <ng-container matColumnDef="UserName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-110">UserName
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-110">
+                                            {{contact.UserName || '-'}}
+                                        </mat-cell>
+                                    </ng-container> 
 
                                     <ng-container matColumnDef="loading">
                                         <mat-header-cell *matFooterCellDef colspan="6" style="display:none;">
@@ -1245,11 +1278,11 @@
                                         </mat-footer-cell>
                                     </ng-container>
                                     <!-- (click)="show($event,contact)" -->
-                                    <mat-header-row class="accent"
+                                    <mat-header-row class="accent min-width-600"
                                         *matHeaderRowDef="DraftSaleDisplayedCol; sticky: true">
                                     </mat-header-row>
                                     <mat-row *matRowDef="let contact; columns: DraftSaleDisplayedCol;"
-                                        [ngClass]="{'row-yellow': QtyBalchk ==0}"
+                                        [ngClass]="{'row-yellow': QtyBalchk ==0}"   class="contact min-width-600"
                                         [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                     <!-- (click)="deleteTableRow($event,contact)"  -->
                                     <!-- <button class="btn btn-default btn-primary" style="float:right;" (click)="deleteRow(pto)" 

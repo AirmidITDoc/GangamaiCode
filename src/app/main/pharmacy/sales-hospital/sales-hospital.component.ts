@@ -38,6 +38,7 @@ import { SubstitutesComponent } from '../sales/substitutes/substitutes.component
 import { SalesHospitalService } from './sales-hospital.service';
 import { PrescriptionComponent } from '../sales/prescription/prescription.component';
 import { SalePopupComponent } from '../sales/sale-popup/sale-popup.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-sales-hospital',
@@ -302,9 +303,13 @@ export class SalesHospitalComponent implements OnInit {
     'BalQty'
   ];
 
-  DraftSaleDisplayedCol = [
+  DraftSaleDisplayedCol = [ 
+    'buttons',
+    'UHIDNo',
+    'PatientName', 
+    'NetAmount',
     'ExtMobileNo',
-    'buttons'
+    'UserName' 
   ];
 
   keyPressAlphanumeric(event) {
@@ -1269,7 +1274,7 @@ export class SalesHospitalComponent implements OnInit {
     var m_data = {
       "insertWhatsappsmsInfo": {
         "mobileNumber": this.MobileNo,
-        "smsString": 'PatientDetail' || '',
+        "smsString": 'PatientDetails',
         "isSent": 0,
         "smsType": 'bulk',
         "smsFlag": 0,
@@ -2285,18 +2290,133 @@ export class SalesHospitalComponent implements OnInit {
     // }
   }
   onSavePayOption() {
+    this.isLoading123=true;  
+    let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
+    let ConcessionId = 0;
+    if (this.ItemSubform.get('ConcessionId').value)
+      ConcessionId = this.ItemSubform.get('ConcessionId').value.ConcessionId;
+
+    let nowDate = new Date();
+    let nowDate1 = nowDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+    this.newDateTimeObj = { date: nowDate1[0], time: nowDate1[1] };
+
+    let SalesInsert = {};
+    SalesInsert['Date'] = this.newDateTimeObj.date;
+    SalesInsert['time'] = this.newDateTimeObj.time;
+
+    if (this.ItemSubform.get('PatientType').value == 'External') {
+      SalesInsert['oP_IP_Type'] = 2;
+      SalesInsert['oP_IP_ID'] = this.OP_IP_Id;
+    } else if (this.ItemSubform.get('PatientType').value == 'OP') {
+      SalesInsert['oP_IP_Type'] = 0;
+      SalesInsert['oP_IP_ID'] = this.OP_IP_Id;
+    } else if (this.ItemSubform.get('PatientType').value == 'IP') {
+      SalesInsert['oP_IP_Type'] = 1;
+      SalesInsert['oP_IP_ID'] = this.OP_IP_Id;
+    }
+    SalesInsert['totalAmount'] = this.ItemSubform.get('FinalTotalAmt').value || 0; //this.FinalTotalAmt
+    SalesInsert['vatAmount'] = this.ItemSubform.get('FinalGSTAmt').value || 0;
+    SalesInsert['discAmount'] = this.ItemSubform.get('FinalDiscAmt').value || 0; //this.FinalDiscAmt;
+    SalesInsert['netAmount'] =  this.ItemSubform.get('roundoffAmt').value || 0;  
+    SalesInsert['paidAmount'] = this.ItemSubform.get('roundoffAmt').value || 0; // NetAmt;
+    SalesInsert['balanceAmount'] = 0;
+    SalesInsert['concessionReasonID'] = ConcessionId || 0;
+    SalesInsert['concessionAuthorizationId'] = 0;
+    SalesInsert['isSellted'] = 0;
+    SalesInsert['isPrint'] = 0;
+    SalesInsert['isFree'] = 0;
+    SalesInsert['unitID'] = 1;
+    SalesInsert['addedBy'] = this._loggedService.currentUserValue.user.id,
+    SalesInsert['externalPatientName'] =this.ItemSubform.get('PatientName').value || this.PatientName || '';
+    SalesInsert['doctorName'] = this.ItemSubform.get('DoctorName').value || this.DoctorName || '';
+    SalesInsert['storeId'] = this._salesService.IndentSearchGroup.get('StoreId').value.storeid;
+    SalesInsert['isPrescription'] =this.IPMedID || 0;
+    SalesInsert['creditReason'] = '';
+    SalesInsert['creditReasonID'] = 0;
+    SalesInsert['wardId'] = 0;
+    SalesInsert['bedID'] = 0;
+    SalesInsert['discper_H'] = 0;
+    SalesInsert['isPurBill'] = 0;
+    SalesInsert['isBillCheck'] = 0;
+    SalesInsert['salesHeadName'] = ""
+    SalesInsert['salesTypeId'] = 0;
+    SalesInsert['salesId'] = 0;
+    SalesInsert['extMobileNo'] = this.MobileNo || 0;
+    SalesInsert['extAddress'] = this.vextAddress || '';
+    if(this.ItemSubform.get('FinalDiscPer').value != 0) {
+      SalesInsert['IsItem_Header_disc'] = 1;   // total amount wise discount 
+    } else if(this.ItemSubform.get('FinalDiscPer').value == 0) {
+      SalesInsert['IsItem_Header_disc'] =0;   // item wise discount amt
+    } 
+  
+
+    let salesDetailInsertarr = [];
+    this.saleSelectedDatasource.data.forEach((element) => {
+      // console.log(element);
+      let salesDetailInsert = {};
+      salesDetailInsert['salesID'] = 0;
+      salesDetailInsert['itemId'] = element.ItemId;
+      salesDetailInsert['batchNo'] = element.BatchNo;
+      salesDetailInsert['batchExpDate'] = element.BatchExpDate;// this.datePipe.transform(element.BatchExpDate,"yyyy/mm/dd");//element.BatchExpDate;
+      salesDetailInsert['unitMRP'] = element.UnitMRP;
+      salesDetailInsert['qty'] = element.Qty;
+      salesDetailInsert['totalAmount'] = element.TotalMRP;
+      salesDetailInsert['vatPer'] = element.VatPer;
+      salesDetailInsert['vatAmount'] = element.VatAmount;
+      salesDetailInsert['discPer'] = element.DiscPer;
+      salesDetailInsert['discAmount'] = element.DiscAmt;
+      salesDetailInsert['grossAmount'] = element.NetAmt;
+      salesDetailInsert['landedPrice'] = element.LandedRate;
+      salesDetailInsert['totalLandedAmount'] = element.LandedRateandedTotal;
+      salesDetailInsert['purRateWf'] = element.PurchaseRate;
+      salesDetailInsert['purTotAmt'] = element.PurTotAmt;
+      salesDetailInsert['cgstPer'] = element.CgstPer;
+      salesDetailInsert['cgstAmt'] = element.CGSTAmt;
+      salesDetailInsert['sgstPer'] = element.SgstPer;
+      salesDetailInsert['sgstAmt'] = element.SGSTAmt;
+      salesDetailInsert['igstPer'] = element.IgstPer
+      salesDetailInsert['igstAmt'] = element.IGSTAmt
+      salesDetailInsert['isPurRate'] = 0;
+      salesDetailInsert['stkID'] = element.StockId;
+      salesDetailInsertarr.push(salesDetailInsert);
+    });
+    let updateCurStkSalestarr = [];
+    this.saleSelectedDatasource.data.forEach((element) => {
+      let updateCurStkSales = {};
+      updateCurStkSales['itemId'] = element.ItemId;
+      updateCurStkSales['issueQty'] = element.Qty;
+      updateCurStkSales['storeID'] = this._loggedService.currentUserValue.user.storeId,
+      updateCurStkSales['stkID'] = element.StockId;
+      updateCurStkSalestarr.push(updateCurStkSales);
+    });
+
+    let cal_DiscAmount_Sales = {};
+    cal_DiscAmount_Sales['salesID'] = 0;
+
+    let cal_GSTAmount_Sales = {};
+    cal_GSTAmount_Sales['salesID'] = 0;
+
+
+    let salesDraftStatusUpdate = {};
+    salesDraftStatusUpdate['DSalesId'] = this.DraftID || 0;
+    salesDraftStatusUpdate['IsClosed'] = 1
+
+    let salesPrescriptionStatusUpdate = {}; 
+    salesPrescriptionStatusUpdate['opipid'] =  this.IPMedID || 0;
+    salesPrescriptionStatusUpdate['isclosed'] = true || 1 
+
     this.vPatientType = this.ItemSubform.get('PatientType').value; 
-    this.isLoading123=true; 
+   
     let PatientHeaderObj = {};
     PatientHeaderObj['Date'] = this.dateTimeObj.date;
     PatientHeaderObj['RegNo'] = this.RegNo;
     PatientHeaderObj['PatientName'] = this.PatientName;
-    if ( this.vPatientType == 'IP'){
+    if (this.vPatientType == 'IP') {
       PatientHeaderObj['OPD_IPD_Id'] = this.IPDNo;
-    }else{
+    } else {
       PatientHeaderObj['OPD_IPD_Id'] = this.OPDNo;
-    } 
-    PatientHeaderObj['Age'] = this.Age ;
+    }
+    PatientHeaderObj['Age'] = this.Age;
     PatientHeaderObj['NetPayAmount'] = this.ItemSubform.get('roundoffAmt').value; //this.ItemSubform.get('FinalNetAmount').value;
   
     const dialogRef = this._matDialog.open(OpPaymentNewComponent,
@@ -2326,119 +2446,6 @@ export class SalesHospitalComponent implements OnInit {
         let onlinepay = result.submitDataPay.ipPaymentInsert.PayTMAmount;
 
         if ((cashpay == 0 && chequepay == 0 && cardpay == 0 && Neftpay == 0 && onlinepay == 0) == false) {
-          let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
-          let ConcessionId = 0;
-          if (this.ItemSubform.get('ConcessionId').value)
-            ConcessionId = this.ItemSubform.get('ConcessionId').value.ConcessionId;
-
-          let nowDate = new Date();
-          let nowDate1 = nowDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
-          this.newDateTimeObj = { date: nowDate1[0], time: nowDate1[1] };
-
-          let SalesInsert = {};
-          SalesInsert['Date'] = this.newDateTimeObj.date;
-          SalesInsert['time'] = this.newDateTimeObj.time;
-
-          if (this.ItemSubform.get('PatientType').value == 'External') {
-            SalesInsert['oP_IP_Type'] = 2;
-            SalesInsert['oP_IP_ID'] = this.OP_IP_Id;
-          } else if (this.ItemSubform.get('PatientType').value == 'OP') {
-            SalesInsert['oP_IP_Type'] = 0;
-            SalesInsert['oP_IP_ID'] = this.OP_IP_Id;
-          } else if (this.ItemSubform.get('PatientType').value == 'IP') {
-            SalesInsert['oP_IP_Type'] = 1;
-            SalesInsert['oP_IP_ID'] = this.OP_IP_Id;
-          }
-          SalesInsert['totalAmount'] = this.ItemSubform.get('FinalTotalAmt').value || 0; //this.FinalTotalAmt
-          SalesInsert['vatAmount'] = this.ItemSubform.get('FinalGSTAmt').value || 0;
-          SalesInsert['discAmount'] = this.ItemSubform.get('FinalDiscAmt').value || 0; //this.FinalDiscAmt;
-          SalesInsert['netAmount'] =  this.ItemSubform.get('roundoffAmt').value || 0;  
-          SalesInsert['paidAmount'] = this.ItemSubform.get('roundoffAmt').value || 0; // NetAmt;
-          SalesInsert['balanceAmount'] = 0;
-          SalesInsert['concessionReasonID'] = ConcessionId || 0;
-          SalesInsert['concessionAuthorizationId'] = 0;
-          SalesInsert['isSellted'] = 0;
-          SalesInsert['isPrint'] = 0;
-          SalesInsert['isFree'] = 0;
-          SalesInsert['unitID'] = 1;
-          SalesInsert['addedBy'] = this._loggedService.currentUserValue.user.id,
-          SalesInsert['externalPatientName'] = this.PatientName || '';
-          SalesInsert['doctorName'] = this.DoctorName || '';
-          SalesInsert['storeId'] = this._salesService.IndentSearchGroup.get('StoreId').value.storeid;
-          SalesInsert['isPrescription'] =this.IPMedID || 0;
-          SalesInsert['creditReason'] = '';
-          SalesInsert['creditReasonID'] = 0;
-          SalesInsert['wardId'] = 0;
-          SalesInsert['bedID'] = 0;
-          SalesInsert['discper_H'] = 0;
-          SalesInsert['isPurBill'] = 0;
-          SalesInsert['isBillCheck'] = 0;
-          SalesInsert['salesHeadName'] = ""
-          SalesInsert['salesTypeId'] = 0;
-          SalesInsert['salesId'] = 0;
-          SalesInsert['extMobileNo'] = this.MobileNo || 0;
-          SalesInsert['extAddress'] = this.vextAddress || '';
-          if(this.ItemSubform.get('FinalDiscPer').value != 0) {
-            SalesInsert['IsItem_Header_disc'] = 1;   // total amount wise discount 
-          } else if(this.ItemSubform.get('FinalDiscPer').value == 0) {
-            SalesInsert['IsItem_Header_disc'] =0;   // item wise discount amt
-          } 
-        
-
-          let salesDetailInsertarr = [];
-          this.saleSelectedDatasource.data.forEach((element) => {
-            // console.log(element);
-            let salesDetailInsert = {};
-            salesDetailInsert['salesID'] = 0;
-            salesDetailInsert['itemId'] = element.ItemId;
-            salesDetailInsert['batchNo'] = element.BatchNo;
-            salesDetailInsert['batchExpDate'] = element.BatchExpDate;// this.datePipe.transform(element.BatchExpDate,"yyyy/mm/dd");//element.BatchExpDate;
-            salesDetailInsert['unitMRP'] = element.UnitMRP;
-            salesDetailInsert['qty'] = element.Qty;
-            salesDetailInsert['totalAmount'] = element.TotalMRP;
-            salesDetailInsert['vatPer'] = element.VatPer;
-            salesDetailInsert['vatAmount'] = element.VatAmount;
-            salesDetailInsert['discPer'] = element.DiscPer;
-            salesDetailInsert['discAmount'] = element.DiscAmt;
-            salesDetailInsert['grossAmount'] = element.NetAmt;
-            salesDetailInsert['landedPrice'] = element.LandedRate;
-            salesDetailInsert['totalLandedAmount'] = element.LandedRateandedTotal;
-            salesDetailInsert['purRateWf'] = element.PurchaseRate;
-            salesDetailInsert['purTotAmt'] = element.PurTotAmt;
-            salesDetailInsert['cgstPer'] = element.CgstPer;
-            salesDetailInsert['cgstAmt'] = element.CGSTAmt;
-            salesDetailInsert['sgstPer'] = element.SgstPer;
-            salesDetailInsert['sgstAmt'] = element.SGSTAmt;
-            salesDetailInsert['igstPer'] = element.IgstPer
-            salesDetailInsert['igstAmt'] = element.IGSTAmt
-            salesDetailInsert['isPurRate'] = 0;
-            salesDetailInsert['stkID'] = element.StockId;
-            salesDetailInsertarr.push(salesDetailInsert);
-          });
-          let updateCurStkSalestarr = [];
-          this.saleSelectedDatasource.data.forEach((element) => {
-            let updateCurStkSales = {};
-            updateCurStkSales['itemId'] = element.ItemId;
-            updateCurStkSales['issueQty'] = element.Qty;
-            updateCurStkSales['storeID'] = this._loggedService.currentUserValue.user.storeId,
-            updateCurStkSales['stkID'] = element.StockId;
-            updateCurStkSalestarr.push(updateCurStkSales);
-          });
-
-          let cal_DiscAmount_Sales = {};
-          cal_DiscAmount_Sales['salesID'] = 0;
-
-          let cal_GSTAmount_Sales = {};
-          cal_GSTAmount_Sales['salesID'] = 0;
-
-
-          let salesDraftStatusUpdate = {};
-          salesDraftStatusUpdate['DSalesId'] = this.DraftID || 0;
-          salesDraftStatusUpdate['IsClosed'] = 1
-
-          let salesPrescriptionStatusUpdate = {}; 
-          salesPrescriptionStatusUpdate['opipid'] =  this.IPMedID || 0;
-          salesPrescriptionStatusUpdate['isclosed'] = true || 1 
 
           let submitData = {
             "salesInsert": SalesInsert,
@@ -2475,13 +2482,11 @@ export class SalesHospitalComponent implements OnInit {
             } else {
               this.toastr.error('API Error!', 'Error !', {
                 toastClass: 'tostr-tost custom-toast-error',
-              });
-          
+              }); 
             }
            
             // });
-          }, error => {
-
+          }, error => { 
             this.toastr.error('API Error!', 'Error !', {
               toastClass: 'tostr-tost custom-toast-error',
             });
@@ -3271,6 +3276,25 @@ export class SalesHospitalComponent implements OnInit {
     
   }
 
+  getDraftbillPrint(el) {  
+    var D_data = {
+      "DSalesId": el,//  
+    }
+    console.log(D_data)  
+    this._salesService.getSalesDraftPrint(D_data).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Pathology Template Report Viewer"
+          }
+        });
+    });
+  }
+
   add: Boolean = false;
   @ViewChild('discamt') discamt: ElementRef;
   @ViewChild('doctorname') doctorname: ElementRef;
@@ -3463,8 +3487,7 @@ getSearchListIP() {
     let IsDischarged = 0;
     IsDischarged = obj.IsDischarged 
     if(IsDischarged == 1){
-      Swal.fire('Selected Patient is already discharged');
-      //this.PatientInformRest();
+      Swal.fire('Selected Patient is already discharged'); 
       this.RegId = ''
     }
     else{

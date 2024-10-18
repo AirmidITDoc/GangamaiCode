@@ -1,6 +1,7 @@
   import { HttpClient } from '@angular/common/http';
   import { Injectable } from '@angular/core';
   import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { LoaderService } from 'app/core/components/loader/loader.service';
   
   @Injectable({
     providedIn: 'root'
@@ -14,7 +15,8 @@
   
     constructor(
       public _httpClient: HttpClient,
-      private _formBuilder: FormBuilder
+      private _formBuilder: FormBuilder,
+      private _loaderService: LoaderService
     ) { 
       this.userFormGroup = this.IndentID();
       this.IndentSearchGroup= this.IndentSearchFrom();
@@ -106,15 +108,24 @@
     {
       return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ConcessionReasonMasterForCombo", {});
     }
-    public InsertCashSales(employee){
+    public InsertCashSales(employee,loader = true){ 
+      if (loader) {
+        this._loaderService.show();
+    }
       return this._httpClient.post("Pharmacy/SalesSaveWithPayment", employee)
     }
   
-    public InsertCreditSales  (employee){
+    public InsertCreditSales  (employee,loader = true){ 
+      if (loader) {
+        this._loaderService.show();
+    }
       return this._httpClient.post("Pharmacy/SalesSaveWithCredit", employee)
     }
   
-    public InsertSalesDraftBill(employee){
+    public InsertSalesDraftBill(employee,loader = true){ 
+      if (loader) {
+        this._loaderService.show();
+    }
       return this._httpClient.post("Pharmacy/SalesSaveDraftBill", employee)
     }
   
@@ -124,10 +135,13 @@
     public getBillSummaryQuery(query) {
       return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
     } 
-    public getSalesPrint(emp){
+    public getSalesPrint(emp,loader = true){ 
+      if (loader) {
+        this._loaderService.show();
+    }
       return this._httpClient.post("Generic/GetByProc?procName=rptSalesPrint",emp);
     }
-    
+  
     public getSalesReturnPrint(emp){
       return this._httpClient.post("Generic/GetByProc?procName=m_rptSalesReturnPrint",emp);
     }
@@ -171,6 +185,12 @@
     }
     public getItemDetailList(Param){
       return this._httpClient.post("Generic/GetByProc?procName=Ret_PrescriptionDet",Param);
+    }
+    public getSalesDraftPrint(DSalesId,loader = true){
+      if(loader){
+        this._loaderService.show();
+      }
+      return this._httpClient.get("PharmacyReport/view-SalesDraftBill" + DSalesId);
     }
   }
   

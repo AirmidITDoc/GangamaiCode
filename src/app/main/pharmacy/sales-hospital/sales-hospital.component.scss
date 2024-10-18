@@ -167,7 +167,18 @@ app-sales {
             text-align: 200px;
         }
     }
-    
+    .mat-column-PatientName {
+        width: 140px;
+        max-width: 140px;
+        min-width: 140px;
+        text-align: left; 
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-block;
+        justify-content: left;
+    }
     .patient-details mat-error {
         margin-top: 10px;
         font-size: 14px;

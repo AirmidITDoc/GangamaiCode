@@ -59,6 +59,22 @@ export class PatientVitalInformationComponent implements OnInit {
     if(this.data){
       this.advanceObj = this.data.registerObj;
       console.log( this.advanceObj)
+
+      this.RegId = this.advanceObj.RegId,
+      this.CompanyId = this.advanceObj.CompanyId,
+      this.RegNo = this.advanceObj.RegNoWithPrefix,
+      this.PatientName = this.advanceObj.PatientName,
+      this.Doctorname = this.advanceObj.Doctorname,
+      this.vOPDNo = this.advanceObj.OPDNo,
+      this.AgeYear = this.advanceObj.AgeYear,
+      this.AgeMonth = this.advanceObj.AgeMonth,
+      this.AgeDay = this.advanceObj.AgeDay,
+      // this.GenderName = this.advanceObj.RegId,
+      this.DepartmentName = this.advanceObj.DepartmentName,
+      this.PatientType = this.advanceObj.PatientType,
+      this.Tarrifname = this.advanceObj.TariffName,
+      this.CompanyName = this.advanceObj.CompanyName,
+      this.RefDocName = this.advanceObj.RefDocName
     } 
 
     this.MyFormGroup = this.createMyForm();
@@ -134,7 +150,37 @@ export class PatientVitalInformationComponent implements OnInit {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
-    }   
+    }  
+    
+    let VitalInfoSave = {};
+    VitalInfoSave['visitId'] = 0 ;
+    VitalInfoSave['height'] =  this.vHeight||  '' ;
+    VitalInfoSave['pWeight'] = this.vWeight ||  '' ;
+    VitalInfoSave['bmi'] = this.vBMI ||  '' ;
+    VitalInfoSave['bsl'] = this.vBSL ||  '' ;
+    VitalInfoSave['spO2'] = this.vSpO2 ||  '' ;
+    VitalInfoSave['temp'] = this.vTemp  ||  '' ;
+    VitalInfoSave['pulse'] = this.vPulse   ||  '' ;
+    VitalInfoSave['bp'] = this.vBP ||  '' ; 
+
+    let SubmitData={
+      "updateVitalInformation":VitalInfoSave
+    }
+    console.log(SubmitData)
+    this._OpAppointmentService.InsertVitalInfo(SubmitData).subscribe(response => {
+      if(response){
+      this.toastr.success(' OP Bill Credit Record Saved Successfully.', 'Save !', {
+        toastClass: 'tostr-tost custom-toast-success',
+      });   
+          this.onClose();
+   
+    } else {
+      this.toastr.success('OP Billing data not saved', 'error', {
+        toastClass: 'tostr-tost custom-toast-success',
+      }); 
+    } 
+  });  
+
 }  
 
   onClose(){
@@ -167,8 +213,6 @@ export class PatientVitalInformationComponent implements OnInit {
   @ViewChild('EBMI') EBMI: ElementRef;
   @ViewChild('EBP') EBP: ElementRef;
   @ViewChild('ETemp') ETemp: ElementRef;
-
-
   
   public onEnterHeight(event): void {
     if (event.which === 13) {

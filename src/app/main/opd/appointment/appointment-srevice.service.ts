@@ -554,4 +554,10 @@ public documentdownloadInsert(employee,loader = true){
         }
       return this._httpClient.post("Generic/GetByProc?procName=Retrieve_DoctorWithDepartCombo_Conditional", {})
     }
+    public InsertVitalInfo(element,loader = true){
+      if(loader){
+        this._loaderService.show();
+      } 
+      return this._httpClient.post("OutPatient/UpdateVitalInformation",element)
+    }
 }
