@@ -25,6 +25,7 @@ import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.s
 import { OpPaymentComponent } from '../../op-search-list/op-payment/op-payment.component';
 import { ConfigService } from 'app/core/services/config.service';
 import { element } from 'protractor';
+import { OpPackageBillInfoComponent } from './op-package-bill-info/op-package-bill-info.component';
 
 @Component({
   selector: 'app-new-opbilling',
@@ -58,7 +59,7 @@ export class NewOPBillingComponent implements OnInit {
     'DiscPer',
     'DiscAmt',
     'NetAmount', 
-    'action'
+    // 'action'
   ];
   displayedPrescriptionColumns = [  
     'ServiceName',
@@ -625,6 +626,8 @@ finaldiscAmt() {
             NetAmount: 0,
             IsPathology: element.IsPathology,
             IsRadiology: element.IsRadiology, 
+            PackageId:element.PackageId,
+            PackageServiceId:element.PackageServiceId
           })
       })
       this.dsPackageDet.data = this.PacakgeList
@@ -633,20 +636,7 @@ finaldiscAmt() {
     });
   }
 
-  gettablecalculation(element, Price) {
-    console.log(element)
-    debugger 
-    if(element.Price > 0 && element.Qty > 0){ 
-    element.TotalAmt = element.Qty * element.Price
-    element.DiscAmt = (element.ConcessionPercentage * element.TotalAmt) / 100 ;
-    element.NetAmount =  element.TotalAmt - element.DiscAmt
-    }  
-    else if(element.Price == 0 || element.Price == '' || element.Qty == '' || element.Qty == 0){
-      element.TotalAmt = 0;  
-      element.DiscAmt =  0 ;
-      element.NetAmount =  0 ;
-    } 
-  }
+
 getConcessionReasonList() {
   this._oPSearhlistService.getConcessionCombo().subscribe(data => {
     this.ConcessionReasonList = data;
@@ -786,6 +776,7 @@ getConcessionChek(){
   } 
   
 }
+SavePackageList:any=[];
   onSaveOPBill2() { 
 debugger
     if ((this.vOPIPId == '' || this.vOPIPId == null || this.vOPIPId == undefined)) {
@@ -920,7 +911,51 @@ debugger
           InsertAddChargesObj['classId'] = this.vClassId,
 
           InsertAdddetArr.push(InsertAddChargesObj);
+
+
+        if (element.IsPackage == '1' && element.ServiceId) {
+          this.SavePackageList = this.PacakgeList.filter(item => item.ServiceId === element.ServiceId)
+          console.log(this.SavePackageList)
+          if (this.SavePackageList) { 
+            this.SavePackageList.forEach((element) => {
+              let InsertAddChargesObj = {};
+              InsertAddChargesObj['ChargeID'] = 0,
+                InsertAddChargesObj['ChargesDate'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
+                InsertAddChargesObj['opD_IPD_Type'] = 0,
+                InsertAddChargesObj['opD_IPD_Id'] = this.vOPIPId,
+                InsertAddChargesObj['serviceId'] = element.ServiceId,
+                InsertAddChargesObj['price'] = element.Price,
+                InsertAddChargesObj['qty'] = element.Qty,
+                InsertAddChargesObj['totalAmt'] = element.TotalAmt,
+                InsertAddChargesObj['concessionPercentage'] = element.DiscPer || 0,
+                InsertAddChargesObj['concessionAmount'] = element.DiscAmt || 0,
+                InsertAddChargesObj['netAmount'] = element.NetAmount,
+                InsertAddChargesObj['doctorId'] = element.DoctorId,
+                InsertAddChargesObj['docPercentage'] = 0,
+                InsertAddChargesObj['docAmt'] = 0,
+                InsertAddChargesObj['hospitalAmt'] = element.NetAmount,
+                InsertAddChargesObj['isGenerated'] = 0,
+                InsertAddChargesObj['addedBy'] = this.accountService.currentUserValue.user.id,
+                InsertAddChargesObj['isCancelled'] = 0,
+                InsertAddChargesObj['isCancelledBy'] = 0,
+                InsertAddChargesObj['isCancelledDate'] = "01/01/1900",
+                InsertAddChargesObj['isPathology'] = element.IsPathology,
+                InsertAddChargesObj['isRadiology'] = element.IsRadiology,
+                InsertAddChargesObj['isPackage'] = 1,
+                InsertAddChargesObj['packageMainChargeID'] = 0,
+                InsertAddChargesObj['isSelfOrCompanyService'] = false,
+                InsertAddChargesObj['packageId'] = element.ServiceId,
+                InsertAddChargesObj['BillNo'] = 0,
+                InsertAddChargesObj['chargeTime'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
+                InsertAddChargesObj['classId'] = this.vClassId,
+                InsertAdddetArr.push(InsertAddChargesObj);
+            })
+          }
+        } 
+        this.SavePackageList = []; 
       })
+
+    
 
 
       let opCalDiscAmountBill = {}
@@ -1291,7 +1326,9 @@ debugger
     this.searchFormGroup.reset();
     this.BillingForm.reset();
     this.dataSource.data = [];
+    this.dsPackageDet.data = [];
     this.chargeslist = [];
+    this.PacakgeList = [];
     this.RegNo = ''
     this.PatientName = ''
     this.Doctorname = ''
@@ -1375,7 +1412,21 @@ debugger
     }
   }
 
-
+getPacakgeDetail(contact){
+  const dialogRef = this._matDialog.open(OpPackageBillInfoComponent,
+    {
+      maxWidth: "100%",
+      height: '75%',
+      width: '65%' ,
+      data: {
+        Obj:contact
+      }
+    });
+  dialogRef.afterClosed().subscribe(result => {
+    console.log('The dialog was closed - Insert Action', result);
+    
+  }); 
+}
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {

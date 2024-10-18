@@ -340,7 +340,7 @@
                                                         <img width="15px" height="9px" src="assets/images/logos/pathology.png">
                                                     </mat-icon> 
 
-                                                    <mat-icon *ngIf="contact.IsPackage == '1'" matTooltip="IsPackage">
+                                                    <mat-icon *ngIf="contact.IsPackage == '1'" matTooltip="IsPackage" (click)="getPacakgeDetail(contact)">
                                                         <img width="15px" height="9px" src="assets/images/logos/package.png"> 
                                                     </mat-icon> 
                                                 </mat-cell>
@@ -500,7 +500,7 @@
                                         <mat-table #table1 matSort [dataSource]="dsPackageDet" class="h-250"
                                             [@animateStagger]="{value:'50'}" style="height:230px !important;overflow: auto;">
                 
-                                            <ng-container matColumnDef="action" stickyEnd>
+                                            <!-- <ng-container matColumnDef="action" stickyEnd>
                                                 <mat-header-cell *matHeaderCellDef style="color: white;"> Action
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let row">
@@ -508,7 +508,7 @@
                                                         <mat-icon>delete_outline</mat-icon>
                                                     </button>
                                                 </mat-cell>
-                                            </ng-container>
+                                            </ng-container> -->
                 
                                             <ng-container matColumnDef="IsCheck" sticky>
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header class="w-70">Status</mat-header-cell>
@@ -535,10 +535,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Price
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    <mat-form-field appearance="legacy">
-                                                        <input matInput [(ngModel)]="contact.Price" type="text" OnlyNumber
-                                                            (keyup)="gettablecalculation(contact,contact.Price)" (keypress)="keyPressCharater($event)">
-                                                    </mat-form-field>
+                                                    <span> {{contact.Price}}</span> 
                                                 </mat-cell>
                                             </ng-container>
                                 
@@ -546,10 +543,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Qty
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    <mat-form-field appearance="legacy">
-                                                        <input matInput [(ngModel)]="contact.Qty" type="text" OnlyNumber
-                                                            (keyup)="gettablecalculation(contact,contact.Qty)" (keypress)="keyPressAlphanumeric($event)">
-                                                    </mat-form-field> 
+                                                    <span> {{contact.Qty}}</span> 
                                                 </mat-cell>
                                             </ng-container>
                 

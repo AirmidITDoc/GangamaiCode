@@ -1,0 +1,232 @@
+<div class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+              Op Package Bill
+            </span>  
+        </div>
+
+        <div fxLayout="row" fxLayoutALign="end start"> 
+            <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div> 
+    </mat-toolbar>
+
+    <div class="content">
+
+        <div class="center p-12 pb-56" fxFlexAlign="start center">
+
+            <div class="content-card" style="border-radius:4px;">
+                <div class="nav material2">
+                    <div fxLayout="column" fxFlexFill fxLayoutGap="10px">
+                        <form [formGroup]="PackageForm">
+                            <mat-card style="padding: 5px;">
+                                <div fxLayout="row" fxLayoutGap="5px">
+                                    <mat-form-field appearance="outline" fxFlex="40%">
+                                        <input type="text" name="SrvcName" formControlName="SrvcName" #Servicename placeholder="Service Name"
+                                            matInput [matAutocomplete]="auto" (keydown)="onEnterservice($event)"
+                                            (input)="getServiceListCombobox()" required id="myInput" [(ngModel)]="vServiceId">
+                                        <span matSuffix style="display: flex;">
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="PackageForm.get('SrvcName').setValue(''); isServiceSelected = false;">close</mat-icon>
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="PackageForm.get('SrvcName').setValue(''); isServiceSelected = false;">search</mat-icon>
+                                        </span>
+                                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText" showPanel="true"
+                                              (optionSelected)='getSelectedObj($event.option.value)'
+                                            style="width: 500px;">
+                        
+                                            <mat-option *ngFor="let option of filteredOptionsService" [value]="option" style="width: 500px;">
+                                                {{option.ServiceName}} | Price {{option.Price}} |
+                                                <span fxLayoutGap="4px">
+                                                    <mat-icon *ngIf="option.CreditedtoDoctor == true" matTooltip="IsDoctor">
+                                                        <img width="10px" height="6px" src="assets/images/logos/doctor.png">
+                                                    </mat-icon> |
+                                                    <mat-icon *ngIf="option.IsRadiology == true" matTooltip="IsRadiology">
+                                                        <img width="10px" height="6px" src="assets/images/logos/radiology.png">
+                                                    </mat-icon>
+                                                    <mat-icon *ngIf="option.IsPathology == true" matTooltip="IsPatholgy">
+                                                        <img width="10px" height="6px" src="assets/images/logos/pathology.png">
+                                                    </mat-icon>
+                                                    <mat-icon *ngIf="option.IsPackage == true" matTooltip="IsPackage">
+                                                        <img width="10px" height="6px" src="assets/images/logos/package.png">
+                                                    </mat-icon>
+                                                </span>
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+                        
+                                    <mat-form-field appearance="outline" fxFlex="25%" *ngIf="isDoctor">
+                                        <mat-label>Doctor Name</mat-label>
+                                        <input matAutocompletePosition="below" type="text" placeholder="Select Doctor" matInput
+                                            formControlName="DoctorID" [(ngModel)]="vDoctor" [matAutocomplete]="autoSearchDoctor1" #doctorname
+                                            (input)="getAdmittedDoctorCombo()">
+                                        <span matSuffix style="display: flex;">
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="PackageForm.get('DoctorID').setValue(''); isDoctorSelected = false;">close</mat-icon>
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="PackageForm.get('DoctorID').setValue(''); isDoctorSelected = false;">search</mat-icon>
+                                        </span>
+                                        <mat-autocomplete #autoSearchDoctor1="matAutocomplete" [displayWith]="getOptionTextDoctor">
+                                            <mat-option *ngFor="let option of filteredOptionsDoctors" [value]="option">
+                                                {{option.Doctorname}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+                        
+                                    <div matTooltip="Enter all data to enable this button!!" [matTooltipPosition]="'above'">
+                                        <button (click)="onAddCharges()" class="btn btn-primary btn-with-icon py-8" #addbutton>
+                                            <span class="btn-icon">
+                                                <mat-icon> add </mat-icon>
+                                            </span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </mat-card>
+                        </form>
+            
+                        <div fxLayout="column" fxLayoutAlign="start none">
+                            <mat-card style="padding: 5px;">
+                                <div fxFlex="100%">
+                                    <mat-table #table1 matSort [dataSource]="dsPackageDet" [@animateStagger]="{value:'50'}"
+                                        style="height:300px !important;overflow: auto;">
+                        
+                                        <ng-container matColumnDef="action" stickyEnd>
+                                            <mat-header-cell *matHeaderCellDef style="color: white;"> Action
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let row">
+                                                <button mat-icon-button (click)="deleteTableRowPackage(row)" color="warn">
+                                                    <mat-icon>delete_outline</mat-icon>
+                                                </button>
+                                            </mat-cell>
+                                        </ng-container>
+                        
+                                        <ng-container matColumnDef="IsCheck" sticky>
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-70">Status</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" class="w-70">
+                                                <mat-icon *ngIf="contact.IsRadiology == 1" matTooltip="IsRadiology">
+                                                    <img width="15px" height="8px" src="assets/images/logos/radiology.png">
+                                                </mat-icon>
+                                                <mat-icon *ngIf="contact.IsPathology == 1" matTooltip="IsPatholgy">
+                                                    <img width="15px" height="9px" src="assets/images/logos/pathology.png">
+                                                </mat-icon>
+                                            </mat-cell>
+                                        </ng-container>
+                        
+                                        <ng-container matColumnDef="ServiceName">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
+                                                Service Name
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
+                                                <span> {{contact.ServiceName}}</span>
+                                            </mat-cell>
+                                        </ng-container>
+                        
+                                        <ng-container matColumnDef="Price">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Price
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                <mat-form-field appearance="legacy">
+                                                    <input matInput [(ngModel)]="contact.Price" type="text" OnlyNumber
+                                                        (keyup)="gettablecalculation(contact,contact.Price)"
+                                                        (keypress)="keyPressCharater($event)">
+                                                </mat-form-field>
+                                            </mat-cell>
+                                        </ng-container>
+                        
+                                        <ng-container matColumnDef="Qty">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Qty
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                <mat-form-field appearance="legacy">
+                                                    <input matInput [(ngModel)]="contact.Qty" type="text" OnlyNumber
+                                                        (keyup)="gettablecalculation(contact,contact.Qty)"
+                                                        (keypress)="keyPressAlphanumeric($event)">
+                                                </mat-form-field>
+                                            </mat-cell>
+                                        </ng-container>
+                        
+                                        <ng-container matColumnDef="TotalAmt">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                Total Amt
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                <span> {{contact.TotalAmt || '-'}}</span>
+                                            </mat-cell>
+                                        </ng-container>
+                        
+                                        <ng-container matColumnDef="DiscPer">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Disc
+                                                %
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                <span> {{contact.ConcessionPercentage || '-'}}</span>
+                                            </mat-cell>
+                                        </ng-container>
+                        
+                                        <ng-container matColumnDef="DiscAmt">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Disc
+                                                Amt
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                        
+                                                <span> {{contact.DiscAmt || '-' }}</span>
+                                            </mat-cell>
+                                        </ng-container>
+                        
+                                        <ng-container matColumnDef="NetAmount">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                NetAmt
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                <span> {{contact.NetAmount || '-'}}</span>
+                                            </mat-cell>
+                                        </ng-container>
+                        
+                                        <ng-container matColumnDef="loading">
+                                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                                loading data...
+                                            </mat-footer-cell>
+                                        </ng-container>
+                        
+                                        <ng-container matColumnDef="noData">
+                                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                                <span>No Data Found</span>
+                                            </mat-footer-cell>
+                                        </ng-container>
+                        
+                                        <mat-header-row class="accent" *matHeaderRowDef="displayedColumnspackage; sticky: true">
+                                        </mat-header-row>
+                                        <mat-row *matRowDef="let contact; columns: displayedColumnspackage;"
+                                            [ngClass]="{'row-yellow': contact.ServiceName == 'CBC'}"
+                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                        <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dsPackageDet!=null}">
+                                        </mat-footer-row>
+                                        <mat-footer-row *matFooterRowDef="['noData']"
+                                            [ngClass]="{'hide':!(dsPackageDet!=null && dsPackageDet.data.length==0)}">
+                                        </mat-footer-row>
+                                        phar-label
+                                    </mat-table>
+                                    <mat-paginator #paginator [pageSizeOptions]="[15, 24, 35, 100]" [pageSize]="15" showFirstLastButtons>
+                                    </mat-paginator>
+                                </div>
+                            </mat-card>
+                        </div> 
+
+                        <div fxLayput="row" fxLayoutAlign="end" fxLayoutGap="6px">
+                            <button class="btn btn-danger-outline" (click)="onClose()">Reset</button>
+                            <button class="btn btn-primary"  (click)="onSavePackage()">Save</button>
+                        </div>
+                    </div>  
+                </div>
+            </div> 
+        </div>
+    </div>
+</div>

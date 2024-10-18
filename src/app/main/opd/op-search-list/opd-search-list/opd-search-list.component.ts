@@ -489,6 +489,9 @@ export class ChargesList{
   ClassId:number;
   ClassName: string;
   ChargesAddedName: string;
+  PackageId:any;
+  PackageServiceId:any;
+  IsPackage:any;
 
   constructor(ChargesList){
           this.ChargesId = ChargesList.ChargesId || '';
@@ -508,5 +511,8 @@ export class ChargesList{
           this.ClassId=ChargesList.ClassId || 0;
           this.ClassName = ChargesList.ClassName || '';
           this.ChargesAddedName = ChargesList.ChargesAddedName || '';
+          this.PackageId=ChargesList.PackageId || 0;
+          this.PackageServiceId=ChargesList.PackageServiceId || 0;
+          this.IsPackage=ChargesList.IsPackage || 0;
   }
 } 

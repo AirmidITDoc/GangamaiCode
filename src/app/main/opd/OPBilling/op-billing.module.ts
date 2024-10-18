@@ -36,6 +36,7 @@ import { MatCheckboxModule } from "@angular/material/checkbox";
 import { NewOPBillingComponent } from "./new-opbilling/new-opbilling.component";
 import { ScrollingModule } from "@angular/cdk/scrolling";
 import { OpBillingService } from "./op-billing.service";
+import { OpPackageBillInfoComponent } from './new-opbilling/op-package-bill-info/op-package-bill-info.component';
 
 const routes: Routes = [
     {
@@ -45,7 +46,8 @@ const routes: Routes = [
 ];
 @NgModule({
     declarations: [
-      NewOPBillingComponent
+      NewOPBillingComponent,
+      OpPackageBillInfoComponent
         
     ],
     imports: [
