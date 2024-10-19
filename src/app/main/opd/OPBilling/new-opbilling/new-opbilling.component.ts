@@ -1101,7 +1101,7 @@ debugger
                 this.onClose();
                 this.savebtn = false; 
           } else {
-            this.toastr.success('OP Billing data not saved', 'error!', {
+            this.toastr.warning('OP Billing data not saved', 'error!', {
               toastClass: 'tostr-tost custom-toast-success',
             });  
           }
@@ -1424,8 +1424,33 @@ getPacakgeDetail(contact){
     });
   dialogRef.afterClosed().subscribe(result => {
     console.log('The dialog was closed - Insert Action', result);
-    
-  }); 
+    if (result) {
+      this.dsPackageDet.data = result
+      this.dsPackageDet.data.forEach(element => {
+        this.PacakgeList = this.PacakgeList.filter(item => item.ServiceId !== element.ServiceId)
+        console.log(this.PacakgeList)
+      });
+
+      this.dsPackageDet.data.forEach(element => {
+        this.PacakgeList.push(
+          {
+            ServiceId: element.ServiceId,
+            ServiceName: element.ServiceName,
+            Price: element.Price || 0,
+            Qty: element.Qty || 1,
+            TotalAmt: element.TotalAmt || 0,
+            ConcessionPercentage: element.DiscPer || 0,
+            DiscAmt: element.DiscAmt || 0,
+            NetAmount: element.NetAmount || 0,
+            IsPathology: element.IsPathology || 0,
+            IsRadiology: element.IsRadiology || 0,
+            PackageId: element.PackageId || 0,
+            PackageServiceId: element.PackageServiceId || 0
+          });
+        this.dsPackageDet.data = this.PacakgeList;
+      });
+    }
+  })
 }
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);

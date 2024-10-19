@@ -2935,8 +2935,8 @@ debugger
         this.advanceDataStored.storage = new SearchInforObj(xx);
         const dialogRef = this._matDialog.open(PatientVitalInformationComponent,
             {
-                maxWidth: '90%',
-                height: '95%',
+                maxWidth: '80%',
+                height: '58%',
                 data: {
                     registerObj: xx,
                 },

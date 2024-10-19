@@ -186,11 +186,13 @@ import { LoaderService } from 'app/core/components/loader/loader.service';
     public getItemDetailList(Param){
       return this._httpClient.post("Generic/GetByProc?procName=Ret_PrescriptionDet",Param);
     }
+ 
+
     public getSalesDraftPrint(DSalesId,loader = true){
-      if(loader){
+      if (loader) {
         this._loaderService.show();
-      }
-      return this._httpClient.get("PharmacyReport/view-SalesDraftBill" + DSalesId);
     }
+        return this._httpClient.get("PharmacyReport/view-SalesDraftBill?DSalesId="+DSalesId);
+      }
   }
   

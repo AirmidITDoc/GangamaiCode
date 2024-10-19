@@ -3245,12 +3245,12 @@ export class SalesHospitalComponent implements OnInit {
         this.toastr.success('Record Saved Successfully.', 'Save !', {
           toastClass: 'tostr-tost custom-toast-success',
         });
-
+        
         this.Itemchargeslist = [];
-        this._matDialog.closeAll();
-
-        //  this.onAddDraftList(response);
+        this.getDraftbillPrint(response);
         this.getDraftorderList();
+        this._matDialog.closeAll(); 
+        //  this.onAddDraftList(response); 
 
       } else {
 
@@ -3276,24 +3276,50 @@ export class SalesHospitalComponent implements OnInit {
     
   }
 
-  getDraftbillPrint(el) {  
-    var D_data = {
-      "DSalesId": el,//  
-    }
-    console.log(D_data)  
-    this._salesService.getSalesDraftPrint(D_data).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "Pathology Template Report Viewer"
-          }
-        });
-    });
-  }
+  // getDraftbillPrint(el) {  
+  //   debugger
+  //   var D_data = {
+  //     "DSalesId": el,//  
+  //   }
+  //   console.log(D_data)  
+  //   this._salesService.getSalesDraftPrint(D_data).subscribe(res => {
+  //     const dialogRef = this._matDialog.open(PdfviewerComponent,
+  //       {
+  //         maxWidth: "85vw",
+  //         height: '750px',
+  //         width: '100%',
+  //         data: {
+  //           base64: res["base64"] as string,
+  //           title: "Pathology Template Report Viewer"
+  //         }
+  //       });
+  //   });
+  // }
+
+  getDraftbillPrint(el) {
+    this.sIsLoading = 'loading-data';
+ 
+     setTimeout(() => {
+     
+       this._salesService.getSalesDraftPrint(el).subscribe(res => {
+         const dialogRef = this._matDialog.open(PdfviewerComponent,
+           {
+             maxWidth: "85vw",
+             height: '750px',
+             width: '100%',
+             data: {
+               base64: res["base64"] as string,
+               title: "Sales Draft Report Viewer"
+             }
+           });
+         dialogRef.afterClosed().subscribe(result => {
+           
+           this.sIsLoading = '';
+         });
+       });
+ 
+     }, 100);
+   }
 
   add: Boolean = false;
   @ViewChild('discamt') discamt: ElementRef;
