@@ -62,7 +62,7 @@ export class PatientVitalInformationComponent implements OnInit {
 
       this.RegId = this.advanceObj.RegId,
       this.CompanyId = this.advanceObj.CompanyId,
-      this.RegNo = this.advanceObj.RegNoWithPrefix,
+      this.RegNo = this.advanceObj.RegNo,
       this.PatientName = this.advanceObj.PatientName,
       this.Doctorname = this.advanceObj.Doctorname,
       this.vOPDNo = this.advanceObj.OPDNo,
@@ -169,13 +169,13 @@ export class PatientVitalInformationComponent implements OnInit {
     console.log(SubmitData)
     this._OpAppointmentService.InsertVitalInfo(SubmitData).subscribe(response => {
       if(response){
-      this.toastr.success(' OP Bill Credit Record Saved Successfully.', 'Save !', {
+      this.toastr.success('Record Saved Successfully.', 'Save !', {
         toastClass: 'tostr-tost custom-toast-success',
       });   
           this.onClose();
    
     } else {
-      this.toastr.success('OP Billing data not saved', 'error', {
+      this.toastr.success('Record data not saved', 'error', {
         toastClass: 'tostr-tost custom-toast-success',
       }); 
     } 

@@ -113,7 +113,7 @@
                                 </div>
                                 <div style="border: 1px solid rgb(203, 203, 203);width: 100%;"></div>
                                 <div fxLayout="row" fxLayoutGap="4px">
-                                    <mat-form-field appearance="outline" fxFlex="10%">
+                                    <mat-form-field appearance="outline" fxFlex="12%">
                                         <mat-label>Height</mat-label>
                                         <!-- <span matTextPrefix>cm</span> -->
                                         <input name="Height" formControlName="Height" placeholder="Height in m" [(ngModel)]="vHeight"
@@ -122,7 +122,7 @@
                                         <span matSuffix style="font-size: x-large;"> | cm</span>
                                     </mat-form-field>
                     
-                                    <mat-form-field appearance="outline" fxFlex="10%">
+                                    <mat-form-field appearance="outline" fxFlex="12%">
                                         <mat-label>Weight</mat-label>
                                         <input name="Weight" formControlName="Weight" placeholder="Weight in Kg" [(ngModel)]="vWeight"
                                             matInput #EWeight (keydown)="onEnterWeight($event)" type="text" OnlyNumber
@@ -130,28 +130,28 @@
                                         <span matSuffix style="font-size: x-large;"> | kg</span>
                                     </mat-form-field>
                     
-                                    <mat-form-field appearance="outline" fxFlex="10%">
+                                    <mat-form-field appearance="outline" fxFlex="12%">
                                         <mat-label>BMI</mat-label>
                                         <input name="BMI" formControlName="BMI" placeholder="BMI" matInput [(ngModel)]="vBMI" #EBMI
                                             (keydown)="onEnterBMI($event)" type="text" OnlyNumber readonly>
                                         <!-- <mat-icon matSuffix>KG</mat-icon> -->
                                     </mat-form-field>
                     
-                                    <mat-form-field appearance="outline" fxFlex="10%">
+                                    <mat-form-field appearance="outline" fxFlex="12%">
                                         <mat-label>BSL</mat-label>
                                         <input name="BSL" formControlName="BSL" placeholder="BSL" matInput [(ngModel)]="vBSL" #EBSL
                                             (keydown)="onEnterBSL($event)" type="text" OnlyNumber (keypress)="keyPressCharater($event)">
                                         <!-- <mat-icon matSuffix>KG</mat-icon> -->
                                     </mat-form-field>
                     
-                                    <mat-form-field appearance="outline" fxFlex="10%">
+                                    <mat-form-field appearance="outline" fxFlex="12%">
                                         <mat-label>SpO2</mat-label>
                                         <input name="SpO2" formControlName="SpO2" placeholder="SpO2" [(ngModel)]="vSpO2" matInput #ESpO2
                                             (keydown)="onEnterSpO2($event)" type="text" OnlyNumber (keypress)="keyPressCharater($event)">
                                         <!-- <mat-icon matSuffix>KG</mat-icon> -->
                                     </mat-form-field>
                     
-                                    <mat-form-field appearance="outline" fxFlex="10%">
+                                    <mat-form-field appearance="outline" fxFlex="12%">
                                         <mat-label>Pulse</mat-label>
                                         <input name="Pulse" formControlName="Pulse" placeholder="Pulse" [(ngModel)]="vPulse" matInput
                                             #EPulse (keydown)="onEnterPulse($event)" type="text" OnlyNumber
@@ -166,7 +166,7 @@
                                         <span matSuffix style="font-size: x-large;"> |mmHg</span>
                                     </mat-form-field>
                     
-                                    <mat-form-field appearance="outline" fxFlex="10%">
+                                    <mat-form-field appearance="outline" fxFlex="12%">
                                         <mat-label>Temp</mat-label>
                                         <input name="Temp" formControlName="Temp" placeholder="Temp" [(ngModel)]="vTemp" matInput #ETemp
                                             (keydown)="onEnterTemp($event)" type="text" OnlyNumber (keypress)="keyPressCharater($event)">

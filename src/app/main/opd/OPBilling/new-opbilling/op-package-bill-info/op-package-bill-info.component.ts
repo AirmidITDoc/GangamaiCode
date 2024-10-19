@@ -46,13 +46,13 @@ export class OpPackageBillInfoComponent implements OnInit {
   filteredOptionsDoctors:any;
   vServiceId:any;
   vDoctor:any;
-  isLoading:string='';
-  chargeslist:any=[];
+  isLoading:string=''; 
   ChargesDoctorname:any;
   ChargeDoctorId:any;
   IsPathology:any;
   IsRadiology:any;
   vClassName:any;
+  screenFromString = 'OP-billing'; 
 
 
 
@@ -74,7 +74,13 @@ export class OpPackageBillInfoComponent implements OnInit {
     if(this.data){
       this.registerObj = this.data.Obj;
       console.log(this.registerObj)
-    }
+      this.vClassId =  this.registerObj.ClassId;
+      this.IsPathology =  this.registerObj.IsPathology;
+      this.IsRadiology =  this.registerObj.IsRadiology;
+      this.vClassName =  this.registerObj.ClassName;
+      this.getpackagedetList(this.registerObj);
+    } 
+    this.createForm();
   }
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
@@ -90,7 +96,7 @@ export class OpPackageBillInfoComponent implements OnInit {
   getServiceListCombobox() {
       var m_data = {
         SrvcName: `${this.PackageForm.get('SrvcName').value}%`,
-        TariffId: this.vTariffId, 
+        TariffId: this.vTariffId || 1, 
         ClassId: this.vClassId,
       };
       console.log(m_data)
@@ -155,7 +161,36 @@ export class OpPackageBillInfoComponent implements OnInit {
       return option && option.Doctorname ? option.Doctorname : '';
     }
 
-
+  //package list 
+  getpackagedetList(obj) { 
+    var vdata = {
+      'ServiceId': obj.ServiceId
+    }
+    console.log(vdata);
+    this._oPSearhlistService.getpackagedetList(vdata).subscribe((data) => {
+      this.dsPackageDet.data = data as ChargesList[];
+      this.dsPackageDet.data.forEach(element =>{
+        this.PacakgeList.push(
+          { 
+            ServiceId: element.ServiceId,
+            ServiceName: element.ServiceName,
+            Price: element.Price || 0,
+            Qty: 1,
+            TotalAmt:  0,
+            ConcessionPercentage:  0, 
+            DiscAmt: 0,
+            NetAmount: 0,
+            IsPathology: element.IsPathology,
+            IsRadiology: element.IsRadiology, 
+            PackageId:element.PackageId,
+            PackageServiceId:element.PackageServiceId
+          })
+      })
+      this.dsPackageDet.data = this.PacakgeList
+      console.log(this.PacakgeList);
+      console.log(this.dsPackageDet.data);
+    }); 
+  }
     //add service
 onAddCharges() {
 
@@ -195,7 +230,7 @@ onAddCharges() {
   debugger
   this.isLoading = 'save'; 
   this.dsPackageDet.data = [];
-  this.chargeslist.push(
+  this.PacakgeList.push(
     {
       ChargesId: 0,// this.serviceId,
       ServiceId: this.PackageForm.get('SrvcName').value.ServiceId || 0,
@@ -206,7 +241,7 @@ onAddCharges() {
       DiscPer: 0, 
       DiscAmt: 0,
       NetAmount: 0,
-      ClassId: 1,
+      ClassId: this.vClassId ,
       DoctorId: this.ChargeDoctorId,
       DoctorName: this.ChargesDoctorname ,
       ChargesDate: this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
@@ -217,7 +252,7 @@ onAddCharges() {
       ChargesAddedName: this._loggedService.currentUserValue.user.id || 1, 
     });
   this.isLoading = '';
-  this.dsPackageDet.data = this.chargeslist; 
+  this.dsPackageDet.data = this.PacakgeList; 
   this.isDoctor = false; 
   this.ChargesDoctorname = ''
   this.ChargeDoctorId = 0;
@@ -234,14 +269,13 @@ onAddCharges() {
       this.dsPackageDet.data = this.PacakgeList;
     }
     Swal.fire('Success !', 'PacakgeList Row Deleted Successfully', 'success'); 
-  }
-
+  } 
   gettablecalculation(element, Price) {
     console.log(element)
     debugger 
     if(element.Price > 0 && element.Qty > 0){ 
-    element.TotalAmt = element.Qty * element.Price
-    element.DiscAmt = (element.ConcessionPercentage * element.TotalAmt) / 100 ;
+    element.TotalAmt = element.Qty * element.Price || 0;
+    element.DiscAmt = (element.ConcessionPercentage * element.TotalAmt) / 100  || 0;
     element.NetAmount =  element.TotalAmt - element.DiscAmt
     }  
     else if(element.Price == 0 || element.Price == '' || element.Qty == '' || element.Qty == 0){
@@ -252,7 +286,13 @@ onAddCharges() {
   }
 
   onSavePackage(){
-
+    if( this.dsPackageDet.data.length < 0){
+      this.toastr.warning('please add services list is blank ', 'error!', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });  
+      return;
+    }
+     this.dialogRef.close(this.dsPackageDet.data)
   }
   onClose(){
     this.dialogRef.close();
