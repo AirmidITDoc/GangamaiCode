@@ -367,12 +367,12 @@ export class ParameterFormMasterComponent implements OnInit {
 
 
         var PathParameterMasterInsert = {
-            parameterShortName: this._ParameterService.myform.get("ParameterShortName").value.trim() || "%",
+            parameterShortName: this._ParameterService.myform.get("ParameterShortName").value.trim() || "",
             parameterName: this._ParameterService.myform.get("ParameterName").value.trim() || "%",
-            printParameterName: this._ParameterService.myform.get("PrintParameterName").value.trim() || "%",
-            methodName: this._ParameterService.myform.get("MethodName").value || "%",
+            printParameterName: this._ParameterService.myform.get("PrintParameterName").value.trim() || "",
+            methodName: this._ParameterService.myform.get("MethodName").value || "",
             IsBoldFlag: BoldValue, //this._ParameterService.myform.get("IsBold").value || 'B',
-            formula: this._ParameterService.myform.get("Formula").value || "%",
+            formula: this._ParameterService.myform.get("Formula").value || "",
             unitId: this._ParameterService.myform.get("UnitId").value.UnitId || 0,
             isNumeric: is_numeric,
             isDeleted:Boolean(JSON.parse(this._ParameterService.myform.get("IsDeleted").value)),

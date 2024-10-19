@@ -35,7 +35,12 @@ export class OPReportsService {
         Id:'',
         Month :'',
         Year:'',
-        Day:''
+        Day:'',
+        IsNarcotic:["0"],
+        ish1Drug:["0"],
+        isScheduleH:["0"],
+        IsHighRisk:["1"],
+        IsScheduleX:["0"],
         // Radio:['1']
 
       })
@@ -45,7 +50,7 @@ export class OPReportsService {
   }
 
   public getUserdetailList(data){
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_loginManagerUserForCombo",data)
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_loginManagerallUserForCombo",data)
   }
 
   public getDoctorList(){
@@ -694,11 +699,11 @@ public getPurchaseorderview(FromDate,ToDate,SupplierID,ToStoreId,loader = true){
     return this._httpClient.get("InventoryReports/view-MaterialConsumptionMonthlySummary?FromDate="+FromDate+"&ToDate="+ToDate + "&ToStoreId="+ToStoreId );
   }
   
-  public getCurrentstocklistReport(FromDate,ToDate,loader = true){
+  public getCurrentstocklistReport(FromDate,ToDate,StoreId,IsNarcotic,ish1Drug,isScheduleH,IsHighRisk,IsScheduleX,loader = true){
     if (loader) {
       this._loaderService.show();
   }
-    return this._httpClient.get("InventoryReports/view-CurrentStockReport?FromDate="+FromDate+"&ToDate="+ToDate);
+    return this._httpClient.get("InventoryReports/view-CurrentStockReport?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId+"&ToDate="+ToDate+"&ToDate="+ToDate+"&ToDate="+ToDate+"&ToDate="+ToDate);
   }
   
 

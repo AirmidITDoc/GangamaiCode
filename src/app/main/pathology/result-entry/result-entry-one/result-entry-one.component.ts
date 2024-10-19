@@ -202,7 +202,7 @@ console.log(element)
         return Keys;
     }
     onResultUp(data) {
-        
+        debugger
         let items = this.dataSource.data.filter(x => (x?.Formula ?? "").indexOf('{{' + data.ParameterShortName + '}}') > 0);
         for (let i = 0; i < items.length; i++) {
             let formula = items[i].Formula;

@@ -1,0 +1,56 @@
+<div id="content" class="simple page-layout left-sidebar inner-scroll inner-sidebar" fusePerfectScrollbar
+    dynamicTableHeight>
+    <mat-toolbar style="width: 100%;justify-content: space-between;height:40px;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">menu
+            </mat-icon>
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Template Master</span>
+        </div>
+        <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog" style="color: white;">
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-toolbar>
+    <!-- #tabGroup (selectedTabChange)="tabChanged($event)" -->
+    <div class="content">
+        <div class="center p-24 pb-56" fusePerfectScrollbar>
+            <div class="content-card">
+
+
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                    <div fxFlex.gt-sm="100%" fxFlex>
+
+                        <!-- <form [formGroup]="_HospitalService.HospitalForm">
+                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                                <div fxFlex.gt-sm="100%" fxFlex>
+
+                                    <mat-label style="font-size: medium;font-weight: bold;">Hospital
+                                        Details</mat-label>
+                                    <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
+                                        style="height:200px;" [(ngModel)]="registerObj.Header" required
+                                        formControlName="HospitalHeader"></angular-editor>
+
+                                </div>
+                            </div>
+                            <mat-checkbox aria-label="Is Active" formControlName="IsDeleted" (checked)=true
+                                [(ngModel)]="registerObj.IsDeleted"
+                                style="font-weight: bold;margin-right: 20px;">IsActive
+                            </mat-checkbox>
+                        </form> -->
+                    </div>
+                </div>
+
+                <div fxLayoutAlign="end">
+                    <div class="sales-footer-buttons gap-8">
+                        <button class="btn btn-danger-outline" (click)="onClear()">Close</button>
+                        <button class="btn btn-primary" (click)="onSubmit()">Save</button>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>

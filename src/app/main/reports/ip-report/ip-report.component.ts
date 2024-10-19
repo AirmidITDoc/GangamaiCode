@@ -488,7 +488,7 @@ var data={
     this.FlagDoctorSelected = true;
     this.FlagUserSelected = false;
     this.FlagGroupSelected=false;
-    this.FlaOPIPTypeSelected=false;
+    this.FlaOPIPTypeSelected=true;
   } else if (this.ReportName == 'Consultant Doctor ShareDetails') {
     this.FlagUserSelected = false;
     this.FlagDoctorSelected = true;
@@ -2653,16 +2653,21 @@ viewgetConsultantDoctorShareDetailsPdf(){
    },100);
 }
 viewgetDoctorWiseSummaryReportReportPdf(){
-  // let DoctorId = 0;
-  // if (this._IPReportService.userForm.get('DoctorId').value)
-  //   DoctorId = this._IPReportService.userForm.get('DoctorId').value.DoctorId
+  debugger
+  let DoctorId = 0;
+  if (this._IPReportService.userForm.get('DoctorId').value)
+    DoctorId = this._IPReportService.userForm.get('DoctorId').value.DoctorId
  
+
+  this.OPIPType= parseInt(this._IPReportService.userForm.get('OPIPType').value)
+ 
+
   setTimeout(() => {
     this.SpinLoading =true;
     this.AdList=true;
    this._IPReportService.getDoctorSharesummaryReportView(
     this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
+    this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",DoctorId,this.OPIPType
        
      ).subscribe(res => {
      const matDialog = this._matDialog.open(PdfviewerComponent,

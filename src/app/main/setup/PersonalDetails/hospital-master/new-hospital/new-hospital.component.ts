@@ -50,7 +50,7 @@ export class NewHospitalComponent implements OnInit {
     public toastr: ToastrService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<NewHospitalComponent>,
-    private _fuseSidebarService: FuseSidebarService,) { }
+    private _fuseSidebarService: FuseSidebarService) { }
 
   ngOnInit(): void {
     

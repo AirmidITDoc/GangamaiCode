@@ -154,11 +154,11 @@
                                             "[ngClass]="{'Result-Formula': contact.Formula !=null}" else  [ngClass]="{'Help-Value': contact.ParaIsNumeric ==0}"-->
 
                                             <!-- [disabled]="contact.Formula" -->
-                                    <ng-container matColumnDef="ResultValue" style="width:100%;font-weight: bold;">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header class="border-right">
+                                    <ng-container matColumnDef="ResultValue" style="width:100%;font-weight: bold;" class="w-400">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header class="border-right" class="w-400">
                                             Result
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" class="border-right">
+                                        <mat-cell *matCellDef="let contact" class="border-right" class="w-400">
                                             <mat-form-field appearance="legacy" *ngIf="!contact.IsHelpShown" style="width: 100%;"
                                                 [ngClass]="{'Result-Formula': contact.Formula !=' '}">
                                                 <input matInput autocomplete="off" (keyup)="onResultUp(contact)" 
