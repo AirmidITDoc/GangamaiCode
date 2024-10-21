@@ -17,7 +17,13 @@ export class NewGendermasterComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onSubmit(){}
+  onSubmit(){
+    if (this._GenderMasterService.myform.valid) {
+        console.log('Form Submitted:', this._GenderMasterService.myform.value);
+      } else {
+        console.log('Form is invalid.');
+      }
+  }
 
   close(){
 this.dialogRef.close()

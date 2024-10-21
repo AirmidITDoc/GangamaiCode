@@ -31,10 +31,11 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { FuseSidebarModule } from "../../../@fuse/components/sidebar/sidebar.module";
+import { AirmidTextboxComponent } from './componets/airmid-textbox/airmid-textbox.component';
 
 
 @NgModule({
-  declarations: [TrimPipe, CommonDateComponent,AirmidTableComponent,SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent,DyanmicTableHeightDirective],
+  declarations: [TrimPipe, CommonDateComponent,AirmidTableComponent, AirmidTextboxComponent, SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent,DyanmicTableHeightDirective],
   imports: [
     CommonModule,
     MatFormFieldModule,
@@ -69,7 +70,8 @@ import { FuseSidebarModule } from "../../../@fuse/components/sidebar/sidebar.mod
     HeaderComponent,
     PaymentModeComponent,
     DyanmicTableHeightDirective,
-    AirmidTableComponent
+    AirmidTableComponent,
+    AirmidTextboxComponent
   ],
   entryComponents: []
 })

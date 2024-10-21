@@ -1,0 +1,19 @@
+<mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+    <mat-label>{{ label }}</mat-label>
+    <input
+        matInput
+        [type]="'text'"
+        [formControl]="control"
+        [placeholder]="placeholder"
+        [maxlength]="maxLength"
+        (blur)="onTouched()"
+    />
+</mat-form-field>
+<div *ngIf="control?.invalid && control?.touched && required">
+    <mat-error class="error" *ngIf="control?.value.trim().length == 0">
+        {{ label }} is required.
+    </mat-error>
+    <mat-error class="error" *ngIf="control?.value?.trim().length > maxLength">
+        Maximum length is {{ maxLength }} characters.
+    </mat-error>
+</div>

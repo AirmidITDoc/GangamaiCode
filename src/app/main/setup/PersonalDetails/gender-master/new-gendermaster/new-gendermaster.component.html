@@ -19,11 +19,13 @@
             <form [formGroup]="_GenderMasterService.myform">
                 <input type="hidden" name="genderId" formControlName="genderId">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                        <mat-label>Gender Name</mat-label>
-                        <input name="genderName" formControlName="genderName" matInput required>
-                        <mat-error>Please enter Gender Name only Char </mat-error>
-                    </mat-form-field>
+                    <airmid-textbox
+                        label="Gender name"
+                        formControlName="genderName"
+                        placeholder="Gender Name"
+                        [required]="true"
+                        [maxLength]="30">
+                    </airmid-textbox> 
                 </div>
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                     <mat-radio-group name="isDeleted" formControlName="isDeleted" value='false'>
@@ -38,7 +40,8 @@
         <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
             <div class="button-row">
                 <button mat-raised-button color="primary" type="submit" (click)="onSubmit()"
-                    [disabled]="_GenderMasterService.myform.invalid">Save</button>
+                    [disabled]="_GenderMasterService.myform.invalid"
+                    >Save</button>
                 <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
             </div>
         </div>
