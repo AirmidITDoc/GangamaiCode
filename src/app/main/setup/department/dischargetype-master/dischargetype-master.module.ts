@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { DischargetypeMasterComponent } from "./dischargetype-master.component";
 import { RouterModule, Routes } from "@angular/router";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
@@ -23,6 +23,9 @@ import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatButtonModule } from "@angular/material/button";
+import { NewDischargetypeComponent } from './new-dischargetype/new-dischargetype.component';
+import { SharedModule } from "app/main/shared/shared.module";
+import { MatDialogModule } from "@angular/material/dialog";
 
 const routes: Routes = [
     {
@@ -32,18 +35,16 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [DischargetypeMasterComponent],
+    declarations: [DischargetypeMasterComponent, NewDischargetypeComponent],
     imports: [
         RouterModule.forChild(routes),
-
+        SharedModule,
         MatButtonModule,
         MatCheckboxModule,
-        MatDatepickerModule,
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
         MatMenuModule,
-        MatRippleModule,
         MatTableModule,
         MatToolbarModule,
         MatPaginatorModule,
@@ -52,14 +53,10 @@ const routes: Routes = [
         MatRadioModule,
         MatSnackBarModule,
         FuseSharedModule,
-        FuseConfirmDialogModule,
         FuseSidebarModule,
-        CommonModule,
-        MatExpansionModule,
-        MatCardModule,
-        MatSlideToggleModule,
+        MatDialogModule,
     ],
-    providers: [DischargetypeMasterService],
+    providers: [DischargetypeMasterService,DatePipe],
     entryComponents: [DischargetypeMasterComponent],
 })
 export class DischargetypeMasterModule {}

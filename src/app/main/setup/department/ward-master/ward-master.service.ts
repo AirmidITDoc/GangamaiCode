@@ -1,16 +1,16 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { gridRequest } from "app/core/models/gridRequest";
+import { ApiCaller } from "app/core/services/apiCaller";
 
-@Injectable({
-    providedIn: "root",
-})
+@Injectable()
 export class WardMasterService {
     myform: FormGroup;
     myformSearch: FormGroup;
 
     constructor(
-        private _httpClient: HttpClient,
+        private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder
     ) {
         this.myform = this.createWardForm();
@@ -42,36 +42,28 @@ export class WardMasterService {
         this.createWardForm();
     }
 
-    public getwardMasterList(param) {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_lvwWardDetails",
-            param
-        );
+  
+    populateForm(Param) {
+        this.myform.patchValue(Param);
     }
 
-    public getLocationMasterCombo() {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=RetrieveLocationMasterForCombo",
-            {}
-        );
+
+
+    public getWardMasterList(param: gridRequest, showLoader = true) {
+        return this._httpClient.PostData("WardMaster/List", param, showLoader);
     }
 
-    public getClassMasterCombo() {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=RetrieveClassMasterForCombo",
-            {}
-        );
+    publicWardMasterInsert(Param: any, showLoader = true) {
+        return this._httpClient.PostData("Ward", Param, showLoader);
     }
 
-    public wardMasterInsert(param) {
-        return this._httpClient.post("DepartMentMaster/WardSave", param);
+    public WardMasterUpdate(id: number , Param: any, showLoader = true) {
+        //return this._httpClient.put("Gender/" + id , Param, showLoader);
+        return this._httpClient.PostData("Ward", Param, showLoader);
     }
 
-    public wardMasterUpdate(param) {
-        return this._httpClient.post("DepartMentMaster/WardUpdate", param);
-    }
-
-    populateForm(param) {
-        this.myform.patchValue(param);
+    public deactivateTheStatus(m_data) {
+        //return this._httpClient.delete("Gender?Id=" + m_data, {});
+        return this._httpClient.PostData("Ward", m_data);
     }
 }

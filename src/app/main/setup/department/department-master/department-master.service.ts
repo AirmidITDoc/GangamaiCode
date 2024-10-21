@@ -1,6 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { gridRequest } from "app/core/models/gridRequest";
+import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
     providedIn: "root",
@@ -10,7 +12,7 @@ export class DepartmentMasterService {
     myformSearch: FormGroup;
 
     constructor(
-        private _httpClient: HttpClient,
+        private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder
     ) {
         this.myform = this.createDepartmentForm();
@@ -36,28 +38,25 @@ export class DepartmentMasterService {
         this.createDepartmentForm();
     }
 
-    public getDepartmentMasterList(param) {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_M_DepartmentMaster",
-            param
-        );
+    public getdepartmentMasterList(param: gridRequest, showLoader = true) {
+        return this._httpClient.PostData("DepartmentMaster/List", param, showLoader);
     }
 
-    public departmentMasterInsert(employee) {
-        return this._httpClient.post(
-            "DepartMentMaster/DepartmentSave",
-            employee
-        );
+    public departmentMasterInsert(Param: any, showLoader = true) {
+        return this._httpClient.PostData("Gender", Param, showLoader);
     }
 
-    public departmentMasterUpdate(employee) {
-        return this._httpClient.post(
-            "DepartMentMaster/DepartmentUpdate",
-            employee
-        );
+    public departmentMasterUpdate(id: number , Param: any, showLoader = true) {
+        //return this._httpClient.put("Gender/" + id , Param, showLoader);
+        return this._httpClient.PostData("Gender", Param, showLoader);
     }
 
-    populateForm(employee) {
-        this.myform.patchValue(employee);
+    public deactivateTheStatus(m_data) {
+        //return this._httpClient.delete("Gender?Id=" + m_data, {});
+        return this._httpClient.PostData("Gender", m_data);
+    }
+
+    populateForm(Param) {
+        this.myform.patchValue(Param);
     }
 }

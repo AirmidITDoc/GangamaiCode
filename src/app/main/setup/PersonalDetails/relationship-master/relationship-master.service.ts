@@ -1,6 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { gridRequest } from "app/core/models/gridRequest";
+import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
     providedIn: "root",
@@ -9,7 +11,7 @@ export class RelationshipMasterService {
     myform: FormGroup;
     myformSearch: FormGroup;
     constructor(
-        private _httpClient: HttpClient,
+        private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder
     ) {
         this.myform = this.createRelationshipForm();
@@ -37,24 +39,25 @@ export class RelationshipMasterService {
         this.createRelationshipForm();
     }
 
-    public getrelationshipMasterList(e) {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_RelativeNameList",
-            e
-        );
+  
+    public getrelationshipMasterList(param: gridRequest, showLoader = true) {
+        return this._httpClient.PostData("RelationshipMaster/List", param, showLoader);
     }
 
-    public relationshipMasterInsert(param) {
-        return this._httpClient.post("PersonalDetails/RelationshipSave", param);
+    public relationshipMasterInsert(Param: any, showLoader = true) {
+        return this._httpClient.PostData("relationship", Param, showLoader);
     }
 
-    public relationshipMasterUpdate(param) {
-        return this._httpClient.post(
-            "PersonalDetails/RelationshipUpdate",
-            param
-        );
+    public relationshipMasterUpdate(id: number , Param: any, showLoader = true) {
+        //return this._httpClient.put("Gender/" + id , Param, showLoader);
+        return this._httpClient.PostData("relationship", Param, showLoader);
     }
 
+      
+    public deactivateTheStatus(m_data) {
+        //return this._httpClient.delete("Gender?Id=" + m_data, {});
+        return this._httpClient.PostData("relationship", m_data);
+    }
     populateForm(param) {
         this.myform.patchValue(param);
     }

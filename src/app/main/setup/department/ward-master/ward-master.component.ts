@@ -9,6 +9,11 @@ import { takeUntil } from "rxjs/operators";
 import { WardMasterService } from "./ward-master.service";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
+import { NewWardComponent } from "./new-ward/new-ward.component";
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 
 @Component({
     selector: "app-ward-master",
@@ -18,58 +23,45 @@ import { ToastrService } from "ngx-toastr";
     animations: fuseAnimations,
 })
 export class WardMasterComponent implements OnInit {
-    WardMasterList: any;
-    LocationcmbList: any = [];
-    ClasscmbList: any = [];
-    msg: any;
-
-    displayedColumns: string[] = [
-        "RoomId",
-        "RoomName",
-        "LocationName",
-        "ClassName",
-
-        "IsAvailable",
-        "IsDeleted",
-        "action",
-    ];
-
-    DSWardMasterList = new MatTableDataSource<WardMaster>();
-    @ViewChild(MatSort) sort: MatSort;
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-
-    //Class filter
-    public classFilterCtrl: FormControl = new FormControl();
-    public filteredClass: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-    //location filter
-    public locationFilterCtrl: FormControl = new FormControl();
-    public filteredLocation: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-    private _onDestroy = new Subject<void>();
-
-    constructor(public _wardService: WardMasterService,
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    gridConfig: gridModel = {
+        apiUrl: "Gender/List",
+        columnsList: [
+            { heading: "Code", key: "roomId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Room Name", key: "roomName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+            {
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            debugger
+                        }
+                    }, {
+                        action: gridActions.delete, callback: (data: any) => {
+                            debugger
+                        }
+                    }]
+            } //Action 1-view, 2-Edit,3-delete
+        ],
+        sortField: "roomId",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "roomName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+        ],
+        row:25
+    }
+    constructor(public _wardService: WardMasterService, public _matDialog: MatDialog,
         public toastr : ToastrService,) {}
 
     ngOnInit(): void {
-        this.getwardMasterList();
-        this.getLocationNameCombobox();
-        this.getClassNameCombobox();
+    
+       
 
-        this.locationFilterCtrl.valueChanges
-            .pipe(takeUntil(this._onDestroy))
-            .subscribe(() => {
-                this.filterLocation();
-            });
-
-        this.classFilterCtrl.valueChanges
-            .pipe(takeUntil(this._onDestroy))
-            .subscribe(() => {
-                this.filterClass();
-            });
+       
     }
     onSearch() {
-        this.getwardMasterList();
+       
     }
 
     onSearchClear() {
@@ -77,193 +69,93 @@ export class WardMasterComponent implements OnInit {
             RoomNameSearch: "",
             IsDeletedSearch: "2",
         });
-        this.getwardMasterList();
+       
     }
-    private filterLocation() {
-        // debugger;
-        if (!this.LocationcmbList) {
-            return;
-        }
-        // get the search keyword
-        let search = this.locationFilterCtrl.value;
-        if (!search) {
-            this.filteredLocation.next(this.LocationcmbList.slice());
-            return;
-        } else {
-            search = search.toLowerCase();
-        }
-        // filter
-        this.filteredLocation.next(
-            this.LocationcmbList.filter(
-                (bank) => bank.LocationName.toLowerCase().indexOf(search) > -1
-            )
-        );
-    }
+ 
 
-    private filterClass() {
-        // debugger;
-        if (!this.ClasscmbList) {
-            return;
-        }
-        // get the search keyword
-        let search = this.classFilterCtrl.value;
-        if (!search) {
-            this.filteredClass.next(this.ClasscmbList.slice());
-            return;
-        } else {
-            search = search.toLowerCase();
-        }
-        // filter
-        this.filteredClass.next(
-            this.ClasscmbList.filter(
-                (bank) => bank.ClassName.toLowerCase().indexOf(search) > -1
-            )
-        );
-    }
+    newwardmaster() {
+        const dialogRef = this._matDialog.open(NewWardComponent,
+            {
+                maxWidth: "45vw",
+                height: '35%',
+                width: '70%',
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
 
-    getwardMasterList() {
-        var param = {
-            RoomName:this._wardService.myformSearch.get("RoomNameSearch")
-                    .value.trim() + "%" || "%",
-        };
-        this._wardService.getwardMasterList(param).subscribe((Menu) => {
-            this.DSWardMasterList.data = Menu as WardMaster[];
-            this.DSWardMasterList.sort = this.sort;
-            this.DSWardMasterList.paginator = this.paginator;
         });
     }
+    // getLocationNameCombobox() {
+    //     this._wardService.getLocationMasterCombo().subscribe((data) => {
+    //         this.LocationcmbList = data;
+    //         this.filteredLocation.next(this.LocationcmbList.slice());
+    //         this._wardService.myform
+    //             .get("LocationId")
+    //             .setValue(this.LocationcmbList[0]);
+    //     });
+    // }
 
-    getLocationNameCombobox() {
-        this._wardService.getLocationMasterCombo().subscribe((data) => {
-            this.LocationcmbList = data;
-            this.filteredLocation.next(this.LocationcmbList.slice());
-            this._wardService.myform
-                .get("LocationId")
-                .setValue(this.LocationcmbList[0]);
-        });
-    }
-
-    getClassNameCombobox() {
-        this._wardService.getClassMasterCombo().subscribe((data) => {
-            this.ClasscmbList = data;
-            this.filteredClass.next(this.ClasscmbList.slice());
-            this._wardService.myform
-                .get("ClassId")
-                .setValue(this.ClasscmbList[0]);
-        });
-    }
+    // getClassNameCombobox() {
+    //     this._wardService.getClassMasterCombo().subscribe((data) => {
+    //         this.ClasscmbList = data;
+    //         this.filteredClass.next(this.ClasscmbList.slice());
+    //         this._wardService.myform
+    //             .get("ClassId")
+    //             .setValue(this.ClasscmbList[0]);
+    //     });
+    // }
 
     onClear() {
         this._wardService.myform.reset({ IsDeleted: "false" });
         this._wardService.initializeFormGroup();
     }
 
-    onSubmit() {
-        if (this._wardService.myform.valid) {
-            if (!this._wardService.myform.get("RoomId").value) {
-                var m_data = {
-                    wardMasterInsert: {
-                        roomName_1: this._wardService.myform
-                            .get("RoomName")
-                            .value.trim(),
-                        roomType_2: "1",
-                        locationId_3:
-                            this._wardService.myform.get("LocationId").value
-                                .LocationId,
-                        isAvailible_4: Boolean(
-                            JSON.parse(
-                                this._wardService.myform.get("IsAvailable")
-                                    .value
-                            )
-                        ),
-                        //  addedBy: 1,
-                        isActive_5: 0,
-                        classId:
-                            this._wardService.myform.get("ClassId").value
-                                .ClassId,
-                    },
-                };
-
-                this._wardService.wardMasterInsert(m_data).subscribe((data) => {
-                    this.msg = data;
-                    if (data) {
-                        this.toastr.success('Record Saved Successfully.', 'Saved !', {
-                            toastClass: 'tostr-tost custom-toast-success',
-                          });
-                          this.getwardMasterList();
-                        // Swal.fire(
-                        //     "Saved !",
-                        //     "Record saved Successfully !",
-                        //     "success"
-                        // ).then((result) => {
-                        //     if (result.isConfirmed) {
-                        //         this.getwardMasterList();
-                        //     }
-                        // });
-                    } else {
-                        this.toastr.error('Ward Data not saved !, Please check API error..', 'Error !', {
-                            toastClass: 'tostr-tost custom-toast-error',
-                          });
-                    }
-                    this.getwardMasterList();
-                },error => {
-                    this.toastr.error('Ward Data not saved !, Please check API error..', 'Error !', {
-                     toastClass: 'tostr-tost custom-toast-error',
-                   });
-                 });
-            } else {
-                var m_dataUpdate = {
-                    wardMasterUpdate: {
-                        roomId_1: this._wardService.myform.get("RoomId").value,
-                        roomName_2: this._wardService.myform
-                            .get("RoomName")
-                            .value.trim(),
-                        roomType_3: "1",
-                        locationId_4:
-                            this._wardService.myform.get("LocationId").value
-                                .LocationId,
-                        //    isAvailable: 1,
-                        isActive_5: 0,
-                        //  updatedBy: 1,
-                        classID:
-                            this._wardService.myform.get("ClassId").value
-                                .ClassId,
-                    },
-                };
-                this._wardService
-                    .wardMasterUpdate(m_dataUpdate)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record updated Successfully.', 'updated !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                              this.getwardMasterList();
-                            // Swal.fire(
-                            //     "Updated !",
-                            //     "Record updated Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getwardMasterList();
-                            //     }
-                            // });
-                        } else {
-                            this.toastr.error('Ward Master Data not Updated !, Please check API error..', 'Updated !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                        }
-                        this.getwardMasterList();
-                    },error => {
-                        this.toastr.error('Ward Data not Updated !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
-            }
-            this.onClear();
+    changeStatus(status: any) {
+        switch (status.id) {
+            case 1:
+                //this.onEdit(status.data)
+                break;
+            case 2:
+                this.onEdit(status.data)
+                break;
+            case 5:
+                this.onDeactive(status.data.roomId);
+                break;
+            default:
+                break;
         }
     }
-
+    onDeactive(roomId) {
+        debugger
+        this.confirmDialogRef = this._matDialog.open(
+            FuseConfirmDialogComponent,
+            {
+                disableClose: false,
+            }
+        );
+        this.confirmDialogRef.componentInstance.confirmMessage =
+            "Are you sure you want to deactive?";
+        this.confirmDialogRef.afterClosed().subscribe((result) => {
+            debugger
+            if (result) {
+                this._wardService.deactivateTheStatus(roomId).subscribe((data: any) => {
+                    
+                    if (data.StatusCode == 200) {
+                        this.toastr.success(
+                            "Record updated Successfully.",
+                            "updated !",
+                            {
+                                toastClass:
+                                    "tostr-tost custom-toast-success",
+                            }
+                        );
+                        // this.getGenderMasterList();
+                    }
+                });
+            }
+            this.confirmDialogRef = null;
+        });
+    }
     onEdit(row) {
         var m_data = {
             RoomId: row.RoomId,
@@ -278,8 +170,8 @@ export class WardMasterComponent implements OnInit {
     }
 }
 export class WardMaster {
-    RoomId: number;
-    RoomName: string;
+    roomId: number;
+    roomName: string;
     LocationId: number;
     IsAvailable: boolean;
     IsDeleted: boolean;
@@ -295,8 +187,8 @@ export class WardMaster {
      */
     constructor(WardMaster) {
         {
-            this.RoomId = WardMaster.RoomId || "";
-            this.RoomName = WardMaster.RoomName || "";
+            this.roomId = WardMaster.roomId || "";
+            this.roomName = WardMaster.roomName || "";
             this.LocationId = WardMaster.LocationId || "";
             this.IsAvailable = WardMaster.IsAvailable || "false";
             this.IsDeleted = WardMaster.IsDeleted || "false";

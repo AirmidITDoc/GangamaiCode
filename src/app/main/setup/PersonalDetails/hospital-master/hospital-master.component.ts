@@ -1,12 +1,15 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { HospitalService } from './hospital.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { NewHospitalComponent } from './new-hospital/new-hospital.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatAccordion } from '@angular/material/expansion';
 import { MatSort } from '@angular/material/sort';
 import { fuseAnimations } from '@fuse/animations';
+import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 
 
 @Component({
@@ -18,44 +21,46 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class HospitalMasterComponent implements OnInit {
  
-  resultsLength:any=0;
-  displayedColumns: string[] = [
-    // "HospitalId",
-    "HospitalName",
-    "HospitalAddress",
-    "City",
-    "Pin",
-    "Phone",
-    "EmailID",
-    "WebSiteInfo",
-    "action",
-];
-DSHospitalList=new MatTableDataSource<HospitalMaster>();
+  msg: any;
+  confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+  gridConfig: gridModel = {
+      apiUrl: "StateMaster/List",
+      columnsList: [
+          { heading: "Code", key: "stateId", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "State Name", key: "stateName", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "Country Name", key: "countryId", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+          {
+              heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                  {
+                      action: gridActions.edit, callback: (data: any) => {
+                          debugger
+                      }
+                  }, {
+                      action: gridActions.delete, callback: (data: any) => {
+                          debugger
+                      }
+                  }]
+          } //Action 1-view, 2-Edit,3-delete
+      ],
+      sortField: "stateId",
+      sortOrder: 0,
+      filters: [
+          { fieldName: "stateName", fieldValue: "", opType: OperatorComparer.Contains },
+          { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+      ],
+      row:25
+  }
 
-@ViewChild(MatSort) sort: MatSort;
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-    @ViewChild(MatAccordion) accordion: MatAccordion;
-
-    
   constructor( public _HospitalService: HospitalService,
     public _matDialog: MatDialog
    ) { }
 
   ngOnInit(): void {
-    this.getHospitalMaster();
-
-    
+        
   }
 
 
-  getHospitalMaster() {
-  this._HospitalService.getHospitalMasterList().subscribe((data) => {
-        this.DSHospitalList.data = data as HospitalMaster[];
-       
-        this.resultsLength=  this.DSHospitalList.data.length; 
-        console.log(this.DSHospitalList.data);
-    });
-}
 onSearch(){
 
 }
@@ -69,7 +74,7 @@ onAdd() {
   });
   dialogRef.afterClosed().subscribe((result) => {
       console.log("The dialog was closed - Insert Action", result);
-      this.getHospitalMaster();
+     
   });
 }
 
@@ -86,7 +91,7 @@ onEdit(row){
 });
 dialogRef.afterClosed().subscribe((result) => {
     console.log("The dialog was closed - Insert Action", result);
-    this.getHospitalMaster();
+    
 });
 }
 }

@@ -9,6 +9,12 @@ import { takeUntil } from "rxjs/operators";
 import { MatSort } from "@angular/material/sort";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
+import { NewBedComponent } from "./new-bed/new-bed.component";
+
 
 @Component({
     selector: "app-bed-master",
@@ -18,66 +24,49 @@ import { ToastrService } from "ngx-toastr";
     animations: fuseAnimations,
 })
 export class BedMasterComponent implements OnInit {
-    BedMasterList: any;
-    WardcmbList: any = [];
-    msg: any;
-
-    displayedColumns: string[] = [
-        "BedId",
-        "BedName",
-        "RoomId",
-        "RoomName",
-        "IsAvailable",
-        "IsActive",
-        "action",
-    ];
-
-    DSBedMasterList = new MatTableDataSource<BedMaster>();
-    @ViewChild(MatSort) sort: MatSort;
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-
-    //room filter
-    public roomFilterCtrl: FormControl = new FormControl();
-    public filteredRoom: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-    private _onDestroy = new Subject<void>();
-
-    constructor(public _bedService: BedMasterService,
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    gridConfig: gridModel = {
+        apiUrl: "BedMaster/List",
+        columnsList: [
+            { heading: "Code", key: "bedId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Bed Name", key: "bedName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Room Name", key: "roomId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsAvailible", key: "isAvailible", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+            {
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            debugger
+                        }
+                    }, {
+                        action: gridActions.delete, callback: (data: any) => {
+                            debugger
+                        }
+                    }]
+            } //Action 1-view, 2-Edit,3-delete
+        ],
+        sortField: "bedId",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "bedName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+        ],
+        row:25
+    }
+    constructor(public _bedService: BedMasterService,public _matDialog: MatDialog,
         public toastr : ToastrService,) {}
 
     ngOnInit(): void {
-        this.getbedMasterList();
-        this.getWardNameCombobox();
+        // this.getbedMasterList();
+        // this.getWardNameCombobox();
 
-        this.roomFilterCtrl.valueChanges
-            .pipe(takeUntil(this._onDestroy))
-            .subscribe(() => {
-                this.filterRoom();
-            });
+       
     }
 
-    private filterRoom() {
-        // debugger;
-        if (!this.WardcmbList) {
-            return;
-        }
-        // get the search keyword
-        let search = this.roomFilterCtrl.value;
-        if (!search) {
-            this.filteredRoom.next(this.WardcmbList.slice());
-            return;
-        } else {
-            search = search.toLowerCase();
-        }
-        // filter
-        this.filteredRoom.next(
-            this.WardcmbList.filter(
-                (bank) => bank.RoomName.toLowerCase().indexOf(search) > -1
-            )
-        );
-    }
+    
     onSearch() {
-        this.getbedMasterList();
+        // this.getbedMasterList();
     }
 
     onSearchClear() {
@@ -85,130 +74,38 @@ export class BedMasterComponent implements OnInit {
             BedNameSearch: "",
             IsDeletedSearch: "2",
         });
-        this.getbedMasterList();
+        // this.getbedMasterList();
     }
-    getbedMasterList() {
-        var param = {
-            BedName:
-                this._bedService.myformSearch
-                    .get("BedNameSearch")
-                    .value.trim() + "%" || "%",
-            WardId: 0,
-        };
+    // getbedMasterList() {
+    //     var param = {
+    //         BedName:
+    //             this._bedService.myformSearch
+    //                 .get("BedNameSearch")
+    //                 .value.trim() + "%" || "%",
+    //         WardId: 0,
+    //     };
 
-        this._bedService.getbedMasterList(param).subscribe((Menu) => {
-            this.DSBedMasterList.data = Menu as BedMaster[];
-            this.DSBedMasterList.sort = this.sort;
-            this.DSBedMasterList.paginator = this.paginator;
-        });
-    }
+    //     this._bedService.getbedMasterList(param).subscribe((Menu) => {
+    //         this.DSBedMasterList.data = Menu as BedMaster[];
+    //         this.DSBedMasterList.sort = this.sort;
+    //         this.DSBedMasterList.paginator = this.paginator;
+    //     });
+    // }
 
-    getWardNameCombobox() {
-        this._bedService.getWardMasterCombo().subscribe((data) => {
-            this.WardcmbList = data;
-            this.filteredRoom.next(this.WardcmbList.slice());
-            this._bedService.myform.get("RoomId").setValue(this.WardcmbList[0]);
-        });
-    }
+    // getWardNameCombobox() {
+    //     this._bedService.getWardMasterCombo().subscribe((data) => {
+    //         this.WardcmbList = data;
+    //         this.filteredRoom.next(this.WardcmbList.slice());
+    //         this._bedService.myform.get("RoomId").setValue(this.WardcmbList[0]);
+    //     });
+    // }
 
     onClear() {
         this._bedService.myform.reset({ IsDeleted: "false" });
         this._bedService.initializeFormGroup();
     }
 
-    onSubmit() {
-        if (this._bedService.myform.valid) {
-            if (!this._bedService.myform.get("BedId").value) {
-                var m_data = {
-                    bedMasterInsert: {
-                        bedName_1: this._bedService.myform
-                            .get("BedName")
-                            .value.trim(),
-                        roomId_2:
-                            this._bedService.myform.get("RoomId").value.RoomId,
-                        isAvailible_3: 1,
-                        //addedBy: 1,
-                        isActive_4: 0,
-                    },
-                };
-
-                this._bedService.bedMasterInsert(m_data).subscribe((data) => {
-                    this.msg = data;
-                    if (data) {
-                        this.toastr.success('Record Saved Successfully.', 'Saved !', {
-                            toastClass: 'tostr-tost custom-toast-success',
-                          });
-                        this.getbedMasterList();
-                        // Swal.fire(
-                        //     "Saved !",
-                        //     "Record saved Successfully !",
-                        //     "success"
-                        // ).then((result) => {
-                        //     if (result.isConfirmed) {
-                        //         this.getbedMasterList();
-                        //     }
-                        // });
-                    } else {
-                        this.toastr.error('Bed Master Data not saved !, Please check API error..', 'Error !', {
-                            toastClass: 'tostr-tost custom-toast-error',
-                          });
-                    }
-                    this.getbedMasterList();
-                },error => {
-                    this.toastr.error('Bed Data not saved !, Please check API error..', 'Error !', {
-                     toastClass: 'tostr-tost custom-toast-error',
-                   });
-                 });
-            } else {
-                var m_dataUpdate = {
-                    bedMasterUpdate: {
-                        bedId_1: this._bedService.myform.get("BedId").value,
-                        bedName_2: this._bedService.myform
-                            .get("BedName")
-                            .value.trim(),
-                        roomId_3:
-                            this._bedService.myform.get("RoomId").value.RoomId,
-                        // isAvailable: 1,
-                        isActive_4: 0,
-                        //  updatedBy: 1,
-                    },
-                };
-
-                this._bedService
-                    .bedMasterUpdate(m_dataUpdate)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record updated Successfully.', 'updated !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                            this.getbedMasterList();
-                            // Swal.fire(
-                            //     "Updated !",
-                            //     "Record updated Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getbedMasterList();
-                            //     }
-                            // });
-                        } else {
-                           
-                            this.toastr.error('Bed Master Data not Updated !, Please check API error..', 'Updated !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                    
-                        }
-                        this.getbedMasterList();
-                    },error => {
-                        this.toastr.error('Bed Data not Updated !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
-            }
-            this.onClear();
-        }
-    }
+  
 
     onEdit(row) {
         var m_data = {
@@ -221,15 +118,74 @@ export class BedMasterComponent implements OnInit {
         };
         this._bedService.populateForm(m_data);
     }
+
+    newBedmaster() {
+        const dialogRef = this._matDialog.open(NewBedComponent,
+            {
+                maxWidth: "45vw",
+                height: '35%',
+                width: '70%',
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
+
+        });
+    }
+    onDeactive(bedId) {
+        debugger
+        this.confirmDialogRef = this._matDialog.open(
+            FuseConfirmDialogComponent,
+            {
+                disableClose: false,
+            }
+        );
+        this.confirmDialogRef.componentInstance.confirmMessage =
+            "Are you sure you want to deactive?";
+        this.confirmDialogRef.afterClosed().subscribe((result) => {
+            debugger
+            if (result) {
+                this._bedService.deactivateTheStatus(bedId).subscribe((data: any) => {
+                    
+                    if (data.StatusCode == 200) {
+                        this.toastr.success(
+                            "Record updated Successfully.",
+                            "updated !",
+                            {
+                                toastClass:
+                                    "tostr-tost custom-toast-success",
+                            }
+                        );
+                        // this.getGenderMasterList();
+                    }
+                });
+            }
+            this.confirmDialogRef = null;
+        });
+    }
+    changeStatus(status: any) {
+        switch (status.id) {
+            case 1:
+                //this.onEdit(status.data)
+                break;
+            case 2:
+                this.onEdit(status.data)
+                break;
+            case 5:
+                this.onDeactive(status.data.bedId);
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 export class BedMaster {
-    BedId: number;
-    BedName: string;
-    RoomName: string;
-    RoomId: number;
-    IsAvailable: boolean;
-    IsActive: boolean;
+    bedId: number;
+    bedName: string;
+    //RoomName: string;
+    roomId: number;
+    isAvailible: boolean;
+    isActive: boolean;
     AddedBy: number;
     UpdatedBy: number;
 
@@ -240,11 +196,11 @@ export class BedMaster {
      */
     constructor(BedMaster) {
         {
-            this.BedId = BedMaster.BedId || "";
-            this.BedName = BedMaster.BedName || "";
-            this.RoomId = BedMaster.RoomId || "";
-            this.IsAvailable = BedMaster.BedMaster || "";
-            this.IsActive = BedMaster.IsActive || "false";
+            this.bedId = BedMaster.bedId || "";
+            this.bedName = BedMaster.bedName || "";
+            this.roomId = BedMaster.roomId || "";
+            this.isAvailible = BedMaster.isAvailible || "";
+            this.isActive = BedMaster.isActive || "true";
             this.AddedBy = BedMaster.AddedBy || "";
             this.UpdatedBy = BedMaster.UpdatedBy || "";
         }

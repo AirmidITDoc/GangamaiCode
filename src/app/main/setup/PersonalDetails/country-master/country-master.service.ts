@@ -1,6 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { gridRequest } from "app/core/models/gridRequest";
+import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
     providedIn: "root",
@@ -10,7 +12,7 @@ export class CountryMasterService {
     myformSearch: FormGroup;
 
     constructor(
-        private _httpClient: HttpClient,
+        private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder
     ) {
         this.myform = this.createCountryForm();
@@ -36,21 +38,24 @@ export class CountryMasterService {
         this.createCountryForm();
     }
 
-    public getCountryMasterList(param) {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=M_Rtrv_CountryNameList_by_Name",
-            param
-        );
+    public getcountryMasterList(param: gridRequest, showLoader = true) {
+        return this._httpClient.PostData("CountryMaster/List", param, showLoader);
     }
 
-    public countryMasterInsert(param) {
-        return this._httpClient.post("PersonalDetails/CountrySave", param);
+    public countryMasterInsert(Param: any, showLoader = true) {
+        return this._httpClient.PostData("Country", Param, showLoader);
     }
 
-    public countryMasterUpdate(param) {
-        return this._httpClient.post("PersonalDetails/CountryUpdate", param);
+    public countryMasterUpdate(id: number , Param: any, showLoader = true) {
+        //return this._httpClient.put("Gender/" + id , Param, showLoader);
+        return this._httpClient.PostData("Country", Param, showLoader);
     }
 
+      
+    public deactivateTheStatus(m_data) {
+        //return this._httpClient.delete("Gender?Id=" + m_data, {});
+        return this._httpClient.PostData("Country", m_data);
+    }
     populateForm(param) {
         this.myform.patchValue(param);
     }

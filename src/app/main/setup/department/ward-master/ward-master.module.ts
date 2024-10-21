@@ -25,6 +25,9 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { SharedModule } from "app/main/shared/shared.module";
 import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
 import { WardMasterService } from "./ward-master.service";
+import { NewWardComponent } from './new-ward/new-ward.component';
+import { MatDialogModule } from "@angular/material/dialog";
+import { DatePipe } from "@angular/common";
 
 const routes: Routes = [
     {
@@ -34,17 +37,16 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [WardMasterComponent],
+    declarations: [WardMasterComponent, NewWardComponent],
     imports: [
         RouterModule.forChild(routes),
+        SharedModule,
         MatButtonModule,
         MatCheckboxModule,
-        MatDatepickerModule,
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
         MatMenuModule,
-        MatRippleModule,
         MatTableModule,
         MatToolbarModule,
         MatPaginatorModule,
@@ -53,19 +55,10 @@ const routes: Routes = [
         MatRadioModule,
         MatSnackBarModule,
         FuseSharedModule,
-        FuseConfirmDialogModule,
         FuseSidebarModule,
-        FuseSharedModule,
-        FuseConfirmDialogModule,
-        FuseSidebarModule,
-        ReactiveFormsModule,
-        MatSnackBarModule,
-        MatAutocompleteModule,
-        MatProgressSpinnerModule,
-        SharedModule,
-        NgxMatSelectSearchModule,
+        MatDialogModule,
     ],
-    providers: [WardMasterService],
+    providers: [WardMasterService,DatePipe],
     entryComponents: [WardMasterComponent],
 })
 export class WardMasterModule {}

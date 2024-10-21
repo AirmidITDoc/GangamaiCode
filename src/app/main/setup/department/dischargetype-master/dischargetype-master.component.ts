@@ -9,6 +9,11 @@ import { MatAccordion } from "@angular/material/expansion";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
 import { fuseAnimations } from "@fuse/animations";
+import { NewWardComponent } from "../ward-master/new-ward/new-ward.component";
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { NewDischargetypeComponent } from "./new-dischargetype/new-dischargetype.component";
+
 
 @Component({
     selector: "app-dischargetype-master",
@@ -18,31 +23,34 @@ import { fuseAnimations } from "@fuse/animations";
     animations: fuseAnimations,
 })
 export class DischargetypeMasterComponent implements OnInit {
-    step = 0;
-    @ViewChild(MatAccordion) accordion: MatAccordion;
-
-    setStep(index: number) {
-        this.step = index;
-    }
-
-    msg: any;
-    SearchName: string;
-
-    displayedColumns: string[] = [
-        "DischargeTypeId",
-        "DischargeTypeName",
-        "AddedBy",
-        "IsDeleted",
-        "action",
-    ];
-
-    @ViewChild(MatSort) sort: MatSort;
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
-
-    DSDischargeTypeMasterList = new MatTableDataSource<DischargeTypeMaster>();
-
+    gridConfig: gridModel = {
+        apiUrl: "DischargeType/List",
+        columnsList: [
+            { heading: "Code", key: "dischargeTypeId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "DischargeType Name", key: "dischargeTypeName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+            {
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            debugger
+                        }
+                    }, {
+                        action: gridActions.delete, callback: (data: any) => {
+                            debugger
+                        }
+                    }]
+            } //Action 1-view, 2-Edit,3-delete
+        ],
+        sortField: "dischargeTypeId",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "dischargeTypeName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+        ],
+        row:25
+    }
     constructor(
         public _dischargetypeService: DischargetypeMasterService,
         public toastr : ToastrService,
@@ -51,23 +59,10 @@ export class DischargetypeMasterComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.getdischargetypeMasterList();
+      
     }
 
-    getdischargetypeMasterList() {
-        var m_data = {
-            DischargeTypeName:this._dischargetypeService.myformSearch.get("DischargeTypeNameSearch")
-                    .value.trim() + "%" || "%",
-        };
-        this._dischargetypeService
-            .getdischargetypeMasterList(m_data).subscribe((Menu) => {
-                this.DSDischargeTypeMasterList.data =
-                    Menu as DischargeTypeMaster[];
-                this.DSDischargeTypeMasterList.sort = this.sort;
-                this.DSDischargeTypeMasterList.paginator = this.paginator;
-                console.log(this.DSDischargeTypeMasterList);
-            });
-    }
+
 
     onClear() {
         this._dischargetypeService.myform.reset({ IsDeleted: "false" });
@@ -75,10 +70,48 @@ export class DischargetypeMasterComponent implements OnInit {
     }
 
     onSearch() {
-        this.getdischargetypeMasterList();
+        
     }
 
-    onDeactive(DischargeTypeId) {
+   
+
+    onSearchClear() {
+        this._dischargetypeService.myformSearch.reset({
+            DischargeTypeNameSearch: "",
+            IsDeletedSearch: "2",
+        });
+        
+    }
+    newdischargetypemaster() {
+        const dialogRef = this._matDialog.open(NewDischargetypeComponent,
+            {
+                maxWidth: "45vw",
+                height: '35%',
+                width: '70%',
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
+
+        });
+    }
+    changeStatus(status: any) {
+        switch (status.id) {
+            case 1:
+                //this.onEdit(status.data)
+                break;
+            case 2:
+                this.onEdit(status.data)
+                break;
+            case 5:
+                this.onDeactive(status.data.dischargeTypeId);
+                break;
+            default:
+                break;
+        }
+    }
+
+    onDeactive(dischargeTypeId) {
+        debugger
         this.confirmDialogRef = this._matDialog.open(
             FuseConfirmDialogComponent,
             {
@@ -88,128 +121,30 @@ export class DischargetypeMasterComponent implements OnInit {
         this.confirmDialogRef.componentInstance.confirmMessage =
             "Are you sure you want to deactive?";
         this.confirmDialogRef.afterClosed().subscribe((result) => {
+            debugger
             if (result) {
-                let Query =
-                    "Update M_DischargeTypeMaster set IsDeleted=1 where DischargeTypeId=" +
-                    DischargeTypeId;
-                console.log(Query);
-                this._dischargetypeService
-                    .deactivateTheStatus(Query)
-                    .subscribe((data) => (this.msg = data));
-                this.getdischargetypeMasterList();
+                this._dischargetypeService.deactivateTheStatus(dischargeTypeId).subscribe((data: any) => {
+                
+                    if (data.StatusCode == 200) {
+                        this.toastr.success(
+                            "Record updated Successfully.",
+                            "updated !",
+                            {
+                                toastClass:
+                                    "tostr-tost custom-toast-success",
+                            }
+                        );
+                        // this.getGenderMasterList();
+                    }
+                });
             }
             this.confirmDialogRef = null;
         });
     }
-
-    onSearchClear() {
-        this._dischargetypeService.myformSearch.reset({
-            DischargeTypeNameSearch: "",
-            IsDeletedSearch: "2",
-        });
-        this.getdischargetypeMasterList();
-    }
-
-    onSubmit() {
-        if (this._dischargetypeService.myform.valid) {
-            if (
-                !this._dischargetypeService.myform.get("DischargeTypeId").value
-            ) {
-                var m_data = {
-                    dischargeTypeMasterInsert: {
-                        dischargeTypeName: this._dischargetypeService.myform
-                            .get("DischargeTypeName")
-                            .value.trim(),
-                        isActive: 0,
-                        addedBy: 1,
-                        updatedBy: 1,
-                    },
-                };
-
-                this._dischargetypeService
-                    .dischargeTypeMasterInsert(m_data)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                            this.getdischargetypeMasterList();
-                            // Swal.fire(
-                            //     "Saved !",
-                            //     "Record saved Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getdischargetypeMasterList();
-                            //     }
-                            // });
-                        } else {
-                            this.toastr.error('DischargeType Master Data not saved !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                        }
-                        this.getdischargetypeMasterList();
-                    },error => {
-                        this.toastr.error('DischargeType Data not saved !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
-            } else {
-                var m_dataUpdate = {
-                    dischargeTypeMasterUpdate: {
-                        dischargeTypeId:
-                            this._dischargetypeService.myform.get(
-                                "DischargeTypeId"
-                            ).value,
-                        dischargeTypeName: this._dischargetypeService.myform
-                            .get("DischargeTypeName")
-                            .value.trim(),
-                        isActive: 0,
-                        updatedBy: 1,
-                    },
-                };
-
-                this._dischargetypeService
-                    .dischargeTypeMasterUpdate(m_dataUpdate)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record updated Successfully.', 'updated !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                            this.getdischargetypeMasterList();
-                            // Swal.fire(
-                            //     "Updated !",
-                            //     "Record updated Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getdischargetypeMasterList();
-                            //     }
-                            // });
-                        } else {
-                           
-                            this.toastr.error('DischargeType Master Data not Updated !, Please check API error..', 'Updated !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                    
-                        }
-                        this.getdischargetypeMasterList();
-                    },error => {
-                        this.toastr.error('DischargeType Data not Updated !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
-            }
-            this.onClear();
-        }
-    }
-
     onEdit(row) {
         var m_data = {
-            DischargeTypeId: row.DischargeTypeId,
-            DischargeTypeName: row.DischargeTypeName.trim(),
+            DischargeTypeId: row.dischargeTypeId,
+            DischargeTypeName: row.dischargeTypeName.trim(),
             IsDeleted: JSON.stringify(row.IsDeleted),
             UpdatedBy: row.UpdatedBy,
         };
@@ -217,8 +152,8 @@ export class DischargetypeMasterComponent implements OnInit {
     }
 }
 export class DischargeTypeMaster {
-    DischargeTypeId: number;
-    DischargeTypeName: string;
+    dischargeTypeId: number;
+    dischargeTypeName: string;
     IsDeleted: boolean;
     AddedBy: number;
     UpdatedBy: number;
@@ -231,9 +166,9 @@ export class DischargeTypeMaster {
      */
     constructor(DischargeTypeMaster) {
         {
-            this.DischargeTypeId = DischargeTypeMaster.DischargeTypeId || "";
-            this.DischargeTypeName =
-                DischargeTypeMaster.DischargeTypeName || "";
+            this.dischargeTypeId = DischargeTypeMaster.dischargeTypeId || "";
+            this.dischargeTypeName =
+                DischargeTypeMaster.dischargeTypeName || "";
             this.IsDeleted = DischargeTypeMaster.IsDeleted || "false";
             this.AddedBy = DischargeTypeMaster.AddedBy || "";
             this.UpdatedBy = DischargeTypeMaster.UpdatedBy || "";

@@ -1,59 +1,16 @@
 .p-sm-24 {
     padding: 10px !important;
 }
-.mat-header-row {
-    width: 650px;
-    max-width: 650px;
-    min-width: 650px;
-    font-weight: bold;
-}
 
-.mat-row {
-    width: 650px;
-    max-width: 650px;
-    min-width: 650px;
-}
+app-religion-master{
 
-.mat-column-ReligionId {
-    width: 110px;
-    max-width: 110px;
-    min-width: 110px;
-}
-
-.mat-column-ReligionName {
-    width: 150px;
-    max-width: 150px;
-    min-width: 150px;
-}
-
-.mat-column-AddedBy {
-    width: 120px;
-    max-width: 120px;
-    min-width: 120px;
-}
-
-.mat-column-IsDeleted {
-    width: 110px;
-    max-width: 110px;
-    min-width: 110px;
-    text-align: center;
-    justify-content: center;
-}
-
-.mat-column-action {
-    // color: white !important;
-    width: 110px;
-    max-width: 110px;
-    min-width: 110px;
-    text-align: right;
-    justify-content: right;
-}
-.mat-icon-button {
-    padding: 0;
-    min-width: 0;
-    width: 40px;
-    height: 20px;
-    flex-shrink: 0;
-    line-height: 20px;
-    border-radius: 50%;
+    .mat-icon-button {
+        padding: 0;
+        min-width: 0;
+        width: 40px;
+        height: 20px;
+        flex-shrink: 0;
+        line-height: 20px;
+        border-radius: 50%;
+    }
 }

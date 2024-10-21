@@ -14,14 +14,19 @@ import { MatRadioModule } from "@angular/material/radio";
 import { MatSelectModule } from "@angular/material/select";
 import { MatSortModule } from "@angular/material/sort";
 import { MatPaginatorModule } from "@angular/material/paginator";
-import { MatTableModule } from "@angular/material/table";
 import { MatInputModule } from "@angular/material/input";
 import { MatIconModule } from "@angular/material/icon";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatButtonModule } from "@angular/material/button";
-import { CommonModule } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { BedMasterService } from "./bed-master.service";
+import { NewBedComponent } from './new-bed/new-bed.component';
+import { SharedModule } from "app/main/shared/shared.module";
+import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatMenuModule } from "@angular/material/menu";
+import { MatDialogModule } from "@angular/material/dialog";
+import { MatTableModule } from "@angular/material/table";
 
 const routes: Routes = [
     {
@@ -31,31 +36,28 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [BedMasterComponent],
+    declarations: [BedMasterComponent, NewBedComponent],
     imports: [
         RouterModule.forChild(routes),
-        CommonModule,
+        SharedModule,
         MatButtonModule,
         MatCheckboxModule,
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
+        MatMenuModule,
         MatTableModule,
+        MatToolbarModule,
         MatPaginatorModule,
         MatSortModule,
         MatSelectModule,
         MatRadioModule,
-        MatTabsModule,
-        MatCardModule,
-        FuseSharedModule,
-        FuseConfirmDialogModule,
-        FuseSidebarModule,
-        ReactiveFormsModule,
         MatSnackBarModule,
-        MatStepperModule,
-        NgxMatSelectSearchModule,
+        FuseSharedModule,
+        FuseSidebarModule,
+        MatDialogModule,
     ],
-    providers: [BedMasterService],
+    providers: [BedMasterService,DatePipe],
     entryComponents: [BedMasterComponent],
 })
 export class BedMasterModule {}

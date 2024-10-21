@@ -32,9 +32,10 @@ export class CityMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "CityMaster/List",
         columnsList: [
-            { heading: "Code", key: "CityId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "City Name", key: "CityName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsDeleted", key: "IsActive", type: gridColumnTypes.status, align: "center" },
+            { heading: "Code", key: "cityId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "City Name", key: "cityName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "State Name", key: "stateId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
@@ -48,11 +49,11 @@ export class CityMasterComponent implements OnInit {
                     }]
             } //Action 1-view, 2-Edit,3-delete
         ],
-        sortField: "CityId",
+        sortField: "cityName",
         sortOrder: 0,
         filters: [
-            { fieldName: "CityName", fieldValue: "", opType: OperatorComparer.Contains },
-            { fieldName: "IsActive", fieldValue: "", opType: OperatorComparer.Equals }
+            { fieldName: "cityName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ],
         row: 25
     }
@@ -164,13 +165,13 @@ export class CityMasterComponent implements OnInit {
 }
 
 export class CityMaster {
-    CityId: number;
-    CityName: string;
-    StateId: number;
+    cityId: number;
+    cityName: string;
+    stateId: number;
    // StateName: string;
     // CountryId: number;
     // CountryName: string;
-    IsDeleted: boolean;
+    isActive: boolean;
     // AddedBy: number;
     // UpdatedBy: number;
 
@@ -181,13 +182,13 @@ export class CityMaster {
      */
     constructor(CityMaster) {
         {
-            this.CityId = CityMaster.CityId || "";
-            this.CityName = CityMaster.CityName || "";
-            this.StateId = CityMaster.StateId || "";
+            this.cityId = CityMaster.cityId || "";
+            this.cityName = CityMaster.cityName || "";
+            this.stateId = CityMaster.stateId || "";
             // this.StateName = CityMaster.StateName || "";
             // this.CountryId = CityMaster.CountryId || "";
             // this.CountryName = CityMaster.CountryName || "";
-            this.IsDeleted = CityMaster.IsDeleted || "false";
+            this.isActive = CityMaster.isActive || "false";
             // this.AddedBy = CityMaster.AddedBy || "";
             // this.UpdatedBy = CityMaster.UpdatedBy || "";
         }

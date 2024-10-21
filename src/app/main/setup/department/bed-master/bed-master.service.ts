@@ -1,15 +1,15 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { gridRequest } from "app/core/models/gridRequest";
+import { ApiCaller } from "app/core/services/apiCaller";
 
-@Injectable({
-    providedIn: "root",
-})
+@Injectable()
 export class BedMasterService {
     myform: FormGroup;
     myformSearch: FormGroup;
     constructor(
-        private _httpClient: HttpClient,
+        private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder
     ) {
         this.myform = this.createBedForm();
@@ -38,29 +38,29 @@ export class BedMasterService {
         this.createBedForm();
     }
 
-    public getbedMasterList(param) {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_BedMasterList_1",
-            param
-        );
+   
+
+    populateForm(Param) {
+        this.myform.patchValue(Param);
     }
 
-    public getWardMasterCombo() {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Retrieve_RoomMasterForCombo",
-            {}
-        );
+
+
+    public getBedMasterList(param: gridRequest, showLoader = true) {
+        return this._httpClient.PostData("BedMaster/List", param, showLoader);
     }
 
-    public bedMasterInsert(param) {
-        return this._httpClient.post("DepartMentMaster/BedSave", param);
+    public BedMasterInsert(Param: any, showLoader = true) {
+        return this._httpClient.PostData("Bed", Param, showLoader);
     }
 
-    public bedMasterUpdate(param) {
-        return this._httpClient.post("DepartMentMaster/BedUpdate", param);
+    public BedMasterUpdate(id: number , Param: any, showLoader = true) {
+        //return this._httpClient.put("Gender/" + id , Param, showLoader);
+        return this._httpClient.PostData("Bed", Param, showLoader);
     }
 
-    populateForm(param) {
-        this.myform.patchValue(param);
+    public deactivateTheStatus(m_data) {
+        //return this._httpClient.delete("Gender?Id=" + m_data, {});
+        return this._httpClient.PostData("Bed", m_data);
     }
 }

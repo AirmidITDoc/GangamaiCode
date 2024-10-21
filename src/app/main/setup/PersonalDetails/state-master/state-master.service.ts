@@ -1,15 +1,15 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { gridRequest } from "app/core/models/gridRequest";
+import { ApiCaller } from "app/core/services/apiCaller";
 
-@Injectable({
-    providedIn: "root",
-})
+@Injectable()
 export class StateMasterService {
     myform: FormGroup;
     myformSearch: FormGroup;
     constructor(
-        private _httpClient: HttpClient,
+        private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder
     ) {
         this.myform = this.createStateForm();
@@ -38,29 +38,34 @@ export class StateMasterService {
         this.createStateForm();
     }
 
-    public getstateMasterList(param) {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_StateNameList_by_Name",
-            param
-        );
+   
+
+    // public getCountryMasterCombo() {
+    //     return this._httpClient.post(
+    //         "Generic/GetByProc?procName=Retrieve_CountryMasterForCombo",
+    //         {}
+    //     );
+    // }
+    public getstateMasterList(param: gridRequest, showLoader = true) {
+        return this._httpClient.PostData("StateMaster/List", param, showLoader);
     }
 
-    public getCountryMasterCombo() {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Retrieve_CountryMasterForCombo",
-            {}
-        );
+    public stateMasterInsert(Param: any, showLoader = true) {
+        return this._httpClient.PostData("State", Param, showLoader);
     }
 
-    public stateMasterInsert(param) {
-        return this._httpClient.post("PersonalDetails/StateSave", param);
-    }
-
-    public stateMasterUpdate(param) {
-        return this._httpClient.post("PersonalDetails/StateUpdate", param);
+    public stateMasterUpdate(id: number , Param: any, showLoader = true) {
+        //return this._httpClient.put("Gender/" + id , Param, showLoader);
+        return this._httpClient.PostData("State", Param, showLoader);
     }
 
     populateForm(param) {
         this.myform.patchValue(param);
+    }
+
+    
+    public deactivateTheStatus(m_data) {
+        //return this._httpClient.delete("Gender?Id=" + m_data, {});
+        return this._httpClient.PostData("State", m_data);
     }
 }

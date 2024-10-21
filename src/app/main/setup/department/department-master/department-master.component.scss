@@ -1,51 +1,9 @@
+.p-sm-24 {
+    padding: 10px !important;
+}
+
 app-department-master {
-    .mat-header-row {
-        width: 700px;
-        max-width: 700px;
-        min-width: 700px;
-        font-weight: bold;
-    }
 
-    .mat-row {
-        width: 700px;
-        max-width: 700px;
-        min-width: 700px;
-    }
-
-    .mat-column-DepartmentId {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-    }
-
-    .mat-column-DepartmentName {
-        width: 200px;
-        max-width: 200px;
-        min-width: 200px;
-    }
-
-    .mat-column-AddedBy {
-        width: 120px;
-        max-width: 120px;
-        min-width: 120px;
-    }
-
-    .mat-column-IsDeleted {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-        text-align: center;
-        justify-content: center;
-    }
-
-    .mat-column-action {
-        // color: white !important;
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-        text-align: right;
-        justify-content: right;
-    }
     .mat-icon-button {
         padding: 0;
         min-width: 0;

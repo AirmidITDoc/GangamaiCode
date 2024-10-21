@@ -1,16 +1,16 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { gridRequest } from "app/core/models/gridRequest";
+import { ApiCaller } from "app/core/services/apiCaller";
 
-@Injectable({
-    providedIn: "root",
-})
+@Injectable()
 export class DischargetypeMasterService {
     myform: FormGroup;
     myformSearch: FormGroup;
 
     constructor(
-        private _httpClient: HttpClient,
+        private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder
     ) {
         this.myform = this.createDischargetypeForm();
@@ -39,37 +39,29 @@ export class DischargetypeMasterService {
         this.createDischargetypeForm();
     }
 
-    //get dischargetype Master list
-    public getdischargetypeMasterList(m_data) {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=M_Rtrv_DischargeTypeMaster",
-            m_data
-        );
+   
+
+    populateForm(Param) {
+        this.myform.patchValue(Param);
     }
 
-    // Deactive the status
+
+
+    public getDischargeTypeMasterList(param: gridRequest, showLoader = true) {
+        return this._httpClient.PostData("DischargeType/List", param, showLoader);
+    }
+
+    public DischargeTypeMasterInsert(Param: any, showLoader = true) {
+        return this._httpClient.PostData("DischargeType", Param, showLoader);
+    }
+
+    public DischargeTypeMasterUpdate(id: number , Param: any, showLoader = true) {
+        //return this._httpClient.put("Gender/" + id , Param, showLoader);
+        return this._httpClient.PostData("DischargeType", Param, showLoader);
+    }
+
     public deactivateTheStatus(m_data) {
-        return this._httpClient.post(
-            "Generic/ExecByQueryStatement?query=" + m_data,
-            {}
-        );
-    }
-
-    public dischargeTypeMasterInsert(param) {
-        return this._httpClient.post(
-            "DepartMentMaster/DischargeTypeMasterSave",
-            param
-        );
-    }
-
-    public dischargeTypeMasterUpdate(param) {
-        return this._httpClient.post(
-            "DepartMentMaster/DischargeTypeMasterUpdate",
-            param
-        );
-    }
-
-    populateForm(param) {
-        this.myform.patchValue(param);
+        //return this._httpClient.delete("Gender?Id=" + m_data, {});
+        return this._httpClient.PostData("DischargeType", m_data);
     }
 }

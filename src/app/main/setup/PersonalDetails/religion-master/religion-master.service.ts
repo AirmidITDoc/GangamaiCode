@@ -1,6 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { gridRequest } from "app/core/models/gridRequest";
+import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
     providedIn: "root",
@@ -9,7 +11,7 @@ export class ReligionMasterService {
     myform: FormGroup;
     myformSearch: FormGroup;
     constructor(
-        public _httpClient: HttpClient,
+        private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder
     ) {
         this.myform = this.CreateReligionForm();
@@ -34,27 +36,24 @@ export class ReligionMasterService {
         this.CreateReligionForm();
     }
 
-    public getReligionMasterList(e) {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=M_Rtrv_ReligionName_by_Name",
-            e
-        );
+    public getreligionMasterList(param: gridRequest, showLoader = true) {
+        return this._httpClient.PostData("ReligionMaster/List", param, showLoader);
     }
 
-    public religionMasterInsert(param) {
-        return this._httpClient.post(
-            "PersonalDetails/ReligionMasterSave",
-            param
-        );
+    public religionMasterInsert(Param: any, showLoader = true) {
+        return this._httpClient.PostData("Religion", Param, showLoader);
     }
 
-    public religionMasterUpdate(param) {
-        return this._httpClient.post(
-            "PersonalDetails/ReligionMasterUpdate",
-            param
-        );
+    public religionMasterUpdate(id: number , Param: any, showLoader = true) {
+        //return this._httpClient.put("Gender/" + id , Param, showLoader);
+        return this._httpClient.PostData("Religion", Param, showLoader);
     }
 
+      
+    public deactivateTheStatus(m_data) {
+        //return this._httpClient.delete("Gender?Id=" + m_data, {});
+        return this._httpClient.PostData("Religion", m_data);
+    }
     populateForm(param) {
         this.myform.patchValue(param);
     }
