@@ -19,12 +19,14 @@
             <form [formGroup]="_GenderMasterService.myform">
                 <input type="hidden" name="genderId" formControlName="genderId">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <airmid-textbox
+                    <airmid-textbox [formGroup]="_GenderMasterService.myform" fieldName="genderName"
                         label="Gender name"
                         formControlName="genderName"
+                        fieldName="genderName"
                         placeholder="Gender Name"
+                        [validations]="genderName"
                         [required]="true"
-                        [maxLength]="30">
+                        [maxLength]="300">
                     </airmid-textbox> 
                 </div>
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
@@ -40,7 +42,7 @@
         <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
             <div class="button-row">
                 <button mat-raised-button color="primary" type="submit" (click)="onSubmit()"
-                    [disabled]="_GenderMasterService.myform.invalid"
+                    
                     >Save</button>
                 <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
             </div>
