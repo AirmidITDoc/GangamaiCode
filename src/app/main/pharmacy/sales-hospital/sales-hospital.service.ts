@@ -187,12 +187,18 @@ import { LoaderService } from 'app/core/components/loader/loader.service';
       return this._httpClient.post("Generic/GetByProc?procName=Ret_PrescriptionDet",Param);
     }
  
-
+    public getSalesPatientList(){ 
+        return this._httpClient.get("Generic/GetByProc?procName=m_Rtrv_SalespateintNameList",{});
+      }
     public getSalesDraftPrint(DSalesId,loader = true){
       if (loader) {
         this._loaderService.show();
     }
         return this._httpClient.get("PharmacyReport/view-SalesDraftBill?DSalesId="+DSalesId);
-      }
+    } 
+
+    public getSalesPatientList1(){
+      return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_SalespateintNameList",{});
+    }
   }
   

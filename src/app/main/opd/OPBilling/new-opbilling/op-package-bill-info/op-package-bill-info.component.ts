@@ -183,7 +183,8 @@ export class OpPackageBillInfoComponent implements OnInit {
             IsPathology: element.IsPathology,
             IsRadiology: element.IsRadiology, 
             PackageId:element.PackageId,
-            PackageServiceId:element.PackageServiceId
+            PackageServiceId:element.PackageServiceId,
+            PacakgeServiceName:element.PacakgeServiceName,
           })
       })
       this.dsPackageDet.data = this.PacakgeList
@@ -192,7 +193,7 @@ export class OpPackageBillInfoComponent implements OnInit {
     }); 
   }
     //add service
-onAddCharges() {
+onAddPackageService() {
 
   if ((this.vServiceId == 0 || this.vServiceId == null || this.vServiceId == undefined)) {
     this.toastr.warning('Please select Service', 'Warning !', {
@@ -240,16 +241,11 @@ onAddCharges() {
       TotalAmt: 0,
       DiscPer: 0, 
       DiscAmt: 0,
-      NetAmount: 0,
-      ClassId: this.vClassId ,
+      NetAmount: 0, 
       DoctorId: this.ChargeDoctorId,
-      DoctorName: this.ChargesDoctorname ,
-      ChargesDate: this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+      DoctorName: this.ChargesDoctorname , 
       IsPathology: this.IsPathology || 0,
-      IsRadiology: this.IsRadiology || 0,
-      IsPackage:0,
-      ClassName: this.vClassName || '',
-      ChargesAddedName: this._loggedService.currentUserValue.user.id || 1, 
+      IsRadiology: this.IsRadiology || 0
     });
   this.isLoading = '';
   this.dsPackageDet.data = this.PacakgeList; 
@@ -346,6 +342,7 @@ export class ChargesList{
   PackageId:any;
   PackageServiceId:any;
   IsPackage:any;
+  PacakgeServiceName:any;
 
   constructor(ChargesList){
           this.ChargesId = ChargesList.ChargesId || '';
@@ -367,6 +364,7 @@ export class ChargesList{
           this.ChargesAddedName = ChargesList.ChargesAddedName || '';
           this.PackageId=ChargesList.PackageId || 0;
           this.PackageServiceId=ChargesList.PackageServiceId || 0;
-          this.IsPackage=ChargesList.IsPackage || 0;
+          this.IsPackage=ChargesList.IsPackage || 0; 
+          this.PacakgeServiceName = ChargesList.PacakgeServiceName || '';
   }
 } 

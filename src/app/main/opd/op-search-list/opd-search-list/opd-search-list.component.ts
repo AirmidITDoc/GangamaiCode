@@ -475,8 +475,8 @@ export class ChargesList{
   ChargesId: number;
   ServiceId: number;
   ServiceName : String;
-  Price:number;
-  Qty: number;
+  Price:any;
+  Qty: any;
   TotalAmt: number;
   DiscPer: number;
   DiscAmt: number;
@@ -492,7 +492,8 @@ export class ChargesList{
   PackageId:any;
   PackageServiceId:any;
   IsPackage:any;
-
+  PacakgeServiceName:any;
+  
   constructor(ChargesList){
           this.ChargesId = ChargesList.ChargesId || '';
           this.ServiceId = ChargesList.ServiceId || '';
@@ -513,6 +514,7 @@ export class ChargesList{
           this.ChargesAddedName = ChargesList.ChargesAddedName || '';
           this.PackageId=ChargesList.PackageId || 0;
           this.PackageServiceId=ChargesList.PackageServiceId || 0;
-          this.IsPackage=ChargesList.IsPackage || 0;
+          this.IsPackage=ChargesList.IsPackage || 0; 
+          this.PacakgeServiceName = ChargesList.PacakgeServiceName || '';
   }
 } 

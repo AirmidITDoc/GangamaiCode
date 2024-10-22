@@ -408,9 +408,11 @@ export class SalesHospitalComponent implements OnInit {
 
   ngOnInit(): void {
     // this.patientDetailsFormGrp = this.createForm();
+    this.getSalesPatientList();
     this.gePharStoreList();
     this.getItemSubform();
     this.getConcessionReasonList();
+  
 
     // pament Code
     // this.patientDetailsFormGrp = this.createForm();
@@ -1108,7 +1110,30 @@ export class SalesHospitalComponent implements OnInit {
       // this.Ipbillform.get('ConcessionId').setValue(this.ConcessionReasonList[1]);
     })
   }
-
+  isPatientNameSelected:boolean=false;
+  filteredOptionPatientNameList:Observable<string[]>; 
+  patientList : any = []; 
+  getSalesPatientList() {
+    debugger
+    this._salesService.getSalesPatientList1().subscribe(data => {
+      this.patientList = data;  
+      this.filteredOptionPatientNameList = this.ItemSubform.get('PatientName').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterSales(value) : this.patientList.slice()),
+      );
+    }); 
+  }
+  private _filterSales(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.ExternalPatientName ? value.ExternalPatientName.toLowerCase() : value.toLowerCase();
+      return this.patientList.filter(option => option.ExternalPatientName.toLowerCase().includes(filterValue));
+    }
+  }  
+  getOptionTextPatientName(option) {
+    if (!option)
+      return '';
+    return option.ExternalPatientName;
+  }  
 
   getDateTime(dateTimeObj) {
 
@@ -3163,6 +3188,10 @@ export class SalesHospitalComponent implements OnInit {
   // }
 
   onSaveDraftBill() {
+    let m = this.ItemSubform.get('PatientName').value
+    console.log(m)
+    m = this.PatientName
+    console.log(m)
     let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
     let ConcessionId = 0;
     if (this.ItemSubform.get('ConcessionId').value)
@@ -3194,7 +3223,7 @@ export class SalesHospitalComponent implements OnInit {
     SalesInsert['isPrint'] = 0;
     SalesInsert['unitID'] = 1;
     SalesInsert['addedBy'] = this._loggedService.currentUserValue.user.id,
-    SalesInsert['externalPatientName'] = this.PatientName || '';
+    SalesInsert['externalPatientName'] = this.ItemSubform.get('PatientName').value || '';
     SalesInsert['doctorName'] = this.DoctorName || '';
     SalesInsert['storeId'] = this._salesService.IndentSearchGroup.get('StoreId').value.storeid;
     SalesInsert['isPrescription'] =this.IPMedID || 0;

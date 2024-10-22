@@ -22,6 +22,7 @@ import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.s
 import { IPpaymentWithadvanceComponent } from '../../ip-settlement/ippayment-withadvance/ippayment-withadvance.component';
 import { map, startWith } from 'rxjs/operators';
 import { ConfigService } from 'app/core/services/config.service';
+import { OpPaymentVimalComponent } from 'app/main/opd/op-search-list/op-payment-vimal/op-payment-vimal.component';
 
 @Component({
   selector: 'app-interim-bill',
@@ -590,36 +591,38 @@ export class InterimBillComponent implements OnInit {
       let PatientHeaderObj = {};
       PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName;
       PatientHeaderObj['Date'] = this.dateTimeObj.date;
-      PatientHeaderObj['UHIDNO'] =this.selectedAdvanceObj.RegNo;
+      PatientHeaderObj['RegNo'] =this.selectedAdvanceObj.RegNo;
       PatientHeaderObj['DoctorName'] = this.selectedAdvanceObj.Doctorname;
       PatientHeaderObj['IPDNo'] = this.selectedAdvanceObj.IPDNo ; // this._IpSearchListService.myShowAdvanceForm.get("AdmissionID").value;
       PatientHeaderObj['NetPayAmount'] = this.netAmount;
       PatientHeaderObj['AdvanceAmount'] =  this.netAmount; 
       PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
       PatientHeaderObj['ComapanyId'] = this.selectedAdvanceObj.CompanyId;
-
-      // const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
+      PatientHeaderObj['Age'] = this.selectedAdvanceObj.AgeYear;
+      PatientHeaderObj['BillNo'] = 0;
+ 
+      // const dialogRef = this._matDialog.open(IPpaymentWithadvanceComponent,
       //   {
-      //     maxWidth: "80vw",
-      //     height: '600px',
-      //     width: '80%',
+      //     maxWidth: "95vw",
+      //     height: '650px',
+      //     width: '85%',
       //     data: {
-      //       vPatientHeaderObj: PatientHeaderObj,
-      //       FromName: "IP-Bill",
-      //       advanceObj: PatientHeaderObj
+      //       advanceObj: PatientHeaderObj,
+      //       FromName: "IP-IntrimBIll"
       //     }
       //   }); 
-      
-      const dialogRef = this._matDialog.open(IPpaymentWithadvanceComponent,
-        {
-          maxWidth: "95vw",
-          height: '650px',
-          width: '85%',
-          data: {
-            advanceObj: PatientHeaderObj,
-            FromName: "IP-IntrimBIll"
-          }
-        });
+
+        const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
+            {
+                maxWidth: "95vw",
+                height: '650px',
+                width: '85%', 
+                data: {
+                    vPatientHeaderObj: PatientHeaderObj,
+                    FromName: "IP-IntrimBIll",
+                    advanceObj: PatientHeaderObj,
+                }
+            }); 
       dialogRef.afterClosed().subscribe(result => {
         console.log(result)
         let submitData = {

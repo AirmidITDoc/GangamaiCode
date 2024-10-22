@@ -52,6 +52,7 @@ export class NewOPBillingComponent implements OnInit {
   ];
   displayedColumnspackage = [ 
     'IsCheck',
+    'ServiceNamePackage',
     'ServiceName',
     'Qty',
     'Price',
@@ -627,7 +628,8 @@ finaldiscAmt() {
             IsPathology: element.IsPathology,
             IsRadiology: element.IsRadiology, 
             PackageId:element.PackageId,
-            PackageServiceId:element.PackageServiceId
+            PackageServiceId:element.PackageServiceId,
+            PacakgeServiceName:element.PacakgeServiceName,
           })
       })
       this.dsPackageDet.data = this.PacakgeList
@@ -1411,7 +1413,10 @@ debugger
       this.addbutton.nativeElement.focus();
     }
   }
-
+  EditedPackageService:any=[];
+  OriginalPackageService:any = [];
+  TotalPrice:any = 0;
+  TotalQty:any = 0;
 getPacakgeDetail(contact){
   const dialogRef = this._matDialog.open(OpPackageBillInfoComponent,
     {
@@ -1428,7 +1433,13 @@ getPacakgeDetail(contact){
       this.dsPackageDet.data = result
       this.dsPackageDet.data.forEach(element => {
         this.PacakgeList = this.PacakgeList.filter(item => item.ServiceId !== element.ServiceId)
-        console.log(this.PacakgeList)
+        console.log(this.PacakgeList)   
+        this.TotalPrice = parseInt(this.TotalPrice) + parseInt(element.Price);
+        this.TotalQty =  parseInt(this.TotalQty) + parseInt(element.Qty);
+        this.OriginalPackageService = this.dataSource.data.filter(item => item.ServiceId !== element.ServiceId)
+        this.EditedPackageService = this.dataSource.data.filter(item => item.ServiceId === element.ServiceId)
+        console.log(this.OriginalPackageService)
+        console.log(this.EditedPackageService)
       });
 
       this.dsPackageDet.data.forEach(element => {
@@ -1445,10 +1456,38 @@ getPacakgeDetail(contact){
             IsPathology: element.IsPathology || 0,
             IsRadiology: element.IsRadiology || 0,
             PackageId: element.PackageId || 0,
-            PackageServiceId: element.PackageServiceId || 0
+            PackageServiceId: element.PackageServiceId || 0, 
+            PacakgeServiceName:element.PacakgeServiceName || '',
           });
         this.dsPackageDet.data = this.PacakgeList;
       });
+ 
+        if(this.EditedPackageService.length){
+          this.EditedPackageService.forEach(element => {
+            this.OriginalPackageService.push(
+              {  
+                ChargesId: 0,// this.serviceId,
+                ServiceId:  element.ServiceId,
+                ServiceName: element.ServiceName,
+                Price: this.TotalPrice|| 0,
+                Qty:  this.TotalQty || 0,
+                TotalAmt: (parseFloat(this.TotalQty) *  parseFloat(this.TotalPrice)) || 0,
+                DiscPer: element.DiscPer || 0, 
+                DiscAmt: element.DiscAmt || 0,
+                NetAmount: (parseFloat(this.TotalQty) *  parseFloat(this.TotalPrice))  || 0,
+                ClassId: 1, 
+                DoctorId: element.DoctornewId, 
+                DoctorName: element.DoctorName,
+                ChargesDate: this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+                IsPathology: element.IsPathology,
+                IsRadiology: element.IsRadiology,
+                IsPackage: element.IsPackage,
+                ClassName: element.ClassName, 
+                ChargesAddedName: this.accountService.currentUserValue.user.id || 1,
+              });
+            this.dataSource.data = this.OriginalPackageService;
+          });
+        }  
     }
   })
 }

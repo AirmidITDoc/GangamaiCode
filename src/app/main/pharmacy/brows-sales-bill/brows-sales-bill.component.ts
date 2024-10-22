@@ -283,9 +283,9 @@ export class BrowsSalesBillComponent implements OnInit {
     else {
       this.isLoadingStr = 'loading';
       var Params = {
-        "F_Name": this._AdmissionService.myFilterform.get("FirstName").value + '%' || "%",
-        "L_Name": this._AdmissionService.myFilterform.get("LastName").value + '%' || "%",
-        "M_Name": this._AdmissionService.myFilterform.get("MiddleName").value + '%' || "%",
+        "F_Name": this._AdmissionService.myFilterform.get("FirstName").value + "%" || "%",
+        "L_Name": this._AdmissionService.myFilterform.get("LastName").value + "%" || "%",
+        "M_Name": this._AdmissionService.myFilterform.get("MiddleName").value + "%" || "%",
         "Reg_No": this._AdmissionService.myFilterform.get("RegNo").value || 0,
         "Doctor_Id": this._AdmissionService.myFilterform.get("DoctorId").value || 0,
         "From_Dt": this.datePipe.transform(this._AdmissionService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
@@ -385,8 +385,8 @@ export class BrowsSalesBillComponent implements OnInit {
   getSalesList() { 
     this.sIsLoading = 'loading-data';
     var vdata = {
-      F_Name: this._BrowsSalesBillService.userForm.get('F_Name').value || '%',
-      L_Name: this._BrowsSalesBillService.userForm.get('L_Name').value || '%',
+      F_Name: this._BrowsSalesBillService.userForm.get('F_Name').value + "%" || "%",
+      L_Name: this._BrowsSalesBillService.userForm.get('L_Name').value + "%" || "%",
       From_Dt: this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       To_Dt: this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       Reg_No: this._BrowsSalesBillService.userForm.get('RegNo').value || 0,
@@ -428,8 +428,8 @@ export class BrowsSalesBillComponent implements OnInit {
   getSalesReturnList() {
     this.sIsLoading = 'loading-data';
     var vdata = {
-      F_Name: this._BrowsSalesBillService.formReturn.get('F_Name').value || '%',
-      L_Name: this._BrowsSalesBillService.formReturn.get('L_Name').value || '%',
+      F_Name: this._BrowsSalesBillService.formReturn.get('F_Name').value + "%" || "%",
+      L_Name: this._BrowsSalesBillService.formReturn.get('L_Name').value + "%" || "%",
       From_Dt: this.datePipe.transform(this._BrowsSalesBillService.formReturn.get('startdate1').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       To_Dt: this.datePipe.transform(this._BrowsSalesBillService.formReturn.get('enddate1').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       Reg_No: this._BrowsSalesBillService.formReturn.get('RegNo').value || 0,

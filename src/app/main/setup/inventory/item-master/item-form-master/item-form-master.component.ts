@@ -303,7 +303,7 @@ export class ItemFormMasterComponent implements OnInit {
         if (value) {
             const filterValue = value && value.CompanyName ? value.CompanyName.toLowerCase() : value.toLowerCase();
 
-            return this.optionsCompany.filter(option => option.CompanyName.toLowerCase().includes(filterValue));
+            return this.CompanyList.filter(option => option.CompanyName.toLowerCase().includes(filterValue));
         }
 
     }
@@ -427,37 +427,32 @@ export class ItemFormMasterComponent implements OnInit {
     }
 
 
-    private _filterDrugType(value: any): string[] {
-        if (value) {
-            const filterValue = value && value.DrugTypeName ? value.DrugTypeName.toLowerCase() : value.toLowerCase();
-            //   this.isDoctorSelected = false;
-            return this.optionsDrugType.filter(option => option.DrugTypeName.toLowerCase().includes(filterValue));
-        }
-
-    }
+ 
 
 
-
-    getDrugTypeList() {
-
+    getDrugTypeList() { 
         this._itemService.getDrugTypeCombo().subscribe(data => {
             this.DrugList = data;
             this.filteredOptionsDrugtype = this._itemService.myform.get('DrugType').valueChanges.pipe(
                 startWith(''),
                 map(value => value ? this._filterDrugType(value) : this.DrugList.slice()),
             );
-            if (this.data) {
-          
+            if (this.data) { 
                 const ddValue = this.DrugList.filter(c => c.ItemDrugTypeId == this.data.registerObj.DrugType);
-                this._itemService.myform.get('DrugType').setValue(ddValue[0]);
-
+                this._itemService.myform.get('DrugType').setValue(ddValue[0]); 
                 this._itemService.myform.updateValueAndValidity();
                 return;
-            }
-           
-        });
-
+            } 
+        }); 
     }
+    private _filterDrugType(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.DrugTypeName ? value.DrugTypeName.toLowerCase() : value.toLowerCase();
+            //   this.isDoctorSelected = false;
+            return this.DrugList.filter(option => option.DrugTypeName.toLowerCase().includes(filterValue));
+        } 
+    }
+
 
     
     getStoreNameMasterCombo() {

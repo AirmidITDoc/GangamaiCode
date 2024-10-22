@@ -80,53 +80,53 @@
                             <div fxlayout="row">
                                 <div style="width: 100%;">
     
-                                    <div matColumnDef="loading"
+                                    <!-- <div matColumnDef="loading"
                                         [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
                                         class="backgroundBlur">
                                         <div class="spinner-border text-danger"></div>
-                                    </div>
+                                    </div> -->
                                     <mat-table #table  matSort [dataSource]="dsGRNList"
-                                        [@animateStagger]="{value:'50'}" style="overflow:auto;">
+                                        [@animateStagger]="{value:'50'}" style="overflow:auto;height: 300px;">
     
                                         <ng-container matColumnDef="Action" sticky>
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-70">
                                                 <span class="material-icons" >
                                                     cached
                                                 </span>
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" required>
+                                            <mat-cell *matCellDef="let contact" required class="w-70">
                                                 <mat-checkbox aria-label="Checked" (change)="tableElementChecked($event, contact)">
                                                 </mat-checkbox>
                                             </mat-cell>   
                                         </ng-container>
     
                                         <ng-container matColumnDef="GRNNO">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
                                                 GRN No</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
                                                 {{contact.GrnNumber}}
                                             </mat-cell>
                                         </ng-container>
     
                                         <ng-container matColumnDef="GRNDate">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-110">
                                                 GRNDate
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-110">
                                                 {{contact.GRNDate | date:'dd/MM/YYYY'}}
                                             </mat-cell>
                                         </ng-container>
     
                                         <ng-container matColumnDef="SupplierName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-250">
                                                 Supplier Name</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250">
                                                 {{contact.SupplierName}}
                                             </mat-cell>
                                         </ng-container>
     
                                         <ng-container matColumnDef="TotalAmount">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm >
                                                 TotalAmount</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                 {{contact.TotalAmount}}
