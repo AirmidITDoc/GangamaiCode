@@ -286,9 +286,9 @@ this._radiologytemplateService.getTemplateCombo(mdata).subscribe(data => {
 
  
   viewgetRadioloyTemplateReportPdf(obj) {
-    // debugger
+    debugger
     this._radiologytemplateService.getRadiologyTempReport(
-      obj,0
+      obj,this.selectedAdvanceObj.OPD_IPD_Type
       ).subscribe(res => {
       const dialogRef = this._matDialog.open(PdfviewerComponent,
         {
@@ -303,7 +303,6 @@ this._radiologytemplateService.getTemplateCombo(mdata).subscribe(data => {
     });
   }
   
-
 
   getTemplateList() {
     var mdata={

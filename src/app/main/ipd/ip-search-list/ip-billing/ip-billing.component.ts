@@ -363,6 +363,8 @@ export class IPBillingComponent implements OnInit {
       AdminPer: [''],
       AdminAmt: [''],
       Admincheck:[''], 
+      BillType:["1"]
+
     });
   }
   getDateTime(dateTimeObj) {
@@ -1679,7 +1681,10 @@ CalculateAdminCharge(){
         if (response) {
           Swal.fire('Draft Bill successfully!', 'IP Draft bill generated successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
-              this.viewgetDraftBillReportPdf(response);
+              if(this.Ipbillform.get("BillType").value==2)
+              this.viewgetDraftBillservicePdf(response);
+            else if(this.Ipbillform.get("BillType").value==1)
+              this.viewgetDraftBillclassPdf(response);
             }
           });
         } else {
@@ -1780,8 +1785,8 @@ CalculateAdminCharge(){
     });
   }
   //For testing 
-  viewgetDraftBillReportPdf(AdmissionID) {
-    this._IpSearchListService.getIpDraftBillReceipt(
+  viewgetDraftBillservicePdf(AdmissionID) {
+    this._IpSearchListService.getIpDraftBillServicewiseReceipt(
       AdmissionID
     ).subscribe(res => {
       const dialogRef = this._matDialog.open(PdfviewerComponent,
@@ -1791,7 +1796,7 @@ CalculateAdminCharge(){
           width: '100%',
           data: {
             base64: res["base64"] as string,
-            title: "IP Draft Bill  Viewer"
+            title: "IP Draft Bill Service Wise Viewer"
           }
         });
     });
@@ -1814,6 +1819,27 @@ CalculateAdminCharge(){
         });
     });
   }
+
+  viewgetDraftBillclassPdf(BillNo) {
+    debugger
+    console.log(BillNo)
+    this._IpSearchListService.getIpDraftBillclasswise(
+      BillNo
+    ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Ip Draft Bill Class Wise Viewer"
+          }
+        });
+    });
+  }
+
+  
   getBillingClassCombo() {
     this._IpSearchListService.getClassList({ "Id": this.selectedAdvanceObj.ClassId }).subscribe(data => {
       this.BillingClassCmbList = data;

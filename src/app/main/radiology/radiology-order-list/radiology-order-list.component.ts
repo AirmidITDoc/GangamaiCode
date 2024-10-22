@@ -233,9 +233,9 @@ export class RadiologyOrderListComponent implements OnInit {
  
   viewgetRadioloyTemplateReportPdf(obj) {
     debugger
-    obj.RadReportId= 94377;
+    //obj.RadReportId= 94377;
     this._RadiologyOrderListService.getRadiologyTempReport(
-      obj.RadReportId,0
+      obj.RadReportId,obj.OPD_IPD_Type
       ).subscribe(res => {
       const dialogRef = this._matDialog.open(PdfviewerComponent,
         {
@@ -410,6 +410,7 @@ export class RadiologyPrint {
   AgeMonth:any;
   ServiceId:any;
   TemplateId:any;
+  OPD_IPD_Type:any;
 
   constructor(RadiologyPrint) {
     this.RadDate = RadiologyPrint.RadDate || '';
@@ -456,6 +457,7 @@ export class RadiologyPrint {
 
     this.RadTestID = RadiologyPrint.RadTestID || '';
     this.ServiceId = RadiologyPrint.ServiceId || 0;
+    this.OPD_IPD_Type= RadiologyPrint.OPD_IPD_Type || 0;
   }
 
 }

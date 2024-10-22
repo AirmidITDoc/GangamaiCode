@@ -1055,12 +1055,23 @@ getIpFinalBillReceiptgroupwise(BillNo,loader = true){
  }
 
 
-public getIpDraftBillReceipt(AdmissionID,loader = true){
+public getIpDraftBillServicewiseReceipt(AdmissionID,loader = true){
   if (loader) {
     this._loaderService.show();
 }
   return this._httpClient.get("InPatient/view-IP-DraftBillReceipt?AdmissionID=" + AdmissionID);
 }
+
+public getIpDraftBillclasswise(AdmissionID,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
+  return this._httpClient.get("InPatient/view-IP-DraftBillNew?AdmissionID=" + AdmissionID);
+}
+
+
+
+
 
 public getCompanyDraftBillReceipt(AdmissionID,loader = true){
   if (loader) {

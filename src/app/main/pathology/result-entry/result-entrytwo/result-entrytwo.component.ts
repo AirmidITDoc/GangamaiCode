@@ -83,6 +83,8 @@ export class ResultEntrytwoComponent implements OnInit {
       this.OP_IPType=this.selectedAdvanceObj1.OPD_IPD_Type
       this.reportIdData =this.selectedAdvanceObj1.PathReportID
       this.PathResultDr1=this.selectedAdvanceObj1.PathResultDr1
+      //this.TemplateId== this.selectedAdvanceObj1.TemplateId;
+
 
       this.getTemplateList();
       this.getPathresultdoctorList();

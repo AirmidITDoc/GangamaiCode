@@ -50,7 +50,7 @@
                                             (click)="Serviceform.get('ChargeClass').setValue(''); isClasselected = false;">search</mat-icon>
                                     </span>
                                     <mat-autocomplete #autoclass="matAutocomplete" [displayWith]="getOptionTextclass"
-                                    (optionSelected)='getSelectedObjClass($event.option.value)'>
+                                        (optionSelected)='getSelectedObjClass($event.option.value)'>
                                         <mat-option *ngFor="let option of filteredOptionsBillingClassName | async"
                                             [value]="option">
                                             {{option.ClassName}}
@@ -74,26 +74,29 @@
                                             (click)="Serviceform.get('SrvcName').setValue(''); isSrvcNameSelected = false;">search</mat-icon>
                                     </span>
                                     <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
-                                        showPanel="true" (optionsScroll)="onScroll()"  
+                                        showPanel="true" (optionsScroll)="onScroll()"
                                         (optionSelected)='getSelectedObj($event.option.value)'>
                                         <mat-option *ngFor="let option of filteredOptions" [value]="option">
-                                            {{option.ServiceName}} | {{option.Price}} | 
-                                            <span  fxLayoutGap="4px">
+                                            {{option.ServiceName}} | {{option.Price}} |
+                                            <span fxLayoutGap="4px">
                                                 <mat-icon *ngIf="option.CreditedtoDoctor == true" matTooltip="IsDoctor">
-                                                    <img width="10px" height="6px" src="assets/images/logos/doctor.png"> 
+                                                    <img width="10px" height="6px" src="assets/images/logos/doctor.png">
                                                 </mat-icon> |
                                                 <mat-icon *ngIf="option.IsRadiology == true" matTooltip="IsRadiology">
-                                                    <img width="10px" height="6px" src="assets/images/logos/radiology.png">
+                                                    <img width="10px" height="6px"
+                                                        src="assets/images/logos/radiology.png">
                                                 </mat-icon>
                                                 <mat-icon *ngIf="option.IsPathology == true" matTooltip="IsPatholgy">
-                                                    <img width="10px" height="6px" src="assets/images/logos/pathology.png">  
-                                                </mat-icon> 
+                                                    <img width="10px" height="6px"
+                                                        src="assets/images/logos/pathology.png">
+                                                </mat-icon>
                                                 <mat-icon *ngIf="option.IsPackage == true " matTooltip="IsPackage">
-                                                    <img width="10px" height="6px" src="assets/images/logos/package.png"> 
-                                                </mat-icon> 
+                                                    <img width="10px" height="6px"
+                                                        src="assets/images/logos/package.png">
+                                                </mat-icon>
                                             </span>
                                         </mat-option>
-                                    </mat-autocomplete> 
+                                    </mat-autocomplete>
                                     <mat-error *ngIf="Serviceform.get('SrvcName').hasError('required')">
                                         Required field cannot be left blank
                                     </mat-error>
@@ -106,20 +109,23 @@
                                             <mat-label>Price</mat-label>
                                             <input matInput [(ngModel)]="vPrice" name="price" #price
                                                 (keyup)="calculateTotalAmt()" formControlName="price" required
-                                                type="text" OnlyNumber id="price" (keydown)="onEnterprice($event)" (keypress)="keyPressCharater($event)">
+                                                type="text" OnlyNumber id="price" (keydown)="onEnterprice($event)"
+                                                (keypress)="keyPressCharater($event)">
                                             <mat-error
                                                 *ngIf="Serviceform.get('price').invalid && Serviceform.get('price').touched">
                                                 Price is required</mat-error>
                                         </mat-form-field>
                                     </div>
-                                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%"> 
+                                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
 
                                         <mat-form-field appearance="outline">
                                             <mat-label>Qty</mat-label>
-                                            <input matInput [(ngModel)]="vQty" name="Qty" #qty required type="text" OnlyNumber 
-                                                (keyup)="calculateTotalAmt()" (keydown)="onEnterqty($event)"
-                                                formControlName="qty" id="qty" required  (keypress)="keyPressAlphanumeric($event)">
-                                                <mat-error *ngIf="Serviceform.get('qty').invalid && Serviceform.get('qty').touched">
+                                            <input matInput [(ngModel)]="vQty" name="Qty" #qty required type="text"
+                                                OnlyNumber (keyup)="calculateTotalAmt()" (keydown)="onEnterqty($event)"
+                                                formControlName="qty" id="qty" required
+                                                (keypress)="keyPressAlphanumeric($event)">
+                                            <mat-error
+                                                *ngIf="Serviceform.get('qty').invalid && Serviceform.get('qty').touched">
                                                 Qty is required</mat-error>
                                         </mat-form-field>
                                     </div>
@@ -136,7 +142,7 @@
                                 </mat-form-field>
                             </div>
                             <!-- *ngIf="isDoctor" -->
-                            <div fxFlex="100%" >
+                            <div fxFlex="100%">
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Doctor Name</mat-label>
                                     <input matAutocompletePosition="below" type="text" #doctorname
@@ -155,18 +161,19 @@
                                             {{option.Doctorname}}
                                         </mat-option>
                                     </mat-autocomplete>
-                                </mat-form-field>  
+                                </mat-form-field>
                             </div>
                             <div fxFlex="100%">
                                 <div fxLayout="row" class="gap-8">
-                                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%"> 
+                                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
 
                                         <mat-form-field appearance="outline">
                                             <mat-label>Disc %</mat-label>
                                             <input matInput placeholder="Percentage" formControlName="discPer"
                                                 [(ngModel)]="vServiceDiscPer" autocomplete="off" #disc
-                                                (keydown)="onEnterdiscper($event,vServiceDiscPer)" (keyup)="calculateServicePersc()"
-                                                maxlength="5" required  (keypress)="keyPressCharater($event)">
+                                                (keydown)="onEnterdiscper($event,vServiceDiscPer)"
+                                                (keyup)="calculateServicePersc()" maxlength="5" required
+                                                (keypress)="keyPressCharater($event)">
                                         </mat-form-field>
 
                                     </div>
@@ -174,8 +181,9 @@
                                         <mat-form-field appearance="outline">
                                             <mat-label>Disc Amt</mat-label>
                                             <input matInput [(ngModel)]="vServiceDisAmt" name="DisAmount" #discamt
-                                                formControlName="discAmount" type="text" OnlyNumber id="discAmount"  required
-                                                (keydown)="onEnterdiscamt($event)" (keyup)="calculatechargesDiscamt()"
+                                                formControlName="discAmount" type="text" OnlyNumber id="discAmount"
+                                                required (keydown)="onEnterdiscamt($event)"
+                                                (keyup)="calculatechargesDiscamt()"
                                                 (keypress)="keyPressCharater($event)">
                                         </mat-form-field>
                                     </div>
@@ -193,13 +201,13 @@
                                         NetAmount is required</mat-error>
                                 </mat-form-field>
                             </div>
-                           
+
                             <div fxFlex="100%" fxLayout="row">
                                 <!-- [disabled]="Serviceform.invalid" -->
                                 <div class="action-buttons">
                                     <!-- [disabled]="!add" -->
                                     <button (click)="onSaveAddCharges()" class="btn btn-primary btn-with-icon py-8"
-                                         #addbutton>
+                                        #addbutton>
                                         <span class="btn-icon">
                                             <mat-icon> add </mat-icon>
                                         </span>
@@ -223,7 +231,7 @@
                             </div>
                         </form>
                     </div>
-                </div> 
+                </div>
             </div>
         </mat-drawer>
 
@@ -233,7 +241,7 @@
             <div class="example-sidenav-content" style="padding-left: 10px;">
 
                 <div class="filter-div mb-4" fxLayout="row" fxLayoutAlign="space-between center">
-                
+
                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
                         <div fxFlex.gt-sm="100%" fxFlex>
                             <div fxlayout="row" fxLayoutGap="5px">
@@ -245,8 +253,8 @@
                                             </span>
                                         </div>
                                         <hr>
-                                        <div class="Ipd-patient-info" fxFlexFill fxLayout="row" fxLayoutAlign="space-between center"
-                                            class="patient-info">
+                                        <div class="Ipd-patient-info" fxFlexFill fxLayout="row"
+                                            fxLayoutAlign="space-between center" class="patient-info">
                                             <div class="patient-sub">
                                                 <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
                                                     fxLayoutAlign="space-between">
@@ -268,63 +276,75 @@
                                                         <div class="patient-col">
                                                             <span class="patient-col-key">Doctor Name</span>
                                                             <span>:</span>
-                                                            <span class="patient-col-value">{{selectedAdvanceObj.Doctorname}}</span>
+                                                            <span
+                                                                class="patient-col-value">{{selectedAdvanceObj.Doctorname}}</span>
                                                         </div>
                                                         <div class="patient-col">
                                                             <span class="patient-col-key">Department</span>
                                                             <span>:</span>
-                                                            <span class="patient-col-value">{{selectedAdvanceObj.DepartmentName}}</span>
+                                                            <span
+                                                                class="patient-col-value">{{selectedAdvanceObj.DepartmentName}}</span>
                                                         </div>
                                                     </div>
                                                     <div fxLayout="column" fxLayoutGap="6px">
-                                                        
+
                                                         <div class="patient-col">
                                                             <span class="patient-col-key">DOA | Time</span>
                                                             <span>:</span>
-                                                            <span class="patient-col-value">{{selectedAdvanceObj.AdmDateTime}}</span>
+                                                            <span
+                                                                class="patient-col-value">{{selectedAdvanceObj.AdmDateTime}}</span>
                                                         </div>
                                                         <div class="patient-col">
                                                             <span class="patient-col-key">IPD No</span>
                                                             <span>:</span>
-                                                            <span class="patient-col-value">{{selectedAdvanceObj.IPDNo}}</span>
+                                                            <span
+                                                                class="patient-col-value">{{selectedAdvanceObj.IPDNo}}</span>
                                                         </div>
                                                         <div class="patient-col">
                                                             <span class="patient-col-key">Age | Sex
                                                             </span>
                                                             <span>:</span>
-                                                            <span class="patient-col-value">{{selectedAdvanceObj.AgeYear}}Y|{{selectedAdvanceObj.AgeMonth}}M|{{selectedAdvanceObj.AgeDay}} D | {{selectedAdvanceObj.GenderName}}</span>
+                                                            <span
+                                                                class="patient-col-value">{{selectedAdvanceObj.AgeYear}}Y|{{selectedAdvanceObj.AgeMonth}}M|{{selectedAdvanceObj.AgeDay}}
+                                                                D | {{selectedAdvanceObj.GenderName}}</span>
                                                         </div>
                                                         <div class="patient-col">
                                                             <span class="patient-col-key">Ref-Doctor Name
                                                             </span>
                                                             <span>:</span>
-                                                            <span class="patient-col-value">{{selectedAdvanceObj.RefDocName}}</span>
+                                                            <span
+                                                                class="patient-col-value">{{selectedAdvanceObj.RefDocName}}</span>
                                                         </div>
-                                                       
+
                                                     </div>
                                                     <div fxLayout="column" fxLayoutGap="6px">
                                                         <div class="patient-col">
                                                             <span class="patient-col-key">Ward | Bed Name
                                                             </span>
                                                             <span>:</span>
-                                                            <span class="patient-col-value">{{selectedAdvanceObj.RoomName}} | {{selectedAdvanceObj.BedName}}</span>
+                                                            <span
+                                                                class="patient-col-value">{{selectedAdvanceObj.RoomName}}
+                                                                | {{selectedAdvanceObj.BedName}}</span>
                                                         </div>
                                                         <div class="patient-col">
                                                             <span class="patient-col-key">Patient Type
                                                             </span>
                                                             <span>:</span>
-                                                            <span class="patient-col-value">{{selectedAdvanceObj.PatientType}}</span>
+                                                            <span
+                                                                class="patient-col-value">{{selectedAdvanceObj.PatientType}}</span>
                                                         </div>
                                                         <div class="patient-col">
                                                             <span class="patient-col-key">Tarrif Name
                                                             </span>
                                                             <span>:</span>
-                                                            <span class="patient-col-value">{{selectedAdvanceObj.TariffName}}</span>
+                                                            <span
+                                                                class="patient-col-value">{{selectedAdvanceObj.TariffName}}</span>
                                                         </div>
-                                                        <div class="patient-col" >
+                                                        <div class="patient-col">
                                                             <span class="patient-col-key">Company Name</span>
                                                             <span>:</span>
-                                                            <span class="patient-col-value" style="color: orange;">{{selectedAdvanceObj.CompanyName}}</span>
+                                                            <span class="patient-col-value"
+                                                                style="color: orange;">{{selectedAdvanceObj.CompanyName}}</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -357,13 +377,15 @@
                                                 <li>
                                                     <div class="list-item">
                                                         <span class="list-item-key">Balance Amount :</span>
-                                                        <span class="list-item-value"> {{vBalanceAmt | currency:'INR'}}</span>
+                                                        <span class="list-item-value"> {{vBalanceAmt |
+                                                            currency:'INR'}}</span>
                                                     </div>
-                                                </li> 
+                                                </li>
                                                 <li>
                                                     <div class="list-item">
                                                         <span class="list-item-key">Pharmacy Amount :</span>
-                                                        <span class="list-item-value"> {{PharmacyAmont | currency:'INR'}}</span>
+                                                        <span class="list-item-value"> {{PharmacyAmont |
+                                                            currency:'INR'}}</span>
                                                     </div>
                                                 </li>
                                             </ul>
@@ -371,16 +393,18 @@
                                     </div>
                                 </mat-card>
                             </div>
-                        </div> 
-                    </div> 
+                        </div>
+                    </div>
                 </div>
                 <div class="right-content" fxLayout="row" class="gap-8" fxLayoutAlign="end center">
                     <div fxLayout="row" class="gap-4" fxLayoutAlign="end center">
                         <form [formGroup]="Ipbillform">
-                            <mat-form-field appearance="outline" fxFlex *ngIf="isFilteredDateDisabled" class="padding-fix">
+                            <mat-form-field appearance="outline" fxFlex *ngIf="isFilteredDateDisabled"
+                                class="padding-fix">
                                 <mat-label>Choose date</mat-label>
                                 <input name="ChargeDate" matInput [matDatepicker]="picker" formControllName="ChargeDate"
-                                    (dateChange)="getDatewiseChargesList($event.value)" [value]="currentDate" [readonly]="true">
+                                    (dateChange)="getDatewiseChargesList($event.value)" [value]="currentDate"
+                                    [readonly]="true">
                                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                 <mat-datepicker #picker></mat-datepicker>
                             </mat-form-field>
@@ -391,7 +415,7 @@
                             Show All Charges
                         </mat-checkbox>
                         <button mat-icon-button (click)="drawer1.toggle()">
-                
+
                             <span class="material-icons">
                                 notifications_none
                             </span>
@@ -423,11 +447,11 @@
                                         <img width="15px" height="8px" src="assets/images/logos/radiology.png">
                                     </mat-icon>
                                     <mat-icon *ngIf="contact.IsPathology == 1" matTooltip="IsPatholgy">
-                                        <img width="15px" height="9px" src="assets/images/logos/pathology.png">  
-                                    </mat-icon> 
+                                        <img width="15px" height="9px" src="assets/images/logos/pathology.png">
+                                    </mat-icon>
                                     <mat-icon *ngIf="contact.IsPackage == '1'" matTooltip="IsPackage">
-                                        <img width="15px" height="9px" src="assets/images/logos/package.png"> 
-                                    </mat-icon>  
+                                        <img width="15px" height="9px" src="assets/images/logos/package.png">
+                                    </mat-icon>
 
                                 </mat-cell>
                             </ng-container>
@@ -532,12 +556,12 @@
                                 <mat-header-cell *matHeaderCellDef class="table-actions ">Action
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact">
-                                    <ng-container class="actions">  
+                                    <ng-container class="actions">
                                         <span class="material-icons" style="cursor: pointer;color: #c95a5a;"
                                             (click)="deletecharges(contact)">
                                             delete
                                         </span>
-                                    </ng-container> 
+                                    </ng-container>
                                 </mat-cell>
                             </ng-container>
 
@@ -593,7 +617,7 @@
                             </div>
                         </div>
                     </mat-tab>
-                    
+
                     <mat-tab label="Advance">
                         <mat-table matSort [dataSource]="advancedatasource" [@animateStagger]="{value:'50'}"
                             class="table3 mt-8" style="height: calc(100vh - 500px);">
@@ -646,15 +670,14 @@
                                 </mat-cell>
                             </ng-container>
 
-                          
+
                             <ng-container matColumnDef="IsCancelled">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>IsCancelled
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    <mat-icon *ngIf="contact.IsCancelled" 
-                                    class="pill green-600 s-16">check_circle</mat-icon>
-                                <mat-icon *ngIf="!contact.IsCancelled"  
-                                    class="pill red-600 s-16">close</mat-icon>
+                                    <mat-icon *ngIf="contact.IsCancelled"
+                                        class="pill green-600 s-16">check_circle</mat-icon>
+                                    <mat-icon *ngIf="!contact.IsCancelled" class="pill red-600 s-16">close</mat-icon>
                                 </mat-cell>
                             </ng-container>
 
@@ -677,16 +700,14 @@
                             <ng-container matColumnDef="Action" stickyEnd>
                                 <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
                                 <mat-cell *matCellDef="let contact">
-                                    <button mat-icon-button    matTooltip="Advance Print" (click)="viewgetIPAdvanceReportPdf(contact)"
-                                    [disabled]="chkprint">
+                                    <button mat-icon-button matTooltip="Advance Print"
+                                        (click)="viewgetIPAdvanceReportPdf(contact)" [disabled]="chkprint">
                                         <mat-icon>print</mat-icon>
                                     </button>
-                                    <button mat-icon-button matTooltip="Send Bill On WhatsApp"
-                                    class="p-4" >
-                                    <img width="100" height="20px"
-                                        src="assets/images/logos/WhatsApp.png">
-                                     </button>
-                                     
+                                    <button mat-icon-button matTooltip="Send Bill On WhatsApp" class="p-4">
+                                        <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
+                                    </button>
+
                                 </mat-cell>
                             </ng-container>
 
@@ -731,7 +752,7 @@
                             </div>
                         </div>
                     </mat-tab>
-                    
+
                     <mat-tab label="Package Det.">
                         <mat-table matSort [dataSource]="PackageDatasource" [@animateStagger]="{value:'50'}"
                             class="table3 mt-8" style="height: calc(100vh - 500px);">
@@ -743,8 +764,8 @@
                                         <img width="15px" height="8px" src="assets/images/logos/radiology.png">
                                     </mat-icon>
                                     <mat-icon *ngIf="contact.IsPathology == 1" matTooltip="IsPatholgy">
-                                        <img width="15px" height="9px" src="assets/images/logos/pathology.png">  
-                                    </mat-icon> 
+                                        <img width="15px" height="9px" src="assets/images/logos/pathology.png">
+                                    </mat-icon>
                                 </mat-cell>
                             </ng-container>
 
@@ -769,23 +790,25 @@
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                     <mat-form-field appearance="legacy">
                                         <input matInput [(ngModel)]="contact.Price" type="text" OnlyNumber
-                                            (keyup)="gettablecalculation(contact,contact.Price)" (keypress)="keyPressCharater($event)">
+                                            (keyup)="gettablecalculation(contact,contact.Price)"
+                                            (keypress)="keyPressCharater($event)">
                                     </mat-form-field>
                                 </mat-cell>
                             </ng-container>
-                
+
                             <ng-container matColumnDef="Qty">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Qty
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                     <mat-form-field appearance="legacy">
                                         <input matInput [(ngModel)]="contact.Qty" type="text" OnlyNumber
-                                            (keyup)="gettablecalculation(contact,contact.Qty)" (keypress)="keyPressAlphanumeric($event)">
-                                    </mat-form-field> 
+                                            (keyup)="gettablecalculation(contact,contact.Qty)"
+                                            (keypress)="keyPressAlphanumeric($event)">
+                                    </mat-form-field>
                                 </mat-cell>
                             </ng-container>
 
-                            
+
                             <ng-container matColumnDef="TotalAmt">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Total Amt
                                 </mat-header-cell>
@@ -808,7 +831,7 @@
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                     <span> {{contact.NetAmount | currency:'INR' }}</span>
                                 </mat-cell>
-                            </ng-container>  
+                            </ng-container>
 
                             <ng-container matColumnDef="Action" stickyEnd>
                                 <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
@@ -840,7 +863,8 @@
                             <mat-row class="min-width-1100" *matRowDef="let contact; columns: PackageBillColumns;"
                                 [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
 
-                            <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':PackageBillColumns!=null}">
+                            <mat-footer-row *matFooterRowDef="['loading']"
+                                [ngClass]="{'hide':PackageBillColumns!=null}">
                             </mat-footer-row>
                             <mat-footer-row *matFooterRowDef="['noData']"
                                 [ngClass]="{'hide':!(PackageDatasource!=null && PackageDatasource.data.length==0)}">
@@ -855,18 +879,17 @@
                             <ng-container matColumnDef="Action" stickyEnd>
                                 <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
                                 <mat-cell *matCellDef="let contact">
-                                    <button mat-icon-button  matTooltip="Details" (click)="getPreBilldet(contact)">
+                                    <button mat-icon-button matTooltip="Details" (click)="getPreBilldet(contact)">
                                         <mat-icon>visibility</mat-icon>
                                     </button>
-                                    <button mat-icon-button   matTooltip="Bill Print"  (click)="viewgetInterimBillReportPdf(contact)">
+                                    <button mat-icon-button matTooltip="Bill Print"
+                                        (click)="viewgetInterimBillReportPdf(contact)">
                                         <mat-icon>print</mat-icon>
                                     </button>
-                                    <button mat-icon-button matTooltip="Send Bill On WhatsApp"
-                                    class="p-4"  >
-                                    <img width="100" height="20px"
-                                        src="assets/images/logos/WhatsApp.png">
-                                     </button>
-                                     
+                                    <button mat-icon-button matTooltip="Send Bill On WhatsApp" class="p-4">
+                                        <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
+                                    </button>
+
                                 </mat-cell>
                             </ng-container>
 
@@ -992,31 +1015,32 @@
                         <div class="row row-container" style="width: 100%;">
 
                             <div class="amount-section" fxLayout="column" class="gap-12">
-                               
-                                <div fxLayout="row" class="gap-8"> 
+
+                                <div fxLayout="row" class="gap-8">
 
                                     <mat-form-field appearance="outline" fxFlex="6%" *ngIf="isAdminDisabled">
                                         <mat-label>Admin %</mat-label>
-                                        <input matInput [(ngModel)]="vAdminPer" name="AdminPer"   formControlName="AdminPer"
-                                             (keypress)="keyPressCharater($event)" (keyup)="CalculateAdminCharge()">
+                                        <input matInput [(ngModel)]="vAdminPer" name="AdminPer"
+                                            formControlName="AdminPer" (keypress)="keyPressCharater($event)"
+                                            (keyup)="CalculateAdminCharge()">
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex="10%" *ngIf="isAdminDisabled">
                                         <mat-label>Admin Amount</mat-label>
                                         <input matInput [(ngModel)]="vAdminAmt" name="AdminAmt" readonly
-                                            formControlName="AdminAmt"  >
+                                            formControlName="AdminAmt">
                                     </mat-form-field>
 
-                                    <mat-form-field appearance="outline"  fxFlex="6%" *ngIf="BillDiscperFlag">
+                                    <mat-form-field appearance="outline" fxFlex="6%" *ngIf="BillDiscperFlag">
                                         <mat-label>Disc %</mat-label>
                                         <input matInput placeholder="Percentage" formControlName="Percentage"
-                                           [(ngModel)]="vFinalDiscper" autocomplete="off" #finaldisc onlyNumber
-                                            (keyup)="CalFinalDisc()"  (keypress)="keyPressCharater($event)">
+                                            [(ngModel)]="vFinalDiscper" autocomplete="off" #finaldisc onlyNumber
+                                            (keyup)="CalFinalDisc()" (keypress)="keyPressCharater($event)">
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex="10%">
                                         <mat-label>Disc Amount</mat-label>
-                                        <input matInput [(ngModel)]="vFinalDiscountAmt" name="concessionAmt"   
+                                        <input matInput [(ngModel)]="vFinalDiscountAmt" name="concessionAmt"
                                             formControlName="concessionAmt" (keyup)="getDiscAmtCal()">
                                     </mat-form-field>
 
@@ -1037,9 +1061,10 @@
 
                                     <mat-form-field appearance="outline" fxFlex="20%">
                                         <mat-label>Cash Counter</mat-label>
-                                        <input matAutocompletePosition="below" type="text" placeholder="Select Cash Counter"
-                                             matInput formControlName="CashCounterID"
-                                            [matAutocomplete]="autoSearchCashCounter" #CashCounterName [(ngModel)]="vCashCounterID">
+                                        <input matAutocompletePosition="below" type="text"
+                                            placeholder="Select Cash Counter" matInput formControlName="CashCounterID"
+                                            [matAutocomplete]="autoSearchCashCounter" #CashCounterName
+                                            [(ngModel)]="vCashCounterID">
                                         <span matSuffix style="display: flex;">
                                             <mat-icon class="mat-icon-close"
                                                 (click)="Ipbillform.get('CashCounterID').setValue(''); isCashCounterSelected = false;">close</mat-icon>
@@ -1061,21 +1086,22 @@
                                     </mat-form-field>
 
                                 </div>
-                                <div fxLayout="row"  fxLayoutAlign="space-between center">
+                                <div fxLayout="row" fxLayoutAlign="space-between center">
                                     <div class="action-content-left" fxLayout="row" class="gap-24"
                                         fxLayoutAlign="start center">
-                                        <mat-checkbox formControlName="Admincheck" (checked)=true  (change)="AdminStatus($event)">
-                                            Admin 
+                                        <mat-checkbox formControlName="Admincheck" (checked)=true
+                                            (change)="AdminStatus($event)">
+                                            Admin
                                         </mat-checkbox>
 
                                         <mat-checkbox formControlName="GenerateBill" (checked)=true>
                                             Generate Bill
                                         </mat-checkbox>
                                         <mat-checkbox formControlName="CreditBill" (checked)=true>
-                                           Credit Bill
+                                            Credit Bill
                                         </mat-checkbox>
 
-                                     
+
 
                                         <!-- <div class="cash-container gap-12">
                                             <div class="net-amt-section">
@@ -1091,14 +1117,27 @@
                                                 </div>
                                             </div>
                                         </div> -->
-                                       
+
                                     </div>
-                                    <div class="action-content-right modal-footer" fxLayout="row" fxLayoutAlign="end center">
+                                    <div class="action-content-right modal-footer" fxLayout="row"
+                                        fxLayoutAlign="end center">
                                         <div class="button-row-group">
+
+                                            <mat-radio-group aria-label="Select an option" formControlName="BillType"
+                                                name="regRadio">
+                                                <mat-radio-button value="1">Class Wise DraftBill
+                                                </mat-radio-button>
+                                                <mat-radio-button value="2">Service Wise DraftBill</mat-radio-button>
+                                            </mat-radio-group>
+
                                             <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                                            <button class="btn btn-primary-outline" (click)="getInterimData()">Interim</button>
-                                            <button class="btn btn-primary" (click)="onSave()" [disabled]="Ipbillform.invalid">Save</button>
-                                    
+                                            <button class="btn btn-primary-outline"
+                                                (click)="getInterimData()">Interim</button>
+                                            <button class="btn btn-primary" (click)="onSave()"
+                                                [disabled]="Ipbillform.invalid">Save</button>
+
+
+
                                         </div>
                                     </div>
                                 </div>
@@ -1144,7 +1183,7 @@
                     <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-80">
                         <span> {{contact.price}}</span>
                     </mat-cell>
-                </ng-container> 
+                </ng-container>
 
                 <ng-container matColumnDef="BillDate" sticky>
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-160">BillDate&Time
@@ -1152,7 +1191,7 @@
                     <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-160">
                         <span> {{contact.ReqDate}}-{{contact.ReqTime}}</span>
                     </mat-cell>
-                </ng-container> 
+                </ng-container>
 
                 <ng-container matColumnDef="UserName">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-90">User Name
@@ -1160,18 +1199,18 @@
                     <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-90">
                         <span> {{contact.BillingUser || '-'}}</span>
                     </mat-cell>
-                </ng-container>  
-              
+                </ng-container>
+
                 <ng-container matColumnDef="Action" stickyEnd>
                     <mat-header-cell *matHeaderCellDef style="color: white;" class="w-80">
                         Action</mat-header-cell>
                     <mat-cell *matCellDef="let contact" class="w-80">
-                        <button mat-icon-button (click)="AddList(contact)"
-                            color="warn" [disabled]="contact.IsStatus == 1">
+                        <button mat-icon-button (click)="AddList(contact)" color="warn"
+                            [disabled]="contact.IsStatus == 1">
                             <mat-icon>add</mat-icon>
                         </button>
                     </mat-cell>
-                </ng-container> 
+                </ng-container>
 
                 <ng-container matColumnDef="loading">
                     <mat-footer-cell *matFooterCellDef colspan="6">
@@ -1191,9 +1230,8 @@
                     (dblclick)="AddList(contact)">
                 </mat-row> -->
 
-                <mat-row *matRowDef="let contact; columns: tableColumns;"
-                    [ngClass]="{'red-row': contact.IsStatus == 1}" [@animate]="{value:'*',params:{y:'100%'}}"
-                    ></mat-row>
+                <mat-row *matRowDef="let contact; columns: tableColumns;" [ngClass]="{'red-row': contact.IsStatus == 1}"
+                    [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                 <!-- <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource1!=null}">
                 </mat-footer-row>
                 <mat-footer-row *matFooterRowDef="['noData']"
@@ -1203,4 +1241,3 @@
         </div>
     </div>
 </mat-drawer>
-

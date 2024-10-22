@@ -199,7 +199,7 @@ export class RadiologyTemplateMasterComponent implements OnInit {
       {
         maxWidth: "80%",
         width: "80%",
-        height: "95%",
+        height: "85%",
         data: {
           Obj: row,
         }

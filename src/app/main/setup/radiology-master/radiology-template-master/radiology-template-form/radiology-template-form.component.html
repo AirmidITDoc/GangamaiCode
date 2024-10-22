@@ -1,26 +1,24 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-
-    <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
+<div class="page-layout simple inner-scroll inner-sidebar right-sidebar">
+    <mat-toolbar style="height: 50px; justify-content:space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
-
             <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
                 <mat-icon>menu</mat-icon>
             </button>
-            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-                style="color: white;">account_box
-            </mat-icon>
+            <button mat-icon-button class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                style="color: white;">
+                <mat-icon>account_box</mat-icon>
+            </button>
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
                 {{_radiologytemplateService.myform.controls.TemplateId.value?"Modify Radiology Template Master":"New
                 Radiology Template Master"}}
             </span>
-            <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog"
-                style="margin-left:970px;">
+        </div>
+        <div fxLayout="row" fxLayoutALign="end start">
+            <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
                 <mat-icon>close</mat-icon>
             </button>
-
         </div>
     </mat-toolbar>
-
     <div class="content">
         <div class="center p-24 pb-56" fusePerfectScrollbar>
             <div class="content-card">
@@ -28,41 +26,41 @@
                     <div fxFlex.gt-sm="100%" fxFlex>
                         <div fxlayout="row" style=" background-color: white;
                              padding: 5px 10px 5px 10px;">
-                            <form [formGroup]="_radiologytemplateService.myform">
-                                <div class="dialog-content-wrapper">
-                                    <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column">
+                           <form [formGroup]="_radiologytemplateService.myform">
+                            <div class="dialog-content-wrapper">
+                                <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column">
 
-                                        <input type="hidden" name="TemplateId" formControlName="TemplateId"
-                                            [(ngModel)]="vTemplateId">
+                                    <input type="hidden" name="TemplateId" formControlName="TemplateId"
+                                        [(ngModel)]="vTemplateId">
 
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>Template Name</mat-label>
-                                            <input matInput placeholder="Template Name" [(ngModel)]="vTemplateName"
-                                                name="TemplateName" formControlName="TemplateName" required>
-                                            <mat-error>Please enter TestName </mat-error>
-                                        </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Template Name</mat-label>
+                                        <input matInput placeholder="Template Name" [(ngModel)]="vTemplateName"
+                                            name="TemplateName" formControlName="TemplateName" required>
+                                        <mat-error>Please enter TestName </mat-error>
+                                    </mat-form-field>
 
-                                        <div>
-                                            <mat-label>Template Details</mat-label>
-                                            <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
-                                                style="height:200px;" [(ngModel)]="vTemplateDesc" required
-                                                formControlName="TemplateDesc"></angular-editor>
+                                    <div>
+                                        <mat-label>Template Details</mat-label>
+                                        <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
+                                            style="height:200px;" [(ngModel)]="vTemplateDesc" required
+                                            formControlName="TemplateDesc"></angular-editor>
 
-                                        </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div class="footer-navigation-container">
-                                   
-                                    <mat-radio-button value='true' [checked]="true" name="IsDeleted"
-                                        formControlName="IsDeleted">IsActive</mat-radio-button>
-                                        <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px" style="margin-right: 10px;">
-                                        <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
-                                        <button class="btn btn-primary" (click)="onSubmit()"
-                                            [disabled]="_radiologytemplateService.myform.invalid">Save</button>
-                                    </div>
+                            <div class="footer-navigation-container">
+                               
+                                <mat-radio-button value='true' [checked]="true" name="IsDeleted"
+                                    formControlName="IsDeleted">IsActive</mat-radio-button>
+                                    <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px" style="margin-right: 10px;">
+                                    <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
+                                    <button class="btn btn-primary" (click)="onSubmit()"
+                                        [disabled]="_radiologytemplateService.myform.invalid">Save</button>
                                 </div>
-                            </form>
+                            </div>
+                        </form>
                         </div>
                     </div>
 

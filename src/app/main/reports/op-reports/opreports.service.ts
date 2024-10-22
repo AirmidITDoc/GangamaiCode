@@ -36,11 +36,11 @@ export class OPReportsService {
         Month :'',
         Year:'',
         Day:'',
-        IsNarcotic:["0"],
-        ish1Drug:["0"],
-        isScheduleH:["0"],
-        IsHighRisk:["1"],
-        IsScheduleX:["0"],
+        IsNarcotic:[0],
+        ish1Drug:[0],
+        isScheduleH:[0],
+        IsHighRisk:[1],
+        IsScheduleX:[0],
         // Radio:['1']
 
       })
@@ -543,11 +543,11 @@ return this._httpClient.get("OPReport/view-OPDoctorWiseNewOldPatientReport?FromD
   }
 
   
-  public getSupplierlistReport(SupplierName,StoreID,FromDate,ToDate,loader = true){
+  public getSupplierlistReport(SupplierName,StoreID,loader = true){
     if (loader) {
       this._loaderService.show();
   }
-    return this._httpClient.get("InventoryReports/view-SupplierList?SupplierName="+SupplierName+"&StoreID="+StoreID+"&FromDate="+FromDate+"&ToDate="+ToDate);
+    return this._httpClient.get("InventoryReports/view-SupplierList?SupplierName="+SupplierName+"&StoreID="+StoreID);
   }
   public getIndentlistReport(FromDate,ToDate,FromStoreId,ToStoreId,loader = true){
     if (loader) {
@@ -679,11 +679,11 @@ public getPurchaseorderview(FromDate,ToDate,SupplierID,ToStoreId,loader = true){
   }
     return this._httpClient.get("InPatient/view-MaterialConsumption?MaterialConsumptionId="+MaterialConsumptionId);
   }
-  public getItemExpirylistReport(ExpMonth,ExpYear,StoreID,FromDate,ToDate,loader = true){
+  public getItemExpirylistReport(ExpMonth,ExpYear,StoreID,loader = true){
     if (loader) {
       this._loaderService.show();
   }
-    return this._httpClient.get("InventoryReports/view-ItemExpiryReport?ExpMonth="+ExpMonth +"&ExpYear="+ExpYear + "&StoreID="+StoreID+"&FromDate="+FromDate + "&ToDate="+ToDate);
+    return this._httpClient.get("InventoryReports/view-ItemExpiryReport?ExpMonth="+ExpMonth +"&ExpYear="+ExpYear + "&StoreID="+StoreID);
   }
   
   public getIssuetodeptReport(IssueId,loader = true){
@@ -699,11 +699,11 @@ public getPurchaseorderview(FromDate,ToDate,SupplierID,ToStoreId,loader = true){
     return this._httpClient.get("InventoryReports/view-MaterialConsumptionMonthlySummary?FromDate="+FromDate+"&ToDate="+ToDate + "&ToStoreId="+ToStoreId );
   }
   
-  public getCurrentstocklistReport(FromDate,ToDate,StoreId,IsNarcotic,ish1Drug,isScheduleH,IsHighRisk,IsScheduleX,loader = true){
+  public getCurrentstocklistReport(StoreId,IsNarcotic,ish1Drug,isScheduleH,IsHighRisk,IsScheduleX,loader = true){
     if (loader) {
       this._loaderService.show();
   }
-    return this._httpClient.get("InventoryReports/view-CurrentStockReport?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId+"&ToDate="+ToDate+"&ToDate="+ToDate+"&ToDate="+ToDate+"&ToDate="+ToDate);
+    return this._httpClient.get("InventoryReports/view-CurrentStockReport?StoreId="+StoreId+"&IsNarcotic="+IsNarcotic+"&ish1Drug="+ish1Drug+"&isScheduleH="+isScheduleH+"&IsHighRisk="+IsHighRisk+"&IsScheduleX="+IsScheduleX);
   }
   
 

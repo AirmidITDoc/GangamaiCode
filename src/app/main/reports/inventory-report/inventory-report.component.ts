@@ -93,6 +93,7 @@ export class InventoryReportComponent implements OnInit {
   isSearchstore1Selected: boolean = false;
   isItemIdSelected: boolean = false;
   FlagStoreSelected: boolean = false;
+  FlagDaterangeSelected: boolean = true;
   FlagStore1Selected: boolean = false;
   FlagItemSelected: boolean = false;
   FlagdrugtypeSelected: boolean = false;
@@ -248,6 +249,7 @@ console.log(event.value)
       this.FlagIdSelected=false;
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
+      this.FlagDaterangeSelected=false;
     }
     else if (this.ReportName == 'Indent Report') {
       this.FlagUserSelected = false;
@@ -429,15 +431,20 @@ console.log(event.value)
       this.FlagIdSelected=false;
       this.FlagMonthSelected=true;
       this.FlagdrugtypeSelected=false;
+      this.FlagDaterangeSelected=false;
     }
      else if (this.ReportName == 'Current Stock Report') {
-      this.FlagBillNoSelected = true;
+      this.FlagBillNoSelected = false;
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
       this.FlagItemSelected=false;
       this.FlagIdSelected=false;
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=true;
+      this.FlagDaterangeSelected=false;
+      this.FlagStore1Selected = false;
+      this.FlagStoreSelected = true;
+      this.FlagSupplierSelected = false;
     }
    
      else if (this.ReportName == 'Item Wise Supplier List') {
@@ -707,9 +714,7 @@ console.log(event.value)
     this.sIsLoading = 'loading-data';
     setTimeout(() => {
    
-    this._OPReportsService.getSupplierlistReport(SupplierName,StoreId,
-      this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-      this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
+    this._OPReportsService.getSupplierlistReport(SupplierName,StoreId     
       ).subscribe(res => {
       const matDialog = this._matDialog.open(PdfviewerComponent,
         {
@@ -1067,9 +1072,8 @@ debugger
      setTimeout(() => {
      
        this._OPReportsService.getItemExpirylistReport(
-        ExpMonth,ExpYear,StoreId,
-        this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
+        ExpMonth,ExpYear,StoreId
+       
        ).subscribe(res => {
          const dialogRef = this._matDialog.open(PdfviewerComponent,
            {
@@ -1104,16 +1108,26 @@ debugger
     StoreId = this._OPReportsService.userForm.get('StoreId').value.StoreId
    
    if (this._OPReportsService.userForm.get('IsNarcotic').value)
-    IsNarcotic = this._OPReportsService.userForm.get('IsNarcotic').value
+  IsNarcotic =1
+  else
+  IsNarcotic =0
    if (this._OPReportsService.userForm.get('ish1Drug').value)
-    ish1Drug = this._OPReportsService.userForm.get('ish1Drug').value
+    ish1Drug = 1
+  else
+  ish1Drug = 0
    if (this._OPReportsService.userForm.get('isScheduleH').value)
-    isScheduleH = this._OPReportsService.userForm.get('isScheduleH').value
+    isScheduleH = 1
+  else
+  isScheduleH = 0
    if (this._OPReportsService.userForm.get('IsHighRisk').value)
-    IsHighRisk = this._OPReportsService.userForm.get('IsHighRisk').value
+    IsHighRisk = 1
+  else
+  IsHighRisk = 0
    if (this._OPReportsService.userForm.get('IsScheduleX').value)
-    IsScheduleX = this._OPReportsService.userForm.get('IsScheduleX').value
-   
+    IsScheduleX = 1
+  else
+  IsScheduleX = 0
+   debugger
     
     
      this.sIsLoading = 'loading-data';
@@ -1121,9 +1135,7 @@ debugger
       setTimeout(() => {
       
         this._OPReportsService.getCurrentstocklistReport(
-         this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-         this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",StoreId,
-         IsNarcotic,ish1Drug,isScheduleH,IsHighRisk,IsScheduleX
+       StoreId,IsNarcotic,ish1Drug,isScheduleH,IsHighRisk,IsScheduleX
         ).subscribe(res => {
           const dialogRef = this._matDialog.open(PdfviewerComponent,
             {
