@@ -50,6 +50,7 @@ export class GrnListComponent implements OnInit {
 
   ngOnInit(): void {
     this.getSupplierSearchCombo();
+    this.getGRNList();
   }
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;

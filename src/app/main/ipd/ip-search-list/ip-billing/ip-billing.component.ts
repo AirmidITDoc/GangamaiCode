@@ -752,6 +752,7 @@ ServiceList:any=[];
       }); 
   } 
   getChargesList() {
+    debugger
     this.chargeslist = [];
     this.dataSource.data = [];
     this.isLoadingStr = 'loading';
@@ -1225,7 +1226,7 @@ CalculateAdminCharge(){
       // console.log(m_data)
       this.advanceDataStored.storage = new AdvanceDetailObj(m_data);
       console.log('this.interimArray==', this.interimArray, m_data);
-      this._matDialog.open(InterimBillComponent,
+      const dialogRef =  this._matDialog.open(InterimBillComponent,
         {
           maxWidth: "85vw",
           //maxHeight: "65vh",
@@ -1233,7 +1234,9 @@ CalculateAdminCharge(){
           height: "500px",
           data: this.interimArray
         });
-
+        dialogRef.afterClosed().subscribe(result => {
+          this.getChargesList();
+        }); 
     } else {
       Swal.fire('Warring !', 'Please select check box ', 'warning');
     }

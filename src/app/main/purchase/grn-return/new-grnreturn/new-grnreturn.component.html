@@ -28,6 +28,7 @@
             <div class="content-card" style="border-radius:4px;" fxLayoutGap="10px">
 
                 <div fxLayout="column" fxLayoutAlign="start none" fxLayoutGap="10px">
+                   
                     <form [formGroup]="_GRNReturnService.NewGRNReturnFrom">
                         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
 
@@ -88,21 +89,20 @@
 
                     <div fxFlex.gt-sm="100%" fxFlex>
                         <div fxlayout="row">
-                            <div style="width: 100%;">
-
+                            <div style="width: 100%;"> 
                                 <div matColumnDef="loading"
                                     [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
                                     class="backgroundBlur">
                                     <div class="spinner-border text-danger"></div>
                                 </div>
                                 <mat-table #table matSort class="table2" [dataSource]="dsGrnItemList"
-                                    [@animateStagger]="{value:'50'}" style="overflow: auto;">
+                                    [@animateStagger]="{value:'50'}" style="overflow: auto;height: 300px;">
 
-                                    <ng-container matColumnDef="Action">
-                                        <mat-header-cell *matHeaderCellDef style="color: white;">
+                                    <ng-container matColumnDef="Action" stickyEnd>
+                                        <mat-header-cell *matHeaderCellDef style="color: white;" class="w-90">
                                             Action
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact">
+                                        <mat-cell *matCellDef="let contact" class="w-90">
                                             <button mat-icon-button (click)="deleteTableRow(contact)"
                                                 color="warn">
                                                 <mat-icon>delete_outline</mat-icon>
@@ -111,20 +111,20 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="checkbox" sticky>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-70">
                                             <span class="material-icons" >
                                                 cached
                                             </span>
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" required>
+                                        <mat-cell *matCellDef="let contact" required class="w-70">
                                             <mat-checkbox aria-label="Checked" (change)="tableElementChecked($event, contact)">
                                             </mat-checkbox>
                                         </mat-cell>
                                           
                                     </ng-container>
 
-
-                                    <ng-container matColumnDef="ItemName">
+ 
+                                    <ng-container matColumnDef="ItemName" sticky>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide class="w-200"
                                             fxShow.gt-sm>
                                             ItemName
@@ -137,7 +137,7 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="BatchNo">
+                                    <ng-container matColumnDef="BatchNo" sticky>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                             BatchNo</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
@@ -145,7 +145,7 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="BatchExpDate">
+                                    <ng-container matColumnDef="BatchExpDate" sticky>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                             ExpDate</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
@@ -154,7 +154,7 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="ConversionFactor">
+                                    <ng-container matColumnDef="ConversionFactor" sticky>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                             Packing</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
@@ -162,7 +162,7 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="BalanceQty">
+                                    <ng-container matColumnDef="BalanceQty" sticky>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                             Bal_Qty</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
@@ -183,7 +183,7 @@
                                         </mat-cell>
                                     </ng-container> -->
 
-                                    <ng-container matColumnDef="ReturnQty">
+                                    <ng-container matColumnDef="ReturnQty" sticky>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
                                             class="w-80">ReturnQty
                                         </mat-header-cell>
@@ -317,13 +317,14 @@
                                 </mat-table>
                                 <mat-paginator #paginator2 [pageSizeOptions]="[10, 15, 25, 100]" [pageSize]="15"
                                     showFirstLastButtons>
-                                </mat-paginator>
+                                </mat-paginator> 
                             </div>
                         </div>
                     </div>
+                  
 
-                    <form [formGroup]="_GRNReturnService.NewGRNRetFinalFrom" fxLayoutGap="10px">
-
+                    <form [formGroup]="_GRNReturnService.NewGRNRetFinalFrom" fxLayoutGap="10px"> 
+                          
                         <div style="padding-top: 10px;">
                             <span class="net-amt-label"
                                 style="width: 200px;font-weight: bold;color:blue;font-size: medium;">
@@ -337,7 +338,8 @@
                                 | currency:'INR' }}</span>
                         </div>
                      
-                        <div fxlayout="row" fxLayoutGap="5px">
+                        <div fxlayout="row" fxLayoutGap="5px"> 
+
                             <mat-form-field appearance="outline" fxFlex="40%">
                                 <mat-label>Remark</mat-label>
                                 <textarea rows="1" matInput name="Remark" formControlName="Remark"></textarea>

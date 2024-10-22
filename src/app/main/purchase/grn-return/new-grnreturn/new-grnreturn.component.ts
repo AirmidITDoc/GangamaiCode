@@ -437,8 +437,8 @@ OnReset() {
     const dialogRef = this._matDialog.open(GrnListComponent,
       {
         maxWidth: "100%",
-        height: '95%',
-        width: '95%',
+        height: '80%',
+        width: '80%',
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
@@ -448,8 +448,7 @@ OnReset() {
       this.VsupplierName = this.dsNewGRNReturnItemList.data[0]['SupplierName']
       this.vGRNID = this.dsNewGRNReturnItemList.data[0].GRNID
       this.CashCredittype = this.dsNewGRNReturnItemList.data[0].Cash_CreditType
-      this.getSupplierSearchCombo(); 
-  
+      this.getSupplierSearchCombo();  
       this.getGrnItemDetailList(this.dsNewGRNReturnItemList.data[0]) 
       if(this.dsNewGRNReturnItemList.data[0].Cash_CreditType == false){
         this.isChecked = true;
