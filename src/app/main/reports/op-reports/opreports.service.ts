@@ -84,11 +84,11 @@ export class OPReportsService {
     return this._httpClient.get("OPReport/view-RegistrationReport ?FromDate="+FromDate+"&ToDate="+ToDate);
   }
 
-  public getAppointmentListReport(FromDate,ToDate,loader = true){
+  public getAppointmentListReport(Doctor_Id,FromDate,ToDate,loader = true){
     if (loader) {
       this._loaderService.show();
   }
-    return this._httpClient.get("OPReport/view-AppointmentListReport?FromDate=" + FromDate+"&ToDate="+ToDate);
+    return this._httpClient.get("OPReport/view-AppointmentListReport?Doctor_Id=" + Doctor_Id+"&FromDate="+FromDate+"&ToDate="+ToDate);
   }
   
   public getDoctorwisevisitView(FromDate,ToDate,loader = true){

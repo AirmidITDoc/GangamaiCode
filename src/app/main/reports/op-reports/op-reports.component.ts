@@ -117,6 +117,7 @@ var data={
   }
 
   ReportSelection(el) {
+    debugger
     this.ReportName = el.ReportName;
     this.ReportID = el.ReportId;
     if (this.ReportName == 'Registration Report') {
@@ -583,7 +584,7 @@ var data={
 
 
   viewgetAppointmentlistReportPdf() {
-
+debugger
     let DoctorID = 0;
     if (this._OPReportsService.userForm.get('DoctorID').value)
       DoctorID = this._OPReportsService.userForm.get('DoctorID').value.DoctorId
@@ -592,7 +593,7 @@ var data={
     this.sIsLoading = 'loading-data';
      setTimeout(() => {
        this.AdList = true;
-       this._OPReportsService.getAppointmentListReport(
+       this._OPReportsService.getAppointmentListReport(DoctorID,
         this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
         this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
        ).subscribe(res => {
