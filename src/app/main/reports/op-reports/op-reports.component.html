@@ -114,8 +114,8 @@
 
 
                                 <div fxLayout="column" fxLayoutAlign="start none">
-                                    <div *ngIf="FlagUserSelected" style="margin-left:2%;">
-                                        <mat-form-field appearance="outline" fxFlex="60%;">
+                                    <div  style="margin-left:2%;">
+                                        <mat-form-field appearance="outline" fxFlex="60%;" *ngIf="FlagUserSelected">
                                             <mat-label>User</mat-label>
                                             <input matAutocompletePosition="below" type="text" placeholder="Select User"
                                                 matInput formControlName="UserId" [matAutocomplete]="autoUser">
