@@ -25,38 +25,41 @@
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                     <div fxFlex.gt-sm="100%" fxFlex>
 
-                        <div fxlayout="row" style="background-color: white; padding: 5px 10px 5px 10px; ">
-                            <form [formGroup]="_unitofmeasurementService.myformSearch">
-                                <div class="dialog-content-wrapper">
-                                    <mat-form-field class="mr-sm-12" fxFlex>
-                                        <input matInput placeholder="Search -->Unit OF Measurement" autocomplete="off" (keyup)="onSearchClear()"
-                                            name="UnitofMeasurementSearch" formControlName="UnitofMeasurementSearch" />
-                                        <button mat-button matSuffix mat-icon-button aria-label="Clear"
-                                            (click)="onSearchClear()">
-                                            <mat-icon>close</mat-icon>
-                                        </button>
-                                    </mat-form-field>
-
-                                    <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch" value="2"
-                                        fxLayoutAlign="center center">
-                                        <mat-radio-button value="2">All</mat-radio-button>
-                                        <mat-radio-button mat-fab value="0">IsActive</mat-radio-button>
-                                        <mat-radio-button mat-fab value="1">IsDeactive</mat-radio-button>
-                                    </mat-radio-group>
-
-                                    <button mat-raised-button (click)="onSearch()" fxLayoutAlign="center center">
-                                        <mat-icon>search</mat-icon>
-                                        Search
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
+                       
 
 
                         <div fxlayout="row">
                             <div fxFlex.gt-sm="65%" fxFlex>
+
+                                <div fxlayout="row" style="background-color: white; padding: 5px 10px 5px 10px; ">
+                                    <form [formGroup]="_unitofmeasurementService.myformSearch">
+                                        <div class="dialog-content-wrapper">
+                                            <mat-form-field class="mr-sm-12" fxFlex>
+                                                <input matInput placeholder="Search -->Unit OF Measurement" autocomplete="off" (keyup)="onSearch()"
+                                                    name="UnitofMeasurementSearch" formControlName="UnitofMeasurementSearch" />
+                                                <button mat-button matSuffix mat-icon-button aria-label="Clear"
+                                                    (click)="onSearchClear()">
+                                                    <mat-icon>close</mat-icon>
+                                                </button>
+                                            </mat-form-field>
+        
+                                            <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch" value="2"
+                                                fxLayoutAlign="center center">
+                                                <mat-radio-button value="2">All</mat-radio-button>
+                                                <mat-radio-button mat-fab value="0">IsActive</mat-radio-button>
+                                                <mat-radio-button mat-fab value="1">IsDeactive</mat-radio-button>
+                                            </mat-radio-group>
+        
+                                            <button mat-raised-button (click)="onSearch()" fxLayoutAlign="center center">
+                                                <mat-icon>search</mat-icon>
+                                                Search
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+
                                 <mat-table #table matSort [dataSource]="DSUnitofmeasurementList"
-                                [@animateStagger]="{value:'50'}" style="overflow:auto;height: 500px !important;">
+                                [@animateStagger]="{value:'50'}" style="overflow:auto;height: 450px !important;">
                                 <ng-container matColumnDef="UnitofMeasurementId">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
                                     </mat-header-cell>

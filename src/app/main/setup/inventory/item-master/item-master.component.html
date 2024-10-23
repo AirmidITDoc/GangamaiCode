@@ -10,10 +10,17 @@ dynamicTableHeight>
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
                 Item Master
             </span>
-            <button mat-raised-button color="pine" (click)="onAdd()" fxLayoutAlign="center center"
+            <!-- <button mat-raised-button color="pine" (click)="onAdd()" fxLayoutAlign="center center"
             style="margin-left: 1250px;">Add
             <mat-icon color="Primary" title=" Add New Item ">add_to_photos</mat-icon>
-        </button>
+        </button> -->
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="end" class="left-icon">
+            <button mat-raised-button (click)="onAdd()" fxLayoutAlign="center center" class="py-8">
+                <mat-icon color="Primary" title=" Add New Item ">add</mat-icon>
+                <span>New Item</span>
+            </button>
         </div>
        
     </mat-toolbar> 

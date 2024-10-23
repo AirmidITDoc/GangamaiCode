@@ -236,6 +236,7 @@ export class UpdateGRNComponent implements OnInit {
             if (!this.registerObj.GRNType)
                 this.vGrntypechecked = 0;
             this.getGRNItemDetailList(this.registerObj);
+            this.getGSTChkList();
         }
         else if (this.data.chkNewGRN == 3) {
             // get full data from excell import.
@@ -247,6 +248,7 @@ export class UpdateGRNComponent implements OnInit {
         }
         this.gePharStoreList();
         this.getGSTtypeList();
+        this.getGSTChkList();
     }
 
     date = new FormControl(moment());
@@ -621,7 +623,7 @@ export class UpdateGRNComponent implements OnInit {
             }, 3000);
         }
         else {
-            this.toastr.warning('Selected Item already added in the list', 'Warning !', {
+            this.toastr.warning('Selected Batch Item already added in the list', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
             this.loading = false;
@@ -679,51 +681,14 @@ export class UpdateGRNComponent implements OnInit {
         return option.ItemName;  // + ' ' + option.Price ; //+ ' (' + option.TariffId + ')';
     }
  
-chekgstper(obj){
-// const dvalue = !this.gstPerArray.some(item => item.gstPer ==  parseFloat(obj.CGSTPer))
-// const valueSgstper = !this.gstPerArray.find(item => item.gstPer ==  parseFloat(obj.CGSTPer))
-// const valueCgstper = this.gstPerArray.filter(item => item.gstPer ==  parseFloat(obj.CGSTPer))
-
-//     console.log(dvalue)
-//     console.log(valueSgstper)
-//     console.log(valueCgstper) 
- 
-
-    // if(parseFloat(obj.CGSTPer) > 0 ){ 
-    //     if(!this.gstPerArray.filter(item => item.gstPer ==  parseFloat(obj.CGSTPer))) {
-    //         this.toastr.warning('Please enter CGST percentage as 2.5%, 6%, 9% or 14%', 'Warning !', {
-    //             toastClass: 'tostr-tost custom-toast-warning',
-    //         });
-    //         obj.CGSTPer = '';
-    //       return
-    //     } 
-    // }
-    // if(parseFloat(obj.SGSTPer) > 0){
-    //     if(!this.gstPerArray.filter(item => item.gstPer == parseFloat(obj.SGSTPer))) {
-    //         this.toastr.warning('Please enter CGST percentage as 2.5%, 6%, 9% or 14%', 'Warning !', {
-    //             toastClass: 'tostr-tost custom-toast-warning',
-    //         });
-    //         obj.SGSTPer = '';
-    //        return
-    //     } 
-    // }
-    // if(parseFloat(obj.IGSTPer) > 0){
-    //     if(!this.gstPerArray.filter(item => item.gstPer == parseFloat(obj.IGSTPer))) {
-    //         this.toastr.warning('Please enter CGST percentage as 2.5%, 6%, 9% or 14%', 'Warning !', {
-    //             toastClass: 'tostr-tost custom-toast-warning',
-    //         });
-    //         obj.IGSTPer = '';
-    //        return
-    //     } 
-    // }   
+getGSTChkList(){ 
+    let Query = "select GSTPer from ss_gstper_config"
+    this._GRNList.checkGSTPer(Query).subscribe(data => {
+        this.ChekGSTPer = data;
+        console.log(this.ChekGSTPer)
+    }) 
 }
-gstPerArray:any=[
-    {gstPer :0},
-    {gstPer :2.5},
-    {gstPer :6},
-    {gstPer :9},
-    {gstPer :14},
-]
+ 
 chckgst0:any = 0;
 chckgst2:any = 2.5;
 chckgst6:any = 6;
@@ -741,11 +706,7 @@ chkgsts:any=[];
         }  
 debugger
         if (contact.VatPercentage > 0) {
-            let Query = "select GSTPer from ss_gstper_config"
-            this._GRNList.checkGSTPer(Query).subscribe(data => {
-                this.ChekGSTPer = data;
-                console.log(this.ChekGSTPer)
-            })
+            console.log(this.ChekGSTPer)
             if (parseFloat(contact.CGSTPer) >= 2.5 ) {
                 const dvalue = this.ChekGSTPer.find(item => item.GSTPer == parseFloat(contact.CGSTPer))
                 console.log(dvalue)
@@ -831,7 +792,7 @@ debugger
                 //total amt
                 contact.TotalAmount = (contact.ReceiveQty * contact.Rate);
                 //disc
-                contact.DiscAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.DiscPercentage.toFixed(2))) / 100).toFixed(2);
+                contact.DiscAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.DiscPercentage)) / 100).toFixed(2);
                 let TotalAmt = (parseFloat(contact.TotalAmount) - parseFloat(contact.DiscAmount));
                 //Gst
                 contact.VatPercentage = (parseFloat(contact.CGSTPer) + parseFloat(contact.SGSTPer) + parseFloat(contact.IGSTPer)).toFixed(2)
@@ -1433,12 +1394,7 @@ debugger
             });
             return;
         }
-        if (this._GRNList.GRNFinalForm.invalid) {
-            this.toastr.warning('please check from is invalid', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-        } 
+      
         if ((this._GRNList.GRNFinalForm.get('ReceivedBy').value == "" || this._GRNList.GRNFinalForm.get('ReceivedBy').value == null ||
             this._GRNList.GRNFinalForm.get('ReceivedBy').value == undefined)) {
             this.toastr.warning('Please enter a Received By', 'Warning !', {
@@ -1446,7 +1402,12 @@ debugger
             });
             return;
         }
-
+        if (this._GRNList.GRNFinalForm.invalid) {
+            this.toastr.warning('please check from is invalid', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        } 
        
         const checkTotalQty = this.dsItemNameList.data.some(item => item.TotalQty === this.vTotalQty && item.TotalQty == null);
         //this.isLoading123 = true;
