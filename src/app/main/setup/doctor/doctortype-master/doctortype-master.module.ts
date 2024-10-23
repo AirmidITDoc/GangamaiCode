@@ -19,12 +19,15 @@ import { MatRadioModule } from "@angular/material/radio";
 import { FuseSharedModule } from "@fuse/shared.module";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
-import { CommonModule } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatCardModule } from "@angular/material/card";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { NotificationServiceService } from "app/core/notification-service.service";
 import { DoctortypeMasterService } from "./doctortype-master.service";
+import { NewDoctorTypeComponent } from './new-doctor-type/new-doctor-type.component';
+import { MatDialogModule } from "@angular/material/dialog";
+import { SharedModule } from "app/main/shared/shared.module";
 
 const routes: Routes = [
     {
@@ -34,10 +37,11 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [DoctortypeMasterComponent],
+    declarations: [DoctortypeMasterComponent, NewDoctorTypeComponent],
     imports: [
         RouterModule.forChild(routes),
-
+        SharedModule,
+        MatDialogModule,
         MatButtonModule,
         MatCheckboxModule,
         MatDatepickerModule,
@@ -61,7 +65,7 @@ const routes: Routes = [
         MatCardModule,
         MatSlideToggleModule,
     ],
-    providers: [DoctortypeMasterService, NotificationServiceService],
+    providers: [DoctortypeMasterService, DatePipe],
     entryComponents: [DoctortypeMasterComponent],
 })
 export class DoctortypeMasterModule {}

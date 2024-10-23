@@ -1,0 +1,34 @@
+<!-- <div fxFlex.gt-sm="35%" fxFlex style="background-color: white;">
+    <div class="dialog-content-wrapper">
+        <div mat-dialog-content class="p-24 pb-0 m-0">
+            <form [formGroup]="_locationService.myform">
+                <h3>{{_locationService.myform.controls.LocationId.value?"Modify Location
+                    Master":"New Location Master"}}</h3>
+
+                <input type="hidden" name="LocationId" formControlName="LocationId">
+
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                        <mat-label>Location Name</mat-label>
+                        <input name="LocationName" formControlName="LocationName" matInput required>
+                        <mat-error>Please Enter Location Name </mat-error>
+                    </mat-form-field>
+                </div>
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
+                        <mat-radio-button value='true' class="mr-sm-12"
+                            fxFlex>IsActive</mat-radio-button>
+
+                    </mat-radio-group>
+                </div>
+            </form>
+        </div>
+        <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+            <div class="button-row">
+                <button mat-raised-button color="primary" type="submit" (click)="onSubmit()"
+                    [disabled]="_locationService.myform.invalid">Save</button>
+                <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
+            </div>
+        </div>
+    </div>
+</div> -->

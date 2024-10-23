@@ -6,6 +6,11 @@ import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { NewDoctorTypeComponent } from "./new-doctor-type/new-doctor-type.component";
 
 @Component({
     selector: "app-doctortype-master",
@@ -15,211 +20,164 @@ import { ToastrService } from "ngx-toastr";
     animations: fuseAnimations,
 })
 export class DoctortypeMasterComponent implements OnInit {
-    isLoading = true;
-    msg: any;
-    currentStatus = 2;
-    @ViewChild(MatSort) sort: MatSort;
-    @ViewChild(MatPaginator) paginator: MatPaginator;
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    gridConfig: gridModel = {
+        apiUrl: "DoctorTypeMaster/List",
+        columnsList: [
+            { heading: "Code", key: "id", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "DoctorType Name", key: "doctorType", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+            {
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            debugger
+                        }
+                    }, {
+                        action: gridActions.delete, callback: (data: any) => {
+                            debugger
+                        }
+                    }]
+            } //Action 1-view, 2-Edit,3-delete
+        ],
+        sortField: "id",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "doctorType", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+        ],
+        row:25
+    }
 
-    displayedColumns: string[] = ["Id", "DoctorType","IsActive", "action"];
-
-    DSDoctorTypeMasterList = new MatTableDataSource<DoctortypeMaster>();
-    DSDoctorTypeMasterList1 = new MatTableDataSource<DoctortypeMaster>();
-    tempList = new MatTableDataSource<DoctortypeMaster>();
-
-    constructor(public _doctortypeService: DoctortypeMasterService,
+    constructor(public _doctortypeService: DoctortypeMasterService,public _matDialog: MatDialog,
         public toastr : ToastrService,) {}
 
     ngOnInit(): void {
-        this.getDoctortypeMasterList();
+       
     }
     onSearch() {
-        this.getDoctortypeMasterList();
+       
     }
     onSearchClear() {
         this._doctortypeService.myformSearch.reset({
             DoctorTypeSearch: "",
             IsDeletedSearch: "2",
         });
-        this.getDoctortypeMasterList();
-    }
-    resultsLength=0;
-    getDoctortypeMasterList() {
-        var vdata={
-            "DoctorType":this._doctortypeService.myformSearch.get('DoctorTypeSearch').value.trim() +"%" || "%"       
-        }
-        this._doctortypeService.getDoctortypeMasterList(vdata).subscribe((Menu) => {
-             this.DSDoctorTypeMasterList.data = Menu as DoctortypeMaster[];
-             this.DSDoctorTypeMasterList1.data = Menu as DoctortypeMaster[];
-             this.resultsLength= this.DSDoctorTypeMasterList.data.length;
-            });
        
     }
-  
-
+    resultsLength=0;
+    
    
     onClear() {
         this._doctortypeService.myform.reset({ IsDeleted: "false" });
         this._doctortypeService.initializeFormGroup();
     }
 
-    onSubmit() {
-        if (this._doctortypeService.myform.valid) {
-            if (!this._doctortypeService.myform.get("Id").value) {
-                var m_data = {
-                    doctortTypeMasterInsert: {
-                        doctorType: this._doctortypeService.myform
-                            .get("DoctorType")
-                            .value.trim(),
-                        IsActive: Boolean(
-                            JSON.parse(
-                                this._doctortypeService.myform.get("isActive")
-                                    .value
-                            )
-                        ),
-                    },
-                };
+   
 
-                this._doctortypeService
-                    .doctortTypeMasterInsert(m_data)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                              this.getDoctortypeMasterList();
-                           
-                        } else {
-                            this.toastr.error('DoctorType Master Master Data not saved !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                        }
-                        this.getDoctortypeMasterList();
-                    },error => {
-                        this.toastr.error('DoctorType Data not saved !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
-            } else {
-                var m_dataUpdate = {
-                    doctorTypeMasterUpdate: {
-                        id: this._doctortypeService.myform.get("Id").value,
-                        doctorType:
-                            this._doctortypeService.myform.get("DoctorType")
-                                .value,
-                                IsActive: Boolean(
-                            JSON.parse(
-                                this._doctortypeService.myform.get("isActive")
-                                    .value
-                            )
-                        ),
-                    },
-                };
-                this._doctortypeService
-                    .doctorTypeMasterUpdate(m_dataUpdate)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record updated Successfully.', 'updated !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                              this.getDoctortypeMasterList();
-                           
-                        } else {
-                            this.toastr.error('DoctorType Master Data not updated !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                        }
-                        this.getDoctortypeMasterList();
-                    },error => {
-                        this.toastr.error('DoctorType Data not Updated !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
-                    
-                    
-            }
-            this.onClear();
+    changeStatus(status: any) {
+        switch (status.id) {
+            case 1:
+                //this.onEdit(status.data)
+                break;
+            case 2:
+                this.onEdit(status.data)
+                break;
+            case 5:
+                this.onDeactive(status.data.genderId);
+                break;
+            default:
+                break;
         }
     }
-
-    onDeactive(Id) {
-
-       
-        Swal.fire({
-            title: 'Confirm Status',
-            text: 'Are you sure you want to Change Status?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes,Change Status!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                let Query
-                if (!this.DSDoctorTypeMasterList.data.find(item => item.Id === Id).IsActive) {
-                    Query = "Update DoctorTypeMaster set IsActive=0 where Id=" + Id;
-                }
-                else {
-                     Query = "Update DoctorTypeMaster set IsActive=1 where Id=" + Id;
-                }
-                console.log(Query);
-                this._doctortypeService.deactivateTheStatus(Query)
-                    .subscribe((data) => {
-                        // Handle success response
-                        Swal.fire('Changed!', 'Doctor Type Status has been Changed.', 'success');
-                        this.getDoctortypeMasterList();
-                    }, (error) => {
-                        // Handle error response
-                        Swal.fire('Error!', 'Failed to deactivate category.', 'error');
-                    });
+  
+    onDeactive(id) {
+        debugger
+        this.confirmDialogRef = this._matDialog.open(
+            FuseConfirmDialogComponent,
+            {
+                disableClose: false,
             }
+        );
+        this.confirmDialogRef.componentInstance.confirmMessage =
+            "Are you sure you want to deactive?";
+        this.confirmDialogRef.afterClosed().subscribe((result) => {
+            debugger
+            if (result) {
+                this._doctortypeService.deactivateTheStatus(id).subscribe((data: any) => {
+                    
+                    if (data.StatusCode == 200) {
+                        this.toastr.success(
+                            "Record updated Successfully.",
+                            "updated !",
+                            {
+                                toastClass:
+                                    "tostr-tost custom-toast-success",
+                            }
+                        );
+                        // this.getGenderMasterList();
+                    }
+                });
+            }
+            this.confirmDialogRef = null;
         });
     }
 
-    onFilterChange() {
+    newDoctorTypemaster() {
+        const dialogRef = this._matDialog.open(NewDoctorTypeComponent,
+            {
+                maxWidth: "45vw",
+                height: '35%',
+                width: '70%',
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
+
+        });
+    }
+
+    // onFilterChange() {
        
-        if (this.currentStatus == 1) {
-            this.tempList.data = []
-            this.DSDoctorTypeMasterList.data= this.DSDoctorTypeMasterList1.data
-            for (let item of this.DSDoctorTypeMasterList.data) {
-                if (item.IsActive) this.tempList.data.push(item)
+    //     if (this.currentStatus == 1) {
+    //         this.tempList.data = []
+    //         this.DSDoctorTypeMasterList.data= this.DSDoctorTypeMasterList1.data
+    //         for (let item of this.DSDoctorTypeMasterList.data) {
+    //             if (item.IsActive) this.tempList.data.push(item)
 
-            }
+    //         }
 
-            this.DSDoctorTypeMasterList.data = [];
-            this.DSDoctorTypeMasterList.data = this.tempList.data;
-        }
-        else if (this.currentStatus == 0) {
-            this.DSDoctorTypeMasterList.data= this.DSDoctorTypeMasterList.data
-            this.tempList.data = []
+    //         this.DSDoctorTypeMasterList.data = [];
+    //         this.DSDoctorTypeMasterList.data = this.tempList.data;
+    //     }
+    //     else if (this.currentStatus == 0) {
+    //         this.DSDoctorTypeMasterList.data= this.DSDoctorTypeMasterList.data
+    //         this.tempList.data = []
 
-            for (let item of this.DSDoctorTypeMasterList.data) {
-                if (!item.IsActive) this.tempList.data.push(item)
+    //         for (let item of this.DSDoctorTypeMasterList.data) {
+    //             if (!item.IsActive) this.tempList.data.push(item)
 
-            }
-            this.DSDoctorTypeMasterList.data = [];
-            this.DSDoctorTypeMasterList.data = this.tempList.data;
-        }
-        else {
-            this.DSDoctorTypeMasterList.data= this.DSDoctorTypeMasterList1.data
-            this.tempList.data = this.DSDoctorTypeMasterList.data;
-        }
+    //         }
+    //         this.DSDoctorTypeMasterList.data = [];
+    //         this.DSDoctorTypeMasterList.data = this.tempList.data;
+    //     }
+    //     else {
+    //         this.DSDoctorTypeMasterList.data= this.DSDoctorTypeMasterList1.data
+    //         this.tempList.data = this.DSDoctorTypeMasterList.data;
+    //     }
 
 
-    }
-    toggle(val: any) {
-        if (val == "2") {
-            this.currentStatus = 2;
-        } else if (val == "1") {
-            this.currentStatus = 1;
-        }
-        else {
-            this.currentStatus = 0;
+    // }
+    // toggle(val: any) {
+    //     if (val == "2") {
+    //         this.currentStatus = 2;
+    //     } else if (val == "1") {
+    //         this.currentStatus = 1;
+    //     }
+    //     else {
+    //         this.currentStatus = 0;
 
-        }
-    }
+    //     }
+    // }
     onEdit(row) {
         var m_data = {
             Id: row.Id,
@@ -231,8 +189,8 @@ export class DoctortypeMasterComponent implements OnInit {
 }
 
 export class DoctortypeMaster {
-    Id: number;
-    DoctorType: string;
+    id: number;
+    doctorType: string;
     isActive: boolean;
     IsActive:any;
     /**
@@ -242,8 +200,8 @@ export class DoctortypeMaster {
      */
     constructor(DoctortypeMaster) {
         {
-            this.Id = DoctortypeMaster.Id || "";
-            this.DoctorType = DoctortypeMaster.DoctorType || "";
+            this.id = DoctortypeMaster.id || "";
+            this.doctorType = DoctortypeMaster.doctorType || "";
             this.isActive = DoctortypeMaster.isActive || true;
             this.IsActive = DoctortypeMaster.IsActive || true;
         }

@@ -25,10 +25,14 @@ import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 export class WardMasterComponent implements OnInit {
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     gridConfig: gridModel = {
-        apiUrl: "Gender/List",
+        apiUrl: "WardMaster/List",
         columnsList: [
             { heading: "Code", key: "roomId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Room Name", key: "roomName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Room Type", key: "roomType", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Location", key: "locationId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsAvailible", key: "isAvailible", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "ClassId", key: "classId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -172,12 +176,13 @@ export class WardMasterComponent implements OnInit {
 export class WardMaster {
     roomId: number;
     roomName: string;
-    LocationId: number;
-    IsAvailable: boolean;
-    IsDeleted: boolean;
+    roomType: string;
+    locationId: number;
+    isAvailible: boolean;
+    isActive: boolean;
     AddedBy: number;
     UpdatedBy: number;
-    ClassId: number;
+    classId: number;
     AddedByName: string;
 
     /**
@@ -189,12 +194,13 @@ export class WardMaster {
         {
             this.roomId = WardMaster.roomId || "";
             this.roomName = WardMaster.roomName || "";
-            this.LocationId = WardMaster.LocationId || "";
-            this.IsAvailable = WardMaster.IsAvailable || "false";
-            this.IsDeleted = WardMaster.IsDeleted || "false";
+            this.roomType = WardMaster.roomType || "";
+            this.locationId = WardMaster.locationId || "";
+            this.isAvailible = WardMaster.isAvailible || "false";
+            this.isActive = WardMaster.isActive || "false";
             this.AddedBy = WardMaster.AddedBy || "";
             this.UpdatedBy = WardMaster.UpdatedBy || "";
-            this.ClassId = WardMaster.ClassId || "";
+            this.classId = WardMaster.classId || "";
         }
     }
 }

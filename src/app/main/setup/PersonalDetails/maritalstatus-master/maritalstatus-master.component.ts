@@ -8,6 +8,11 @@ import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
+import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { NewMaritalstatusComponent } from "./new-maritalstatus/new-maritalstatus.component";
 
 @Component({
     selector: "app-maritalstatus-master",
@@ -17,27 +22,39 @@ import { ToastrService } from "ngx-toastr";
     animations: fuseAnimations,
 })
 export class MaritalstatusMasterComponent implements OnInit {
-    MaritalStatusList: any;
-    msg: any;
-
-    displayedColumns: string[] = [
-        "MaritalStatusId",
-        "MaritalStatusName",
-        "AddedBy",
-        "IsDeleted",
-        "action",
-    ];
-
-    DSMaritalStatusMasterList = new MatTableDataSource<MaritalStatusMaster>();
-
-    @ViewChild(MatSort) sort: MatSort;
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-
-    constructor(public _maritalService: MaritalstatusMasterService,
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    gridConfig: gridModel = {
+        apiUrl: "MaritalStatus/List",
+        columnsList: [
+            { heading: "Code", key: "maritalStatusId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "MaritalStatus Name", key: "maritalStatusName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+            {
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            debugger
+                        }
+                    }, {
+                        action: gridActions.delete, callback: (data: any) => {
+                            debugger
+                        }
+                    }]
+            } //Action 1-view, 2-Edit,3-delete
+        ],
+        sortField: "maritalStatusId",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "maritalStatusName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+        ],
+        row:25
+    }
+    constructor(public _maritalService: MaritalstatusMasterService,public _matDialog: MatDialog,
         public toastr : ToastrService,) {}
 
     ngOnInit(): void {
-        this.getmaritalstatusMasterList();
+        
     }
 
     onSearchClear() {
@@ -45,135 +62,20 @@ export class MaritalstatusMasterComponent implements OnInit {
             MaritalStatusNameSearch: "",
             IsDeletedSearch: "2",
         });
-        this.getmaritalstatusMasterList();
+        
     }
     onSearch() {
-        this.getmaritalstatusMasterList();
+       
     }
 
-    getmaritalstatusMasterList() {
-        var m_data = {
-            MaritalStatusName:
-                this._maritalService.myformSearch
-                    .get("MaritalStatusNameSearch")
-                    .value.trim() || "%",
-            // IsDeleted: Boolean(
-            //     JSON.parse(
-            //         this._maritalService.myformSearch.get("IsDeletedSearch")
-            //             .value
-            //     )
-            // ),
-        };
-        this._maritalService
-            .getmaritalstatusMasterList(m_data)
-            .subscribe((Menu) => {
-                this.DSMaritalStatusMasterList.data =
-                    Menu as MaritalStatusMaster[];
-                this.DSMaritalStatusMasterList.sort = this.sort;
-                this.DSMaritalStatusMasterList.paginator = this.paginator;
-            });
-    }
+   
 
     onClear() {
         this._maritalService.myform.reset({ IsDeleted: "false" });
         this._maritalService.initializeFormGroup();
     }
 
-    onSubmit() {
-        if (this._maritalService.myform.valid) {
-            if (!this._maritalService.myform.get("MaritalStatusId").value) {
-                var m_data = {
-                    maritalStatusMasterInsert: {
-                        maritalStatusName: this._maritalService.myform
-                            .get("MaritalStatusName")
-                            .value.trim(),
-                        addedBy: 1,
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._maritalService.myform.get("IsDeleted")
-                                    .value
-                            )
-                        ),
-                    },
-                };
-
-                this._maritalService
-                    .insertMaritalStatusMaster(m_data)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                              this.getmaritalstatusMasterList();
-                            // Swal.fire(
-                            //     "Saved !",
-                            //     "Record saved Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getmaritalstatusMasterList();
-                            //     }
-                            // });
-                        } else {
-                            this.toastr.error('MaritalStatus Master Data not Saved !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                        }
-                        this.getmaritalstatusMasterList();
-                    },error => {
-                        this.toastr.error('MaritalStatus Data not saved !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     } );
-            } else {
-                var m_dataUpdate = {
-                    maritalStatusMasterUpdate: {
-                        maritalStatusId:
-                            this._maritalService.myform.get("MaritalStatusId")
-                                .value,
-                        maritalStatusName: this._maritalService.myform
-                            .get("MaritalStatusName")
-                            .value.trim(),
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._maritalService.myform.get("IsDeleted")
-                                    .value
-                            )
-                        ),
-                        updatedBy: 1,
-                    },
-                };
-
-                this._maritalService
-                    .updateMaritalStatusMaster(m_dataUpdate)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record updated Successfully.', 'updated !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                              this.getmaritalstatusMasterList();
-                            // Swal.fire(
-                            //     "Updated !",
-                            //     "Record updated Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getmaritalstatusMasterList();
-                            //     }
-                            // });
-                        } else {
-                            this.toastr.error('MaritalStatus Master Data not updated !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                        }
-                        this.getmaritalstatusMasterList();
-                    });
-            }
-            this.onClear();
-        }
-    }
+   
 
     onEdit(row) {
         var m_data = {
@@ -184,13 +86,75 @@ export class MaritalstatusMasterComponent implements OnInit {
         };
         this._maritalService.populateForm(m_data);
     }
+
+    changeStatus(status: any) {
+        switch (status.id) {
+            case 1:
+                //this.onEdit(status.data)
+                break;
+            case 2:
+                this.onEdit(status.data)
+                break;
+            case 5:
+                this.onDeactive(status.data.maritalStatusId);
+                break;
+            default:
+                break;
+        }
+    }
+   
+    onDeactive(maritalStatusId) {
+        debugger
+        this.confirmDialogRef = this._matDialog.open(
+            FuseConfirmDialogComponent,
+            {
+                disableClose: false,
+            }
+        );
+        this.confirmDialogRef.componentInstance.confirmMessage =
+            "Are you sure you want to deactive?";
+        this.confirmDialogRef.afterClosed().subscribe((result) => {
+            debugger
+            if (result) {
+                this._maritalService.deactivateTheStatus(maritalStatusId).subscribe((data: any) => {
+                    
+                    if (data.StatusCode == 200) {
+                        this.toastr.success(
+                            "Record updated Successfully.",
+                            "updated !",
+                            {
+                                toastClass:
+                                    "tostr-tost custom-toast-success",
+                            }
+                        );
+                        // this.getGenderMasterList();
+                    }
+                });
+            }
+            this.confirmDialogRef = null;
+        });
+    }
+
+    newMaritalStatusmaster() {
+        const dialogRef = this._matDialog.open(NewMaritalstatusComponent,
+            {
+                maxWidth: "45vw",
+                height: '35%',
+                width: '70%',
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
+
+        });
+    }
 }
+
 export class MaritalStatusMaster {
-    MaritalStatusId: number;
-    MaritalStatusName: string;
-    IsDeleted: boolean;
-    AddedBy: number;
-    UpdatedBy: number;
+    maritalStatusId: number;
+    maritalStatusName: string;
+    isActive: boolean;
+    // AddedBy: number;
+    // UpdatedBy: number;
 
     /**
      * Constructor
@@ -199,11 +163,11 @@ export class MaritalStatusMaster {
      */
     constructor(MaritalStatusMaster) {
         {
-            this.MaritalStatusId = MaritalStatusMaster.MaritalStatusId || "";
-            this.MaritalStatusName = MaritalStatusMaster.PrefixName || "";
-            this.IsDeleted = MaritalStatusMaster.IsDeleted || "false";
-            this.AddedBy = MaritalStatusMaster.AddedBy || "";
-            this.UpdatedBy = MaritalStatusMaster.UpdatedBy || "";
+            this.maritalStatusId = MaritalStatusMaster.maritalStatusId || "";
+            this.maritalStatusName = MaritalStatusMaster.maritalStatusName || "";
+            this.isActive = MaritalStatusMaster.isActive || "false";
+            // this.AddedBy = MaritalStatusMaster.AddedBy || "";
+            // this.UpdatedBy = MaritalStatusMaster.UpdatedBy || "";
         }
     }
 }

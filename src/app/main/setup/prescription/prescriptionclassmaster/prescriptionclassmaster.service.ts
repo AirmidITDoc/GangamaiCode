@@ -1,15 +1,15 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { gridRequest } from "app/core/models/gridRequest";
+import { ApiCaller } from "app/core/services/apiCaller";
 
-@Injectable({
-    providedIn: "root",
-})
+@Injectable()
 export class PrescriptionclassmasterService {
     myForm: FormGroup;
     myformSearch: FormGroup;
     constructor(
-        private _httpClient: HttpClient,
+        private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder
     ) {
         this.myForm = this.createPrescriptionclassForm();
@@ -37,26 +37,24 @@ export class PrescriptionclassmasterService {
         this.createPrescriptionclassForm();
     }
 
-    public getPrescriptionclassMasterList(Param) {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_M_Prescription_TemplateMaster_By_Name",Param
-        );
+   
+    public getgenericMasterList(param: gridRequest, showLoader = true) {
+        return this._httpClient.PostData("GenericMaster/List", param, showLoader);
     }
 
-    public prescriptionTemplateMasterInsert(param) {
-        return this._httpClient.post(
-            "Prescription/PrescriptionTemplateMasterSave",
-            param
-        );
+    public genericMasterInsert(Param: any, showLoader = true) {
+        return this._httpClient.PostData("Generic", Param, showLoader);
     }
 
-    public prescriptionTemplateMasterUpdate(param) {
-        return this._httpClient.post(
-            "Prescription/PrescriptionTemplateMasterUpdate",
-            param
-        );
+    public genericMasterUpdate(id: number , Param: any, showLoader = true) {
+        //return this._httpClient.put("generic/" + id , Param, showLoader);
+        return this._httpClient.PostData("Generic", Param, showLoader);
     }
 
+    public deactivateTheStatus(m_data) {
+        //return this._httpClient.delete("generic?Id=" + m_data, {});
+        return this._httpClient.PostData("generic", m_data);
+    }
     populateForm(param) {
         this.myForm.patchValue(param);
     }

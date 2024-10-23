@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { PrescriptionclassmasterComponent } from "./prescriptionclassmaster.component";
 import { RouterModule, Routes } from "@angular/router";
 import { PrescriptionclassmasterService } from "./prescriptionclassmaster.service";
@@ -20,6 +20,9 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatButtonModule } from "@angular/material/button";
+import { NewPrescriptionClassComponent } from './new-prescription-class/new-prescription-class.component';
+import { SharedModule } from "app/main/shared/shared.module";
+import { MatDialogModule } from "@angular/material/dialog";
 
 const routes: Routes = [
     {
@@ -29,18 +32,16 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [PrescriptionclassmasterComponent],
+    declarations: [PrescriptionclassmasterComponent, NewPrescriptionClassComponent],
     imports: [
         RouterModule.forChild(routes),
-
+        SharedModule,
         MatButtonModule,
         MatCheckboxModule,
-        MatDatepickerModule,
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
         MatMenuModule,
-        MatRippleModule,
         MatTableModule,
         MatToolbarModule,
         MatPaginatorModule,
@@ -49,10 +50,10 @@ const routes: Routes = [
         MatRadioModule,
         MatSnackBarModule,
         FuseSharedModule,
-        FuseConfirmDialogModule,
         FuseSidebarModule,
+        MatDialogModule,
     ],
-    providers: [PrescriptionclassmasterService],
+    providers: [PrescriptionclassmasterService,DatePipe],
     entryComponents: [PrescriptionclassmasterComponent],
 })
 export class PrescriptionclassmasterModule {}

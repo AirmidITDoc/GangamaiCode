@@ -1,6 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { gridRequest } from "app/core/models/gridRequest";
+import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
     providedIn: "root",
@@ -9,7 +11,7 @@ export class LocationMasterService {
     myform: FormGroup;
     myformSearch: FormGroup;
     constructor(
-        private _httpClient: HttpClient,
+        private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder
     ) {
         this.myform = this.createLocationForm();
@@ -36,21 +38,24 @@ export class LocationMasterService {
         this.createLocationForm();
     }
 
-    public getLocationMasterList(param) {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_LocationMaster",
-            param
-        );
+  
+    public getBedMasterList(param: gridRequest, showLoader = true) {
+        return this._httpClient.PostData("BedMaster/List", param, showLoader);
     }
 
-    public locationMasterInsert(param) {
-        return this._httpClient.post("DepartMentMaster/LocationSave", param);
+    public BedMasterInsert(Param: any, showLoader = true) {
+        return this._httpClient.PostData("Bed", Param, showLoader);
     }
 
-    public locationMasterUpdate(param) {
-        return this._httpClient.post("DepartMentMaster/LocationtUpdate", param);
+    public BedMasterUpdate(id: number , Param: any, showLoader = true) {
+        //return this._httpClient.put("Gender/" + id , Param, showLoader);
+        return this._httpClient.PostData("Bed", Param, showLoader);
     }
 
+    public deactivateTheStatus(m_data) {
+        //return this._httpClient.delete("Gender?Id=" + m_data, {});
+        return this._httpClient.PostData("Bed", m_data);
+    }
     populateForm(param) {
         this.myform.patchValue(param);
     }

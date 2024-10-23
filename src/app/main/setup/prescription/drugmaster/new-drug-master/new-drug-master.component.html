@@ -1,0 +1,75 @@
+<!-- <div fxFlex.gt-sm="35%" fxFlex style="background-color: white;">
+    <div class="dialog-content-wrapper">
+        <div mat-dialog-content class="p-24 pb-0 m-0">
+            <form [formGroup]="_drugService.myform">
+                <h3>{{_drugService.myform.controls.DrugId.value?"Modify Prefix Master":"New Prefix
+                    Master"}}</h3>
+
+                <input type="hidden" name="DrugId" formControlName="DrugId">
+
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                        <mat-label>Drug Name</mat-label>
+                        <input name="DrugName" formControlName="DrugName" matInput required>
+                        <mat-error>Please enter Drug Name </mat-error>
+                    </mat-form-field>
+                </div>
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+
+
+                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                        <mat-label>GenericName</mat-label>
+                        <mat-select formControlName="GenericId" placeholder="Bank" #singleSelect
+                            required>
+                            <mat-option>
+                                <ngx-mat-select-search [formControl]="genericFilterCtrl"
+                                    [placeholderLabel]="'Search'"
+                                    [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                            </mat-option>
+                            <mat-option *ngFor="let element of filteredGeneric | async"
+                                [value]="element">
+                                {{element.GenericName}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                </div>
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+
+
+                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                        <mat-label>Class Name</mat-label>
+                        <mat-select formControlName="ClassId" placeholder="Bank" #singleSelect
+                            required>
+                            <mat-option>
+                                <ngx-mat-select-search [formControl]="classFilterCtrl"
+                                    [placeholderLabel]="'Search'"
+                                    [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                            </mat-option>
+                            <mat-option *ngFor="let element of filteredClass | async"
+                                [value]="element">
+                                {{element.ClassName}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                </div>
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
+                        <mat-radio-button value='true' class="mr-sm-12"
+                            fxFlex>IsActive</mat-radio-button>
+                        <mat-radio-button value='false' class="mr-sm-12"
+                            fxFlex>IsDeactive</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+            </form>
+        </div>
+        <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+            <div class="button-row">
+                <button mat-raised-button color="primary" type="submit" (click)="onSubmit()"
+                    [disabled]="_drugService.myform.invalid">Save</button>
+                <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
+            </div>
+        </div>
+    </div>
+</div> -->

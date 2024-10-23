@@ -8,7 +8,6 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatMenuModule } from "@angular/material/menu";
-import { MatTableModule } from "@angular/material/table";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatSortModule } from "@angular/material/sort";
 import { MatSelectModule } from "@angular/material/select";
@@ -18,6 +17,12 @@ import { FuseSharedModule } from "@fuse/shared.module";
 import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
 import { NotificationServiceService } from "app/core/notification-service.service";
 import { PatienttypeMasterService } from "./patienttype-master.service";
+import { NewPatientTypeComponent } from './new-patient-type/new-patient-type.component';
+import { SharedModule } from "app/main/shared/shared.module";
+import { MatDialogModule } from "@angular/material/dialog";
+import { MatToolbarModule } from "@angular/material/toolbar";
+import { DatePipe } from "@angular/common";
+import { MatTableModule } from "@angular/material/table";
 
 const routes: Routes = [
     {
@@ -27,11 +32,11 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [PatienttypeMasterComponent],
+    declarations: [PatienttypeMasterComponent, NewPatientTypeComponent],
 
     imports: [
         RouterModule.forChild(routes),
-
+        SharedModule,
         MatButtonModule,
         MatCheckboxModule,
         MatFormFieldModule,
@@ -39,16 +44,17 @@ const routes: Routes = [
         MatInputModule,
         MatMenuModule,
         MatTableModule,
+        MatToolbarModule,
         MatPaginatorModule,
         MatSortModule,
         MatSelectModule,
         MatRadioModule,
         MatSnackBarModule,
         FuseSharedModule,
-        FuseConfirmDialogModule,
         FuseSidebarModule,
+        MatDialogModule,
     ],
-    providers: [PatienttypeMasterService, NotificationServiceService],
+    providers: [PatienttypeMasterService, DatePipe],
     entryComponents: [PatienttypeMasterComponent],
 })
 export class PatienttypeMasterModule {}

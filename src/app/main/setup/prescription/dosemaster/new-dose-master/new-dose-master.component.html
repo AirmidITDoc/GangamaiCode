@@ -1,0 +1,53 @@
+<!-- <div fxFlex.gt-sm="35%" fxFlex style="background-color: white;">
+    <div class="dialog-content-wrapper">
+        <div mat-dialog-content class="p-24 pb-0 m-0">
+            <form [formGroup]="_DoseService.myForm">
+                <h3>{{_DoseService.myForm.controls.DoseId.value?"Modify Dose Master":"New Dose
+                    Master"}}</h3>
+
+
+                <input type="hidden" name="DoseId" formControlName="DoseId">
+
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                        <mat-label>Dose Name</mat-label>
+                        <input name="DoseName" formControlName="DoseName" matInput required>
+                        <mat-error>Please enter Dose Name</mat-error>
+                    </mat-form-field>
+                </div>
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                        <mat-label>Dose Name In English</mat-label>
+                        <input name="DoseNameInEnglish" formControlName="DoseNameInEnglish" matInput
+                            required>
+                        <mat-error>Please enter Dose Name in English</mat-error>
+                    </mat-form-field>
+                </div>
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                        <mat-label>DoseQtyPerDay</mat-label>
+                        <input name="DoseQtyPerDay" formControlName="DoseQtyPerDay" matInput
+                            required>
+                        <mat-error>Please enter DoseQtyPerDay</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
+                        <mat-radio-button value='true' class="mr-sm-12"
+                            fxFlex>IsActive</mat-radio-button>
+                        <mat-radio-button value='false' class="mr-sm-12"
+                            fxFlex>IsDeactive</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+            </form>
+        </div>
+        <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+            <div class="button-row">
+                <button mat-raised-button color="primary" type="submit" (click)="onSubmit()"
+                    [disabled]="_DoseService.myForm.invalid">Save</button>
+                <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
+            </div>
+        </div>
+    </div>
+</div> -->

@@ -1,15 +1,15 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { gridRequest } from "app/core/models/gridRequest";
+import { ApiCaller } from "app/core/services/apiCaller";
 
-@Injectable({
-    providedIn: "root",
-})
+@Injectable()
 export class DosemasterService {
     myForm: FormGroup;
     myformSearch: FormGroup;
     constructor(
-        private _httpClient: HttpClient,
+        private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder
     ) {
         this.myForm = this.createDoseForm();
@@ -42,21 +42,23 @@ export class DosemasterService {
         this.createDoseForm();
     }
 
-    public getDoseMasterList(param) {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_M_DoseMaster",
-            param
-        );
+    public getDoseMasterList(param: gridRequest, showLoader = true) {
+        return this._httpClient.PostData("DoseMaster/List", param, showLoader);
     }
 
-    public insertDoseMaster(param) {
-        return this._httpClient.post("Prescription/DoseSave", param);
+    public doseMasterInsert(Param: any, showLoader = true) {
+        return this._httpClient.PostData("DoseMaster", Param, showLoader);
     }
 
-    public updateDoseMaster(param) {
-        return this._httpClient.post("Prescription/DoseUpdate", param);
+    public doseMasterUpdate(id: number , Param: any, showLoader = true) {
+        //return this._httpClient.put("Gender/" + id , Param, showLoader);
+        return this._httpClient.PostData("DoseMaster", Param, showLoader);
     }
 
+    public deactivateTheStatus(m_data) {
+        //return this._httpClient.delete("Gender?Id=" + m_data, {});
+        return this._httpClient.PostData("DoseMaster", m_data);
+    }
     populateForm(param) {
         this.myForm.patchValue(param);
     }

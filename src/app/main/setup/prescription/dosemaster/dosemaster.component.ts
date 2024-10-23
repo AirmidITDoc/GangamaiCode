@@ -6,6 +6,11 @@ import { MatSort } from "@angular/material/sort";
 import { MatPaginator } from "@angular/material/paginator";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { NewDoseMasterComponent } from "./new-dose-master/new-dose-master.component";
 
 @Component({
     selector: "app-dosemaster",
@@ -15,33 +20,47 @@ import { ToastrService } from "ngx-toastr";
     animations: fuseAnimations,
 })
 export class DosemasterComponent implements OnInit {
-    DoseMasterList: any;
-    msg: any;
-    sIsLoading: string = '';
-    isLoading = true;
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    gridConfig: gridModel = {
+        apiUrl: "DoseMaster/List",
+        columnsList: [
+            { heading: "Code", key: "doseId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Dose Name", key: "doseName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Dose Name English", key: "doseNameInEnglish", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Dose Name Marathi ", key: "doseNameInMarathi", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+            { heading: "Qty/Day", key: "doseQtyPerDay", sort: true, align: 'left', emptySign: 'NA' },
+            {
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            debugger
+                        }
+                    }, {
+                        action: gridActions.delete, callback: (data: any) => {
+                            debugger
+                        }
+                    }]
+            } //Action 1-view, 2-Edit,3-delete
+        ],
+        sortField: "doseId",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "doseName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+        ],
+        row:25
+    }
 
-    displayedColumns: string[] = [
-        "DoseId",
-        "DoseName",
-        "DoseNameInEnglish",
-        "DoseQtyPerDay",
-        //"AddedByName",
-        "IsDeleted",
-        "action",
-    ];
 
-    DSDoseMasterList = new MatTableDataSource<DoseMaster>();
-    @ViewChild(MatSort) sort: MatSort;
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-
-    constructor(public _DoseService: DosemasterService,
+    constructor(public _DoseService: DosemasterService,public _matDialog: MatDialog,
         public toastr : ToastrService,) {}
 
     ngOnInit(): void {
-        this.getDoseMasterList();
+        
     }
     onSearch() {
-        this.getDoseMasterList();
+       
     }
 
     onSearchClear() {
@@ -49,135 +68,17 @@ export class DosemasterComponent implements OnInit {
             DoseNameSearch: "",
             IsDeletedSearch: "2",
         });
-        this.getDoseMasterList();
+       
     }
 
-    getDoseMasterList() {
-        this.sIsLoading = 'loading-data';
-        var param = {
-            DoseName:this._DoseService.myformSearch.get("DoseNameSearch")
-                    .value.trim() + "%" || "%",
-        };
-        this._DoseService.getDoseMasterList(param).subscribe((Menu) => {
-            this.DSDoseMasterList.data = Menu as DoseMaster[];
-            this.DSDoseMasterList.sort = this.sort;
-            this.DSDoseMasterList.paginator = this.paginator;
-            this.sIsLoading = '';
-        },
-        error => {
-          this.sIsLoading = '';
-        });
-    }
+   
 
     onClear() {
         this._DoseService.myForm.reset({ IsDeleted: "false" });
         this._DoseService.initializeFormGroup();
     }
 
-    onSubmit() {
-        if (this._DoseService.myForm.valid) {
-            if (!this._DoseService.myForm.get("DoseId").value) {
-                var m_data = {
-                    insertDoseMaster: {
-                        doseName: this._DoseService.myForm
-                            .get("DoseName")
-                            .value.trim(),
-                        doseNameInEnglish: this._DoseService.myForm
-                            .get("DoseNameInEnglish")
-                            .value.trim(),
-                        doseNameInMarathi: "",
-                        doseQtyPerDay:
-                            this._DoseService.myForm.get("DoseQtyPerDay").value,
-
-                        isActive: Boolean(
-                            JSON.parse(
-                                this._DoseService.myForm.get("IsDeleted").value
-                            )
-                        ),
-                        // addedBy: 1,
-                    },
-                };
-                this._DoseService.insertDoseMaster(m_data).subscribe((data) => {
-                    this.msg = m_data;
-                    if (data) {
-                        this.toastr.success('Record Saved Successfully.', 'Saved !', {
-                            toastClass: 'tostr-tost custom-toast-success',
-                          });
-                        this.getDoseMasterList();
-                        // Swal.fire(
-                        //     "Saved !",
-                        //     "Record saved Successfully !",
-                        //     "success"
-                        // ).then((result) => {
-                        //     if (result.isConfirmed) {
-                        //         this.getDoseMasterList();
-                        //     }
-                        // });
-                    } else {
-                        this.toastr.error(' Dose Master Data not saved !, Please check API error..', 'Error !', {
-                            toastClass: 'tostr-tost custom-toast-error',
-                          });
-                    }
-                    this.getDoseMasterList();
-                },error => {
-                    this.toastr.error('Dose Class Data not saved !, Please check API error..', 'Error !', {
-                     toastClass: 'tostr-tost custom-toast-error',
-                   });
-                 });
-            } else {
-                var m_dataUpdate = {
-                    updateDoseMaster: {
-                        doseId: this._DoseService.myForm.get("DoseId").value,
-                        doseName: this._DoseService.myForm
-                            .get("DoseName")
-                            .value.trim(),
-                        doseNameInEnglish: this._DoseService.myForm
-                            .get("DoseNameInEnglish")
-                            .value.trim(),
-                        doseNameInMarathi: "",
-                        isActive: Boolean(
-                            JSON.parse(
-                                this._DoseService.myForm.get("IsDeleted").value
-                            )
-                        ),
-                        doseQtyPerDay:
-                            this._DoseService.myForm.get("DoseQtyPerDay").value,
-                        //  updatedBy: 1,
-                    },
-                };
-                this._DoseService
-                    .updateDoseMaster(m_dataUpdate)
-                    .subscribe((data) => {
-                        this.msg = m_dataUpdate;
-                        if (data) {
-                            this.toastr.success('Record updated Successfully.', 'updated !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                            this.getDoseMasterList();
-                            // Swal.fire(
-                            //     "Updated !",
-                            //     "Record updated Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getDoseMasterList();
-                            //     }
-                            // });
-                        } else {
-                            this.toastr.error(' Dose Master Data not updated !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                        }
-                        this.getDoseMasterList();
-                    },error => {
-                        this.toastr.error('Dose Class Data not updated !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
-            }
-            this.onClear();
-        }
-    }
+   
     onEdit(row) {
         var m_data1 = {
             DoseId: row.DoseId,
@@ -190,17 +91,79 @@ export class DosemasterComponent implements OnInit {
 
         this._DoseService.populateForm(m_data1);
     }
+
+    changeStatus(status: any) {
+        switch (status.id) {
+            case 1:
+                //this.onEdit(status.data)
+                break;
+            case 2:
+                this.onEdit(status.data)
+                break;
+            case 5:
+                this.onDeactive(status.data.doseId);
+                break;
+            default:
+                break;
+        }
+    }
+   
+    onDeactive(doseId) {
+        debugger
+        this.confirmDialogRef = this._matDialog.open(
+            FuseConfirmDialogComponent,
+            {
+                disableClose: false,
+            }
+        );
+        this.confirmDialogRef.componentInstance.confirmMessage =
+            "Are you sure you want to deactive?";
+        this.confirmDialogRef.afterClosed().subscribe((result) => {
+            debugger
+            if (result) {
+                this._DoseService.deactivateTheStatus(doseId).subscribe((data: any) => {
+                    
+                    if (data.StatusCode == 200) {
+                        this.toastr.success(
+                            "Record updated Successfully.",
+                            "updated !",
+                            {
+                                toastClass:
+                                    "tostr-tost custom-toast-success",
+                            }
+                        );
+                        // this.getGenderMasterList();
+                    }
+                });
+            }
+            this.confirmDialogRef = null;
+        });
+    }
+
+    newDosemaster() {
+        const dialogRef = this._matDialog.open(NewDoseMasterComponent,
+            {
+                maxWidth: "45vw",
+                height: '35%',
+                width: '70%',
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
+
+        });
+    }
 }
 
 export class DoseMaster {
-    DoseId: number;
-    DoseName: string;
-    DoseNameInEnglish: string;
-    DoseQtyPerDay: number;
-    IsDeleted: boolean;
-    AddedBy: number;
-    UpdatedBy: number;
-    AddedByName: string;
+    doseId: number;
+    doseName: string;
+    doseNameInEnglish: string;
+    doseNameInMarathi:string;
+    doseQtyPerDay: number;
+    isActive: boolean;
+    // AddedBy: number;
+    // UpdatedBy: number;
+    // AddedByName: string;
 
     /**
      * Constructor
@@ -209,15 +172,16 @@ export class DoseMaster {
      */
     constructor(DoseMaster) {
         {
-            this.DoseId = DoseMaster.DoseId || "";
-            this.DoseName = DoseMaster.DoseName || "";
-            this.DoseNameInEnglish = DoseMaster.DoseNameInEnglish || "";
-            this.DoseQtyPerDay = DoseMaster.DoseQtyPerDay || "";
+            this.doseId = DoseMaster.doseId || "";
+            this.doseName = DoseMaster.doseName || "";
+            this.doseNameInEnglish = DoseMaster.doseNameInEnglish || "";
+            this.doseNameInMarathi = DoseMaster.doseNameInMarathi || "";
+            this.doseQtyPerDay = DoseMaster.doseQtyPerDay || "";
 
-            this.IsDeleted = DoseMaster.IsDeleted || "false";
-            this.AddedBy = DoseMaster.AddedBy || "";
-            this.UpdatedBy = DoseMaster.UpdatedBy || "";
-            this.AddedByName = DoseMaster.AddedByName || "";
+            this.isActive = DoseMaster.isActive || "false";
+            // this.AddedBy = DoseMaster.AddedBy || "";
+            // this.UpdatedBy = DoseMaster.UpdatedBy || "";
+            // this.AddedByName = DoseMaster.AddedByName || "";
         }
     }
 }

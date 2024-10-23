@@ -59,7 +59,14 @@ export class GenderMasterComponent implements OnInit {
         this._GenderService.myform.reset({ isDeleted: "false" });
         this._GenderService.initializeFormGroup();
     }
-
+    onEdit(row) {
+        var m_data = {
+            genderId: row.genderId,
+            genderName: row.genderName.trim(),
+            isDeleted: JSON.stringify(row.isActive),
+        };
+        this._GenderService.populateForm(m_data);
+    }
     onSubmit() {
         if (this._GenderService.myform.valid) {
             if (!this._GenderService.myform.get("GenderId").value) {
@@ -195,14 +202,7 @@ export class GenderMasterComponent implements OnInit {
                 break;
         }
     }
-    onEdit(row) {
-        var m_data = {
-            genderId: row.genderId,
-            genderName: row.genderName.trim(),
-            isDeleted: JSON.stringify(row.isActive),
-        };
-        this._GenderService.populateForm(m_data);
-    }
+  
     onDeactive(genderId) {
         debugger
         this.confirmDialogRef = this._matDialog.open(

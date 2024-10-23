@@ -1,15 +1,15 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { gridRequest } from "app/core/models/gridRequest";
+import { ApiCaller } from "app/core/services/apiCaller";
 
-@Injectable({
-    providedIn: "root",
-})
+@Injectable()
 export class GenericmasterService {
     myForm: FormGroup;
     myformSearch: FormGroup;
     constructor(
-        private _httpClient: HttpClient,
+        private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder
     ) {
         this.myForm = this.createGenericForm();
@@ -38,21 +38,25 @@ export class GenericmasterService {
         this.createGenericForm();
     }
 
-    public getGenericMasterList(param) {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_M_GenericMaster",
-            param
-        );
+  
+
+    public getgenericMasterList(param: gridRequest, showLoader = true) {
+        return this._httpClient.PostData("generic/List", param, showLoader);
     }
 
-    public insertGenericMaster(param) {
-        return this._httpClient.post("Prescription/GenericSave", param);
+    public genericMasterInsert(Param: any, showLoader = true) {
+        return this._httpClient.PostData("generic", Param, showLoader);
     }
 
-    public updateGenericMaster(param) {
-        return this._httpClient.post("Prescription/GenericUpdate", param);
+    public genericMasterUpdate(id: number , Param: any, showLoader = true) {
+        //return this._httpClient.put("generic/" + id , Param, showLoader);
+        return this._httpClient.PostData("generic", Param, showLoader);
     }
 
+    public deactivateTheStatus(m_data) {
+        //return this._httpClient.delete("generic?Id=" + m_data, {});
+        return this._httpClient.PostData("generic", m_data);
+    }
     populateForm(param) {
         this.myForm.patchValue(param);
     }

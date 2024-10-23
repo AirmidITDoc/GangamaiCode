@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { GenericmasterComponent } from "./genericmaster.component";
 import { RouterModule, Routes } from "@angular/router";
 import { GenericmasterService } from "./genericmaster.service";
@@ -20,6 +20,9 @@ import { FuseSharedModule } from "@fuse/shared.module";
 import { MatRadioModule } from "@angular/material/radio";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
+import { NewGnericMasterComponent } from './new-gneric-master/new-gneric-master.component';
+import { SharedModule } from "app/main/shared/shared.module";
+import { MatDialogModule } from "@angular/material/dialog";
 
 const routes: Routes = [
     {
@@ -29,18 +32,16 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [GenericmasterComponent],
+    declarations: [GenericmasterComponent, NewGnericMasterComponent],
     imports: [
         RouterModule.forChild(routes),
-
+        SharedModule,
         MatButtonModule,
         MatCheckboxModule,
-        MatDatepickerModule,
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
         MatMenuModule,
-        MatRippleModule,
         MatTableModule,
         MatToolbarModule,
         MatPaginatorModule,
@@ -49,10 +50,10 @@ const routes: Routes = [
         MatRadioModule,
         MatSnackBarModule,
         FuseSharedModule,
-        FuseConfirmDialogModule,
         FuseSidebarModule,
+        MatDialogModule,
     ],
-    providers: [GenericmasterService],
+    providers: [GenericmasterService,DatePipe],
     entryComponents: [GenericmasterComponent],
 })
 export class GenericmasterModule {}

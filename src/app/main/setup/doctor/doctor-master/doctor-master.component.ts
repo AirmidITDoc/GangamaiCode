@@ -12,6 +12,11 @@ import { NewDoctorComponent } from "./new-doctor/new-doctor.component";
 import Swal from "sweetalert2";
 import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
 import { DatePipe } from "@angular/common";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { MatDialogRef } from "@angular/material/dialog";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
     selector: "app-doctor-master",
@@ -21,50 +26,37 @@ import { DatePipe } from "@angular/common";
     animations: fuseAnimations,
 })
 export class DoctorMasterComponent implements OnInit {
-
-    
-    isLoading = true;
-    msg: any;
-    step = 0;
-
-    setStep(index: number) {
-        this.step = index;
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    gridConfig: gridModel = {
+        apiUrl: "Gender/List",
+        columnsList: [
+            { heading: "Code", key: "genderId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Gender Name", key: "genderName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+            {
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            debugger
+                        }
+                    }, {
+                        action: gridActions.delete, callback: (data: any) => {
+                            debugger
+                        }
+                    }]
+            } //Action 1-view, 2-Edit,3-delete
+        ],
+        sortField: "genderId",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "genderName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+        ],
+        row:25
     }
-    SearchName: string;
-    sIsLoading: string = '';
-    @ViewChild(MatSort) sort: MatSort;
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-    @ViewChild(MatAccordion) accordion: MatAccordion;
-
-    displayedColumns: string[] = [
-        "DoctorId",
-        "DoctorName",
-        "DateofBirth",
-        "Address",
-        "City",
-        "Pin",
-        "Phone",
-        "Mobile",
-        "Education",
-        "RefDocHospitalName",
-        "DoctorType",
-        "PassportNo",
-        "ESINO",
-        "RegNo",
-        "MahRegNo",
-        "MahRegDate",
-        "RegDate",
-        "AddedBy",
-        "IsConsultant",
-        "IsRefDoc",
-        "IsDeleted",
-        "action",
-    ];
-
-    DSDoctorMasterList = new MatTableDataSource<DoctorMaster>();
 
     constructor(
-        public _doctorService: DoctorMasterService,
+        public _doctorService: DoctorMasterService,public toastr: ToastrService,
         private accountService: AuthenticationService,
         private _fuseSidebarService: FuseSidebarService,
         public _matDialog: MatDialog,
@@ -72,14 +64,14 @@ export class DoctorMasterComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        this.getDoctorMasterList();
+       
     }
     onSearchClear() {
         this._doctorService.myformSearch.reset({
             DoctorNameSearch: "",
             IsDeletedSearch: "2",
         });
-        this.getDoctorMasterList();
+       
     }
     toggleSidebar(name): void {
         this._fuseSidebarService.getSidebar(name).toggleOpen();
@@ -90,59 +82,34 @@ export class DoctorMasterComponent implements OnInit {
     }
 
     onSearch() {
-        this.getDoctorMasterList();
+       
     }
-    resultsLength = 0;
-    getDoctorMasterList() {
-        let Refstatus
-        if (this.currentStatus1 == 1)
-            Refstatus = 0
-        if (this.currentStatus1 == 0)
-            Refstatus = 1
-        var vdata = {
-            "F_Name": this._doctorService.myformSearch.get('DoctorNameSearch').value.trim() + "%" || "%",
-            "L_Name": this._doctorService.myform.get('LastName').value || "%",
-            "FlagActive": this.currentStatus,
-            "ConsultantDoc_All": this.currentStatus1,
-            "ReferDoc_All": Refstatus,
-            Start:(this.paginator?.pageIndex??1),
-            Length:(this.paginator?.pageSize??30),
-        }
-        console.log(vdata)
-        this._doctorService.getDoctorMasterList(vdata).subscribe((data) => {
-            this.DSDoctorMasterList.data = data["Table1"]??[] as DoctorMaster[];
-            //  this.DSDoctorMasterList.sort = this.sort;
-             this.resultsLength= data["Table"][0]["total_row"];
-             this.sIsLoading = '';
-        },
-            (error) => (this.isLoading = false)
-        );
-    }
+   
 
-    currentStatus = 1;
-    toggle(val: any) {
-        if (val == "2") {
-            this.currentStatus = 2;
-        } else if (val == "1") {
-            this.currentStatus = 1;
-        }
-        else {
-            this.currentStatus = 0;
+    // currentStatus = 1;
+    // toggle(val: any) {
+    //     if (val == "2") {
+    //         this.currentStatus = 2;
+    //     } else if (val == "1") {
+    //         this.currentStatus = 1;
+    //     }
+    //     else {
+    //         this.currentStatus = 0;
 
-        }
-    }
-    currentStatus1 = 0;
-    toggle1(val: any) {
-        if (val == "2") {
-            this.currentStatus1 = 2;
-        } else if (val == "1") {
-            this.currentStatus1 = 1;
-        }
-        else {
-            this.currentStatus1 = 0;
+    //     }
+    // }
+    // currentStatus1 = 0;
+    // toggle1(val: any) {
+    //     if (val == "2") {
+    //         this.currentStatus1 = 2;
+    //     } else if (val == "1") {
+    //         this.currentStatus1 = 1;
+    //     }
+    //     else {
+    //         this.currentStatus1 = 0;
 
-        }
-    }
+    //     }
+    // }
 
     onEdit(row) {
         console.log(row)
@@ -162,11 +129,57 @@ export class DoctorMasterComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe((result) => {
             console.log("The dialog was closed - Insert Action", result);
-            this.getDoctorMasterList();
+           
         });
     }
-
-    onAdd() {
+    changeStatus(status: any) {
+        switch (status.id) {
+            case 1:
+                //this.onEdit(status.data)
+                break;
+            case 2:
+                this.onEdit(status.data)
+                break;
+            case 5:
+                this.onDeactive(status.data.genderId);
+                break;
+            default:
+                break;
+        }
+    }
+  
+    onDeactive(genderId) {
+        debugger
+        this.confirmDialogRef = this._matDialog.open(
+            FuseConfirmDialogComponent,
+            {
+                disableClose: false,
+            }
+        );
+        this.confirmDialogRef.componentInstance.confirmMessage =
+            "Are you sure you want to deactive?";
+        this.confirmDialogRef.afterClosed().subscribe((result) => {
+            debugger
+            if (result) {
+                this._doctorService.deactivateTheStatus(genderId).subscribe((data: any) => {
+                  //  this.msg = data
+                    if (data.StatusCode == 200) {
+                        this.toastr.success(
+                            "Record updated Successfully.",
+                            "updated !",
+                            {
+                                toastClass:
+                                    "tostr-tost custom-toast-success",
+                            }
+                        );
+                        // this.getGenderMasterList();
+                    }
+                });
+            }
+            this.confirmDialogRef = null;
+        });
+    }
+    newDoctormaster() {
         const dialogRef = this._matDialog.open(NewDoctorComponent, {
             maxWidth: "85vw",
             maxHeight: "98vh",
@@ -175,44 +188,13 @@ export class DoctorMasterComponent implements OnInit {
         });
         dialogRef.afterClosed().subscribe((result) => {
             console.log("The dialog was closed - Insert Action", result);
-            this.getDoctorMasterList();
+           
         });
     }
 
 
 
-    onDeactive(row) {
-        Swal.fire({
-            title: 'Confirm Status',
-            text: 'Are you sure you want to Change Status?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes,Change Status!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-
-                let Query
-                if (row.IsActive) {
-                    Query = "Update DoctorMaster set IsActive=0 where DoctorId=" + row.DoctorId;
-                }
-                else {
-                    Query = "Update DoctorMaster set IsActive=1 where DoctorId=" + row.DoctorId;
-                }
-                console.log(Query);
-                this._doctorService.deactivateTheStatus(Query)
-                    .subscribe((data) => {
-                        // Handle success response
-                        Swal.fire('Changed!', 'DoctorId Status has been Changed.', 'success');
-                        this.getDoctorMasterList();
-                    }, (error) => {
-                        // Handle error response
-                        Swal.fire('Error!', 'Failed to deactivate DoctorId.', 'error');
-                    });
-            }
-        });
-    }
+    
 }
 
 export class DoctorMaster {

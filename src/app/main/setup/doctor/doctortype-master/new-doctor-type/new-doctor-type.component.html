@@ -1,0 +1,36 @@
+<!-- <div fxFlex.gt-sm="35%" fxFlex style="background-color: white;">
+    <div class="dialog-content-wrapper">
+        <div mat-dialog-content class="p-24 pb-0 m-0">
+            <form [formGroup]="_doctortypeService.myform">
+                <h3>{{_doctortypeService.myform.controls.Id.value?"Modify DoctorType Master":"New
+                    DoctorType Master"}}</h3>
+
+
+                <input type="hidden" name="Id" formControlName="Id">
+
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                        <mat-label>DoctorType Name</mat-label>
+                        <input name="DoctorType" formControlName="DoctorType" matInput required>
+                        <mat-error>Please enter DoctorType Name </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <mat-radio-group name="isActive" formControlName="isActive" >
+                        <mat-radio-button  class="mr-sm-12" [checked]=true
+                            fxFlex>IsActive</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+            </form>
+        </div>
+        <div class="footer-navigation-container">
+            <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px"
+                style="margin-right: 10px;">
+                <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
+                <button class="btn btn-primary" (click)="onSubmit()"
+                    [disabled]="_doctortypeService.myform.invalid">Save</button>
+            </div>
+        </div>
+
+    </div> -->

@@ -2,58 +2,8 @@
     padding: 10px !important;
 }
 
-app-doctortype-master {
-    .mat-header-row {
-        width: 700px;
-        max-width: 700px;
-        min-width: 700px;
-        font-weight: bold;
-    }
+app-doctortype-master{
 
-    .mat-row {
-        width: 700px;
-        max-width: 700px;
-        min-width: 700px;
-    }
-
-    .mat-column-Id {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-    }
-
-    .mat-column-DoctorType {
-        width: 250px;
-        max-width: 250px;
-        min-width: 250px;
-        text-align: left;
-        justify-content: left;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        overflow: hidden !important;
-        display: inline-flex;
-        display: inline;
-        margin-right: 20px;
-        margin-top: 20px;
-    }
-
-    .mat-column-IsDeleted {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-        text-align: center;
-        justify-content: center;
-    }
-
-    .mat-column-action {
-        // color: white !important;
-        width: 110px;
-        max-width: 110px;
-        min-width: 110px;
-        text-align: right;
-        justify-content: right;
-    }
     .mat-icon-button {
         padding: 0;
         min-width: 0;
@@ -64,11 +14,3 @@ app-doctortype-master {
         border-radius: 50%;
     }
 }
-
-// .button-row button{
-//     margin: 5px;
-// }
-// .mat-radio-group{
-//     margin: 7px;
-//     margin-bottom: 10px;
-// }

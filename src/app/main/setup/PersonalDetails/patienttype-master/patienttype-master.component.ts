@@ -8,6 +8,14 @@ import { AuthenticationService } from "app/core/services/authentication.service"
 import { PatienttypeMasterService } from "./patienttype-master.service";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
+import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { NewPatientTypeComponent } from "./new-patient-type/new-patient-type.component";
+
+
 
 @Component({
     selector: "app-patienttype-master",
@@ -17,28 +25,42 @@ import { ToastrService } from "ngx-toastr";
     animations: fuseAnimations,
 })
 export class PatienttypeMasterComponent implements OnInit {
-    msg: any;
-
-    displayedColumns: string[] = [
-        "PatientTypeId",
-        "PatientType",
-        //   "AddedByName",
-        "IsDeleted",
-        "action",
-    ];
-
-    DSPatientTypeMasterList = new MatTableDataSource<PatientTypeMaster>();
-    @ViewChild(MatSort) sort: MatSort;
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    gridConfig: gridModel = {
+        apiUrl: "Gender/List",
+        columnsList: [
+            { heading: "Code", key: "genderId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Gender Name", key: "genderName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+            {
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            debugger
+                        }
+                    }, {
+                        action: gridActions.delete, callback: (data: any) => {
+                            debugger
+                        }
+                    }]
+            } //Action 1-view, 2-Edit,3-delete
+        ],
+        sortField: "genderId",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "genderName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+        ],
+        row:25
+    }
     constructor(
-        public _PatientTypeService: PatienttypeMasterService,
+        public _PatientTypeService: PatienttypeMasterService, public _matDialog: MatDialog,
         private accountService: AuthenticationService,
         public notification: NotificationServiceService,
         public toastr : ToastrService,
     ) {}
     onSearch() {
-        this.getPatientTypeMasterList();
+        
     }
 
     onSearchClear() {
@@ -46,23 +68,12 @@ export class PatienttypeMasterComponent implements OnInit {
             PatientTypeSearch: "",
             IsDeletedSearch: "2",
         });
-        this.getPatientTypeMasterList();
+        
     }
     ngOnInit(): void {
-        this.getPatientTypeMasterList();
+        
     }
-    getPatientTypeMasterList() {
-        var param = {                    
-        PatientType:this._PatientTypeService.myformSearch.get("PatientTypeSearch").value.trim() + "%" || "%",
- 
-        };
-       // console.log(param)
-        this._PatientTypeService.getPatientTypeMasterList(param).subscribe((Menu) =>{
-            this.DSPatientTypeMasterList.data =Menu as PatientTypeMaster[];
-            this.DSPatientTypeMasterList.sort = this.sort;
-            this.DSPatientTypeMasterList.paginator = this.paginator;
-        });
-    }
+  
 
   
 
@@ -72,105 +83,7 @@ export class PatienttypeMasterComponent implements OnInit {
     }
  
 
-    onSubmit() {
-        if (this._PatientTypeService.myForm.valid) {
-            if (!this._PatientTypeService.myForm.get("PatientTypeId").value) {
-                var m_data = {
-                    patientTypeMasterInsert: {
-                        patientType: this._PatientTypeService.myForm
-                            .get("PatientType")
-                            .value.trim(),
-                        addedBy: 1,
-                        isActive: Boolean(
-                            JSON.parse(
-                                this._PatientTypeService.myForm.get("IsDeleted")
-                                    .value
-                            )
-                        ),
-                    },
-                };
-                this._PatientTypeService
-                    .patientTypeMasterInsert(m_data)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                              //this.getPatientTypeMasterList();
-                            // Swal.fire(
-                            //     "Saved !",
-                            //     "Record saved Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getPatientTypeMasterList();
-                            //     }
-                            // });
-                        } else {
-                            this.toastr.error('Patient Type Master Data not saved !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                        }
-                        this.getPatientTypeMasterList();
-                    },error => {
-                        this.toastr.error('Patient Type Data not saved !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     } );
-            } else {
-                var m_dataUpdate = {
-                    patientTypeMasterUpdate: {
-                        patientTypeID:
-                            this._PatientTypeService.myForm.get("PatientTypeId")
-                                .value,
-                        patientType: this._PatientTypeService.myForm
-                            .get("PatientType")
-                            .value.trim(),
-                        isActive: Boolean(
-                            JSON.parse(
-                                this._PatientTypeService.myForm.get("IsDeleted")
-                                    .value
-                            )
-                        ),
-                        updatedBy: 1,
-                    },
-                };
-                console.log(m_dataUpdate);
-                this._PatientTypeService
-                    .patientTypeMasterUpdate(m_dataUpdate)
-                    .subscribe((data) => {
-                        this.msg = m_dataUpdate;
-                        if (data) {
-                            this.toastr.success('Record Updated Successfully.', 'Updated !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                              this.getPatientTypeMasterList();
-                            // Swal.fire(
-                            //     "Updated !",
-                            //     "Record updated Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getPatientTypeMasterList();
-                            //     }
-                            // });
-                        } else {
-                           
-                            this.toastr.error('Patient Type Master Data not Updated !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                        }
-                        this.getPatientTypeMasterList();
-                    },error => {
-                        this.toastr.error('Patient Type Data not Updated !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     } );
-            }
-            this.onClear();
-        }
-    }
+   
     onEdit(row) {
         console.log(row);
         var m_data1 = {
@@ -181,6 +94,67 @@ export class PatienttypeMasterComponent implements OnInit {
         };
        // console.log(m_data1);
         this._PatientTypeService.populateForm(m_data1);
+    }
+
+    changeStatus(status: any) {
+        switch (status.id) {
+            case 1:
+                //this.onEdit(status.data)
+                break;
+            case 2:
+                this.onEdit(status.data)
+                break;
+            case 5:
+                this.onDeactive(status.data.genderId);
+                break;
+            default:
+                break;
+        }
+    }
+  
+    onDeactive(genderId) {
+        debugger
+        this.confirmDialogRef = this._matDialog.open(
+            FuseConfirmDialogComponent,
+            {
+                disableClose: false,
+            }
+        );
+        this.confirmDialogRef.componentInstance.confirmMessage =
+            "Are you sure you want to deactive?";
+        this.confirmDialogRef.afterClosed().subscribe((result) => {
+            debugger
+            if (result) {
+                this._PatientTypeService.deactivateTheStatus(genderId).subscribe((data: any) => {
+                   
+                    if (data.StatusCode == 200) {
+                        this.toastr.success(
+                            "Record updated Successfully.",
+                            "updated !",
+                            {
+                                toastClass:
+                                    "tostr-tost custom-toast-success",
+                            }
+                        );
+                        // this.getGenderMasterList();
+                    }
+                });
+            }
+            this.confirmDialogRef = null;
+        });
+    }
+
+    newnewpatienttypemaster() {
+        const dialogRef = this._matDialog.open(NewPatientTypeComponent,
+            {
+                maxWidth: "45vw",
+                height: '35%',
+                width: '70%',
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
+
+        });
     }
 }
     

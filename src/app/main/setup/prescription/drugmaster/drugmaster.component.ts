@@ -9,6 +9,11 @@ import { takeUntil } from "rxjs/operators";
 import { DrugmasterService } from "./drugmaster.service";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { NewDrugMasterComponent } from "./new-drug-master/new-drug-master.component";
+import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 
 @Component({
     selector: "app-drugmaster",
@@ -18,60 +23,46 @@ import { ToastrService } from "ngx-toastr";
     animations: fuseAnimations,
 })
 export class DrugmasterComponent implements OnInit {
-    DrugMasterList: any;
-    GenericmbList: any = [];
-    ClassmbList: any = [];
-    msg: any;
-    sIsLoading: string = '';
-    isLoading = true;
-
-    @ViewChild(MatSort) sort: MatSort;
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-
-    //class filter
-    public classFilterCtrl: FormControl = new FormControl();
-    public filteredClass: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-    //generic filter
-    public genericFilterCtrl: FormControl = new FormControl();
-    public filteredGeneric: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-    private _onDestroy = new Subject<void>();
-
-    displayedColumns: string[] = [
-        "DrugId",
-        "DrugName",
-        "GenericName",
-        "ClassName",
-        // "AddedByName",
-        "IsDeleted",
-        "action",
-    ];
-
-    DSDrugMasterList = new MatTableDataSource<DrugMaster>();
-
-    constructor(public _drugService: DrugmasterService,
+   
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    gridConfig: gridModel = {
+        apiUrl: "DrugMaster/List",
+        columnsList: [
+            { heading: "Code", key: "drugId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Drug Name", key: "drugName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Generic Name", key: "genericId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Class Id", key: "classId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+           
+            {
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            debugger
+                        }
+                    }, {
+                        action: gridActions.delete, callback: (data: any) => {
+                            debugger
+                        }
+                    }]
+            } //Action 1-view, 2-Edit,3-delete
+        ],
+        sortField: "drugId",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "drugName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+        ],
+        row:25
+    }
+    constructor(public _drugService: DrugmasterService,public _matDialog: MatDialog,
         public toastr : ToastrService,) {}
 
     ngOnInit(): void {
-        this.getDrugMasterList();
-        this.getGenericNameCombobox();
-        this.getClassNameCombobox();
-
-        this.classFilterCtrl.valueChanges
-            .pipe(takeUntil(this._onDestroy))
-            .subscribe(() => {
-                this.filterClass();
-            });
-
-        this.genericFilterCtrl.valueChanges
-            .pipe(takeUntil(this._onDestroy))
-            .subscribe(() => {
-                this.filterGeneric();
-            });
+             
     }
     onSearch() {
-        this.getDrugMasterList();
+        
     }
 
     onSearchClear() {
@@ -79,77 +70,55 @@ export class DrugmasterComponent implements OnInit {
             DrugNameSearch: "",
             IsDeletedSearch: "2",
         });
-        this.getDrugMasterList();
-    }
-    private filterClass() {
-        if (!this.ClassmbList) {
-            return;
-        }
-        // get the search keyword
-        let search = this.classFilterCtrl.value;
-        if (!search) {
-            this.filteredClass.next(this.ClassmbList.slice());
-            return;
-        } else {
-            search = search.toLowerCase();
-        }
-        // filter the banks
-        this.filteredClass.next(
-            this.ClassmbList.filter(
-                (bank) => bank.ClassName.toLowerCase().indexOf(search) > -1
-            )
-        );
+        
     }
 
-    private filterGeneric() {
-        // debugger;
-        if (!this.GenericmbList) {
-            return;
+    changeStatus(status: any) {
+        switch (status.id) {
+            case 1:
+                //this.onEdit(status.data)
+                break;
+            case 2:
+                this.onEdit(status.data)
+                break;
+            case 5:
+                this.onDeactive(status.data.drugId);
+                break;
+            default:
+                break;
         }
-        // get the search keyword
-        let search = this.genericFilterCtrl.value;
-        if (!search) {
-            this.filteredGeneric.next(this.GenericmbList.slice());
-            return;
-        } else {
-            search = search.toLowerCase();
-        }
-        // filter
-        this.filteredGeneric.next(
-            this.GenericmbList.filter(
-                (bank) => bank.GenericName.toLowerCase().indexOf(search) > -1
-            )
-        );
-    }
-    getDrugMasterList() {
-        this.sIsLoading = 'loading-data';
-        var param = {
-            DrugName:this._drugService.myformSearch.get("DrugNameSearch")
-                    .value.trim() + "%" || "%",
-        };
-        this._drugService.getDrugMasterList(param).subscribe((Menu) => {
-            this.DSDrugMasterList.data = Menu as DrugMaster[];
-            this.DSDrugMasterList.sort = this.sort;
-            this.DSDrugMasterList.paginator = this.paginator;
-            this.sIsLoading = '';
-            console.log(this.DSDrugMasterList);
-        },
-        error => {
-          this.sIsLoading = '';
-        });
     }
 
-    getGenericNameCombobox() {
-        this._drugService.getGenericMasterCombo().subscribe((data) => {
-            this.GenericmbList = data;
-            this.filteredGeneric.next(this.GenericmbList.slice());
-        });
-    }
-    getClassNameCombobox() {
-        this._drugService.getClassMasterCombo().subscribe((data) => {
-            this.ClassmbList = data;
-            this.filteredClass.next(this.ClassmbList.slice());
-            console.log(this.ClassmbList);
+     
+    onDeactive(drugId) {
+        debugger
+        this.confirmDialogRef = this._matDialog.open(
+            FuseConfirmDialogComponent,
+            {
+                disableClose: false,
+            }
+        );
+        this.confirmDialogRef.componentInstance.confirmMessage =
+            "Are you sure you want to deactive?";
+        this.confirmDialogRef.afterClosed().subscribe((result) => {
+            debugger
+            if (result) {
+                this._drugService.deactivateTheStatus(drugId).subscribe((data: any) => {
+                    
+                    if (data.StatusCode == 200) {
+                        this.toastr.success(
+                            "Record updated Successfully.",
+                            "updated !",
+                            {
+                                toastClass:
+                                    "tostr-tost custom-toast-success",
+                            }
+                        );
+                        // this.getGenderMasterList();
+                    }
+                });
+            }
+            this.confirmDialogRef = null;
         });
     }
     onClear() {
@@ -157,109 +126,17 @@ export class DrugmasterComponent implements OnInit {
         this._drugService.initializeFormGroup();
     }
 
-    onSubmit() {
-        if (this._drugService.myform.valid) {
-            if (!this._drugService.myform.get("DrugId").value) {
-                var m_data = {
-                    insertDrugMaster: {
-                        drugName: this._drugService.myform
-                            .get("DrugName")
-                            .value.trim(),
-                        genericId:
-                            this._drugService.myform.get("GenericId").value
-                                .GenericId,
-                        classId:
-                            this._drugService.myform.get("ClassId").value
-                                .ClassId,
-                        isActive: Boolean(
-                            JSON.parse(
-                                this._drugService.myform.get("IsDeleted").value
-                            )
-                        ),
-                        // addedBy: 1,
-                    },
-                };
+    newDrugmaster() {
+        const dialogRef = this._matDialog.open(NewDrugMasterComponent,
+            {
+                maxWidth: "45vw",
+                height: '35%',
+                width: '70%',
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
 
-                this._drugService.insertDrugMaster(m_data).subscribe((data) => {
-                    this.msg = data;
-                    console.log(this.msg);
-                    if (data) {
-                        this.toastr.success('Record Saved Successfully.', 'Saved !', {
-                            toastClass: 'tostr-tost custom-toast-success',
-                          });
-                        this.getDrugMasterList();
-                        // Swal.fire(
-                        //     "Saved !",
-                        //     "Record saved Successfully !",
-                        //     "success"
-                        // ).then((result) => {
-                        //     if (result.isConfirmed) {
-                        //         this.getDrugMasterList();
-                        //     }
-                        // });
-                    } else {
-                        this.toastr.error('Drug Master Data not saved !, Please check API error..', 'Error !', {
-                            toastClass: 'tostr-tost custom-toast-error',
-                          });
-                        }
-                    this.getDrugMasterList();
-                },error => {
-                    this.toastr.error('Drug Class Data not saved !, Please check API error..', 'Error !', {
-                     toastClass: 'tostr-tost custom-toast-error',
-                   });
-                 });
-            } else {
-                var m_dataUpdate = {
-                    updateDrugMaster: {
-                        drugId: this._drugService.myform.get("DrugId").value,
-                        drugName:
-                            this._drugService.myform.get("DrugName").value,
-                        genericId:
-                            this._drugService.myform.get("GenericId").value
-                                .GenericId,
-                        classId:
-                            this._drugService.myform.get("ClassId").value
-                                .ClassId,
-                        isActive: Boolean(
-                            JSON.parse(
-                                this._drugService.myform.get("IsDeleted").value
-                            )
-                        ),
-                        //  updatedBy: 1,
-                    },
-                };
-                this._drugService
-                    .updateDrugMaster(m_dataUpdate)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record updated Successfully.', 'updated !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                            this.getDrugMasterList();
-                            // Swal.fire(
-                            //     "Updated !",
-                            //     "Record updated Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getDrugMasterList();
-                            //     }
-                            // });
-                        } else {
-                            this.toastr.error('Drug Master Data not updated !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                        }
-                        this.getDrugMasterList();
-                    },error => {
-                        this.toastr.error('Drug Class Data not updated !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
-            }
-            this.onClear();
-        }
+        });
     }
     onEdit(row) {
         var m_data = {
@@ -274,14 +151,14 @@ export class DrugmasterComponent implements OnInit {
     }
 }
 export class DrugMaster {
-    DrugId: number;
-    DrugName: string;
-    GenericId: number;
-    ClassId: string;
-    IsDeleted: boolean;
-    AddedBy: number;
-    UpdatedBy: number;
-    AddedByName: string;
+    drugId: number;
+    drugName: string;
+    genericId: number;
+    classId: string;
+    isActive: boolean;
+    // AddedBy: number;
+    // UpdatedBy: number;
+    // AddedByName: string;
 
     /**
      * Constructor
@@ -290,14 +167,14 @@ export class DrugMaster {
      */
     constructor(DrugMaster) {
         {
-            this.DrugId = DrugMaster.DrugId || "";
-            this.DrugName = DrugMaster.DrugName || "";
-            this.GenericId = DrugMaster.GenericId || "";
-            this.ClassId = DrugMaster.ClassId || "";
-            this.IsDeleted = DrugMaster.IsDeleted || "false";
-            this.AddedBy = DrugMaster.AddedBy || "";
-            this.UpdatedBy = DrugMaster.UpdatedBy || "";
-            this.AddedByName = DrugMaster.AddedByName || "";
+            this.drugId = DrugMaster.drugId || "";
+            this.drugName = DrugMaster.drugName || "";
+            this.genericId = DrugMaster.genericId || "";
+            this.classId = DrugMaster.classId || "";
+            this.isActive = DrugMaster.isActive || "true";
+            // this.AddedBy = DrugMaster.AddedBy || "";
+            // this.UpdatedBy = DrugMaster.UpdatedBy || "";
+            // this.AddedByName = DrugMaster.AddedByName || "";
         }
     }
 }

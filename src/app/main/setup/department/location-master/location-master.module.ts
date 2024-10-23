@@ -20,6 +20,7 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatButtonModule } from "@angular/material/button";
+import { NewLocationComponent } from './new-location/new-location.component';
 
 const routes: Routes = [
     {
@@ -29,7 +30,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [LocationMasterComponent],
+    declarations: [LocationMasterComponent, NewLocationComponent],
     imports: [
         RouterModule.forChild(routes),
 

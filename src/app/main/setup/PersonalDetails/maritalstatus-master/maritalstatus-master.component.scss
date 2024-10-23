@@ -1,49 +1,9 @@
-app-maritalstatus-master {
-    .mat-header-row {
-        width: 80px;
-        max-width: 850px;
-        min-width: 850px;
-        font-weight: bold;
-    }
+.p-sm-24 {
+    padding: 10px !important;
+}
 
-    .mat-row {
-        width: 850px;
-        max-width: 850px;
-        min-width: 850px;
-    }
+app-maritalstatus-master{
 
-    .mat-column-MaritalStatusId {
-        width: 110px;
-        max-width: 110px;
-        min-width: 110px;
-    }
-
-    .mat-column-MaritalStatusName {
-        width: 150px;
-        max-width: 150px;
-        min-width: 150px;
-    }
-    .mat-column-AddedBy {
-        width: 120px;
-        max-width: 120px;
-        min-width: 120px;
-    }
-    .mat-column-IsDeleted {
-         width: 120px;
-        max-width: 120px;
-        min-width: 120px;
-        text-align: center;
-        justify-content: center;
-    }
-
-    .mat-column-action {
-        // color: white !important;
-        width: 110px;
-        max-width: 110px;
-        min-width: 110px;
-        text-align: right;
-        justify-content: right;
-    }
     .mat-icon-button {
         padding: 0;
         min-width: 0;

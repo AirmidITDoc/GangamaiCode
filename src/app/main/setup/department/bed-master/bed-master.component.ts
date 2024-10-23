@@ -183,11 +183,11 @@ export class BedMaster {
     bedId: number;
     bedName: string;
     //RoomName: string;
-    roomId: number;
+    roomId: any;
     isAvailible: boolean;
     isActive: boolean;
-    AddedBy: number;
-    UpdatedBy: number;
+    // AddedBy: number;
+    // UpdatedBy: number;
 
     /**
      * Constructor
@@ -196,13 +196,13 @@ export class BedMaster {
      */
     constructor(BedMaster) {
         {
-            this.bedId = BedMaster.bedId || "";
-            this.bedName = BedMaster.bedName || "";
-            this.roomId = BedMaster.roomId || "";
-            this.isAvailible = BedMaster.isAvailible || "";
-            this.isActive = BedMaster.isActive || "true";
-            this.AddedBy = BedMaster.AddedBy || "";
-            this.UpdatedBy = BedMaster.UpdatedBy || "";
+            this.bedId = BedMaster.bedId;
+            this.bedName = BedMaster.bedName;
+            this.roomId = BedMaster.roomId;
+            this.isAvailible = BedMaster.isAvailible;
+            this.isActive = BedMaster.isActive;
+            // this.AddedBy = BedMaster.AddedBy || "";
+            // this.UpdatedBy = BedMaster.UpdatedBy || "";
         }
     }
 }

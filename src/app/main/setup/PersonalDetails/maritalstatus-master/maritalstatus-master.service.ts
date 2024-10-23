@@ -1,16 +1,16 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { gridRequest } from "app/core/models/gridRequest";
+import { ApiCaller } from "app/core/services/apiCaller";
 
-@Injectable({
-    providedIn: "root",
-})
+@Injectable()
 export class MaritalstatusMasterService {
     myform: FormGroup;
     myformSearch: FormGroup;
 
     constructor(
-        private _httpClient: HttpClient,
+        private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder
     ) {
         this.myform = this.createMaritalForm();
@@ -38,25 +38,23 @@ export class MaritalstatusMasterService {
         this.createMaritalForm();
     }
 
-    public getmaritalstatusMasterList(e) {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_MaritalStatusNameNameList",
-            e
-        );
+   
+    public getMaritalStatusList(param: gridRequest, showLoader = true) {
+        return this._httpClient.PostData("MaritalStatus/List", param, showLoader);
     }
 
-    public insertMaritalStatusMaster(param) {
-        return this._httpClient.post(
-            "PersonalDetails/MaritalStatusSave",
-            param
-        );
+    public MaritalStatusMasterInsert(Param: any, showLoader = true) {
+        return this._httpClient.PostData("MaritalStatus", Param, showLoader);
     }
 
-    public updateMaritalStatusMaster(param) {
-        return this._httpClient.post(
-            "PersonalDetails/MaritalStatusUpdate",
-            param
-        );
+    public MaritalStatusMasterUpdate(id: number , Param: any, showLoader = true) {
+        //return this._httpClient.put("Gender/" + id , Param, showLoader);
+        return this._httpClient.PostData("MaritalStatus", Param, showLoader);
+    }
+
+    public deactivateTheStatus(m_data) {
+        //return this._httpClient.delete("Gender?Id=" + m_data, {});
+        return this._httpClient.PostData("MaritalStatus", m_data);
     }
 
     populateForm(param) {

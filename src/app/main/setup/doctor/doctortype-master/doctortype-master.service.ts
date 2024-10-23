@@ -1,16 +1,15 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { ApiCaller } from "app/core/services/apiCaller";
 
-@Injectable({
-    providedIn: "root",
-})
+@Injectable()
 export class DoctortypeMasterService {
     myform: FormGroup;
     myformSearch: FormGroup;
 
     constructor(
-        private _httpClient: HttpClient,
+        private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder
     ) {
         this.myform = this.createDoctortypeForm();
@@ -35,22 +34,19 @@ export class DoctortypeMasterService {
         this.createDoctortypeForm();
     }
 
-    public getDoctortypeMasterList(param) {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_DoctorTypeMaster",param
-           
-        );
+  
+    public doctorTypeMasterInsert(Param: any, showLoader = true) {
+        return this._httpClient.PostData("doctorType", Param, showLoader);
     }
 
-    public doctortTypeMasterInsert(param) {
-        return this._httpClient.post("DoctorMaster/DoctorTypeSave", param);
+    public doctorTypeMasterUpdate(id: number , Param: any, showLoader = true) {
+        //return this._httpClient.put("Gender/" + id , Param, showLoader);
+        return this._httpClient.PostData("doctorType", Param, showLoader);
     }
 
-    public doctorTypeMasterUpdate(param) {
-        return this._httpClient.post("DoctorMaster/DoctorTypeUpdate", param);
-    }
     public deactivateTheStatus(m_data) {
-        return this._httpClient.post("Generic/ExecByQueryStatement?query=" + m_data,{});
+        //return this._httpClient.delete("Gender?Id=" + m_data, {});
+        return this._httpClient.PostData("doctorType", m_data);
     }
     populateForm(param) {
         this.myform.patchValue(param);

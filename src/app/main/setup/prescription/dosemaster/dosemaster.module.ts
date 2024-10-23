@@ -1,25 +1,26 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { DosemasterComponent } from "./dosemaster.component";
 import { RouterModule, Routes } from "@angular/router";
-import { DosemasterService } from "./dosemaster.service";
 import { MatButtonModule } from "@angular/material/button";
-import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
-import { MatMenuModule } from "@angular/material/menu";
 import { MatTableModule } from "@angular/material/table";
+import { MatMenuModule } from "@angular/material/menu";
 import { MatToolbarModule } from "@angular/material/toolbar";
-import { MatRippleModule } from "@angular/material/core";
-import { MatSortModule } from "@angular/material/sort";
 import { MatPaginatorModule } from "@angular/material/paginator";
+import { MatSortModule } from "@angular/material/sort";
 import { MatSelectModule } from "@angular/material/select";
-import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatRadioModule } from "@angular/material/radio";
-import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { FuseSharedModule } from "@fuse/shared.module";
+import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
+import { SharedModule } from "app/main/shared/shared.module";
+import { MatDialogModule } from "@angular/material/dialog";
+import { DatePipe } from "@angular/common";
+import { DosemasterService } from "./dosemaster.service";
+import { DosemasterComponent } from "./dosemaster.component";
+import { NewDoseMasterComponent } from "./new-dose-master/new-dose-master.component";
 
 const routes: Routes = [
     {
@@ -29,17 +30,16 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [DosemasterComponent],
+    declarations: [DosemasterComponent,NewDoseMasterComponent],
     imports: [
         RouterModule.forChild(routes),
+        SharedModule,
         MatButtonModule,
         MatCheckboxModule,
-        MatDatepickerModule,
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
         MatMenuModule,
-        MatRippleModule,
         MatTableModule,
         MatToolbarModule,
         MatPaginatorModule,
@@ -47,12 +47,11 @@ const routes: Routes = [
         MatSelectModule,
         MatRadioModule,
         MatSnackBarModule,
-        MatPaginatorModule,
         FuseSharedModule,
-        FuseConfirmDialogModule,
         FuseSidebarModule,
+        MatDialogModule,
     ],
-    providers: [DosemasterService],
+    providers: [DosemasterService,DatePipe],
     entryComponents: [DosemasterComponent],
 })
 export class DosemasterModule {}

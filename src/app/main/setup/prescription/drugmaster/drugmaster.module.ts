@@ -1,29 +1,26 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { DrugmasterComponent } from "./drugmaster.component";
 import { RouterModule, Routes } from "@angular/router";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
-import { MatMenuModule } from "@angular/material/menu";
 import { MatTableModule } from "@angular/material/table";
-import { MatRippleModule } from "@angular/material/core";
+import { MatMenuModule } from "@angular/material/menu";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatPaginatorModule } from "@angular/material/paginator";
-import { MatSelectModule } from "@angular/material/select";
 import { MatSortModule } from "@angular/material/sort";
+import { MatSelectModule } from "@angular/material/select";
 import { MatRadioModule } from "@angular/material/radio";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { FuseSharedModule } from "@fuse/shared.module";
 import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
-import { MatAutocompleteModule } from "@angular/material/autocomplete";
-import { MatStepperModule } from "@angular/material/stepper";
-import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { SharedModule } from "app/main/shared/shared.module";
-import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
+import { MatDialogModule } from "@angular/material/dialog";
+import { DatePipe } from "@angular/common";
+import { DrugmasterComponent } from "./drugmaster.component";
 import { DrugmasterService } from "./drugmaster.service";
+import { NewDrugMasterComponent } from "./new-drug-master/new-drug-master.component";
 
 const routes: Routes = [
     {
@@ -33,17 +30,16 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [DrugmasterComponent],
+    declarations: [DrugmasterComponent, NewDrugMasterComponent],
     imports: [
         RouterModule.forChild(routes),
+        SharedModule,
         MatButtonModule,
         MatCheckboxModule,
-
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
         MatMenuModule,
-        MatRippleModule,
         MatTableModule,
         MatToolbarModule,
         MatPaginatorModule,
@@ -52,15 +48,10 @@ const routes: Routes = [
         MatRadioModule,
         MatSnackBarModule,
         FuseSharedModule,
-        FuseConfirmDialogModule,
         FuseSidebarModule,
-        MatStepperModule,
-        MatAutocompleteModule,
-        MatProgressSpinnerModule,
-        SharedModule,
-        NgxMatSelectSearchModule,
+        MatDialogModule,
     ],
-    providers: [DrugmasterService],
+    providers: [DrugmasterService,DatePipe],
     entryComponents: [DrugmasterComponent],
 })
 export class DrugmasterModule {}
