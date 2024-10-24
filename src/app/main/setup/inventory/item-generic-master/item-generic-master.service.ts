@@ -38,7 +38,7 @@ export class ItemGenericMasterService {
 
     public getitemgenericMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Retrieve_Item_Generic_ByName",
+            "Generic/GetByProc?procName=Rtrv_GenericMaster_by_Name",
             param
         );
     }

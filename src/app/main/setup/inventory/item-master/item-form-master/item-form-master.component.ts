@@ -120,9 +120,7 @@ export class ItemFormMasterComponent implements OnInit {
             this.vSGST = this.registerObj.SGST
             this.vIGST = this.registerObj.IGST
             this.vchkactive = (this.registerObj.Isdeleted)
-           this.getAssigneToStoreList()
-            this.setDropdownObjs1();
-            this.getStoreNameMasterCombo();
+           this.getAssigneToStoreList()  
         }
         this.getitemtypeNameMasterCombo();
         this.getitemclassNameMasterCombo();
@@ -134,18 +132,11 @@ export class ItemFormMasterComponent implements OnInit {
         this.getManufactureNameMasterCombo();
         this.getCurrencyNameMasterCombo();
         this.getCompanyList();
-        this.getDrugTypeList();
-        this.setDropdownObjs1();
+        this.getDrugTypeList(); 
     }
  
 
-    setDropdownObjs1() {  
-        this.filteredOptionsStore = this._itemService.myform.get('StoreId').valueChanges.pipe(
-            startWith(''),
-            map(value => value ? this._filterStore(value) : this.StorecmbList.slice()),
-        ); 
-    }
-  
+ 
     // getAssigneToStoreList() {
     //     var vadat = {
     //         'ItemID': this.registerObj.ItemID
@@ -168,23 +159,61 @@ export class ItemFormMasterComponent implements OnInit {
             'ItemID': this.registerObj.ItemID
         }
         this._itemService.getAssigneToStoreList(vdata).subscribe((data) => {
-          this.filteredStore.data = data;
-          console.log(data)  
-          console.log(this.filteredStore.data) 
-
-          this.StorecmbList = this.filteredStore;
-          console.log(this.StorecmbList )
-          this.vStoreName = true
-          this._itemService.myform.get('StoreId').setValue(this.StorecmbList); 
-          if(this.filteredStore.StoreId == this.StorecmbList.Storeid)
-            {
-                this.vStoreName =  this.filteredStore.StoreId
-                console.log(this.vStoreName )
-            }
-        }); 
+          this.filteredStore.data = data; 
+          console.log(this.filteredStore.data)  
+          this.RtrvtoggleSelection(); 
+        });  
       }
    
-  
+      getStoreNameMasterCombo() { 
+        this._itemService.getStoreMasterCombo().subscribe(data => {
+            this.StorecmbList = data;
+            console.log(this.StorecmbList) 
+            this.filteredOptionsStore = this._itemService.myform.get('StoreId').valueChanges.pipe(
+                startWith(''),
+                map(value => value ? this._filterStore(value) : this.StorecmbList.slice()),
+            );  
+        });
+    }
+    private _filterStore(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase(); 
+            return this.StorecmbList.filter(option => option.StoreName.toLowerCase().includes(filterValue));
+        } 
+    } 
+    getOptionTextStore(option) { 
+        return option && option.StoreName ? option.StoreName : ''; 
+    }
+
+    selectedItems = [];
+    toggleSelection(item: any) {
+      item.selected = !item.selected;
+      if (item.selected) {
+        this.selectedItems.push(item);
+      } 
+      else {
+        const i = this.selectedItems.findIndex(value => value.ServiceId === item.ServiceId);
+        this.selectedItems.splice(i, 1);
+      } 
+    }
+    remove(item: string): void {
+        const index = this.selectedItems.indexOf(item);
+        if (index >= 0) {
+          this.selectedItems.splice(index, 1);
+        }
+      }
+      RtrvtoggleSelection() {
+        if(this.filteredStore.data){
+          this.filteredStore.data.forEach(element =>{
+              this.selectedItems.push(
+                {
+                    Storeid:element.StoreId || 0,
+                    StoreName:element.StoreName || '' 
+                });
+          }) 
+          console.log(this.selectedItems)
+        } 
+      }
     get f() {
         return this._itemService.myform.controls;
     } 
@@ -387,14 +416,7 @@ export class ItemFormMasterComponent implements OnInit {
 
     }
 
-    private _filterStore(value: any): string[] {
-        if (value) {
-            const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
-            //   this.isDoctorSelected = false;
-            return this.StorecmbList.filter(option => option.StoreName.toLowerCase().includes(filterValue));
-        }
-
-    } 
+ 
     private _filterClass(value: any): string[] {
         if (value) {
             const filterValue = value && value.ItemClassName ? value.ItemClassName.toLowerCase() : value.toLowerCase();
@@ -452,29 +474,7 @@ export class ItemFormMasterComponent implements OnInit {
             return this.DrugList.filter(option => option.DrugTypeName.toLowerCase().includes(filterValue));
         } 
     }
-
-
-    
-    getStoreNameMasterCombo() {
-        
-        this._itemService.getStoreMasterCombo().subscribe(data => {
-            this.StorecmbList = data;
-            console.log(this.StorecmbList)
-           
-            // if (this.data) {
-               
-            //     this.data.registerObj.StoreId =this._loggedService.currentUserValue.user.storeId;
-            //     const ddValue = this.StorecmbList.filter(c => c.Storeid == this.data.registerObj.StoreId);
-            //     this._itemService.myform.get('StoreId').setValue(ddValue[0]);
-
-            //     this._itemService.myform.updateValueAndValidity();
-            //     return;
-            // }
-
-        });
-    }
-   
-
+ 
     getManufactureNameMasterCombo() {
         this._itemService.getManufactureMasterCombo().subscribe(data => {
             this.ManufacurecmbList = data;
@@ -504,11 +504,7 @@ export class ItemFormMasterComponent implements OnInit {
 
     }
 
-    getOptionTextStore(option) {
-
-        return option && option.StoreName ? option.StoreName : '';
-
-    }
+ 
 
     getOptionTextItemtype(option) {
         return option && option.ItemTypeName ? option.ItemTypeName : '';
@@ -746,8 +742,7 @@ export class ItemFormMasterComponent implements OnInit {
     vSGST:any;
     vStoreName:any
     vROrder:any;
-    Savebtn:boolean=false; 
-    selectedStore:any=[];
+    Savebtn:boolean=false;  
     onSubmit() {
         const currentDate = new Date();
         const datePipe = new DatePipe('en-US');
@@ -814,16 +809,13 @@ export class ItemFormMasterComponent implements OnInit {
             }  
         }
     
-        if ((this.vStoreName == undefined || this.vStoreName == undefined || this.vStoreName == undefined)) {
+        if ((!this.selectedItems.length)) {
             this.toastr.warning('Please select StoreName.', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
             return;
-        }
-
-        this.selectedStore = this.vStoreName;
-      
-``       //console.log(this.selectedStore);
+        } 
+``       
         let ItemCategaryId = 0;
         if (this._itemService.myform.get("ItemCategoryId").value)
             ItemCategaryId = this._itemService.myform.get("ItemCategoryId").value.ItemCategoryId;
@@ -861,7 +853,7 @@ export class ItemFormMasterComponent implements OnInit {
             manufId = this._itemService.myform.get("ManufId").value.ManufId;
 
 
-          console.log(this.selectedStore);
+          console.log(this.selectedItems);
             if (!this._itemService.myform.get("ItemID").value) {
                 this.Savebtn = true;
 
@@ -871,7 +863,7 @@ export class ItemFormMasterComponent implements OnInit {
                 //     storeId: this._itemService.myform.get("StoreId").value.Storeid,
                 //     itemId: 0,
                 // };
-                this.selectedStore.forEach(element =>{
+                this.selectedItems.forEach(element =>{
                     let data ={
                         storeId :element.Storeid,
                         itemId: 0,
@@ -953,7 +945,7 @@ export class ItemFormMasterComponent implements OnInit {
                 //     itemId: this._itemService.myform.get("ItemID").value || 0,
                 // };
 
-                this.selectedStore.forEach(element =>{
+                this.selectedItems.forEach(element =>{
                     let data4 ={
                         storeId :element.Storeid,
                         itemId: this._itemService.myform.get("ItemID").value || 0,

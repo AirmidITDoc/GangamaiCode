@@ -47,19 +47,16 @@ export class ItemGenericMasterComponent implements OnInit {
         this.getitemgenericMasterList();
     }
     getitemgenericMasterList() {
-        var param = {
-            ItemId: 0,
-            ItemGenericId: 0,
-            ItemGenericName:
-                this._itemgenericService.myformSearch
-                    .get("ItemGenericNameSearch")
-                    .value.trim() + "%" || "%",
+        var param = { 
+            ItemGenericName: this._itemgenericService.myformSearch
+                    .get("ItemGenericNameSearch").value.trim() + "%" || "%",
         };
-
+        console.log(param)
         this._itemgenericService
             .getitemgenericMasterList(param)
             .subscribe((Menu) => {
                 this.DSItemGenericMasterList.data = Menu as ItemGenericMaster[];
+                console.log(this.DSItemGenericMasterList.data)
                 this.DSItemGenericMasterList.sort = this.sort;
                 this.DSItemGenericMasterList.paginator = this.paginator;
             });

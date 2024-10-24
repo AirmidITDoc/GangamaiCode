@@ -137,16 +137,16 @@
                                                                 required</mat-error>
                                                         </mat-form-field>
 
-                                                        <mat-form-field appearance="outline"
+                                                        <!-- <mat-form-field appearance="outline"
                                                             *ngIf="ItemSubform.get('PatientType').value == 'External'">
                                                             <mat-label>Patient Name</mat-label>
                                                             <input matInput placeholder="PatientName"
                                                                 formControlName="PatientName" [(ngModel)]="PatientName"
                                                                 required (keydown)="onEnterpatientname($event)"
                                                                 #patientname type="text"> 
-                                                        </mat-form-field>
+                                                        </mat-form-field> -->
 
-                                                        <!-- <mat-form-field appearance="outline"
+                                                        <mat-form-field appearance="outline"
                                                         *ngIf="ItemSubform.get('PatientType').value == 'External'">
                                                         <mat-label>Patient Name</mat-label>
                                                         <input matInput placeholder="PatientName"  formControlName="PatientName" [(ngModel)]="PatientName"
@@ -165,16 +165,36 @@
                                                                     {{option.ExternalPatientName}}
                                                                 </mat-option>
                                                             </mat-autocomplete>
-                                                        </mat-form-field> -->
+                                                        </mat-form-field>
+
 
                                                         <mat-form-field appearance="outline"
+                                                            *ngIf="ItemSubform.get('PatientType').value == 'External'">
+                                                            <mat-label>Doctor Name</mat-label>
+                                                            <input matAutocompletePosition="below" type="text"  matInput
+                                                            formControlName="DoctorName" [matAutocomplete]="autoDocName"  #doctorname
+                                                              (keydown)="onEnterDoctorname($event)" [(ngModel)]="DoctorName">
+                                                            <span matSuffix style="display: flex;">
+                                                                <mat-icon class="mat-icon-close"
+                                                                    (click)="ItemSubform.get('DoctorName').setValue(''); isDoctorSelected = false;">close</mat-icon>
+                                                                <mat-icon class="mat-icon-close"
+                                                                    (click)="ItemSubform.get('DoctorName').setValue(''); isDoctorSelected = false;">search</mat-icon>
+                                                            </span>
+                                                            <mat-autocomplete #autoDocName="matAutocomplete" [displayWith]="getOptionTextDoctor">
+                                                                <mat-option *ngFor="let option of filteredOptionDoctorList | async"  [value]="option">
+                                                                    {{option.DoctorName}}
+                                                                </mat-option>
+                                                            </mat-autocomplete>
+                                                        </mat-form-field>         
+
+                                                        <!-- <mat-form-field appearance="outline"
                                                             *ngIf="ItemSubform.get('PatientType').value == 'External'">
                                                             <mat-label>Doctor Name</mat-label>
                                                             <input matInput placeholder="DoctorName"
                                                                 [(ngModel)]="DoctorName"
                                                                 (keydown)="onEnterDoctorname($event)" #doctorname
                                                                 formControlName="DoctorName">
-                                                        </mat-form-field>
+                                                        </mat-form-field> -->
 
                                                         <mat-form-field appearance="outline"
                                                             *ngIf="ItemSubform.get('PatientType').value == 'External'">

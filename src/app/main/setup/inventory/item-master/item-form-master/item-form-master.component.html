@@ -239,7 +239,7 @@
           </div>
 
           <div>
-            <mat-form-field appearance="outline" fxFlex style="margin-right:10px;">
+            <mat-form-field appearance="outline" fxFlex="15%" style="margin-right:10px;">
               <mat-label>Drug TYpe</mat-label>
               <input matAutocompletePosition="below" type="text" placeholder="Select DrugType" matInput
                 formControlName="DrugType" [matAutocomplete]="autoDrugType" (keydown)="onEnterDrugType($event)"
@@ -257,7 +257,7 @@
               </mat-autocomplete>
             </mat-form-field>
 
-            <mat-form-field appearance="outline" fxFlex style="margin-right:10px;">
+            <mat-form-field appearance="outline" fxFlex="15%" style="margin-right:10px;">
               <mat-label>Manufacture Name</mat-label>
               <input matAutocompletePosition="below" type="text" placeholder="Select ManufId" matInput
                 (keydown)="onEnterManufId($event)" #ManufId formControlName="ManufId" [matAutocomplete]="autoManufId"
@@ -275,7 +275,7 @@
               </mat-autocomplete>
             </mat-form-field>
 
-            <mat-form-field appearance="outline" fxFlex style="margin-right:10px;">
+            <mat-form-field appearance="outline" fxFlex="18%" style="margin-right:10px;">
               <mat-label>Company Name </mat-label>
               <input matAutocompletePosition="below" type="text" placeholder="Select Company" matInput
                 (keydown)="onEnterCompany($event)" #Company formControlName="CompanyId" [matAutocomplete]="autoCompany"
@@ -293,7 +293,7 @@
               </mat-autocomplete>
             </mat-form-field>
 
-            <!-- <mat-form-field appearance="outline" fxFlex fxFlex.xs="100%" style="margin-right:10px;">
+            <mat-form-field appearance="outline" fxFlex="22%" style="margin-right:10px;">
               <mat-label>Store Name</mat-label>
               <input matAutocompletePosition="below" type="text" placeholder="Select StoreId" matInput
                 formControlName="StoreId" [matAutocomplete]="autoStoreId" required #storename
@@ -306,19 +306,32 @@
               </span>
               <mat-autocomplete #autoStoreId="matAutocomplete" [displayWith]="getOptionTextStore">
                 <mat-option *ngFor="let option of filteredOptionsStore | async" [value]="option"> 
-                  {{option.StoreName}}
+                  <mat-checkbox [checked]="option.selected"
+                  (change)="toggleSelection(option)"
+                  (click)="$event.stopPropagation()">
+                  {{option.StoreName}}</mat-checkbox> 
                 </mat-option>
               </mat-autocomplete>
-            </mat-form-field> -->
+            </mat-form-field>
 
-            <mat-form-field  appearance="outline" fxFlex fxFlex.xs="100%" style="margin-right:10px;">
+            <div fxLayout="column" fxFlex>
+              <mat-chip-list #chipList>
+                  <mat-chip *ngFor="let item of selectedItems">
+                      {{ item.StoreName }} <mat-icon
+                          (click)="remove(item)">close</mat-icon>
+                  </mat-chip>
+              </mat-chip-list>
+          </div>
+ 
+
+            <!-- <mat-form-field  appearance="outline" fxFlex fxFlex.xs="100%" style="margin-right:10px;">
               <mat-label>Store Name</mat-label>
               <mat-select  [(ngModel)]="vStoreName"  multiple  formControlName="StoreId" #storename>
                 <mat-option *ngFor="let option of StorecmbList" [value]="option" > 
                   {{ option.StoreName }}
                 </mat-option>
               </mat-select>
-            </mat-form-field>
+            </mat-form-field> -->
             
            
 

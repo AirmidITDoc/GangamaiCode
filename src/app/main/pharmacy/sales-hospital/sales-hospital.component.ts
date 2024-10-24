@@ -21,7 +21,7 @@ import { ComponentPortal, DomPortalOutlet, PortalInjector } from '@angular/cdk/p
 import { HeaderComponent } from 'app/main/shared/componets/header/header.component';
 import { element } from 'protractor';
 import { OPSearhlistService } from 'app/main/opd/op-search-list/op-searhlist.service';
-import { map, startWith } from 'rxjs/operators';
+ 
 import { RequestforlabtestService } from 'app/main/nursingstation/requestforlabtest/requestforlabtest.service';
 import { RegInsert } from 'app/main/opd/appointment/appointment.component';
 import { SnackBarService } from 'app/main/shared/services/snack-bar.service';
@@ -39,6 +39,7 @@ import { SalesHospitalService } from './sales-hospital.service';
 import { PrescriptionComponent } from '../sales/prescription/prescription.component';
 import { SalePopupComponent } from '../sales/sale-popup/sale-popup.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-sales-hospital',
@@ -408,7 +409,7 @@ export class SalesHospitalComponent implements OnInit {
 
   ngOnInit(): void {
     // this.patientDetailsFormGrp = this.createForm();
-    this.getSalesPatientList();
+  
     this.gePharStoreList();
     this.getItemSubform();
     this.getConcessionReasonList();
@@ -460,6 +461,9 @@ export class SalesHospitalComponent implements OnInit {
     } else{
       this.vCondition = true
     }  
+
+    this.getSalesPatientList();
+    this.getSalesDoctorList();
   }
 
   // createForm() {
@@ -1111,8 +1115,12 @@ export class SalesHospitalComponent implements OnInit {
     })
   }
   isPatientNameSelected:boolean=false;
-  filteredOptionPatientNameList:Observable<string[]>; 
+  isDoctorSelected:boolean=false;
+  filteredOptionPatientNameList: Observable<string[]>; 
+  filteredOptionDoctorList: Observable<string[]>; 
   patientList : any = []; 
+  DoctorNameList : any = [];  
+ 
   getSalesPatientList() {
     debugger
     this._salesService.getSalesPatientList1().subscribe(data => {
@@ -1121,8 +1129,8 @@ export class SalesHospitalComponent implements OnInit {
         startWith(''),
         map(value => value ? this._filterSales(value) : this.patientList.slice()),
       );
-    }); 
-  }
+    });  
+  }   
   private _filterSales(value: any): string[] {
     if (value) {
       const filterValue = value && value.ExternalPatientName ? value.ExternalPatientName.toLowerCase() : value.toLowerCase();
@@ -1135,6 +1143,28 @@ export class SalesHospitalComponent implements OnInit {
     return option.ExternalPatientName;
   }  
 
+  getSalesDoctorList() {
+    debugger
+    this._salesService.getSalesDoctorList().subscribe(data => {
+      this.DoctorNameList = data;  
+      this.filteredOptionDoctorList = this.ItemSubform.get('DoctorName').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterDoctor(value) : this.DoctorNameList.slice()),
+      );
+    });  
+  
+  }
+  private _filterDoctor(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
+      return this.DoctorNameList.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
+    }
+  } 
+  getOptionTextDoctor(option) {
+    if (!option)
+      return '';
+    return option.DoctorName;
+  }  
   getDateTime(dateTimeObj) {
 
     this.dateTimeObj = dateTimeObj;
@@ -2144,8 +2174,8 @@ export class SalesHospitalComponent implements OnInit {
     SalesInsert['isFree'] = 0;
     SalesInsert['unitID'] = 1;
     SalesInsert['addedBy'] = this._loggedService.currentUserValue.user.id,
-    SalesInsert['externalPatientName'] = this.PatientName || '';
-    SalesInsert['doctorName'] = this.DoctorName || '';
+    SalesInsert['externalPatientName'] = this.PatientName || this.ItemSubform.get('PatientName').value.ExternalPatientName || '';
+    SalesInsert['doctorName'] = this.DoctorName || this.ItemSubform.get('DoctorName').value.DoctorName || '';
     SalesInsert['storeId'] = this._salesService.IndentSearchGroup.get('StoreId').value.storeid;
     SalesInsert['isPrescription'] = this.IPMedID || 0;
     SalesInsert['creditReason'] = '';
@@ -2352,8 +2382,8 @@ export class SalesHospitalComponent implements OnInit {
     SalesInsert['isFree'] = 0;
     SalesInsert['unitID'] = 1;
     SalesInsert['addedBy'] = this._loggedService.currentUserValue.user.id,
-    SalesInsert['externalPatientName'] =this.ItemSubform.get('PatientName').value || this.PatientName || '';
-    SalesInsert['doctorName'] = this.ItemSubform.get('DoctorName').value || this.DoctorName || '';
+    SalesInsert['externalPatientName'] = this.PatientName || this.ItemSubform.get('PatientName').value.ExternalPatientName || '';
+    SalesInsert['doctorName'] = this.DoctorName || this.ItemSubform.get('DoctorName').value.DoctorName || '';
     SalesInsert['storeId'] = this._salesService.IndentSearchGroup.get('StoreId').value.storeid;
     SalesInsert['isPrescription'] =this.IPMedID || 0;
     SalesInsert['creditReason'] = '';
@@ -2572,7 +2602,7 @@ export class SalesHospitalComponent implements OnInit {
     salesInsertCredit['unitID'] = 1;
     salesInsertCredit['addedBy'] = this._loggedService.currentUserValue.user.id,
     salesInsertCredit['externalPatientName'] = this.PatientName;
-    salesInsertCredit['doctorName'] = "";
+    salesInsertCredit['doctorName'] = this.DoctorName || this.ItemSubform.get('DoctorName').value.DoctorName || '';;
     salesInsertCredit['storeId'] = this._loggedService.currentUserValue.user.storeId,
     salesInsertCredit['isPrescription'] = this.IPMedID || 0;
     salesInsertCredit['creditReason'] = '';
@@ -3188,10 +3218,10 @@ export class SalesHospitalComponent implements OnInit {
   // }
 
   onSaveDraftBill() {
-    let m = this.ItemSubform.get('PatientName').value
+    let m = this.ItemSubform.get('PatientName').value.ExternalPatientName;
     console.log(m)
-    m = this.PatientName
-    console.log(m)
+    let m1 = this.ItemSubform.get('DoctorName').value.DoctorName;
+    console.log(m1)
     let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
     let ConcessionId = 0;
     if (this.ItemSubform.get('ConcessionId').value)
@@ -3223,8 +3253,8 @@ export class SalesHospitalComponent implements OnInit {
     SalesInsert['isPrint'] = 0;
     SalesInsert['unitID'] = 1;
     SalesInsert['addedBy'] = this._loggedService.currentUserValue.user.id,
-    SalesInsert['externalPatientName'] = this.ItemSubform.get('PatientName').value || '';
-    SalesInsert['doctorName'] = this.DoctorName || '';
+    SalesInsert['externalPatientName'] = this.ItemSubform.get('PatientName').value.ExternalPatientName || '';
+    SalesInsert['doctorName'] = this.ItemSubform.get('DoctorName').value.DoctorName || '';
     SalesInsert['storeId'] = this._salesService.IndentSearchGroup.get('StoreId').value.storeid;
     SalesInsert['isPrescription'] =this.IPMedID || 0;
     SalesInsert['creditReason'] = '';

@@ -1,4 +1,5 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fusePerfectScrollbar
+dynamicTableHeight>
     <!-- HEADER -->
     <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
         fxLayoutAlign.gt-xs="space-between center">
@@ -40,7 +41,7 @@
                                 <div class="dialog-content-wrapper">
                                     <mat-form-field class="mr-sm-12" fxFlex>
                                         <input matInput placeholder="Search --> Item Generic Name" autocomplete="off"
-                                            name="ItemGenericNameSearch" formControlName="ItemGenericNameSearch" />
+                                            name="ItemGenericNameSearch" formControlName="ItemGenericNameSearch"  (keyup)="onSearch()"/>
                                         <button mat-button matSuffix mat-icon-button aria-label="Clear"
                                             (click)="onSearchClear()">
                                             <mat-icon>close</mat-icon>
@@ -65,7 +66,7 @@
                         <div fxlayout="row">
                             <div style="width: 100%;">
                                 <mat-table #table matSort [dataSource]="DSItemGenericMasterList"
-                                    [@animateStagger]="{value:'50'}" style="overflow:auto">
+                                    [@animateStagger]="{value:'50'}" style="overflow:auto;height: 450px !important;">
                                     <ng-container matColumnDef="ItemGenericNameId">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
                                         </mat-header-cell>
@@ -82,7 +83,7 @@
 
                                     <ng-container matColumnDef="AddedBy">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header> User Name </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.AddedBy}}
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.AddedBy || '-'}}
                                         </mat-cell>
                                     </ng-container>
 
