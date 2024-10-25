@@ -24,7 +24,7 @@
                         formControlName="genderName"
                         fieldName="genderName"
                         placeholder="Gender Name"
-                        [validations]="genderName"
+                        [validations]="genderNameValidation"
                         [required]="true"
                         [maxLength]="300">
                     </airmid-textbox> 
@@ -44,7 +44,7 @@
                 <button mat-raised-button color="primary" type="submit" (click)="onSubmit()"
                     
                     >Save</button>
-                <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
+                <button mat-raised-button color="warn" (click)="onClear(false)">Clear</button>
             </div>
         </div>
     </div>

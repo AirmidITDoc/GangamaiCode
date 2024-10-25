@@ -65,4 +65,27 @@ export class ApiCaller {
             }
         })));
     }
+
+    PutData(url: string, data: any,passToken: boolean = true) {
+        var httpOptions = {};
+        if (passToken) {
+            let currentUser=JSON.parse(localStorage.getItem("currentUser"));
+            httpOptions = {
+                headers: new HttpHeaders({
+                    'content-type': 'application/json',
+                    'Authorization': `Bearer ${currentUser.token}`
+                })
+            };
+        };
+        return (this._httpClient.put<any>(`${this.ApiUrl}${url}`, data,httpOptions).pipe(map((data: apiResponse) => {
+            if (data.statusCode == 200) {
+                return data.data;
+            }
+            else {
+                this.toastr.error(data.message, 'Error !', {
+                    toastClass: 'tostr-tost custom-toast-error',
+                });
+            }
+        })));
+    }
 }

@@ -48,17 +48,14 @@ export class GenderMasterService {
         return this._httpClient.PostData("Gender/List", param, showLoader);
     }
 
-    public genderMasterInsert(Param: any, showLoader = true) {
-        return this._httpClient.PostData("Gender", Param, showLoader);
-    }
-
-    public genderMasterUpdate(id: number , Param: any, showLoader = true) {
-        //return this._httpClient.put("Gender/" + id , Param, showLoader);
-        return this._httpClient.PostData("Gender", Param, showLoader);
+    public genderMasterSave(Param: any, id: string ,showLoader = true) {
+        if(id)
+            return this._httpClient.PutData("Gender/"+ id, Param, showLoader);
+        else
+            return this._httpClient.PostData("Gender", Param, showLoader);       
     }
 
     public deactivateTheStatus(m_data) {
-        //return this._httpClient.delete("Gender?Id=" + m_data, {});
         return this._httpClient.PostData("Gender", m_data);
     }
 }

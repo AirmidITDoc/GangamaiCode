@@ -18,7 +18,6 @@ export class AirmidTableComponent implements OnInit {
     }
 
     @Input() gridConfig: gridModel; // or whatever type of datasource you have
-    @Output() status: EventEmitter<any> = new EventEmitter();
     resultsLength = 0;
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatTable, { static: true }) table: MatTable<any>;
