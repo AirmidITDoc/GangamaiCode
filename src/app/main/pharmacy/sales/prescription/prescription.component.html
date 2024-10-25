@@ -129,17 +129,17 @@
                                 
 
                                     <ng-container matColumnDef="RegNo" sticky>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-90">
                                             RegNo</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-90">
                                             <span>{{contact.RegNo}}</span>
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="PatientName" sticky>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-230">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-320">
                                             PatientName</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-230">
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-320">
                                             <span>{{contact.PatientName}}</span>
                                         </mat-cell>
                                     </ng-container>
@@ -153,49 +153,41 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="Date">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-110">
-                                            Pres.Date</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-110">
-                                            <span>{{contact.Date}}</span>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-180">
+                                            Pres.DateTime</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
+                                            <span>{{contact.Date}} - {{contact.PTime}}</span>
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="Type">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            Type</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-110">
+                                            PatientType</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-110">
                                             <span>{{contact.PatientType}}</span>
                                         </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="Time">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            Pres.Time</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            <span> {{contact.PTime}}</span>
-                                        </mat-cell>
-                                    </ng-container>
+                                    </ng-container> 
 
                                     <ng-container matColumnDef="CompanyName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-170">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-160">
                                             CompanyName</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-170">
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-160">
                                             <span> {{contact.CompanyName || '-'}}</span>
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="No">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-90">
                                             Pres.No</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-90">
                                             <span>{{contact.IPPreId}}</span>
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="WardName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-170">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-160">
                                             WardName</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-170">
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-160">
                                             <span>{{contact.RoomName || '-'}}</span>
                                         </mat-cell>
                                     </ng-container> 
@@ -224,12 +216,12 @@
                                         </mat-footer-cell>
                                     </ng-container>
                                     <!-- Min width is required for fit content in cell. -->
-                                    <mat-header-row class="accent min-width-1350"
+                                    <mat-header-row class="accent min-width-1400"
                                         *matHeaderRowDef="displayedColumns; sticky: true">
                                     </mat-header-row>
 
                                     <mat-row *matRowDef="let contact; columns: displayedColumns;"
-                                        class="contact min-width-1350" [@animate]="{value:'*',params:{y:'100%'}}"
+                                        class="contact min-width-1400" [@animate]="{value:'*',params:{y:'100%'}}"
                                         (click)="getItemDetailList(contact)"></mat-row>
                                     <mat-footer-row *matFooterRowDef="['loading']"
                                         [ngClass]="{'hide':!(sIsLoading == 'loading-data')}"></mat-footer-row>

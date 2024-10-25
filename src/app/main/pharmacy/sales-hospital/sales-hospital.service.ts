@@ -156,7 +156,12 @@ import { LoaderService } from 'app/core/components/loader/loader.service';
     public getchargesList(data) {
       return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
     }
-  
+    public DraftbillCancel(data,loader = true){
+      if (loader) {
+        this._loaderService.show();
+    }
+      return this._httpClient.post("Generic/ExecByQueryStatement?query="+data, {})
+    }
     public getDelDrat(data){
       return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
     }

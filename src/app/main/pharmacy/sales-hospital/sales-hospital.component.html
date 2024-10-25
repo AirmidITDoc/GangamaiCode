@@ -1259,16 +1259,16 @@
                                         <mat-cell *matCellDef="let contact" class="w-50">
                                             <ng-container class="actions">
                                                 <span class="material-icons" (click)="onAddDraftList(contact)">
-                                                    <mat-icon>add_shopping_cart</mat-icon>
+                                                    <mat-icon matTooltip="Add" >add_shopping_cart</mat-icon>
                                                 </span>
                                             </ng-container>
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="UHIDNo">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">UHID No
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-70">UHID No
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-80">
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-70">
                                             {{contact.RegNo || '-'}}
                                         </mat-cell>
                                     </ng-container> 
@@ -1305,6 +1305,14 @@
                                         </mat-cell>
                                     </ng-container> 
 
+                                    <ng-container matColumnDef="DraftClose" stickyEnd>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-50">
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-50">
+                                            <mat-icon matTooltip="Cancel" (click)="DraftbillCancel(contact)">cancel</mat-icon>
+                                        </mat-cell>
+                                    </ng-container> 
+
                                     <ng-container matColumnDef="loading">
                                         <mat-header-cell *matFooterCellDef colspan="6" style="display:none;">
                                         </mat-header-cell>
@@ -1319,11 +1327,11 @@
                                         </mat-footer-cell>
                                     </ng-container>
                                     <!-- (click)="show($event,contact)" -->
-                                    <mat-header-row class="accent min-width-600"
+                                    <mat-header-row class="accent min-width-800"
                                         *matHeaderRowDef="DraftSaleDisplayedCol; sticky: true">
                                     </mat-header-row>
                                     <mat-row *matRowDef="let contact; columns: DraftSaleDisplayedCol;"
-                                        [ngClass]="{'row-yellow': QtyBalchk ==0}"   class="contact min-width-600"
+                                        [ngClass]="{'row-yellow': QtyBalchk ==0}"   class="contact min-width-800"
                                         [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                     <!-- (click)="deleteTableRow($event,contact)"  -->
                                     <!-- <button class="btn btn-default btn-primary" style="float:right;" (click)="deleteRow(pto)" 

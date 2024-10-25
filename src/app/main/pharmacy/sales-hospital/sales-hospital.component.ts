@@ -310,7 +310,8 @@ export class SalesHospitalComponent implements OnInit {
     'PatientName', 
     'NetAmount',
     'ExtMobileNo',
-    'UserName' 
+    'UserName',
+    'DraftClose'
   ];
 
   keyPressAlphanumeric(event) {
@@ -3056,7 +3057,22 @@ export class SalesHospitalComponent implements OnInit {
       (error) => {
       });
   }
-
+  DraftbillCancel(contact) {
+    let Query = "update t_salesdraftheader set IsClosed = 1 where DSalesId=" + contact.DSalesId;
+    console.log(Query)
+    this._salesService.DraftbillCancel(Query).subscribe(response => {
+      if (response) {
+        this.toastr.success('Record Deleted Successfully.', 'Save !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        });
+        this.getDraftorderList();
+      } else {
+        this.toastr.error('API Error!', 'Error !', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
+      }
+    });
+  }
 
   onAddRepeat(contact) {
     this.tempDatasource.data = [];
@@ -3076,12 +3092,53 @@ export class SalesHospitalComponent implements OnInit {
     });
   }
   onAddDraftList(contact) {
-    // console.log(contact)
-    this.PatientName = contact.PatientName;
-    this.MobileNo = contact.ExtMobileNo;
-    this.vextAddress = contact.extAddress;
-    this.DoctorName = contact.AdmDoctorName;
-    this.DraftID = contact.DSalesId;
+    console.log(contact)
+    if(contact.OP_IP_Type == 2){
+      this.PatientName = contact.PatientName;
+      this.MobileNo = contact.ExtMobileNo;
+      this.vextAddress = contact.extAddress;
+      this.DoctorName = contact.AdmDoctorName;
+      this.DraftID = contact.DSalesId;
+    }else{
+      this.DoctorNamecheck = true;  
+      this.OPDNoCheck = false; 
+      this.IPDNocheck = false;
+      this.PatientName = contact.PatientName;
+      this.RegId = contact.RegID; 
+      this.RegNo =contact.RegNo;
+      this.DoctorName = contact.AdmDoctorName;
+      this.TariffName =contact.TariffName || '';
+      this.CompanyName = contact.CompanyName || ''; 
+      this.DraftID = contact.DSalesId;
+    }  
+
+    if (contact.OP_IP_Type == 0) { 
+      this.paymethod = true;
+      this.vSelectedOption = 'OP';  
+      this.ItemSubform.get('MobileNo').clearValidators();
+      this.ItemSubform.get('PatientName').clearValidators();
+      this.ItemSubform.get('MobileNo').updateValueAndValidity();
+      this.ItemSubform.get('PatientName').updateValueAndValidity();
+    }
+    else if (contact.OP_IP_Type == 1) { 
+      this.paymethod = true;
+      this.vSelectedOption = 'IP'; 
+      this.ItemSubform.get('MobileNo').clearValidators();
+      this.ItemSubform.get('PatientName').clearValidators();
+      this.ItemSubform.get('MobileNo').updateValueAndValidity();
+      this.ItemSubform.get('PatientName').updateValueAndValidity();
+    } else {
+      this.ItemSubform.get('MobileNo').reset();
+      this.ItemSubform.get('MobileNo').setValidators([Validators.required]);
+      this.ItemSubform.get('MobileNo').enable();
+      this.ItemSubform.get('PatientName').reset();
+      this.ItemSubform.get('PatientName').setValidators([Validators.required]);
+      this.ItemSubform.get('PatientName').enable();
+      this.ItemSubform.updateValueAndValidity();
+      this.paymethod = false; 
+    }
+
+ 
     this.saleSelectedDatasource.data = [];
     this.Itemchargeslist1 = [];
     this.Itemchargeslist = [];
@@ -3218,10 +3275,7 @@ export class SalesHospitalComponent implements OnInit {
   // }
 
   onSaveDraftBill() {
-    let m = this.ItemSubform.get('PatientName').value.ExternalPatientName;
-    console.log(m)
-    let m1 = this.ItemSubform.get('DoctorName').value.DoctorName;
-    console.log(m1)
+   
     let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
     let ConcessionId = 0;
     if (this.ItemSubform.get('ConcessionId').value)
@@ -3253,8 +3307,8 @@ export class SalesHospitalComponent implements OnInit {
     SalesInsert['isPrint'] = 0;
     SalesInsert['unitID'] = 1;
     SalesInsert['addedBy'] = this._loggedService.currentUserValue.user.id,
-    SalesInsert['externalPatientName'] = this.ItemSubform.get('PatientName').value.ExternalPatientName || '';
-    SalesInsert['doctorName'] = this.ItemSubform.get('DoctorName').value.DoctorName || '';
+    SalesInsert['externalPatientName'] = this.PatientName || this.ItemSubform.get('PatientName').value.ExternalPatientName  || '';
+    SalesInsert['doctorName'] = this.DoctorName || this.ItemSubform.get('DoctorName').value.DoctorName || '';
     SalesInsert['storeId'] = this._salesService.IndentSearchGroup.get('StoreId').value.storeid;
     SalesInsert['isPrescription'] =this.IPMedID || 0;
     SalesInsert['creditReason'] = '';
