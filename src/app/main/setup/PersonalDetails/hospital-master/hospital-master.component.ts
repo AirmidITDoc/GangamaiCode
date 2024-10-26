@@ -7,6 +7,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatAccordion } from '@angular/material/expansion';
 import { MatSort } from '@angular/material/sort';
 import { fuseAnimations } from '@fuse/animations';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -88,6 +89,43 @@ dialogRef.afterClosed().subscribe((result) => {
     console.log("The dialog was closed - Insert Action", result);
     this.getHospitalMaster();
 });
+}
+
+
+
+onDeactive(HospitalId) {
+
+       
+  Swal.fire({
+      title: 'Confirm Status',
+      text: 'Are you sure you want to Change Status?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes,Change Status!'
+  }).then((result) => {
+      if (result.isConfirmed) {
+          let Query
+          if (!this.DSHospitalList.data.find(item => item.HospitalId === HospitalId).IsDeleted) {
+              Query = "Update HospitalMaster set IsDeleted=1 where HospitalId=" + HospitalId;
+              
+          }
+          else {
+               Query = "Update HospitalMaster set IsDeleted=0 where HospitalId=" + HospitalId;
+          }
+          console.log(Query);
+          this._HospitalService.deactivateTheStatus(Query)
+              .subscribe((data) => {
+                  // Handle success response
+                  Swal.fire('Changed!', 'Hospital Status has been Changed.', 'success');
+                  this.getHospitalMaster();
+              }, (error) => {
+                  // Handle error response
+                  Swal.fire('Error!', 'Failed to deactivate category.', 'error');
+              });
+      }
+  });
 }
 }
 

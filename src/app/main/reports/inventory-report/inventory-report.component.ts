@@ -700,7 +700,7 @@ console.log(event.value)
   
   viewSupplierListPdf() {
 
-    let SupplierName =''
+    let SupplierName ='%'
 
     if (this._OPReportsService.userForm.get('SupplierName').value)
       SupplierName = this._OPReportsService.userForm.get('SupplierName').value.SupplierName

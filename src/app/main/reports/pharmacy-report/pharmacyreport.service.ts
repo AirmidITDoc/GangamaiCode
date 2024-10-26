@@ -25,7 +25,8 @@ export class PharmacyreportService {
         Radio:['1'],
         StoreId:[''],
         ItemId:[''],
-        DoctorID:['']
+        DoctorID:[''],
+        OPIPType:["1"],
       })
     }
   public getDataByQuery(emp) {

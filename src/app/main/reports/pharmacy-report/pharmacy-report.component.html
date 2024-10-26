@@ -253,7 +253,17 @@
 
                                     </mat-form-field>
                               
+                                    <span *ngIf="FlaOPIPTypeSelected"
+                                    style="font-weight: bold;margin-left: 2%;">Patient Type</span>
+                                <mat-radio-group aria-label="Select an option" formControlName="OPIPType"
+                                    *ngIf="FlaOPIPTypeSelected" style="margin-left:2%;" name="OPIPType">
 
+                                    <mat-radio-button value="2">All
+                                    </mat-radio-button>
+                                    <mat-radio-button value="0">OP
+                                    </mat-radio-button>
+                                    <mat-radio-button value="1">IP</mat-radio-button>
+                                </mat-radio-group>
                                     <!-- <span *ngIf="SpinLoading" style="width:60px;height: 60px;margin-left:10px;">
                                         Processing..... <i class="fa-solid fa-spinner fa-spin loading-spinner"></i>
                                     </span> -->

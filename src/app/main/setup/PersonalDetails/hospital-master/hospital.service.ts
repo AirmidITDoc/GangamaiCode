@@ -56,4 +56,9 @@ public getHospitalMasterList() {
 populateForm(param) {
   this.HospitalForm.patchValue(param);
 }
+
+public deactivateTheStatus(m_data) {
+  return this._httpClient.post("Generic/ExecByQueryStatement?query=" + m_data,{});
+}
+
 }

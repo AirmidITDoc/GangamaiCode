@@ -23,30 +23,48 @@
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                     <div fxFlex.gt-sm="100%" fxFlex>
 
-                        <!-- <form [formGroup]="_HospitalService.HospitalForm">
+                         <form [formGroup]="_TempDescService.myform">
+                            <div fxLayout="row">
+                                    
+                                <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                    <mat-label>Template Name</mat-label>
+                                    <input name="TemplateName" placeholder="TemplateName" 
+                                        formControlName="TemplateName" matInput required
+                                         [(ngModel)]="registerObj.TemplateName">
+                                </mat-form-field>
+
+                            </div>
                             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                              
                                 <div fxFlex.gt-sm="100%" fxFlex>
 
-                                    <mat-label style="font-size: medium;font-weight: bold;">Hospital
+                                    <mat-label style="font-size: medium;font-weight: bold;">Template
                                         Details</mat-label>
                                     <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
-                                        style="height:200px;" [(ngModel)]="registerObj.Header" required
-                                        formControlName="HospitalHeader"></angular-editor>
+                                        style="height:500px;" [(ngModel)]="tempdesc" required [(ngModel)]="registerObj.TemplateDescription"
+                                        formControlName="Tempdesc"></angular-editor>
 
                                 </div>
+
+                                <!-- <div class="editor"> 
+                                    <ejs-richtexteditor id='defaultRTE' [toolbarSettings]='tools' formControlName="Tempdesc">
+                                        <ng-Template #tempdesc>
+
+                                        </ng-Template>
+                                    </ejs-richtexteditor> 
+                                 </div>  -->
                             </div>
-                            <mat-checkbox aria-label="Is Active" formControlName="IsDeleted" (checked)=true
-                                [(ngModel)]="registerObj.IsDeleted"
+                            <mat-checkbox aria-label="Is Active" formControlName="IsActive" (checked)=true
                                 style="font-weight: bold;margin-right: 20px;">IsActive
                             </mat-checkbox>
-                        </form> -->
+                        </form>
                     </div>
                 </div>
 
                 <div fxLayoutAlign="end">
                     <div class="sales-footer-buttons gap-8">
                         <button class="btn btn-danger-outline" (click)="onClear()">Close</button>
-                        <button class="btn btn-primary" (click)="onSubmit()">Save</button>
+                        <button class="btn btn-primary" (click)="onSubmit()" [disabled]="_TempDescService.myform.invalid">Save</button>
                     </div>
                 </div>
 

@@ -72,7 +72,7 @@ export class PharmacyReportComponent implements OnInit {
   FlagStoreSelected: boolean = false;
   FlagRegNoSelected: boolean = false;
   FlagDrugTypeIdSelected: boolean = false;
-  
+  FlaOPIPTypeSelected: boolean = false;
   FlagItemSelected: boolean = false;
   optionsUser: any[] = [];
   optionsSearchDoc: any[] = [];
@@ -96,7 +96,7 @@ export class PharmacyReportComponent implements OnInit {
   SalesReturnPaidAmount: any = 0;
   SalesBalAmount: any = 0;
   SalesReturnBalAmount: any = 0;
-
+  OPIPType:any;
   SalesCashAmount: any = 0;
   SalesReturnCashAmount: any = 0;
 
@@ -249,6 +249,7 @@ var data={
       this.FlagItemSelected=false;
       this.FlagDoctorIDSelected=false;
       this.FlagStoreSelected=true;
+      this.FlaOPIPTypeSelected=false;
     } else if (this.ReportName == 'Pharmacy Daily Collection Summary') {
       this.FlagUserSelected = true;
       this.FlagPaymentSelected = false;
@@ -257,6 +258,7 @@ var data={
       this.FlagItemSelected=false;
       this.FlagStoreSelected=true;
       this.FlagDoctorIDSelected=false;
+      this.FlaOPIPTypeSelected=false;
     } else if (this.ReportName == 'Sales Summary Report') {
       this.FlagUserSelected = true;
       this.FlagPaymentSelected = false;
@@ -265,6 +267,7 @@ var data={
       this.FlagItemSelected=false;
       this.FlagStoreSelected=true;
       this.FlagDoctorIDSelected=false;
+      this.FlaOPIPTypeSelected=false;
     } else if (this.ReportName == 'Sales Patient Wise Report') {
       this.FlagUserSelected = true;
       this.FlagPaymentSelected = false;
@@ -273,6 +276,7 @@ var data={
       this.FlagItemSelected=false;
       this.FlagStoreSelected=true;
       this.FlagDoctorIDSelected=false;
+      this.FlaOPIPTypeSelected=false;
     } else if (this.ReportName == 'Sales Return Summary Report') {
       this.FlagPaymentSelected = false;
       this.FlagUserSelected = false;
@@ -281,6 +285,7 @@ var data={
       this.FlagItemSelected=false;
       this.FlagStoreSelected=true;
       this.FlagDoctorIDSelected=false;
+      this.FlaOPIPTypeSelected=false;
     } else if (this.ReportName == 'Sales Return PatientWise Report') {
       this.FlagPaymentSelected = false;
       this.FlagUserSelected = false;
@@ -289,6 +294,7 @@ var data={
       this.FlagItemSelected=false;
       this.FlagStoreSelected=true;
       this.FlagDoctorIDSelected=false;
+      this.FlaOPIPTypeSelected=false;
     } else if (this.ReportName == 'Sales Credit Report') {
       this.FlagPaymentSelected = false;
       this.FlagUserSelected = false;
@@ -297,6 +303,7 @@ var data={
       this.FlagItemSelected=false;
       this.FlagStoreSelected=true;
       this.FlagDoctorIDSelected=false;
+      this.FlaOPIPTypeSelected=false;
     } else if (this.ReportName == 'Pharmacy Daily Collection Summary Day & User Wise') {
       this.FlagUserSelected = true;
       this.FlagPaymentSelected = false;
@@ -305,6 +312,7 @@ var data={
       this.FlagItemSelected=false;
       this.FlagStoreSelected=true;
       this.FlagDoctorIDSelected=false;
+      this.FlaOPIPTypeSelected=false;
     }
     else if (this.ReportName == 'Sales Cash Book Report') {
       this.FlagPaymentSelected = true;
@@ -314,6 +322,7 @@ var data={
       this.FlagItemSelected=false;
       this.FlagStoreSelected=true;
       this.FlagDoctorIDSelected=false;
+      this.FlaOPIPTypeSelected=false;
     } else if (this.ReportName == 'Sales SCHEDULEH1 Report') {
       this.FlagPaymentSelected = false;
       this.FlagUserSelected = false;
@@ -322,6 +331,7 @@ var data={
       this.FlagStoreSelected=true;
       this.FlagItemSelected=false;
       this.FlagDoctorIDSelected=false;
+      this.FlaOPIPTypeSelected=false;
           } else if (this.ReportName == 'SCHEDULEH1 SalesSummary Report') {
       this.FlagPaymentSelected = false;
       this.FlagUserSelected = false;
@@ -330,6 +340,7 @@ var data={
       this.FlagStoreSelected=true;
       this.FlagItemSelected=false;
       this.FlagDoctorIDSelected=false;
+      this.FlaOPIPTypeSelected=false;
     } else if (this.ReportName == 'SalesH1 DrugCount Report') {
       this.FlagUserSelected = false;
       this.FlagPaymentSelected = false;
@@ -338,6 +349,7 @@ var data={
       this.FlagStoreSelected=true;
       this.FlagItemSelected=false;
       this.FlagDoctorIDSelected=false;
+      this.FlaOPIPTypeSelected=false;
     }
     else if (this.ReportName == 'ItemWise DailySales Report') {
       this.FlagPaymentSelected = false;
@@ -347,6 +359,7 @@ var data={
       this.FlagStoreSelected=true;
       this.FlagItemSelected=true;
       this.FlagDoctorIDSelected=false;
+      this.FlaOPIPTypeSelected=false;
     }
     else if (this.ReportName == 'WardWise HighRisk Drug Report') {
       this.FlagUserSelected = false;
@@ -356,6 +369,7 @@ var data={
       this.FlagStoreSelected=true;
       this.FlagItemSelected=false;
       this.FlagDoctorIDSelected=false;
+      this.FlaOPIPTypeSelected=false;
     }
     else if (this.ReportName == 'Purchase Re-Order List Report') {
       this.FlagPaymentSelected = false;
@@ -365,6 +379,7 @@ var data={
       this.FlagStoreSelected=true;
       this.FlagItemSelected=false;
       this.FlagDoctorIDSelected=false;
+      this.FlaOPIPTypeSelected=false;
     }else if (this.ReportName == 'Pharmacy BillSummary Report') {
       this.FlagPaymentSelected = false;
       this.FlagUserSelected = false;
@@ -373,6 +388,7 @@ var data={
       this.FlagStoreSelected=true;
       this.FlagItemSelected=false;
       this.FlagDoctorIDSelected=false;
+      this.FlaOPIPTypeSelected=false;
     }else if(this.ReportName == 'Doctor Wise Profit Report'){
       this.FlagPaymentSelected = false;
       this.FlagUserSelected = false;
@@ -381,6 +397,7 @@ var data={
       this.FlagStoreSelected=false;
       this.FlagItemSelected=false;
       this.FlagDoctorIDSelected=true;
+      this.FlaOPIPTypeSelected=false;
     }else if(this.ReportName == 'Dr Wise Sales Report'){
       this.FlagPaymentSelected = false;
       this.FlagUserSelected = false;
@@ -389,6 +406,7 @@ var data={
       this.FlagStoreSelected=true;
       this.FlagItemSelected=false;
       this.FlagDoctorIDSelected=true;
+      this.FlaOPIPTypeSelected=false;
     }else if(this.ReportName == 'Dr Wise Profit Detail Report'){
       this.FlagPaymentSelected = false;
       this.FlagUserSelected = false;
@@ -397,6 +415,7 @@ var data={
       this.FlagStoreSelected=true;
       this.FlagItemSelected=false;
       this.FlagDoctorIDSelected=true;
+      this.FlaOPIPTypeSelected=true;
     }else if(this.ReportName == 'Dr Wise Profit Summary Report'){
       this.FlagPaymentSelected = false;
       this.FlagUserSelected = false;
@@ -405,6 +424,7 @@ var data={
       this.FlagStoreSelected=false;
       this.FlagItemSelected=false;
       this.FlagDoctorIDSelected=true;
+      this.FlaOPIPTypeSelected=true;
     }
   }
 
@@ -1182,6 +1202,8 @@ debugger
       if (this._PharmacyreportService.userForm.get('StoreId').value.StoreId)
         storeId = this._PharmacyreportService.userForm.get('StoreId').value.StoreId
 
+      this.OPIPType= parseInt(this._PharmacyreportService.userForm.get('OPIPType').value)
+ 
 
       let DoctorID = 0;
       if (this._PharmacyreportService.userForm.get('DoctorID').value)
@@ -1217,7 +1239,8 @@ debugger
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
       this.AdList = true;
-    
+    this.OPIPType= parseInt(this._PharmacyreportService.userForm.get('OPIPType').value)
+ 
       let DoctorID = 0;
       if (this._PharmacyreportService.userForm.get('DoctorID').value)
         DoctorID = this._PharmacyreportService.userForm.get('DoctorID').value.DoctorId

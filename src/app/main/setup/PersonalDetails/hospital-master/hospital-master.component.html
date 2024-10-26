@@ -25,8 +25,7 @@
         </div>
         <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-raised-button color="pine" (click)="onAdd()" fxLayoutAlign="center center">Add
-                <!-- <mat-icon color="Primary" title=" Add New Store ">add_to_photos</mat-icon> -->
-            </button>
+              </button>
 
         </div>
     </mat-toolbar>
@@ -157,9 +156,9 @@
                                                 <!-- *ngIf="element.Isdeleted" -->
                                                 <button mat-icon-button (click)="onEdit(element)"><mat-icon
                                                         title="Edit Menu">edit</mat-icon></button>
-                                                <!-- <button mat-icon-button
-                                                    (click)="onDeactive(element,element.ParameterID)"
-                                                    color="warn"><mat-icon>delete_outline</mat-icon></button> -->
+                                                <button mat-icon-button
+                                                    (click)="onDeactive(element,element.HospitalId)"
+                                                    color="warn"><mat-icon>delete_outline</mat-icon></button>
 
                                             </mat-cell>
                                         </ng-container>

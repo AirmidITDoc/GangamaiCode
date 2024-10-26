@@ -1,5 +1,5 @@
-<div id="content" class="simple page-layout left-sidebar inner-scroll inner-sidebar"fusePerfectScrollbar
-dynamicTableHeight>
+<div id="content" class="simple page-layout left-sidebar inner-scroll inner-sidebar" fusePerfectScrollbar
+    dynamicTableHeight>
     <mat-toolbar style="width: 100%;justify-content: space-between;height:40px;">
         <div fxLayout="row" fxLayoutAlign="start center">
             <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
@@ -174,7 +174,7 @@ dynamicTableHeight>
                                 <form [formGroup]="_HospitalService.HospitalForm">
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                                         <div fxFlex.gt-sm="100%" fxFlex>
-
+                                            <!-- [innerHTML]="registerObj.Header" -->
                                             <mat-label style="font-size: medium;font-weight: bold;">Hospital
                                                 Details</mat-label>
                                             <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
@@ -182,6 +182,10 @@ dynamicTableHeight>
                                                 formControlName="HospitalHeader"></angular-editor>
 
                                         </div>
+                                        <!-- <angular-editor [(ngModel)]="registerObj.Header" [config]="editorConfig"></angular-editor>
+                                         <div class="html">
+                                            {{ registerObj.Header }}
+                                        </div> -->
                                     </div>
                                     <mat-checkbox aria-label="Is Active" formControlName="IsDeleted" (checked)=true
                                         [(ngModel)]="registerObj.IsDeleted"

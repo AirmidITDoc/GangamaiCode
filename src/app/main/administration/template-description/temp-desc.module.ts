@@ -27,7 +27,7 @@ import { MatStepperModule } from "@angular/material/stepper";
 import { AngularEditorModule } from "@kolkov/angular-editor";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
-
+// import { HtmlEditorService, ImageService, LinkService, RichTextEditorModule, TableService, ToolbarService } from '@syncfusion/ej2-angular-richtexteditor';
 
 const routes: Routes = [
   {
@@ -62,12 +62,17 @@ const routes: Routes = [
     NgxMatSelectSearchModule,
     MatToolbarModule,
     MatAutocompleteModule,
-    AngularEditorModule
+    AngularEditorModule,
+   // RichTextEditorModule
 ],
 schemas: [
   CUSTOM_ELEMENTS_SCHEMA
 ],
-providers: [TempDescService],
+providers: [TempDescService
+  // ,TableService,
+  // ToolbarService,LinkService,HtmlEditorService,ImageService
+
+],
 entryComponents: [TemplateDescriptionComponent],
 
 })

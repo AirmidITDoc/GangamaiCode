@@ -141,15 +141,7 @@ export class DepartmentMasterComponent implements OnInit {
                                 toastClass: 'tostr-tost custom-toast-success',
                               });
                               this.getDepartmentMasterList();
-                            // Swal.fire(
-                            //     "Updated !",
-                            //     "Record updated Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getDepartmentMasterList();
-                            //     }
-                            // });
+                          
                         } else {
                         
                                 this.toastr.error('Department Master Data not Updated !, Please check API error..', 'Updated !', {

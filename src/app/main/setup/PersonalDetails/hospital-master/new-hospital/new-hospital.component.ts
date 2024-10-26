@@ -58,6 +58,10 @@ export class NewHospitalComponent implements OnInit {
     if(this.data){
       this.registerObj=this.data.registerObj;
      this.HospitalId=this.registerObj.HospitalId
+   //  this.registerObj.Header=this.registerObj.Header.innerHtml
+     //this.registerObj.Header.innerHtml=this.registerObj.Header
+
+
      console.log(this.registerObj)
      this.getCitylist();
     }
@@ -70,6 +74,40 @@ export class NewHospitalComponent implements OnInit {
   }
 
   onSubmit(){
+
+   
+    if(this._HospitalService.HospitalForm.get('HospitalName').value ==''){
+      this.toastr.warning('Please Enter HospitalName ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if(this._HospitalService.HospitalForm.get('HospitalAddress').value ==''){
+      this.toastr.warning('Please Enter HospitalAddress', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if(this. _HospitalService.HospitalForm.get('CityId').value ==''){
+      this.toastr.warning('Please Enter CityId ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if(this._HospitalService.HospitalForm.get('Phone').value ==''){
+      this.toastr.warning('Please Enter Phone', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if(this._HospitalService.HospitalForm.get('HospitalHeader').value ==''){
+      this.toastr.warning('Please Enter HospitalHeader', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+
+
     let hospitalarr = [];
    if(this.HospitalId==0){
     let hospitaldata = {};

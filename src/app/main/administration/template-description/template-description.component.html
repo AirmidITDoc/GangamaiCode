@@ -1,18 +1,6 @@
 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fusePerfectScrollbar
     dynamicTableHeight>
-    <!-- <mat-toolbar class="top-header accent">
-        <div fxLayout="row" class="top-header-info">
-            <mat-icon class="logo-icon " [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
-            </mat-icon>
-            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                Hospital List
-            </span>
-        </div>
-        <div fxLayout="row" fxLayoutGap="5px">
-            <button mat-raised-button (click)="onAdd()" style="background-color: aliceblue;color: brown;">Add
-            </button>
-        </div>
-    </mat-toolbar> -->
+  
     <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
 
@@ -23,11 +11,10 @@
                 Template List
             </span>
         </div>
-        <div fxLayout="row" fxLayoutAlign="start center">
-            <button mat-raised-button color="pine" (click)="onAdd()" fxLayoutAlign="center center">Add Template
-                <!-- <mat-icon color="Primary" title=" Add New Store ">add_to_photos</mat-icon> -->
+      
+        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+            <button mat-raised-button (click)="onAdd()">New Template
             </button>
-
         </div>
     </mat-toolbar>
 
@@ -65,9 +52,9 @@
                                         </ng-container>
 
                                         <ng-container matColumnDef="TemplateDescription">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-230">TemplateDescription
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-730">TemplateDescription
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-230">
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-730">
                                                 {{element.TemplateDescription}}
                                             </mat-cell>
                                         </ng-container>
@@ -81,9 +68,9 @@
                                                 <!-- *ngIf="element.Isdeleted" -->
                                                 <button mat-icon-button (click)="onEdit(element)"><mat-icon
                                                         title="Edit Menu">edit</mat-icon></button>
-                                                <!-- <button mat-icon-button
-                                                    (click)="onDeactive(element,element.ParameterID)"
-                                                    color="warn"><mat-icon>delete_outline</mat-icon></button> -->
+                                                <button mat-icon-button
+                                                    (click)="onDeactive(element,element.TemplateId)"
+                                                    color="warn"><mat-icon>delete_outline</mat-icon></button>
 
                                             </mat-cell>
                                         </ng-container>

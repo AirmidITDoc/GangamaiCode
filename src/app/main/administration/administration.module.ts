@@ -65,7 +65,10 @@ const appRoutes: Routes = [
     path: "smsconfigrationtool",
     loadChildren: () => import("./smsconfuguration/smsconfuguration.module").then((m) => m.SMSConfugurationModule),
 },
- 
+{
+  path: "Template Description",
+  loadChildren: () => import("./template-description/temp-desc.module").then((m) => m.TempDescModule),
+},
 ];
 
 @NgModule({
