@@ -10,11 +10,13 @@ export class MenuConfigureService
   myformMenu: FormGroup;
   myformMenuSubMenu: FormGroup;
   myformMenuSub_SubMenu: FormGroup;
+  menuform: FormGroup;
   
     constructor(private _httpClient: HttpClient,private _formBuilder: FormBuilder) {
       this.myformMenu = this.createMenuForm();
       this.myformMenuSubMenu = this.createMenuSubMenuForm();
       this.myformMenuSub_SubMenu = this.createMenuSub_SubMenuForm();
+      this.menuform= this.createNewMenuForm();
   }
   
   createMenuForm(): FormGroup {
@@ -52,6 +54,21 @@ export class MenuConfigureService
       menu_master_detail_detail_display_sr_no: [''],
       menu_Sub_SubID:[''],
       menu_master_detail_detail_icon:[''],
+    });
+  }
+
+
+  createNewMenuForm(): FormGroup {
+    return this._formBuilder.group({
+      Id: [''],
+      UpId: [''],
+      LinkName: [''],
+      Icon: [''],
+      LinkAction: [''],
+      SortOrder: [''],
+      IsActive: [1],
+      Display:[''],
+      IsBlock:['']
     });
   }
 
@@ -140,4 +157,23 @@ export class MenuConfigureService
   updateSub_SubMenuMaster(employee) {
     return this._httpClient.post("Master/MenuMasterDetails_DetailsUpdate",employee)
   }
+
+
+  // new
+  getNewMenuMasterList() {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_Menu_master", { })
+  }
+       // Insert menu Master 
+       insertMenuMasterNew(employee) {
+        return this._httpClient.post("Master/MenuSave", employee)
+      }
+    
+      // Update menu Master 
+      updateMenuMasterNew(employee) {
+        return this._httpClient.post("Master/MenuUpdate", employee)
+      }
+  
+    populateMenuform(employee) {
+      this.menuform.patchValue(employee);
+    }
 }

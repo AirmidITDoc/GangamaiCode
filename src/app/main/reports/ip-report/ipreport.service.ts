@@ -447,13 +447,13 @@ public getDoctorShareReportView(Doctor_Id, GroupId, From_Dt, To_Dt, OP_IP_Type,l
   return this._httpClient.get("DoctorShareReports/view-DoctorShareReport?Doctor_Id=" + Doctor_Id+"&GroupId="+GroupId+"&From_Dt="+From_Dt+"&To_Dt="+To_Dt+"&OP_IP_Type="+OP_IP_Type);
 }
 
-public getDoctorSharesummaryReportView(FromDate,ToDate, DoctorId,OP_IP_Type,loader = true){
+public getDoctorSharesummaryReportView(FromDate,ToDate,DoctorId,OPD_IPD_Type,loader = true){
   if (loader) {
     this._loaderService.show();
 }
-  return this._httpClient.get("DoctorShareReports/viewDoctorWiseSummaryReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&DoctorId="+DoctorId+"&OP_IP_Type="+OP_IP_Type);
+  return this._httpClient.get("DoctorShareReports/viewDoctorWiseSummaryReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&DoctorId="+DoctorId+"&OPD_IPD_Type="+OPD_IPD_Type);
 }
-public getConDoctorSharesReportView(FromDate, ToDate, DoctorId,OP_IP_Type,loader = true){
+public getConDoctorSharesReportView(FromDate,ToDate,DoctorId,OP_IP_Type,loader = true){
   if (loader) {
     this._loaderService.show();
 }

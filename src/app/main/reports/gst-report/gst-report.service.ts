@@ -22,6 +22,7 @@ export class GstReportService {
           UserId:'',
           DoctorId:'',
           StoreId:'',
+          ReportType:['1']
           // VisitId:'',
           // PaymentId:'',
           // RefundId:'',
@@ -41,12 +42,12 @@ export class GstReportService {
     }
 
     
-  public getSalesprofitsummaryReport(FromDate,ToDate,loader = true){
+  public getSalesprofitsummaryReport(FromDate,ToDate,StoreId,loader = true){
     if (loader) {
       this._loaderService.show();
   }
   
-    return this._httpClient.get("GSTReport/view-SalesProfitSummaryReport?FromDate="+FromDate+"&ToDate="+ToDate);
+    return this._httpClient.get("GSTReport/view-SalesProfitSummaryReport?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId);
   }
 
   public getSalesprofitbillReport(FromDate,ToDate,StoreId,loader = true){
@@ -156,18 +157,18 @@ export class GstReportService {
     return this._httpClient.get("GSTReport/view-HSNCodeWiseReport?FromDate="+FromDate+"&ToDate="+ToDate);
   }
 
-  public geGSTRAZPurchaseReport(FromDate,ToDate,loader = true){
+  public geGSTRAZPurchaseReport(FromDate,ToDate,StoreId,loader = true){
     if (loader) {
       this._loaderService.show();
   }
-    return this._httpClient.get("GSTReport/view-GSTRZAPurchaseReport?FromDate="+FromDate+"&ToDate="+ToDate);
+    return this._httpClient.get("GSTReport/view-GSTRZAPurchaseReport?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId);
   }
  
-  public geGSTR2ASupplierwiseReport(FromDate,ToDate,loader = true){
+  public geGSTR2ASupplierwiseReport(FromDate,ToDate,StoreId,loader = true){
     if (loader) {
       this._loaderService.show();
   }
-    return this._httpClient.get("GSTReport/view-ViewGSTR2ASupplierWisePurchaseReport?FromDate="+FromDate+"&ToDate="+ToDate);
+    return this._httpClient.get("GSTReport/view-ViewGSTR2ASupplierWisePurchaseReport?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId);
   }
   getStoreList(){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ToStoreName",{})

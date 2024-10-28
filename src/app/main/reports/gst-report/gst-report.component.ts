@@ -32,7 +32,7 @@ export class GSTReportComponent implements OnInit {
   isSearchstoreSelected: boolean = false;
   FlagStoreSelected: boolean = false;
   FlagUserSelected: boolean = false;
-
+  FlagReportTypeSelected: boolean = false;
   ReportName: any;
   SpinLoading: boolean = false;
   sIsLoading: string = '';
@@ -87,79 +87,96 @@ export class GSTReportComponent implements OnInit {
      this.ReportID = el.ReportId;
      
      if (this.ReportName == 'Sales Profit Summary Report') {
-      this.FlagStoreSelected = false;
+      this.FlagStoreSelected = true;
      }else if (this.ReportName == 'Sales Profit Bill Report') {
        this.FlagStoreSelected = true;
        this.FlagUserSelected = false;
-   
+       this.FlagReportTypeSelected= false;
      }
      else if (this.ReportName == 'Sales Profit Item Wise Summary Report') {
        this.FlagUserSelected = false;
        this.FlagStoreSelected = true;
+       this.FlagReportTypeSelected= false;
      } 
    
      else if (this.ReportName == 'Purchase GST Report Supplier Wise-GST%') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
+      this.FlagReportTypeSelected= false;
     } 
     else if (this.ReportName == 'Purchase GST Report Supplier Wise-Without GST%') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
+      this.FlagReportTypeSelected= false;
     } 
     else if (this.ReportName == 'Purchase GST Report Date Wise') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
+      this.FlagReportTypeSelected= true;
     } 
     else if (this.ReportName == 'Purchase GST Report - Summary') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
+      this.FlagReportTypeSelected= false;
     } 
     else if (this.ReportName == 'Purchase Retum GST Report Date Wise Purchase Return GST Report - Summary') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
+      this.FlagReportTypeSelected= false;
     } 
     else if (this.ReportName == 'Purchase GST Summary') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
+      this.FlagReportTypeSelected= false;
     } 
     else if (this.ReportName == 'Sales GST Report') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
+      this.FlagReportTypeSelected= true;
     } 
     else if (this.ReportName == 'Sales GST Date Wise Report') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
+      this.FlagReportTypeSelected= true;
     } 
     else if (this.ReportName == 'Sales Return GST Report') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
+      this.FlagReportTypeSelected= false;
     } 
     else if (this.ReportName == 'Sales Return GST Date Wise Report') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
+      this.FlagReportTypeSelected= true;
     } 
     else if (this.ReportName == 'Sales GST Summary Consolidated') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
+      this.FlagReportTypeSelected= false;
     } 
     else if (this.ReportName == 'HSN Code Wise Report') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
+      this.FlagReportTypeSelected= false;
     } 
     else if (this.ReportName == 'GST B2CS Report') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
+      this.FlagReportTypeSelected= false;
     } 
     else if (this.ReportName == 'GST B2GS Report Consolidated') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
-    }   else if (this.ReportName == 'GSTRZA Purchase Report') {
+      this.FlagReportTypeSelected= false;
+    }   else if (this.ReportName == 'GSTR2A Purchase Report') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
+      this.FlagReportTypeSelected= false;
     } 
     else if (this.ReportName == 'GSTR2A Supplier Wise Purchase Report') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
+      this.FlagReportTypeSelected= false;
     } 
     }
 
@@ -216,7 +233,7 @@ export class GSTReportComponent implements OnInit {
      } 
      else if (this.ReportName == 'GST B2GS Report Consolidated') {
      // this.viewgetGSTB2CsconsolidatedPdf();
-     }   else if (this.ReportName == 'GSTRZA Purchase Report') {
+     }   else if (this.ReportName == 'GSTR2A Purchase Report') {
       this.viewgeGSTRAZpurchasePdf();
      } 
      else if (this.ReportName == 'GSTR2A Supplier Wise Purchase Report') {
@@ -228,12 +245,16 @@ export class GSTReportComponent implements OnInit {
 
     viewSalesprofitsummaryPdf() {
       debugger
+      let storeId=0;
+      if (this._GstReportService.userForm.get('StoreId').value.StoreId)
+        storeId = this._GstReportService.userForm.get('StoreId').value.StoreId
+  
       this.sIsLoading = 'loading-data';
       setTimeout(() => {
      
       this._GstReportService.getSalesprofitsummaryReport(
         this.datePipe.transform(this._GstReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-        this.datePipe.transform(this._GstReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
+        this.datePipe.transform(this._GstReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",storeId
         ).subscribe(res => {
         const matDialog = this._matDialog.open(PdfviewerComponent,
           {
@@ -716,6 +737,7 @@ export class GSTReportComponent implements OnInit {
      
 
      viewgeGSTRAZpurchasePdf() {
+      debugger
       this.sIsLoading = 'loading-data';
    
       let storeId =this._loggedUser.currentUserValue.user.storeId;
@@ -726,7 +748,7 @@ export class GSTReportComponent implements OnInit {
        
          this._GstReportService.geGSTRAZPurchaseReport(
           this.datePipe.transform(this._GstReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-        this.datePipe.transform(this._GstReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
+        this.datePipe.transform(this._GstReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",storeId
          ).subscribe(res => {
            const dialogRef = this._matDialog.open(PdfviewerComponent,
              {
@@ -758,7 +780,7 @@ export class GSTReportComponent implements OnInit {
        
          this._GstReportService.geGSTR2ASupplierwiseReport(
           this.datePipe.transform(this._GstReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-        this.datePipe.transform(this._GstReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
+        this.datePipe.transform(this._GstReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",storeId
          ).subscribe(res => {
            const dialogRef = this._matDialog.open(PdfviewerComponent,
              {

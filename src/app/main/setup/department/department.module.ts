@@ -13,20 +13,13 @@ const appRoutes: Routes = [
                 (m) => m.DepartmentMasterModule
             ),
     },
-    {
+       {
         path: "location-master",
         loadChildren: () =>
-            import("../PersonalDetails/hospital-master/hospital.module").then(
-                (m) => m.HospitalModule
+            import("./location-master/location-master.module").then(
+                (m) => m.LocationMasterModule
             ),
     },
-    // {
-    //     path: "location-master",
-    //     loadChildren: () =>
-    //         import("./location-master/location-master.module").then(
-    //             (m) => m.LocationMasterModule
-    //         ),
-    // },
     {
         path: "ward-master",
         loadChildren: () =>

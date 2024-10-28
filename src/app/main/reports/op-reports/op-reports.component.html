@@ -100,7 +100,7 @@
                                 <div fxLayout="row" fxLayoutAlign="start none">
                                     <br />
 
-                                    <mat-form-field appearance="outline" style="margin-left: 2%;">
+                                    <mat-form-field appearance="outline" style="margin-left: 2%;" fxFlex="40%">
                                         <mat-label>Enter a date range</mat-label>
                                         <mat-date-range-input [rangePicker]="picker">
                                             <input matStartDate formControlName="startdate" placeholder="Start date">
@@ -115,7 +115,7 @@
 
                                 <div fxLayout="column" fxLayoutAlign="start none">
                                     <div  style="margin-left:2%;">
-                                        <mat-form-field appearance="outline" fxFlex="60%;" *ngIf="FlagUserSelected">
+                                        <mat-form-field appearance="outline" fxFlex="40%;" *ngIf="FlagUserSelected">
                                             <mat-label>User</mat-label>
                                             <input matAutocompletePosition="below" type="text" placeholder="Select User"
                                                 matInput formControlName="UserId" [matAutocomplete]="autoUser">
@@ -134,7 +134,7 @@
                                             </mat-autocomplete>
                                         </mat-form-field>
 
-                                        <mat-form-field appearance="outline" fxFlex="60%" *ngIf="FlagDoctorIDSelected"
+                                        <mat-form-field appearance="outline" fxFlex="40%" *ngIf="FlagDoctorIDSelected"
                                         style="margin-right:10px;">
                                                 <mat-label>Doctor Name</mat-label>
                                                 <input matAutocompletePosition="below" type="text"

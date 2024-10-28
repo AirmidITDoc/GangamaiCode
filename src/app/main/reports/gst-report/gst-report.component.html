@@ -34,10 +34,7 @@
                     <div fxlayout="column" style="width: 50%;">
                         <!-- style="width: 100%;" -->
                         <div fxFlex.gt-sm="100%" style="width: 99%;">
-                            <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                                class="backgroundBlur" style="height: 100%;">
-                                <div class="spinner-border text-danger"></div>
-                            </div>
+                          
 
                             <mat-table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
                                 <ng-container matColumnDef="ReportName">
@@ -101,7 +98,7 @@
                                 <div fxLayout="row" fxLayoutAlign="start none">
                                     <br />
 
-                                    <mat-form-field appearance="outline" style="margin-left: 2%;">
+                                    <mat-form-field appearance="outline" style="margin-left: 2%;" fxFlex="40%">
                                         <mat-label>Enter a date range</mat-label>
                                         <mat-date-range-input [rangePicker]="picker">
                                             <input matStartDate formControlName="startdate" placeholder="Start date">
@@ -212,7 +209,18 @@
 
                                         </div>
 
-                                   
+                                        <div>
+                                            <span *ngIf="FlagReportTypeSelected" style="font-weight: bold;margin-left: 2%;">Patient Type</span>
+                                            <mat-radio-group aria-label="Select an option" formControlName="ReportType" *ngIf="FlagReportTypeSelected"  style="margin-left:2%;"
+                                            name="ReportType">
+                                            
+                                           
+                                            <mat-radio-button value="0">Detail
+                                                </mat-radio-button>
+                                            <mat-radio-button value="1">Summary</mat-radio-button>
+                                        </mat-radio-group>
+    
+                                        </div>
 
                                 </div>
                                 <div fxLayout="row" fxLayoutAlign="start none">

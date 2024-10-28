@@ -18,34 +18,23 @@ import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
-import { MenuSubMenuComponent } from './menu-sub-menu/menu-sub-menu.component';
-import { MenuMasterComponent } from './menu-master/menu-master.component';
-import { MenuConfigureComponent } from './menu-configure.component';
-import { MenuConfigureService } from './menu-configure.service';
 import { MatCardModule } from '@angular/material/card';
 import { NotificationServiceService } from 'app/core/notification-service.service';
-import { MenuSubSubmenuComponent } from './menu-sub-submenu/menu-sub-submenu.component';
-import { MenuMainComponent } from './menu-main/menu-main.component';
-import { MenuFormComponent } from './menu-form/menu-form.component';
+import { NewMenuService } from './new-menu.service';
+import { NewMenuComponent } from './new-menu.component';
 
-const appRoutes: Routes = [
-    {
-        path: 'menu-master',
-        component: MenuFormComponent,
-    }
+const routes: Routes = [
+  {
+      path: "**",
+      component: NewMenuComponent,
+  },
 ];
-
 @NgModule({
     declarations: [
-        MenuConfigureComponent,
-        MenuMasterComponent,
-        MenuSubMenuComponent,
-        MenuSubSubmenuComponent,
-        MenuMainComponent,
-        MenuFormComponent
+      NewMenuComponent
     ],
     imports: [
-        RouterModule.forChild(appRoutes),
+        RouterModule.forChild(routes),
 
         MatButtonModule,
         MatCheckboxModule,
@@ -66,16 +55,13 @@ const appRoutes: Routes = [
         FuseSharedModule,
         FuseConfirmDialogModule,
         FuseSidebarModule,
-        MatCardModule,
-        
+        MatCardModule
     ]
     ,providers: [
-        MenuConfigureService,
-        NotificationServiceService
+      NewMenuService
     ],
     entryComponents: [
-        MenuFormComponent,
+      NewMenuComponent,
     ]
 })
-export class MenuModule {
-}
+export class NewMenuModule { }

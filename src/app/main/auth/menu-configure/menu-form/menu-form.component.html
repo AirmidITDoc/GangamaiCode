@@ -1,1 +1,181 @@
-<p>menu-form works!</p>
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <!-- HEADER -->
+    <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center">
+
+        <!-- APP TITLE -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Menu Master
+                </span>
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+        <!-- SEARCH -->
+        <!-- / SEARCH -->
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content">
+
+        <!-- SIDEBAR -->
+        <!-- / SIDEBAR -->
+
+        <!-- CENTER -->
+        <div class="center p-24 pb-56" fusePerfectScrollbar>
+            <!-- CONTENT -->
+            <div class="content-card">
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                    <div fxFlex.gt-sm="65%" fxFlex>
+
+                       
+
+                        <div fxlayout="row">
+                            <div style="width: 100%;">
+                                <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" style="overflow:auto">
+                                    <ng-container matColumnDef="Id">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-100">Code </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-100">  {{element.Id}} </mat-cell>
+                                    </ng-container>
+                    
+                                    <ng-container matColumnDef="UpId">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-100">UpId </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-100"> {{element.UpId}} </mat-cell>
+                                    </ng-container>
+                                
+                                    <ng-container matColumnDef="LinkName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200"> Menu Name </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-200">  {{element.LinkName}} </mat-cell>
+                                    </ng-container>
+                    
+                                    <ng-container matColumnDef="Icon">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-100"> Icon </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-100"> {{element.Icon}} </mat-cell>
+                                    </ng-container>
+                                
+                                    <ng-container matColumnDef="LinkAction">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header  fxHide fxShow.gt-sm class="w-200"> Action </mat-header-cell>
+                                        <mat-cell *matCellDef="let element"  fxHide fxShow.gt-sm class="w-200"> {{element.LinkAction}} </mat-cell>
+                                    </ng-container>
+                                
+                                
+                                    <ng-container matColumnDef="IsDisplay">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-100"> IsBlock </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-100"> {{element.IsDisplay}} </mat-cell>
+                                    </ng-container>
+                                
+                                    <ng-container matColumnDef="action" stickyEnd>
+                                        <mat-header-cell *matHeaderCellDef class="table-actions"> Action </mat-header-cell>
+                                        <mat-cell *matCellDef="let element">
+                                            <button mat-icon-button (click)="onEditMenu(element)">
+                                                <mat-icon title="Edit Menu">launch</mat-icon>
+                                            </button>
+                                          
+                                        </mat-cell>
+                                    </ng-container>
+                                
+                                    <ng-container matColumnDef="loading">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            loading data...
+                                        </mat-footer-cell>
+                                    </ng-container>
+                                
+                                    <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                                    <mat-row *matRowDef="let element; columns: displayedColumns;" class="element"
+                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                    <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
+                                </mat-table>
+
+                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
+                                    showFirstLastButtons></mat-paginator>
+                            </div>
+                        </div>
+                    </div>
+                  
+                    <div fxFlex.gt-sm="35%">
+                        <div class="dialog-content-wrapper">
+                            <div mat-dialog-content>
+                                <form [formGroup]="_MenuService.menuform">
+                                    <h3>New Menu Master</h3>
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                            <mat-label>Menu Number </mat-label>
+                                            <input name="Id" formControlName="Id" matInput required>
+                                            <mat-error>Please enter Menu Number</mat-error>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                            <mat-label>UP Id </mat-label>
+                                            <input name="UpId" formControlName="UpId" matInput required>
+                                            <mat-error>Please enter Menu Number</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                            <mat-label>Menu Name</mat-label>
+                                            <input name="LinkName" formControlName="LinkName" matInput required>
+                                            <mat-error>Please enter Menu Name </mat-error>
+                                        </mat-form-field>
+                                    </div>        
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                        <mat-form-field  appearance="outline" class="mr-sm-12" fxFlex>
+                                            <mat-label>Icon</mat-label>
+                                            <input name="Icon" formControlName="Icon" matInput required>
+                                            <mat-error>Please enter Icon </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                        <mat-form-field  appearance="outline" class="mr-sm-12" fxFlex>
+                                            <mat-label>action</mat-label>
+                                            <input name="LinkAction" formControlName="LinkAction" matInput required>
+                                            <mat-error>Please enter action </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                            <mat-label>Display No</mat-label>
+                                            <input name="SortOrder" formControlName="SortOrder" matInput required>
+                                            <mat-error>Please enter menu display sr no </mat-error>
+                                        </mat-form-field>
+                
+                                        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                            <mat-select placeholder="Please Select IsBlock" name="IsBlock"
+                                                formControlName="IsBlock" required value="1">
+                                                <mat-option value="0">0</mat-option>
+                                                <mat-option value="1">1</mat-option>
+                                            </mat-select>
+                                            <mat-error>Please Select IsBlock</mat-error>
+                                        </mat-form-field>
+
+                                        <mat-radio-group name="IsActive" formControlName="IsActive" value='1' fxFlex>
+                                            <mat-radio-button value='1' class="mr-sm-12"
+                                                fxFlex>IsActive</mat-radio-button>
+    
+                                        </mat-radio-group>
+                                    </div>                        
+                                 </form>
+                            </div>
+                          
+
+                            <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
+                                <button class="btn btn-danger-outline" (click)="onClear()">Reset</button>
+                                <button class="btn btn-primary " color="accent" (click)="onSubmit()"
+                                    [disabled]="_MenuService.menuform.invalid">
+                                    <span>Save</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- / CONTENT -->
+        </div>
+        <!-- / CENTER -->
+    </div>
+    <!-- / CONTENT-->
+</div>

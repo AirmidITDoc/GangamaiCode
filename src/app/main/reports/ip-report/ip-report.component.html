@@ -101,7 +101,7 @@
                                 <div fxLayout="row" fxLayoutAlign="start none">
                                     <br />
 
-                                    <mat-form-field appearance="outline" style="margin-left: 2%;">
+                                    <mat-form-field appearance="outline" style="margin-left: 2%;" fxFlex="40%">
                                         <mat-label>Enter a date range</mat-label>
                                         <mat-date-range-input [rangePicker]="picker">
                                             <input matStartDate formControlName="startdate" placeholder="Start date">
@@ -116,7 +116,7 @@
 
                                 <div fxLayout="column" fxLayoutAlign="start none">
                                     <div style="margin-left: 2%;">
-                                        <mat-form-field appearance="outline" fxFlex *ngIf="FlagUserSelected">
+                                        <mat-form-field appearance="outline" fxFlex *ngIf="FlagUserSelected" fxFlex="40%">
                                             <mat-label>User</mat-label>
                                             <input matAutocompletePosition="below" type="text" placeholder="Select User"
                                                 matInput formControlName="UserId" [matAutocomplete]="autoUser">
@@ -157,7 +157,7 @@
                                         </mat-form-field> -->
 
 
-                                        <mat-form-field appearance="outline" *ngIf="FlagDoctorSelected" fxFlex="60%">
+                                        <mat-form-field appearance="outline" *ngIf="FlagDoctorSelected" fxFlex="40%">
                                             <mat-label>Doctor Name</mat-label>
                                             <input matAutocompletePosition="below" type="text"
                                                 placeholder="Select  Doctor Name" matInput formControlName="DoctorId"
@@ -177,7 +177,7 @@
                                             </mat-autocomplete>
                                         </mat-form-field>
 
-                                        <mat-form-field appearance="outline" *ngIf="FlagAdmissionIdSelected">
+                                        <mat-form-field appearance="outline" *ngIf="FlagAdmissionIdSelected" fxFlex="40%">
                                             <mat-label>Admission Id</mat-label>
                                             <input name="AdmissionID" formControlName="AdmissionID"
                                                 placeholder="Admission Id" matInput>
@@ -215,7 +215,7 @@
 
 
 
-                                        <mat-form-field appearance="outline" *ngIf="FlagGroupSelected" fxFlex="60%">
+                                        <mat-form-field appearance="outline" *ngIf="FlagGroupSelected" fxFlex="40%">
                                             <mat-label>Group Name</mat-label>
                                             <input matAutocompletePosition="below" type="text"
                                                 placeholder="Select GroupId" matInput formControlName="GroupId"
@@ -255,7 +255,7 @@
 
 
                                         <mat-form-field appearance="outline" *ngIf="FlagDischargetypeIdSelected"
-                                            fxFlex="60%">
+                                            fxFlex="40%">
                                             <mat-label>Discharge Type Name</mat-label>
                                             <input matAutocompletePosition="below" type="text"
                                                 placeholder="Select DischargeTypeName" matInput
@@ -277,7 +277,7 @@
                                         </mat-form-field>
                                     </div>
                                     <div style="margin-left: 2%;">
-                                        <mat-form-field appearance="outline" fxFlex="60%" *ngIf="FlagWardSelected">
+                                        <mat-form-field appearance="outline" fxFlex="40%" *ngIf="FlagWardSelected">
                                             <mat-label>Ward Name</mat-label>
                                             <input matAutocompletePosition="below" type="text" placeholder="Select Ward"
                                                 matInput formControlName="RoomId" [(ngModel)]="vRoomId"
@@ -298,7 +298,7 @@
                                         </mat-form-field>
                                     </div>
                                     <div style="margin-left: 2%;">
-                                        <mat-form-field appearance="outline" fxFlex="60%" *ngIf="FlagCompanySelected">
+                                        <mat-form-field appearance="outline" fxFlex="40%" *ngIf="FlagCompanySelected">
                                             <mat-label>Company Name </mat-label>
                                             <input matAutocompletePosition="below" type="text"
                                                 placeholder="Select Company" [(ngModel)]="vCompanyId" matInput
