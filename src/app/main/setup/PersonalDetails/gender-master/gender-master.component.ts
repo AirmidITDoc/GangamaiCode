@@ -32,19 +32,7 @@ export class GenderMasterComponent implements OnInit {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
-                            let that = this;
-                            const dialogRef = this._matDialog.open(NewGendermasterComponent,
-                                {
-                                    maxWidth: "45vw",
-                                    height: '35%',
-                                    width: '70%',
-                                    data: data
-                                });
-                            dialogRef.afterClosed().subscribe(result => {
-                                if (result) {
-                                    that.grid.bindGridData();
-                                }
-                            });
+                            this.onSave(data);
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
@@ -57,7 +45,7 @@ export class GenderMasterComponent implements OnInit {
                             this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
                             this.confirmDialogRef.afterClosed().subscribe((result) => {
                                 if (result) {
-                                    let that=this;
+                                    let that = this;
                                     this._GenderService.deactivateTheStatus(data.genderId).subscribe((response: any) => {
                                         if (response.StatusCode == 200) {
                                             this.toastr.success(response.Message);
@@ -86,4 +74,20 @@ export class GenderMasterComponent implements OnInit {
     ) { }
 
     ngOnInit(): void { }
+    onSave(row: any = null) {
+        let that = this;
+        const dialogRef = this._matDialog.open(NewGendermasterComponent,
+            {
+                maxWidth: "45vw",
+                height: '35%',
+                width: '70%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
+        });
+    }
+
 }
