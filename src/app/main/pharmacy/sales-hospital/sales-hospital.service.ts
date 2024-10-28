@@ -205,5 +205,11 @@ import { LoaderService } from 'app/core/components/loader/loader.service';
     public getSalesDoctorList(){
       return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_SalesDoctorNameList",{});
     }
+    public getItemStockNotAvailableList(query ,loader = true) {
+      if (loader) {
+        this._loaderService.show();
+    }
+      return this._httpClient.post("Generic/GetBySelectQuery?query=" + query,{});
+  }
   }
   

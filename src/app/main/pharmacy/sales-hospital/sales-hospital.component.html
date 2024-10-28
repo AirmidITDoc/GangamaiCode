@@ -1391,6 +1391,55 @@
                                         [ngClass]="{'hide':!(dsBalAvaListStore!=null && dsBalAvaListStore.data.length==0)}">
                                     </mat-footer-row>
                                 </mat-table>
+
+
+                                      <!-- Available Stock in Other Store -->
+                                      <mat-table class="sales-table-right" #table matSort [dataSource]="dsStockNotAvilableItem"
+                                      [@animateStagger]="{value:'50'}">
+                                      <ng-container matColumnDef="ItemName">
+                                          <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                              class="w-190">Item Name
+                                          </mat-header-cell>
+                                          <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-190">
+                                              {{contact.ItemName}}
+                                          </mat-cell>
+                                      </ng-container>
+  
+                                      <!-- <ng-container matColumnDef="BalQty" stickyEnd>
+                                          <mat-header-cell *matHeaderCellDef class="table-actions">Qty
+                                          </mat-header-cell>
+                                          <mat-cell *matCellDef="let contact">
+                                              {{contact.BalQty}}
+                                          </mat-cell>
+                                      </ng-container> -->
+  
+                                      <ng-container matColumnDef="loading">
+                                          <mat-header-cell *matFooterCellDef colspan="6" style="display:none;">
+                                          </mat-header-cell>
+                                      </ng-container>
+  
+                                      <ng-container matColumnDef="noData">
+                                          <mat-footer-cell *matFooterCellDef colspan="6">
+  
+                                              <mat-spinner *ngIf="isLoadingStr=='loading'" [diameter]='30'>
+                                              </mat-spinner>
+                                              <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
+                                          </mat-footer-cell>
+                                      </ng-container>
+                                      <!-- (click)="show($event,contact)" -->
+                                      <mat-header-row class="accent"
+                                          *matHeaderRowDef="ItemSktNotDisplayedCol; sticky: true">
+                                      </mat-header-row>
+                                      <mat-row *matRowDef="let contact; columns: ItemSktNotDisplayedCol;"
+                                          [ngClass]="{'row-yellow': QtyBalchk ==0}"
+                                          [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                      <mat-footer-row *matFooterRowDef="['loading']"
+                                          [ngClass]="{'hide':dsStockNotAvilableItem!=null}">
+                                      </mat-footer-row>
+                                      <mat-footer-row *matFooterRowDef="['noData']"
+                                          [ngClass]="{'hide':!(dsStockNotAvilableItem!=null && dsStockNotAvilableItem.data.length==0)}">
+                                      </mat-footer-row>
+                                      </mat-table>
                             </div>
                             <hr>
                             <div fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="9px">

@@ -40,6 +40,7 @@ import { PrescriptionComponent } from '../sales/prescription/prescription.compon
 import { SalePopupComponent } from '../sales/sale-popup/sale-popup.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { map, startWith } from 'rxjs/operators';
+import { query } from '@angular/animations';
 
 @Component({
   selector: 'app-sales-hospital',
@@ -302,6 +303,9 @@ export class SalesHospitalComponent implements OnInit {
   DraftAvbStkListDisplayedCol = [
     'StoreName',
     'BalQty'
+  ];
+  ItemSktNotDisplayedCol = [
+    'ItemName',  
   ];
 
   DraftSaleDisplayedCol = [ 
@@ -1773,6 +1777,7 @@ export class SalesHospitalComponent implements OnInit {
     this.ItemSubform.get('ConcessionId').disable();
 
     this.saleSelectedDatasource.data = [];
+    this.ItemStkNot = [];
     this.getDraftorderList();
     this.TotalAdvanceAmt = 0;
     this.TotalBalanceAmt = 0;
@@ -3549,6 +3554,7 @@ export class SalesHospitalComponent implements OnInit {
 
   onClose() {
     this.Itemchargeslist = [];
+    this.ItemStkNot = [];
     this.ItemFormreset();
    // this.patientDetailsFormGrp.reset();
     this.ItemSubform.reset();
@@ -3940,8 +3946,7 @@ getSearchListIP() {
         if (this.IPMedID > 0) {
           this.paymethod = true;
           this.vSelectedOption = 'IP';
-        }
-
+        } 
 
         this.dsItemNameList1.data = result;
         this.dsItemNameList1.data.forEach((contact) => {
@@ -3950,10 +3955,19 @@ getSearchListIP() {
             "StoreId": this._loggedService.currentUserValue.user.storeId || 0
           }
           this._salesService.getDraftBillItem(m_data).subscribe(draftdata => {
-            //console.log(draftdata)
+            console.log(draftdata)
             this.Itemchargeslist1 = draftdata as any;
             if (this.Itemchargeslist1.length == 0) {
-              Swal.fire(contact.ItemId + " : " + "Item Stock is Not Avilable:")
+             Swal.fire(contact.ItemId + " : " + "Item Stock is Not Avilable:") 
+             this.getstocknotAvailableList(contact)
+              // Swal.fire({
+              //   title: contact.ItemId + 'This Item Stock Is Not Available', 
+              //   icon: "warning",
+              //   showCancelButton: false,
+              //   confirmButtonColor: "#3085d6",
+              //   cancelButtonColor: "#d33",
+              //   confirmButtonText: "Ok" 
+              // }) 
             }
             else if (this.Itemchargeslist1.length > 0) {
               let ItemID = contact.ItemId;
@@ -3995,6 +4009,32 @@ getSearchListIP() {
       });
     }
   } 
+
+  dsStockNotAvilableItem = new MatTableDataSource<IndentList>();
+  ItemStkNot:any=[];
+  SktNotList:any=[];
+getstocknotAvailableList(contact){
+  debugger 
+  let Query 
+  Query = "select ItemName from M_ItemMaster where ItemId ="+ contact.ItemId
+  console.log(Query)
+  this._salesService.getItemStockNotAvailableList(Query).subscribe(data =>{
+    console.log(data) 
+    this.ItemStkNot = data  
+    console.log(this.ItemStkNot)  
+    this.ItemStkNot.forEach(element=>{
+      this.SktNotList.push(
+        {
+          ItemName:element.ItemName 
+        });
+    });
+    this.dsStockNotAvilableItem.data = this.SktNotList;
+    console.log(this.dsStockNotAvilableItem.data ) 
+  })
+}
+
+
+
   TotalCreditAmt:any=0;
   TotalAdvanceAmt:any=0;
   TotalBalanceAmt:any=0;

@@ -377,6 +377,7 @@ export class CompanyBillComponent implements OnInit {
       if (this.vClassId != 0) {
         const ddValue = this.ClassList.filter(c => c.ClassId == this.vClassId);
         this.Serviceform.get('ChargeClass').setValue(ddValue[0]);
+        this.Serviceform.get('TableClassName').setValue(ddValue[0]);
         this.Serviceform.updateValueAndValidity();
         return;
       }
@@ -387,6 +388,10 @@ export class CompanyBillComponent implements OnInit {
       const filterValue = value && value.ClassName ? value.ClassName.toLowerCase() : value.toLowerCase();
       return this.ClassList.filter(option => option.ClassName.toLowerCase().includes(filterValue));
     }
+  }
+  setlist:any=[];
+  getsetclassNameDropdown(){
+    this.setlist = this.dataSource.data;
   }
   getSelectedObjClass(obj) {
     this.Serviceform.get('SrvcName').setValue('');
@@ -624,7 +629,16 @@ export class CompanyBillComponent implements OnInit {
       });
     }
   
-  
+    showAllFilter(event) {
+      console.log(event);
+      if (event.checked == true)
+        // this.isFilteredDateDisabled = event.value;
+        this.isFilteredDateDisabled = true;
+      if (event.checked == false) {
+        this.getChargesList();
+        this.isFilteredDateDisabled = false;
+      }
+    } 
     getDateTime(dateTimeObj) {
       this.dateTimeObj = dateTimeObj;
     }
@@ -1514,19 +1528,7 @@ export class CompanyBillComponent implements OnInit {
     calBalanceAmt() {
       // select isnull(Sum(BalanceAmount),0) as PhBillCredit from T_SalesHeader where OP_IP_Type=1 and OP_IP_ID=
     }
-  
-  
-    showAllFilter(event) {
-      console.log(event);
-      if (event.checked == true)
-        // this.isFilteredDateDisabled = event.value;
-        this.isFilteredDateDisabled = true;
-      if (event.checked == false) {
-        this.getChargesList();
-        this.isFilteredDateDisabled = false;
-      }
-    }
-  
+   
     getBillingClassCombo() {
       this._IpSearchListService.getClassList({ "Id": this.selectedAdvanceObj.ClassId }).subscribe(data => {
         this.BillingClassCmbList = data;

@@ -1270,7 +1270,7 @@ export class SalesComponent implements OnInit {
     var m_data = {
       "insertWhatsappsmsInfo": {
         "mobileNumber": this.MobileNo,
-        "smsString": 'PatientDetail' || '',
+        "smsString": 'PatientDetail',
         "isSent": 0,
         "smsType": 'bulk',
         "smsFlag": 0,

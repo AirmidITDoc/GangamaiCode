@@ -403,12 +403,6 @@
                         <mat-checkbox (change)="showAllFilter($event)" aria-label="Remember Me">
                             Show All Charges
                         </mat-checkbox>
-                        <button mat-icon-button (click)="drawer1.toggle()">
-
-                            <span class="material-icons">
-                                notifications_none
-                            </span>
-                        </button>
                     </div>
                 </div>
                 <mat-tab-group class="mat-tab-header-small" #tabGroup (selectedTabChange)="tabChanged($event)">
@@ -508,15 +502,7 @@
                                     <span> {{contact.DoctorName || '--'}}</span>
                                 </mat-cell>
                             </ng-container>
-                
-                            <ng-container matColumnDef="ClassId">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="accent">ClassId
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    <span> {{contact.ClassId}}</span>
-                                </mat-cell>
-                            </ng-container> 
-
+                         
                             <ng-container matColumnDef="ClassName">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm  class="w-200">ClassName
                                 </mat-header-cell>
@@ -531,14 +517,16 @@
                                       </mat-form-field> 
                                     </form> -->
                                     <form [formGroup]="Serviceform">
-                                    <mat-form-field style="width: 180px;">
-                                        <mat-select [(value)]="contact.ClassName" formControleName="TableClassName">
-                                          <mat-option *ngFor="let contact of Tableclasslist" [value]="contact">
-                                            {{contact.ClassName }}
-                                          </mat-option>
+                                        <mat-form-field style="width: 180px;">  
+                                            <mat-select formControlName="TableClassName" name="TableClassName" 
+                                            [(value)]="contact.ClassName" >
+                                            <mat-option></mat-option>
+                                            <mat-option *ngFor="let m of Tableclasslist" [value]="m">
+                                                {{m.ClassName}}
+                                            </mat-option>
                                         </mat-select>
-                                      </mat-form-field>
-                                      </form>
+                                        </mat-form-field>  
+                                    </form>
                                 </mat-cell>
                             </ng-container>
                 
