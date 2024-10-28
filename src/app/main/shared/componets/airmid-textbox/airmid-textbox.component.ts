@@ -24,18 +24,19 @@ import { takeUntil } from "rxjs/operators";
     //     },
     // ],
     providers: [
-        {
-            provide: MatFormFieldControl,
-            useExisting: forwardRef(() => AirmidTextboxComponent),
-            multi: true,
-        }
+        // {
+        //     provide: MatFormFieldControl,
+        //     useExisting: forwardRef(() => AirmidTextboxComponent),
+        //     multi: true,
+        // }
     ],
     host: {
         '(focusout)': 'onTouched()',
     },
 })
-export class AirmidTextboxComponent implements ControlValueAccessor,
-    MatFormFieldControl<string>,
+export class AirmidTextboxComponent implements 
+//ControlValueAccessor,
+    //MatFormFieldControl<string>,
     OnInit,
     OnDestroy {
     static nextId: number = 0;
@@ -49,6 +50,7 @@ export class AirmidTextboxComponent implements ControlValueAccessor,
     control = new FormControl();
     stateChanges: Subject<void> = new Subject();
     @Input() formGroup: FormGroup;
+    @Input() formControlName:string;
     @Input() maxLength: number = 50;
     @Input() validations: [] = [];
     @Input() label: string = "";
@@ -200,6 +202,7 @@ export class AirmidTextboxComponent implements ControlValueAccessor,
     // Handle custom validation if required is enabled
     ngOnInit() {
         debugger
+        //this.control.setValidators(this.formGroup.get(formControlName))
         // if (this.required) {
         //     this.control.setValidators([
         //         Validators.required,

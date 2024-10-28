@@ -23,7 +23,8 @@
                         label="Gender name"
                         formControlName="genderName"
                         [value]=""
-                        [validations]="genderNameValidation"
+                        [formGroup]="genderForm"
+                        [validations]="_GenderMasterService.getValidationMessages().genderName"
                         [maxLength]="300">
                     </airmid-textbox> 
                 </div>
