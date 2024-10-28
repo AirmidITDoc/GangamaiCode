@@ -49,8 +49,10 @@ export class GenderMasterService {
     }
 
     public genderMasterSave(Param: any, id: string ,showLoader = true) {
-        if(id)
+        if(id){
+            Param.genderId = id;
             return this._httpClient.PutData("Gender/"+ id, Param, showLoader);
+        }
         else
             return this._httpClient.PostData("Gender", Param, showLoader);       
     }

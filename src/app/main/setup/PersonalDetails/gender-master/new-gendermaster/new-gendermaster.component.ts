@@ -47,13 +47,8 @@ export class NewGendermasterComponent implements OnInit {
                 )
                 .subscribe(
                     (response) => {
-                        if (response.statusCode == 200) {
-                            this.toastr.success(response.message);
-                            this.onClear(true);
-                        } else {
-                            this.toastr.error(response.message);
-                        }
-                    },
+                        this.toastr.success(response.message);
+                        this.onClear(true);                    },
                     (error) => {
                         this.toastr.error(error.message);
                     }
