@@ -19,13 +19,11 @@
             <form [formGroup]="_GenderMasterService.myform">
                 <input type="hidden" name="genderId" formControlName="genderId">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <airmid-textbox [formGroup]="_GenderMasterService.myform" fieldName="genderName"
+                    <airmid-textbox [formGroup]="_GenderMasterService.myform"
                         label="Gender name"
                         formControlName="genderName"
-                        fieldName="genderName"
-                        placeholder="Gender Name"
+                        [value]=""
                         [validations]="genderNameValidation"
-                        [required]="true"
                         [maxLength]="300">
                     </airmid-textbox> 
                 </div>
