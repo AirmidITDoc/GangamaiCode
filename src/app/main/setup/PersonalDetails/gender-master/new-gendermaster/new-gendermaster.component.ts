@@ -29,17 +29,13 @@ export class NewGendermasterComponent implements OnInit {
         this.genderForm.patchValue(m_data);
     }
     onSubmit() {
-        debugger
-        // GENDER NAME NOT GET
         if (this.genderForm.valid) {
             this._GenderMasterService.genderMasterSave(this.genderForm.value).subscribe((response) => {
                 this.toastr.success(response.message);
                 this.onClear(true);
-            },
-                (error) => {
-                    this.toastr.error(error.message);
-                }
-            );
+            }, (error) => {
+                this.toastr.error(error.message);
+            });
         }
     }
 

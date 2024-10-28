@@ -201,7 +201,6 @@ export class AirmidTextboxComponent implements
 
     // Handle custom validation if required is enabled
     ngOnInit() {
-        debugger
         //this.control.setValidators(this.formGroup.get(formControlName))
         // if (this.required) {
         //     this.control.setValidators([
