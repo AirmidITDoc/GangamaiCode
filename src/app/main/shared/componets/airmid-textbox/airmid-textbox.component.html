@@ -2,12 +2,18 @@
     <mat-label>{{ label }}</mat-label>
     <input matInput [formControl]="control" [maxlength]="maxLength" (blur)="onTouched()" ngDefaultControl
         [type]="type" [value]="value" [placeholder]="placeholder" />
-        {{control}}
-    <div *ngIf="this.control.hasError() && control?.touched && validations.length>0">
+        <!-- {{control}} -->
+    <div *ngIf="this.control?.invalid && control?.touched && validations.length>0">
         <div *ngFor="let item of validations">
             <mat-error *ngIf="formGroup.get(formControlName).hasError(item.name)">
                 {{item.Message}}
             </mat-error>
         </div>
     </div>
+
+
+    <!-- <div *ngIf="control?.invalid && control?.touched" class="error">
+        <small *ngIf="control?.errors?.['required']">This field is required.</small>
+        <small *ngIf="control?.errors?.['maxlength']">Maximum {{ maxLength }} characters allowed.</small>
+    </div> -->
 </mat-form-field>

@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { GenderMasterService } from '../gender-master.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
     selector: "app-new-gendermaster",
@@ -9,8 +10,10 @@ import { GenderMasterService } from '../gender-master.service';
     styleUrls: ["./new-gendermaster.component.scss"],
 })
 export class NewGendermasterComponent implements OnInit {
+    genderForm: FormGroup;
     constructor(
         public _GenderMasterService: GenderMasterService,
+        public _formBuilder: FormBuilder,
         public dialogRef: MatDialogRef<NewGendermasterComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
         public toastr: ToastrService
@@ -23,12 +26,27 @@ export class NewGendermasterComponent implements OnInit {
     ];
 
     ngOnInit(): void {
+        this.createGenderForm();
         var m_data = {
             genderId: this.data?.genderId,
             genderName: this.data?.genderName.trim(),
             isDeleted: JSON.stringify(this.data?.isActive),
         };
         this._GenderMasterService.populateForm(m_data);
+    }
+
+    get frmCtrl() { return this.genderForm.controls; } //return form controls
+
+    createGenderForm(){
+        this.genderForm =  this._formBuilder.group({
+            genderId: [""],
+            genderName: ['', [
+                Validators.required,
+                Validators.maxLength(50),
+                Validators.pattern('^[a-zA-Z () ]*$')
+              ]],
+              isDeleted: [""],
+        });
     }
 
     onSubmit() {
@@ -57,8 +75,7 @@ export class NewGendermasterComponent implements OnInit {
     }
 
     onClear(val: boolean) {
-        this._GenderMasterService.myform.reset({ isDeleted: "false" });
-        this._GenderMasterService.initializeFormGroup();
+        this.genderForm.reset();
         this.dialogRef.close(val);
     }
 }
