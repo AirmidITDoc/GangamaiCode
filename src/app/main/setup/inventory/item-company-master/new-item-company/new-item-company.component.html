@@ -1,0 +1,66 @@
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fusePerfectScrollbar
+dynamicTableHeight>  
+    <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <h3>{{_ItemCompanyMasteService.myform.controls.ItemCompanyNameId.value?"Modify
+                ItemCompanyNameSearch Master":"New Item Company Name Master"}}</h3>
+        </div> 
+        <div fxLayout="row" fxLayoutALign="end start">
+            <!-- <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
+            </app-common-date> -->
+            <button mat-icon-button tabIndex="-1" (click)="onClear()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div> 
+    </mat-toolbar>
+
+
+    
+    <div class="content"> 
+        <div class="center p-12 pb-56" fusePerfectScrollbar> 
+            <div class="content-card">
+                <div fxFlexFill fxLayout="column" fxLayoutGap="10px">
+                
+                    <div class="dialog-content-wrapper">
+                        <form [formGroup]="_ItemCompanyMasteService.myform">
+                            <mat-card style="padding: 8px;">
+                                <input type="hidden" name="ItemCompanyNameId" formControlName="ItemCompanyNameId">
+                
+                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                        <mat-label>Item Company Name</mat-label>
+                                        <input name="ItemCompanyName" formControlName="ItemCompanyName" matInput type="text"
+                                            [(ngModel)]="vItemCompanyName" required>
+                                        <mat-error>Please Enter Item Company Name </mat-error>
+                                    </mat-form-field>
+                                </div>
+                
+                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"> 
+                                    <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value="0"
+                                    [(ngModel)]="vIsDeleted"> 
+                                    <mat-radio-button mat-fab value="0">IsActive</mat-radio-button>
+                                    <mat-radio-button mat-fab value="1">IsDeactive</mat-radio-button>
+                                </mat-radio-group>
+                                </div>
+                            </mat-card>
+                        </form>
+                    </div>
+                    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+                        <div class="button-row">
+                            <button mat-raised-button color="warn" (click)="onClear()">Close</button>
+                            <button mat-raised-button color="primary" type="submit" (click)="onSubmit()"
+                                [disabled]="_ItemCompanyMasteService.myform.invalid">Save</button>
+                          
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        </div> 
+    </div> 
+</div>
