@@ -183,18 +183,18 @@ export class PharmacyreportService {
     return this._httpClient.get("PharmacyReport/view-DoctorWiseSalesReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId+"&DoctorId="+DoctorId);
   }
 
-  public getDrwiseprofitdetail(FromDate,ToDate,StoreId,DoctorId,loader = true){
+  public getDrwiseprofitdetail(FromDate,ToDate,StoreId,DoctorId,OP_IP_Type,loader = true){
     if (loader) {
       this._loaderService.show();
   }
-    return this._httpClient.get("PharmacyReport/view-PharmacySalesDoctorWiseProfitDetailsReportOPIP?FromDate=" + FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId+"&DoctorId="+DoctorId);
+    return this._httpClient.get("PharmacyReport/view-PharmacySalesDoctorWiseProfitDetailsReportOPIP?FromDate=" + FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId+"&DoctorId="+DoctorId+"&OP_IP_Type="+OP_IP_Type);
   }
   
-  public getdrwiseperofitsummary(FromDate,ToDate,DoctorId,loader = true){
+  public getdrwiseperofitsummary(FromDate,ToDate,DoctorId,OP_IP_Type,loader = true){
     if (loader) {
       this._loaderService.show();
   }
-    return this._httpClient.get("PharmacyReport/view-PharmacySalesDoctorWiseProfitDetailsReportOPIP?FromDate=" + FromDate+"&ToDate="+ToDate+"&DoctorId="+DoctorId);
+    return this._httpClient.get("PharmacyReport/view-PharmacySalesDoctorWiseProfitDetailsReportOPIP?FromDate=" + FromDate+"&ToDate="+ToDate+"&DoctorId="+DoctorId+"&OP_IP_Type="+OP_IP_Type);
   }
   public getItemlist(Param){
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_Item_Name",Param)

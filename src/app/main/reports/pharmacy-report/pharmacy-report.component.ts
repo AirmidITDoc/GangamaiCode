@@ -1211,7 +1211,7 @@ debugger
   
       this._PharmacyreportService.getDrwiseprofitdetail(
         this.datePipe.transform(this._PharmacyreportService.userForm.get('startdate').value, "yyyy-MM-dd") || '01/01/1900',
-        this.datePipe.transform(this._PharmacyreportService.userForm.get('enddate').value, "yyyy-MM-dd") || '01/01/1900',storeId,DoctorID
+        this.datePipe.transform(this._PharmacyreportService.userForm.get('enddate').value, "yyyy-MM-dd") || '01/01/1900',storeId,DoctorID,this.OPIPType
         
       ).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,
@@ -1247,7 +1247,7 @@ debugger
   
       this._PharmacyreportService.getdrwiseperofitsummary(
         this.datePipe.transform(this._PharmacyreportService.userForm.get('startdate').value, "yyyy-MM-dd") || '01/01/1900',
-        this.datePipe.transform(this._PharmacyreportService.userForm.get('enddate').value, "yyyy-MM-dd") || '01/01/1900',DoctorID
+        this.datePipe.transform(this._PharmacyreportService.userForm.get('enddate').value, "yyyy-MM-dd") || '01/01/1900',DoctorID,this.OPIPType
         
       ).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,

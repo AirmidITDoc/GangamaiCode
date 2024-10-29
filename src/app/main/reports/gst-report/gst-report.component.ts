@@ -142,7 +142,7 @@ export class GSTReportComponent implements OnInit {
     else if (this.ReportName == 'Sales Return GST Report') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
-      this.FlagReportTypeSelected= false;
+      this.FlagReportTypeSelected= true;
     } 
     else if (this.ReportName == 'Sales Return GST Date Wise Report') {
       this.FlagUserSelected = false;
@@ -211,16 +211,20 @@ export class GSTReportComponent implements OnInit {
       this.viewgetpurchasegstsummaryPdf();
      } 
      else if (this.ReportName == 'Sales GST Report') {
-      this.viewgetSalesGstreportPdf();
+      this.viewsalesgst();
      } 
      else if (this.ReportName == 'Sales GST Date Wise Report') {
-      this.viewgetSalesGstdatewisereportPdf();
+      this.viewsalesgst();
      } 
      else if (this.ReportName == 'Sales Return GST Report') {
-      this.viewgetSalesreturngstPdf();
+    //  this.viewgetSalesreturngstPdf();
+
+      this.viewsalesgstreturn();
      } 
      else if (this.ReportName == 'Sales Return GST Date Wise Report') {
-      this.viewgetSalesreturngstdatewisePdf();
+      //this.viewgetSalesreturngstdatewisePdf();
+
+      this.viewsalesgstreturn();
      } 
      else if (this.ReportName == 'Sales GST Summary Consolidated') {
      // this.viewgetSalesreturngstsummconsolidatedPdf();
@@ -537,6 +541,15 @@ export class GSTReportComponent implements OnInit {
        }, 100);
      }
 
+     viewsalesgst(){
+      debugger
+      if(this._GstReportService.userForm.get("ReportType").value=='0')
+        this.viewgetSalesGstreportPdf()
+      else
+      this.viewgetSalesGstdatewisereportPdf()
+     }
+
+
      viewgetSalesGstreportPdf() {
       this.sIsLoading = 'loading-data';
    
@@ -602,7 +615,15 @@ export class GSTReportComponent implements OnInit {
        }, 100);
      }
 
-     
+     viewsalesgstreturn(){
+      debugger
+      if(this._GstReportService.userForm.get("ReportType").value=='0')
+        this.viewgetSalesreturngstPdf()
+      else
+      this.viewgetSalesreturngstdatewisePdf()
+     }
+
+
      viewgetSalesreturngstPdf() {
       this.sIsLoading = 'loading-data';
    

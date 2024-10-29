@@ -97,6 +97,7 @@ export class InventoryReportComponent implements OnInit {
   FlagStore1Selected: boolean = false;
   FlagItemSelected: boolean = false;
   FlagdrugtypeSelected: boolean = false;
+  FlagReportTypeSelected: boolean = false;
   optionsSearchstore: any[] = [];
   optionsSearchItem: any[] = [];
   filteredOptionssupplier:any;
@@ -238,6 +239,7 @@ console.log(event.value)
       this.FlagIdSelected=false;
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
+      this.FlagReportTypeSelected= false;
     }else if (this.ReportName == 'Supplier List') {
       this.FlagUserSelected = false;
       this.FlagnonmovedaySelected = false;
@@ -250,6 +252,7 @@ console.log(event.value)
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
       this.FlagDaterangeSelected=false;
+      this.FlagReportTypeSelected= false;
     }
     else if (this.ReportName == 'Indent Report') {
       this.FlagUserSelected = false;
@@ -262,6 +265,7 @@ console.log(event.value)
       this.FlagIdSelected=false;
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
+      this.FlagReportTypeSelected= false;
     } 
     else if (this.ReportName == 'Monthly Purchase(GRN) Report') {
       this.FlagUserSelected = false;
@@ -274,6 +278,7 @@ console.log(event.value)
       this.FlagIdSelected=false;
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
+      this.FlagReportTypeSelected= false;
     } 
      
     else if (this.ReportName == 'GRN Report') {
@@ -287,18 +292,20 @@ console.log(event.value)
       this.FlagIdSelected=false;
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
+      this.FlagReportTypeSelected= true;
     } 
     else if (this.ReportName == 'GRN Return Report') {
       this.FlagUserSelected = false;
       this.FlagnonmovedaySelected = false;
       this.FlagDoctorSelected = false;
-      this.FlagStoreSelected = false;
+      this.FlagStoreSelected = true;
       this.FlagStore1Selected = false;
-      this.FlagSupplierSelected = false;
+      this.FlagSupplierSelected = true;
       this.FlagItemSelected=false;
       this.FlagIdSelected=false;
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
+      this.FlagReportTypeSelected= false;
     }
     else if (this.ReportName == 'GRN Report - NABH') {
       this.FlagUserSelected = false;
@@ -311,6 +318,7 @@ console.log(event.value)
       this.FlagIdSelected=false;
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
+      this.FlagReportTypeSelected= false;
     }
     
     else if (this.ReportName == 'GRN Wise Product Qty Report') {
@@ -319,11 +327,12 @@ console.log(event.value)
       this.FlagDoctorSelected = false;
       this.FlagStoreSelected = true;
       this.FlagStore1Selected = false;
-      this.FlagSupplierSelected = true;
+      this.FlagSupplierSelected = false;
       this.FlagItemSelected=false;
       this.FlagIdSelected=false;
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
+      this.FlagReportTypeSelected= false;
     }
     else if (this.ReportName == 'GRN Purchase Report') {
       this.FlagUserSelected = false;
@@ -336,6 +345,7 @@ console.log(event.value)
       this.FlagIdSelected=false;
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
+      this.FlagReportTypeSelected= false;
     }
      else if (this.ReportName == 'Supplier Wise GRN List') {
       this.FlagUserSelected = false;
@@ -347,6 +357,7 @@ console.log(event.value)
       this.FlagItemSelected=false;
       this.FlagIdSelected=false;
       this.FlagdrugtypeSelected=false;
+      this.FlagReportTypeSelected= false;
     }
     else if (this.ReportName == 'Issue To Department') {
       this.FlagUserSelected = false;
@@ -359,6 +370,7 @@ console.log(event.value)
       this.FlagIdSelected=false;
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
+      this.FlagReportTypeSelected= false;
     }
     else if (this.ReportName == 'Issue To Department Item Wise') {
       this.FlagUserSelected = false;
@@ -371,6 +383,7 @@ console.log(event.value)
       this.FlagIdSelected=false;
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
+      this.FlagReportTypeSelected= false;
     }
      else if (this.ReportName == 'Return From Department') {
       this.FlagUserSelected = false;
@@ -383,6 +396,7 @@ console.log(event.value)
       this.FlagIdSelected=false;
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
+      this.FlagReportTypeSelected= false;
     }
     else if (this.ReportName == 'Purchase Order') {
       this.FlagUserSelected = false;
@@ -395,6 +409,7 @@ console.log(event.value)
       this.FlagIdSelected=false;
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
+      this.FlagReportTypeSelected= false;
     }
     else if (this.ReportName == 'Material Consumption Monthly Summary') {
       this.FlagUserSelected = false;
@@ -407,6 +422,7 @@ console.log(event.value)
       this.FlagIdSelected=false;
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
+      this.FlagReportTypeSelected= false;
     }
      else if (this.ReportName == 'Material Consumption') {
       this.FlagUserSelected = false;
@@ -419,6 +435,7 @@ console.log(event.value)
       this.FlagIdSelected=false;
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
+      this.FlagReportTypeSelected= false;
     }
     else if (this.ReportName == 'Item Expiry Report') {
       this.FlagUserSelected = false;
@@ -432,6 +449,7 @@ console.log(event.value)
       this.FlagMonthSelected=true;
       this.FlagdrugtypeSelected=false;
       this.FlagDaterangeSelected=false;
+      this.FlagReportTypeSelected= false;
     }
      else if (this.ReportName == 'Current Stock Report') {
       this.FlagBillNoSelected = false;
@@ -445,6 +463,7 @@ console.log(event.value)
       this.FlagStore1Selected = false;
       this.FlagStoreSelected = true;
       this.FlagSupplierSelected = false;
+      this.FlagReportTypeSelected= false;
     }
    
      else if (this.ReportName == 'Item Wise Supplier List') {
@@ -458,6 +477,7 @@ console.log(event.value)
       this.FlagIdSelected=false;
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
+      this.FlagReportTypeSelected= false;
     }
     else if (this.ReportName == 'Current Stock Date Wise') {
       this.FlagUserSelected = false;
@@ -470,6 +490,7 @@ console.log(event.value)
       this.FlagIdSelected=false;
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
+      this.FlagReportTypeSelected= false;
     }
      else if (this.ReportName == 'Non-Moving Item List') {
       this.FlagUserSelected = false;
@@ -482,6 +503,7 @@ console.log(event.value)
       this.FlagIdSelected=false;
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
+      this.FlagReportTypeSelected= false;
     }
     else if (this.ReportName == 'Non-Moving Item Without Batch List') {
       this.FlagUserSelected = false;
@@ -494,6 +516,7 @@ console.log(event.value)
       this.FlagIdSelected=false;
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
+      this.FlagReportTypeSelected= false;
     }
     else if (this.ReportName == 'Patient Wise Material Consumption') {
       this.FlagUserSelected = false;
@@ -506,6 +529,7 @@ console.log(event.value)
       this.FlagIdSelected=true;
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
+      this.FlagReportTypeSelected= false;
     }
      else if (this.ReportName == 'Last Purchase Rate Wise Consumtion') {
       this.FlagUserSelected = false;
@@ -518,6 +542,7 @@ console.log(event.value)
       this.FlagIdSelected=false;
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
+      this.FlagReportTypeSelected= false;
     }
     else if (this.ReportName == 'Item Count') {
       this.FlagUserSelected = false;
@@ -530,6 +555,7 @@ console.log(event.value)
       this.FlagIdSelected=false;
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
+      this.FlagReportTypeSelected= false;
     }
      else if (this.ReportName == 'Supplier Wise Debit Credit Note') {
       this.FlagUserSelected = false;
@@ -542,6 +568,7 @@ console.log(event.value)
       this.FlagIdSelected=false;
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
+      this.FlagReportTypeSelected= false;
     }   else if (this.ReportName == 'Stock Adjustment Report') {
       this.FlagUserSelected = false;
       this.FlagnonmovedaySelected = false;
@@ -553,6 +580,7 @@ console.log(event.value)
       this.FlagIdSelected=false;
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
+      this.FlagReportTypeSelected= false;
     }
      else if (this.ReportName == 'Purchase Wise GRN Summary') {
       this.FlagUserSelected = false;
@@ -565,6 +593,7 @@ console.log(event.value)
       this.FlagIdSelected=false;
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
+      this.FlagReportTypeSelected= false;
     }
 
   }
@@ -847,8 +876,8 @@ console.log(event.value)
     
     let SupplierId =0
 
-    if (this._OPReportsService.userForm.get('SupplierName').value)
-      SupplierId = this._OPReportsService.userForm.get('SupplierName').value.SupplierId
+    // if (this._OPReportsService.userForm.get('SupplierName').value)
+    //   SupplierId = this._OPReportsService.userForm.get('SupplierName').value.SupplierId
     
      setTimeout(() => {
      

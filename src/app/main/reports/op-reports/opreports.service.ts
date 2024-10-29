@@ -41,6 +41,7 @@ export class OPReportsService {
         isScheduleH:[0],
         IsHighRisk:[1],
         IsScheduleX:[0],
+        ReportType:[1]
         // Radio:['1']
 
       })
