@@ -1,0 +1,66 @@
+<!-- <div fxFlex.gt-sm="35%" fxFlex style="background-color: white;">
+    <div class="dialog-content-wrapper">
+        <div mat-dialog-content class="p-24 pb-0 m-0">
+            <form [formGroup]="_groupService.myform">
+                <h3>{{_groupService.myform.controls.GroupId.value?"Modify Group Master":"New Group
+                    Master"}}</h3>
+
+
+                <input type="hidden" name="GroupId" formControlName="GroupId">
+
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                        <mat-label>Group Name</mat-label>
+                        <input name="GroupName" formControlName="GroupName" matInput required>
+                        <mat-error>Please enter GroupName Name </mat-error>
+                    </mat-form-field>
+                </div>
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                        <mat-label>PrintSeqNo Name</mat-label>
+                        <input name="PrintSeqNo" formControlName="PrintSeqNo"
+                            [ngClass]="{ 'is-invalid': submitted && f.PrintSeqNo.errors }" matInput>
+                        <span class="error"
+                            *ngIf="f.PrintSeqNo.invalid && f.PrintSeqNo.touched">PrintSeqNo is
+                            required Enter only Digits</span>
+
+                    </mat-form-field>
+                </div>
+                <br>
+
+
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="2px">
+
+                    <mat-radio-group name="Isconsolidated" formControlName="Isconsolidated"
+                        value='false'>
+                        <mat-radio-button value='true' class="mr-sm-12"
+                            fxFlex>Isconsolidated</mat-radio-button>
+                    </mat-radio-group>
+
+
+                    <mat-radio-group name="IsConsolidatedDR" formControlName="IsConsolidatedDR"
+                        value='false'>
+                        <mat-radio-button value='true' class="mr-sm-12"
+                            fxFlex>IsConsolidatedDR</mat-radio-button>
+                    </mat-radio-group>
+
+
+                    <mat-radio-group name="IsActive" formControlName="IsActive" value='false'>
+                        <mat-radio-button value='true' class="mr-sm-12"
+                            fxFlex>IsActive</mat-radio-button>
+                    </mat-radio-group>
+
+
+                </div>
+
+            </form>
+        </div>
+        <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+            <div class="button-row">
+                <button mat-raised-button color="primary" type="submit" (click)="onSubmit()"
+                    [disabled]="_groupService.myform.invalid">Save</button>
+                <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
+            </div>
+        </div>
+    </div>
+</div> -->

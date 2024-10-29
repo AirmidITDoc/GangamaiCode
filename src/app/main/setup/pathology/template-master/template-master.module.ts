@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { RouterModule, Routes } from "@angular/router";
 import { MatTabsModule } from "@angular/material/tabs";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
@@ -29,6 +29,8 @@ import { TemplateMasterComponent } from "./template-master.component";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { AngularEditorModule } from "@kolkov/angular-editor";
 import { NgxSummernoteModule } from "ngx-summernote";
+import { MatDialogModule } from "@angular/material/dialog";
+import { SharedModule } from "app/main/shared/shared.module";
 
 const routes: Routes = [
     {
@@ -86,8 +88,11 @@ const routes: Routes = [
         FuseSharedModule,
         MatAutocompleteModule,
       MatProgressSpinnerModule,
+
+      SharedModule,
+     MatDialogModule,
     ],
-    providers: [TemplateServieService],
+    providers: [TemplateServieService,DatePipe],
     entryComponents: [TemplateMasterComponent],
 })
 export class TemplateMasterModule { }

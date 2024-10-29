@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { gridRequest } from 'app/core/models/gridRequest';
+import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +12,7 @@ export class RadiologyTestMasterService {
   myformSearch: FormGroup;
   AddParameterFrom: FormGroup;
 
-  constructor(private _httpClient: HttpClient, private _formBuilder: FormBuilder) {
+  constructor( private _httpClient: ApiCaller, private _formBuilder: FormBuilder) {
     this.myform = this.createRadiologytestForm();
     this.myformSearch = this.createSearchForm();
     this.AddParameterFrom = this.createAddparaFrom();
@@ -45,41 +47,21 @@ export class RadiologyTestMasterService {
     this.createRadiologytestForm();
     this.createSearchForm();
   }
-  // get Test Master list
-  public getRadiologyList(param) {
-    return this._httpClient.post("Generic/GetDataSetByProc?procName=m_Rtrv_RadiologyTestList", param);
-  }
+  
 
+  public gettestMasterList(param: gridRequest, showLoader = true) {
+    return this._httpClient.PostData("RadiologyTest/List", param, showLoader);
+}
 
-  // Category Master Combobox List
-  public getCategoryMasterCombo() {
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RadiologyCategoryMasterForCombo", {})
-  }
+public testMasterSave(Param: any, id: string ,showLoader = true) {
+    if(id)
+        return this._httpClient.PutData("test/"+ id, Param, showLoader);
+    else
+        return this._httpClient.PostData("test", Param, showLoader);       
+}
 
-  public insertRadiologyTestMaster(employee) {
-    return this._httpClient.post("RadiologyMaster/RadiologyTestMasterSave", employee);
-  }
-
-  // Service Master Combobox List
-  public getServiceMasterCombo() {
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RathTestListForCombo", {})
-  }
-
-  // TemplateMaster Combobox List dropdown
-  public gettemplateMasterCombo() {
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_RadioTemplateMasterForComboMaster", {})
-  }
-
-  // TemplateMaster Combobox List
-  public gettemplateMasterComboList(emp) {
-    return this._httpClient.post("Generic/GetByProc?procName=m_Retrieve_RadTemplateMasterForCombo",emp)
-  }
-  public updateRadiologyTestMaster(employee) {
-    return this._httpClient.post("RadiologyMaster/RadiologyTestMasterUpdate", employee);
-  }
-  public deactivateTheStatus(m_data) {
-    return this._httpClient.post(
-        "Generic/ExecByQueryStatement?query=" + m_data, {});
+public deactivateTheStatus(m_data) {
+    return this._httpClient.PostData("test", m_data);
 }
   populateForm(employee) {
     this.myform.patchValue(employee);

@@ -93,71 +93,71 @@ export class RadiologyTemplateFormComponent implements OnInit {
   onClear() {
     this._radiologytemplateService.myform.reset();
   }
-  onSubmit() {
-    if (!this._radiologytemplateService.myform.get("TemplateId").value) {
-      let insertRadiologyTemp = {};
-      insertRadiologyTemp['templateName'] = this._radiologytemplateService.myform.get("TemplateName").value;
-      insertRadiologyTemp['templateDesc'] = this._radiologytemplateService.myform.get("TemplateDesc").value;
-      insertRadiologyTemp['TemplateDescInHTML'] = this._radiologytemplateService.myform.get("TemplateDesc").value;
-      insertRadiologyTemp['Isdeleted'] = this._radiologytemplateService.myform.get("IsDeleted").value ||1;
-      insertRadiologyTemp['addedBy'] = this.accountService.currentUserValue.user.id;
+  // onSubmit() {
+  //   if (!this._radiologytemplateService.myform.get("TemplateId").value) {
+  //     let insertRadiologyTemp = {};
+  //     insertRadiologyTemp['templateName'] = this._radiologytemplateService.myform.get("TemplateName").value;
+  //     insertRadiologyTemp['templateDesc'] = this._radiologytemplateService.myform.get("TemplateDesc").value;
+  //     insertRadiologyTemp['TemplateDescInHTML'] = this._radiologytemplateService.myform.get("TemplateDesc").value;
+  //     insertRadiologyTemp['Isdeleted'] = this._radiologytemplateService.myform.get("IsDeleted").value ||1;
+  //     insertRadiologyTemp['addedBy'] = this.accountService.currentUserValue.user.id;
 
-      let submitData = {};
-      submitData['insertRadiologyTemplateMaster'] = insertRadiologyTemp
+  //     let submitData = {};
+  //     submitData['insertRadiologyTemplateMaster'] = insertRadiologyTemp
 
-      console.log(submitData);
-      this._radiologytemplateService.insertRadiologyTemplateMaster(submitData).subscribe(response => {
-        if (response) {
-          this.toastr.success('Record Saved Successfully.', 'Saved !', {
-            toastClass: 'tostr-tost custom-toast-success',
-          });
-          this._matDialog.closeAll();
-          this.onClear();
-        } else {
-          this.toastr.error('Template Master Master Data not saved !, Please check API error..', 'Error !', {
-            toastClass: 'tostr-tost custom-toast-error',
-          });
-        }
-        // this.isLoading = '';
-      }, error => {
-        this.toastr.error('New Template Order Data not saved !, Please check API error..', 'Error !', {
-          toastClass: 'tostr-tost custom-toast-error',
-        }); this._matDialog.closeAll();
-      });
-    }
-    else {
-      let updateRadiologyTemp = {};
-      updateRadiologyTemp['templateId'] = this.registerObj.TemplateId
-      updateRadiologyTemp['templateName'] = this._radiologytemplateService.myform.get("TemplateName").value;
-      updateRadiologyTemp['templateDesc'] = this._radiologytemplateService.myform.get("TemplateDesc").value;
-      updateRadiologyTemp['TemplateDescInHTML'] = this._radiologytemplateService.myform.get("TemplateDesc").value;
-      updateRadiologyTemp['Isdeleted'] = this._radiologytemplateService.myform.get("IsDeleted").value ||1;
-      updateRadiologyTemp['updatedBy'] = this.accountService.currentUserValue.user.id;
+  //     console.log(submitData);
+  //     this._radiologytemplateService.insertRadiologyTemplateMaster(submitData).subscribe(response => {
+  //       if (response) {
+  //         this.toastr.success('Record Saved Successfully.', 'Saved !', {
+  //           toastClass: 'tostr-tost custom-toast-success',
+  //         });
+  //         this._matDialog.closeAll();
+  //         this.onClear();
+  //       } else {
+  //         this.toastr.error('Template Master Master Data not saved !, Please check API error..', 'Error !', {
+  //           toastClass: 'tostr-tost custom-toast-error',
+  //         });
+  //       }
+  //       // this.isLoading = '';
+  //     }, error => {
+  //       this.toastr.error('New Template Order Data not saved !, Please check API error..', 'Error !', {
+  //         toastClass: 'tostr-tost custom-toast-error',
+  //       }); this._matDialog.closeAll();
+  //     });
+  //   }
+  //   else {
+  //     let updateRadiologyTemp = {};
+  //     updateRadiologyTemp['templateId'] = this.registerObj.TemplateId
+  //     updateRadiologyTemp['templateName'] = this._radiologytemplateService.myform.get("TemplateName").value;
+  //     updateRadiologyTemp['templateDesc'] = this._radiologytemplateService.myform.get("TemplateDesc").value;
+  //     updateRadiologyTemp['TemplateDescInHTML'] = this._radiologytemplateService.myform.get("TemplateDesc").value;
+  //     updateRadiologyTemp['Isdeleted'] = this._radiologytemplateService.myform.get("IsDeleted").value ||1;
+  //     updateRadiologyTemp['updatedBy'] = this.accountService.currentUserValue.user.id;
 
-      let submitData = {};
-      submitData['updateRadiologyTemplateMaster'] = updateRadiologyTemp
+  //     let submitData = {};
+  //     submitData['updateRadiologyTemplateMaster'] = updateRadiologyTemp
 
-      console.log(submitData);
-      this._radiologytemplateService.updateRadiologyTemplateMaster(submitData).subscribe(response => {
-        if (response) {
-          this.toastr.success('Record Updated Successfully.', 'Updated !', {
-            toastClass: 'tostr-tost custom-toast-success',
-          });
-          this._matDialog.closeAll();
-          this.onClear();
-        } else {
-          this.toastr.error('Template Master Master Data not Updated !, Please check API error..', 'Error !', {
-            toastClass: 'tostr-tost custom-toast-error',
-          });
-        }
-        // this.isLoading = '';
-      }, error => {
-        this.toastr.error('New Template Order Data not Updated !, Please check API error..', 'Error !', {
-          toastClass: 'tostr-tost custom-toast-error',
-        });
-      }); this._matDialog.closeAll();
-    }
-  }
+  //     console.log(submitData);
+  //     this._radiologytemplateService.updateRadiologyTemplateMaster(submitData).subscribe(response => {
+  //       if (response) {
+  //         this.toastr.success('Record Updated Successfully.', 'Updated !', {
+  //           toastClass: 'tostr-tost custom-toast-success',
+  //         });
+  //         this._matDialog.closeAll();
+  //         this.onClear();
+  //       } else {
+  //         this.toastr.error('Template Master Master Data not Updated !, Please check API error..', 'Error !', {
+  //           toastClass: 'tostr-tost custom-toast-error',
+  //         });
+  //       }
+  //       // this.isLoading = '';
+  //     }, error => {
+  //       this.toastr.error('New Template Order Data not Updated !, Please check API error..', 'Error !', {
+  //         toastClass: 'tostr-tost custom-toast-error',
+  //       });
+  //     }); this._matDialog.closeAll();
+  //   }
+  // }
 
 
   OnPrintPop(TemplateId) { }

@@ -1,16 +1,16 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { gridRequest } from "app/core/models/gridRequest";
+import { ApiCaller } from "app/core/services/apiCaller";
 
-@Injectable({
-    providedIn: "root",
-})
+@Injectable()
 export class CategorymasterService {
     currentStatus = 0;
     myform: FormGroup;
     myformSearch: FormGroup;
     constructor(
-        private _httpClient: HttpClient,
+        private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder
     ) {
         this.myform = this.createCategorymasterForm();
@@ -38,21 +38,21 @@ export class CategorymasterService {
         this.createCategorymasterForm();
     }
 
-    public getCategoryMasterList(param) {
-        return this._httpClient.post( "Generic/GetByProc?procName=m_Rtrv_PathCategoryList_by_Name",param);
+    
+    public getCategoryMasterList(param: gridRequest, showLoader = true) {
+        return this._httpClient.PostData("PathCategoryMaster/List", param, showLoader);
     }
 
-    public insertPathologyCategoryMaster(param) {
-        return this._httpClient.post("PathologyMaster/PathologyCategoryMasterSave", param);
+    public CategoryMasterSave(Param: any, id: string ,showLoader = true) {
+        if(id)
+            return this._httpClient.PutData("Category/"+ id, Param, showLoader);
+        else
+            return this._httpClient.PostData("Category", Param, showLoader);       
     }
 
-    public updatePathologyCategoryMaster(param) {
-        return this._httpClient.post("PathologyMaster/PathologyCategoryMasterUpdate",param);
-    }
     public deactivateTheStatus(m_data) {
-        return this._httpClient.post("Generic/ExecByQueryStatement?query=" + m_data,{});
+        return this._httpClient.PostData("Category", m_data);
     }
-
     populateForm(param) {
         debugger
         this.myform.patchValue(param);

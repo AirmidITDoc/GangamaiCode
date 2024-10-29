@@ -1,0 +1,32 @@
+<div fxFlex.gt-sm="35%" fxFlex style="background-color: white;">
+    <div class="dialog-content-wrapper">
+        <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar>
+            <form [formGroup]="_bankService.myform">
+                <h3>{{_bankService.myform.controls.BankId.value?"Modify Bank Master":"New Bank
+                    Master"}}</h3>
+                <input type="hidden" name="BankId" formControlName="BankId">
+
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                        <mat-label>Bank Name</mat-label>
+                        <input name="BankName" formControlName="BankName" matInput required>
+                        <mat-error>Please enter Bank Name </mat-error>
+                    </mat-form-field>
+                </div>
+                <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
+                    <mat-radio-button value='false' class="mr-sm-12"
+                        fxFlex>IsActive</mat-radio-button>
+
+                </mat-radio-group>
+
+            </form>
+        </div>
+        <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+            <div class="button-row">
+                <button mat-raised-button color="primary" type="submit" (click)="onSubmit()"
+                    [disabled]="_bankService.myform.invalid">Save</button>
+                <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
+            </div>
+        </div>
+    </div>
+</div>

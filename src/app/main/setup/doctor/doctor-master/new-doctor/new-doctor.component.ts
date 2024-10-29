@@ -105,7 +105,7 @@ export class NewDoctorComponent implements OnInit {
     ngOnInit(): void {
         this.getPrefixList();
         this.getcityList();
-       this.getDoctortypeNameCombobox();
+       //this.getDoctortypeNameCombobox();
        
        if (this.data) {
             debugger
@@ -326,7 +326,7 @@ public onEnteraddress(event): void {
 
     getDocDeptList() {
         var m_data = {
-            "DoctorId": this.registerObj.DoctorId
+           // "DoctorId": this.registerObj.DoctorId
         }
         this._doctorService.getDocDeptwiseList(m_data).subscribe(data => {
             this.selectedItems = data as any[];
@@ -341,7 +341,7 @@ public onEnteraddress(event): void {
 
     setDropdownObjs1() {
 
-        const toSelect = this.PrefixcmbList.find(c => c.PrefixID == this.registerObj.PrefixID);
+        const toSelect = this.PrefixcmbList.find(c => c.PrefixID == this.registerObj.prefixId);
         this._doctorService.myform.get('PrefixID').setValue(toSelect);
 
         // const toSelect1 = this.DepartmentcmbList.find(c => c.Departmentid == this.docobject.DepartmentId);
@@ -376,19 +376,19 @@ public onEnteraddress(event): void {
 
 
 
-    getDoctortypeNameCombobox() {
+    // getDoctortypeNameCombobox() {
 
-        this._doctorService.getDoctortypeMasterCombo().subscribe(data => {
-            this.DoctortypecmbList = data;
-            if (this.data) {
-                const ddValue = this.DoctortypecmbList.filter(c => c.Id == this.registerObj.DoctorTypeId);
-                this._doctorService.myform.get('DoctorTypeId').setValue(ddValue[0]);
-                this._doctorService.myform.updateValueAndValidity();
-                return;
-            }
-        });
+    //     this._doctorService.getDoctortypeMasterCombo().subscribe(data => {
+    //         this.DoctortypecmbList = data;
+    //         if (this.data) {
+    //             const ddValue = this.DoctortypecmbList.filter(c => c.Id == this.registerObj.DoctorTypeId);
+    //             this._doctorService.myform.get('DoctorTypeId').setValue(ddValue[0]);
+    //             this._doctorService.myform.updateValueAndValidity();
+    //             return;
+    //         }
+    //     });
 
-    }
+    // }
 
 
     private _filterDcotype(value: any): string[] {
@@ -500,7 +500,7 @@ public onEnteraddress(event): void {
                 firstName: this._doctorService.myform.get("FirstName").value.trim() || "",
                 middleName: this._doctorService.myform.get("MiddleName").value.trim() || "",
                 lastName: this._doctorService.myform.get("LastName").value.trim() || "",
-                dateOfBirth: this.registerObj.DateofBirth,//this.datePipe.transform(this.registerObj.DateofBirth, 'MM/dd/yyyy') || '01/01/1900',
+              //  dateOfBirth: this.registerObj.DateofBirth,//this.datePipe.transform(this.registerObj.DateofBirth, 'MM/dd/yyyy') || '01/01/1900',
                 City: this._doctorService.myform.get("CityId").value.CityName || "",
                 address: this._doctorService.myform.get("Address").value || "",
                 phone: this._doctorService.myform.get("Phone").value || "0",
@@ -566,29 +566,29 @@ public onEnteraddress(event): void {
             const todayDate = new Date();
             const dob = new Date(DateOfBirth);
             const timeDiff = Math.abs(Date.now() - dob.getTime());
-            this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
-            this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
-            this.registerObj.AgeDay = Math.abs(todayDate.getDate() - dob.getDate());
-            this.registerObj.DateofBirth = DateOfBirth;
+            // this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
+            // this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
+            // this.registerObj.AgeDay = Math.abs(todayDate.getDate() - dob.getDate());
+            // this.registerObj.DateofBirth = DateOfBirth;
             this._doctorService.myform.get('DateOfBirth').setValue(DateOfBirth);
         }
 
     }
     onChangeRegDate(RegDate) {
-        if (RegDate) {
-            this.registerObj.RegDate = new Date(RegDate);
-        }
-        else {
-            this.registerObj.RegDate = null;
-        }
+        // if (RegDate) {
+        //     this.registerObj.RegDate = new Date(RegDate);
+        // }
+        // else {
+        //     this.registerObj.RegDate = null;
+        // }
     }
     onChangeMahRegDate(MahRegDate) {
-        if (MahRegDate) {
-            this.registerObj.MahRegDate = new Date(MahRegDate);
-        }
-        else {
-            this.registerObj.MahRegDate = null;
-        }
+        // if (MahRegDate) {
+        //     this.registerObj.MahRegDate = new Date(MahRegDate);
+        // }
+        // else {
+        //     this.registerObj.MahRegDate = null;
+        // }
     }
 
     onChangeGenderList(prefixObj) {
@@ -622,22 +622,22 @@ public onEnteraddress(event): void {
     let d = new Date();
     if (mode == "Day") {
       d.setDate(d.getDate() - Number(e.target.value));
-      this.registerObj.DateofBirth = d;
+      //this.registerObj.DateofBirth = d;
       //this.personalFormGroup.get('DateOfBirth').setValue(moment().add(Number(e.target.value), 'days').format("DD-MMM-YYYY"));
     }
     else if (mode == "Month") {
       d.setMonth(d.getMonth() - Number(e.target.value));
-      this.registerObj.DateofBirth = d;
+     // this.registerObj.DateofBirth = d;
     }
     else if (mode == "Year") {
       d.setFullYear(d.getFullYear() - Number(e.target.value));
-      this.registerObj.DateofBirth = d;
+      //this.registerObj.DateofBirth = d;
     }
     let todayDate = new Date();
-    const timeDiff = Math.abs(Date.now() - this.registerObj.DateofBirth.getTime());
-    this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
-    this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - this.registerObj.DateofBirth.getMonth());
-    this.registerObj.AgeDay = Math.abs(todayDate.getDate() - this.registerObj.DateofBirth.getDate());
+    //const timeDiff = Math.abs(Date.now() - this.registerObj.DateofBirth.getTime());
+    // this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
+    // this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - this.registerObj.DateofBirth.getMonth());
+    // this.registerObj.AgeDay = Math.abs(todayDate.getDate() - this.registerObj.DateofBirth.getDate());
   }
   
 
@@ -658,8 +658,8 @@ public onEnteraddress(event): void {
     this._doctorService.getPrefixMasterCombo().subscribe(data => {
       this.PrefixcmbList = data;
       if (this.data) {
-        const ddValue = this.PrefixcmbList.filter(c => c.PrefixID == this.registerObj.PrefixID);
-        this._doctorService.myform.get('PrefixID').setValue(ddValue[0]);
+        //const ddValue = this.PrefixcmbList.filter(c => c.PrefixID == this.registerObj.PrefixID);
+        // this._doctorService.myform.get('PrefixID').setValue(ddValue[0]);
         this._doctorService.myform.updateValueAndValidity();
         return;
       }
@@ -699,8 +699,8 @@ public onEnteraddress(event): void {
     this._doctorService.getCityList().subscribe(data => {
       this.cityList = data;
       if (this.data) {
-        const ddValue = this.cityList.filter(c => c.CityId == this.registerObj.City);
-        this._doctorService.myform.get('CityId').setValue(ddValue[0]);
+        // const ddValue = this.cityList.filter(c => c.CityId == this.registerObj.City);
+        // this._doctorService.myform.get('CityId').setValue(ddValue[0]);
         this._doctorService.myform.updateValueAndValidity();
         return;
       }

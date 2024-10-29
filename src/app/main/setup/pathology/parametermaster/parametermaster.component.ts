@@ -14,6 +14,11 @@ import { ExcelDownloadService } from "app/main/shared/services/excel-download.se
 import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
 import { AddformulaComponent } from "./addformula/addformula.component";
 
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { ToastrService } from "ngx-toastr";
+
+
 @Component({
     selector: "app-parametermaster",
     templateUrl: "./parametermaster.component.html",
@@ -22,50 +27,46 @@ import { AddformulaComponent } from "./addformula/addformula.component";
     animations: fuseAnimations,
 })
 export class ParametermasterComponent implements OnInit {
-    displayedColumns: string[] = [
-        "ParameterID",
-        "ParameterName",
-        "ParameterShortName",
-        "PrintParameterName",
-        "UnitName",
-        "IsNumeric",
-        "IsPrintDisSummary",
-        // "MethodName",
-        //"ParaMultipleRange",
-        "Formula",
-        "AddedBy",
-        "Isdeleted",
-        "action",
-    ];
-
-    isLoading = true;
-    sIsLoading: string = '';
-    msg: any;
-    step = 0;
-    SearchName: string;
-    resultsLength=0;
-    setStep(index: number) {
-        this.step = index;
+    gridConfig: gridModel = {
+        apiUrl: "PathCategoryMaster/List",
+        columnsList: [
+            { heading: "Code", key: "parameterId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Parameter Name", key: "parameterName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+            {
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            this.onAdd(data) // EDIT Records
+                        }
+                    }, {
+                        action: gridActions.delete, callback: (data: any) => {
+                            this.onDeactive(data.genderId); // DELETE Records
+                        }
+                    }]
+            } //Action 1-view, 2-Edit,3-delete
+        ],
+        sortField: "parameterId",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "parameterName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+        ],
+        row:25
     }
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent, any>;
+    
 
-    @ViewChild(MatSort) sort: MatSort;
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-    @ViewChild(MatAccordion) accordion: MatAccordion;
-
-
-
-    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
-    DSParameterList = new MatTableDataSource<PathparameterMaster>();
-    tempList = new MatTableDataSource<PathparameterMaster>();
     constructor(
         public _ParameterService: ParametermasterService,
         public _matDialog: MatDialog,
         private reportDownloadService: ExcelDownloadService,
         private _fuseSidebarService: FuseSidebarService,
+        public toastr: ToastrService,
     ) { }
 
     ngOnInit(): void {
-        this.getParameterMasterList();
+       
     }
 
     toggleSidebar(name): void {
@@ -76,72 +77,36 @@ export class ParametermasterComponent implements OnInit {
             ParameterNameSearch: "",
             IsDeletedSearch: "2",
         });
-        this.getParameterMasterList();
+       
     }
     onSearch() {
-        this.getParameterMasterList();
+       
     }
     onClear() {
         this._ParameterService.myform.reset({ IsDeleted: "false" });
         this._ParameterService.initializeFormGroup();
     }
 
-    getParameterMasterList() {
-        this.sIsLoading = 'loading-data';
-        var m_data = {
-            ParameterName:this._ParameterService.myformSearch.get("ParameterNameSearch").value.trim() + "%" || "%",
-            // IsDeleted: this._ParameterService.myformSearch.get("IsDeletedSearch").value || 0
-        };
-      
-        this._ParameterService.getParameterMasterList(m_data).subscribe((data) => {
-            this.DSParameterList.data = data as PathparameterMaster[];
-            this.DSParameterList.sort = this.sort;
-            this.DSParameterList.paginator = this.paginator;
-            this.resultsLength=  this.DSParameterList.data.length; 
-            console.log(this.DSParameterList.data);
-        },
-            error => {
-                this.sIsLoading = '';
-            });
-    }
-
-
-    onDeactive(row,ParameterID) {
-        Swal.fire({
-            title: 'Confirm Status',
-            text: 'Are you sure you want to Change Active Status?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes,Change Status!'
-          }).then((result) => {
-            let Query;
-            if (result.isConfirmed) {
-                if(row.Isdeleted){
-                 Query =
-                "Update M_PathParameterMaster set Isdeleted=0 where ParameterID=" +
-                    ParameterID;
-                console.log(Query);
-                }else{
-                     Query =
-                    "Update M_PathParameterMaster set Isdeleted=1 where ParameterID=" +
-                        ParameterID;
-                }
-
-                this._ParameterService.deactivateTheStatus(Query)
-                  .subscribe((data) => {
-                        // Handle success response
-                        Swal.fire('Changed!', 'Parameter Status has been Changed.', 'success');
-                       
-                      }, (error) => {
-                        // Handle error response
-                        Swal.fire('Error!', 'Failed to Change  Parameter status.', 'error');
-                      });
+    onDeactive(parameterId) {
+        this.confirmDialogRef = this._matDialog.open(
+            FuseConfirmDialogComponent,
+            {
+                disableClose: false,
             }
-          });
-
-        this.getParameterMasterList();
+        );
+        this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+        this.confirmDialogRef.afterClosed().subscribe((result) => {
+            if (result) {
+                this._ParameterService.deactivateTheStatus(parameterId).subscribe((response: any) => {
+                    if (response.StatusCode == 200) {
+                        this.toastr.success(response.Message);
+                        // this.getGenderMasterList();
+                        // How to refresh Grid.
+                    }
+                });
+            }
+            this.confirmDialogRef = null;
+        });
     }
 
     onEdit(row) {
@@ -193,25 +158,26 @@ export class ParametermasterComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe((result) => {
             console.log("The dialog was closed - Insert Action", result);
-            this.getParameterMasterList();
+           
         });
         })
     }
 
-    onAdd() {
-
-        const dialogRef = this._matDialog.open(ParameterFormMasterComponent, {
-            maxWidth: "70vw",
-            maxHeight: "95vh",
-            width: "100%",
-            height: "100%",
+    onAdd(row:any = null) {
+        const dialogRef = this._matDialog.open(ParameterFormMasterComponent,
+        {
+            maxWidth: "45vw",
+            height: '35%',
+            width: '70%',
+            data: row
         });
-        dialogRef.afterClosed().subscribe((result) => {
-            console.log("The dialog was closed - Insert Action", result);
-            this.getParameterMasterList();
+        dialogRef.afterClosed().subscribe(result => {
+            if(result){
+             
+            }
+            console.log('The dialog was closed - Action', result);
         });
     }
-
     onaddformula(row) {
 
         const dialogRef = this._matDialog.open(AddformulaComponent, {
@@ -226,7 +192,7 @@ export class ParametermasterComponent implements OnInit {
         });
         dialogRef.afterClosed().subscribe((result) => {
             console.log("The dialog was closed - Insert Action", result);
-            this.getParameterMasterList();
+           
         });
     }
     currentStatus=0;
@@ -265,37 +231,11 @@ export class ParametermasterComponent implements OnInit {
 // this.getParameterMasterList()
 //     }
     
-    exportParameterExcel(){
-    this.sIsLoading == 'loading-data'
-    let exportHeaders = ['ParameterID', 'ParameterShortName','ParameterName','PrintParameterName', 'UnitId','IsNumeric','MethodName','Isdeleted', 'AddedBy', 'UpdatedBy'];
-    this.reportDownloadService.getExportJsonData(this.DSParameterList.data, exportHeaders, 'Pathology Parameter');
-    this.DSParameterList.data = [];
-    this.sIsLoading = '';
-  }
-
-  exportReportPdf() {
-    let actualData = [];
-    this.DSParameterList.data.forEach(e => {
-      var tempObj = [];
-      tempObj.push(e.ParameterID);
-      tempObj.push(e.ParameterShortName);
-      tempObj.push(e.ParameterName);
-      tempObj.push(e.PrintParameterName);
-      tempObj.push(e.UnitId);
-      tempObj.push(e.IsNumeric);
-      tempObj.push(e.MethodName);
-      tempObj.push(e.Isdeleted);
-      tempObj.push(e.AddedBy);
-      
-      actualData.push(tempObj);
-    });
-    let headers = [['ParameterID', 'ParameterShortName','ParameterName','PrintParameterName','UnitId','MethodName', 'Isdeleted', 'AddedBy', 'UpdatedBy']];
-    this.reportDownloadService.exportPdfDownload(headers, actualData, 'Pathology Parameter');
-  }
+    
 }
 
 export class PathparameterMaster {
-    ParameterID: number;
+    parameterId: number;
     ParameterShortName: string;
     ParameterName: string;
     PrintParameterName: string;
@@ -317,7 +257,7 @@ export class PathparameterMaster {
      */
     constructor(PathparameterMaster) {
         {
-            this.ParameterID = PathparameterMaster.ParameterID || "";
+            this.parameterId = PathparameterMaster.parameterId || "";
             this.ParameterShortName = PathparameterMaster.ParameterShortName || "";
             this.ParameterName = PathparameterMaster.ParameterName || "";
             this.MethodName = PathparameterMaster.MethodName || "";

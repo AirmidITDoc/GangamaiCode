@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { ParametermasterComponent } from "./parametermaster.component";
 import { RouterModule, Routes } from "@angular/router";
 import { ParametermasterService } from "./parametermaster.service";
@@ -27,6 +27,8 @@ import { MatButtonModule } from "@angular/material/button";
 import { ParameterFormMasterComponent } from './parameter-form-master/parameter-form-master.component';
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { AddformulaComponent } from './addformula/addformula.component';
+import { SharedModule } from "app/main/shared/shared.module";
+import { MatDialogModule } from "@angular/material/dialog";
 
 const routes: Routes = [
     {
@@ -64,8 +66,13 @@ const routes: Routes = [
         MatCardModule,
         MatSlideToggleModule,
         MatTabsModule,
+
+
+        SharedModule,
+      
+        MatDialogModule,
     ],
-    providers: [ParametermasterService],
+    providers: [ParametermasterService,DatePipe],
     entryComponents: [ParametermasterComponent],
 })
 export class ParametermasterModule {}

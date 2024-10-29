@@ -11,6 +11,10 @@ import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/conf
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
 
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { NewUnitComponent } from "./new-unit/new-unit.component";
+
 @Component({
     selector: "app-unitmaster",
     templateUrl: "./unitmaster.component.html",
@@ -19,25 +23,34 @@ import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
     animations: fuseAnimations,
 })
 export class UnitmasterComponent implements OnInit {
-    displayedColumns: string[] = [
-        "UnitId",
-        "UnitName",
-       // "AddedBy",
-        "IsDeleted",
-        "action",
-    ];
-    resultsLength=0;
-    PrefixMasterList: any;
-    GendercmbList: any = [];
-    msg: any;
-    currentStatus=0;
-    DSUnitmasterList = new MatTableDataSource<PathunitMaster>();
-    DSUnitmasterList1 = new MatTableDataSource<PathunitMaster>();
-    tempList = new MatTableDataSource<PathunitMaster>();
-    @ViewChild(MatSort) sort: MatSort;
-
-    @ViewChild(MatPaginator) paginator: MatPaginator;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    gridConfig: gridModel = {
+        apiUrl: "PathUnitMaster/List",
+        columnsList: [
+            { heading: "Code", key: "unitId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "unit Name", key: "unitName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+            {
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            this.onSave(data) // EDIT Records
+                        }
+                    }, {
+                        action: gridActions.delete, callback: (data: any) => {
+                            this.onDeactive(data.unitId); // DELETE Records
+                        }
+                    }]
+            } //Action 1-view, 2-Edit,3-delete
+        ],
+        sortField: "unitId",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "unitName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+        ],
+        row:25
+    }
 
     constructor(
         public _unitmasterService: UnitmasterService,
@@ -48,13 +61,13 @@ export class UnitmasterComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        this.getUnitMasterList();
+       
     }
     toggleSidebar(name): void {
         this._fuseSidebarService.getSidebar(name).toggleOpen();
       }
     onSearch() {
-        this.getUnitMasterList();
+       
     }
 
     onSearchClear() {
@@ -62,177 +75,53 @@ export class UnitmasterComponent implements OnInit {
             UnitNameSearch: "",
             IsDeletedSearch: "2",
         });
-        this.getUnitMasterList();
-    }
-
-    getUnitMasterList() {
-        var param = {
-            UnitName: this._unitmasterService.myformSearch.get('UnitNameSearch').value + "%" || "%",
-        };
-        this._unitmasterService.getUnitMasterList(param).subscribe((data) => {
-            this.DSUnitmasterList.data = data as PathunitMaster[];
-            this.DSUnitmasterList1.data = data as PathunitMaster[];
-            this.tempList.data = this.DSUnitmasterList.data;
-            console.log( this.DSUnitmasterList)
-            this.resultsLength=  this.DSUnitmasterList.data.length
-            this.DSUnitmasterList.sort = this.sort;
-            this.DSUnitmasterList.paginator = this.paginator;
-        });
-    }
-
-    onClear() {
-        this._unitmasterService.myform.reset({ IsDeleted: "true" });
-        this._unitmasterService.initializeFormGroup();
-    }
-
-    onSubmit() {
-        if (this._unitmasterService.myform.valid) {
-            if (!this._unitmasterService.myform.get("UnitId").value) {
-                var m_data = {
-                    insertUnitMaster: {
-                        unitName: this._unitmasterService.myform
-                            .get("UnitName")
-                            .value.trim(),
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._unitmasterService.myform.get("IsDeleted")
-                                    .value
-                            )
-                        ),
-                        addedBy: this.accountService.currentUserValue.user.id,
-                    },
-                };
-
-                this._unitmasterService
-                    .insertUnitMaster(m_data)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                            });
-                            this.getUnitMasterList();
-                        } else {
-                            this.toastr.error('Unit Master Data not saved !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                            });
-                        }
-                        this.getUnitMasterList();
-                    }, error => {
-                        this.toastr.error('Unit not saved !, Please check API error..', 'Error !', {
-                            toastClass: 'tostr-tost custom-toast-error',
-                        });
-                    });
-            } else {
-                var m_dataUpdate = {
-                    updateUnitMaster: {
-                        unitId: this._unitmasterService.myform.get("UnitId")
-                            .value,
-                        unitName:
-                            this._unitmasterService.myform.get("UnitName")
-                                .value,
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._unitmasterService.myform.get("IsDeleted")
-                                    .value
-                            )
-                        ),
-                        updatedBy:this.accountService.currentUserValue.user.id,
-                    },
-                };
-                this._unitmasterService
-                    .updateUnitMaster(m_dataUpdate)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record updated Successfully.', 'updated !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                            });
-                            this.getUnitMasterList();
-                        } else {
-                            this.toastr.error('Unit Master Data not updated !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                            });
-                        }
-                        this.getUnitMasterList();
-                    }, error => {
-                        this.toastr.error('Unit not updated !, Please check API error..', 'Error !', {
-                            toastClass: 'tostr-tost custom-toast-error',
-                        });
-                    });
-            }
-            this.onClear();
-        }
-    }
-        toggle(val: any) {
-        if (val == "2") {
-            this.currentStatus = 2;
-        } else if(val=="1") {
-            this.currentStatus = 1;
-        }
-        else{
-            this.currentStatus = 0;
-
-        }
-    }
-    onFilterChange(){
-        debugger
-      
-        if (this.currentStatus == 1) {
-            this.tempList.data = []
-            this.DSUnitmasterList.data= this.DSUnitmasterList1.data
-            for (let item of this.DSUnitmasterList.data) {
-                if(item.IsDeleted)this.tempList.data.push(item)
-            }
-      debugger
-            this.DSUnitmasterList.data = [];
-            this.DSUnitmasterList.data = this.tempList.data;
-        }
-        else if (this.currentStatus == 0) {
-            this.DSUnitmasterList.data= this.DSUnitmasterList1.data
-            this.tempList.data = []
-            for (let item of this.DSUnitmasterList.data) {
-                if (!item.IsDeleted) this.tempList.data.push(item)
-      
-            }
-            this.DSUnitmasterList.data = [];
-            this.DSUnitmasterList.data = this.tempList.data;
-        }
-        else {
-            this.DSUnitmasterList.data= this.DSUnitmasterList1.data
-            this.tempList.data = this.DSUnitmasterList.data;
-        }
-      
-    }
-    onDeactive(UnitId) {
        
-            Swal.fire({
-                title: 'Confirm Status',
-                text: 'Are you sure you want to Change Active Status?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes,Change Status!'
-            }).then((result) => {
-          if (result.isConfirmed) {
-            debugger
-            let Query 
-            if (!this.DSUnitmasterList.data.find(item => item.UnitId === UnitId).IsDeleted){
-                 Query ="Update M_PathUnitMaster set IsDeleted=1 where UnitId=" +UnitId;}
-            else{
-             Query = "Update M_PathUnitMaster set IsDeleted=0 where UnitId=" +UnitId;}
-                this._unitmasterService.deactivateTheStatus(Query)
-                .subscribe((data) => (this.msg = data));
-            this.getUnitMasterList();
-          }
+    }
+
+    onSave(row:any = null) {
+        const dialogRef = this._matDialog.open(NewUnitComponent,
+        {
+            maxWidth: "45vw",
+            height: '35%',
+            width: '70%',
+            data: row
         });
-      }
+        dialogRef.afterClosed().subscribe(result => {
+            if(result){
+                // this.getGenderMasterList();
+                // How to refresh Grid.
+            }
+            console.log('The dialog was closed - Action', result);
+        });
+    }
+
+    onDeactive(unitId) {
+        this.confirmDialogRef = this._matDialog.open(
+            FuseConfirmDialogComponent,
+            {
+                disableClose: false,
+            }
+        );
+        this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+        this.confirmDialogRef.afterClosed().subscribe((result) => {
+            if (result) {
+                this._unitmasterService.deactivateTheStatus(unitId).subscribe((response: any) => {
+                    if (response.StatusCode == 200) {
+                        this.toastr.success(response.Message);
+                        // this.getGenderMasterList();
+                        // How to refresh Grid.
+                    }
+                });
+            }
+            this.confirmDialogRef = null;
+        });
+    }
+
     onEdit(row) {
         var m_data = {
-            UnitId: row.UnitId,
+            UnitId: row.unitId,
             UnitName: row.UnitName.trim(),
-            IsDeleted: JSON.stringify(row.IsDeleted),
+            IsDeleted: JSON.stringify(row.isActive),
             UpdatedBy: row.UpdatedBy,
         };
         this._unitmasterService.populateForm(m_data);
@@ -240,9 +129,9 @@ export class UnitmasterComponent implements OnInit {
 }
 
 export class PathunitMaster {
-    UnitId: number;
-    UnitName: string;
-    IsDeleted: boolean;
+    unitId: number;
+    unitName: string;
+    isActive: boolean;
     AddedBy: number;
     UpdatedBy: number;
 
@@ -253,9 +142,9 @@ export class PathunitMaster {
      */
     constructor(PathunitMaster) {
         {
-            this.UnitId = PathunitMaster.UnitId || "";
-            this.UnitName = PathunitMaster.UnitName || "";
-            this.IsDeleted = PathunitMaster.IsDeleted || "true";
+            this.unitId = PathunitMaster.unitId || "";
+            this.unitName = PathunitMaster.unitName || "";
+            this.isActive = PathunitMaster.isActive || "true";
             this.AddedBy = PathunitMaster.AddedBy || "";
             this.UpdatedBy = PathunitMaster.UpdatedBy || "";
         }

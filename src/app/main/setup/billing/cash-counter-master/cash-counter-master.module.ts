@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { RouterModule, Routes } from "@angular/router";
 import { CashCounterMasterComponent } from "./cash-counter-master.component";
 import { MatButtonModule } from "@angular/material/button";
@@ -20,6 +20,9 @@ import { MatRadioModule } from "@angular/material/radio";
 import { FuseSharedModule } from "@fuse/shared.module";
 import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
 import { CashCounterMasterService } from "./cash-counter-master.service";
+import { NewCashCounterComponent } from './new-cash-counter/new-cash-counter.component';
+import { SharedModule } from "app/main/shared/shared.module";
+import { MatDialogModule } from "@angular/material/dialog";
 
 const routes: Routes = [
     {
@@ -29,17 +32,16 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [CashCounterMasterComponent],
+    declarations: [CashCounterMasterComponent, NewCashCounterComponent],
     imports: [
         RouterModule.forChild(routes),
+        SharedModule,
         MatButtonModule,
         MatCheckboxModule,
-        MatDatepickerModule,
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
         MatMenuModule,
-        MatRippleModule,
         MatTableModule,
         MatToolbarModule,
         MatPaginatorModule,
@@ -48,10 +50,10 @@ const routes: Routes = [
         MatRadioModule,
         MatSnackBarModule,
         FuseSharedModule,
-        FuseConfirmDialogModule,
         FuseSidebarModule,
+        MatDialogModule,
     ],
-    providers: [CashCounterMasterService],
+    providers: [CashCounterMasterService,DatePipe],
 
     entryComponents: [CashCounterMasterComponent],
 })

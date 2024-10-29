@@ -28,11 +28,37 @@ import { ToastrService } from "ngx-toastr";
 export class DoctorMasterComponent implements OnInit {
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     gridConfig: gridModel = {
-        apiUrl: "Gender/List",
+        apiUrl: "DoctoreMaster/List",
         columnsList: [
-            { heading: "Code", key: "genderId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Gender Name", key: "genderName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+            { heading: "Code", key: "doctorId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Gender Name", key: "prefixId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Code", key: "firstName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Gender Name", key: "middleName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Code", key: "lastName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Gender Name", key: "dateofBirth", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Code", key: "address", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Gender Name", key: "city", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Code", key: "pin", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Gender Name", key: "phone", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Code", key: "mobile", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Gender Name", key: "education", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Code", key: "isConsultant", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Gender Name", key: "isRefDoc", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Code", key: "doctorTypeId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Gender Name", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Code", key: "ageMonth", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Gender Name", key: "ageDay", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Code", key: "passportNo", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Gender Name", key: "esino", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Code", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Gender Name", key: "regDate", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsDeleted", key: "mahRegNo", type: gridColumnTypes.status, align: "center" },
+            { heading: "Gender Name", key: "mahRegDate", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Code", key: "refDocHospitalName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Gender Name", key: "isInHouseDoctor", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Code", key: "isOnCallDoctor", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Gender Name", key: "panCardNo", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsDeleted", key: "aadharCardNo", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
@@ -46,10 +72,10 @@ export class DoctorMasterComponent implements OnInit {
                     }]
             } //Action 1-view, 2-Edit,3-delete
         ],
-        sortField: "genderId",
+        sortField: "doctorId",
         sortOrder: 0,
         filters: [
-            { fieldName: "genderName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "FirstName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ],
         row:25
@@ -148,7 +174,7 @@ export class DoctorMasterComponent implements OnInit {
         }
     }
   
-    onDeactive(genderId) {
+    onDeactive(doctorId) {
         debugger
         this.confirmDialogRef = this._matDialog.open(
             FuseConfirmDialogComponent,
@@ -161,7 +187,7 @@ export class DoctorMasterComponent implements OnInit {
         this.confirmDialogRef.afterClosed().subscribe((result) => {
             debugger
             if (result) {
-                this._doctorService.deactivateTheStatus(genderId).subscribe((data: any) => {
+                this._doctorService.deactivateTheStatus(doctorId).subscribe((data: any) => {
                   //  this.msg = data
                     if (data.StatusCode == 200) {
                         this.toastr.success(
@@ -198,52 +224,51 @@ export class DoctorMasterComponent implements OnInit {
 }
 
 export class DoctorMaster {
-    DoctorId: number;
-    PrefixID: number;
-    FirstName: string;
-    MiddleName: string;
-    LastName: string;
-    DateofBirth: any;
-    Address: string;
-    City: string;
-    CityId:any;
-    Pin: string;
-    Phone: string;
-    Mobile: string;
-    GenderId: number;
+    doctorId: number;
+    prefixId: number;
+    firstName: string;
+    middleName: string;
+    lastName: string;
+    dateofBirth: any;
+    address: string;
+    city: string;
+    cityId:any;
+    pin: string;
+    phone: string;
+    mobile: string;
+    genderId: number;
     education: string;
-    IsConsultant: boolean;
-    IsRefDoc: boolean;
-    IsDeleted: boolean;
-    DoctorTypeId: number;
-    AgeYear: any;
-    AgeMonth: any;
-    AgeDay: any;
-    PassportNo: string;
+    isConsultant: boolean;
+    isRefDoc: boolean;
+    isDeleted: boolean;
+    doctorTypeId: number;
+    ageYear: any;
+    ageMonth: any;
+    ageDay: any;
+    passportNo: string;
     esino: string;
-    REGNO: string;
-    RegDate: any;
+    regNo: string;
+    regDate: any;
     RegDate1: any;
     mahRegNo: string;
-    MahRegDate: any;
+    mahRegDate: any;
     MahRegDate1: any;
     UpdatedBy: number;
-    RefDocHospitalName: string;
+    refDocHospitalName: string;
     AddedBy: String;
     CurrentDate = new Date();
     IsDeletedSearch: number;
     Age: any;
     DoctorName: any;
     IsActive: any;
-    regNo: any;
     MAHREGNO: any;
-    PANCARDNO: any;
-    AADHARCARDNO: any;
+    panCardNo: any;
+    aadharCardNo: any;
     isInHouseDoctor: any;
     Education:any;
     ESINO:any;
     Signature:string;
-
+    isOnCallDoctor: any;
     /**
      * Constructor
      *
@@ -251,49 +276,49 @@ export class DoctorMaster {
      */
     constructor(DoctorMaster) {
         {
-            this.DoctorId = DoctorMaster.DoctorId || 0;
+            this.doctorId = DoctorMaster.doctorId || 0;
             this.DoctorName = DoctorMaster.DoctorName || "";
-            this.PrefixID = DoctorMaster.PrefixID || "";
-            this.FirstName = DoctorMaster.FirstName || "";
-            this.MiddleName = DoctorMaster.MiddleName || "";
-            this.LastName = DoctorMaster.LastName || "";
-            this.DateofBirth = DoctorMaster.DateofBirth || this.CurrentDate;
-            this.Address = DoctorMaster.Address || "";
-            this.City = DoctorMaster.City || "";
-            this.CityId = DoctorMaster.CityId || "";
-            this.Pin = DoctorMaster.Pin || "";
-            this.Phone = DoctorMaster.Phone || "";
-            this.Mobile = DoctorMaster.Mobile || "";
-            this.GenderId = DoctorMaster.GenderId || "";
+            this.prefixId = DoctorMaster.prefixId || "";
+            this.firstName = DoctorMaster.firstName || "";
+            this.middleName = DoctorMaster.middleName || "";
+            this.lastName = DoctorMaster.lastName || "";
+            this.dateofBirth = DoctorMaster.dateofBirth || this.CurrentDate;
+            this.address = DoctorMaster.address || "";
+            this.city = DoctorMaster.city || "";
+            this.cityId = DoctorMaster.cityId || "";
+            this.pin = DoctorMaster.pin || "";
+            this.phone = DoctorMaster.phone || "";
+            this.mobile = DoctorMaster.mobile || "";
+            this.genderId = DoctorMaster.genderId || "";
             this.education = DoctorMaster.education || "";
-            this.IsConsultant = DoctorMaster.IsConsultant || 1;
-            this.IsRefDoc = DoctorMaster.IsRefDoc || 0;
-            this.IsDeleted = DoctorMaster.IsDeleted || "false";
-            this.DoctorTypeId = DoctorMaster.DoctorTypeId || "";
+            this.isConsultant = DoctorMaster.isConsultant || 1;
+            this.isRefDoc = DoctorMaster.isRefDoc || 0;
+          //  this.IsDeleted = DoctorMaster.IsDeleted || "false";
+            this.doctorTypeId = DoctorMaster.doctorTypeId || "";
             this.Age = DoctorMaster.Age || "";
-            this.AgeYear = DoctorMaster.AgeYear || "";
-            this.AgeMonth = DoctorMaster.AgeMonth || "";
-            this.AgeDay = DoctorMaster.AgeDay || "";
-            this.PassportNo = DoctorMaster.PassportNo || "";
+            this.ageYear = DoctorMaster.ageYear || "";
+            this.ageMonth = DoctorMaster.ageMonth || "";
+            this.ageDay = DoctorMaster.ageDay || "";
+            this.passportNo = DoctorMaster.passportNo || "";
             this.esino = DoctorMaster.esino || "";
-            this.RegDate = DoctorMaster.RegDate || this.CurrentDate;
+            this.regDate = DoctorMaster.regDate || this.CurrentDate;
             this.RegDate1 = DoctorMaster.RegDate1 || this.CurrentDate;
             this.Education = DoctorMaster.Education || "";
-            this.MahRegDate = DoctorMaster.MahRegDate || this.CurrentDate;
+            this.mahRegDate = DoctorMaster.mahRegDate || this.CurrentDate;
             this.MahRegDate1 = DoctorMaster.MahRegDate1 || this.CurrentDate;
             this.UpdatedBy = DoctorMaster.UpdatedBy || "";
             this.AddedBy = DoctorMaster.AddedBy || "";
             this.IsActive = DoctorMaster.IsActive || 1;
-            this.RefDocHospitalName = DoctorMaster.RefDocHospitalName || "";
+            this.refDocHospitalName = DoctorMaster.refDocHospitalName || "";
             this.IsDeletedSearch = DoctorMaster.IsDeletedSearch || "";
-            this.REGNO= DoctorMaster.REGNO || "";
-            this.MAHREGNO= DoctorMaster.MAHREGNO || "";
-            this.PANCARDNO= DoctorMaster.PANCARDNO || "";
-            this.AADHARCARDNO= DoctorMaster.AADHARCARDNO || "";
+            this.regNo= DoctorMaster.regNo || "";
+            this.mahRegNo= DoctorMaster.mahRegNo || "";
+            this.panCardNo= DoctorMaster.panCardNo || "";
+            this.aadharCardNo= DoctorMaster.aadharCardNo || "";
             this.isInHouseDoctor= DoctorMaster.isInHouseDoctor || "";
             this.ESINO= DoctorMaster.ESINO || "";
             this.Signature=DoctorMaster.Signature||"";
-          
+          this.isOnCallDoctor=DoctorMaster.isOnCallDoctor||0;
         }
     }
 }

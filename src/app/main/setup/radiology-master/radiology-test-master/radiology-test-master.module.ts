@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { RouterModule, Routes } from "@angular/router";
 import { MatSortModule } from "@angular/material/sort";
 import { MatButtonModule } from "@angular/material/button";
@@ -101,7 +101,7 @@ const routes: Routes = [
         MatTooltipModule,
         MatTreeModule,
     ],
-    providers: [RadiologyTestMasterService],
+    providers: [RadiologyTestMasterService,DatePipe],
 
     entryComponents: [RadiologyTestMasterComponent],
 })

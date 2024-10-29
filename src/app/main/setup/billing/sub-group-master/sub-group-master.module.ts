@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { RouterModule, Routes } from "@angular/router";
 import { SubGroupMasterComponent } from "./sub-group-master.component";
 import { SubGroupMasterService } from "./sub-group-master.service";
@@ -27,6 +27,8 @@ import { MatInputModule } from "@angular/material/input";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatButtonModule } from "@angular/material/button";
+import { NewSubgroupComponent } from './new-subgroup/new-subgroup.component';
+import { MatDialogModule } from "@angular/material/dialog";
 
 const routes: Routes = [
     {
@@ -36,7 +38,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [SubGroupMasterComponent],
+    declarations: [SubGroupMasterComponent, NewSubgroupComponent],
     imports: [
         RouterModule.forChild(routes),
 
@@ -66,8 +68,10 @@ const routes: Routes = [
         SharedModule,
         NgxMatSelectSearchModule,
         MatBadgeModule,
+       
+        MatDialogModule,
     ],
-    providers: [SubGroupMasterService],
+    providers: [SubGroupMasterService,DatePipe],
     entryComponents: [SubGroupMasterComponent],
 })
 export class SubGroupMasterModule {}

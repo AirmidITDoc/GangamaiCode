@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { RouterModule, Routes } from "@angular/router";
 import { ServiceMasterComponent } from "./service-master.component";
 import { ServiceMasterFormComponent } from "./service-master-form/service-master-form.component";
@@ -29,6 +29,7 @@ import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { SharedModule } from "app/main/shared/shared.module";
 import { MatCardModule } from "@angular/material/card";
+import { MatDialogModule } from "@angular/material/dialog";
 
 const routes: Routes = [
     {
@@ -66,9 +67,11 @@ const routes: Routes = [
         MatAutocompleteModule,
         SharedModule,
         NgxMatSelectSearchModule,
-        MatCardModule
+        MatCardModule,
+      
+        MatDialogModule,
     ],
-    providers: [ServiceMasterService],
+    providers: [ServiceMasterService,DatePipe],
     entryComponents: [ServiceMasterComponent],
 })
 export class ServiceMasterModule {}

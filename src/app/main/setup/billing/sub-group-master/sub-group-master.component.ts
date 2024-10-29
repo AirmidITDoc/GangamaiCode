@@ -9,6 +9,11 @@ import { MatPaginator } from "@angular/material/paginator";
 import { fuseAnimations } from "@fuse/animations";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { NewSubgroupComponent } from "./new-subgroup/new-subgroup.component";
 
 @Component({
     selector: "app-sub-group-master",
@@ -18,23 +23,35 @@ import { ToastrService } from "ngx-toastr";
     animations: fuseAnimations,
 })
 export class SubGroupMasterComponent implements OnInit {
-    SubgroupMasterList: any;
-    GroupcmbList: any = [];
-    msg: any;
-
-    @ViewChild(MatSort) sort: MatSort;
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-
-    displayedColumns: string[] = [
-        "SubGroupId",
-        "SubGroupName",
-        "GroupName",
-        "AddedBy",
-        "IsDeleted",
-        "action",
-    ];
-
-    DSSubGroupMasterList = new MatTableDataSource<SubGroupMaster>();
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    gridConfig: gridModel = {
+        apiUrl: "BankMaster/List",
+        columnsList: [
+            { heading: "Code", key: "subGroupId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Sub Group  Name", key: "subGroupName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Group Name", key: "groupName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+            {
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            this.onSave(data) // EDIT Records
+                        }
+                    }, {
+                        action: gridActions.delete, callback: (data: any) => {
+                            this.onDeactive(data.subGroupId); // DELETE Records
+                        }
+                    }]
+            } //Action 1-view, 2-Edit,3-delete
+        ],
+        sortField: "subGroupId",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "subGroupName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+        ],
+        row:25
+    }
 
     //groupname filter
     public groupnameFilterCtrl: FormControl = new FormControl();
@@ -42,185 +59,56 @@ export class SubGroupMasterComponent implements OnInit {
 
     private _onDestroy = new Subject<void>();
 
-    constructor(public _subgroupService: SubGroupMasterService,
+    constructor(public _subgroupService: SubGroupMasterService, public _matDialog: MatDialog,
         public toastr : ToastrService,) {}
 
     ngOnInit(): void {
-        this.getSubgroupMasterList();
-        this.getGroupNameCombobox();
-
-        this.groupnameFilterCtrl.valueChanges
-            .pipe(takeUntil(this._onDestroy))
-            .subscribe(() => {
-                this.filterGroupname();
-            });
+    
     }
-    onSearch() {
-        this.getSubgroupMasterList();
-    }
-
-    onSearchClear() {
-        this._subgroupService.myformSearch.reset({
-            SubGroupNameSearch: "",
-            IsDeletedSearch: "2",
-        });
-        this.getSubgroupMasterList();
-    }
-    private filterGroupname() {
-        // debugger;
-        if (!this.GroupcmbList) {
-            return;
-        }
-        // get the search keyword
-        let search = this.groupnameFilterCtrl.value;
-        if (!search) {
-            this.filteredGroupname.next(this.GroupcmbList.slice());
-            return;
-        } else {
-            search = search.toLowerCase();
-        }
-        // filter
-        this.filteredGroupname.next(
-            this.GroupcmbList.filter(
-                (bank) => bank.GroupName.toLowerCase().indexOf(search) > -1
-            )
-        );
-    }
-
-    getSubgroupMasterList() {
-        var param = {
-            SubGroupName:
-                this._subgroupService.myformSearch
-                    .get("SubGroupNameSearch")
-                    .value.trim() || "%",
-        };
-        this._subgroupService.getSubgroupMasterList(param).subscribe((Menu) => {
-            this.DSSubGroupMasterList.data = Menu as SubGroupMaster[];
-            this.DSSubGroupMasterList.sort = this.sort;
-            this.DSSubGroupMasterList.paginator = this.paginator;
-            console.log(this.DSSubGroupMasterList);
-        });
-    }
-
-    getGroupNameCombobox() {
-        this._subgroupService.getGroupMasterCombo().subscribe((data) => {
-            this.GroupcmbList = data;
-            this.filteredGroupname.next(this.GroupcmbList.slice());
-            this._subgroupService.myform
-                .get("GroupId")
-                .setValue(this.GroupcmbList[0]);
-        });
-    }
+  
     onClear() {
         this._subgroupService.myform.reset({ IsDeleted: "false" });
         this._subgroupService.initializeFormGroup();
     }
 
-    onSubmit() {
-        if (this._subgroupService.myform.valid) {
-            if (!this._subgroupService.myform.get("SubGroupId").value) {
-                var m_data = {
-                    subGroupMasterInsert: {
-                        groupId:
-                            this._subgroupService.myform.get("GroupId").value
-                                .GroupId,
-                        subGroupName: this._subgroupService.myform
-                            .get("SubGroupName")
-                            .value.trim(),
-                        addedBy: 1,
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._subgroupService.myform.get("IsDeleted")
-                                    .value
-                            )
-                        ),
-                    },
-                };
-
-                this._subgroupService
-                    .subGroupMasterInsert(m_data)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                              this.getSubgroupMasterList();
-                            // Swal.fire(
-                            //     "Saved !",
-                            //     "Record saved Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getSubgroupMasterList();
-                            //     }
-                            // });
-                        } else {
-                            this.toastr.error('Sub-Group Master Data not saved !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                        }
-                        this.getSubgroupMasterList();
-                    },error => {
-                        this.toastr.error('Sub-Group Data not saved !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
-            } else {
-                var m_dataUpdate = {
-                    subGroupMasterUpdate: {
-                        subGroupID:
-                            this._subgroupService.myform.get("SubGroupId")
-                                .value,
-                        groupId:
-                            this._subgroupService.myform.get("GroupId").value
-                                .GroupId,
-                        subGroupName:
-                            this._subgroupService.myform.get("SubGroupName")
-                                .value,
-
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._subgroupService.myform.get("IsDeleted")
-                                    .value
-                            )
-                        ),
-                        updatedBy: 1,
-                    },
-                };
-
-                this._subgroupService
-                    .subGroupMasterUpdate(m_dataUpdate)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record updated Successfully.', 'updated !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                            this.getSubgroupMasterList();
-                            // Swal.fire(
-                            //     "Updated !",
-                            //     "Record updated Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getSubgroupMasterList();
-                            //     }
-                            // });
-                        } else {
-                            this.toastr.error('Sub-Group Master Data not updated !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                        }
-                        this.getSubgroupMasterList();
-                    },error => {
-                        this.toastr.error('Sub-Group Data not Updated !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
+  
+    
+    onSave(row:any = null) {
+        const dialogRef = this._matDialog.open(NewSubgroupComponent,
+        {
+            maxWidth: "45vw",
+            height: '35%',
+            width: '70%',
+            data: row
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            if(result){
+                // this.getGenderMasterList();
+                // How to refresh Grid.
             }
-            this.onClear();
-        }
+            console.log('The dialog was closed - Action', result);
+        });
+    }
+
+    onDeactive(subGroupId) {
+        this.confirmDialogRef = this._matDialog.open(
+            FuseConfirmDialogComponent,
+            {
+                disableClose: false,
+            }
+        );
+        this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+        this.confirmDialogRef.afterClosed().subscribe((result) => {
+            if (result) {
+                this._subgroupService.deactivateTheStatus(subGroupId).subscribe((response: any) => {
+                    if (response.StatusCode == 200) {
+                        this.toastr.success(response.Message);
+                       
+                    }
+                });
+            }
+            this.confirmDialogRef = null;
+        });
     }
     onEdit(row) {
         var m_data = {
@@ -236,11 +124,11 @@ export class SubGroupMasterComponent implements OnInit {
 }
 
 export class SubGroupMaster {
-    SubGroupId: number;
-    SubGroupName: string;
-    GroupId: number;
-    GroupName: string;
-    IsDeleted: boolean;
+    subGroupId: number;
+    subGroupName: string;
+    groupId: number;
+    groupName: string;
+    isActive: boolean;
     AddedBy: number;
     UpdatedBy: number;
 
@@ -251,10 +139,10 @@ export class SubGroupMaster {
      */
     constructor(SubGroupMaster) {
         {
-            this.SubGroupId = SubGroupMaster.SubGroupId || "";
-            this.SubGroupName = SubGroupMaster.SubGroupName || "";
-            this.GroupId = SubGroupMaster.GroupId || "";
-            this.IsDeleted = SubGroupMaster.IsDeleted || "false";
+            this.subGroupId = SubGroupMaster.subGroupId || "";
+            this.subGroupName = SubGroupMaster.subGroupName || "";
+            this.groupId = SubGroupMaster.groupId || "";
+            this.isActive = SubGroupMaster.isActive || "false";
             this.AddedBy = SubGroupMaster.AddedBy || "";
             this.UpdatedBy = SubGroupMaster.UpdatedBy || "";
         }

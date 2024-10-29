@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { CategorymasterComponent } from "./categorymaster.component";
 import { RouterModule, Routes } from "@angular/router";
 import { CategorymasterService } from "./categorymaster.service";
@@ -19,6 +19,9 @@ import { MatInputModule } from "@angular/material/input";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatButtonModule } from "@angular/material/button";
+import { NewCategoryComponent } from './new-category/new-category.component';
+import { SharedModule } from "app/main/shared/shared.module";
+import { MatDialogModule } from "@angular/material/dialog";
 
 const routes: Routes = [
     {
@@ -28,17 +31,16 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [CategorymasterComponent],
+    declarations: [CategorymasterComponent, NewCategoryComponent],
     imports: [
         RouterModule.forChild(routes),
+        SharedModule,
         MatButtonModule,
         MatCheckboxModule,
-
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
         MatMenuModule,
-        MatRippleModule,
         MatTableModule,
         MatToolbarModule,
         MatPaginatorModule,
@@ -47,10 +49,10 @@ const routes: Routes = [
         MatRadioModule,
         MatSnackBarModule,
         FuseSharedModule,
-        FuseConfirmDialogModule,
         FuseSidebarModule,
+        MatDialogModule,
     ],
-    providers: [CategorymasterService],
+    providers: [CategorymasterService,DatePipe],
     entryComponents: [CategorymasterComponent],
 })
 export class CategorymasterModule {}

@@ -1,6 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { gridRequest } from "app/core/models/gridRequest";
+import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
     providedIn: "root",
@@ -9,7 +11,7 @@ export class BankMasterService {
     myform: FormGroup;
     myformSearch: FormGroup;
     constructor(
-        private _httpClient: HttpClient,
+        private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder
     ) {
         this.myform = this.createBankForm();
@@ -37,19 +39,20 @@ export class BankMasterService {
         this.createBankForm();
     }
 
-    public getBankMasterList(param) {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_BankNameList_by_Name",
-            param
-        );
+   
+    public getbankMasterList(param: gridRequest, showLoader = true) {
+        return this._httpClient.PostData("BankMaster/List", param, showLoader);
     }
 
-    public bankMasterInsert(param) {
-        return this._httpClient.post("Billing/BankMasterSave", param);
+    public bankMasterSave(Param: any, id: string ,showLoader = true) {
+        if(id)
+            return this._httpClient.PutData("bank/"+ id, Param, showLoader);
+        else
+            return this._httpClient.PostData("bank", Param, showLoader);       
     }
 
-    public bankMasterUpdate(param) {
-        return this._httpClient.post("Billing/BankUpdate", param);
+    public deactivateTheStatus(m_data) {
+        return this._httpClient.PostData("bank", m_data);
     }
 
     populateForm(param) {

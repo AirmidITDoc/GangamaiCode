@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatBadgeModule } from '@angular/material/badge';
@@ -95,12 +95,12 @@ const routes: Routes = [
     FuseSharedModule,
     // RichTextEditorModule
     //  NgMultiSelectDropDownModule.forRoot()
-    AngularEditorModule
+    AngularEditorModule,
 
     ],
     providers: [
         RadiologyTemplateMasterService,
-        NotificationServiceService 
+        DatePipe 
     ],
     entryComponents: [
         RadiologyTemplateMasterComponent,

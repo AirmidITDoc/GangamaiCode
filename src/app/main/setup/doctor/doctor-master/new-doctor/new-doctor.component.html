@@ -1,5 +1,4 @@
-<div class="modal-wrapper grid-container">
-    <!-- Modal header -->
+<!-- 
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
@@ -8,8 +7,7 @@
             <div class="modal-header-right">
 
                 <div fxLayout="row" fxLayoutALign="end start">
-                    <!-- <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
-                    </app-common-date> -->
+                   
                     <button mat-icon-button (click)="onClose()" aria-label="Close dialog">
                         <mat-icon>close</mat-icon>
                     </button>
@@ -27,7 +25,7 @@
             <span style="font-size:15px; font-weight: bolder; color:white;padding:7px;">Personal
                 Details</span>
         </div>
-        <!-- <div style="padding: 7px;overflow-block: hover;"> -->
+        
         <mat-card>
             <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="12px grid">
                 <div fxFlex="85%" fxFlex.xs="100%" fxFlex.sm="80%" fxLayout="row wrap">
@@ -59,9 +57,7 @@
                                 [ngClass]="{ 'is-invalid': submitted && _doctorService.myform.get('FirstName').errors }"
                                 matInput #fname (keydown)="onEnterfname($event)" required
                                 [(ngModel)]="registerObj.FirstName">
-                            <!-- onkeypress=" (event.charCode > 64 && 
-                                          event.charCode < 91) || (event.charCode > 96 && event.charCode < 123)"> -->
-                            <mat-error class="error"
+                          <mat-error class="error"
                                 *ngIf="_doctorService.myform.get('FirstName').invalid && _doctorService.myform.get('FirstName').touched">
                                 First
                                 Name is required Enter
@@ -154,7 +150,7 @@
                             </mat-form-field>
                         </div>
                     </div>
-                    <!-- age, month, dat -->
+                 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <div fxLayout="row" class="gap-8">
                             <mat-form-field appearance="outline" fxFlex="30%">
@@ -259,7 +255,7 @@
                             </mat-autocomplete>
                         </mat-form-field>
                     </div>
-                    <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <mat-form-field appearance="outline" fxFlex>
                             <mat-label>City</mat-label>
                             <input matAutocompletePosition="below" type="text" placeholder="Select City" matInput #city
@@ -277,7 +273,7 @@
                                 </mat-option>
                             </mat-autocomplete>
                         </mat-form-field>
-                    </div> -->
+                    </div>
                 </div>
                 <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="20%">
                     <mat-card style="padding: 6px;height: 200px;">
@@ -309,7 +305,7 @@
                 Details</span>
         </div>
         <mat-card>
-            <!-- oninput="this.value = this.value.replace(/['^[a-zA-Z0-9]*$']/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);" -->
+           
             <div fxFlex="100" fxLayout="row wrap" >
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <mat-form-field appearance="outline" fxFlex>
@@ -411,43 +407,11 @@
 
 
         <div fxLayout="row">
-            <!-- <div fxFlex>
-                <mat-card style="padding: 6px;height: 280px;">
-                <div class="photo-capture p-16 border border-radius-4 gap-12" fxLayout="column">
-                    <div class="photp-capture-image">
-                        <img class="h-100-p w-100-p border-radius-4" style="height:100px !important;"
-                            [src]="sanitizeImagePreview ? sanitizeImagePreview:'/assets/images/noimage.jpg'" />
-                    </div>
-                    <div class="photo-capture-button ">
-                        <label class="btn btn-primary-outline btn-hover btn-with-icon w-100-p m-0 "
-                            (click)="onViewSignature()">
-                            <span class="btn-icon">
-                                <mat-icon>camera_enhance</mat-icon>
-                            </span>
-                            <span>Capture Signature</span>
-                        </label>
-                    </div>
-                </div>
-            </mat-card>
-            </div> -->
+          
             <div fxFlex>
                 <mat-card>
                     <form [formGroup]="_doctorService.myform">
-                        <!-- <div class="sales-radio-buttons gap-2" fxLayout="row">
-                            <mat-slide-toggle name="IsConsultant" formControlName="IsConsultant"
-                                [(ngModel)]="registerObj.IsConsultant">
-                                IsConsultant
-                            </mat-slide-toggle>
-
-                            <mat-slide-toggle name="IsRefDoc" formControlName="IsRefDoc"
-                                [(ngModel)]="registerObj.IsRefDoc">
-                                IsRefDoctor
-                            </mat-slide-toggle>
-                            <mat-checkbox aria-label="Is Active" formControlName="isActive" (checked)=true
-                                [(ngModel)]="registerObj.IsActive" style="font-weight: bold;">
-                                IsActive
-                            </mat-checkbox>
-                        </div> -->
+                      
                         <div fxLayout="row">
                             <mat-form-field appearance="outline" fxFlex="30%">
                                 <mat-label>Department</mat-label>
@@ -511,6 +475,6 @@
         </div>
     </div>
 </mat-card>
-    <!-- Modal footer -->
+   
 
-</div>
+</div>  -->

@@ -1,6 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { gridRequest } from "app/core/models/gridRequest";
+import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
     providedIn: "root",
@@ -9,7 +11,7 @@ export class GroupMasterService {
     myform: FormGroup;
     myformSearch: FormGroup;
     constructor(
-        private _httpClient: HttpClient,
+        private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder
     ) {
         this.myform = this.createGroupForm();
@@ -39,19 +41,20 @@ export class GroupMasterService {
         this.createGroupForm();
     }
 
-    public getGroupMasterList(param) {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_GroupList_by_Name",
-            param
-        );
+ 
+    public getgroupMasterList(param: gridRequest, showLoader = true) {
+        return this._httpClient.PostData("GroupMaster/List", param, showLoader);
     }
 
-    public groupMasterInsert(param) {
-        return this._httpClient.post("Billing/GroupSave", param);
+    public groupMasterSave(Param: any, id: string ,showLoader = true) {
+        if(id)
+            return this._httpClient.PutData("group/"+ id, Param, showLoader);
+        else
+            return this._httpClient.PostData("group", Param, showLoader);       
     }
 
-    public groupMasterUpdate(param) {
-        return this._httpClient.post("Billing/GroupUpdate", param);
+    public deactivateTheStatus(m_data) {
+        return this._httpClient.PostData("bank", m_data);
     }
 
     populateForm(param) {

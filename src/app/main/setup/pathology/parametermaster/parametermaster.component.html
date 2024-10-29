@@ -1,242 +1,39 @@
-<div fxlayout="row" fxFlex.gt-sm="100%" fxFlex class="page-layout" dynamicTableHeight>
-    <div class="center">
-        <mat-toolbar class="top-header accent">
-            <div fxLayout="row" class="top-header-info">
-                <button mat-icon-button class="sidebar-toggle" fxHide.gt-sm (click)="toggleSidebar('app-main')">
-                    <mat-icon>menu</mat-icon>
-                </button>
-                <mat-icon class="logo-icon " [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
-                </mat-icon>
-                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    Parameter List
+<div fusePerfectScrollbar
+    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+    dynamicTableHeight>
+    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center ">
+        <div class="top-header-info">
+            <div class="top-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Pathology Parameter
                 </span>
-
-            </div>
-            <div fxLayout="row" fxLayoutGap="5px">
-                <button mat-raised-button (click)="onAdd()"
-                    style="background-color: aliceblue;color: brown;">Add
-
-                </button>
-            </div>
-        </mat-toolbar>
-
-    <div class="content">
-        <div class="center p-24 pb-56" fusePerfectScrollbar>
-            <div class="content-card">
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-                    <div fxFlex.gt-sm="100%" fxFlex>
-
-                        <div fxlayout="row" style="background-color: white; padding: 5px 10px 5px 10px; ">
-                            <form [formGroup]="_ParameterService.myformSearch">
-                                <div class="dialog-content-wrapper">
-                                    <mat-form-field class="mr-sm-12" fxFlex>
-                                        <input matInput placeholder="Search --> Parameter Name" autocomplete="off"
-                                            (keyup)="onSearch()" name="ParameterNameSearch"
-                                            formControlName="ParameterNameSearch" />
-                                        <button mat-button matSuffix mat-icon-button aria-label="Clear"
-                                            (click)="onSearchClear()">
-                                            <mat-icon>close</mat-icon>
-                                        </button>
-                                    </mat-form-field>
-
-                                    <!-- <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch" value="1"
-                                        fxLayoutAlign="center center">
-                                        <mat-radio-button value="2">All</mat-radio-button>
-                                        <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
-                                        <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
-                                    </mat-radio-group> -->
-                                
-                                    <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch"
-                                    (change)="onSearch()">
-                                    <mat-radio-button (click)="toggle(2)" [checked]="true"
-                                        value="2">All</mat-radio-button>
-                                    <mat-radio-button mat-fab value="1"
-                                        (click)="toggle(1)">IsActive</mat-radio-button>
-                                    <mat-radio-button (click)="toggle(0)" value="0">IsDeactive</mat-radio-button>
-                                     </mat-radio-group>
-
-                                    <button type="button" mat-raised-button class="searchButton" (click)="onSearch()"
-                                        matTooltip="search">
-                                        <mat-icon>search</mat-icon>
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-
-
-                        <div fxlayout="row">
-                            <div class="content-card">
-                                <!-- <div class="table-header" style="margin-left: 1480px;">
-                                    <div fxLayout="row wrap" fxLayoutAlign="space-between center">
-
-                                        <div class="table-header-right">
-                                            <div class="export-buttons">
-                                                <div fxLayout="row" fxLayoutAlign="center center" class="gap-8">
-                                                    <button type="button" mat-icon-button>
-                                                        <img width="32" height="10px" (click)="exportReportPdf()"
-                                                            src="assets/images/svg/pdf-svg.svg">
-                                                    </button>
-
-                                                    <button type="button" mat-icon-button>
-                                                        <img width="32" height="10px" (click)="exportParameterExcel()"
-                                                            src="assets/images/svg/xls-svg.svg">
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> -->
-                                <div style="width: 100%;">
-                                
-                                    <mat-table class="table1" matSort [dataSource]="DSParameterList"
-                                        [@animateStagger]="{value:'50'}" style="overflow:auto;height: 500px !important;">
-
-                                        <ng-container matColumnDef="ParameterID">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide  class="w-180"
-                                                fxShow.gt-sm>ParameterCode
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm  class="w-180">
-                                                {{element.ParameterID}}
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="ParameterName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header  class="w-330"> ParameterName
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm  class="w-330"> {{element.ParameterName}}
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="ParameterShortName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-230">ShortName
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-230">
-                                                {{element.ParameterShortName}}
-                                            </mat-cell>
-                                        </ng-container>
-
-
-                                        <ng-container matColumnDef="PrintParameterName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide class="w-200"
-                                                fxShow.gt-sm>PrintParameterName </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-200">
-                                                {{element.PrintParameterName}} </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="UnitName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200"> UnitName
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-200"> {{element.UnitName}}
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="IsNumeric">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header> IsNumeric
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                                <!-- {{element.IsNumericParameter}} -->
-                                                <mat-icon *ngIf="element.IsNumericParameter== 1" title="IsNumeric">
-                                                    <img width="20px" height="20px" src="assets/images/logos/radiology.png">
-                                                </mat-icon>
-                                                <mat-icon *ngIf="element.IsNumericParameter== 0" title="IsDescriptive">
-                                                    <img width="20px" height="20px" src="assets/images/logos/pathology.png">  
-                                                </mat-icon>
-
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="IsPrintDisSummary">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header> IsPrintDisSummary
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                                {{element.IsPrintDisSummary}}
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        
-                                        <ng-container matColumnDef="Formula">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                                Formula</mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.Formula}}
-                                            </mat-cell>
-                                        </ng-container>
-                                        
-                                        <ng-container matColumnDef="AddedBy">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                                AddedBy</mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.AddedBy}}
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="Isdeleted" stickyEnd>
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                IsActive
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                <mat-icon *ngIf="element.Isdeleted"
-                                                    class="active-icon green-600 s-16">check_circle</mat-icon>
-                                                <mat-icon *ngIf="!element.Isdeleted"
-                                                    class="active-icon red-500 s-16">close</mat-icon>
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="action" stickyEnd>
-                                            <mat-header-cell *matHeaderCellDef class="table-actions"> Action
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let element">
-
-                                                <button mat-icon-button (click)="onEdit(element)"
-                                                    *ngIf="element.Isdeleted"><mat-icon
-                                                        title="Edit Menu">edit</mat-icon></button>
-                                                <button mat-icon-button
-                                                    *ngIf="!element.Isdeleted"><mat-icon
-                                                        title="Edit Menu">highlight_off</mat-icon></button>
-                                                        <button mat-icon-button
-                                                        (click)="onaddformula(element)"
-                                                        color="warn"><mat-icon title="Add Formula">add</mat-icon></button>
-    
-                                                <button mat-icon-button
-                                                    (click)="onDeactive(element,element.ParameterID)"
-                                                    color="warn"><mat-icon>delete_outline</mat-icon></button>
-
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="loading">
-                                            <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                            </mat-header-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="noData">
-                                            <mat-footer-cell *matFooterCellDef colspan="6">
-                                                no data found...
-                                            </mat-footer-cell>
-                                        </ng-container>
-
-                                        <mat-header-row class="accent min-width-2000"
-                                        *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                                        <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
-                                        class=" min-width-2000" 
-                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                        <mat-footer-row *matFooterRowDef="['loading']"
-                                            [ngClass]="{'hide':DSParameterList!=null}"></mat-footer-row>
-                                        <mat-footer-row *matFooterRowDef="['noData']"
-                                            [ngClass]="{'hide':!(DSParameterList!=null && DSParameterList.data.length==0)}"></mat-footer-row>
-
-                                    </mat-table>
-                                    <mat-paginator [pageSizeOptions]="[30, 50, 75, 100]" [pageSize]="30" [length]="resultsLength"
-                                    showFirstLastButtons (page)="getParameterMasterList()">
-                                </mat-paginator>
-                                </div>
-
-                            </div>
-                        </div>
-
-
-
-                    </div>
-                </div>
             </div>
         </div>
+        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+            <button mat-raised-button (click)="onAdd()">New Parameter
+            </button>
+        </div>
     </div>
+    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+        <airmid-table [gridConfig]="gridConfig" class="content">
+            <ng-container filters>
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>Parameter Name</mat-label>
+                    <input matInput placeholder="Search Parameter Name" autocomplete="off"
+                        [(ngModel)]="gridConfig.filters[0].fieldValue" />
+                    <button mat-button matSuffix mat-icon-button aria-label="Clear"
+                        (click)="gridConfig.filters[0].fieldValue=''">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
+
+                <mat-radio-group value="" [(ngModel)]="gridConfig.filters[1].fieldValue" fxLayoutAlign="center center">
+                    <mat-radio-button value="">All</mat-radio-button>
+                    <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
+                    <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
+                </mat-radio-group>
+            </ng-container>
+        </airmid-table>
     </div>
+</div>

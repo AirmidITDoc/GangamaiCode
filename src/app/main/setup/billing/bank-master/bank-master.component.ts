@@ -6,6 +6,12 @@ import { fuseAnimations } from "@fuse/animations";
 import { BankMasterService } from "./bank-master.service";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { NewBankComponent } from "./new-bank/new-bank.component";
+
 
 @Component({
     selector: "app-bank-master",
@@ -15,32 +21,44 @@ import { ToastrService } from "ngx-toastr";
     animations: fuseAnimations,
 })
 export class BankMasterComponent implements OnInit {
-    PrefixMasterList: any;
-    GendercmbList: any = [];
-    msg: any;
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    gridConfig: gridModel = {
+        apiUrl: "BankMaster/List",
+        columnsList: [
+            { heading: "Code", key: "bankId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Bank Name", key: "bankName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+            {
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            this.onSave(data) // EDIT Records
+                        }
+                    }, {
+                        action: gridActions.delete, callback: (data: any) => {
+                            this.onDeactive(data.bankId); // DELETE Records
+                        }
+                    }]
+            } //Action 1-view, 2-Edit,3-delete
+        ],
+        sortField: "bankId",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "BankName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+        ],
+        row:25
+    }
 
-    @ViewChild(MatSort) sort: MatSort;
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-
-    displayedColumns: string[] = [
-        "BankId",
-        "BankName",
-        "AddedBy",
-        "IsDeleted",
-        "action",
-    ];
-
-    DSBankMasterList = new MatTableDataSource<BankMaster>();
-
-    constructor(public _bankService: BankMasterService,
+    constructor(public _bankService: BankMasterService,public _matDialog: MatDialog,
         public toastr : ToastrService,) {}
 
     ngOnInit(): void {
-        this.getBankMasterList();
+      
         this._bankService.myform.get("IsDeleted").setValue(true);
     }
     onSearch() {
-        this.getBankMasterList();
+      
     }
 
     onSearchClear() {
@@ -48,123 +66,53 @@ export class BankMasterComponent implements OnInit {
             BankNameSearch: "",
             IsDeletedSearch: "2",
         });
-        this.getBankMasterList();
+      
     }
-    IsActiveStatus: any;
-    onChangeIsactive(SiderOption) {
-        this.IsActiveStatus = SiderOption.checked;
-        console.log(this.IsActiveStatus);
-    }
+   
+  
 
-    getBankMasterList() {
-        var param = {
-            BankName:
-                this._bankService.myformSearch
-                    .get("BankNameSearch")
-                    .value.trim() + "%" || "%",
-        };
-        this._bankService.getBankMasterList(param).subscribe((Menu) => {
-            this.DSBankMasterList.data = Menu as BankMaster[];
-            this.DSBankMasterList.sort = this.sort;
-            this.DSBankMasterList.paginator = this.paginator;
+    onSave(row:any = null) {
+        const dialogRef = this._matDialog.open(NewBankComponent,
+        {
+            maxWidth: "45vw",
+            height: '35%',
+            width: '70%',
+            data: row
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            if(result){
+                // this.getGenderMasterList();
+                // How to refresh Grid.
+            }
+            console.log('The dialog was closed - Action', result);
         });
     }
 
-    onClear() {
-        this._bankService.myform.reset({ IsDeleted: "true" });
-        this._bankService.initializeFormGroup();
-    }
-
-    onSubmit() {
-        if (this._bankService.myform.valid) {
-            if (!this._bankService.myform.get("BankId").value) {
-                var m_data = {
-                    bankMasterInsert: {
-                        bankName: this._bankService.myform
-                            .get("BankName")
-                            .value.trim(),
-                        isDeleted: JSON.parse(
-                            this._bankService.myform.get("IsDeleted").value
-                        ),
-                        addedBy: 1,
-                    },
-                };
-
-                console.log(m_data);
-                this._bankService.bankMasterInsert(m_data).subscribe((data) => {
-                    this.msg = data;
-                    if (data) {
-                        this.toastr.success('Record Saved Successfully.', 'Saved !', {
-                            toastClass: 'tostr-tost custom-toast-success',
-                          });
-                          this.getBankMasterList();
-                        // Swal.fire(
-                        //     "Saved !",
-                        //     "Record saved Successfully !",
-                        //     "success"
-                        // ).then((result) => {
-                        //     if (result.isConfirmed) {
-                        //         this.getBankMasterList();
-                        //     }
-                        // });
-                    } else {
-                        this.toastr.error('Bank Master Data not saved !, Please check API error..', 'Error !', {
-                            toastClass: 'tostr-tost custom-toast-error',
-                          });
-                    }
-                    this.getBankMasterList();
-                },error => {
-                    this.toastr.error('Bank Master Data not saved !, Please check API error..', 'Error !', {
-                     toastClass: 'tostr-tost custom-toast-error',
-                   });
-                 });
-            } else {
-                var m_dataUpdate = {
-                    bankMasterUpdate: {
-                        bankID: this._bankService.myform.get("BankId").value,
-                        bankName:
-                            this._bankService.myform.get("BankName").value,
-                        isDeleted: JSON.parse(
-                            this._bankService.myform.get("IsDeleted").value
-                        ),
-                        updatedBy: 1,
-                    },
-                };
-                console.log(m_dataUpdate);
-                this._bankService
-                    .bankMasterUpdate(m_dataUpdate)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record updated Successfully.', 'updated !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                            this.getBankMasterList();
-                            // Swal.fire(
-                            //     "Updated !",
-                            //     "Record updated Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getBankMasterList();
-                            //     }
-                            // });
-                        } else {
-                            Swal.fire(
-                                "Error !",
-                                "Appoinment not updated",
-                                "error"
-                            );
-                        }
-                        this.getBankMasterList();
-                    });
+    onDeactive(bankId) {
+        this.confirmDialogRef = this._matDialog.open(
+            FuseConfirmDialogComponent,
+            {
+                disableClose: false,
             }
-            this.onClear();
-        }
+        );
+        this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+        this.confirmDialogRef.afterClosed().subscribe((result) => {
+            if (result) {
+                this._bankService.deactivateTheStatus(bankId).subscribe((response: any) => {
+                    if (response.StatusCode == 200) {
+                        this.toastr.success(response.Message);
+                        // this.getGenderMasterList();
+                        // How to refresh Grid.
+                    }
+                });
+            }
+            this.confirmDialogRef = null;
+        });
     }
+
     onEdit(row) {
         var m_data = {
-            BankId: row.BankId,
+            BankId: row.bankId,
             BankName: row.BankName.trim(),
             IsDeleted: JSON.stringify(row.IsDeleted),
             UpdatedBy: row.UpdatedBy,
@@ -174,9 +122,9 @@ export class BankMasterComponent implements OnInit {
 }
 
 export class BankMaster {
-    BankId: number;
-    BankName: string;
-    IsDeleted: boolean;
+    bankId: number;
+    bankName: string;
+    isActive: boolean;
     AddedBy: number;
     UpdatedBy: number;
 
@@ -187,9 +135,9 @@ export class BankMaster {
      */
     constructor(BankMaster) {
         {
-            this.BankId = BankMaster.BankId || "";
-            this.BankName = BankMaster.BankName || "";
-            this.IsDeleted = BankMaster.IsDeleted || "false";
+            this.bankId = BankMaster.bankId || "";
+            this.bankName = BankMaster.bankName || "";
+            this.isActive = BankMaster.isActive || "true";
             this.AddedBy = BankMaster.AddedBy || "";
             this.UpdatedBy = BankMaster.UpdatedBy || "";
         }

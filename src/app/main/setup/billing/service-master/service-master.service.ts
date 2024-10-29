@@ -2,6 +2,8 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { LoaderService } from "app/core/components/loader/loader.service";
+import { gridRequest } from "app/core/models/gridRequest";
+import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
     providedIn: "root",
@@ -11,7 +13,7 @@ export class ServiceMasterService {
     myformSearch: FormGroup;
     edit_data = {};
     constructor(
-        private _httpClient: HttpClient,
+        private _httpClient: ApiCaller,
         private _loaderService: LoaderService,
         private _formBuilder: FormBuilder
     ) {
@@ -61,85 +63,19 @@ export class ServiceMasterService {
         this.createServicemasterForm();
     }
 
-    public getServiceMasterList(param) {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_ServList", param
-        );
+    public getbankMasterList(param: gridRequest, showLoader = true) {
+        return this._httpClient.PostData("BankMaster/List", param, showLoader);
     }
 
-    public getServiceMasterList_Pagn(Param, loader = true) {
-        if (loader) {
-            this._loaderService.show();
-        }
-        return this._httpClient.post("Generic/GetDataSetByProc?procName=m_Rtrv_ServiceList_Pagn", Param);
-      }
-
-    public getGroupMasterCombo(loader = true) {
-        if (loader) {
-            this._loaderService.show();
-        }
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Retrieve_GroupMasterForCombo", {}
-        );
+    public bankMasterSave(Param: any, id: string ,showLoader = true) {
+        if(id)
+            return this._httpClient.PutData("bank/"+ id, Param, showLoader);
+        else
+            return this._httpClient.PostData("bank", Param, showLoader);       
     }
 
-    public getDoctorMasterCombo() {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Retrieve_DoctorMasterForCombo", {}
-        );
-    }
-
-    public getSubgroupMasterCombo(param) {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=m_Rtrv_SubGroupList_by_Name ", param
-        );
-    }
-    public getTariffMasterCombo() {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=RetrieveTariffMasterForCombo", {}
-        );
-    }
-
-    public getClassMasterList() {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=RetrieveClassMasterForCombo",{}
-        );
-    }
-
-    public getServicewiseClassMasterList(param,loader = true) {
-        if (loader) {
-            this._loaderService.show();
-        }
-        return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ServiceClassdetail",param
-        );
-    }
-
-    public serviceMasterInsert(param,loader = true) {
-        if (loader) {
-            this._loaderService.show();
-        }
-        return this._httpClient.post("Billing/ServiceSave", param);
-    }
-
-    public serviceMasterUpdate(param, loader = true) {
-        if (loader) {
-            this._loaderService.show();
-        }
-        return this._httpClient.post("Billing/ServiceUpdate", param);
-    }
-
-    public serviceDetailInsert(param, loader = true) {
-        if (loader) {
-            this._loaderService.show();
-        }
-        return this._httpClient.post("Billing/ServiceSave", param);
-    }
-
-    public serviceDetDelete(param,loader = true) {
-        if (loader) {
-            this._loaderService.show();
-        }
-        return this._httpClient.post("Billing/ServiceUpdate", param);
+    public deactivateTheStatus(m_data) {
+        return this._httpClient.PostData("bank", m_data);
     }
 
     populateForm(param) {

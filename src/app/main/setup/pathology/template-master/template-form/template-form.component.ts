@@ -51,71 +51,71 @@ export class TemplateFormComponent implements OnInit {
             console.log(this.registerObj)
         }
     }
+    onSubmit() {}
+
+    // onSubmit() {
 
 
-    onSubmit() {
+    //     if ((this.vTemplateDesc == '' || this.vTemplateDesc == null || this.vTemplateDesc == undefined)) {
+    //         this.toastr.warning('Please Enter valid Template ', 'Warning !', {
+    //           toastClass: 'tostr-tost custom-toast-warning',
+    //         });
+    //         return;
+    //       }
+    //     if (this._TemplateServieService.myform.valid) {
+    //         if (!this._TemplateServieService.myform.get("TemplateId").value) {
+    //             let insertPathologyTemplateMaster = {};
 
+    //             insertPathologyTemplateMaster['templateName'] = this._TemplateServieService.myform.get("TemplateName").value;
+    //             insertPathologyTemplateMaster['TemplateDescInHTML'] =this.vTemplateDesc,// this._TemplateServieService.myform.get("TemplateName").value;
+    //             insertPathologyTemplateMaster['templateDesc'] =this.vTemplateDesc, this._TemplateServieService.myform.get("TemplateDesc").value;
+    //             insertPathologyTemplateMaster['addedBy'] = this.accountService.currentUserValue.user.id,
+    //                 insertPathologyTemplateMaster['isDeleted'] =1// this._TemplateServieService.myform.get("IsDeleted").value
 
-        if ((this.vTemplateDesc == '' || this.vTemplateDesc == null || this.vTemplateDesc == undefined)) {
-            this.toastr.warning('Please Enter valid Template ', 'Warning !', {
-              toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-          }
-        if (this._TemplateServieService.myform.valid) {
-            if (!this._TemplateServieService.myform.get("TemplateId").value) {
-                let insertPathologyTemplateMaster = {};
+    //             let submitData = {
+    //                 "insertPathologyTemplateMaster": insertPathologyTemplateMaster
 
-                insertPathologyTemplateMaster['templateName'] = this._TemplateServieService.myform.get("TemplateName").value;
-                insertPathologyTemplateMaster['TemplateDescInHTML'] =this.vTemplateDesc,// this._TemplateServieService.myform.get("TemplateName").value;
-                insertPathologyTemplateMaster['templateDesc'] =this.vTemplateDesc, this._TemplateServieService.myform.get("TemplateDesc").value;
-                insertPathologyTemplateMaster['addedBy'] = this.accountService.currentUserValue.user.id,
-                    insertPathologyTemplateMaster['isDeleted'] =1// this._TemplateServieService.myform.get("IsDeleted").value
+    //             };
+    //             console.log(submitData)
+    //             this._TemplateServieService.insertTemplateMaster(submitData)
+    //                 .subscribe((data) => {
+    //                     if (data) {
+    //                         this.toastr.success('Record Saved Successfully.', 'Saved !', {
+    //                             toastClass: 'tostr-tost custom-toast-success',
+    //                         });
 
-                let submitData = {
-                    "insertPathologyTemplateMaster": insertPathologyTemplateMaster
+    //                         this.onClear();
 
-                };
-                console.log(submitData)
-                this._TemplateServieService.insertTemplateMaster(submitData)
-                    .subscribe((data) => {
-                        if (data) {
-                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                            });
+    //                     } 
+    //                 });
+    //         } else {
+    //             let updatePathologyTemplateMaster = {};
+    //             updatePathologyTemplateMaster['templateId'] = this.TemplateId;
+    //             updatePathologyTemplateMaster['templateName'] = this.vTemplateName;
+    //             updatePathologyTemplateMaster['templateDesc'] = this.vTemplateDesc;
+    //             updatePathologyTemplateMaster['TemplateDescInHTML'] = this.vTemplateDesc;
+    //             updatePathologyTemplateMaster['updatedBy'] = this.accountService.currentUserValue.user.id;
+    //                 updatePathologyTemplateMaster['isDeleted'] = 1// this._TemplateServieService.myform.get("IsDeleted").value;
 
-                            this.onClear();
+    //             let submitData = {
+    //                 "updatePathologyTemplateMaster": updatePathologyTemplateMaster
+    //             };
+    //             console.log(submitData)
+    //             this._TemplateServieService.updateTemplateMaster(submitData).subscribe((data) => {
+    //                 if (data) {
+    //                     this.toastr.success('Record Updated Successfully.', 'Saved !', {
+    //                         toastClass: 'tostr-tost custom-toast-success',
+    //                     });
 
-                        } 
-                    });
-            } else {
-                let updatePathologyTemplateMaster = {};
-                updatePathologyTemplateMaster['templateId'] = this.TemplateId;
-                updatePathologyTemplateMaster['templateName'] = this.vTemplateName;
-                updatePathologyTemplateMaster['templateDesc'] = this.vTemplateDesc;
-                updatePathologyTemplateMaster['TemplateDescInHTML'] = this.vTemplateDesc;
-                updatePathologyTemplateMaster['updatedBy'] = this.accountService.currentUserValue.user.id;
-                    updatePathologyTemplateMaster['isDeleted'] = 1// this._TemplateServieService.myform.get("IsDeleted").value;
+    //                     this.onClear();
 
-                let submitData = {
-                    "updatePathologyTemplateMaster": updatePathologyTemplateMaster
-                };
-                console.log(submitData)
-                this._TemplateServieService.updateTemplateMaster(submitData).subscribe((data) => {
-                    if (data) {
-                        this.toastr.success('Record Updated Successfully.', 'Saved !', {
-                            toastClass: 'tostr-tost custom-toast-success',
-                        });
-
-                        this.onClear();
-
-                    }
+    //                 }
                     
-                });
-            }
-            this.onClose();
-        }
-    }
+    //             });
+    //         }
+    //         this.onClose();
+    //     }
+    // }
 
     onBlur(e: any) {
         this.vTemplateDesc = e.target.innerHTML;

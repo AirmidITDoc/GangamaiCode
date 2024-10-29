@@ -1,6 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { gridRequest } from "app/core/models/gridRequest";
+import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
     providedIn: "root",
@@ -10,7 +12,7 @@ export class CashCounterMasterService {
     myformSearch: FormGroup;
 
     constructor(
-        private _httpClient: HttpClient,
+        private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder
     ) {
         this.myform = this.createcashcounterForm();
@@ -38,19 +40,22 @@ export class CashCounterMasterService {
         this.createcashcounterForm();
     }
 
-    public getCashcounterMasterList(param) {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_CashCounterNameList_by_Name",
-            param
-        );
+  
+
+    
+    public getcashcounterMasterList(param: gridRequest, showLoader = true) {
+        return this._httpClient.PostData("CashCounter/List", param, showLoader);
     }
 
-    public cashCounterMasterInsert(param) {
-        return this._httpClient.post("Billing/CashCounterSave", param);
+    public cashcounterMasterSave(Param: any, id: string ,showLoader = true) {
+        if(id)
+            return this._httpClient.PutData("cashcounter/"+ id, Param, showLoader);
+        else
+            return this._httpClient.PostData("cashcounter", Param, showLoader);       
     }
 
-    public cashCounterMasterUpdate(param) {
-        return this._httpClient.post("Billing/CashCounterUpdate", param);
+    public deactivateTheStatus(m_data) {
+        return this._httpClient.PostData("cashcounter", m_data);
     }
 
     populateForm(param) {

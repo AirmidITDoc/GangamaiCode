@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { BankMasterComponent } from "./bank-master.component";
 import { RouterModule, Routes } from "@angular/router";
 import { MatButtonModule } from "@angular/material/button";
@@ -21,6 +21,9 @@ import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { BankMasterService } from "./bank-master.service";
+import { NewBankComponent } from './new-bank/new-bank.component';
+import { SharedModule } from "app/main/shared/shared.module";
+import { MatDialogModule } from "@angular/material/dialog";
 
 const routes: Routes = [
     {
@@ -30,18 +33,16 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [BankMasterComponent],
+    declarations: [BankMasterComponent, NewBankComponent],
     imports: [
         RouterModule.forChild(routes),
-
+        SharedModule,
         MatButtonModule,
         MatCheckboxModule,
-        MatDatepickerModule,
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
         MatMenuModule,
-        MatRippleModule,
         MatTableModule,
         MatToolbarModule,
         MatPaginatorModule,
@@ -50,11 +51,10 @@ const routes: Routes = [
         MatRadioModule,
         MatSnackBarModule,
         FuseSharedModule,
-        FuseConfirmDialogModule,
         FuseSidebarModule,
-        MatSlideToggleModule,
+        MatDialogModule,
     ],
-    providers: [BankMasterService],
+    providers: [BankMasterService,DatePipe],
     entryComponents: [BankMasterComponent],
 })
 export class BankMasterModule {}

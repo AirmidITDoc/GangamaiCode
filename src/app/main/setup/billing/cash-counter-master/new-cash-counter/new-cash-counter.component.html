@@ -1,0 +1,54 @@
+<!-- 
+<div fxFlex.gt-sm="35%" fxFlex style="background-color: white;">
+    <div class="dialog-content-wrapper">
+        <div mat-dialog-content class="p-24 pb-0 m-0">
+            <form [formGroup]="_cashcounterService.myform">
+                <h3>{{_cashcounterService.myform.controls.CashCounterId.value?"Modify CashCounter
+                    Master":"New CashCounter Master"}}</h3>
+
+
+                <input type="hidden" name="CashCounterId" formControlName="CashCounterId">
+
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                        <mat-label>CashCounter Name</mat-label>
+                        <input name="CashCounterName" formControlName="CashCounterName" matInput
+                            required>
+                        <mat-error>Please enter CashCounter Name </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                        <mat-label>Prefix Name</mat-label>
+                        <input name="Prefix" formControlName="Prefix" matInput required>
+                        <mat-error>Please enter Prefix </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                        <mat-label>BillNo </mat-label>
+                        <input name="BillNo" formControlName="BillNo" matInput required>
+                        <mat-error>Please enter BillNo </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
+                        <mat-radio-button value='false' class="mr-sm-12"
+                            fxFlex>IsActive</mat-radio-button>
+
+                    </mat-radio-group>
+                </div>
+            </form>
+        </div>
+        <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+            <div class="button-row">
+                <button mat-raised-button color="primary" type="submit" (click)="onSubmit()"
+                    [disabled]="_cashcounterService.myform.invalid">Save</button>
+                <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
+            </div>
+        </div>
+    </div>
+</div> -->

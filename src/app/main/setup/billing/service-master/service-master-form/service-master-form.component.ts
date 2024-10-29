@@ -62,7 +62,7 @@ private _onDestroy = new Subject<void>();
     public dialogRef: MatDialogRef<ServiceMasterComponent>,
     ) {
      
-      this.getClassList();
+      //this.getClassList();
      
      }
 
@@ -78,12 +78,12 @@ private _onDestroy = new Subject<void>();
     
   ngOnInit(): void {
 
-   this.getGroupNameCombobox();
-   this.getDoctorNameCombobox();
-   this.getSubgroupNameCombobox();
-   this.getClassList()
+  //  this.getGroupNameCombobox();
+  //  this.getDoctorNameCombobox();
+  //  this.getSubgroupNameCombobox();
+  //  this.getClassList()
   //  this.getServicewiseClassMasterList();
-   this.getTariffNameCombobox();
+   //this.getTariffNameCombobox();
    this._serviceMasterService.myform.get('EffectiveDate').setValue(new Date());
 
 
@@ -108,7 +108,7 @@ private _onDestroy = new Subject<void>();
 
    });
    if (this.data) {
-    this.getServicewiseClassMasterList();
+   // this.getServicewiseClassMasterList();
     this.registerObj = this.data.registerObj;
     
 }
@@ -192,75 +192,75 @@ private _onDestroy = new Subject<void>();
       this.TariffcmbList.filter(bank => bank.TariffName.toLowerCase().indexOf(search) > -1)
     );
   }
-  getGroupNameCombobox(){
+  // getGroupNameCombobox(){
   
-    this._serviceMasterService.getGroupMasterCombo().subscribe(data => {
-      this.GroupcmbList = data;
-      this.filteredGroupname.next(this.GroupcmbList.slice());
-      // this._serviceMasterService.myform.get('GroupId').setValue(this.GroupcmbList[0]);
-      this._serviceMasterService.myform.get('GroupId').setValue(this._serviceMasterService.edit_data['GroupId']);
-    });
-  }
-  getSubgroupNameCombobox(){
-  var data={
-    SubGroupName:'%'
-  }
-    this._serviceMasterService.getSubgroupMasterCombo(data).subscribe(data => {
-      this.SubGroupcmbList = data;
-      this.filteredSubgroupname.next(this.SubGroupcmbList.slice());
-      // this._serviceMasterService.myform.get('SubGroupId').setValue(this.SubGroupcmbList[0]);
-      this._serviceMasterService.myform.get('SubGroupId').setValue(this._serviceMasterService.edit_data['SubGroupId']);
-    });
-  }
-  getTariffNameCombobox(){
+  //   this._serviceMasterService.getGroupMasterCombo().subscribe(data => {
+  //     this.GroupcmbList = data;
+  //     this.filteredGroupname.next(this.GroupcmbList.slice());
+  //     // this._serviceMasterService.myform.get('GroupId').setValue(this.GroupcmbList[0]);
+  //     this._serviceMasterService.myform.get('GroupId').setValue(this._serviceMasterService.edit_data['GroupId']);
+  //   });
+  // }
+  // getSubgroupNameCombobox(){
+  // var data={
+  //   SubGroupName:'%'
+  // }
+  //   this._serviceMasterService.getSubgroupMasterCombo(data).subscribe(data => {
+  //     this.SubGroupcmbList = data;
+  //     this.filteredSubgroupname.next(this.SubGroupcmbList.slice());
+  //     // this._serviceMasterService.myform.get('SubGroupId').setValue(this.SubGroupcmbList[0]);
+  //     this._serviceMasterService.myform.get('SubGroupId').setValue(this._serviceMasterService.edit_data['SubGroupId']);
+  //   });
+  // }
+  // getTariffNameCombobox(){
     
-    this._serviceMasterService.getTariffMasterCombo().subscribe(data => {
-      this.TariffcmbList = data;
-      this.filteredTariff.next(this.TariffcmbList.slice());     
-     if(this.isEditMode)this._serviceMasterService.myform.get('TariffId').setValue(this._serviceMasterService.edit_data['TariffId']);      
-      else this._serviceMasterService.myform.get('TariffId').setValue(this.TariffcmbList[0].TariffId);
+  //   this._serviceMasterService.getTariffMasterCombo().subscribe(data => {
+  //     this.TariffcmbList = data;
+  //     this.filteredTariff.next(this.TariffcmbList.slice());     
+  //    if(this.isEditMode)this._serviceMasterService.myform.get('TariffId').setValue(this._serviceMasterService.edit_data['TariffId']);      
+  //     else this._serviceMasterService.myform.get('TariffId').setValue(this.TariffcmbList[0].TariffId);
 
-    });
-  }
+  //   });
+  // }
   
-  getClassList() {
-    this._serviceMasterService.getClassMasterList().subscribe(Menu => {
+  // getClassList() {
+  //   this._serviceMasterService.getClassMasterList().subscribe(Menu => {
     
-      this.DSServicedetailList.data = Menu as Servicedetail[];;
-      this.DSServicedetailList.sort = this.sort;
-      this.DSServicedetailList.paginator = this.paginator;      
-      console.log(this.DSServicedetailList.data)
-    });
-  }
+  //     this.DSServicedetailList.data = Menu as Servicedetail[];;
+  //     this.DSServicedetailList.sort = this.sort;
+  //     this.DSServicedetailList.paginator = this.paginator;      
+  //     console.log(this.DSServicedetailList.data)
+  //   });
+  // }
 
   gettableclassrate(element,ClassRate){
     console.log(element)
     // this.DSServicedetailList[element.ClassId]["ClassRate"]=ClassRate;
   }
   classratearry=[];
-  getServicewiseClassMasterList() {
-    var data={
-      ServiceId :this.data.registerObj.ServiceId || 0
-    }
-    this._serviceMasterService.getServicewiseClassMasterList(data).subscribe(Menu => {
-      this.DSServicedetailList.data = Menu as Servicedetail[];
-      console.log(this.DSServicedetailList.data)
+  // getServicewiseClassMasterList() {
+  //   var data={
+  //     ServiceId :this.data.registerObj.ServiceId || 0
+  //   }
+  //   this._serviceMasterService.getServicewiseClassMasterList(data).subscribe(Menu => {
+  //     this.DSServicedetailList.data = Menu as Servicedetail[];
+  //     console.log(this.DSServicedetailList.data)
       
-    });
+  //   });
     
-  }
+  // }
 
   
 
   get f() { return this._serviceMasterService.myform.controls; }
 
-  getDoctorNameCombobox(){
-    this._serviceMasterService.getDoctorMasterCombo().subscribe(data => {
-      this.DoctorcmbList =data;
+  // getDoctorNameCombobox(){
+  //   this._serviceMasterService.getDoctorMasterCombo().subscribe(data => {
+  //     this.DoctorcmbList =data;
    
-      this._serviceMasterService.myform.get('DoctorId').setValue(this._serviceMasterService.edit_data['DoctorId']);   
-    });  
-  }
+  //     this._serviceMasterService.myform.get('DoctorId').setValue(this._serviceMasterService.edit_data['DoctorId']);   
+  //   });  
+  // }
   
   valuechange(event, cls){    
     cls['ClassRate'] = parseInt(event.target.value);
@@ -268,118 +268,118 @@ private _onDestroy = new Subject<void>();
 
   onSubmit() {
     debugger;
-    if (this.showEmg) {
-      this._serviceMasterService.myform.get('EmgAmt').setValidators([Validators.required,Validators.min(0)]);
-      this._serviceMasterService.myform.get('EmgPer').setValidators([Validators.required,Validators.min(0)]);
+  //   if (this.showEmg) {
+  //     this._serviceMasterService.myform.get('EmgAmt').setValidators([Validators.required,Validators.min(0)]);
+  //     this._serviceMasterService.myform.get('EmgPer').setValidators([Validators.required,Validators.min(0)]);
       
-  } else {
-      this._serviceMasterService.myform.get('EmgAmt').clearValidators();
-      this._serviceMasterService.myform.get('EmgPer').clearValidators();
-  }            
-  this._serviceMasterService.myform.get('EmgAmt').updateValueAndValidity();
-  this._serviceMasterService.myform.get('EmgPer').updateValueAndValidity();
-    if (this._serviceMasterService.myform.valid ) {
+  // } else {
+  //     this._serviceMasterService.myform.get('EmgAmt').clearValidators();
+  //     this._serviceMasterService.myform.get('EmgPer').clearValidators();
+  // }            
+  // this._serviceMasterService.myform.get('EmgAmt').updateValueAndValidity();
+  // this._serviceMasterService.myform.get('EmgPer').updateValueAndValidity();
+  //   if (this._serviceMasterService.myform.valid ) {
 
-      var clas_d = [];
-      var class_det ={      
-        "serviceId":parseInt(this._serviceMasterService.myform.get("ServiceId").value || 0),
-        "tariffId":this._serviceMasterService.myform.get("TariffId").value || 0,
-        "classId": 0,
-        "classRate":0,
-        "effectiveDate":this._serviceMasterService.myform.get("EffectiveDate").value || "01/01/1900",
-     }
-      this.DSServicedetailList.data.forEach(element => {
-        debugger
-        let c =  JSON.parse(JSON.stringify(class_det));
-        c['classId'] = element.ClassId;
-        c['classRate'] = element.ClassRate || 0;        
-        clas_d.push(c)
-      });
+  //     var clas_d = [];
+  //     var class_det ={      
+  //       "serviceId":parseInt(this._serviceMasterService.myform.get("ServiceId").value || 0),
+  //       "tariffId":this._serviceMasterService.myform.get("TariffId").value || 0,
+  //       "classId": 0,
+  //       "classRate":0,
+  //       "effectiveDate":this._serviceMasterService.myform.get("EffectiveDate").value || "01/01/1900",
+  //    }
+  //     this.DSServicedetailList.data.forEach(element => {
+  //       debugger
+  //       let c =  JSON.parse(JSON.stringify(class_det));
+  //       c['classId'] = element.ClassId;
+  //       c['classRate'] = element.ClassRate || 0;        
+  //       clas_d.push(c)
+  //     });
 
 
-      let serviceMasterdata = {
-        "serviceShortDesc": this._serviceMasterService.myform.get("ServiceShortDesc").value,
-        "serviceName": (this._serviceMasterService.myform.get("ServiceName").value).trim(),
-        "price": parseInt(this._serviceMasterService.myform.get("Price").value || "0"),
-        "printOrder": parseInt(this._serviceMasterService.myform.get("PrintOrder").value),
-        "isEditable": String(this._serviceMasterService.myform.get("IsEditable").value) == 'false' ?  false : true ,
-        "creditedtoDoctor":  String (this._serviceMasterService.myform.get("CreditedtoDoctor").value) == 'false' ? false : true ,
-        "isPathology": String(this._serviceMasterService.myform.get("IsPathology").value) == 'false' ? 0:1,
-        "isRadiology": String(this._serviceMasterService.myform.get("IsRadiology").value) == 'false' ? 0:1,
-        "isActive": String(this._serviceMasterService.myform.get("IsActive").value) == 'false' ?  false : true ,
-        "isPackage": String(this._serviceMasterService.myform.get("IsPackage").value) == 'false' ? 0:1 ,
-        "isDocEditable": String(this._serviceMasterService.myform.get("IsDocEditable").value) == 'false' ? false : true,  
+  //     let serviceMasterdata = {
+  //       "serviceShortDesc": this._serviceMasterService.myform.get("ServiceShortDesc").value,
+  //       "serviceName": (this._serviceMasterService.myform.get("ServiceName").value).trim(),
+  //       "price": parseInt(this._serviceMasterService.myform.get("Price").value || "0"),
+  //       "printOrder": parseInt(this._serviceMasterService.myform.get("PrintOrder").value),
+  //       "isEditable": String(this._serviceMasterService.myform.get("IsEditable").value) == 'false' ?  false : true ,
+  //       "creditedtoDoctor":  String (this._serviceMasterService.myform.get("CreditedtoDoctor").value) == 'false' ? false : true ,
+  //       "isPathology": String(this._serviceMasterService.myform.get("IsPathology").value) == 'false' ? 0:1,
+  //       "isRadiology": String(this._serviceMasterService.myform.get("IsRadiology").value) == 'false' ? 0:1,
+  //       "isActive": String(this._serviceMasterService.myform.get("IsActive").value) == 'false' ?  false : true ,
+  //       "isPackage": String(this._serviceMasterService.myform.get("IsPackage").value) == 'false' ? 0:1 ,
+  //       "isDocEditable": String(this._serviceMasterService.myform.get("IsDocEditable").value) == 'false' ? false : true,  
 
-        "isEmergency": String(this._serviceMasterService.myform.get("IsEmergency").value) == 'false' ? false : true ,
-        "emgAmt": parseInt(this._serviceMasterService.myform.get("EmgAmt").value ||"0"),
-        "emgPer": parseInt(this._serviceMasterService.myform.get("EmgPer").value ||"0"),
+  //       "isEmergency": String(this._serviceMasterService.myform.get("IsEmergency").value) == 'false' ? false : true ,
+  //       "emgAmt": parseInt(this._serviceMasterService.myform.get("EmgAmt").value ||"0"),
+  //       "emgPer": parseInt(this._serviceMasterService.myform.get("EmgPer").value ||"0"),
         
-        "groupId": parseInt(this._serviceMasterService.myform.get("GroupId").value || 0),
-        "subgroupId": parseInt(this._serviceMasterService.myform.get("SubGroupId").value || 0),
-        "doctorId": this._serviceMasterService.myform.get("DoctorId").value ||0,        
+  //       "groupId": parseInt(this._serviceMasterService.myform.get("GroupId").value || 0),
+  //       "subgroupId": parseInt(this._serviceMasterService.myform.get("SubGroupId").value || 0),
+  //       "doctorId": this._serviceMasterService.myform.get("DoctorId").value ||0,        
      
-        "serviceId":parseInt(this._serviceMasterService.myform.get("ServiceId").value || 0),                 
-      }
+  //       "serviceId":parseInt(this._serviceMasterService.myform.get("ServiceId").value || 0),                 
+  //     }
 
 
-      if (!this._serviceMasterService.myform.get("ServiceId").value) {
+  //     if (!this._serviceMasterService.myform.get("ServiceId").value) {
 
        
-        let m_data = {
-          "serviceMasterInsert": serviceMasterdata,
-          "serviceDetailInsert" :clas_d 
-        }
-        console.log(m_data);
+  //       let m_data = {
+  //         "serviceMasterInsert": serviceMasterdata,
+  //         "serviceDetailInsert" :clas_d 
+  //       }
+  //       console.log(m_data);
 
-        this._serviceMasterService.serviceMasterInsert(m_data).subscribe(data => {
-          this.msg = data;
-          if (data) {
-            this.toastr.success('Record Saved Successfully.', 'Saved !', {
-                toastClass: 'tostr-tost custom-toast-success',
-              });
+  //       this._serviceMasterService.serviceMasterInsert(m_data).subscribe(data => {
+  //         this.msg = data;
+  //         if (data) {
+  //           this.toastr.success('Record Saved Successfully.', 'Saved !', {
+  //               toastClass: 'tostr-tost custom-toast-success',
+  //             });
             
-        } else {
-            this.toastr.error('Service Master Data not saved !, Please check API error..', 'Error !', {
-                toastClass: 'tostr-tost custom-toast-error',
-              });  
-        }      
-    },error => {
-        this.toastr.error('Service Data not saved !, Please check API error..', 'Error !', {
-         toastClass: 'tostr-tost custom-toast-error',
-       });
-     });
+  //       } else {
+  //           this.toastr.error('Service Master Data not saved !, Please check API error..', 'Error !', {
+  //               toastClass: 'tostr-tost custom-toast-error',
+  //             });  
+  //       }      
+  //   },error => {
+  //       this.toastr.error('Service Data not saved !, Please check API error..', 'Error !', {
+  //        toastClass: 'tostr-tost custom-toast-error',
+  //      });
+  //    });
        
-      }
-      else {
-        debugger;
-        var m_dataUpdate = {        
-            "serviceMasterUpdate": serviceMasterdata,
-            "serviceDetailInsert" :clas_d, 
-            "serviceDetDelete": {
-              "serviceId": this._serviceMasterService.myform.get("ServiceId").value,
-              "tariffId":this._serviceMasterService.myform.get("TariffId").value,
-            },
-        }
+  //     }
+  //     else {
+  //       debugger;
+  //       var m_dataUpdate = {        
+  //           "serviceMasterUpdate": serviceMasterdata,
+  //           "serviceDetailInsert" :clas_d, 
+  //           "serviceDetDelete": {
+  //             "serviceId": this._serviceMasterService.myform.get("ServiceId").value,
+  //             "tariffId":this._serviceMasterService.myform.get("TariffId").value,
+  //           },
+  //       }
 
-        this._serviceMasterService.serviceMasterUpdate(m_dataUpdate).subscribe(data => {
-          this.msg = data; 
-           if (data) {
-            this.toastr.success('Record updated Successfully.', 'updated !', {
-                toastClass: 'tostr-tost custom-toast-success',
-              });                      
-        } else {
-            this.toastr.error('Service Master Data not updated !, Please check API error..', 'Error !', {
-                toastClass: 'tostr-tost custom-toast-error',
-              });
-        }      
-    },error => {
-        this.toastr.error('Service Data not Updated !, Please check API error..', 'Error !', {
-         toastClass: 'tostr-tost custom-toast-error',
-       });
-     });       
-      }
+  //       this._serviceMasterService.serviceMasterUpdate(m_dataUpdate).subscribe(data => {
+  //         this.msg = data; 
+  //          if (data) {
+  //           this.toastr.success('Record updated Successfully.', 'updated !', {
+  //               toastClass: 'tostr-tost custom-toast-success',
+  //             });                      
+  //       } else {
+  //           this.toastr.error('Service Master Data not updated !, Please check API error..', 'Error !', {
+  //               toastClass: 'tostr-tost custom-toast-error',
+  //             });
+  //       }      
+  //   },error => {
+  //       this.toastr.error('Service Data not Updated !, Please check API error..', 'Error !', {
+  //        toastClass: 'tostr-tost custom-toast-error',
+  //      });
+  //    });       
+  //     }
      
-    }
+  //   }
   
 this.dialogRef.close();
     

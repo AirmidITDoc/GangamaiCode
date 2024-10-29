@@ -1,6 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { gridRequest } from "app/core/models/gridRequest";
+import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
     providedIn: "root",
@@ -11,7 +13,7 @@ export class UnitmasterService {
     myformSearch: FormGroup;
 
     constructor(
-        private _httpClient: HttpClient,
+        private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder
     ) {
         this.myform = this.createUnitmasterForm();
@@ -39,19 +41,19 @@ export class UnitmasterService {
         this.createUnitmasterForm();
     }
 
-    public getUnitMasterList(param) {
-        return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PathUnitMasterList_by_Name", param );
+    public getUnitMasterList(param: gridRequest, showLoader = true) {
+        return this._httpClient.PostData("PathUnitMaster/List", param, showLoader);
     }
 
-    public insertUnitMaster(param) {
-        return this._httpClient.post("PathologyMaster/UnitSave", param);
+    public UnitMasterSave(Param: any, id: string ,showLoader = true) {
+        if(id)
+            return this._httpClient.PutData("Unit/"+ id, Param, showLoader);
+        else
+            return this._httpClient.PostData("Unit", Param, showLoader);       
     }
 
-    public updateUnitMaster(param) {
-        return this._httpClient.post("PathologyMaster/UnitUpdate", param);
-    }
     public deactivateTheStatus(m_data) {
-        return this._httpClient.post("Generic/ExecByQueryStatement?query=" + m_data,{});
+        return this._httpClient.PostData("Unit", m_data);
     }
 
     populateForm(param) {

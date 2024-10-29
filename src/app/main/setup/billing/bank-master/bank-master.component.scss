@@ -1,51 +1,9 @@
+.p-sm-24 {
+    padding: 10px !important;
+}
+
 app-bank-master {
-    .mat-header-row {
-        width: 720px;
-        max-width: 720px;
-        min-width: 720px;
-        font-weight: bold;
-    }
 
-    .mat-row {
-        width: 720px;
-        max-width: 720px;
-        min-width: 720px;
-    }
-
-    .mat-column-BankId {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-    }
-
-    .mat-column-BankName {
-        width: 300px;
-        max-width: 300px;
-        min-width: 300px;
-    }
-
-    .mat-column-AddedBy {
-        width: 120px;
-        max-width: 120px;
-        min-width: 120px;
-    }
-
-    .mat-column-IsDeleted {
-        width: 120px;
-        max-width: 120px;
-        min-width: 120px;
-        text-align: center;
-        justify-content: center;
-    }
-
-    .mat-column-action {
-        // color: white !important;
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-        text-align: right;
-        justify-content: right;
-    }
     .mat-icon-button {
         padding: 0;
         min-width: 0;

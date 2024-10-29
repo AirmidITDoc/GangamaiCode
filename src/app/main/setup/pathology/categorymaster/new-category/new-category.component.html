@@ -1,0 +1,41 @@
+<!-- <div fxFlex.gt-sm="35%" fxFlex style="background-color: white;">
+    <div class="dialog-content-wrapper">
+        <div mat-dialog-content class="p-24 pb-0 m-0">
+            <form [formGroup]="_categorymasterService.myform">
+                <h3>{{_categorymasterService.myform.controls.CategoryId.value?"Modify
+                    Category
+                    Master":"New Category Master"}}</h3>
+
+
+                <input type="hidden" name="CategoryId" formControlName="CategoryId">
+
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                        <mat-label>Category Name</mat-label>
+                        <input name="CategoryName" formControlName="CategoryName" matInput
+                            required>
+                        <mat-error>Please enter Category Name </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='true'>
+                        <mat-radio-button value='true' class="mr-sm-12"
+                            fxFlex>IsActive</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+
+                
+            </form>
+        </div>
+        <div class="footer-navigation-container">
+            <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px"
+                style="margin-right: 10px;">
+                <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
+                <button class="btn btn-primary" (click)="onSubmit()"
+                    [disabled]="_categorymasterService.myform.invalid">Save</button>
+            </div>
+        </div>
+
+    </div>
+</div>a -->

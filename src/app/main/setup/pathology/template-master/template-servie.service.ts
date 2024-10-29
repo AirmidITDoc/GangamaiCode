@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { gridRequest } from 'app/core/models/gridRequest';
+import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +12,7 @@ export class TemplateServieService {
   
   myformSearch: FormGroup;
   constructor(
-    private _httpClient: HttpClient,
+    private _httpClient: ApiCaller,
     private _formBuilder: FormBuilder
   ) {
     this.myformSearch = this.createSearchForm();
@@ -37,31 +39,19 @@ createTemplateForm(): FormGroup {
 }
 
 
-public getTemplateMasterList(param) {
-  return this._httpClient.post( "Generic/GetByProc?procName=m_Rtrv_TemplateMaster_by_Name",param );
+public gettemplateMasterList(param: gridRequest, showLoader = true) {
+  return this._httpClient.PostData("PathologyTemplate/List", param, showLoader);
 }
 
+public templateMasterSave(Param: any, id: string ,showLoader = true) {
+  if(id)
+      return this._httpClient.PutData("template/"+ id, Param, showLoader);
+  else
+      return this._httpClient.PostData("template", Param, showLoader);       
+}
 
 public deactivateTheStatus(m_data) {
-  return this._httpClient.post("Generic/ExecByQueryStatement?query=" + m_data,{});
-}
-
-// Test Master Combobox List
-public getTestMasterCombo() {
-    return this._httpClient.post(
-        "Generic/GetByProc?procName=ps_Retrieve_TestMasterForCombo",
-        {}
-    );
-}
-
-
-public insertTemplateMaster(param) {
-    return this._httpClient.post("PathologyMaster/PathologyTemplateMasterSave",param);
-}
-
-
-public updateTemplateMaster(param) {
-    return this._httpClient.post("PathologyMaster/PathologyTemplateMasterUpdate",param);
+  return this._httpClient.PostData("template", m_data);
 }
 
 //Edit pop data

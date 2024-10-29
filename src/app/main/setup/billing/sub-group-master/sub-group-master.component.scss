@@ -1,77 +1,9 @@
-app-sub-group-master {
-    .mat-header-row {
-        width: 900px;
-        max-width: 900px;
-        min-width: 900px;
-        font-weight: bold;
-    }
+.p-sm-24 {
+    padding: 10px !important;
+}
 
-    .mat-row {
-        width: 900px;
-        max-width: 900px;
-        min-width: 900px;
-    }
+app-new-subgroup {
 
-    .mat-column-SubGroupId {
-        width: 90px;
-        max-width: 90px;
-        min-width: 90px;
-    }
-
-    .mat-column-SubGroupName {
-        width: 170px;
-        max-width: 170px;
-        min-width: 170px;
-        text-align: left;
-        justify-content: left;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        overflow: hidden !important;
-        display: inline-flex;
-        display: inline;
-        margin-right: 20px;
-        margin-top: 20px;
-    }
-
-    .mat-column-GroupName {
-        width: 170px;
-        max-width: 170px;
-        min-width: 170px;
-        text-align: left;
-        justify-content: left;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        overflow: hidden !important;
-        display: inline-flex;
-        display: inline;
-        margin-right: 20px;
-        margin-top: 20px;
-    }
-
-    .mat-column-AddedBy {
-        width: 120px;
-        max-width: 120px;
-        min-width: 120px;
-    }
-
-    .mat-column-IsDeleted {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-        text-align: center;
-        justify-content: center;
-    }
-
-    .mat-column-action {
-        // color: white !important;
-        width: 120px;
-        max-width: 120px;
-        min-width: 120px;
-        text-align: right;
-        justify-content: right;
-    }
     .mat-icon-button {
         padding: 0;
         min-width: 0;

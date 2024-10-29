@@ -20,6 +20,7 @@ import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CategoryMasterService } from "./category-master.service";
+import { NewCategoryComponent } from './new-category/new-category.component';
 
 const routes: Routes = [
     {
@@ -29,7 +30,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [CategoryMasterComponent],
+    declarations: [CategoryMasterComponent, NewCategoryComponent],
     imports: [
         RouterModule.forChild(routes),
 

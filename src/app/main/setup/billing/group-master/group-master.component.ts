@@ -6,6 +6,12 @@ import { fuseAnimations } from "@fuse/animations";
 import { GroupMasterService } from "./group-master.service";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { NewGroupComponent } from "./new-group/new-group.component";
+
 
 @Component({
     selector: "app-group-master",
@@ -15,34 +21,44 @@ import { ToastrService } from "ngx-toastr";
     animations: fuseAnimations,
 })
 export class GroupMasterComponent implements OnInit {
-    GroupMasterList: any;
-    submitted = false;
-    msg: any;
-
-    @ViewChild(MatSort) sort: MatSort;
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-
-    displayedColumns: string[] = [
-        "GroupId",
-        "GroupName",
-        "Isconsolidated",
-        "IsConsolidatedDR",
-        //  "PrintSeqNo",
-
-        "IsActive",
-        "action",
-    ];
-
-    DSGroupMasterList = new MatTableDataSource<GroupMaster>();
-
-    constructor(public _groupService: GroupMasterService,
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    gridConfig: gridModel = {
+        apiUrl: "GroupMaster/List",
+        columnsList: [
+            { heading: "Code", key: "groupId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Group Name", key: "groupName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Isconsolidated", key: "isconsolidated", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsConsolidatedDr", key: "isConsolidatedDr", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+            {
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            this.onSave(data) // EDIT Records
+                        }
+                    }, {
+                        action: gridActions.delete, callback: (data: any) => {
+                            this.onDeactive(data.groupId); // DELETE Records
+                        }
+                    }]
+            } //Action 1-view, 2-Edit,3-delete
+        ],
+        sortField: "groupId",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "GroupName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+        ],
+        row:25
+    }
+    constructor(public _groupService: GroupMasterService, public _matDialog: MatDialog,
         public toastr : ToastrService,) {}
 
     ngOnInit(): void {
-        this.getGroupMasterList();
+      
     }
     onSearch() {
-        this.getGroupMasterList();
+      
     }
 
     onSearchClear() {
@@ -50,155 +66,52 @@ export class GroupMasterComponent implements OnInit {
             GroupNameSearch: "",
             IsDeletedSearch: "2",
         });
-        this.getGroupMasterList();
+      
     }
     get f() {
         return this._groupService.myform.controls;
     }
 
-    getGroupMasterList() {
-        var param = {
-            GroupName:
-                this._groupService.myformSearch
-                    .get("GroupNameSearch")
-                    .value.trim() || "%",
-        };
-        this._groupService.getGroupMasterList(param).subscribe((Menu) => {
-            this.DSGroupMasterList.data = Menu as GroupMaster[];
-            this.DSGroupMasterList.sort = this.sort;
-            this.DSGroupMasterList.paginator = this.paginator;
+   
+   
+    
+    onSave(row:any = null) {
+        const dialogRef = this._matDialog.open(NewGroupComponent,
+        {
+            maxWidth: "45vw",
+            height: '35%',
+            width: '70%',
+            data: row
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            if(result){
+                // this.getGenderMasterList();
+                // How to refresh Grid.
+            }
+            console.log('The dialog was closed - Action', result);
         });
     }
 
-    onClear() {
-        this._groupService.myform.reset({ IsDeleted: "false" });
-        this._groupService.initializeFormGroup();
-    }
-
-    onSubmit() {
-        if (this._groupService.myform.valid) {
-            if (!this._groupService.myform.get("GroupId").value) {
-                var m_data = {
-                    groupMasterInsert: {
-                        groupName: this._groupService.myform
-                            .get("GroupName")
-                            .value.trim(),
-                        isconsolidated: Boolean(
-                            JSON.parse(
-                                this._groupService.myform.get("Isconsolidated")
-                                    .value
-                            )
-                        ),
-                        isConsolidatedDR: Boolean(
-                            JSON.parse(
-                                this._groupService.myform.get(
-                                    "IsConsolidatedDR"
-                                ).value
-                            )
-                        ),
-
-                        isActive: Boolean(
-                            JSON.parse(
-                                this._groupService.myform.get("IsActive").value
-                            )
-                        ),
-                        // PrintSeqNo:
-                        //     this._groupService.myform.get("PrintSeqNo").value,
-                    },
-                };
-
-                this._groupService
-                    .groupMasterInsert(m_data)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                            this.getGroupMasterList();
-                            // Swal.fire(
-                            //     "Saved !",
-                            //     "Record saved Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getGroupMasterList();
-                            //     }
-                            // });
-                        } else {
-                            this.toastr.error('Group Master Data not saved !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                        }
-                        this.getGroupMasterList();
-                    },error => {
-                        this.toastr.error('Group Data not saved !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
-            } else {
-                var m_dataUpdate = {
-                    groupMasterUpdate: {
-                        groupId: this._groupService.myform.get("GroupId").value,
-                        groupName: this._groupService.myform
-                            .get("GroupName")
-                            .value.trim(),
-                        isconsolidated: Boolean(
-                            JSON.parse(
-                                this._groupService.myform.get("Isconsolidated")
-                                    .value
-                            )
-                        ),
-                        isConsolidatedDR: Boolean(
-                            JSON.parse(
-                                this._groupService.myform.get(
-                                    "IsConsolidatedDR"
-                                ).value
-                            )
-                        ),
-
-                        isActive: Boolean(
-                            JSON.parse(
-                                this._groupService.myform.get("IsActive").value
-                            )
-                        ),
-                        // PrintSeqNo:
-                        //     this._groupService.myform.get("PrintSeqNo").value,
-                    },
-                };
-
-                this._groupService
-                    .groupMasterUpdate(m_dataUpdate)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record updated Successfully.', 'updated !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                              this.getGroupMasterList();
-                            // Swal.fire(
-                            //     "Updated !",
-                            //     "Record updated Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getGroupMasterList();
-                            //     }
-                            // });
-                        } else {
-                            this.toastr.error('Group Master Data not updated !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                        }
-                        this.getGroupMasterList();
-                    },error => {
-                        this.toastr.error('Group Data not Updated !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
+    onDeactive(groupId) {
+        this.confirmDialogRef = this._matDialog.open(
+            FuseConfirmDialogComponent,
+            {
+                disableClose: false,
             }
-            this.onClear();
-        }
+        );
+        this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+        this.confirmDialogRef.afterClosed().subscribe((result) => {
+            if (result) {
+                this._groupService.deactivateTheStatus(groupId).subscribe((response: any) => {
+                    if (response.StatusCode == 200) {
+                        this.toastr.success(response.Message);
+                        // this.getGenderMasterList();
+                        // How to refresh Grid.
+                    }
+                });
+            }
+            this.confirmDialogRef = null;
+        });
     }
     onEdit(row) {
         var m_data = {
@@ -215,10 +128,10 @@ export class GroupMasterComponent implements OnInit {
 }
 
 export class GroupMaster {
-    GroupId: number;
-    GroupName: string;
-    Isconsolidated: boolean;
-    IsConsolidatedDR: boolean;
+    groupId: number;
+    groupName: string;
+    isconsolidated: boolean;
+    isConsolidatedDr: boolean;
     PrintSeqNo: Number;
     IsActive: boolean;
     AddedBy: number;
@@ -231,10 +144,10 @@ export class GroupMaster {
      */
     constructor(GroupMaster) {
         {
-            this.GroupId = GroupMaster.GroupId || "";
-            this.GroupName = GroupMaster.GroupName || "";
-            this.Isconsolidated = GroupMaster.Isconsolidated || "false";
-            this.IsConsolidatedDR = GroupMaster.IsConsolidatedDR || "false";
+            this.groupId = GroupMaster.groupId || "";
+            this.groupName = GroupMaster.groupName || "";
+            this.isconsolidated = GroupMaster.isconsolidated || "false";
+            this.isConsolidatedDr = GroupMaster.isConsolidatedDr || "false";
             this.PrintSeqNo = GroupMaster.PrintSeqNo || "";
             this.IsActive = GroupMaster.IsActive || "false";
             this.AddedBy = GroupMaster.AddedBy || "";

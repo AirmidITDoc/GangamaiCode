@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { TemplateServieService } from './template-servie.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatAccordion } from '@angular/material/expansion';
 import { MatSort } from '@angular/material/sort';
@@ -12,6 +12,11 @@ import Swal from 'sweetalert2';
 import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
+
+
 @Component({
   selector: 'app-template-master',
   templateUrl: './template-master.component.html',
@@ -20,27 +25,35 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
   animations: fuseAnimations,
 })
 export class TemplateMasterComponent implements OnInit {
-
-  displayedColumns: string[] = [
-    "TemplateId",
-    "TemplateName",
-    "IsDeleted",
-    "AddedBy",
-    "UpdatedBy",
-    "action"
-  ];
-
-  isLoading = true;
-  sIsLoading: string = '';
-  TemplateList: any = [];
-  currentStatus = 0;
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatAccordion) accordion: MatAccordion;
-
-  Templatedatasource = new MatTableDataSource<TemplateMaster>();
-  Templatedatasource1 = new MatTableDataSource<TemplateMaster>();
-  tempList= new MatTableDataSource<TemplateMaster>();
+  confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+  gridConfig: gridModel = {
+      apiUrl: "PathologyTemplate/List",
+      columnsList: [
+          { heading: "Code", key: "templateId", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "Template Name", key: "templateName", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "Template Desc", key: "templateDesc", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+          {
+              heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                  {
+                      action: gridActions.edit, callback: (data: any) => {
+                          this.onAdd(data) // EDIT Records
+                      }
+                  }, {
+                      action: gridActions.delete, callback: (data: any) => {
+                          this.onDeactive(data.templateId); // DELETE Records
+                      }
+                  }]
+          } //Action 1-view, 2-Edit,3-delete
+      ],
+      sortField: "templateId",
+      sortOrder: 0,
+      filters: [
+          { fieldName: "templateName", fieldValue: "", opType: OperatorComparer.Contains },
+          { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+      ],
+      row:25
+  }
   constructor(
     public _TemplateServieService: TemplateServieService,
     public _matDialog: MatDialog,
@@ -50,91 +63,52 @@ export class TemplateMasterComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getTemplateMasterList();
+   
   }
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
-  resultsLength=0;
-  getTemplateMasterList() {
-    this.sIsLoading = 'loading-data';
-    var m_data = {
-      TemplateName:
-        this._TemplateServieService.myformSearch.get("TemplateNameSearch").value + "%" || "%",
-    };
-    ;
-    this._TemplateServieService.getTemplateMasterList(m_data).subscribe((Menu) => {
-      this.Templatedatasource.data = Menu as TemplateMaster[];
-      this.Templatedatasource1.data = Menu as TemplateMaster[];
-      this.isLoading = false;
-      this.Templatedatasource.sort = this.sort;
-      this.Templatedatasource.paginator = this.paginator;
-      this.resultsLength= this.Templatedatasource.data.length
-      this.sIsLoading = '';
-      console.log(this.Templatedatasource.data);
-    },
-      error => {
-        this.sIsLoading = '';
-      });
-  }
 
-  onAdd() {
-    const dialogRef = this._matDialog.open(TemplateFormComponent, {
-      maxWidth: "70vw",
-      maxHeight: "95vh",
-      width: "100%",
-      height: "100%",
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log("The dialog was closed - Insert Action", result);
-      this.getTemplateMasterList();
-    });
-  }
+  
 
-  toggle(val: any) {
-    if (val == "2") {
-        this.currentStatus = 2;
-    } else if(val=="1") {
-        this.currentStatus = 1;
-    }
-    else{
-        this.currentStatus = 0;
-
-    }
+onDeactive(templateId) {
+  this.confirmDialogRef = this._matDialog.open(
+      FuseConfirmDialogComponent,
+      {
+          disableClose: false,
+      }
+  );
+  this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+  this.confirmDialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+          this._TemplateServieService.deactivateTheStatus(templateId).subscribe((response: any) => {
+              if (response.StatusCode == 200) {
+                  this.toastr.success(response.Message);
+                  // this.getGenderMasterList();
+                  // How to refresh Grid.
+              }
+          });
+      }
+      this.confirmDialogRef = null;
+  });
 }
 
-
-  onFilterChange(){
-    debugger
-            
-    if (this.currentStatus == 1) {
-      this.tempList.data = []
-      this.Templatedatasource.data= this.Templatedatasource1.data
-      for (let item of this.Templatedatasource.data) {
-          if (item.IsDeleted) this.tempList.data.push(item)
-
+onAdd(row:any = null) {
+  const dialogRef = this._matDialog.open(TemplateFormComponent,
+  {
+      maxWidth: "45vw",
+      height: '35%',
+      width: '70%',
+      data: row
+  });
+  dialogRef.afterClosed().subscribe(result => {
+      if(result){
+          // this.getGenderMasterList();
+          // How to refresh Grid.
       }
-
-      this.Templatedatasource.data = [];
-      this.Templatedatasource.data = this.tempList.data;
-  }
-  else if (this.currentStatus == 0) {
-      this.Templatedatasource.data= this.Templatedatasource1.data
-      this.tempList.data = []
-
-      for (let item of this.Templatedatasource.data) {
-          if (!item.IsDeleted) this.tempList.data.push(item)
-
-      }
-      this.Templatedatasource.data = [];
-      this.Templatedatasource.data = this.tempList.data;
-  }
-  else {
-      this.Templatedatasource.data= this.Templatedatasource1.data
-      this.tempList.data = this.Templatedatasource.data;
-  }
-
-   }
+      console.log('The dialog was closed - Action', result);
+  });
+}
   onEdit(row) {
     console.log(row);
 
@@ -149,60 +123,14 @@ export class TemplateMasterComponent implements OnInit {
       }
     });
     dialogRef.afterClosed().subscribe((data) => {
-     this.getTemplateMasterList();
+    
     });
   }
 
 
-  onDeactive(row, PTemplateId) {
-
-    Swal.fire({
-      title: 'Confirm Status',
-      text: 'Are you sure you want to deactivate?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes,Change Status!'
-    }).then((result) => {
-      let Query
-      if (result.isConfirmed) {
-        if (row.IsDeleted) {
-          Query =
-            "Update M_TemplateMaster set IsDeleted=0 where TemplateId=" +
-            PTemplateId;
-          console.log(Query);
-        } else {
-          Query =
-            "Update M_TemplateMaster set IsDeleted=1 where TemplateId=" +
-            PTemplateId;
-          console.log(Query);
-        }
-        this._TemplateServieService
-          .deactivateTheStatus(Query)
-          .subscribe((data) => {
-            if (data) {
-             this.toastr.success('Record  Status has been Changed Successfully.', 'Saved !', {
-               toastClass: 'tostr-tost custom-toast-success',
-             });
-             
-             this.onClear();
-             
-           } else {
-             this.toastr.error('Template Data  Status has been Changed !, Please check API error..', 'Error !', {
-               toastClass: 'tostr-tost custom-toast-error',
-             });
-           }
-          });
-        this.getTemplateMasterList();
-      }
-    });
-  }
-
-
-
+  
   onSearch() {
-    this.getTemplateMasterList();
+   
   }
   onClear() {
     this._TemplateServieService.myform.reset({ IsDeleted: "false" });
@@ -213,43 +141,20 @@ export class TemplateMasterComponent implements OnInit {
       TemplateNameSearch: "",
       IsDeletedSearch: "2",
     });
-    this.getTemplateMasterList();
+   
   }
 
 
   
-  exportTemplateExcel(){
-    this.sIsLoading == 'loading-data'
-    let exportHeaders = ['TemplateId', 'TemplateName', 'IsDeleted', 'AddedBy', 'UpdatedBy'];
-    this.reportDownloadService.getExportJsonData(this.Templatedatasource.data, exportHeaders, 'Pathology Template');
-    this.Templatedatasource.data = [];
-    this.sIsLoading = '';
-  }
-
-  exportReportPdf() {
-    let actualData = [];
-    this.Templatedatasource.data.forEach(e => {
-      var tempObj = [];
-      tempObj.push(e.TemplateId);
-      tempObj.push(e.TemplateName);
-      tempObj.push(e.IsDeleted);
-      tempObj.push(e.AddedBy);
-      
-      actualData.push(tempObj);
-    });
-    let headers = [['TemplateId', 'TemplateName', 'IsDeleted', 'AddedBy', 'UpdatedBy']];
-    this.reportDownloadService.exportPdfDownload(headers, actualData, 'Pathology Template');
-  }
-
 
 }
 
 
 export class TemplateMaster {
-  TemplateId: number;
-  TemplateName: any;
-  TemplateDesc: any;
-  IsDeleted:any;
+  templateId: number;
+  templateName: any;
+  templateDesc: any;
+  isActive:any;
   AddedBy:any;
   UpdatedBy:any;
   TemplateDescInHTML:any;
@@ -260,10 +165,10 @@ export class TemplateMaster {
    */
   constructor(TemplateMaster) {
       {
-          this.AddedBy = TemplateMaster.AddedBy || 0;
-          this.TemplateName = TemplateMaster.TemplateName || "";
-          this.TemplateDesc = TemplateMaster.TemplateDesc || "";
-          this.IsDeleted = TemplateMaster.IsDeleted || 0;
+          this.templateId = TemplateMaster.templateId || 0;
+          this.templateName = TemplateMaster.templateName || "";
+          this.templateDesc = TemplateMaster.templateDesc || "";
+          this.isActive = TemplateMaster.isActive || 0;
           this.AddedBy = TemplateMaster.AddedBy || 0;
           this.UpdatedBy = TemplateMaster.UpdatedBy || 0;
           this.TemplateDescInHTML = TemplateMaster.TemplateDescInHTML || '';

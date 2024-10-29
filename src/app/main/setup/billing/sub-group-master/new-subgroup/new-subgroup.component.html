@@ -1,0 +1,52 @@
+<!-- <div fxFlex.gt-sm="35%" fxFlex style="background-color: white;">
+    <div class="dialog-content-wrapper">
+        <div mat-dialog-content class="p-24 pb-0 m-0">
+            <form [formGroup]="_subgroupService.myform">
+                <h3>{{_subgroupService.myform.controls.SubGroupId.value?"Modify SubGroup
+                    Master":"New SubGroup Master"}}</h3>
+
+
+                <input type="hidden" name="SubGroupId" formControlName="SubGroupId">
+
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                        <mat-label>SubGroupName</mat-label>
+                        <input name="SubGroupName" formControlName="SubGroupName" matInput required>
+                        <mat-error>Please enter SubGroup Name </mat-error>
+                    </mat-form-field>
+                </div>
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+
+
+                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                        <mat-label>Group Name</mat-label>
+                        <mat-select formControlName="GroupId" placeholder="Bank" #singleSelect>
+                            <mat-option>
+                                <ngx-mat-select-search [formControl]="groupnameFilterCtrl"
+                                    [placeholderLabel]="'Search'"
+                                    [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                            </mat-option>
+                            <mat-option *ngFor="let element of filteredGroupname | async"
+                                [value]="element">
+                                {{element.GroupName}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
+                        <mat-radio-button value='false' class="mr-sm-12"
+                            fxFlex>IsActive</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+            </form>
+        </div>
+        <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+            <div class="button-row">
+                <button mat-raised-button color="primary" type="submit" (click)="onSubmit()"
+                    [disabled]="_subgroupService.myform.invalid">Save</button>
+                <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
+            </div>
+        </div>
+    </div>
+</div> -->

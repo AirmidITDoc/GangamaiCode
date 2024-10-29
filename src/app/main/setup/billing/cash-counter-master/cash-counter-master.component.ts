@@ -6,6 +6,13 @@ import { MatSort } from "@angular/material/sort";
 import { fuseAnimations } from "@fuse/animations";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { NewCashCounterComponent } from "./new-cash-counter/new-cash-counter.component";
+
+
 
 @Component({
     selector: "app-cash-counter-master",
@@ -15,33 +22,45 @@ import { ToastrService } from "ngx-toastr";
     animations: fuseAnimations,
 })
 export class CashCounterMasterComponent implements OnInit {
-    CashcounterMasterList: any;
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    gridConfig: gridModel = {
+        apiUrl: "CashCounter/List",
+        columnsList: [
+            { heading: "Code", key: "cashCounterId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Cash Counter Name", key: "cashCounterName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Prefix Name", key: "prefix", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+            {
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            this.onSave(data) // EDIT Records
+                        }
+                    }, {
+                        action: gridActions.delete, callback: (data: any) => {
+                            this.onDeactive(data.cashCounterId); // DELETE Records
+                        }
+                    }]
+            } //Action 1-view, 2-Edit,3-delete
+        ],
+        sortField: "cashCounterId",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "cashCounterName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+        ],
+        row:25
+    }
 
-    msg: any;
-
-    @ViewChild(MatSort) sort: MatSort;
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-
-    displayedColumns: string[] = [
-        "CashCounterId",
-        "CashCounterName",
-        "Prefix",
-        "BillNo",
-        // "AddedBy",
-        "IsDeleted",
-        "action",
-    ];
-
-    DSCashCounterMasterList = new MatTableDataSource<CashCounterMaster>();
-
-    constructor(public _cashcounterService: CashCounterMasterService,
+    constructor(public _cashcounterService: CashCounterMasterService,public _matDialog: MatDialog,
         public toastr : ToastrService,) {}
 
     ngOnInit(): void {
-        this.getCashcounterMasterList();
+        
     }
     onSearch() {
-        this.getCashcounterMasterList();
+        
     }
 
     onSearchClear() {
@@ -49,137 +68,53 @@ export class CashCounterMasterComponent implements OnInit {
             CashCounterNameSearch: "",
             IsDeletedSearch: "2",
         });
-        this.getCashcounterMasterList();
+        
     }
-    getCashcounterMasterList() {
-        var param = {
-            CashCounterName:
-                this._cashcounterService.myformSearch
-                    .get("CashCounterNameSearch")
-                    .value.trim() || "%",
-        };
-        this._cashcounterService
-            .getCashcounterMasterList(param)
-            .subscribe((Menu) => {
-                this.DSCashCounterMasterList.data = Menu as CashCounterMaster[];
-                this.DSCashCounterMasterList.sort = this.sort;
-                this.DSCashCounterMasterList.paginator = this.paginator;
-                console.log(this.DSCashCounterMasterList);
-            });
-    }
+   
 
-    onClear() {
-        this._cashcounterService.myform.reset({ IsDeleted: "false" });
-        this._cashcounterService.initializeFormGroup();
-    }
+   
 
-    onSubmit() {
-        if (this._cashcounterService.myform.valid) {
-            if (!this._cashcounterService.myform.get("CashCounterId").value) {
-                var m_data = {
-                    cashCounterMasterInsert: {
-                        cashCounter: this._cashcounterService.myform
-                            .get("CashCounterName")
-                            .value.trim(),
-                        prefix: this._cashcounterService.myform
-                            .get("Prefix")
-                            .value.trim(),
-                        billNo: this._cashcounterService.myform
-                            .get("BillNo")
-                            .value.trim(),
-                        //  addedBy: 1,
-                        isActive: Boolean(
-                            JSON.parse(
-                                this._cashcounterService.myform.get("IsDeleted")
-                                    .value
-                            )
-                        ),
-                    },
-                };
-                this._cashcounterService
-                    .cashCounterMasterInsert(m_data)
-                    .subscribe((response) => {
-                        this.msg = response;
-                        if (response) {
-                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                              this.getCashcounterMasterList();
-                            // Swal.fire(
-                            //     "Saved !",
-                            //     "Record saved Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getCashcounterMasterList();
-                            //     }
-                            // });
-                        } else {
-                            this.toastr.error('Cash-Counter Master Data not saved !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                        }
-                    },error => {
-                        this.toastr.error('Cash-Counter Master Data not saved !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
-            } else {
-                var m_dataUpdate = {
-                    cashCounterMasterUpdate: {
-                        cashCounterId:
-                            this._cashcounterService.myform.get("CashCounterId")
-                                .value,
-                        cashCounter:
-                            this._cashcounterService.myform.get(
-                                "CashCounterName"
-                            ).value,
-
-                        isActive: Boolean(
-                            JSON.parse(
-                                this._cashcounterService.myform.get("IsDeleted")
-                                    .value
-                            )
-                        ),
-                    },
-                };
-
-                this._cashcounterService
-                    .cashCounterMasterUpdate(m_dataUpdate)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record updated Successfully.', 'updated !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                            this.getCashcounterMasterList();
-                            // Swal.fire(
-                            //     "Updated !",
-                            //     "Record updated Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getCashcounterMasterList();
-                            //     }
-                            // });
-                        } else {
-                            this.toastr.error('Cash-Counter Master Data not updated !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                        }
-                        this.getCashcounterMasterList();
-                    },error => {
-                        this.toastr.error('Cash-Counter Master Data not updated !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
+    onSave(row:any = null) {
+        const dialogRef = this._matDialog.open(NewCashCounterComponent,
+        {
+            maxWidth: "45vw",
+            height: '35%',
+            width: '70%',
+            data: row
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            if(result){
+                // this.getGenderMasterList();
+                // How to refresh Grid.
             }
-            this.onClear();
-        }
+            console.log('The dialog was closed - Action', result);
+        });
+    }
+
+    onDeactive(cashCounterId) {
+        this.confirmDialogRef = this._matDialog.open(
+            FuseConfirmDialogComponent,
+            {
+                disableClose: false,
+            }
+        );
+        this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+        this.confirmDialogRef.afterClosed().subscribe((result) => {
+            if (result) {
+                this._cashcounterService.deactivateTheStatus(cashCounterId).subscribe((response: any) => {
+                    if (response.StatusCode == 200) {
+                        this.toastr.success(response.Message);
+                        // this.getGenderMasterList();
+                        // How to refresh Grid.
+                    }
+                });
+            }
+            this.confirmDialogRef = null;
+        });
     }
     onEdit(row) {
         var m_data = {
-            CashCounterId: row.CashCounterId,
+            CashCounterId: row.cashCounterId,
             CashCounterName: row.CashCounterName,
             Prefix: row.Prefix,
             BillNo: row.BillNo,
@@ -191,11 +126,11 @@ export class CashCounterMasterComponent implements OnInit {
 }
 
 export class CashCounterMaster {
-    CashCounterId: number;
-    CashCounterName: string;
-    Prefix: string;
-    BillNo: string;
-    IsDeleted: boolean;
+    cashCounterId: number;
+    cashCounterName: string;
+    prefix: string;
+    billNo: string;
+    isActive: boolean;
     // AddedBy: number;
     // UpdatedBy: number;
 
@@ -206,11 +141,11 @@ export class CashCounterMaster {
      */
     constructor(CashCounterMaster) {
         {
-            this.CashCounterId = CashCounterMaster.CashCounterId || "";
-            this.CashCounterName = CashCounterMaster.CashCounterName || "";
-            this.Prefix = CashCounterMaster.Prefix || "";
-            this.BillNo = CashCounterMaster.BillNo || "";
-            this.IsDeleted = CashCounterMaster.IsDeleted || "false";
+            this.cashCounterId = CashCounterMaster.cashCounterId || "";
+            this.cashCounterName = CashCounterMaster.cashCounterName || "";
+            this.prefix = CashCounterMaster.prefix || "";
+            this.billNo = CashCounterMaster.billNo || "";
+            this.isActive = CashCounterMaster.isActive || "false";
             //  this.AddedBy = CashCounterMaster.AddedBy || "";
             // this.UpdatedBy = CashCounterMaster.UpdatedBy || "";
         }

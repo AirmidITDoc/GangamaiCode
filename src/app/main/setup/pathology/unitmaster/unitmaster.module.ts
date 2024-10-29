@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { UnitmasterComponent } from "./unitmaster.component";
 import { RouterModule, Routes } from "@angular/router";
 import { UnitmasterService } from "./unitmaster.service";
@@ -30,6 +30,7 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatButtonModule } from "@angular/material/button";
+import { NewUnitComponent } from './new-unit/new-unit.component';
 
 const routes: Routes = [
     {
@@ -39,7 +40,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [UnitmasterComponent],
+    declarations: [UnitmasterComponent, NewUnitComponent],
     imports: [
         RouterModule.forChild(routes),
         MatButtonModule,
@@ -71,8 +72,9 @@ const routes: Routes = [
         SharedModule,
         NgxMatSelectSearchModule,
         MatBadgeModule,
+       
     ],
-    providers: [UnitmasterService],
+    providers: [UnitmasterService,DatePipe],
     entryComponents: [UnitmasterComponent],
 })
 export class UnitmasterModule {}

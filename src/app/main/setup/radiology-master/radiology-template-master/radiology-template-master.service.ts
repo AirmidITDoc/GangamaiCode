@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { gridRequest } from 'app/core/models/gridRequest';
+import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +12,7 @@ export class RadiologyTemplateMasterService {
   myform: FormGroup;
   myformSearch: FormGroup;
   
-  constructor(private _httpClient: HttpClient,private _formBuilder: FormBuilder) {
+  constructor(  private _httpClient: ApiCaller,private _formBuilder: FormBuilder) {
     this.myform=this.createRadiologytemplateForm();
     this.myformSearch=this.createSearchForm();
   }
@@ -51,31 +53,20 @@ export class RadiologyTemplateMasterService {
   }
 
  
-  public getRadiologytemplateMasterList() {
-    return this._httpClient.post("Generic/GetByProc?procName=ps_Rtrv_Radiology_TemplateMaster_by_Name", {TemplateName:"%"})
-  }
-  public deactivateTheStatus(m_data) {
-    return this._httpClient.post("Generic/ExecByQueryStatement?query=" + m_data,{});
+  public gettemplateMasterList(param: gridRequest, showLoader = true) {
+    return this._httpClient.PostData("RadiologyTemplate/List", param, showLoader);
 }
-  public getRadiologytemplateMasterList1(employee) {
-    return this._httpClient.post("Generic/GetDataSetByProc?procName=m_Rtrv_Radiology_TemplateMaster_by_Name", employee)
-  }
-  public gettemplateCombo(Id)
-  {
-    return this._httpClient.post("Generic/GetByProc?procName=m_Retrieve_RadTemplateMasterForCombo",{Id:1});
-  }
-  public getdoctorCombo()
-  {
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_PathologistDoctorMasterForCombo",{});
-  }
-  public insertRadiologyTemplateMaster(employee) { 
-    return this._httpClient.post("RadiologyMaster/RadiologyTemplateMasterSave", employee);
-  }
-  
-  public updateRadiologyTemplateMaster(employee) {
-    return this._httpClient.post("RadiologyMaster/RadiologyTemplateMasterUpdate", employee);
-  }
 
+public templateMasterSave(Param: any, id: string ,showLoader = true) {
+    if(id)
+        return this._httpClient.PutData("template/"+ id, Param, showLoader);
+    else
+        return this._httpClient.PostData("template", Param, showLoader);       
+}
+
+public deactivateTheStatus(m_data) {
+    return this._httpClient.PostData("template", m_data);
+}
   populateForm(employee) {
     this.myform.patchValue(employee);
   }
@@ -84,7 +75,5 @@ export class RadiologyTemplateMasterService {
     this.myform.patchValue(employee);
   }
 
-  Print(employee) {
-    return this._httpClient.post("Generic/GetByProc?procName=ps_rpt_radiologyTemplate", employee)
-  }
+ 
 }

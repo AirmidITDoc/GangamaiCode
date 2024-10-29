@@ -1,64 +1,16 @@
-// .table {
-//     height: 100%;
-//     .mat-header-row {
-//         width: 700px;
-//         max-width: 700px;
-//         min-width: 700px;
-//         font-weight: bold;
-//     }
+.p-sm-24 {
+    padding: 10px !important;
+}
 
-//     .mat-row {
-//         width: 700px;
-//         max-width: 700px;
-//         min-width: 700px;
-//     }
+app-unitmaster{
 
-//     .mat-column-UnitId {
-//         width: 100px;
-//         max-width: 100px;
-//         min-width: 100px;
-//         text-align: left;
-//         justify-content: left;
-//     }
-
-//     .mat-column-UnitName {
-//         width: 365px;
-//         max-width: 365px;
-//         min-width: 365px;
-//         text-align: left;
-//         justify-content: left;
-//     }
-
-//     .mat-column-AddedBy {
-//         width: 120px;
-//         max-width: 120px;
-//         min-width: 120px;
-//         text-align: left;
-//         justify-content: left;
-//     }
-
-//     .mat-column-IsDeleted {
-//         width: 120px;
-//         max-width: 120px;
-//         min-width: 120px;
-//         text-align: left;
-//         justify-content: left;
-//     }
-
-//     .mat-column-action {
-//         width: 120px;
-//         max-width: 120px;
-//         min-width: 120px;
-//         text-align: center;
-//         justify-content: center;
-//     }
-//     .mat-icon-button {
-//         padding: 0;
-//         min-width: 0;
-//         width: 40px;
-//         height: 20px;
-//         flex-shrink: 0;
-//         line-height: 20px;
-//         border-radius: 50%;
-//     }
-// }
+    .mat-icon-button {
+        padding: 0;
+        min-width: 0;
+        width: 40px;
+        height: 20px;
+        flex-shrink: 0;
+        line-height: 20px;
+        border-radius: 50%;
+    }
+}
