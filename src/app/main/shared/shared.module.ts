@@ -32,10 +32,12 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { FuseSidebarModule } from "../../../@fuse/components/sidebar/sidebar.module";
 import { AirmidTextboxComponent } from './componets/airmid-textbox/airmid-textbox.component';
+import { AirmidAutocompleteComponent } from './componets/airmid-autocomplete/airmid-autocomplete.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 
 @NgModule({
-  declarations: [TrimPipe, CommonDateComponent,AirmidTableComponent, AirmidTextboxComponent, SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent,DyanmicTableHeightDirective],
+  declarations: [TrimPipe, CommonDateComponent,AirmidTableComponent, AirmidTextboxComponent,AirmidAutocompleteComponent, SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent,DyanmicTableHeightDirective, AirmidAutocompleteComponent],
   imports: [
     CommonModule,
     MatFormFieldModule,
@@ -56,7 +58,8 @@ import { AirmidTextboxComponent } from './componets/airmid-textbox/airmid-textbo
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    FuseSidebarModule
+    FuseSidebarModule,
+    MatAutocompleteModule
 ],
   providers: [
     ExcelDownloadService,
@@ -71,7 +74,8 @@ import { AirmidTextboxComponent } from './componets/airmid-textbox/airmid-textbo
     PaymentModeComponent,
     DyanmicTableHeightDirective,
     AirmidTableComponent,
-    AirmidTextboxComponent
+    AirmidTextboxComponent,
+    AirmidAutocompleteComponent
   ],
   entryComponents: []
 })

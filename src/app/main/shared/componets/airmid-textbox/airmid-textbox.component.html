@@ -1,12 +1,12 @@
 <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
     <mat-label>{{ label }}</mat-label>
-    <input matInput [type]="'text'" [formControl]="fieldName" [placeholder]="placeholder" [maxlength]="maxLength"
-        (blur)="onTouched()" />
-</mat-form-field>
-<div *ngIf="formGroup.controls[fieldName]?.invalid && validations.length>0">
-    <div *ngFor="let item of validations">
-        <mat-error *ngIf="formGroup.get(fieldName).hasError(item.name)">
-            {{item.Message}}
-        </mat-error>
+    <input matInput [formControl]="control" [maxlength]="maxLength" (blur)="onTouched()" ngDefaultControl [type]="type"
+        [value]="value" [placeholder]="placeholder" />
+    <div *ngIf="formGroup.controls[formControlName]?.invalid && control?.touched && validations.length>0">
+        <div *ngFor="let item of validations">
+            <mat-error *ngIf="formGroup.get(formControlName).hasError(item.name)">
+                {{item.Message}}
+            </mat-error>
+        </div>
     </div>
-</div>
+</mat-form-field>

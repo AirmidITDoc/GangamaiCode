@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { HttpService } from "app/core/http/http.service";
 import { gridRequest } from "app/core/models/gridRequest";
 import { ApiCaller } from "app/core/services/apiCaller";
 
@@ -12,7 +11,6 @@ export class GenderMasterService {
         private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder
     ) {
-        this.myform = this.createGenderForm();
         this.myformSearch = this.createSearchForm();
     }
     createSearchForm(): FormGroup {
@@ -21,38 +19,31 @@ export class GenderMasterService {
             IsDeletedSearch: ["2"],
         });
     }
-
-    createGenderForm(): FormGroup {
+    createGenderForm() {
         return this._formBuilder.group({
             genderId: [""],
             genderName: ['', [
                 Validators.required,
                 Validators.maxLength(50),
                 Validators.pattern('^[a-zA-Z () ]*$')
-              ]],
-              isDeleted: [""],
+            ]],
+            isDeleted: [""],
         });
     }
-
-    initializeFormGroup() {
-        this.createGenderForm();
+    getValidationMessages() {
+        return {
+            genderName: [
+                { name: "required", Message: "Gender Name is required" },
+                { name: "maxlength", Message: "Gender name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
     }
 
-    populateForm(Param) {
-        this.myform.patchValue(Param);
-    }
-
-
-
-    public getGenderMasterList(param: gridRequest, showLoader = true) {
-        return this._httpClient.PostData("Gender/List", param, showLoader);
-    }
-
-    public genderMasterSave(Param: any, id: string ,showLoader = true) {
-        if(id)
-            return this._httpClient.PutData("Gender/"+ id, Param, showLoader);
-        else
-            return this._httpClient.PostData("Gender", Param, showLoader);       
+    public genderMasterSave(Param: any, showLoader = true) {
+        if (Param.genderId) {
+            return this._httpClient.PutData("Gender/" + Param.genderId, Param, showLoader);
+        } else return this._httpClient.PostData("Gender", Param, showLoader);
     }
 
     public deactivateTheStatus(m_data) {

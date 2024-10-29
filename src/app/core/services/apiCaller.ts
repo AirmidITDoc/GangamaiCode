@@ -56,7 +56,7 @@ export class ApiCaller {
         };
         return (this._httpClient.post<any>(`${this.ApiUrl}${url}`, data,httpOptions).pipe(map((data: apiResponse) => {
             if (data.statusCode == 200) {
-                return data.data;
+                return data?.data || data;
             }
             else {
                 this.toastr.error(data.message, 'Error !', {
@@ -79,7 +79,7 @@ export class ApiCaller {
         };
         return (this._httpClient.put<any>(`${this.ApiUrl}${url}`, data,httpOptions).pipe(map((data: apiResponse) => {
             if (data.statusCode == 200) {
-                return data.data;
+                return data?.data || data;
             }
             else {
                 this.toastr.error(data.message, 'Error !', {
