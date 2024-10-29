@@ -208,98 +208,98 @@ getOptionTextService(option) {
     this._matDialog.closeAll();
     this._radiologytestService.myform.reset();
   }
-  // onSubmit() {
-  //   if (this._radiologytestService.myform.valid) {
-  //     if (!this._radiologytestService.myform.get("TestId").value) {
-  //        let insertRadiologyTestMaster= {};
-  //        insertRadiologyTestMaster['testId'] = 0;
-  //        insertRadiologyTestMaster['testName'] = this._radiologytestService.myform.get("TestName").value;
-  //        insertRadiologyTestMaster['printTestName'] = this._radiologytestService.myform.get("PrintTestName").value;
-  //        insertRadiologyTestMaster['categoryId'] = this._radiologytestService.myform.get("CategoryId").value.CategoryId;
-  //        insertRadiologyTestMaster['addedBy'] = this.accountService.currentUserValue.user.id;
-  //        insertRadiologyTestMaster['Isdeleted'] = this._radiologytestService.myform.get("IsDeleted").value || 1;
-  //        insertRadiologyTestMaster['serviceId'] = this._radiologytestService.myform.get("ServiceId").value.ServiceId;
+  onSubmit() {
+    // if (this._radiologytestService.myform.valid) {
+    //   if (!this._radiologytestService.myform.get("TestId").value) {
+    //      let insertRadiologyTestMaster= {};
+    //      insertRadiologyTestMaster['testId'] = 0;
+    //      insertRadiologyTestMaster['testName'] = this._radiologytestService.myform.get("TestName").value;
+    //      insertRadiologyTestMaster['printTestName'] = this._radiologytestService.myform.get("PrintTestName").value;
+    //      insertRadiologyTestMaster['categoryId'] = this._radiologytestService.myform.get("CategoryId").value.CategoryId;
+    //      insertRadiologyTestMaster['addedBy'] = this.accountService.currentUserValue.user.id;
+    //      insertRadiologyTestMaster['Isdeleted'] = this._radiologytestService.myform.get("IsDeleted").value || 1;
+    //      insertRadiologyTestMaster['serviceId'] = this._radiologytestService.myform.get("ServiceId").value.ServiceId;
         
-  //        let insertRadiologyTemplateTest = [];
-  //        this.DSTestList.data.forEach((element) => {
-  //         let insertRtestObj={};
-  //         insertRtestObj['testId'] = 0;
-  //         insertRtestObj['templateId'] = element.TemplateId;
-  //         insertRadiologyTemplateTest.push(insertRtestObj);
+    //      let insertRadiologyTemplateTest = [];
+    //      this.DSTestList.data.forEach((element) => {
+    //       let insertRtestObj={};
+    //       insertRtestObj['testId'] = 0;
+    //       insertRtestObj['templateId'] = element.TemplateId;
+    //       insertRadiologyTemplateTest.push(insertRtestObj);
 
-  //        });
+    //      });
 
-  //        let submitData ={
-  //         "insertRadiologyTestMaster": insertRadiologyTestMaster,
-  //         "insertRadiologyTemplateTest":insertRadiologyTemplateTest
-  //        }
-  //       console.log(submitData);
-  //       this._radiologytestService.insertRadiologyTestMaster(submitData).subscribe(data => {
-  //         this.msg = data;
-  //         if (data) {
-  //           this.toastr.success('Record Saved Successfully.', 'Saved !', {
-  //             toastClass: 'tostr-tost custom-toast-success',
-  //           });
-  //           this.onClear();
-  //           this._matDialog.closeAll();
-  //         } else {
-  //           this.toastr.error('Radiology Test Master Data not saved !, Please check API error..', 'Error !', {
-  //             toastClass: 'tostr-tost custom-toast-error',
-  //           });
-  //         }
-  //         this._matDialog.closeAll();
-  //       });
+    //      let submitData ={
+    //       "insertRadiologyTestMaster": insertRadiologyTestMaster,
+    //       "insertRadiologyTemplateTest":insertRadiologyTemplateTest
+    //      }
+    //     console.log(submitData);
+    //     this._radiologytestService.insertRadiologyTestMaster(submitData).subscribe(data => {
+    //       this.msg = data;
+    //       if (data) {
+    //         this.toastr.success('Record Saved Successfully.', 'Saved !', {
+    //           toastClass: 'tostr-tost custom-toast-success',
+    //         });
+    //         this.onClear();
+    //         this._matDialog.closeAll();
+    //       } else {
+    //         this.toastr.error('Radiology Test Master Data not saved !, Please check API error..', 'Error !', {
+    //           toastClass: 'tostr-tost custom-toast-error',
+    //         });
+    //       }
+    //       this._matDialog.closeAll();
+    //     });
       
-  //     }  
-  //     else{
-  //       let updateRadiologyTestMaster= {};
-  //       updateRadiologyTestMaster['testId'] = this._radiologytestService.myform.get('TestId').value;
-  //       updateRadiologyTestMaster['testName'] = this._radiologytestService.myform.get("TestName").value;
-  //       updateRadiologyTestMaster['printTestName'] = this._radiologytestService.myform.get("PrintTestName").value;
-  //       updateRadiologyTestMaster['categoryId'] = this._radiologytestService.myform.get("CategoryId").value.CategoryId;
-  //       updateRadiologyTestMaster['Isdeleted'] = this._radiologytestService.myform.get("IsDeleted").value || 1;
-  //       updateRadiologyTestMaster['updatedBy'] = this.accountService.currentUserValue.user.id;
-  //       updateRadiologyTestMaster['serviceId'] = this._radiologytestService.myform.get("ServiceId").value.ServiceId;
+    //   }  
+    //   else{
+    //     let updateRadiologyTestMaster= {};
+    //     updateRadiologyTestMaster['testId'] = this._radiologytestService.myform.get('TestId').value;
+    //     updateRadiologyTestMaster['testName'] = this._radiologytestService.myform.get("TestName").value;
+    //     updateRadiologyTestMaster['printTestName'] = this._radiologytestService.myform.get("PrintTestName").value;
+    //     updateRadiologyTestMaster['categoryId'] = this._radiologytestService.myform.get("CategoryId").value.CategoryId;
+    //     updateRadiologyTestMaster['Isdeleted'] = this._radiologytestService.myform.get("IsDeleted").value || 1;
+    //     updateRadiologyTestMaster['updatedBy'] = this.accountService.currentUserValue.user.id;
+    //     updateRadiologyTestMaster['serviceId'] = this._radiologytestService.myform.get("ServiceId").value.ServiceId;
        
-  //       let radiologyTemplateDetDelete={};
-  //       radiologyTemplateDetDelete["testId"] =this._radiologytestService.myform.get('TestId').value; 
+    //     let radiologyTemplateDetDelete={};
+    //     radiologyTemplateDetDelete["testId"] =this._radiologytestService.myform.get('TestId').value; 
 
-  //       let insertRadiologyTemplateTest = [];
-  //       this.DSTestList.data.forEach((element) => {
-  //         let insertRtestObj={};
-  //        insertRtestObj['testId'] = this._radiologytestService.myform.get('TestId').value;
-  //        insertRtestObj['templateId'] = element.TemplateId;
-  //        insertRadiologyTemplateTest.push(insertRtestObj);
+    //     let insertRadiologyTemplateTest = [];
+    //     this.DSTestList.data.forEach((element) => {
+    //       let insertRtestObj={};
+    //      insertRtestObj['testId'] = this._radiologytestService.myform.get('TestId').value;
+    //      insertRtestObj['templateId'] = element.TemplateId;
+    //      insertRadiologyTemplateTest.push(insertRtestObj);
 
-  //       });
+    //     });
 
      
-  //       let submitData ={
-  //        "updateRadiologyTestMaster": updateRadiologyTestMaster,
-  //        "radiologyTemplateDetDelete": radiologyTemplateDetDelete,
-  //        "insertRadiologyTemplateTest":insertRadiologyTemplateTest
+    //     let submitData ={
+    //      "updateRadiologyTestMaster": updateRadiologyTestMaster,
+    //      "radiologyTemplateDetDelete": radiologyTemplateDetDelete,
+    //      "insertRadiologyTemplateTest":insertRadiologyTemplateTest
        
-  //       }
-  //      console.log(submitData);
-  //      this._radiologytestService.updateRadiologyTestMaster(submitData).subscribe(data => {
-  //     if (data) {
-  //          this.toastr.success('Record Updated Successfully.', 'Saved !', {
-  //            toastClass: 'tostr-tost custom-toast-success',
-  //          }); this.onClear();
-  //          this._matDialog.closeAll();
+    //     }
+    //    console.log(submitData);
+    //    this._radiologytestService.updateRadiologyTestMaster(submitData).subscribe(data => {
+    //   if (data) {
+    //        this.toastr.success('Record Updated Successfully.', 'Saved !', {
+    //          toastClass: 'tostr-tost custom-toast-success',
+    //        }); this.onClear();
+    //        this._matDialog.closeAll();
            
-  //        } else {
-  //          this.toastr.error('Radiology Test Master Data not saved !, Please check API error..', 'Error !', {
-  //            toastClass: 'tostr-tost custom-toast-error',
-  //          });
-  //        }
-  //        this._matDialog.closeAll();
-  //      });
-  //     }
-  //     this._radiologytestService.myform.reset();
-  //     }
+    //      } else {
+    //        this.toastr.error('Radiology Test Master Data not saved !, Please check API error..', 'Error !', {
+    //          toastClass: 'tostr-tost custom-toast-error',
+    //        });
+    //      }
+    //      this._matDialog.closeAll();
+    //    });
+    //   }
+    //   this._radiologytestService.myform.reset();
+    //   }
      
-  // }
+  }
 }
 export class TestList {
   TemplateName: any;

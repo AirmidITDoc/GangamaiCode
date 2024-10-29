@@ -93,7 +93,7 @@ export class RadiologyTemplateFormComponent implements OnInit {
   onClear() {
     this._radiologytemplateService.myform.reset();
   }
-  // onSubmit() {
+   onSubmit() {
   //   if (!this._radiologytemplateService.myform.get("TemplateId").value) {
   //     let insertRadiologyTemp = {};
   //     insertRadiologyTemp['templateName'] = this._radiologytemplateService.myform.get("TemplateName").value;
@@ -157,7 +157,7 @@ export class RadiologyTemplateFormComponent implements OnInit {
   //       });
   //     }); this._matDialog.closeAll();
   //   }
-  // }
+  }
 
 
   OnPrintPop(TemplateId) { }

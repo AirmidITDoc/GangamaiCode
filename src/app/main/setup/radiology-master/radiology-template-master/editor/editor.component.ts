@@ -62,7 +62,7 @@ export class EditorComponent implements OnInit {
    
    
     this.getTemplateList();
-    this.getDoctorList();
+   // this.getDoctorList();
 
 
     if (this.advanceDataStored.storage) {
@@ -108,73 +108,73 @@ export class EditorComponent implements OnInit {
 
 
 // doctorlist
-  getDoctorList() {
-    this._radiologytemplateService.getdoctorCombo().subscribe(data => {
-      this.Doctorlist = data;
-      console.log(this.Doctorlist);
-      this.filtereddoctor.next(this.Doctorlist.slice());
-    });
-  }
+  // getDoctorList() {
+  //   this._radiologytemplateService.getdoctorCombo().subscribe(data => {
+  //     this.Doctorlist = data;
+  //     console.log(this.Doctorlist);
+  //     this.filtereddoctor.next(this.Doctorlist.slice());
+  //   });
+  // }
 
   getTemplateList() {
     let Id=1;
-    this._radiologytemplateService.gettemplateCombo(Id).subscribe(data => { this.templatelist = data; })
+   // this._radiologytemplateService.gettemplateCombo(Id).subscribe(data => { this.templatelist = data; })
   }
 
-  onSubmit() {
-    debugger;
-    if (this._radiologytemplateService.myform.valid) {
-      if (!this._radiologytemplateService.myform.get("TemplateId").value) {
-        var m_data = {
-          insertRadiologyTemplateMaster: {
-            "RadReportID": this._radiologytemplateService.myform.get("RadReportID").value || 1,
-            "ReportDate": this._radiologytemplateService.myform.get("ReportDate").value || '11/01/2022',
-            "ReportTime": this._radiologytemplateService.myform.get("ReportTime").value || '11/01/2022',
-            "IsCompleted":'false',// (this._radiologytemplateService.myform.get("IsCompleted").value).trim(),
-            "IsPrinted":'false',//Boolean(JSON.parse(this._radiologytemplateService.myform.get("IsPrinted").value)),
-            "RadResultDr1": this._radiologytemplateService.myform.get("DoctorId").value.DoctorId ,
-            "RadResultDr2": this._radiologytemplateService.myform.get("DoctorId").value.DoctorId,
-            "RadResultDr3": this._radiologytemplateService.myform.get("DoctorId").value.DoctorId,
-            "SuggestionNotes":this._radiologytemplateService.myform.get("Suggatationnote").value || '',
-            "AdmVisitDoctorID": this._radiologytemplateService.myform.get("DoctorId").value.DoctorId,
-            "RefDoctorID": this._radiologytemplateService.myform.get("DoctorId").value.DoctorId || 1,
-            "ResultEntry": 'Clear',//Boolean(JSON.parse(this._radiologytemplateService.myform.get("SuggestionNotes").value)),
+   onSubmit() {
+  //   debugger;
+  //   if (this._radiologytemplateService.myform.valid) {
+  //     if (!this._radiologytemplateService.myform.get("TemplateId").value) {
+  //       var m_data = {
+  //         insertRadiologyTemplateMaster: {
+  //           "RadReportID": this._radiologytemplateService.myform.get("RadReportID").value || 1,
+  //           "ReportDate": this._radiologytemplateService.myform.get("ReportDate").value || '11/01/2022',
+  //           "ReportTime": this._radiologytemplateService.myform.get("ReportTime").value || '11/01/2022',
+  //           "IsCompleted":'false',// (this._radiologytemplateService.myform.get("IsCompleted").value).trim(),
+  //           "IsPrinted":'false',//Boolean(JSON.parse(this._radiologytemplateService.myform.get("IsPrinted").value)),
+  //           "RadResultDr1": this._radiologytemplateService.myform.get("DoctorId").value.DoctorId ,
+  //           "RadResultDr2": this._radiologytemplateService.myform.get("DoctorId").value.DoctorId,
+  //           "RadResultDr3": this._radiologytemplateService.myform.get("DoctorId").value.DoctorId,
+  //           "SuggestionNotes":this._radiologytemplateService.myform.get("Suggatationnote").value || '',
+  //           "AdmVisitDoctorID": this._radiologytemplateService.myform.get("DoctorId").value.DoctorId,
+  //           "RefDoctorID": this._radiologytemplateService.myform.get("DoctorId").value.DoctorId || 1,
+  //           "ResultEntry": 'Clear',//Boolean(JSON.parse(this._radiologytemplateService.myform.get("SuggestionNotes").value)),
             
-          }
-        }
-        // console.log(m_data);
-        this._radiologytemplateService.insertRadiologyTemplateMaster(m_data).subscribe(data => {
-          this.msg = data;
-        });
-        this.notification.success('Record added successfully')
-      }      
-      else {
-        var m_dataUpdate = {
-          radiologyReportHeaderUpdate: {
-            "RadReportID": this._radiologytemplateService.myform.get("RadReportID").value || 1,
-            "ReportDate": this._radiologytemplateService.myform.get("ReportDate").value || '11/01/2022',
-            "ReportTime": this._radiologytemplateService.myform.get("ReportTime").value || '11/01/2022',
-            "IsCompleted":'false',// (this._radiologytemplateService.myform.get("IsCompleted").value).trim(),
-            "IsPrinted":'false',//Boolean(JSON.parse(this._radiologytemplateService.myform.get("IsPrinted").value)),
-            "RadResultDr1": this._radiologytemplateService.myform.get("DoctorId").value.DoctorId ,
-            "RadResultDr2": this._radiologytemplateService.myform.get("DoctorId").value.DoctorId,
-            "RadResultDr3": this._radiologytemplateService.myform.get("DoctorId").value.DoctorId,
-            "SuggestionNotes":this._radiologytemplateService.myform.get("Suggatationnote").value || '',
-            "AdmVisitDoctorID": this._radiologytemplateService.myform.get("DoctorId").value.DoctorId,
-            "RefDoctorID": this._radiologytemplateService.myform.get("DoctorId").value.DoctorId || 1,
-            "ResultEntry": 'Clear',//Boolean(JSON.parse(this._radiologytemplateService.myform.get("SuggestionNotes").value)),
+  //         }
+  //       }
+  //       // console.log(m_data);
+  //       this._radiologytemplateService.insertRadiologyTemplateMaster(m_data).subscribe(data => {
+  //         this.msg = data;
+  //       });
+  //       this.notification.success('Record added successfully')
+  //     }      
+  //     else {
+  //       var m_dataUpdate = {
+  //         radiologyReportHeaderUpdate: {
+  //           "RadReportID": this._radiologytemplateService.myform.get("RadReportID").value || 1,
+  //           "ReportDate": this._radiologytemplateService.myform.get("ReportDate").value || '11/01/2022',
+  //           "ReportTime": this._radiologytemplateService.myform.get("ReportTime").value || '11/01/2022',
+  //           "IsCompleted":'false',// (this._radiologytemplateService.myform.get("IsCompleted").value).trim(),
+  //           "IsPrinted":'false',//Boolean(JSON.parse(this._radiologytemplateService.myform.get("IsPrinted").value)),
+  //           "RadResultDr1": this._radiologytemplateService.myform.get("DoctorId").value.DoctorId ,
+  //           "RadResultDr2": this._radiologytemplateService.myform.get("DoctorId").value.DoctorId,
+  //           "RadResultDr3": this._radiologytemplateService.myform.get("DoctorId").value.DoctorId,
+  //           "SuggestionNotes":this._radiologytemplateService.myform.get("Suggatationnote").value || '',
+  //           "AdmVisitDoctorID": this._radiologytemplateService.myform.get("DoctorId").value.DoctorId,
+  //           "RefDoctorID": this._radiologytemplateService.myform.get("DoctorId").value.DoctorId || 1,
+  //           "ResultEntry": 'Clear',//Boolean(JSON.parse(this._radiologytemplateService.myform.get("SuggestionNotes").value)),
             
 
-          }
-        }
-        console.log(m_dataUpdate);
-        this._radiologytemplateService.updateRadiologyTemplateMaster(m_dataUpdate).subscribe(data => {
-          this.msg = data;
-        });
-        this.notification.success('Record updated successfully')
-      }
-      this.onClose();
-    }
+  //         }
+  //       }
+  //       console.log(m_dataUpdate);
+  //       this._radiologytemplateService.updateRadiologyTemplateMaster(m_dataUpdate).subscribe(data => {
+  //         this.msg = data;
+  //       });
+  //       this.notification.success('Record updated successfully')
+  //     }
+  //     this.onClose();
+  //   }
   }
 
 
