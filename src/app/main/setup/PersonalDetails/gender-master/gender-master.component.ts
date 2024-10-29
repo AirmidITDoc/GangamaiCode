@@ -47,10 +47,8 @@ export class GenderMasterComponent implements OnInit {
                                 if (result) {
                                     let that = this;
                                     this._GenderService.deactivateTheStatus(data.genderId).subscribe((response: any) => {
-                                        if (response.StatusCode == 200) {
-                                            this.toastr.success(response.Message);
-                                            that.grid.bindGridData();
-                                        }
+                                        this.toastr.success(response.message);
+                                        that.grid.bindGridData();
                                     });
                                 }
                                 this.confirmDialogRef = null;
