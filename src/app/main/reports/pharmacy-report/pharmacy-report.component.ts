@@ -1193,7 +1193,7 @@ debugger
 
    
   viewgetDrwiseprofitdetailReportPdf(){
-    debugger
+    
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
       this.AdList = true;
@@ -1203,7 +1203,7 @@ debugger
         storeId = this._PharmacyreportService.userForm.get('StoreId').value.StoreId
 
       this.OPIPType= parseInt(this._PharmacyreportService.userForm.get('OPIPType').value)
- 
+      debugger
 
       let DoctorID = 0;
       if (this._PharmacyreportService.userForm.get('DoctorID').value)

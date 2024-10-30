@@ -194,7 +194,7 @@ export class PharmacyreportService {
     if (loader) {
       this._loaderService.show();
   }
-    return this._httpClient.get("PharmacyReport/view-PharmacySalesDoctorWiseProfitDetailsReportOPIP?FromDate=" + FromDate+"&ToDate="+ToDate+"&DoctorId="+DoctorId+"&OP_IP_Type="+OP_IP_Type);
+    return this._httpClient.get("PharmacyReport/view-PharmacySalesDoctorWiseProfitReportSummaryOPIP?FromDate=" + FromDate+"&ToDate="+ToDate+"&DoctorId="+DoctorId+"&OP_IP_Type="+OP_IP_Type);
   }
   public getItemlist(Param){
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_Item_Name",Param)
