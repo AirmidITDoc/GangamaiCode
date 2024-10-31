@@ -24,9 +24,9 @@ export class PatienttypeMasterService {
 
     createPatientTypeForm(): FormGroup {
         return this._formBuilder.group({
-            PatientTypeId: [""],
-            PatientType: [""],
-            IsDeleted: ["false"],
+            patientTypeId: [""],
+            patientType: [""],
+            isDeleted: ["false"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
         });
@@ -35,26 +35,23 @@ export class PatienttypeMasterService {
     initializeFormGroup() {
         this.createPatientTypeForm();
     }
-
-    public getPatienttypeMasterList(param: gridRequest, showLoader = true) {
-        return this._httpClient.PostData("Gender/List", param, showLoader);
+    getValidationMessages() {
+        return {
+            patientType: [
+                { name: "required", Message: "PatientType Name is required" },
+                { name: "maxlength", Message: "PatientType name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
     }
 
-    public PatienttypeMasterInsert(Param: any, showLoader = true) {
-        return this._httpClient.PostData("Patienttype", Param, showLoader);
-    }
-
-    public PatienttypeMasterUpdate(id: number , Param: any, showLoader = true) {
-        //return this._httpClient.put("Gender/" + id , Param, showLoader);
-        return this._httpClient.PostData("Patienttype", Param, showLoader);
+    public patienttypeMasterSave(Param: any, showLoader = true) {
+        if (Param.patientTypeId) {
+            return this._httpClient.PutData("PatientType/" + Param.patientTypeId, Param, showLoader);
+        } else return this._httpClient.PostData("PatientType", Param, showLoader);
     }
 
     public deactivateTheStatus(m_data) {
-        //return this._httpClient.delete("Gender?Id=" + m_data, {});
-        return this._httpClient.PostData("Patienttype", m_data);
-    }
-
-    populateForm(param) {
-        this.myForm.patchValue(param);
+        return this._httpClient.PostData("PatientType", m_data);
     }
 }

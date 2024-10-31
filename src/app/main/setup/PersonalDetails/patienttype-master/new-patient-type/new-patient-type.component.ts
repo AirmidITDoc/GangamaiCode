@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { PatienttypeMasterService } from '../patienttype-master.service';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-new-patient-type',
@@ -7,107 +11,37 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NewPatientTypeComponent implements OnInit {
 
-  constructor() { }
+  patienttypeForm: FormGroup;
+  constructor(
+      public _PatienttypeMasterService: PatienttypeMasterService,
+      public dialogRef: MatDialogRef<NewPatientTypeComponent>,
+      @Inject(MAT_DIALOG_DATA) public data: any,
+      public toastr: ToastrService
+  ) { }
+
 
   ngOnInit(): void {
+      this.patienttypeForm = this._PatienttypeMasterService.createPatientTypeForm();
+      var m_data = {
+        patientTypeId: this.data?.patientTypeId,
+        patientType: this.data?.patientType.trim(),
+          isDeleted: JSON.stringify(this.data?.isActive),
+      };
+      this.patienttypeForm.patchValue(m_data);
   }
-//   onSubmit() {
-//     if (this._PatientTypeService.myForm.valid) {
-//         if (!this._PatientTypeService.myForm.get("PatientTypeId").value) {
-//             var m_data = {
-//                 patientTypeMasterInsert: {
-//                     patientType: this._PatientTypeService.myForm
-//                         .get("PatientType")
-//                         .value.trim(),
-//                     addedBy: 1,
-//                     isActive: Boolean(
-//                         JSON.parse(
-//                             this._PatientTypeService.myForm.get("IsDeleted")
-//                                 .value
-//                         )
-//                     ),
-//                 },
-//             };
-//             this._PatientTypeService
-//                 .patientTypeMasterInsert(m_data)
-//                 .subscribe((data) => {
-//                     this.msg = data;
-//                     if (data) {
-//                         this.toastr.success('Record Saved Successfully.', 'Saved !', {
-//                             toastClass: 'tostr-tost custom-toast-success',
-//                           });
-//                           //this.getPatientTypeMasterList();
-//                         // Swal.fire(
-//                         //     "Saved !",
-//                         //     "Record saved Successfully !",
-//                         //     "success"
-//                         // ).then((result) => {
-//                         //     if (result.isConfirmed) {
-//                         //         this.getPatientTypeMasterList();
-//                         //     }
-//                         // });
-//                     } else {
-//                         this.toastr.error('Patient Type Master Data not saved !, Please check API error..', 'Error !', {
-//                             toastClass: 'tostr-tost custom-toast-error',
-//                           });
-//                     }
-//                     this.getPatientTypeMasterList();
-//                 },error => {
-//                     this.toastr.error('Patient Type Data not saved !, Please check API error..', 'Error !', {
-//                      toastClass: 'tostr-tost custom-toast-error',
-//                    });
-//                  } );
-//         } else {
-//             var m_dataUpdate = {
-//                 patientTypeMasterUpdate: {
-//                     patientTypeID:
-//                         this._PatientTypeService.myForm.get("PatientTypeId")
-//                             .value,
-//                     patientType: this._PatientTypeService.myForm
-//                         .get("PatientType")
-//                         .value.trim(),
-//                     isActive: Boolean(
-//                         JSON.parse(
-//                             this._PatientTypeService.myForm.get("IsDeleted")
-//                                 .value
-//                         )
-//                     ),
-//                     updatedBy: 1,
-//                 },
-//             };
-//             console.log(m_dataUpdate);
-//             this._PatientTypeService
-//                 .patientTypeMasterUpdate(m_dataUpdate)
-//                 .subscribe((data) => {
-//                     this.msg = m_dataUpdate;
-//                     if (data) {
-//                         this.toastr.success('Record Updated Successfully.', 'Updated !', {
-//                             toastClass: 'tostr-tost custom-toast-success',
-//                           });
-//                           this.getPatientTypeMasterList();
-//                         // Swal.fire(
-//                         //     "Updated !",
-//                         //     "Record updated Successfully !",
-//                         //     "success"
-//                         // ).then((result) => {
-//                         //     if (result.isConfirmed) {
-//                         //         this.getPatientTypeMasterList();
-//                         //     }
-//                         // });
-//                     } else {
-                       
-//                         this.toastr.error('Patient Type Master Data not Updated !, Please check API error..', 'Error !', {
-//                             toastClass: 'tostr-tost custom-toast-error',
-//                           });
-//                     }
-//                     this.getPatientTypeMasterList();
-//                 },error => {
-//                     this.toastr.error('Patient Type Data not Updated !, Please check API error..', 'Error !', {
-//                      toastClass: 'tostr-tost custom-toast-error',
-//                    });
-//                  } );
-//         }
-//         this.onClear();
-//     }
-// }
+  onSubmit() {
+      if (this.patienttypeForm.valid) {
+          this._PatienttypeMasterService.patienttypeMasterSave(this.patienttypeForm.value).subscribe((response) => {
+              this.toastr.success(response.message);
+              this.onClear(true);
+          }, (error) => {
+              this.toastr.error(error.message);
+          });
+      }
+  }
+
+  onClear(val: boolean) {
+      this.patienttypeForm.reset();
+      this.dialogRef.close(val);
+  }
 }

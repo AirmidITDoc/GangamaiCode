@@ -19,8 +19,8 @@ export class DischargetypeMasterService {
 
     createDischargetypeForm(): FormGroup {
         return this._formBuilder.group({
-            DischargeTypeId: [""],
-            DischargeTypeName: [""],
+            dischargeTypeId: [""],
+            dischargeTypeName: [""],
             IsDeleted: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
@@ -51,17 +51,23 @@ export class DischargetypeMasterService {
         return this._httpClient.PostData("DischargeType/List", param, showLoader);
     }
 
-    public DischargeTypeMasterInsert(Param: any, showLoader = true) {
-        return this._httpClient.PostData("DischargeType", Param, showLoader);
+    getValidationMessages() {
+        return {
+            dischargeTypeName: [
+                { name: "required", Message: "DischargeType Name is required" },
+                { name: "maxlength", Message: "DischargeType name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
     }
 
-    public DischargeTypeMasterUpdate(id: number , Param: any, showLoader = true) {
-        //return this._httpClient.put("Gender/" + id , Param, showLoader);
-        return this._httpClient.PostData("DischargeType", Param, showLoader);
+    public dischargeTypeMasterSave(Param: any, showLoader = true) {
+        if (Param.dischargeTypeId) {
+            return this._httpClient.PutData("DischargeType/" + Param.dischargeTypeId, Param, showLoader);
+        } else return this._httpClient.PostData("DischargeType", Param, showLoader);
     }
 
     public deactivateTheStatus(m_data) {
-        //return this._httpClient.delete("Gender?Id=" + m_data, {});
         return this._httpClient.PostData("DischargeType", m_data);
     }
 }

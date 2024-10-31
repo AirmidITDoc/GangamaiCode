@@ -21,9 +21,9 @@ export class DepartmentMasterService {
 
     createDepartmentForm(): FormGroup {
         return this._formBuilder.group({
-            DepartmentId: [""],
-            DepartmentName: [""],
-            IsDeleted: ["false"],
+            departmentId: [""],
+            departmentName: [""],
+            isDeleted: ["false"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
         });
@@ -41,22 +41,23 @@ export class DepartmentMasterService {
     public getdepartmentMasterList(param: gridRequest, showLoader = true) {
         return this._httpClient.PostData("DepartmentMaster/List", param, showLoader);
     }
-
-    public departmentMasterInsert(Param: any, showLoader = true) {
-        return this._httpClient.PostData("Gender", Param, showLoader);
+    getValidationMessages() {
+        return {
+            departmentName: [
+                { name: "required", Message: "Department Name is required" },
+                { name: "maxlength", Message: "Department name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
     }
 
-    public departmentMasterUpdate(id: number , Param: any, showLoader = true) {
-        //return this._httpClient.put("Gender/" + id , Param, showLoader);
-        return this._httpClient.PostData("Gender", Param, showLoader);
+    public departmentMasterSave(Param: any, showLoader = true) {
+        if (Param.departmentId) {
+            return this._httpClient.PutData("DepartmentMaster/" + Param.departmentId, Param, showLoader);
+        } else return this._httpClient.PostData("DepartmentMaster", Param, showLoader);
     }
 
     public deactivateTheStatus(m_data) {
-        //return this._httpClient.delete("Gender?Id=" + m_data, {});
-        return this._httpClient.PostData("Gender", m_data);
-    }
-
-    populateForm(Param) {
-        this.myform.patchValue(Param);
+        return this._httpClient.PostData("DepartmentMaster", m_data);
     }
 }

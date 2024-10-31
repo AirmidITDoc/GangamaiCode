@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { MaritalstatusMasterService } from '../maritalstatus-master.service';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-new-maritalstatus',
@@ -6,86 +10,35 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./new-maritalstatus.component.scss']
 })
 export class NewMaritalstatusComponent implements OnInit {
-
-  constructor() { }
+  maritalForm: FormGroup;
+  constructor( public _MaritalstatusMasterService: MaritalstatusMasterService,
+    public dialogRef: MatDialogRef<NewMaritalstatusComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public toastr: ToastrService) { }
 
   ngOnInit(): void {
+    this.maritalForm = this._MaritalstatusMasterService.createMaritalForm();
+    var m_data = {
+      maritalStatusId: this.data?.maritalStatusId,
+      maritalStatusName: this.data?.maritalStatusName.trim(),
+        isDeleted: JSON.stringify(this.data?.isActive),
+    };
+    this.maritalForm.patchValue(m_data);
   }
-//   onSubmit() {
-//     if (this._maritalService.myform.valid) {
-//         if (!this._maritalService.myform.get("MaritalStatusId").value) {
-//             var m_data = {
-//                 maritalStatusMasterInsert: {
-//                     maritalStatusName: this._maritalService.myform
-//                         .get("MaritalStatusName")
-//                         .value.trim(),
-//                     addedBy: 1,
-//                     isDeleted: Boolean(
-//                         JSON.parse(
-//                             this._maritalService.myform.get("IsDeleted")
-//                                 .value
-//                         )
-//                     ),
-//                 },
-//             };
 
-//             this._maritalService
-//                 .insertMaritalStatusMaster(m_data)
-//                 .subscribe((data) => {
-//                     this.msg = data;
-//                     if (data) {
-//                         this.toastr.success('Record Saved Successfully.', 'Saved !', {
-//                             toastClass: 'tostr-tost custom-toast-success',
-//                           });
-                        
-//                     } else {
-//                         this.toastr.error('MaritalStatus Master Data not Saved !, Please check API error..', 'Error !', {
-//                             toastClass: 'tostr-tost custom-toast-error',
-//                           });
-//                     }
-                  
-//                 },error => {
-//                     this.toastr.error('MaritalStatus Data not saved !, Please check API error..', 'Error !', {
-//                      toastClass: 'tostr-tost custom-toast-error',
-//                    });
-//                  } );
-//         } else {
-//             var m_dataUpdate = {
-//                 maritalStatusMasterUpdate: {
-//                     maritalStatusId:
-//                         this._maritalService.myform.get("MaritalStatusId")
-//                             .value,
-//                     maritalStatusName: this._maritalService.myform
-//                         .get("MaritalStatusName")
-//                         .value.trim(),
-//                     isDeleted: Boolean(
-//                         JSON.parse(
-//                             this._maritalService.myform.get("IsDeleted")
-//                                 .value
-//                         )
-//                     ),
-//                     updatedBy: 1,
-//                 },
-//             };
+  onSubmit() {
+    if (this.maritalForm.valid) {
+        this._MaritalstatusMasterService.MaritalStatusMasterSave(this.maritalForm.value).subscribe((response) => {
+            this.toastr.success(response.message);
+            this.onClear(true);
+        }, (error) => {
+            this.toastr.error(error.message);
+        });
+    }
+}
 
-//             this._maritalService
-//                 .updateMaritalStatusMaster(m_dataUpdate)
-//                 .subscribe((data) => {
-//                    // this.msg = data;
-//                     if (data) {
-//                         this.toastr.success('Record updated Successfully.', 'updated !', {
-//                             toastClass: 'tostr-tost custom-toast-success',
-//                           });
-                       
-//                     } else {
-//                         this.toastr.error('MaritalStatus Master Data not updated !, Please check API error..', 'Error !', {
-//                             toastClass: 'tostr-tost custom-toast-error',
-//                           });
-//                     }
-                    
-//                 });
-//         }
-//         this.onClear();
-//     }
-// }
+onClear(val: boolean) {
+    this.maritalForm.reset();
+    this.dialogRef.close(val);
+}
 }

@@ -13,6 +13,7 @@ import { NewWardComponent } from "../ward-master/new-ward/new-ward.component";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { NewDischargetypeComponent } from "./new-dischargetype/new-dischargetype.component";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 
 
 @Component({
@@ -24,6 +25,15 @@ import { NewDischargetypeComponent } from "./new-dischargetype/new-dischargetype
 })
 export class DischargetypeMasterComponent implements OnInit {
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+ 
+    constructor(
+        public _dischargetypeService: DischargetypeMasterService,
+        public toastr : ToastrService,
+
+        public _matDialog: MatDialog
+    ) {}
+    
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
         apiUrl: "DischargeType/List",
         columnsList: [
@@ -34,11 +44,27 @@ export class DischargetypeMasterComponent implements OnInit {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
-                            debugger
+                            this.onSave(data);
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            debugger
+                            this.confirmDialogRef = this._matDialog.open(
+                                FuseConfirmDialogComponent,
+                                {
+                                    disableClose: false,
+                                }
+                            );
+                            this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+                            this.confirmDialogRef.afterClosed().subscribe((result) => {
+                                if (result) {
+                                    let that = this;
+                                    this._dischargetypeService.deactivateTheStatus(data.dischargeTypeId).subscribe((response: any) => {
+                                        this.toastr.success(response.message);
+                                        that.grid.bindGridData();
+                                    });
+                                }
+                                this.confirmDialogRef = null;
+                            });
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
@@ -49,130 +75,26 @@ export class DischargetypeMasterComponent implements OnInit {
             { fieldName: "dischargeTypeName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ],
-        row:25
-    }
-    constructor(
-        public _dischargetypeService: DischargetypeMasterService,
-        public toastr : ToastrService,
-
-        public _matDialog: MatDialog
-    ) {}
-
-    ngOnInit(): void {
-      
+        row: 25
     }
 
+    
 
-
-    onClear() {
-        this._dischargetypeService.myform.reset({ IsDeleted: "false" });
-        this._dischargetypeService.initializeFormGroup();
-    }
-
-    onSearch() {
-        
-    }
-
-   
-
-    onSearchClear() {
-        this._dischargetypeService.myformSearch.reset({
-            DischargeTypeNameSearch: "",
-            IsDeletedSearch: "2",
-        });
-        
-    }
-    newdischargetypemaster() {
+    ngOnInit(): void { }
+    onSave(row: any = null) {
+        let that = this;
         const dialogRef = this._matDialog.open(NewDischargetypeComponent,
             {
                 maxWidth: "45vw",
                 height: '35%',
                 width: '70%',
+                data: row
             });
         dialogRef.afterClosed().subscribe(result => {
-            console.log('The dialog was closed - Insert Action', result);
-
-        });
-    }
-    changeStatus(status: any) {
-        switch (status.id) {
-            case 1:
-                //this.onEdit(status.data)
-                break;
-            case 2:
-                this.onEdit(status.data)
-                break;
-            case 5:
-                this.onDeactive(status.data.dischargeTypeId);
-                break;
-            default:
-                break;
-        }
-    }
-
-    onDeactive(dischargeTypeId) {
-        debugger
-        this.confirmDialogRef = this._matDialog.open(
-            FuseConfirmDialogComponent,
-            {
-                disableClose: false,
-            }
-        );
-        this.confirmDialogRef.componentInstance.confirmMessage =
-            "Are you sure you want to deactive?";
-        this.confirmDialogRef.afterClosed().subscribe((result) => {
-            debugger
             if (result) {
-                this._dischargetypeService.deactivateTheStatus(dischargeTypeId).subscribe((data: any) => {
-                
-                    if (data.StatusCode == 200) {
-                        this.toastr.success(
-                            "Record updated Successfully.",
-                            "updated !",
-                            {
-                                toastClass:
-                                    "tostr-tost custom-toast-success",
-                            }
-                        );
-                        // this.getGenderMasterList();
-                    }
-                });
+                that.grid.bindGridData();
             }
-            this.confirmDialogRef = null;
         });
     }
-    onEdit(row) {
-        var m_data = {
-            DischargeTypeId: row.dischargeTypeId,
-            DischargeTypeName: row.dischargeTypeName.trim(),
-            IsDeleted: JSON.stringify(row.IsDeleted),
-            UpdatedBy: row.UpdatedBy,
-        };
-        this._dischargetypeService.populateForm(m_data);
-    }
-}
-export class DischargeTypeMaster {
-    dischargeTypeId: number;
-    dischargeTypeName: string;
-    IsDeleted: boolean;
-    AddedBy: number;
-    UpdatedBy: number;
 
-    IsDeletedSearch: number;
-    /**
-     * Constructor
-     *
-     * @param DischargeTypeMaster
-     */
-    constructor(DischargeTypeMaster) {
-        {
-            this.dischargeTypeId = DischargeTypeMaster.dischargeTypeId || "";
-            this.dischargeTypeName =
-                DischargeTypeMaster.dischargeTypeName || "";
-            this.IsDeleted = DischargeTypeMaster.IsDeleted || "false";
-            this.AddedBy = DischargeTypeMaster.AddedBy || "";
-            this.UpdatedBy = DischargeTypeMaster.UpdatedBy || "";
-            this.IsDeletedSearch = DischargeTypeMaster.IsDeletedSearch || "";
-        }
-    }
 }

@@ -18,11 +18,11 @@ export class StateMasterService {
 
     createStateForm(): FormGroup {
         return this._formBuilder.group({
-            StateId: [""],
-            StateName: [""],
-            CountryId: [""],
-            CountryName: [""],
-            IsDeleted: ["false"],
+            stateId: [""],
+            stateName: [""],
+            countryId: [""],
+            countryName: [""],
+            isDeleted: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
         });
@@ -38,34 +38,23 @@ export class StateMasterService {
         this.createStateForm();
     }
 
-   
-
-    // public getCountryMasterCombo() {
-    //     return this._httpClient.post(
-    //         "Generic/GetByProc?procName=Retrieve_CountryMasterForCombo",
-    //         {}
-    //     );
-    // }
-    public getstateMasterList(param: gridRequest, showLoader = true) {
-        return this._httpClient.PostData("StateMaster/List", param, showLoader);
+    getValidationMessages() {
+        return {
+           stateName: [
+                { name: "required", Message: "State Name is required" },
+                { name: "maxlength", Message: "State name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
     }
 
-    public stateMasterInsert(Param: any, showLoader = true) {
-        return this._httpClient.PostData("State", Param, showLoader);
+    public stateMasterSave(Param: any, showLoader = true) {
+        if (Param.stateId) {
+            return this._httpClient.PutData("StateMaster/" + Param.stateId, Param, showLoader);
+        } else return this._httpClient.PostData("StateMaster", Param, showLoader);
     }
 
-    public stateMasterUpdate(id: number , Param: any, showLoader = true) {
-        //return this._httpClient.put("Gender/" + id , Param, showLoader);
-        return this._httpClient.PostData("State", Param, showLoader);
-    }
-
-    populateForm(param) {
-        this.myform.patchValue(param);
-    }
-
-    
     public deactivateTheStatus(m_data) {
-        //return this._httpClient.delete("Gender?Id=" + m_data, {});
-        return this._httpClient.PostData("State", m_data);
+        return this._httpClient.PostData("StateMaster", m_data);
     }
 }

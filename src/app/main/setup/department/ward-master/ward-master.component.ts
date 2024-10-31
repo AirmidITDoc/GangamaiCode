@@ -14,6 +14,7 @@ import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 
 @Component({
     selector: "app-ward-master",
@@ -24,6 +25,7 @@ import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 })
 export class WardMasterComponent implements OnInit {
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
         apiUrl: "WardMaster/List",
         columnsList: [
@@ -34,173 +36,61 @@ export class WardMasterComponent implements OnInit {
             { heading: "IsAvailible", key: "isAvailible", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "ClassId", key: "classId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
-            {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            debugger
-                        }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            debugger
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "roomId",
-        sortOrder: 0,
-        filters: [
-            { fieldName: "roomName", fieldValue: "", opType: OperatorComparer.Contains },
-            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row:25
+           { heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                {
+                    action: gridActions.edit, callback: (data: any) => {
+                        this.onSave(data);
+                    }
+                }, {
+                    action: gridActions.delete, callback: (data: any) => {
+                        this.confirmDialogRef = this._matDialog.open(
+                            FuseConfirmDialogComponent,
+                            {
+                                disableClose: false,
+                            }
+                        );
+                        this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+                        this.confirmDialogRef.afterClosed().subscribe((result) => {
+                            if (result) {
+                                let that = this;
+                                this._wardService.deactivateTheStatus(data.roomId).subscribe((response: any) => {
+                                    this.toastr.success(response.message);
+                                    that.grid.bindGridData();
+                                });
+                            }
+                            this.confirmDialogRef = null;
+                        });
+                    }
+                }]
+        } //Action 1-view, 2-Edit,3-delete
+    ],
+    sortField: "roomId",
+    sortOrder: 0,
+    filters: [
+        { fieldName: "roomName", fieldValue: "", opType: OperatorComparer.Contains },
+        { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+    ],
+    row: 25
     }
     constructor(public _wardService: WardMasterService, public _matDialog: MatDialog,
         public toastr : ToastrService,) {}
 
-    ngOnInit(): void {
+    ngOnInit(): void {}
     
-       
-
-       
-    }
-    onSearch() {
-       
-    }
-
-    onSearchClear() {
-        this._wardService.myformSearch.reset({
-            RoomNameSearch: "",
-            IsDeletedSearch: "2",
-        });
-       
-    }
- 
-
-    newwardmaster() {
-        const dialogRef = this._matDialog.open(NewWardComponent,
-            {
-                maxWidth: "45vw",
-                height: '35%',
-                width: '70%',
-            });
-        dialogRef.afterClosed().subscribe(result => {
-            console.log('The dialog was closed - Insert Action', result);
-
-        });
-    }
-    // getLocationNameCombobox() {
-    //     this._wardService.getLocationMasterCombo().subscribe((data) => {
-    //         this.LocationcmbList = data;
-    //         this.filteredLocation.next(this.LocationcmbList.slice());
-    //         this._wardService.myform
-    //             .get("LocationId")
-    //             .setValue(this.LocationcmbList[0]);
-    //     });
-    // }
-
-    // getClassNameCombobox() {
-    //     this._wardService.getClassMasterCombo().subscribe((data) => {
-    //         this.ClasscmbList = data;
-    //         this.filteredClass.next(this.ClasscmbList.slice());
-    //         this._wardService.myform
-    //             .get("ClassId")
-    //             .setValue(this.ClasscmbList[0]);
-    //     });
-    // }
-
-    onClear() {
-        this._wardService.myform.reset({ IsDeleted: "false" });
-        this._wardService.initializeFormGroup();
-    }
-
-    changeStatus(status: any) {
-        switch (status.id) {
-            case 1:
-                //this.onEdit(status.data)
-                break;
-            case 2:
-                this.onEdit(status.data)
-                break;
-            case 5:
-                this.onDeactive(status.data.roomId);
-                break;
-            default:
-                break;
-        }
-    }
-    onDeactive(roomId) {
-        debugger
-        this.confirmDialogRef = this._matDialog.open(
-            FuseConfirmDialogComponent,
-            {
-                disableClose: false,
-            }
-        );
-        this.confirmDialogRef.componentInstance.confirmMessage =
-            "Are you sure you want to deactive?";
-        this.confirmDialogRef.afterClosed().subscribe((result) => {
-            debugger
-            if (result) {
-                this._wardService.deactivateTheStatus(roomId).subscribe((data: any) => {
-                    
-                    if (data.StatusCode == 200) {
-                        this.toastr.success(
-                            "Record updated Successfully.",
-                            "updated !",
-                            {
-                                toastClass:
-                                    "tostr-tost custom-toast-success",
-                            }
-                        );
-                        // this.getGenderMasterList();
-                    }
+        onSave(row: any = null) {
+            let that = this;
+            const dialogRef = this._matDialog.open(NewWardComponent,
+                {
+                    maxWidth: "45vw",
+                    height: '35%',
+                    width: '70%',
+                    data: row
                 });
-            }
-            this.confirmDialogRef = null;
-        });
-    }
-    onEdit(row) {
-        var m_data = {
-            RoomId: row.RoomId,
-            RoomName: row.RoomName,
-            LocationId: row.LocationId,
-            IsAvailable: JSON.stringify(row.IsAvailible),
-            ClassId: row.ClassID,
-            IsDeleted: JSON.stringify(row.IsActive),
-            UpdatedBy: row.UpdatedBy,
-        };
-        this._wardService.populateForm(m_data);
-    }
-}
-export class WardMaster {
-    roomId: number;
-    roomName: string;
-    roomType: string;
-    locationId: number;
-    isAvailible: boolean;
-    isActive: boolean;
-    AddedBy: number;
-    UpdatedBy: number;
-    classId: number;
-    AddedByName: string;
-
-    /**
-     * Constructor
-     *
-     * @param WardMaster
-     */
-    constructor(WardMaster) {
-        {
-            this.roomId = WardMaster.roomId || "";
-            this.roomName = WardMaster.roomName || "";
-            this.roomType = WardMaster.roomType || "";
-            this.locationId = WardMaster.locationId || "";
-            this.isAvailible = WardMaster.isAvailible || "false";
-            this.isActive = WardMaster.isActive || "false";
-            this.AddedBy = WardMaster.AddedBy || "";
-            this.UpdatedBy = WardMaster.UpdatedBy || "";
-            this.classId = WardMaster.classId || "";
+            dialogRef.afterClosed().subscribe(result => {
+                if (result) {
+                    that.grid.bindGridData();
+                }
+            });
         }
+
     }
-}

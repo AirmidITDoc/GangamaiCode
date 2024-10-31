@@ -26,9 +26,9 @@ export class CountryMasterService {
     }
     createCountryForm(): FormGroup {
         return this._formBuilder.group({
-            CountryId: [""],
-            CountryName: [""],
-            IsDeleted: ["false"],
+            countryId: [""],
+            countryName: [""],
+            isDeleted: ['true'],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
         });
@@ -38,25 +38,23 @@ export class CountryMasterService {
         this.createCountryForm();
     }
 
-    public getcountryMasterList(param: gridRequest, showLoader = true) {
-        return this._httpClient.PostData("CountryMaster/List", param, showLoader);
+    getValidationMessages() {
+        return {
+            countryName: [
+                { name: "required", Message: "Country Name is required" },
+                { name: "maxlength", Message: "Country name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
     }
 
-    public countryMasterInsert(Param: any, showLoader = true) {
-        return this._httpClient.PostData("Country", Param, showLoader);
+    public countryMasterSave(Param: any, showLoader = true) {
+        if (Param.countryId) {
+            return this._httpClient.PutData("CountryMaster/" + Param.countryId, Param, showLoader);
+        } else return this._httpClient.PostData("CountryMaster", Param, showLoader);
     }
 
-    public countryMasterUpdate(id: number , Param: any, showLoader = true) {
-        //return this._httpClient.put("Gender/" + id , Param, showLoader);
-        return this._httpClient.PostData("Country", Param, showLoader);
-    }
-
-      
     public deactivateTheStatus(m_data) {
-        //return this._httpClient.delete("Gender?Id=" + m_data, {});
-        return this._httpClient.PostData("Country", m_data);
-    }
-    populateForm(param) {
-        this.myform.patchValue(param);
+        return this._httpClient.PostData("CountryMaster", m_data);
     }
 }

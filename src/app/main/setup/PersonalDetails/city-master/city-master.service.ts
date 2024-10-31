@@ -18,13 +18,13 @@ export class CityMasterService {
 
     createCityForm(): FormGroup {
         return this._formBuilder.group({
-            CityId: [""],
-            CityName: [""],
-            StateId: [""],
-            StateName: [""],
-            CountryId: [""],
-            CountryName: [""],
-            IsDeleted: ["false"],
+            cityId: [""],
+            cityName: [""],
+            stateId: [""],
+            // StateName: [""],
+            // countryId: [""],
+            // CountryName: [""],
+             isDeleted: ["true"],
             // AddedBy: ["0"],
             // UpdatedBy: ["0"],
         });
@@ -41,37 +41,24 @@ export class CityMasterService {
     }
 
   
-    public getCityMasterCombo() {
-        return this._httpClient1.post(
-            "Generic/GetByProc?procName=Retrieve_CityMasterForCombo",
-            {}
-        );
+   
+    getValidationMessages() {
+        return {
+           cityName: [
+                { name: "required", Message: "City Name is required" },
+                { name: "maxlength", Message: "City name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
     }
 
-    
-
-    public getStateList(CityId) {
-        return this._httpClient1.post("Generic/GetByProc?procName=Retrieve_StateMasterForCombo_Conditional",{"Id": CityId})
-    }
-    
-    public getCityMasterList(param: gridRequest, showLoader = true) {
-        return this._httpClient.PostData("CityMaster/List", param, showLoader);
-    }
-    public cityMasterInsert(Param: any, showLoader = true) {
-        return this._httpClient.PostData("City", Param, showLoader);
-    }
-
-    public cityMasterUpdate(id: number , Param: any, showLoader = true) {
-        return this._httpClient.PostData("City", Param, showLoader);
+    public cityMasterSave(Param: any, showLoader = true) {
+        if (Param.cityId) {
+            return this._httpClient.PutData("CityMaster/" + Param.cityId, Param, showLoader);
+        } else return this._httpClient.PostData("CityMaster", Param, showLoader);
     }
 
     public deactivateTheStatus(m_data) {
-        //return this._httpClient.delete("Gender?Id=" + m_data, {});
-        return this._httpClient.PostData("City", m_data);
-    }
-
-
-    populateForm(param) {
-        this.myform.patchValue(param);
+        return this._httpClient.PostData("CityMaster", m_data);
     }
 }

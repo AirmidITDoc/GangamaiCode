@@ -1,4 +1,4 @@
-<!-- <div class="modal-wrapper grid-container">
+<div class="modal-wrapper grid-container">
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
@@ -16,14 +16,15 @@
     </div>
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
-            <form [formGroup]="_GenderMasterService.myform">
-                <input type="hidden" name="genderId" formControlName="genderId">
+            <form [formGroup]="stateForm">
+                <input type="hidden" name="stateId" formControlName="stateId">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                        <mat-label>Gender Name</mat-label>
-                        <input name="genderName" formControlName="genderName" matInput required>
-                        <mat-error>Please enter Gender Name only Char </mat-error>
-                    </mat-form-field>
+                    <airmid-textbox label="State name" formControlName="stateName" [value]="" [formGroup]="stateForm"
+                        [validations]="_StateMasterService.getValidationMessages().stateName" [maxLength]="300">
+                    </airmid-textbox>
+                    <airmid-textbox label="Countery Id" formControlName="countryId" [value]="" [formGroup]="stateForm"
+                        [validations]="_StateMasterService.getValidationMessages().stateName" [maxLength]="300">
+                    </airmid-textbox>
                 </div>
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                     <mat-radio-group name="isDeleted" formControlName="isDeleted" value='false'>
@@ -35,12 +36,11 @@
                 </div>
             </form>
         </div>
-        <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
-            <div class="button-row">
-                <button mat-raised-button color="primary" type="submit" (click)="onSubmit()"
-                    [disabled]="_GenderMasterService.myform.invalid">Save</button>
-                <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
-            </div>
+        <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
+           <button class="btn btn-danger-outline" (click)="onClear(false)">Reset</button>
+            <button class="btn btn-primary " color="accent" (click)="onSubmit()">
+                <span>Save</span>
+            </button>
         </div>
     </div>
-</div> -->
+</div>

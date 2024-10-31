@@ -21,6 +21,9 @@ import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatButtonModule } from "@angular/material/button";
 import { NewLocationComponent } from './new-location/new-location.component';
+import { MatDialogModule } from "@angular/material/dialog";
+import { SharedModule } from "app/main/shared/shared.module";
+import { DatePipe } from "@angular/common";
 
 const routes: Routes = [
     {
@@ -33,15 +36,13 @@ const routes: Routes = [
     declarations: [LocationMasterComponent, NewLocationComponent],
     imports: [
         RouterModule.forChild(routes),
-
+        SharedModule,
         MatButtonModule,
         MatCheckboxModule,
-        MatDatepickerModule,
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
         MatMenuModule,
-        MatRippleModule,
         MatTableModule,
         MatToolbarModule,
         MatPaginatorModule,
@@ -50,10 +51,10 @@ const routes: Routes = [
         MatRadioModule,
         MatSnackBarModule,
         FuseSharedModule,
-        FuseConfirmDialogModule,
         FuseSidebarModule,
+        MatDialogModule,
     ],
-    providers: [LocationMasterService],
+    providers: [LocationMasterService,DatePipe],
     entryComponents: [LocationMasterComponent],
 })
 export class LocationMasterModule {}

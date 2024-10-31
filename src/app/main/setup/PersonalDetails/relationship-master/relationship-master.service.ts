@@ -20,9 +20,9 @@ export class RelationshipMasterService {
 
     createRelationshipForm(): FormGroup {
         return this._formBuilder.group({
-            RelationshipId: [""],
-            RelationshipName: [""],
-            IsDeleted: ["false"],
+            relationshipId: [""],
+            relationshipName: [""],
+            IsDeleted: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
         });
@@ -39,26 +39,23 @@ export class RelationshipMasterService {
         this.createRelationshipForm();
     }
 
-  
-    public getrelationshipMasterList(param: gridRequest, showLoader = true) {
-        return this._httpClient.PostData("RelationshipMaster/List", param, showLoader);
+    getValidationMessages() {
+        return {
+            relationshipName: [
+                { name: "required", Message: "Relationship Name is required" },
+                { name: "maxlength", Message: "Relationship name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
     }
 
-    public relationshipMasterInsert(Param: any, showLoader = true) {
-        return this._httpClient.PostData("relationship", Param, showLoader);
+    public relationshipMasterSave(Param: any, showLoader = true) {
+        if (Param.relationshipId) {
+            return this._httpClient.PutData("RelationshipMaster/" + Param.relationshipId, Param, showLoader);
+        } else return this._httpClient.PostData("RelationshipMaster", Param, showLoader);
     }
 
-    public relationshipMasterUpdate(id: number , Param: any, showLoader = true) {
-        //return this._httpClient.put("Gender/" + id , Param, showLoader);
-        return this._httpClient.PostData("relationship", Param, showLoader);
-    }
-
-      
     public deactivateTheStatus(m_data) {
-        //return this._httpClient.delete("Gender?Id=" + m_data, {});
-        return this._httpClient.PostData("relationship", m_data);
-    }
-    populateForm(param) {
-        this.myform.patchValue(param);
+        return this._httpClient.PostData("RelationshipMaster", m_data);
     }
 }

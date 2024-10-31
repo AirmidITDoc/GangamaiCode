@@ -19,17 +19,17 @@ export class WardMasterService {
 
     createWardForm(): FormGroup {
         return this._formBuilder.group({
-            RoomId: [""],
-            RoomName: [""],
-            LocationId: [""],
-            LocationName: [""],
-            ClassId: [""],
-            ClassName: [""],
-            RoomType: ["1"],
-            IsAvailable: ["1"],
-            IsDeleted: ["false"],
-            AddedBy: ["0"],
-            UpdatedBy: ["0"],
+            roomId: [""],
+            roomName: [""],
+            locationId: [""],
+           // locationName: [""],
+           classId: [""],
+            //className: [""],
+            roomType: ["1"],
+            isAvailable: ["1"],
+           // isDeleted: ["false"],
+            // AddedBy: ["0"],
+            // UpdatedBy: ["0"],
         });
     }
     createSearchForm(): FormGroup {
@@ -42,28 +42,23 @@ export class WardMasterService {
         this.createWardForm();
     }
 
-  
-    populateForm(Param) {
-        this.myform.patchValue(Param);
+    getValidationMessages() {
+        return {
+            roomName: [
+                { name: "required", Message: "RoomName  is required" },
+                { name: "maxlength", Message: "RoomName should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
     }
 
-
-
-    public getWardMasterList(param: gridRequest, showLoader = true) {
-        return this._httpClient.PostData("WardMaster/List", param, showLoader);
-    }
-
-    publicWardMasterInsert(Param: any, showLoader = true) {
-        return this._httpClient.PostData("Ward", Param, showLoader);
-    }
-
-    public WardMasterUpdate(id: number , Param: any, showLoader = true) {
-        //return this._httpClient.put("Gender/" + id , Param, showLoader);
-        return this._httpClient.PostData("Ward", Param, showLoader);
+    public roomMasterSave(Param: any, showLoader = true) {
+        if (Param.roomId) {
+            return this._httpClient.PutData("WardMaster/" + Param.roomId, Param, showLoader);
+        } else return this._httpClient.PostData("WardMaster", Param, showLoader);
     }
 
     public deactivateTheStatus(m_data) {
-        //return this._httpClient.delete("Gender?Id=" + m_data, {});
-        return this._httpClient.PostData("Ward", m_data);
+        return this._httpClient.PostData("WardMaster", m_data);
     }
 }

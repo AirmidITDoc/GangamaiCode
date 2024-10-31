@@ -38,26 +38,23 @@ export class MaritalstatusMasterService {
         this.createMaritalForm();
     }
 
-   
-    public getMaritalStatusList(param: gridRequest, showLoader = true) {
-        return this._httpClient.PostData("MaritalStatus/List", param, showLoader);
+    getValidationMessages() {
+        return {
+            maritalStatusName: [
+                { name: "required", Message: "MaritalStatusName  is required" },
+                { name: "maxlength", Message: "MaritalStatusName should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
     }
 
-    public MaritalStatusMasterInsert(Param: any, showLoader = true) {
-        return this._httpClient.PostData("MaritalStatus", Param, showLoader);
-    }
-
-    public MaritalStatusMasterUpdate(id: number , Param: any, showLoader = true) {
-        //return this._httpClient.put("Gender/" + id , Param, showLoader);
-        return this._httpClient.PostData("MaritalStatus", Param, showLoader);
+    public MaritalStatusMasterSave(Param: any, showLoader = true) {
+        if (Param.maritalStatusId) {
+            return this._httpClient.PutData("MaritalStatus/" + Param.maritalStatusId, Param, showLoader);
+        } else return this._httpClient.PostData("MaritalStatus", Param, showLoader);
     }
 
     public deactivateTheStatus(m_data) {
-        //return this._httpClient.delete("Gender?Id=" + m_data, {});
         return this._httpClient.PostData("MaritalStatus", m_data);
-    }
-
-    populateForm(param) {
-        this.myform.patchValue(param);
     }
 }

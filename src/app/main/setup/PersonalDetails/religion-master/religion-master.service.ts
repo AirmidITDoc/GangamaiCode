@@ -25,9 +25,9 @@ export class ReligionMasterService {
     }
     CreateReligionForm(): FormGroup {
         return this._formBuilder.group({
-            ReligionId: [""],
-            ReligionName: [""],
-            IsDeleted: ["false"],
+            religionId: [""],
+            religionName: [""],
+            isDeleted: ["true"],
             AddedBy: [""],
             UpdatedBy: [""],
         });
@@ -40,20 +40,28 @@ export class ReligionMasterService {
         return this._httpClient.PostData("ReligionMaster/List", param, showLoader);
     }
 
-    public religionMasterInsert(Param: any, showLoader = true) {
-        return this._httpClient.PostData("Religion", Param, showLoader);
+    getValidationMessages() {
+        return {
+            religionName: [
+                { name: "required", Message: "Religion Name is required" },
+                { name: "maxlength", Message: "Religion name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
     }
 
-    public religionMasterUpdate(id: number , Param: any, showLoader = true) {
-        //return this._httpClient.put("Gender/" + id , Param, showLoader);
-        return this._httpClient.PostData("Religion", Param, showLoader);
+    public religionMasterSave(Param: any, showLoader = true) {
+        if (Param.religionId) {
+            return this._httpClient.PutData("ReligionMaster/" + Param.religionId, Param, showLoader);
+        } else return this._httpClient.PostData("ReligionMaster", Param, showLoader);
     }
 
-      
+    
     public deactivateTheStatus(m_data) {
-        //return this._httpClient.delete("Gender?Id=" + m_data, {});
-        return this._httpClient.PostData("Religion", m_data);
+        return this._httpClient.PostData("ReligionMaster", m_data);
     }
+
+
     populateForm(param) {
         this.myform.patchValue(param);
     }

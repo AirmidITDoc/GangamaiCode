@@ -2,7 +2,7 @@
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> PatientType Master</span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Area Master</span>
             </div>
             <div class="modal-header-right">
                 <div class="close-icon">
@@ -16,15 +16,15 @@
     </div>
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
-            <form [formGroup]="patienttypeForm">
-                <input type="hidden" name="patientTypeId" formControlName="patientTypeId">
+            <form [formGroup]="areaForm">
+                <input type="hidden" name="areaId" formControlName="areaId">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                     <airmid-textbox 
-                        label="PatientType name"
-                        formControlName="patientType"
+                        label="Area name"
+                        formControlName="areaName"
                         [value]=""
-                        [formGroup]="patienttypeForm"
-                        [validations]="_PatienttypeMasterService.getValidationMessages().patientType"
+                        [formGroup]="areaForm"
+                        [validations]="_AreaMasterService.getValidationMessages().areaName"
                         [maxLength]="300">
                     </airmid-textbox> 
                 </div>

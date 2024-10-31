@@ -1,5 +1,4 @@
-<!-- <div class="modal-wrapper grid-container">
-    
+<div class="modal-wrapper grid-container">
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
@@ -7,75 +6,41 @@
             </div>
             <div class="modal-header-right">
                 <div class="close-icon">
-                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                        matTooltip="Close">
                         <mat-icon>close</mat-icon>
                     </button>
                 </div>
             </div>
         </div>
     </div>
-  
-    
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
-            
-            <form [formGroup]="_CityMasterService.myform">
-                <h3>{{_CityMasterService.myform.controls.CityId.value?"Modify City Master":"New City
-                    Master"}}</h3>
-
-                <input type="hidden" name="CityId" formControlName="CityId">
-
+            <form [formGroup]="cityForm">
+                <input type="hidden" name="cityId" formControlName="cityId">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                    <mat-label>City</mat-label>
-                    <mat-select formControlName="CityName" placeholder="Bank" #singleSelect
-                        required>
-                        <mat-option>
-                            <ngx-mat-select-search [formControl]="cityFilterCtrl"
-                                [placeholderLabel]="'Search'"
-                                [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                        </mat-option>
-                        <mat-option *ngFor="let element of filteredCity | async"
-                            [value]="element"  (onSelectionChange)="onChangeCityList(element)">
-                            {{element.CityName}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-                </div>
-
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-
-
-                    <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>State Name</mat-label>
-                        <mat-select formControlName="StateId" name="StateId">
-                          <mat-option></mat-option>
-                          <mat-option *ngFor="let m of StatecmbList" [value]="m">
-                            {{m.StateName}}
-                          </mat-option>
-                        </mat-select>
-                      </mat-form-field>
-
+                    <airmid-textbox label="City name" formControlName="cityName" [value]="" [formGroup]="cityForm"
+                        [validations]="_CityMasterService.getValidationMessages().cityName" [maxLength]="300">
+                    </airmid-textbox>
+                    <airmid-textbox label="State Id" formControlName="stateId" [value]="" [formGroup]="cityForm"
+                       [maxLength]="300">
+                    </airmid-textbox>
                 </div>
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
-                        <mat-radio-button value='false' class="mr-sm-12"
-                            fxFlex>IsActive</mat-radio-button>
-
+                    <mat-radio-group name="isDeleted" formControlName="isDeleted" value='false'>
+                        <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive
+                        </mat-radio-button>
+                        <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsDeactive
+                        </mat-radio-button>
                     </mat-radio-group>
                 </div>
             </form>
         </div>
-        <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
-            <div class="button-row">
-                <button mat-raised-button color="primary" type="submit" (click)="onSubmit()"
-                    [disabled]="_CityMasterService.myform.invalid">Save</button>
-                <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
-            </div>
+        <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
+           <button class="btn btn-danger-outline" (click)="onClear(false)">Reset</button>
+            <button class="btn btn-primary " color="accent" (click)="onSubmit()">
+                <span>Save</span>
+            </button>
         </div>
-       
     </div>
-  
-    
-    
-  </div> -->
+</div>

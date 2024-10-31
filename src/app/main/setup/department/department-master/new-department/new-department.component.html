@@ -1,1 +1,50 @@
-<p>new-department works!</p>
+<div class="modal-wrapper grid-container">
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Department Master</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                        matTooltip="Close">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <form [formGroup]="departmentForm">
+                <input type="hidden" name="departmentId" formControlName="departmentId">
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <airmid-textbox 
+                        label="Department name"
+                        formControlName="departmentName"
+                        [value]=""
+                        [formGroup]="departmentForm"
+                        [validations]="_DepartmentMasterService.getValidationMessages().departmentName"
+                        [maxLength]="300">
+                    </airmid-textbox> 
+                </div>
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <mat-radio-group name="isDeleted" formControlName="isDeleted" value='false'>
+                        <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive
+                        </mat-radio-button>
+                        <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsDeactive
+                        </mat-radio-button>
+                    </mat-radio-group>
+                </div>
+            </form>
+        </div>
+        <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+            <div class="button-row">
+                <button mat-raised-button color="primary" type="submit" (click)="onSubmit()"
+                    
+                    >Save</button>
+                <button mat-raised-button color="warn" (click)="onClear(false)">Clear</button>
+            </div>
+        </div>
+    </div>
+</div>

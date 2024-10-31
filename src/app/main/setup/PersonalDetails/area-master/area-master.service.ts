@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
     providedIn: "root",
@@ -10,7 +11,7 @@ export class AreaMasterService {
     myformSearch: FormGroup;
 
     constructor(
-        private _httpClient: HttpClient,
+        private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder
     ) {
         this.myform = this.createAreaForm();
@@ -39,30 +40,23 @@ export class AreaMasterService {
         this.createAreaForm();
     }
 
-    public getAreaMasterList(param) {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=M_Rtrv_AreaName",
-            param
-        );
+    getValidationMessages() {
+        return {
+            areaName: [
+                { name: "required", Message: "Area Name is required" },
+                { name: "maxlength", Message: "Area name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
     }
 
-    // City Master Combobox List
-    public getCityMasterCombo() {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=RetrieveCityMasterForCombo",
-            {}
-        );
+    public AreaMasterSave(Param: any, showLoader = true) {
+        if (Param.areaId) {
+            return this._httpClient.PutData("AreaMaster/" + Param.areaId, Param, showLoader);
+        } else return this._httpClient.PostData("AreaMaster", Param, showLoader);
     }
 
-    public areaMasterInsert(param) {
-        return this._httpClient.post("PersonalDetails/AreaSave", param);
-    }
-
-    public areaMasterUpdate(param) {
-        return this._httpClient.post("PersonalDetails/AreaUpdate", param);
-    }
-
-    populateForm(param) {
-        this.myform.patchValue(param);
+    public deactivateTheStatus(m_data) {
+        return this._httpClient.PostData("AreaMaster", m_data);
     }
 }

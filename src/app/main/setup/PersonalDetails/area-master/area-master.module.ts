@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { AreaMasterComponent } from "./area-master.component";
 import { RouterModule, Routes } from "@angular/router";
 import { MatCheckboxModule } from "@angular/material/checkbox";
@@ -24,6 +24,9 @@ import { AreaMasterService } from "./area-master.service";
 import { MatTabsModule } from "@angular/material/tabs";
 import { MatCardModule } from "@angular/material/card";
 import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
+import { NewAreaComponent } from './new-area/new-area.component';
+import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatDialogModule } from "@angular/material/dialog";
 
 const routes: Routes = [
     {
@@ -33,31 +36,28 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [AreaMasterComponent],
+    declarations: [AreaMasterComponent, NewAreaComponent],
     imports: [
         RouterModule.forChild(routes),
-        CommonModule,
+        SharedModule,
         MatButtonModule,
         MatCheckboxModule,
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
+        MatMenuModule,
         MatTableModule,
+        MatToolbarModule,
         MatPaginatorModule,
         MatSortModule,
         MatSelectModule,
         MatRadioModule,
-        MatTabsModule,
-        MatCardModule,
-        FuseSharedModule,
-        FuseConfirmDialogModule,
-        FuseSidebarModule,
-        ReactiveFormsModule,
         MatSnackBarModule,
-        MatStepperModule,
-        NgxMatSelectSearchModule,
+        FuseSharedModule,
+        FuseSidebarModule,
+        MatDialogModule,
     ],
-    providers: [AreaMasterService],
+    providers: [AreaMasterService,DatePipe],
     entryComponents: [AreaMasterComponent],
 })
 export class AreaMasterModule {}

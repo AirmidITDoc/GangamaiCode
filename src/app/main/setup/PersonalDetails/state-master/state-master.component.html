@@ -11,12 +11,12 @@
             </div>
         </div>
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="newstatemaster()">New State
+            <button mat-raised-button (click)="onSave()">New State
             </button>
         </div>
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-        <airmid-table [gridConfig]="gridConfig" (status)="changeStatus($event)" class="content">
+        <airmid-table [gridConfig]="gridConfig"  class="content">
             <ng-container filters>
                 <mat-form-field appearance="outline" fxFlex>
                     <mat-label>State Name</mat-label>

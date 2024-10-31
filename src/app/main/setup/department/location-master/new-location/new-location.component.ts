@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { LocationMasterService } from '../location-master.service';
+import { ToastrService } from 'ngx-toastr';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-new-location',
@@ -6,98 +10,35 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./new-location.component.scss']
 })
 export class NewLocationComponent implements OnInit {
-
-  constructor() { }
+  locationForm: FormGroup;
+  constructor( public _LocationMasterService: LocationMasterService,
+    public dialogRef: MatDialogRef<NewLocationComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public toastr: ToastrService) { }
 
   ngOnInit(): void {
+    this.locationForm = this._LocationMasterService.createLocationForm();
+    var m_data = {
+      locationId: this.data?.locationId,
+      locationName: this.data?.locationName.trim(),
+        isDeleted: JSON.stringify(this.data?.isActive),
+    };
+    this.locationForm.patchValue(m_data);
   }
-//   onSubmit() {
-//     if (this._locationService.myform.valid) {
-//         if (!this._locationService.myform.get("LocationId").value) {
-//             var m_data = {
-//                 locationMasterInsert: {
-//                     locatioName_1: this._locationService.myform
-//                         .get("LocationName")
-//                         .value.trim(),
-//                     //  addedBy: 1,
-//                     isActive_2: 1,
-//                 },
-//             };
 
-//             this._locationService
-//                 .locationMasterInsert(m_data)
-//                 .subscribe((data) => {
-//                     this.msg = data;
-//                     if (data) {
-//                         this.toastr.success('Record Saved Successfully.', 'Saved !', {
-//                             toastClass: 'tostr-tost custom-toast-success',
-//                           });
-//                           this.getLocationMasterList();
-//                         // Swal.fire(
-//                         //     "Saved !",
-//                         //     "Record saved Successfully !",
-//                         //     "success"
-//                         // ).then((result) => {
-//                         //     if (result.isConfirmed) {
-//                         //         this.getLocationMasterList();
-//                         //     }
-//                         // });
-//                     } else {
-//                         this.toastr.error('Location Master Data not saved !, Please check API error..', 'Error !', {
-//                             toastClass: 'tostr-tost custom-toast-error',
-//                           });
-//                     }
-//                     this.getLocationMasterList();
-//                 },error => {
-//                     this.toastr.error('Location Data not saved !, Please check API error..', 'Error !', {
-//                      toastClass: 'tostr-tost custom-toast-error',
-//                    });
-//                  });
-//         } else {
-//             var m_dataUpdate = {
-//                 locationMasterUpdate: {
-//                     locationId_1:
-//                         this._locationService.myform.get("LocationId")
-//                             .value,
-//                     locationName_2: this._locationService.myform
-//                         .get("LocationName")
-//                         .value.trim(),
-//                     isActive_3: 1,
-//                     // updatedBy: 1,
-//                 },
-//             };
+  onSubmit() {
+    if (this.locationForm.valid) {
+        this._LocationMasterService.locationMasterSave(this.locationForm.value).subscribe((response) => {
+            this.toastr.success(response.message);
+            this.onClear(true);
+        }, (error) => {
+            this.toastr.error(error.message);
+        });
+    }
+}
 
-//             this._locationService
-//                 .locationMasterUpdate(m_dataUpdate)
-//                 .subscribe((data) => {
-//                     this.msg = data;
-//                     if (data) {
-//                         this.toastr.success('Record updated Successfully.', 'updated !', {
-//                             toastClass: 'tostr-tost custom-toast-success',
-//                           });
-//                           this.getLocationMasterList();
-//                         // Swal.fire(
-//                         //     "Updated !",
-//                         //     "Record updated Successfully !",
-//                         //     "success"
-//                         // ).then((result) => {
-//                         //     if (result.isConfirmed) {
-//                         //         this.getLocationMasterList();
-//                         //     }
-//                         // });
-//                     } else {
-//                         this.toastr.error('Location Master Data not Updated !, Please check API error..', 'Updated !', {
-//                             toastClass: 'tostr-tost custom-toast-error',
-//                           });
-//                     }
-//                     this.getLocationMasterList();
-//                 },error => {
-//                     this.toastr.error('Location Data not Updated !, Please check API error..', 'Error !', {
-//                      toastClass: 'tostr-tost custom-toast-error',
-//                    });
-//                  });
-//         }
-//         this.onClear();
-//     }
-// }
+onClear(val: boolean) {
+    this.locationForm.reset();
+    this.dialogRef.close(val);
+}
 }

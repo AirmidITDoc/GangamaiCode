@@ -20,9 +20,9 @@ export class LocationMasterService {
 
     createLocationForm(): FormGroup {
         return this._formBuilder.group({
-            LocationId: [""],
-            LocationName: [""],
-            IsDeleted: ["false"],
+            locationId: [""],
+            locationName: [""],
+            isDeleted: ["false"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
         });
@@ -38,25 +38,23 @@ export class LocationMasterService {
         this.createLocationForm();
     }
 
-  
-    public getBedMasterList(param: gridRequest, showLoader = true) {
-        return this._httpClient.PostData("BedMaster/List", param, showLoader);
+    getValidationMessages() {
+        return {
+            locationName: [
+                { name: "required", Message: "LocationName  is required" },
+                { name: "maxlength", Message: "LocationName should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
     }
 
-    public BedMasterInsert(Param: any, showLoader = true) {
-        return this._httpClient.PostData("Bed", Param, showLoader);
-    }
-
-    public BedMasterUpdate(id: number , Param: any, showLoader = true) {
-        //return this._httpClient.put("Gender/" + id , Param, showLoader);
-        return this._httpClient.PostData("Bed", Param, showLoader);
+    public locationMasterSave(Param: any, showLoader = true) {
+        if (Param.locationId) {
+            return this._httpClient.PutData("LocationMaster/" + Param.locationId, Param, showLoader);
+        } else return this._httpClient.PostData("LocationMaster", Param, showLoader);
     }
 
     public deactivateTheStatus(m_data) {
-        //return this._httpClient.delete("Gender?Id=" + m_data, {});
-        return this._httpClient.PostData("Bed", m_data);
-    }
-    populateForm(param) {
-        this.myform.patchValue(param);
+        return this._httpClient.PostData("LocationMaster", m_data);
     }
 }
