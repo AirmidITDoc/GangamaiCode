@@ -44,7 +44,7 @@ export class PharmacyreportService {
 
   public getDoctorMaster(loader = true) {
    
-    return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
+    return this._httpClient.post("Generic/GetByProc?procName=m_RetrieveDoctorMasterForCombo", {})
   }
   // public getPharmacyDailyCollectionNew(FromDate,ToDate,StoreId,AddedById){
   //   return this._httpClient.get("Sales/view-pharmacy-daily-collection?FromDate=" +  FromDate + "&ToDate=" + ToDate+"&StoreId="+StoreId+"&AddedById="+AddedById);

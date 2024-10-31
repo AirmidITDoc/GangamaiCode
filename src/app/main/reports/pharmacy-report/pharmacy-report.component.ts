@@ -1235,7 +1235,7 @@ debugger
 
    
   viewgetDrwiseprofitsummaryReportPdf(){
-    debugger
+    
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
       this.AdList = true;
@@ -1244,7 +1244,7 @@ debugger
       let DoctorID = 0;
       if (this._PharmacyreportService.userForm.get('DoctorID').value)
         DoctorID = this._PharmacyreportService.userForm.get('DoctorID').value.DoctorId
-  
+      debugger
       this._PharmacyreportService.getdrwiseperofitsummary(
         this.datePipe.transform(this._PharmacyreportService.userForm.get('startdate').value, "yyyy-MM-dd") || '01/01/1900',
         this.datePipe.transform(this._PharmacyreportService.userForm.get('enddate').value, "yyyy-MM-dd") || '01/01/1900',DoctorID,this.OPIPType
