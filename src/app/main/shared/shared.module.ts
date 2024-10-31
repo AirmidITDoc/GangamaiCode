@@ -34,6 +34,8 @@ import { FuseSidebarModule } from "../../../@fuse/components/sidebar/sidebar.mod
 import { AirmidTextboxComponent } from './componets/airmid-textbox/airmid-textbox.component';
 import { AirmidAutocompleteComponent } from './componets/airmid-autocomplete/airmid-autocomplete.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatSelectModule } from '@angular/material/select';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 
 @NgModule({
@@ -59,7 +61,10 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatPaginatorModule,
     MatSortModule,
     FuseSidebarModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatSelectModule,
+    NgxMatSelectSearchModule
+
 ],
   providers: [
     ExcelDownloadService,

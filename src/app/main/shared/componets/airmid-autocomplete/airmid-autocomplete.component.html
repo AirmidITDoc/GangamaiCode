@@ -1,14 +1,21 @@
-<mat-form-field class="example-full-width">
+<!-- <mat-form-field class="example-full-width">
     <mat-label>Number</mat-label>
-    <input type="text"
-           placeholder="Pick one"
-           aria-label="Number"
-           matInput
-           [formControl]="myControl"
-           [matAutocomplete]="auto">
-    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-      <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-        {{option}}
-      </mat-option>
+    <input type="text" placeholder="Pick one" aria-label="Number" matInput [formControl]="myControl"
+        [matAutocomplete]="auto">
+    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)='SelectItem($event.option.value)'>
+        <mat-option *ngFor="let option of filteredOptions | async" [value]="option[TextKey]">
+            {{option[TextKey]}}
+        </mat-option>
     </mat-autocomplete>
-  </mat-form-field>
+</mat-form-field> -->
+<!-- <mat-form-field> -->
+    <mat-select [formControl]="bankCtrl" placeholder="Bank" #singleSelect>
+        <!-- <mat-option>
+            <ngx-mat-select-search [formControl]="bankFilterCtrl"></ngx-mat-select-search>
+        </mat-option> -->
+        <ngx-mat-select-search ngModel></ngx-mat-select-search>
+        <mat-option *ngFor="let bank of filteredBanks | async" [value]="bank">
+            {{bank.name}}
+        </mat-option>
+    </mat-select>
+<!-- </mat-form-field> -->

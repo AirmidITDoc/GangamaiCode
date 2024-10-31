@@ -20,6 +20,7 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 export class GenderMasterComponent implements OnInit {
     GenderMasterList: any;
     msg: any;
+    options:any[]=[{Text:'Text-1',Id:1},{Text:'Text-2',Id:2},{Text:'Text-3',Id:3}];
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
