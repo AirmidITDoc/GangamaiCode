@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { SubGroupMasterService } from '../sub-group-master.service';
+import { FormGroup } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-new-subgroup',
@@ -7,116 +11,39 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NewSubgroupComponent implements OnInit {
 
-  constructor() { }
-
+  subgroupForm: FormGroup;
+  constructor(
+      public _SubGroupMasterService: SubGroupMasterService,
+      public dialogRef: MatDialogRef<NewSubgroupComponent>,
+      @Inject(MAT_DIALOG_DATA) public data: any,
+      public toastr: ToastrService
+  ) { }
+ 
+ 
   ngOnInit(): void {
+      this.subgroupForm = this._SubGroupMasterService.createSubgroupForm();
+      var m_data = {
+        subGroupId: this.data?.subGroupId,
+        subGroupName: this.data?.subGroupName.trim(),
+        groupId: this.data?.groupId,
+        isDeleted: JSON.stringify(this.data?.isActive),
+      };
+      this.subgroupForm.patchValue(m_data);
+  }
+  onSubmit() {
+      if (this.subgroupForm.valid) {
+        debugger
+          this._SubGroupMasterService.SubGroupMasterSave(this.subgroupForm.value).subscribe((response) => {
+              this.toastr.success(response.message);
+              this.onClear(true);
+          }, (error) => {
+              this.toastr.error(error.message);
+          });
+      }
   }
 
-  onSubmit() {
-    // if (this._subgroupService.myform.valid) {
-    //     if (!this._subgroupService.myform.get("SubGroupId").value) {
-    //         var m_data = {
-    //             subGroupMasterInsert: {
-    //                 groupId:
-    //                     this._subgroupService.myform.get("GroupId").value
-    //                         .GroupId,
-    //                 subGroupName: this._subgroupService.myform
-    //                     .get("SubGroupName")
-    //                     .value.trim(),
-    //                 addedBy: 1,
-    //                 isDeleted: Boolean(
-    //                     JSON.parse(
-    //                         this._subgroupService.myform.get("IsDeleted")
-    //                             .value
-    //                     )
-    //                 ),
-    //             },
-    //         };
-
-    //         this._subgroupService
-    //             .subGroupMasterInsert(m_data)
-    //             .subscribe((data) => {
-    //                 this.msg = data;
-    //                 if (data) {
-    //                     this.toastr.success('Record Saved Successfully.', 'Saved !', {
-    //                         toastClass: 'tostr-tost custom-toast-success',
-    //                       });
-    //                       this.getSubgroupMasterList();
-    //                     // Swal.fire(
-    //                     //     "Saved !",
-    //                     //     "Record saved Successfully !",
-    //                     //     "success"
-    //                     // ).then((result) => {
-    //                     //     if (result.isConfirmed) {
-    //                     //         this.getSubgroupMasterList();
-    //                     //     }
-    //                     // });
-    //                 } else {
-    //                     this.toastr.error('Sub-Group Master Data not saved !, Please check API error..', 'Error !', {
-    //                         toastClass: 'tostr-tost custom-toast-error',
-    //                       });
-    //                 }
-    //                 this.getSubgroupMasterList();
-    //             },error => {
-    //                 this.toastr.error('Sub-Group Data not saved !, Please check API error..', 'Error !', {
-    //                  toastClass: 'tostr-tost custom-toast-error',
-    //                });
-    //              });
-    //     } else {
-    //         var m_dataUpdate = {
-    //             subGroupMasterUpdate: {
-    //                 subGroupID:
-    //                     this._subgroupService.myform.get("SubGroupId")
-    //                         .value,
-    //                 groupId:
-    //                     this._subgroupService.myform.get("GroupId").value
-    //                         .GroupId,
-    //                 subGroupName:
-    //                     this._subgroupService.myform.get("SubGroupName")
-    //                         .value,
-
-    //                 isDeleted: Boolean(
-    //                     JSON.parse(
-    //                         this._subgroupService.myform.get("IsDeleted")
-    //                             .value
-    //                     )
-    //                 ),
-    //                 updatedBy: 1,
-    //             },
-    //         };
-
-    //         this._subgroupService
-    //             .subGroupMasterUpdate(m_dataUpdate)
-    //             .subscribe((data) => {
-    //                 this.msg = data;
-    //                 if (data) {
-    //                     this.toastr.success('Record updated Successfully.', 'updated !', {
-    //                         toastClass: 'tostr-tost custom-toast-success',
-    //                       });
-    //                     this.getSubgroupMasterList();
-    //                     // Swal.fire(
-    //                     //     "Updated !",
-    //                     //     "Record updated Successfully !",
-    //                     //     "success"
-    //                     // ).then((result) => {
-    //                     //     if (result.isConfirmed) {
-    //                     //         this.getSubgroupMasterList();
-    //                     //     }
-    //                     // });
-    //                 } else {
-    //                     this.toastr.error('Sub-Group Master Data not updated !, Please check API error..', 'Error !', {
-    //                         toastClass: 'tostr-tost custom-toast-error',
-    //                       });
-    //                 }
-    //                 this.getSubgroupMasterList();
-    //             },error => {
-    //                 this.toastr.error('Sub-Group Data not Updated !, Please check API error..', 'Error !', {
-    //                  toastClass: 'tostr-tost custom-toast-error',
-    //                });
-    //              });
-    //     }
-    //     this.onClear();
-    // }
-}
-
+  onClear(val: boolean) {
+      this.subgroupForm.reset();
+      this.dialogRef.close(val);
+  }
 }

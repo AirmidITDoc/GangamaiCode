@@ -20,13 +20,13 @@ export class SubGroupMasterService {
 
     createSubgroupForm(): FormGroup {
         return this._formBuilder.group({
-            SubGroupId: [""],
-            SubGroupName: [""],
-            GroupId: [""],
-            GroupName: [""],
-            IsDeleted: ["false"],
-            UpdatedBy: ["0"],
-            AddedByName: [""],
+            subGroupId: [""],
+            subGroupName: [""],
+            groupId: [""],
+            //GroupName: [""],
+            isDeleted: ["false"],
+            // UpdatedBy: ["0"],
+            // AddedByName: [""],
         });
     }
     createSearchForm(): FormGroup {
@@ -40,23 +40,24 @@ export class SubGroupMasterService {
         this.createSubgroupForm();
     }
 
-    
-    public getbankMasterList(param: gridRequest, showLoader = true) {
-        return this._httpClient.PostData("BankMaster/List", param, showLoader);
+   
+    getValidationMessages() {
+        return {
+            subGroupName: [
+                { name: "required", Message: "SubGroup Name is required" },
+                { name: "maxlength", Message: "SubGroup name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
     }
 
-    public bankMasterSave(Param: any, id: string ,showLoader = true) {
-        if(id)
-            return this._httpClient.PutData("bank/"+ id, Param, showLoader);
-        else
-            return this._httpClient.PostData("bank", Param, showLoader);       
+    public SubGroupMasterSave(Param: any, showLoader = true) {
+        if (Param.subGroupId) {
+            return this._httpClient.PutData("SubGroupMaster/" + Param.subGroupId, Param, showLoader);
+        } else return this._httpClient.PostData("SubGroupMaster", Param, showLoader);
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.PostData("bank", m_data);
-    }
-
-    populateForm(param) {
-        this.myform.patchValue(param);
+        return this._httpClient.PostData("SubGroupMaster", m_data);
     }
 }

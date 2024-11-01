@@ -39,7 +39,7 @@ const routes: Routes = [
     declarations: [BedMasterComponent, NewBedComponent],
     imports: [
         RouterModule.forChild(routes),
-        SharedModule,
+        
         MatButtonModule,
         MatCheckboxModule,
         MatFormFieldModule,
@@ -55,7 +55,7 @@ const routes: Routes = [
         MatSnackBarModule,
         FuseSharedModule,
         FuseSidebarModule,
-        MatDialogModule,
+        MatDialogModule,SharedModule,
     ],
     providers: [BedMasterService,DatePipe],
     entryComponents: [BedMasterComponent],

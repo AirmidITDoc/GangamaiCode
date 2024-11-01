@@ -11,6 +11,7 @@ import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { NewCashCounterComponent } from "./new-cash-counter/new-cash-counter.component";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 
 
 
@@ -23,6 +24,8 @@ import { NewCashCounterComponent } from "./new-cash-counter/new-cash-counter.com
 })
 export class CashCounterMasterComponent implements OnInit {
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    
     gridConfig: gridModel = {
         apiUrl: "CashCounter/List",
         columnsList: [
@@ -30,16 +33,32 @@ export class CashCounterMasterComponent implements OnInit {
             { heading: "Cash Counter Name", key: "cashCounterName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Prefix Name", key: "prefix", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+           // { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data) // EDIT Records
+                            this.onSave(data);
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this.onDeactive(data.cashCounterId); // DELETE Records
+                            this.confirmDialogRef = this._matDialog.open(
+                                FuseConfirmDialogComponent,
+                                {
+                                    disableClose: false,
+                                }
+                            );
+                            this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+                            this.confirmDialogRef.afterClosed().subscribe((result) => {
+                                if (result) {
+                                    let that = this;
+                                    this._CashCounterMasterService.deactivateTheStatus(data.cashCounterId).subscribe((response: any) => {
+                                        this.toastr.success(response.message);
+                                        that.grid.bindGridData();
+                                    });
+                                }
+                                this.confirmDialogRef = null;
+                            });
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
@@ -50,104 +69,30 @@ export class CashCounterMasterComponent implements OnInit {
             { fieldName: "cashCounterName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ],
-        row:25
+        row: 25
     }
 
-    constructor(public _cashcounterService: CashCounterMasterService,public _matDialog: MatDialog,
-        public toastr : ToastrService,) {}
+    constructor(
+        public _CashCounterMasterService: CashCounterMasterService,
+        public toastr: ToastrService, public _matDialog: MatDialog
+    ) { }
 
-    ngOnInit(): void {
-        
-    }
-    onSearch() {
-        
-    }
-
-    onSearchClear() {
-        this._cashcounterService.myformSearch.reset({
-            CashCounterNameSearch: "",
-            IsDeletedSearch: "2",
-        });
-        
-    }
-   
-
-   
-
-    onSave(row:any = null) {
+    ngOnInit(): void { }
+    onSave(row: any = null) {
+        debugger
+        let that = this;
         const dialogRef = this._matDialog.open(NewCashCounterComponent,
-        {
-            maxWidth: "45vw",
-            height: '35%',
-            width: '70%',
-            data: row
-        });
-        dialogRef.afterClosed().subscribe(result => {
-            if(result){
-                // this.getGenderMasterList();
-                // How to refresh Grid.
-            }
-            console.log('The dialog was closed - Action', result);
-        });
-    }
-
-    onDeactive(cashCounterId) {
-        this.confirmDialogRef = this._matDialog.open(
-            FuseConfirmDialogComponent,
             {
-                disableClose: false,
-            }
-        );
-        this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-        this.confirmDialogRef.afterClosed().subscribe((result) => {
+                maxWidth: "45vw",
+                height: '35%',
+                width: '70%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this._cashcounterService.deactivateTheStatus(cashCounterId).subscribe((response: any) => {
-                    if (response.StatusCode == 200) {
-                        this.toastr.success(response.Message);
-                        // this.getGenderMasterList();
-                        // How to refresh Grid.
-                    }
-                });
+                that.grid.bindGridData();
             }
-            this.confirmDialogRef = null;
         });
     }
-    onEdit(row) {
-        var m_data = {
-            CashCounterId: row.cashCounterId,
-            CashCounterName: row.CashCounterName,
-            Prefix: row.Prefix,
-            BillNo: row.BillNo,
-            IsDeleted: JSON.stringify(row.IsDeleted),
-            // UpdatedBy: row.UpdatedBy,
-        };
-        this._cashcounterService.populateForm(m_data);
-    }
-}
 
-export class CashCounterMaster {
-    cashCounterId: number;
-    cashCounterName: string;
-    prefix: string;
-    billNo: string;
-    isActive: boolean;
-    // AddedBy: number;
-    // UpdatedBy: number;
-
-    /**
-     * Constructor
-     *
-     * @param CashCounterMaster
-     */
-    constructor(CashCounterMaster) {
-        {
-            this.cashCounterId = CashCounterMaster.cashCounterId || "";
-            this.cashCounterName = CashCounterMaster.cashCounterName || "";
-            this.prefix = CashCounterMaster.prefix || "";
-            this.billNo = CashCounterMaster.billNo || "";
-            this.isActive = CashCounterMaster.isActive || "false";
-            //  this.AddedBy = CashCounterMaster.AddedBy || "";
-            // this.UpdatedBy = CashCounterMaster.UpdatedBy || "";
-        }
-    }
 }

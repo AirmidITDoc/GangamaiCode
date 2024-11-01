@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { CashCounterMasterService } from '../cash-counter-master.service';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-new-cash-counter',
@@ -7,114 +11,39 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NewCashCounterComponent implements OnInit {
 
-  constructor() { }
-
+  cashcounterForm: FormGroup;
+  constructor(
+      public _CashCounterMasterService: CashCounterMasterService,
+      public dialogRef: MatDialogRef<NewCashCounterComponent>,
+      @Inject(MAT_DIALOG_DATA) public data: any,
+      public toastr: ToastrService
+  ) { }
+ 
   ngOnInit(): void {
+      this.cashcounterForm = this._CashCounterMasterService.createcashcounterForm();
+      var m_data = {
+        cashCounterId: this.data?.cashCounterId,
+        cashCounterName: this.data?.cashCounterName.trim(),
+        prefix: this.data?.prefix,
+        billNo: this.data?.billNo,
+     //  isDeleted: JSON.stringify(this.data?.isActive),
+      };
+      this.cashcounterForm.patchValue(m_data);
+  }
+  onSubmit() {
+      if (this.cashcounterForm.valid) {
+        debugger
+          this._CashCounterMasterService.cashcounterMasterSave(this.cashcounterForm.value).subscribe((response) => {
+              this.toastr.success(response.message);
+              this.onClear(true);
+          }, (error) => {
+              this.toastr.error(error.message);
+          });
+      }
   }
 
-
-  onSubmit() {
-    // if (this._cashcounterService.myform.valid) {
-    //     if (!this._cashcounterService.myform.get("CashCounterId").value) {
-    //         var m_data = {
-    //             cashCounterMasterInsert: {
-    //                 cashCounter: this._cashcounterService.myform
-    //                     .get("CashCounterName")
-    //                     .value.trim(),
-    //                 prefix: this._cashcounterService.myform
-    //                     .get("Prefix")
-    //                     .value.trim(),
-    //                 billNo: this._cashcounterService.myform
-    //                     .get("BillNo")
-    //                     .value.trim(),
-    //                 //  addedBy: 1,
-    //                 isActive: Boolean(
-    //                     JSON.parse(
-    //                         this._cashcounterService.myform.get("IsDeleted")
-    //                             .value
-    //                     )
-    //                 ),
-    //             },
-    //         };
-    //         this._cashcounterService
-    //             .cashCounterMasterInsert(m_data)
-    //             .subscribe((response) => {
-    //                 this.msg = response;
-    //                 if (response) {
-    //                     this.toastr.success('Record Saved Successfully.', 'Saved !', {
-    //                         toastClass: 'tostr-tost custom-toast-success',
-    //                       });
-    //                       this.getCashcounterMasterList();
-    //                     // Swal.fire(
-    //                     //     "Saved !",
-    //                     //     "Record saved Successfully !",
-    //                     //     "success"
-    //                     // ).then((result) => {
-    //                     //     if (result.isConfirmed) {
-    //                     //         this.getCashcounterMasterList();
-    //                     //     }
-    //                     // });
-    //                 } else {
-    //                     this.toastr.error('Cash-Counter Master Data not saved !, Please check API error..', 'Error !', {
-    //                         toastClass: 'tostr-tost custom-toast-error',
-    //                       });
-    //                 }
-    //             },error => {
-    //                 this.toastr.error('Cash-Counter Master Data not saved !, Please check API error..', 'Error !', {
-    //                  toastClass: 'tostr-tost custom-toast-error',
-    //                });
-    //              });
-    //     } else {
-    //         var m_dataUpdate = {
-    //             cashCounterMasterUpdate: {
-    //                 cashCounterId:
-    //                     this._cashcounterService.myform.get("CashCounterId")
-    //                         .value,
-    //                 cashCounter:
-    //                     this._cashcounterService.myform.get(
-    //                         "CashCounterName"
-    //                     ).value,
-
-    //                 isActive: Boolean(
-    //                     JSON.parse(
-    //                         this._cashcounterService.myform.get("IsDeleted")
-    //                             .value
-    //                     )
-    //                 ),
-    //             },
-    //         };
-
-    //         this._cashcounterService
-    //             .cashCounterMasterUpdate(m_dataUpdate)
-    //             .subscribe((data) => {
-    //                 this.msg = data;
-    //                 if (data) {
-    //                     this.toastr.success('Record updated Successfully.', 'updated !', {
-    //                         toastClass: 'tostr-tost custom-toast-success',
-    //                       });
-    //                     this.getCashcounterMasterList();
-    //                     // Swal.fire(
-    //                     //     "Updated !",
-    //                     //     "Record updated Successfully !",
-    //                     //     "success"
-    //                     // ).then((result) => {
-    //                     //     if (result.isConfirmed) {
-    //                     //         this.getCashcounterMasterList();
-    //                     //     }
-    //                     // });
-    //                 } else {
-    //                     this.toastr.error('Cash-Counter Master Data not updated !, Please check API error..', 'Error !', {
-    //                         toastClass: 'tostr-tost custom-toast-error',
-    //                       });
-    //                 }
-    //                 this.getCashcounterMasterList();
-    //             },error => {
-    //                 this.toastr.error('Cash-Counter Master Data not updated !, Please check API error..', 'Error !', {
-    //                  toastClass: 'tostr-tost custom-toast-error',
-    //                });
-    //              });
-    //     }
-    //     this.onClear();
-    // }
-}
+  onClear(val: boolean) {
+      this.cashcounterForm.reset();
+      this.dialogRef.close(val);
+  }
 }

@@ -6,6 +6,12 @@ import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
+import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { NewClassComponent } from "./new-class/new-class.component";
 
 @Component({
     selector: "app-billing-class-master",
@@ -15,185 +21,75 @@ import { ToastrService } from "ngx-toastr";
     animations: fuseAnimations,
 })
 export class BillingClassMasterComponent implements OnInit {
-    PrefixMasterList: any;
-    GendercmbList: any = [];
-    msg: any;
-
-    @ViewChild(MatSort) sort: MatSort;
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-
-    displayedColumns: string[] = [
-        "ClassId",
-        "ClassName",
-
-        "IsDeleted",
-        "action",
-    ];
-
-    DSBillingClassMasterList = new MatTableDataSource<BillingClassMaster>();
-
-    constructor(public _billingClassService: BillingClassMasterService,
-        public toastr : ToastrService,) {}
-
-    ngOnInit(): void {
-        this.getClassMasterList();
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+  
+   
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    gridConfig: gridModel = {
+        apiUrl: "ClassMaster/List",
+    columnsList: [
+        { heading: "Code", key: "classId", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Billing Class Name", key: "className", sort: true, align: 'left', emptySign: 'NA' },
+       
+       { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+             {
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            this.onSave(data);
+                        }
+                    }, {
+                        action: gridActions.delete, callback: (data: any) => {
+                            this.confirmDialogRef = this._matDialog.open(
+                                FuseConfirmDialogComponent,
+                                {
+                                    disableClose: false,
+                                }
+                            );
+                            this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+                            this.confirmDialogRef.afterClosed().subscribe((result) => {
+                                if (result) {
+                                    let that = this;
+                                    this._BillingClassMasterService.deactivateTheStatus(data.classId).subscribe((response: any) => {
+                                        this.toastr.success(response.message);
+                                        that.grid.bindGridData();
+                                    });
+                                }
+                                this.confirmDialogRef = null;
+                            });
+                        }
+                    }]
+            } //Action 1-view, 2-Edit,3-delete
+        ],
+        sortField: "classId",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "className", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+        ],
+        row: 25
     }
-    onSearch() {
-        this.getClassMasterList();
-    }
 
-    onSearchClear() {
-        this._billingClassService.myformSearch.reset({
-            ClassNameSearch: "",
-            IsDeletedSearch: "2",
-        });
-        this.getClassMasterList();
-    }
-    getClassMasterList() {
-        var param = {
-            ClassName:
-                this._billingClassService.myformSearch
-                    .get("ClassNameSearch")
-                    .value.trim() || "%",
-        };
-        this._billingClassService
-            .getClassMasterList(param)
-            .subscribe((Menu) => {
-                this.DSBillingClassMasterList.data =
-                    Menu as BillingClassMaster[];
-                this.DSBillingClassMasterList.sort = this.sort;
-                this.DSBillingClassMasterList.paginator = this.paginator;
+    constructor(
+        public _BillingClassMasterService: BillingClassMasterService,
+        public toastr: ToastrService, public _matDialog: MatDialog
+    ) { }
+
+    ngOnInit(): void { }
+    onSave(row: any = null) {
+        let that = this;
+        const dialogRef = this._matDialog.open(NewClassComponent,
+            {
+                maxWidth: "45vw",
+                height: '35%',
+                width: '70%',
+                data: row
             });
-    }
-
-    onClear() {
-        this._billingClassService.myform.reset({ IsDeleted: "false" });
-        this._billingClassService.initializeFormGroup();
-    }
-
-    onSubmit() {
-        if (this._billingClassService.myform.valid) {
-            if (!this._billingClassService.myform.get("ClassId").value) {
-                var m_data = {
-                    classMasterInsert: {
-                        className: this._billingClassService.myform
-                            .get("ClassName")
-                            .value.trim(),
-                        isActive: Boolean(
-                            JSON.parse(
-                                this._billingClassService.myform.get(
-                                    "IsDeleted"
-                                ).value
-                            )
-                        ),
-                    },
-                };
-
-                this._billingClassService
-                    .classMasterInsert(m_data)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                              this.getClassMasterList();
-                            // Swal.fire(
-                            //     "Saved !",
-                            //     "Record saved Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getClassMasterList();
-                            //     }
-                            // });
-                        } else {
-                            this.toastr.error('Billing Master Data not saved !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                        }
-                        this.getClassMasterList();
-                    },error => {
-                        this.toastr.error('Billing Master Data not saved !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
-            } else {
-                var m_dataUpdate = {
-                    classMasterUpdate: {
-                        classId:
-                            this._billingClassService.myform.get("ClassId")
-                                .value,
-                        className:
-                            this._billingClassService.myform.get("ClassName")
-                                .value,
-                        isActive: Boolean(
-                            JSON.parse(
-                                this._billingClassService.myform.get(
-                                    "IsDeleted"
-                                ).value
-                            )
-                        ),
-                    },
-                };
-
-                this._billingClassService
-                    .classMasterUpdate(m_dataUpdate)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record updated Successfully.', 'updated !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                            this.getClassMasterList();
-                            // Swal.fire(
-                            //     "Updated !",
-                            //     "Record updated Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getClassMasterList();
-                            //     }
-                            // });
-                        } else {
-                            this.toastr.error('Billing Master Data not updated !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                        }
-                        this.getClassMasterList();
-                    },error => {
-                        this.toastr.error('Billing Master Data not updated !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
             }
-            this.onClear();
-        }
+        });
     }
-    onEdit(row) {
-        var m_data = {
-            ClassId: row.ClassId,
-            ClassName: row.ClassName.trim(),
-            IsDeleted: JSON.stringify(row.IsActive),
-        };
-        this._billingClassService.populateForm(m_data);
-    }
-}
-export class BillingClassMaster {
-    ClassId: number;
-    ClassName: string;
-    IsDeleted: boolean;
 
-    /**
-     * Constructor
-     *
-     * @param BillingClassMaster
-     */
-    constructor(BillingClassMaster) {
-        {
-            this.ClassId = BillingClassMaster.ClassId || "";
-            this.ClassName = BillingClassMaster.ClassName || "";
-            this.IsDeleted = BillingClassMaster.IsDeleted || "false";
-        }
-    }
 }

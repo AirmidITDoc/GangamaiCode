@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
     providedIn: "root",
@@ -10,7 +11,7 @@ export class BillingClassMasterService {
     myformSearch: FormGroup;
 
     constructor(
-        private _httpClient: HttpClient,
+        private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder
     ) {
         this.myform = this.createClassForm();
@@ -19,9 +20,9 @@ export class BillingClassMasterService {
 
     createClassForm(): FormGroup {
         return this._formBuilder.group({
-            ClassId: [""],
-            ClassName: [""],
-            IsDeleted: ["false"],
+            classId: [""],
+            className: [""],
+            isDeleted: ["false"],
             // AddedBy: ["0"],
             // UpdatedBy: ["0"],
             // AddedByName: [""],
@@ -36,23 +37,23 @@ export class BillingClassMasterService {
     initializeFormGroup() {
         this.createClassForm();
     }
-
-    public getClassMasterList(param) {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_ClassNameList_by_Name",
-            param
-        );
+    getValidationMessages() {
+        return {
+            className: [
+                { name: "required", Message: "Class Name is required" },
+                { name: "maxlength", Message: "Class name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
     }
 
-    public classMasterInsert(param) {
-        return this._httpClient.post("Billing/ClassSave", param);
+    public classMasterSave(Param: any, showLoader = true) {
+        if (Param.classId) {
+            return this._httpClient.PutData("ClassMaster/" + Param.classId, Param, showLoader);
+        } else return this._httpClient.PostData("ClassMaster", Param, showLoader);
     }
 
-    public classMasterUpdate(param) {
-        return this._httpClient.post("Billing/ClassUpdate", param);
-    }
-
-    populateForm(param) {
-        this.myform.patchValue(param);
+    public deactivateTheStatus(m_data) {
+        return this._httpClient.PostData("ClassMaster", m_data);
     }
 }

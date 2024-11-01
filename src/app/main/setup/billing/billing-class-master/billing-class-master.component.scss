@@ -1,55 +1,9 @@
-app-billing-class-master {
-    .mat-header-row {
-        width: 600px;
-        max-width: 600px;
-        min-width: 600px;
-        font-weight: bold;
-    }
+.p-sm-24 {
+    padding: 10px !important;
+}
 
-    .mat-row {
-        width: 600px;
-        max-width: 600px;
-        min-width: 600px;
-    }
+app-billing-class-master{
 
-    .mat-column-ClassId {
-        width: 120px;
-        max-width: 120px;
-        min-width: 120px;
-    }
-
-    .mat-column-ClassName {
-        width: 200px;
-        max-width: 200px;
-        min-width: 200px;
-        text-align: left;
-        justify-content: left;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        overflow: hidden !important;
-        display: inline-flex;
-        display: inline;
-        margin-right: 20px;
-        margin-top: 20px;
-    }
-
-    .mat-column-IsDeleted {
-        width: 120px;
-        max-width: 120px;
-        min-width: 120px;
-        text-align: center;
-        justify-content: center;
-    }
-
-    .mat-column-action {
-        // color: white !important;
-        width: 120px;
-        max-width: 120px;
-        min-width: 120px;
-        text-align: right;
-        justify-content: right;
-    }
     .mat-icon-button {
         padding: 0;
         min-width: 0;

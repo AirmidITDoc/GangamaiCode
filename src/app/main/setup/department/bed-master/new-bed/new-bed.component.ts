@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { BedMasterService } from '../bed-master.service';
 import { ToastrService } from 'ngx-toastr';
+import { FormGroup } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-new-bed',
@@ -9,87 +11,39 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class NewBedComponent implements OnInit {
 
-  constructor(public _bedService: BedMasterService,
-    public toastr : ToastrService) { }
-
+  bedForm: FormGroup;
+  constructor(
+      public _BedMasterService: BedMasterService,
+      public dialogRef: MatDialogRef<NewBedComponent>,
+      @Inject(MAT_DIALOG_DATA) public data: any,
+      public toastr: ToastrService
+  ) { }
+ 
   ngOnInit(): void {
+      this.bedForm = this._BedMasterService.createBedForm();
+      var m_data = {
+        bedId: this.data?.bedId,
+        bedName: this.data?.bedName.trim(),
+        roomId: this.data?.roomId,
+        isAvailible: JSON.stringify(this.data?.isAvailible),
+         // isDeleted: JSON.stringify(this.data?.isActive),
+      };
+      this.bedForm.patchValue(m_data);
+  }
+  onSubmit() {
+      if (this.bedForm.valid) {
+        debugger
+          this._BedMasterService.bedMasterSave(this.bedForm.value).subscribe((response) => {
+              this.toastr.success(response.message);
+              this.onClear(true);
+          }, (error) => {
+              this.toastr.error(error.message);
+          });
+      }
   }
 
-  onClear(){}
-  onSubmit(){}
-//   onSubmit() {
-//     if (this._bedService.myform.valid) {
-//         if (!this._bedService.myform.get("BedId").value) {
-//             var m_data = {
-//                 bedMasterInsert: {
-//                     bedName_1: this._bedService.myform
-//                         .get("BedName")
-//                         .value.trim(),
-//                     roomId_2:
-//                         this._bedService.myform.get("RoomId").value.RoomId,
-//                     isAvailible_3: 1,
-//                     //addedBy: 1,
-//                     isActive_4: 0,
-//                 },
-//             };
-
-//             this._bedService.bedMasterInsert(m_data).subscribe((data) => {
-               
-//                 if (data) {
-//                     this.toastr.success('Record Saved Successfully.', 'Saved !', {
-//                         toastClass: 'tostr-tost custom-toast-success',
-//                       });
-                  
-//                 } else {
-//                     this.toastr.error('Bed Master Data not saved !, Please check API error..', 'Error !', {
-//                         toastClass: 'tostr-tost custom-toast-error',
-//                       });
-//                 }
-              
-//             },error => {
-//                 this.toastr.error('Bed Data not saved !, Please check API error..', 'Error !', {
-//                  toastClass: 'tostr-tost custom-toast-error',
-//                });
-//              });
-//         } else {
-//             var m_dataUpdate = {
-//                 bedMasterUpdate: {
-//                     bedId_1: this._bedService.myform.get("BedId").value,
-//                     bedName_2: this._bedService.myform
-//                         .get("BedName")
-//                         .value.trim(),
-//                     roomId_3:
-//                         this._bedService.myform.get("RoomId").value.RoomId,
-//                     // isAvailable: 1,
-//                     isActive_4: 0,
-//                     //  updatedBy: 1,
-//                 },
-//             };
-
-//             this._bedService
-//                 .bedMasterUpdate(m_dataUpdate)
-//                 .subscribe((data) => {
-                    
-//                     if (data) {
-//                         this.toastr.success('Record updated Successfully.', 'updated !', {
-//                             toastClass: 'tostr-tost custom-toast-success',
-//                           });
-                       
-//                     } else {
-                       
-//                         this.toastr.error('Bed Master Data not Updated !, Please check API error..', 'Updated !', {
-//                             toastClass: 'tostr-tost custom-toast-error',
-//                           });
-                
-//                     }
-                   
-//                 },error => {
-//                     this.toastr.error('Bed Data not Updated !, Please check API error..', 'Error !', {
-//                      toastClass: 'tostr-tost custom-toast-error',
-//                    });
-//                  });
-//         }
-//        // this.onClear();
-//     }
-// }
+  onClear(val: boolean) {
+      this.bedForm.reset();
+      this.dialogRef.close(val);
+  }
 }

@@ -21,13 +21,13 @@ export class CashCounterMasterService {
 
     createcashcounterForm(): FormGroup {
         return this._formBuilder.group({
-            CashCounterId: [""],
-            CashCounterName: [""],
-            Prefix: [""],
-            BillNo: [""],
-            IsDeleted: ["false"],
-            AddedBy: ["0"],
-            UpdatedBy: ["0"],
+            cashCounterId: [""],
+            cashCounterName: [""],
+            prefix: [""],
+            billNo: [""],
+           // isDeleted: ["false"],
+            // AddedBy: ["0"],
+            // UpdatedBy: ["0"],
         });
     }
     createSearchForm(): FormGroup {
@@ -41,24 +41,23 @@ export class CashCounterMasterService {
     }
 
   
-
-    
-    public getcashcounterMasterList(param: gridRequest, showLoader = true) {
-        return this._httpClient.PostData("CashCounter/List", param, showLoader);
+    getValidationMessages() {
+        return {
+            cashCounterName: [
+                { name: "required", Message: "cashCounter Name is required" },
+                { name: "maxlength", Message: "cashCounter name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
     }
 
-    public cashcounterMasterSave(Param: any, id: string ,showLoader = true) {
-        if(id)
-            return this._httpClient.PutData("cashcounter/"+ id, Param, showLoader);
-        else
-            return this._httpClient.PostData("cashcounter", Param, showLoader);       
+    public cashcounterMasterSave(Param: any, showLoader = true) {
+        if (Param.cashCounterId) {
+            return this._httpClient.PutData("CashCounter/" + Param.cashCounterId, Param, showLoader);
+        } else return this._httpClient.PostData("CashCounter", Param, showLoader);
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.PostData("cashcounter", m_data);
-    }
-
-    populateForm(param) {
-        this.myform.patchValue(param);
+        return this._httpClient.PostData("CashCounter", m_data);
     }
 }

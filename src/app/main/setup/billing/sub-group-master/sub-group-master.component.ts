@@ -14,6 +14,7 @@ import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { NewSubgroupComponent } from "./new-subgroup/new-subgroup.component";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 
 @Component({
     selector: "app-sub-group-master",
@@ -24,22 +25,40 @@ import { NewSubgroupComponent } from "./new-subgroup/new-subgroup.component";
 })
 export class SubGroupMasterComponent implements OnInit {
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    
     gridConfig: gridModel = {
-        apiUrl: "BankMaster/List",
+        apiUrl: "SubGroupMaster/List",
         columnsList: [
             { heading: "Code", key: "subGroupId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Sub Group  Name", key: "subGroupName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Group Name", key: "groupName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Group Name", key: "groupId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data) // EDIT Records
+                            this.onSave(data);
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this.onDeactive(data.subGroupId); // DELETE Records
+                            this.confirmDialogRef = this._matDialog.open(
+                                FuseConfirmDialogComponent,
+                                {
+                                    disableClose: false,
+                                }
+                            );
+                            this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+                            this.confirmDialogRef.afterClosed().subscribe((result) => {
+                                if (result) {
+                                    let that = this;
+                                    this._subgroupService.deactivateTheStatus(data.subGroupId).subscribe((response: any) => {
+                                        this.toastr.success(response.message);
+                                        that.grid.bindGridData();
+                                    });
+                                }
+                                this.confirmDialogRef = null;
+                            });
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
@@ -50,8 +69,9 @@ export class SubGroupMasterComponent implements OnInit {
             { fieldName: "subGroupName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ],
-        row:25
+        row: 25
     }
+
 
     //groupname filter
     public groupnameFilterCtrl: FormControl = new FormControl();
@@ -65,86 +85,21 @@ export class SubGroupMasterComponent implements OnInit {
     ngOnInit(): void {
     
     }
-  
-    onClear() {
-        this._subgroupService.myform.reset({ IsDeleted: "false" });
-        this._subgroupService.initializeFormGroup();
-    }
-
-  
-    
-    onSave(row:any = null) {
+    onSave(row: any = null) {
+        debugger
+        let that = this;
         const dialogRef = this._matDialog.open(NewSubgroupComponent,
-        {
-            maxWidth: "45vw",
-            height: '35%',
-            width: '70%',
-            data: row
-        });
-        dialogRef.afterClosed().subscribe(result => {
-            if(result){
-                // this.getGenderMasterList();
-                // How to refresh Grid.
-            }
-            console.log('The dialog was closed - Action', result);
-        });
-    }
-
-    onDeactive(subGroupId) {
-        this.confirmDialogRef = this._matDialog.open(
-            FuseConfirmDialogComponent,
             {
-                disableClose: false,
-            }
-        );
-        this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-        this.confirmDialogRef.afterClosed().subscribe((result) => {
+                maxWidth: "45vw",
+                height: '35%',
+                width: '70%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this._subgroupService.deactivateTheStatus(subGroupId).subscribe((response: any) => {
-                    if (response.StatusCode == 200) {
-                        this.toastr.success(response.Message);
-                       
-                    }
-                });
+                that.grid.bindGridData();
             }
-            this.confirmDialogRef = null;
         });
     }
-    onEdit(row) {
-        var m_data = {
-            SubGroupId: row.SubGroupId,
-            SubGroupName: row.SubGroupName.trim(),
-            GroupId: row.GroupId,
-            GroupName: row.GroupName.trim(),
-            IsDeleted: JSON.stringify(row.IsDeleted),
-            UpdatedBy: row.UpdatedBy,
-        };
-        this._subgroupService.populateForm(m_data);
-    }
-}
 
-export class SubGroupMaster {
-    subGroupId: number;
-    subGroupName: string;
-    groupId: number;
-    groupName: string;
-    isActive: boolean;
-    AddedBy: number;
-    UpdatedBy: number;
-
-    /**
-     * Constructor
-     *
-     * @param SubGroupMaster
-     */
-    constructor(SubGroupMaster) {
-        {
-            this.subGroupId = SubGroupMaster.subGroupId || "";
-            this.subGroupName = SubGroupMaster.subGroupName || "";
-            this.groupId = SubGroupMaster.groupId || "";
-            this.isActive = SubGroupMaster.isActive || "false";
-            this.AddedBy = SubGroupMaster.AddedBy || "";
-            this.UpdatedBy = SubGroupMaster.UpdatedBy || "";
-        }
-    }
 }
