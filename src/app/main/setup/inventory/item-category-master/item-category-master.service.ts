@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
     providedIn: "root",
@@ -10,7 +11,7 @@ export class ItemCategoryMasterService {
     myformSearch: FormGroup;
 
     constructor(
-        private _httpClient: HttpClient,
+        private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder
     ) {
         this.myform = this.createItemCategoryForm();
@@ -19,13 +20,13 @@ export class ItemCategoryMasterService {
 
     createItemCategoryForm(): FormGroup {
         return this._formBuilder.group({
-            ItemCategoryId: [""],
-            ItemCategoryName: [""],
-            ItemTypeID: [""],
-            ItemTypeName: [""],
-            IsDeleted: ["true"],
-            AddedBy: ["0"],
-            UpdatedBy: ["0"],
+            itemCategoryId: [""],
+            itemCategoryName: [""],
+            itemTypeId: [""],
+            // ItemTypeName: [""],
+            // IsDeleted: ["true"],
+            // AddedBy: ["0"],
+            // UpdatedBy: ["0"],
         });
     }
     createSearchForm(): FormGroup {
@@ -38,29 +39,23 @@ export class ItemCategoryMasterService {
         this.createItemCategoryForm();
     }
 
-    public getitemcategoryMasterList(param) {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_ItemCategoryMaster_by_Name",
-            param
-        );
+    getValidationMessages() {
+        return {
+            itemCategoryName: [
+                { name: "required", Message: "Category Name is required" },
+                { name: "maxlength", Message: "Category name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
     }
 
-    public getItemTypeMasterCombo() {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Retrieve_ItemTypeMasterForCombo",
-            {}
-        );
+    public categoryMasterSave(Param: any, showLoader = true) {
+        if (Param.itemCategoryId) {
+            return this._httpClient.PutData("ItemCategoryMaster/" + Param.itemCategoryId, Param, showLoader);
+        } else return this._httpClient.PostData("ItemCategoryMaster", Param, showLoader);
     }
 
-    public insertItemCategoryMaster(param) {
-        return this._httpClient.post("Inventory/ItemCategorySave", param);
-    }
-
-    public updateItemCategoryMaster(param) {
-        return this._httpClient.post("Inventory/ItemCategoryUpdate", param);
-    }
-
-    populateForm(param) {
-        this.myform.patchValue(param);
+    public deactivateTheStatus(m_data) {
+        return this._httpClient.PostData("ItemCategoryMaster", m_data);
     }
 }

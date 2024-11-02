@@ -15,6 +15,7 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 
 
 @Component({
@@ -26,6 +27,9 @@ import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/conf
 })
 export class TemplateMasterComponent implements OnInit {
   confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    
+  
   gridConfig: gridModel = {
       apiUrl: "PathologyTemplate/List",
       columnsList: [
@@ -34,26 +38,42 @@ export class TemplateMasterComponent implements OnInit {
           { heading: "Template Desc", key: "templateDesc", sort: true, align: 'left', emptySign: 'NA' },
           { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
           {
-              heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                  {
-                      action: gridActions.edit, callback: (data: any) => {
-                          this.onAdd(data) // EDIT Records
-                      }
-                  }, {
-                      action: gridActions.delete, callback: (data: any) => {
-                          this.onDeactive(data.templateId); // DELETE Records
-                      }
-                  }]
-          } //Action 1-view, 2-Edit,3-delete
-      ],
-      sortField: "templateId",
-      sortOrder: 0,
-      filters: [
-          { fieldName: "templateName", fieldValue: "", opType: OperatorComparer.Contains },
-          { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-      ],
-      row:25
-  }
+            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                {
+                    action: gridActions.edit, callback: (data: any) => {
+                        this.onSave(data);
+                    }
+                }, {
+                    action: gridActions.delete, callback: (data: any) => {
+                        this.confirmDialogRef = this._matDialog.open(
+                            FuseConfirmDialogComponent,
+                            {
+                                disableClose: false,
+                            }
+                        );
+                        this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+                        this.confirmDialogRef.afterClosed().subscribe((result) => {
+                            if (result) {
+                                let that = this;
+                                this._TemplateServieService.deactivateTheStatus(data.templateId).subscribe((response: any) => {
+                                    this.toastr.success(response.message);
+                                    that.grid.bindGridData();
+                                });
+                            }
+                            this.confirmDialogRef = null;
+                        });
+                    }
+                }]
+        } //Action 1-view, 2-Edit,3-delete
+    ],
+    sortField: "templateId",
+    sortOrder: 0,
+    filters: [
+        { fieldName: "templateName", fieldValue: "", opType: OperatorComparer.Contains },
+        { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+    ],
+    row: 25
+}
   constructor(
     public _TemplateServieService: TemplateServieService,
     public _matDialog: MatDialog,
@@ -65,113 +85,20 @@ export class TemplateMasterComponent implements OnInit {
   ngOnInit(): void {
    
   }
-  toggleSidebar(name): void {
-    this._fuseSidebarService.getSidebar(name).toggleOpen();
-  }
-
-  
-
-onDeactive(templateId) {
-  this.confirmDialogRef = this._matDialog.open(
-      FuseConfirmDialogComponent,
-      {
-          disableClose: false,
-      }
-  );
-  this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-  this.confirmDialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-          this._TemplateServieService.deactivateTheStatus(templateId).subscribe((response: any) => {
-              if (response.StatusCode == 200) {
-                  this.toastr.success(response.Message);
-                  // this.getGenderMasterList();
-                  // How to refresh Grid.
-              }
-          });
-      }
-      this.confirmDialogRef = null;
-  });
-}
-
-onAdd(row:any = null) {
-  const dialogRef = this._matDialog.open(TemplateFormComponent,
-  {
-      maxWidth: "45vw",
-      height: '35%',
-      width: '70%',
-      data: row
-  });
-  dialogRef.afterClosed().subscribe(result => {
-      if(result){
-          // this.getGenderMasterList();
-          // How to refresh Grid.
-      }
-      console.log('The dialog was closed - Action', result);
-  });
-}
-  onEdit(row) {
-    console.log(row);
-
-    console.log(row);
-    this._TemplateServieService.populateForm(row);
-    const dialogRef = this._matDialog.open(TemplateFormComponent, {
-      maxWidth: "80%",
-      width: "80%",
-      height: "85%",
-      data: {
-        registerObj: row,
-      }
+  onSave(row: any = null) {
+    debugger
+    let that = this;
+    const dialogRef = this._matDialog.open(TemplateFormComponent,
+        {
+            maxWidth: "45vw",
+            height: '35%',
+            width: '70%',
+            data: row
+        });
+    dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+            that.grid.bindGridData();
+        }
     });
-    dialogRef.afterClosed().subscribe((data) => {
-    
-    });
-  }
-
-
-  
-  onSearch() {
-   
-  }
-  onClear() {
-    this._TemplateServieService.myform.reset({ IsDeleted: "false" });
-    // this._TemplateServieService.initializeFormGroup();
-  }
-  onSearchClear() {
-    this._TemplateServieService.myformSearch.reset({
-      TemplateNameSearch: "",
-      IsDeletedSearch: "2",
-    });
-   
-  }
-
-
-  
-
 }
-
-
-export class TemplateMaster {
-  templateId: number;
-  templateName: any;
-  templateDesc: any;
-  isActive:any;
-  AddedBy:any;
-  UpdatedBy:any;
-  TemplateDescInHTML:any;
-  /**
-   * Constructor
-   *
-   * @param TemplateMaster
-   */
-  constructor(TemplateMaster) {
-      {
-          this.templateId = TemplateMaster.templateId || 0;
-          this.templateName = TemplateMaster.templateName || "";
-          this.templateDesc = TemplateMaster.templateDesc || "";
-          this.isActive = TemplateMaster.isActive || 0;
-          this.AddedBy = TemplateMaster.AddedBy || 0;
-          this.UpdatedBy = TemplateMaster.UpdatedBy || 0;
-          this.TemplateDescInHTML = TemplateMaster.TemplateDescInHTML || '';
-      }
-  }
 }

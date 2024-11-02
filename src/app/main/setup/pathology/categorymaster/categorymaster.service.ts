@@ -19,9 +19,9 @@ export class CategorymasterService {
 
     createCategorymasterForm(): FormGroup {
         return this._formBuilder.group({
-            CategoryId: [""],
-            CategoryName: [""],
-            IsDeleted: ["true"],
+            categoryId: [""],
+            categoryName: [""],
+            isDeleted: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
         });
@@ -38,23 +38,24 @@ export class CategorymasterService {
         this.createCategorymasterForm();
     }
 
-    
-    public getCategoryMasterList(param: gridRequest, showLoader = true) {
-        return this._httpClient.PostData("PathCategoryMaster/List", param, showLoader);
+
+    getValidationMessages() {
+        return {
+            categoryName: [
+                { name: "required", Message: "Category Name is required" },
+                { name: "maxlength", Message: "Category name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
     }
 
-    public CategoryMasterSave(Param: any, id: string ,showLoader = true) {
-        if(id)
-            return this._httpClient.PutData("Category/"+ id, Param, showLoader);
-        else
-            return this._httpClient.PostData("Category", Param, showLoader);       
+    public categoryMasterSave(Param: any, showLoader = true) {
+        if (Param.categoryId) {
+            return this._httpClient.PutData("PathCategoryMaster/" + Param.categoryId, Param, showLoader);
+        } else return this._httpClient.PostData("PathCategoryMaster", Param, showLoader);
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.PostData("Category", m_data);
-    }
-    populateForm(param) {
-        debugger
-        this.myform.patchValue(param);
+        return this._httpClient.PostData("PathCategoryMaster", m_data);
     }
 }

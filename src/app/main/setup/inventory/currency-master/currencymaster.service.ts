@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
     providedIn: "root",
@@ -9,7 +10,7 @@ export class CurrencymasterService {
     myform: FormGroup;
     myformSearch: FormGroup;
     constructor(
-        private _httpClient: HttpClient,
+        private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder
     ) {
         this.myform = this.createCurrencyForm();
@@ -18,12 +19,12 @@ export class CurrencymasterService {
 
     createCurrencyForm(): FormGroup {
         return this._formBuilder.group({
-            CurrencyId: [""],
-            CurrencyName: [""],
-            IsDeleted: ["false"],
-            AddedBy: ["0"],
-            UpdatedBy: ["0"],
-            AddedByName: [""],
+            currencyId: [""],
+            currencyName: [""],
+            isDeleted: ["false"],
+            // AddedBy: ["0"],
+            // UpdatedBy: ["0"],
+            // AddedByName: [""],
         });
     }
     createSearchForm(): FormGroup {
@@ -36,22 +37,23 @@ export class CurrencymasterService {
         this.createCurrencyForm();
     }
 
-    public getCurrencyMasterList(param) {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_CurrencyMaster_by_Name",
-            param
-        );
+    getValidationMessages() {
+        return {
+            currencyName: [
+                { name: "required", Message: "Currency Name is required" },
+                { name: "maxlength", Message: "Currency name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
     }
 
-    public insertCurrencyMaster(param) {
-        return this._httpClient.post("Inventory/CurrencySave", param);
+    public currencyMasterSave(Param: any, showLoader = true) {
+        if (Param.currencyId) {
+            return this._httpClient.PutData("CurrencyMaster/" + Param.currencyId, Param, showLoader);
+        } else return this._httpClient.PostData("CurrencyMaster", Param, showLoader);
     }
 
-    public updateCurrencyMaster(param) {
-        return this._httpClient.post("Inventory/CurrencyUpdate", param);
-    }
-
-    populateForm(param) {
-        this.myform.patchValue(param);
+    public deactivateTheStatus(m_data) {
+        return this._httpClient.PostData("CurrencyMaster", m_data);
     }
 }

@@ -1,73 +1,55 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-
-    <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
-        <div fxLayout="row" fxLayoutAlign="start center">
-
-            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
-                <mat-icon>menu</mat-icon>
-            </button>
-            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-                style="color: white;">account_box
-            </mat-icon>
-            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                {{_radiologytemplateService.myform.controls.TemplateId.value?"Modify Radiology Template Master":"New
-                Radiology Template Master"}}
-            </span>
-            <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog"
-                style="margin-left:970px;">
-                <mat-icon>close</mat-icon>
-            </button>
-
-        </div>
-    </mat-toolbar>
-
-    <div class="content">
-        <div class="center p-24 pb-56" fusePerfectScrollbar>
-            <div class="content-card">
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-                    <div fxFlex.gt-sm="100%" fxFlex>
-                        <div fxlayout="row" style=" background-color: white;
-                             padding: 5px 10px 5px 10px;">
-                            <form [formGroup]="_radiologytemplateService.myform">
-                                <div class="dialog-content-wrapper">
-                                    <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column">
-
-                                        <input type="hidden" name="TemplateId" formControlName="TemplateId"
-                                            [(ngModel)]="vTemplateId">
-
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>Template Name</mat-label>
-                                            <input matInput placeholder="Template Name" [(ngModel)]="vTemplateName"
-                                                name="TemplateName" formControlName="TemplateName" required>
-                                            <mat-error>Please enter TestName </mat-error>
-                                        </mat-form-field>
-
-                                        <div>
-                                            <mat-label>Template Details</mat-label>
-                                            <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
-                                                style="height:200px;" [(ngModel)]="vTemplateDesc" required
-                                                formControlName="TemplateDesc"></angular-editor>
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="footer-navigation-container">
-                                   
-                                    <mat-radio-button value='true' [checked]="true" name="IsDeleted"
-                                        formControlName="IsDeleted">IsActive</mat-radio-button>
-                                        <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px" style="margin-right: 10px;">
-                                        <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
-                                        <button class="btn btn-primary" (click)="onSubmit()"
-                                            [disabled]="_radiologytemplateService.myform.invalid">Save</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-
+<div class="modal-wrapper grid-container">
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Template Master</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                        matTooltip="Close">
+                        <mat-icon>close</mat-icon>
+                    </button>
                 </div>
             </div>
+        </div>
+    </div>
+  
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <form [formGroup]="templateForm">
+                <input type="hidden" name="templateId" formControlName="templateId">
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <airmid-textbox label="Template name" formControlName="templateName" [value]=""
+                        [formGroup]="templateForm"
+                        [validations]="_TemplateServieService.getValidationMessages().templateName"
+                        [maxLength]="300">
+                    </airmid-textbox>
+                 
+                </div>
+                
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <airmid-textbox label="Template Desc" formControlName="templateDesc" [value]=""
+                    [formGroup]="templateForm"
+                    [maxLength]="300">
+                </airmid-textbox>
+            
+                </div>
+                <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <airmid-textbox label="Template HTML" formControlName="templateDescInHtml" [value]=""
+                    [formGroup]="templateForm"
+                    [maxLength]="300">
+                </airmid-textbox>
+            
+                </div> -->
+            </form>
+        </div>
+        <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
+
+            <button class="btn btn-danger-outline" (click)="onClear(false)">Reset</button>
+            <button class="btn btn-primary " color="accent" (click)="onSubmit()">
+                <span>Save</span>
+            </button>
         </div>
     </div>
 </div>

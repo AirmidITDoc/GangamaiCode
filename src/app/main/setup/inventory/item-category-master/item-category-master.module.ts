@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { ItemCategoryMasterComponent } from "./item-category-master.component";
 import { RouterModule, Routes } from "@angular/router";
 import { ItemCategoryMasterService } from "./item-category-master.service";
@@ -23,6 +23,8 @@ import { FuseSharedModule } from "@fuse/shared.module";
 import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
 import { SharedModule } from "app/main/shared/shared.module";
 import { MatBadgeModule } from "@angular/material/badge";
+import { NewItemcategoryComponent } from './new-itemcategory/new-itemcategory.component';
+import { MatDialogModule } from "@angular/material/dialog";
 
 const routes: Routes = [
     {
@@ -32,18 +34,16 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [ItemCategoryMasterComponent],
+    declarations: [ItemCategoryMasterComponent, NewItemcategoryComponent],
     imports: [
         RouterModule.forChild(routes),
-
+        SharedModule,
         MatButtonModule,
         MatCheckboxModule,
-        MatDatepickerModule,
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
         MatMenuModule,
-        MatRippleModule,
         MatTableModule,
         MatToolbarModule,
         MatPaginatorModule,
@@ -52,15 +52,11 @@ const routes: Routes = [
         MatRadioModule,
         MatSnackBarModule,
         FuseSharedModule,
-        FuseConfirmDialogModule,
         FuseSidebarModule,
-        SharedModule,
-        NgxMatSelectSearchModule,
-        MatBadgeModule,
-        MatSelectModule,
+        MatDialogModule,
        
     ],
-    providers: [ItemCategoryMasterService],
+    providers: [ItemCategoryMasterService,DatePipe],
     entryComponents: [ItemCategoryMasterComponent],
 })
 export class ItemCategoryMasterModule {}

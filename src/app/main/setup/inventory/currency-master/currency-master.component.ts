@@ -7,6 +7,12 @@ import { fuseAnimations } from "@fuse/animations";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
 import { AuthenticationService } from "app/core/services/authentication.service";
+import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { NewCurrencyComponent } from "./new-currency/new-currency.component";
 
 @Component({
     selector: "app-currency-master",
@@ -16,166 +22,71 @@ import { AuthenticationService } from "app/core/services/authentication.service"
     animations: fuseAnimations,
 })
 export class CurrencyMasterComponent implements OnInit {
-    CurrencyMasterList: any;
-    msg: any;
-    resultsLength = 0;
-    @ViewChild(MatSort) sort: MatSort;
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-
-    displayedColumns: string[] = [
-        "CurrencyId",
-        "CurrencyName",
-        "AddedBy",
-        "IsDeleted",
-        "action",
-    ];
-
-    DSCurrencyMasterList = new MatTableDataSource<CurrencyMaster>();
-
-    constructor(public _currencyService: CurrencymasterService,
-        private accountService: AuthenticationService,
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+ 
+    constructor(public _CurrencymasterService: CurrencymasterService,public _matDialog: MatDialog,
         public toastr : ToastrService,) {}
-
-    ngOnInit(): void {
-        this.getCurrencyMasterList();
-    }
-    onSearch() {
-        this.getCurrencyMasterList();
-    }
-
-    onSearchClear() {
-        this._currencyService.myformSearch.reset({
-            CurrencyNameSearch: "",
-            IsDeletedSearch: "2",
-        });
-        this.getCurrencyMasterList();
-    }
-    getCurrencyMasterList() {
-        var param = {
-            CurrencyName:
-                this._currencyService.myformSearch
-                    .get("CurrencyNameSearch")
-                    .value.trim() + "%" || "%",
-        };
-        this._currencyService.getCurrencyMasterList(param).subscribe((Menu) => {
-            this.DSCurrencyMasterList.data = Menu as CurrencyMaster[];
-            this.DSCurrencyMasterList.sort = this.sort;
-            this.DSCurrencyMasterList.paginator = this.paginator;
-            this.resultsLength= this.DSCurrencyMasterList.data.length
-        });
-    }
-
-    onClear() {
-        this._currencyService.myform.reset({ IsDeleted: "false" });
-        this._currencyService.initializeFormGroup();
-    }
-
-    onSubmit() {
-        if (this._currencyService.myform.valid) {
-            if (!this._currencyService.myform.get("CurrencyId").value) {
-                var m_data = {
-                    insertCurrencyMaster: {
-                        currencyName: this._currencyService.myform
-                            .get("CurrencyName")
-                            .value.trim(),
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._currencyService.myform.get("IsDeleted")
-                                    .value
-                            )
-                        ),
-                        addedBy: this.accountService.currentUserValue.user.id,
-                        updatedBy:this.accountService.currentUserValue.user.id,
-                    },
-                };
-                // console.log(m_data);
-                this._currencyService
-                    .insertCurrencyMaster(m_data)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                            this.getCurrencyMasterList();
-                           
-                        } else {
-                            this.toastr.error('Currency Master Master Data not saved !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                        }
-                        this.getCurrencyMasterList();
-                    });
-            } else {
-                var m_dataUpdate = {
-                    updateCurrencyMaster: {
-                        currencyId:
-                            this._currencyService.myform.get("CurrencyId")
-                                .value,
-                        currencyName: this._currencyService.myform
-                            .get("CurrencyName")
-                            .value.trim(),
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._currencyService.myform.get("IsDeleted")
-                                    .value
-                            )
-                        ),
-                        updatedBy: this.accountService.currentUserValue.user.id,
-                    },
-                };
-                this._currencyService
-                    .updateCurrencyMaster(m_dataUpdate)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record updated Successfully.', 'updated !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                            this.getCurrencyMasterList();
-                           
-                        } else {
-                            this.toastr.error('Currency Master Master Data not updated !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                        }
-                        this.getCurrencyMasterList();
-                    });
-            }
-            this.onClear();
+        @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+        gridConfig: gridModel = {
+            apiUrl: "CurrencyMaster/List",
+            columnsList: [
+                { heading: "Code", key: "currencyId", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Currency Name", key: "currencyName", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+                {
+                    heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                        {
+                            action: gridActions.edit, callback: (data: any) => {
+                                this.onSave(data);
+                            }
+                        }, {
+                            action: gridActions.delete, callback: (data: any) => {
+                                this.confirmDialogRef = this._matDialog.open(
+                                    FuseConfirmDialogComponent,
+                                    {
+                                        disableClose: false,
+                                    }
+                                );
+                                this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+                                this.confirmDialogRef.afterClosed().subscribe((result) => {
+                                    if (result) {
+                                        let that = this;
+                                        this._CurrencymasterService.deactivateTheStatus(data.currencyId).subscribe((response: any) => {
+                                            this.toastr.success(response.message);
+                                            that.grid.bindGridData();
+                                        });
+                                    }
+                                    this.confirmDialogRef = null;
+                                });
+                            }
+                        }]
+                } //Action 1-view, 2-Edit,3-delete
+            ],
+            sortField: "currencyId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "currencyName", fieldValue: "", opType: OperatorComparer.Contains },
+                { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+            ],
+            row: 25
         }
-    }
-    onEdit(row) {
-        var m_data = {
-            CurrencyId: row.CurrencyId,
-            CurrencyName: row.CurrencyName.trim(),
-            SexID: row.SexID,
-            IsDeleted: JSON.stringify(row.IsDeleted),
-            UpdatedBy: row.UpdatedBy,
-        };
-        this._currencyService.populateForm(m_data);
-    }
-}
-export class CurrencyMaster {
-    CurrencyId: number;
-    CurrencyName: string;
-    SexID: number;
-    IsDeleted: boolean;
-    AddedBy: number;
-    UpdatedBy: number;
-
-    /**
-     * Constructor
-     *
-     * @param CurrencyMaster
-     */
-    constructor(CurrencyMaster) {
-        {
-            this.CurrencyId = CurrencyMaster.CurrencyId || "";
-            this.CurrencyName = CurrencyMaster.CurrencyName || "";
-            this.IsDeleted = CurrencyMaster.IsDeleted || "false";
-            this.AddedBy = CurrencyMaster.AddedBy || "";
-            this.UpdatedBy = CurrencyMaster.UpdatedBy || "";
+    
+     
+        ngOnInit(): void { }
+        onSave(row: any = null) {
+            let that = this;
+            const dialogRef = this._matDialog.open(NewCurrencyComponent,
+                {
+                    maxWidth: "45vw",
+                    height: '35%',
+                    width: '70%',
+                    data: row
+                });
+            dialogRef.afterClosed().subscribe(result => {
+                if (result) {
+                    that.grid.bindGridData();
+                }
+            });
         }
+    
     }
-}

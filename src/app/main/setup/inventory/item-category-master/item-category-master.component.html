@@ -1,209 +1,39 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fusePerfectScrollbar
+<div fusePerfectScrollbar
+    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
     dynamicTableHeight>
-    <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-        fxLayoutAlign.gt-xs="space-between center">
-        <div fxLayout="row" fxLayoutAlign="start center">
-            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
-                <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
-                    <mat-icon>menu</mat-icon>
-                </button>
-                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-                    style="color: white;">account_box
-                </mat-icon>
-                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                   Item Category Master
+    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center ">
+        <div class="top-header-info">
+            <div class="top-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Item Category
                 </span>
-
             </div>
+        </div>
+        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+            <button mat-raised-button (click)="onSave()">New Category
+            </button>
         </div>
     </div>
+    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+        <airmid-table [gridConfig]="gridConfig" class="content">
+            <ng-container filters>
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>Category Name</mat-label>
+                    <input matInput placeholder="Search Category Name" autocomplete="off"
+                        [(ngModel)]="gridConfig.filters[0].fieldValue" />
+                    <button mat-button matSuffix mat-icon-button aria-label="Clear"
+                        (click)="gridConfig.filters[0].fieldValue=''">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
 
-
-    <div class="content">
-        <div class="center p-24 pb-56" fusePerfectScrollbar>
-            <div class="content-card">
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-                    <div fxFlex.gt-sm="100%" fxFlex>
-
-                        <div fxlayout="row" style="background-color: white; padding: 5px 10px 5px 10px; ">
-                            <form [formGroup]="_itemcategoryService.myformSearch">
-                                <div class="dialog-content-wrapper">
-                                    <mat-form-field class="mr-sm-12" fxFlex>
-                                        <input matInput placeholder="Search --> Item Category Name" autocomplete="off"
-                                            name="ItemCategoryNameSearch" formControlName="ItemCategoryNameSearch" (keyup)="onSearchClear()"/>
-                                        <button mat-button matSuffix mat-icon-button aria-label="Clear"
-                                            (click)="onSearchClear()">
-                                            <mat-icon>close</mat-icon>
-                                        </button>
-                                    </mat-form-field>
-
-                                    <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch" value="2"
-                                        fxLayoutAlign="center center">
-                                        <mat-radio-button value="2">All</mat-radio-button>
-                                        <mat-radio-button mat-fab value="0">IsActive</mat-radio-button>
-                                        <mat-radio-button mat-fab value="1">IsDeactive</mat-radio-button>
-                                    </mat-radio-group>
-
-                                    <button mat-raised-button (click)="onSearch()" fxLayoutAlign="center center">
-                                        <mat-icon>search</mat-icon>
-                                        Search
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-
-
-                        <div fxlayout="row">
-                            <div fxFlex.gt-sm="65%" fxFlex>
-
-
-                                <mat-table #table matSort [dataSource]="DSItemCategoryMasterList"
-                                [@animateStagger]="{value:'50'}" style="overflow:auto;height: 500px !important;">
-
-                                <ng-container matColumnDef="ItemCategoryId">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                        {{element.ItemCategoryId}}
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="ItemCategoryName">
-                                    <mat-header-cell *matHeaderCellDef
-                                        mat-sort-header>ItemCategoryName</mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.ItemCategoryName}}
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="ItemTypeName">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header> ItemType Name
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.ItemTypeName}}
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="AddedBy">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header> User Name </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.AddedBy}}
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="IsDeleted">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm> IsActive
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                        <mat-icon *ngIf="element.IsDeleted"
-                                            class="active-icon green-600 s-16">check_circle</mat-icon>
-                                        <mat-icon *ngIf="!element.IsDeleted"
-                                            class="active-icon red-500 s-16">close</mat-icon>
-                                    </mat-cell>
-                                </ng-container>
-
-
-                                <ng-container matColumnDef="action" stickyEnd>
-                                    <mat-header-cell *matHeaderCellDef class="table-actions" style="color: white;">
-                                        Action
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let element">
-                                        <button mat-icon-button (click)="onEdit(element)"><mat-icon
-                                                title="Edit Menu" *ngIf="element.IsDeleted">launch</mat-icon></button>
-                                                <button mat-icon-button *ngIf="!element.IsDeleted"><mat-icon
-                                                    title="Edit Menu">highlight_off</mat-icon></button>
-                                        <button mat-icon-button (click)="onDeactive(element.ItemCategoryId)"
-                                            color="warn"><mat-icon>delete_outline</mat-icon></button>
-
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="loading">
-                                    <mat-footer-cell *matFooterCellDef colspan="6">
-                                        loading data...
-                                    </mat-footer-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="noData">
-                                    <mat-footer-cell *matFooterCellDef colspan="6">
-                                        no data found...
-                                    </mat-footer-cell>
-                                </ng-container>
-
-                                <mat-header-row class="accent"
-                                    *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                                <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
-                                    [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                <mat-footer-row *matFooterRowDef="['loading']"
-                                    [ngClass]="{'hide':DSItemCategoryMasterList!=null}"></mat-footer-row>
-                            </mat-table>
-                                <mat-paginator [pageSizeOptions]="[30, 50, 75, 100]" [pageSize]="30"
-                                    [length]="resultsLength" showFirstLastButtons (page)="getitemcategoryMasterList()">
-                                </mat-paginator>
-                            </div>
-
-                            <div fxFlex.gt-sm="35%" fxFlex style="background-color: white;">
-                                <div class="dialog-content-wrapper">
-                                    <div mat-dialog-content class="p-24 pb-0 m-0">
-                                        <form [formGroup]="_itemcategoryService.myform">
-                                            <h3>{{_itemcategoryService.myform.controls.ItemCategoryId.value?"Modify Item
-                                                Category
-                                                Master":"New Item Category Master"}}</h3>
-        
-                                            <input type="hidden" name="ItemCategoryId" formControlName="ItemCategoryId">
-        
-                                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                                <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                                                    <mat-label>Item Category Name</mat-label>
-                                                    <input name="ItemCategoryName" formControlName="ItemCategoryName" matInput
-                                                        required>
-                                                    <mat-error>Please Enter Item CategoryName</mat-error>
-                                                </mat-form-field>
-                                            </div>
-        
-                                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-        
-        
-                                                <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                                                    <mat-label>Item Type Name</mat-label>
-                                                    <mat-select formControlName="ItemTypeID" placeholder="Bank" #singleSelect>
-                                                        <mat-option>
-                                                            <ngx-mat-select-search [formControl]="itemFilterCtrl"
-                                                                [placeholderLabel]="'Search'"
-                                                                [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                                                        </mat-option>
-                                                        <mat-option *ngFor="let element of filteredItem | async"
-                                                            [value]="element">
-                                                            {{element.ItemTypeName}}
-                                                        </mat-option>
-                                                    </mat-select>
-                                                </mat-form-field>
-                                            </div>
-        
-                                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                                <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='true'>
-                                                    <mat-radio-button value='true' class="mr-sm-12"
-                                                        fxFlex>IsActive</mat-radio-button>
-                                                </mat-radio-group>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="footer-navigation-container">
-                                        <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px"
-                                            style="margin-right: 10px;">
-                                            <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
-                                            <button class="btn btn-primary" (click)="onSubmit()"
-                                                [disabled]="_itemcategoryService.myform.invalid">Save</button>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-
-
-
-                    </div>
-
-                </div>
-            </div>
-        </div>
+                <mat-radio-group value="" [(ngModel)]="gridConfig.filters[1].fieldValue" fxLayoutAlign="center center">
+                    <mat-radio-button value="">All</mat-radio-button>
+                    <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
+                    <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
+                </mat-radio-group>
+            </ng-container>
+        </airmid-table>
     </div>
 </div>

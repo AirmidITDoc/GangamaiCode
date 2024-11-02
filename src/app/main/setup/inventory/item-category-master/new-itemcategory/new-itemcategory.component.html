@@ -2,7 +2,7 @@
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Test Master</span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Category Master</span>
             </div>
             <div class="modal-header-right">
                 <div class="close-icon">
@@ -17,31 +17,30 @@
   
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
-            <form [formGroup]="testForm">
-                <input type="hidden" name="testId" formControlName="testId">
+            <form [formGroup]="categoryForm">
+                <input type="hidden" name="itemCategoryId" formControlName="itemCategoryId">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <airmid-textbox label="Test name" formControlName="testName" [value]=""
-                        [formGroup]="testForm"
-                        [validations]="_TestmasterService.getValidationMessages().testName"
+                    <airmid-textbox label="Category name" formControlName="itemCategoryName" [value]=""
+                        [formGroup]="categoryForm"
+                        [validations]="_CategorymasterService.getValidationMessages().itemCategoryName"
                         [maxLength]="300">
                     </airmid-textbox>
-                 
+                    <airmid-textbox label="Item Type  name" formControlName="itemTypeId" [value]=""
+                    [formGroup]="categoryForm"
+                   [maxLength]="300">
+                </airmid-textbox>
                 </div>
-                
-                <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <airmid-textbox label="Template Desc" formControlName="templateDesc" [value]=""
-                    [formGroup]="templateForm"
-                    [maxLength]="300">
-                </airmid-textbox>
-            
-                </div> -->
-                <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <airmid-textbox label="Template HTML" formControlName="templateDescInHtml" [value]=""
-                    [formGroup]="templateForm"
-                    [maxLength]="300">
-                </airmid-textbox>
-            
-                </div> -->
+
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+
+                  
+                    <!-- <mat-radio-group name="isDeleted" formControlName="isDeleted" value='true'>
+                        <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive
+                        </mat-radio-button>
+                        <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsDeactive
+                        </mat-radio-button>
+                    </mat-radio-group> -->
+                </div>
             </form>
         </div>
         <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">

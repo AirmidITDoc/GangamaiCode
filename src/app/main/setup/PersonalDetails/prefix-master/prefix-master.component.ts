@@ -31,10 +31,7 @@ export class PrefixMasterComponent implements OnInit {
             { heading: "Prefix Name", key: "PrefixName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Gender Name", key: "SexID", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: 'status', align: "center" },
-            { heading: "Code", key: "prefixId", sort: false, align: 'left', emptySign: 'NA' },
-            { heading: "Prefix Name", key: "prefixName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Gender Name", key: "genderName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsDeleted", key: "isActive", type: 'status', align: "center" },
+         
             { heading: "Action", key: "action", align: "right", type: "action", action: [2, 3] } //Action 1-view, 2-Edit,3-delete
         ],
         sortField: "PrefixID",

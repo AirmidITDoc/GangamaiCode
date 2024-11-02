@@ -1,37 +1,51 @@
-<!-- <div fxFlex.gt-sm="35%" fxFlex style="background-color: white;">
-    <div class="dialog-content-wrapper">
-        <div mat-dialog-content class="p-24 pb-0 m-0">
-            <form [formGroup]="_unitmasterService.myform">
-                <h3>{{_unitmasterService.myform.controls.UnitId.value?"Modify Unit Master":"New Unit
-                    Master"}}</h3>
-
-
-                <input type="hidden" name="UnitId" formControlName="UnitId">
-
+<div class="modal-wrapper grid-container">
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Unit Master</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                        matTooltip="Close">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+  
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <form [formGroup]="unitForm">
+                <input type="hidden" name="unitId" formControlName="unitId">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                        <mat-label>Unit Name</mat-label>
-                        <input name="UnitName" formControlName="UnitName" matInput required>
-                        <mat-error>Please enter unit Name </mat-error>
-                    </mat-form-field>
+                    <airmid-textbox label="Unit name" formControlName="unitName" [value]=""
+                        [formGroup]="unitForm"
+                        [validations]="_UnitmasterService.getValidationMessages().unitName"
+                        [maxLength]="300">
+                    </airmid-textbox>
+                 
                 </div>
 
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='true'>
-                        <mat-radio-button value='true' class="mr-sm-12"
-                            fxFlex>IsActive</mat-radio-button>
-                    </mat-radio-group>
+
+                  
+                    <!-- <mat-radio-group name="isDeleted" formControlName="isDeleted" value='true'>
+                        <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive
+                        </mat-radio-button>
+                        <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsDeactive
+                        </mat-radio-button>
+                    </mat-radio-group> -->
                 </div>
             </form>
         </div>
-        <div class="footer-navigation-container">
-            <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px"
-                style="margin-right: 10px;">
-                <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
-                <button class="btn btn-primary" (click)="onSubmit()"
-                    [disabled]="_unitmasterService.myform.invalid">Save</button>
-            </div>
-        </div>
+        <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
 
+            <button class="btn btn-danger-outline" (click)="onClear(false)">Reset</button>
+            <button class="btn btn-primary " color="accent" (click)="onSubmit()">
+                <span>Save</span>
+            </button>
+        </div>
     </div>
-</div> -->
+</div>

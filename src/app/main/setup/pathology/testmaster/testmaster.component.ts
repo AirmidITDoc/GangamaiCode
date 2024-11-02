@@ -20,6 +20,7 @@ import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
 
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 
 @Component({
     selector: "app-testmaster",
@@ -30,6 +31,9 @@ import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 })
 export class TestmasterComponent implements OnInit {
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    
+    
     gridConfig: gridModel = {
         apiUrl: "Gender/List",
         columnsList: [
@@ -40,22 +44,38 @@ export class TestmasterComponent implements OnInit {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data) // EDIT Records
+                            this.onSave(data);
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this.onDeactive(data.genderId); // DELETE Records
+                            this.confirmDialogRef = this._matDialog.open(
+                                FuseConfirmDialogComponent,
+                                {
+                                    disableClose: false,
+                                }
+                            );
+                            this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+                            this.confirmDialogRef.afterClosed().subscribe((result) => {
+                                if (result) {
+                                    let that = this;
+                                    this._TestService.deactivateTheStatus(data.unitId).subscribe((response: any) => {
+                                        this.toastr.success(response.message);
+                                        that.grid.bindGridData();
+                                    });
+                                }
+                                this.confirmDialogRef = null;
+                            });
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
         ],
-        sortField: "genderId",
+        sortField: "testId",
         sortOrder: 0,
         filters: [
-            { fieldName: "genderName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "testName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ],
-        row:25
+        row: 25
     }
 
     constructor(
@@ -71,167 +91,22 @@ export class TestmasterComponent implements OnInit {
         
     }
   
-    onSearchClear() {
-        this._TestService.myformSearch.reset({
-            TestNameSearch: "",
-            IsDeletedSearch: "2",
-        });
-       
-    }
-    onSearch() {
-       
-        setTimeout(() => {
-            this.onSearchClear();
-        }, 5000);
-    }
-
-  
-
-
-    onEdit(row) {
-
-        row.IsDeleted=JSON.stringify(row.Isdeleted)
-        this._TestService.populateForm(row);
-        const dialogRef = this._matDialog.open(TestFormMasterComponent, {
-            maxWidth: "90vw",
-            maxHeight: "90vh",
-            width: "100%",
-            height: "100%",
-            data: {
-                registerObj: row
-            }
-        });
-        dialogRef.afterClosed().subscribe((result) => {
-            console.log("The dialog was closed - Insert Action", result);
-           
-        });
-    }
-    onSave(row:any = null) {
+   
+    onSave(row: any = null) {
+        debugger
+        let that = this;
         const dialogRef = this._matDialog.open(TestFormMasterComponent,
-        {
-            maxWidth: "45vw",
-            height: '35%',
-            width: '70%',
-            data: row
-        });
-        dialogRef.afterClosed().subscribe(result => {
-            if(result){
-                // this.getGenderMasterList();
-                // How to refresh Grid.
-            }
-            console.log('The dialog was closed - Action', result);
-        });
-    }
-
-    onDeactive(genderId) {
-        this.confirmDialogRef = this._matDialog.open(
-            FuseConfirmDialogComponent,
             {
-                disableClose: false,
-            }
-        );
-        this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-        this.confirmDialogRef.afterClosed().subscribe((result) => {
+                maxWidth: "45vw",
+                height: '35%',
+                width: '70%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this._TestService.deactivateTheStatus(genderId).subscribe((response: any) => {
-                    if (response.StatusCode == 200) {
-                        this.toastr.success(response.Message);
-                        // this.getGenderMasterList();
-                        // How to refresh Grid.
-                    }
-                });
+                that.grid.bindGridData();
             }
-            this.confirmDialogRef = null;
         });
     }
 
-    onClear() {
-        this._TestService.myform.reset({ IsDeleted: "false" });
-        this._TestService.initializeFormGroup();
-       
-    }
-  
 }
-
-export class TestMaster {
-    TestId: number;
-    TestName: string;
-    PrintTestName: String;
-    CategoryId: number;
-    IsSubTest: boolean;
-    TechniqueName: string;
-    MachineName: string;
-    SuggestionNote: string;
-    FootNote: string;
-    ServiceID: number;
-    ServiceName:any;
-    IsTemplateTest: number;
-    IsCategoryPrint: boolean;
-    IsPrintTestName: boolean;
-    Isdeleted: boolean;
-    UpdatedBy: number;
-    AddedBy: number;
-    IsDeletedSearch: number;
-    /**
-     * Constructor
-     *
-     * @param TestMaster
-     */
-    constructor(TestMaster) {
-        {
-            this.TestId = TestMaster.TestId || 0;
-            this.TestName = TestMaster.TestName || "";
-            this.PrintTestName = TestMaster.PrintTestName || "";
-            this.CategoryId = TestMaster.CategoryId || 0;
-            this.IsSubTest = TestMaster.IsSubTest || "";
-            this.TechniqueName = TestMaster.TechniqueName || "";
-            this.MachineName = TestMaster.MachineName || "";
-            this.SuggestionNote = TestMaster.SuggestionNote || "";
-            this.FootNote = TestMaster.FootNote || "";
-            this.Isdeleted = TestMaster.Isdeleted || "false";
-            this.ServiceID = TestMaster.ServiceID || 0;
-            this.ServiceName= TestMaster.ServiceName || "";
-            this.IsTemplateTest = TestMaster.IsTemplateTest || "";
-            this.IsCategoryPrint = TestMaster.IsCategoryPrint || "false";
-            this.IsPrintTestName = TestMaster.IsPrintTestName || "false";
-            this.UpdatedBy = TestMaster.UpdatedBy || 0;
-            this.AddedBy = TestMaster.AddedBy || 0;
-            this.IsDeletedSearch = TestMaster.IsDeletedSearch || "true";
-        }
-    }
-}
-export class TestList {
-    TestId: number;
-    TestName: any;
-    ParameterName: any;
-    ParameterID: number;
-    Isdeleted: any;
-    IsDeleted: any;
-    /**
-     * Constructor
-     *
-     * @param TestList
-     */
-    constructor(TestList) {
-        {
-            this.ParameterName = TestList.ParameterName || "";
-            this.TestId = TestList.TestId || "";
-            this.TestName = TestList.TestName || "";
-            this.Isdeleted = TestList.Isdeleted || "";
-            this.IsDeleted = TestList.IsDeleted || "true";
-        }
-    }
-}
-
-
-export class TemplatedetailList {
-    TemplateId: number;
-    TemplateName: any;
-    constructor(TemplateList) {
-        {
-            this.TemplateId = TemplateList.TemplateId || 0;
-            this.TemplateName = TemplateList.TemplateName || "";
-
-        }
-    }
-} 

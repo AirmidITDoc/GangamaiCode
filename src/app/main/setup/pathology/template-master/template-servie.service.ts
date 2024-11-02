@@ -29,37 +29,33 @@ export class TemplateServieService {
 
 createTemplateForm(): FormGroup {
   return this._formBuilder.group({
-      PTemplateId: [""],
-      TestId: [""], 
-      TemplateId:[""],
-      TemplateName:[""],
-      TemplateDesc:[""],
-      IsDeleted:['true']
+      templateId: [""],
+      templateName: [""], 
+      templateDesc:[""],
+      templateDescInHtml:[""],
+      // TemplateDesc:[""],
+      // IsDeleted:['true']
   });
 }
 
-
-public gettemplateMasterList(param: gridRequest, showLoader = true) {
-  return this._httpClient.PostData("PathologyTemplate/List", param, showLoader);
+getValidationMessages() {
+  return {
+      templateName: [
+          { name: "required", Message: "Template Name is required" },
+          { name: "maxlength", Message: "Template name should not be greater than 50 char." },
+          { name: "pattern", Message: "Special char not allowed." }
+      ]
+  };
 }
 
-public templateMasterSave(Param: any, id: string ,showLoader = true) {
-  if(id)
-      return this._httpClient.PutData("template/"+ id, Param, showLoader);
-  else
-      return this._httpClient.PostData("template", Param, showLoader);       
+public templateMasterSave(Param: any, showLoader = true) {
+  if (Param.templateId) {
+      return this._httpClient.PutData("PathologyTemplate/" + Param.templateId, Param, showLoader);
+  } else return this._httpClient.PostData("PathologyTemplate", Param, showLoader);
 }
 
 public deactivateTheStatus(m_data) {
-  return this._httpClient.PostData("template", m_data);
+  return this._httpClient.PostData("PathologyTemplate", m_data);
+}
 }
 
-//Edit pop data
-populateForm(param) {
-    this.myform.patchValue(param);
-}
-
-populatePrintForm(param) {
-    this.myform.patchValue(param);
-}
-}

@@ -21,10 +21,10 @@ export class RadiologyTemplateMasterService {
 
   createRadiologytemplateForm(): FormGroup {
     return this._formBuilder.group({
-      TemplateId:[''],
-      TemplateName:[''],
-      TemplateDesc:[''],
-      IsDeleted:['true']
+      templateId:[''],
+      templateName:[''],
+      templateDesc:[''],
+      //IsDeleted:['true']
         });
   }
   createSearchForm(): FormGroup {
@@ -52,28 +52,23 @@ export class RadiologyTemplateMasterService {
     this.createSearchForm();
   }
 
- 
-  public gettemplateMasterList(param: gridRequest, showLoader = true) {
-    return this._httpClient.PostData("RadiologyTemplate/List", param, showLoader);
-}
-
-public templateMasterSave(Param: any, id: string ,showLoader = true) {
-    if(id)
-        return this._httpClient.PutData("template/"+ id, Param, showLoader);
-    else
-        return this._httpClient.PostData("template", Param, showLoader);       
-}
-
-public deactivateTheStatus(m_data) {
-    return this._httpClient.PostData("template", m_data);
-}
-  populateForm(employee) {
-    this.myform.patchValue(employee);
+  getValidationMessages() {
+    return {
+        templateName: [
+            { name: "required", Message: "Template Name is required" },
+            { name: "maxlength", Message: "Template name should not be greater than 50 char." },
+            { name: "pattern", Message: "Special char not allowed." }
+        ]
+    };
   }
-
-  populatePrintForm(employee) {
-    this.myform.patchValue(employee);
+  
+  public templateMasterSave(Param: any, showLoader = true) {
+    if (Param.templateId) {
+        return this._httpClient.PutData("RadiologyTemplate/" + Param.templateId, Param, showLoader);
+    } else return this._httpClient.PostData("RadiologyTemplate", Param, showLoader);
   }
-
- 
-}
+  
+  public deactivateTheStatus(m_data) {
+    return this._httpClient.PostData("RadiologyTemplate", m_data);
+  }
+  }

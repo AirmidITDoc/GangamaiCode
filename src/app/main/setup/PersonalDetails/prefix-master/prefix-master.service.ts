@@ -45,14 +45,24 @@ export class PrefixMasterService {
         return this._httpClient.PostData("Prefix/List", param, showLoader);
     }
 
-    public insertPrefixMaster(Param: any, showLoader = true) {
-        return this._httpClient.PostData("Prefix", Param, showLoader);
+
+    public prefixMasterSave(Param: any, showLoader = true) {
+        if (Param.prefixId) {
+            return this._httpClient.PutData("Prefix/" + Param.prefixId, Param, showLoader);
+        } else return this._httpClient.PostData("Prefix", Param, showLoader);
     }
 
-    public updatePrefixMaster(id: number , Param: any, showLoader = true) {
-        
-        return this._httpClient.PostData("Prefix", Param, showLoader);
+    getValidationMessages() {
+        return {
+            genderName: [
+                { name: "required", Message: "Prefix Name is required" },
+                { name: "maxlength", Message: "Prefix name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
     }
+
+
     populateForm(param) {
         this.myform.patchValue(param);
     }

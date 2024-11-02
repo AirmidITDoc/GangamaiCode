@@ -14,6 +14,7 @@ import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { NewUnitComponent } from "./new-unit/new-unit.component";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 
 @Component({
     selector: "app-unitmaster",
@@ -24,6 +25,9 @@ import { NewUnitComponent } from "./new-unit/new-unit.component";
 })
 export class UnitmasterComponent implements OnInit {
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    
+    
     gridConfig: gridModel = {
         apiUrl: "PathUnitMaster/List",
         columnsList: [
@@ -34,11 +38,27 @@ export class UnitmasterComponent implements OnInit {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data) // EDIT Records
+                            this.onSave(data);
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this.onDeactive(data.unitId); // DELETE Records
+                            this.confirmDialogRef = this._matDialog.open(
+                                FuseConfirmDialogComponent,
+                                {
+                                    disableClose: false,
+                                }
+                            );
+                            this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+                            this.confirmDialogRef.afterClosed().subscribe((result) => {
+                                if (result) {
+                                    let that = this;
+                                    this._unitmasterService.deactivateTheStatus(data.unitId).subscribe((response: any) => {
+                                        this.toastr.success(response.message);
+                                        that.grid.bindGridData();
+                                    });
+                                }
+                                this.confirmDialogRef = null;
+                            });
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
@@ -49,7 +69,7 @@ export class UnitmasterComponent implements OnInit {
             { fieldName: "unitName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ],
-        row:25
+        row: 25
     }
 
     constructor(
@@ -63,90 +83,22 @@ export class UnitmasterComponent implements OnInit {
     ngOnInit(): void {
        
     }
-    toggleSidebar(name): void {
-        this._fuseSidebarService.getSidebar(name).toggleOpen();
-      }
-    onSearch() {
-       
-    }
+   
 
-    onSearchClear() {
-        this._unitmasterService.myformSearch.reset({
-            UnitNameSearch: "",
-            IsDeletedSearch: "2",
-        });
-       
-    }
-
-    onSave(row:any = null) {
+    onSave(row: any = null) {
+        debugger
+        let that = this;
         const dialogRef = this._matDialog.open(NewUnitComponent,
-        {
-            maxWidth: "45vw",
-            height: '35%',
-            width: '70%',
-            data: row
-        });
-        dialogRef.afterClosed().subscribe(result => {
-            if(result){
-                // this.getGenderMasterList();
-                // How to refresh Grid.
-            }
-            console.log('The dialog was closed - Action', result);
-        });
-    }
-
-    onDeactive(unitId) {
-        this.confirmDialogRef = this._matDialog.open(
-            FuseConfirmDialogComponent,
             {
-                disableClose: false,
-            }
-        );
-        this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-        this.confirmDialogRef.afterClosed().subscribe((result) => {
+                maxWidth: "45vw",
+                height: '35%',
+                width: '70%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this._unitmasterService.deactivateTheStatus(unitId).subscribe((response: any) => {
-                    if (response.StatusCode == 200) {
-                        this.toastr.success(response.Message);
-                        // this.getGenderMasterList();
-                        // How to refresh Grid.
-                    }
-                });
+                that.grid.bindGridData();
             }
-            this.confirmDialogRef = null;
         });
-    }
-
-    onEdit(row) {
-        var m_data = {
-            UnitId: row.unitId,
-            UnitName: row.UnitName.trim(),
-            IsDeleted: JSON.stringify(row.isActive),
-            UpdatedBy: row.UpdatedBy,
-        };
-        this._unitmasterService.populateForm(m_data);
-    }
-}
-
-export class PathunitMaster {
-    unitId: number;
-    unitName: string;
-    isActive: boolean;
-    AddedBy: number;
-    UpdatedBy: number;
-
-    /**
-     * Constructor
-     *
-     * @param PathunitMaster
-     */
-    constructor(PathunitMaster) {
-        {
-            this.unitId = PathunitMaster.unitId || "";
-            this.unitName = PathunitMaster.unitName || "";
-            this.isActive = PathunitMaster.isActive || "true";
-            this.AddedBy = PathunitMaster.AddedBy || "";
-            this.UpdatedBy = PathunitMaster.UpdatedBy || "";
-        }
     }
 }

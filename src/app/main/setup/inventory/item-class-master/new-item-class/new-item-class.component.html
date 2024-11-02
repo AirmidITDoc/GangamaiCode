@@ -2,7 +2,7 @@
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Department Master</span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Currency Master</span>
             </div>
             <div class="modal-header-right">
                 <div class="close-icon">
@@ -16,15 +16,15 @@
     </div>
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
-            <form [formGroup]="departmentForm">
-                <input type="hidden" name="departmentId" formControlName="departmentId">
+            <form [formGroup]="classForm">
+                <input type="hidden" name="itemClassId" formControlName="itemClassId">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                     <airmid-textbox 
-                        label="Department name"
-                        formControlName="departmentName"
+                        label="Item Class  name"
+                        formControlName="itemClassName"
                         [value]=""
-                        [formGroup]="departmentForm"
-                        [validations]="_DepartmentMasterService.getValidationMessages().departmentName"
+                        [formGroup]="classForm"
+                        [validations]="_ItemClassMasterService.getValidationMessages().itemClassName"
                         [maxLength]="300">
                     </airmid-textbox> 
                 </div>

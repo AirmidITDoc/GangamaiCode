@@ -188,7 +188,7 @@ export class EditorComponent implements OnInit {
       // "IsDeleted": JSON.stringify(row.IsDeleted),
       // "UpdatedBy": row.UpdatedBy,
     }
-    this._radiologytemplateService.populateForm(m_data);
+   // this._radiologytemplateService.populateForm(m_data);
   }
 
   onPrint() {

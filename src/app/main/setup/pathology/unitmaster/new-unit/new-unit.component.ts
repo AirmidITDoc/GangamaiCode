@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { UnitmasterService } from '../unitmaster.service';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-new-unit',
@@ -6,88 +10,40 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./new-unit.component.scss']
 })
 export class NewUnitComponent implements OnInit {
-
-  constructor() { }
-
+  unitForm: FormGroup;
+  constructor(
+      public _UnitmasterService: UnitmasterService,
+      public dialogRef: MatDialogRef<NewUnitComponent>,
+      @Inject(MAT_DIALOG_DATA) public data: any,
+      public toastr: ToastrService
+  ) { }
+ 
   ngOnInit(): void {
+      this.unitForm = this._UnitmasterService.createUnitmasterForm();
+      var m_data = {
+        unitId: this.data?.unitId,
+        unitName: this.data?.unitName.trim(),
+      //   printSeqNo: this.data?.printSeqNo,
+      //   isconsolidated: JSON.stringify(this.data?.isconsolidated),
+      //   isConsolidatedDR: JSON.stringify(this.data?.isConsolidatedDR),
+      // isDeleted: JSON.stringify(this.data?.isActive),
+      };
+      this.unitForm.patchValue(m_data);
   }
-//   onSubmit() {
-//     if (this._unitmasterService.myform.valid) {
-//         if (!this._unitmasterService.myform.get("UnitId").value) {
-//             var m_data = {
-//                 insertUnitMaster: {
-//                     unitName: this._unitmasterService.myform
-//                         .get("UnitName")
-//                         .value.trim(),
-//                     isDeleted: Boolean(
-//                         JSON.parse(
-//                             this._unitmasterService.myform.get("IsDeleted")
-//                                 .value
-//                         )
-//                     ),
-//                     addedBy: this.accountService.currentUserValue.user.id,
-//                 },
-//             };
+  onSubmit() {
+      if (this.unitForm.valid) {
+        debugger
+          this._UnitmasterService.unitMasterSave(this.unitForm.value).subscribe((response) => {
+              this.toastr.success(response.message);
+              this.onClear(true);
+          }, (error) => {
+              this.toastr.error(error.message);
+          });
+      }
+  }
 
-//             this._unitmasterService
-//                 .insertUnitMaster(m_data)
-//                 .subscribe((data) => {
-//                     this.msg = data;
-//                     if (data) {
-//                         this.toastr.success('Record Saved Successfully.', 'Saved !', {
-//                             toastClass: 'tostr-tost custom-toast-success',
-//                         });
-//                         this.getUnitMasterList();
-//                     } else {
-//                         this.toastr.error('Unit Master Data not saved !, Please check API error..', 'Error !', {
-//                             toastClass: 'tostr-tost custom-toast-error',
-//                         });
-//                     }
-//                     this.getUnitMasterList();
-//                 }, error => {
-//                     this.toastr.error('Unit not saved !, Please check API error..', 'Error !', {
-//                         toastClass: 'tostr-tost custom-toast-error',
-//                     });
-//                 });
-//         } else {
-//             var m_dataUpdate = {
-//                 updateUnitMaster: {
-//                     unitId: this._unitmasterService.myform.get("UnitId")
-//                         .value,
-//                     unitName:
-//                         this._unitmasterService.myform.get("UnitName")
-//                             .value,
-//                     isDeleted: Boolean(
-//                         JSON.parse(
-//                             this._unitmasterService.myform.get("IsDeleted")
-//                                 .value
-//                         )
-//                     ),
-//                     updatedBy:this.accountService.currentUserValue.user.id,
-//                 },
-//             };
-//             this._unitmasterService
-//                 .updateUnitMaster(m_dataUpdate)
-//                 .subscribe((data) => {
-//                     this.msg = data;
-//                     if (data) {
-//                         this.toastr.success('Record updated Successfully.', 'updated !', {
-//                             toastClass: 'tostr-tost custom-toast-success',
-//                         });
-//                         this.getUnitMasterList();
-//                     } else {
-//                         this.toastr.error('Unit Master Data not updated !, Please check API error..', 'Error !', {
-//                             toastClass: 'tostr-tost custom-toast-error',
-//                         });
-//                     }
-//                     this.getUnitMasterList();
-//                 }, error => {
-//                     this.toastr.error('Unit not updated !, Please check API error..', 'Error !', {
-//                         toastClass: 'tostr-tost custom-toast-error',
-//                     });
-//                 });
-//         }
-//         this.onClear();
-//     }
-// }
+  onClear(val: boolean) {
+      this.unitForm.reset();
+      this.dialogRef.close(val);
+  }
 }

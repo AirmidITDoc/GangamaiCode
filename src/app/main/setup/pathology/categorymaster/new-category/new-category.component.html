@@ -1,41 +1,51 @@
-<!-- <div fxFlex.gt-sm="35%" fxFlex style="background-color: white;">
-    <div class="dialog-content-wrapper">
-        <div mat-dialog-content class="p-24 pb-0 m-0">
-            <form [formGroup]="_categorymasterService.myform">
-                <h3>{{_categorymasterService.myform.controls.CategoryId.value?"Modify
-                    Category
-                    Master":"New Category Master"}}</h3>
-
-
-                <input type="hidden" name="CategoryId" formControlName="CategoryId">
-
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                        <mat-label>Category Name</mat-label>
-                        <input name="CategoryName" formControlName="CategoryName" matInput
-                            required>
-                        <mat-error>Please enter Category Name </mat-error>
-                    </mat-form-field>
+<div class="modal-wrapper grid-container">
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Category Master</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                        matTooltip="Close">
+                        <mat-icon>close</mat-icon>
+                    </button>
                 </div>
-
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='true'>
-                        <mat-radio-button value='true' class="mr-sm-12"
-                            fxFlex>IsActive</mat-radio-button>
-                    </mat-radio-group>
-                </div>
-
-                
-            </form>
-        </div>
-        <div class="footer-navigation-container">
-            <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px"
-                style="margin-right: 10px;">
-                <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
-                <button class="btn btn-primary" (click)="onSubmit()"
-                    [disabled]="_categorymasterService.myform.invalid">Save</button>
             </div>
         </div>
-
     </div>
-</div>a -->
+  
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <form [formGroup]="categoryForm">
+                <input type="hidden" name="categoryId" formControlName="categoryId">
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <airmid-textbox label="Category name" formControlName="categoryName" [value]=""
+                        [formGroup]="categoryForm"
+                        [validations]="_CategorymasterService.getValidationMessages().categoryName"
+                        [maxLength]="300">
+                    </airmid-textbox>
+                 
+                </div>
+
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+
+                  
+                    <!-- <mat-radio-group name="isDeleted" formControlName="isDeleted" value='true'>
+                        <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive
+                        </mat-radio-button>
+                        <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsDeactive
+                        </mat-radio-button>
+                    </mat-radio-group> -->
+                </div>
+            </form>
+        </div>
+        <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
+
+            <button class="btn btn-danger-outline" (click)="onClear(false)">Reset</button>
+            <button class="btn btn-primary " color="accent" (click)="onSubmit()">
+                <span>Save</span>
+            </button>
+        </div>
+    </div>
+</div>

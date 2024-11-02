@@ -1,61 +1,9 @@
-app-item-category-master {
-    .mat-header-row {
-        width: 900px;
-        max-width: 900px;
-        min-width: 900px;
-        font-weight: bold;
-    }
+.p-sm-24 {
+    padding: 10px !important;
+}
 
-    .mat-row {
-        width: 900px;
-        max-width: 900px;
-        min-width: 900px;
-    }
-    .mat-column-ItemCategoryId {
-        width: 110px;
-        max-width: 110px;
-        min-width: 110px;
-    }
-    .mat-column-ItemCategoryName {
-        width: 250px;
-        max-width: 250px;
-        min-width: 250px;
-    }
-    .mat-column-ItemTypeName {
-        width: 150px;
-        max-width: 150px;
-        min-width: 150px;
-    }
-    .mat-column-AddedBy {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-    }
+app-item-category-master{
 
-    .mat-column-IsDeleted {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-        text-align: center;
-        justify-content: center;
-    }
-
-    .mat-column-Active {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-        text-align: center;
-        justify-content: center;
-    }
-
-    .mat-column-action {
-        // color: white !important;
-        width: 110px;
-        max-width: 110px;
-        min-width: 110px;
-        text-align: right;
-        justify-content: right;
-    }
     .mat-icon-button {
         padding: 0;
         min-width: 0;

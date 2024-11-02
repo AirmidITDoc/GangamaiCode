@@ -23,6 +23,7 @@ import Swal from 'sweetalert2';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 
 
 @Component({
@@ -34,6 +35,9 @@ import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 })
 export class RadiologyTemplateMasterComponent implements OnInit {
   confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+  
+  
   gridConfig: gridModel = {
       apiUrl: "RadiologyTemplate/List",
       columnsList: [
@@ -43,161 +47,66 @@ export class RadiologyTemplateMasterComponent implements OnInit {
           
           { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
           {
-              heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                  {
-                      action: gridActions.edit, callback: (data: any) => {
-                          this.onSave(data) // EDIT Records
-                      }
-                  }, {
-                      action: gridActions.delete, callback: (data: any) => {
-                          this.onDeactive(data.templateId); // DELETE Records
-                      }
-                  }]
-          } //Action 1-view, 2-Edit,3-delete
-      ],
-      sortField: "templateId",
-      sortOrder: 0,
-      filters: [
-          { fieldName: "templateName", fieldValue: "", opType: OperatorComparer.Contains },
-          { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-      ],
-      row:25
-  }
-  constructor(public _radiologytemplateService: RadiologyTemplateMasterService,
-    private accountService: AuthenticationService,
-    public notification: NotificationServiceService,
+            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                {
+                    action: gridActions.edit, callback: (data: any) => {
+                        this.onSave(data);
+                    }
+                }, {
+                    action: gridActions.delete, callback: (data: any) => {
+                        this.confirmDialogRef = this._matDialog.open(
+                            FuseConfirmDialogComponent,
+                            {
+                                disableClose: false,
+                            }
+                        );
+                        this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+                        this.confirmDialogRef.afterClosed().subscribe((result) => {
+                            if (result) {
+                                let that = this;
+                                this._TemplateServieService.deactivateTheStatus(data.templateId).subscribe((response: any) => {
+                                    this.toastr.success(response.message);
+                                    that.grid.bindGridData();
+                                });
+                            }
+                            this.confirmDialogRef = null;
+                        });
+                    }
+                }]
+        } //Action 1-view, 2-Edit,3-delete
+    ],
+    sortField: "templateId",
+    sortOrder: 0,
+    filters: [
+        { fieldName: "templateName", fieldValue: "", opType: OperatorComparer.Contains },
+        { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+    ],
+    row: 25
+}
+  constructor(
+    public _TemplateServieService: RadiologyTemplateMasterService,
     public _matDialog: MatDialog,
-    private _fuseSidebarService: FuseSidebarService,
-    private _ActRoute: Router,
     public toastr: ToastrService,
-    private advanceDataStored: AdvanceDataStored,
+   
   ) { }
-  registerObj: any;
+
   ngOnInit(): void {
-
+   
   }
-
-  onSearch() {
-  
-  }
-  onSearchClear() {
-    this._radiologytemplateService.myformSearch.reset({
-      TemplateNameSearch: "",
-      IsDeletedSearch: "2",
-    });
-  
-  }
-
-  
-
-  onEdit(row) {
-    console.log(row)
-    this._radiologytemplateService.populateForm(row);
+  onSave(row: any = null) {
+    debugger
+    let that = this;
     const dialogRef = this._matDialog.open(RadiologyTemplateFormComponent,
-      {
-        maxWidth: "80%",
-        width: "80%",
-        height: "95%",
-        data: {
-          Obj: row,
-        }
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
-    
-    });
-  }
-
-  onSave(row:any = null) {
-    const dialogRef = this._matDialog.open(RadiologyTemplateFormComponent,
-    {
-        maxWidth: "95vw",
-        height: '95%',
-        width: '90%',
-        data: row
-    });
-    dialogRef.afterClosed().subscribe(result => {
-        if(result){
-            // this.getGenderMasterList();
-            // How to refresh Grid.
-        }
-        console.log('The dialog was closed - Action', result);
-    });
-}
-
-onDeactive(templateId) {
-    this.confirmDialogRef = this._matDialog.open(
-        FuseConfirmDialogComponent,
         {
-            disableClose: false,
-        }
-    );
-    this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-    this.confirmDialogRef.afterClosed().subscribe((result) => {
+            maxWidth: "45vw",
+            height: '35%',
+            width: '70%',
+            data: row
+        });
+    dialogRef.afterClosed().subscribe(result => {
         if (result) {
-            this._radiologytemplateService.deactivateTheStatus(templateId).subscribe((response: any) => {
-                if (response.StatusCode == 200) {
-                    this.toastr.success(response.Message);
-                    // this.getGenderMasterList();
-                    // How to refresh Grid.
-                }
-            });
+            that.grid.bindGridData();
         }
-        this.confirmDialogRef = null;
     });
 }
-  onBlur(e: any) {
-    //this.vTemplateDesc = e.target.innerHTML;
-  }
-
-}
-
-
-export class RadiologytemplateMaster {
-
-  templateId: Date;
-  templateName: Date;
-  templateDesc: String;
-  isActive:any;
-  RadDate: Date;
-  RadTime: Date;
-  RegNo: any;
-  PatientName: String;
-  PatientType: number;
-  TestName: String;
-  ConsultantDoctor: any;
-  CategoryName: String;
-  AgeYear: number;
-  GenderName: String;
-  PBillNo: number;
-
-
-
-
-  /**
-   * Constructor
-   *
-   * @param RadiologytemplateMaster
-   */
-  constructor(RadiologytemplateMaster) {
-    {
-
-      this.templateId = RadiologytemplateMaster.templateId || '';
-      this.templateName = RadiologytemplateMaster.templateName;
-      this.templateDesc = RadiologytemplateMaster.templateDesc;
-      this.isActive = RadiologytemplateMaster.isActive;
-
-      this.RadDate = RadiologytemplateMaster.RadDate || '';
-      this.RadTime = RadiologytemplateMaster.RadTime;
-      this.RegNo = RadiologytemplateMaster.RegNo;
-      this.PatientName = RadiologytemplateMaster.PatientName;
-      this.PBillNo = RadiologytemplateMaster.PBillNo;
-      this.PatientType = RadiologytemplateMaster.PatientType || '0';
-      this.ConsultantDoctor = RadiologytemplateMaster.ConsultantDoctor || '';
-      this.TestName = RadiologytemplateMaster.TestName || '0';
-      this.CategoryName = RadiologytemplateMaster.CategoryName || '';
-      this.AgeYear = RadiologytemplateMaster.AgeYear;
-      this.GenderName = RadiologytemplateMaster.GenderName;
-    }
-  }
 }

@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
     providedIn: "root",
@@ -9,7 +10,7 @@ export class CategoryMasterService {
     myform: FormGroup;
     myformSearch: FormGroup;
     constructor(
-        private _httpClient: HttpClient,
+        private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder
     ) {
         this.myform = this.createCategoryForm();
@@ -18,12 +19,11 @@ export class CategoryMasterService {
 
     createCategoryForm(): FormGroup {
         return this._formBuilder.group({
-            CategoryId: [""],
-            CategoryName: [""],
-            IsDeleted: ["true"],
+            categoryId: [""],
+            categoryName: [""],
+            isDeleted: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
-            AddedByName: [""],
         });
     }
     createSearchForm(): FormGroup {
@@ -36,23 +36,23 @@ export class CategoryMasterService {
         this.createCategoryForm();
     }
 
-    public getCategoryMasterList(emp) {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=m_Rtrv_Radiology_CategoryList_by_Name",emp);
+    getValidationMessages() {
+        return {
+            categoryName: [
+                { name: "required", Message: "Category Name is required" },
+                { name: "maxlength", Message: "Category name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
     }
+
+    public categoryMasterSave(Param: any, showLoader = true) {
+        if (Param.categoryId) {
+            return this._httpClient.PutData("PathCategoryMaster/" + Param.categoryId, Param, showLoader);
+        } else return this._httpClient.PostData("PathCategoryMaster", Param, showLoader);
+    }
+
     public deactivateTheStatus(m_data) {
-        return this._httpClient.post("Generic/ExecByQueryStatement?query=" + m_data,{});
-    }
-
-    public insertCategoryMaster(employee) { 
-        return this._httpClient.post("RadiologyMaster/CategorySave", employee);
-    }
-
-    public updateCategoryMaster(employee) {
-        return this._httpClient.post("RadiologyMaster/CategoryUpdate", employee);
-    }
-
-    populateForm(employee) {
-        this.myform.patchValue(employee);
+        return this._httpClient.PostData("PathCategoryMaster", m_data);
     }
 }

@@ -1,5 +1,4 @@
 <!-- <div class="modal-wrapper grid-container">
-    
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
@@ -7,74 +6,43 @@
             </div>
             <div class="modal-header-right">
                 <div class="close-icon">
-                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                        matTooltip="Close">
                         <mat-icon>close</mat-icon>
                     </button>
                 </div>
             </div>
         </div>
     </div>
-  
-   
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
-            
-            <form [formGroup]="_PrefixMasterService.myform">
-                <h3>
-                    {{
-                        _PrefixMasterService.myform.controls
-                    .PrefixID.value
-                    ? "Modify Prefix Master"
-                    : "New Prefix
-                    Master"
-                    }}
-                </h3>
-                <input type="hidden" name="PrefixID" formControlName="PrefixID" />
+            <form [formGroup]="prefixForm">
+                <input type="hidden" name="prefixId" formControlName="prefixId">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                        <mat-label>Prefix Name</mat-label>
-                        <input name="PrefixName" formControlName="PrefixName" matInput
-                            required />
-                        <mat-error>Please enter Prefix Name
-                        </mat-error>
-                    </mat-form-field>
+                    <airmid-textbox 
+                        label="Prefix name"
+                        formControlName="prefixName"
+                        [value]=""
+                        [formGroup]="prefixForm"
+                        [validations]="_PrefixMasterService.getValidationMessages().prefixName"
+                        [maxLength]="300">
+                    </airmid-textbox> 
                 </div>
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                        <mat-select placeholder="Select Gender Name" name="SexID"
-                            formControlName="SexID" required>
-                            <mat-option *ngFor="
-                                    let M of GendercmbList
-                                " [value]="M">
-                                {{ M.GenderName }}
-                            </mat-option>
-                        </mat-select>
-                        <mat-error>Please Select Gender
-                            Name</mat-error>
-                    </mat-form-field>
-                </div>
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <mat-radio-group name="IsActive" formControlName="IsActive" value="true">
-                        <mat-radio-button value="true" class="mr-sm-12"
-                            fxFlex>IsActive</mat-radio-button>
-                        <mat-radio-button value="false" class="mr-sm-12"
-                            fxFlex>IsDeactive</mat-radio-button>
+                    <mat-radio-group name="isDeleted" formControlName="isDeleted" value='false'>
+                        <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive
+                        </mat-radio-button>
+                        <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsDeactive
+                        </mat-radio-button>
                     </mat-radio-group>
                 </div>
             </form>
         </div>
         <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
             <div class="button-row">
-                <button mat-raised-button color="primary" type="submit" (click)="onSubmit()"
-                    [disabled]="_PrefixMasterService.myform.invalid">
-                    Save
-                </button>
-                <button mat-raised-button color="warn" (click)="onClear()">
-                    Clear
-                </button>
+                <button mat-raised-button color="primary" type="submit" (click)="onSubmit()">Save</button>
+                <button mat-raised-button color="warn" (click)="onClear(false)">Clear</button>
             </div>
         </div>
-       
     </div>
-  
-  </div> -->
+</div> -->

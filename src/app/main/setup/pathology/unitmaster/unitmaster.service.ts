@@ -22,11 +22,11 @@ export class UnitmasterService {
 
     createUnitmasterForm(): FormGroup {
         return this._formBuilder.group({
-            UnitId: [""],
-            UnitName: [""],
-            IsDeleted: ["true"],
-            AddedBy: ["0"],
-            UpdatedBy: ["0"],
+            unitId: [""],
+            unitName: [""],
+            // isDeleted: ["true"],
+            // AddedBy: ["0"],
+            // UpdatedBy: ["0"],
         });
     }
 
@@ -41,22 +41,25 @@ export class UnitmasterService {
         this.createUnitmasterForm();
     }
 
-    public getUnitMasterList(param: gridRequest, showLoader = true) {
-        return this._httpClient.PostData("PathUnitMaster/List", param, showLoader);
+    
+    getValidationMessages() {
+        return {
+            unitName: [
+                { name: "required", Message: "Unit Name is required" },
+                { name: "maxlength", Message: "Unit name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
     }
 
-    public UnitMasterSave(Param: any, id: string ,showLoader = true) {
-        if(id)
-            return this._httpClient.PutData("Unit/"+ id, Param, showLoader);
-        else
-            return this._httpClient.PostData("Unit", Param, showLoader);       
+    public unitMasterSave(Param: any, showLoader = true) {
+        if (Param.unitId) {
+            return this._httpClient.PutData("PathUnitMaster/" + Param.unitId, Param, showLoader);
+        } else return this._httpClient.PostData("PathUnitMaster", Param, showLoader);
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.PostData("Unit", m_data);
-    }
-
-    populateForm(param) {
-        this.myform.patchValue(param);
+        return this._httpClient.PostData("PathUnitMaster", m_data);
     }
 }
+

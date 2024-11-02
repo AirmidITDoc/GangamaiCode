@@ -11,6 +11,7 @@ import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { NewGroupComponent } from "./new-group/new-group.component";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 
 
 @Component({
@@ -22,6 +23,8 @@ import { NewGroupComponent } from "./new-group/new-group.component";
 })
 export class GroupMasterComponent implements OnInit {
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    
     gridConfig: gridModel = {
         apiUrl: "GroupMaster/List",
         columnsList: [
@@ -34,11 +37,27 @@ export class GroupMasterComponent implements OnInit {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data) // EDIT Records
+                            this.onSave(data);
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this.onDeactive(data.groupId); // DELETE Records
+                            this.confirmDialogRef = this._matDialog.open(
+                                FuseConfirmDialogComponent,
+                                {
+                                    disableClose: false,
+                                }
+                            );
+                            this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+                            this.confirmDialogRef.afterClosed().subscribe((result) => {
+                                if (result) {
+                                    let that = this;
+                                    this._GroupMasterService.deactivateTheStatus(data.groupId).subscribe((response: any) => {
+                                        this.toastr.success(response.message);
+                                        that.grid.bindGridData();
+                                    });
+                                }
+                                this.confirmDialogRef = null;
+                            });
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
@@ -46,112 +65,33 @@ export class GroupMasterComponent implements OnInit {
         sortField: "groupId",
         sortOrder: 0,
         filters: [
-            { fieldName: "GroupName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "groupName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ],
-        row:25
+        row: 25
     }
-    constructor(public _groupService: GroupMasterService, public _matDialog: MatDialog,
+
+    constructor(public _GroupMasterService: GroupMasterService, public _matDialog: MatDialog,
         public toastr : ToastrService,) {}
 
     ngOnInit(): void {
       
     }
-    onSearch() {
-      
-    }
-
-    onSearchClear() {
-        this._groupService.myformSearch.reset({
-            GroupNameSearch: "",
-            IsDeletedSearch: "2",
-        });
-      
-    }
-    get f() {
-        return this._groupService.myform.controls;
-    }
-
-   
-   
-    
-    onSave(row:any = null) {
+    onSave(row: any = null) {
+        debugger
+        let that = this;
         const dialogRef = this._matDialog.open(NewGroupComponent,
-        {
-            maxWidth: "45vw",
-            height: '35%',
-            width: '70%',
-            data: row
-        });
-        dialogRef.afterClosed().subscribe(result => {
-            if(result){
-                // this.getGenderMasterList();
-                // How to refresh Grid.
-            }
-            console.log('The dialog was closed - Action', result);
-        });
-    }
-
-    onDeactive(groupId) {
-        this.confirmDialogRef = this._matDialog.open(
-            FuseConfirmDialogComponent,
             {
-                disableClose: false,
-            }
-        );
-        this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-        this.confirmDialogRef.afterClosed().subscribe((result) => {
+                maxWidth: "45vw",
+                height: '35%',
+                width: '70%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this._groupService.deactivateTheStatus(groupId).subscribe((response: any) => {
-                    if (response.StatusCode == 200) {
-                        this.toastr.success(response.Message);
-                        // this.getGenderMasterList();
-                        // How to refresh Grid.
-                    }
-                });
+                that.grid.bindGridData();
             }
-            this.confirmDialogRef = null;
         });
     }
-    onEdit(row) {
-        var m_data = {
-            GroupId: row.GroupId,
-            GroupName: row.GroupName.trim(),
-            Isconsolidated: JSON.stringify(row.IsConsolidated),
-            IsConsolidatedDR: JSON.stringify(row.IsConsolidatedDR),
-            //  PrintSeqNo: row.PrintSeqNo,
-            IsActive: JSON.stringify(row.IsActive),
-            UpdatedBy: row.UpdatedBy,
-        };
-        this._groupService.populateForm(m_data);
-    }
-}
 
-export class GroupMaster {
-    groupId: number;
-    groupName: string;
-    isconsolidated: boolean;
-    isConsolidatedDr: boolean;
-    PrintSeqNo: Number;
-    IsActive: boolean;
-    AddedBy: number;
-    UpdatedBy: number;
-
-    /**
-     * Constructor
-     *
-     * @param GroupMaster
-     */
-    constructor(GroupMaster) {
-        {
-            this.groupId = GroupMaster.groupId || "";
-            this.groupName = GroupMaster.groupName || "";
-            this.isconsolidated = GroupMaster.isconsolidated || "false";
-            this.isConsolidatedDr = GroupMaster.isConsolidatedDr || "false";
-            this.PrintSeqNo = GroupMaster.PrintSeqNo || "";
-            this.IsActive = GroupMaster.IsActive || "false";
-            this.AddedBy = GroupMaster.AddedBy || "";
-            this.UpdatedBy = GroupMaster.UpdatedBy || "";
-        }
-    }
 }

@@ -2,29 +2,29 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
-import { CategoryMasterService } from '../category-master.service';
+import { ItemCategoryMasterService } from '../item-category-master.service';
 
 @Component({
-  selector: 'app-new-category',
-  templateUrl: './new-category.component.html',
-  styleUrls: ['./new-category.component.scss']
+  selector: 'app-new-itemcategory',
+  templateUrl: './new-itemcategory.component.html',
+  styleUrls: ['./new-itemcategory.component.scss']
 })
-export class NewCategoryComponent implements OnInit {
+export class NewItemcategoryComponent implements OnInit {
 
   categoryForm: FormGroup;
   constructor(
-      public _CategorymasterService: CategoryMasterService,
-      public dialogRef: MatDialogRef<NewCategoryComponent>,
+      public _CategorymasterService: ItemCategoryMasterService,
+      public dialogRef: MatDialogRef<NewItemcategoryComponent>,
       @Inject(MAT_DIALOG_DATA) public data: any,
       public toastr: ToastrService
   ) { }
  
   ngOnInit(): void {
-      this.categoryForm = this._CategorymasterService.createCategoryForm();
+      this.categoryForm = this._CategorymasterService.createItemCategoryForm();
       var m_data = {
-        categoryId: this.data?.categoryId,
-        categoryName: this.data?.categoryName.trim(),
-      //   printSeqNo: this.data?.printSeqNo,
+        itemCategoryId: this.data?.itemCategoryId,
+        itemCategoryName: this.data?.itemCategoryName.trim(),
+        itemTypeId: this.data?.itemTypeId,
       //   isconsolidated: JSON.stringify(this.data?.isconsolidated),
       //   isConsolidatedDR: JSON.stringify(this.data?.isConsolidatedDR),
       // isDeleted: JSON.stringify(this.data?.isActive),

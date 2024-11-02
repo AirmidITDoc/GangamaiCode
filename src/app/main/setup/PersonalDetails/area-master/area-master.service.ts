@@ -60,3 +60,4 @@ export class AreaMasterService {
         return this._httpClient.PostData("AreaMaster", m_data);
     }
 }
+// Set NODE_OPTIONS="--max-old-space-size=8192"

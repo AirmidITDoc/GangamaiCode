@@ -18,6 +18,7 @@ import { NewCategoryComponent } from "./new-category/new-category.component";
 
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 
 @Component({
     selector: "app-categorymaster",
@@ -28,6 +29,9 @@ import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 })
 export class CategorymasterComponent implements OnInit {
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    
+
     gridConfig: gridModel = {
         apiUrl: "PathCategoryMaster/List",
         columnsList: [
@@ -38,11 +42,27 @@ export class CategorymasterComponent implements OnInit {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
-                            this.onAdd(data) // EDIT Records
+                            this.onSave(data);
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this.onDeactive(data.genderId); // DELETE Records
+                            this.confirmDialogRef = this._matDialog.open(
+                                FuseConfirmDialogComponent,
+                                {
+                                    disableClose: false,
+                                }
+                            );
+                            this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+                            this.confirmDialogRef.afterClosed().subscribe((result) => {
+                                if (result) {
+                                    let that = this;
+                                    this._categorymasterService.deactivateTheStatus(data.groupId).subscribe((response: any) => {
+                                        this.toastr.success(response.message);
+                                        that.grid.bindGridData();
+                                    });
+                                }
+                                this.confirmDialogRef = null;
+                            });
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
@@ -50,10 +70,10 @@ export class CategorymasterComponent implements OnInit {
         sortField: "categoryId",
         sortOrder: 0,
         filters: [
-            { fieldName: "categoryName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "groupName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ],
-        row:25
+        row: 25
     }
     constructor(
         public _categorymasterService: CategorymasterService,
@@ -67,128 +87,20 @@ export class CategorymasterComponent implements OnInit {
         
     }
 
-    toggleSidebar(name): void {
-        this._fuseSidebarService.getSidebar(name).toggleOpen();
-      }
-  
-    onSearch() {
-       
-    }
-
-  
-
-
-    onClear() {
-        this._categorymasterService.myform.reset({ IsDeleted: "true" });
-        this._categorymasterService.initializeFormGroup();
-    }
-    // toggle(val: any) {
-    //     if (val == "2") {
-    //         this.currentStatus = 2;
-    //     } else if (val == "1") {
-    //         this.currentStatus = 1;
-    //     }
-    //     else {
-    //         this.currentStatus = 0;
-
-    //     }
-    // }
-
-   
-    // onFilterChange() {
-       
-    //     if (this.currentStatus == 1) {
-    //         this.tempList.data = []
-    //         this.DSCategoryMasterList.data= this.DSCategoryMasterList1.data
-    //         for (let item of this.DSCategoryMasterList.data) {
-    //             if (item.IsDeleted) this.tempList.data.push(item)
-
-    //         }
-
-    //         this.DSCategoryMasterList.data = [];
-    //         this.DSCategoryMasterList.data = this.tempList.data;
-    //     }
-    //     else if (this.currentStatus == 0) {
-    //         this.DSCategoryMasterList.data= this.DSCategoryMasterList1.data
-    //         this.tempList.data = []
-
-    //         for (let item of this.DSCategoryMasterList.data) {
-    //             if (!item.IsDeleted) this.tempList.data.push(item)
-
-    //         }
-    //         this.DSCategoryMasterList.data = [];
-    //         this.DSCategoryMasterList.data = this.tempList.data;
-    //     }
-    //     else {
-    //         this.DSCategoryMasterList.data= this.DSCategoryMasterList1.data
-    //         this.tempList.data = this.DSCategoryMasterList.data;
-    //     }
-
-
-    // }
-    onDeactive(categoryId) {
-        this.confirmDialogRef = this._matDialog.open(
-            FuseConfirmDialogComponent,
-            {
-                disableClose: false,
-            }
-        );
-        this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-        this.confirmDialogRef.afterClosed().subscribe((result) => {
-            if (result) {
-                this._categorymasterService.deactivateTheStatus(categoryId).subscribe((response: any) => {
-                    if (response.StatusCode == 200) {
-                        this.toastr.success(response.Message);
-                        // this.getGenderMasterList();
-                        // How to refresh Grid.
-                    }
-                });
-            }
-            this.confirmDialogRef = null;
-        });
-    }
-
-    onAdd(row:any = null) {
+  onSave(row: any = null) {
+        debugger
+        let that = this;
         const dialogRef = this._matDialog.open(NewCategoryComponent,
-        {
-            maxWidth: "45vw",
-            height: '35%',
-            width: '70%',
-            data: row
-        });
+            {
+                maxWidth: "45vw",
+                height: '35%',
+                width: '70%',
+                data: row
+            });
         dialogRef.afterClosed().subscribe(result => {
-            if(result){
-                // this.getGenderMasterList();
-                // How to refresh Grid.
+            if (result) {
+                that.grid.bindGridData();
             }
-            console.log('The dialog was closed - Action', result);
         });
-    }
-    onEdit(row) {
-        row.IsDeleted=JSON.stringify(row.IsDeleted)
-               this._categorymasterService.populateForm(row);
-    }
-}
-
-export class CategoryMaster {
-    categoryId: number;
-    categoryName: string;
-    isActive: boolean;
-    CreatedBy: any;
-    ModifiedBy: any;
-
-    /**
-     * Constructor
-     *
-     * @param CategoryMaster
-     */
-    constructor(CategoryMaster) {
-        {
-            this.categoryId = CategoryMaster.categoryId || "";
-            this.categoryName = CategoryMaster.categoryName || "";
-            this.isActive = CategoryMaster.isActive || "true";
-            this.CreatedBy = CategoryMaster.CreatedBy || "";
-            this.ModifiedBy = CategoryMaster.ModifiedBy || "";
-        }
     }
 }

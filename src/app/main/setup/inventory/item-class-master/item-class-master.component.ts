@@ -6,6 +6,12 @@ import { fuseAnimations } from "@fuse/animations";
 import { ItemClassMasterService } from "./item-class-master.service";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
+import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { NewItemClassComponent } from "./new-item-class/new-item-class.component";
 
 @Component({
     selector: "app-item-class-master",
@@ -15,165 +21,71 @@ import { ToastrService } from "ngx-toastr";
     animations: fuseAnimations,
 })
 export class ItemClassMasterComponent implements OnInit {
-    msg: any;
-    resultsLength = 0;
-    displayedColumns: string[] = [
-        "ItemClassId",
-        "ItemClassName",
-        "AddedBy",
-        "IsDeleted",
-        "action",
-    ];
-
-    DSItemClassMasterList = new MatTableDataSource<ItemClassMaster>();
-    @ViewChild(MatSort) sort: MatSort;
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-
-    constructor(public _itemclassService: ItemClassMasterService,
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+ 
+    constructor(public _ItemClassMasterService: ItemClassMasterService,public _matDialog: MatDialog,
         public toastr : ToastrService,) {}
-
-    ngOnInit(): void {
-        this.getitemclassMasterList();
-    }
-    onSearch() {
-        this.getitemclassMasterList();
-    }
-
-    onSearchClear() {
-        this._itemclassService.myformSearch.reset({
-            ItemClassNameSearch: "",
-            IsDeletedSearch: "2",
-        });
-        this.getitemclassMasterList();
-    }
-    getitemclassMasterList() {
-        var param = {
-            ItemClassName:
-                this._itemclassService.myformSearch
-                    .get("ItemClassNameSearch")
-                    .value.trim() + "%" || "%",
-        };
-        this._itemclassService
-            .getitemclassMasterList(param)
-            .subscribe((Menu) => {
-                this.DSItemClassMasterList.data = Menu as ItemClassMaster[];
-                this.DSItemClassMasterList.sort = this.sort;
-                this.DSItemClassMasterList.paginator = this.paginator;
-                this.resultsLength= this.DSItemClassMasterList.data.length
+        @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+        gridConfig: gridModel = {
+            apiUrl: "ItemClassMaster/List",
+            columnsList: [
+                { heading: "Code", key: "itemClassId", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Item Class Name", key: "itemClassName", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+                {
+                    heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                        {
+                            action: gridActions.edit, callback: (data: any) => {
+                                this.onSave(data);
+                            }
+                        }, {
+                            action: gridActions.delete, callback: (data: any) => {
+                                this.confirmDialogRef = this._matDialog.open(
+                                    FuseConfirmDialogComponent,
+                                    {
+                                        disableClose: false,
+                                    }
+                                );
+                                this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+                                this.confirmDialogRef.afterClosed().subscribe((result) => {
+                                    if (result) {
+                                        let that = this;
+                                        this._ItemClassMasterService.deactivateTheStatus(data.itemClassId).subscribe((response: any) => {
+                                            this.toastr.success(response.message);
+                                            that.grid.bindGridData();
+                                        });
+                                    }
+                                    this.confirmDialogRef = null;
+                                });
+                            }
+                        }]
+                } //Action 1-view, 2-Edit,3-delete
+            ],
+            sortField: "itemClassId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "itemClassName", fieldValue: "", opType: OperatorComparer.Contains },
+                { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+            ],
+            row: 25
+        }
+    
+     
+        ngOnInit(): void { }
+        onSave(row: any = null) {
+            let that = this;
+            const dialogRef = this._matDialog.open(NewItemClassComponent,
+                {
+                    maxWidth: "45vw",
+                    height: '35%',
+                    width: '70%',
+                    data: row
+                });
+            dialogRef.afterClosed().subscribe(result => {
+                if (result) {
+                    that.grid.bindGridData();
+                }
             });
-    }
-
-    onClear() {
-        this._itemclassService.myform.reset({ IsDeleted: "false" });
-        this._itemclassService.initializeFormGroup();
-    }
-
-    onSubmit() {
-        if (this._itemclassService.myform.valid) {
-            if (!this._itemclassService.myform.get("ItemClassId").value) {
-                var m_data = {
-                    insertItemClassMaster: {
-                        itemClassName: this._itemclassService.myform
-                            .get("ItemClassName")
-                            .value.trim(),
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._itemclassService.myform.get("IsDeleted")
-                                    .value
-                            )
-                        ),
-                        addedBy: 1,
-                        updatedBy: 1,
-                    },
-                };
-                console.log(m_data);
-                this._itemclassService
-                    .insertItemClassMaster(m_data)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                              this.getitemclassMasterList();
-                            
-                        } else {
-                            this.toastr.error('Item-Class Master Master Data not saved !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                        }
-                        this.getitemclassMasterList();
-                    });
-            } else {
-                var m_dataUpdate = {
-                    updateItemClassMaster: {
-                        itemClassId:
-                            this._itemclassService.myform.get("ItemClassId")
-                                .value,
-                        itemClassName: this._itemclassService.myform
-                            .get("ItemClassName")
-                            .value.trim(),
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._itemclassService.myform.get("IsDeleted")
-                                    .value
-                            )
-                        ),
-                        updatedBy: 1,
-                    },
-                };
-
-                this._itemclassService
-                    .updateItemClassMaster(m_dataUpdate)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record updated Successfully.', 'updated !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                              this.getitemclassMasterList();
-                           
-                        } else {
-                            this.toastr.error('Item-Class Master Master Data not updated !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                        }
-                        this.getitemclassMasterList();
-                    });
-            }
-            this.onClear();
         }
+    
     }
-
-    onEdit(row) {
-        var m_data = {
-            ItemClassId: row.ItemClassId,
-            ItemClassName: row.ItemClassName.trim(),
-            IsDeleted: JSON.stringify(row.IsDeleted),
-            UpdatedBy: row.UpdatedBy,
-        };
-        this._itemclassService.populateForm(m_data);
-    }
-}
-export class ItemClassMaster {
-    ItemClassId: number;
-    ItemClassName: string;
-    IsDeleted: boolean;
-    AddedBy: number;
-    UpdatedBy: number;
-
-    /**
-     * Constructor
-     *
-     * @param ItemClassMaster
-     */
-    constructor(ItemClassMaster) {
-        {
-            this.ItemClassId = ItemClassMaster.ItemClassId || "";
-            this.ItemClassName = ItemClassMaster.ItemClassName || "";
-            this.IsDeleted = ItemClassMaster.IsDeleted || "true";
-            this.AddedBy = ItemClassMaster.AddedBy || "";
-            this.UpdatedBy = ItemClassMaster.UpdatedBy || "";
-        }
-    }
-}
