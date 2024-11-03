@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { StoreMasterComponent } from "./store-master.component";
 import { RouterModule, Routes } from "@angular/router";
 import { StoreMasterService } from "./store-master.service";
@@ -27,6 +27,7 @@ import { MatCheckboxModule } from "@angular/material/checkbox";
 import { StoreFormMasterComponent } from './store-form-master/store-form-master.component';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
+import { SharedModule } from "app/main/shared/shared.module";
 
 
 const routes: Routes = [
@@ -64,10 +65,11 @@ const routes: Routes = [
         MatCardModule,
         MatSlideToggleModule,
         MatTabsModule,
-        MatAutocompleteModule
+        MatAutocompleteModule,
+        SharedModule
         // MatLabel,
     ],
-    providers: [StoreMasterService],
+    providers: [StoreMasterService,DatePipe],
     entryComponents: [StoreMasterComponent],
 })
 export class StoreMasterModule { }

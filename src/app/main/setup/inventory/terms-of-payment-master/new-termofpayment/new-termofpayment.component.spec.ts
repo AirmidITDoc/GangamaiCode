@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NewItemClassComponent } from './new-item-class.component';
+import { NewTermofpaymentComponent } from './new-termofpayment.component';
 
-describe('NewItemClassComponent', () => {
-  let component: NewItemClassComponent;
-  let fixture: ComponentFixture<NewItemClassComponent>;
+describe('NewTermofpaymentComponent', () => {
+  let component: NewTermofpaymentComponent;
+  let fixture: ComponentFixture<NewTermofpaymentComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ NewItemClassComponent ]
+      declarations: [ NewTermofpaymentComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NewItemClassComponent);
+    fixture = TestBed.createComponent(NewTermofpaymentComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

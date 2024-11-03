@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { DoctortypeMasterService } from '../doctortype-master.service';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-new-doctor-type',
@@ -7,88 +11,37 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NewDoctorTypeComponent implements OnInit {
 
-  constructor() { }
-
+  doctortypeForm: FormGroup;
+  constructor(
+      public _DoctortypeMasterService: DoctortypeMasterService,
+      public dialogRef: MatDialogRef<NewDoctorTypeComponent>,
+      @Inject(MAT_DIALOG_DATA) public data: any,
+      public toastr: ToastrService
+  ) { }
+ 
   ngOnInit(): void {
+      this.doctortypeForm = this._DoctortypeMasterService.createDoctortypeForm();
+      var m_data = {
+        id: this.data?.id,
+        doctorType: this.data?.doctorType.trim(),
+       isDeleted: JSON.stringify(this.data?.isActive),
+      };
+      this.doctortypeForm.patchValue(m_data);
   }
-//   onSubmit() {
-//     if (this._doctortypeService.myform.valid) {
-//         if (!this._doctortypeService.myform.get("Id").value) {
-//             var m_data = {
-//                 doctortTypeMasterInsert: {
-//                     doctorType: this._doctortypeService.myform
-//                         .get("DoctorType")
-//                         .value.trim(),
-//                     IsActive: Boolean(
-//                         JSON.parse(
-//                             this._doctortypeService.myform.get("isActive")
-//                                 .value
-//                         )
-//                     ),
-//                 },
-//             };
+  onSubmit() {
+      if (this.doctortypeForm.valid) {
+        debugger
+          this._DoctortypeMasterService.doctortypeMasterSave(this.doctortypeForm.value).subscribe((response) => {
+              this.toastr.success(response.message);
+              this.onClear(true);
+          }, (error) => {
+              this.toastr.error(error.message);
+          });
+      }
+  }
 
-//             this._doctortypeService
-//                 .doctortTypeMasterInsert(m_data)
-//                 .subscribe((data) => {
-//                     this.msg = data;
-//                     if (data) {
-//                         this.toastr.success('Record Saved Successfully.', 'Saved !', {
-//                             toastClass: 'tostr-tost custom-toast-success',
-//                           });
-//                           this.getDoctortypeMasterList();
-                       
-//                     } else {
-//                         this.toastr.error('DoctorType Master Master Data not saved !, Please check API error..', 'Error !', {
-//                             toastClass: 'tostr-tost custom-toast-error',
-//                           });
-//                     }
-//                     this.getDoctortypeMasterList();
-//                 },error => {
-//                     this.toastr.error('DoctorType Data not saved !, Please check API error..', 'Error !', {
-//                      toastClass: 'tostr-tost custom-toast-error',
-//                    });
-//                  });
-//         } else {
-//             var m_dataUpdate = {
-//                 doctorTypeMasterUpdate: {
-//                     id: this._doctortypeService.myform.get("Id").value,
-//                     doctorType:
-//                         this._doctortypeService.myform.get("DoctorType")
-//                             .value,
-//                             IsActive: Boolean(
-//                         JSON.parse(
-//                             this._doctortypeService.myform.get("isActive")
-//                                 .value
-//                         )
-//                     ),
-//                 },
-//             };
-//             this._doctortypeService
-//                 .doctorTypeMasterUpdate(m_dataUpdate)
-//                 .subscribe((data) => {
-//                     this.msg = data;
-//                     if (data) {
-//                         this.toastr.success('Record updated Successfully.', 'updated !', {
-//                             toastClass: 'tostr-tost custom-toast-success',
-//                           });
-//                           this.getDoctortypeMasterList();
-                       
-//                     } else {
-//                         this.toastr.error('DoctorType Master Data not updated !, Please check API error..', 'Error !', {
-//                             toastClass: 'tostr-tost custom-toast-error',
-//                           });
-//                     }
-//                     this.getDoctortypeMasterList();
-//                 },error => {
-//                     this.toastr.error('DoctorType Data not Updated !, Please check API error..', 'Error !', {
-//                      toastClass: 'tostr-tost custom-toast-error',
-//                    });
-//                  });
-                
-                
-//         }
-//         this.onClear();
-//     }
-// }
+  onClear(val: boolean) {
+      this.doctortypeForm.reset();
+      this.dialogRef.close(val);
+  }
 }

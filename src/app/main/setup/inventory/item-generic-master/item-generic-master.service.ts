@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
     providedIn: "root",
@@ -10,7 +11,7 @@ export class ItemGenericMasterService {
     myformSearch: FormGroup;
 
     constructor(
-        private _httpClient: HttpClient,
+        private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder
     ) {
         this.myform = this.createItemgenericForm();
@@ -19,9 +20,9 @@ export class ItemGenericMasterService {
 
     createItemgenericForm(): FormGroup {
         return this._formBuilder.group({
-            ItemGenericNameId: [""],
-            ItemGenericName: [""],
-            IsDeleted: ["false"],
+            itemGenericNameId: [""],
+            itemGenericName: [""],
+            isDeleted: ["false"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
         });
@@ -35,23 +36,23 @@ export class ItemGenericMasterService {
     initializeFormGroup() {
         this.createItemgenericForm();
     }
-
-    public getitemgenericMasterList(param) {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Retrieve_Item_Generic_ByName",
-            param
-        );
+    getValidationMessages() {
+        return {
+            itemGenericName: [
+                { name: "required", Message: "ItemGeneric Name is required" },
+                { name: "maxlength", Message: "ItemGeneric name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
     }
 
-    public insertItemGenericMaster(param) {
-        return this._httpClient.post("Inventory/ItemGenericSave", param);
+    public genericMasterSave(Param: any, showLoader = true) {
+        if (Param.itemGenericNameId) {
+            return this._httpClient.PutData("ItemGenericName/" + Param.itemGenericNameId, Param, showLoader);
+        } else return this._httpClient.PostData("ItemGenericName", Param, showLoader);
     }
 
-    public updateItemGenericMaster(param) {
-        return this._httpClient.post("Inventory/ItemGenericUpdate", param);
-    }
-
-    populateForm(param) {
-        this.myform.patchValue(param);
+    public deactivateTheStatus(m_data) {
+        return this._httpClient.PostData("ItemGenericName", m_data);
     }
 }

@@ -11,6 +11,7 @@ import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/conf
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { NewDoctorTypeComponent } from "./new-doctor-type/new-doctor-type.component";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 
 @Component({
     selector: "app-doctortype-master",
@@ -20,7 +21,11 @@ import { NewDoctorTypeComponent } from "./new-doctor-type/new-doctor-type.compon
     animations: fuseAnimations,
 })
 export class DoctortypeMasterComponent implements OnInit {
+    
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    
+
     gridConfig: gridModel = {
         apiUrl: "DoctorTypeMaster/List",
         columnsList: [
@@ -31,11 +36,27 @@ export class DoctortypeMasterComponent implements OnInit {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
-                            debugger
+                            this.onSave(data);
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            debugger
+                            this.confirmDialogRef = this._matDialog.open(
+                                FuseConfirmDialogComponent,
+                                {
+                                    disableClose: false,
+                                }
+                            );
+                            this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+                            this.confirmDialogRef.afterClosed().subscribe((result) => {
+                                if (result) {
+                                    let that = this;
+                                    this._doctortypeService.deactivateTheStatus(data.id).subscribe((response: any) => {
+                                        this.toastr.success(response.message);
+                                        that.grid.bindGridData();
+                                    });
+                                }
+                                this.confirmDialogRef = null;
+                            });
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
@@ -46,8 +67,9 @@ export class DoctortypeMasterComponent implements OnInit {
             { fieldName: "doctorType", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ],
-        row:25
+        row: 25
     }
+
 
     constructor(public _doctortypeService: DoctortypeMasterService,public _matDialog: MatDialog,
         public toastr : ToastrService,) {}
@@ -55,156 +77,21 @@ export class DoctortypeMasterComponent implements OnInit {
     ngOnInit(): void {
        
     }
-    onSearch() {
-       
-    }
-    onSearchClear() {
-        this._doctortypeService.myformSearch.reset({
-            DoctorTypeSearch: "",
-            IsDeletedSearch: "2",
-        });
-       
-    }
-    resultsLength=0;
-    
-   
-    onClear() {
-        this._doctortypeService.myform.reset({ IsDeleted: "false" });
-        this._doctortypeService.initializeFormGroup();
-    }
-
-   
-
-    changeStatus(status: any) {
-        switch (status.id) {
-            case 1:
-                //this.onEdit(status.data)
-                break;
-            case 2:
-                this.onEdit(status.data)
-                break;
-            case 5:
-                this.onDeactive(status.data.genderId);
-                break;
-            default:
-                break;
-        }
-    }
-  
-    onDeactive(id) {
+    onSave(row: any = null) {
         debugger
-        this.confirmDialogRef = this._matDialog.open(
-            FuseConfirmDialogComponent,
-            {
-                disableClose: false,
-            }
-        );
-        this.confirmDialogRef.componentInstance.confirmMessage =
-            "Are you sure you want to deactive?";
-        this.confirmDialogRef.afterClosed().subscribe((result) => {
-            debugger
-            if (result) {
-                this._doctortypeService.deactivateTheStatus(id).subscribe((data: any) => {
-                    
-                    if (data.StatusCode == 200) {
-                        this.toastr.success(
-                            "Record updated Successfully.",
-                            "updated !",
-                            {
-                                toastClass:
-                                    "tostr-tost custom-toast-success",
-                            }
-                        );
-                        // this.getGenderMasterList();
-                    }
-                });
-            }
-            this.confirmDialogRef = null;
-        });
-    }
-
-    newDoctorTypemaster() {
+        let that = this;
         const dialogRef = this._matDialog.open(NewDoctorTypeComponent,
             {
                 maxWidth: "45vw",
                 height: '35%',
                 width: '70%',
+                data: row
             });
         dialogRef.afterClosed().subscribe(result => {
-            console.log('The dialog was closed - Insert Action', result);
-
+            if (result) {
+                that.grid.bindGridData();
+            }
         });
     }
 
-    // onFilterChange() {
-       
-    //     if (this.currentStatus == 1) {
-    //         this.tempList.data = []
-    //         this.DSDoctorTypeMasterList.data= this.DSDoctorTypeMasterList1.data
-    //         for (let item of this.DSDoctorTypeMasterList.data) {
-    //             if (item.IsActive) this.tempList.data.push(item)
-
-    //         }
-
-    //         this.DSDoctorTypeMasterList.data = [];
-    //         this.DSDoctorTypeMasterList.data = this.tempList.data;
-    //     }
-    //     else if (this.currentStatus == 0) {
-    //         this.DSDoctorTypeMasterList.data= this.DSDoctorTypeMasterList.data
-    //         this.tempList.data = []
-
-    //         for (let item of this.DSDoctorTypeMasterList.data) {
-    //             if (!item.IsActive) this.tempList.data.push(item)
-
-    //         }
-    //         this.DSDoctorTypeMasterList.data = [];
-    //         this.DSDoctorTypeMasterList.data = this.tempList.data;
-    //     }
-    //     else {
-    //         this.DSDoctorTypeMasterList.data= this.DSDoctorTypeMasterList1.data
-    //         this.tempList.data = this.DSDoctorTypeMasterList.data;
-    //     }
-
-
-    // }
-    // toggle(val: any) {
-    //     if (val == "2") {
-    //         this.currentStatus = 2;
-    //     } else if (val == "1") {
-    //         this.currentStatus = 1;
-    //     }
-    //     else {
-    //         this.currentStatus = 0;
-
-    //     }
-    // }
-    onEdit(row) {
-        var m_data = {
-            Id: row.Id,
-            DoctorType: row.DoctorType.trim(),
-            IsActive: JSON.stringify(row.IsActive),
-        };
-        this._doctortypeService.populateForm(m_data);
-    }
 }
-
-export class DoctortypeMaster {
-    id: number;
-    doctorType: string;
-    isActive: boolean;
-    IsActive:any;
-    /**
-     * Constructor
-     *
-     * @param DoctortypeMaster
-     */
-    constructor(DoctortypeMaster) {
-        {
-            this.id = DoctortypeMaster.id || "";
-            this.doctorType = DoctortypeMaster.doctorType || "";
-            this.isActive = DoctortypeMaster.isActive || true;
-            this.IsActive = DoctortypeMaster.IsActive || true;
-        }
-    }
-}
-

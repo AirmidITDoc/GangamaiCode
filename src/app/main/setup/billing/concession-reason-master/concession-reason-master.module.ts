@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { RouterModule, Routes } from "@angular/router";
 import { ConcessionReasonMasterComponent } from "./concession-reason-master.component";
 import { ConcessionReasonMasterService } from "./concession-reason-master.service";
@@ -20,6 +20,9 @@ import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatButtonModule } from "@angular/material/button";
+import { NewConcessionreasonComponent } from './new-concessionreason/new-concessionreason.component';
+import { SharedModule } from "app/main/shared/shared.module";
+import { MatDialogModule } from "@angular/material/dialog";
 
 const routes: Routes = [
     {
@@ -29,18 +32,16 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [ConcessionReasonMasterComponent],
+    declarations: [ConcessionReasonMasterComponent, NewConcessionreasonComponent],
     imports: [
         RouterModule.forChild(routes),
-
+        SharedModule,
         MatButtonModule,
         MatCheckboxModule,
-        MatDatepickerModule,
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
         MatMenuModule,
-        MatRippleModule,
         MatTableModule,
         MatToolbarModule,
         MatPaginatorModule,
@@ -49,10 +50,10 @@ const routes: Routes = [
         MatRadioModule,
         MatSnackBarModule,
         FuseSharedModule,
-        FuseConfirmDialogModule,
         FuseSidebarModule,
+        MatDialogModule,
     ],
-    providers: [ConcessionReasonMasterService],
+    providers: [ConcessionReasonMasterService,DatePipe],
     entryComponents: [ConcessionReasonMasterComponent],
 })
 export class ConcessionReasonMasterModule {}

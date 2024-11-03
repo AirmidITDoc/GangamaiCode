@@ -1,51 +1,11 @@
-app-location-master {
-    .mat-header-row {
-        width: 600px;
-        max-width: 600px;
-        min-width: 600px;
-        font-weight: bold;
-    }
 
-    .mat-row {
-        width: 600px;
-        max-width: 600px;
-        min-width: 600px;
-    }
 
-    .mat-column-LocationId {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-    }
+.p-sm-24 {
+    padding: 10px !important;
+}
 
-    .mat-column-LocationName {
-        width: 200px;
-        max-width: 200px;
-        min-width: 200px;
-    }
+app-location-master{
 
-    // .mat-column-AddedByName {
-    //     width: 200px;
-    //     max-width: 200px;
-    //     min-width: 200px;
-    // }
-
-    .mat-column-IsActive {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-        text-align: center;
-        justify-content: center;
-    }
-
-    .mat-column-action {
-        // color: white !important;
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-        text-align: right;
-        justify-content: right;
-    }
     .mat-icon-button {
         padding: 0;
         min-width: 0;

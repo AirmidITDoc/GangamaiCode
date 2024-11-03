@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
     providedIn: "root",
@@ -10,7 +11,7 @@ export class ItemTypeMasterService {
     myformSearch: FormGroup;
 
     constructor(
-        private _httpClient: HttpClient,
+        private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder
     ) {
         this.myform = this.createItemtypeForm();
@@ -19,9 +20,9 @@ export class ItemTypeMasterService {
 
     createItemtypeForm(): FormGroup {
         return this._formBuilder.group({
-            ItemTypeId: [""],
-            ItemTypeName: [""],
-            IsDeleted: ["true"],
+            itemTypeId: [""],
+            itemTypeName: [""],
+            isDeleted: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
         });
@@ -37,22 +38,23 @@ export class ItemTypeMasterService {
         this.createItemtypeForm();
     }
 
-    public getItemtypeMasterList(param) {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=m_Rtrv_ItemTypeMaster_by_Name",
-            param
-        );
+    getValidationMessages() {
+        return {
+            itemTypeName: [
+                { name: "required", Message: "ItemType Name is required" },
+                { name: "maxlength", Message: "ItemType name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
     }
 
-    public insertItemTypeMaster(param) {
-        return this._httpClient.post("Inventory/ItemTypeSave", param);
+    public itemtypeMasterSave(Param: any, showLoader = true) {
+        if (Param.itemTypeId) {
+            return this._httpClient.PutData("ItemType/" + Param.itemTypeId, Param, showLoader);
+        } else return this._httpClient.PostData("ItemType", Param, showLoader);
     }
 
-    public updateItemTypeMaster(param) {
-        return this._httpClient.post("Inventory/ItemTypeUpdate", param);
-    }
-
-    populateForm(param) {
-        this.myform.patchValue(param);
+    public deactivateTheStatus(m_data) {
+        return this._httpClient.PostData("ItemType", m_data);
     }
 }

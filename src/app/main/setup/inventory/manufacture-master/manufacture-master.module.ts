@@ -19,6 +19,10 @@ import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
 import { MatRadioModule } from "@angular/material/radio";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { ManufactureMasterService } from "./manufacture-master.service";
+import { NewManufactureComponent } from './new-manufacture/new-manufacture.component';
+import { SharedModule } from "app/main/shared/shared.module";
+import { MatDialogModule } from "@angular/material/dialog";
+import { DatePipe } from "@angular/common";
 
 const routes: Routes = [
     {
@@ -28,18 +32,16 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [ManufactureMasterComponent],
+    declarations: [ManufactureMasterComponent, NewManufactureComponent],
     imports: [
         RouterModule.forChild(routes),
-
+        SharedModule,
         MatButtonModule,
         MatCheckboxModule,
-        MatDatepickerModule,
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
         MatMenuModule,
-        MatRippleModule,
         MatTableModule,
         MatToolbarModule,
         MatPaginatorModule,
@@ -48,10 +50,10 @@ const routes: Routes = [
         MatRadioModule,
         MatSnackBarModule,
         FuseSharedModule,
-        FuseConfirmDialogModule,
         FuseSidebarModule,
+        MatDialogModule,
     ],
-    providers: [ManufactureMasterService],
+    providers: [ManufactureMasterService,DatePipe],
     entryComponents: [ManufactureMasterComponent],
 })
 export class ManufactureMasterModule {}

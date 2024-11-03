@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
     providedIn: "root",
@@ -10,7 +11,7 @@ export class StoreMasterService {
     myform: FormGroup;
 
     constructor(
-        private _httpClient: HttpClient,
+        private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder
     ) {
         this.myformSearch = this.createSearchForm();
@@ -19,22 +20,22 @@ export class StoreMasterService {
 
     createStoremasterForm(): FormGroup {
         return this._formBuilder.group({
-            StoreId: [""],
-            StoreShortName: [""],
-            StoreName: [""],
-            IndentPrefix: [""],
-            IndentNo: [""],
-            PurchasePrefix: [""],  
-            PurchaseNo: [""],
-            GrnPrefix: [""],  
-            GrnNo: [""],
-            GrnreturnNoPrefix: [""],
-            GrnreturnNo: [""],
-            IssueToDeptPrefix: [""],
-            IssueToDeptNo: [""],
-            ReturnFromDeptNoPrefix: [""],
-            ReturnFromDeptNo: [""],
-            IsDeleted: ["true"],
+            storeId: [""],
+            storeShortName: [""],
+            storeName: [""],
+            indentPrefix: [""],
+            indentNo: [""],
+            purchasePrefix: [""],  
+            purchaseNo: [""],
+            grnPrefix: [""],  
+            grnNo: [""],
+            grnreturnNoPrefix: [""],
+            grnreturnNo: [""],
+            issueToDeptPrefix: [""],
+            issueToDeptNo: [""],
+            returnFromDeptNoPrefix: [""],
+            returnFromDeptNo: [""],
+            isDeleted: ["true"],
             UpdatedBy: [""],
             AddedByName: [""],
             Header:[""],
@@ -55,33 +56,23 @@ export class StoreMasterService {
         this.createStoremasterForm();
     }
 
-    public getStoreMasterList(m_data) {
-        //return this._httpClient.post("Generic/GetByProc?procName=ps_Rtrv_Inventory_StoreMaster_by_Name", {StoreName:"%"})
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_StoreMaster_by_Name",
-            m_data
-        );
+    getValidationMessages() {
+        return {
+            storeName: [
+                { name: "required", Message: "storeName  is required" },
+                { name: "maxlength", Message: "storeName  should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
+    }
+
+    public storeMasterSave(Param: any, showLoader = true) {
+        if (Param.currencyId) {
+            return this._httpClient.PutData("StoreMaster/" + Param.currencyId, Param, showLoader);
+        } else return this._httpClient.PostData("StoreMaster", Param, showLoader);
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.post(
-            "Generic/ExecByQueryStatement?query=" + m_data,{}
-        );
-    }
-
-    public insertStoreMaster(param) {
-        return this._httpClient.post("Inventory/StoreMasterSave", param);
-    }
-
-    public updateStoreMaster(param) {
-        return this._httpClient.post("Inventory/StoreMasterUpdate", param);
-    }
-
-      // Get CashCounter List 
-  public getCashcounterList() {
-    return this._httpClient.post("Generic/GetByProc?procName=m_RtrvCashCounterForCombo", {})
-  }
-    populateForm(param) {
-        this.myform.patchValue(param);
+        return this._httpClient.PostData("StoreMaster", m_data);
     }
 }

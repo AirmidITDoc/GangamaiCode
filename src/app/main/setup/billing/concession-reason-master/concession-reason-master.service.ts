@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
     providedIn: "root",
@@ -10,18 +11,18 @@ export class ConcessionReasonMasterService {
     myformSearch: FormGroup;
 
     constructor(
-        private _httpClient: HttpClient,
+        private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder
     ) {
         this.myform = this.createConcessionreasonForm();
         this.myformSearch = this.createSearchForm();
     }
-
+    
     createConcessionreasonForm(): FormGroup {
         return this._formBuilder.group({
-            ConcessionId: [""],
-            ConcessionReasonName: [""],
-            IsDeleted: ["false"],
+            concessionId: [""],
+            concessionReason: [""],
+            isDeleted: ["false"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
             AddedByName: [""],
@@ -37,23 +38,23 @@ export class ConcessionReasonMasterService {
     initializeFormGroup() {
         this.createConcessionreasonForm();
     }
-
-    public getConcessionreasonMasterList(param) {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_ConcessionReasonNameList_by_Name",
-            param
-        );
+    getValidationMessages() {
+        return {
+            concessionReason: [
+                { name: "required", Message: "Concession Name is required" },
+                { name: "maxlength", Message: "Concession name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
     }
 
-    public consessionReasonMasterInsert(param) {
-        return this._httpClient.post("Billing/ConsessionReasonSave", param);
+    public concessionreasonMasterSave(Param: any, showLoader = true) {
+        if (Param.concessionId) {
+            return this._httpClient.PutData("ConcessionReasonMaster/" + Param.concessionId, Param, showLoader);
+        } else return this._httpClient.PostData("ConcessionReasonMaster", Param, showLoader);
     }
 
-    public consessionReasonMasterUpdate(param) {
-        return this._httpClient.post("Billing/ConsessionReasonUpdate", param);
-    }
-
-    populateForm(param) {
-        this.myform.patchValue(param);
+    public deactivateTheStatus(m_data) {
+        return this._httpClient.PostData("ConcessionReasonMaster", m_data);
     }
 }

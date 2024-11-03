@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { ModeOfPaymentMasterComponent } from "./mode-of-payment-master.component";
 import { RouterModule, Routes } from "@angular/router";
 import { MatButtonModule } from "@angular/material/button";
@@ -20,6 +20,9 @@ import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
 import { MatRadioModule } from "@angular/material/radio";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { ModeOfPaymentMasterService } from "./mode-of-payment-master.service";
+import { NewModeofpaymentComponent } from './new-modeofpayment/new-modeofpayment.component';
+import { SharedModule } from "app/main/shared/shared.module";
+import { MatDialogModule } from "@angular/material/dialog";
 
 const routes: Routes = [
     {
@@ -29,18 +32,16 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [ModeOfPaymentMasterComponent],
+    declarations: [ModeOfPaymentMasterComponent, NewModeofpaymentComponent],
     imports: [
         RouterModule.forChild(routes),
-
+        SharedModule,
         MatButtonModule,
         MatCheckboxModule,
-        MatDatepickerModule,
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
         MatMenuModule,
-        MatRippleModule,
         MatTableModule,
         MatToolbarModule,
         MatPaginatorModule,
@@ -49,10 +50,10 @@ const routes: Routes = [
         MatRadioModule,
         MatSnackBarModule,
         FuseSharedModule,
-        FuseConfirmDialogModule,
         FuseSidebarModule,
+        MatDialogModule,
     ],
-    providers: [ModeOfPaymentMasterService],
+    providers: [ModeOfPaymentMasterService,DatePipe],
     entryComponents: [ModeOfPaymentMasterComponent],
 })
 export class ModeOfPaymentMasterModule {}

@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { RouterModule, Routes } from "@angular/router";
 import { CompanyTypeMasterComponent } from "./company-type-master.component";
 import { MatButtonModule } from "@angular/material/button";
@@ -20,6 +20,9 @@ import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { FuseSharedModule } from "@fuse/shared.module";
 import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
 import { CompanyTypeMasterService } from "./company-type-master.service";
+import { NewCompanyTypeComponent } from './new-company-type/new-company-type.component';
+import { SharedModule } from "app/main/shared/shared.module";
+import { MatDialogModule } from "@angular/material/dialog";
 
 const routes: Routes = [
     {
@@ -29,18 +32,16 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [CompanyTypeMasterComponent],
+    declarations: [CompanyTypeMasterComponent, NewCompanyTypeComponent],
     imports: [
         RouterModule.forChild(routes),
-
+        SharedModule,
         MatButtonModule,
         MatCheckboxModule,
-        MatDatepickerModule,
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
         MatMenuModule,
-        MatRippleModule,
         MatTableModule,
         MatToolbarModule,
         MatPaginatorModule,
@@ -49,10 +50,10 @@ const routes: Routes = [
         MatRadioModule,
         MatSnackBarModule,
         FuseSharedModule,
-        FuseConfirmDialogModule,
         FuseSidebarModule,
+        MatDialogModule,
     ],
-    providers: [CompanyTypeMasterService],
+    providers: [CompanyTypeMasterService,DatePipe],
 
     entryComponents: [CompanyTypeMasterComponent],
 })

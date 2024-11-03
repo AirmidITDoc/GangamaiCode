@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
     providedIn: "root",
@@ -10,7 +11,7 @@ export class UomMasterService {
     myformSearch: FormGroup;
 
     constructor(
-        private _httpClient: HttpClient,
+        private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder
     ) {
         this.myform = this.createUnitofmeasurementForm();
@@ -19,8 +20,8 @@ export class UomMasterService {
 
     createUnitofmeasurementForm(): FormGroup {
         return this._formBuilder.group({
-            UnitofMeasurementId: [""],
-            UnitofMeasurementName: [""],
+            unitofMeasurementId: [""],
+            unitofMeasurementName: [""],
             IsDeleted: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
@@ -35,26 +36,23 @@ export class UomMasterService {
     initializeFormGroup() {
         this.createUnitofmeasurementForm();
     }
-
-    public getUnitofmeasurementMasterList(param) {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_UnitofMeasurment_by_Name",
-            param
-        );
+    getValidationMessages() {
+        return {
+            unitofMeasurementName: [
+                { name: "required", Message: "Currency Name is required" },
+                { name: "maxlength", Message: "Currency name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
     }
 
-    public insertUnitofMeasurementMaster(param) {
-        return this._httpClient.post("Inventory/UnitofMeasurementSave", param);
+    public unitMasterSave(Param: any, showLoader = true) {
+        if (Param.unitofMeasurementId) {
+            return this._httpClient.PutData("UnitOfMeasurement/" + Param.unitofMeasurementId, Param, showLoader);
+        } else return this._httpClient.PostData("UnitOfMeasurement", Param, showLoader);
     }
 
-    public updateUnitofMeasurementMaster(param) {
-        return this._httpClient.post(
-            "Inventory/UnitofMeasurementUpdate",
-            param
-        );
-    }
-
-    populateForm(param) {
-        this.myform.patchValue(param);
+    public deactivateTheStatus(m_data) {
+        return this._httpClient.PostData("UnitOfMeasurement", m_data);
     }
 }

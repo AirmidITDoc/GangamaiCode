@@ -6,6 +6,12 @@ import { fuseAnimations } from "@fuse/animations";
 import { ModeOfPaymentMasterService } from "./mode-of-payment-master.service";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
+import { NewModeofpaymentComponent } from "./new-modeofpayment/new-modeofpayment.component";
+import { MatDialog } from "@angular/material/dialog";
 
 @Component({
     selector: "app-mode-of-payment-master",
@@ -15,189 +21,70 @@ import { ToastrService } from "ngx-toastr";
     animations: fuseAnimations,
 })
 export class ModeOfPaymentMasterComponent implements OnInit {
-    msg: any;
-
-    @ViewChild(MatSort) sort: MatSort;
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-
-    displayedColumns: string[] = [
-        "Id",
-        "ModeOfPayment",
-        "AddedBy",
-        "IsDeleted",
-        "action",
-    ];
-
-    DSModeofpaymentMasterList = new MatTableDataSource<ModeofpaymentMaster>();
-
-    constructor(public _modeofpaymentService: ModeOfPaymentMasterService,
-        public toastr : ToastrService,) {}
-
-    ngOnInit(): void {
-        this.getModeofpaymentMasterList();
-    }
-    onSearch() {
-        this.getModeofpaymentMasterList();
-    }
-
-    onSearchClear() {
-        this._modeofpaymentService.myformSearch.reset({
-            ModeOfPaymentSearch: "",
-            IsDeletedSearch: "2",
-        });
-        this.getModeofpaymentMasterList();
-    }
-    getModeofpaymentMasterList() {
-        var param = {
-            ModeOfPayment:
-                this._modeofpaymentService.myformSearch
-                    .get("ModeOfPaymentSearch")
-                    .value.trim() + "%" || "%",
-        };
-        this._modeofpaymentService
-            .getModeofpaymentMasterList(param)
-            .subscribe((Menu) => {
-                this.DSModeofpaymentMasterList.data =
-                    Menu as ModeofpaymentMaster[];
-                this.DSModeofpaymentMasterList.sort = this.sort;
-                this.DSModeofpaymentMasterList.paginator = this.paginator;
-                console.log(this.DSModeofpaymentMasterList);
+    confirmDialogRef: any;
+    constructor(public _ModeOfPaymentMasterService: ModeOfPaymentMasterService,public _matDialog: MatDialog,
+    public toastr : ToastrService,) {}
+        @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+        gridConfig: gridModel = {
+            apiUrl: "ModeOfPayment/List",
+            columnsList: [
+                { heading: "Code", key: "id", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Mode Of Payment Name", key: "modeOfPayment", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+                {
+                    heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                        {
+                            action: gridActions.edit, callback: (data: any) => {
+                                this.onSave(data);
+                            }
+                        }, {
+                            action: gridActions.delete, callback: (data: any) => {
+                                this.confirmDialogRef = this._matDialog.open(
+                                    FuseConfirmDialogComponent,
+                                    {
+                                        disableClose: false,
+                                    }
+                                );
+                                this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+                                this.confirmDialogRef.afterClosed().subscribe((result) => {
+                                    if (result) {
+                                        let that = this;
+                                        this._ModeOfPaymentMasterService.deactivateTheStatus(data.id).subscribe((response: any) => {
+                                            this.toastr.success(response.message);
+                                            that.grid.bindGridData();
+                                        });
+                                    }
+                                    this.confirmDialogRef = null;
+                                });
+                            }
+                        }]
+                } //Action 1-view, 2-Edit,3-delete
+            ],
+            sortField: "id",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "modeOfPayment", fieldValue: "", opType: OperatorComparer.Contains },
+                { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+            ],
+            row: 25
+        }
+    
+     
+        ngOnInit(): void { }
+        onSave(row: any = null) {
+            let that = this;
+            const dialogRef = this._matDialog.open(NewModeofpaymentComponent,
+                {
+                    maxWidth: "45vw",
+                    height: '35%',
+                    width: '70%',
+                    data: row
+                });
+            dialogRef.afterClosed().subscribe(result => {
+                if (result) {
+                    that.grid.bindGridData();
+                }
             });
-    }
-
-    onClear() {
-        this._modeofpaymentService.myform.reset({ IsDeleted: "false" });
-        this._modeofpaymentService.initializeFormGroup();
-    }
-
-    onSubmit() {
-        if (this._modeofpaymentService.myform.valid) {
-            if (!this._modeofpaymentService.myform.get("Id").value) {
-                var m_data = {
-                    insertModeofPaymentMaster: {
-                        modeOfPayment: this._modeofpaymentService.myform
-                            .get("ModeOfPayment")
-                            .value.trim(),
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._modeofpaymentService.myform.get(
-                                    "IsDeleted"
-                                ).value
-                            )
-                        ),
-                        addedBy: 1,
-                    },
-                };
-
-                this._modeofpaymentService
-                    .insertModeofPaymentMaster(m_data)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                            this.getModeofpaymentMasterList();
-                            // Swal.fire(
-                            //     "Saved !",
-                            //     "Record saved Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getModeofpaymentMasterList();
-                            //     }
-                            // });
-                        } else {
-                            this.toastr.error('Mode-Of-Payment Master Data not saved !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                        }
-                        this.getModeofpaymentMasterList();
-                    },error => {
-                        this.toastr.error('Mode-Of-Payment not saved !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
-            } else {
-                var m_dataUpdate = {
-                    updateModeofPaymentMaster: {
-                        id: this._modeofpaymentService.myform.get("Id").value,
-                        modeOfPayment:
-                            this._modeofpaymentService.myform.get(
-                                "ModeOfPayment"
-                            ).value,
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._modeofpaymentService.myform.get(
-                                    "IsDeleted"
-                                ).value
-                            )
-                        ),
-                        updatedBy: 1,
-                    },
-                };
-                this._modeofpaymentService
-                    .updateModeofPaymentMaster(m_dataUpdate)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record updated Successfully.', 'updated !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                            this.getModeofpaymentMasterList();
-                            // Swal.fire(
-                            //     "Updated !",
-                            //     "Record updated Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getModeofpaymentMasterList();
-                            //     }
-                            // });
-                        } else {
-                            this.toastr.error('Mode-Of-Payment Master Data not saved !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                        }
-                        this.getModeofpaymentMasterList();
-                    },error => {
-                        this.toastr.error('Mode-Of-Payment not saved !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
-            }
-            this.onClear();
         }
+    
     }
-    onEdit(row) {
-        var m_data = {
-            Id: row.Id,
-            ModeOfPayment: row.ModeofPayment,
-            IsDeleted: JSON.stringify(row.IsDeleted),
-            UpdatedBy: row.UpdatedBy,
-        };
-        this._modeofpaymentService.populateForm(m_data);
-    }
-}
-export class ModeofpaymentMaster {
-    Id: number;
-    ModeOfPayment: string;
-    IsDeleted: boolean;
-    AddedBy: number;
-    UpdatedBy: number;
-
-    /**
-     * Constructor
-     *
-     * @param ModeofpaymentMaster
-     */
-    constructor(ModeofpaymentMaster) {
-        {
-            this.Id = ModeofpaymentMaster.Id || "";
-            this.ModeOfPayment = ModeofpaymentMaster.ModeOfPayment || "";
-            this.IsDeleted = ModeofpaymentMaster.IsDeleted || "false";
-            this.AddedBy = ModeofpaymentMaster.AddedBy || "";
-            this.UpdatedBy = ModeofpaymentMaster.UpdatedBy || "";
-        }
-    }
-}

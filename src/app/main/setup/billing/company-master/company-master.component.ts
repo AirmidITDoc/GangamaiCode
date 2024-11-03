@@ -10,6 +10,15 @@ import { fuseAnimations } from "@fuse/animations";
 import { CompanyMasterListComponent } from "./company-master-list/company-master-list.component";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
+import { AuthenticationService } from "app/core/services/authentication.service";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
+import {  MatDialogRef } from "@angular/material/dialog";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
+
+
 
 @Component({
     selector: "app-company-master",
@@ -19,233 +28,85 @@ import { ToastrService } from "ngx-toastr";
     animations: fuseAnimations,
 })
 export class CompanyMasterComponent implements OnInit {
-    //RadiologytemplateMasterList: any;
-    isLoading = true;
-    msg: any;
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    
 
-    @ViewChild(MatSort) sort: MatSort;
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-
-    displayedColumns: string[] = [
-        "CompanyId",
-        "CompanyName",
-        "TypeName",
-        "Address",
-        "City",
-        "PinNo",
-        "PhoneNo",
-        "MobileNo",
-        "FaxNo",
-        "TariffName",
-        "AddedBy",
-        "IsDeleted",
-        "action",
-    ];
-
-    DSCompanyMasterList = new MatTableDataSource<CompanyMaster>();
-
-    //doctorone filter
-    public doctortwoFilterCtrl: FormControl = new FormControl();
-    public filteredDoctortwo: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-    private _onDestroy = new Subject<void>();
-
+    gridConfig: gridModel = {
+        apiUrl: "CompanyMaster/List",
+        columnsList: [
+            { heading: "Code", key: "companyId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "CompTypeId", key: "compTypeId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "City", key: "city", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "pinNo", key: "pinNo", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "PhoneNo", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA' },
+           
+           { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+            {
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            this.onSave(data);
+                        }
+                    }, {
+                        action: gridActions.delete, callback: (data: any) => {
+                            this.confirmDialogRef = this._matDialog.open(
+                                FuseConfirmDialogComponent,
+                                {
+                                    disableClose: false,
+                                }
+                            );
+                            this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+                            this.confirmDialogRef.afterClosed().subscribe((result) => {
+                                if (result) {
+                                    let that = this;
+                                    this._CompanyMasterService.deactivateTheStatus(data.companyId).subscribe((response: any) => {
+                                        this.toastr.success(response.message);
+                                        that.grid.bindGridData();
+                                    });
+                                }
+                                this.confirmDialogRef = null;
+                            });
+                        }
+                    }]
+            } //Action 1-view, 2-Edit,3-delete
+        ],
+        sortField: "companyId",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "companyName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+        ],
+        row: 25
+    }
     constructor(
-        public _companyService: CompanyMasterService,
-        public toastr : ToastrService,
-        public _matDialog: MatDialog
-    ) {}
+        public _CompanyMasterService: CompanyMasterService,
+        public _matDialog: MatDialog,
+        private accountService: AuthenticationService,
+        private _fuseSidebarService: FuseSidebarService,
+        public toastr: ToastrService,
+    ) { }
 
-    ngOnInit():void {
-        this.getCompanyMaster();
-    }
-    onSearch() {
-        this.getCompanyMaster();
+    ngOnInit(): void {
+        
     }
 
-    onSearchClear() {
-        this._companyService.myformSearch.reset({
-            CompanyNameSearch: "",
-            IsDeletedSearch: "2",
+  onSave(row: any = null) {
+        debugger
+        let that = this;
+        const dialogRef = this._matDialog.open(CompanyMasterListComponent,
+            {
+                maxWidth: "45vw",
+                height: '35%',
+                width: '70%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
         });
-        this.getCompanyMaster();
-    }
-    getCompanyMaster() {
-        var vdata={
-            CompanyName:this._companyService.myformSearch.get('CompanyNameSearch').value.trim() || "%" 
-        };
-       // console.log(vdata);
-        this._companyService.getCompanyMasterList(vdata).subscribe((data) => {
-            this.DSCompanyMasterList.data = data as CompanyMaster[];
-            this.DSCompanyMasterList.sort = this.sort;
-             this.DSCompanyMasterList.paginator = this.paginator;
-             console.log(this.DSCompanyMasterList);
-        });
-      
-    }
-
-    onClear() {
-        this._companyService.myform.reset({ IsDeleted: "false" });
-        this._companyService.initializeFormGroup();
-    }
-
-    onEdit(row) {
-        var m_data = {
-            CompanyId: row.CompanyId,
-            CompTypeId: row.CompTypeId,
-            CompanyName: row.CompanyName.trim(),
-            Address: row.Address.trim(),
-            City: row.City.trim(),
-            PinNo: row.PinNo.trim(),
-            PhoneNo: row.PhoneNo.trim(),
-            MobileNo: row.MobileNo.trim(),
-            FaxNo: row.FaxNo.trim(),
-            TariffId: row.TariffId,
-            IsDeleted: JSON.stringify(row.IsDeleted),
-            UpdatedBy: row.UpdatedBy,
-            IsCancelled: JSON.stringify(row.IsCancelled),
-            IsCancelledBy: row.IsCancelledBy,
-            IsCancelledDate: row.IsCancelledDate,
-        };
-
-        this._companyService.populateForm(m_data);
-
-        const dialogRef = this._matDialog.open(CompanyMasterListComponent, {
-            maxWidth: "80vw",
-            maxHeight: "55vh",
-            width: "100%",
-            height: "100%",
-        });
-
-        dialogRef.afterClosed().subscribe((result) => {
-            console.log("The dialog was closed - Insert Action", result);
-            this.getCompanyMaster();
-        });
-    }
-
-    onAdd() {
-        const dialogRef = this._matDialog.open(CompanyMasterListComponent, {
-            maxWidth: "80vw",
-            maxHeight: "55vh",
-            width: "100%",
-            height: "100%",
-        });
-
-        dialogRef.afterClosed().subscribe((result) => {
-            console.log("The dialog was closed - Insert Action", result);
-            this.getCompanyMaster();
-        });
-    }
-}
-
-// export class CompanyMaster {
-//     // "CompanyId",
-//     // "CompanyName",
-//     // "TypeName",
-//     // "Address",
-//     // "City",
-//     // "PinNo",
-//     // "PhoneNo",
-//     // "MobileNo",
-//     // "FaxNo",
-//     // "TariffName",
-//     // "AddedBy",
-//     // "IsDeleted",
-//     // "action",
-    
-//     CompanyId: number;
-//    // CompTypeId: number;
-//     CompanyName: string;
-//     TypeName:string;
-//     Address: string;
-//     City: String;
-//     PinNo: String;
-//     PhoneNo: String;
-//     MobileNo: String;
-//     FaxNo: String;
-//     TariffName:any;
-//    // TariffId: number;
-//     IsDeleted: boolean;
-//     AddedBy: number;
-//    // UpdatedBy: number;
-//   //  IsCancelled: boolean;
-//   //  IsCancelledBy: number;
-//   //  IsCancelledDate: Date;
-//     // AddedByName: string;
-//     /**
-//    * Constructor
-//    *
-// export class CompanyMaster {
-//    * @param export class CompanyMaster {
-
-//    */
-//     constructor(CompanyMaster) {
-//         {
-//             this.CompanyId = CompanyMaster.CompanyId || 0;
-//            this.TypeName = CompanyMaster.TypeName || "";
-//             this.CompanyName = CompanyMaster.CompanyName || "";
-//             this.Address = CompanyMaster.Address || "";
-//             this.City = CompanyMaster.City || "";
-//             this.PinNo = CompanyMaster.PinNo || 0;
-//             this.PhoneNo = CompanyMaster.PhoneNo || 0;
-//             this.MobileNo = CompanyMaster.MobileNo || 0;
-//             this.FaxNo = CompanyMaster.FaxNo || 0;
-//            this.TariffName = CompanyMaster.TariffName || "";
-//             this.AddedBy = CompanyMaster.AddedBy || "";
-//             this.IsDeleted = CompanyMaster.IsDeleted || "false";
-//            // this.UpdatedBy = CompanyMaster.UpdatedBy || "";
-//            // this.IsCancelled = CompanyMaster.IsCancelled || "false";
-//            // this.IsCancelledBy = CompanyMaster.IsCancelledBy || "";
-//            // this.IsCancelledDate = CompanyMaster.IsCancelledDate || "";
-//             // this.AddedByName = CompanyMaster.AddedByName || "";
-//         }
-//     }
-// }
-export class CompanyMaster {
-    
-    CompanyId: number;
-    CompTypeId: number;
-    CompanyName: string;
-    Address: string;
-    City: String;
-    PinNo: String;
-    PhoneNo: String;
-    MobileNo: String;
-    FaxNo: String;
-    TariffId: number;
-    IsDeleted: boolean;
-    AddedBy: number;
-    UpdatedBy: number;
-    IsCancelled: boolean;
-    IsCancelledBy: number;
-    IsCancelledDate: Date;
-    // AddedByName: string;
-    /**
-   * Constructor
-   *
-export class CompanyMaster {
-   * @param export class CompanyMaster {
-
-   */
-    constructor(CompanyMaster) {
-        {
-            this.CompanyId = CompanyMaster.CompanyId || "";
-            this.CompTypeId = CompanyMaster.CompTypeId || "";
-            this.CompanyName = CompanyMaster.CompanyName || "";
-            this.Address = CompanyMaster.Address || "";
-            this.City = CompanyMaster.City || "";
-            this.PinNo = CompanyMaster.PinNo || "";
-            this.PhoneNo = CompanyMaster.PhoneNo || "";
-            this.MobileNo = CompanyMaster.MobileNo || "";
-            this.FaxNo = CompanyMaster.FaxNo || "";
-            this.TariffId = CompanyMaster.TariffId || "";
-            this.AddedBy = CompanyMaster.AddedBy || "";
-            this.IsDeleted = CompanyMaster.IsDeleted || "false";
-            this.UpdatedBy = CompanyMaster.UpdatedBy || "";
-            this.IsCancelled = CompanyMaster.IsCancelled || "false";
-            this.IsCancelledBy = CompanyMaster.IsCancelledBy || "";
-            this.IsCancelledDate = CompanyMaster.IsCancelledDate || "";
-            // this.AddedByName = CompanyMaster.AddedByName || "";
-        }
     }
 }

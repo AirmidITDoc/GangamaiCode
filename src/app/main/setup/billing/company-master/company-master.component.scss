@@ -1,93 +1,11 @@
-app-company-master {
-    .mat-header-row {
-        width: 2200px;
-        max-width: 2200px;
-        min-width: 2200px;
-        font-weight: bold;
-    }
-    .mat-row {
-        width: 2200px;
-        max-width: 2200px;
-        min-width: 2200px;
-    }
 
-    .mat-column-CompanyId {
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
-    }
 
-    .mat-column-CompanyName {
-        width: 400px;
-        max-width: 400px;
-        min-width: 400px;
-    }
-    .mat-column-TypeName {
-        width: 300px;
-        max-width: 300px;
-        min-width: 300px;
-    }
-    .mat-column-Address {
-        width: 300px;
-        max-width: 300px;
-        min-width: 300px;
-    }
-    .mat-column-City {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-    }
-    .mat-column-PinNo {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-    }
-    .mat-column-PhoneNo {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-    }
+.p-sm-24 {
+    padding: 10px !important;
+}
 
-    .mat-column-MobileNo {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-    }
+app-company-master{
 
-    .mat-column-FaxNo {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-    }
-
-    .mat-column-TariffName {
-        width: 300px;
-        max-width: 300px;
-        min-width: 300px;
-    }
-
-    .mat-column-AddedBy {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-    }
-
-    .mat-column-IsDeleted {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-        text-align: center;
-        justify-content: center;
-    }
-
-    .mat-column-action {
-        // color: white !important;
-        width: 120px;
-        max-width: 120px;
-        min-width: 70px;
-        text-align: right;
-        justify-content: right;
-    }
     .mat-icon-button {
         padding: 0;
         min-width: 0;
@@ -97,53 +15,4 @@ app-company-master {
         line-height: 20px;
         border-radius: 50%;
     }
-}
-
-// .button-row button{
-//     margin: 5px;
-// }
-// .mat-radio-group{
-//     margin: 7px;
-//     margin-bottom: 10px;
-// }
-
-//sidebar
-#toggle,
-#container .e-btn.e-info:hover,
-#toggle:focus {
-    /* csslint allow: adjoining-classes*/
-    background: #00695c;
-    box-shadow: none;
-    border-radius: 0;
-    height: 39px;
-    width: 100px;
-}
-
-#close,
-#close:hover,
-#close:active,
-#close:focus {
-    /* csslint allow: adjoining-classes*/
-    background: #fafafa;
-    color: black;
-}
-
-#toggle,
-#container .e-btn.e-info:hover,
-#toggle:focus {
-    /* csslint allow: adjoining-classes*/
-    background: #00695c;
-    box-shadow: none;
-    border-radius: 0;
-    height: 39px;
-    width: 100px;
-}
-
-#close,
-#close:hover,
-#close:active,
-#close:focus {
-    /* csslint allow: adjoining-classes*/
-    background: #fafafa;
-    color: black;
 }

@@ -6,6 +6,12 @@ import { ItemGenericMasterService } from "./item-generic-master.service";
 import { fuseAnimations } from "@fuse/animations";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { NewGenericComponent } from "./new-generic/new-generic.component";
+import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 
 @Component({
     selector: "app-item-generic-master",
@@ -15,193 +21,71 @@ import { ToastrService } from "ngx-toastr";
     animations: fuseAnimations,
 })
 export class ItemGenericMasterComponent implements OnInit {
-    msg: any;
-
-    displayedColumns: string[] = [
-        "ItemGenericNameId",
-        "ItemGenericName",
-        "AddedBy",
-        "IsDeleted",
-        "action",
-    ];
-
-    DSItemGenericMasterList = new MatTableDataSource<ItemGenericMaster>();
-    @ViewChild(MatSort) sort: MatSort;
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-
-    constructor(public _itemgenericService: ItemGenericMasterService,
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+ 
+    constructor(public _ItemGenericMasterService: ItemGenericMasterService,public _matDialog: MatDialog,
         public toastr : ToastrService,) {}
-
-    ngOnInit(): void {
-        this.getitemgenericMasterList();
-    }
-    onSearch() {
-        this.getitemgenericMasterList();
-    }
-
-    onSearchClear() {
-        this._itemgenericService.myformSearch.reset({
-            ItemGenericNameSearch: "",
-            IsDeletedSearch: "2",
-        });
-        this.getitemgenericMasterList();
-    }
-    getitemgenericMasterList() {
-        var param = {
-            ItemId: 0,
-            ItemGenericId: 0,
-            ItemGenericName:
-                this._itemgenericService.myformSearch
-                    .get("ItemGenericNameSearch")
-                    .value.trim() + "%" || "%",
-        };
-
-        this._itemgenericService
-            .getitemgenericMasterList(param)
-            .subscribe((Menu) => {
-                this.DSItemGenericMasterList.data = Menu as ItemGenericMaster[];
-                this.DSItemGenericMasterList.sort = this.sort;
-                this.DSItemGenericMasterList.paginator = this.paginator;
+        @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+        gridConfig: gridModel = {
+            apiUrl: "ItemGenericName/List",
+            columnsList: [
+                { heading: "Code", key: "itemGenericNameId", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Generic Name", key: "itemGenericName", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+                {
+                    heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                        {
+                            action: gridActions.edit, callback: (data: any) => {
+                                this.onSave(data);
+                            }
+                        }, {
+                            action: gridActions.delete, callback: (data: any) => {
+                                this.confirmDialogRef = this._matDialog.open(
+                                    FuseConfirmDialogComponent,
+                                    {
+                                        disableClose: false,
+                                    }
+                                );
+                                this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+                                this.confirmDialogRef.afterClosed().subscribe((result) => {
+                                    if (result) {
+                                        let that = this;
+                                        this._ItemGenericMasterService.deactivateTheStatus(data.itemGenericNameId).subscribe((response: any) => {
+                                            this.toastr.success(response.message);
+                                            that.grid.bindGridData();
+                                        });
+                                    }
+                                    this.confirmDialogRef = null;
+                                });
+                            }
+                        }]
+                } //Action 1-view, 2-Edit,3-delete
+            ],
+            sortField: "itemGenericNameId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "itemGenericName", fieldValue: "", opType: OperatorComparer.Contains },
+                { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+            ],
+            row: 25
+        }
+    
+     
+        ngOnInit(): void { }
+        onSave(row: any = null) {
+            let that = this;
+            const dialogRef = this._matDialog.open(NewGenericComponent,
+                {
+                    maxWidth: "45vw",
+                    height: '35%',
+                    width: '70%',
+                    data: row
+                });
+            dialogRef.afterClosed().subscribe(result => {
+                if (result) {
+                    that.grid.bindGridData();
+                }
             });
-    }
-
-    onClear() {
-        this._itemgenericService.myform.reset({ IsDeleted: "false" });
-        this._itemgenericService.initializeFormGroup();
-    }
-
-    onSubmit() {
-        if (this._itemgenericService.myform.valid) {
-            if (
-                !this._itemgenericService.myform.get("ItemGenericNameId").value
-            ) {
-                var m_data = {
-                    insertItemGenericMaster: {
-                        itemGenericName: this._itemgenericService.myform
-                            .get("ItemGenericName")
-                            .value.trim(),
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._itemgenericService.myform.get("IsDeleted")
-                                    .value
-                            )
-                        ),
-                        addedBy: 1,
-                        updatedBy: 1,
-                    },
-                };
-
-                this._itemgenericService
-                    .insertItemGenericMaster(m_data)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                            this.getitemgenericMasterList();
-                            // Swal.fire(
-                            //     "Saved !",
-                            //     "Record saved Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getitemgenericMasterList();
-                            //     }
-                            // });
-                        } else {
-                            this.toastr.error('Item-Generic Master Master Data not saved !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                        }
-                        this.getitemgenericMasterList();
-                    },error => {
-                        this.toastr.error('Item-Generic not saved !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
-            } else {
-                var m_dataUpdate = {
-                    updateItemGenericMaster: {
-                        itemGenericNameId:
-                            this._itemgenericService.myform.get(
-                                "ItemGenericNameId"
-                            ).value,
-                        itemGenericName: this._itemgenericService.myform
-                            .get("ItemGenericName")
-                            .value.trim(),
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._itemgenericService.myform.get("IsDeleted")
-                                    .value
-                            )
-                        ),
-                        updatedBy: 1,
-                    },
-                };
-
-                this._itemgenericService
-                    .updateItemGenericMaster(m_dataUpdate)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record updated Successfully.', 'updated !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                            this.getitemgenericMasterList();
-                            // Swal.fire(
-                            //     "Updated !",
-                            //     "Record updated Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getitemgenericMasterList();
-                            //     }
-                            // });
-                        } else {
-                            this.toastr.error('Item-Generic Master Master Data not updated !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                        }
-                        this.getitemgenericMasterList();
-                    },error => {
-                        this.toastr.error('Item-Generic not updated !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
-            }
-            this.onClear();
         }
+    
     }
-
-    onEdit(row) {
-        var m_data = {
-            ItemGenericNameId: row.ItemGenericNameId,
-            ItemGenericName: row.ItemGenericName.trim(),
-            UpdatedBy: row.UpdatedBy,
-        };
-        this._itemgenericService.populateForm(m_data);
-    }
-}
-export class ItemGenericMaster {
-    ItemGenericNameId: number;
-    ItemGenericName: string;
-    IsDeleted: boolean;
-    AddedBy: number;
-    UpdatedBy: number;
-
-    /**
-     * Constructor
-     *
-     * @param ItemGenericMaster
-     */
-    constructor(ItemGenericMaster) {
-        {
-            this.ItemGenericNameId = ItemGenericMaster.ItemGenericNameId || "";
-            this.ItemGenericName = ItemGenericMaster.ItemGenericName || "";
-            this.IsDeleted = ItemGenericMaster.IsDeleted || "false";
-            this.AddedBy = ItemGenericMaster.AddedBy || "";
-            this.UpdatedBy = ItemGenericMaster.UpdatedBy || "";
-        }
-    }
-}

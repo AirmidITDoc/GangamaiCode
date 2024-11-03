@@ -7,6 +7,12 @@ import { fuseAnimations } from "@fuse/animations";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
 import { AuthenticationService } from "app/core/services/authentication.service";
+import { MatDialog } from "@angular/material/dialog";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
+import { NewItemtypeComponent } from "./new-itemtype/new-itemtype.component";
 
 @Component({
     selector: "app-item-type-master",
@@ -16,166 +22,70 @@ import { AuthenticationService } from "app/core/services/authentication.service"
     animations: fuseAnimations,
 })
 export class ItemTypeMasterComponent implements OnInit {
-    msg: any;
-    resultsLength = 0;
-    displayedColumns: string[] = [
-        "ItemTypeId",
-        "ItemTypeName",
-        "AddedBy",
-        "IsActive",
-        "action",
-    ];
-
-    DSItemTypeMasterList = new MatTableDataSource<ItemTypeMaster>();
-    @ViewChild(MatSort) sort: MatSort;
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-
-    constructor(public _itemtypeService: ItemTypeMasterService,
-        private accountService: AuthenticationService,
-        public toastr : ToastrService,) {}
-
-    ngOnInit(): void {
-        this.getItemtypeMasterList();
-    }
-    onSearch() {
-        this.getItemtypeMasterList();
-    }
-
-    onSearchClear() {
-        this._itemtypeService.myformSearch.reset({
-            ItemTypeNameSearch: "",
-            IsDeletedSearch: "2",
-        });
-        this.getItemtypeMasterList();
-    }
-    getItemtypeMasterList() {
-        var param = {
-            ItemTypeName:
-                this._itemtypeService.myformSearch
-                    .get("ItemTypeNameSearch")
-                    .value.trim() + "%" || "%",
-        };
-        this._itemtypeService.getItemtypeMasterList(param).subscribe((Menu) => {
-            this.DSItemTypeMasterList.data = Menu as ItemTypeMaster[];
-            this.DSItemTypeMasterList.sort = this.sort;
-            console.log(this.DSItemTypeMasterList.data )
-            this.DSItemTypeMasterList.paginator = this.paginator;
-            this.resultsLength= this.DSItemTypeMasterList.data.length
-        });
-    }
-
-    onClear() {
-        this._itemtypeService.myform.reset({ IsDeleted: "false" });
-        this._itemtypeService.initializeFormGroup();
-    }
-
-    onSubmit() {
-        if (this._itemtypeService.myform.valid) {
-            if (!this._itemtypeService.myform.get("ItemTypeId").value) {
-                var m_data = {
-                    insertItemTypeMaster: {
-                        itemTypeName: this._itemtypeService.myform
-                            .get("ItemTypeName")
-                            .value.trim(),
-                        IsActive: Boolean(
-                            JSON.parse(
-                                this._itemtypeService.myform.get("IsDeleted")
-                                    .value
-                            )
-                        ),
-                        addedBy:this.accountService.currentUserValue.user.id,
-                        updatedBy: this.accountService.currentUserValue.user.id,
-                    },
-                };
-
-                this._itemtypeService
-                    .insertItemTypeMaster(m_data)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                              this.getItemtypeMasterList();
-                         
-                        } else {
-                            this.toastr.error('Item-Type Master Master Data not saved !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                        }
-                        this.getItemtypeMasterList();
-                    });
-            } else {
-                var m_dataUpdate = {
-                    updateItemTypeMaster: {
-                        itemTypeId:
-                            this._itemtypeService.myform.get("ItemTypeId")
-                                .value,
-                        itemTypeName: this._itemtypeService.myform
-                            .get("ItemTypeName")
-                            .value.trim(),
-                            IsActive: Boolean(
-                            JSON.parse(
-                                this._itemtypeService.myform.get("IsDeleted")
-                                    .value
-                            )
-                        ),
-                        updatedBy:this.accountService.currentUserValue.user.id,
-                    },
-                };
-
-                this._itemtypeService
-                    .updateItemTypeMaster(m_dataUpdate)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record updated Successfully.', 'updated !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                            this.getItemtypeMasterList();
-                           
-                        } else {
-                            this.toastr.error('Item-Type Master Master Data not updated !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                        }
-                        this.getItemtypeMasterList();
-                    });
-            }
-            this.onClear();
+    confirmDialogRef: any;
+    constructor(public _ItemTypeMasterService: ItemTypeMasterService,public _matDialog: MatDialog,
+    public toastr : ToastrService,) {}
+        @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+        gridConfig: gridModel = {
+            apiUrl: "ItemType/List",
+            columnsList: [
+                { heading: "Code", key: "itemTypeId", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "ItemType Name", key: "itemTypeName", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+                {
+                    heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                        {
+                            action: gridActions.edit, callback: (data: any) => {
+                                this.onSave(data);
+                            }
+                        }, {
+                            action: gridActions.delete, callback: (data: any) => {
+                                this.confirmDialogRef = this._matDialog.open(
+                                    FuseConfirmDialogComponent,
+                                    {
+                                        disableClose: false,
+                                    }
+                                );
+                                this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+                                this.confirmDialogRef.afterClosed().subscribe((result) => {
+                                    if (result) {
+                                        let that = this;
+                                        this._ItemTypeMasterService.deactivateTheStatus(data.itemTypeId).subscribe((response: any) => {
+                                            this.toastr.success(response.message);
+                                            that.grid.bindGridData();
+                                        });
+                                    }
+                                    this.confirmDialogRef = null;
+                                });
+                            }
+                        }]
+                } //Action 1-view, 2-Edit,3-delete
+            ],
+            sortField: "itemTypeId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "itemTypeName", fieldValue: "", opType: OperatorComparer.Contains },
+                { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+            ],
+            row: 25
         }
-    }
-
-    onEdit(row) {
-        var m_data = {
-            ItemTypeId: row.ItemTypeId,
-            ItemTypeName: row.ItemTypeName.trim(),
-            IsActive: JSON.stringify(row.IsActive),
-            UpdatedBy: row.UpdatedBy,
-        };
-        this._itemtypeService.populateForm(m_data);
-    }
-}
-export class ItemTypeMaster {
-    ItemTypeId: number;
-    ItemTypeName: string;
-    IsActive: boolean;
-    AddedBy: number;
-    UpdatedBy: number;
-    AddedByName: string;
-
-    /**
-     * Constructor
-     *
-     * @param ItemTypeMaster
-     */
-    constructor(ItemTypeMaster) {
-        {
-            this.ItemTypeId = ItemTypeMaster.ItemTypeId || "";
-            this.ItemTypeName = ItemTypeMaster.ItemTypeName || "";
-            this.IsActive = ItemTypeMaster.IsActive || "true";
-            this.AddedBy = ItemTypeMaster.AddedBy || "";
-            this.UpdatedBy = ItemTypeMaster.UpdatedBy || "";
+    
+     
+        ngOnInit(): void { }
+        onSave(row: any = null) {
+            let that = this;
+            const dialogRef = this._matDialog.open(NewItemtypeComponent,
+                {
+                    maxWidth: "45vw",
+                    height: '35%',
+                    width: '70%',
+                    data: row
+                });
+            dialogRef.afterClosed().subscribe(result => {
+                if (result) {
+                    that.grid.bindGridData();
+                }
+            });
         }
+    
     }
-}

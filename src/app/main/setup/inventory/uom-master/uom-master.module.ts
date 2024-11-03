@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { UomMasterComponent } from "./uom-master.component";
 import { RouterModule, Routes } from "@angular/router";
 import { UomMasterService } from "./uom-master.service";
@@ -19,6 +19,9 @@ import { FuseSharedModule } from "@fuse/shared.module";
 import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { NewUMOComponent } from './new-umo/new-umo.component';
+import { MatDialogModule } from "@angular/material/dialog";
+import { SharedModule } from "app/main/shared/shared.module";
 
 const routes: Routes = [
     {
@@ -28,17 +31,16 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [UomMasterComponent],
+    declarations: [UomMasterComponent, NewUMOComponent],
     imports: [
         RouterModule.forChild(routes),
-
+        SharedModule,
         MatButtonModule,
         MatCheckboxModule,
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
         MatMenuModule,
-        MatRippleModule,
         MatTableModule,
         MatToolbarModule,
         MatPaginatorModule,
@@ -47,10 +49,10 @@ const routes: Routes = [
         MatRadioModule,
         MatSnackBarModule,
         FuseSharedModule,
-        FuseConfirmDialogModule,
         FuseSidebarModule,
+        MatDialogModule,
     ],
-    providers: [UomMasterService],
+    providers: [UomMasterService,DatePipe],
     entryComponents: [UomMasterComponent],
 })
 export class UomMasterModule {}

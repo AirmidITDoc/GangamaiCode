@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
     providedIn: "root",
@@ -9,7 +10,7 @@ export class CompanyTypeMasterService {
     myform: FormGroup;
     myformSearch: FormGroup;
     constructor(
-        private _httpClient: HttpClient,
+        private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder
     ) {
         this.myform = this.createcompanytypeForm();
@@ -18,9 +19,9 @@ export class CompanyTypeMasterService {
 
     createcompanytypeForm(): FormGroup {
         return this._formBuilder.group({
-            CompanyTypeId: [""],
-            TypeName: [""],
-            IsDeleted: ["false"],
+            companyTypeId: [""],
+            typeName: [""],
+            isDeleted: ["false"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
         });
@@ -35,22 +36,23 @@ export class CompanyTypeMasterService {
         this.createcompanytypeForm();
     }
 
-    public getCompanytypeMasterList(param) {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=M_Rtrv_CompanyMaster",
-            param
-        );
+    getValidationMessages() {
+        return {
+            typeName: [
+                { name: "required", Message: "Company type Name is required" },
+                { name: "maxlength", Message: "Company type name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
     }
 
-    public companyTypeMasterInsert(param) {
-        return this._httpClient.post("Billing/CompanyTypeMasterSave", param);
+    public companytypeMasterSave(Param: any, showLoader = true) {
+        if (Param.companyTypeId) {
+            return this._httpClient.PutData("CompanyTypeMaster/" + Param.companyTypeId, Param, showLoader);
+        } else return this._httpClient.PostData("CompanyTypeMaster", Param, showLoader);
     }
 
-    public companyTypeMasterUpdate(param) {
-        return this._httpClient.post("Billing/CompanyTypeMasterUpdate", param);
-    }
-
-    populateForm(param) {
-        this.myform.patchValue(param);
+    public deactivateTheStatus(m_data) {
+        return this._httpClient.PostData("CompanyTypeMaster", m_data);
     }
 }

@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { ItemTypeMasterComponent } from "./item-type-master.component";
 import { RouterModule, Routes } from "@angular/router";
 import { ItemTypeMasterService } from "./item-type-master.service";
@@ -19,6 +19,9 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatButtonModule } from "@angular/material/button";
+import { NewItemtypeComponent } from './new-itemtype/new-itemtype.component';
+import { MatDialogModule } from "@angular/material/dialog";
+import { SharedModule } from "app/main/shared/shared.module";
 
 const routes: Routes = [
     {
@@ -28,18 +31,16 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [ItemTypeMasterComponent],
+    declarations: [ItemTypeMasterComponent, NewItemtypeComponent],
     imports: [
         RouterModule.forChild(routes),
-
+        SharedModule,
         MatButtonModule,
         MatCheckboxModule,
-
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
         MatMenuModule,
-        MatRippleModule,
         MatTableModule,
         MatToolbarModule,
         MatPaginatorModule,
@@ -48,10 +49,10 @@ const routes: Routes = [
         MatRadioModule,
         MatSnackBarModule,
         FuseSharedModule,
-        FuseConfirmDialogModule,
         FuseSidebarModule,
+        MatDialogModule,
     ],
-    providers: [ItemTypeMasterService],
+    providers: [ItemTypeMasterService,DatePipe],
     entryComponents: [ItemTypeMasterComponent],
 })
 export class ItemTypeMasterModule {}

@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { RouterModule, Routes } from "@angular/router";
 import { CompanyMasterComponent } from "./company-master.component";
 import { CompanyMasterService } from "./company-master.service";
@@ -26,6 +26,7 @@ import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatButtonModule } from "@angular/material/button";
 import { CompanyMasterListComponent } from "./company-master-list/company-master-list.component";
 import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatDialogModule } from "@angular/material/dialog";
 
 const routes: Routes = [
     {
@@ -38,15 +39,13 @@ const routes: Routes = [
     declarations: [CompanyMasterComponent, CompanyMasterListComponent],
     imports: [
         RouterModule.forChild(routes),
-
+        SharedModule,
         MatButtonModule,
         MatCheckboxModule,
-        MatDatepickerModule,
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
         MatMenuModule,
-        MatRippleModule,
         MatTableModule,
         MatToolbarModule,
         MatPaginatorModule,
@@ -55,16 +54,10 @@ const routes: Routes = [
         MatRadioModule,
         MatSnackBarModule,
         FuseSharedModule,
-        FuseConfirmDialogModule,
         FuseSidebarModule,
-
-        MatProgressSpinnerModule,
-        ReactiveFormsModule,
-        MatAutocompleteModule,
-        SharedModule,
-        NgxMatSelectSearchModule,
+        MatDialogModule,
     ],
-    providers: [CompanyMasterService],
+    providers: [CompanyMasterService,DatePipe],
 
     entryComponents: [CompanyMasterService],
 })

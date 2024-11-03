@@ -1,7 +1,5 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { StoreFormMasterComponent } from "./store-form-master/store-form-master.component";
-import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
-import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { StoreMasterService } from "./store-master.service";
 import { MatTableDataSource } from "@angular/material/table";
 import { MatAccordion } from "@angular/material/expansion";
@@ -11,6 +9,12 @@ import { fuseAnimations } from "@fuse/animations";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
 import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
+import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+
 
 @Component({
     selector: "app-store-master",
@@ -20,260 +24,90 @@ import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
     animations: fuseAnimations,
 })
 export class StoreMasterComponent implements OnInit {
-    displayedColumns: string[] = [
-        "StoreId",
-        "StoreShortName",
-        "StoreName",
-        "IndentPrefix",
-        "IndentNo",
-        "PurchasePrefix",
-        "PurchaseNo",
-        "GrnPrefix",
-        "GrnNo",
-        "GrnreturnNoPrefix",
-        "GrnreturnNo",
-        "IssueToDeptPrefix",
-        "IssueToDeptNo",
-        "ReturnFromDeptNoPrefix",
-        "ReturnFromDeptNo",
-        "AddedBy",
-        "IsDeleted",
-        "action",
-    ];
-
-    isLoading = true;
-    msg: any;
-    step = 0;
-    resultsLength=0;
-    sIsLoading: string = '';
-    currentStatus = 2;
-    
-    setStep(index: number) {
-        this.step = index;
-    }
-    SearchName: string;
-
-    @ViewChild(MatSort) sort: MatSort;
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-    @ViewChild(MatAccordion) accordion: MatAccordion;
-
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+ 
+    constructor(public _StoreMasterService: StoreMasterService,public _matDialog: MatDialog,
+        public toastr : ToastrService,) {}
+        @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+        gridConfig: gridModel = {
+            apiUrl: "StoreMaster/List",
+            columnsList: [
+                { heading: "Code", key: "storeId", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Short Name", key: "storeShortName", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Store Name", key: "storeName", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: " Indent Prefix", key: "indentPrefix", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Indent No", key: "indentNo", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Pur Prefix", key: "purchasePrefix", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Purchase No", key: "purchaseNo", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Grn Prefix", key: "grnPrefix", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "GRN No", key: "grnNo", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "GRN Return Pre", key: "grnreturnNoPrefix", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Grn Ret No", key: "grnreturnNo", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Issue To dept", key: "issueToDeptPrefix", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "No", key: "issueToDeptNo", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Ret Fr Dept", key: "returnFromDeptNoPrefix", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Ret Fr DeptNo", key: "returnFromDeptNo", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Issue to DeptNo", key: "issueToDeptNo", sort: true, align: 'left', emptySign: 'NA' },
+                // { heading: "Currency Name", key: "issueToDeptNo", sort: true, align: 'left', emptySign: 'NA' },
+                // { heading: "Currency Name", key: "issueToDeptNo", sort: true, align: 'left', emptySign: 'NA' },
+                // { heading: "Currency Name", key: "issueToDeptNo", sort: true, align: 'left', emptySign: 'NA' },
+                // { heading: "Currency Name", key: "issueToDeptNo", sort: true, align: 'left', emptySign: 'NA' },
 
-    DSStoreMasterList = new MatTableDataSource<StoreMaster>();
-    DSStoreMasterList1 = new MatTableDataSource<StoreMaster>();
-    tempList = new MatTableDataSource<StoreMaster>();
+                { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+                {
+                    heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                        {
+                            action: gridActions.edit, callback: (data: any) => {
+                                this.onSave(data);
+                            }
+                        }, {
+                            action: gridActions.delete, callback: (data: any) => {
+                                this.confirmDialogRef = this._matDialog.open(
+                                    FuseConfirmDialogComponent,
+                                    {
+                                        disableClose: false,
+                                    }
+                                );
+                                this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+                                this.confirmDialogRef.afterClosed().subscribe((result) => {
+                                    if (result) {
+                                        let that = this;
+                                        this._StoreMasterService.deactivateTheStatus(data.currencyId).subscribe((response: any) => {
+                                            this.toastr.success(response.message);
+                                            that.grid.bindGridData();
+                                        });
+                                    }
+                                    this.confirmDialogRef = null;
+                                });
+                            }
+                        }]
+                } //Action 1-view, 2-Edit,3-delete
+            ],
+            sortField: "storeId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "storeName", fieldValue: "", opType: OperatorComparer.Contains },
+                { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+            ],
+            row: 25
+        }
     
-
-    constructor(
-        public _StoreService: StoreMasterService,
-        public toastr : ToastrService,
-        private _fuseSidebarService: FuseSidebarService,
-        public _matDialog: MatDialog
-    ) {}
-
-    ngOnInit(): void {
-        this.getStoreMasterList();
-    }
-
-    onSearchClear() {
-        this._StoreService.myformSearch.reset({
-            StoreNameSearch: "",
-            IsDeletedSearch: "2",
-        });
-        this.getStoreMasterList();
-    }
-
-    onClear() {
-        this._StoreService.myform.reset({ IsDeleted: "false" });
-        this._StoreService.initializeFormGroup();
-    }
-
-    onSearch() {
-        this.getStoreMasterList();
-    }
-
-    getStoreMasterList() {
-        var m_data = {
-            StoreName:this._StoreService.myformSearch .get("StoreNameSearch").value.trim() + "%" || "%",
-        };
-        this._StoreService.getStoreMasterList(m_data).subscribe((Menu) => {
-            this.DSStoreMasterList.data = Menu as StoreMaster[];
-            this.DSStoreMasterList1.data = Menu as StoreMaster[];
-            this.DSStoreMasterList.sort = this.sort;
-            this.resultsLength= this.DSStoreMasterList.data.length
-            this.DSStoreMasterList.paginator = this.paginator;
-        });
-    }
-
-  
-
-    onDeactive(StoreId) {
-
-       
-        Swal.fire({
-            title: 'Confirm Status',
-            text: 'Are you sure you want to Change Status?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes,Change Status!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                let Query
-                if (!this.DSStoreMasterList.data.find(item => item.StoreId === StoreId).IsDeleted) {
-                    Query = "Update M_StoreMaster set IsDeleted=1 where StoreId=" + StoreId;
-                    
+     
+        ngOnInit(): void { }
+        onSave(row: any = null) {
+            let that = this;
+            const dialogRef = this._matDialog.open(StoreFormMasterComponent,
+                {
+                    maxWidth: "45vw",
+                    height: '35%',
+                    width: '70%',
+                    data: row
+                });
+            dialogRef.afterClosed().subscribe(result => {
+                if (result) {
+                    that.grid.bindGridData();
                 }
-                else {
-                     Query = "Update M_StoreMaster set Isdeleted=0 where StoreId=" + StoreId;
-                }
-                console.log(Query);
-                this._StoreService.deactivateTheStatus(Query)
-                    .subscribe((data) => {
-                        // Handle success response
-                        Swal.fire('Changed!', 'Store Status has been Changed.', 'success');
-                        this.getStoreMasterList();
-                    }, (error) => {
-                        // Handle error response
-                        Swal.fire('Error!', 'Failed to deactivate category.', 'error');
-                    });
-            }
-        });
-    }
-
-    toggle(val: any) {
-        if (val == "2") {
-            this.currentStatus = 2;
-        } else if (val == "1") {
-            this.currentStatus = 1;
+            });
         }
-        else {
-            this.currentStatus = 0;
-
-        }
+    
     }
-
-  
-    onEdit(row) {
-             row["IsDeleted"]= JSON.stringify(row.IsDeleted),
-        console.log(row)
-        this._StoreService.populateForm(row);
-
-        const dialogRef = this._matDialog.open(StoreFormMasterComponent, {
-            maxWidth: "80vw",
-            maxHeight: "95vh",
-            width: "100%",
-            height: "100%",
-            data: {
-                Obj: row,
-              }
-        });
-
-        dialogRef.afterClosed().subscribe((result) => {
-            console.log("The dialog was closed - Insert Action", result);
-            this.getStoreMasterList();
-        });
-    }
-    toggleSidebar(name): void {
-        this._fuseSidebarService.getSidebar(name).toggleOpen();
-      }
-    onAdd() {
-        const dialogRef = this._matDialog.open(StoreFormMasterComponent, {
-            maxWidth: "80vw",
-            maxHeight: "95vh",
-            width: "100%",
-            height: "100%",
-        });
-        dialogRef.afterClosed().subscribe((result) => {
-            console.log("The dialog was closed - Insert Action", result);
-            this.getStoreMasterList();
-        });
-    }
-
-                
-    onFilterChange() {
-       
-        if (this.currentStatus == 1) {
-            this.tempList.data = []
-            this.DSStoreMasterList.data= this.DSStoreMasterList1.data
-            for (let item of this.DSStoreMasterList.data) {
-                if (item.IsDeleted) this.tempList.data.push(item)
-
-            }
-
-            this.DSStoreMasterList.data = [];
-            this.DSStoreMasterList.data = this.tempList.data;
-        }
-        else if (this.currentStatus == 0) {
-            this.DSStoreMasterList.data= this.DSStoreMasterList1.data
-            this.tempList.data = []
-
-            for (let item of this.DSStoreMasterList.data) {
-                if (!item.IsDeleted) this.tempList.data.push(item)
-
-            }
-            this.DSStoreMasterList.data = [];
-            this.DSStoreMasterList.data = this.tempList.data;
-        }
-        else {
-            this.DSStoreMasterList.data= this.DSStoreMasterList1.data
-            this.tempList.data = this.DSStoreMasterList.data;
-        }
-
-
-    }
-}
-export class StoreMaster {
-    StoreId: number;
-    StoreShortName: string;
-    StoreName: string;
-    IndentPrefix: string;
-    IndentNo: string;
-    PurchasePrefix: string;
-    PurchaseNo: string;
-    GrnPrefix: string;
-    GrnNo: string;
-    GrnreturnNoPrefix: string;
-    GrnreturnNo: string;
-    IssueToDeptPrefix: string;
-    IssueToDeptNo: string;
-    ReturnFromDeptNoPrefix: string;
-    ReturnFromDeptNo: string;
-    IsDeleted: boolean;
-    AddedBy: number;
-    UpdatedBy: number;
-    Header:any;
-    IsDeletedSearch: number;
-
-    /**
-     * Constructor
-     *
-     * @param StoreMaster
-     */
-    constructor(StoreMaster) {
-        {
-            this.StoreId = StoreMaster.StoreId || "";
-            this.StoreShortName = StoreMaster.StoreShortName || "";
-            this.StoreName = StoreMaster.StoreName || "";
-            this.IndentPrefix = StoreMaster.IndentPrefix || "";
-            this.IndentNo = StoreMaster.IndentNo || "";
-            this.PurchasePrefix = StoreMaster.PurchasePrefix || "";
-            this.PurchaseNo = StoreMaster.PurchaseNo || "";
-            this.GrnPrefix = StoreMaster.GrnPrefix || "";
-            this.GrnNo = StoreMaster.GrnNo || "";
-            this.GrnreturnNoPrefix = StoreMaster.GrnreturnNoPrefix || "";
-            this.GrnreturnNo = StoreMaster.GrnreturnNo || "";
-            this.IssueToDeptPrefix = StoreMaster.IssueToDeptPrefix || "";
-            this.IssueToDeptNo = StoreMaster.IssueToDeptNo || "";
-            this.ReturnFromDeptNoPrefix =
-                StoreMaster.ReturnFromDeptNoPrefix || "";
-            this.ReturnFromDeptNo = StoreMaster.ReturnFromDeptNo || "";
-            this.IsDeleted = StoreMaster.IsDeleted || "true";
-            this.AddedBy = StoreMaster.AddedBy || "";
-            this.UpdatedBy = StoreMaster.UpdatedBy || "";
-           this.Header=StoreMaster.Header || '';
-            this.IsDeletedSearch = StoreMaster.IsDeletedSearch || "";
-        }
-    }
-}

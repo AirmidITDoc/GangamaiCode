@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
 
 import { RouterModule, Routes } from "@angular/router";
-import { CreditReasonMasterComponent } from './credit-reason-master/credit-reason-master.component';
+
 
 const appRoutes: Routes = [
     {
@@ -91,7 +91,7 @@ const appRoutes: Routes = [
 ];
 
 @NgModule({
-    declarations: [CreditReasonMasterComponent],
+    declarations: [],
     imports: [RouterModule.forChild(appRoutes)],
 })
 export class BillingModule {}
