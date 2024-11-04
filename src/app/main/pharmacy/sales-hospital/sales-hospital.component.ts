@@ -442,30 +442,44 @@ export class SalesHospitalComponent implements OnInit {
     this.vPharOPOpt = this._loggedService.currentUserValue.user.pharOPOpt;
     this.vPharIPOpt = this._loggedService.currentUserValue.user.pharIPOpt;
 
-   
     if (this.vPharExtOpt == true) { 
-        this.paymethod = false;
-        this.vSelectedOption = 'External'; 
-    }else{
-      this.vPharOPOpt = true
-    }
+      this.paymethod = false;
+      this.vSelectedOption = 'External'; 
+      this.ItemSubform.get('MobileNo').reset();
+      this.ItemSubform.get('MobileNo').setValidators([Validators.required]);
+      this.ItemSubform.get('MobileNo').enable();
+      this.ItemSubform.get('PatientName').reset();
+      this.ItemSubform.get('PatientName').setValidators([Validators.required]);
+      this.ItemSubform.get('PatientName').enable();
+      this.ItemSubform.updateValueAndValidity();
+  }else{
+    this.vPharOPOpt = true
+  }
 
-    if (this.vPharIPOpt == true) { 
-      if(this.vPharOPOpt == false){
-        this.paymethod = true;
-        this.vSelectedOption = 'IP'; 
-      }  
-    }else{
-      this.vConditionIP = true
-    } 
-    if (this.vPharOPOpt == true) {
-      if (this.vPharExtOpt == false) { 
-        this.paymethod = true;
-        this.vSelectedOption = 'OP'; 
-      }
-    } else{
-      this.vCondition = true
+  if (this.vPharIPOpt == true) { 
+    if(this.vPharOPOpt == false){
+      this.paymethod = true;
+      this.vSelectedOption = 'IP';  
+    this.ItemSubform.get('MobileNo').clearValidators();
+    this.ItemSubform.get('PatientName').clearValidators();
+    this.ItemSubform.get('MobileNo').updateValueAndValidity();
+    this.ItemSubform.get('PatientName').updateValueAndValidity();
     }  
+  }else{
+    this.vConditionIP = true
+  } 
+  if (this.vPharOPOpt == true) {
+    if (this.vPharExtOpt == false) { 
+      this.paymethod = true;
+      this.vSelectedOption = 'OP'; 
+      this.ItemSubform.get('MobileNo').clearValidators();
+      this.ItemSubform.get('PatientName').clearValidators();
+      this.ItemSubform.get('MobileNo').updateValueAndValidity();
+      this.ItemSubform.get('PatientName').updateValueAndValidity();
+    }
+  } else{
+    this.vCondition = true
+  }
 
     this.getSalesPatientList();
     this.getSalesDoctorList();

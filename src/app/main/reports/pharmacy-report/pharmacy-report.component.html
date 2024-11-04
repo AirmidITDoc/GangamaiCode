@@ -90,15 +90,17 @@
                                 <div>
                                     <span
                                         style="font-family: 'Times New Roman', Times, serif;font-size: medium;color: rgb(80, 6, 30);padding: 10px;">Selected
-                                        Report : {{ReportName}}</span> 
+                                        Report : {{ReportName}}</span>
 
-                                        <span  style="font-family: 'Times New Roman', Times, serif;font-size: medium;color: rgb(80, 6, 30);float: right;">Current User : {{UserId}} | {{UserName}}</span>
+                                    <span
+                                        style="font-family: 'Times New Roman', Times, serif;font-size: medium;color: rgb(80, 6, 30);float: right;">Current
+                                        User : {{UserId}} | {{UserName}}</span>
                                 </div>
                                 <br />
                                 <div fxLayout="row" fxLayoutAlign="start none">
                                     <br />
 
-                                    <mat-form-field appearance="outline" style="margin-left: 2%;">
+                                    <mat-form-field appearance="outline" style="margin-left: 2%;" fxFlex="60%">
                                         <mat-label>Enter a date range</mat-label>
                                         <mat-date-range-input [rangePicker]="picker">
                                             <input matStartDate formControlName="startdate" placeholder="Start date">
@@ -108,49 +110,51 @@
                                         <mat-date-range-picker #picker></mat-date-range-picker>
                                     </mat-form-field>
 
-                                    
+
                                 </div>
-                             
-                                    <div   fxLayout="row" *ngIf="FlagUserSelected" style="margin-left: 2%;">                                 
-                                          <mat-form-field appearance="outline" fxFlex="60%;">
+
+                                <div fxLayout="row" *ngIf="FlagUserSelected" style="margin-left: 2%;">
+                                    <mat-form-field appearance="outline" fxFlex="60%">
                                         <mat-label>User</mat-label>
-                                        <input matAutocompletePosition="below" type="text" placeholder="Select User" matInput
-                                           formControlName="UserId" [matAutocomplete]="autoUser">
+                                        <input matAutocompletePosition="below" type="text" placeholder="Select User"
+                                            matInput formControlName="UserId" [matAutocomplete]="autoUser">
                                         <span matSuffix style="display: flex;">
-                                          <mat-icon class="mat-icon-close"
-                                            (click)="_PharmacyreportService.userForm.get('UserId').setValue(''); isUserSelected = false;">close</mat-icon>
-                                          <mat-icon class="mat-icon-close"
-                                            (click)="_PharmacyreportService.userForm.get('UserId').setValue(''); isUserSelected = false;">search</mat-icon>
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_PharmacyreportService.userForm.get('UserId').setValue(''); isUserSelected = false;">close</mat-icon>
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_PharmacyreportService.userForm.get('UserId').setValue(''); isUserSelected = false;">search</mat-icon>
                                         </span>
                                         <mat-autocomplete #autoUser="matAutocomplete" [displayWith]="getOptionTextUser">
-                                          <mat-option *ngFor="let option of filteredOptionsUser | async" [value]="option"
-                                            (onSelectionChange)="userChk(option)">
-                                            {{option.UserName}}
-                                          </mat-option>
+                                            <mat-option *ngFor="let option of filteredOptionsUser | async"
+                                                [value]="option" (onSelectionChange)="userChk(option)">
+                                                {{option.UserName}}
+                                            </mat-option>
                                         </mat-autocomplete>
-                                      </mat-form-field>
-                                    </div>
-                                    <div  fxLayout="row" *ngIf="FlagPaymentSelected" style="margin-left: 2%;">     
-                                      <mat-form-field appearance="outline" fxFlex="60%;">
+                                    </mat-form-field>
+                                </div>
+                                <div fxLayout="row" *ngIf="FlagPaymentSelected" style="margin-left: 2%;">
+                                    <mat-form-field appearance="outline" fxFlex="60%">
                                         <mat-label>PayemntMode</mat-label>
-                                        <input matAutocompletePosition="below" type="text" placeholder="Select PaymentMode" matInput
-                                           formControlName="PaymentMode" [matAutocomplete]="autoPayment">
+                                        <input matAutocompletePosition="below" type="text"
+                                            placeholder="Select PaymentMode" matInput formControlName="PaymentMode"
+                                            [matAutocomplete]="autoPayment">
                                         <span matSuffix style="display: flex;">
-                                          <mat-icon class="mat-icon-close"
-                                            (click)="_PharmacyreportService.userForm.get('PaymentMode').setValue(''); isPaymentSelected = false;">close</mat-icon>
-                                          <mat-icon class="mat-icon-close"
-                                            (click)="_PharmacyreportService.userForm.get('PaymentMode').setValue(''); isPaymentSelected = false;">search</mat-icon>
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_PharmacyreportService.userForm.get('PaymentMode').setValue(''); isPaymentSelected = false;">close</mat-icon>
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_PharmacyreportService.userForm.get('PaymentMode').setValue(''); isPaymentSelected = false;">search</mat-icon>
                                         </span>
-                                        <mat-autocomplete #autoPayment="matAutocomplete" [displayWith]="getOptionTextPaymentMode">
-                                          <mat-option *ngFor="let option of filteredOptionsPaymentmode | async" [value]="option"
-                                            (onSelectionChange)="PaymentModeChk(option)">
-                                            {{option.PaymentMode}}
-                                          </mat-option>
+                                        <mat-autocomplete #autoPayment="matAutocomplete"
+                                            [displayWith]="getOptionTextPaymentMode">
+                                            <mat-option *ngFor="let option of filteredOptionsPaymentmode | async"
+                                                [value]="option" (onSelectionChange)="PaymentModeChk(option)">
+                                                {{option.PaymentMode}}
+                                            </mat-option>
                                         </mat-autocomplete>
-                                      </mat-form-field>
-                                    </div>
-                                    <div fxLayout="row" *ngIf="FlagStoreSelected" style="margin-left:2%;"> 
-                                        <!-- <mat-form-field appearance="outline" fxFlex="60%;">
+                                    </mat-form-field>
+                                </div>
+                                <div fxLayout="row" *ngIf="FlagStoreSelected" style="margin-left:2%;">
+                                    <!-- <mat-form-field appearance="outline" fxFlex="60%;">
                                         <mat-label>Store Name</mat-label>
                                         <mat-select formControlName="StoreId" name="StoreId1" required>
                                             <mat-option></mat-option>
@@ -162,108 +166,113 @@
 
                                     <mat-form-field appearance="outline" fxFlex="60%;" style="margin-right:10px;">
                                         <mat-label>Store Name</mat-label>
-                                        <input matAutocompletePosition="below" type="text" placeholder="Select Store Name" matInput
-                                          formControlName="StoreId" [matAutocomplete]="autoStoreName">
+                                        <input matAutocompletePosition="below" type="text"
+                                            placeholder="Select Store Name" matInput formControlName="StoreId"
+                                            [matAutocomplete]="autoStoreName">
                                         <span matSuffix style="display: flex;">
-                                          <mat-icon class="mat-icon-close"
-                                            (click)="_PharmacyreportService.userForm.get('StoreId').setValue(''); isstoreSelected = false;">close</mat-icon>
-                                          <mat-icon class="mat-icon-close"
-                                            (click)="_PharmacyreportService.userForm.get('StoreId').setValue(''); isstoreSelected = false;">search</mat-icon>
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_PharmacyreportService.userForm.get('StoreId').setValue(''); isstoreSelected = false;">close</mat-icon>
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_PharmacyreportService.userForm.get('StoreId').setValue(''); isstoreSelected = false;">search</mat-icon>
                                         </span>
-                                        <mat-autocomplete #autoStoreName="matAutocomplete" [displayWith]="getOptionstoreText">
-                                          <mat-option *ngFor="let option of filteredOptionsStore | async" [value]="option">
-                                            {{option.StoreName}}
-                                          </mat-option>
+                                        <mat-autocomplete #autoStoreName="matAutocomplete"
+                                            [displayWith]="getOptionstoreText">
+                                            <mat-option *ngFor="let option of filteredOptionsStore | async"
+                                                [value]="option">
+                                                {{option.StoreName}}
+                                            </mat-option>
                                         </mat-autocomplete>
-                                      </mat-form-field>
-                                    </div>
+                                    </mat-form-field>
+                                </div>
 
-                                    <div fxLayout="row" *ngIf="FlagItemSelected" style="margin-left:2%;"> 
-                                        <mat-form-field appearance="outline" fxFlex="60%;">
-                                            <mat-label>ItemName</mat-label>
-                                            <input type="text" name="ItemId" formControlName="ItemId" 
-                                                placeholder="Item Name " matInput [matAutocomplete]="auto">
-                                            <span matSuffix style="display: flex;">
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="_PharmacyreportService.userForm.get('ItemId').setValue(''); isItemIdSelected = false;"> close </mat-icon>
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="_PharmacyreportService.userForm.get('ItemId').setValue(''); isItemIdSelected = false;">search</mat-icon>
-                                            </span>
-                                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionItemText">
-                                                <mat-option *ngFor="let option of filteredOptionsItem" [value]="option">
-                                                   {{option.ItemName}}
-                                                </mat-option>
-                                            </mat-autocomplete>
-                                            <!-- <mat-error class="error" *ngIf="_PharmacyreportService.userForm.get('ItemId').invalid && _PharmacyreportService.userForm.get('ItemId').touched">
+                                <div fxLayout="row" *ngIf="FlagItemSelected" style="margin-left:2%;">
+                                    <mat-form-field appearance="outline" fxFlex="60%;">
+                                        <mat-label>ItemName</mat-label>
+                                        <input type="text" name="ItemId" formControlName="ItemId"
+                                            placeholder="Item Name " matInput [matAutocomplete]="auto">
+                                        <span matSuffix style="display: flex;">
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_PharmacyreportService.userForm.get('ItemId').setValue(''); isItemIdSelected = false;">
+                                                close </mat-icon>
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_PharmacyreportService.userForm.get('ItemId').setValue(''); isItemIdSelected = false;">search</mat-icon>
+                                        </span>
+                                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionItemText">
+                                            <mat-option *ngFor="let option of filteredOptionsItem" [value]="option">
+                                                {{option.ItemName}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                        <!-- <mat-error class="error" *ngIf="_PharmacyreportService.userForm.get('ItemId').invalid && _PharmacyreportService.userForm.get('ItemId').touched">
                                                 Select ItemName
                                             </mat-error> -->
-                                        </mat-form-field> 
-                                    </div>
+                                    </mat-form-field>
+                                </div>
 
-                                    <div fxLayout="row"  *ngIf="FlagDrugTypeIdSelected" style="margin-left:2%;"> 
-                                    
-                                        <mat-form-field appearance="outline" fxFlex="60%;" style="margin-right:10px;">
-                                            <mat-label>Drug TYpe</mat-label>
-                                            <input matAutocompletePosition="below" type="text" placeholder="Select DrugType" matInput
-                                              formControlName="DrugTypeId" [matAutocomplete]="autoDrugType">
-                                            <span matSuffix style="display: flex;">
-                                              <mat-icon class="mat-icon-close"
+                                <div fxLayout="row" *ngIf="FlagDrugTypeIdSelected" style="margin-left:2%;">
+
+                                    <mat-form-field appearance="outline" fxFlex="60%;" style="margin-right:10px;">
+                                        <mat-label>Drug TYpe</mat-label>
+                                        <input matAutocompletePosition="below" type="text" placeholder="Select DrugType"
+                                            matInput formControlName="DrugTypeId" [matAutocomplete]="autoDrugType">
+                                        <span matSuffix style="display: flex;">
+                                            <mat-icon class="mat-icon-close"
                                                 (click)="_PharmacyreportService.userForm.get('DrugTypeId').setValue(''); isDugtypeSelected = false;">close</mat-icon>
-                                              <mat-icon class="mat-icon-close"
+                                            <mat-icon class="mat-icon-close"
                                                 (click)="_PharmacyreportService.userForm.get('DrugTypeId').setValue(''); isDugtypeSelected = false;">search</mat-icon>
-                                            </span>
-                                            <mat-autocomplete #autoDrugType="matAutocomplete" [displayWith]="getOptionDrugtypeText">
-                                              <mat-option *ngFor="let option of filteredOptionsDrugtype | async" [value]="option">
+                                        </span>
+                                        <mat-autocomplete #autoDrugType="matAutocomplete"
+                                            [displayWith]="getOptionDrugtypeText">
+                                            <mat-option *ngFor="let option of filteredOptionsDrugtype | async"
+                                                [value]="option">
                                                 {{option.DrugTypeName}}
-                                              </mat-option>
-                                            </mat-autocomplete>
-                                          </mat-form-field>
-                                    </div>
-                                    <div fxLayout="row"  *ngIf="FlagDoctorIDSelected" style="margin-left:2%;"> 
-                                    
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+                                </div>
+                                <div fxLayout="row" *ngIf="FlagDoctorIDSelected" style="margin-left:2%;">
+
 
                                     <mat-form-field appearance="outline" fxFlex="60%" *ngIf="FlagDoctorIDSelected"
-                                    style="margin-right:10px;">
-                                            <mat-label>Doctor Name</mat-label>
-                                            <input matAutocompletePosition="below" type="text"
-                                                placeholder="Select Doctor" matInput formControlName="DoctorID"
-                                                [matAutocomplete]="autosearchDoctor">
-                                            <span matSuffix style="display: flex;">
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="_PharmacyreportService.userForm.get('DoctorID').setValue(''); isSearchdoctorSelected = false;">close</mat-icon>
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="_PharmacyreportService.userForm.get('DoctorID').setValue(''); isSearchdoctorSelected = false;">search</mat-icon>
-                                            </span>
-                                            <mat-autocomplete #autosearchDoctor="matAutocomplete"
-                                                [displayWith]="getOptionTextsearchDoctor">
-                                                <mat-option *ngFor="let option of filteredOptionssearchDoctor | async"
-                                                    [value]="option">
-                                                    {{option.Doctorname}}
-                                                </mat-option>
-                                            </mat-autocomplete>
-                                        </mat-form-field>
-                                    </div>
-                                        
-                                    <div fxLayout="row" *ngIf="FlagRegNoSelected" style="margin-left:2%;"> 
-                                    
+                                        style="margin-right:10px;">
+                                        <mat-label>Doctor Name</mat-label>
+                                        <input matAutocompletePosition="below" type="text" placeholder="Select Doctor"
+                                            matInput formControlName="DoctorID" [matAutocomplete]="autosearchDoctor">
+                                        <span matSuffix style="display: flex;">
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_PharmacyreportService.userForm.get('DoctorID').setValue(''); isSearchdoctorSelected = false;">close</mat-icon>
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_PharmacyreportService.userForm.get('DoctorID').setValue(''); isSearchdoctorSelected = false;">search</mat-icon>
+                                        </span>
+                                        <mat-autocomplete #autosearchDoctor="matAutocomplete"
+                                            [displayWith]="getOptionTextsearchDoctor">
+                                            <mat-option *ngFor="let option of filteredOptionssearchDoctor | async"
+                                                [value]="option">
+                                                {{option.Doctorname}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxLayout="row" *ngIf="FlagRegNoSelected" style="margin-left:2%;">
+
                                     <mat-form-field appearance="outline" fxFlex="60%;">
                                         <mat-label>RegNo</mat-label>
-                                        <input name="RegNo" formControlName="RegNo" placeholder="RegNo"
-                                            matInput>
+                                        <input name="RegNo" formControlName="RegNo" placeholder="RegNo" matInput>
 
                                     </mat-form-field>
-                              
-                                    <span *ngIf="FlaOPIPTypeSelected"
-                                    style="font-weight: bold;margin-left: 2%;">Patient Type</span>
-                                <mat-radio-group aria-label="Select an option" formControlName="OPIPType"
-                                    *ngIf="FlaOPIPTypeSelected" style="margin-left:2%;" name="OPIPType">
+                                </div>
+                                <div fxLayout="row" *ngIf="FlaOPIPTypeSelected" style="margin-left:2%;">
+                                    <span *ngIf="FlaOPIPTypeSelected" style="font-weight: bold;margin-left: 2%;">Patient
+                                        Type</span>
+                                    <mat-radio-group aria-label="Select an option" formControlName="OPIPType"
+                                        *ngIf="FlaOPIPTypeSelected" style="margin-left:2%;" name="OPIPType">
 
-                                    <mat-radio-button value="2">All
-                                    </mat-radio-button>
-                                    <mat-radio-button value="0">OP
-                                    </mat-radio-button>
-                                    <mat-radio-button value="1">IP</mat-radio-button>
-                                </mat-radio-group>
+                                        <mat-radio-button value="2">All
+                                        </mat-radio-button>
+                                        <mat-radio-button value="0">OP
+                                        </mat-radio-button>
+                                        <mat-radio-button value="1">IP</mat-radio-button>
+                                    </mat-radio-group>
                                     <!-- <span *ngIf="SpinLoading" style="width:60px;height: 60px;margin-left:10px;">
                                         Processing..... <i class="fa-solid fa-spinner fa-spin loading-spinner"></i>
                                     </span> -->
@@ -771,7 +780,3 @@
         </tbody>
     </table>
 </div>
-
-
-
-
