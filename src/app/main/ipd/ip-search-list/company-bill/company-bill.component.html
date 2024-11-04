@@ -437,7 +437,7 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200 border-right">Service Name
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200 border-right">
-                                    <span> {{contact.ServiceName}}</span>
+                                    <span> {{contact.CompanyServiceName}}</span>
                                 </mat-cell>
                             </ng-container>
                 
@@ -446,8 +446,8 @@
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                     <mat-form-field appearance="legacy">
-                                        <input matInput [(ngModel)]="contact.Price" type="text" OnlyNumber
-                                            (keyup)="gettablecalculation(contact,contact.Price)" (keypress)="keyPressCharater($event)">
+                                        <input matInput [(ngModel)]="contact.C_Price" type="text" OnlyNumber
+                                            (keyup)="gettablecalculation(contact,contact.C_Price)" (keypress)="keyPressCharater($event)">
                                     </mat-form-field>
                                 </mat-cell>
                             </ng-container>
@@ -457,8 +457,8 @@
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                     <mat-form-field appearance="legacy">
-                                        <input matInput [(ngModel)]="contact.Qty" type="text" OnlyNumber
-                                            (keyup)="gettablecalculation(contact,contact.Qty)" (keypress)="keyPressAlphanumeric($event)">
+                                        <input matInput [(ngModel)]="contact.C_qty" type="text" OnlyNumber
+                                            (keyup)="gettablecalculation(contact,contact.C_qty)" (keypress)="keyPressAlphanumeric($event)">
                                     </mat-form-field> 
                                 </mat-cell>
                             </ng-container>
@@ -467,7 +467,7 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Total Amt
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    <span> {{contact.TotalAmt | currency:'INR' }}</span>
+                                    <span> {{contact.C_TotalAmount | currency:'INR' }}</span>
                                 </mat-cell>
                             </ng-container>
                 

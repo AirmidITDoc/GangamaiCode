@@ -529,9 +529,10 @@ export class CompanyBillComponent implements OnInit {
           return;
         }
       } 
+      debugger
       let doctorid = 0;
       if (this.Serviceform.get("DoctorID").value)
-      doctorid = this.Serviceform.get("DoctorID").value.DoctorID;
+      doctorid = this.Serviceform.get("DoctorID").value.DoctorId;
   
       let doctorName = '';
       if (this.Serviceform.get("DoctorID").value)
@@ -552,8 +553,7 @@ export class CompanyBillComponent implements OnInit {
           "concessionPercentage": this.vServiceDiscPer || 0,
           "concessionAmount": this.vServiceDisAmt,
           "netAmount": this.vServiceNetAmount,
-          "doctorId": doctorid,
-          "doctorName": doctorName,
+          "doctorId": doctorid, 
           "docPercentage": 0,
           "docAmt": 0,
           "hospitalAmt": this.FAmount,// this.vServiceNetAmount,
@@ -570,10 +570,10 @@ export class CompanyBillComponent implements OnInit {
           "packageId": 0,
           "chargeTime":this.datePipe.transform(this.Serviceform.get('Date').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900', // this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
           "classId":this.Serviceform.get('ChargeClass').value.ClassId     // this.selectedAdvanceObj.ClassId,
-        }
+        }   
         console.log(m_data);
         let submitData = {
-          "addCharges": m_data
+          "comAddCharges": m_data
         };
   
         this._IpSearchListService.InsertIPAddCharges(submitData).subscribe(data => {
@@ -1332,13 +1332,13 @@ export class CompanyBillComponent implements OnInit {
   gettablecalculation(element, Price) {
     console.log(element)
     debugger 
-    if(element.Price > 0 && element.Qty > 0){ 
-    element.TotalAmt = element.Qty * element.Price
-    element.ConcessionAmount = (element.ConcessionPercentage * element.TotalAmt) / 100 ;
-    element.NetAmount =  element.TotalAmt - element.ConcessionAmount
+    if(element.C_Price > 0 && element.C_qty > 0){ 
+    element.C_TotalAmount = element.C_qty * element.C_Price
+    element.ConcessionAmount = (element.ConcessionPercentage * element.C_TotalAmount) / 100 ;
+    element.NetAmount =  element.C_TotalAmount - element.ConcessionAmount
     }  
-    else if(element.Price == 0 || element.Price == '' || element.Qty == '' || element.Qty == 0){
-      element.TotalAmt = 0;  
+    else if(element.C_Price == 0 || element.C_Price == '' || element.C_qty == '' || element.C_qty == 0){
+      element.C_TotalAmount = 0;  
       element.ConcessionAmount =  0 ;
       element.NetAmount =  0 ;
     } 
