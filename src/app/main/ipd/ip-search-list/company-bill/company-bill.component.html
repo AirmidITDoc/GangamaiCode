@@ -519,7 +519,7 @@
                                     <form [formGroup]="Serviceform">
                                         <mat-form-field style="width: 180px;">  
                                             <mat-select formControlName="TableClassName" name="TableClassName" 
-                                            [(value)]="contact.ClassName" >
+                                            [(value)]="selectedClass">
                                             <mat-option></mat-option>
                                             <mat-option *ngFor="let m of Tableclasslist" [value]="m">
                                                 {{m.ClassName}}

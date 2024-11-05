@@ -395,7 +395,7 @@ export class BrowsSalesBillComponent implements OnInit {
       StoreId:  this._loggedService.currentUserValue.user.storeId || 0,
       IPNo: this._BrowsSalesBillService.userForm.get('IPNo').value || 0 
     }
-   // console.log(vdata); 
+    console.log(vdata); 
     setTimeout(() => {
     this.sIsLoading = 'loading-data';
       this.sIsLoading = '';

@@ -377,7 +377,7 @@ export class CompanyBillComponent implements OnInit {
       if (this.vClassId != 0) {
         const ddValue = this.ClassList.filter(c => c.ClassId == this.vClassId);
         this.Serviceform.get('ChargeClass').setValue(ddValue[0]);
-        this.Serviceform.get('TableClassName').setValue(ddValue[0]);
+      //  this.Serviceform.get('TableClassName').setValue(ddValue[0]);
         this.Serviceform.updateValueAndValidity();
         return;
       }
@@ -576,7 +576,7 @@ export class CompanyBillComponent implements OnInit {
           "comAddCharges": m_data
         };
   
-        this._IpSearchListService.InsertIPAddCharges(submitData).subscribe(data => {
+        this._IpSearchListService.InsertCompanyAddCharges(submitData).subscribe(data => {
           if (data) {
             this.getChargesList();
            
@@ -613,7 +613,7 @@ export class CompanyBillComponent implements OnInit {
       this.isLoadingStr = 'loading';
       let Query = "select Isnull(AdminPer,0) as AdminPer from Admission where AdmissionId="+  this.selectedAdvanceObj.AdmissionID
        console.log(Query);
-       debugger
+       //debugger
       this._IpSearchListService.getBillheaderList(Query).subscribe(data => {
         this.billheaderlist = data[0].AdminPer ;
        // console.log(this.billheaderlist)
@@ -833,40 +833,46 @@ export class CompanyBillComponent implements OnInit {
       this.chargeslist = [];
       this.dataSource.data = [];
       this.isLoadingStr = 'loading';
-      let Query = "Select * from lvwAddCharges where IsGenerated=0 and IsPackage=0 and IsCancelled =0 AND OPD_IPD_ID=" + this.selectedAdvanceObj.AdmissionID + " and OPD_IPD_Type=1 Order by Chargesid"
+      let Query  = "Select * from lvwAddCharges where IsGenerated=0 and IsPackage=0 and IsPrintCompSer=1 and IsCancelled =0 AND OPD_IPD_ID=" + this.selectedAdvanceObj.AdmissionID + " and OPD_IPD_Type=1 Order by Chargesid"
       // console.log(Query);
       this._IpSearchListService.getchargesList(Query).subscribe(data => {
         this.chargeslist = data as ChargesList[];
         console.log(this.chargeslist)
-        this.dataSource.data = this.chargeslist;
-  
+        this.dataSource.data = this.chargeslist; 
         this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
+        this.filterData();
+        this.dataSource.data.forEach(element =>{
+          let rowId = this.dataSource.data.indexOf(element); 
+          this.setTableClassName(element,rowId) 
+        })
       },
         (error) => {
           this.isLoading = 'list-loaded';
-        });
-      this.setTableClassName();
+        }); 
       this.chkdiscstatus();
   
     }
     vTableClassName:any;
-    setTableClassName(){
+    selectedClass: string = '';
+    setTableClassName(element,rowId){
       debugger
-      const dvalue = this.Tableclasslist.filter(item => item.ClassId == this.Serviceform.get('ChargeClass').value.ClassId )
-      console.log(dvalue)
-      this.Serviceform.get('TableClassName').setValue(dvalue);
-      //       if(dvalue){
-      //   let className = dvalue[0].ClassName ;
-      //   this.vTableClassName = className;
-      //   console.log(dvalue[0].ClassName )
-      //   console.log(className)
-      //   console.log(this.vTableClassName)
-      // }
+      console.log(element)
+      console.log(rowId)
+      // const dvalue = this.Tableclasslist.filter(item => item.ClassId == element.ClassId)
+      // console.log(dvalue)  
+      // //this.dataSource.data['ClassName'] = dvalue[0]
+      // //this.Serviceform.get('TableClassName').setValue(dvalue[0]);
+      // element.ClassName = dvalue[0];
   
+    }
+
+    filterData() {
+      return this.dataSource.data.filter(item => {
+        return this.selectedClass ? item.ClassName === this.selectedClass : true;
+      });
     }
   //Previouse Bill List
     getPrevBillList() {
-      debugger
       var D_data = {
         "IP_Id": this.selectedAdvanceObj.AdmissionID
       }
@@ -937,54 +943,7 @@ export class CompanyBillComponent implements OnInit {
         (error) => {
           this.isLoading = 'list-loaded';
         });
-    }
-  //Nursing list added in service list
-    AddList(m) {
-      console.log(m)
-      var m_data = {
-        "chargeID": 0,
-        "chargesDate": this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
-        "opD_IPD_Type": 1,
-        "opD_IPD_Id": m.OP_IP_ID,
-        "serviceId": m.ServiceId,
-        "price": m.price, 
-        "qty": 1, 
-        "totalAmt": (m.price * 1),
-        "concessionPercentage": 0, 
-        "concessionAmount": 0,
-        "netAmount": (m.price * 1),
-        "doctorId": 0, 
-        "docPercentage": 0,
-        "docAmt": 0,
-        "hospitalAmt": 0, 
-        "isGenerated": 0,
-        "addedBy": this.accountService.currentUserValue.user.id,
-        "isCancelled": 0,
-        "isCancelledBy": 0,
-        "isCancelledDate": "01/01/1900",
-        "isPathology": m.IsPathology, 
-        "isRadiology": m.IsRadiology, 
-        "isPackage": 0,
-        "packageMainChargeID": 0,
-        "isSelfOrCompanyService": false,
-        "packageId": 0,
-        "chargeTime": this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
-        "classId": this.Serviceform.get("ChargeClass").value.ClassId 
-      }
-      let submitData = {
-        "addCharges": m_data
-      };
-      this._IpSearchListService.InsertIPAddCharges(submitData).subscribe(data => {
-        if (data) {
-          Swal.fire('Success !', 'ChargeList Row Added Successfully', 'success');
-          this.getChargesList(); 
-        }
-      });
-      this.onClearServiceAddList()
-      this.itemid.nativeElement.focus();
-      this.isLoading = '';
-  
-    }
+    } 
   
     getTotalAmount(element) {
       if (element.Price && element.Qty) {
@@ -1018,8 +977,7 @@ export class CompanyBillComponent implements OnInit {
       })
     } 
     setcashCounter:any;
-    getCashCounterComboList() {
-      debugger
+    getCashCounterComboList() { 
       this._IpSearchListService.getCashcounterList().subscribe(data => {
         this.CashCounterList = data
         //console.log(this.CashCounterList)
@@ -1236,8 +1194,7 @@ export class CompanyBillComponent implements OnInit {
       }
     }
   } 
-  getDiscAmtCal1() {
-    debugger
+  getDiscAmtCal1() { 
     let FinalDiscAmt = this.Ipbillform.get('concessionAmt').value || 0;
     let CompDiscAmt = this.Ipbillform.get('CompanyDiscAmt').value || 0;
 
@@ -1330,8 +1287,7 @@ export class CompanyBillComponent implements OnInit {
   }
 
   gettablecalculation(element, Price) {
-    console.log(element)
-    debugger 
+    console.log(element) 
     if(element.C_Price > 0 && element.C_qty > 0){ 
     element.C_TotalAmount = element.C_qty * element.C_Price
     element.ConcessionAmount = (element.ConcessionPercentage * element.C_TotalAmount) / 100 ;

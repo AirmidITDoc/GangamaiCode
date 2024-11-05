@@ -143,6 +143,9 @@ export class CompanyListComponent implements OnInit {
     } 
   }
   getRecord(contact, m): void { 
+    console.log(contact)
+    console.log(m)
+    console.log(contact.CompanyId)
     if(contact.CompanyId){
       if (m == "Company Bill") {
         // let m_data = {

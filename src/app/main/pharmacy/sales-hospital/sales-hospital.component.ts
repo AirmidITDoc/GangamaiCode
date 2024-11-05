@@ -2162,6 +2162,20 @@ export class SalesHospitalComponent implements OnInit {
     this.newDateTimeObj = { date: nowDate1[0], time: nowDate1[1] };
     // console.log(this.newDateTimeObj);
 
+    let ExternalPatient = '';
+    let ExternalDoc = '';
+     if(this.ItemSubform.get('PatientName').value){
+       ExternalPatient = this.ItemSubform.get('PatientName').value.ExternalPatientName 
+     }else{
+       ExternalPatient = this.PatientName
+     }
+ 
+     if(this.ItemSubform.get('DoctorName').value){
+       ExternalDoc = this.ItemSubform.get('DoctorName').value.DoctorName 
+     }else{
+       ExternalDoc = this.DoctorName
+     }
+
     let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
     let ConcessionId = 0;
     if (this.ItemSubform.get('ConcessionId').value)
@@ -2194,8 +2208,8 @@ export class SalesHospitalComponent implements OnInit {
     SalesInsert['isFree'] = 0;
     SalesInsert['unitID'] = 1;
     SalesInsert['addedBy'] = this._loggedService.currentUserValue.user.id,
-    SalesInsert['externalPatientName'] = this.PatientName || this.ItemSubform.get('PatientName').value.ExternalPatientName || '';
-    SalesInsert['doctorName'] = this.DoctorName || this.ItemSubform.get('DoctorName').value.DoctorName || '';
+    SalesInsert['externalPatientName'] = ExternalPatient;
+    SalesInsert['doctorName'] = ExternalDoc;
     SalesInsert['storeId'] = this._salesService.IndentSearchGroup.get('StoreId').value.storeid;
     SalesInsert['isPrescription'] = this.IPMedID || 0;
     SalesInsert['creditReason'] = '';
@@ -2366,6 +2380,21 @@ export class SalesHospitalComponent implements OnInit {
   }
   onSavePayOption() {
     this.isLoading123=true;  
+
+    let ExternalPatient = '';
+    let ExternalDoc = '';
+     if(this.ItemSubform.get('PatientName').value){
+       ExternalPatient = this.ItemSubform.get('PatientName').value.ExternalPatientName 
+     }else{
+       ExternalPatient = this.PatientName
+     }
+ 
+     if(this.ItemSubform.get('DoctorName').value){
+       ExternalDoc = this.ItemSubform.get('DoctorName').value.DoctorName 
+     }else{
+       ExternalDoc = this.DoctorName
+     }
+
     let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
     let ConcessionId = 0;
     if (this.ItemSubform.get('ConcessionId').value)
@@ -2402,8 +2431,8 @@ export class SalesHospitalComponent implements OnInit {
     SalesInsert['isFree'] = 0;
     SalesInsert['unitID'] = 1;
     SalesInsert['addedBy'] = this._loggedService.currentUserValue.user.id,
-    SalesInsert['externalPatientName'] = this.PatientName || this.ItemSubform.get('PatientName').value.ExternalPatientName || '';
-    SalesInsert['doctorName'] = this.DoctorName || this.ItemSubform.get('DoctorName').value.DoctorName || '';
+    SalesInsert['externalPatientName'] = ExternalPatient;
+    SalesInsert['doctorName'] = ExternalDoc;
     SalesInsert['storeId'] = this._salesService.IndentSearchGroup.get('StoreId').value.storeid;
     SalesInsert['isPrescription'] =this.IPMedID || 0;
     SalesInsert['creditReason'] = '';
@@ -2621,8 +2650,8 @@ export class SalesHospitalComponent implements OnInit {
     salesInsertCredit['isFree'] = 0;
     salesInsertCredit['unitID'] = 1;
     salesInsertCredit['addedBy'] = this._loggedService.currentUserValue.user.id,
-    salesInsertCredit['externalPatientName'] = this.PatientName;
-    salesInsertCredit['doctorName'] = this.DoctorName || this.ItemSubform.get('DoctorName').value.DoctorName || '';;
+    salesInsertCredit['externalPatientName'] = this.PatientName || '';
+    salesInsertCredit['doctorName'] = this.DoctorName || '';
     salesInsertCredit['storeId'] = this._loggedService.currentUserValue.user.storeId,
     salesInsertCredit['isPrescription'] = this.IPMedID || 0;
     salesInsertCredit['creditReason'] = '';
@@ -2760,6 +2789,7 @@ export class SalesHospitalComponent implements OnInit {
       "SalesID": el,// 
       "OP_IP_Type": this.OP_IPType
     }
+    console.log(D_data)
     let printContents;
     this.subscriptionArr.push(
       this._salesService.getSalesPrint(D_data).subscribe(res => {
@@ -3295,6 +3325,21 @@ export class SalesHospitalComponent implements OnInit {
 
   onSaveDraftBill() {
    
+   let ExternalPatient = '';
+   let ExternalDoc = '';
+    if(this.ItemSubform.get('PatientName').value){
+      ExternalPatient = this.ItemSubform.get('PatientName').value.ExternalPatientName 
+    }else{
+      ExternalPatient = this.PatientName
+    }
+
+    if(this.ItemSubform.get('DoctorName').value){
+      ExternalDoc = this.ItemSubform.get('DoctorName').value.DoctorName 
+    }else{
+      ExternalDoc = this.DoctorName
+    }
+ 
+
     let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
     let ConcessionId = 0;
     if (this.ItemSubform.get('ConcessionId').value)
@@ -3326,8 +3371,8 @@ export class SalesHospitalComponent implements OnInit {
     SalesInsert['isPrint'] = 0;
     SalesInsert['unitID'] = 1;
     SalesInsert['addedBy'] = this._loggedService.currentUserValue.user.id,
-    SalesInsert['externalPatientName'] = this.PatientName || this.ItemSubform.get('PatientName').value.ExternalPatientName  || '';
-    SalesInsert['doctorName'] = this.DoctorName || this.ItemSubform.get('DoctorName').value.DoctorName || '';
+    SalesInsert['externalPatientName'] = ExternalPatient ;
+    SalesInsert['doctorName'] = ExternalDoc ;
     SalesInsert['storeId'] = this._salesService.IndentSearchGroup.get('StoreId').value.storeid;
     SalesInsert['isPrescription'] =this.IPMedID || 0;
     SalesInsert['creditReason'] = '';
@@ -3429,6 +3474,7 @@ export class SalesHospitalComponent implements OnInit {
   // }
 
   getDraftbillPrint(el) {
+    console.log(el);
     this.sIsLoading = 'loading-data';
  
      setTimeout(() => {
@@ -3676,7 +3722,7 @@ getSearchListIP() {
   getSelectedObjOP(obj) { 
       console.log(obj)
       this.OPDNoCheck = true;
-      this.DoctorNamecheck = false;
+      this.DoctorNamecheck = true;
       this.IPDNocheck = false;
       this.registerObj = obj;
       this.RegId = obj.RegId;
@@ -3687,6 +3733,7 @@ getSearchListIP() {
       this.CompanyName = obj.CompanyName;
       this.TariffName = obj.TariffName; 
       this.OP_IP_MobileNo = obj.MobileNo;
+      this.DoctorName = obj.DoctorName;
       this.getBillSummary();
   }
   getOptionTextIPObj(option) { 

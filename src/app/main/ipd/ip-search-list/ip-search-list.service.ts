@@ -726,6 +726,14 @@ public updateIPDDischargSummary(employee)
     return this._httpClient.post("InPatient/AddIPCharges", employee);
   }
 
+    // Insert compnay add Charges 
+    public InsertCompanyAddCharges(employee, loader = true) {
+      if (loader) {
+        this._loaderService.show();
+    } 
+      return this._httpClient.post("InPatient/ComAddCharges", employee);
+    }
+
   
   public Addchargescancle(employee, loader = true) {
     if (loader) {
