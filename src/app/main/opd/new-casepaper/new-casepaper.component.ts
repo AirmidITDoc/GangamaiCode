@@ -763,7 +763,11 @@ onTemplDetAdd(){
       if (response) {
         Swal.fire('Congratulations !', 'Casepaper save Successfully !', 'success').then((result) => {
           if (result.isConfirmed) {
-            this.viewgetOpprescriptionReportPdf();
+            debugger
+            if(this.caseFormGroup.get("LetteHeadRadio").value=='LetterHead')
+            this.viewgetOpprescriptionReportwithheaderPdf();
+          else
+          this.viewgetOpprescriptionReportwithoutheaderPdf();
             this.getWhatsappshareSales(this.vOPIPId, this.vMobileNo)
             this.onClear();
           }
@@ -810,12 +814,43 @@ onTemplDetAdd(){
     this.vDays = 10
   }
   SpinLoading: any = ""
-  viewgetOpprescriptionReportPdf() {
+  viewgetOpprescriptionReportwithheaderPdf() {
     debugger
     setTimeout(() => {
       this.SpinLoading = true;
       //  this.AdList=true;
       this._CasepaperService.getOpPrescriptionview(
+        this.VisitId
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "OP Prescription Viewer"
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+      });
+
+    }, 100);
+  }
+
+  viewgetOpprescriptionReportwithoutheaderPdf() {
+    debugger
+    setTimeout(() => {
+      this.SpinLoading = true;
+      //  this.AdList=true;
+      this._CasepaperService.getOpPrescriptionwithoutheaderview(
         this.VisitId
       ).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,

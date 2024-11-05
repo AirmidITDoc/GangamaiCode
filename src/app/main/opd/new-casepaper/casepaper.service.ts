@@ -119,6 +119,16 @@ public getServiceList(param,loader = true){
   }
     return this._httpClient.get("OutPatient/view-OP_Prescription?VisitId=" + VisitId);
   }
+
+  
+  public getOpPrescriptionwithoutheaderview(VisitId,loader = true){ 
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.get("OutPatient/view-OP_PrescriptionwithoutHeader?VisitId=" + VisitId);
+  }
+
+
   public getRtrvVisitedList(param, loader = true) {
     if (loader) {
       this._loaderService.show();

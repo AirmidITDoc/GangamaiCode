@@ -118,28 +118,28 @@ export class GstReportService {
     return this._httpClient.get("GSTReport/view-SalesGSTReport?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId);
   }
   
-  public getSalesGstdatewiseReport(FromDate,ToDate,loader = true){
+  public getSalesGstdatewiseReport(FromDate,ToDate,StoreId,loader = true){
     if (loader) {
       this._loaderService.show();
   }
   
-    return this._httpClient.get("GSTReport/view-SalesGSTDateWiseReport?FromDate="+FromDate+"&ToDate="+ToDate);
+    return this._httpClient.get("GSTReport/view-SalesGSTDateWiseReport?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId);
   }
   
-  public getSalesreturnReport(FromDate,ToDate,loader = true){
+  public getSalesreturnReport(FromDate,ToDate,StoreId,loader = true){
     if (loader) {
       this._loaderService.show();
   }
   
-    return this._httpClient.get("GSTReport/view-SalesReturnGSTReport?FromDate="+FromDate+"&ToDate="+ToDate);
+    return this._httpClient.get("GSTReport/view-SalesReturnGSTReport?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId);
   }
 
 
-  public getSalesreturndatewiseReport(FromDate,ToDate,loader = true){
+  public getSalesreturndatewiseReport(FromDate,ToDate,StoreId,loader = true){
     if (loader) {
       this._loaderService.show();
   }
-    return this._httpClient.get("GSTReport/view-SalesReturnGSTDateWiseReport?FromDate="+FromDate+"&ToDate="+ToDate);
+    return this._httpClient.get("GSTReport/view-SalesReturnGSTDateWiseReport?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId);
   }
   
  

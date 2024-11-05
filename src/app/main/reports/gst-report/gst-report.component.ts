@@ -107,7 +107,7 @@ export class GSTReportComponent implements OnInit {
     else if (this.ReportName == 'Purchase GST Report Supplier Wise-Without GST%') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
-      this.FlagReportTypeSelected= false;
+      this.FlagReportTypeSelected= true;
     } 
     else if (this.ReportName == 'Purchase GST Report Date Wise') {
       this.FlagUserSelected = false;
@@ -196,7 +196,7 @@ export class GSTReportComponent implements OnInit {
         this.viewgetpurchasesupplierwisegstPdf();
      } 
      else if (this.ReportName == 'Purchase GST Report Supplier Wise-Without GST%') {
-      this.viewgetpurchasesupplierwisewithoutgstPdf();
+      this.viewpurchasereport();
      } 
      else if (this.ReportName == 'Purchase GST Report Date Wise') {
       this.viewgetpurchasegstdatewisePdf();
@@ -213,19 +213,19 @@ export class GSTReportComponent implements OnInit {
      else if (this.ReportName == 'Sales GST Report') {
       this.viewsalesgst();
      } 
-     else if (this.ReportName == 'Sales GST Date Wise Report') {
-      this.viewsalesgst();
-     } 
+    //  else if (this.ReportName == 'Sales GST Date Wise Report') {
+    //   this.viewsalesgst();
+    //  } 
      else if (this.ReportName == 'Sales Return GST Report') {
     //  this.viewgetSalesreturngstPdf();
 
       this.viewsalesgstreturn();
      } 
-     else if (this.ReportName == 'Sales Return GST Date Wise Report') {
-      //this.viewgetSalesreturngstdatewisePdf();
+    //  else if (this.ReportName == 'Sales Return GST Date Wise Report') {
+    //   //this.viewgetSalesreturngstdatewisePdf();
 
-      this.viewsalesgstreturn();
-     } 
+    //   this.viewsalesgstreturn();
+    //  } 
      else if (this.ReportName == 'Sales GST Summary Consolidated') {
      // this.viewgetSalesreturngstsummconsolidatedPdf();
      } 
@@ -380,7 +380,16 @@ export class GSTReportComponent implements OnInit {
    
        }, 100);
      }
-     viewgetpurchasesupplierwisewithoutgstPdf() {
+     
+     viewpurchasereport(){
+      if(this._GstReportService.userForm.get("ReportType").value=='0')
+        this.viewgetpurchasesupplierwisewithoutgstdetailPdf()
+      else
+      this.viewgetpurchasesupplierwisewithoutgstsummaryPdf()
+     }
+
+     
+     viewgetpurchasesupplierwisewithoutgstdetailPdf() {
       this.sIsLoading = 'loading-data';
    
       let storeId =this._loggedUser.currentUserValue.user.storeId;
@@ -400,7 +409,7 @@ export class GSTReportComponent implements OnInit {
                width: '100%',
                data: {
                  base64: res["base64"] as string,
-                 title: "Purchase Supplier Wise Without GST Report  Viewer"
+                 title: "Purchase Supplier Wise Without GST Report Detail Viewer"
                }
              });
            dialogRef.afterClosed().subscribe(result => {
@@ -412,7 +421,37 @@ export class GSTReportComponent implements OnInit {
        }, 100);
      }
 
-
+     viewgetpurchasesupplierwisewithoutgstsummaryPdf() {
+      this.sIsLoading = 'loading-data';
+   
+      let storeId =this._loggedUser.currentUserValue.user.storeId;
+      if (this._GstReportService.userForm.get('StoreId').value.StoreId)
+        storeId = this._GstReportService.userForm.get('StoreId').value.StoreId
+  
+       setTimeout(() => {
+       
+         this._GstReportService.getpurchasedatewiseReport(
+          this.datePipe.transform(this._GstReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._GstReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",storeId
+         ).subscribe(res => {
+           const dialogRef = this._matDialog.open(PdfviewerComponent,
+             {
+               maxWidth: "85vw",
+               height: '750px',
+               width: '100%',
+               data: {
+                 base64: res["base64"] as string,
+                 title: "Purchase Supplier Wise Without GST Report Summary Viewer"
+               }
+             });
+           dialogRef.afterClosed().subscribe(result => {
+             
+             this.sIsLoading = '';
+           });
+         });
+   
+       }, 100);
+     }
      viewgetpurchasegstdatewisePdf() {
       this.sIsLoading = 'loading-data';
    
@@ -570,7 +609,7 @@ export class GSTReportComponent implements OnInit {
                width: '100%',
                data: {
                  base64: res["base64"] as string,
-                 title: "Sales GST Report  Viewer"
+                 title: "Sales GST Detail Report  Viewer"
                }
              });
            dialogRef.afterClosed().subscribe(result => {
@@ -594,7 +633,7 @@ export class GSTReportComponent implements OnInit {
        
          this._GstReportService.getSalesGstdatewiseReport(
           this.datePipe.transform(this._GstReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-        this.datePipe.transform(this._GstReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
+        this.datePipe.transform(this._GstReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",storeId
          ).subscribe(res => {
            const dialogRef = this._matDialog.open(PdfviewerComponent,
              {
@@ -603,7 +642,7 @@ export class GSTReportComponent implements OnInit {
                width: '100%',
                data: {
                  base64: res["base64"] as string,
-                 title: "Sales GST Date Wise Report  Viewer"
+                 title: "Sales GST Summary Report  Viewer"
                }
              });
            dialogRef.afterClosed().subscribe(result => {
@@ -635,7 +674,7 @@ export class GSTReportComponent implements OnInit {
        
          this._GstReportService.getSalesreturnReport(
           this.datePipe.transform(this._GstReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-        this.datePipe.transform(this._GstReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
+        this.datePipe.transform(this._GstReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",storeId
          ).subscribe(res => {
            const dialogRef = this._matDialog.open(PdfviewerComponent,
              {
@@ -667,7 +706,7 @@ export class GSTReportComponent implements OnInit {
        
          this._GstReportService.getSalesreturndatewiseReport(
           this.datePipe.transform(this._GstReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-        this.datePipe.transform(this._GstReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
+        this.datePipe.transform(this._GstReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",storeId
          ).subscribe(res => {
            const dialogRef = this._matDialog.open(PdfviewerComponent,
              {
