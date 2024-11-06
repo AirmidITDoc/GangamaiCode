@@ -926,6 +926,16 @@ export class ChargesList {
   IsStatus: any;
   extMobileNo: any;
   ConcessionPercentage: any;
+
+  OPD_IPD_Id: any;
+  DoctorName: any;
+  OPD_IPD_Type: any;
+  C_TotalAmount: any;
+  ConcessionAmount: any;
+  C_qty:any;
+  C_Price:any;
+  IsComServ:any;
+
   constructor(ChargesList) {
     this.ChargesId = ChargesList.ChargesId || '';
     this.ServiceId = ChargesList.ServiceId || '';

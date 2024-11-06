@@ -300,9 +300,12 @@ public getConcessionCombo()
     return this._httpClient.post("Generic/GetByProc?procName=ps_Retrieve_ServiceMasterForCombo", {})
   }
 
-  public InsertOPBilling(employee) : Observable<any> {
-    return this._httpClient.post("OutPatient/OPBillWithPaymentCashCounter", employee)
+  public InsertOPBilling(employee, loader = true) : Observable<any> {//OPBillWithPaymentCashCounter
+    if (loader) {
+      this._loaderService.show();
   }
+    return this._httpClient.post("OutPatient/OPBillWithPackageCashCounter", employee)
+  } 
 
   public InsertOPBillingCredit(employee) : Observable<any> {
     return this._httpClient.post("OutPatient/OPBillingWithCreditCashCounter", employee)
