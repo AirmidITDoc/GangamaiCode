@@ -427,21 +427,38 @@
                             </ng-container>
                 
                             <ng-container matColumnDef="ChargesDate">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header>ChargesDate</mat-header-cell>
-                                <mat-cell *matCellDef="let contact">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-110"
+                                >ChargesDate</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" class="w-110">
                                     <span> {{contact.ChargesDate}}</span>
                                 </mat-cell>
                             </ng-container>
                 
                             <ng-container matColumnDef="ServiceName">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200 border-right">Service Name
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-220">Service Name
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200 border-right">
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-220">
                                     <span> {{contact.CompanyServiceName}}</span>
                                 </mat-cell>
                             </ng-container>
-                
+
                             <ng-container matColumnDef="Price">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Price
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    <span> {{contact.C_Price}}</span>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Qty">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Qty
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm >
+                                    <span> {{contact.C_qty}}</span>
+                                </mat-cell>
+                            </ng-container>
+                
+                            <!-- <ng-container matColumnDef="Price">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Price
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
@@ -450,9 +467,9 @@
                                             (keyup)="gettablecalculation(contact,contact.C_Price)" (keypress)="keyPressCharater($event)">
                                     </mat-form-field>
                                 </mat-cell>
-                            </ng-container>
+                            </ng-container> -->
                 
-                            <ng-container matColumnDef="Qty">
+                            <!-- <ng-container matColumnDef="Qty">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Qty
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
@@ -461,7 +478,7 @@
                                             (keyup)="gettablecalculation(contact,contact.C_qty)" (keypress)="keyPressAlphanumeric($event)">
                                     </mat-form-field> 
                                 </mat-cell>
-                            </ng-container>
+                            </ng-container> -->
 
                             <ng-container matColumnDef="TotalAmt">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Total Amt
@@ -469,15 +486,7 @@
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                     <span> {{contact.C_TotalAmount | currency:'INR' }}</span>
                                 </mat-cell>
-                            </ng-container>
-                
-                            <ng-container matColumnDef="DiscPer">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Disc %
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    <span> {{contact.ConcessionPercentage}}</span>
-                                </mat-cell>
-                            </ng-container>
+                            </ng-container> 
                 
                             <ng-container matColumnDef="DiscAmt">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Disc Amt
@@ -487,6 +496,14 @@
                                 </mat-cell>
                             </ng-container>
                 
+                            <ng-container matColumnDef="Amount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Amount
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    <span> {{contact.Amount | currency:'INR' }}</span>
+                                </mat-cell>
+                            </ng-container>
+
                             <ng-container matColumnDef="NetAmount">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Net Amt
                                 </mat-header-cell>
@@ -502,20 +519,20 @@
                                     <span> {{contact.DoctorName || '--'}}</span>
                                 </mat-cell>
                             </ng-container>
-                         
+
                             <ng-container matColumnDef="ClassName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-180">ClassName
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
+                                    <span> {{contact.ClassName}}</span>
+                                </mat-cell>
+                            </ng-container>
+                         
+                            <!-- <ng-container matColumnDef="ClassName">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm  class="w-200">ClassName
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200"> 
-                                   <!-- <form [formGroup]="Serviceform">
-                                    <mat-form-field style="width: 200px;">
-                                        <mat-select   [(ngModel)]="contact.ClassName" (selectionChange)="onDropdownChange(contact)"
-                                        formControlName="TableClassName" name="TableClassName">
-                                          <mat-option *ngFor="let contact of Tableclasslist" [value]="contact">
-                                            {{contact.ClassName}}</mat-option>
-                                        </mat-select>
-                                      </mat-form-field> 
-                                    </form> -->
+                                
                                     <form [formGroup]="Serviceform">
                                         <mat-form-field style="width: 180px;">  
                                             <mat-select formControlName="TableClassName" name="TableClassName" 
@@ -528,7 +545,7 @@
                                         </mat-form-field>  
                                     </form>
                                 </mat-cell>
-                            </ng-container>
+                            </ng-container> -->
                 
                             <ng-container matColumnDef="ChargesAddedName">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ChargesAddedName
@@ -539,15 +556,22 @@
                             </ng-container>
                 
                             <ng-container matColumnDef="buttons" stickyEnd>
-                                <mat-header-cell *matHeaderCellDef class="table-actions ">Action
+                                <mat-header-cell *matHeaderCellDef class="table-actions " class="w-80">Action
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let contact">
+                                <mat-cell *matCellDef="let contact" class="w-80">
+                                    <button mat-icon-button (click)="EditService(contact)"
+                                    matTooltip="edit">
+                                    <mat-icon style="color: black;">edit</mat-icon>
+                                  </button>
+
                                     <ng-container class="actions">  
                                         <span class="material-icons" style="cursor: pointer;color: #c95a5a;"
                                             (click)="deletecharges(contact)">
                                             delete
                                         </span>
                                     </ng-container> 
+
+                                   
                                 </mat-cell>
                             </ng-container>
                 

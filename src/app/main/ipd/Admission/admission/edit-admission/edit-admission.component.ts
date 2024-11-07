@@ -866,8 +866,7 @@ export class EditAdmissionComponent implements OnInit {
    
     if (this.hospitalFormGroup.get('admittedDoctor1').value) {
       this.vadmittedDoctor1 = this.hospitalFormGroup.get('admittedDoctor1').value.DoctorId;
-      console.log(this.vadmittedDoctor1)
-
+      console.log(this.vadmittedDoctor1) 
     }
     if (this.hospitalFormGroup.get('admittedDoctor2').value) {
       this.vadmittedDoctor2 = this.hospitalFormGroup.get('admittedDoctor2').value.DoctorId;
@@ -892,6 +891,12 @@ export class EditAdmissionComponent implements OnInit {
         return;
       }
     }
+    let ReferDocNameId = 0 ;
+
+    if (this.hospitalFormGroup.get('refDoctorId').value) {
+      ReferDocNameId = this.hospitalFormGroup.get('refDoctorId').value.DoctorId; 
+    }
+
     debugger
     var m_data = {
       "admissionNewUpdate": {
@@ -904,7 +909,7 @@ export class EditAdmissionComponent implements OnInit {
         "TariffId": this.hospitalFormGroup.get('TariffId').value.TariffId || 0,
         "DepartmentId": this.hospitalFormGroup.get('Departmentid').value.DepartmentId || 0,
         "AdmittedNameID":this.hospitalFormGroup.get('DoctorId').value.DoctorId ||0,
-        "RefDocNameID": this.hospitalFormGroup.get('refDoctorId').value.DoctorId || 0,
+        "RefDocNameID": ReferDocNameId || 0,
         "RelativeName": this.otherFormGroup.get('RelativeName').value || "",
         "RelativeAddress": this.otherFormGroup.get('RelativeAddress').value || "",
         "RelativePhoneNo": this.otherFormGroup.get('RelatvieMobileNo').value || "",

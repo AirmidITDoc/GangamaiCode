@@ -34,6 +34,7 @@ import { IPpaymentWithadvanceComponent } from '../../ip-settlement/ippayment-wit
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 import { ConfigService } from 'app/core/services/config.service';
 import { PrebillDetailsComponent } from '../ip-billing/prebill-details/prebill-details.component';
+import { UpdateCompanyDetailsComponent } from './update-company-details/update-company-details.component';
 
 @Component({
   selector: 'app-company-bill',
@@ -47,12 +48,12 @@ export class CompanyBillComponent implements OnInit {
     'IsCheck',
     'ChargesDate',
     'ServiceName',
-    'Price',
     'Qty',
-    'TotalAmt',
-    'DiscPer',
+    'Price',
+    'TotalAmt', 
     'DiscAmt',
-    'NetAmount', 
+    'NetAmount',
+    'Amount', 
     'DoctorName', 
     'ClassName',
     'ChargesAddedName',
@@ -836,15 +837,41 @@ export class CompanyBillComponent implements OnInit {
       let Query  = "Select * from lvwAddCharges where IsGenerated=0 and IsPackage=0 and IsPrintCompSer=1 and IsCancelled =0 AND OPD_IPD_ID=" + this.selectedAdvanceObj.AdmissionID + " and OPD_IPD_Type=1 Order by Chargesid"
       // console.log(Query);
       this._IpSearchListService.getchargesList(Query).subscribe(data => {
-        this.chargeslist = data as ChargesList[];
-        console.log(this.chargeslist)
-        this.dataSource.data = this.chargeslist; 
-        this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
-        this.filterData();
+        this.dataSource.data = data as ChargesList[];
+        console.log(this.dataSource.data) 
         this.dataSource.data.forEach(element =>{
-          let rowId = this.dataSource.data.indexOf(element); 
-          this.setTableClassName(element,rowId) 
-        })
+          console.log(element) 
+          let FinalNetAmt = 0;
+          if(element.IsComServ  == true){
+            FinalNetAmt = element.C_TotalAmount
+          }else{
+            FinalNetAmt = element.NetAmount 
+          }
+          this.chargeslist.push(
+            {
+              ChargesDate: element.ChargesDate || 0,
+              ChargesId: element.ChargesId || 0,
+              OPD_IPD_Id: element.OPD_IPD_Id || 0,
+              ServiceId: element.ServiceId || 0, 
+              DoctorName: element.DoctorName || '', 
+              CompanyServiceName: element.CompanyServiceName  || '',
+              C_Price: element.C_Price  || 0,
+              C_qty: element.C_qty  || 0,
+              C_TotalAmount: element.C_TotalAmount  || 0, 
+              ConcessionAmount: element.ConcessionAmount  || 0,
+              Amount: element.NetAmount  || 0,
+              NetAmount: FinalNetAmt || 0,
+              OPD_IPD_Type: element.OPD_IPD_Type  || 0,
+              ClassName: element.ClassName  || '',
+              ChargesAddedName: element.ChargesAddedName  || '', 
+              IsPathology: element.IsPathology || 0,
+              IsRadiology: element.IsRadiology || 0,
+              ClassId: element.ClassId || 0,
+            });
+            this.dataSource.data = this.chargeslist
+            console.log(this.dataSource.data) 
+        }) 
+        this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';  
       },
         (error) => {
           this.isLoading = 'list-loaded';
@@ -858,19 +885,15 @@ export class CompanyBillComponent implements OnInit {
       debugger
       console.log(element)
       console.log(rowId)
-      // const dvalue = this.Tableclasslist.filter(item => item.ClassId == element.ClassId)
-      // console.log(dvalue)  
-      // //this.dataSource.data['ClassName'] = dvalue[0]
-      // //this.Serviceform.get('TableClassName').setValue(dvalue[0]);
-      // element.ClassName = dvalue[0];
+      const dvalue = this.Tableclasslist.filter(item => item.ClassId == element.ClassId)
+      console.log(dvalue)  
+      //this.dataSource.data['ClassName'] = dvalue[0]
+      //this.Serviceform.get('TableClassName').setValue(dvalue[0]);
+      element.ClassName = dvalue[0];
   
     }
 
-    filterData() {
-      return this.dataSource.data.filter(item => {
-        return this.selectedClass ? item.ClassName === this.selectedClass : true;
-      });
-    }
+  
   //Previouse Bill List
     getPrevBillList() {
       var D_data = {
@@ -1680,6 +1703,23 @@ export class CompanyBillComponent implements OnInit {
         }
       });
     }
+    }
+
+    EditService(row) { 
+      console.log(row) 
+      const dialogRef = this._matDialog.open(UpdateCompanyDetailsComponent,
+        {
+          maxWidth: "70vw",
+          height: '70vw',
+          width: '100%',
+          data: {
+            registerObj: row, 
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          console.log('The dialog was closed - Insert Action', result);
+          //this.getChargesList();
+        }); 
     }
   }
   
