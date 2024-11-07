@@ -3,7 +3,6 @@ import { RouterModule, Routes } from "@angular/router";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatFormFieldModule } from "@angular/material/form-field";
-import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatTableModule } from "@angular/material/table";
 import { MatMenuModule } from "@angular/material/menu";
@@ -21,6 +20,8 @@ import { SharedModule } from "app/main/shared/shared.module";
 import { NewGendermasterComponent } from './new-gendermaster/new-gendermaster.component';
 import { MatDialogModule } from "@angular/material/dialog";
 import { DatePipe } from "@angular/common";
+import { MatIconModule } from "@angular/material/icon";
+
 
 const routes: Routes = [
     {

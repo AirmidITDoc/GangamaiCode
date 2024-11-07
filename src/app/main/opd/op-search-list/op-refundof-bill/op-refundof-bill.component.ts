@@ -4,7 +4,7 @@ import { AdvanceDetailObj } from '../../appointment/appointment.component';
 import { Observable, Subscription } from 'rxjs';
 import { OPAdvancePaymentComponent } from '../op-advance-payment/op-advance-payment.component';
 import Swal from 'sweetalert2';
-import { RefundMaster } from '../../browse-refund-list/browse-refund-list.component';
+// import { RefundMaster } from '../../browse-refund-list/browse-refund-list.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -69,7 +69,7 @@ export class OPRefundofBillComponent implements OnInit {
   serviceNameCmbList: any = [];
   refundremain:any=[];
   isLoadingStr: string = '';
-  reportPrintObj: RefundMaster;
+  reportPrintObj: any;
   subscriptionArr: Subscription[] = [];
   printTemplate: any;
   totalAmtOfNetAmt: any;

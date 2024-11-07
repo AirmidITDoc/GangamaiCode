@@ -26,9 +26,9 @@ export class MaritalstatusMasterService {
 
     createMaritalForm(): FormGroup {
         return this._formBuilder.group({
-            MaritalStatusId: [""],
-            MaritalStatusName: [""],
-            IsDeleted: ["false"],
+            maritalStatusId: [""],
+            maritalStatusName: [""],
+            isDeleted: ["false"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
         });

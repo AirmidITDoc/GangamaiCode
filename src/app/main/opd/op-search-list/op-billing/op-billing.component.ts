@@ -16,7 +16,6 @@ import { Router } from '@angular/router';
 import { debounceTime, exhaustMap, filter, map, scan, startWith, switchMap, takeUntil, tap } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
-import { BrowseOPDBill } from '../../browse-opbill/browse-opbill.component';
 import { IpPaymentInsert, OPAdvancePaymentComponent } from '../op-advance-payment/op-advance-payment.component';
 import * as converter from 'number-to-words';
 import { OpPaymentNewComponent } from '../op-payment-new/op-payment-new.component';
@@ -52,11 +51,11 @@ export class OPBillingComponent implements OnInit {
   disamt: any;
   msg: any;
 
-  reportPrintObj: BrowseOPDBill;
+  reportPrintObj: any;
   subscriptionArr: Subscription[] = [];
   printTemplate: any;
 
-  reportPrintObjList: BrowseOPDBill[] = [];
+  reportPrintObjList: any[] = [];
   chargeslist: any = [];
 
   screenFromString = 'OP-billing';

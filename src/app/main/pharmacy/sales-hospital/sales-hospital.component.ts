@@ -23,7 +23,7 @@ import { element } from 'protractor';
 import { OPSearhlistService } from 'app/main/opd/op-search-list/op-searhlist.service';
 import { map, startWith } from 'rxjs/operators';
 import { RequestforlabtestService } from 'app/main/nursingstation/requestforlabtest/requestforlabtest.service';
-import { RegInsert } from 'app/main/opd/appointment/appointment.component';
+
 import { SnackBarService } from 'app/main/shared/services/snack-bar.service';
 import { ToasterService } from 'app/main/shared/services/toaster.service';
 import { PaymentModeComponent } from 'app/main/shared/componets/payment-mode/payment-mode.component';
@@ -331,7 +331,7 @@ export class SalesHospitalComponent implements OnInit {
   data: any;
   PatientListfilteredOptionsOP: any;
   PatientListfilteredOptionsIP: any;
-  registerObj = new RegInsert({});
+  // registerO/bj = new any({});
   RegId: any = '';
   vAdmissionID: any;
   isPaymentSuccess: boolean = false;
@@ -1269,7 +1269,7 @@ export class SalesHospitalComponent implements OnInit {
     var m_data = {
       "insertWhatsappsmsInfo": {
         "mobileNumber": this.MobileNo,
-        "smsString": 'PatientDetail' || '',
+        // "smsString": ""|| '',
         "isSent": 0,
         "smsType": 'bulk',
         "smsFlag": 0,
@@ -3450,11 +3450,11 @@ getSearchListIP() {
       this.DoctorNamecheck = true;
       this.IPDNocheck = true;
       this.OPDNoCheck = false;
-      this.registerObj = obj;
-      this.PatientName = obj.FirstName + ' ' + obj.LastName;
-      this.RegId = obj.RegID;
-      this.OP_IP_Id = this.registerObj.AdmissionID;
-      this.IPDNo = obj.IPDNo;
+      // this.registerObj = obj;
+      // this.PatientName = obj.FirstName + ' ' + obj.LastName;
+      // this.RegId = obj.RegID;
+      // this.OP_IP_Id = this.registerObj.AdmissionID;
+      // this.IPDNo = obj.IPDNo;
       this.RegNo =obj.RegNo;
       this.DoctorName = obj.DoctorName;
       this.TariffName =obj.TariffName
@@ -3473,7 +3473,7 @@ getSearchListIP() {
       this.OPDNoCheck = true;
       this.DoctorNamecheck = false;
       this.IPDNocheck = false;
-      this.registerObj = obj;
+      // this.registerObj = obj;
       this.RegId = obj.RegId;
       this.PatientName = obj.FirstName + " " + obj.LastName; 
       this.OP_IP_Id  = obj.VisitId;
@@ -3738,8 +3738,8 @@ getSearchListIP() {
         this.DoctorNamecheck = true;
         this.IPDNocheck = true;
         this.OPDNoCheck = false;
-        this.registerObj = result;
-        console.log(this.registerObj)
+        // this.registerObj = result;
+        // console.log(this.registerObj)
         this.PatientName = result[0].PatientName;
         this.RegId = result[0].RegId;
         this.OP_IP_Id = result[0].AdmissionID;

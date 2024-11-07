@@ -11,7 +11,7 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import Swal from 'sweetalert2';
 import { IPBrowseBillService } from 'app/main/ipd/ip-bill-browse-list/ip-browse-bill.service';
-import { BrowseOPBillService } from 'app/main/opd/browse-opbill/browse-opbill.service';
+
 import { ToastrService } from 'ngx-toastr';
 import { BillDateUpdateComponent } from './bill-date-update/bill-date-update.component';
 
@@ -53,7 +53,7 @@ export class CancellationComponent implements OnInit {
     public toastr: ToastrService,
     private _loggedService: AuthenticationService,
     public _IpBillBrowseListService: IPBrowseBillService,
-    public _BrowseOPDBillsService: BrowseOPBillService,
+    // public _BrowseOPDBillsService: BrowseOPBillService,
   ) { }
 
   ngOnInit(): void {
@@ -244,22 +244,22 @@ export class CancellationComponent implements OnInit {
   viewgetOPBillReportPdf(contact) { 
     setTimeout(() => {
       // this.SpinLoading =true; 
-      this._BrowseOPDBillsService.getOpBillReceipt(
-        contact.BillNo
-      ).subscribe(res => {
-        const matDialog = this._matDialog.open(PdfviewerComponent,
-          {
-            maxWidth: "85vw",
-            height: '750px',
-            width: '100%',
-            data: {
-              base64: res["base64"] as string,
-              title: "OP BILL Viewer"
-            }
-          });
-        matDialog.afterClosed().subscribe(result => {  
-        });
-      });
+      // this._BrowseOPDBillsService.getOpBillReceipt(
+      //   contact.BillNo
+      // ).subscribe(res => {
+      //   const matDialog = this._matDialog.open(PdfviewerComponent,
+      //     {
+      //       maxWidth: "85vw",
+      //       height: '750px',
+      //       width: '100%',
+      //       data: {
+      //         base64: res["base64"] as string,
+      //         title: "OP BILL Viewer"
+      //       }
+      //     });
+      //   matDialog.afterClosed().subscribe(result => {  
+      //   });
+      // });
 
     }, 100);
   }

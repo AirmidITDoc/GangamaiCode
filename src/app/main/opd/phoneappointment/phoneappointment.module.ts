@@ -36,6 +36,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { PhoneappointmentComponent } from './phoneappointment.component';
 import { NewPhoneAppointmentComponent } from './new-phone-appointment/new-phone-appointment.component';
+import { PhoneAppointListService } from './phone-appoint-list.service';
 
 const routes: Routes = [
     {
@@ -91,7 +92,7 @@ const routes: Routes = [
         MatListModule,
     ],
     providers: [
-        DatePipe
+        DatePipe,PhoneAppointListService
     ],
     entryComponents: [
         PhoneappointmentComponent,

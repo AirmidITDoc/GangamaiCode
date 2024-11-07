@@ -8,12 +8,19 @@ import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { fuseAnimations } from '@fuse/animations';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { NewPhoneAppointmentComponent } from './new-phone-appointment/new-phone-appointment.component';
 import { GeturlService } from './geturl.service';
 import { map, startWith } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
+import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-phoneappointment',
@@ -24,202 +31,79 @@ import { Router } from '@angular/router';
 })
 export class PhoneappointmentComponent implements OnInit {
 
-  sIsLoading: string = '';
-  isLoading = true;
-  isRateLimitReached = false;
-  isLoading1: String = '';
-  hasSelectedContacts: boolean;
-  doctorNameCmbList: any = [];
-  isDoctorSelected:boolean=false;
-  filteredOptionsDoctor: Observable<string[]>;
+  confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   
-  optionsDoctor: any[] = [];
 
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @Input() dataArray: any;
-
-  displayedColumns = [
-    // 'PhoneAppId',
-    'IsCancelled',
-    'AppDate',
-    'PatientName',
-    'Address',
-    'MobileNo',
-    'DepartmentName',
-    'DoctorName',
-    'PhAppDate',
-    'action'
-  ];
-
-  dataSource = new MatTableDataSource<PhoneAppointmentlist>();
-  menuActions: Array<string> = [];
-
-
+  gridConfig: gridModel = {
+      apiUrl: "PathCategoryMaster/List",
+      columnsList: [
+          { heading: "Code", key: "categoryId", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "Category Name", key: "categoryName", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+          {
+              heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                  {
+                      action: gridActions.edit, callback: (data: any) => {
+                          this.onSave(data);
+                      }
+                  }, {
+                      action: gridActions.delete, callback: (data: any) => {
+                          this.confirmDialogRef = this._matDialog.open(
+                              FuseConfirmDialogComponent,
+                              {
+                                  disableClose: false,
+                              }
+                          );
+                          this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+                          this.confirmDialogRef.afterClosed().subscribe((result) => {
+                              if (result) {
+                                  let that = this;
+                                  this._PhoneAppointListService.deactivateTheStatus(data.groupId).subscribe((response: any) => {
+                                      this.toastr.success(response.message);
+                                      that.grid.bindGridData();
+                                  });
+                              }
+                              this.confirmDialogRef = null;
+                          });
+                      }
+                  }]
+          } //Action 1-view, 2-Edit,3-delete
+      ],
+      sortField: "categoryId",
+      sortOrder: 0,
+      filters: [
+          { fieldName: "groupName", fieldValue: "", opType: OperatorComparer.Contains },
+          { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+      ],
+      row: 25
+  }
   constructor(
-    public _phoneAppointService: PhoneAppointListService,
-    private _fuseSidebarService: FuseSidebarService,
-    public _matDialog: MatDialog,
-    private router: Router,
-    public datePipe: DatePipe,
-    public _geturl :GeturlService
+      public _PhoneAppointListService: PhoneAppointListService,
+      public _matDialog: MatDialog,
+     //private accountService: AuthenticationService,
+      private _fuseSidebarService: FuseSidebarService,
+      public toastr: ToastrService,
   ) { }
 
   ngOnInit(): void {
-    // get Doctor list
-    this.getDoctorNameCombobox();
-    // get phone appointment list on page load
-    this.getPhoneAppointList();
-  }
-  
-  // toggle sidebar
-  toggleSidebar(name): void {
-    this._fuseSidebarService.getSidebar(name).toggleOpen();
-  }
-
-  // field validation 
-  get f() { return this._phoneAppointService.mysearchform.controls; }
-
-  // clear data from input field 
-  onClear() {
-    this._phoneAppointService.mysearchform.get('FirstNameSearch').reset();
-    this._phoneAppointService.mysearchform.get('LastNameSearch').reset();
-    this._phoneAppointService.mysearchform.get('DoctorId').reset();
-  }
-
-
-  private _filterDoctor(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
-       return this.optionsDoctor.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
-    }
-
-  }
-   
-  getDoctorNameCombobox() {
-    this._phoneAppointService.getAdmittedDoctorCombo().subscribe(data => {
-      this.doctorNameCmbList = data;
-      this.optionsDoctor = this.doctorNameCmbList.slice();
-      this.filteredOptionsDoctor = this._phoneAppointService.mysearchform.get('DoctorId').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterDoctor(value) : this.doctorNameCmbList.slice()),
-      );
       
-    });
   }
 
-  
-  getOptionTextDoctor(option){
-    return option && option.DoctorName ? option.DoctorName : '';
-  }
-
-  // get phone appointment list on Button click
-  getPhoneAppointList() {
-    this.sIsLoading = 'loading-data';
-    var D_data = {
-      "F_Name": this._phoneAppointService.mysearchform.get("FirstNameSearch").value + '%' || '%',
-      "L_Name": this._phoneAppointService.mysearchform.get("LastNameSearch").value + '%' || '%',
-      "Doctor_Id": this._phoneAppointService.mysearchform.get("DoctorId").value.DoctorID || 0,
-      "From_Dt": this.datePipe.transform(this._phoneAppointService.mysearchform.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      "To_Dt": this.datePipe.transform(this._phoneAppointService.mysearchform.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-    }
-    this._phoneAppointService.getPhoneAppointmentlist(D_data).subscribe(Visit => {
-    this.dataSource.data = Visit as PhoneAppointmentlist[];
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
-    this.sIsLoading = '';
-    },
-      error => {
-        this.sIsLoading = '';
-      });
-  }
-
-viewPhoneAppointment(){
-    this.router.navigate(['/opd/view-phone-appointment']);
-}
-
-newPhoneAppointment(){
-    const dialogRef = this._matDialog.open(NewPhoneAppointmentComponent,
-      {
-        maxWidth: "85vw",
-        height: '65%',
-        width: '70%',
-      });
-    dialogRef.afterClosed().subscribe(result => {
-       console.log('The dialog was closed - Insert Action', result);
-       this.getPhoneAppointList();
-    });
-  }
-
-CanclePhoneApp(contact){
-  
-    Swal.fire({
-      title: 'Do you want to Cancle Appointment',
-      // showDenyButton: true,
-      showCancelButton: true,
-      confirmButtonText: 'OK',
-
-    }).then((flag) => {
-
-
-      if (flag.isConfirmed) {
-        let appointmentcancle={};
-        appointmentcancle['phoneAppId'] =  contact.PhoneAppId;
-       
-        let submitData = {
-          "phoneAppointmentCancle": appointmentcancle
-        
-        };
-        console.log(submitData);
-        this._phoneAppointService.PhoneAppointCancle(submitData).subscribe(response => {
-          if (response) {
-            Swal.fire('Appointment cancelled !', 'Phone Appointment cancelled Successfully!', 'success').then((result) => {
-              
-            });
-          } else {
-            Swal.fire('Error !', 'Appointment cancelled data not saved', 'error');
+onSave(row: any = null) {
+      debugger
+      let that = this;
+      const dialogRef = this._matDialog.open(NewPhoneAppointmentComponent,
+          {
+              maxWidth: "75vw",
+              height: '75%',
+              width: '70%',
+              data: row
+          });
+      dialogRef.afterClosed().subscribe(result => {
+          if (result) {
+              that.grid.bindGridData();
           }
-          this.isLoading1 = '';
-        });
-      }
-    });
-    this.getPhoneAppointList();
-  }
-
-}
-
-
-
-
-export class PhoneAppointmentlist {
-  PhoneAppId: number;
-  PatientName: string;
-  AppDate: Date;
-  Address: string;
-  PhAppDate: Date;
-  MobileNo: string;
-  DepartmentName: string;
-  DoctorName: string;
-  IsCancelled: boolean;
-
-  /**
-   * Constructor
-   *
-   * @param contact
-   */
-  constructor(PhoneAppointmentlist) {
-    {
-      this.PhoneAppId = PhoneAppointmentlist.PhoneAppId || '';
-      this.PatientName = PhoneAppointmentlist.PatientName || '';
-      this.AppDate = PhoneAppointmentlist.AppDate || '';
-      this.Address = PhoneAppointmentlist.Address || '';
-      this.PhAppDate = PhoneAppointmentlist.PhAppDate || '';
-      this.MobileNo = PhoneAppointmentlist.MobileNo || '';
-      this.DepartmentName = PhoneAppointmentlist.DepartmentName || '';
-      this.DoctorName = PhoneAppointmentlist.DoctorName || '';
-      this.IsCancelled = PhoneAppointmentlist.IsCancelled || '';
-
-    }
+      });
   }
 }
-

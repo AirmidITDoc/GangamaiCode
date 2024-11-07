@@ -24,7 +24,6 @@ import { IPSettlementComponent } from '../ip-settlement/ip-settlement.component'
 import { DischargeSummaryComponent } from './discharge-summary/discharge-summary.component';
 import { ToastrService } from 'ngx-toastr';
 import { CompanyInformationComponent } from '../company-information/company-information.component';
-import { NewCasepaperComponent } from 'app/main/opd/new-casepaper/new-casepaper.component';
 import { IPRefundofAdvanceComponent } from '../ip-refundof-advance/ip-refundof-advance.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { OPIPFeedbackComponent } from '../Feedback/opip-feedback/opip-feedback.component';
@@ -564,15 +563,15 @@ export class IPSearchListComponent implements OnInit {
       this.advanceDataStored.storage = new AdvanceDetailObj(contact);
       this._IpSearchListService.populateForm(contact);
 
-      const dialogRef = this._matDialog.open(NewCasepaperComponent,
-        {
-          maxWidth: "95vw",
-          maxHeight: "55vh", width: '100%', height: "100%"
-        });
-      dialogRef.afterClosed().subscribe(result => {
-        console.log('The dialog was closed - Insert Action', result);
-        this.getAdmittedPatientList();
-      });
+      // const dialogRef = this._matDialog.open(NewCasepaperComponent,
+      //   {
+      //     maxWidth: "95vw",
+      //     maxHeight: "55vh", width: '100%', height: "100%"
+      //   });
+      // dialogRef.afterClosed().subscribe(result => {
+      //   console.log('The dialog was closed - Insert Action', result);
+      //   this.getAdmittedPatientList();
+      // });
     }
 
 

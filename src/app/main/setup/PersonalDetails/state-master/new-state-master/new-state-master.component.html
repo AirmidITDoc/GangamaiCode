@@ -19,9 +19,15 @@
             <form [formGroup]="stateForm">
                 <input type="hidden" name="stateId" formControlName="stateId">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                 
+                 
                     <airmid-textbox label="State name" formControlName="stateName" [value]="" [formGroup]="stateForm"
                         [validations]="_StateMasterService.getValidationMessages().stateName" [maxLength]="300">
                     </airmid-textbox>
+
+
+
+
                     <airmid-textbox label="Countery Id" formControlName="countryId" [value]="" [formGroup]="stateForm"
                         [validations]="_StateMasterService.getValidationMessages().stateName" [maxLength]="300">
                     </airmid-textbox>

@@ -11,7 +11,6 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { AdvanceDetailObj, ChargesList } from 'app/main/ipd/ip-search-list/ip-search-list.component';
-import { BrowseOPDBill } from 'app/main/opd/browse-opbill/browse-opbill.component';
 import { ReplaySubject, Subject, Subscription } from 'rxjs';
 import { PatientwiseMaterialConsumptionService } from '../patientwise-material-consumption.service';
 import { takeUntil } from 'rxjs/operators';
@@ -133,10 +132,10 @@ public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 
   //Print Bill
-  reportPrintObj: BrowseOPDBill;
+  reportPrintObj: any;
   subscriptionArr: Subscription[] = [];
   printTemplate: any;
-  reportPrintObjList: BrowseOPDBill[] = [];
+  reportPrintObjList: any[] = [];
  
 
   constructor(

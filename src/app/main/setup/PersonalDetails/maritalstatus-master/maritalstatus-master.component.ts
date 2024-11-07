@@ -29,7 +29,7 @@ export class MaritalstatusMasterComponent implements OnInit {
         apiUrl: "MaritalStatus/List",
         columnsList: [
             { heading: "Code", key: "maritalStatusId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Country Name", key: "maritalStatusName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Marital Status", key: "maritalStatusName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [

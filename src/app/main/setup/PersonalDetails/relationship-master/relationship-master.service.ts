@@ -22,9 +22,9 @@ export class RelationshipMasterService {
         return this._formBuilder.group({
             relationshipId: [""],
             relationshipName: [""],
-            IsDeleted: ["true"],
-            AddedBy: ["0"],
-            UpdatedBy: ["0"],
+            isDeleted: ["true"],
+            addBy: ["0"],
+            updatedBy: ["0"],
         });
     }
 

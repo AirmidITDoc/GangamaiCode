@@ -30,8 +30,7 @@ import { ToastrService } from 'ngx-toastr';
 import { IPBillingComponent } from '../../ip-search-list/ip-billing/ip-billing.component';
 import { NewRegistrationComponent } from 'app/main/opd/registration/new-registration/new-registration.component';
 import { RegistrationService } from 'app/main/opd/registration/registration.service';
-import { EditRefraneDoctorComponent } from 'app/main/opd/appointment/edit-refrane-doctor/edit-refrane-doctor.component';
-import { EditConsultantDoctorComponent } from 'app/main/opd/appointment/edit-consultant-doctor/edit-consultant-doctor.component';
+
 import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 import { CompanyInformationComponent } from '../../company-information/company-information.component';
 import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
@@ -2200,20 +2199,20 @@ this.getAdmittedPatientList_1()
         DoctorName: contact.Doctorname,
       };
       this._registrationService.populateFormpersonal(m_data2);
-      const dialogRef = this._matDialog.open(EditConsultantDoctorComponent,
-        {
-          maxWidth: "70vw",
-          height: "410px",
-          width: "70%",
-          data: {
-            registerObj: m_data2,
-            FormName:"Admission"
-          },
-        }
-      );
-      dialogRef.afterClosed().subscribe((result) => {
+      // const dialogRef = this._matDialog.open(EditConsultantDoctorComponent,
+      //   {
+      //     maxWidth: "70vw",
+      //     height: "410px",
+      //     width: "70%",
+      //     data: {
+      //       registerObj: m_data2,
+      //       FormName:"Admission"
+      //     },
+      //   }
+      // );
+      // dialogRef.afterClosed().subscribe((result) => {
 
-      });
+      // });
     } else if (m == "Update Referred Doctor") {
       
       var m_data3 = {
@@ -2226,18 +2225,18 @@ this.getAdmittedPatientList_1()
         VisitId: contact.VisitId,
       };
       this._registrationService.populateFormpersonal(m_data3);
-      const dialogRef = this._matDialog.open(EditRefraneDoctorComponent, {
-        maxWidth: "70vw",
-        height: "410px",
-        width: "70%",
-        data: {
-          registerObj: m_data3,
-          FormName:"Admission"
-        },
-      });
-      dialogRef.afterClosed().subscribe((result) => {
-        console.log("The dialog was closed - Insert Action", result);
-      });
+      // const dialogRef = this._matDialog.open(EditRefraneDoctorComponent, {
+      //   maxWidth: "70vw",
+      //   height: "410px",
+      //   width: "70%",
+      //   data: {
+      //     registerObj: m_data3,
+      //     FormName:"Admission"
+      //   },
+      // });
+      // dialogRef.afterClosed().subscribe((result) => {
+      //   console.log("The dialog was closed - Insert Action", result);
+      // });
     }
 
   }

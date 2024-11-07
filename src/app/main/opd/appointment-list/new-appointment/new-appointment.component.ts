@@ -1,124 +1,67 @@
-import { ChangeDetectorRef, Component, ElementRef, HostListener, Inject, Input, OnInit, SimpleChanges, ViewChild, ViewEncapsulation, } from "@angular/core";
-import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatSort } from "@angular/material/sort";
-import { MatTableDataSource } from "@angular/material/table";
-import { Observable, ReplaySubject, Subject, Subscription } from "rxjs";
-import { RegistrationService } from "../registration/registration.service";
-import { DatePipe, Time } from "@angular/common";
-import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
-import { ActivatedRoute, Router } from "@angular/router";
-import { AppointmentSreviceService } from "./appointment-srevice.service";
-import Swal from "sweetalert2";
-import { fuseAnimations } from "@fuse/animations";
-import { NewRegistrationComponent } from "../registration/new-registration/new-registration.component";
-import { EditConsultantDoctorComponent } from "./edit-consultant-doctor/edit-consultant-doctor.component";
-import { EditRefraneDoctorComponent } from "./edit-refrane-doctor/edit-refrane-doctor.component";
-import { EditRegistrationComponent } from "../registration/edit-registration/edit-registration.component";
-import { CasepaperVisitDetails } from "../op-search-list/op-casepaper/op-casepaper.component";
-import { FeedbackComponent } from "./feedback/feedback.component";
-import { PatientAppointmentComponent } from "./patient-appointment/patient-appointment.component";
-import { ImageViewComponent } from "./image-view/image-view.component";
-import { CameraComponent } from "./camera/camera.component";
-import { map, startWith, takeUntil } from "rxjs/operators";
-import { OPBillingComponent } from "../op-search-list/op-billing/op-billing.component";
-import { ChargesList, SearchInforObj } from "../op-search-list/opd-search-list/opd-search-list.component";
-import { AdvanceDataStored } from "app/main/ipd/advance";
-import { OPIPPatientModel } from "../op-search-list/search-page/search-page.component";
-import { MatStepper } from "@angular/material/stepper";
-import { AuthenticationService } from "app/core/services/authentication.service";
-import { HeaderComponent } from "app/main/shared/componets/header/header.component";
-import { ExcelDownloadService } from "app/main/shared/services/excel-download.service";
-import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
-import { MatSelect } from "@angular/material/select";
-import { AnyCnameRecord } from "dns";
-import { PdfviewerComponent } from "app/main/pdfviewer/pdfviewer.component";
-import { ImageCropComponent } from "app/main/shared/componets/image-crop/image-crop.component";
-import { ImageCroppedEvent } from "ngx-image-cropper";
-import { VisitDetailsComponent } from "./visit-details/visit-details.component";
-import { ConfigService } from "app/core/services/config.service";
-import { MatDrawer } from "@angular/material/sidenav";
-import { MatAccordion } from "@angular/material/expansion";
-import { CrossConsultationComponent } from "./cross-consultation/cross-consultation.component";
-import { ThisReceiver } from "@angular/compiler";
-import { ToastrService } from "ngx-toastr";
-import { NewOPBillingComponent } from "../OPBilling/new-opbilling/new-opbilling.component";
-import { Table } from "jspdf-autotable";
-import moment, { invalid } from "moment";
-import { values } from "lodash";
-import { WhatsAppEmailService } from "app/main/shared/services/whats-app-email.service";
-import { PatientVitalInformationComponent } from "./patient-vital-information/patient-vital-information.component";
-
-export class DocData {
-    doc: any;
-    type: string = '';
-};
-
+import { Component, ElementRef, Inject, Input, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
+import { ToastrService } from 'ngx-toastr';
+import { AppointmentlistService } from '../appointmentlist.service';
+import { DatePipe } from '@angular/common';
+import { map, startWith, takeUntil } from 'rxjs/operators';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
+import { MatStepper } from '@angular/material/stepper';
+import Swal from 'sweetalert2';
+import { MatTableDataSource } from '@angular/material/table';
+import { AppointmentSreviceService } from '../../appointment/appointment-srevice.service';
+import { MatSelect } from '@angular/material/select';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { Router } from '@angular/router';
+import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 
 @Component({
-    selector: "app-appointment",
-    templateUrl: "./appointment.component.html",
-    styleUrls: ["./appointment.component.scss"],
-    encapsulation: ViewEncapsulation.None,
-    animations: fuseAnimations,
+  selector: 'app-new-appointment',
+  templateUrl: './new-appointment.component.html',
+  styleUrls: ['./new-appointment.component.scss']
 })
-export class AppointmentComponent implements OnInit {
-    // events: string[] = [];
-    // opened: boolean;
-
-    // shouldRun = [/(^|\.)plnkr\.co$/, /(^|\.)stackblitz\.io$/].some(h => h.test(window.location.host));
-
-    dateStyle?: string = 'Date';
+export class NewAppointmentComponent implements OnInit {
+  dateStyle?: string = 'Date';
     OnChangeDobType(e) {
         this.dateStyle = e.value;
     }
     CalcDOB(mode, e) {
-        let d = new Date();
-        if (mode == "Day") {
-            d.setDate(d.getDate() - Number(e.target.value));
-            this.registerObj.DateofBirth = d;
-            //this.personalFormGroup.get('DateOfBirth').setValue(moment().add(Number(e.target.value), 'days').format("DD-MMM-YYYY"));
-        }
-        else if (mode == "Month") {
-            d.setMonth(d.getMonth() - Number(e.target.value));
-            this.registerObj.DateofBirth = d;
-        }
-        else if (mode == "Year") {
-            d.setFullYear(d.getFullYear() - Number(e.target.value));
-            this.registerObj.DateofBirth = d;
-        }
-        let todayDate=new Date();
-        const timeDiff = Math.abs(Date.now() - this.registerObj.DateofBirth.getTime());
-        this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
-        this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - this.registerObj.DateofBirth.getMonth());
-        this.registerObj.AgeDay = Math.abs(todayDate.getDate() - this.registerObj.DateofBirth.getDate());
+        // let d = new Date();
+        // if (mode == "Day") {
+        //     d.setDate(d.getDate() - Number(e.target.value));
+        //     this.registerObj.DateofBirth = d;
+        //     //this.personalFormGroup.get('DateOfBirth').setValue(moment().add(Number(e.target.value), 'days').format("DD-MMM-YYYY"));
+        // }
+        // else if (mode == "Month") {
+        //     d.setMonth(d.getMonth() - Number(e.target.value));
+        //     this.registerObj.DateofBirth = d;
+        // }
+        // else if (mode == "Year") {
+        //     d.setFullYear(d.getFullYear() - Number(e.target.value));
+        //     this.registerObj.DateofBirth = d;
+        // }
+        // let todayDate=new Date();
+        // const timeDiff = Math.abs(Date.now() - this.registerObj.DateofBirth.getTime());
+        // this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
+        // this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - this.registerObj.DateofBirth.getMonth());
+        // this.registerObj.AgeDay = Math.abs(todayDate.getDate() - this.registerObj.DateofBirth.getDate());
     }
     msg: any;
     // isLoading = true;
     isRateLimitReached = false;
     hasSelectedContacts: boolean;
     currentDate = new Date();
-    subscriptions: Subscription[] = [];
-    reportPrintObj: CasepaperVisitDetails;
-    printTemplate: any;
+   
     TempKeys: any[] = [];
-    reportPrintObjList: CasepaperVisitDetails[] = [];
-    subscriptionArr: Subscription[] = [];
-    isLoadingStr: string = '';
-    isLoading: String = '';
-
+   
     VisitID: any;
 
     showtable: boolean = false;
 
     Regflag: boolean = false;
 
-    registerObj = new RegInsert({});
-    registerObj1 = new RegInsert({});
-    name = new FormControl('');
-    FirstName = new FormControl('');
-    AreaId = new FormControl('');
+   
     submitted = false;
     year = 10;
     month = 5;
@@ -203,9 +146,9 @@ export class AppointmentComponent implements OnInit {
     sStatus: any = '';
     // public errors: WebcamInitError[] = [];
     minDate = new Date();
-    private trigger: Subject<any> = new Subject();
-    // public webcamImage!: WebcamImage;
-    private nextWebcam: Subject<any> = new Subject();
+    // private trigger: Subject<any> = new Subject();
+    // // public webcamImage!: WebcamImage;
+    // private nextWebcam: Subject<any> = new Subject();
     sysImage = '';
 
     // upload document
@@ -219,7 +162,7 @@ export class AppointmentComponent implements OnInit {
     title = 'file-upload';
     images: any[] = [];
     docs: any[] = [];
-    docsArray: DocData[] = [];
+    // docsArray: DocData[] = [];
     filteredOptions: any;
     showOptions: boolean = false;
 
@@ -296,45 +239,9 @@ export class AppointmentComponent implements OnInit {
         docFileSource: new FormControl('', [Validators.required])
     });
 
-    @ViewChild(MatSort) sort: MatSort;
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-
-
-    displayedColumns = [
-        "PatientOldNew",
-        "RegNoWithPrefix",
-        "PatientName",
-        "DVisitDate",
-        "OPDNo",
-        'DepartmentName',
-        "Doctorname",
-        "RefDocName",
-        "PatientType",
-        'TariffName',
-        "CompanyName",
-        'MobileNo',
-        "action",
-    ];
-
-    dataSource = new MatTableDataSource<VisitMaster>();
-    dataSource1 = new MatTableDataSource<CasepaperVisitDetails>();
+   
+ 
     menuActions: Array<string> = [];
-    tableColumns = [
-
-        'VisitId',
-        'VisitTime',
-        'DocName'
-
-    ];
-    @ViewChild('drawer') public drawer: MatDrawer;
-    @ViewChild(MatAccordion) accordion: MatAccordion;
-
-    displayedColumns1 = [
-        'DocumentName',
-        'DocumentPath',
-        'buttons'
-    ];
-
     pdfDataSource = new MatTableDataSource<any>();
     imgDataSource = new MatTableDataSource<any>();
     filterReligion: any;
@@ -345,26 +252,18 @@ export class AppointmentComponent implements OnInit {
     public height: string;
     sanitizeImagePreview;
     constructor(
-        public _AppointmentSreviceService: AppointmentSreviceService,
+        public _AppointmentlistService: AppointmentlistService,
         public _opappointmentService: AppointmentSreviceService,
-        private accountService: AuthenticationService,
-        public _registerService: RegistrationService,
-        public _matDialog: MatDialog,
+              public _matDialog: MatDialog,
+              private _ActRoute: Router,
+              public _WhatsAppEmailService: WhatsAppEmailService,
         public datePipe: DatePipe,
         private formBuilder: FormBuilder,
-        private _ActRoute: Router,
-        private configService: ConfigService,
-        private _fuseSidebarService: FuseSidebarService,
-        public _registrationService: RegistrationService,
         public matDialog: MatDialog,
         public toastr: ToastrService,
-        private advanceDataStored: AdvanceDataStored,
-        private reportDownloadService: ExcelDownloadService,
-        private _Activatedroute: ActivatedRoute,
-        private changeDetectorRefs: ChangeDetectorRef,
-        public _WhatsAppEmailService: WhatsAppEmailService
+       
     ) {
-        this.getVisitList1();
+        
     }
 
 
@@ -413,8 +312,8 @@ export class AppointmentComponent implements OnInit {
                 this.filterHospital();
             });
 
-        this.FirstName.markAsTouched();
-        this.AreaId.markAsTouched();
+        // this.FirstName.markAsTouched();
+        // this.AreaId.markAsTouched();
 
         this.filteredOptionsDep = this.VisitFormGroup.get('Departmentid').valueChanges.pipe(
             startWith(''),
@@ -443,94 +342,9 @@ export class AppointmentComponent implements OnInit {
     }
 
 
-    NewCrossConsultation(contact) {
+    
 
-        const dialogRef = this._matDialog.open(CrossConsultationComponent,
-            {
-                maxWidth: '75vw',
-                height: '400px', width: '100%',
-                data: contact,
-
-            });
-        dialogRef.afterClosed().subscribe(result => {
-            this.getVisitList1();
-        });
-
-    }
-
-
-
-    onImageChange(event) {
-        let Imgflag = "";
-        if (!event.target.files.length) return;
-        const file = event.target.files[0];
-
-
-        this._matDialog.open(ImageCropComponent, { data: { file } }).afterClosed().subscribe(
-
-            (event: ImageCroppedEvent) => (this.sanitizeImagePreview = event.base64,
-                Imgflag = event.base64
-            )
-
-        );
-
-
-
-
-        if (Imgflag != " ") {
-            let filesAmount = event.target.files.length;
-            // for (let i = 0; i < filesAmount; i++) {
-            // this.imgArr.push(file.name);
-            this.images.push({ url: file, name: file.name, Id: 0 });
-            this.imgDataSource.data = this.images;
-            this.imageForm.patchValue({
-                imgFileSource: this.images
-            });
-            // }
-            this.attachment.nativeElement.value = '';
-        }
-    }
-    onPhotoChange(event) {
-        let Imgflag = "";
-
-        if (!event.target.files.length) return;
-        const file = event.target.files[0];
-
-        this._matDialog.open(ImageCropComponent, { data: { file } }).afterClosed().subscribe(
-
-            (event: ImageCroppedEvent) => (this.sanitizeImagePreview = event.base64,
-                Imgflag = event.base64
-            )
-
-        );
-
-        if (Imgflag != " ") {
-            let filesAmount = event.target.files.length;
-            // for (let i = 0; i < filesAmount; i++) {
-            // this.imgArr.push(file.name);
-            this.images.push({ url: file, name: file.name, Id: 0 });
-            this.imgDataSource.data = this.images;
-            this.imageForm.patchValue({
-                imgFileSource: this.images
-            });
-            // }
-            this.attachment.nativeElement.value = '';
-        }
-    }
-
-
-    getPrint(contact) {
-
-    }
-
-
-
-    public handleKeyboardEvent(event: MatAutocompleteSelectedEvent): void {
-        if (event.source.isOpen) {
-            ((event.option as any)
-                ._element as ElementRef).nativeElement.scrollIntoView();
-        }
-    }
+    
     getDoctor1List() {
         this._opappointmentService.getDoctorMaster1Combo().subscribe(data => {
             this.Doctor1List = data;
@@ -732,7 +546,7 @@ export class AppointmentComponent implements OnInit {
             ]],
             GenderId: '',
             Address: '',
-            DateOfBirth: [{ value: this.registerObj.DateofBirth }],
+            DateOfBirth: [''],
             AgeYear: ['', [
                 Validators.required,
                 Validators.pattern("^[0-9]*$")]],
@@ -808,7 +622,7 @@ export class AppointmentComponent implements OnInit {
     onChangeReg(event) {
         //
         if (event.value == 'registration') {
-            this.registerObj = new RegInsert({});
+            // this.registerObj = new RegInsert({});
             this.personalFormGroup.reset();
             this.personalFormGroup.get('RegId').reset();
             this.searchFormGroup.get('RegId').disable();
@@ -870,15 +684,15 @@ export class AppointmentComponent implements OnInit {
 
 
     getPrefixList() {
-        this._registerService.getPrefixCombo().subscribe(data => {
-            this.PrefixList = data;
-            this.optionsPrefix = this.PrefixList.slice();
-            this.filteredOptionsPrefix = this.personalFormGroup.get('PrefixID').valueChanges.pipe(
-                startWith(''),
-                map(value => value ? this._filterPrex(value) : this.PrefixList.slice()),
-            );
+        // this._registerService.getPrefixCombo().subscribe(data => {
+        //     this.PrefixList = data;
+        //     this.optionsPrefix = this.PrefixList.slice();
+        //     this.filteredOptionsPrefix = this.personalFormGroup.get('PrefixID').valueChanges.pipe(
+        //         startWith(''),
+        //         map(value => value ? this._filterPrex(value) : this.PrefixList.slice()),
+        //     );
 
-        });
+        // });
     }
 
 
@@ -978,108 +792,48 @@ export class AppointmentComponent implements OnInit {
         // }
 
     }
-    onEdit(row) {
+  
 
-        // console.log(row)
-        // let Query = "Select * from Registration where  RegId=" + row.RegId + " ";
-        // this._AppointmentSreviceService.getRegIdDetail(Query).subscribe(data => {
-        //   this.registerObj = data[0];
-        //   console.log(this.registerObj);
-        // });
+  
 
-        // this.registerObj["VisitId"] = row.VisitId;
-        // this.registerObj["RegId"]=row.RegId;
-        // this.registerObj["RegID"]=row.RegId;
-        // 
-        console.log(row)
-        this.registerObj = row;
-        this.registerObj["RegId"] = row.RegId;
-        this.registerObj["RegID"] = row.RegId;
-        this.registerObj["PrefixId"] = row.PrefixID;
-        // this.EditRegistration();
-    }
+    // AppointmentCancle(contact) {
+    //     Swal.fire({
+    //         title: 'Do you want to Cancle Appointment',
+    //         // showDenyButton: true,
+    //         showCancelButton: true,
+    //         confirmButtonText: 'OK',
 
-    EditRegistration(row) {
-        this.registerObj = row;
-        this.registerObj["RegId"] = row.RegId;
-        this.registerObj["RegID"] = row.RegId;
-        // this.registerObj["PrefixId"] = row.PrefixID;
-        this.advanceDataStored.storage = new AdvanceDetailObj(row);
-        console.log(row)
-
-        this._registrationService.populateFormpersonal(row);
-
-        const dialogRef = this._matDialog.open(NewRegistrationComponent,
-            {
-                maxWidth: "85vw",
-                height: "450px",
-                width: "100%",
-                data: {
-                    registerObj: row,
-                    Submitflag: false
-                },
-            }
-        );
-
-        dialogRef.afterClosed().subscribe(result => {
-            console.log('The dialog was closed - Insert Action', result);
-            this.getVisitList1();
-        });
-    }
-
-    AppointmentCancle(contact) {
-        Swal.fire({
-            title: 'Do you want to Cancle Appointment',
-            // showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonText: 'OK',
-
-        }).then((flag) => {
+    //     }).then((flag) => {
 
 
-            if (flag.isConfirmed) {
-                let appointmentcancle = {};
-                appointmentcancle['visitId'] = contact.VisitId;
+    //         if (flag.isConfirmed) {
+    //             let appointmentcancle = {};
+    //             appointmentcancle['visitId'] = contact.VisitId;
 
-                let submitData = {
-                    "appointmentcancle": appointmentcancle
+    //             let submitData = {
+    //                 "appointmentcancle": appointmentcancle
 
-                };
-                console.log(submitData);
-                this._AppointmentSreviceService.Appointmentcancle(submitData).subscribe(response => {
-                    if (response) {
-                        Swal.fire('Appointment cancelled !', 'Appointment cancelled Successfully!', 'success').then((result) => {
+    //             };
+    //             console.log(submitData);
+    //             this._AppointmentSreviceService.Appointmentcancle(submitData).subscribe(response => {
+    //                 if (response) {
+    //                     Swal.fire('Appointment cancelled !', 'Appointment cancelled Successfully!', 'success').then((result) => {
 
-                        });
-                        this.getVisitList1();
-                    } else {
-                        Swal.fire('Error !', 'Appointment cancelled data not saved', 'error');
-                    }
-                    this.isLoading = '';
-                });
-            }
-        });
-        this.getVisitList1();
-    }
+    //                     });
+    //                     this.getVisitList1();
+    //                 } else {
+    //                     Swal.fire('Error !', 'Appointment cancelled data not saved', 'error');
+    //                 }
+    //                 this.isLoading = '';
+    //             });
+    //         }
+    //     });
+    //     this.getVisitList1();
+    // }
     getClassList() {
         this._opappointmentService.getClassMasterCombo().subscribe(data => { this.ClassList = data; })
     }
 
-
-
-
-    // getTariffList() {
-    //   this._opappointmentService.getTariffCombo().subscribe(data => {
-    //     this.TariffList = data;
-    //     this.optionsTariff = this.TariffList.slice();
-    //     this.filteredOptionsTarrif = this.VisitFormGroup.get('TariffId').valueChanges.pipe(
-    //       startWith(''),
-    //       map(value => value ? this._filterTariff(value) : this.TariffList.slice()),
-    //     );
-
-    //   });
-    //   this.VisitFormGroup.get('TariffId').setValue(this.TariffList[0]);
-    // }
 
     getAreaList() {
         this._opappointmentService.getAreaCombo().subscribe(data => {
@@ -1166,14 +920,14 @@ debugger
                 startWith(''),
                 map(value => value ? this._filterDep(value) : this.DepartmentList.slice()),
             );
-            if (this.configService.configParams.DepartmentId) {
+            // if (this.configService.configParams.DepartmentId) {
 
-                const ddValue = this.DepartmentList.filter(c => c.DepartmentId == this.configService.configParams.DepartmentId);
-                this.VisitFormGroup.get('Departmentid').setValue(ddValue[0]);
-                this.OnChangeDoctorList(ddValue[0]);
-                this.VisitFormGroup.updateValueAndValidity();
-                return;
-            }
+            //     const ddValue = this.DepartmentList.filter(c => c.DepartmentId == this.configService.configParams.DepartmentId);
+            //     this.VisitFormGroup.get('Departmentid').setValue(ddValue[0]);
+            //     this.OnChangeDoctorList(ddValue[0]);
+            //     this.VisitFormGroup.updateValueAndValidity();
+            //     return;
+            // }
         });
 
     }
@@ -1210,10 +964,10 @@ debugger
             const todayDate = new Date();
             const dob = new Date(DateOfBirth);
             const timeDiff = Math.abs(Date.now() - dob.getTime());
-            this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
-            this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
-            this.registerObj.AgeDay = Math.abs(todayDate.getDate() - dob.getDate());
-            this.registerObj.DateofBirth = DateOfBirth;
+            // this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
+            // this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
+            // this.registerObj.AgeDay = Math.abs(todayDate.getDate() - dob.getDate());
+            // this.registerObj.DateofBirth = DateOfBirth;
             this.personalFormGroup.get('DateOfBirth').setValue(DateOfBirth);
         }
 
@@ -1221,30 +975,30 @@ debugger
     // VisitList
     resultsLength = 0;
 
-    getVisitList() {
+    // getVisitList() {
 
-        var D_data = {
-            F_Name: this._AppointmentSreviceService.myFilterform.get("FirstName").value.trim() + "%" || "%",
-            L_Name: this._AppointmentSreviceService.myFilterform.get("LastName").value.trim() + "%" || "%",
-            Reg_No: this._AppointmentSreviceService.myFilterform.get("RegNo").value || 0,
-            Doctor_Id: this._AppointmentSreviceService.myFilterform.get("DoctorId").value.DoctorID || 0,
-            From_Dt: this.datePipe.transform(this._AppointmentSreviceService.myFilterform.get("startdate").value, "yyyy-MM-dd 00:00:00.000") || "01/01/1900",
-            To_Dt: this.datePipe.transform(this._AppointmentSreviceService.myFilterform.get("enddate").value, "yyyy-MM-dd 00:00:00.000") || "01/01/1900",
-            IsMark: this._AppointmentSreviceService.myFilterform.get("IsMark").value || 0,
-        };
-        setTimeout(() => {
-            this._AppointmentSreviceService.getAppointmentListold(D_data).subscribe(
-                (Visit) => {
+    //     var D_data = {
+    //         F_Name: this._AppointmentSreviceService.myFilterform.get("FirstName").value.trim() + "%" || "%",
+    //         L_Name: this._AppointmentSreviceService.myFilterform.get("LastName").value.trim() + "%" || "%",
+    //         Reg_No: this._AppointmentSreviceService.myFilterform.get("RegNo").value || 0,
+    //         Doctor_Id: this._AppointmentSreviceService.myFilterform.get("DoctorId").value.DoctorID || 0,
+    //         From_Dt: this.datePipe.transform(this._AppointmentSreviceService.myFilterform.get("startdate").value, "yyyy-MM-dd 00:00:00.000") || "01/01/1900",
+    //         To_Dt: this.datePipe.transform(this._AppointmentSreviceService.myFilterform.get("enddate").value, "yyyy-MM-dd 00:00:00.000") || "01/01/1900",
+    //         IsMark: this._AppointmentSreviceService.myFilterform.get("IsMark").value || 0,
+    //     };
+    //     setTimeout(() => {
+    //         this._AppointmentSreviceService.getAppointmentListold(D_data).subscribe(
+    //             (Visit) => {
 
-                    this.dataSource.data = Visit as VisitMaster[];
+    //                 this.dataSource.data = Visit as VisitMaster[];
 
-                },
-                (error) => {
-                    this.isLoading = 'list-loaded';
-                }
-            );
-        }, 1000);
-    }
+    //             },
+    //             (error) => {
+    //                 this.isLoading = 'list-loaded';
+    //             }
+    //         );
+    //     }, 1000);
+    // }
     isRowDisabled: boolean = false
 
     chkdisabled(contact) {
@@ -1257,46 +1011,46 @@ debugger
 
 
 
-    getVisitList1() {
-        debugger
+    // getVisitList1() {
+    //     debugger
 
-        console.log(this._AppointmentSreviceService.myFilterform.get("DoctorId").value)
-        var D_data = {
-            F_Name: this._AppointmentSreviceService.myFilterform.get("FirstName").value.trim() + "%" || "%",
-            L_Name: this._AppointmentSreviceService.myFilterform.get("LastName").value.trim() + "%" || "%",
-            Reg_No: this._AppointmentSreviceService.myFilterform.get("RegNo").value || 0,
-            Doctor_Id: this._AppointmentSreviceService.myFilterform.get("DoctorId").value.DoctorId || 0,
-            From_Dt: this.datePipe.transform(this._AppointmentSreviceService.myFilterform.get("startdate").value, "yyyy-MM-dd 00:00:00.000") || "01/01/1900",
-            To_Dt: this.datePipe.transform(this._AppointmentSreviceService.myFilterform.get("enddate").value, "yyyy-MM-dd 00:00:00.000") || "01/01/1900",
-            IsMark: this._AppointmentSreviceService.myFilterform.get("IsMark").value || 0,
-            Start: (this.paginator?.pageIndex ?? 0),
-            Length: (this.paginator?.pageSize ?? 10),
-            Sort: this.sort?.active ?? 'VisitId',
-            Order: this.sort?.direction ?? 'desc'
-        };
-        console.log(D_data)
-        setTimeout(() => {
+    //     console.log(this._AppointmentSreviceService.myFilterform.get("DoctorId").value)
+    //     var D_data = {
+    //         F_Name: this._AppointmentSreviceService.myFilterform.get("FirstName").value.trim() + "%" || "%",
+    //         L_Name: this._AppointmentSreviceService.myFilterform.get("LastName").value.trim() + "%" || "%",
+    //         Reg_No: this._AppointmentSreviceService.myFilterform.get("RegNo").value || 0,
+    //         Doctor_Id: this._AppointmentSreviceService.myFilterform.get("DoctorId").value.DoctorId || 0,
+    //         From_Dt: this.datePipe.transform(this._AppointmentSreviceService.myFilterform.get("startdate").value, "yyyy-MM-dd 00:00:00.000") || "01/01/1900",
+    //         To_Dt: this.datePipe.transform(this._AppointmentSreviceService.myFilterform.get("enddate").value, "yyyy-MM-dd 00:00:00.000") || "01/01/1900",
+    //         IsMark: this._AppointmentSreviceService.myFilterform.get("IsMark").value || 0,
+    //         Start: (this.paginator?.pageIndex ?? 0),
+    //         Length: (this.paginator?.pageSize ?? 10),
+    //         Sort: this.sort?.active ?? 'VisitId',
+    //         Order: this.sort?.direction ?? 'desc'
+    //     };
+    //     console.log(D_data)
+    //     setTimeout(() => {
 
-            this._AppointmentSreviceService.getAppointmentList(D_data).subscribe(
-                (Visit) => {
-                    this.dataSource.data = Visit["Table1"] ?? [] as VisitMaster[];
-                    console.log(this.dataSource.data)
-                    if (this.dataSource.data.length > 0) {
-                        this.Appointdetail(this.dataSource.data);
-                    }
-                    this.dataSource.sort = this.sort;
-                    this.resultsLength = Visit["Table"][0]["total_row"];
-                    // this.dataSource.paginator = this.paginator;
-                    this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
-                },
-                (error) => {
-                    // this.isLoading = 'list-loaded';
-                }
-            );
-        }, 1000);
+    //         this._AppointmentSreviceService.getAppointmentList(D_data).subscribe(
+    //             (Visit) => {
+    //                 this.dataSource.data = Visit["Table1"] ?? [] as VisitMaster[];
+    //                 console.log(this.dataSource.data)
+    //                 if (this.dataSource.data.length > 0) {
+    //                     this.Appointdetail(this.dataSource.data);
+    //                 }
+    //                 this.dataSource.sort = this.sort;
+    //                 this.resultsLength = Visit["Table"][0]["total_row"];
+    //                 // this.dataSource.paginator = this.paginator;
+    //                 this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
+    //             },
+    //             (error) => {
+    //                 // this.isLoading = 'list-loaded';
+    //             }
+    //         );
+    //     }, 1000);
 
-        console.log(this.dataSource.data)
-    }
+    //     console.log(this.dataSource.data)
+    // }
 
     Vtotalcount = 0;
     VNewcount = 0;
@@ -1331,56 +1085,6 @@ debugger
 
     }
 
-
-
-
-    getVisitDetails() {
-
-        const dialogRef = this._matDialog.open(VisitDetailsComponent,
-            {
-                maxWidth: "800px",
-                minWidth: '800px',
-                width: '800px',
-                height: '380px',
-                disableClose: true,
-                data: {
-                    "VisitId": this.VisitId// 159641
-
-                }
-            });
-        dialogRef.afterClosed().subscribe(result => {
-
-            this.VisitFlag = 1;
-            this.DoctorId = result.DoctorId;
-
-            const toSelectDept = this.DepartmentList.find(c => c.Departmentid == result.DepartmentId);
-            this.VisitFormGroup.get('Departmentid').setValue(toSelectDept);
-
-            this.OnChangeDoctorList(result);
-            this.dept.nativeElement.focus();
-        });
-
-
-        this.isLoading = '';
-        // this.Quantity.nativeElement.focus();
-    }
-
-
-    // toggle sidebar
-    toggleSidebar(name): void {
-        this._fuseSidebarService.getSidebar(name).toggleOpen();
-    }
-
-    onClear() {
-        this._AppointmentSreviceService.myFilterform.reset({
-            start: [(new Date()).toISOString()],
-            end: [(new Date()).toISOString()],
-        });
-        this._opappointmentService.mySaveForm.reset({ IsDeleted: 'false' });
-        this._opappointmentService.initializeFormGroup();
-
-
-    }
 
 
     private _filterDoctor(value: any): string[] {
@@ -1439,15 +1143,15 @@ debugger
     filteredOptionsPurpose: Observable<string[]>;
 
     getDoctorNameCombobox() {
-        this._AppointmentSreviceService.getDoctorMasterComboA().subscribe(data => {
-            this.doctorNameCmbList = data;
-            this.optionsDoctor = this.doctorNameCmbList.slice();
-            this.filteredOptionsDoctor = this._AppointmentSreviceService.myFilterform.get('DoctorId').valueChanges.pipe(
-                startWith(''),
-                map(value => value ? this._filterDoctor(value) : this.doctorNameCmbList.slice()),
-            );
+        // this._AppointmentSreviceService.getDoctorMasterComboA().subscribe(data => {
+        //     this.doctorNameCmbList = data;
+        //     this.optionsDoctor = this.doctorNameCmbList.slice();
+        //     this.filteredOptionsDoctor = this._AppointmentSreviceService.myFilterform.get('DoctorId').valueChanges.pipe(
+        //         startWith(''),
+        //         map(value => value ? this._filterDoctor(value) : this.doctorNameCmbList.slice()),
+        //     );
 
-        });
+        // });
     }
 
 
@@ -1525,40 +1229,10 @@ debugger
         this.RegId = obj.RegID;
         this.VisitId = obj.VisitId;
 
-        this.getdocumentList(this.VisitId);
     }
 
 
-    getdocumentList(VisitId) {
-        this.images = [];
-        let query = "SELECT * FROM T_MRD_AdmFile WHERE OPD_IPD_ID= " + VisitId + " AND OPD_IPD_Type=0";
-        this._AppointmentSreviceService.getuploadeddocumentsList(query).subscribe((resData: any) => {
-            if (resData.length > 0) {
-                Swal.fire("Documents Already Uploaded");
-                for (let i = 0; i < resData.length; i++) {
-                    this.images.push({ url: "", name: resData[i].FileName, Id: resData[i].ID });
-                }
-                this.imgDataSource.data = this.images;
-                this.imgDataSource.data.forEach((currentValue, index) => {
-                    if (currentValue.Id > 0) {
-                        if (currentValue.name.endsWith('.pdf')) {
-                            this._AppointmentSreviceService.getfile(currentValue.Id).subscribe((resFile: any) => {
-                                if (resFile.file)
-                                    currentValue.url = 'data:application/pdf;base64,' + resFile.file;
-                            });
-                        }
-                        else {
-                            this._AppointmentSreviceService.getfile(currentValue.Id).subscribe((resFile: any) => {
-                                if (resFile.file)
-                                    currentValue.url = 'data:image/jpg;base64,' + resFile.file;
-                            });
-                        }
-                    }
-                });
-            }
-        });
-    }
-
+   
 
     WhatsAppAppointmentSend(el, vmono) {
         var m_data = {
@@ -1620,9 +1294,9 @@ debugger
     getSelectedObjPhone(obj) {
         this.RegOrPhoneflag = 'Entry From Phone Appointment'
         this.vPhoneFlage = 1;
-        this.registerObj = obj;
-        this.registerObj.MobileNo = obj.MobileNo.trim();
-        this.registerObj.DateofBirth = this.currentDate;
+        // this.registerObj = obj;
+        // this.registerObj.MobileNo = obj.MobileNo.trim();
+        // this.registerObj.DateofBirth = this.currentDate;
         this.PatientName = obj.PatientName;
         this.RegId = obj.RegId;
         this.RegNo = obj.RegNo;
@@ -1633,14 +1307,14 @@ debugger
 
 
 
-        this.setDropdownObjs();
+        // this.setDropdownObjs();
 
         this.VisitFlagDisp = true;
         let todayDate=new Date();
-        const timeDiff = Math.abs(Date.now() - this.registerObj.DateofBirth.getTime());
-        this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
-        this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - this.registerObj.DateofBirth.getMonth());
-        this.registerObj.AgeDay = Math.abs(todayDate.getDate() - this.registerObj.DateofBirth.getDate());
+        // const timeDiff = Math.abs(Date.now() - this.registerObj.DateofBirth.getTime());
+        // this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
+        // this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - this.registerObj.DateofBirth.getMonth());
+        // this.registerObj.AgeDay = Math.abs(todayDate.getDate() - this.registerObj.DateofBirth.getDate());
     }
 
     getSelectedObj(obj) {
@@ -1652,35 +1326,12 @@ debugger
         obj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
         obj.AgeMonth = Math.abs(todayDate.getMonth() - d.getMonth());
         obj.AgeDay = Math.abs(todayDate.getDate() - d.getDate());
-        this.registerObj = obj;
+        //this.registerObj = obj;
         this.PatientName = obj.PatientName;
         this.RegId = obj.RegId;
-
-        this.setDropdownObjs();
-
         this.VisitFlagDisp = true;
     }
-    setDropdownObjs() {
-
-        const toSelect = this.PrefixList.find(c => c.PrefixID == this.registerObj.PrefixID);
-        this.personalFormGroup.get('PrefixID').setValue(toSelect);
-
-        const toSelectMarital = this.MaritalStatusList.find(c => c.MaritalStatusId == this.registerObj.MaritalStatusId);
-        this.personalFormGroup.get('MaritalStatusId').setValue(toSelectMarital);
-
-        const toSelectReligion = this.ReligionList.find(c => c.ReligionId == this.registerObj.ReligionId);
-        this.personalFormGroup.get('ReligionId').setValue(toSelectReligion);
-
-        const toSelectArea = this.AreaList.find(c => c.AreaId == this.registerObj.AreaId);
-        this.personalFormGroup.get('AreaId').setValue(toSelectArea);
-
-        const toSelectCity = this.cityList.find(c => c.CityId == this.registerObj.CityId);
-        this.personalFormGroup.get('CityId').setValue(toSelectCity);
-
-        this.onChangeGenderList(this.personalFormGroup.get('PrefixID').value);
-        this.onChangeCityList(this.personalFormGroup.get('CityId').value);
-        this.personalFormGroup.updateValueAndValidity();
-    }
+  
 
     onChangeGenderList(prefixObj) {
         if (prefixObj) {
@@ -1816,11 +1467,11 @@ debugger
 
             }
             else if (this.searchFormGroup.get('regRadio').value == "registrered") {
-                this.onSaveRegistered();
+                // this.onSaveRegistered();
                 this.onClose();
             }
         }
-        this.getVisitList1();
+        // this.getVisitList1();
     }
 
     onSave() {
@@ -1835,12 +1486,12 @@ debugger
         }
         else {
             if ((!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid)) {
-                if(this.registerObj.AgeYear !=0 || this.registerObj.AgeMonth !=0  || this.registerObj.AgeDay !=0 ){
-                    this.toastr.warning('Please Enter Valid Age.', 'Warning !', {
-                        toastClass: 'tostr-tost custom-toast-warning',
-                    });
-                    return;
-                }
+                // if(this.registerObj.AgeYear !=0 || this.registerObj.AgeMonth !=0  || this.registerObj.AgeDay !=0 ){
+                //     this.toastr.warning('Please Enter Valid Age.', 'Warning !', {
+                //         toastClass: 'tostr-tost custom-toast-warning',
+                //     });
+                //     return;
+                // }
 
 
                 if (this.searchFormGroup.get('regRadio').value == "registration") {
@@ -1849,266 +1500,211 @@ debugger
 
                 }
                 else if (this.searchFormGroup.get('regRadio').value == "registrered") {
-                    this.onSaveRegistered();
-                    this.onClose();
+                    // this.onSaveRegistered();
+                    // this.onClose();
                 }
 
             }
 
         }
-        this.getVisitList1();
+        // this.getVisitList1();
     }
-
 
 
     OnsaveNewRegister() {
-
-        let Areaid = 0;
-        if (this.personalFormGroup.get('AreaId').value)
-            Areaid = this.personalFormGroup.get('AreaId').value.AreaId;
-
-        let MaritalStatusId = 0;
-        if (this.personalFormGroup.get('MaritalStatusId').value)
-            MaritalStatusId = this.personalFormGroup.get('MaritalStatusId').value.MaritalStatusId;
-
-        let ReligionId = 0;
-        if (this.personalFormGroup.get('ReligionId').value)
-            ReligionId = this.personalFormGroup.get('ReligionId').value.ReligionId;
-
-        let RefDocId = 0;
-        if (this.VisitFormGroup.get('RefDocId').value)
-            RefDocId = this.VisitFormGroup.get('RefDocId').value.DoctorId;
-
-        let PurposeId = 0;
-        if (this.VisitFormGroup.get('PurposeId').value)
-            PurposeId = this.VisitFormGroup.get('PurposeId').value.PurposeId;
-
-
-        if (this.patienttype != 2) {
-            this.CompanyId = 0;
-        } else if (this.patienttype == 2) {
-            this.CompanyId = this.VisitFormGroup.get('CompanyId').value.CompanyId;
-            // this.vTariffId=2;
+      debugger
+      // if(!isNaN(this.vDepartmentid.Departmentid) && !isNaN(this.vDoctorId.DoctorId)){
+  
+      var m_data = {
+        
+          "Registration": {
+            "regID": 0,
+            "regDate":  this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
+            "regTime":this.dateTimeObj.time,
+            "prefixId": 1,
+            "firstName":  this.personalFormGroup.get('FirstName').value || '',
+            "middleName":  this.personalFormGroup.get('MiddleName').value || '',
+            "lastName":  this.personalFormGroup.get('LastName').value || '',
+            "address":  this.personalFormGroup.get('Address').value || '',
+            "city": "Ss",// this.personalFormGroup.get('city').value || '',
+            "pinNo": "",//this.personalFormGroup.get('PhoneNo').value || '',
+            "dateofBirth":  this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
+            "age":  this.personalFormGroup.get('AgeYear').value.toString() || '',
+            "genderID": 0,
+            "phoneNo": this.personalFormGroup.get('PhoneNo').value || '',
+            "mobileNo": this.personalFormGroup.get('MobileNo').value || '',
+            "addedBy": 0,
+            "updatedBy": 0,
+            "ageYear":  this.personalFormGroup.get('AgeYear').value.toString() || '',
+            "ageMonth":  this.personalFormGroup.get('AgeMonth').value.toString() || '',
+            "ageDay":  this.personalFormGroup.get('AgeDay').value.toString() || '',
+            "countryId": 0,
+            "stateId": 0,
+            "cityId": 0,
+            "maritalStatusId": 0,
+            "isCharity": true,
+            "religionId": 0,
+            "areaId": 0,
+            "isSeniorCitizen": true,
+            "aadharCardNo": this.personalFormGroup.get('AadharCardNo').value.toString() || '',
+            "panCardNo": this.personalFormGroup.get('PanCardNo').value.toString() || '',
+            "photo":  " "
+          },
+          "Visit": {
+            "visitID": 0,
+            "regId": 0,
+            "visitDate":   this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
+            "visitTime":this.dateTimeObj.time,
+            "unitId": 0,
+            "patientTypeId": 0,
+            "consultantDocId": 0,
+            "refDocId": 0,
+            "tariffId": 0,
+            "companyId": 0,
+            "addedBy": 0,
+            "updatedBy": 0,
+            "isCancelledBy": 0,
+            "isCancelled": true,
+            "isCancelledDate": "2024-09-18T11:24:02.656Z",
+            "classId": 0,
+            "departmentId": 0,
+            "patientOldNew": 0,
+            "firstFollowupVisit": 0,
+            "appPurposeId": 0,
+            "followupDate": "2024-09-18T11:24:02.656Z",
+            "crossConsulFlag": 0,
+            "phoneAppId": 0
+          }
         }
-       
-
-
-
-        if (this.searchFormGroup.get('regRadio').value == "registration") {
-
-            this.isLoading = 'submit';
-            let submissionObj = {};
-            let registrationSave = {};
-            let visitSave = {};
-            let tokenNumberWithDoctorWiseInsert = {};
-
-            registrationSave['regID'] = 0;
-            registrationSave['regDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-                registrationSave['regTime'] = this.dateTimeObj.time,
-                registrationSave['prefixId'] = this.personalFormGroup.get('PrefixID').value.PrefixID;
-            registrationSave['firstName'] = this.registerObj.FirstName;
-            registrationSave['middleName'] = this.registerObj.MiddleName || '';
-            registrationSave['lastName'] = this.registerObj.LastName;
-            registrationSave['address'] = this.registerObj.Address || '';
-            registrationSave['City'] = this.personalFormGroup.get('CityId').value.CityName || '';
-            registrationSave['pinNo'] = '123';
-            debugger
-            registrationSave['dateOfBirth'] = this.datePipe.transform(this.registerObj.DateofBirth, "MM-dd-yyyy"), //this.personalFormGroup.get('DateofBirth').value.DateofBirth;
-                registrationSave['age'] = this.registerObj.AgeYear;
-            registrationSave['genderID'] = this.personalFormGroup.get('GenderId').value.GenderId;
-            registrationSave['phoneNo'] = this.personalFormGroup.get('PhoneNo').value || 0;
-            registrationSave['mobileNo'] = this.registerObj.MobileNo || 0;
-            registrationSave['addedBy'] = this.accountService.currentUserValue.user.id;
-            registrationSave['ageYear'] = this.registerObj.AgeYear || 0;
-            registrationSave['ageMonth'] = this.registerObj.AgeMonth || 0;
-            registrationSave['ageDay'] = this.registerObj.AgeDay || 0;
-            registrationSave['countryId'] = this.personalFormGroup.get('CountryId').value.CountryId;
-            registrationSave['stateId'] = this.personalFormGroup.get('StateId').value.StateId;
-            registrationSave['cityId'] = this.personalFormGroup.get('CityId').value.CityId;
-            registrationSave['maritalStatusId'] = MaritalStatusId; //this.personalFormGroup.get('MaritalStatusId').value ? this.personalFormGroup.get('MaritalStatusId').value.MaritalStatusId : 0;
-            registrationSave['isCharity'] = false;
-            registrationSave['religionId'] = ReligionId; //this.personalFormGroup.get('ReligionId').value ? this.personalFormGroup.get('ReligionId').value.ReligionId : 0;
-            registrationSave['areaId'] = Areaid; //this.personalFormGroup.get('AreaId').value ? this.personalFormGroup.get('AreaId').value.AreaId : 0;
-            registrationSave['Aadharcardno'] = this.personalFormGroup.get('AadharCardNo').value || '';
-            registrationSave['Pancardno'] = this.registerObj.PanCardNo || '';// this.personalFormGroup.get('Pancardno').value || '';
-            registrationSave['isSeniorCitizen'] = true; //this.personalFormGroup.get('isSeniorCitizen').value ? this.personalFormGroup.get('VillageId').value.VillageId : 0; //this.registerObj.VillageId;
-            registrationSave['Photo'] = '';
-
-            submissionObj['RegistrationSave'] = registrationSave;
-
-            visitSave['VisitId'] = 0;
-            visitSave['RegID'] = 0;
-            visitSave['VisitDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-                visitSave['VisitTime'] = this.dateTimeObj.time,
-                visitSave['UnitId'] = this.VisitFormGroup.get('HospitalId').value.HospitalId ? this.VisitFormGroup.get('HospitalId').value.HospitalId : 0;
-            visitSave['PatientTypeId'] = this.VisitFormGroup.get('PatientTypeID').value.PatientTypeId || 0;
-            visitSave['ConsultantDocId'] = this.VisitFormGroup.get('DoctorID').value.DoctorId || 0;
-            visitSave['RefDocId'] = RefDocId; // this.VisitFormGroup.get('RefDocId').value.DoctorId || 0;
-            visitSave['TariffId'] = this.VisitFormGroup.get('TariffId').value.TariffId ? this.VisitFormGroup.get('TariffId').value.TariffId : 0;
-            visitSave['CompanyId'] = this.CompanyId;
-            visitSave['AddedBy'] = this.accountService.currentUserValue.user.id;
-            //visitSave['updatedBy'] = 0,
-            visitSave['IsCancelled'] = false;
-            visitSave['IsCancelledBy'] = 0;
-            visitSave['IsCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-                visitSave['ClassId'] = 1; //this.VisitFormGroup.get('ClassId').value.ClassId ? this.VisitFormGroup.get('ClassId').value.ClassId : 0;
-            visitSave['DepartmentId'] = this.VisitFormGroup.get('Departmentid').value.DepartmentId;
-            visitSave['PatientOldNew'] = this.Patientnewold;
-            visitSave['FirstFollowupVisit'] = 0,
-                visitSave['appPurposeId'] = PurposeId; // this.VisitFormGroup.get('PurposeId').value.PurposeId || 0;
-            visitSave['FollowupDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-                visitSave['crossConsulFlag'] = 0,
-                visitSave['phoneAppId'] = this.vPhoneAppId || 0;
-
-            submissionObj['visitSave'] = visitSave;
-
-            tokenNumberWithDoctorWiseInsert['patVisitID'] = 0;
-            submissionObj['tokenNumberWithDoctorWiseSave'] = tokenNumberWithDoctorWiseInsert;
-
-            console.log(submissionObj)
-            const formData = new FormData();
-            this._opappointmentService.appointregInsert(submissionObj).subscribe(response => {
-                if (response) {
-                    //  
-                    if (this.vPhoneAppId !== 0) {
-                        Swal.fire('Congratulations !', 'New Appoinment from Phone save Successfully !', 'success').then((result) => {
-
-                        });
-                        this.getVisitList1();
-                    } else {
-                        Swal.fire('Congratulations !', 'New Appoinment save Successfully !', 'success').then((result) => {
-                        });
-
-                        this.viewgetPatientAppointmentReportPdf(response, false);
-                    }
-                } else {
-                    Swal.fire('Error !', 'Appoinment not saved', 'error');
-                }
-                this.isLoading = '';
-            });
-        }
-        this.onClose();
-
-        this.getVisitList1();
+  
+      
+      console.log(m_data);
+     
+      this._AppointmentlistService.appointmentSave(m_data).subscribe((response) => {
+        this.toastr.success(response.message);
+        this.onClear(true);
+      }, (error) => {
+        this.toastr.error(error.message);
+      });
     }
+   
+    // onSaveRegistered() {
 
-    onSaveRegistered() {
+    //     let Areaid = 0;
+    //     if (this.personalFormGroup.get('AreaId').value)
+    //         Areaid = this.personalFormGroup.get('AreaId').value.AreaId;
 
-        let Areaid = 0;
-        if (this.personalFormGroup.get('AreaId').value)
-            Areaid = this.personalFormGroup.get('AreaId').value.AreaId;
+    //     let MaritalStatusId = 0;
+    //     if (this.personalFormGroup.get('MaritalStatusId').value)
+    //         MaritalStatusId = this.personalFormGroup.get('MaritalStatusId').value.MaritalStatusId;
 
-        let MaritalStatusId = 0;
-        if (this.personalFormGroup.get('MaritalStatusId').value)
-            MaritalStatusId = this.personalFormGroup.get('MaritalStatusId').value.MaritalStatusId;
+    //     let ReligionId = 0;
+    //     if (this.personalFormGroup.get('ReligionId').value)
+    //         ReligionId = this.personalFormGroup.get('ReligionId').value.ReligionId;
 
-        let ReligionId = 0;
-        if (this.personalFormGroup.get('ReligionId').value)
-            ReligionId = this.personalFormGroup.get('ReligionId').value.ReligionId;
+    //     let RefDocId = 0;
+    //     if (this.VisitFormGroup.get('RefDocId').value)
+    //         RefDocId = this.VisitFormGroup.get('RefDocId').value.DoctorId;
 
-        let RefDocId = 0;
-        if (this.VisitFormGroup.get('RefDocId').value)
-            RefDocId = this.VisitFormGroup.get('RefDocId').value.DoctorId;
-
-        let PurposeId = 0;
-        if (this.VisitFormGroup.get('PurposeId').value)
-            PurposeId = this.VisitFormGroup.get('PurposeId').value.PurposeId;
-
-
-        if (this.patienttype != 2) {
-            this.CompanyId = 0;
-
-        } else if (this.patienttype == 2) {
-            this.CompanyId = this.VisitFormGroup.get('CompanyId').value.CompanyId;
-        }
-
-        this.isLoading = 'submit';
-        let submissionObj = {};
-        let registrationUpdate = {};
-        let visitUpdate = {};
-
-        let tokenNumberWithDoctorWiseUpdate = {};
-        registrationUpdate['regID'] = this.registerObj.RegId;
-        registrationUpdate['regDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-            registrationUpdate['regTime'] = this.dateTimeObj.time,
-            registrationUpdate['prefixId'] = this.personalFormGroup.get('PrefixID').value.PrefixID;
-        registrationUpdate['firstName'] = this.registerObj.FirstName;
-        registrationUpdate['middleName'] = this.registerObj.MiddleName || '';
-        registrationUpdate['lastName'] = this.registerObj.LastName;
-        registrationUpdate['address'] = this.registerObj.Address || '';
-        registrationUpdate['City'] = this.personalFormGroup.get('CityId').value.CityName || '';
-        registrationUpdate['pinNo'] = '';
-        registrationUpdate['dateOfBirth'] = this.datePipe.transform(this.registerObj.DateofBirth, "MM-dd-yyyy") || this.personalFormGroup.get('DateofBirth').value.DateofBirth;
-        registrationUpdate['age'] = this.registerObj.AgeYear;
-        registrationUpdate['genderID'] = this.personalFormGroup.get('GenderId').value.GenderId;
-        registrationUpdate['phoneNo'] = this.personalFormGroup.get('PhoneNo').value || 0;
-        registrationUpdate['mobileNo'] = this.registerObj.MobileNo || 0;
-        registrationUpdate['addedBy'] = this.accountService.currentUserValue.user.id;
-        registrationUpdate['ageYear'] = this.registerObj.AgeYear || 0;
-        registrationUpdate['ageMonth'] = this.registerObj.AgeMonth || 0;
-        registrationUpdate['ageDay'] = this.registerObj.AgeDay || 0;
-        registrationUpdate['countryId'] = this.personalFormGroup.get('CountryId').value.CountryId;
-        registrationUpdate['stateId'] = this.personalFormGroup.get('StateId').value.StateId;
-        registrationUpdate['cityId'] = this.personalFormGroup.get('CityId').value.CityId;
-        registrationUpdate['maritalStatusId'] = MaritalStatusId;// this.personalFormGroup.get('MaritalStatusId').value ? this.personalFormGroup.get('MaritalStatusId').value.MaritalStatusId : 0;
-        registrationUpdate['isCharity'] = false;
-        registrationUpdate['religionId'] = ReligionId;//this.personalFormGroup.get('ReligionId').value ? this.personalFormGroup.get('ReligionId').value.ReligionId : 0;
-        registrationUpdate['areaId'] = Areaid;//this.personalFormGroup.get('AreaId').value ? this.personalFormGroup.get('AreaId').value.AreaId : 0;
-        registrationUpdate['Aadharcardno'] = this.personalFormGroup.get('AadharCardNo').value || '';
-        registrationUpdate['Pancardno'] = this.personalFormGroup.get('PanCardNo').value || '';
-        registrationUpdate['isSeniorCitizen'] = true; //this.personalFormGroup.get('isSeniorCitizen').value ? this.personalFormGroup.get('VillageId').value.VillageId : 0; //this.registerObj.VillageId;
-        registrationUpdate['Photo'] = ''
-
-        // this.CompanyId = this.VisitFormGroup.get('CompanyId').value.CompanyId || 0;
-        submissionObj['registrationUpdate'] = registrationUpdate;
-        // visit detail
-        visitUpdate['VisitId'] = 0;
-        visitUpdate['RegID'] = this.registerObj.RegId;
-        visitUpdate['VisitDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-            visitUpdate['VisitTime'] = this.dateTimeObj.time,
-            visitUpdate['UnitId'] = this.VisitFormGroup.get('HospitalId').value.HospitalId ? this.VisitFormGroup.get('HospitalId').value.HospitalId : 0;
-        visitUpdate['PatientTypeId'] = this.VisitFormGroup.get('PatientTypeID').value.PatientTypeId || 0;//.PatientTypeID;//? this.VisitFormGroup.get('PatientTypeID').value.PatientTypeID : 0;
-        visitUpdate['ConsultantDocId'] = this.VisitFormGroup.get('DoctorID').value.DoctorId || 0;//? this.VisitFormGroup.get('DoctorId').value.DoctorId : 0;
-        visitUpdate['RefDocId'] = RefDocId; // this.VisitFormGroup.get('DoctorIdOne').value.DoctorId || 0;// ? this.VisitFormGroup.get('DoctorIdOne').value.DoctorIdOne : 0;
-        visitUpdate['TariffId'] = this.VisitFormGroup.get('TariffId').value.TariffId ? this.VisitFormGroup.get('TariffId').value.TariffId : 0;
-        visitUpdate['CompanyId'] = this.CompanyId || 0;
-        visitUpdate['AddedBy'] = this.accountService.currentUserValue.user.id;
-        visitUpdate['updatedBy'] = 0,//this.VisitFormGroup.get('RelationshipId').value.RelationshipId ? this.VisitFormGroup.get('RelationshipId').value.RelationshipId : 0;
-            visitUpdate['IsCancelled'] = 0;
-        visitUpdate['IsCancelledBy'] = 0;
-        visitUpdate['IsCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-            visitUpdate['ClassId'] = 1; //this.VisitFormGroup.get('ClassId').value.ClassId ? this.VisitFormGroup.get('ClassId').value.ClassId : 0;
-        visitUpdate['DepartmentId'] = this.VisitFormGroup.get('Departmentid').value.DepartmentId; //? this.VisitFormGroup.get('DepartmentId').value.DepartmentId : 0;
-        visitUpdate['PatientOldNew'] = this.Patientnewold;
-        visitUpdate['FirstFollowupVisit'] = 0, // this.VisitFormGroup.get('RelativeAddress').value ? this.VisitFormGroup.get('RelativeAddress').value : '';
-            visitUpdate['appPurposeId'] = PurposeId; //this.VisitFormGroup.get('PurposeId').value.PurposeId || 0; // ? this.VisitFormGroup.get('RelativeAddress').value : '';
-        visitUpdate['FollowupDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900', // this.personalFormGroup.get('PhoneNo').value ? this.personalFormGroup.get('PhoneNo').value : '';
-            visitUpdate['crossConsulFlag'] = 0,
-            visitUpdate['phoneAppId'] = this.vPhoneAppId || 0;
-
-        submissionObj['visitSave'] = visitUpdate;
+    //     let PurposeId = 0;
+    //     if (this.VisitFormGroup.get('PurposeId').value)
+    //         PurposeId = this.VisitFormGroup.get('PurposeId').value.PurposeId;
 
 
-        tokenNumberWithDoctorWiseUpdate['patVisitID'] = 0;
-        submissionObj['tokenNumberWithDoctorWiseSave'] = tokenNumberWithDoctorWiseUpdate;
+    //     if (this.patienttype != 2) {
+    //         this.CompanyId = 0;
 
-        console.log(submissionObj);
-        this._opappointmentService.appointregupdate(submissionObj).subscribe(response => {
-            if (response) {
-            Swal.fire('Congratulations !', 'Registered Appoinment Saved Successfully  !', 'success').then((result) => {
-                    if (result.isConfirmed) {
-                        this.viewgetPatientAppointmentReportPdf(response, false);
-                    }
-                    this.getVisitList1();
-                });
-            } else {
-                Swal.fire('Error !', 'Appointment not Updated', 'error');
-            }
-            this.isLoading = '';
-        });
-        this.RegOrPhoneflag = "";
-        this.getVisitList1();
-    }
+    //     } else if (this.patienttype == 2) {
+    //         this.CompanyId = this.VisitFormGroup.get('CompanyId').value.CompanyId;
+    //     }
+
+    //     this.isLoading = 'submit';
+    //     let submissionObj = {};
+    //     let registrationUpdate = {};
+    //     let visitUpdate = {};
+
+    //     let tokenNumberWithDoctorWiseUpdate = {};
+    //     registrationUpdate['regID'] = this.registerObj.RegId;
+    //     registrationUpdate['regDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+    //         registrationUpdate['regTime'] = this.dateTimeObj.time,
+    //         registrationUpdate['prefixId'] = this.personalFormGroup.get('PrefixID').value.PrefixID;
+    //     registrationUpdate['firstName'] = this.registerObj.FirstName;
+    //     registrationUpdate['middleName'] = this.registerObj.MiddleName || '';
+    //     registrationUpdate['lastName'] = this.registerObj.LastName;
+    //     registrationUpdate['address'] = this.registerObj.Address || '';
+    //     registrationUpdate['City'] = this.personalFormGroup.get('CityId').value.CityName || '';
+    //     registrationUpdate['pinNo'] = '';
+    //     registrationUpdate['dateOfBirth'] = this.datePipe.transform(this.registerObj.DateofBirth, "MM-dd-yyyy") || this.personalFormGroup.get('DateofBirth').value.DateofBirth;
+    //     registrationUpdate['age'] = this.registerObj.AgeYear;
+    //     registrationUpdate['genderID'] = this.personalFormGroup.get('GenderId').value.GenderId;
+    //     registrationUpdate['phoneNo'] = this.personalFormGroup.get('PhoneNo').value || 0;
+    //     registrationUpdate['mobileNo'] = this.registerObj.MobileNo || 0;
+    //     registrationUpdate['addedBy'] = this.accountService.currentUserValue.user.id;
+    //     registrationUpdate['ageYear'] = this.registerObj.AgeYear || 0;
+    //     registrationUpdate['ageMonth'] = this.registerObj.AgeMonth || 0;
+    //     registrationUpdate['ageDay'] = this.registerObj.AgeDay || 0;
+    //     registrationUpdate['countryId'] = this.personalFormGroup.get('CountryId').value.CountryId;
+    //     registrationUpdate['stateId'] = this.personalFormGroup.get('StateId').value.StateId;
+    //     registrationUpdate['cityId'] = this.personalFormGroup.get('CityId').value.CityId;
+    //     registrationUpdate['maritalStatusId'] = MaritalStatusId;// this.personalFormGroup.get('MaritalStatusId').value ? this.personalFormGroup.get('MaritalStatusId').value.MaritalStatusId : 0;
+    //     registrationUpdate['isCharity'] = false;
+    //     registrationUpdate['religionId'] = ReligionId;//this.personalFormGroup.get('ReligionId').value ? this.personalFormGroup.get('ReligionId').value.ReligionId : 0;
+    //     registrationUpdate['areaId'] = Areaid;//this.personalFormGroup.get('AreaId').value ? this.personalFormGroup.get('AreaId').value.AreaId : 0;
+    //     registrationUpdate['Aadharcardno'] = this.personalFormGroup.get('AadharCardNo').value || '';
+    //     registrationUpdate['Pancardno'] = this.personalFormGroup.get('PanCardNo').value || '';
+    //     registrationUpdate['isSeniorCitizen'] = true; //this.personalFormGroup.get('isSeniorCitizen').value ? this.personalFormGroup.get('VillageId').value.VillageId : 0; //this.registerObj.VillageId;
+    //     registrationUpdate['Photo'] = ''
+
+    //     // this.CompanyId = this.VisitFormGroup.get('CompanyId').value.CompanyId || 0;
+    //     submissionObj['registrationUpdate'] = registrationUpdate;
+    //     // visit detail
+    //     visitUpdate['VisitId'] = 0;
+    //     visitUpdate['RegID'] = this.registerObj.RegId;
+    //     visitUpdate['VisitDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+    //         visitUpdate['VisitTime'] = this.dateTimeObj.time,
+    //         visitUpdate['UnitId'] = this.VisitFormGroup.get('HospitalId').value.HospitalId ? this.VisitFormGroup.get('HospitalId').value.HospitalId : 0;
+    //     visitUpdate['PatientTypeId'] = this.VisitFormGroup.get('PatientTypeID').value.PatientTypeId || 0;//.PatientTypeID;//? this.VisitFormGroup.get('PatientTypeID').value.PatientTypeID : 0;
+    //     visitUpdate['ConsultantDocId'] = this.VisitFormGroup.get('DoctorID').value.DoctorId || 0;//? this.VisitFormGroup.get('DoctorId').value.DoctorId : 0;
+    //     visitUpdate['RefDocId'] = RefDocId; // this.VisitFormGroup.get('DoctorIdOne').value.DoctorId || 0;// ? this.VisitFormGroup.get('DoctorIdOne').value.DoctorIdOne : 0;
+    //     visitUpdate['TariffId'] = this.VisitFormGroup.get('TariffId').value.TariffId ? this.VisitFormGroup.get('TariffId').value.TariffId : 0;
+    //     visitUpdate['CompanyId'] = this.CompanyId || 0;
+    //     visitUpdate['AddedBy'] = this.accountService.currentUserValue.user.id;
+    //     visitUpdate['updatedBy'] = 0,//this.VisitFormGroup.get('RelationshipId').value.RelationshipId ? this.VisitFormGroup.get('RelationshipId').value.RelationshipId : 0;
+    //         visitUpdate['IsCancelled'] = 0;
+    //     visitUpdate['IsCancelledBy'] = 0;
+    //     visitUpdate['IsCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+    //         visitUpdate['ClassId'] = 1; //this.VisitFormGroup.get('ClassId').value.ClassId ? this.VisitFormGroup.get('ClassId').value.ClassId : 0;
+    //     visitUpdate['DepartmentId'] = this.VisitFormGroup.get('Departmentid').value.DepartmentId; //? this.VisitFormGroup.get('DepartmentId').value.DepartmentId : 0;
+    //     visitUpdate['PatientOldNew'] = this.Patientnewold;
+    //     visitUpdate['FirstFollowupVisit'] = 0, // this.VisitFormGroup.get('RelativeAddress').value ? this.VisitFormGroup.get('RelativeAddress').value : '';
+    //         visitUpdate['appPurposeId'] = PurposeId; //this.VisitFormGroup.get('PurposeId').value.PurposeId || 0; // ? this.VisitFormGroup.get('RelativeAddress').value : '';
+    //     visitUpdate['FollowupDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900', // this.personalFormGroup.get('PhoneNo').value ? this.personalFormGroup.get('PhoneNo').value : '';
+    //         visitUpdate['crossConsulFlag'] = 0,
+    //         visitUpdate['phoneAppId'] = this.vPhoneAppId || 0;
+
+    //     submissionObj['visitSave'] = visitUpdate;
+
+
+    //     tokenNumberWithDoctorWiseUpdate['patVisitID'] = 0;
+    //     submissionObj['tokenNumberWithDoctorWiseSave'] = tokenNumberWithDoctorWiseUpdate;
+
+    //     console.log(submissionObj);
+    //     this._opappointmentService.appointregupdate(submissionObj).subscribe(response => {
+    //         if (response) {
+    //         Swal.fire('Congratulations !', 'Registered Appoinment Saved Successfully  !', 'success').then((result) => {
+    //                 if (result.isConfirmed) {
+    //                     this.viewgetPatientAppointmentReportPdf(response, false);
+    //                 }
+    //                 this.getVisitList1();
+    //             });
+    //         } else {
+    //             Swal.fire('Error !', 'Appointment not Updated', 'error');
+    //         }
+    //         this.isLoading = '';
+    //     });
+    //     this.RegOrPhoneflag = "";
+    //     this.getVisitList1();
+    // }
 
 
 
@@ -2165,170 +1761,32 @@ debugger
         }
     }
 
-    getRecord(contact, m): void {
-        ;
-        // this.VisitID = contact.VisitId;
-        if (m == "CasePaper Print") {
-            this.getPrint(contact);
-        }
-        if (m == "Update Registration") {
-            var D_data = {
-                RegId: contact.RegId,
-            };
-
-            this._AppointmentSreviceService
-                .getregisterListByRegId(D_data)
-                .subscribe(
-                    (reg) => {
-                        this.dataArray = reg;
-                        var m_data = {
-                            RegNo: this.dataArray[0].RegNo,
-                            RegId: this.dataArray[0].RegId,
-                            PrefixID: this.dataArray[0].PrefixId,
-                            PrefixName: this.dataArray[0].PrefixName,
-                            FirstName: this.dataArray[0].FirstName,
-                            MiddleName: this.dataArray[0].MiddleName,
-                            LastName: this.dataArray[0].LastName,
-                            PatientName: this.dataArray[0].PatientName,
-                            DateofBirth: this.dataArray[0].DateofBirth,
-                            MaritalStatusId: this.dataArray[0].MaritalStatusId,
-                            AadharCardNo: this.dataArray[0].AadharCardNo || 0,
-                            Age: this.dataArray[0].Age.trim(),
-                            AgeDay: this.dataArray[0].AgeDay,
-                            AgeMonth: this.dataArray[0].AgeMonth,
-                            AgeYear: this.dataArray[0].AgeYear,
-                            Address: this.dataArray[0].Address,
-                            AreaId: this.dataArray[0].AreaId,
-                            City: this.dataArray[0].City,
-                            CityId: this.dataArray[0].CityId,
-                            StateId: this.dataArray[0].StateId,
-                            CountryId: this.dataArray[0].CountryId,
-                            PhoneNo: this.dataArray[0].PhoneNo,
-                            MobileNo: this.dataArray[0].MobileNo,
-                            GenderId: this.dataArray[0].GenderId,
-                            GenderName: this.dataArray[0].GenderName,
-                            ReligionId: this.dataArray[0].ReligionId,
-                            IsCharity: 0,
-                            PinNo: this.dataArray[0].PinNo,
-                            RegDate: this.dataArray[0].RegDate,
-                            RegNoWithPrefix: this.dataArray[0].RegNoWithPrefix,
-                            RegTime: this.dataArray[0].RegTime,
-                        };
-                        this._registrationService.populateFormpersonal(m_data);
-                        // const dialogRef = this._matDialog.open(NewAppointmentComponent,
-                        //   {
-                        //     maxWidth: "85vw",
-                        //     height: "80%",
-                        //     width: "80%",
-                        //     data: {
-                        //       registerObj: m_data,
-                        //     },
-                        //   }
-                        // );
-                        // dialogRef.afterClosed().subscribe((result) => {
-                        //   console.log(
-                        //     "The dialog was closed - Insert Action",
-                        //     result
-                        //   );
-                        //   this.getVisitList();
-                        // });
-                    },
-                    (error) => {
-                    }
-                );
-        } else if (m == "Update Consultant Doctor") {
-
-            var m_data2 = {
-                RegId: contact.RegId,
-                PatientName: contact.PatientName,
-                VisitId: contact.VisitId,
-                OPD_IPD_Id: contact.OPD_IPD_Id,
-                DoctorId: contact.DoctorId,
-                DoctorName: contact.Doctorname,
-            };
-            this._registrationService.populateFormpersonal(contact);
-            const dialogRef = this._matDialog.open(
-                EditConsultantDoctorComponent,
-                {
-                    maxWidth: "70vw",
-                    height: "410px",
-                    width: "70%",
-                    data: {
-                        registerObj: contact,
-                        FormName: "Appointment"
-                    },
-                }
-            );
-            dialogRef.afterClosed().subscribe((result) => {
-                this.getVisitList1();
-            });
-        } else if (m == "Update Referred Doctor") {
-            var m_data3 = {
-                RegId: contact.RegId,
-                PatientName: contact.PatientName,
-                VisitId: contact.VisitId,
-                OPD_IPD_Id: contact.OPD_IPD_Id,
-                RefDoctorId: contact.RefDocId,
-                RefDocName: contact.RefDocName,
-            };
-            this._registrationService.populateFormpersonal(contact);
-            const dialogRef = this._matDialog.open(EditRefraneDoctorComponent, {
-                maxWidth: "70vw",
-                height: "380px",
-                width: "70%",
-                data: {
-                    registerObj: contact,
-                    FormName: "Appointment"
-                },
-            });
-            dialogRef.afterClosed().subscribe((result) => {
-                console.log("The dialog was closed - Insert Action", result);
-                this.getVisitList1();
-            });
-        } else if (m == "Cancle Appointment") {
-            // console.log(contact)
-            this.AppointmentCancle(contact.VisitId);
-        }
-        this.getVisitList1();
-    }
-
-    newappointment() {
-        const dialogRef = this._matDialog.open(HeaderComponent, {
-            maxWidth: "110vw",
-            height: "850px",
-            width: "100%",
-
-        });
-        dialogRef.afterClosed().subscribe((result) => {
-
-            this.getVisitList();
-        });
-    }
+    
     feedback() {
-        const dialogRef = this._matDialog.open(FeedbackComponent, {
-            maxWidth: "80vw",
-            height: "90%",
-            width: "100%",
+        // const dialogRef = this._matDialog.open(FeedbackComponent, {
+        //     maxWidth: "80vw",
+        //     height: "90%",
+        //     width: "100%",
 
-        });
+        // });
     }
 
     PatientAppointment() {
-        const dialogRef = this._matDialog.open(PatientAppointmentComponent,
-            {
-                maxWidth: "95vw",
-                maxHeight: "95vh", width: '100%', height: "100%"
-            });
-        dialogRef.afterClosed().subscribe(result => {
-            console.log('The dialog was closed - Insert Action', result);
+        // const dialogRef = this._matDialog.open(PatientAppointmentComponent,
+        //     {
+        //         maxWidth: "95vw",
+        //         maxHeight: "95vh", width: '100%', height: "100%"
+        //     });
+        // dialogRef.afterClosed().subscribe(result => {
+        //     console.log('The dialog was closed - Insert Action', result);
 
-        });
+        // });
     }
 
     // field validation
-    get f() {
-        return this._AppointmentSreviceService.myFilterform.controls;
-    }
+    // get f() {
+    //     return this._AppointmentlistService.myFilterform.controls;
+    // }
     selectRow(row) {
         this.selectRow = row;
     }
@@ -2513,35 +1971,35 @@ debugger
     }
 
 
-    onSubmitImgFiles() {
-        let data: PatientDocument[] = [];
-        for (let i = 0; i < this.imgDataSource.data.length; i++) {
-            if (this.imgDataSource.data[i].name.endsWith('.pdf')) {
-                let file = new File([this.dataURItoBlob(this.imgDataSource.data[i].url)], this.imgDataSource.data[i].name, {
-                    type: "'application/pdf'"
-                });
-                data.push({
-                    Id: "0", OPD_IPD_ID: this.VisitId, OPD_IPD_Type: 0, DocFile: file, FileName: this.imgDataSource.data[i].name
-                });
-            }
-            else {
-                let file = new File([this.dataURItoBlob(this.imgDataSource.data[i].url)], this.imgDataSource.data[i].name, {
-                    type: "'image/" + this.imgDataSource.data[i].name.split('.')[this.imgDataSource.data[i].name.split('.').length - 1] + "'"
-                });
-                data.push({
-                    Id: "0", OPD_IPD_ID: this.VisitId, OPD_IPD_Type: 0, DocFile: file, FileName: this.imgDataSource.data[i].name
-                });
-            }
-        }
-        const formData = new FormData();
-        let finalData = { Files: data };
-        this.CreateFormData(finalData, formData);
-        this._AppointmentSreviceService.documentuploadInsert(formData).subscribe((data) => {
-            if (data) {
-                Swal.fire("Images uploaded Successfully  ! ");
-            }
-        });
-    }
+    // onSubmitImgFiles() {
+    //     // let data: PatientDocument[] = [];
+    //     for (let i = 0; i < this.imgDataSource.data.length; i++) {
+    //         if (this.imgDataSource.data[i].name.endsWith('.pdf')) {
+    //             let file = new File([this.dataURItoBlob(this.imgDataSource.data[i].url)], this.imgDataSource.data[i].name, {
+    //                 type: "'application/pdf'"
+    //             });
+    //             data.push({
+    //                 Id: "0", OPD_IPD_ID: this.VisitId, OPD_IPD_Type: 0, DocFile: file, FileName: this.imgDataSource.data[i].name
+    //             });
+    //         }
+    //         else {
+    //             let file = new File([this.dataURItoBlob(this.imgDataSource.data[i].url)], this.imgDataSource.data[i].name, {
+    //                 type: "'image/" + this.imgDataSource.data[i].name.split('.')[this.imgDataSource.data[i].name.split('.').length - 1] + "'"
+    //             });
+    //             data.push({
+    //                 Id: "0", OPD_IPD_ID: this.VisitId, OPD_IPD_Type: 0, DocFile: file, FileName: this.imgDataSource.data[i].name
+    //             });
+    //         }
+    //     }
+    //     const formData = new FormData();
+    //     let finalData = { Files: data };
+    //     this.CreateFormData(finalData, formData);
+    //     this._AppointmentSreviceService.documentuploadInsert(formData).subscribe((data) => {
+    //         if (data) {
+    //             Swal.fire("Images uploaded Successfully  ! ");
+    //         }
+    //     });
+    // }
 
 
     //Image Upload
@@ -2549,16 +2007,16 @@ debugger
     docArr: string[] = [];
 
     viewPdf(data: any) {
-        const dialogRef = this._matDialog.open(PdfviewerComponent,
-            {
-                maxWidth: "95vw",
-                height: '1000px',
-                width: '100%',
-                data: {
-                    base64: data.url.split('application/pdf;base64,')[1] as string,
-                    title: "Appointment Document"
-                }
-            });
+        // const dialogRef = this._matDialog.open(PdfviewerComponent,
+        //     {
+        //         maxWidth: "95vw",
+        //         height: '1000px',
+        //         width: '100%',
+        //         data: {
+        //             base64: data.url.split('application/pdf;base64,')[1] as string,
+        //             title: "Appointment Document"
+        //         }
+        //     });
     }
     getHospitalList1() {
         this._opappointmentService.getHospitalCombo().subscribe(data => {
@@ -2613,7 +2071,7 @@ debugger
 
     onClose() {
 
-        this.registerObj = new RegInsert({});
+        // this.registerObj = new RegInsert({});
         this.personalFormGroup.reset();
         this.personalFormGroup.get('RegId').reset();
 
@@ -2645,10 +2103,10 @@ debugger
         const todayDate = new Date();
         const dob = new Date(this.currentDate);
         const timeDiff = Math.abs(Date.now() - dob.getTime());
-        this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
-        this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
-        this.registerObj.AgeDay = Math.abs(todayDate.getDate() - dob.getDate());
-        this.registerObj.DateofBirth = this.currentDate;
+        // this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
+        // this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
+        // this.registerObj.AgeDay = Math.abs(todayDate.getDate() - dob.getDate());
+        // this.registerObj.DateofBirth = this.currentDate;
         this.personalFormGroup.get('DateOfBirth').setValue(this.currentDate);
 
         this.personalFormGroup.get('PhoneNo').clearValidators();
@@ -2669,36 +2127,36 @@ debugger
     get showNameEditor() {
         return this.editor === 'name';
     }
-    removeImage(url: string) {
-        let index = this.images.indexOf(url);
-        this.images.splice(index, 1);
-    }
+    // removeImage(url: string) {
+    //     let index = this.images.indexOf(url);
+    //     this.images.splice(index, 1);
+    // }
 
-    removeDoc(ele: DocData) {
-        let index = this.docsArray.indexOf(ele);
-        this.docsArray.splice(index, 1);
-    }
+    // removeDoc(ele: DocData) {
+    //     let index = this.docsArray.indexOf(ele);
+    //     this.docsArray.splice(index, 1);
+    // }
 
-    onViewImage(ele: any, type: string) {
+    // onViewImage(ele: any, type: string) {
 
-        let fileType;
-        if (ele) {
+    //     let fileType;
+    //     if (ele) {
 
-            const dialogRef = this.matDialog.open(ImageViewComponent,
-                {
-                    width: '900px',
-                    height: '900px',
-                    data: {
-                        docData: type == 'img' ? ele : ele.doc,
-                        type: type == 'img' ? "image" : ele.type
-                    }
-                }
-            );
-            dialogRef.afterClosed().subscribe(result => {
+    //         const dialogRef = this.matDialog.open(ImageViewComponent,
+    //             {
+    //                 width: '900px',
+    //                 height: '900px',
+    //                 data: {
+    //                     docData: type == 'img' ? ele : ele.doc,
+    //                     type: type == 'img' ? "image" : ele.type
+    //                 }
+    //             }
+    //         );
+    //         dialogRef.afterClosed().subscribe(result => {
 
-            });
-        }
-    }
+    //         });
+    //     }
+    // }
 
     OnChangeDoctorList1(departmentObj) {
 
@@ -2714,11 +2172,11 @@ debugger
                 );
             })
 
-        if (this.configService.configParams.DoctorId) {
+        // if (this.configService.configParams.DoctorId) {
 
-            const toSelectDoc = this.DoctorList.find(c => c.DoctorId == this.configService.configParams.DoctorId);
-            this.VisitFormGroup.get('DoctorID').setValue(toSelectDoc);
-        }
+        //     const toSelectDoc = this.DoctorList.find(c => c.DoctorId == this.configService.configParams.DoctorId);
+        //     this.VisitFormGroup.get('DoctorID').setValue(toSelectDoc);
+        // }
 
     }
 
@@ -2736,13 +2194,13 @@ debugger
                 );
             })
 
-        if (this.configService.configParams.DoctorId) {
+        // if (this.configService.configParams.DoctorId) {
 
             // this.configService.configParams.DoctorId = 269;
             // const toSelectDoc = this.DoctorList.find(c => c.DoctorId == this.configService.configParams.DoctorId);
             // this.VisitFormGroup.get('DoctorID').setValue(toSelectDoc);
             this.doctorset();
-        }
+        // }
     }
 
     doctorset() {
@@ -2751,8 +2209,8 @@ debugger
             startWith(''),
             map(value => value ? this._filterDoc(value) : this.DoctorList.slice()),
         );
-        const toSelectDoc = this.DoctorList.find(c => c.DoctorId == this.configService.configParams.DoctorId);
-        this.VisitFormGroup.get('DoctorID').setValue(toSelectDoc);
+        // const toSelectDoc = this.DoctorList.find(c => c.DoctorId == this.configService.configParams.DoctorId);
+        // this.VisitFormGroup.get('DoctorID').setValue(toSelectDoc);
     }
 
 
@@ -2778,31 +2236,31 @@ debugger
     //   CameraComponent
 
     openCamera(type: string, place: string) {
-        let fileType;
-        const dialogRef = this.matDialog.open(ImageViewComponent,
-            {
-                width: '750px',
-                height: '550px',
+        // let fileType;
+        // const dialogRef = this.matDialog.open(ImageViewComponent,
+        //     {
+        //         width: '750px',
+        //         height: '550px',
 
-                data: {
-                    docData: type == 'camera' ? 'camera' : '',
-                    type: type == 'camera' ? 'camera' : '',
-                    place: place
-                }
-            }
-        );
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                if (place == "photo") {
-                    this.sanitizeImagePreview = result.url;
-                }
-                else {
-                    this.imgArr.push(result.name);
-                    this.images.push(result);
-                    this.imgDataSource.data = this.images;
-                }
-            }
-        });
+        //         data: {
+        //             docData: type == 'camera' ? 'camera' : '',
+        //             type: type == 'camera' ? 'camera' : '',
+        //             place: place
+        //         }
+        //     }
+        // );
+        // dialogRef.afterClosed().subscribe(result => {
+        //     if (result) {
+        //         if (place == "photo") {
+        //             this.sanitizeImagePreview = result.url;
+        //         }
+        //         else {
+        //             this.imgArr.push(result.name);
+        //             this.images.push(result);
+        //             this.imgDataSource.data = this.images;
+        //         }
+        //     }
+        // });
     }
 
 
@@ -2810,7 +2268,7 @@ debugger
     onAddDocument(name, type) {
 
 
-        this.isLoading = 'save';
+        // this.isLoading = 'save';
 
         this.pdfDataSource.data = [];
         this.doclist.push(
@@ -2819,7 +2277,7 @@ debugger
                 DocumentPath: type// this.imageForm.get('imgFileSource')?.value,
 
             });
-        this.isLoading = '';
+        // this.isLoading = '';
         this.pdfDataSource.data = this.doclist;
 
     }
@@ -2837,11 +2295,11 @@ debugger
 
         let query = "delete FROM T_MRD_AdmFile WHERE OPD_IPD_ID= " + this.VisitId + " AND FileName=" + "'" + this.FimeName + "'" + " ";
 
-        this._AppointmentSreviceService.getdeleteddocument(query).subscribe((resData: any) => {
-            if (resData) {
-                Swal.fire('Success !', 'Document Row Deleted Successfully', 'success');
-            }
-        });
+        // this._AppointmentSreviceService.getdeleteddocument(query).subscribe((resData: any) => {
+        //     if (resData) {
+        //         Swal.fire('Success !', 'Document Row Deleted Successfully', 'success');
+        //     }
+        // });
     }
 
     deleteTableRow(element) {
@@ -2854,56 +2312,15 @@ debugger
         this.FimeName = element.name;
         let query = "delete FROM T_MRD_AdmFile WHERE OPD_IPD_ID= " + this.VisitId + " AND FileName=" + "'" + this.FimeName + "'" + " ";
 
-        this._AppointmentSreviceService.getdeleteddocument(query).subscribe((resData: any) => {
-            if (resData) {
-                Swal.fire('Success !', 'Document Row Deleted Successfully', 'success');
-            }
-        });
+        // this._AppointmentSreviceService.getdeleteddocument(query).subscribe((resData: any) => {
+        //     if (resData) {
+        //         Swal.fire('Success !', 'Document Row Deleted Successfully', 'success');
+        //     }
+        // });
     }
 
 
-    Billpayment(contact) {
-        let xx = {
-            RegId: contact.RegId,
-            OPD_IPD_ID: contact.OPD_IPD_ID,
-            RegNo: contact.RegNoWithPrefix,
-            VisitId: contact.VisitId,
-            PatientName: contact.PatientName,
-            Doctorname: contact.Doctorname,
-            AdmDateTime: contact.AdmDateTime,
-            AgeYear: contact.AgeYear,
-            AgeMonth: contact.AgeMonth,
-            AgeDay: contact.AgeDay,
-            DepartmentName: contact.DepartmentName,
-            ClassId: contact.ClassId,
-            OPDNo: contact.OPDNo,
-            PatientType: contact.PatientType,
-            ClassName: contact.ClassName,
-            TariffName: contact.TariffName,
-            TariffId: contact.TariffId,
-            CompanyId: contact.CompanyId,
-            CompanyName: contact.CompanyName,
-            RefDocName: contact.RefDocName,
-            MobileNo: contact.MobileNo,
-            Lbl: "AppointmentBill"
-        };
-        console.log(xx)
-        //console.log(contact)
-        this.advanceDataStored.storage = new SearchInforObj(xx);
-        const dialogRef = this._matDialog.open(NewOPBillingComponent,
-            {
-                maxWidth: '90%',
-                height: '95%',
-                data: {
-                    registerObj: xx,
-                },
-            });
-
-        dialogRef.afterClosed().subscribe(result => {
-            this.getVisitList1();
-        });
-
-    }
+  
 
     VitalInfo(contact) {
         let xx = {
@@ -2932,19 +2349,19 @@ debugger
         };
         console.log(xx)
         //console.log(contact)
-        this.advanceDataStored.storage = new SearchInforObj(xx);
-        const dialogRef = this._matDialog.open(PatientVitalInformationComponent,
-            {
-                maxWidth: '80%',
-                height: '58%',
-                data: {
-                    registerObj: xx,
-                },
-            });
+        // this.advanceDataStored.storage = new SearchInforObj(xx);
+        // const dialogRef = this._matDialog.open(PatientVitalInformationComponent,
+        //     {
+        //         maxWidth: '80%',
+        //         height: '58%',
+        //         data: {
+        //             registerObj: xx,
+        //         },
+        //     });
 
-        dialogRef.afterClosed().subscribe(result => {
-            this.getVisitList1();
-        });
+        // dialogRef.afterClosed().subscribe(result => {
+        //     this.getVisitList1();
+        // });
 
     }
     vhealthCardNo:any;
@@ -2988,28 +2405,7 @@ debugger
           return false;
         }
       }
-    exportReportExcel() {
-        let exportHeaders = ['RegNoWithPrefix', 'PatientName', 'DVisitDate', 'VisitTime', 'OPDNo', 'Doctorname', 'RefDocName', 'PatientType'];
-        this.reportDownloadService.getExportJsonData(this.dataSource.data, exportHeaders, 'appointment');
-    }
-
-    exportReportPdf() {
-        let actualData = [];
-        this.dataSource.data.forEach(e => {
-            var tempObj = [];
-            tempObj.push(e.RegNoWithPrefix);
-            tempObj.push(e.PatientName);
-            // tempObj.push(e.DVisitDate);
-            tempObj.push(e.VisitTime);
-            tempObj.push(e.OPDNo);
-            tempObj.push(e.Doctorname);
-            tempObj.push(e.RefDocName);
-            tempObj.push(e.PatientType);
-            actualData.push(tempObj);
-        });
-        let headers = [['Reg No', 'Patient Name', 'Visit Time', 'OPD No', 'Doctor Name', 'Ref Doc Name', 'Patient Type']];
-        this.reportDownloadService.exportPdfDownload(headers, actualData, 'appointment');
-    }
+    
 
 
 
@@ -3258,304 +2654,9 @@ debugger
         this.VisitFlagDisp = false;
     }
 
+  onClear(val: boolean) {
+   // this.personalform.reset();
+    // this.dialogRef.close(val);
+  }
 
-    @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
-        //   
-        // f10
-        // if (event.keyCode === 121) {
-        //     this.NewOPBill();
-        // }
-        // f8
-        if (event.keyCode === 119) {
-            this.NewOPBill();
-        }
-    }
-
-    NewOPBill() {
-
-        const dialogRef = this._matDialog.open(NewOPBillingComponent,
-            {
-                maxWidth: "99%",
-
-                height: '1195px !important',
-
-            });
-        dialogRef.afterClosed().subscribe(result => {
-            console.log('The dialog was closed - Insert Action', result);
-
-        });
-    }
-
-    getNewPatient(element1) {
-        let Newcount = 0;
-        // netAmt = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
-        // this.b_TotalChargesAmount = netAmt;
-        // this.TotalnetPaybleAmt = this.b_TotalChargesAmount;
-        this.dataSource.data.forEach((element) => {
-            // console.log(element)
-            if (element.patientOldNew) {
-                Newcount + 1;
-            }
-        });
-        console.log(Newcount)
-        return Newcount;
-    }
-
-}
-
-export class DocumentUpload {
-    DocumentName: any;
-    DocumentPath: string;
-
-    constructor(DocumentUpload) {
-        {
-            this.DocumentName = DocumentUpload.DocumentName || '';
-            this.DocumentPath = DocumentUpload.DocumentPath || '';
-
-        }
-    }
-}
-
-export class PatientDocument {
-    Id: string;
-    OPD_IPD_ID: Number;
-    OPD_IPD_Type: Number;
-    FileName: string;
-    DocFile: File;
-    constructor(PatientDocument) {
-        {
-            this.Id = PatientDocument.Id || "";
-            this.OPD_IPD_ID = PatientDocument.OPD_IPD_ID || 0;
-            this.OPD_IPD_Type = PatientDocument.opD_IPD_Type || 0;
-            this.FileName = PatientDocument.Filename || "";
-            this.DocFile = PatientDocument.DocFile || null;
-        }
-    }
-}
-
-export class VisitMaster {
-    VisitId: Number;
-    PrefixId: number;
-    RegNoWithPrefix: number;
-    PatientName: string;
-    VisitDate: Date;
-    VisitTime: Time;
-    HospitalID: number;
-    HospitalName: string;
-    PatientTypeID: number;
-    PatientTypeId: number;
-    PatientType: string;
-    CompanyId: number;
-    OPDNo: string;
-    TariffId: number;
-    TariffName: string;
-    ConsultantDocId: number;
-    RefDocId: number;
-    Doctorname: string;
-    RefDocName: string;
-    DepartmentId: number;
-    appPurposeId: number;
-    patientOldNew: Boolean;
-    isMark: boolean;
-    isXray: boolean;
-    AddedBy: number;
-    MPbillNo: number;
-    RegNo: any;
-    PhoneAppId: any;
-    IsCancelled: any;
-    /**
-     * Constructor
-     *
-     * @param VisitMaster
-     */
-    constructor(VisitMaster) {
-        {
-            this.VisitId = VisitMaster.VisitId || "";
-            (this.PrefixId = VisitMaster.PrefixId || ""),
-                (this.RegNoWithPrefix = VisitMaster.RegNoWithPrefix || "");
-            this.PatientName = VisitMaster.PatientName || "";
-            this.VisitDate = VisitMaster.VisitDate || "";
-            this.VisitTime = VisitMaster.VisitTime || "";
-            this.HospitalID = VisitMaster.HospitalID || "";
-            this.HospitalName = VisitMaster.HospitalName || "";
-            this.PatientTypeID = VisitMaster.PatientTypeID || "";
-            this.PatientTypeId = VisitMaster.PatientTypeId || "";
-            this.PatientType = VisitMaster.PatientType || "";
-            this.CompanyId = VisitMaster.CompanyId || "";
-            this.TariffId = VisitMaster.TariffId || "";
-            this.OPDNo = VisitMaster.OPDNo || "";
-            this.ConsultantDocId = VisitMaster.ConsultantDocId || "";
-            this.Doctorname = VisitMaster.Doctorname || "";
-            this.RefDocId = VisitMaster.VisitTime || "";
-            this.RefDocName = VisitMaster.RefDocName || "";
-            this.DepartmentId = VisitMaster.DepartmentId || "";
-            this.patientOldNew = VisitMaster.patientOldNew || "";
-            this.isXray = VisitMaster.isXray || "";
-            this.AddedBy = VisitMaster.AddedBy || "";
-            this.MPbillNo = VisitMaster.MPbillNo || "";
-            this.RegNo = VisitMaster.RegNo || "";
-            this.PhoneAppId = VisitMaster.PhoneAppId || 0
-            this.IsCancelled = VisitMaster.IsCancelled || 0
-        }
-    }
-}
-
-export class RegInsert {
-    RegId: Number;
-    RegDate: Date;
-    RegTime: Time;
-    PrefixId: number;
-    PrefixID: number;
-    FirstName: string;
-    MiddleName: string;
-    LastName: string;
-    Address: string;
-    City: string;
-    PinNo: string;
-    RegNo: string;
-    DateofBirth: Date;
-    Age: any;
-    GenderId: Number;
-    PhoneNo: string;
-    MobileNo: string;
-    AddedBy: number;
-    AgeYear: any;
-    AgeMonth: any;
-    AgeDay: any;
-    CountryId: number;
-    StateId: number;
-    CityId: number;
-    MaritalStatusId: number;
-    IsCharity: Boolean;
-    ReligionId: number;
-    AreaId: number;
-    VillageId: number;
-    TalukaId: number;
-    PatientWeight: number;
-    AreaName: string;
-    AadharCardNo: string;
-    PanCardNo: string;
-    currentDate = new Date();
-    AdmissionID: any;
-    VisitId: any;
-    WardId: any;
-    BedId: any;
-    /**
-     * Constructor
-     *
-     * @param RegInsert
-     */
-
-    constructor(RegInsert) {
-        {
-            this.RegId = RegInsert.RegId || "";
-            this.RegDate = RegInsert.RegDate || "";
-            this.RegTime = RegInsert.RegTime || "";
-            this.PrefixId = RegInsert.PrefixId || "";
-            this.PrefixID = RegInsert.PrefixID || "";
-            this.FirstName = RegInsert.FirstName || "";
-            this.MiddleName = RegInsert.MiddleName || "";
-            this.LastName = RegInsert.LastName || "";
-            this.Address = RegInsert.Address || "";
-            this.City = RegInsert.City || "";
-            this.PinNo = RegInsert.PinNo || "";
-            this.DateofBirth = RegInsert.DateofBirth || this.currentDate;
-            this.Age = RegInsert.Age || "";
-            this.GenderId = RegInsert.GenderId || "";
-            this.PhoneNo = RegInsert.PhoneNo || "";
-            this.MobileNo = RegInsert.MobileNo || "";
-            this.AddedBy = RegInsert.AddedBy || "";
-            this.AgeYear = RegInsert.AgeYear || "";
-            this.AgeMonth = RegInsert.AgeMonth || "";
-            this.AgeDay = RegInsert.AgeDay || "";
-            this.CountryId = RegInsert.CountryId || "";
-            this.StateId = RegInsert.StateId || "";
-            this.CityId = RegInsert.CityId || "";
-            this.MaritalStatusId = RegInsert.MaritalStatusId || "";
-            this.IsCharity = RegInsert.IsCharity || "";
-            this.ReligionId = RegInsert.ReligionId || "";
-            this.AreaId = RegInsert.AreaId || "";
-            this.VillageId = RegInsert.VillageId || "";
-            this.TalukaId = RegInsert.TalukaId || "";
-            this.PatientWeight = RegInsert.PatientWeight || "";
-            this.AreaName = RegInsert.AreaName || "";
-            this.AadharCardNo = RegInsert.AadharCardNo || "";
-            this.PanCardNo = RegInsert.PanCardNo || '';
-            this.AdmissionID = RegInsert.AdmissionID || 0;
-            this.VisitId = RegInsert.VisitId || 0;
-            this.WardId = RegInsert.WardId || 0;
-            this.BedId = RegInsert.BedId || 0;
-        }
-    }
-}
-
-export class AdvanceDetailObj {
-    RegNo: Number;
-    RegId: number;
-    AdmissionID: Number;
-    PatientName: string;
-    Doctorname: string;
-    DoctorName: string;
-    AdmDateTime: string;
-    AgeYear: number;
-    ClassId: number;
-    TariffName: String;
-    TariffId: number;
-    opD_IPD_Type: number;
-    VisitId: number;
-    storage: any;
-    IPDNo: any;
-    RefDoctorId: any;
-    DoctorId: any;
-    OPD_IPD_ID: any;
-    RefDocName: any;
-    WardName: any;
-    BedName: any;
-    VisitDate: any;
-    VisitTime: any;
-    PatientTypeId: any;
-    CompanyId: any;
-    HospitalId: any;
-    VistDateTime: any;
-    AadharCardNo: any;
-    DepartmentId: any;
-    Departmentid: any;
-    /**
-     * Constructor
-     *
-     * @param AdvanceDetailObj
-     */
-    constructor(AdvanceDetailObj) {
-        {
-            this.RegNo = AdvanceDetailObj.RegNo || "";
-            this.RegId = AdvanceDetailObj.RegId || "";
-            this.VisitId = AdvanceDetailObj.VisitId || "";
-            this.AdmissionID = AdvanceDetailObj.AdmissionID || "";
-            this.PatientName = AdvanceDetailObj.PatientName || "";
-            this.Doctorname = AdvanceDetailObj.Doctorname || "";
-            this.DoctorName = AdvanceDetailObj.DoctorName || "";
-            this.AdmDateTime = AdvanceDetailObj.AdmDateTime || "";
-            this.AgeYear = AdvanceDetailObj.AgeYear || "";
-            this.ClassId = AdvanceDetailObj.ClassId || "";
-            this.TariffName = AdvanceDetailObj.TariffName || "";
-            this.TariffId = AdvanceDetailObj.TariffId || "";
-            this.opD_IPD_Type = AdvanceDetailObj.opD_IPD_Type || 0;
-            this.IPDNo = AdvanceDetailObj.IPDNo || "";
-            this.RefDoctorId = AdvanceDetailObj.RefDoctorId || 0;
-            this.DoctorId = AdvanceDetailObj.DoctorId || 0;
-            this.OPD_IPD_ID = AdvanceDetailObj.OPD_IPD_ID || 0;
-            this.RefDocName = AdvanceDetailObj.RefDocName || "";
-            this.WardName = AdvanceDetailObj.WardName || "";
-            this.BedName = AdvanceDetailObj.BedName || "";
-            this.VisitDate = AdvanceDetailObj.VisitDate || "";
-            this.VisitTime = AdvanceDetailObj.VisitTime || "";
-            this.PatientTypeId = AdvanceDetailObj.PatientTypeId || 0;
-            this.CompanyId = AdvanceDetailObj.CompanyId || 0;
-            this.HospitalId = AdvanceDetailObj.HospitalId || 0;
-            this.VistDateTime = AdvanceDetailObj.VistDateTime || ''
-            this.AadharCardNo = AdvanceDetailObj.AadharCardNo || 0;
-            this.DepartmentId = AdvanceDetailObj.DepartmentId || 0;
-            this.Departmentid = AdvanceDetailObj.Departmentid || 0;
-        }
-    }
 }

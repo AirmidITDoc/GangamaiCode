@@ -27,7 +27,7 @@ export class PrefixMasterService {
 
     createPrefixForm(): FormGroup {
         return this._formBuilder.group({
-            PrefixID: [""],
+            prefixID: [""],
             PrefixName: [""],
             SexID: [" "],
             GenderName: [""],

@@ -9,10 +9,13 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { DatePipe, Time } from '@angular/common';
 import { RegistrationService } from './registration.service';
 import { fuseAnimations } from '@fuse/animations';
-import { MatDialog } from '@angular/material/dialog';
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { ToastrService } from 'ngx-toastr';
 import { NewRegistrationComponent } from './new-registration/new-registration.component';
-import { EditRegistrationComponent } from './edit-registration/edit-registration.component';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 
 @Component({
@@ -24,159 +27,87 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 })
 export class RegistrationComponent implements OnInit {
 
-  sIsLoading: string = '';
-  isLoading = true;
-  registerObj = new RegInsert({});
-
-  hasSelectedContacts: boolean;
+  confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   
+  gridConfig: gridModel = {
+      apiUrl: "VisitDetail/OPRegistrationList",
+      columnsList: [
+          { heading: "Code", key: "regId", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "RegTime", key: "regTime", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "MobileNo", key: "MobileNo", sort: true, align: 'left', emptySign: 'NA' },
+         
+          { heading: "Address", key: "Address", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "City", key: "City", sort: true, align: 'left', emptySign: 'NA' },
+        //  { heading: "IsConsolidatedDr", key: "isConsolidatedDr", sort: true, align: 'left', emptySign: 'NA' },
+          {
+              heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                  {
+                      action: gridActions.edit, callback: (data: any) => {
+                          this.onSave(data);
+                      }
+                  }, {
+                      action: gridActions.delete, callback: (data: any) => {
+                          this.confirmDialogRef = this._matDialog.open(
+                              FuseConfirmDialogComponent,
+                              {
+                                  disableClose: false,
+                              }
+                          );
+                          this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+                          this.confirmDialogRef.afterClosed().subscribe((result) => {
+                              if (result) {
+                                  let that = this;
+                                  this._RegistrationService.deactivateTheStatus(data.regId).subscribe((response: any) => {
+                                      this.toastr.success(response.message);
+                                      that.grid.bindGridData();
+                                  });
+                              }
+                              this.confirmDialogRef = null;
+                          });
+                      }
+                  }]
+          } //Action 1-view, 2-Edit,3-delete
+      ],
+      sortField: "RegId",
+      sortOrder: 0,
+      filters: [
+          { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+          { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+          { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+          { fieldName: "From_Dt", fieldValue: "01/01/2024", opType: OperatorComparer.Equals },
+          { fieldName: "To_Dt", fieldValue: "01/01/2024", opType: OperatorComparer.Equals },
+          { fieldName: "MobileNo", fieldValue: "%", opType: OperatorComparer.Contains },
+          
+         // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+      ],
+      row: 25
+  }
 
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @Input() dataArray: any;
-
-  displayedColumns = [
-    'RegDate',
-    'RegNo',
-    'PatientName',
-    'AgeYear',
-    'GenderName',
-    'PhoneNo',
-    'MobileNo',
-    'Address',
-   'action',
-  
-  ];
-
-  dataSource = new MatTableDataSource<RegInsert>();
-  menuActions: Array<string> = [];
-
-  public doctorFilterCtrl: FormControl = new FormControl();
-  public filtereddoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
-  private _onDestroy = new Subject<void>();
-
-  constructor(
-    public _registrationService: RegistrationService,
-    private _fuseSidebarService: FuseSidebarService,
-    public datePipe: DatePipe,
-    public _matDialog: MatDialog
-  ) { }
+  constructor(public _RegistrationService: RegistrationService, public _matDialog: MatDialog,
+      public toastr : ToastrService,) {}
 
   ngOnInit(): void {
-    // get Registration list on page load
-     this.getregistrationList();
-  }
-
-  // toggle sidebar
-  toggleSidebar(name): void {
-    this._fuseSidebarService.getSidebar(name).toggleOpen();
-  }
-
-  // field validation 
-  get f() { return this._registrationService.myFilterform.controls; }
-
-  // clear data from input field 
-  onClear() {
-    this._registrationService.myFilterform.reset(
-      {
-        start: [],
-        end: []
-      }
-    );
-  }
-  // get Registration list on Button click
-  getregistrationList() {
-    this.sIsLoading = 'loading';
-    var D_data = {
-      "F_Name": (this._registrationService.myFilterform.get("FirstName").value) + '%' || '%',
-      "L_Name": (this._registrationService.myFilterform.get("LastName").value) + '%' || '%',
-      "Reg_No": this._registrationService.myFilterform.get("RegNo").value || "0",
-      "From_Dt": this.datePipe.transform(this._registrationService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
-      "To_Dt": this.datePipe.transform(this._registrationService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
-      "MobileNo": this._registrationService.myFilterform.get("MobileNo").value  + '%' || '%',
-    }
     
-    setTimeout(() => {
-      this.sIsLoading = 'loading-data';
-      this._registrationService.getRegistrationList(D_data).subscribe(data => {
-        this.dataSource.data = data as RegInsert[];
-        console.log( this.dataSource.data )
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
-        this.sIsLoading = '';
-      },
-        error => {
-          this.sIsLoading = '';
-        });
-    }, 500);
   }
-
-  newRegistration() {
-    const dialogRef = this._matDialog.open(NewRegistrationComponent,
-      {
-        maxWidth: "90vw",
-          height: '450px',
-          width: '100%',
-      });
-    dialogRef.afterClosed().subscribe(result => {
-    this. getregistrationList();
-    });
-  }
-
-  
-onEdit(row){
-  console.log(row);
-  this.registerObj=row;
-  this.registerObj["RegId"]=row.RegId;
-  this.registerObj["RegID"]=row.RegId;
-  this.registerObj["PrefixId"]=row.PrefixID;
-    this._registrationService.populateFormpersonal(row);
-    
-    const dialogRef = this._matDialog.open(NewRegistrationComponent, 
-      {   maxWidth: "90vw",
-          height: '450px',
-          width: '100%',
-           data : {
-          registerObj :this.registerObj,
-          Submitflag:true
-        }
-    });
-    
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
-      this. getregistrationList();
-     
-    });
-  }
-
-  getAdmittedPatientCasepaperview(contact) {
-    this.sIsLoading = 'loading-data';
-    setTimeout(() => {
-    //   this.SpinLoading =true;
-    //  this.AdList=true;
-    this._registrationService.getAdmittedPatientCasepaaperView(
-      contact.AdmissionId
-      ).subscribe(res => {
-      const matDialog = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "Admission Paper  Viewer"
+  onSave(row: any = null) {
+      debugger
+      let that = this;
+      const dialogRef = this._matDialog.open(NewRegistrationComponent,
+          {
+              maxWidth: "95vw",
+              height: '95%',
+              width: '90%',
+              data: row
+          });
+      dialogRef.afterClosed().subscribe(result => {
+          if (result) {
+              that.grid.bindGridData();
           }
-        });
-
-        matDialog.afterClosed().subscribe(result => {
-          // this.AdList=false;
-          this.sIsLoading = ' ';
-        });
-    });
-   
-    },100);
-
+      });
   }
+
 }
 
 

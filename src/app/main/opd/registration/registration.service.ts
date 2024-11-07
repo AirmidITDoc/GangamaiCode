@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RegInsert } from './registration.component';
 import { LoaderService } from 'app/core/components/loader/loader.service';
+import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class RegistrationService {
   registerObj = new RegInsert({});
 
   constructor(
-    public _httpClient:HttpClient,
+    public _httpClient:HttpClient,  public _httpClient1:ApiCaller,
     private _formBuilder: FormBuilder,
     private _loaderService: LoaderService
   ) { 
@@ -188,4 +189,33 @@ public getPatientTypeCombo() {
   public getAppointmentReport(VisitId){
     return this._httpClient.get("OutPatient/view-PatientAppointment?VisitId=" + VisitId);
   }
+
+
+
+  // new Api
+     getRegistrationValidationMessages() {
+    //     return {
+    //         patientName: [
+    //             { name: "required", Message: "Patient Name is required" },
+    //             { name: "maxlength", Message: "Patient name should not be greater than 50 char." },
+    //             { name: "pattern", Message: "Special char not allowed." }
+    //         ]
+    //     };
+    }
+    
+    public RegstrationtSave(Param: any, showLoader = true) {
+        if (Param.regID) {
+            return this._httpClient1.PutData("OutPatient/RegistrationInsert" + Param.regID, Param, showLoader);
+        } else return this._httpClient1.PostData("OutPatient/RegistrationInsert", Param, showLoader);
+    }
+
+    public Regstrationtupdate(Param: any, showLoader = true) {
+      if (Param.regID) {
+          return this._httpClient1.PutData("OutPatient/RegistrationInsert" + Param.regID, Param, showLoader);
+      } else return this._httpClient1.PostData("OutPatient/RegistrationInsert", Param, showLoader);
+  }
+    
+    public deactivateTheStatus(m_data) {
+        return this._httpClient1.PostData("OutPatient/RegistrationInsert", m_data);
+    }
 }

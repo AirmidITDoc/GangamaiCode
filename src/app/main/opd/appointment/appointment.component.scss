@@ -1,6 +1,5 @@
-.p-sm-24 {
-    padding: 10px !important;
-}
+@import "src/@fuse/scss/fuse";
+
 app-appointment {
     body {
         background-color: transparent;
@@ -138,16 +137,6 @@ app-appointment {
     }
     .auto-height-table mat-row {
         height: auto !important;
-    }
-
-    .mat-icon-button {
-        padding: 0;
-        min-width: 0;
-        width: 40px;
-        height: 20px;
-        flex-shrink: 0;
-        line-height: 20px;
-        border-radius: 50%;
     }
 }
 

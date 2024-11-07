@@ -245,15 +245,12 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     ConfigSettingParam() {
-        // debugger;
-        // this.http
-        //     .post(`Generic/GetByProc?procName=SS_ConfigSettingParam`, {}).subscribe(data => {
-        //         this.configSettingParam = data;
-        //         this.configService.setCongiParam(this.configSettingParam[0]);
-        //         console.log(this.configSettingParam);
-        //     });
+        debugger;
+        this.http
+            .post(`Generic/GetByProc?procName=SS_ConfigSettingParam`, {}).subscribe(data => {
+                this.configSettingParam = data;
+                this.configService.setCongiParam(this.configSettingParam[0]);
+                console.log(this.configSettingParam);
+            });
     }
 }
-
-
-// http://117.216.212.131:2020/auth/login"

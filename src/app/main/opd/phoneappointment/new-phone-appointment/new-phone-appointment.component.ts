@@ -1,11 +1,11 @@
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { PhoneAppointListService } from '../phone-appoint-list.service';
@@ -22,7 +22,7 @@ import { ToastrService } from 'ngx-toastr';
   animations: fuseAnimations
 })
 export class NewPhoneAppointmentComponent implements OnInit {
-
+  phoneappForm: FormGroup
   hasSelectedContacts: boolean;
   ConfigcityList: any = [];
   cityList: any = [];
@@ -55,7 +55,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
   selectedGender = "";
   selectedGenderID: any;
   capturedImage: any;
-  personalFormGroup: FormGroup;
+
   hospitalFormGroup: FormGroup;
   // registerObj = new AdmissionPersonlModel({});
   options = [];
@@ -71,12 +71,12 @@ export class NewPhoneAppointmentComponent implements OnInit {
   submitted = false;
   sIsLoading: string = '';
   minDate: Date;
-  vMobile:any;
-  isDepartmentSelected:boolean=false;
-  isDoctorSelected:boolean=false;
+  vMobile: any;
+  isDepartmentSelected: boolean = false;
+  isDoctorSelected: boolean = false;
 
-  vDepartmentid:any='';
-  vDoctorId:any='';
+  vDepartmentid: any = '';
+  vDoctorId: any = '';
 
 
   optionsDep: any[] = [];
@@ -84,7 +84,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
 
   filteredOptionsDep: Observable<string[]>;
   filteredOptionsDoc: Observable<string[]>;
-  
+
 
   displayedColumns = [
 
@@ -104,7 +104,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
     public formBuilder: FormBuilder,
     public _matDialog: MatDialog,
     public toastr: ToastrService,
-    private accountService: AuthenticationService,
+    @Inject(MAT_DIALOG_DATA) public data: any, private accountService: AuthenticationService,
     public dialogRef: MatDialogRef<NewPhoneAppointmentComponent>,
     public datePipe: DatePipe) {
   }
@@ -122,7 +122,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
   private _onDestroy = new Subject<void>();
 
   ngOnInit(): void {
-    this.personalFormGroup = this.createPesonalForm();
+
     this.getDepartmentList();
     this.minDate = new Date();
 
@@ -138,73 +138,54 @@ export class NewPhoneAppointmentComponent implements OnInit {
         this.filterDepartment();
       });
     this.getPhoneschduleList();
+
+    this.phoneappForm = this._phoneAppointListService.createphoneForm();
+    var m_data = {
+      phoneAppId: this.data?.phoneAppId,
+      categoryName: this.data?.categoryName.trim(),
+      appDate: this.data?.appDate,
+      appTime: this.data?.appTime,
+      firstName: this.data?.firstName.trim(),
+      middleName: this.data?.middleName.trim(),
+      lastName: this.data?.lastName.trim(),
+      address: this.data?.address.trim(),
+      mobileNo: this.data?.mobileNo.trim(),
+      phAppDate: this.data?.phAppDate,
+      phAppTime: this.data?.phAppTime,
+      departmentId: this.data?.departmentId,
+      doctorId: this.data?.doctorId,
+      addedBy: this.data?.addedBy,
+      updatedBy: this.data?.updatedBy,
+      regNo: this.data?.regNo,
+    };
+    this.phoneappForm.patchValue(m_data);
+
   }
 
 
-  get f() { return this.personalFormGroup.controls; }
+  get f() { return this.phoneappForm.controls; }
 
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
 
 
-  createPesonalForm() {
-    return this.formBuilder.group({
-      AppointmentDate: [(new Date()).toISOString()],
-      phoneAppId: '',
-      AppDate: '',
-      AppTime: '',
-      seqNo: '',
-      FirstName:  ['', [
-        Validators.required,
-        Validators.maxLength(50),
-        // Validators.pattern("^[a-zA-Z._ -]*$"),
-        Validators.pattern('^[a-zA-Z () ]*$')
-      ]],
-      MiddleName: ['', [
 
-        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
-      ]],
-      LastName: ['', [
-        Validators.required,
-        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
-      ]],
-      Address: ['', Validators.required],
-      PhAppDate: '',
-      PhAppTime: '',
-      DepartmentId: '',
-      Departmentid: '',
-    
-
-      MobileNo:['', [Validators.required, Validators.pattern("^[0-9]*$"),
-      Validators.minLength(10),
-      Validators.maxLength(10),]],
-      DoctorId: '',
-      DoctorID: '',
-      AddedBy: '',
-      UpdatedBy: '',
-      PhoneAppId: '',
-      isCancelled: '',
-      isCancelledBy: '',
-      isCancelledDate: '',
-      regNo: '',
-    });
-  }
 
   getOptionTextDep(option) {
-    
+
     return option && option.departmentName ? option.departmentName : '';
   }
 
   getOptionTextDoc(option) {
-    
+
     return option && option.Doctorname ? option.Doctorname : '';
-    
+
   }
 
 
   private filterDepartment() {
-    
+
     if (!this.DepartmentList) {
       return;
     }
@@ -261,15 +242,15 @@ export class NewPhoneAppointmentComponent implements OnInit {
 
 
   OnChangeDoctorList(departmentObj) {
-  
+
     this.isDepartmentSelected = true;
     this._phoneAppointListService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(
       data => {
         this.DoctorList = data;
-       
+
         // this.filteredDoctor.next(this.DoctorList.slice());
         this.optionsDoc = this.DoctorList.slice();
-        this.filteredOptionsDoc = this.personalFormGroup.get('DoctorId').valueChanges.pipe(
+        this.filteredOptionsDoc = this.phoneappForm.get('doctorId').valueChanges.pipe(
           startWith(''),
           map(value => value ? this._filterDoc(value) : this.DoctorList.slice()),
         );
@@ -278,7 +259,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
 
 
 
-   private _filterDep(value: any): string[] {
+  private _filterDep(value: any): string[] {
     if (value) {
       const filterValue = value && value.departmentName ? value.departmentName.toLowerCase() : value.toLowerCase();
       // this.isDepartmentSelected = false;
@@ -293,7 +274,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
     this._phoneAppointListService.getDepartmentCombo().subscribe(data => {
       this.DepartmentList = data;
       this.optionsDep = this.DepartmentList.slice();
-      this.filteredOptionsDep = this.personalFormGroup.get('Departmentid').valueChanges.pipe(
+      this.filteredOptionsDep = this.phoneappForm.get('departmentId').valueChanges.pipe(
         startWith(''),
         map(value => value ? this._filterDep(value) : this.DepartmentList.slice()),
       );
@@ -302,56 +283,42 @@ export class NewPhoneAppointmentComponent implements OnInit {
   }
 
   OnSubmit() {
-debugger
-    if(!isNaN(this.vDepartmentid.Departmentid) && !isNaN(this.vDoctorId.DoctorId)){
+    debugger
+    // if(!isNaN(this.vDepartmentid.Departmentid) && !isNaN(this.vDoctorId.DoctorId)){
 
-    
-    console.log(this.personalFormGroup.get('AppointmentDate').value.Date);
     var m_data = {
-      "phoneAppointmentInsert": {
-        "phoneAppId": 0,
-        "RegNo":'',
-        "appDate": this.dateTimeObj.date,
-        "appTime": this.dateTimeObj.time,
-        "firstName": this.personalFormGroup.get('FirstName').value || '',
-        "middleName": this.personalFormGroup.get('MiddleName').value || '',
-        "lastName": this.personalFormGroup.get('LastName').value || '',
-        "address": this.personalFormGroup.get('Address').value || '',
-        "mobileNo": this.personalFormGroup.get('MobileNo').value || '',
-        "phAppDate": this.datePipe.transform(this.personalFormGroup.get('AppointmentDate').value, "yyyy-MM-dd 00:00:00.000"),
-        "phAppTime": this.datePipe.transform(this.personalFormGroup.get('AppointmentDate').value, "yyyy-MM-dd 00:00:00.000"),
-        "departmentId": this.personalFormGroup.get('Departmentid').value.Departmentid || 0,
-        "doctorId": this.personalFormGroup.get('DoctorId').value.DoctorId || 0,
-        "addedBy": this.accountService.currentUserValue.user.id,
-        "UpdatedBy": this.accountService.currentUserValue.user.id,
-      }
+      "phoneAppId": 0,
+      "regNo": '',
+      "appDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
+      "appTime": this.dateTimeObj.time,
+      "firstName": this.phoneappForm.get('firstName').value || '',
+      "middleName": this.phoneappForm.get('middleName').value || '',
+      "lastName": this.phoneappForm.get('lastName').value || '',
+      "address": this.phoneappForm.get('address').value || '',
+      "mobileNo": this.phoneappForm.get('mobileNo').value.toString() || '',
+      "phAppDate": this.datePipe.transform(this.phoneappForm.get('phAppDate').value, "yyyy-MM-dd"),
+      "phAppTime": this.dateTimeObj.time,// this.datePipe.transform(this.phoneappForm.get('phAppTime').value, "yyyy-MM-dd 00:00:00.000"),
+      "departmentId": this.phoneappForm.get('departmentId').value || 0,
+      "doctorId": this.phoneappForm.get('doctorId').value || 0,
+      "addedBy": 1,// this.accountService.currentUserValue.user.id,
+      "updatedBy": 1,// this.accountService.currentUserValue.user.id,
+
     }
     console.log(m_data);
-    this._phoneAppointListService.PhoneAppointInsert(m_data).subscribe(response => {
-      if (response) {
-        Swal.fire('Record Save !', 'Phone Appointment Data save Successfully !', 'success').then((result) => {
-          if (result.isConfirmed) {
-            this._matDialog.closeAll();
-          }
-        });
-      } else {
-        Swal.fire('Error !', 'Register Data  not saved', 'error');
-      }
-      // this.isLoading = '';
-    });
-  }else{
-    this.toastr.warning('Please Enter Valid Department & Doctor', 'Warning !', {
-      toastClass: 'tostr-tost custom-toast-warning',
-    });
-    return;
-  }
-}
+    console.log(this.phoneappForm.value);
 
-  onClose() {
-    // this.personalFormGroup.reset();
-    // this.dialogRef.close();
-  }
 
+    this._phoneAppointListService.phoneMasterSave(m_data).subscribe((response) => {
+      this.toastr.success(response.message);
+      this.onClear(true);
+    }, (error) => {
+      this.toastr.error(error.message);
+    });
+  }
+  onClear(val: boolean) {
+    this.phoneappForm.reset();
+    this.dialogRef.close(val);
+  }
 
   getPhoneschduleList() {
     this.sIsLoading = 'loading-data';
@@ -368,15 +335,11 @@ debugger
 
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
-    
+
     this.dateTimeObj = dateTimeObj;
   }
 
-  changec() {
-    this.buttonColor = 'red';
-    
-  }
-
+  onClose() { }
 
   @ViewChild('fname') fname: ElementRef;
   @ViewChild('mname') mname: ElementRef;
@@ -412,13 +375,13 @@ debugger
     }
   }
 
-  public onEntermobile(event):void{
-if(event.which===13){
-this.dept.nativeElement.focus();
-}
+  public onEntermobile(event): void {
+    if (event.which === 13) {
+      this.dept.nativeElement.focus();
+    }
   }
-  public onEnterdept(event,value): void {
-   
+  public onEnterdept(event, value): void {
+
     if (event.which === 13) {
       if (value == undefined) {
         this.toastr.warning('Please Enter Valid Department.', 'Warning !', {
@@ -430,8 +393,8 @@ this.dept.nativeElement.focus();
       }
     }
   }
-  public onEnterdeptdoc(event,value): void {
-   
+  public onEnterdeptdoc(event, value): void {
+
     if (event.which === 13) {
       if (value == undefined) {
         this.toastr.warning('Please Enter Valid Department Dosctor', 'Warning !', {
@@ -443,7 +406,7 @@ this.dept.nativeElement.focus();
       }
     }
   }
-  
+
 
 
 }

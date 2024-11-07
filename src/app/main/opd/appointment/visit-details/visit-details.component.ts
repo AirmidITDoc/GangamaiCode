@@ -2,7 +2,7 @@ import { Component, HostListener, Inject, OnInit, ViewEncapsulation } from '@ang
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { AppointmentSreviceService } from '../appointment-srevice.service';
-import { CasepaperVisitDetails } from '../../new-casepaper/new-casepaper.component';
+
 import { fuseAnimations } from '@fuse/animations';
 
 @Component({
@@ -22,7 +22,7 @@ export class VisitDetailsComponent implements OnInit {
     
   ];
   isLoadingStr: string = '';
-  dataSource1 = new MatTableDataSource<CasepaperVisitDetails>();
+  // dataSource1 = new MatTableDataSource<CasepaperVisitDetails>();
   selectedRowIndex: number = 0;
   screenFromString = 'admission-form';
   sIsLoading: string = "";
@@ -60,15 +60,15 @@ export class VisitDetailsComponent implements OnInit {
    
   }
 
-  arrowUpEvent(row: object, index: number) {
-    var nextrow = this.dataSource1.data[index - 2];
-    this.highlight(nextrow);
-  }
+  // arrowUpEvent(row: object, index: number) {
+  //   var nextrow = this.dataSource1.data[index - 2];
+  //   this.highlight(nextrow);
+  // }
 
-  arrowDownEvent(row: object, index: number) {
-    var nextrow = this.dataSource1.data[index];
-    this.highlight(nextrow);
-  }
+  // arrowDownEvent(row: object, index: number) {
+  //   var nextrow = this.dataSource1.data[index];
+  //   this.highlight(nextrow);
+  // }
 
   ngOnInit(): void {
     this.getregisterList();
@@ -88,9 +88,9 @@ export class VisitDetailsComponent implements OnInit {
     console.log(D_data);
     this.sIsLoading = 'loading-data';
     this._opappointmentService.getVisitedList(D_data).subscribe(Visit => {
-      this.dataSource1.data = Visit as CasepaperVisitDetails[];
+      // this.dataSource1.data = Visit as CasepaperVisitDetails[];
 
-      console.log(this.dataSource1.data);
+      // console.log(this.dataSource1.data);
      
       this.sIsLoading = '';
 
@@ -99,15 +99,15 @@ export class VisitDetailsComponent implements OnInit {
     
   }
 
-  selectedRow(index?: number, ele?: CasepaperVisitDetails) {
-    let selectedData;
-    if(index) {
-      selectedData = this.dataSource1.data[index-1];
-    } else if(ele) {
-      selectedData = ele;
-    }
-    this.dialogRef.close(selectedData);
-  }
+  // selectedRow(index?: number, ele?: CasepaperVisitDetails) {
+  //   let selectedData;
+  //   if(index) {
+  //     selectedData = this.dataSource1.data[index-1];
+  //   } else if(ele) {
+  //     selectedData = ele;
+  //   }
+  //   this.dialogRef.close(selectedData);
+  // }
 
   dateTimeObj: any;
   getDateTime(dateTimeObj) {

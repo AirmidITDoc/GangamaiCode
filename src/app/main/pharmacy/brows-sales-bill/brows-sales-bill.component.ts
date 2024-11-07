@@ -16,8 +16,7 @@ import { SalesService } from '../sales/sales.service';
 import { Subscription } from 'rxjs';
 import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-new/op-payment-new.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import { AppointmentSreviceService } from 'app/main/opd/appointment/appointment-srevice.service';
-import { PatientDocument } from 'app/main/opd/appointment/appointment.component';
+
 import { E } from '@angular/cdk/keycodes';
 import * as XLSX from 'xlsx';
 const jsPDF = require('jspdf');
@@ -170,7 +169,7 @@ export class BrowsSalesBillComponent implements OnInit {
     public _AdmissionService: IPSearchListService,
     public _BrowsSalesBillService: BrowsSalesBillService,
     public _BrowsSalesService: SalesService,
-    public _AppointmentSreviceService: AppointmentSreviceService,
+    // public _AppointmentSreviceService: AppointmentSreviceService,
     private _loggedService: AuthenticationService,
     public _matDialog: MatDialog,
     private _fuseSidebarService: FuseSidebarService,

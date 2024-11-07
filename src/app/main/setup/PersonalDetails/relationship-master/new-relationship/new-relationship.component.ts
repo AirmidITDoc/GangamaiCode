@@ -22,13 +22,16 @@ export class NewRelationshipComponent implements OnInit {
   ngOnInit(): void {
       this.relationshipForm = this._RelationshipMasterService.createRelationshipForm();
       var m_data = {
-        relationshipId: this.data?.relationshipId,
+        relationshipId: this.data?.relationshipId || 0,
         relationshipName: this.data?.relationshipName.trim(),
           isDeleted: JSON.stringify(this.data?.isActive),
+          addBy:10,
+          updatedBy:1
       };
       this.relationshipForm.patchValue(m_data);
   }
   onSubmit() {
+    debugger
       if (this.relationshipForm.valid) {
           this._RelationshipMasterService.relationshipMasterSave(this.relationshipForm.value).subscribe((response) => {
               this.toastr.success(response.message);

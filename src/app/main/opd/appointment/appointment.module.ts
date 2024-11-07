@@ -24,7 +24,6 @@ import { MatDividerModule } from "@angular/material/divider";
 import { MatRadioModule } from "@angular/material/radio";
 import { MatCardModule } from "@angular/material/card";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
-import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { MatTooltipModule } from "@angular/material/tooltip";
@@ -51,6 +50,8 @@ import { CrossConsultationComponent } from './cross-consultation/cross-consultat
 import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
 import {NgxPrintModule} from 'ngx-print';
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
+import { PatientVitalInformationComponent } from './patient-vital-information/patient-vital-information.component';
+import { MatAutocompleteModule } from "@angular/material/autocomplete";
 
 const routes: Routes = [
     {
@@ -70,6 +71,7 @@ const routes: Routes = [
         InfoheadDirective,
         VisitDetailsComponent,
         CrossConsultationComponent,
+        PatientVitalInformationComponent,
         
     ],
     imports: [

@@ -13,7 +13,7 @@ import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { IPSearchListService } from '../ip-search-list/ip-search-list.service';
 import { IPAdvancePaymentComponent, IpPaymentInsert } from '../ip-search-list/ip-advance-payment/ip-advance-payment.component';
-import { BrowseOpdPaymentReceipt } from 'app/main/opd/browse-payment-list/browse-payment-list.component';
+// import { BrowseOpdPaymentReceipt } from 'app/main/opd/browse-payment-list/browse-payment-list.component';
 import { IPSettlementViewComponent } from './ipsettlement-view/ipsettlement-view.component';
 import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
@@ -469,7 +469,7 @@ export class IPSettlementComponent implements OnInit {
 
         };
 
-        this.advanceDataStored.storage = new BrowseOpdPaymentReceipt(xx);
+        // this.advanceDataStored.storage = new BrowseOpdPaymentReceipt(xx);
 
         const dialogRef = this._matDialog.open(IPSettlementViewComponent,
             {

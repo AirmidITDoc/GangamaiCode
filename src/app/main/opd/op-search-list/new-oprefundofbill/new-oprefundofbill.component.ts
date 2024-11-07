@@ -8,7 +8,7 @@ import { OPSearhlistService } from '../op-searhlist.service';
 import { Router } from '@angular/router';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { Observable, Subscription } from 'rxjs';
-import { RefundMaster } from '../../browse-refund-list/browse-refund-list.component';
+// import { RefundMaster } from '../../browse-refund-list/browse-refund-list.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { DatePipe } from '@angular/common';
@@ -81,7 +81,7 @@ export class NewOPRefundofbillComponent implements OnInit {
   serviceNameCmbList: any = [];
   refundremain: any = [];
   isLoadingStr: string = '';
-  reportPrintObj: RefundMaster;
+  reportPrintObj: any;
   subscriptionArr: Subscription[] = [];
   printTemplate: any;
   totalAmtOfNetAmt: any;

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup , Validators} from '@angular/forms';
+import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,8 @@ export class PhoneAppointListService {
   mysearchform: FormGroup;
 
   constructor(
-    private _httpClient: HttpClient,
+    private _httpClient: ApiCaller,
+    private _httpClient1: HttpClient,
     private _formBuilder: FormBuilder
   ) { 
     this.myFilterform=this.filterForms();
@@ -39,61 +41,89 @@ export class PhoneAppointListService {
   filterForms(): FormGroup {
     return this._formBuilder.group({
      
-      HospitalId:'0',
-      PatientTypeID: '0',
-      CompanyId: '0',
-      TariffId: '0',
-      DepartmentId: '0',
-      DoctorId: '0',
-      RefDocName: '0',
+      hospitalId:'0',
+      patientTypeID: '0',
+      companyId: '0',
+      tariffId: '0',
+      departmentId: '0',
+      doctorId: '0',
+      refDocName: '0',
       classId: '0',
-      CountryId: '0',
-      IsSeniorCitizen:'0',
+      countryId: '0',
+      isSeniorCitizen:'0',
 
     });
   }
 
-  public getPhoneAppointmentlist(employee) {
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_PhoneAppList",employee)
-  }
+  createphoneForm(): FormGroup {
+    return this._formBuilder.group({
+      phoneAppId: '',
+      appDate: '',
+      appTime: '',
+     // seqNo: '',
+     firstName:  ['', [
+        Validators.required,
+        Validators.maxLength(50),
+        // Validators.pattern("^[a-zA-Z._ -]*$"),
+        Validators.pattern('^[a-zA-Z () ]*$')
+      ]],
+      middleName: ['', [
 
-  public getOTReservationlist(employee) {
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_OTBookingList",employee)
-  }
+        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+      ]],
+      lastName: ['', [
+        Validators.required,
+        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+      ]],
+      address: ['', Validators.required],
+      mobileNo:'',
+      phAppDate: '',
+      phAppTime: '',
+      departmentId: '',
+      doctorId: '',
+      addedBy: '',
+      updatedBy: '',
+      regNo: '',
+   
+    });
+}
+
+
+
+
+
+  getValidationMessages() {
+    return {
+        categoryName: [
+            { name: "required", Message: "Category Name is required" },
+            { name: "maxlength", Message: "Category name should not be greater than 50 char." },
+            { name: "pattern", Message: "Special char not allowed." }
+        ]
+    };
+}
+
+public phoneMasterSave(Param: any, showLoader = true) {
+    if (Param.phoneAppId) {
+        return this._httpClient.PutData("PhoneApp/Insert" + Param.phoneAppId, Param, showLoader);
+    } else return this._httpClient.PostData("PhoneApp/Insert", Param, showLoader);
+}
+
+public deactivateTheStatus(m_data) {
+    return this._httpClient.PostData("PhoneApp", m_data);
+}
+  
     
-  public getPhoenapplist(employee) {
-      return this._httpClient.post("Generic/GetByProc?procName=Retrieve_PhoneAppList",employee)
-  }
-      
-  public getPhoenappschdulelist() {
-      return this._httpClient.post("Generic/GetByProc?procName=Rtrv_ScheduledPhoneApp",{})
-  }
-  public getAdmittedDoctorCombo() {
-      return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
-  }
+public getPhoenappschdulelist() {
+  return this._httpClient1.post("Generic/GetByProc?procName=Rtrv_ScheduledPhoneApp",{})
+}
+
 
      //Deartment Combobox List
-  public getDepartmentCombo() {
-      return this._httpClient.post("Generic/GetByProc?procName=RetrieveDepartmentMasterForCombo", {})
+     public getDepartmentCombo() {
+      return this._httpClient1.post("Generic/GetByProc?procName=RetrieveDepartmentMasterForCombo", {})
   }
-   
-  public PhoneAppointInsert(employee)
-  {
-    return this._httpClient.post("OutPatient/PhoneAppointmentInsert", employee);
-  }
-  
-  public PhoneAppointCancle(employee)
-  {
-    return this._httpClient.post("OutPatient/PhoneAppointmentCancle", employee);
-  }
-    //Doctor Master Combobox List
+     //Doctor Master Combobox List
   public getDoctorMasterCombo(Id) {
-      return this._httpClient.post("Generic/GetByProc?procName=Retrieve_DoctorWithDepartMasterForCombo_Conditional", {"Id":Id})
-  }
-  
-  //Hospital Combobox List
-  public getHospitalCombo() {
-    return this._httpClient.post("Generic/GetByProc?procName=rtrv_UnitMaster_1", {})
-  }
-  
+    return this._httpClient1.post("Generic/GetByProc?procName=Retrieve_DoctorWithDepartMasterForCombo_Conditional", {"Id":Id})
+}
 }

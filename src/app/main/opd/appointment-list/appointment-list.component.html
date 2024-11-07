@@ -6,21 +6,21 @@
         <div class="top-header-info">
             <div class="top-header-title">
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    MaritalStatus Master
+                   Appointment List
                 </span>
             </div>
         </div>
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="onSave()">New MaritalStatus
+            <button mat-raised-button (click)="onSave()">New Appointment
             </button>
         </div>
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-        <airmid-table [gridConfig]="gridConfig"  class="content">
+        <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
                 <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>MaritalStatus Name</mat-label>
-                    <input matInput placeholder="Search MaritalStatus Name" autocomplete="off"
+                    <mat-label>Patient Name</mat-label>
+                    <input matInput placeholder="Search Patient Name" autocomplete="off"
                         [(ngModel)]="gridConfig.filters[0].fieldValue" />
                     <button mat-button matSuffix mat-icon-button aria-label="Clear"
                         (click)="gridConfig.filters[0].fieldValue=''">

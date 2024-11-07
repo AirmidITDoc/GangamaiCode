@@ -1,5 +1,4 @@
 import { ChangeDetectorRef, Component, ElementRef, Inject, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
-import { BrowseOPDBill } from '../../browse-opbill/browse-opbill.component';
 import { Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
 import { ChargesList, SearchInforObj } from '../../op-search-list/opd-search-list/opd-search-list.component';
 import { MatTableDataSource } from '@angular/material/table';
@@ -16,7 +15,6 @@ import Swal from 'sweetalert2';
 import { OpPaymentNewComponent } from '../../op-search-list/op-payment-new/op-payment-new.component';
 import { IpPaymentInsert, OPAdvancePaymentComponent } from '../../op-search-list/op-advance-payment/op-advance-payment.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import { AdvanceDetailObj, RegInsert } from '../../appointment/appointment.component';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
 import { ToastrService } from 'ngx-toastr';
@@ -132,7 +130,7 @@ export class NewOPBillingComponent implements OnInit {
   vFinalnetPaybleAmt: any = 0;
   Consessionres: boolean = false; 
   savebtn:boolean=true;
-  PatientHeaderObj: AdvanceDetailObj;
+  PatientHeaderObj: any;
   BillDiscPer:boolean=false;
   vRegNo: any;
 
@@ -148,10 +146,10 @@ export class NewOPBillingComponent implements OnInit {
   balanceamt: number;
   disamt: any;
   msg: any; 
-  reportPrintObj: BrowseOPDBill;
+  reportPrintObj: any;
   subscriptionArr: Subscription[] = [];
   printTemplate: any; 
-  reportPrintObjList: BrowseOPDBill[] = [];  
+  reportPrintObjList: any[] = [];  
   billingServiceList = []; 
   ConcessionReason: any;
   FinalNetAmt: any; 
@@ -178,7 +176,7 @@ export class NewOPBillingComponent implements OnInit {
   SrvcName: any;
   add: Boolean = false;
   // search code
-  registerObj = new RegInsert({}); 
+  // registerObj = new any({}); 
  
   resBillId: Post; 
   constructor(
@@ -280,6 +278,7 @@ export class NewOPBillingComponent implements OnInit {
       }
     }); 
   }  
+  registerObj:any;
   //patient infomation
   getSelectedObj1(obj) {
     console.log(obj)
