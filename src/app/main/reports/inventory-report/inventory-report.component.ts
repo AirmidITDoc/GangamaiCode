@@ -240,6 +240,7 @@ console.log(event.value)
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
       this.FlagReportTypeSelected= false;
+      this.FlagDaterangeSelected=true;
     }else if (this.ReportName == 'Supplier List') {
       this.FlagUserSelected = false;
       this.FlagnonmovedaySelected = false;
@@ -266,6 +267,7 @@ console.log(event.value)
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
       this.FlagReportTypeSelected= false;
+      this.FlagDaterangeSelected=true;
     } 
     else if (this.ReportName == 'Monthly Purchase(GRN) Report') {
       this.FlagUserSelected = false;
@@ -279,6 +281,7 @@ console.log(event.value)
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
       this.FlagReportTypeSelected= false;
+      this.FlagDaterangeSelected=true;
     } 
      
     else if (this.ReportName == 'GRN Report') {
@@ -293,6 +296,7 @@ console.log(event.value)
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
       this.FlagReportTypeSelected= true;
+      this.FlagDaterangeSelected=true;
     } 
     else if (this.ReportName == 'GRN Return Report') {
       this.FlagUserSelected = false;
@@ -306,6 +310,7 @@ console.log(event.value)
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
       this.FlagReportTypeSelected= false;
+      this.FlagDaterangeSelected=true;
     }
     else if (this.ReportName == 'GRN Report - NABH') {
       this.FlagUserSelected = false;
@@ -319,6 +324,7 @@ console.log(event.value)
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
       this.FlagReportTypeSelected= false;
+      this.FlagDaterangeSelected=true;
     }
     
     else if (this.ReportName == 'GRN Wise Product Qty Report') {
@@ -333,6 +339,7 @@ console.log(event.value)
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
       this.FlagReportTypeSelected= false;
+      this.FlagDaterangeSelected=true;
     }
     else if (this.ReportName == 'GRN Purchase Report') {
       this.FlagUserSelected = false;
@@ -491,6 +498,7 @@ console.log(event.value)
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
       this.FlagReportTypeSelected= false;
+      this.FlagDaterangeSelected=true;
     }
      else if (this.ReportName == 'Non-Moving Item List') {
       this.FlagUserSelected = false;
@@ -504,6 +512,7 @@ console.log(event.value)
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
       this.FlagReportTypeSelected= false;
+      this.FlagDaterangeSelected=true;
     }
     else if (this.ReportName == 'Non-Moving Item Without Batch List') {
       this.FlagUserSelected = false;
@@ -517,6 +526,7 @@ console.log(event.value)
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
       this.FlagReportTypeSelected= false;
+      this.FlagDaterangeSelected=true;
     }
     else if (this.ReportName == 'Patient Wise Material Consumption') {
       this.FlagUserSelected = false;
@@ -543,6 +553,7 @@ console.log(event.value)
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
       this.FlagReportTypeSelected= false;
+      this.FlagDaterangeSelected=true;
     }
     else if (this.ReportName == 'Item Count') {
       this.FlagUserSelected = false;
@@ -556,6 +567,7 @@ console.log(event.value)
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
       this.FlagReportTypeSelected= false;
+      this.FlagDaterangeSelected=true;
     }
      else if (this.ReportName == 'Supplier Wise Debit Credit Note') {
       this.FlagUserSelected = false;
