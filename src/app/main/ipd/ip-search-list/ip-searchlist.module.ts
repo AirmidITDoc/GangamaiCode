@@ -58,6 +58,7 @@ import { PrebillDetailsComponent } from './ip-billing/prebill-details/prebill-de
 import { DiscountAfterFinalBillComponent } from './discount-after-final-bill/discount-after-final-bill.component';
 import { OPIPFeedbackComponent } from '../Feedback/opip-feedback/opip-feedback.component';
 import { CompanyBillComponent } from './company-bill/company-bill.component';
+import { UpdateCompanyDetailsComponent } from './company-bill/update-company-details/update-company-details.component';
 
 
 
@@ -87,7 +88,8 @@ const routes: Routes = [
       PrebillDetailsComponent,
       DiscountAfterFinalBillComponent,
       // OPIPFeedbackComponent,
-      CompanyBillComponent
+      CompanyBillComponent,
+      UpdateCompanyDetailsComponent
     ],
     imports: [
         RouterModule.forChild(routes),

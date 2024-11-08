@@ -244,7 +244,7 @@ vAdvanceDetId:any;
       AdvanceDetObj['Time'] = this.datePipe.transform(this.currentDate, 'hh:mm:ss') || '01/01/1900'
       AdvanceDetObj['AdvanceId'] = 0;
       AdvanceDetObj['RefId'] = this.selectedAdvanceObj.RegID,
-        AdvanceDetObj['transactionID'] = 2;
+        AdvanceDetObj['transactionID'] = 1;
       AdvanceDetObj['OPD_IPD_Type'] = 1;
       AdvanceDetObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
       AdvanceDetObj['AdvanceAmount'] = this.advanceAmount;

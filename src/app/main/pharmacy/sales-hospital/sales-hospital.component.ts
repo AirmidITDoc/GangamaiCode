@@ -1796,6 +1796,8 @@ export class SalesHospitalComponent implements OnInit {
     this.TotalAdvanceAmt = 0;
     this.TotalBalanceAmt = 0;
     this.TotalCreditAmt = 0; 
+    this.getSalesPatientList();
+    this.getSalesDoctorList();
   }
 
   getGSTAmtSum(element) {
@@ -2153,6 +2155,8 @@ export class SalesHospitalComponent implements OnInit {
     this.PatientName = '';
     this.DoctorName = '';
     this.ItemSubform.get('FinalDiscPer').enable();
+    this.paymethod = false;
+   
   } 
   isLoading123 = false;
   onCashOnlinePaySave() {
@@ -2160,18 +2164,25 @@ export class SalesHospitalComponent implements OnInit {
     let nowDate = new Date();
     let nowDate1 = nowDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
     this.newDateTimeObj = { date: nowDate1[0], time: nowDate1[1] };
-    // console.log(this.newDateTimeObj);
-
+    // console.log(this.newDateTimeObj); 
     let ExternalPatient = '';
-    let ExternalDoc = '';
+    let ExternalDoc = ''; 
      if(this.ItemSubform.get('PatientName').value){
-       ExternalPatient = this.ItemSubform.get('PatientName').value.ExternalPatientName 
+      if(this.ItemSubform.get('PatientName').value.ExternalPatientName != undefined){
+        ExternalPatient = this.ItemSubform.get('PatientName').value.ExternalPatientName  
+      }else{
+        ExternalPatient = this.ItemSubform.get('PatientName').value
+      }
      }else{
        ExternalPatient = this.PatientName
      }
  
      if(this.ItemSubform.get('DoctorName').value){
-       ExternalDoc = this.ItemSubform.get('DoctorName').value.DoctorName 
+      if(this.ItemSubform.get('DoctorName').value.DoctorName  != undefined){
+        ExternalDoc = this.ItemSubform.get('DoctorName').value.DoctorName 
+      }else{
+        ExternalDoc = this.ItemSubform.get('DoctorName').value
+      } 
      }else{
        ExternalDoc = this.DoctorName
      }
@@ -2383,14 +2394,22 @@ export class SalesHospitalComponent implements OnInit {
 
     let ExternalPatient = '';
     let ExternalDoc = '';
-     if(this.ItemSubform.get('PatientName').value){
-       ExternalPatient = this.ItemSubform.get('PatientName').value.ExternalPatientName 
+    if(this.ItemSubform.get('PatientName').value){
+      if(this.ItemSubform.get('PatientName').value.ExternalPatientName != undefined){
+        ExternalPatient = this.ItemSubform.get('PatientName').value.ExternalPatientName  
+      }else{
+        ExternalPatient = this.ItemSubform.get('PatientName').value
+      }
      }else{
        ExternalPatient = this.PatientName
      }
  
      if(this.ItemSubform.get('DoctorName').value){
-       ExternalDoc = this.ItemSubform.get('DoctorName').value.DoctorName 
+      if(this.ItemSubform.get('DoctorName').value.DoctorName  != undefined){
+        ExternalDoc = this.ItemSubform.get('DoctorName').value.DoctorName 
+      }else{
+        ExternalDoc = this.ItemSubform.get('DoctorName').value
+      } 
      }else{
        ExternalDoc = this.DoctorName
      }
@@ -3327,17 +3346,25 @@ export class SalesHospitalComponent implements OnInit {
    
    let ExternalPatient = '';
    let ExternalDoc = '';
-    if(this.ItemSubform.get('PatientName').value){
-      ExternalPatient = this.ItemSubform.get('PatientName').value.ExternalPatientName 
+   if(this.ItemSubform.get('PatientName').value){
+    if(this.ItemSubform.get('PatientName').value.ExternalPatientName != undefined){
+      ExternalPatient = this.ItemSubform.get('PatientName').value.ExternalPatientName  
     }else{
-      ExternalPatient = this.PatientName
+      ExternalPatient = this.ItemSubform.get('PatientName').value
     }
+   }else{
+     ExternalPatient = this.PatientName
+   }
 
-    if(this.ItemSubform.get('DoctorName').value){
+   if(this.ItemSubform.get('DoctorName').value){
+    if(this.ItemSubform.get('DoctorName').value.DoctorName  != undefined){
       ExternalDoc = this.ItemSubform.get('DoctorName').value.DoctorName 
     }else{
-      ExternalDoc = this.DoctorName
-    }
+      ExternalDoc = this.ItemSubform.get('DoctorName').value
+    } 
+   }else{
+     ExternalDoc = this.DoctorName
+   }
  
 
     let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);

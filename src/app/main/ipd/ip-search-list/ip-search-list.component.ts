@@ -935,6 +935,7 @@ export class ChargesList {
   C_qty:any;
   C_Price:any;
   IsComServ:any;
+  CompanyServiceName:any;
 
   constructor(ChargesList) {
     this.ChargesId = ChargesList.ChargesId || '';
