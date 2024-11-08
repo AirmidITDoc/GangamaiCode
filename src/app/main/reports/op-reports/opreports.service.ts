@@ -289,8 +289,8 @@ return this._httpClient.get("OPReport/view-OPDoctorWiseNewOldPatientReport?FromD
   public getgroupwisescollummaryView(FromDate,ToDate,GroupId,loader = true){
     if (loader) {
       this._loaderService.show();
-  }
-    return this._httpClient.get("CommanReport/view-GroupwiseSummaryReport?FromDate=" + FromDate+"&ToDate="+ToDate,+"&GroupId="+GroupId);
+  }debugger
+    return this._httpClient.get("CommanReport/view-GroupwiseSummaryReport?FromDate="+FromDate+"&ToDate="+ToDate+"&GroupId="+GroupId);
   }
   
   public getgroupwiserevenusummaryView(FromDate,ToDate,loader = true){

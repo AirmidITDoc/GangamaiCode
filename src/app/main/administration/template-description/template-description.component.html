@@ -51,13 +51,13 @@
                                             </mat-cell>
                                         </ng-container>
 
-                                        <ng-container matColumnDef="TemplateDescription">
+                                        <!-- <ng-container matColumnDef="TemplateDescription">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header class="w-730">TemplateDescription
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-730">
                                                 {{element.TemplateDescription}}
                                             </mat-cell>
-                                        </ng-container>
+                                        </ng-container> -->
 
 
 
@@ -86,10 +86,10 @@
                                             </mat-footer-cell>
                                         </ng-container>
 
-                                        <mat-header-row class="accent min-width-1800"
+                                        <mat-header-row class="accent min-width-1000"
                                             *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
                                         <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
-                                            class=" min-width-1800"
+                                            class=" min-width-1000"
                                             [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                         <mat-footer-row *matFooterRowDef="['loading']"
                                             [ngClass]="{'hide':DSList!=null}"></mat-footer-row>
