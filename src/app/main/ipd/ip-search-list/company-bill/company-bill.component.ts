@@ -1709,8 +1709,8 @@ export class CompanyBillComponent implements OnInit {
       console.log(row) 
       const dialogRef = this._matDialog.open(UpdateCompanyDetailsComponent,
         {
-          maxWidth: "70vw",
-          height: '70vw',
+          maxWidth: "40%",
+          height: '50%',
           width: '100%',
           data: {
             registerObj: row, 
@@ -1718,7 +1718,7 @@ export class CompanyBillComponent implements OnInit {
         });
         dialogRef.afterClosed().subscribe(result => {
           console.log('The dialog was closed - Insert Action', result);
-          //this.getChargesList();
+          console.log(result)
         }); 
     }
   }

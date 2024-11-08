@@ -778,6 +778,38 @@ getConcessionChek(){
   } 
   
 }
+
+onsave(){
+  if ((this.vOPIPId == '' || this.vOPIPId == null || this.vOPIPId == undefined)) {
+    this.toastr.warning('Please select Patient', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  }
+  if ((!this.dataSource.data.length)) {
+    this.toastr.warning('Please add service in table', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  } 
+    Swal.fire({
+      title: 'Do you want to Generate the Bill',
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Generate!" 
+  
+    }).then((result) => { 
+      if (result.isConfirmed) { 
+       this.onSaveOPBill2();
+      }
+    }) 
+} 
+
+
+
 SavePackageList:any=[];  
 onSaveOPBill2() {
   debugger
@@ -913,36 +945,36 @@ debugger
     })
 
     
-    let InsertPackageDetails = []; 
-    this.dsPackageDet.data.forEach((element) => {
-      let InsertPackageDetObj = {};
-       InsertPackageDetObj['packageMainChargeID'] = 0,
-       InsertPackageDetObj['ChargesDate'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
-       InsertPackageDetObj['opD_IPD_Type'] = 0,
-       InsertPackageDetObj['opD_IPD_Id'] = this.vOPIPId,
-       InsertPackageDetObj['serviceId'] = element.ServiceId,
-       InsertPackageDetObj['price'] = element.Price,
-       InsertPackageDetObj['qty'] = element.Qty,
-       InsertPackageDetObj['totalAmt'] = element.TotalAmt,
-       InsertPackageDetObj['concessionPercentage'] = element.DiscPer || 0,
-       InsertPackageDetObj['concessionAmount'] = element.DiscAmt || 0,
-       InsertPackageDetObj['netAmount'] = element.NetAmount,
-       InsertPackageDetObj['doctorId'] = element.DoctorId || 0,
-       InsertPackageDetObj['docPercentage'] = 0,
-       InsertPackageDetObj['docAmt'] = 0,
-       InsertPackageDetObj['hospitalAmt'] = element.NetAmount || 0,
-       InsertPackageDetObj['isGenerated'] = 0,
-       InsertPackageDetObj['addedBy'] = this.accountService.currentUserValue.user.id,
-       InsertPackageDetObj['isCancelled'] = 0,
-       InsertPackageDetObj['isCancelledBy'] = 0,
-       InsertPackageDetObj['isCancelledDate'] = "01/01/1900",
-       InsertPackageDetObj['isPathology'] = element.IsPathology,
-       InsertPackageDetObj['isRadiology'] = element.IsRadiology,
-       InsertPackageDetObj['isPackage'] = 1,
-       InsertPackageDetObj['isSelfOrCompanyService'] = false,
-       InsertPackageDetObj['packageId'] = element.ServiceId,
-       InsertPackageDetails.push(InsertPackageDetObj);
-   }); 
+  //   let InsertPackageDetails = []; 
+  //   this.dsPackageDet.data.forEach((element) => {
+  //     let InsertPackageDetObj = {};
+  //      InsertPackageDetObj['packageMainChargeID'] = 0,
+  //      InsertPackageDetObj['ChargesDate'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
+  //      InsertPackageDetObj['opD_IPD_Type'] = 0,
+  //      InsertPackageDetObj['opD_IPD_Id'] = this.vOPIPId,
+  //      InsertPackageDetObj['serviceId'] = element.ServiceId,
+  //      InsertPackageDetObj['price'] = element.Price,
+  //      InsertPackageDetObj['qty'] = element.Qty,
+  //      InsertPackageDetObj['totalAmt'] = element.TotalAmt,
+  //      InsertPackageDetObj['concessionPercentage'] = element.DiscPer || 0,
+  //      InsertPackageDetObj['concessionAmount'] = element.DiscAmt || 0,
+  //      InsertPackageDetObj['netAmount'] = element.NetAmount,
+  //      InsertPackageDetObj['doctorId'] = element.DoctorId || 0,
+  //      InsertPackageDetObj['docPercentage'] = 0,
+  //      InsertPackageDetObj['docAmt'] = 0,
+  //      InsertPackageDetObj['hospitalAmt'] = element.NetAmount || 0,
+  //      InsertPackageDetObj['isGenerated'] = 0,
+  //      InsertPackageDetObj['addedBy'] = this.accountService.currentUserValue.user.id,
+  //      InsertPackageDetObj['isCancelled'] = 0,
+  //      InsertPackageDetObj['isCancelledBy'] = 0,
+  //      InsertPackageDetObj['isCancelledDate'] = "01/01/1900",
+  //      InsertPackageDetObj['isPathology'] = element.IsPathology,
+  //      InsertPackageDetObj['isRadiology'] = element.IsRadiology,
+  //      InsertPackageDetObj['isPackage'] = 1,
+  //      InsertPackageDetObj['isSelfOrCompanyService'] = false,
+  //      InsertPackageDetObj['packageId'] = element.ServiceId,
+  //      InsertPackageDetails.push(InsertPackageDetObj);
+  //  }); 
 
  
      
@@ -1002,7 +1034,7 @@ debugger
             "opBillDetailsInsert": Billdetsarr,
             "opCalDiscAmountBill": opCalDiscAmountBill,
             "opInsertPayment": result.submitDataPay.ipPaymentInsert,
-            "chargesPackageInsert": InsertPackageDetails
+            //"chargesPackageInsert": InsertPackageDetails
           };
           console.log(submitData);
           this._oPSearhlistService.InsertOPBilling(submitData).subscribe(response => {
@@ -1075,7 +1107,7 @@ debugger
         "opBillDetailsInsert": Billdetsarr,
         "opCalDiscAmountBill": opCalDiscAmountBill,
         "opInsertPayment": Paymentobj,
-        "chargesPackageInsert": InsertPackageDetails
+       // "chargesPackageInsert": InsertPackageDetails
       };
       console.log(submitData);
       this._oPSearhlistService.InsertOPBilling(submitData).subscribe(response => {
