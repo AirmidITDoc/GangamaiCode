@@ -36,7 +36,7 @@
                                             <mat-label>Servce Name</mat-label>
                                             <input type="text" name="SrvcName" formControlName="SrvcName" placeholder="Service Name" matInput
                                                 [matAutocomplete]="auto" (input)="getServiceListCombobox()" id="ServiceId" [(ngModel)]="vServiceName"
-                                                (keydown)="onEnterservice($event)">
+                                                (keydown)="onEnterservice($event)" required> 
                                             <span matSuffix style="display: flex;">
                                                 <mat-icon class="mat-icon-close"
                                                     (click)="Myform.get('SrvcName').setValue(''); isSrvcNameSelected = false;">close</mat-icon>
@@ -73,7 +73,7 @@
                                 
                                         <mat-form-field appearance="outline" fxFlex="12%">
                                             <mat-label>Qty</mat-label>
-                                            <input matInput [(ngModel)]="vQty" name="Qty" #qty required type="text" OnlyNumber
+                                            <input matInput [(ngModel)]="vQty" name="Qty" #qty   type="text" OnlyNumber
                                                 (keydown)="onEnterqty($event)" formControlName="qty" id="qty" required
                                                 (keypress)="keyPressAlphanumeric($event)">
                                         </mat-form-field>
@@ -85,7 +85,7 @@
                                 
                                         <mat-form-field appearance="outline" fxFlex="50%">
                                             <mat-label>Select ClassName</mat-label>
-                                            <input matAutocompletePosition="below" type="text" placeholder="Select " matInput
+                                            <input matAutocompletePosition="below" type="text" placeholder="Select " matInput required
                                                 formControlName="ChargeClass" [matAutocomplete]="autoclass" [(ngModel)]="vClassName">
                                             <span matSuffix style="display: flex;">
                                                 <mat-icon class="mat-icon-close"

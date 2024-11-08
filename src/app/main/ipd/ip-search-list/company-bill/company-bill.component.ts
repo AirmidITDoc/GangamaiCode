@@ -867,6 +867,8 @@ export class CompanyBillComponent implements OnInit {
               IsPathology: element.IsPathology || 0,
               IsRadiology: element.IsRadiology || 0,
               ClassId: element.ClassId || 0,
+              DoctorId :element.DoctorId || 0,
+              IsComServ:element.IsComServ
             });
             this.dataSource.data = this.chargeslist
             console.log(this.dataSource.data) 
@@ -1704,7 +1706,7 @@ export class CompanyBillComponent implements OnInit {
       });
     }
     }
-
+    CompanyServList:any=[];
     EditService(row) { 
       console.log(row) 
       const dialogRef = this._matDialog.open(UpdateCompanyDetailsComponent,
@@ -1719,6 +1721,46 @@ export class CompanyBillComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
           console.log('The dialog was closed - Insert Action', result);
           console.log(result)
+          if(result){
+          let FinalNetAmt = 0;
+          this.chargeslist = this.dataSource.data
+          this.dataSource.data = result;
+          console.log(this.dataSource.data) 
+          this.dataSource.data.forEach(element =>{
+            console.log(element)  
+            this.CompanyServList = this.chargeslist.filter(item => item.ServiceId !== element.ServiceId) 
+            if(element.IsComServ == true){
+              FinalNetAmt = element.C_TotalAmount
+            }else{
+              FinalNetAmt = element.NetAmount 
+            }
+            this.CompanyServList.push(
+              {
+                ChargesDate: element.ChargesDate || 0,
+                ChargesId: element.ChargesId || 0,
+                OPD_IPD_Id: element.OPD_IPD_Id || 0,
+                ServiceId: element.ServiceId || 0, 
+                DoctorName: element.DoctorName || '', 
+                CompanyServiceName: element.CompanyServiceName  || '',
+                C_Price: element.C_Price  || 0,
+                C_qty: element.C_qty  || 0,
+                C_TotalAmount: element.C_TotalAmount  || 0, 
+                ConcessionAmount: element.ConcessionAmount  || 0,
+                Amount: element.NetAmount  || 0,
+                NetAmount: FinalNetAmt || 0,
+                OPD_IPD_Type: element.OPD_IPD_Type  || 0,
+                ClassName: element.ClassName  || '',
+                ChargesAddedName: element.ChargesAddedName  || '', 
+                IsPathology: element.IsPathology || 0,
+                IsRadiology: element.IsRadiology || 0,
+                ClassId: element.ClassId || 0,
+                DoctorId :element.DoctorId || 0
+              });
+              this.dataSource.data = this.CompanyServList
+              this.chargeslist = this.CompanyServList
+              console.log(this.dataSource.data) 
+          }) 
+        }
         }); 
     }
   }

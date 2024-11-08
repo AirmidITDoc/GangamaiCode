@@ -44,6 +44,7 @@ export class UpdateCompanyDetailsComponent implements OnInit {
   selectedAdvanceObj:any;
   ClassId:any;
   DoctorName:any;
+  ComServiceName:any;
 
   constructor(
     public _IpSearchListService: IPSearchListService,
@@ -60,9 +61,11 @@ export class UpdateCompanyDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.Myform = this.CreateMyForm(); 
     if(this.data){
+     
       this.selectedAdvanceObj = this.data.registerObj
       console.log(this.selectedAdvanceObj)
-      this.vServiceName = this.selectedAdvanceObj.CompanyServiceName;
+      this.getRetreivDoctor();
+      this.ComServiceName = this.selectedAdvanceObj.CompanyServiceName;
       this.vPrice = this.selectedAdvanceObj.C_Price;
       this.vQty = this.selectedAdvanceObj.C_qty;
       this.vTotalAmt = this.selectedAdvanceObj.C_TotalAmount;
@@ -135,9 +138,8 @@ export class UpdateCompanyDetailsComponent implements OnInit {
 
  //ServiceName
     getServiceListCombobox() {
-      debugger
       let ServiceName
-    if(this.selectedAdvanceObj.CompanyServiceName){
+    if(this.ComServiceName){
       ServiceName = this.selectedAdvanceObj.CompanyServiceName
     }else{
       ServiceName = this.Myform.get('SrvcName').value
@@ -162,7 +164,8 @@ export class UpdateCompanyDetailsComponent implements OnInit {
            // this.Myform.get('SrvcName').setValue(toSelectServiceId); 
             this.Myform.get('SrvcName').setValue(this.filteredOptions[0]);
         }
-        });  
+        }); 
+        this.ComServiceName = ""
     }
     getSelectedServiceObj(obj) { 
       console.log(obj) 
@@ -191,16 +194,35 @@ export class UpdateCompanyDetailsComponent implements OnInit {
         return ''; 
       return option && option.ServiceName ? option.ServiceName : '';
     }
-  //Doctor list 
-  getAdmittedDoctorCombo() {
-    let DoctorName
-    if(this.DoctorName){
-      DoctorName = this.DoctorName
-    }else{
-      DoctorName = this.Myform.get('DoctorID').value
+
+    getRetreivDoctor(){
+      if(this.selectedAdvanceObj.DoctorId){ 
+        this._IpSearchListService.CompanyDoctorList().subscribe(data=>{ 
+        this.searchDocList = data
+        console.log(this.searchDocList)
+        const toSelectDocterId = this.searchDocList.find(c => c.DoctorId == this.selectedAdvanceObj.DoctorId);
+        console.log(toSelectDocterId) 
+        if(toSelectDocterId){
+          this.selectedDocName = toSelectDocterId.Doctorname 
+          this.getAdmittedDoctorCombo();
+        } 
+       }); 
+      } 
     }
+  //Doctor list 
+  searchDocList:any=[];
+  selectedDocName:any;
+  getAdmittedDoctorCombo() {  
+    debugger
+    let DoctorName 
+    if(this.selectedDocName){
+      DoctorName =  this.selectedDocName
+    }
+    else{
+      DoctorName = this.Myform.get('DoctorID').value
+    }  
     var vdata = {
-      "Keywords": this.Myform.get('DoctorID').value + "%" || "%"
+      "Keywords": DoctorName + "%" || "%"
     }
     console.log(vdata)
     this._IpSearchListService.getAdmittedDoctorCombo(vdata).subscribe(data => {
@@ -212,12 +234,13 @@ export class UpdateCompanyDetailsComponent implements OnInit {
         this.noOptionFound = false;
       }
 
-      if (this.DoctorName) {
-         const toSelectDocterId = this.filteredOptionsDoctors.find(c => c.DoctorName == this.DoctorName);
-        this.Myform.get('DoctorID').setValue(toSelectDocterId[0]); 
-        //this.Myform.get('DoctorID').setValue(this.filteredOptionsDoctors[0]);
+      if (this.selectedAdvanceObj.DoctorId) {
+        // const toSelectDocterId = this.filteredOptionsDoctors.find(c => c.DoctorName == this.DoctorName);
+       // this.Myform.get('DoctorID').setValue(toSelectDocterId); 
+        this.Myform.get('DoctorID').setValue(this.filteredOptionsDoctors[0]);
     }
     });
+    this.selectedDocName = '';
   }
   getOptionTextDoctor(option) {
     return option && option.Doctorname ? option.Doctorname : '';
@@ -225,11 +248,54 @@ export class UpdateCompanyDetailsComponent implements OnInit {
 
   chargeslist:any=[];
   onSave(){
+    debugger
+    if (( this.vServiceName== '' || this.vServiceName == null || this.vServiceName == undefined)) {
+      this.toastr.warning('Please select service', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if(!this.filteredOptions.find(item => item.ServiceName == this.Myform.get('SrvcName').value.ServiceName)){
+      this.toastr.warning('Please select valid Service', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if (( this.vPrice== '' || this.vPrice == null || this.vPrice == undefined || this.vPrice == '0')) {
+      this.toastr.warning('Please enter price', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if (( this.vQty== '' || this.vQty == null || this.vQty == undefined || this.vQty == '0')) {
+      this.toastr.warning('Please enter qty', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if ((this.vClassName== '' || this.vClassName == null || this.vClassName == undefined)) {
+      this.toastr.warning('Please select Class Name', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if(!this.ClassList.find(item => item.ClassName == this.Myform.get('ChargeClass').value.ClassName)){
+      this.toastr.warning('Please select valid ClassName', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    } 
     if(this.Myform.invalid){
       this.toastr.warning('please check Total Amount/Net Amount showing Zero  ', 'error!', {
         toastClass: 'tostr-tost custom-toast-warning',
       });  
       return;
+    }
+    let DoctorId = 0
+    let DoctorName = '';
+    if(this.Myform.get('DoctorID').value){
+      DoctorId = this.Myform.get('DoctorID').value.DoctorId 
+      DoctorName = this.Myform.get('DoctorID').value.Doctorname 
     }
     this.chargeslist.push(
       {
@@ -237,8 +303,8 @@ export class UpdateCompanyDetailsComponent implements OnInit {
         ChargesId: this.selectedAdvanceObj.ChargesId || 0,
         OPD_IPD_Id: this.selectedAdvanceObj.OPD_IPD_Id || 0,
         ServiceId: this.Myform.get('SrvcName').value.ServiceId || 0, 
-        DoctorName: this.Myform.get('DoctorID').value.DoctorName || '', 
-        CompanyServiceName:  this.Myform.get('SrvcName').value.CompanyServiceName  || '',
+        DoctorName: DoctorName || '', 
+        CompanyServiceName:  this.Myform.get('SrvcName').value.ServiceName  || '',
         C_Price: this.vPrice || 0,
         C_qty: this.vQty|| 0,
         C_TotalAmount: this.vTotalAmt || 0, 
@@ -251,6 +317,8 @@ export class UpdateCompanyDetailsComponent implements OnInit {
         IsPathology: this.IsPathology || 0,
         IsRadiology: this.IsRadiology  || 0,
         ClassId: this.Myform.get('ChargeClass').value.ClassId || 0,
+        DoctorId : DoctorId || 0,
+        IsComServ:this.selectedAdvanceObj.IsComServ
       });
      
       console.log(this.chargeslist) 
