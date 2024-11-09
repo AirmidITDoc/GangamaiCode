@@ -23,7 +23,7 @@ export class TemplateDescriptionComponent implements OnInit {
   displayedColumns: string[] = [
      "TemplateId",
     "TemplateName",
-    "TemplateDescription",
+    // "TemplateDescription",
      "action",
 ];
 DSList=new MatTableDataSource<TemplateMaster>();

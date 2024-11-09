@@ -20,6 +20,7 @@ export class NewTemplateDescComponent implements OnInit {
   tempdesc:any='';
   TemplateId:any=0;
   TemplateName:any;
+  vTemplateDesc:any;
   registerObj = new TemplateMaster({});
 
   public tools: object = {
@@ -88,7 +89,7 @@ export class NewTemplateDescComponent implements OnInit {
     //   });
     //   return;
     // }
-
+   // this.vTemplateDesc = this._TempDescService.myform.get("Tempdesc").value.target.innerHTML;
 
 if(this.TemplateId==0){
     let tempobj = {};

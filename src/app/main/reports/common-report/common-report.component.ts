@@ -685,12 +685,12 @@ ServiceList: any = [];
     let GroupId = 0;
     if (this._OPReportsService.userForm.get('GroupId').value)
       GroupId = this._OPReportsService.userForm.get('GroupId').value.GroupId
-
+debugger
     setTimeout(() => {
-      let GroupId = this._OPReportsService.userForm.get('GroupId').value | 0
+    
       this._OPReportsService.getgroupwisescollummaryView(
         this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900", GroupId
+        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",GroupId
       ).subscribe(res => {
         const matDialog = this._matDialog.open(PdfviewerComponent,
           {
