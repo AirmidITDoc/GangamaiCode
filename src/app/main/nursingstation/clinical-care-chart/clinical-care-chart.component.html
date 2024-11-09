@@ -397,6 +397,193 @@
                                                     </div>
                                                 </div>
                                             </mat-tab>
+                                            
+                                            <mat-tab label="Lab Reports">
+                                                <div class="content" style="overflow: auto;height:460px;">
+                                                    <div class="center p-12 pb-56" style="border-radius: 4px;overflow: auto;"> 
+                                                            <div fxFlexFill fxLayout="column" fxLayoutGap="6px">  
+                                                              
+                                                        
+                                                                <mat-card style="padding: 5px;">
+                                                                    <div class="table-header">
+                                                                        <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+                                                                            <div class="table-header-title">
+                                                                                <span class="h3 font-weight-600">Lab Test Result List</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <mat-table  matSort [dataSource]="datasource" [@animateStagger]="{value:'50'}"
+                                                                    style="overflow: auto;height: 370px;">  
+                                                    
+                                                                    <ng-container matColumnDef="Date">
+                                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-200">
+                                                                            Date&TIme </mat-header-cell>
+                                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-200">
+                                                                            {{element.DOA}}-{{element.DOT}}</mat-cell>
+                                                                    </ng-container>
+                                                    
+                                                                    <ng-container matColumnDef="TestName">
+                                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-250">
+                                                                            TestName </mat-header-cell>
+                                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-250">
+                                                                            {{element.ServiceName}} </mat-cell>
+                                                                    </ng-container>
+                                                    
+                                                                    <ng-container matColumnDef="PBillNo">
+                                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-130">
+                                                                            PBill No </mat-header-cell>
+                                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-130">
+                                                                            {{element.PBillNo || '-'}} </mat-cell>
+                                                                    </ng-container>
+                                    
+                                                                    <ng-container matColumnDef="IsCompleted">
+                                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                            IsCompleted </mat-header-cell>
+                                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                            <button mat-icon-button>
+                                                                                <mat-icon matTooltip="Lab Report" (click)="LabReportView(element)"
+                                                                                    *ngIf="element.IsCompleted==true">remove_red_eye</mat-icon>
+                                                                                <mat-icon matTooltip="not Completed" *ngIf="element.IsCompleted==false"
+                                                                                    class="active-icon red-500 s-16">hourglass_empty</mat-icon>
+                                                                            </button>
+                                                                        </mat-cell>
+                                                                    </ng-container>
+                                                                    
+                                                                    <ng-container matColumnDef="loading">
+                                                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                                                        </mat-header-cell>
+                                                                    </ng-container>
+                                                    
+                                                                    <ng-container matColumnDef="noData">
+                                                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                                                            no data found...
+                                                                        </mat-footer-cell>
+                                                                    </ng-container>
+                                                    
+                                                                    <mat-header-row class="accent" *matHeaderRowDef="displayedColumnsLapReports; sticky: true">
+                                                                    </mat-header-row>
+                                                                    <mat-row *matRowDef="let row; columns: displayedColumnsLapReports;"
+                                                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                                                    <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                                                    </mat-footer-row>
+                                                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                                                        [ngClass]="{'hide':!(datasource!=null && datasource.data.length==0)}">
+                                                                    </mat-footer-row>
+                                                                </mat-table>
+                                                                </mat-card>
+                                                            </div> 
+                                                    </div>
+                                                </div>
+                                            </mat-tab> 
+                                            <mat-tab label="Lab Request">
+                                                <div class="content" style="overflow: auto;height:450px;">
+                                                    <div class="center p-12 pb-56" style="border-radius: 4px;overflow: auto;"> 
+                                                            <div fxFlexFill fxLayout="column" fxLayoutGap="6px"> 
+                                                        
+                                                                <div fxLayoutAlign="end">
+                                                                    <div class="top-header-right">
+                                                                        <div class="header-add-button">
+                                                                            <button mat-raised-button (click)="getLabRequest()">Request New Test</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                        
+                                                                <mat-card style="padding: 5px;">
+                                                                    <div class="table-header">
+                                                                        <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+                                                                            <div class="table-header-title">
+                                                                                <span class="h3 font-weight-600">Lab Request List</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <mat-table class="Tab1" matSort [dataSource]="dsrequestList" [@animateStagger]="{value:'50'}"
+                                                                        style="overflow: auto;height: 350px;">
+                                                        
+                                                                        <ng-container matColumnDef="RegNo">
+                                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>RegNo
+                                                                            </mat-header-cell>
+                                                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                                                <span> {{contact.RegNo}}</span>
+                                                                            </mat-cell>
+                                                                        </ng-container>
+                                                        
+                                                                        <ng-container matColumnDef="PatientName">
+                                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
+                                                                                PatientName
+                                                                            </mat-header-cell>
+                                                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
+                                                                                <span> {{contact.PatientName}}</span>
+                                                                            </mat-cell>
+                                                                        </ng-container>
+                                                        
+                                                                        <ng-container matColumnDef="WardName">
+                                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm> Ward Name
+                                                                            </mat-header-cell>
+                                                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                                                <span> {{contact.WardName}}</span>
+                                                                            </mat-cell>
+                                                                        </ng-container>
+                                                        
+                                                                        <ng-container matColumnDef="RequestType">
+                                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm> RequestType
+                                                                            </mat-header-cell>
+                                                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                                                <span> {{contact.RequestType}}</span>
+                                                                            </mat-cell>
+                                                                        </ng-container>
+                                                        
+                                                                        <ng-container matColumnDef="IsOnFileTest">
+                                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm> IsOnFile Test
+                                                                            </mat-header-cell>
+                                                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                                                <span> {{contact.IsOnFileTest}}</span>
+                                                                            </mat-cell>
+                                                                        </ng-container>
+                                                        
+                                                                        <ng-container matColumnDef="action" stickyEnd>
+                                                                            <mat-header-cell *matHeaderCellDef fxShow.gt-sm>Action
+                                                                            </mat-header-cell>
+                                                                            <mat-cell *matCellDef="let row">
+                                                                                <button mat-icon-button matTooltip="print" (click)="viewgetLabrequestReportPdf(row)">
+                                                                                    <mat-icon>print</mat-icon>
+                                                                                </button>
+                                                                            </mat-cell>
+                                                                        </ng-container>
+                                                        
+                                                                        <ng-container matColumnDef="loading">
+                                                                            <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                                                            </mat-header-cell>
+                                                                        </ng-container>
+                                                        
+                                                                        <ng-container matColumnDef="noData">
+                                                                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                                                                no data found...
+                                                                            </mat-footer-cell>
+                                                                        </ng-container>
+                                                        
+                                                                        <mat-header-row class="accent" *matHeaderRowDef="displayedColumnsLabReq; sticky: true"></mat-header-row>
+                                                                        <mat-row *matRowDef="let contact; columns: displayedColumnsLabReq;" class="contact"
+                                                                            [ngClass]="contact.IsClosed == '1' ? 'self-row' : ''" [@animate]="{value:'*',params:{y:'100%'}}"
+                                                                            (click)="getRequestdetList(contact)">
+                                                                        </mat-row>
+                                                        
+                                                                        <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                                                        </mat-footer-row>
+                                                                        <mat-footer-row *matFooterRowDef="['noData']"
+                                                                            [ngClass]="{'hide':!(dsrequestList!=null && dsrequestList.data.length==0)}">
+                                                                        </mat-footer-row>
+                                                                    </mat-table>
+                                                                </mat-card>
+                                                            </div> 
+                                                    </div>
+                                                </div>
+                                            </mat-tab> 
+
+
+
+
+
+                                          
                             
                                             <!-- //seconds tab -->
                                             <mat-tab label="Vitals">

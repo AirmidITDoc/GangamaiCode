@@ -401,7 +401,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
     IPRefundofAdvanceObj['RefundDate'] = this.dateTimeObj.date;
     IPRefundofAdvanceObj['RefundTime'] = this.dateTimeObj.time;
     IPRefundofAdvanceObj['BillId'] = this.BillNo || 0;
-    IPRefundofAdvanceObj['AdvanceId'] = this.advId;
+    IPRefundofAdvanceObj['AdvanceId'] = this.advDetailId;
     IPRefundofAdvanceObj['OPD_IPD_Type'] = 1;
     IPRefundofAdvanceObj['OPD_IPD_ID'] = this.vOPIPId,
       IPRefundofAdvanceObj['BalanceAmount'] = this.BalanceAdvance;
@@ -425,7 +425,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
     this.dsrefundlist.data.forEach((element) =>{
       let InsertIPRefundofAdvanceDetailObj = {}; 
       InsertIPRefundofAdvanceDetailObj['AdvRefId'] =0;
-      InsertIPRefundofAdvanceDetailObj['AdvDetailId'] = element.AdvanceId || 0;
+      InsertIPRefundofAdvanceDetailObj['AdvDetailId'] = element.AdvanceDetailID || 0;
       InsertIPRefundofAdvanceDetailObj['RefundDate'] = this.dateTimeObj.date;
       InsertIPRefundofAdvanceDetailObj['RefundTime'] = this.dateTimeObj.time;
       InsertIPRefundofAdvanceDetailObj['AdvRefundAmt'] =element.RefundAmt || 0;

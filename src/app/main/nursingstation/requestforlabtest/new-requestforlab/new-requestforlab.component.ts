@@ -90,6 +90,7 @@ export class NewRequestforlabComponent implements OnInit {
       if (this.advanceDataStored.storage) {
         debugger
          this.selectedAdvanceObj = this.advanceDataStored.storage;
+         this.RegNo =  this.selectedAdvanceObj.RegNo
          // this.PatientHeaderObj = this.advanceDataStored.storage;
          console.log( this.selectedAdvanceObj)
        }
@@ -195,13 +196,13 @@ export class NewRequestforlabComponent implements OnInit {
 
   getServiceListdata() {
     // debugger 
-    if(this.RegNo){
+    if(this.selectedAdvanceObj.RegNo){
       this.sIsLoading = ''
       var Param = {
         "ServiceName":`${this.myFormGroup.get('ServiceId').value}%` ||'%',
         "IsPathRad":parseInt(this.myFormGroup.get('IsPathRad').value) || 0,
-        "ClassId":   this.vClassId || 0,
-        "TariffId":  this.vTariffId  || 0
+        "ClassId":   this.selectedAdvanceObj.ClassId || 1,
+        "TariffId":  this.selectedAdvanceObj.TariffId  || 0
     }
       console.log(Param);
       this._RequestforlabtestService.getServiceListDetails(Param).subscribe(data => {

@@ -827,6 +827,9 @@ public updateIPDDischargSummary(employee)
   public CompanyDoctorList() {
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_DoctorListMaster" , {});  
   }
+  public UpdateCompayService(data) {
+    return this._httpClient.post("Generic/ExecByQueryStatement?query="+data, {});
+  }
   public getAdvanceId(data) {
     return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
   }

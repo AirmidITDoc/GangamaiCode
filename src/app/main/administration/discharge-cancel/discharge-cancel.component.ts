@@ -51,6 +51,7 @@ export class DischargeCancelComponent implements OnInit {
   AdmissionId:any;
   convertedDate: Date;
   formattedTime:any;
+  IsBillgenerated:any;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   
@@ -157,10 +158,22 @@ getSelectedDischargeObj(obj){
  this.vGenderName = obj.GenderName
  this.vAge = obj.Age  
  this.AdmissionId = obj.AdmissionID;
+ this.IsBillgenerated = obj.IsBillGenerated;
 }
  
   isLoading123:boolean=false;
   DischargeCancel(){ 
+    if(this.IsBillgenerated == 1){
+      Swal.fire({
+        title: 'Selected Patient Bill Is Already Generated', 
+        icon: "warning",
+        showCancelButton: false,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Ok!" 
+    })
+       
+    }else{
     Swal.fire({
       title: 'Do you want to cancel the Discharge ',
       text: "You won't be able to revert this!",
@@ -191,6 +204,7 @@ getSelectedDischargeObj(obj){
         });  
       } 
     })
+  }
   }
   AdmisssionCancel(){
 

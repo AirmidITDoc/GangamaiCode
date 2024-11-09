@@ -180,4 +180,7 @@ export class ClinicalCareChartService {
     }
       return this._httpClient.get("Pathology/view-PathTemplate?PathReportId=" + PathReportId + "&OP_IP_Type="+OP_IP_Type);
     }
+    public getRequesttList(Param){
+      return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_LabRequest_Nursing",Param)
+    }
 }

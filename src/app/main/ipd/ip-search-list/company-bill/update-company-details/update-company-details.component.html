@@ -68,14 +68,15 @@
                                         <mat-form-field appearance="outline" fxFlex="15%">
                                             <mat-label>Price</mat-label>
                                             <input matInput [(ngModel)]="vPrice" name="Price" #price formControlName="price" required type="text"
-                                                OnlyNumber id="price" (keydown)="onEnterprice($event)" (keypress)="keyPressCharater($event)">
+                                                OnlyNumber id="price" (keydown)="onEnterprice($event)" (keypress)="keyPressCharater($event)"
+                                                (keyup)="CalTotalAmt()">
                                         </mat-form-field>
                                 
                                         <mat-form-field appearance="outline" fxFlex="12%">
                                             <mat-label>Qty</mat-label>
                                             <input matInput [(ngModel)]="vQty" name="Qty" #qty   type="text" OnlyNumber
                                                 (keydown)="onEnterqty($event)" formControlName="qty" id="qty" required
-                                                (keypress)="keyPressAlphanumeric($event)">
+                                                (keypress)="keyPressAlphanumeric($event)" (keyup)="CalTotalAmt()">
                                         </mat-form-field>
                                 
                                         <mat-form-field appearance="outline" fxFlex="25%">
@@ -126,17 +127,16 @@
                                 
                                         <mat-form-field appearance="outline" fxFlex="20%">
                                             <mat-label>DiscAmt</mat-label>
-                                            <input matInput [(ngModel)]="vDiscAmt" name="DiscAmt" #DiscAmt formControlName="DiscAmt">
+                                            <input matInput [(ngModel)]="vDiscAmt" name="DiscAmt" #DiscAmt formControlName="DiscAmt"
+                                            (keyup)="CalTotalAmt()">
                                         </mat-form-field>
                                 
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>NetAmount</mat-label>
                                             <input matInput [(ngModel)]="vNetAmount" name="NetAmount" readonly #Netamt formControlName="NetAmount"
                                                 required type="number" (keydown)="onEnternetAmount($event)">
-                                        </mat-form-field>
-                                
-                                    </div>
-                                
+                                        </mat-form-field> 
+                                    </div> 
                                 </form>
                             </mat-card> 
                     </div>
@@ -146,7 +146,8 @@
                     <div fxLayout="row"  fxLayoutAlign="end">  
                         <div class="next-div button-row-group" style="padding-right: 20px;">
                             <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                            <button class="btn btn-primary" color="accent" (click)="onSave()">
+                            <button class="btn btn-primary" color="accent" (click)="onSave()"
+                              [disabled]="Myform.invalid">
                                 <span>Save</span>
                             </button>
                         </div>  

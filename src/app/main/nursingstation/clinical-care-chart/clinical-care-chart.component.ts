@@ -25,6 +25,7 @@ import { NewRequestforlabComponent } from '../requestforlabtest/new-requestforla
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
 import { LabReportsViewComponent } from './lab-reports-view/lab-reports-view.component';
+import { RequestList } from '../requestforlabtest/requestforlabtest.component';
 
 @Component({
   selector: 'app-clinical-care-chart',
@@ -101,6 +102,20 @@ export class ClinicalCareChartComponent implements OnInit {
     'Peroral', 
     'Action'
   ]
+  displayedColumnsLabReq: string[] = [ 
+    'RegNo', 
+    'PatientName',  
+    'WardName',
+    'RequestType',
+    'IsOnFileTest', 
+    'action',
+  ]
+  displayedColumnsLapReports: string[] = [
+    'Date', 
+    'TestName', 
+    'PBillNo',
+    'IsCompleted', 
+  ]
   isLoading: String = '';
   sIsLoading: string = ""; 
   WardList:any=[];
@@ -134,6 +149,8 @@ export class ClinicalCareChartComponent implements OnInit {
   dsInputOutTable = new MatTableDataSource<INputOutputList>();
   dsOxygenTable = new MatTableDataSource<INputOutputList>();
   dsSugarTable = new MatTableDataSource<INputOutputList>();
+  dsrequestList = new MatTableDataSource<RequestList>();
+  datasource = new MatTableDataSource<LabtestList>();
   
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('wardpaginator', { static: true }) public wardpaginator: MatPaginator;
@@ -241,6 +258,8 @@ registerObj:any;
     this.vAgeMonth = obj.AgeMonth;
     this.vAgeDay =obj.AgeDay;
     this.vRegNo = obj.RegNo;
+    this.getRequesttList();
+    this.gettestList();
   }
   PainList:any=[];
   OnAdd() {
@@ -272,6 +291,34 @@ registerObj:any;
         toastClass: 'tostr-tost custom-toast-success',
       });  
   }
+  getRequesttList(){
+    var vdata={
+      FromDate: this.datePipe.transform(new Date(), "yyyy-MM-dd 00:00:00.000") || '01/01/1900', //'09/01/2023',
+      ToDate: this.datePipe.transform(new Date(), "yyyy-MM-dd 00:00:00.000") || '01/01/1900', //'09/01/2023',
+      Reg_No: this.vRegNo|| 0
+    }
+    console.log(vdata);
+    this._ClinicalcareService.getRequesttList(vdata).subscribe(data =>{
+      this.dsrequestList.data = data as RequestList[]; 
+      console.log(this.dsrequestList.data);
+    })
+  }
+//lab Report list
+gettestList(){
+  this.sIsLoading = ''
+   var vdata={
+    "AdmissionId": this.registerObj.AdmissionID,
+    "OP_IP_Type ": 1
+   }
+   console.log(vdata)
+   this._ClinicalcareService.getLabTestList(vdata).subscribe((data) =>{
+     this.datasource.data = data as LabtestList[]; 
+     console.log(this.datasource.data); 
+   },
+ error =>{
+   this.sIsLoading = ''; 
+ }); 
+ }
   getDoctornote(){
    if(this.vRegNo == 0 || this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined){
     this.toastr.warning('Please select Patient','Warning !',{
@@ -532,6 +579,19 @@ export class INputOutputList {
       this.TakenBy = INputOutputList.TakenBy || 0;  
       this.CVP = INputOutputList.CVP || 0; 
     }
+  }
+}
+export class LabtestList{
+  Date : any;
+  IsCompleted : any;
+  PBillNo : any
+  Testname:any
+
+  constructor(LabtestList){
+    this.IsCompleted = LabtestList.IsCompleted || 0;
+    this.Date = LabtestList.Date || 0;
+    this.PBillNo = LabtestList.PBillNo || 0;
+    this.Testname = LabtestList.Testname || '';
   }
 }
 

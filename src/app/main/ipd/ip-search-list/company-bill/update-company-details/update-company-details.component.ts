@@ -8,6 +8,7 @@ import { IPSearchListService } from '../../ip-search-list.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-update-company-details',
@@ -138,6 +139,7 @@ export class UpdateCompanyDetailsComponent implements OnInit {
 
  //ServiceName
     getServiceListCombobox() {
+      debugger
       let ServiceName
     if(this.ComServiceName){
       ServiceName = this.selectedAdvanceObj.CompanyServiceName
@@ -213,7 +215,7 @@ export class UpdateCompanyDetailsComponent implements OnInit {
   searchDocList:any=[];
   selectedDocName:any;
   getAdmittedDoctorCombo() {  
-    debugger
+
     let DoctorName 
     if(this.selectedDocName){
       DoctorName =  this.selectedDocName
@@ -245,7 +247,27 @@ export class UpdateCompanyDetailsComponent implements OnInit {
   getOptionTextDoctor(option) {
     return option && option.Doctorname ? option.Doctorname : '';
   }
-
+  CalTotalAmt(){
+    if (( this.vPrice== '' || this.vPrice == null || this.vPrice == undefined || this.vPrice == '0')) {
+      this.toastr.warning('Please enter price', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if (( this.vQty== '' || this.vQty == null || this.vQty == undefined || this.vQty == '0')) {
+      this.toastr.warning('Please enter qty', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    this.vTotalAmt = this.vQty * this.vPrice ;
+    if(this.vDiscAmt > 0){
+      this.vNetAmount = this.vTotalAmt - this.vDiscAmt;
+    }else{
+      this.vNetAmount = this.vTotalAmt;
+    }
+   
+  }
   chargeslist:any=[];
   onSave(){
     debugger
@@ -297,35 +319,25 @@ export class UpdateCompanyDetailsComponent implements OnInit {
       DoctorId = this.Myform.get('DoctorID').value.DoctorId 
       DoctorName = this.Myform.get('DoctorID').value.Doctorname 
     }
-    this.chargeslist.push(
-      {
-        ChargesDate: this.selectedAdvanceObj.ChargesDate || 0,
-        ChargesId: this.selectedAdvanceObj.ChargesId || 0,
-        OPD_IPD_Id: this.selectedAdvanceObj.OPD_IPD_Id || 0,
-        ServiceId: this.Myform.get('SrvcName').value.ServiceId || 0, 
-        DoctorName: DoctorName || '', 
-        CompanyServiceName:  this.Myform.get('SrvcName').value.ServiceName  || '',
-        C_Price: this.vPrice || 0,
-        C_qty: this.vQty|| 0,
-        C_TotalAmount: this.vTotalAmt || 0, 
-        ConcessionAmount: this.vDiscAmt || 0,
-        Amount: 0,
-        NetAmount: this.vNetAmount|| 0,
-        OPD_IPD_Type: this.selectedAdvanceObj.OPD_IPD_Type  || 0,
-        ClassName: this.Myform.get('ChargeClass').value.ClassName  || '',
-        ChargesAddedName: this.selectedAdvanceObj.ChargesAddedName  || '', 
-        IsPathology: this.IsPathology || 0,
-        IsRadiology: this.IsRadiology  || 0,
-        ClassId: this.Myform.get('ChargeClass').value.ClassId || 0,
-        DoctorId : DoctorId || 0,
-        IsComServ:this.selectedAdvanceObj.IsComServ
-      });
-     
-      console.log(this.chargeslist) 
-     this.dialogRef.close(this.chargeslist)
+    let TotalAmount = this.vQty * this.vPrice;
+    let Query
+    Query ="update addcharges set ServiceId =" + this.Myform.get('SrvcName').value.ServiceId + ",ServiceName='"+this.Myform.get('SrvcName').value.ServiceName +
+    "',c_qty= " + this.vQty + ",c_price = " + this.vPrice + ",c_totalamount="+ TotalAmount +
+    ",DoctorId= " + DoctorId +",ConcessionAmount=" + this.vDiscAmt + ",ClassId=" + this.Myform.get('ChargeClass').value.ClassId +
+    ",IsPathology= "+this.IsPathology +",IsRadiology=" + this.IsRadiology + "where ChargesId= " + this.selectedAdvanceObj.ChargesId
+    this._IpSearchListService.UpdateCompayService(Query).subscribe(data =>{  
+      if(data){
+        Swal.fire('Charges Updated Successfully!', 'success').then((result) => {
+          this.onClose();
+        });
+      } else {
+        Swal.fire('Error !', 'Charges data not Updated', 'error');
+      }
+    }); 
   }
   onClose() {
     this.dialogRef.close();  
+    this.Myform.reset();
   }
  
   add: Boolean = false; 
