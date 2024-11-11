@@ -28,7 +28,7 @@ export class CrossConsultationComponent implements OnInit {
 
   InfoFormGroup: FormGroup;
   dateTimeObj: any;
-  screenFromString = 'advance';
+  screenFromString = 'admission-form';
   selectedAdvanceObj: AdmissionPersonlModel;
   submitted: any;
   isLoading: any;

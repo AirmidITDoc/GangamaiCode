@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
 import { AdvanceDataStored } from '../../advance';
 import { DatePipe, Time } from '@angular/common';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AdmissionService } from './admission.service';
 import Swal from 'sweetalert2';
 import { EditAdmissionComponent } from './edit-admission/edit-admission.component';
@@ -37,6 +37,10 @@ import { ExcelDownloadService } from 'app/main/shared/services/excel-download.se
 import { ThemeService } from 'ng2-charts';
 import { AdvanceDetailObj } from '../../ip-search-list/ip-search-list.component';
 import { OPIPFeedbackComponent } from '../../Feedback/opip-feedback/opip-feedback.component';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
+import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 
 
 @Component({
@@ -47,7 +51,72 @@ import { OPIPFeedbackComponent } from '../../Feedback/opip-feedback/opip-feedbac
   animations: fuseAnimations
 })
 export class AdmissionComponent implements OnInit {
+// new Api
+confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    
+    gridConfig: gridModel = {
+        apiUrl: "Admission/AdmissionList",
+        columnsList: [
+            { heading: "Code", key: "admissionId", sort: true, align: 'left', emptySign: 'NA' , width:50 },
+            { heading: "RegId", key: "regId", sort: true, align: 'left', emptySign: 'NA' , width:50 },
+            // { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "AdmissionTime", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', width:150  },
+            { heading: "PatientTypeId", key: "patientTypeId", sort: true, align: 'left', emptySign: 'NA' , width:150 },
+           
+            { heading: "DocNameId", key: "docNameId", sort: true, align: 'left', emptySign: 'NA' , width:150 },
+            { heading: "Ipdno", key: "ipdno", sort: true, align: 'left', emptySign: 'NA' , width:150 },
+          //  { heading: "IsConsolidatedDr", key: "isConsolidatedDr", sort: true, align: 'left', emptySign: 'NA' },
+          {
+            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                {
+                    action: gridActions.edit, callback: (data: any) => {
+                        this.onSave(data);
+                    }
+                }, {
+                    action: gridActions.delete, callback: (data: any) => {
+                        this.confirmDialogRef = this._matDialog.open(
+                            FuseConfirmDialogComponent,
+                            {
+                                disableClose: false,
+                            }
+                        );
+                        this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+                        this.confirmDialogRef.afterClosed().subscribe((result) => {
+                            if (result) {
+                                let that = this;
+                                this._AdmissionService.deactivateTheStatus(data.AdmissionId).subscribe((response: any) => {
+                                    this.toastr.success(response.message);
+                                    that.grid.bindGridData();
+                                });
+                            }
+                            this.confirmDialogRef = null;
+                        });
+                    }
+                }]
+        } //Action 1-view, 2-Edit,3-delete
+    ],
+    sortField: "AdmissionId",
+    sortOrder: 0,
+    filters: [
+        { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+        { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+        { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "From_Dt", fieldValue: "01/01/2024", opType: OperatorComparer.Equals },
+        { fieldName: "To_Dt", fieldValue: "11/01/2024", opType: OperatorComparer.Equals },
+        { fieldName: "Admtd_Dschrgd_All", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "M_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+        { fieldName: "IPNo", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+       // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+    ],
+    row: 25
+    }
 
+onSave(data){}
+    // end
 
   currentDate = new Date();
   // reportPrintObj: Admission;

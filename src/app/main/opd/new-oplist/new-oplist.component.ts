@@ -23,20 +23,15 @@ export class NewOPListComponent implements OnInit {
   gridConfig: gridModel = {
       apiUrl: "VisitDetail/OPBillList",
       columnsList: [
-          { heading: "Code", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "BillTime", key: "billTime", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "VisitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "BillTime", key: "billTime", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "VisitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "TotalAmt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "Net Pay", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "Code", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+          { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' ,width:250},
+          { heading: "BillTime", key: "billTime", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+          { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA',width:50 },
+          { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+          { heading: "VisitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+          { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+          { heading: "TotalAmt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA',width:50 },
+          { heading: "Net Pay", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' ,width:50},
           
           {
               heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -86,18 +81,18 @@ export class NewOPListComponent implements OnInit {
   gridConfig1: gridModel = {
     apiUrl: "VisitDetail/OPPaymentList",
     columnsList: [
-        { heading: "Code", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "OpdNo", key: "opdNo", sort: true, align: "center" },
-        { heading: "BillAmount", key: "billAmount", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "BalanceAmt", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "CashPay", key: "cashPay",sort: true, align: "center" },
-        { heading: "ChequePay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "CardPay", key: "cardPay", sort: true,align: "center" },
-        { heading: "AdvUsedPay", key: "advUsedPay", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "OnlinePay", key: "onlinePay", sort: true, align: "center" },
+        { heading: "Code", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA',width:150 },
+        { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+        { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+        { heading: "OpdNo", key: "opdNo", sort: true, align: "center" ,width:50},
+        { heading: "BillAmount", key: "billAmount", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+        { heading: "BalanceAmt", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+        { heading: "CashPay", key: "cashPay",sort: true, align: "center" ,width:50},
+        { heading: "ChequePay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+        { heading: "CardPay", key: "cardPay", sort: true,align: "center" ,width:50},
+        { heading: "AdvUsedPay", key: "advUsedPay", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+        { heading: "OnlinePay", key: "onlinePay", sort: true, align: "center",width:50 },
         {
             heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                 {
@@ -148,9 +143,9 @@ export class NewOPListComponent implements OnInit {
 gridConfig2: gridModel = {
     apiUrl: "VisitDetail/OPRefundList",
     columnsList: [
-        { heading: "Code", key: "RefundId", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "RefundDate", key: "RefundDate", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Code", key: "RefundId", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' ,width:250},
+        { heading: "RefundDate", key: "RefundDate", sort: true, align: 'left', emptySign: 'NA' ,width:150},
         // { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
         // { heading: "OpdNo", key: "opdNo", sort: true, align: "center" },
         // { heading: "BillAmount", key: "billAmount", sort: true, align: 'left', emptySign: 'NA' },

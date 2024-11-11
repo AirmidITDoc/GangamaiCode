@@ -1,24 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
   providedIn: 'root'
 })
 export class IndentService {
-  // deleteItem(displayedColumns2: string[], ItemID: any, ItemName: any, Qty: any) {
-  //   throw new Error('Method not implemented.');
-  // }
-  // IndentList() {
-  //   throw new Error('Method not implemented.');
-  // }
-
+ 
   IndentSearchGroup :FormGroup;
   newIndentFrom: FormGroup;
   StoreFrom:FormGroup;
 
   constructor(
-    public _httpClient: HttpClient,
+    public _httpClient: HttpClient,   public _httpClient1: ApiCaller,
     private _formBuilder: FormBuilder
   ) { 
     this.IndentSearchGroup= this.IndentSearchFrom();
@@ -102,5 +97,11 @@ export class IndentService {
 
   populateForm(employee) {
     this.newIndentFrom.patchValue(employee);
+}
+
+
+  // NewApi
+  public deactivateTheStatus(m_data) {
+    return this._httpClient1.PostData("BedMaster", m_data);
 }
 }

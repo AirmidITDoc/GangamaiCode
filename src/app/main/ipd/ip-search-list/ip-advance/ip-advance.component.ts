@@ -18,7 +18,6 @@ import { Router } from '@angular/router';
 import * as converter from 'number-to-words';
 import { OPSearhlistService } from 'app/main/opd/op-search-list/op-searhlist.service';
 import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-new/op-payment-new.component';
-import { IpdAdvanceBrowseModel } from '../../browse-ipadvance/browse-ipadvance.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { debug } from 'console';
 import { OPAdvancePaymentComponent } from 'app/main/opd/op-search-list/op-advance-payment/op-advance-payment.component';
@@ -44,8 +43,8 @@ export class IPAdvanceComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @Input() dataArray: any;
   currentDate = new Date();
-  reportPrintObjList: IpdAdvanceBrowseModel[] = [];
-  reportPrintsummaryObjList: IpdAdvanceBrowseModel[] = [];
+  reportPrintObjList: any[] = [];
+  reportPrintsummaryObjList: any[] = [];
   Filepath:any;
 
 
@@ -77,8 +76,8 @@ export class IPAdvanceComponent implements OnInit {
   TotalAdvamt: any;
   Advavilableamt: any;
   vAdvanceId: any;
-  reportPrintObj: IpdAdvanceBrowseModel;
-  reportPrintsummaryObj: IpdAdvanceBrowseModel;
+  reportPrintObj: any;
+  reportPrintsummaryObj: any;
   subscriptionArr: Subscription[] = [];
   printTemplate: any;
   CashCounterList: any = [];

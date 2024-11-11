@@ -1,6 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { BrowseIpdreturnadvanceReceipt } from '../ip-browse-refundof-bill.component';
-import { ReportPrintObj } from 'app/main/ipd/ip-bill-browse-list/ip-bill-browse-list.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
@@ -19,7 +18,7 @@ export class ViewIPReunfofBillComponent implements OnInit {
 
   
   selectedAdvanceObj: BrowseIpdreturnadvanceReceipt;
-  dataSource = new MatTableDataSource<ReportPrintObj>();
+  dataSource = new MatTableDataSource<any>();
 
 rptData: any;
 reportPrintObj: BrowseIpdreturnadvanceReceipt;

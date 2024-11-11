@@ -254,6 +254,7 @@ export class NewAppointmentComponent implements OnInit {
     constructor(
         public _AppointmentlistService: AppointmentlistService,
         public _opappointmentService: AppointmentSreviceService,
+        public dialogRef: MatDialogRef<NewAppointmentComponent>,
               public _matDialog: MatDialog,
               private _ActRoute: Router,
               public _WhatsAppEmailService: WhatsAppEmailService,
@@ -1553,7 +1554,7 @@ debugger
           "Visit": {
             "visitID": 0,
             "regId": 0,
-            "visitDate":   this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
+            "visitDate":this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
             "visitTime":this.dateTimeObj.time,
             "unitId": 0,
             "patientTypeId": 0,
@@ -2069,50 +2070,52 @@ debugger
         // }
     }
 
-    onClose() {
+    // onClose() {
 
-        // this.registerObj = new RegInsert({});
-        this.personalFormGroup.reset();
-        this.personalFormGroup.get('RegId').reset();
+    //     // this.registerObj = new RegInsert({});
+    //     this.personalFormGroup.reset();
+    //     this.personalFormGroup.get('RegId').reset();
 
-        this.searchFormGroup.get('RegId').reset();
+    //     this.searchFormGroup.get('RegId').reset();
 
-        this.personalFormGroup = this.createPesonalForm();
-        this.personalFormGroup.markAllAsTouched();
-        this.VisitFormGroup = this.createVisitdetailForm();
-        this.VisitFormGroup.markAllAsTouched();
+    //     this.personalFormGroup = this.createPesonalForm();
+    //     this.personalFormGroup.markAllAsTouched();
+    //     this.VisitFormGroup = this.createVisitdetailForm();
+    //     this.VisitFormGroup.markAllAsTouched();
 
-        this.getHospitalList1();
-        this.getHospitalList();
-        this.getTariffCombo();
-        this.getPatientTypeList();
-        this.getPrefixList();
-        this.getDepartmentList();
-        this.getcityList1();
-        this.getCompanyList();
-        this.getSubTPACompList();
+    //     this.getHospitalList1();
+    //     this.getHospitalList();
+    //     this.getTariffCombo();
+    //     this.getPatientTypeList();
+    //     this.getPrefixList();
+    //     this.getDepartmentList();
+    //     this.getcityList1();
+    //     this.getCompanyList();
+    //     this.getSubTPACompList();
 
-        this.isCompanySelected = false;
-        this.VisitFormGroup.get('CompanyId').setValue(this.CompanyList[-1]);
-        this.VisitFormGroup.get('CompanyId').clearValidators();
-        this.VisitFormGroup.get('SubCompanyId').clearValidators();
-        this.VisitFormGroup.get('CompanyId').updateValueAndValidity();
-        this.VisitFormGroup.get('SubCompanyId').updateValueAndValidity();
-        this.patienttype = 1;
+    //     this.isCompanySelected = false;
+    //     this.VisitFormGroup.get('CompanyId').setValue(this.CompanyList[-1]);
+    //     this.VisitFormGroup.get('CompanyId').clearValidators();
+    //     this.VisitFormGroup.get('SubCompanyId').clearValidators();
+    //     this.VisitFormGroup.get('CompanyId').updateValueAndValidity();
+    //     this.VisitFormGroup.get('SubCompanyId').updateValueAndValidity();
+    //     this.patienttype = 1;
 
-        const todayDate = new Date();
-        const dob = new Date(this.currentDate);
-        const timeDiff = Math.abs(Date.now() - dob.getTime());
-        // this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
-        // this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
-        // this.registerObj.AgeDay = Math.abs(todayDate.getDate() - dob.getDate());
-        // this.registerObj.DateofBirth = this.currentDate;
-        this.personalFormGroup.get('DateOfBirth').setValue(this.currentDate);
+    //     const todayDate = new Date();
+    //     const dob = new Date(this.currentDate);
+    //     const timeDiff = Math.abs(Date.now() - dob.getTime());
+    //     // this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
+    //     // this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
+    //     // this.registerObj.AgeDay = Math.abs(todayDate.getDate() - dob.getDate());
+    //     // this.registerObj.DateofBirth = this.currentDate;
+    //     this.personalFormGroup.get('DateOfBirth').setValue(this.currentDate);
 
-        this.personalFormGroup.get('PhoneNo').clearValidators();
-        this.VisitFormGroup.get('PhoneNo').updateValueAndValidity();
-    }
-
+    //     this.personalFormGroup.get('PhoneNo').clearValidators();
+    //     this.VisitFormGroup.get('PhoneNo').updateValueAndValidity();
+    // }
+    onClose(){
+        this.dialogRef.close();
+      }
 
     dateTimeObj: any;
     getDateTime(dateTimeObj) {

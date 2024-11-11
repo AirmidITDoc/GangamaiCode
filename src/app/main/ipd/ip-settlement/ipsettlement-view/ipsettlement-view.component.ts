@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ReportPrintObj } from '../../ip-bill-browse-list/ip-bill-browse-list.component';
 import { Subscription } from 'rxjs';
 import { AdvanceDataStored } from '../../advance';
 import { MatDialog } from '@angular/material/dialog';
@@ -15,11 +14,11 @@ import { IPSearchListService } from '../../ip-search-list/ip-search-list.service
 export class IPSettlementViewComponent implements OnInit {
 
  
-  selectedAdvanceObj: ReportPrintObj;
+  selectedAdvanceObj: any;
 
 rptData: any;
 Today :any;
-reportPrintObj: ReportPrintObj;
+reportPrintObj: any;
 
 // reportPrintObjList: IpBillBrowseList[] = [];
 
@@ -69,7 +68,7 @@ outputWords=''
       this.subscriptionArr.push(
         this._opSearchListService.getPaymentPrint(D_data).subscribe(res => {
           if(res){
-          this.reportPrintObj = res[0] as ReportPrintObj;
+          this.reportPrintObj = res[0] as any;
           this.convertToWord(this.reportPrintObj.PaidAmount);
            console.log(this.reportPrintObj);
          }

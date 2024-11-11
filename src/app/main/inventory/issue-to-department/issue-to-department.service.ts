@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class IssueToDepartmentService {
   
 
   constructor(
-    public _httpClient: HttpClient,
+    public _httpClient: HttpClient,  public _httpClient1: ApiCaller,
     private _formBuilder: FormBuilder
   ) { 
     this.NewIssueGroup = this.getNewIssueForm();
@@ -132,6 +133,9 @@ export class IssueToDepartmentService {
   public getIndentItemBatch(emp){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ItemName_BatchPOP_BalanceQty",emp);
   }
-  
+
+  // NewApi
+  public deactivateTheStatus(m_data) {
+    return this._httpClient1.PostData("BedMaster", m_data);
 }
-// rptNonMovingItemList  RptItemExpReportMonthWise
+}

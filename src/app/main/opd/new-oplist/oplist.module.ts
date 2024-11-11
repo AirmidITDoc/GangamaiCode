@@ -40,6 +40,7 @@ import { NgxPrintModule } from "ngx-print";
 import { WebcamModule } from "ngx-webcam";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { NgxQRCodeModule } from "@techiediaries/ngx-qrcode";
+import { OPSettlementComponent } from './op-settlement/op-settlement.component';
 
 
 
@@ -51,7 +52,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [NewOPListComponent],
+    declarations: [NewOPListComponent, OPSettlementComponent],
     imports: [
         RouterModule.forChild(routes),
         SharedModule,

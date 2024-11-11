@@ -36,6 +36,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
 import { IndentComponent } from './indent.component';
 import { NewIndentComponent } from './new-indent/new-indent.component';
+import { IndentService } from './indent.service';
 
 const routes: Routes = [
   { 
@@ -95,10 +96,8 @@ const routes: Routes = [
         
   ],
   providers: [
-    
-    DatePipe,
-    
-  
+    IndentService,
+    DatePipe  
 ],
 entryComponents: [
   IndentComponent,

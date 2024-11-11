@@ -6,7 +6,6 @@ import { DatePipe } from '@angular/common';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { IPBrowseBillService } from '../ip-browse-bill.service';
-import { IpBillBrowseList } from '../ip-bill-browse-list.component';
 
 @Component({
   selector: 'app-view-ip-bill',
@@ -15,12 +14,12 @@ import { IpBillBrowseList } from '../ip-bill-browse-list.component';
 })
 export class ViewIPBillComponent implements OnInit {
 
-  selectedAdvanceObj: IpBillBrowseList;
-  dataSource = new MatTableDataSource<IpBillBrowseList>();
+  selectedAdvanceObj: any;
+  dataSource = new MatTableDataSource<any>();
 rptData: any;
 Today :any;
-reportPrintObj: IpBillBrowseList;
-reportPrintObjList: IpBillBrowseList[] = [];
+reportPrintObj: any;
+reportPrintObjList: any[] = [];
 
 mynumber:number=0;
 outputWords=''
@@ -71,7 +70,7 @@ outputWords=''
       this.subscriptionArr.push(
         this._IpBillBrowseListService.getIPBILLBrowsePrint(D_data).subscribe(res => {
           if(res){
-          this.reportPrintObj = res[0] as IpBillBrowseList;
+          this.reportPrintObj = res[0] as any;
            console.log(this.reportPrintObj);
          }
        

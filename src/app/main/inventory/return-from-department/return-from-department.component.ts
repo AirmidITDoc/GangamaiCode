@@ -13,7 +13,7 @@ import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { NewRetrunFromDepartmentComponent } from './new-retrun-from-department/new-retrun-from-department.component';
-import { IssueItemList } from '../issue-to-department/issue-to-department.component';
+
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
 
@@ -60,7 +60,7 @@ export class ReturnFromDepartmentComponent implements OnInit {
   filteredOptionsStore: Observable<string[]>;
 
   dsReturnToDepList = new MatTableDataSource<ReturnTODepList>();
-  dsReturnItemList = new MatTableDataSource<IssueItemList>();
+  // dsReturnItemList = new MatTableDataSource<IssueItemList>();
 
 
   @ViewChild(MatSort) sort: MatSort;
@@ -115,16 +115,16 @@ export class ReturnFromDepartmentComponent implements OnInit {
 
 
   getReturnItemList(Param) {
-    console.log(Param)
-    var vdata = {
-      "ReturnId":Param.ReturnId
-    }
-    this._ReturnToDepartmentList.getReturnItemList(vdata).subscribe(data => {
-      this.dsReturnItemList.data = data as IssueItemList[];
-      console.log(this.dsReturnItemList)
-      this.dsReturnItemList.sort = this.sort;
-      this.dsReturnItemList.paginator = this.paginator;
-    });
+    // console.log(Param)
+    // var vdata = {
+    //   "ReturnId":Param.ReturnId
+    // }
+    // this._ReturnToDepartmentList.getReturnItemList(vdata).subscribe(data => {
+    //   this.dsReturnItemList.data = data as IssueItemList[];
+    //   console.log(this.dsReturnItemList)
+    //   this.dsReturnItemList.sort = this.sort;
+    //   this.dsReturnItemList.paginator = this.paginator;
+    // });
   }
   getToStoreSearchList() {
     this._ReturnToDepartmentList.getToStoreSearchList().subscribe(data => {

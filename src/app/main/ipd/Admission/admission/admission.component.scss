@@ -1,3 +1,16 @@
-.ipd-admission .mat-tab-body-wrapper {
-    // background-color: #f4ecec;
+.p-sm-24 {
+    padding: 10px !important;
+}
+
+app-admission{
+
+    .mat-icon-button {
+        padding: 0;
+        min-width: 0;
+        width: 40px;
+        height: 20px;
+        flex-shrink: 0;
+        line-height: 20px;
+        border-radius: 50%;
+    }
 }

@@ -11,7 +11,6 @@ import { SnackBarService } from 'app/main/shared/services/snack-bar.service';
 import { DatePipe } from '@angular/common';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
-import { IpdAdvanceBrowseModel } from 'app/main/ipd/browse-ipadvance/browse-ipadvance.component';
 import { IPSettlementService } from 'app/main/ipd/ip-settlement/ip-settlement.service';
 
 @Component({
@@ -202,7 +201,7 @@ export class OpPaymentVimalComponent implements OnInit {
         'BalanceAmount',
         'RefundAmount'
     ];
-    dataSource = new MatTableDataSource<IpdAdvanceBrowseModel>();
+    dataSource = new MatTableDataSource<any>();
     constructor(
         private formBuilder: FormBuilder,
         private dialogRef: MatDialogRef<OpPaymentVimalComponent>,

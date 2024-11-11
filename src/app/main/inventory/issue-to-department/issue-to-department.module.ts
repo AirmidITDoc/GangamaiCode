@@ -36,6 +36,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
 import { IssueToDepartmentComponent } from './issue-to-department.component';
 import { IssueToDeparmentAgainstIndentComponent } from './issue-to-deparment-against-indent/issue-to-deparment-against-indent.component';
+import { IssueToDepartmentService } from './issue-to-department.service';
 
 const routes: Routes = [
   { 
@@ -89,11 +90,12 @@ const routes: Routes = [
     MatSelectModule,
     MatChipsModule,
     // NgMultiSelectDropDownModule.forRoot(),
-    MatTooltipModule
+    MatTooltipModule,
+    SharedModule
         
   ],
   providers: [
-    DatePipe,
+    DatePipe,IssueToDepartmentService
 ],
 entryComponents: [
   IssueToDepartmentComponent,

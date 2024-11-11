@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { LoaderService } from 'app/core/components/loader/loader.service';
+import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class IPBrowseBillService {
   myFilterIppaymentbrowseform: FormGroup;
   myFilterIprefundbrowseform: FormGroup;
 
-  constructor(public _httpClient:HttpClient,  private _loaderService: LoaderService,
+  constructor(public _httpClient:HttpClient,  private _loaderService: LoaderService,public _httpClient1:ApiCaller,
     private _formBuilder: FormBuilder) { 
       this.myFilterIpbillbrowseform=this.filterForm_IpdBrowse();
       this.myFilterIppaymentbrowseform=this.filterForm_IpdpaymentBrowse();
@@ -154,5 +155,14 @@ public getIpdRefundBillBrowseList(employee) {
 } 
 public getRefundofbillview(RefundId){
   return this._httpClient.get("InPatient/view-IP-ReturnOfBillReceipt?RefundId=" + RefundId);
+}
+
+// new Api?
+public deactivateTheStatus(m_data) {
+  return this._httpClient1.PostData("VisitDetail", m_data);
+}
+
+public deactivateTheStatuspayment(m_data) {
+  return this._httpClient1.PostData("VisitDetail", m_data);
 }
 }

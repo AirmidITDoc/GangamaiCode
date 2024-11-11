@@ -1,6 +1,5 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ReportPrintObj } from '../../ip-bill-browse-list/ip-bill-browse-list.component';
 import { Observable, Subscription } from 'rxjs';
 import { AdvanceDetailObj, ChargesList } from '../ip-search-list.component';
 import { MatTableDataSource } from '@angular/material/table';
@@ -53,8 +52,8 @@ export class InterimBillComponent implements OnInit {
   BalanceAmt: any;
   selectedAdvanceObj:AdvanceDetailObj;
   vPatientHeaderObj: Bill;
-  reportPrintObj: ReportPrintObj;
-  reportPrintObjList: ReportPrintObj[] = [];
+  reportPrintObj: any;
+  reportPrintObjList: any[] = [];
   subscriptionArr: Subscription[] = [];
   printTemplate: any;
   currentDate = new Date();

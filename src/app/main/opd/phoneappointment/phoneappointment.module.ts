@@ -18,7 +18,7 @@ import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { RouterModule, Routes } from '@angular/router';
-import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDatepickerInput, MatDatepickerModule } from '@angular/material/datepicker';
 // import { NewAppointmentComponent } from './new-appointment/new-appointment.component';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -92,7 +92,7 @@ const routes: Routes = [
         MatListModule,
     ],
     providers: [
-        DatePipe,PhoneAppointListService
+        DatePipe,PhoneAppointListService,MatDatepickerInput
     ],
     entryComponents: [
         PhoneappointmentComponent,

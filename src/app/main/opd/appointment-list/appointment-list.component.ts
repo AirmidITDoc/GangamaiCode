@@ -7,6 +7,9 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { NewAppointmentComponent } from './new-appointment/new-appointment.component';
 import { ToastrService } from 'ngx-toastr';
 import { AppointmentlistService } from './appointmentlist.service';
+import { EditRefranceDoctorComponent } from './edit-refrance-doctor/edit-refrance-doctor.component';
+import { EditConsultantDoctorComponent } from './edit-consultant-doctor/edit-consultant-doctor.component';
+import { CrossConsultationComponent } from './cross-consultation/cross-consultation.component';
 
 
 @Component({
@@ -22,13 +25,13 @@ export class AppointmentListComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "VisitDetail/AppVisitList",
         columnsList: [
-            { heading: "Code", key: "visitId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "RegId", key: "regId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "visitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Code", key: "visitId", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+            { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' ,width:250 },
+            { heading: "RegId", key: "regId", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+            { heading: "visitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA' ,width:150},
            
-            { heading: "DateofBirth", key: "dateofBirth", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "DateofBirth", key: "dateofBirth", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+            { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA' ,width:150},
           //  { heading: "IsConsolidatedDr", key: "isConsolidatedDr", sort: true, align: 'left', emptySign: 'NA' },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -99,4 +102,55 @@ export class AppointmentListComponent implements OnInit {
         });
     }
 
+
+    EditConsultdr(){
+        debugger
+        let that = this;
+        const dialogRef = this._matDialog.open(EditConsultantDoctorComponent,
+            {
+                maxWidth: "45vw",
+                height: '45%',
+                width: '80%',
+                // data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
+        });
+    }
+
+    Editrefrancedr(){
+        debugger
+        let that = this;
+        const dialogRef = this._matDialog.open(EditRefranceDoctorComponent,
+            {
+                maxWidth: "45vw",
+                height: '45%',
+                width: '80%',
+                // data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
+        });
+    }
+
+    Editcrossconsult(){
+        debugger
+        let that = this;
+        const dialogRef = this._matDialog.open(CrossConsultationComponent,
+            {
+                maxWidth: "55vw",
+                height: '45%',
+                width: '80%',
+                // data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
+        });
+    }
 }

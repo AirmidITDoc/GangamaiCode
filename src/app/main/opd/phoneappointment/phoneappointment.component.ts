@@ -36,10 +36,11 @@ export class PhoneappointmentComponent implements OnInit {
   
 
   gridConfig: gridModel = {
-      apiUrl: "PathCategoryMaster/List",
+      apiUrl: "PhoneAppointment2/PhoneAppList",
       columnsList: [
-          { heading: "Code", key: "categoryId", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "Category Name", key: "categoryName", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "Code", key: "phoneAppId", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA' },
           { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
           {
               heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -59,7 +60,7 @@ export class PhoneappointmentComponent implements OnInit {
                           this.confirmDialogRef.afterClosed().subscribe((result) => {
                               if (result) {
                                   let that = this;
-                                  this._PhoneAppointListService.deactivateTheStatus(data.groupId).subscribe((response: any) => {
+                                  this._PhoneAppointListService.phoneMasterCancle(data.phoneAppId).subscribe((response: any) => {
                                       this.toastr.success(response.message);
                                       that.grid.bindGridData();
                                   });
@@ -70,11 +71,17 @@ export class PhoneappointmentComponent implements OnInit {
                   }]
           } //Action 1-view, 2-Edit,3-delete
       ],
-      sortField: "categoryId",
+      sortField: "phoneAppId",
       sortOrder: 0,
       filters: [
-          { fieldName: "groupName", fieldValue: "", opType: OperatorComparer.Contains },
-          { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+        { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+        { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+        { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "From_Dt", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
+        { fieldName: "To_Dt", fieldValue: "11/01/2024", opType: OperatorComparer.Equals },
+        { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+        //   { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
       ],
       row: 25
   }

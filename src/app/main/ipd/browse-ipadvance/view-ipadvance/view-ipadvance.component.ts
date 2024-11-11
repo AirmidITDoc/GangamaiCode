@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { IpdAdvanceBrowseModel } from '../browse-ipadvance.component';
+
 import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
 import { AdvanceDataStored } from '../../advance';
@@ -15,12 +15,12 @@ import * as converter from 'number-to-words';
 })
 export class ViewIPAdvanceComponent implements OnInit {
 
-  selectedAdvanceObj: IpdAdvanceBrowseModel;
-  dataSource = new MatTableDataSource<IpdAdvanceBrowseModel>();
+  selectedAdvanceObj: any;
+  dataSource = new MatTableDataSource<any>();
   Today= this.datePipe.transform(new Date(), 'dd/MM/yyyy h:mm a'); 
 
 rptData: any;
-reportPrintObj: IpdAdvanceBrowseModel;
+reportPrintObj: any;
 SummaryData:any=[];  
   
 subscriptionArr: Subscription[] = [];
@@ -73,7 +73,7 @@ outputWords=''
      this.subscriptionArr.push(
        this._ipAdvListService.getAdvanceBrowsePrint(D_data).subscribe(res => {
          if(res){
-         this.reportPrintObj = res[0] as IpdAdvanceBrowseModel;
+         this.reportPrintObj = res[0] as any;
          console.log(this.reportPrintObj);
          this.convertToWord(this.reportPrintObj.AdvanceAmount);
         }

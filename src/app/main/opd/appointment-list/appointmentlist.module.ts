@@ -41,6 +41,9 @@ import { NgxQRCodeModule } from "@techiediaries/ngx-qrcode";
 import { WebcamModule } from "ngx-webcam";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
+import { EditConsultantDoctorComponent } from './edit-consultant-doctor/edit-consultant-doctor.component';
+import { EditRefranceDoctorComponent } from './edit-refrance-doctor/edit-refrance-doctor.component';
+import { CrossConsultationComponent } from './cross-consultation/cross-consultation.component';
 
 const routes: Routes = [
     {
@@ -50,7 +53,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [AppointmentListComponent, NewAppointmentComponent],
+    declarations: [AppointmentListComponent, NewAppointmentComponent, EditConsultantDoctorComponent, EditRefranceDoctorComponent, CrossConsultationComponent],
     imports: [
         RouterModule.forChild(routes),
         SharedModule,

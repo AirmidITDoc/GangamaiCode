@@ -4,7 +4,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AdvanceDetailObj, ChargesList } from '../ip-search-list.component';
 import { Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
 import { ILookup } from 'app/main/opd/op-search-list/op-billing/op-billing.component';
-import { ReportPrintObj } from '../../ip-bill-browse-list/ip-bill-browse-list.component';
 import { IPSearchListService } from '../ip-search-list.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ActivatedRoute } from '@angular/router';
@@ -21,7 +20,7 @@ import * as converter from 'number-to-words';
 import { InterimBillComponent } from '../interim-bill/interim-bill.component';
 import { PrintPreviewService } from 'app/main/shared/services/print-preview.service';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import { IpdAdvanceBrowseModel } from '../../browse-ipadvance/browse-ipadvance.component';
+
 import { analyzeAndValidateNgModules } from '@angular/compiler';
 import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-new/op-payment-new.component';
 import { debug } from 'console';
@@ -117,7 +116,7 @@ export class CompanyBillComponent implements OnInit {
     dataSource = new MatTableDataSource<ChargesList>();
     dataSource1 = new MatTableDataSource<ChargesList>();
     prevbilldatasource = new MatTableDataSource<Bill>();
-    advancedatasource = new MatTableDataSource<IpdAdvanceBrowseModel>();
+    advancedatasource = new MatTableDataSource<any>();
     PackageDatasource = new MatTableDataSource
   
     myControl = new FormControl(); 
@@ -218,8 +217,8 @@ export class CompanyBillComponent implements OnInit {
     Serviceform: FormGroup;
     AdmissionId: any;
     MenuMasterid: any;
-    reportPrintObj: ReportPrintObj;
-    reportPrintObjList: ReportPrintObj[] = [];
+    reportPrintObj: any;
+    reportPrintObjList: any[] = [];
     subscriptionArr: Subscription[] = [];
     printTemplate: any;
     ConcessionId: any;
@@ -896,7 +895,7 @@ export class CompanyBillComponent implements OnInit {
       setTimeout(() => {
         this.sIsLoading = 'loading-data';
         this._IpSearchListService.getAdvancedetail(D_data).subscribe(Visit => {
-          this.advancedatasource.data = Visit as IpdAdvanceBrowseModel[];
+          this.advancedatasource.data = Visit as any[];
           console.log(this.advancedatasource.data)
         },
           error => {

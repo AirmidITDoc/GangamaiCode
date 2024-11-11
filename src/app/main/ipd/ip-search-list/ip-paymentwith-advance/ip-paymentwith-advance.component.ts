@@ -1,6 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { IpdAdvanceBrowseModel } from '../../browse-ipadvance/browse-ipadvance.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -70,7 +69,7 @@ export class IpPaymentwithAdvanceComponent implements OnInit {
     'BalanceAmount',
     'RefundAmount'
   ];
-  dataSource = new MatTableDataSource<IpdAdvanceBrowseModel>();
+  dataSource = new MatTableDataSource<any>();
   //bANK filter
   public bankFilterCtrl: FormControl = new FormControl();
   public filteredBank: ReplaySubject<any> = new ReplaySubject<any>(1);

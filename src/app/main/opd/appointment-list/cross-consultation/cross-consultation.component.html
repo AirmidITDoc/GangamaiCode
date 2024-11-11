@@ -1,0 +1,179 @@
+<div class="modal-wrapper grid-container">
+    <!-- Modal header -->
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Cross Consultation</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                        matTooltip="Close">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+                <div fxLayout="row" fxLayoutGap="5px" >
+                    <app-common-date [screenFrom]="screenFromString" style="float:right"
+                        (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal body -->
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <form [formGroup]="crossconForm">
+                <div fxLayout="column" class="gap-12">
+                    <div class="modal-card-container">
+                        <!-- <mat-card>
+                            <div class="patient-info-container">
+                                <div class="patient-sub">
+                                    <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
+                                        fxLayoutAlign="space-between">
+                                        <div fxLayout="column" fxLayoutGap="10px">
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">UHID No
+                                                </span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{selectedAdvanceObj.RegId}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Patient Name
+                                                </span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{selectedAdvanceObj.PatientName}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Doctor Name</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{selectedAdvanceObj.Doctorname}}</span>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="column" fxLayoutGap="10px"> 
+                                             
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">OPD No</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{selectedAdvanceObj.OPDNo}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Age | Sex
+                                                </span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{selectedAdvanceObj.AgeYear}}Y|{{selectedAdvanceObj.AgeMonth}}M|{{selectedAdvanceObj.AgeDay}} D | {{selectedAdvanceObj.GenderName}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Department</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{selectedAdvanceObj.DepartmentName}}</span>
+                                            </div>
+                                          
+                                           
+                                        </div>
+                                        <div fxLayout="column" fxLayoutGap="10px" style="margin-right: 100px;">
+                                          
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Patient Type | Tarrif
+                                                </span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{selectedAdvanceObj.PatientType}} | {{selectedAdvanceObj.TarrifName}}</span>
+                                            </div> 
+                                            <div class="patient-col" >
+                                                <span class="patient-col-key">Company Name</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value" style="color: orange;">{{selectedAdvanceObj.CompanyName}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Ref-Doctor Name
+                                                </span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{selectedAdvanceObj.RefDocName}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-card> -->
+                    </div>
+                    <div class="modal-card-container">
+                        <mat-card>
+                            <div fxLayout="column" class="gap-8">
+                                <div class="form-title mb-2 border-bottom pb-2">
+                                    <span class="h3 font-weight-600">Cross Consultation Information</span>
+                                </div>
+                                <div class="form-body">
+                                    <div fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
+
+                                        <mat-form-field appearance="outline" fxFlex.sm="33%">
+                                            <input matInput type="datetime-local" placeholder="Visit Date / Time"
+                                                formControlName="VisitDate"
+                                                [ngModel]="date | date:'yyyy-MM-ddTHH:mm'" />
+                                        </mat-form-field>
+
+                                        <!-- 
+                                        <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <mat-label>Department</mat-label>
+                                            <input matAutocompletePosition="below" type="text" placeholder="Select Department" matInput
+                                                #dept (keydown)="onEnterdept($event)" formControlName="Departmentid"
+                                                [matAutocomplete]="autoDep1" required>
+                                            <span matSuffix style="display: flex;">
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="InfoFormGroup.get('Departmentid').setValue(''); isDepartmentSelected = false;">close</mat-icon>
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="InfoFormGroup.get('Departmentid').setValue(''); isDepartmentSelected = false;">search</mat-icon>
+                                            </span>
+                                            <mat-autocomplete #autoDep1="matAutocomplete" [displayWith]="getOptionTextDep">
+                                                <mat-option *ngFor="let option of filteredOptionsDep | async" [value]="option"
+                                                    (onSelectionChange)="OnChangeDoctorList(option,false)">
+                                                    {{option.DepartmentName}}
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field> -->
+                                        <airmid-textbox label="Department name" formControlName="Departmentid" [value]=""
+                                            [formGroup]="crossconForm" [maxLength]="200">
+                                        </airmid-textbox>
+                                        <airmid-textbox label="Doctor name" formControlName="DoctorID" [value]=""
+                                            [formGroup]="crossconForm" [maxLength]="200">
+                                        </airmid-textbox>
+
+                                        <!-- <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <mat-label>Doctor Name</mat-label>
+                                            <input matAutocompletePosition="below" type="text" placeholder="Select Doctor Name" matInput #deptdoc
+                                                formControlName="DoctorID" [matAutocomplete]="autoDoctor" required>
+                                            <span matSuffix style="display: flex;">
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="InfoFormGroup.get('DoctorID').setValue(''); isDoctorSelected = false;">close</mat-icon>
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="InfoFormGroup.get('DoctorID').setValue(''); isDoctorSelected = false;">search</mat-icon>
+                                            </span>
+                                    
+                                            <mat-autocomplete #autoDoctor="matAutocomplete" [displayWith]="getOptionTextDoc">
+                                                <mat-option *ngFor="let option of filteredOptionsDoc | async" [value]="option"
+                                                    (onSelectionChange)="isDoctorSelected = true;">
+                                                    {{option.Doctorname }} <b>|</b> {{option.DepartmentName }} <b>|</b>
+                                                    {{option.DoctorId}}
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-card>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal footer -->
+    <div class="modal-footer">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-buttons">
+                <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                <button class="btn btn-primary " color="accent" (click)="onSubmit()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -284,8 +284,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
 
   OnSubmit() {
     debugger
-    // if(!isNaN(this.vDepartmentid.Departmentid) && !isNaN(this.vDoctorId.DoctorId)){
-
+  
     var m_data = {
       "phoneAppId": 0,
       "regNo": '',
@@ -407,7 +406,12 @@ export class NewPhoneAppointmentComponent implements OnInit {
     }
   }
 
-
+Phappcancle(data){
+  this._phoneAppointListService.phoneMasterCancle(data.phoneAppId).subscribe((response: any) => {
+    this.toastr.success(response.message);
+    // that.grid.bindGridData();
+});
+}
 
 }
 

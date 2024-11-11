@@ -102,17 +102,7 @@ export class PhoneAppointListService {
     };
 }
 
-public phoneMasterSave(Param: any, showLoader = true) {
-    if (Param.phoneAppId) {
-        return this._httpClient.PutData("PhoneApp/Insert" + Param.phoneAppId, Param, showLoader);
-    } else return this._httpClient.PostData("PhoneApp/Insert", Param, showLoader);
-}
 
-public deactivateTheStatus(m_data) {
-    return this._httpClient.PostData("PhoneApp", m_data);
-}
-  
-    
 public getPhoenappschdulelist() {
   return this._httpClient1.post("Generic/GetByProc?procName=Rtrv_ScheduledPhoneApp",{})
 }
@@ -126,4 +116,22 @@ public getPhoenappschdulelist() {
   public getDoctorMasterCombo(Id) {
     return this._httpClient1.post("Generic/GetByProc?procName=Retrieve_DoctorWithDepartMasterForCombo_Conditional", {"Id":Id})
 }
+
+// new Api
+public phoneMasterSave(Param: any, showLoader = true) {
+  if (Param.phoneAppId) {
+      return this._httpClient.PutData("PhoneAppointment2/InsertSP" + Param.phoneAppId, Param, showLoader);
+  } else return this._httpClient.PostData("PhoneAppointment2/InsertSP", Param, showLoader);
+}
+
+public deactivateTheStatus(m_data) {
+  return this._httpClient.PostData("PhoneApp", m_data);
+}
+
+ 
+public phoneMasterCancle(Param: any, showLoader = true) {
+if (Param.phoneAppId) {
+    return this._httpClient.PutData("PhoneAppointment2/Cancel" + Param.phoneAppId, Param, showLoader);
+} else return this._httpClient.PostData("PhoneAppointment2/Cancel", Param, showLoader);
+} 
 }

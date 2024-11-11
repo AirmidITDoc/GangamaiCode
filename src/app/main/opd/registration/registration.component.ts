@@ -31,15 +31,20 @@ export class RegistrationComponent implements OnInit {
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   
   gridConfig: gridModel = {
-      apiUrl: "VisitDetail/OPRegistrationList",
+      apiUrl: "OutPatient/RegistrationList",
       columnsList: [
           { heading: "Code", key: "regId", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "Prefix", key: "prefixId", sort: true, align: 'left', emptySign: 'NA' },
+        
+          { heading: "First Name", key: "firstName", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "Middle Name", key: "middleName", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "Last Name", key: "lastName", sort: true, align: 'left', emptySign: 'NA' },
+
           { heading: "RegTime", key: "regTime", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "MobileNo", key: "MobileNo", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
          
-          { heading: "Address", key: "Address", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "City", key: "City", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA' },
+         // { heading: "City", key: "city", sort: true, align: 'left', emptySign: 'NA' },
         //  { heading: "IsConsolidatedDr", key: "isConsolidatedDr", sort: true, align: 'left', emptySign: 'NA' },
           {
               heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -76,11 +81,12 @@ export class RegistrationComponent implements OnInit {
           { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
           { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
           { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-          { fieldName: "From_Dt", fieldValue: "01/01/2024", opType: OperatorComparer.Equals },
-          { fieldName: "To_Dt", fieldValue: "01/01/2024", opType: OperatorComparer.Equals },
+          { fieldName: "From_Dt", fieldValue: "01/01/2020", opType: OperatorComparer.Equals },
+          { fieldName: "To_Dt", fieldValue: "11/09/2024", opType: OperatorComparer.Equals },
           { fieldName: "MobileNo", fieldValue: "%", opType: OperatorComparer.Contains },
-          
-         // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+          { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+          { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+        //  { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
       ],
       row: 25
   }

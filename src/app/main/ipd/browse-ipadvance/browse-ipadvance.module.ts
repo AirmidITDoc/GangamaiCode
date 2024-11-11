@@ -65,7 +65,7 @@ const routes: Routes = [
         SharedModule
     ],
     providers: [
-      // BrowseIPAdvanceService,
+      BrowseIPAdvanceService,
         DatePipe
     ],
     entryComponents: [
