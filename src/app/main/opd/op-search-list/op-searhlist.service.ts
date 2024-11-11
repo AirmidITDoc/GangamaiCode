@@ -304,7 +304,7 @@ public getConcessionCombo()
     if (loader) {
       this._loaderService.show();
   }
-    return this._httpClient.post("OutPatient/OPBillWithPaymentCashCounter", employee)
+    return this._httpClient.post("OutPatient/OPBillWithPackageCashCounter", employee)
   } 
 
   public InsertOPBillingCredit(employee) : Observable<any> {

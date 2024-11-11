@@ -119,6 +119,9 @@ export class NewPrescriptionComponent implements OnInit {
     debugger
      this.selectedAdvanceObj = this.advanceDataStored.storage;
      // this.PatientHeaderObj = this.advanceDataStored.storage;
+     this.RegNo = this.selectedAdvanceObj.RegNo
+     this.vClassId= this.selectedAdvanceObj.WardId ;
+     this.vAdmissionID = this.selectedAdvanceObj.AdmissionID;
      console.log( this.selectedAdvanceObj)
    }}
 
