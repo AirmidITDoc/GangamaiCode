@@ -86,7 +86,7 @@ export class RequestforlabtestComponent implements OnInit {
     })
   }
   getRequestdetList(Param){
-    // debugger
+   debugger
     var vdata={
       RequestId: Param.RequestId
     }

@@ -91,8 +91,10 @@ export class NewRequestforlabComponent implements OnInit {
         debugger
          this.selectedAdvanceObj = this.advanceDataStored.storage;
          this.RegNo =  this.selectedAdvanceObj.RegNo
+         this.vClassId  = this.selectedAdvanceObj.WardId
          // this.PatientHeaderObj = this.advanceDataStored.storage;
          console.log( this.selectedAdvanceObj)
+         this.getServiceListdata();
        }
     }
 
@@ -201,7 +203,7 @@ export class NewRequestforlabComponent implements OnInit {
       var Param = {
         "ServiceName":`${this.myFormGroup.get('ServiceId').value}%` ||'%',
         "IsPathRad":parseInt(this.myFormGroup.get('IsPathRad').value) || 0,
-        "ClassId":   this.selectedAdvanceObj.ClassId || 1,
+        "ClassId":   this.vClassId  || 0,
         "TariffId":  this.selectedAdvanceObj.TariffId  || 0
     }
       console.log(Param);

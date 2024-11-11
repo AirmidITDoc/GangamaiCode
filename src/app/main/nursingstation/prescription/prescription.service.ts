@@ -77,7 +77,10 @@ export class PrescriptionService {
   public getAdmittedpatientlist(employee){
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch ", employee)
   }
-  public presciptionSave(employee) {
+  public presciptionSave(employee,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.post("InPatient/InsertIPPrescription", employee);
   }
    

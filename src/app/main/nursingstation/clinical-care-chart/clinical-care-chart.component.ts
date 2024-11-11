@@ -18,14 +18,14 @@ import { MatSliderChange } from '@angular/material/slider';
 import { PhlebitisScoreComponent } from './phlebitis-score/phlebitis-score.component';
 import { MedicationErrorComponent } from './medication-error/medication-error.component';
 import { DischargeSummaryComponent } from 'app/main/ipd/ip-search-list/discharge-summary/discharge-summary.component';
-import { PrescriptionComponent } from '../prescription/prescription.component';
+import { PrescriptionComponent, PrescriptiondetList, PrescriptionList } from '../prescription/prescription.component';
 import { BedTransferComponent } from 'app/main/ipd/ip-search-list/bed-transfer/bed-transfer.component';
 import { NewPrescriptionComponent } from '../prescription/new-prescription/new-prescription.component';
 import { NewRequestforlabComponent } from '../requestforlabtest/new-requestforlab/new-requestforlab.component';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
 import { LabReportsViewComponent } from './lab-reports-view/lab-reports-view.component';
-import { RequestList } from '../requestforlabtest/requestforlabtest.component';
+import { RequestdetList, RequestList } from '../requestforlabtest/requestforlabtest.component';
 
 @Component({
   selector: 'app-clinical-care-chart',
@@ -110,12 +110,39 @@ export class ClinicalCareChartComponent implements OnInit {
     'IsOnFileTest', 
     'action',
   ]
+  displayedColumnsIPprescription: string[] = [ 
+    'RegNo',
+    'PatientName',
+    'Vst_Adm_Date',
+    'Date',
+    'StoreName',
+    'CompanyName', 
+    'action',
+  ] 
+  dscPrescriptionDetList:string[] = [
+    'Status',
+    'ItemName',
+    'Qty', 
+  ]
   displayedColumnsLapReports: string[] = [
     'Date', 
     'TestName', 
     'PBillNo',
     'IsCompleted', 
   ]
+  displayColumnsLapReqDet: string[] =[ 
+    'IsStatus', 
+    'IsComplted',
+    'ReqDate',
+    'ReqTime',
+    'ServiceName',
+    'AddedByName',
+    'BillingUser',
+    'AddedByDate',
+    'PBillNo'
+  ]
+
+
   isLoading: String = '';
   sIsLoading: string = ""; 
   WardList:any=[];
@@ -151,6 +178,9 @@ export class ClinicalCareChartComponent implements OnInit {
   dsSugarTable = new MatTableDataSource<INputOutputList>();
   dsrequestList = new MatTableDataSource<RequestList>();
   datasource = new MatTableDataSource<LabtestList>();
+  dsrequestdetList=new MatTableDataSource<RequestdetList>();
+  dsprescritionList = new MatTableDataSource<PrescriptionList>();
+  dsprescriptiondetList = new MatTableDataSource<PrescriptiondetList>();
   
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('wardpaginator', { static: true }) public wardpaginator: MatPaginator;
@@ -258,8 +288,9 @@ registerObj:any;
     this.vAgeMonth = obj.AgeMonth;
     this.vAgeDay =obj.AgeDay;
     this.vRegNo = obj.RegNo;
-    this.getRequesttList();
     this.gettestList();
+    this.getPrescriptionList();
+    this.getRequesttList();
   }
   PainList:any=[];
   OnAdd() {
@@ -291,6 +322,31 @@ registerObj:any;
         toastClass: 'tostr-tost custom-toast-success',
       });  
   }
+  //IP Prescription list 
+  getPrescriptionList(){
+    var vdata={
+      FromDate: this.datePipe.transform(new Date(), "yyyy-MM-dd 00:00:00.000") || '01/01/1900', //'09/01/2023',
+      ToDate: this.datePipe.transform(new Date(), "yyyy-MM-dd 00:00:00.000") || '01/01/1900', //'09/01/2023',
+      Reg_No: this.vRegNo|| 0 
+    }
+     console.log(vdata);
+    this._ClinicalcareService.getPrecriptionlistmain(vdata).subscribe(data =>{
+        this.dsprescritionList.data = data as PrescriptionList[]; 
+        console.log(this.dsprescritionList.data);
+    })
+  }
+  //IP Prescription Det list 
+  getPrescriptiondetList(Param){
+    debugger
+    var vdata={
+      IPMedID: Param.IPMedID 
+    }
+    this._ClinicalcareService.getPrecriptiondetlist(vdata).subscribe(data =>{
+      this.dsprescriptiondetList.data = data as PrescriptiondetList[]; 
+       console.log(this.dsprescriptiondetList.data);
+    })
+  }
+  //lab request list
   getRequesttList(){
     var vdata={
       FromDate: this.datePipe.transform(new Date(), "yyyy-MM-dd 00:00:00.000") || '01/01/1900', //'09/01/2023',
@@ -303,6 +359,16 @@ registerObj:any;
       console.log(this.dsrequestList.data);
     })
   }
+    //lab request det list
+  getRequestdetList(Param){ 
+    var vdata={
+      RequestId: Param.RequestId
+    }
+    this._ClinicalcareService.getRequestdetList(vdata).subscribe(data =>{
+      this.dsrequestdetList.data = data as RequestdetList[]; 
+       console.log(this.dsrequestdetList.data);
+    })
+  } 
 //lab Report list
 gettestList(){
   this.sIsLoading = ''
@@ -392,6 +458,7 @@ getPriscription(){
     });
   dialogRef.afterClosed().subscribe(result => {
     console.log('The dialog was closed - Insert Action', result); 
+    this.getPrescriptionList();
   });  
 }
 getbedTransfer(){ 
@@ -430,6 +497,7 @@ getLabRequest(){
     });
   dialogRef.afterClosed().subscribe(result => {
     console.log('The dialog was closed - Insert Action', result); 
+    this.getRequesttList();
   });  
 }
   getPhlebitis(){

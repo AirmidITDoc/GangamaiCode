@@ -180,7 +180,29 @@ export class ClinicalCareChartService {
     }
       return this._httpClient.get("Pathology/view-PathTemplate?PathReportId=" + PathReportId + "&OP_IP_Type="+OP_IP_Type);
     }
-    public getRequesttList(Param){
+    public getRequesttList(Param,loader = true){
+      if (loader) {
+        this._loaderService.show();
+    }
       return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_LabRequest_Nursing",Param)
+    }
+    public getRequestdetList(Param,loader = true){
+      if (loader) {
+        this._loaderService.show();
+    }
+      return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_NursingLabRequestDetails",Param)
+    }
+    public getPrecriptionlistmain(Param,loader = true){
+      if (loader) {
+        this._loaderService.show();
+    }
+      return this._httpClient.post("Generic/GetByProc?procName=Retrieve_PrescriptionListFromWard",Param)
+    }
+  
+    public getPrecriptiondetlist(Param,loader = true){
+      if (loader) {
+        this._loaderService.show();
+    }
+      return this._httpClient.post("Generic/GetByProc?procName=Rtrv_IP_Prescriptio_Det",Param)
     }
 }
