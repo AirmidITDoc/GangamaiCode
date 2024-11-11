@@ -21,16 +21,16 @@
 <div class="center p-12 pb-56" fxFlexAlign="start center">
     <div class="content-card">
         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
-            <div fxFlex.gt-sm="100%" fxFlex>
+            <div width="100%" >
                 <div fxlayout="row">
                     <div style="width: 100%;">
                         <mat-table #table matSort [dataSource]="dataSource" (matSortChange)="bindGridData()"
                             style="overflow:auto">
                             <ng-container *ngFor="let row of gridConfig?.columnsList" [matColumnDef]="row.key">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="!row.sort"> {{
+                                <mat-header-cell [style.min-width.px]="row.width" *matHeaderCellDef mat-sort-header [disabled]="!row.sort"> {{
                                     row?.heading }}
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let element; let i = index" fxShow.gt-sm>
+                                <mat-cell [style.min-width.px]="row.width" *matCellDef="let element; let i = index" fxShow.gt-sm>
                                     <ng [ngSwitch]="row?.type||GridColumnType.default" fxShow.gt-sm>
                                         <ng *ngSwitchCase="GridColumnType.customText">
                                             <span> {{ element[row.key] ? [row.text1] : [row.text2] }}</span>
