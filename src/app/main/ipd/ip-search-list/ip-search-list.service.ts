@@ -1131,6 +1131,11 @@ getIpDischargeReceipt(AdmId){
   return this._httpClient.get("InPatient/view-DischargSummary?AdmissionID=" + AdmissionID)
  }
 
+ getIpDischargesummaryTempReceipt(AdmissionID){
+  return this._httpClient.get("InPatient/view-DischargSummaryTemplate?AdmissionID=" + AdmissionID)
+ }
+
+
  getViewAdvancestatementReceipt(AdmissionID){
   return this._httpClient.get("InPatient/view-IP-AdvanceSummaryReceipt?AdmissionID=" + AdmissionID)
  }

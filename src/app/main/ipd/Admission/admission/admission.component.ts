@@ -2101,7 +2101,7 @@ this.getAdmittedPatientList_1()
 
   
   
-  getAdmittedPatientCasepapertemplateview(AdmissionId, flag) {
+  getAdmittedPatientCasepaperTempview(AdmissionId, flag) {
     this.sIsLoading = 'loading-data';
     debugger
     let AdmissionID

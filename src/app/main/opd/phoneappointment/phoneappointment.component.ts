@@ -173,11 +173,11 @@ CanclePhoneApp(contact){
         console.log(submitData);
         this._phoneAppointService.PhoneAppointCancle(submitData).subscribe(response => {
           if (response) {
-            Swal.fire('Appointment cancelled !', 'Phone Appointment cancelled Successfully!', 'success').then((result) => {
+            Swal.fire('Phone Appointment cancelled !', 'Phone Appointment cancelled Successfully!', 'success').then((result) => {
               
             });
           } else {
-            Swal.fire('Error !', 'Appointment cancelled data not saved', 'error');
+            Swal.fire('Error !', 'Phone Appointment cancelled data not saved', 'error');
           }
           this.isLoading1 = '';
         });

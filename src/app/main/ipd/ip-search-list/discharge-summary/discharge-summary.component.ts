@@ -739,11 +739,32 @@ viewgetDischargesummaryPdf(AdmId) {
         width: '100%',
         data: {
           base64: res["base64"] as string,
-          title: "Discharge SummaryViewer"
+          title: "Discharge Summary Viewer"
         }
       });
   });
 }
+
+
+viewgetDischargesummaryTempPdf(AdmId) {
+
+  this._IpSearchListService.getIpDischargesummaryTempReceipt(
+    AdmId
+  ).subscribe(res => {
+    const dialogRef = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Discharge Summary Viewer"
+        }
+      });
+  });
+}
+
+
 SetDeathOrNormal(){
   
 }

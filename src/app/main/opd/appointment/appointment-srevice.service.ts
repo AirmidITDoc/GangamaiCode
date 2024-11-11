@@ -537,7 +537,7 @@ public documentdownloadInsert(employee,loader = true){
         if (loader) {
             this._loaderService.show();
         }
-      return this._httpClient.get("OutPatient/view-AppointmentTemplate?VisitId=" + VisitId);
+      return this._httpClient.get("OutPatient/view-PatientAppointment?VisitId=" + VisitId);
     }
 
     

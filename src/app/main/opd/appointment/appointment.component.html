@@ -401,6 +401,15 @@
                                                                 print</mat-icon>
                                                             <!-- <mat-icon>print</mat-icon> -->
                                                         </button>
+
+                                                        <button mat-icon-button matTooltip="print"
+                                                            (click)="viewgetPatientAppointmentTemplateReportPdf(contact,true)"
+                                                            *ngIf="contact.IsCancelled==0">
+                                                            <mat-icon title="Print Menu"
+                                                                [disabled]="contact.IsCancelled" class="disabled-icon">
+                                                                print</mat-icon>
+                                                            <!-- <mat-icon>print</mat-icon> -->
+                                                        </button>
                                                         <button mat-icon-button matTooltip="Bill"
                                                             *ngIf="contact.IsCancelled==0"
                                                             (click)="Billpayment(contact)">
