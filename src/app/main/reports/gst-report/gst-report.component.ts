@@ -591,7 +591,7 @@ export class GSTReportComponent implements OnInit {
 
      viewgetSalesGstreportPdf() {
       this.sIsLoading = 'loading-data';
-   
+   debugger
       let storeId =this._loggedUser.currentUserValue.user.storeId;
       if (this._GstReportService.userForm.get('StoreId').value.StoreId)
         storeId = this._GstReportService.userForm.get('StoreId').value.StoreId
@@ -624,7 +624,7 @@ export class GSTReportComponent implements OnInit {
      
      viewgetSalesGstdatewisereportPdf() {
       this.sIsLoading = 'loading-data';
-   
+   debugger
       let storeId =this._loggedUser.currentUserValue.user.storeId;
       if (this._GstReportService.userForm.get('StoreId').value.StoreId)
         storeId = this._GstReportService.userForm.get('StoreId').value.StoreId

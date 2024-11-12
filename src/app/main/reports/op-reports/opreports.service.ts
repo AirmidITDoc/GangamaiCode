@@ -39,7 +39,7 @@ export class OPReportsService {
         IsNarcotic:[0],
         ish1Drug:[0],
         isScheduleH:[0],
-        IsHighRisk:[1],
+        IsHighRisk:[0],
         IsScheduleX:[0],
         ReportType:[1]
         // Radio:['1']
