@@ -1440,7 +1440,7 @@ getPacakgeDetail(contact){
     {
       maxWidth: "100%",
       height: '75%',
-      width: '65%' ,
+      width: '70%' ,
       data: {
         Obj:contact
       }
@@ -1449,13 +1449,20 @@ getPacakgeDetail(contact){
     debugger
     console.log('The dialog was closed - Insert Action', result);
     if (result) {
+
       this.dsPackageDet.data = result
       console.log( this.dsPackageDet.data)   
       this.dsPackageDet.data.forEach(element => {
         this.PacakgeList = this.PacakgeList.filter(item => item.ServiceId !== element.ServiceId)
         console.log(this.PacakgeList)   
-        this.TotalPrice = parseInt(this.TotalPrice) + parseInt(element.Price);  
-        console.log(this.TotalPrice)   
+        if(element.BillwiseTotalAmt > 0){
+          this.TotalPrice = element.BillwiseTotalAmt;  
+          console.log(this.TotalPrice) 
+        }else{
+          this.TotalPrice = parseInt(this.TotalPrice) + parseInt(element.Price);  
+          console.log(this.TotalPrice) 
+        }
+     
         this.OriginalPackageService = this.dataSource.data.filter(item => item.ServiceId !== element.ServiceId)
         this.EditedPackageService = this.dataSource.data.filter(item => item.ServiceId === element.ServiceId)
         console.log(this.OriginalPackageService)

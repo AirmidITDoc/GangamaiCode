@@ -46,6 +46,7 @@ export class UpdateCompanyDetailsComponent implements OnInit {
   ClassId:any;
   DoctorName:any;
   ComServiceName:any;
+  IsComServ:any;
 
   constructor(
     public _IpSearchListService: IPSearchListService,
@@ -77,7 +78,7 @@ export class UpdateCompanyDetailsComponent implements OnInit {
       this.ClassId = this.selectedAdvanceObj.ClassId; 
       this.vDiscAmt = this.selectedAdvanceObj.ConcessionAmount; 
       this.DoctorName = this.selectedAdvanceObj.DoctorName;  
-      
+      this.IsComServ = this.selectedAdvanceObj.IsComServ;
        this.getServiceListCombobox();
        this.getAdmittedDoctorCombo();
     }
@@ -321,10 +322,17 @@ export class UpdateCompanyDetailsComponent implements OnInit {
     }
     let TotalAmount = this.vQty * this.vPrice;
     let Query
-    Query ="update addcharges set ServiceId =" + this.Myform.get('SrvcName').value.ServiceId + ",ServiceName='"+this.Myform.get('SrvcName').value.ServiceName +
-    "',c_qty= " + this.vQty + ",c_price = " + this.vPrice + ",c_totalamount="+ TotalAmount +
-    ",DoctorId= " + DoctorId +",ConcessionAmount=" + this.vDiscAmt + ",ClassId=" + this.Myform.get('ChargeClass').value.ClassId +
-    ",IsPathology= "+this.IsPathology +",IsRadiology=" + this.IsRadiology + "where ChargesId= " + this.selectedAdvanceObj.ChargesId
+    if(this.IsComServ == 1){
+    Query ="update addcharges set ServiceId =" + this.Myform.get('SrvcName').value.ServiceId + 
+    ",ServiceName='"+this.Myform.get('SrvcName').value.ServiceName +
+    "',c_qty=" + this.vQty + ",c_price = " + this.vPrice + ",c_totalamount="+ TotalAmount +
+    ",DoctorId= " + DoctorId + ",ClassId=" + this.Myform.get('ChargeClass').value.ClassId +
+    ",IsPathology= "+this.IsPathology +",IsRadiology=" + this.IsRadiology + 
+    "where ChargesId= " + this.selectedAdvanceObj.ChargesId
+    }else{
+      Query ="update addcharges set  c_qty=" + this.vQty + ",c_price = " + this.vPrice + 
+      ",c_totalamount="+ TotalAmount + "where ChargesId= " + this.selectedAdvanceObj.ChargesId
+    }
     this._IpSearchListService.UpdateCompayService(Query).subscribe(data =>{  
       if(data){
         Swal.fire('Charges Updated Successfully!', 'success').then((result) => {
@@ -347,22 +355,28 @@ export class UpdateCompanyDetailsComponent implements OnInit {
   @ViewChild('DiscAmt') DiscAmt: ElementRef; 
   @ViewChild('Netamt') Netamt: ElementRef; 
   @ViewChild('addbutton') addbutton: ElementRef;
+  @ViewChild('service') service: ElementRef;
 
-  onEnterservice(event): void {
-
+  onEnterClass(event): void { 
     if (event.which === 13) { 
-      this.price.nativeElement.focus();
+      this.service.nativeElement.focus();
+    }
+  } 
+
+  onEnterservice(event): void { 
+    if (event.which === 13) { 
+      this.qty.nativeElement.focus();
     }
   } 
   public onEnterprice(event): void { 
     if (event.which === 13) {
-      this.qty.nativeElement.focus();  
+      this.doctorname.nativeElement.focus();  
     }
   }
   public onEnterqty(event): void {
     if (event.which === 13) {
       if (this.isDoctor) {
-        this.doctorname.nativeElement.focus();
+        this.price.nativeElement.focus();
       }
       else {
         this.DiscAmt.nativeElement.focus(); 

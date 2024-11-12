@@ -24,6 +24,7 @@ export class OpPackageBillInfoComponent implements OnInit {
     'Qty',
     'Price',
     'TotalAmt',
+    'DoctorName',
     'DiscPer',
     'DiscAmt',
     'NetAmount', 
@@ -52,6 +53,9 @@ export class OpPackageBillInfoComponent implements OnInit {
   IsPathology:any;
   IsRadiology:any;
   vClassName:any;
+  vBillWiseTotal:boolean=false;
+  vBillWiseTotalAmt:any;
+  isChkbillwiseAmt:boolean=false;
   screenFromString = 'OP-billing'; 
 
 
@@ -90,7 +94,19 @@ export class OpPackageBillInfoComponent implements OnInit {
     this.PackageForm = this.formBuilder.group({
       SrvcName: [''],  
       DoctorID: [''], 
+      BillWiseTotal:['']
     });
+  }
+  getBillwiseAmt(event){
+    debugger
+    if(event.checked){
+      this.isChkbillwiseAmt = true; 
+      this.gettablecalculation(event)
+    }else{
+      this.isChkbillwiseAmt = false;
+      this.gettablecalculation(event)
+    }
+
   }
   //Service list
   getServiceListCombobox() {
@@ -185,6 +201,8 @@ export class OpPackageBillInfoComponent implements OnInit {
             PackageId:element.PackageId,
             PackageServiceId:element.PackageServiceId,
             PacakgeServiceName:element.PacakgeServiceName,
+            DoctorId:element.DoctorId || 0,
+            DoctorName:element.DoctorName || '',
           })
       })
       this.dsPackageDet.data = this.PacakgeList
@@ -245,7 +263,7 @@ onAddPackageService() {
       DoctorId: this.ChargeDoctorId,
       DoctorName: this.ChargesDoctorname , 
       IsPathology: this.IsPathology || 0,
-      IsRadiology: this.IsRadiology || 0
+      IsRadiology: this.IsRadiology || 0  
     });
   this.isLoading = '';
   this.dsPackageDet.data = this.PacakgeList; 
@@ -266,8 +284,15 @@ onAddPackageService() {
     }
     Swal.fire('Success !', 'PacakgeList Row Deleted Successfully', 'success'); 
   } 
-  gettablecalculation(element, Price) {
+  gettablecalculation(element) {
     console.log(element)
+    if(element.Qty == 0 || element.Qty == ''){
+      element.Qty = 1 ;
+      this.toastr.warning('Qty is connot be Zero By default Qty is 1', 'error!', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });  
+      return;
+    }
     debugger 
     if(element.Price > 0 && element.Qty > 0){ 
     element.TotalAmt = element.Qty * element.Price || 0;
@@ -279,16 +304,48 @@ onAddPackageService() {
       element.DiscAmt =  0 ;
       element.NetAmount =  0 ;
     } 
+    
+    if(this.isChkbillwiseAmt == true){
+      element.Qty = 1;  
+      element.Price = 0;  
+      element.TotalAmt = 0;  
+      element.DiscAmt =  0 ;
+      element.NetAmount =  0 ;
+    }
   }
-
+  SavePacList:any=[];
   onSavePackage(){
+    debugger
     if( this.dsPackageDet.data.length < 0){
       this.toastr.warning('please add services list is blank ', 'error!', {
         toastClass: 'tostr-tost custom-toast-warning',
       });  
       return;
     }
-     this.dialogRef.close(this.dsPackageDet.data)
+    console.log(this.vBillWiseTotalAmt)
+
+    this.dsPackageDet.data.forEach(element => {
+      this.SavePacList.push(
+        {
+          ServiceId: element.ServiceId,
+          ServiceName: element.ServiceName,
+          Price: element.Price || 0,
+          Qty: element.Qty || 1,
+          TotalAmt: element.TotalAmt || 0,
+          ConcessionPercentage: element.DiscPer || 0,
+          DiscAmt: element.DiscAmt || 0,
+          NetAmount: element.NetAmount || 0,
+          IsPathology: element.IsPathology || 0,
+          IsRadiology: element.IsRadiology || 0,
+          PackageId: element.PackageId || 0,
+          PackageServiceId: element.PackageServiceId || 0,  
+          PacakgeServiceName:this.registerObj.ServiceName || '',
+          BillwiseTotalAmt:this.vBillWiseTotalAmt || 0,
+          DoctorId: element.DoctorId,
+          DoctorName: element.DoctorName , 
+        }); 
+    }); 
+     this.dialogRef.close(this.SavePacList) 
   }
   onClose(){
     this.dialogRef.close();
@@ -343,6 +400,7 @@ export class ChargesList{
   PackageServiceId:any;
   IsPackage:any;
   PacakgeServiceName:any;
+  DoctorName :any;
 
   constructor(ChargesList){
           this.ChargesId = ChargesList.ChargesId || '';

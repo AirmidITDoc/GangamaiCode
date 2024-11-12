@@ -6,6 +6,7 @@ import { ItemGenericMasterService } from "./item-generic-master.service";
 import { fuseAnimations } from "@fuse/animations";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 
 @Component({
     selector: "app-item-generic-master",
@@ -30,7 +31,9 @@ export class ItemGenericMasterComponent implements OnInit {
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
     constructor(public _itemgenericService: ItemGenericMasterService,
-        public toastr : ToastrService,) {}
+        public toastr : ToastrService,
+        public _matDialog: MatDialog,
+        public dialogRef: MatDialogRef<ItemGenericMasterComponent>) {}
 
     ngOnInit(): void {
         this.getitemgenericMasterList();
@@ -65,7 +68,9 @@ export class ItemGenericMasterComponent implements OnInit {
     onClear() {
         this._itemgenericService.myform.reset({ IsDeleted: "false" });
         this._itemgenericService.initializeFormGroup();
+        this.dialogRef.close(); 
     }
+   
 
     onSubmit() {
         if (this._itemgenericService.myform.valid) {

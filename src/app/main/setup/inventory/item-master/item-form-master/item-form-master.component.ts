@@ -15,6 +15,7 @@ import { COMMA, ENTER } from "@angular/cdk/keycodes";
 import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
 import { DatePipe } from "@angular/common";
 import { element } from "protractor";
+import { ItemGenericMasterComponent } from "../../item-generic-master/item-generic-master.component";
 
 @Component({
     selector: "app-item-form-master",
@@ -1116,7 +1117,17 @@ export class ItemFormMasterComponent implements OnInit {
            
     }
 
-
+    onaddItemGeneric() {
+        const dialogRef = this._matDialog.open(ItemGenericMasterComponent, {
+            maxWidth: "85vw",
+            maxHeight: "85vh",
+            width: "100%",
+            height: "100%",
+        });
+        dialogRef.afterClosed().subscribe((result) => {
+            console.log("The dialog was closed - Insert Action", result); 
+        });
+    }
 }
 
 

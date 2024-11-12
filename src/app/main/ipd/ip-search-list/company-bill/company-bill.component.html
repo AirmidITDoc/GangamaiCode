@@ -385,24 +385,38 @@
                         </div>
                     </div>
                 </div>
-                <div class="right-content" fxLayout="row" class="gap-8" fxLayoutAlign="end center">
-                    <div fxLayout="row" class="gap-4" fxLayoutAlign="end center">
-                        <form [formGroup]="Ipbillform">
-                            <mat-form-field appearance="outline" fxFlex *ngIf="isFilteredDateDisabled"
-                                class="padding-fix">
-                                <mat-label>Choose date</mat-label>
-                                <input name="ChargeDate" matInput [matDatepicker]="picker" formControllName="ChargeDate"
-                                    (dateChange)="getDatewiseChargesList($event.value)" [value]="currentDate"
-                                    [readonly]="true">
-                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                <mat-datepicker #picker></mat-datepicker>
-                            </mat-form-field>
-                        </form>
+                <div class="right-content" fxLayout="row" class="gap-8" fxLayoutAlign="space-between">
+
+                    <div class="info-badge-top pb-2 border-bottom">
+                        <div fxLayout="row" fxLayoutAlign="start center" class="gap-8"> 
+                            <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                                <span>: Hospital Services</span>
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                                <span>: Company Services</span>
+                            </div>
+                        </div>
                     </div>
-                    <div fxLayout="row" fxLayoutAlign="end center" class="date-time-container gap-8">
-                        <mat-checkbox (change)="showAllFilter($event)" aria-label="Remember Me">
-                            Show All Charges
-                        </mat-checkbox>
+
+                    <div>
+                        <div fxLayout="row" class="gap-4" fxLayoutAlign="end center">
+                            <form [formGroup]="Ipbillform">
+                                <mat-form-field appearance="outline" fxFlex *ngIf="isFilteredDateDisabled" class="padding-fix">
+                                    <mat-label>Choose date</mat-label>
+                                    <input name="ChargeDate" matInput [matDatepicker]="picker" formControllName="ChargeDate"
+                                        (dateChange)="getDatewiseChargesList($event.value)" [value]="currentDate" [readonly]="true">
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                </mat-form-field>
+                            </form>
+                        </div>
+                        <div fxLayout="row" fxLayoutAlign="end center" class="date-time-container gap-8">
+                            <mat-checkbox (change)="showAllFilter($event)" aria-label="Remember Me">
+                                Show All Charges
+                            </mat-checkbox>
+                        </div>
                     </div>
                 </div>
                 <mat-tab-group class="mat-tab-header-small" #tabGroup (selectedTabChange)="tabChanged($event)">
@@ -412,11 +426,16 @@
                             style="height: calc(100vh - 500px);">  
 
                             <ng-container matColumnDef="IsCheck" sticky>
-                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-50">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-90">
                                     <span class="material-icons" (click)="getChargesList()">
                                         cached
                                     </span></mat-header-cell>
-                                <mat-cell *matCellDef="let contact" class="w-50">
+                                <mat-cell *matCellDef="let contact" class="w-90">
+                                    <mat-icon *ngIf="contact.IsComServ == '0'" matTooltip="Hospital Service"
+                                    class="pill green-600 s-16">circle</mat-icon>
+                                     <mat-icon *ngIf="contact.IsComServ == '1'" matTooltip="Company Service"
+                                    class="pill orange-600 s-16">circle</mat-icon>
+
                                     <mat-icon *ngIf="contact.IsRadiology == 1" matTooltip="IsRadiology">
                                         <img width="15px" height="8px" src="assets/images/logos/radiology.png">
                                     </mat-icon>

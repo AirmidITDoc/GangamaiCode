@@ -103,16 +103,14 @@ export class ClinicalCareChartComponent implements OnInit {
     'Action'
   ]
   displayedColumnsLabReq: string[] = [ 
-    'RegNo', 
-    'PatientName',  
+    'ReqDate', 
+    'ReqTime',  
     'WardName',
     'RequestType',
     'IsOnFileTest', 
     'action',
   ]
-  displayedColumnsIPprescription: string[] = [ 
-    'RegNo',
-    'PatientName',
+  displayedColumnsIPprescription: string[] = [  
     'Vst_Adm_Date',
     'Date',
     'StoreName',
@@ -278,6 +276,7 @@ export class ClinicalCareChartComponent implements OnInit {
   }); 
   }
 registerObj:any;
+vIPDNo:any;
   getpatientDet(obj){ 
     console.log(obj) 
     this.registerObj = obj;
@@ -288,6 +287,7 @@ registerObj:any;
     this.vAgeMonth = obj.AgeMonth;
     this.vAgeDay =obj.AgeDay;
     this.vRegNo = obj.RegNo;
+    this.vIPDNo = obj.IPDNo
     this.gettestList();
     this.getPrescriptionList();
     this.getRequesttList();

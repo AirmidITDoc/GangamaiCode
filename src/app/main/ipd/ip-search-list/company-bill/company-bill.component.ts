@@ -1708,7 +1708,7 @@ export class CompanyBillComponent implements OnInit {
       console.log(row) 
       const dialogRef = this._matDialog.open(UpdateCompanyDetailsComponent,
         {
-          maxWidth: "40%",
+          maxWidth: "45%",
           height: '50%',
           width: '100%',
           data: {

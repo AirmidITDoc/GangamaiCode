@@ -493,6 +493,7 @@ export class ChargesList{
   PackageServiceId:any;
   IsPackage:any;
   PacakgeServiceName:any;
+  BillwiseTotalAmt: any;
   
   constructor(ChargesList){
           this.ChargesId = ChargesList.ChargesId || '';

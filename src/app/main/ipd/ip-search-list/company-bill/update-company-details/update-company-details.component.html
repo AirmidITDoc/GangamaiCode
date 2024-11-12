@@ -7,7 +7,7 @@
             </button>
             
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
-              Modify Company Details
+              Modify Service Details
             </span> 
         </div>
         <div class="close-icon">
@@ -32,11 +32,34 @@
                                 <form [formGroup]="Myform" fxLayout="column" fxLayoutGap="4px">
                                 
                                     <div fxlayout="row" fxLayoutGap="6px">
+                                     
+
+
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Select ClassName</mat-label>
+                                            <input matAutocompletePosition="below" type="text" placeholder="Select " matInput required
+                                                formControlName="ChargeClass" [matAutocomplete]="autoclass" [(ngModel)]="vClassName">
+                                            <span matSuffix style="display: flex;"     (keydown)="onEnterClass($event)">
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="Myform.get('ChargeClass').setValue(''); isClasselected = false;">close</mat-icon>
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="Myform.get('ChargeClass').setValue(''); isClasselected = false;">search</mat-icon>
+                                            </span>
+                                            <mat-autocomplete #autoclass="matAutocomplete" [displayWith]="getOptionTextclass"
+                                                (optionSelected)='getSelectedObjClass($event.option.value)'>
+                                                <mat-option *ngFor="let option of filteredOptionsBillingClassName | async" [value]="option">
+                                                    {{option.ClassName}}
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
+                                    </div>
+                                
+                                    <div fxlayout="row" fxLayoutGap="6px">
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Servce Name</mat-label>
                                             <input type="text" name="SrvcName" formControlName="SrvcName" placeholder="Service Name" matInput
                                                 [matAutocomplete]="auto" (input)="getServiceListCombobox()" id="ServiceId" [(ngModel)]="vServiceName"
-                                                (keydown)="onEnterservice($event)" required> 
+                                                (keydown)="onEnterservice($event)" required #service> 
                                             <span matSuffix style="display: flex;">
                                                 <mat-icon class="mat-icon-close"
                                                     (click)="Myform.get('SrvcName').setValue(''); isSrvcNameSelected = false;">close</mat-icon>
@@ -59,12 +82,16 @@
                                                         </mat-icon>
                                                     </span>
                                                 </mat-option>
-                                            </mat-autocomplete>
-                                           
+                                            </mat-autocomplete> 
+                                        </mat-form-field> 
+
+                                        <mat-form-field appearance="outline" fxFlex="10%">
+                                            <mat-label>Qty</mat-label>
+                                            <input matInput [(ngModel)]="vQty" name="Qty" #qty   type="text" OnlyNumber
+                                                (keydown)="onEnterqty($event)" formControlName="qty" id="qty" required
+                                                (keypress)="keyPressAlphanumeric($event)" (keyup)="CalTotalAmt()">
                                         </mat-form-field>
-                                    </div>
-                                
-                                    <div fxlayout="row" fxLayoutGap="6px">
+
                                         <mat-form-field appearance="outline" fxFlex="15%">
                                             <mat-label>Price</mat-label>
                                             <input matInput [(ngModel)]="vPrice" name="Price" #price formControlName="price" required type="text"
@@ -72,41 +99,16 @@
                                                 (keyup)="CalTotalAmt()">
                                         </mat-form-field>
                                 
-                                        <mat-form-field appearance="outline" fxFlex="12%">
-                                            <mat-label>Qty</mat-label>
-                                            <input matInput [(ngModel)]="vQty" name="Qty" #qty   type="text" OnlyNumber
-                                                (keydown)="onEnterqty($event)" formControlName="qty" id="qty" required
-                                                (keypress)="keyPressAlphanumeric($event)" (keyup)="CalTotalAmt()">
-                                        </mat-form-field>
-                                
-                                        <mat-form-field appearance="outline" fxFlex="25%">
+                                        <mat-form-field appearance="outline" fxFlex="20%">
                                             <mat-label>TotalAmt</mat-label>
                                             <input matInput [(ngModel)]="vTotalAmt" name="TotalAmt" readonly formControlName="totalAmount" required>
-                                        </mat-form-field>
-                                
-                                        <mat-form-field appearance="outline" fxFlex="50%">
-                                            <mat-label>Select ClassName</mat-label>
-                                            <input matAutocompletePosition="below" type="text" placeholder="Select " matInput required
-                                                formControlName="ChargeClass" [matAutocomplete]="autoclass" [(ngModel)]="vClassName">
-                                            <span matSuffix style="display: flex;">
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="Myform.get('ChargeClass').setValue(''); isClasselected = false;">close</mat-icon>
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="Myform.get('ChargeClass').setValue(''); isClasselected = false;">search</mat-icon>
-                                            </span>
-                                            <mat-autocomplete #autoclass="matAutocomplete" [displayWith]="getOptionTextclass"
-                                                (optionSelected)='getSelectedObjClass($event.option.value)'>
-                                                <mat-option *ngFor="let option of filteredOptionsBillingClassName | async" [value]="option">
-                                                    {{option.ClassName}}
-                                                </mat-option>
-                                            </mat-autocomplete>
-                                        </mat-form-field>
+                                        </mat-form-field> 
                                 
                                     </div>
                                 
                                     <div fxlayout="row" fxLayoutGap="6px">
                                 
-                                        <mat-form-field appearance="outline" fxFlex="50%">
+                                        <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Doctor Name</mat-label>
                                             <input matAutocompletePosition="below" type="text" #doctorname [(ngModel)]="vDoctorID"
                                                 placeholder="Select Doctor" matInput (keydown)="onEnterdoctor($event)" formControlName="DoctorID"
@@ -125,13 +127,13 @@
                                             </mat-autocomplete>
                                         </mat-form-field>  
                                 
-                                        <mat-form-field appearance="outline" fxFlex="20%">
+                                        <mat-form-field appearance="outline" fxFlex="15%">
                                             <mat-label>DiscAmt</mat-label>
                                             <input matInput [(ngModel)]="vDiscAmt" name="DiscAmt" #DiscAmt formControlName="DiscAmt"
                                             (keyup)="CalTotalAmt()">
                                         </mat-form-field>
                                 
-                                        <mat-form-field appearance="outline" fxFlex>
+                                        <mat-form-field appearance="outline" fxFlex="25%">
                                             <mat-label>NetAmount</mat-label>
                                             <input matInput [(ngModel)]="vNetAmount" name="NetAmount" readonly #Netamt formControlName="NetAmount"
                                                 required type="number" (keydown)="onEnternetAmount($event)">

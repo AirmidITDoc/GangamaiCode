@@ -756,7 +756,7 @@ ServiceList:any=[];
     this.chargeslist = [];
     this.dataSource.data = [];
     this.isLoadingStr = 'loading';
-    let Query = "Select * from lvwAddCharges where IsGenerated=0 and IsPackage=0 and IsCancelled =0 AND OPD_IPD_ID=" + this.selectedAdvanceObj.AdmissionID + " and OPD_IPD_Type=1 Order by Chargesid"
+    let Query = "Select * from lvwAddCharges where IsGenerated=0 and IsPackage=0 and IsCancelled =0 AND OPD_IPD_ID=" + this.selectedAdvanceObj.AdmissionID + " and OPD_IPD_Type=1 and IsComServ= 0 Order by Chargesid"
     // console.log(Query);
     this._IpSearchListService.getchargesList(Query).subscribe(data => {
       this.chargeslist = data as ChargesList[];

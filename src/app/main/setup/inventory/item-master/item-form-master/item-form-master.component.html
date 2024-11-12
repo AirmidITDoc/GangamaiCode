@@ -350,6 +350,11 @@
        
     
         <div class="modal-footer-buttons gap-8" fxLayout="row" fxLayoutAlign="end" style="padding: 20px;"> 
+          
+           <button mat-raised-button (click)="onaddItemGeneric()" fxLayoutAlign="center center" class="py-8">
+           <mat-icon color="Primary" title=" Add New Item ">add</mat-icon>
+           <span>Item GenericName</span>
+           </button>
             <button class="btn btn-danger-outline" (click)="onClear()">Close</button>
             <button class="btn btn-primary " (click)="onSubmit()" [disabled]="Savebtn">Save</button> 
         </div>
