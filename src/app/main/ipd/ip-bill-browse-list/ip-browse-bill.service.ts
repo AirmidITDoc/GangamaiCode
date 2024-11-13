@@ -145,6 +145,14 @@ public getIPBILLBrowsedatewisePrint(BillNo) {
   return this._httpClient.get("InPatient/view-IP-BillReceiptgroupwise?BillNo=" + BillNo)
  }
 
+ viewgetIPFinalBillReportNewPdf(BillNo,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
+  return this._httpClient.get("InPatient/view-IP-IPFinalBillReceiptNew?BillNo=" + BillNo)
+ }
+
+
  
 
 

@@ -180,6 +180,7 @@ export class IPBillBrowseListComponent implements OnInit {
       this.menuActions.push('Print Final Bill Groupwise');
       this.menuActions.push('Print FinalBill Classwise');
       this.menuActions.push('Print FinalBill ClassService');
+      this.menuActions.push('Print IP Final Bill');
       // this.menuActions.push('Print FinalBill WardWise');
     }
 
@@ -238,6 +239,9 @@ export class IPBillBrowseListComponent implements OnInit {
       this.viewgetBillReportclassservicewisePdf(contact)
       // if (m == "Print FinalBill WardWise") 
       //   this.viewgetBillReportwardwisePdf(contact)
+
+         if (m == "Print IP Final Bill") 
+        this.viewgetFinalBillReportNewPdf(contact.BillNo)
   }
   
   
@@ -812,6 +816,37 @@ console.log(PatientHeaderObj)
         dialogRef.afterClosed().subscribe(result => {
           this.AdList = false;
           this.SpinLoading = false;
+        });
+      });
+
+    }, 100);
+  }
+
+  viewgetFinalBillReportNewPdf(BillNo) {
+    debugger
+    setTimeout(() => {
+      // this.SpinLoading =true;
+      this.chkprint = true;
+      this.sIsLoading = 'loading-data';
+
+      this.AdList = true;
+      this._IpBillBrowseListService.viewgetIPFinalBillReportNewPdf(
+        BillNo
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "IPD Final Bill"
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          this.AdList = false;
+          // this.SpinLoading = false;
+          this.sIsLoading = '';
         });
       });
 
