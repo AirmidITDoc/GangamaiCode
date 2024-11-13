@@ -103,7 +103,7 @@ export class RegistrationComponent implements OnInit {
       const dialogRef = this._matDialog.open(NewRegistrationComponent,
           {
               maxWidth: "95vw",
-              height: '95%',
+              height: '75%',
               width: '90%',
               data: row
           });
@@ -126,6 +126,9 @@ export class RegInsert
     RegTime : Time; 
     PrefixId : number;
     PrefixID : number;
+    firstName : string;
+    middleName : string;
+    lastName : string;
     FirstName : string;
     MiddleName : string;
     LastName : string;
@@ -174,6 +177,9 @@ export class RegInsert
             this.PrefixId = RegInsert.PrefixId || '';
             this.PrefixID = RegInsert.PrefixID || '';
             this.PrefixID = RegInsert.PrefixID || '';
+            this.firstName = RegInsert.firstName || '';
+            this.middleName = RegInsert.middleName || '';
+            this.lastName = RegInsert.lastName || '';
             this.FirstName = RegInsert.FirstName || '';
             this.MiddleName = RegInsert.MiddleName || '';
             this.LastName = RegInsert.LastName || '';

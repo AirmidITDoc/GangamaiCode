@@ -218,4 +218,9 @@ public getPatientTypeCombo() {
     public deactivateTheStatus(m_data) {
         return this._httpClient1.PostData("OutPatient/RegistrationInsert", m_data);
     }
+
+    public getMaster(mode,Id) {
+      return this._httpClient1.GetData("Dropdown/GetBindDropDown?mode="+mode+"&Id="+Id);
+  }
+
 }

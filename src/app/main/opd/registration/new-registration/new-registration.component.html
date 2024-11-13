@@ -40,16 +40,27 @@
                                             </span>
                                             <mat-autocomplete #autoPrefix="matAutocomplete" [displayWith]="getOptionTextPrefix">
                                                 <mat-option *ngFor="let option of filteredOptionsPrefix | async" [value]="option" (onSelectionChange)="onChangeGenderList(option)">
-                                                    {{option.PrefixName}}
+                                                    {{option.text}}
                                                 </mat-option>
                                             </mat-autocomplete>
                                         </mat-form-field>
+
+
+                                        <!-- <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Prefix Name</mat-label>
+                                            <mat-select formControlName="PrefixID" name="PrefixID" (selectionChange)="onChangeCountryList($event.value)">
+                                                <mat-option></mat-option>
+                                                <mat-option *ngFor="let m of PrefixList" [value]="m">
+                                                    {{m.text}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field> -->
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>First Name</mat-label>
-                                            <input name="FirstName" formControlName="FirstName" placeholder="First Name" matInput required type="text" [(ngModel)]="registerObj.FirstName" #fname (keydown)="onEnterfname($event)">
+                                            <input name="FirstName" formControlName="FirstName" placeholder="First Name" matInput required type="text" [(ngModel)]="registerObj.firstName" #fname (keydown)="onEnterfname($event)">
                                             <mat-error *ngIf="personalFormGroup.get('FirstName').invalid && personalFormGroup.get('FirstName').touched">
                                                 First Name is required Enter only
                                                 Alphabets</mat-error>
@@ -59,7 +70,7 @@
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Middle Name</mat-label>
-                                            <input name="MiddleName" formControlName="MiddleName" placeholder="Middle Name" [ngClass]="{ 'is-invalid': submitted && personalFormGroup.get('MiddleName').errors }" matInput [(ngModel)]="registerObj.MiddleName" type="text" #mname (keydown)="onEntermname($event)">
+                                            <input name="MiddleName" formControlName="MiddleName" placeholder="Middle Name" [ngClass]="{ 'is-invalid': submitted && personalFormGroup.get('MiddleName').errors }" matInput [(ngModel)]="registerObj.middleName" type="text" #mname (keydown)="onEntermname($event)">
                                             <mat-error class="error" *ngIf="personalFormGroup.get('MiddleName').invalid && personalFormGroup.get('MiddleName').touched">
                                                 Middle Name is required
                                                 Enter
@@ -70,7 +81,7 @@
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Last Name</mat-label>
-                                            <input name="LastName" formControlName="LastName" placeholder="Last Name" [ngClass]="{ 'is-invalid': submitted && personalFormGroup.get('LastName').errors }" matInput required [(ngModel)]="registerObj.LastName" type="text" #lname (keydown)="onEnterlname($event)">
+                                            <input name="LastName" formControlName="LastName" placeholder="Last Name" [ngClass]="{ 'is-invalid': submitted && personalFormGroup.get('LastName').errors }" matInput required [(ngModel)]="registerObj.lastName" type="text" #lname (keydown)="onEnterlname($event)">
                                             <mat-error class="error" *ngIf="personalFormGroup.get('LastName').invalid && personalFormGroup.get('LastName').touched">Last
                                                 Name is required Enter
                                                 only
@@ -84,7 +95,7 @@
                                             <mat-select formControlName="GenderId">
                                                 <mat-option></mat-option>
                                                 <mat-option *ngFor="let m of GenderList" [value]="m">
-                                                    {{m.GenderName}}
+                                                    {{m.text}}
                                                 </mat-option>
                                             </mat-select>
                                             <mat-error *ngIf="personalFormGroup.get('GenderId').invalid && personalFormGroup.get('GenderId').touched">
@@ -168,7 +179,7 @@
                                             </span>
                                             <mat-autocomplete #autoArea="matAutocomplete" [displayWith]="getOptionTextArea">
                                                 <mat-option *ngFor="let option of filteredOptionsArea | async" [value]="option">
-                                                    {{option.AreaName}}
+                                                    {{option.text}}
                                                 </mat-option>
                                             </mat-autocomplete>
                                         </mat-form-field>
@@ -184,7 +195,7 @@
                                             </span>
                                             <mat-autocomplete #autoCity="matAutocomplete" [displayWith]="getOptionTextCity">
                                                 <mat-option *ngFor="let option of filteredOptionsCity | async" [value]="option" (onSelectionChange)="onChangeCityList(option)">
-                                                    {{option.CityName}}
+                                                    {{option.text}}
                                                 </mat-option>
                                             </mat-autocomplete>
                                         </mat-form-field>
@@ -196,7 +207,7 @@
                                             <mat-select formControlName="StateId" name="StateId" (selectionChange)="onChangeCountryList($event.value)">
                                                 <mat-option></mat-option>
                                                 <mat-option *ngFor="let m of stateList" [value]="m">
-                                                    {{m.StateName}}
+                                                    {{m.text}}
                                                 </mat-option>
                                             </mat-select>
                                         </mat-form-field>
@@ -208,7 +219,7 @@
                                             <mat-select formControlName="CountryId">
                                                 <mat-option></mat-option>
                                                 <mat-option *ngFor="let g of countryList" [value]="g">
-                                                    {{g.CountryName}}
+                                                    {{g.text}}
                                                 </mat-option>
                                             </mat-select>
                                         </mat-form-field>
@@ -224,7 +235,7 @@
                                             </span>
                                             <mat-autocomplete #autoMstatus="matAutocomplete" [displayWith]="getOptionTextMstatus">
                                                 <mat-option *ngFor="let option of filteredOptionsMstatus | async" [value]="option">
-                                                    {{option.MaritalStatusName}}
+                                                    {{option.text}}
                                                 </mat-option>
                                             </mat-autocomplete>
                                         </mat-form-field>
@@ -265,7 +276,7 @@
                                             </span>
                                             <mat-autocomplete #autoReligion="matAutocomplete" [displayWith]="getOptionTextReligion">
                                                 <mat-option *ngFor="let option of filteredOptionsReligion | async" [value]="option">
-                                                    {{option.ReligionName}}
+                                                    {{option.text}}
                                                 </mat-option>
                                             </mat-autocomplete>
                                         </mat-form-field>
