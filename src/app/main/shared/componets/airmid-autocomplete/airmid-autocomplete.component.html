@@ -13,7 +13,11 @@
         <!-- <mat-option>
             <ngx-mat-select-search [formControl]="bankFilterCtrl"></ngx-mat-select-search>
         </mat-option> -->
-        <ngx-mat-select-search ngModel></ngx-mat-select-search>
+        <ngx-mat-select-search 
+        [formControl]="bankFilterCtrl"
+        placeholderLabel="Search..."
+        noEntriesFoundLabel="No results found"
+        ></ngx-mat-select-search>
         <mat-option *ngFor="let bank of filteredBanks | async" [value]="bank">
             {{bank.name}}
         </mat-option>
