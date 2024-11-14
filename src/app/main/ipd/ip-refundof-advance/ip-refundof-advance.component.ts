@@ -401,7 +401,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
     IPRefundofAdvanceObj['RefundDate'] = this.dateTimeObj.date;
     IPRefundofAdvanceObj['RefundTime'] = this.dateTimeObj.time;
     IPRefundofAdvanceObj['BillId'] = this.BillNo || 0;
-    IPRefundofAdvanceObj['AdvanceId'] = this.advDetailId;
+    IPRefundofAdvanceObj['AdvanceId'] = this.advId;
     IPRefundofAdvanceObj['OPD_IPD_Type'] = 1;
     IPRefundofAdvanceObj['OPD_IPD_ID'] = this.vOPIPId,
       IPRefundofAdvanceObj['BalanceAmount'] = this.BalanceAdvance;
