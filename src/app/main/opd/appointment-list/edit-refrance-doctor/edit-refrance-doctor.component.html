@@ -21,10 +21,10 @@
         <div class="modal-body-container">
             <form [formGroup]="RefrancedrForm">
                 <div fxLayout="column" class="gap-12">
-                    <div class="modal-card-container">
+                    <!-- <div class="modal-card-container">
                         <mat-card>
                             <div class="patient-info-container">
-                                <!-- <div class="patient-sub">
+                                <div class="patient-sub">
                                     <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
                                         fxLayoutAlign="space-between">
                                         <div fxLayout="column" fxLayoutGap="10px">
@@ -93,75 +93,42 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div> -->
+                                </div>
                             </div>
                         </mat-card>
-                    </div>
+                    </div> -->
                     <div class="modal-card-container">
                         <mat-card>
-                            <div fxLayout="column" class="gap-8">
+                            <div>
                                 <div class="form-title mb-2 border-bottom pb-2">
                                     <span class="h3 font-weight-600"> Ref Doctor Information</span>
                                 </div>
                                 <div class="form-body">
-                                    <div fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
-
-                                        <!-- <mat-form-field appearance="outline" fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="40%">
-                                            <mat-label>Department</mat-label>
-                                            <input matAutocompletePosition="below" type="text"
-                                                placeholder="Select Department" matInput #dept
-                                                [(ngModel)]="vDepartmentid" (keydown)="onEnterdept($event)"
-                                                formControlName="Departmentid" [matAutocomplete]="autoDep1" required>
-                                            <span matSuffix style="display: flex;">
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="searchFormGroup.get('Departmentid').setValue(''); isDepartmentSelected = false;">close</mat-icon>
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="searchFormGroup.get('Departmentid').setValue(''); isDepartmentSelected = false;">search</mat-icon>
-                                            </span>
-
-                                            <mat-autocomplete #autoDep1="matAutocomplete"
-                                                [displayWith]="getOptionTextDep">
-                                                <mat-option *ngFor="let option of filteredOptionsDep | async"
-                                                    [value]="option" (onSelectionChange)="OnChangeDoctorList(option)">
-                                                    {{option.DepartmentName}}
-                                                </mat-option>
-                                            </mat-autocomplete>
-                                        </mat-form-field> -->
-
-
-
-                                        <!-- 
+                                    
                                         <mat-form-field appearance="outline" fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="40%">
                                             <mat-label>Doctor Name</mat-label>
                                             <input matAutocompletePosition="below" type="text"
-                                                placeholder="Select Doctor" matInput required formControlName="DoctorID"
+                                                placeholder="Select Doctor" matInput required formControlName="refDoctorId"
                                                 [matAutocomplete]="autoDoctor" required>
                                             <span matSuffix style="display: flex;">
                                                 <mat-icon class="mat-icon-close"
-                                                    (click)="searchFormGroup.get('DoctorID').setValue(''); isDoctorSelected = false;">close</mat-icon>
+                                                    (click)="RefrancedrForm.get('refDoctorId').setValue(''); isDoctorSelected = false;">close</mat-icon>
                                                 <mat-icon class="mat-icon-close"
-                                                    (click)="searchFormGroup.get('DoctorID').setValue(''); isDoctorSelected = false;">search</mat-icon>
+                                                    (click)="RefrancedrForm.get('refDoctorId').setValue(''); isDoctorSelected = false;">search</mat-icon>
                                             </span>
 
                                             <mat-autocomplete #autoDoctor="matAutocomplete"
                                                 [displayWith]="getOptionTextDoc">
                                                 <mat-option *ngFor="let option of filteredOptionsDoc | async"
                                                     [value]="option">
-                                                    {{option.Doctorname }} <b>|</b> {{option.DepartmentName }} <b>|</b>
-                                                    {{option.DoctorId}}
+                                                    {{option.text }} 
                                                 </mat-option>
                                             </mat-autocomplete>
-                                        </mat-form-field> -->
+                                        </mat-form-field> 
 
-
-
-                                        <airmid-textbox label="Ref Doctor name" formControlName="refDoctorId" [value]=""
-                                            [formGroup]="RefrancedrForm" [maxLength]="300">
-                                        </airmid-textbox>
-                                    </div>
                                 </div>
                             </div>
-                            <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" style="margin-left:800px;">
+                            <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" style="margin-left:300px;">
 
                                 <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
                                 <button class="btn btn-primary " color="accent" (click)="onSubmit()">

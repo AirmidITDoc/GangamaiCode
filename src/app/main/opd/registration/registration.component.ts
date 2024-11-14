@@ -33,18 +33,18 @@ export class RegistrationComponent implements OnInit {
   gridConfig: gridModel = {
       apiUrl: "OutPatient/RegistrationList",
       columnsList: [
-          { heading: "Code", key: "regId", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "Prefix", key: "prefixId", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "Code", key: "regId", sort: true, align: 'left', emptySign: 'NA',width:50 },
+          { heading: "Prefix", key: "prefixId", sort: true, align: 'left', emptySign: 'NA',width:50 },
         
-          { heading: "First Name", key: "firstName", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "Middle Name", key: "middleName", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "Last Name", key: "lastName", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "First Name", key: "firstName", sort: true, align: 'left', emptySign: 'NA' ,width:100},
+          { heading: "Middle Name", key: "middleName", sort: true, align: 'left', emptySign: 'NA' ,width:100},
+          { heading: "Last Name", key: "lastName", sort: true, align: 'left', emptySign: 'NA' ,width:100},
 
-          { heading: "RegTime", key: "regTime", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
-         
-          { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA' },
-         // { heading: "City", key: "city", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "RegTime", key: "regTime", sort: true, align: 'left', emptySign: 'NA' ,width:100},
+          { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' ,width:100},
+          { heading: "City", key: "city", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+          { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+          { heading: "AgeYear", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' },
         //  { heading: "IsConsolidatedDr", key: "isConsolidatedDr", sort: true, align: 'left', emptySign: 'NA' },
           {
               heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -120,10 +120,12 @@ export class RegistrationComponent implements OnInit {
 export class RegInsert
 {
     RegId : Number;
+    regId: Number;
     RegID : Number;
     RegDate : Date;
     PatientName:string;
     RegTime : Time; 
+    prefixId : number;
     PrefixId : number;
     PrefixID : number;
     firstName : string;
@@ -133,30 +135,48 @@ export class RegInsert
     MiddleName : string;
     LastName : string;
     Address : string;
+    address : string;
     City :string;
+    city :string;
     PinNo : string;
+    regNo:string;
     RegNo:string;
     DateofBirth : Date;
+    dateofBirth : Date;
     Age: any;
+    age: any;
     GenderId : Number;
-    PhoneNo: string; 
+    genderId : Number;
+    PhoneNo: string;
+    phoneNo: string; 
     MobileNo: string; 
+    mobileNo: string; 
     AddedBy: number;
     AgeYear: any;
     AgeMonth : any;
     AgeDay : any;
+    ageYear: any;
+    ageMonth : any;
+    ageDay : any;
     CountryId : number;
+    countryId : number;
     StateId: number;
+    stateId: number;
     CityId: number;
+    cityId: number;
     MaritalStatusId :number;
+    maritalStatusId :number;
     IsCharity : Boolean;
     ReligionId : number;
+    religionId : number;
     AreaId : number;
+    areaId : number;
     VillageId : number;
     TalukaId : number;
     PatientWeight: number;
     AreaName : string;
     AadharCardNo: string;
+    aadharCardNo: string;
     PanCardNo : string;
     currentDate = new Date();
     AdmissionID:any;
@@ -171,9 +191,12 @@ export class RegInsert
     constructor(RegInsert) {
         {
            this.RegId = RegInsert.RegId || '';
+           this.regId = RegInsert.regId || '';
            this.RegID = RegInsert.RegID || '';
            this.RegDate = RegInsert.RegDate || '';
             this.RegTime = RegInsert.RegTime || '';
+            
+            this.prefixId = RegInsert.prefixId || '';
             this.PrefixId = RegInsert.PrefixId || '';
             this.PrefixID = RegInsert.PrefixID || '';
             this.PrefixID = RegInsert.PrefixID || '';
@@ -184,30 +207,48 @@ export class RegInsert
             this.MiddleName = RegInsert.MiddleName || '';
             this.LastName = RegInsert.LastName || '';
             this.Address = RegInsert.Address || '';
+            this.address = RegInsert.address || '';
             this.RegNo = RegInsert.RegNo || '';
+            this.regNo = RegInsert.regNo || '';
             this.City = RegInsert.City || '';
+            this.city = RegInsert.city || '';
             this.PinNo = RegInsert.PinNo || '';
             this.DateofBirth = RegInsert.DateofBirth ||this.currentDate;
+            this.dateofBirth = RegInsert.dateofBirth ||this.currentDate;
             this.Age = RegInsert.Age || '';
+            this.age = RegInsert.age || '';
             this.GenderId = RegInsert.GenderId || '';
+            this.genderId = RegInsert.genderId || '';
             this.PhoneNo= RegInsert.PhoneNo || '';
+            this.phoneNo= RegInsert.phoneNo || '';
             this.MobileNo= RegInsert.MobileNo || '';
+            this.mobileNo= RegInsert.mobileNo || '';
             this.AddedBy= RegInsert.AddedBy || '';
             this.AgeYear= RegInsert.AgeYear || '';
             this.AgeMonth = RegInsert.AgeMonth || '';
             this.AgeDay = RegInsert.AgeDay || '';
+            this.ageYear= RegInsert.ageYear || '';
+            this.ageMonth = RegInsert.ageMonth || '';
+            this.ageDay = RegInsert.ageDay || '';
             this.CountryId = RegInsert.CountryId || '';
+            this.countryId = RegInsert.countryId || '';
             this.StateId= RegInsert.StateId || '';
+            this.stateId= RegInsert.stateId || '';
             this.CityId= RegInsert.CityId || '';
+            this.cityId= RegInsert.cityId || '';
             this.MaritalStatusId = RegInsert.MaritalStatusId || '';
+            this.maritalStatusId = RegInsert.maritalStatusId || '';
             this.IsCharity = RegInsert.IsCharity || '';
             this.ReligionId = RegInsert.ReligionId || '';
+            this.religionId = RegInsert.religionId || '';
             this.AreaId = RegInsert.AreaId || '';
+            this.areaId = RegInsert.areaId || '';
             this.VillageId = RegInsert.VillageId || '';
             this.TalukaId = RegInsert.TalukaId || '';
             this.PatientWeight= RegInsert.PatientWeight || '';
             this.AreaName = RegInsert.AreaName || '';
             this.AadharCardNo= RegInsert.AadharCardNo || '';
+            this.aadharCardNo= RegInsert.aadharCardNo || '';
             this.PanCardNo = RegInsert.PanCardNo || '';
             this.AdmissionID = RegInsert.AdmissionID || '';
             this.VisitId=RegInsert.VisitId ||''

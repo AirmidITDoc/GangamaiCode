@@ -50,7 +50,7 @@
                    </mat-form-field>   -->
   
                    <mat-form-field appearance="outline" fxFlex>
-                    <input matInput [matDatepicker]="picker" [min]="minDate"  placeholder="Choose a AppointmentDate" name="phAppDate" formControlName="phAppDate">
+                    <input matInput [matDatepicker]="picker" [min]="minDate"  placeholder="Choose a AppointmentDate" name="AppointmentDate" formControlName="PhAppDate">
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
                   </mat-form-field>
@@ -64,23 +64,23 @@
   
                     <mat-form-field appearance="outline">
                       <mat-label>First Name</mat-label>
-                      <input name="FirstName" formControlName="firstName" placeholder="First Name" matInput required type="text"  #fname (keydown)="onEnterfname($event)">
-                      <mat-error *ngIf="phoneappForm.get('firstName').invalid && phoneappForm.get('firstName').touched">
+                      <input name="FirstName" formControlName="FirstName" placeholder="First Name" matInput required type="text"  #fname (keydown)="onEnterfname($event)">
+                      <mat-error *ngIf="phoneappForm.get('FirstName').invalid && phoneappForm.get('FirstName').touched">
                           First Name is required Enter only
                           Alphabets</mat-error>
                   </mat-form-field>
   
                     <mat-form-field appearance="outline" fxFlex>
                       <mat-label>Middle Name</mat-label>
-                      <input name="MiddleName" formControlName="middleName" matInput type="text"  [ngClass]="{ 'is-invalid': submitted && f.middleName.errors }"
+                      <input name="MiddleName" formControlName="MiddleName" matInput type="text"  [ngClass]="{ 'is-invalid': submitted && f.MiddleName.errors }"
                       #mname (keydown)="onEntermname($event)">
-                      <span class="error" *ngIf="f.middleName.invalid && f.middleName.touched">Middle Name is required Enter only Alphabets</span>
+                      <span class="error" *ngIf="f.MiddleName.invalid && f.MiddleName.touched">Middle Name is required Enter only Alphabets</span>
                     </mat-form-field>
   
-                    <mat-form-field appearance="outline" fxFlex [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }">
+                    <mat-form-field appearance="outline" fxFlex [ngClass]="{ 'is-invalid': submitted && f.LastName.errors }">
                       <mat-label>Last Name</mat-label>
-                      <input name="LastName" formControlName="lastName" matInput type="text"   #lname (keydown)="onEnterlname($event)">
-                      <span class="error" *ngIf="f.lastName.invalid && f.lastName.touched">LastName Name is required Enter only Alphabets</span>
+                      <input name="LastName" formControlName="LastName" matInput type="text"   #lname (keydown)="onEnterlname($event)">
+                      <span class="error" *ngIf="f.LastName.invalid && f.LastName.touched">LastName Name is required Enter only Alphabets</span>
                     </mat-form-field>
   
   
@@ -89,9 +89,9 @@
   
                   <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
   
-                    <mat-form-field appearance="outline" fxFlex [ngClass]="{ 'is-invalid': submitted && f.address.errors }">
+                    <mat-form-field appearance="outline" fxFlex [ngClass]="{ 'is-invalid': submitted && f.Address.errors }">
                       <mat-label>Address</mat-label>
-                      <input name="Address" formControlName="address" placeholder="Address" matInput
+                      <input name="Address" formControlName="Address" placeholder="Address" matInput
                       #Address (keydown)="onEnterAddress($event)">
                       <!-- <mat-error>Please enter Address </mat-error> -->
                     </mat-form-field>
@@ -109,12 +109,12 @@
                   <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
                   style="margin-right:10px;">
                   <mat-label>Mobile Number</mat-label>
-                  <input name="Mobile" formControlName="mobileNo" placeholder="Mobile Number" matInput required
+                  <input name="Mobile" formControlName="MobileNo" placeholder="Mobile Number" matInput required
                       [(ngModel)]="vMobile" #mobile (keydown)="onEntermobile($event)" 
                       oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
                       type="number" value="Mobile.length">
                   <mat-error class="error"
-                      *ngIf="phoneappForm.get('mobileNo').invalid && phoneappForm.get('mobileNo').touched">10
+                      *ngIf="phoneappForm.get('MobileNo').invalid && phoneappForm.get('MobileNo').touched">10
                       digits Mobile number is
                       required</mat-error>
               </mat-form-field>
@@ -125,68 +125,52 @@
                   <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
   
   
-                    <!-- <mat-form-field appearance="outline" fxFlex>
+                 
+                    <mat-form-field appearance="outline" fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="40%">
                       <mat-label>Department</mat-label>
-                      <input matAutocompletePosition="below" type="text" placeholder="Select Department" matInput
-                        formControlName="departmentId" [matAutocomplete]="autoDep" required #dept (keydown)="onEnterdept($event,vDepartmentid.Departmentid)" [(ngModel)]="vDepartmentid">
+                      <input matAutocompletePosition="below" type="text"
+                          placeholder="Select Department" matInput #dept
+                          [(ngModel)]="vDepartmentid" (keydown)="onEnterdept($event)"
+                          formControlName="Departmentid" [matAutocomplete]="autoDep1" required>
                       <span matSuffix style="display: flex;">
-                        <mat-icon class="mat-icon-close"
-                          (click)="phoneappForm.get('departmentId').setValue(''); isDepartmentSelected = false;">close</mat-icon>
-                        <mat-icon class="mat-icon-close"
-                          (click)="phoneappForm.get('departmentId').setValue(''); isDepartmentSelected = false;">search</mat-icon>
+                          <mat-icon class="mat-icon-close"
+                              (click)="phoneappForm.get('Departmentid').setValue(''); isDepartmentSelected = false;">close</mat-icon>
+                          <mat-icon class="mat-icon-close"
+                              (click)="phoneappForm.get('Departmentid').setValue(''); isDepartmentSelected = false;">search</mat-icon>
                       </span>
-  
-                      <mat-autocomplete #autoDep="matAutocomplete" [displayWith]="getOptionTextDep">
-                        <mat-option *ngFor="let option of filteredOptionsDep | async" [value]="option"
-                          (onSelectionChange)="OnChangeDoctorList(option)">
-                          {{option.DepartmentName}}
-                        </mat-option>
+
+                      <mat-autocomplete #autoDep1="matAutocomplete"
+                          [displayWith]="getOptionTextDep">
+                          <mat-option *ngFor="let option of filteredOptionsDep | async"
+                              [value]="option" (onSelectionChange)="OnChangeDoctorList(option)">
+                              {{option.text}}
+                          </mat-option>
                       </mat-autocomplete>
-                    </mat-form-field> -->
-  
-                    <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
-                    style="margin-right:10px;">
-                    <mat-label>DepartmentId</mat-label>
-                    <input name="Mobile" formControlName="departmentId" placeholder="departmentId Number" matInput required
-                    type="number" >
-                    <mat-error class="error"
-                        *ngIf="phoneappForm.get('departmentId').invalid && phoneappForm.get('departmentId').touched">10
-                        digits  number is
-                        required</mat-error>
-                </mat-form-field>
-  
-            
-  
-  
-                    <!-- <mat-form-field appearance="outline" fxFlex>
+                  </mat-form-field>
+
+                
+
+
+                  <mat-form-field appearance="outline" fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="40%">
                       <mat-label>Doctor Name</mat-label>
-                      <input matAutocompletePosition="below" type="text" placeholder="Pick one" matInput [(ngModel)]="vDoctorId" (keydown)="onEnterdeptdoc($event,vDoctorId.DoctorId)"
-                        formControlName="doctorId" [matAutocomplete]="autoDoctor" required #docname>
+                      <input matAutocompletePosition="below" type="text"
+                          placeholder="Select Doctor" matInput required formControlName="DoctorID"
+                          [matAutocomplete]="autoDoctor" required>
                       <span matSuffix style="display: flex;">
-                        <mat-icon class="mat-icon-close"
-                          (click)="phoneappForm.get('doctorId').setValue(''); isDoctorSelected = false;">close</mat-icon>
-                        <mat-icon class="mat-icon-close"
-                          (click)="phoneappForm.get('doctorId').setValue(''); isDoctorSelected = false;">search</mat-icon>
+                          <mat-icon class="mat-icon-close"
+                              (click)="phoneappForm.get('DoctorID').setValue(''); isDoctorSelected = false;">close</mat-icon>
+                          <mat-icon class="mat-icon-close"
+                              (click)="phoneappForm.get('DoctorID').setValue(''); isDoctorSelected = false;">search</mat-icon>
                       </span>
-  
-                      <mat-autocomplete #autoDoctor="matAutocomplete" [displayWith]="getOptionTextDoc">
-                        <mat-option *ngFor="let option of filteredOptionsDoc | async" [value]="option"
-                          (onSelectionChange)="isDoctorSelected = true;">
-                          {{option.Doctorname }} <b>|</b> {{option.DepartmentName }} <b>|</b> {{option.DoctorId
-                          }}
-                        </mat-option>
+
+                      <mat-autocomplete #autoDoctor="matAutocomplete"
+                          [displayWith]="getOptionTextDoc">
+                          <mat-option *ngFor="let option of filteredOptionsDoc | async"
+                              [value]="option">
+                              {{option.text }} 
+                          </mat-option>
                       </mat-autocomplete>
-                    </mat-form-field> -->
-                    <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
-                    style="margin-right:10px;">
-                    <mat-label>DoctortId</mat-label>
-                    <input name="Mobile" formControlName="doctorId" placeholder="doctorId Number" matInput required
-                    type="number" >
-                    <mat-error class="error"
-                        *ngIf="phoneappForm.get('doctorId').invalid && phoneappForm.get('doctorId').touched">10
-                        digits  number is
-                        required</mat-error>
-                </mat-form-field>
+                  </mat-form-field>
                 
                 </div>
                 <br/><br/>
@@ -197,7 +181,7 @@
               <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
                            
                 <button class="btn btn-danger-outline" (click)="onClose()">Cancle</button>
-                <button class="btn btn-primary " color="accent" (click)="OnSubmit()" >
+                <button class="btn btn-primary " color="accent" (click)="OnSubmit()" [disabled]="phoneappForm.invalid" >
                     <span>Save</span>
                 </button>
             </div>

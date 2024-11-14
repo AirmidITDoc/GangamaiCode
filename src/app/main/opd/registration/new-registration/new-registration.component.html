@@ -108,7 +108,7 @@
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
                                         <mat-form-field appearance="outline" fxFlex>
-                                            <input matInput [matDatepicker]="validFromPicker" formControllName="DateOfBirth" #bday [value]="registerObj.DateofBirth" (keydown)="onEnterbday($event)" (dateChange)="onChangeDateofBirth($event.value)" placeholder="mm/dd/yyyy">
+                                            <input matInput [matDatepicker]="validFromPicker" formControllName="DateOfBirth" #bday [value]="registerObj.dateofBirth" (keydown)="onEnterbday($event)" (dateChange)="onChangeDateofBirth($event.value)" placeholder="mm/dd/yyyy">
                                             <mat-datepicker-toggle matSuffix [for]="validFromPicker"></mat-datepicker-toggle>
                                             <mat-datepicker #validFromPicker></mat-datepicker>
                                         </mat-form-field>
@@ -118,19 +118,19 @@
                                         <div fxLayout="row" class="gap-8">
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Age (Y)</mat-label>
-                                                <input name="AgeYear" formControlName="AgeYear" placeholder="Age (Y)" matInput [ngModel]="registerObj.Age" (ngModelChange)="registerObj.Age = $event" required type="number" maxlength="4" #agey (keydown)="onEnteragey($event)" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
+                                                <input name="AgeYear" formControlName="AgeYear" placeholder="Age (Y)" matInput [ngModel]="registerObj.ageYear" (ngModelChange)="registerObj.Age = $event" required type="number" maxlength="4" #agey (keydown)="onEnteragey($event)" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
                                                 <mat-error *ngIf="personalFormGroup.get('AgeYear').invalid && personalFormGroup.get('AgeYear').touched">Please
                                                     enter Age Year </mat-error>
                                             </mat-form-field>
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Age (M)</mat-label>
-                                                <input name="AgeMonth" formControlName="AgeMonth" placeholder="Age (M)" matInput [ngModel]="registerObj.AgeMonth" (ngModelChange)="registerObj.AgeMonth = $event" type="number" maxlength="2" #agem (keydown)="onEnteragem($event)" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,2);">
+                                                <input name="AgeMonth" formControlName="AgeMonth" placeholder="Age (M)" matInput [ngModel]="registerObj.ageMonth" (ngModelChange)="registerObj.ageMonth = $event" type="number" maxlength="2" #agem (keydown)="onEnteragem($event)" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,2);">
                                                 <mat-error *ngIf="personalFormGroup.get('AgeMonth').invalid && personalFormGroup.get('AgeMonth').touched">
                                                     Please enter Age Month </mat-error>
                                             </mat-form-field>
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Age (D)</mat-label>
-                                                <input name="AgeDay" formControlName="AgeDay" placeholder="Age (D)" matInput [ngModel]="registerObj.AgeDay" (ngModelChange)="registerObj.AgeDay = $event" type="number" maxlength="2" #aged (keydown)="onEnteraged($event)" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,2);">
+                                                <input name="AgeDay" formControlName="AgeDay" placeholder="Age (D)" matInput [ngModel]="registerObj.ageDay" (ngModelChange)="registerObj.ageDay = $event" type="number" maxlength="2" #aged (keydown)="onEnteraged($event)" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,2);">
                                                 <mat-error *ngIf="personalFormGroup.get('AgeDay').invalid && personalFormGroup.get('AgeDay').touched">
                                                     Please enter Age Day </mat-error>
                                             </mat-form-field>
@@ -153,7 +153,7 @@
 
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>AadharCard Number</mat-label>
-                                            <input name="AadharCardNo" formControlName="AadharCardNo" #AadharCardNo placeholder="Mobile Number" matInput required [(ngModel)]="registerObj.AadharCardNo" max="999999999999" min="100000000011"
+                                            <input name="AadharCardNo" formControlName="AadharCardNo" #AadharCardNo placeholder="AadharCardNo Number" matInput required [(ngModel)]="registerObj.aadharCardNo" max="999999999999" min="100000000011"
                                              autocomplete="off" maxlength="12" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);" required="required" value="987665868811" 
                                              (keydown.enter)="onEnterAadharCardNo($event)" (blur)="onEnterAadharCardNo($event)">
                                             
@@ -163,7 +163,7 @@
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Address</mat-label>
-                                            <input name="Address" formControlName="Address" placeholder="Address" matInput #address (keydown)="onEnteraddress($event)" [(ngModel)]="registerObj.Address">
+                                            <input name="Address" formControlName="Address" placeholder="Address" matInput #address (keydown)="onEnteraddress($event)" [(ngModel)]="registerObj.address">
                                             <mat-error *ngIf="personalFormGroup.get('Address').invalid && personalFormGroup.get('Address').touched">Please
                                                 enter Address </mat-error>
                                         </mat-form-field>
@@ -246,7 +246,7 @@
 
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Mobile Number</mat-label>
-                                                <input name="MobileNo" formControlName="MobileNo" #mobile placeholder="Mobile Number" matInput required [(ngModel)]="registerObj.MobileNo" max="9999999999" min="1000000000"
+                                                <input name="MobileNo" formControlName="MobileNo" #mobile placeholder="Mobile Number" matInput required [(ngModel)]="registerObj.mobileNo" max="9999999999" min="1000000000"
                                                  autocomplete="off" maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);" required="required" value="9876658688" 
                                                  (keydown.enter)="onEntermobile($event)" (blur)="onEntermobile($event)">
                                                 <mat-error class="error" *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">10
@@ -256,7 +256,7 @@
 
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Phone Number</mat-label>
-                                                <input name="PhoneNo" formControlName="PhoneNo" placeholder="Phone Number" matInput  [(ngModel)]="registerObj.PhoneNo" max="9999999999" min="1000000000" 
+                                                <input name="PhoneNo" formControlName="PhoneNo" placeholder="Phone Number" matInput  [(ngModel)]="registerObj.phoneNo" max="9999999999" min="1000000000" 
                                                 autocomplete="off" maxlength="10"  #phone oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"  value="9876658688" (keydown.enter)="onEnterphone($event)" (blur)="onEntermobile($event)">
                                                 <!-- <mat-error class="error" *ngIf="personalFormGroup.get('PhoneNo').invalid && personalFormGroup.get('PhoneNo').touched">10
                                                     digits Mobile number is

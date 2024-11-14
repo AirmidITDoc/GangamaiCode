@@ -58,31 +58,41 @@ export class PhoneAppointListService {
   createphoneForm(): FormGroup {
     return this._formBuilder.group({
       phoneAppId: '',
-      appDate: '',
-      appTime: '',
-     // seqNo: '',
-     firstName:  ['', [
+      AppDate: '',
+      AppTime: '',
+      seqNo: '',
+      FirstName:  ['', [
         Validators.required,
         Validators.maxLength(50),
         // Validators.pattern("^[a-zA-Z._ -]*$"),
         Validators.pattern('^[a-zA-Z () ]*$')
       ]],
-      middleName: ['', [
+      MiddleName: ['', [
 
         Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
       ]],
-      lastName: ['', [
+      LastName: ['', [
         Validators.required,
         Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
       ]],
-      address: ['', Validators.required],
-      mobileNo:'',
-      phAppDate: '',
-      phAppTime: '',
-      departmentId: '',
-      doctorId: '',
-      addedBy: '',
-      updatedBy: '',
+      Address: ['', Validators.required],
+      PhAppDate: '',
+      PhAppTime: '',
+      DepartmentId: '',
+      Departmentid: '',
+    
+
+      MobileNo:['', [Validators.required, Validators.pattern("^[0-9]*$"),
+      Validators.minLength(10),
+      Validators.maxLength(10),]],
+      DoctorId: '',
+      DoctorID: '',
+      AddedBy: '',
+      UpdatedBy: '',
+      PhoneAppId: '',
+      isCancelled: '',
+      isCancelledBy: '',
+      isCancelledDate: '',
       regNo: '',
    
     });
@@ -130,8 +140,13 @@ public deactivateTheStatus(m_data) {
 
  
 public phoneMasterCancle(Param: any, showLoader = true) {
-if (Param.phoneAppId) {
-    return this._httpClient.PutData("PhoneAppointment2/Cancel" + Param.phoneAppId, Param, showLoader);
+if (Param) {
+    return this._httpClient.PutData("PhoneAppointment2/Cancel" + Param, Param, showLoader);
 } else return this._httpClient.PostData("PhoneAppointment2/Cancel", Param, showLoader);
 } 
+
+public getMaster(mode,Id) {
+  return this._httpClient.GetData("Dropdown/GetBindDropDown?mode="+mode+"&Id="+Id);
+}
+
 }

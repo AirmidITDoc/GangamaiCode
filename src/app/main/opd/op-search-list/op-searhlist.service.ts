@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoaderService } from 'app/core/components/loader/loader.service';
+import { ApiCaller } from 'app/core/services/apiCaller';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -24,7 +25,7 @@ export class OPSearhlistService {
    paymentForm: FormGroup;
 
 
-  constructor(public _httpClient: HttpClient,
+  constructor(public _httpClient: HttpClient,public _httpClient1: ApiCaller,
     private _formBuilder: FormBuilder,
     private _loaderService: LoaderService,
   ) {
@@ -517,4 +518,11 @@ public prescriptionDetails(visistId) {
       {value: 'card', viewValue: 'Card'} 
     ];
   }
+
+  public CreditBillSave(Param: any, showLoader = true) {
+    if (Param.BillId) {
+        return this._httpClient1.PutData("Billing/OPCreditBillingInsert" + Param.BillId, Param, showLoader);
+    } else return this._httpClient1.PostData("Billing/OPCreditBillingInsert", Param, showLoader);
+  }
+  
 }

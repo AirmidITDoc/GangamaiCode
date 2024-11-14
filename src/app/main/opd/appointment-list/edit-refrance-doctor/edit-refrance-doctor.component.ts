@@ -4,6 +4,7 @@ import { AppointmentlistService } from '../appointmentlist.service';
 import { DatePipe } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
+import { map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-edit-refrance-doctor',
@@ -12,8 +13,12 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class EditRefranceDoctorComponent implements OnInit {
 
-  
+  RegID:any=0;
+  filteredOptionsDoc: any;
+  RefDoctorList: any = [];
+  isDoctorSelected: boolean = false;
   RefrancedrForm: FormGroup;
+  VisitId:any;
   constructor(
       public _AppointmentlistService: AppointmentlistService,
       public dialogRef: MatDialogRef<EditRefranceDoctorComponent>,
@@ -32,14 +37,51 @@ export class EditRefranceDoctorComponent implements OnInit {
          // isDeleted: JSON.stringify(this.data?.isActive),
       };
       this.RefrancedrForm.patchValue(m_data);
+if(this.data){
+this.RegID=this.data.RegID
+this.VisitId=this.data.VisitId
+}
+      this.getRefDoctorList();
+   
+    this.filteredOptionsDoc = this.RefrancedrForm.get('refDoctorId').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterrefDoctorId(value)),
+
+    );
+
+  }
+
+  
+  private _filterrefDoctorId(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.text ? value.text.toLowerCase() : value.toLowerCase();
+      return this.RefDoctorList.filter(option => option.text.toLowerCase().includes(filterValue));
+    }
+  }
+
+  getRefDoctorList() {
+    var mode="RefDoctor"
+    this._AppointmentlistService.getMaster(mode,1).subscribe(data => {
+      this.RefDoctorList = data;
+      // if (this.PatientHeaderObj) {
+      //   const ddValue = this.RefDoctorList.filter(c => c.DoctorId == this.PatientHeaderObj.RefDocId);
+      //   this.searchFormGroup.get('refDoctorId').setValue(ddValue[0]);
+      //   this.searchFormGroup.updateValueAndValidity();
+      //   return;
+      // }
+    });
+  }
+
+  getOptionTextDoc(option) {
+    return option && option.text ? option.text : '';
   }
   onSubmit() {
       // if (this.RefrancedrForm.valid) {
         debugger
         var m_data={
-          "visitId": 0,
-          "regId": 0,
-          "refDocId": this.RefrancedrForm.get("refDoctorId").value || 0
+          "visitId":this.VisitId,
+          "regId": this.RegID,
+          "refDocId": this.RefrancedrForm.get("refDoctorId").value.value || 0
           
         }
           this._AppointmentlistService.EditRefDoctor(m_data).subscribe((response) => {
