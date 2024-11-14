@@ -16,6 +16,7 @@ import { SearchPageComponent } from '../../op-search-list/search-page/search-pag
 import { MatSelect } from '@angular/material/select';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { ToastrService } from 'ngx-toastr';
+import { DataRowOutlet } from '@angular/cdk/table';
 
 @Component({
   selector: 'app-new-registration',
@@ -137,15 +138,15 @@ export class NewRegistrationComponent implements OnInit {
     this.getReligionList();
     this.getAreaList();
     this.getCityList();
-    this.getDoctor1List();
-    this.getDoctor2List();
+    // this.getDoctor1List();
+    // this.getDoctor2List();
 
 
 
     if (this.data) {
       debugger
-        console.log(this.data.registerObj)
-        this.registerObj = this.data.registerObj;
+        console.log(this.data)
+        this.registerObj = this.data;
         this.registerObj.PrefixID=this.registerObj.PrefixID;
         this.registerObj.PrefixID=this.registerObj.PrefixId;
         this.RegID=this.registerObj.RegID;
@@ -288,23 +289,27 @@ export class NewRegistrationComponent implements OnInit {
 
   private _filterPrex(value: any): string[] {
     if (value) {
-      const filterValue = value && value.PrefixName ? value.PrefixName.toLowerCase() : value.toLowerCase();
-      return this.PrefixList.filter(option => option.PrefixName.toLowerCase().includes(filterValue));
+      const filterValue = value && value.text ? value.text.toLowerCase() : value.toLowerCase();
+      return this.PrefixList.filter(option => option.text.toLowerCase().includes(filterValue));
     }
   }
 
   getPrefixList() {
-    
-    this._registerService.getPrefixCombo().subscribe(data => {
+   
+     var mode="Prefix";
+     
+  
+    this._registerService.getMaster(mode,1).subscribe(data => {
       this.PrefixList = data;
-      if (this.data) {
-        const ddValue = this.PrefixList.filter(c => c.PrefixID == this.registerObj.PrefixID);
-        this.personalFormGroup.get('PrefixID').setValue(ddValue[0]);
-        this.personalFormGroup.updateValueAndValidity();
-        return;
-      }
+      console.log(data)
+      // if (this.data) {
+      //   const ddValue = this.PrefixList.filter(c => c.PrefixID == this.registerObj.PrefixID);
+      //   this.personalFormGroup.get('PrefixID').setValue(ddValue[0]);
+      //   this.personalFormGroup.updateValueAndValidity();
+      //   return;
+      // }
     });
-    this.onChangeGenderList(this.registerObj);
+    // this.onChangeGenderList(this.registerObj);
   }
 
 
@@ -315,91 +320,97 @@ export class NewRegistrationComponent implements OnInit {
 
 
   getAreaList() {
-    this._registerService.getAreaCombo().subscribe(data => {
+    var m_data="Area";
+    this._registerService.getMaster(m_data,1).subscribe(data => {
       this.AreaList = data;
-      if (this.data) {
-        const ddValue = this.AreaList.filter(c => c.AreaId == this.registerObj.AreaId);
-        this.personalFormGroup.get('AreaId').setValue(ddValue[0]);
-        this.personalFormGroup.updateValueAndValidity();
-        return;
-      }
+    //   if (this.data) {
+    //     const ddValue = this.AreaList.filter(c => c.AreaId == this.registerObj.AreaId);
+    //     this.personalFormGroup.get('AreaId').setValue(ddValue[0]);
+    //     this.personalFormGroup.updateValueAndValidity();
+    //     return;
+    //   }
     });
   }
   private _filterArea(value: any): string[] {
     if (value) {
-      const filterValue = value && value.AreaName ? value.AreaName.toLowerCase() : value.toLowerCase();
-      return this.AreaList.filter(option => option.AreaName.toLowerCase().includes(filterValue));
+      const filterValue = value && value.text ? value.text.toLowerCase() : value.toLowerCase();
+      return this.AreaList.filter(option => option.text.toLowerCase().includes(filterValue));
     }
   }
 
 
 
   getMaritalStatusList() {
-    this._registerService.getMaritalStatusCombo().subscribe(data => {
+    var Mode="MaritalStatus"
+    this._registerService.getMaster(Mode,1).subscribe(data => {
       this.MaritalStatusList = data;
-      if (this.data) {
-        const ddValue = this.MaritalStatusList.filter(c => c.MaritalStatusId == this.registerObj.MaritalStatusId);
-        this.personalFormGroup.get('MaritalStatusId').setValue(ddValue[0]);
-        this.personalFormGroup.updateValueAndValidity();
-        return;
-      }
+      // if (this.data) {
+      //   const ddValue = this.MaritalStatusList.filter(c => c.MaritalStatusId == this.registerObj.MaritalStatusId);
+      //   this.personalFormGroup.get('MaritalStatusId').setValue(ddValue[0]);
+      //   this.personalFormGroup.updateValueAndValidity();
+      //   return;
+      // }
     });
   }
   private _filterMstatus(value: any): string[] {
     if (value) {
-      const filterValue = value && value.MaritalStatusName ? value.MaritalStatusName.toLowerCase() : value.toLowerCase();
-      return this.MaritalStatusList.filter(option => option.MaritalStatusName.toLowerCase().includes(filterValue));
+      const filterValue = value && value.text ? value.text.toLowerCase() : value.toLowerCase();
+      return this.MaritalStatusList.filter(option => option.text.toLowerCase().includes(filterValue));
     }
   }
 
 
 
   getReligionList() {
-    this._registerService.getReligionCombo().subscribe(data => {
+    var m_data="Religion";
+    this._registerService.getMaster(m_data,1).subscribe(data => {
       this.ReligionList = data;
-      if (this.data) {
-        const ddValue = this.ReligionList.filter(c => c.ReligionId == this.registerObj.ReligionId);
-        this.personalFormGroup.get('ReligionId').setValue(ddValue[0]);
-        this.personalFormGroup.updateValueAndValidity();
-        return;
-      }
+      // if (this.data) {
+      //   const ddValue = this.ReligionList.filter(c => c.ReligionId == this.registerObj.ReligionId);
+      //   this.personalFormGroup.get('ReligionId').setValue(ddValue[0]);
+      //   this.personalFormGroup.updateValueAndValidity();
+      //   return;
+      // }
     });
   }
   private _filterReligion(value: any): string[] {
     if (value) {
-      const filterValue = value && value.ReligionName ? value.ReligionName.toLowerCase() : value.toLowerCase();
-      return this.ReligionList.filter(option => option.ReligionName.toLowerCase().includes(filterValue));
+      const filterValue = value && value.text ? value.text.toLowerCase() : value.toLowerCase();
+      return this.ReligionList.filter(option => option.text.toLowerCase().includes(filterValue));
     }
   }
-  getGendorMasterList() {
-    this._registerService.getGenderMasterCombo().subscribe(data => {
-      this.GenderList = data;
-      const ddValue = this.GenderList.find(c => c.GenderId == this.data.registerObj.GenderId);
-      this.personalFormGroup.get('GenderId').setValue(ddValue);
+  getGenderMasterList() {
+    var m_data="Gender";
+    this._registerService.getMaster(m_data,1).subscribe(data => {
+      this.AreaList = data;
+      // const ddValue = this.GenderList.find(c => c.GenderId == this.data.registerObj.GenderId);
+      // this.personalFormGroup.get('GenderId').setValue(ddValue);
     })
   }
 
   getCityList() {
-    this._registerService.getCityListCombo().subscribe(data => {
+    var mode="City";
+    this._registerService.getMaster(mode,1).subscribe(data => {
       this.cityList = data;
-      if (this.data) {
-        const ddValue = this.cityList.filter(c => c.CityId == this.registerObj.CityId);
-        this.personalFormGroup.get('CityId').setValue(ddValue[0]);
-        this.personalFormGroup.updateValueAndValidity();
-        return;
-      }
+      // if (this.data) {
+      //   const ddValue = this.cityList.filter(c => c.CityId == this.registerObj.CityId);
+      //   this.personalFormGroup.get('CityId').setValue(ddValue[0]);
+      //   this.personalFormGroup.updateValueAndValidity();
+      //   return;
+      // }
     });
   }
   private _filterCity(value: any): string[] {
     if (value) {
-      const filterValue = value && value.CityName ? value.CityName.toLowerCase() : value.toLowerCase();
-      return this.cityList.filter(option => option.CityName.toLowerCase().includes(filterValue));
+      const filterValue = value && value.text ? value.text.toLowerCase() : value.toLowerCase();
+      return this.cityList.filter(option => option.text.toLowerCase().includes(filterValue));
     }
   }
 
 
   getcityList() {
-    this._registerService.getCityListCombo().subscribe(data => {
+    var mode="City";
+    this._registerService.getMaster(mode,1).subscribe(data => {
       this.cityList = data;
       this.optionsCity = this.cityList.slice();
       this.filteredOptionsCity = this.personalFormGroup.get('CityId').valueChanges.pipe(
@@ -414,7 +425,7 @@ export class NewRegistrationComponent implements OnInit {
     if (CityId > 0) {
       this._registerService.getStateList(CityId).subscribe(data => {
         this.stateList = data;
-        this.selectedState = this.stateList[0].StateName;
+        this.selectedState = this.stateList[0].text;
 
       });
     }
@@ -422,10 +433,13 @@ export class NewRegistrationComponent implements OnInit {
 
 
   onChangeCityList(CityObj) {
+    debugger
     if (CityObj) {
-      this._registerService.getStateList(CityObj.CityId).subscribe((data: any) => {
+      var mode="StateByCity"
+      this._registerService.getMaster(mode,CityObj.value).subscribe((data: any) => {
         this.stateList = data;
-        this.selectedState = this.stateList[0].StateName;
+        console.log(data)
+        this.selectedState = this.stateList[0].text;
         // const stateListObj = this.stateList.find(s => s.StateId == this.selectedStateID);
         this.personalFormGroup.get('StateId').setValue(this.stateList[0]);
         this.selectedStateID = this.stateList[0].StateId;
@@ -437,10 +451,12 @@ export class NewRegistrationComponent implements OnInit {
 
 
   onChangeCountryList(StateId) {
+    debugger
     if (StateId > 0) {
-
-      this._registerService.getCountryList(StateId).subscribe(data => {
+  var mode="CountryByState"
+      this._registerService.getMaster(mode,StateId.value).subscribe(data => {
         this.countryList = data;
+        console.log(data)
         this.selectedCountry = this.countryList[0].CountryName;
         this.personalFormGroup.get('CountryId').setValue(this.countryList[0]);
         this.personalFormGroup.updateValueAndValidity();
@@ -482,17 +498,27 @@ export class NewRegistrationComponent implements OnInit {
 
   getOptionTextArea(option) {
 
-    return option && option.AreaName ? option.AreaName : '';
+    return option && option.text ? option.text : '';
   }
 
   getOptionTextReligion(option) {
 
-    return option && option.ReligionName ? option.ReligionName : '';
+    return option && option.text ? option.text : '';
   }
 
   getOptionTextMstatus(option) {
 
-    return option && option.MaritalStatusName ? option.MaritalStatusName : '';
+    return option && option.text ? option.text : '';
+  }
+
+  
+  getOptionTextPrefix(option) {
+    return option && option.text ? option.text : '';
+  }
+
+  getOptionTextCity(option) {
+    return option && option.text ? option.text : '';
+
   }
 
   setDropdownObjs() {
@@ -526,12 +552,13 @@ debugger
   }
 
   onChangeGenderList(prefixObj) {
-    
+    var mode="GenderByPrefix"
+    debugger
     if (prefixObj) {
-      this._registerService.getGenderCombo(prefixObj.PrefixID).subscribe(data => {
+      this._registerService.getMaster(mode,prefixObj.value).subscribe(data => {
         this.GenderList = data;
         this.personalFormGroup.get('GenderId').setValue(this.GenderList[0]);
-        this.selectedGenderID = this.GenderList[0].GenderId;
+        this.selectedGenderID = this.GenderList[0].value;
       });
     }
   }
@@ -555,16 +582,16 @@ if(this.RegId==0){
                 "regID": 0,
       "regDate": this.dateTimeObj.date || '01/01/1900',// this.dateTimeObj.date,//
       "regTime": this.dateTimeObj.time,// this._registerService.mySaveForm.get("RegTime").value || "2021-03-31T12:27:24.771Z",
-      "prefixId": 1,//this.personalFormGroup.get('PrefixID').value.PrefixID,
+      "prefixId": this.personalFormGroup.get('PrefixID').value.value,
       "firstName":this.personalFormGroup.get("FirstName").value || "",
       "middleName":this.personalFormGroup.get("MiddleName").value || "",
       "lastName":this.personalFormGroup.get("LastName").value || "",
       "address": this.personalFormGroup.get("Address").value || "",
-      "city":"Pune",// this.personalFormGroup.get('CityId').value.CityName || '',
+      "city": this.personalFormGroup.get('CityId').value.text || '',
       "pinNo": '0',// this._registerService.mySaveForm.get("PinNo").value || "0",
       "dateOfBirth": this.datePipe.transform(this.registerObj.DateofBirth, "MM-dd-yyyy"),// this.registerObj.DateofBirth || "2021-03-31",
       "age": this.personalFormGroup.get("AgeYear").value.toString()  || "0",
-      "genderID":1,// this.personalFormGroup.get('GenderId').value.GenderId || 0,
+      "genderID": this.personalFormGroup.get('GenderId').value.value || 0,
       "phoneNo":  this.personalFormGroup.get("PhoneNo").value || "0",
       "mobileNo": this.personalFormGroup.get("MobileNo").value || "0",
       "addedBy":1,// this.accountService.currentUserValue.user.id,
@@ -572,12 +599,12 @@ if(this.RegId==0){
       "ageYear": this.personalFormGroup.get("AgeYear").value.toString()  || "0",// this._registerService.mySaveForm.get("AgeYear").value.trim() || "%",
       "ageMonth":  this.personalFormGroup.get("AgeMonth").value.toString()  || "",
       "ageDay":  this.personalFormGroup.get("AgeDay").value.toString()  || "",
-      "countryId":1,// this.personalFormGroup.get('CountryId').value.CountryId,
-      "stateId":1,// this.personalFormGroup.get('StateId').value.StateId,
-      "cityId":1,// this.personalFormGroup.get('CityId').value.CityId,
-      "maritalStatusId":1,// this.personalFormGroup.get('MaritalStatusId').value ? this.personalFormGroup.get('MaritalStatusId').value.MaritalStatusId : 0,
+      "countryId":this.personalFormGroup.get('CountryId').value.value,
+      "stateId": this.personalFormGroup.get('StateId').value.value,
+      "cityId": this.personalFormGroup.get('CityId').value.value,
+      "maritalStatusId":this.personalFormGroup.get('MaritalStatusId').value ? this.personalFormGroup.get('MaritalStatusId').value.value : 0,
       "isCharity": false,//Boolean(JSON.parse(this.personalFormGroup.get("IsCharity").value)) || "0",
-      "religionId":1,// this.personalFormGroup.get('ReligionId').value ? this.personalFormGroup.get('ReligionId').value.ReligionId : 0,
+      "religionId":this.personalFormGroup.get('ReligionId').value ? this.personalFormGroup.get('ReligionId').value.value : 0,
       "areaId":1,// this.personalFormGroup.get('AreaId').value ? this.personalFormGroup.get('AreaId').value.AreaId : 0,
       "isSeniorCitizen": false,
       "aadharcardno": this.personalFormGroup.get('AadharCardNo').value ? this.personalFormGroup.get('AadharCardNo').value : 0,
@@ -594,7 +621,7 @@ if(this.RegId==0){
       this.toastr.error(error.message);
     });
   }else{
-    var m_data = {
+    var m_data1 = {
       "regID": 0,
 "regDate": this.dateTimeObj.date || '01/01/1900',// this.dateTimeObj.date,//
 "regTime": this.dateTimeObj.time,// this._registerService.mySaveForm.get("RegTime").value || "2021-03-31T12:27:24.771Z",
@@ -607,7 +634,7 @@ if(this.RegId==0){
 "pinNo": '0',// this._registerService.mySaveForm.get("PinNo").value || "0",
 "dateOfBirth": this.datePipe.transform(this.registerObj.DateofBirth, "MM-dd-yyyy"),// this.registerObj.DateofBirth || "2021-03-31",
 "age": this.personalFormGroup.get("AgeYear").value.toString()  || "0",
-"genderID":1,// this.personalFormGroup.get('GenderId').value.GenderId || 0,
+"genderID": this.personalFormGroup.get('GenderId').value.Value || 0,
 "phoneNo":  this.personalFormGroup.get("PhoneNo").value || "0",
 "mobileNo": this.personalFormGroup.get("MobileNo").value || "0",
 "addedBy":1,// this.accountService.currentUserValue.user.id,
@@ -616,8 +643,8 @@ if(this.RegId==0){
 "ageMonth":  this.personalFormGroup.get("AgeMonth").value.toString()  || "",
 "ageDay":  this.personalFormGroup.get("AgeDay").value.toString()  || "",
 "countryId":1,// this.personalFormGroup.get('CountryId').value.CountryId,
-"stateId":1,// this.personalFormGroup.get('StateId').value.StateId,
-"cityId":1,// this.personalFormGroup.get('CityId').value.CityId,
+"stateId":this.personalFormGroup.get('StateId').value.value,
+"cityId":this.personalFormGroup.get('CityId').value.value,
 "maritalStatusId":1,// this.personalFormGroup.get('MaritalStatusId').value ? this.personalFormGroup.get('MaritalStatusId').value.MaritalStatusId : 0,
 "isCharity": false,//Boolean(JSON.parse(this.personalFormGroup.get("IsCharity").value)) || "0",
 "religionId":1,// this.personalFormGroup.get('ReligionId').value ? this.personalFormGroup.get('ReligionId').value.ReligionId : 0,
@@ -630,7 +657,7 @@ if(this.RegId==0){
 }
 console.log(m_data);
 
-this._registerService.Regstrationtupdate(m_data).subscribe((response) => {
+this._registerService.Regstrationtupdate(m_data1).subscribe((response) => {
 this.toastr.success(response.message);
 this.onClear(true);
 }, (error) => {
@@ -640,14 +667,6 @@ this.toastr.error(error.message);
   }
 
 
-  getOptionTextPrefix(option) {
-    return option && option.PrefixName ? option.PrefixName : '';
-  }
-
-  getOptionTextCity(option) {
-    return option && option.CityName ? option.CityName : '';
-
-  }
 
   
 
