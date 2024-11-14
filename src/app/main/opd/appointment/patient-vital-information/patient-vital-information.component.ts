@@ -110,47 +110,47 @@ export class PatientVitalInformationComponent implements OnInit {
 
   onSave(){
     if (this.vHeight == '' || this.vHeight == undefined || this.vHeight == null || this.vHeight == '') {
-      this.toastr.warning('Please select patient', 'Warning !', {
+      this.toastr.warning('Please select Height', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
     if (this.vWeight == '' || this.vWeight == undefined || this.vWeight == null || this.vWeight == '') {
-      this.toastr.warning('Please select patient', 'Warning !', {
+      this.toastr.warning('Please select Weight', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    if (this.vBSL == '' || this.vBSL == undefined || this.vBSL == null || this.vBSL == '') {
-      this.toastr.warning('Please select patient', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    if (this.vSpO2 == '' || this.vSpO2 == undefined || this.vSpO2 == null || this.vSpO2 == '') {
-      this.toastr.warning('Please select patient', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
+    // if (this.vBSL == '' || this.vBSL == undefined || this.vBSL == null || this.vBSL == '') {
+    //   this.toastr.warning('Please select BSL', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
+    // if (this.vSpO2 == '' || this.vSpO2 == undefined || this.vSpO2 == null || this.vSpO2 == '') {
+    //   this.toastr.warning('Please select SpO2', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
     if (this.vPulse == '' || this.vPulse == undefined || this.vPulse == null || this.vPulse == '') {
-      this.toastr.warning('Please select patient', 'Warning !', {
+      this.toastr.warning('Please select Pulse', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
     if (this.vBP == '' || this.vBP == undefined || this.vBP == null || this.vBP == '') {
-      this.toastr.warning('Please select patient', 'Warning !', {
+      this.toastr.warning('Please select BP', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }   
-    if (this.vTemp == '' || this.vTemp == undefined || this.vTemp == null || this.vTemp == '') {
-      this.toastr.warning('Please select patient', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }  
+    // if (this.vTemp == '' || this.vTemp == undefined || this.vTemp == null || this.vTemp == '') {
+    //   this.toastr.warning('Please select Temp', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }  
     
     let VitalInfoSave = {};
     VitalInfoSave['visitId'] = 0 ;

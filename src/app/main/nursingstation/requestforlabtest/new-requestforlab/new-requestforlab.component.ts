@@ -89,18 +89,21 @@ export class NewRequestforlabComponent implements OnInit {
       this.date = new Date();
       if (this.advanceDataStored.storage) {
         debugger
-         this.selectedAdvanceObj = this.advanceDataStored.storage;
-         this.RegNo =  this.selectedAdvanceObj.RegNo
-         this.vClassId  = this.selectedAdvanceObj.WardId
-         // this.PatientHeaderObj = this.advanceDataStored.storage;
-         console.log( this.selectedAdvanceObj)
-         this.getServiceListdata();
+         this.selectedAdvanceObj = this.advanceDataStored.storage;  
        }
     }
 
   ngOnInit(): void {
     this.searchFormGroup = this.createSearchForm();
-    this.myFormGroup = this.createMyForm(); 
+    this.myFormGroup = this.createMyForm();
+    
+    if (this.advanceDataStored.storage) { 
+       this.selectedAdvanceObj = this.advanceDataStored.storage;
+       this.RegNo =  this.selectedAdvanceObj.RegNo
+       this.vClassId  = this.selectedAdvanceObj.WardId 
+       console.log( this.selectedAdvanceObj)
+       this.getServiceListdata();
+     }
   }
 
   createMyForm():FormGroup {

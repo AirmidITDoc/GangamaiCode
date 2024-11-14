@@ -130,9 +130,7 @@ export class ClinicalCareChartComponent implements OnInit {
   ]
   displayColumnsLapReqDet: string[] =[ 
     'IsStatus', 
-    'IsComplted',
-    'ReqDate',
-    'ReqTime',
+    'IsComplted', 
     'ServiceName',
     'AddedByName',
     'BillingUser',
@@ -261,6 +259,7 @@ export class ClinicalCareChartComponent implements OnInit {
   getPatientListwardWise(){
    this.sIsLoading = ''
     var vdata={
+      'PatientName':this._ClinicalcareService.MyForm.get('PatientNameSearch').value.trim() + "%" || "%",
       'WardId':  this.vWardId || 0,
       'DoctorId': 0
     }
@@ -275,6 +274,10 @@ export class ClinicalCareChartComponent implements OnInit {
     this.sIsLoading = ''; 
   }); 
   }
+  onSearchClear() {
+    this._ClinicalcareService.MyForm.get('PatientNameSearch').setValue('');
+    this.getPatientListwardWise();
+}
 registerObj:any;
 vIPDNo:any;
   getpatientDet(obj){ 

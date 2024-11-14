@@ -32,7 +32,7 @@ export class ClinicalCareChartService {
    createMyForm(){
       return this._formbuilder.group({ 
         WardName:[''],
-        RegID:['']
+        PatientNameSearch:['']
        // FromDate:[new Date()],
        // ToDate:[new Date()],
       })
