@@ -36,21 +36,24 @@ export class BrowseIPAdvanceComponent implements OnInit {
   
   gridConfig: gridModel = {
       apiUrl: "Admission/AdvanceList",
-      columnsList: [
-        //   { heading: "Code", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },
+      columnsList: [   
           { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
-          // { heading: "BillTime", key: "billTime", sort: true, align: 'left', emptySign: 'NA' },
-          // { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
-          // { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
-          // { heading: "VisitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA' },
-          // { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
-          // { heading: "BillTime", key: "billTime", sort: true, align: 'left', emptySign: 'NA' },
-          // { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
-          // { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
-          // { heading: "VisitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA' },
-          // { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA' },
-          // { heading: "TotalAmt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' },
-          // { heading: "Net Pay", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "IPD No", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "RefDocName", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "MobeileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "WardName", key: "wardName", sort: true, align: 'left', emptySign: 'NA' }, 
+          { heading: "AdvanceNo", key: "advanceNo", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "AdvanceAmt", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "CashPayAmt", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "ChequePayAmt", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "CardPayAmt", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "PayTMAmt", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "BalAmt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "RefundAmt", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
           
           {
               heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -86,7 +89,7 @@ export class BrowseIPAdvanceComponent implements OnInit {
       filters: [
           { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
           { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-         { fieldName: "From_Dt", fieldValue: "01/01/2024", opType: OperatorComparer.Equals },
+          { fieldName: "From_Dt", fieldValue: "01/01/2020", opType: OperatorComparer.Equals },
           { fieldName: "To_Dt", fieldValue: "11/11/2024", opType: OperatorComparer.Equals },
           { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
           { fieldName: "PBillNo", fieldValue: "0", opType: OperatorComparer.Equals },
@@ -146,7 +149,7 @@ export class BrowseIPAdvanceComponent implements OnInit {
     filters: [
         { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
         { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-        { fieldName: "From_Dt", fieldValue: "01/01/2024", opType: OperatorComparer.Equals },
+        { fieldName: "From_Dt", fieldValue: "01/01/2020", opType: OperatorComparer.Equals },
         { fieldName: "To_Dt", fieldValue: "01/01/2024", opType: OperatorComparer.Equals },
         { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
         { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
@@ -154,68 +157,7 @@ export class BrowseIPAdvanceComponent implements OnInit {
        // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
     ],
     row: 25
-}
-
-
-// gridConfig2: gridModel = {
-//     apiUrl: "VisitDetail/OPRefundList",
-//     columnsList: [
-//         { heading: "Code", key: "RefundId", sort: true, align: 'left', emptySign: 'NA' },
-//         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
-//         { heading: "RefundDate", key: "RefundDate", sort: true, align: 'left', emptySign: 'NA' },
-//         // { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
-//         // { heading: "OpdNo", key: "opdNo", sort: true, align: "center" },
-//         // { heading: "BillAmount", key: "billAmount", sort: true, align: 'left', emptySign: 'NA' },
-//         // { heading: "BalanceAmt", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' },
-//         // { heading: "CashPay", key: "cashPay",sort: true, align: "center" },
-//         // { heading: "ChequePay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA' },
-//         // { heading: "CardPay", key: "cardPay", sort: true,align: "center" },
-//         // { heading: "AdvUsedPay", key: "advUsedPay", sort: true, align: 'left', emptySign: 'NA' },
-//         // { heading: "OnlinePay", key: "onlinePay", sort: true, align: "center" },
-//         {
-//             heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-//                 {
-//                     action: gridActions.edit, callback: (data: any) => {
-//                         this.onSave(data);
-//                     }
-//                 }, {
-//                     action: gridActions.delete, callback: (data: any) => {
-//                         this.confirmDialogRef = this._matDialog.open(
-//                             FuseConfirmDialogComponent,
-//                             {
-//                                 disableClose: false,
-//                             }
-//                         );
-//                         this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-//                         this.confirmDialogRef.afterClosed().subscribe((result) => {
-//                             if (result) {
-//                                 let that = this;
-//                                 this._OPListService.deactivateTheStatus(data.RefundId).subscribe((response: any) => {
-//                                     this.toastr.success(response.message);
-//                                     that.grid.bindGridData();
-//                                 });
-//                             }
-//                             this.confirmDialogRef = null;
-//                         });
-//                     }
-//                 }]
-//         } //Action 1-view, 2-Edit,3-delete
-//     ],
-//     sortField: "RefundId",
-//     sortOrder: 0,
-//     filters: [
-//         { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-//         { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-//         { fieldName: "From_Dt", fieldValue: "01/01/2024", opType: OperatorComparer.Equals },
-//         { fieldName: "To_Dt", fieldValue: "01/01/2024", opType: OperatorComparer.Equals },
-//         { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-//         { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-//         { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-//        // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-//     ],
-//     row: 25
-// }
-
+}  
   constructor(public _BrowseIPAdvanceService: BrowseIPAdvanceService, public _matDialog: MatDialog,
       public toastr : ToastrService,) {}
   ngOnInit(): void {

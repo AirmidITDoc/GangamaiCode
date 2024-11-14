@@ -1,7 +1,6 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-import { HospitalMasterComponent } from './hospital-master/hospital-master.component';
-import { NewAreaComponent } from './new-area/new-area.component';
+import { HospitalMasterComponent } from './hospital-master/hospital-master.component'; 
 
 const appRoutes: Routes = [
     {
@@ -92,7 +91,7 @@ const appRoutes: Routes = [
 ];
 
 @NgModule({
-    declarations: [NewAreaComponent],
+    declarations: [],
     imports: [RouterModule.forChild(appRoutes)],
 })
 export class PersonaldetailModule {}
