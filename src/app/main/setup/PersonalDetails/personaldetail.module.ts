@@ -1,7 +1,6 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-import { HospitalMasterComponent } from './hospital-master/hospital-master.component';
-
+import { HospitalMasterComponent } from './hospital-master/hospital-master.component'; 
 
 const appRoutes: Routes = [
     {

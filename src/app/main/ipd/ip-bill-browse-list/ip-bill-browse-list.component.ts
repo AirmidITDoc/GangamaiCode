@@ -54,9 +54,10 @@ export class IPBillBrowseListComponent implements OnInit {
   
   gridConfig: gridModel = {
       apiUrl: "Admission/IPBillList",
-      columnsList: [
+      columnsList: [ 
           { heading: "Code", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA',width:50 },
           { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' ,width:250  },
+          { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA' ,width:150 },
           { heading: "BillTime", key: "billTime", sort: true, align: 'left', emptySign: 'NA' ,width:150 },
           { heading: "OpdIpdId", key: "opdIpdId", sort: true, align: 'left', emptySign: 'NA' ,width:150},
           { heading: "OpdIpdType", key: "opdIpdType", sort: true, align: 'left', emptySign: 'NA',width:50 },
@@ -99,7 +100,7 @@ export class IPBillBrowseListComponent implements OnInit {
       filters: [
           { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
           { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-         { fieldName: "From_Dt", fieldValue: "01/01/2024", opType: OperatorComparer.Equals },
+         { fieldName: "From_Dt", fieldValue: "01/01/2020", opType: OperatorComparer.Equals },
           { fieldName: "To_Dt", fieldValue: "01/01/2024", opType: OperatorComparer.Equals },
           { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
           { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Contains },
