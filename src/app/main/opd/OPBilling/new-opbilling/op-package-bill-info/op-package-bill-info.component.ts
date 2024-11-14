@@ -294,7 +294,14 @@ onAddPackageService() {
       return;
     }
     debugger 
-    if(element.Price > 0 && element.Qty > 0){ 
+    if(this.isChkbillwiseAmt == true){
+      element.Qty = 1;  
+      element.Price = 0;  
+      element.TotalAmt = 0;  
+      element.DiscAmt =  0 ;
+      element.NetAmount =  0 ;
+    }
+    else if(element.Price > 0 && element.Qty > 0){ 
     element.TotalAmt = element.Qty * element.Price || 0;
     element.DiscAmt = (element.ConcessionPercentage * element.TotalAmt) / 100  || 0;
     element.NetAmount =  element.TotalAmt - element.DiscAmt
@@ -305,13 +312,7 @@ onAddPackageService() {
       element.NetAmount =  0 ;
     } 
     
-    if(this.isChkbillwiseAmt == true){
-      element.Qty = 1;  
-      element.Price = 0;  
-      element.TotalAmt = 0;  
-      element.DiscAmt =  0 ;
-      element.NetAmount =  0 ;
-    }
+  
   }
   SavePacList:any=[];
   onSavePackage(){

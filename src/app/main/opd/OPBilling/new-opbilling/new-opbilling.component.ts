@@ -1034,7 +1034,7 @@ debugger
             "opBillDetailsInsert": Billdetsarr,
             "opCalDiscAmountBill": opCalDiscAmountBill,
             "opInsertPayment": result.submitDataPay.ipPaymentInsert,
-            //"chargesPackageInsert": InsertPackageDetails
+            "chargesPackageInsert": InsertPackageDetails
           };
           console.log(submitData);
           this._oPSearhlistService.InsertOPBilling(submitData).subscribe(response => {
