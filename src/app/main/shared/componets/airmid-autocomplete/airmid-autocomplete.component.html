@@ -1,25 +1,11 @@
-<!-- <mat-form-field class="example-full-width">
-    <mat-label>Number</mat-label>
-    <input type="text" placeholder="Pick one" aria-label="Number" matInput [formControl]="myControl"
-        [matAutocomplete]="auto">
-    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)='SelectItem($event.option.value)'>
-        <mat-option *ngFor="let option of filteredOptions | async" [value]="option[TextKey]">
-            {{option[TextKey]}}
-        </mat-option>
-    </mat-autocomplete>
-</mat-form-field> -->
-<!-- <mat-form-field> -->
-    <mat-select [formControl]="bankCtrl" placeholder="Bank" #singleSelect>
-        <!-- <mat-option>
-            <ngx-mat-select-search [formControl]="bankFilterCtrl"></ngx-mat-select-search>
-        </mat-option> -->
-        <ngx-mat-select-search 
-        [formControl]="bankFilterCtrl"
-        placeholderLabel="Search..."
-        noEntriesFoundLabel="No results found"
-        ></ngx-mat-select-search>
-        <mat-option *ngFor="let bank of filteredBanks | async" [value]="bank">
-            {{bank.name}}
-        </mat-option>
-    </mat-select>
-<!-- </mat-form-field> -->
+<mat-select [formControl]="ddlCtrl" placeholder="Search..." #singleSelect
+    (selectionChange)="onDdlChange($event)" msInfiniteScroll>
+    <ngx-mat-select-search 
+    [formControl]="ddlFilterCtrl"
+    placeholderLabel="Search..."
+    noEntriesFoundLabel="No results found"
+    ></ngx-mat-select-search>
+    <mat-option *ngFor="let ddl of filteredDdls | async" [value]="ddl">
+        {{ddl.text}}
+    </mat-option>
+</mat-select>

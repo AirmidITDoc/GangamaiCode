@@ -66,7 +66,27 @@ export class GenderMasterComponent implements OnInit {
         ],
         row: 25
     }
-
+    autocompleteMode: string = "Gender";
+    public autocompleteOptions: any[] = [
+        {text: 'Bank A (Switzerland)', value: 'A'},
+        {text: 'Bank B (Switzerland)', value: 'B'},
+        {text: 'Bank C (France)', value: 'C'},
+        {text: 'Bank D (France)', value: 'D'},
+        {text: 'Bank E (France)', value: 'E'},
+        {text: 'Bank F (Italy)', value: 'F'},
+        {text: 'Bank G (Italy)', value: 'G'},
+        {text: 'Bank H (Italy)', value: 'H'},
+        {text: 'Bank I (Italy)', value: 'I'},
+        {text: 'Bank J (Italy)', value: 'J'},
+        {text: 'Bank Kolombia (United States of America)', value: 'K'},
+        {text: 'Bank L (Germany)', value: 'L'},
+        {text: 'Bank M (Germany)', value: 'M'},
+        {text: 'Bank N (Germany)', value: 'N'},
+        {text: 'Bank O (Germany)', value: 'O'},
+        {text: 'Bank P (Germany)', value: 'P'},
+        {text: 'Bank Q (Germany)', value: 'Q'},
+        {text: 'Bank R (Germany)', value: 'R'}
+      ];
     constructor(
         public _GenderService: GenderMasterService,
         public toastr: ToastrService, public _matDialog: MatDialog
@@ -87,6 +107,9 @@ export class GenderMasterComponent implements OnInit {
                 that.grid.bindGridData();
             }
         });
+    }
+    selectChange(obj: any){
+        console.log(obj);
     }
 
 }

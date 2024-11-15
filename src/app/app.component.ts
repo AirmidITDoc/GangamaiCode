@@ -245,7 +245,6 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     ConfigSettingParam() {
-        debugger;
         this.http
             .post(`Generic/GetByProc?procName=SS_ConfigSettingParam`, {}).subscribe(data => {
                 this.configSettingParam = data;
