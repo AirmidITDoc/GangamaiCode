@@ -113,8 +113,8 @@ createSearchForm(): FormGroup {
 
 createConsultatDrForm() {
   return this._formBuilder.group({
-    DoctorID: '',
-    Departmentid: ''
+    doctorID: '',
+    departmentid: ''
   });
 }
 
@@ -147,11 +147,6 @@ public appointmentSave(Param: any, showLoader = true) {
     } else return this._httpClient1.PostData("VisitDetail/Insert", Param, showLoader);
 }
 
-public appointmentUpdate(Param: any, showLoader = true) {
-  if (Param.visitID) {
-      return this._httpClient1.PutData("VisitDetail/Update" + Param.visitID, Param, showLoader);
-  } else return this._httpClient1.PostData("VisitDetail/Update", Param, showLoader);
-}
 public EditConDoctor(Param: any, showLoader = true) {
   if (Param.visitID) {
       return this._httpClient1.PutData("ConsRefDoctor/ConsultantDoctorUpdate" + Param.visitID, Param, showLoader);
@@ -173,13 +168,6 @@ public crossconsultSave(Param: any, showLoader = true) {
       return this._httpClient1.PutData("CrossConsultation/CrossConsultationInsert" + Param.visitID, Param, showLoader);
   } else return this._httpClient1.PostData("CrossConsultation/CrossConsultationInsert", Param, showLoader);
 }
-
-
-public getMaster(mode,Id) {
-  return this._httpClient1.GetData("Dropdown/GetBindDropDown?mode="+mode+"&Id="+Id);
-}
-
-
 }
 
 

@@ -204,22 +204,19 @@ public getPatientTypeCombo() {
     }
     
     public RegstrationtSave(Param: any, showLoader = true) {
-        if (Param.regId) {
-            return this._httpClient1.PutData("OutPatient/RegistrationInsert" + Param.regId, Param, showLoader);
+        if (Param.regID) {
+            return this._httpClient1.PutData("OutPatient/RegistrationInsert" + Param.regID, Param, showLoader);
         } else return this._httpClient1.PostData("OutPatient/RegistrationInsert", Param, showLoader);
     }
 
     public Regstrationtupdate(Param: any, showLoader = true) {
-      // if (Param.regId) {
-      //   return this._httpClient1.PutData("OutPatient/RegistrationUpdate" + Param.regId, Param, showLoader);
-    // } else
-     return this._httpClient1.PostData("OutPatient/RegistrationUpdate/", Param, showLoader);
-                
+      if (Param.regID) {
+          return this._httpClient1.PutData("OutPatient/RegistrationUpdate" + Param.regID, Param, showLoader);
+      } else return this._httpClient1.PostData("OutPatient/RegistrationUpdate", Param, showLoader);
   }
     
     public deactivateTheStatus(m_data) {
         return this._httpClient1.PostData("OutPatient/RegistrationInsert", m_data);
-        // return this._httpClient1.DeleteData("Gender?Id=" + m_data.toString());
     }
 
     public getMaster(mode,Id) {

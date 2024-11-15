@@ -38,12 +38,10 @@ export class PhoneappointmentComponent implements OnInit {
   gridConfig: gridModel = {
       apiUrl: "PhoneAppointment2/PhoneAppList",
       columnsList: [
-          { heading: "Code", key: "phoneAppId", sort: true, align: 'left', emptySign: 'NA',width:50 },
-          { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' ,width:250},
-          { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-          { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA',width:150 },
-          { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA',width:150 },
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" ,width:50},
+          { heading: "Code", key: "phoneAppId", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
           {
               heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                   {
@@ -62,7 +60,6 @@ export class PhoneappointmentComponent implements OnInit {
                           this.confirmDialogRef.afterClosed().subscribe((result) => {
                               if (result) {
                                   let that = this;
-                                  debugger
                                   this._PhoneAppointListService.phoneMasterCancle(data.phoneAppId).subscribe((response: any) => {
                                       this.toastr.success(response.message);
                                       that.grid.bindGridData();
@@ -116,17 +113,4 @@ onSave(row: any = null) {
           }
       });
   }
-
-
-  Phappcancle(data){
-    debugger
-    var mdata={
-      "phoneAppId":data
-    }
-    this._PhoneAppointListService.phoneMasterCancle(mdata).subscribe((response: any) => {
-      this.toastr.success(response.message);
-      // that.grid.bindGridData();
-  });
-  }
-  
 }

@@ -13,7 +13,6 @@ import { map, startWith, takeUntil } from 'rxjs/operators';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';
-import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
 
 @Component({
   selector: 'app-new-phone-appointment',
@@ -57,8 +56,8 @@ export class NewPhoneAppointmentComponent implements OnInit {
   selectedGenderID: any;
   capturedImage: any;
 
-
-  registerObj = new AdmissionPersonlModel({});
+  hospitalFormGroup: FormGroup;
+  // registerObj = new AdmissionPersonlModel({});
   options = [];
   filteredOptions: any;
   noOptionFound: boolean = false;
@@ -123,27 +122,24 @@ export class NewPhoneAppointmentComponent implements OnInit {
   private _onDestroy = new Subject<void>();
 
   ngOnInit(): void {
-    this.phoneappForm = this._phoneAppointListService.createphoneForm();
+
     this.getDepartmentList();
-    this.getDoctorList();
     this.minDate = new Date();
 
-    
+    this.doctorFilterCtrl.valueChanges
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.filterDoctor();
+      });
+
+    this.departmentFilterCtrl.valueChanges
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.filterDepartment();
+      });
     this.getPhoneschduleList();
 
-    this.filteredOptionsDep = this.phoneappForm.get('Departmentid').valueChanges.pipe(
-      startWith(''),
-      map(value => this._filterdept(value)),
-
-    );
-
-    this.filteredOptionsDoc = this.phoneappForm.get('DoctorID').valueChanges.pipe(
-      startWith(''),
-      map(value => this._filterDoc(value)),
-
-    );
-
-   
+    this.phoneappForm = this._phoneAppointListService.createphoneForm();
     var m_data = {
       phoneAppId: this.data?.phoneAppId,
       categoryName: this.data?.categoryName.trim(),
@@ -176,6 +172,74 @@ export class NewPhoneAppointmentComponent implements OnInit {
 
 
 
+  getOptionTextDep(option) {
+
+    return option && option.departmentName ? option.departmentName : '';
+  }
+
+  getOptionTextDoc(option) {
+
+    return option && option.Doctorname ? option.Doctorname : '';
+
+  }
+
+
+  private filterDepartment() {
+
+    if (!this.DepartmentList) {
+      return;
+    }
+    // get the search keyword
+    let search = this.departmentFilterCtrl.value;
+    if (!search) {
+      this.filteredDepartment.next(this.DepartmentList.slice());
+      return;
+    }
+    else {
+      search = search.toLowerCase();
+    }
+    // filter
+    this.filteredDepartment.next(
+      this.DepartmentList.filter(bank => bank.departmentName.toLowerCase().indexOf(search) > -1)
+    );
+  }
+
+  // doctorone filter code  
+  private filterDoctor() {
+
+    if (!this.DoctorList) {
+      return;
+    }
+    // get the search keyword
+    let search = this.doctorFilterCtrl.value;
+    if (!search) {
+      this.filteredDoctor.next(this.DoctorList.slice());
+      return;
+    }
+    else {
+      search = search.toLowerCase();
+    }
+    // filter
+    this.filteredDoctor.next(
+      this.DoctorList.filter(bank => bank.Doctorname.toLowerCase().indexOf(search) > -1)
+    );
+  }
+
+  // OnChangeDoctorList(departmentObj) {
+  //   this._phoneAppointListService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(data => { this.DoctorList = data; })
+  // }
+
+  private _filterDoc(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
+      this.isDoctorSelected = false;
+      return this.optionsDoc.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
+    }
+    // const filterValue = value.toLowerCase();
+    // this.isDoctorSelected = false;
+    // return this.optionsDoc.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
+  }
+
 
   OnChangeDoctorList(departmentObj) {
 
@@ -193,58 +257,29 @@ export class NewPhoneAppointmentComponent implements OnInit {
       })
   }
 
-  
+
+
+  private _filterDep(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.departmentName ? value.departmentName.toLowerCase() : value.toLowerCase();
+      // this.isDepartmentSelected = false;
+      return this.optionsDep.filter(option => option.departmentName.toLowerCase().includes(filterValue));
+    }
+
+  }
+
+
+
   getDepartmentList() {
-    var mode="Department"
-    this._phoneAppointListService.getMaster(mode,1).subscribe(data => {
+    this._phoneAppointListService.getDepartmentCombo().subscribe(data => {
       this.DepartmentList = data;
-      if (this.registerObj) {
-        const ddValue = this.DepartmentList.filter(c => c.DepartmentId == this.registerObj.DepartmentId);
-        this.phoneappForm.get('Departmentid').setValue(ddValue[0]);
-        //  this.OnChangeDoctorList(this.registerObj1);
-        this.phoneappForm.updateValueAndValidity();
-        return;
-      }
+      this.optionsDep = this.DepartmentList.slice();
+      this.filteredOptionsDep = this.phoneappForm.get('departmentId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterDep(value) : this.DepartmentList.slice()),
+      );
+      // this.filteredDepartment.next(this.DepartmentList.slice());
     });
-
-  }
-
-  getDoctorList() {
-     var mode="ConDoctor"
-
-    this._phoneAppointListService.getMaster(mode,1).subscribe(data => {
-      this.DoctorList = data;
-      if (this.data) {
-        const ddValue = this.DoctorList.filter(c => c.DoctorId == this.registerObj.DoctorId);
-        this.phoneappForm.get('DoctorID').setValue(ddValue[0]);
-        this.phoneappForm.updateValueAndValidity();
-        return;
-      }
-    });
-  }
-
-
-  private _filterdept(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.text ? value.text.toLowerCase() : value.toLowerCase();
-      return this.DepartmentList.filter(option => option.text.toLowerCase().includes(filterValue));
-    }
-  }
-
-  private _filterDoc(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.text ? value.text.toLowerCase() : value.toLowerCase();
-      return this.DoctorList.filter(option => option.text.toLowerCase().includes(filterValue));
-    }
-  }
- 
-
-  getOptionTextDep(option) {
-    return option && option.text ? option.text : '';
-  }
-
-  getOptionTextDoc(option) {
-    return option && option.text ? option.text : '';
   }
 
   OnSubmit() {
@@ -255,21 +290,23 @@ export class NewPhoneAppointmentComponent implements OnInit {
       "regNo": '',
       "appDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
       "appTime": this.dateTimeObj.time,
-      "firstName": this.phoneappForm.get('FirstName').value || '',
-      "middleName": this.phoneappForm.get('MiddleName').value || '',
-      "lastName": this.phoneappForm.get('LastName').value || '',
-      "address": this.phoneappForm.get('Address').value || '',
-      "mobileNo": this.phoneappForm.get('MobileNo').value.toString() || '',
-      "phAppDate": this.datePipe.transform(this.phoneappForm.get('PhAppDate').value, "yyyy-MM-dd"),
+      "firstName": this.phoneappForm.get('firstName').value || '',
+      "middleName": this.phoneappForm.get('middleName').value || '',
+      "lastName": this.phoneappForm.get('lastName').value || '',
+      "address": this.phoneappForm.get('address').value || '',
+      "mobileNo": this.phoneappForm.get('mobileNo').value.toString() || '',
+      "phAppDate": this.datePipe.transform(this.phoneappForm.get('phAppDate').value, "yyyy-MM-dd"),
       "phAppTime": this.dateTimeObj.time,// this.datePipe.transform(this.phoneappForm.get('phAppTime').value, "yyyy-MM-dd 00:00:00.000"),
-      "departmentId": this.phoneappForm.get('Departmentid').value.value || 0,
-      "doctorId": this.phoneappForm.get('DoctorID').value.value || 0,
+      "departmentId": this.phoneappForm.get('departmentId').value || 0,
+      "doctorId": this.phoneappForm.get('doctorId').value || 0,
       "addedBy": 1,// this.accountService.currentUserValue.user.id,
       "updatedBy": 1,// this.accountService.currentUserValue.user.id,
 
     }
     console.log(m_data);
- 
+    console.log(this.phoneappForm.value);
+
+
     this._phoneAppointListService.phoneMasterSave(m_data).subscribe((response) => {
       this.toastr.success(response.message);
       this.onClear(true);
@@ -342,33 +379,39 @@ export class NewPhoneAppointmentComponent implements OnInit {
       this.dept.nativeElement.focus();
     }
   }
-  public onEnterdept(event): void {
+  public onEnterdept(event, value): void {
 
     if (event.which === 13) {
-      // if (value == undefined) {
-      //   this.toastr.warning('Please Enter Valid Department.', 'Warning !', {
-      //     toastClass: 'tostr-tost custom-toast-warning',
-      //   });
-      //   return;
-      // } else {
+      if (value == undefined) {
+        this.toastr.warning('Please Enter Valid Department.', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      } else {
         this.docname.nativeElement.focus();
-      // }
+      }
     }
   }
-  public onEnterdeptdoc(event): void {
+  public onEnterdeptdoc(event, value): void {
 
     if (event.which === 13) {
-      // if (value == undefined) {
-      //   this.toastr.warning('Please Enter Valid Department Dosctor', 'Warning !', {
-      //     toastClass: 'tostr-tost custom-toast-warning',
-      //   });
-      //   return;
-      // } else {
+      if (value == undefined) {
+        this.toastr.warning('Please Enter Valid Department Dosctor', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      } else {
         // this.button.nativeElement.focus();
-      // }
+      }
     }
   }
 
+Phappcancle(data){
+  this._phoneAppointListService.phoneMasterCancle(data.phoneAppId).subscribe((response: any) => {
+    this.toastr.success(response.message);
+    // that.grid.bindGridData();
+});
+}
 
 }
 

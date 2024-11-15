@@ -1176,8 +1176,6 @@ debugger
       "opBillDetailscreditInsert": Billdetsarr,
       "opCalDiscAmountBillcredit": opCalDiscAmountBill,
     };
-
-    
     console.log(submitData);
     this._oPSearhlistService.InsertOPBillingCredit(submitData).subscribe(response => {
       if (response) { 
@@ -1199,90 +1197,86 @@ debugger
     });  
   } 
 
-savecredit(){
- var mdata={
-    "BillNo": 0,
-      "OPDIPDID": 211110,
-      "TotalAmt": 2220,
-      "ConcessionAmt": 1110,
-      "NetPayableAmt": 210,
-      "PaidAmt": 0,
-      "BalanceAmt": 22210,
-      "BillDate": "2024-08-10 00:00:00.000",
-      "OPDIPDType": 0,
-      "AddedBy": 110,
-      "TotalAdvanceAmount": 0,
-      "BillTime": "2024-08-10 00:00:00.000",
-      "ConcessionReasonId": 0,
-      "IsSettled": true,
-      "IsPrinted": true,
-      "IsFree": true,
-      "CompanyId": 10,
-      "TariffId": 10,
-      "UnitId": 10,
-      "InterimOrFinal": 0,
-      "CompanyRefNo": 0,
-      "ConcessionAuthorizationName": 0,
-      "SpeTaxPer": 10,
-      "SpeTaxAmt": 10,
-      "CompDiscAmt": 0,
-      "DiscComments": "string",
-      "CashCounterId": 0,
-      "AddCharges": [
-        {
-          "ChargesId": 0,
-          "ChargesDate":"2024-08-10 00:00:00.000",
-          "OpdIpdType": 0,
-          "OpdIpdId": 2210,
-          "ServiceId": 120,
-          "Price": 4410,
-          "Qty": 510,
-          "TotalAmt": 5510,
-          "ConcessionPercentage": 10,
-          "ConcessionAmount": 5510,
-          "NetAmount": 665510,
-          "DoctorId": 410,
-          "DocPercentage": 10,
-          "DocAmt": 410,
-          "HospitalAmt": 440,
-          "IsGenerated": true,
-          "AddedBy": 310,
-          "IsCancelled": true,
-          "IsCancelledBy": 30,
-          "IsCancelledDate":"2024-08-10 00:00:00.000",
-          "IsPathology": true,
-          "IsRadiology": true,
-          "IsPackage": true,
-          "PackageMainChargeID": 0,
-          "IsSelfOrCompanyService": true,
-          "PackageId": 0,
-          "ChargesTime":"2024-08-10 00:00:00.000",
-          "ClassId": 110,
-          "BillNo": 20
-        }
-      ],
-      "BillDetails": [
-        {
-          "BillNo": 120,
-          "ChargesId": 0
-        }
-      ]
-  }
+// savecredit(){
+//   {
+//     "BillNo": 0,
+//       "OPDIPDID": 211110,
+//       "TotalAmt": 2220,
+//       "ConcessionAmt": 1110,
+//       "NetPayableAmt": 210,
+//       "PaidAmt": 0,
+//       "BalanceAmt": 22210,
+//       "BillDate": "2024-08-10 00:00:00.000",
+//       "OPDIPDType": 0,
+//       "AddedBy": 110,
+//       "TotalAdvanceAmount": 0,
+//       "BillTime": "2024-08-10 00:00:00.000",
+//       "ConcessionReasonId": 0,
+//       "IsSettled": true,
+//       "IsPrinted": true,
+//       "IsFree": true,
+//       "CompanyId": 10,
+//       "TariffId": 10,
+//       "UnitId": 10,
+//       "InterimOrFinal": 0,
+//       "CompanyRefNo": 0,
+//       "ConcessionAuthorizationName": 0,
+//       "SpeTaxPer": 10,
+//       "SpeTaxAmt": 10,
+//       "CompDiscAmt": 0,
+//       "DiscComments": "string",
+//       "CashCounterId": 0,
+//       "AddCharges": [
+//         {
+//           "ChargesId": 0,
+//           "ChargesDate":"2024-08-10 00:00:00.000",
+//           "OpdIpdType": 0,
+//           "OpdIpdId": 2210,
+//           "ServiceId": 120,
+//           "Price": 4410,
+//           "Qty": 510,
+//           "TotalAmt": 5510,
+//           "ConcessionPercentage": 10,
+//           "ConcessionAmount": 5510,
+//           "NetAmount": 665510,
+//           "DoctorId": 410,
+//           "DocPercentage": 10,
+//           "DocAmt": 410,
+//           "HospitalAmt": 440,
+//           "IsGenerated": true,
+//           "AddedBy": 310,
+//           "IsCancelled": true,
+//           "IsCancelledBy": 30,
+//           "IsCancelledDate":"2024-08-10 00:00:00.000",
+//           "IsPathology": true,
+//           "IsRadiology": true,
+//           "IsPackage": true,
+//           "PackageMainChargeID": 0,
+//           "IsSelfOrCompanyService": true,
+//           "PackageId": 0,
+//           "ChargesTime":"2024-08-10 00:00:00.000",
+//           "ClassId": 110,
+//           "BillNo": 20
+//         }
+//       ],
+//       "BillDetails": [
+//         {
+//           "BillNo": 120,
+//           "ChargesId": 0
+//         }
+//       ]
+//   }
     
-  this._oPSearhlistService.CreditBillSave(mdata).subscribe((response) => {
-    this.toastr.success(response.message);
-    this.onClear(true);
-  }, (error) => {
-    this.toastr.error(error.message);
-  });
-}
+//   this._AppointmentlistService.appointmentSave(m_data).subscribe((response) => {
+//     this.toastr.success(response.message);
+//     this.onClear(true);
+//   }, (error) => {
+//     this.toastr.error(error.message);
+//   });
+// }
+// }
 
 
-onClear(val: boolean) {
-  // this.personalFormGroup.reset();
-  // this.VisitFormGroup.reset();
-  //  this.dialogRef.close(val);
- }
 
 
   getWhatsappshareSales(el, vmono) {

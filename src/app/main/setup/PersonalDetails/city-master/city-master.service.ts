@@ -59,7 +59,6 @@ export class CityMasterService {
     }
 
     public deactivateTheStatus(m_data) {
-       
-        return this._httpClient.DeleteData("CityMaster?Id=" + m_data.toString());
+        return this._httpClient.PostData("CityMaster", m_data);
     }
 }

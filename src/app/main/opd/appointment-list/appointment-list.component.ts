@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
@@ -10,15 +10,12 @@ import { AppointmentlistService } from './appointmentlist.service';
 import { EditRefranceDoctorComponent } from './edit-refrance-doctor/edit-refrance-doctor.component';
 import { EditConsultantDoctorComponent } from './edit-consultant-doctor/edit-consultant-doctor.component';
 import { CrossConsultationComponent } from './cross-consultation/cross-consultation.component';
-import { fuseAnimations } from '@fuse/animations';
 
 
 @Component({
   selector: 'app-appointment-list',
   templateUrl: './appointment-list.component.html',
-  styleUrls: ['./appointment-list.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  animations: fuseAnimations
+  styleUrls: ['./appointment-list.component.scss']
 })
 export class AppointmentListComponent implements OnInit {
 
