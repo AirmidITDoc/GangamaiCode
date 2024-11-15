@@ -44,7 +44,7 @@
 
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
                     <div fxFlex.gt-sm="100%" fxFlex>
-                        <div fxlayout="row">
+                        <!-- <div fxlayout="row">
                             <form [formGroup]="_IssueTracker.MyFrom">
                             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
                                 <div fxFlex.gt-sm="100%" fxFlex style="margin-left: 8px;">
@@ -72,118 +72,155 @@
                                 </div>
                             </div>
                         </form>
-                        </div>
+                        </div> -->
 
                         <div fxlayout="row">
-                            <div style="width: 100%;">
-                                
-                                <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                                    class="backgroundBlur">
-                                    <div class="spinner-border text-danger" style="margin-left: 100px;"></div>
-                                </div>
+                            <div style="width: 100%;"> 
 
                                  <mat-table #table class="table1" matSort [dataSource]="dsIssueTracker"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
-                                    <!-- <ng-container matColumnDef="IssueTrackerId">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                            Issue Id
+                                    <ng-container matColumnDef="IssueNo" sticky>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-90">
+                                            Issue No
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.IssueTrackerId}}
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-90">
+                                            {{contact.IssueNo || '-'}}
                                         </mat-cell>
-                                    </ng-container> -->
+                                    </ng-container>
 
-                                    <ng-container matColumnDef="IssueRaisedDate">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    <ng-container matColumnDef="IssueRaisedDate" sticky>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-160">
                                             IssueRaised Date</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.IssueRaisedDate | date: 'dd/MM/yyyy'}}
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-160">
+                                            {{contact.IssueDate | date: 'dd/MM/yyyy'}}- {{contact.IssueTime | date:'shortTime'}}
                                         </mat-cell>
                                     </ng-container>
 
 
-                                    <ng-container matColumnDef="IssueRaisedTime">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            IssueRaised Time</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.IssueRaisedTime | date:'shortTime'}}
+                                    <ng-container matColumnDef="IssueName" sticky>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-180">
+                                            Issue Name</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
+                                            {{contact.IssueName}}
                                         </mat-cell>
-                                    </ng-container>
+                                    </ng-container> 
 
-                                    <ng-container matColumnDef="IssueSummary">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            Issue Summary</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.IssueSummary}}
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="IssueDescription">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    <ng-container matColumnDef="IssueDescription"  >
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-250">
                                             Issue Description </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.IssueDescription}}
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250"
+                                        matTooltip="contact.IssueDescription">
+                                            {{contact.IssueDescription || '-'}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="RaisedByName"  >
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
+                                            Raised ByName</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
+                                            {{contact.RaisedByName || '-'}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="AssignedByName"  >
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
+                                            Assigned ByName</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
+                                            {{contact.AssignedByName || '-'}}
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="UploadImagePath">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            Upload ImagePath </mat-header-cell>
+                                            Document</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             <mat-icon>visibility</mat-icon>
-                                            {{contact.ImageName}}
-                                            {{contact.UploadImagePath}}
-                                           
+                                            {{contact.DocumentUpload}} 
+                                        </mat-cell>
+                                    </ng-container> 
+
+                                    <ng-container matColumnDef="IssueStatus" sticky>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
+                                            Status Name </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
+                                            {{contact.StatusName || '-'}}
                                         </mat-cell>
                                     </ng-container>
 
-                                    <!-- <ng-container matColumnDef="ImageName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            Image Name </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.ImageName}}
-                                        </mat-cell>
-                                    </ng-container> -->
-
-                                    <ng-container matColumnDef="IssueStatus">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            Issue Status </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.IssueStatus}}
+                                    <ng-container matColumnDef="DevComment">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-140">
+                                            DevComment </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-140"
+                                              >
+                                            {{contact.DevComment || '-'}}
                                         </mat-cell>
                                     </ng-container>
  
  
-                                    <ng-container matColumnDef="IssueAssigned">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            Issue Assigned </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.IssueAssigned}}
+                                    <ng-container matColumnDef="Comment">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-140">
+                                            Comment </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-140">
+                                            {{contact.Comment || '-'}}
                                         </mat-cell>
+                                    </ng-container>
+
+                                    
+                                    <ng-container matColumnDef="ReleaseStatus">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-90">
+                                            ReleaseStatus </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-90">
+                                            {{contact.ReleaseStatus || '-'}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="ResolvedDate">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            Resolved Date</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.ResolvedDate | date: 'dd/MM/yyyy'}}
+                                        </mat-cell>
+                                        <!-- - {{contact.ResolvedTime | date:'shortTime'}} -->
                                     </ng-container>
 
                                     <ng-container matColumnDef="AddedBy">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                             AddedBy </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.AddedBy}}
+                                            {{contact.CreatedBy || '-'}}
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="AddedDatetime">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            AddedDate </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.AddedDatetime | date: 'dd/MM/yyyy'}}
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
+                                            AddedByDate </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
+                                            {{contact.CreatedDate | date: 'dd/MM/yyyy'}}
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="Action">
+                                    <ng-container matColumnDef="ModifiedBy">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            ModifiedBy </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.ModifiedBy || '-'}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="ModifiedDate">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
+                                            ModifiedDate </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
+                                            {{contact.ModifiedDate | date: 'dd/MM/yyyy'}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="Action" StickyEnd>
                                         <mat-header-cell *matHeaderCellDef fxShow.gt-sm
-                                            style="color: white;">Action
+                                            style="color: white;" class="w-100">Action
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact">
+                                        <mat-cell *matCellDef="let contact" class="w-100">
                                             <button mat-icon-button (click)="onEdit(contact)" matTooltip="Edit"> 
                                                 <mat-icon>edit</mat-icon>
                                             </button>
@@ -202,9 +239,9 @@
                                         </mat-footer-cell>
                                     </ng-container>
 
-                                    <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+                                    <mat-header-row class="accent min-width-2050" *matHeaderRowDef="displayedColumns; sticky: true">
                                     </mat-header-row>
-                                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact min-width-2050"
                                         [@animate]="{value:'*',params:{y:'100%'}}"   appHighlight></mat-row>
                                     <mat-footer-row *matFooterRowDef="['loading']"
                                         [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">

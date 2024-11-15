@@ -10,6 +10,8 @@ import { ImageCropComponent } from "app/main/shared/componets/image-crop/image-c
 import { ImageCroppedEvent } from "ngx-image-cropper";
 import { IssueTrackerService } from '../issue-tracker.service';
 import { IssueTrackerList } from '../issue-tracker.component';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-new-issue-tracker',
@@ -29,6 +31,15 @@ export class NewIssueTrackerComponent implements OnInit {
   ConstanyTypeList: any = [];
   IssueAssignedList: any = [];
   IssueRaisedList: any = [];
+  CustomerList:any=[];
+  isChecked:boolean=false;
+  vCustomerId:any;
+  isCustomerSelected:boolean=false;
+  filteredOptionsCustomer:Observable<string[]>;
+  vIssueStatus:any;
+  vIssueRaised:any;
+  vIssueAssigned:any;
+  IsReviewStatus:any = 0;
 
   @ViewChild('attachments') attachment: any;
   imageForm = new FormGroup({
@@ -48,17 +59,17 @@ export class NewIssueTrackerComponent implements OnInit {
 
   ) { }
 
-  ngOnInit(): void {
-
-    this.getIssueStatusList();
-    this.getIssueAssignedList();
-    this.getIssueRaisedList();
-
-    if (this.data.Obj) {
+  ngOnInit(): void { 
+    if (this.data) {
       this.registerObj = this.data.Obj;
       this.setDropdownObjs();
       console.log(this.registerObj)
     }
+
+    this.getHospitalList();
+    this.getIssueStatusList();
+    this.getIssueAssignedList();
+    this.getIssueRaisedList(); 
   }
 
   setDropdownObjs() {
@@ -78,12 +89,28 @@ export class NewIssueTrackerComponent implements OnInit {
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
-  onClose() {
-    this.dialogRef.close();
-  }
-  OnReset() {
-    this._IssueTracker.userFormGroup.reset();
-  }
+  //Hospital list
+getHospitalList() {
+  this._IssueTracker.getCustomerNameList().subscribe(data => {
+    this.CustomerList = data;
+    console.log(this.CustomerList)
+    this.filteredOptionsCustomer = this._IssueTracker.userFormGroup.get('CustomerId').valueChanges.pipe(
+      startWith(''),
+      map(value => value ? this._filterCustomer(value) : this.CustomerList.slice()),
+    ); 
+    this._IssueTracker.userFormGroup.get('CustomerId').setValue(this.CustomerList[0]);
+  });
+} 
+getOptionTextCutomers(option) {
+  return option && option.CustomerName ? option.CustomerName : '';
+}
+private _filterCustomer(value: any): string[] {
+  if (value) {
+    const filterValue = value && value.CustomerName ? value.CustomerName.toLowerCase() : value.toLowerCase();
+    return this.CustomerList.filter(option => option.CustomerName.toLowerCase().includes(filterValue));
+  } 
+} 
+
 
   getIssueStatusList() {
     var vdata = {
@@ -128,7 +155,16 @@ export class NewIssueTrackerComponent implements OnInit {
       }
     });
   }
-
+  IsRelease: any;
+  onChangeIsactive(SiderOption) {
+   // this.IsRelease = SiderOption.checked;
+    if (SiderOption.checked == true) {
+      this.IsRelease = 1;
+    }else{
+      this.IsRelease = 0;
+    }
+    
+  }
   onImageChange(event) {
     let Imgflag = "";
 
@@ -141,9 +177,7 @@ export class NewIssueTrackerComponent implements OnInit {
       (event: ImageCroppedEvent) => (this.sanitizeImagePreview = event.base64,
         Imgflag = event.base64
       )
-    );
-
-    debugger
+    );  
 
     if (Imgflag != " ") {
       let filesAmount = event.target.files.length;
@@ -158,103 +192,159 @@ export class NewIssueTrackerComponent implements OnInit {
       this.attachment.nativeElement.value = '';
     }
   }
-  onViewImage(ele: any, type: string) {
-
-    // let fileType;
-    // if (ele) {
-
-    //   const dialogRefs = this._matDialog.open(ImageViewComponent,
-    //     {
-    //       width: '900px',
-    //       height: '900px',
-    //       data: {
-    //         docData: type == 'img' ? ele : ele.doc,
-    //         type: type == 'img' ? "image" : ele.type
-    //       }
-    //     }
-    //   );
-    //   dialogRefs.afterClosed().subscribe(result => {
-    //   });
-    // }
+  chkRevieStatus(event){
+    if(event.checked){
+      this.IsReviewStatus = 1;
+    }else{
+      this.IsReviewStatus = 0;
+    } 
   }
-
-
-
-
-  // OnSave() {
-  //   if (this.data.NewIssueTracker == 1) {
-  //     this.OnSavenew();
-  //   } else if (this.data.NewIssueTracker == 2) {
-  //     this.OnSaveEdit()
-  //   }
-  // }
+  
 
   OnSave() {
-    if (!this.registerObj.IssueTrackerId) {
-      this.sIsLoading = 'loading-data';
-      let insertIssueTracker = {};
-      insertIssueTracker['issueRaisedDate'] = this.dateTimeObj.date;
-      insertIssueTracker['issueRaisedTime'] = this.dateTimeObj.time;
-      insertIssueTracker['issueSummary'] = this._IssueTracker.userFormGroup.get('IssueSummary').value || '';
-      insertIssueTracker['issueDescription'] = this._IssueTracker.userFormGroup.get('IssueDescription').value || '';
-      insertIssueTracker['uploadImagePath'] = this._IssueTracker.userFormGroup.get('ImagePath').value || '';
-      insertIssueTracker['imageName'] = this._IssueTracker.userFormGroup.get('ImageName').value || '';
-      insertIssueTracker['issueStatus'] = this._IssueTracker.userFormGroup.get('IssueStatus').value.Name || '';
-      insertIssueTracker['issueRaised'] = this._IssueTracker.userFormGroup.get('IssueRaised').value.Name || '';
-      insertIssueTracker['issueAssigned'] = this._IssueTracker.userFormGroup.get('IssueAssigned').value.Name || '';
-      insertIssueTracker['addedby'] = this._loggedService.currentUserValue.user.id || 0;
+    const currentDate = new Date();
+    const datePipe = new DatePipe('en-US');
+    const formattedTime = datePipe.transform(currentDate, 'shortTime');
+    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
 
+    if (this.vCustomerId == '' || this.vCustomerId == null || this.vCustomerId == undefined) {
+      this.toastr.warning('Please select Customer Name', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+    } 
+    if (this._IssueTracker.userFormGroup.get('CustomerId').value) {
+      if(!this.CustomerList.find(item => item.CustomerId == this._IssueTracker.userFormGroup.get('CustomerId').value.CustomerId))
+      this.toastr.warning('Please select Valid Customer Name', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+    } 
+    if (this._IssueTracker.userFormGroup.get('IssueName').value == '' || this._IssueTracker.userFormGroup.get('IssueName').value== null) {
+      this.toastr.warning('Please enter Issue Name  ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+    } 
+    if (this._IssueTracker.userFormGroup.get('IssueDescription').value == '' || this._IssueTracker.userFormGroup.get('IssueDescription').value== null) {
+      this.toastr.warning('Please enter Issue Description  ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+    } 
+    if (this.vIssueStatus == '' || this.vIssueStatus == null || this.vIssueStatus == undefined) {
+      this.toastr.warning('Please select Issue Status', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+    } 
+    if (this._IssueTracker.userFormGroup.get('IssueStatus').value) {
+      if(!this.ConstanyTypeList.find(item => item.ConstantId == this._IssueTracker.userFormGroup.get('IssueStatus').value.ConstantId))
+      this.toastr.warning('Please select Valid Issue Status', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+    }  
+    if (this.vIssueRaised == '' || this.vIssueRaised == null || this.vIssueRaised == undefined ) {
+      this.toastr.warning('Please select Issue Raised Name', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+    } 
+    if (this._IssueTracker.userFormGroup.get('IssueRaised').value) {
+      if(!this.IssueRaisedList.find(item => item.ConstantId == this._IssueTracker.userFormGroup.get('IssueRaised').value.ConstantId))
+      this.toastr.warning('Please select Valid Issue Raised Name', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+    } 
+    if (this.vIssueAssigned == '' || this.vIssueAssigned == null || this.vIssueAssigned == undefined ) {
+      this.toastr.warning('Please select Issue Assigned Name', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+    } 
+    if (this._IssueTracker.userFormGroup.get('IssueAssigned').value) {
+      if(!this.IssueAssignedList.find(item => item.ConstantId == this._IssueTracker.userFormGroup.get('IssueAssigned').value.ConstantId))
+      this.toastr.warning('Please select Valid Issue Assigned Name', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+    } 
+
+    if (!this.registerObj.IssueId) { 
+
+        this.sIsLoading = 'loading-data';
+        let insertIssueTrackerObj = {};
+        insertIssueTrackerObj['issueNo'] = 0;
+        insertIssueTrackerObj['clientId'] = this._IssueTracker.userFormGroup.get('CustomerId').value.CustomerId || 0;  
+        insertIssueTrackerObj['issueDate'] = this._IssueTracker.userFormGroup.get("IssueRaisedDate").value || 0;   
+        insertIssueTrackerObj['issueTime'] =  formattedTime ;  
+        insertIssueTrackerObj['issueName'] =  this._IssueTracker.userFormGroup.get('IssueName').value || '';
+        insertIssueTrackerObj['issueDescription'] = this._IssueTracker.userFormGroup.get('IssueDescription').value || '';
+        insertIssueTrackerObj['raisedById'] =  this._IssueTracker.userFormGroup.get('IssueRaised').value.ConstantId  || 0
+        insertIssueTrackerObj['assignedToId'] = this._IssueTracker.userFormGroup.get('IssueAssigned').value.ConstantId || 0
+        insertIssueTrackerObj['statusId'] =   this._IssueTracker.userFormGroup.get('IssueStatus').value.ConstantId  || 0
+        insertIssueTrackerObj['devComment'] = this._IssueTracker.userFormGroup.get('DevComment').value || ''; 
+        insertIssueTrackerObj['comment'] =    this._IssueTracker.userFormGroup.get('Comment').value || '';
+        insertIssueTrackerObj['reviewStatusId'] =  this.IsReviewStatus || 0 ;  
+        insertIssueTrackerObj['releaseStatus'] =  this.IsRelease || 0;  
+        insertIssueTrackerObj['resolvedDate'] =  formattedDate ; 
+        insertIssueTrackerObj['resolvedTime'] = formattedTime ;
+        insertIssueTrackerObj['documentUpload'] =  this._IssueTracker.userFormGroup.get('imageFile').value || '';   
+        insertIssueTrackerObj['createdBy'] = this._loggedService.currentUserValue.user.id || 0;  
+        insertIssueTrackerObj['createdDate'] = formattedTime ;
+        insertIssueTrackerObj['modifiedDate'] = formattedTime;
+        insertIssueTrackerObj['modifiedBy'] = 0;   
 
       let submitData = {
-        "insertIssueTracker": insertIssueTracker,
+        "insertIssueTracker": insertIssueTrackerObj,
       };
       console.log(submitData);
       this._IssueTracker.InsertIssueTracker(submitData).subscribe(response => {
         if (response) {
           this.toastr.success('Record Saved Successfully.', 'Saved !', {
             toastClass: 'tostr-tost custom-toast-success',
-          }); this._matDialog.closeAll();
-
+          });
+          this.onClose();
         }
         else {
-          this.toastr.error('New Issue Tracker Data not saved !, Please check API error..', 'Error !', {
+          this.toastr.error('Record Data not saved !, Please check error..', 'Error !', {
             toastClass: 'tostr-tost custom-toast-error',
           });
-        }
-
+        } 
       }, error => {
-        this.toastr.error('New Issue Tracker Data not saved !, Please check API error..', 'Error !', {
+        this.toastr.error('Record Data not saved !, Please check API error..', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
         });
-      });
-
-    }
-
-    else {
+      }); 
+    } 
+    else { 
       this.sIsLoading = 'loading-data';
-      let updateIssueTracker = {};
-      updateIssueTracker['operation'] = "UPDATE";
-      updateIssueTracker['issueTrackerId'] = this.registerObj.IssueTrackerId;
-      updateIssueTracker['issueSummary'] = this._IssueTracker.userFormGroup.get('IssueSummary').value || '';
-      updateIssueTracker['issueDescription'] = this._IssueTracker.userFormGroup.get('IssueDescription').value || '';
-      updateIssueTracker['uploadImagePath'] = this._IssueTracker.userFormGroup.get('ImagePath').value || '';
-      updateIssueTracker['imageName'] = this._IssueTracker.userFormGroup.get('ImageName').value || '';
-      updateIssueTracker['issueStatus'] = this._IssueTracker.userFormGroup.get('IssueStatus').value.Name || '';
-      updateIssueTracker['issueRaised'] = this._IssueTracker.userFormGroup.get('IssueRaised').value.Name || '';
-      updateIssueTracker['issueAssigned'] = this._IssueTracker.userFormGroup.get('IssueAssigned').value.Name || '';
-      updateIssueTracker['updatedBy'] = this._loggedService.currentUserValue.user.id || 0;
+      let UpdateIssueTrackerObj = {};
+      UpdateIssueTrackerObj['issueId'] = this.registerObj.IssueId || 0;
+      UpdateIssueTrackerObj['issueNo'] = this.registerObj.IssueNo || 0;
+      UpdateIssueTrackerObj['clientId'] = this._IssueTracker.userFormGroup.get('CustomerId').value.CustomerId || 0;  
+      UpdateIssueTrackerObj['issueDate'] = this._IssueTracker.userFormGroup.get("IssueRaisedDate").value || 0;   
+      UpdateIssueTrackerObj['issueTime'] =  formattedTime ;  
+      UpdateIssueTrackerObj['issueName'] =  this._IssueTracker.userFormGroup.get('IssueName').value || '';
+      UpdateIssueTrackerObj['issueDescription'] = this._IssueTracker.userFormGroup.get('IssueDescription').value || '';
+      UpdateIssueTrackerObj['raisedById'] =  this._IssueTracker.userFormGroup.get('IssueRaised').value.ConstantId  || 0
+      UpdateIssueTrackerObj['assignedToId'] = this._IssueTracker.userFormGroup.get('IssueAssigned').value.ConstantId || 0
+      UpdateIssueTrackerObj['statusId'] =   this._IssueTracker.userFormGroup.get('IssueStatus').value.ConstantId  || 0
+      UpdateIssueTrackerObj['devComment'] = this._IssueTracker.userFormGroup.get('DevComment').value || ''; 
+      UpdateIssueTrackerObj['comment'] =    this._IssueTracker.userFormGroup.get('Comment').value || '';
+      UpdateIssueTrackerObj['reviewStatusId'] =  this.IsReviewStatus || 0 ;    
+      UpdateIssueTrackerObj['releaseStatus'] =  this.IsRelease || 0;  
+      UpdateIssueTrackerObj['resolvedDate'] =  formattedDate ; 
+      UpdateIssueTrackerObj['resolvedTime'] = formattedTime ;
+      UpdateIssueTrackerObj['documentUpload'] =  this._IssueTracker.userFormGroup.get('imageFile').value || '';   
+      UpdateIssueTrackerObj['createdBy'] = this._loggedService.currentUserValue.user.id; 
+      UpdateIssueTrackerObj['createdDate'] = formattedTime ;
+      UpdateIssueTrackerObj['modifiedDate'] = formattedTime;
+      UpdateIssueTrackerObj['modifiedBy'] = this._loggedService.currentUserValue.user.id || 0;  
 
-      let submitData = {
-        "updateIssueTracker": updateIssueTracker
-      };
+    let submitData = {
+      "updateIssueTracker": UpdateIssueTrackerObj,
+    };
 
       console.log(submitData);
       this._IssueTracker.UpdateIssueTracker(submitData).subscribe(response => {
         if (response) {
           this.toastr.success('Record Updated Successfully.', 'Updated !', {
             toastClass: 'tostr-tost custom-toast-success',
-          }); this._matDialog.closeAll();
-
+          });  
+          this.onClose();
         }
         else {
           this.toastr.error('New Issue Tracker Data not Updated !, Please check API error..', 'Error !', {
@@ -269,52 +359,63 @@ export class NewIssueTrackerComponent implements OnInit {
       });
     }
   }
+  onClose() {
+    this._IssueTracker.userFormGroup.reset();
+    this.dialogRef.close();
+  } 
+  @ViewChild('IssueRaisedDate') IssueRaisedDate: ElementRef;
+  @ViewChild('IssueName') IssueName: ElementRef;
+  @ViewChild('Issuedescrip') Issuedescrip: ElementRef;
+  @ViewChild('Issuestatus') Issuestatus: ElementRef;
+  @ViewChild('Issueraised') Issueraised: ElementRef;
+  @ViewChild('IssueAssign') IssueAssign: ElementRef;
+  @ViewChild('Devcomment') Devcomment: ElementRef;
+  @ViewChild('comment') comment: ElementRef;
 
-  @ViewChild('ImageName') ImageName: ElementRef;
-  @ViewChild('ImagePath') ImagePath: ElementRef;
-  @ViewChild('ImageUpload') ImageUpload: ElementRef;
-  @ViewChild('IssueStatus') IssueStatus: ElementRef;
-  @ViewChild('IssueRaised') IssueRaised: ElementRef;
-  @ViewChild('IssueAssigned') IssueAssigned: ElementRef;
-  @ViewChild('IssueSummary') IssueSummary: ElementRef;
-  @ViewChild('IssueDescription') IssueDescription: ElementRef;
-
-  public onEnterImageName(event): void {
+  public onEnterCustomer(event): void {
     if (event.which === 13) {
-      this.ImagePath.nativeElement.focus();
+      this.IssueRaisedDate.nativeElement.focus();
     }
   }
-  public onEnterImagePath(event): void {
+  public onEnterIssueRaisedDate(event): void {
     if (event.which === 13) {
-      this.IssueStatus.nativeElement.focus();
+      this.IssueName.nativeElement.focus();
+    }
+  }
+  public onEnterIssueName(event): void {
+    if (event.which === 13) {
+      this.Issuedescrip.nativeElement.focus();
+    }
+  } 
+  public onEnterIssueDescrip(event): void {
+    if (event.which === 13) {
+      this.Issuestatus.nativeElement.focus();
     }
   }
   public onEnterIssueStatus(event): void {
     if (event.which === 13) {
-      this.IssueRaised.nativeElement.focus();
+      this.Issueraised.nativeElement.focus();
     }
   }
-
   public onEnterIssueRaised(event): void {
     if (event.which === 13) {
-      this.IssueAssigned.nativeElement.focus();
+      this.IssueAssign.nativeElement.focus();
     }
   }
-  public onEnterIssueAssigned(event): void {
+  public onEnterIssueAssign(event): void {
     if (event.which === 13) {
-      this.IssueSummary.nativeElement.focus();
+      this.Devcomment.nativeElement.focus(); 
     }
   }
-  public onEnterIssueSummary(event): void {
+  public onEnterDevComment(event): void {
     if (event.which === 13) {
-      this.IssueDescription.nativeElement.focus();
+      this.comment.nativeElement.focus();
     }
   }
-  public onEnterIssueDescription(event): void {
+  public onEnterComment(event): void {
     if (event.which === 13) {
-      //this.IssueDescription.nativeElement.focus();
-
+      this.IssueAssign.nativeElement.focus();
     }
-  }
+  } 
 }
   

@@ -13,6 +13,7 @@ import { CustomerBillRaiseComponent } from 'app/main/Customer/customer-bill-rais
 import { NewCustomerComponent } from 'app/main/Customer/customer-information/new-customer/new-customer.component';
 import { NewBillRaiseComponent } from 'app/main/Customer/customer-bill-raise/new-bill-raise/new-bill-raise.component';
 import { IssueTrackerService } from './issue-tracker.service';
+import { NewIssueTrackerComponent } from './new-issue-tracker/new-issue-tracker.component';
 
 @Component({
   selector: 'app-issue-tracker',
@@ -22,18 +23,24 @@ import { IssueTrackerService } from './issue-tracker.service';
   animations: fuseAnimations,
 })
 export class IssueTrackerComponent implements OnInit {
-  displayedColumns = [
-    // 'IssueTrackerId',
+  displayedColumns = [ 
+
     'IssueRaisedDate',
-    'IssueRaisedTime',
-    'IssueSummary',
+    'IssueNo',
+    'IssueName',
     'IssueDescription',
-    'UploadImagePath',
-    // 'ImageName',
+    'RaisedByName',
+    'AssignedByName',
     'IssueStatus',
-    'IssueAssigned',
+    'DevComment',
+    'Comment',
+    'ReleaseStatus',
+    'ResolvedDate',
+    'UploadImagePath',
     'AddedBy',
     'AddedDatetime',
+    'ModifiedBy',
+    'ModifiedDate',
     'Action'
   ];
 
@@ -75,17 +82,14 @@ export class IssueTrackerComponent implements OnInit {
   }
 
   getIssuTrackerList() {
-    // let vstatus=this._IssueTracker.MyFrom.get('IssueStatus').value.Value || '%';
-    // let vassigned=this._IssueTracker.MyFrom.get('IssueAssigned').value.Value || '%';
-    // console.log(vassigned)
-    // console.log(vstatus)
-    var vdata = {
-      'IssueStatus': this._IssueTracker.MyFrom.get('IssueStatus').value.Value || '%',
-      'IssueAssigned': this._IssueTracker.MyFrom.get('IssueAssigned').value.Value || '%'
-    }
-    console.log(vdata)
+   
+    // var vdata = {
+    //   'IssueStatus': this._IssueTracker.MyFrom.get('IssueStatus').value.Value || '%',
+    //   'IssueAssigned': this._IssueTracker.MyFrom.get('IssueAssigned').value.Value || '%'
+    // }
+   // console.log(vdata)
     this.sIsLoading = 'loading-data';
-    this._IssueTracker.getIssuTrackerList(vdata).subscribe(data => {
+    this._IssueTracker.getIssuTrackerList().subscribe(data => {
       this.dsIssueTracker.data = data as IssueTrackerList[];
       console.log(this.dsIssueTracker.data)
       this.dsIssueTracker.sort = this.sort;
@@ -118,19 +122,7 @@ export class IssueTrackerComponent implements OnInit {
 
 
 
-  OpenPopUp() {
-    // const dialogRef = this._matDialog.open(NewIssueTrackerComponent,
-    //   {
-    //     maxWidth: "75vw",
-    //     height: '72%',
-    //     width: '100%',
-
-    //   });
-    // dialogRef.afterClosed().subscribe(result => {
-    //   console.log('The dialog was closed - Insert Action', result);
-    //   this.getIssuTrackerList();
-    // });
-  }
+  
   CustomerList() {
     const dialogRef = this._matDialog.open(CustomerInformationComponent,
       {
@@ -172,7 +164,7 @@ export class IssueTrackerComponent implements OnInit {
     const dialogRef = this._matDialog.open(CustomerBillRaiseComponent,
       {
         maxWidth: "85vw",
-        height: '85%',
+        height: '60%',
         width: '100%',
 
       });
@@ -181,57 +173,85 @@ export class IssueTrackerComponent implements OnInit {
       //this.getIssuTrackerList();
     });
   }
-  onEdit(contact) {
-    // const dialogRef = this._matDialog.open(NewIssueTrackerComponent,
-    //   {
-    //     maxWidth: "75vw",
-    //     height: '72%',
-    //     width: '100%',
-    //     data: {
-    //       Obj: contact,
+  OpenPopUp() {
+    const dialogRef = this._matDialog.open(NewIssueTrackerComponent,
+      {
+        maxWidth: "75vw",
+        height: '80%',
+        width: '100%',
 
-    //     }
-    //   });
-    // dialogRef.afterClosed().subscribe(result => {
-    //   console.log('The dialog was closed - Insert Action', result);
-    //   this.getIssuTrackerList();
-    // });
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      this.getIssuTrackerList();
+    });
+  }
+  onEdit(contact) {
+    const dialogRef = this._matDialog.open(NewIssueTrackerComponent,
+      {
+        maxWidth: "75vw",
+        height: '80%',
+        width: '100%',
+        data: {
+          Obj: contact, 
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      this.getIssuTrackerList();
+    });
   }
 
 
 }
 
 export class IssueTrackerList {
-  // IssueTrackerId: Number;
+   IssueId: Number;
   IssueRaisedDate: number;
-  IssueRaisedTime: number;
-  IssueSummary: string;
+  IssueNo: number;
+  IssueName: string;
   IssueDescription: string;
+  RaisedByName:string;
+  AssignedByName:string;
+  DevComment:string;
+  Comment:string;
+  ReleaseStatus:any;
+  ResolvedDate:any;
   UploadImagePath: any;
   ImageName: any;
-  IssueStatus: any;
-  IssueAssigned: any
+  IssueStatus: any; 
   AddedBy: any;
   AddedDatetime: any;
   IssueRaised: any;
   IssueTrackerId: any
   IssueStatusId: any;
+  ModifiedBy:any;
+  ModifiedDate:any; 
+  IssueAssigned:any;
+  
   constructor(IssueTrackerList) {
     {
-      //this.IssueTrackerId = _IssueTrackerList.IssueTrackerId || 0;
+      this.IssueId = IssueTrackerList.IssueId || 0;
       this.IssueRaisedDate = IssueTrackerList.IssueRaisedDate || 0;
-      this.IssueRaisedTime = IssueTrackerList.IssueRaisedTime || 0;
-      this.IssueSummary = IssueTrackerList.IssueSummary || "";
+      this.IssueNo = IssueTrackerList.IssueNo || 0;
+      this.IssueName = IssueTrackerList.IssueName || "";
       this.IssueDescription = IssueTrackerList.IssueDescription || "";
       this.UploadImagePath = IssueTrackerList.UploadImagePath || "";
+      this.RaisedByName = IssueTrackerList.RaisedByName || "";
+      this.AssignedByName = IssueTrackerList.AssignedByName || "";
+      this.DevComment = IssueTrackerList.DevComment || "";
+      this.Comment = IssueTrackerList.Comment || "";
+      this.ReleaseStatus = IssueTrackerList.ReleaseStatus || 0;
+      this.ResolvedDate = IssueTrackerList.ResolvedDate || 0;
       this.ImageName = IssueTrackerList.ImageName || "";
-      this.IssueStatus = IssueTrackerList.IssueStatus || "";
-      this.IssueAssigned = IssueTrackerList.IssueAssigned || "";
+      this.IssueStatus = IssueTrackerList.IssueStatus || ""; 
       this.AddedBy = IssueTrackerList.AddedBy || 0;
       this.AddedDatetime = IssueTrackerList.AddedDatetime || 0;
       this.IssueRaised = IssueTrackerList.IssueRaised || '';
       this.IssueTrackerId = IssueTrackerList.IssueTrackerId || 0;
       this.IssueStatusId = IssueTrackerList.IssueStatusId || 0;
+      this.ModifiedDate = IssueTrackerList.ModifiedDate || 0;
+      this.ModifiedBy = IssueTrackerList.ModifiedBy || 0;
     }
   }
 }
