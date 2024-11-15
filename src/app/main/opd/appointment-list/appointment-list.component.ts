@@ -29,9 +29,9 @@ export class AppointmentListComponent implements OnInit {
         apiUrl: "VisitDetail/AppVisitList",
         columnsList: [
             { heading: "Code", key: "visitId", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+            { heading: "visitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA' ,width:150},
             { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' ,width:250 },
             { heading: "RegId", key: "regId", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-            { heading: "visitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA' ,width:150},
            
             { heading: "DateofBirth", key: "dateofBirth", sort: true, align: 'left', emptySign: 'NA' ,width:150},
             { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA' ,width:150},
