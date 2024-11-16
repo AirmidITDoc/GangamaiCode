@@ -150,11 +150,11 @@ export class GstReportService {
     return this._httpClient.get("GSTReport/view-SalesReturnGSTReport?FromDate="+FromDate+"&ToDate="+ToDate);
   }
   
-  public getHSNcodewiseReport(FromDate,ToDate,loader = true){
+  public getHSNcodewiseReport(FromDate,ToDate,StoreId,loader = true){
     if (loader) {
       this._loaderService.show();
   }
-    return this._httpClient.get("GSTReport/view-HSNCodeWiseReport?FromDate="+FromDate+"&ToDate="+ToDate);
+    return this._httpClient.get("GSTReport/view-HSNCodeWiseReport?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId);
   }
 
   public geGSTRAZPurchaseReport(FromDate,ToDate,StoreId,loader = true){

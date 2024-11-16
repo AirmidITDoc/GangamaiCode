@@ -739,7 +739,7 @@ export class GSTReportComponent implements OnInit {
        
          this._GstReportService.getHSNcodewiseReport(
           this.datePipe.transform(this._GstReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-        this.datePipe.transform(this._GstReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
+        this.datePipe.transform(this._GstReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",storeId
          ).subscribe(res => {
            const dialogRef = this._matDialog.open(PdfviewerComponent,
              {

@@ -299,11 +299,11 @@ return this._httpClient.get("OPReport/view-OPDoctorWiseNewOldPatientReport?FromD
   }
     return this._httpClient.get("CommanReport/view-GroupwiseRevenueSummary?FromDate="+FromDate+"&ToDate="+ToDate);
   }
-  public getservicewisereportwithoutbillView(ServiceId,FromDate,ToDate,loader = true){
+  public getservicewisereportwithoutbillView(ServiceId,FromDate,ToDate,DoctorId,loader = true){
     if (loader) {
       this._loaderService.show();
   }
-    return this._httpClient.get("CommanReport/view-ServiceWiseReportWithoutBill?ServiceId="+ServiceId+"&FromDate=" + FromDate+"&ToDate="+ToDate);
+    return this._httpClient.get("CommanReport/view-ServiceWiseReportWithoutBill?ServiceId="+ServiceId+"&FromDate=" + FromDate+"&ToDate="+ToDate+"&DoctorId="+DoctorId);
   }
   
   
@@ -324,11 +324,11 @@ return this._httpClient.get("OPReport/view-OPDoctorWiseNewOldPatientReport?FromD
   
  
   
-  public getServicewisereportwithbillView(ServiceId,FromDate,ToDate,loader = true){
+  public getServicewisereportwithbillView(ServiceId,FromDate,ToDate,DoctorId,loader = true){
     if (loader) {
       this._loaderService.show();
   }
-    return this._httpClient.get("CommanReport/view-ServicewiseReportwithbill?ServiceId="+ServiceId+"&FromDate=" + FromDate+"&ToDate="+ToDate);
+    return this._httpClient.get("CommanReport/view-ServicewiseReportwithbill?ServiceId="+ServiceId+"&FromDate=" + FromDate+"&ToDate="+ToDate+"&DoctorId="+DoctorId);
   }
 
   public getServicewisereportView(ServiceId,FromDate,ToDate,DoctorId,loader = true){
@@ -740,6 +740,15 @@ public getPurchaseorderview(FromDate,ToDate,SupplierID,ToStoreId,loader = true){
   }
     return this._httpClient.get("InventoryReports/view-StockAdjustmentReport?FromDate="+FromDate+"&ToDate="+ToDate+"&ToStoreId="+ToStoreId);
   }
+
+  
+  public getIssuetodeptmonthlysummaryview(FromDate,ToDate,FromStoreId,ToStoreId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.get("InventoryReports/view-IssueToDepartmentMonthlySummary?FromDate="+FromDate+"&ToDate="+ToDate+"&FromStoreId="+FromStoreId+"&ToStoreId="+ToStoreId);
+  }
+
 
   public getBillingServiceList(loader = true) {
     if (loader) {

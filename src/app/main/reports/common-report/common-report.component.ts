@@ -10,6 +10,7 @@ import { FormBuilder } from '@angular/forms';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { fuseAnimations } from '@fuse/animations';
 import { map, startWith } from 'rxjs/operators';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-common-report',
@@ -225,7 +226,7 @@ ServiceList: any = [];
     else if (this.ReportName == 'Service Wise Report without Bill') {
       this.FlagUserSelected = false;
       this.FlagPaymentIdSelected = false;
-      this.FlagDoctorIDSelected = false;
+      this.FlagDoctorIDSelected = true;
       this.FlagRefundIdSelected = false;
       this.FlagVisitSelected = false;
       this.FlaOPIPTypeSelected= false;
@@ -234,7 +235,7 @@ ServiceList: any = [];
     } else if (this.ReportName == 'Service Wise Report with Bill') {
       this.FlagUserSelected = false;
       this.FlagPaymentIdSelected = false;
-      this.FlagDoctorIDSelected = false;
+      this.FlagDoctorIDSelected = true;
       this.FlagRefundIdSelected = false;
       this.FlagVisitSelected = false;
       this.FlaOPIPTypeSelected= false;
@@ -800,17 +801,23 @@ debugger
   }
 
   ViewgeServicewisereportwithoutbillview() {
+   
     let ServiceId = 0;
     if (this._OPReportsService.userForm.get('ServiceId').value)
       ServiceId = this._OPReportsService.userForm.get('ServiceId').value.ServiceId
 
+
+    let DoctorID = 0;
+    if (this._OPReportsService.userForm.get('DoctorID').value)
+      DoctorID = this._OPReportsService.userForm.get('DoctorID').value.DoctorId
+if(ServiceId !==0){
     this.sIsLoading = 'loading-data';
     setTimeout(() => {
       //   this.SpinLoading =true;
       let VisitId
       this._OPReportsService.getservicewisereportwithoutbillView(ServiceId,
         this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
+        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",DoctorID
       ).subscribe(res => {
         const matDialog = this._matDialog.open(PdfviewerComponent,
           {
@@ -830,18 +837,29 @@ debugger
       });
 
     }, 100);
+  }else{
+    Swal.fire("Ple select Service Name")
+  }
   }
   getServicewisereportwithbillview() {
+
+    debugger
     this.sIsLoading = 'loading-data';
     let ServiceId = 0;
     if (this._OPReportsService.userForm.get('ServiceId').value)
       ServiceId = this._OPReportsService.userForm.get('ServiceId').value.ServiceId
 
+    
+    let DoctorID = 0;
+    if (this._OPReportsService.userForm.get('DoctorID').value)
+      DoctorID = this._OPReportsService.userForm.get('DoctorID').value.DoctorId
+
+if(ServiceId != 0){
     setTimeout(() => {
       
       this._OPReportsService.getServicewisereportwithbillView(ServiceId,
         this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",DoctorID
       ).subscribe(res => {
         const matDialog = this._matDialog.open(PdfviewerComponent,
           {
@@ -861,6 +879,10 @@ debugger
       });
 
     }, 100);
+  }
+    else{
+      Swal.fire("Ple select Service Name")
+    }
   }
   viewgetServicewiseReportPdf() {
     debugger

@@ -190,7 +190,7 @@
                                             </span>
                                             <mat-autocomplete #autosearchstore="matAutocomplete"
                                                 [displayWith]="getOptionTextsearchstore">
-                                                <mat-option *ngFor="let option of filteredOptionsstore| async"
+                                                <mat-option *ngFor="let option of filteredOptionsstore | async"
                                                     [value]="option">
                                                     {{option.StoreName}}
                                                 </mat-option>
@@ -199,15 +199,15 @@
                                         <mat-form-field appearance="outline" fxFlex="40%" *ngIf="FlagStore1Selected">
                                             <mat-label>To Store Name</mat-label>
                                             <input matAutocompletePosition="below" type="text"
-                                                placeholder="Select Store" matInput formControlName="StoreId"
-                                                [matAutocomplete]="autosearchstore">
+                                                placeholder="Select Store" matInput formControlName="StoreId1"
+                                                [matAutocomplete]="autosearchstore1">
                                             <span matSuffix style="display: flex;">
                                                 <mat-icon class="mat-icon-close"
                                                     (click)="_OPReportsService.userForm.get('StoreId1').setValue(''); isSearchstore1Selected = false;">close</mat-icon>
                                                 <mat-icon class="mat-icon-close"
                                                     (click)="_OPReportsService.userForm.get('StoreId1').setValue(''); isSearchstore1Selected = false;">search</mat-icon>
                                             </span>
-                                            <mat-autocomplete #autosearchstore="matAutocomplete"
+                                            <mat-autocomplete #autosearchstore1="matAutocomplete"
                                                 [displayWith]="getOptionTextsearchstore1">
                                                 <mat-option *ngFor="let option of filteredOptionsstore1 | async"
                                                     [value]="option">

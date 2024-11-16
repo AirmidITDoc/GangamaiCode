@@ -2477,7 +2477,6 @@ debugger
 
     onImageFileChange(events: any) {
 
-
         if (events.target.files && events.target.files[0]) {
             let filesAmount = events.target.files.length;
             for (let i = 0; i < filesAmount; i++) {

@@ -75,6 +75,8 @@ export class InventoryReportComponent implements OnInit {
   UserName:any=''
   UserList:any=[];
   StoreList:any=[];
+  StoreList1:any=[];
+
   ItemList:any=[];
   filteredOptionsUser: Observable<string[]>;
   isUserSelected: boolean = false;
@@ -99,6 +101,7 @@ export class InventoryReportComponent implements OnInit {
   FlagdrugtypeSelected: boolean = false;
   FlagReportTypeSelected: boolean = false;
   optionsSearchstore: any[] = [];
+  optionsSearchstore1: any[] = [];
   optionsSearchItem: any[] = [];
   filteredOptionssupplier:any;
   noOptionFoundsupplier:any;
@@ -196,14 +199,16 @@ console.log(event.value)
   gePharStoreList() {
     this._OPReportsService.getStoreList().subscribe(data => {
       this.StoreList = data;
+      this.StoreList1 = data;
       this.optionsSearchstore = this.StoreList.slice();
+      this.optionsSearchstore1 = this.StoreList.slice();
       this.filteredOptionsstore = this._OPReportsService.userForm.get('StoreId').valueChanges.pipe(
         startWith(''),
         map(value => value ? this._filterSearchstore(value) : this.StoreList.slice()),
       );
       this.filteredOptionsstore1 = this._OPReportsService.userForm.get('StoreId1').valueChanges.pipe(
         startWith(''),
-        map(value => value ? this._filterSearchstore1(value) : this.StoreList.slice()),
+        map(value => value ? this._filterSearchstore1(value) : this.StoreList1.slice()),
       );
     });
   }
@@ -218,7 +223,7 @@ console.log(event.value)
   private _filterSearchstore1(value: any): string[] {
     if (value) {
       const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
-      return this.optionsSearchstore.filter(option => option.StoreName.toLowerCase().includes(filterValue));
+      return this.optionsSearchstore1.filter(option => option.StoreName.toLowerCase().includes(filterValue));
     }
 
   }
@@ -606,6 +611,18 @@ console.log(event.value)
       this.FlagMonthSelected=false;
       this.FlagdrugtypeSelected=false;
       this.FlagReportTypeSelected= false;
+    }   else if (this.ReportName == 'Issue To Department Monthly Summary') {
+      this.FlagUserSelected = false;
+      this.FlagnonmovedaySelected = false;
+      this.FlagDoctorSelected = false;
+      this.FlagStoreSelected = true;
+      this.FlagStore1Selected = true;
+      this.FlagSupplierSelected = false;
+      this.FlagItemSelected=false;
+      this.FlagIdSelected=false;
+      this.FlagMonthSelected=false;
+      this.FlagdrugtypeSelected=false;
+      this.FlagReportTypeSelected= false;
     }
 
   }
@@ -699,7 +716,9 @@ console.log(event.value)
     }  else if (this.ReportName == 'Item Count') {
       this.viewgetItemcountPdf();
     } 
-
+    else if (this.ReportName == 'Issue To Department Monthly Summary') {
+      this.viewgetIssutodeptmonthlysummaryPdf();
+    }
 
 
   }
@@ -1738,7 +1757,46 @@ debugger
     }, 100);
   }
 
+  viewgetIssutodeptmonthlysummaryPdf() {
+    let StoreId1 =0
+    let StoreId2 =0
+debugger
+    if (this._OPReportsService.userForm.get('StoreId').value)
+     StoreId1 = this._OPReportsService.userForm.get('StoreId').value.StoreId
+    
+    if (this._OPReportsService.userForm.get('StoreId1').value)
+      StoreId2 = this._OPReportsService.userForm.get('StoreId1').value.StoreId
+     
 
+    setTimeout(() => {
+      this.SpinLoading = true;
+      this._OPReportsService.getIssuetodeptmonthlysummaryview(
+        this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+       this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",StoreId1,StoreId2
+        
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "95vw",
+            height: '850px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Issue to Dept Monthly Summary"
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+      });
+
+    }, 100);
+  }
   GetUserList() {
     var data = {
           "StoreId": this._loggedUser.currentUserValue.user.storeId
