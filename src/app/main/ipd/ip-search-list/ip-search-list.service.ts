@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoaderService } from 'app/core/components/loader/loader.service';
+import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,7 @@ export class IPSearchListService {
   // getIPLitPharmsalesDateWise: any;
   
 
-constructor(public _httpClient:HttpClient,
+constructor(public _httpClient:HttpClient,public _httpClient1:ApiCaller,
     private _formBuilder: FormBuilder,
     private _loaderService: LoaderService,
     ) {
@@ -431,13 +432,7 @@ constructor(public _httpClient:HttpClient,
   return this._httpClient.post("InPatient/InsertIPPrescription",employee);
   }
   
-  public BedtransferUpdate(employee,loader = true){ 
-    if (loader) {
-      this._loaderService.show();
-  }
-    return this._httpClient.post("InPatient/IPDBedTransfer",employee);
-  }
- 
+
   // Dashboard
 
   public getAccountDashboard()
@@ -1098,6 +1093,20 @@ public getItemlist(Param){//m_Rtrv_IPDrugName,Retrieve_ItemName_BalanceQty
 }
 public getDoseList() {
   return this._httpClient.post("Generic/GetByProc?procName=ps_Rtrv_DoseMasterList", {})
+}
+
+
+
+
+//  new Api
+public BedtransferUpdate(Param: any, showLoader = true) {
+  if (Param.transferId) {
+      return this._httpClient1.PutData("BedTransfer/InsertSP" + Param.transferId, Param, showLoader);
+  } else return this._httpClient1.PostData("BedTransfer/InsertSP", Param, showLoader);
+}
+
+public getMaster(mode,Id) {
+return this._httpClient1.GetData("Dropdown/GetBindDropDown?mode="+mode+"&Id="+Id);
 }
 }
 

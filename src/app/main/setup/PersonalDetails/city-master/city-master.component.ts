@@ -26,10 +26,9 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 export class CityMasterComponent implements OnInit {
   
     msg: any;
-  private _onDestroy = new Subject<void>();
-
+    options:any[]=[{Text:'Text-1',Id:1},{Text:'Text-2',Id:2},{Text:'Text-3',Id:3}];
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
-   
+  
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
         apiUrl: "CityMaster/List",
@@ -75,7 +74,27 @@ export class CityMasterComponent implements OnInit {
         ],
         row: 25
     }
-
+    autocompleteMode: string = "CityMaster";
+    public autocompleteOptions: any[] = [
+        {text: 'Bank A (Solapur)', value: 'S'},
+        {text: 'Bank B (Satara)', value: 'B'},
+        {text: 'Bank C (Pune)', value: 'C'},
+        {text: 'Bank D (Sangali)', value: 'D'},
+        {text: 'Bank E (Kolhapur)', value: 'K'},
+        {text: 'Bank F (Mumbai)', value: 'F'},
+        {text: 'Bank G (Dellhi)', value: 'G'},
+        {text: 'Bank H (Jalgaon)', value: 'H'},
+        {text: 'Bank I (Nagpur)', value: 'I'},
+        {text: 'Bank J (Nanded)', value: 'J'},
+        // {text: 'Bank Kolombia (United States of America)', value: 'K'},
+        // {text: 'Bank L (Germany)', value: 'L'},
+        // {text: 'Bank M (Germany)', value: 'M'},
+        // {text: 'Bank N (Germany)', value: 'N'},
+        // {text: 'Bank O (Germany)', value: 'O'},
+        // {text: 'Bank P (Germany)', value: 'P'},
+        // {text: 'Bank Q (Germany)', value: 'Q'},
+        // {text: 'Bank R (Germany)', value: 'R'}
+      ];
     constructor(
         public _CityMasterService: CityMasterService,
         public toastr: ToastrService, public _matDialog: MatDialog
@@ -96,6 +115,10 @@ export class CityMasterComponent implements OnInit {
                 that.grid.bindGridData();
             }
         });
+    }
+
+    selectChange(obj: any){
+        console.log(obj);
     }
 
 }

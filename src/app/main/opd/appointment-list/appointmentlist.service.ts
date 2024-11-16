@@ -113,14 +113,14 @@ createSearchForm(): FormGroup {
 
 createConsultatDrForm() {
   return this._formBuilder.group({
-    doctorID: '',
-    departmentid: ''
+    DoctorID: '',
+    Departmentid: ''
   });
 }
 
 createRefranceDrForm() {
   return this._formBuilder.group({
-    refDoctorId: ['', [
+    DoctorID: ['', [
       Validators.required]],
    
   });
@@ -141,22 +141,31 @@ initializeFormGroup() {
     };
 }
 
-public appointmentSave(Param: any, showLoader = true) {
+public NewappointmentSave(Param: any, showLoader = true) {
     if (Param.visitID) {
         return this._httpClient1.PutData("VisitDetail/Insert" + Param.visitID, Param, showLoader);
     } else return this._httpClient1.PostData("VisitDetail/Insert", Param, showLoader);
 }
 
-public EditConDoctor(Param: any, showLoader = true) {
+public RregisteredappointmentSave(Param: any, showLoader = true) {
   if (Param.visitID) {
-      return this._httpClient1.PutData("ConsRefDoctor/ConsultantDoctorUpdate" + Param.visitID, Param, showLoader);
-  } else return this._httpClient1.PostData("ConsRefDoctor/ConsultantDoctorUpdate", Param, showLoader);
+      return this._httpClient1.PutData("VisitDetail/Insert" + Param.visitID, Param, showLoader);
+  } else return this._httpClient1.PostData("VisitDetail/Insert", Param, showLoader);
+}
+
+public EditConDoctor(Param: any, showLoader = true) {
+  // if (Param.visitId) {
+  //     return this._httpClient1.PutData("ConsRefDoctor/ConsultantDoctorUpdate" + Param.visitId, Param, showLoader);
+  // } else
+   return this._httpClient1.PostData("ConsRefDoctor/ConsultantDoctorUpdate", Param, showLoader);
 }
 
 public EditRefDoctor(Param: any, showLoader = true) {
-  if (Param.visitID) {
-      return this._httpClient1.PutData("ConsRefDoctor/RefDoctorUpdate" + Param.visitID, Param, showLoader);
-  } else return this._httpClient1.PostData("ConsRefDoctor/RefDoctorUpdate", Param, showLoader);
+  // if (Param.visitId) {
+  //     return this._httpClient1.PutData("ConsRefDoctor/RefDoctorUpdate" + Param.visitId, Param, showLoader);
+  // } else 
+  
+  return this._httpClient1.PostData("ConsRefDoctor/RefDoctorUpdate", Param, showLoader);
 }
 
 public deactivateTheStatus(m_data) {
@@ -167,6 +176,10 @@ public crossconsultSave(Param: any, showLoader = true) {
   if (Param.visitID) {
       return this._httpClient1.PutData("CrossConsultation/CrossConsultationInsert" + Param.visitID, Param, showLoader);
   } else return this._httpClient1.PostData("CrossConsultation/CrossConsultationInsert", Param, showLoader);
+}
+
+public getMaster(mode,Id) {
+  return this._httpClient1.GetData("Dropdown/GetBindDropDown?mode="+mode+"&Id="+Id);
 }
 }
 

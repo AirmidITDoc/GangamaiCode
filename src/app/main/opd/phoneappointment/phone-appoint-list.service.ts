@@ -61,26 +61,26 @@ export class PhoneAppointListService {
       appDate: '',
       appTime: '',
      // seqNo: '',
-     firstName:  ['', [
+     FirstName:  ['', [
         Validators.required,
         Validators.maxLength(50),
         // Validators.pattern("^[a-zA-Z._ -]*$"),
         Validators.pattern('^[a-zA-Z () ]*$')
       ]],
-      middleName: ['', [
+      MiddleName: ['', [
 
         Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
       ]],
-      lastName: ['', [
+      LastName: ['', [
         Validators.required,
         Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
       ]],
-      address: ['', Validators.required],
-      mobileNo:'',
-      phAppDate: '',
-      phAppTime: '',
-      departmentId: '',
-      doctorId: '',
+      Address: ['', Validators.required],
+      MobileNo:'',
+      PhAppDate: '',
+      PhAppTime: '',
+      Departmentid: '',
+      DoctorId: '',
       addedBy: '',
       updatedBy: '',
       regNo: '',
@@ -134,4 +134,8 @@ if (Param.phoneAppId) {
     return this._httpClient.PutData("PhoneAppointment2/Cancel" + Param.phoneAppId, Param, showLoader);
 } else return this._httpClient.PostData("PhoneAppointment2/Cancel", Param, showLoader);
 } 
+
+public getMaster(mode,Id) {
+  return this._httpClient.GetData("Dropdown/GetBindDropDown?mode="+mode+"&Id="+Id);
+}
 }

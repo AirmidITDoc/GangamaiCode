@@ -36,7 +36,7 @@
                 <div fxLayout="row" style="width: 100%;">
                     <div fxFlex fxFlex.gt-sm fxLayout="column" style="overflow: auto ;" fusePerfectScrollbar
                         class="newappointment-body"> 
-                        <!-- <form [formGroup]="searchFormGroup">
+                         <form [formGroup]="searchFormGroup">
                             <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign="space-between start"
                                 fxLayoutAlign.gt-sm="space-between center" class="appointment-header gap-12">
                                 <div class="redio-container">
@@ -49,7 +49,7 @@
                                     </mat-radio-group>
                                 </div>
                                 <div fxLayout="row" fxLayoutGap="18px" fxLayoutAlign="center center">
-                                    <mat-form-field class=searchRegId appearance="outline" fxflex="30" *ngIf="Regflag">
+                                    <!-- <mat-form-field class=searchRegId appearance="outline" fxflex="30" *ngIf="Regflag">
                                         <input type="text" name="RegId" formControlName="RegId"
                                             placeholder="Patient Name (enter 2 char) " matInput [matAutocomplete]="auto"
                                             (input)="getSearchList()" maxlength="10">
@@ -92,25 +92,25 @@
                                         <mat-error *ngIf="searchFormGroup.get('RegId').hasError('required')">
                                             Required field cannot be left blank
                                         </mat-error>
-                                    </mat-form-field>
+                                    </mat-form-field> -->
                                     <form [formGroup]="VisitFormGroup">
                                         <mat-form-field appearance="outline" fxflex="30">
                                             <mat-label>Unit Name </mat-label>
                                             <mat-select formControlName="HospitalId" required #hname
                                                 (keydown)="onEnterhname($event)">
                                                 <mat-option *ngFor="let Doc of HospitalList1" [value]="Doc">
-                                                    {{Doc.HospitalName}}
+                                                    {{Doc.text}}
                                                 </mat-option>
                                             </mat-select>
                                         </mat-form-field>
                                     </form>
                                 </div>
                             </div>
-                        </form> -->
+                        </form> 
                         <div class="personal-panel">
                             <mat-accordion multi>
                                 <mat-expansion-panel expanded>
-                                    <!-- <mat-expansion-panel-header>
+                                    <mat-expansion-panel-header>
                                         <mat-panel-title>
                                             <div class="panel-title" fxLayout="row" fxLayoutAlign="space-between center"
                                                 fxFlex="65%" fxFlex.lt-md="100%">
@@ -122,7 +122,7 @@
                                                 </span>
                                             </div>
                                         </mat-panel-title>
-                                    </mat-expansion-panel-header> -->
+                                    </mat-expansion-panel-header>
                                     <form [formGroup]="personalFormGroup" class="mat-form-field-100">
                                         <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="12px grid">
 
@@ -130,7 +130,7 @@
                                                 fxLayoutGap="12px grid">
 
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <!-- <mat-form-field appearance="outline">
+                                                    <mat-form-field appearance="outline">
                                                         <mat-label>Prefix</mat-label>
                                                         <input matAutocompletePosition="below" type="text"
                                                             placeholder="Select Prefix" matInput
@@ -149,16 +149,16 @@
                                                                 *ngFor="let option of filteredOptionsPrefix | async"
                                                                 [value]="option"
                                                                 (onSelectionChange)="onChangeGenderList(option)">
-                                                                {{option.PrefixName}}
+                                                                {{option.text}}
                                                             </mat-option>
                                                         </mat-autocomplete>
-                                                    </mat-form-field> -->
+                                                    </mat-form-field>
                                                 </div>
 
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <mat-form-field appearance="outline">
                                                         <mat-label>First Name</mat-label>
-                                                        <input name="FirstName" formControlName="FirstName"
+                                                        <input name="FirstName" formControlName="FirstName"  [(ngModel)]="registerObj.firstName"
                                                             placeholder="First Name" matInput required type="text"
                                                             #fname
                                                             (keydown)="onEnterfname($event)">
@@ -172,7 +172,7 @@
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <mat-form-field appearance="outline">
                                                         <mat-label>Middle Name</mat-label>
-                                                        <input name="MiddleName" formControlName="MiddleName"
+                                                        <input name="MiddleName" formControlName="MiddleName"  [(ngModel)]="registerObj.middleName"
                                                             placeholder="Middle Name"
                                                                                                                        matInput type="text"
                                                             #mname (keydown)="onEntermname($event)">
@@ -187,7 +187,7 @@
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <mat-form-field appearance="outline">
                                                         <mat-label>Last Name</mat-label>
-                                                        <input name="LastName" formControlName="LastName"
+                                                        <input name="LastName" formControlName="LastName"  [(ngModel)]="registerObj.lastName"
                                                             placeholder="Last Name"
                                                             
                                                             matInput required 
@@ -201,12 +201,12 @@
                                                 </div>
 
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <!-- <mat-form-field appearance="outline">
+                                                    <mat-form-field appearance="outline">
                                                         <mat-label>Gender</mat-label>
                                                         <mat-select formControlName="GenderId">
                                                             <mat-option></mat-option>
                                                             <mat-option *ngFor="let m of GenderList" [value]="m">
-                                                                {{m.GenderName}}
+                                                                {{m.text}}
                                                             </mat-option>
                                                         </mat-select>
                                                         <mat-error
@@ -215,7 +215,7 @@
                                                                 *ngIf="personalFormGroup.get('GenderId').hasError('required')">
                                                                 Gender is required</span>
                                                         </mat-error>
-                                                    </mat-form-field> -->
+                                                    </mat-form-field>
                                                 </div>
 
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -231,19 +231,19 @@
                                                     <div fxLayout="row" class="gap-8">
                                                         <mat-form-field appearance="outline" *ngIf="dateStyle=='Year'">
                                                             <mat-label>Age (Y)</mat-label>
-                                                            <input placeholder="Age (Y)" matInput
+                                                            <input placeholder="Age (Y)" matInput  [(ngModel)]="registerObj.ageYear"
                                                                 (keyup)="CalcDOB('Year',$event)"
                                                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
                                                         </mat-form-field>
                                                         <mat-form-field appearance="outline" *ngIf="dateStyle=='Month'">
                                                             <mat-label>Age (M)</mat-label>
-                                                            <input placeholder="Age (M)" matInput
+                                                            <input placeholder="Age (M)" matInput  [(ngModel)]="registerObj.ageMonth"
                                                                 (keyup)="CalcDOB('Month',$event)"
                                                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,2);">
                                                         </mat-form-field>
                                                         <mat-form-field appearance="outline" *ngIf="dateStyle=='Day'">
                                                             <mat-label>Age (D)</mat-label>
-                                                            <input placeholder="Age (D)" matInput
+                                                            <input placeholder="Age (D)" matInput  [(ngModel)]="registerObj.ageDay"
                                                                 (keyup)="CalcDOB('Day',$event)"
                                                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,2);">
                                                         </mat-form-field>
@@ -266,7 +266,7 @@
                                                     <div fxLayout="row" class="gap-8">
                                                         <mat-form-field appearance="outline">
                                                             <mat-label>Age (Y)</mat-label>
-                                                            <input name="AgeYear" formControlName="AgeYear"
+                                                            <input name="AgeYear" formControlName="AgeYear"  [(ngModel)]="registerObj.ageYear"
                                                                 placeholder="Age (Y)" matInput
                                                                 maxlength="3" #agey readonly
                                                               oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
@@ -276,7 +276,7 @@
                                                         </mat-form-field>
                                                         <mat-form-field appearance="outline">
                                                             <mat-label>Age (M)</mat-label>
-                                                            <input name="AgeMonth" formControlName="AgeMonth"
+                                                            <input name="AgeMonth" formControlName="AgeMonth"  [(ngModel)]="registerObj.ageMonth"
                                                                 placeholder="Age (M)" matInput readonly
                                                                 type="number" maxlength="2" #agem
                                                                 (keydown)="onEnteragem($event)"
@@ -287,7 +287,7 @@
                                                         </mat-form-field>
                                                         <mat-form-field appearance="outline">
                                                             <mat-label>Age (D)</mat-label>
-                                                            <input name="AgeDay" formControlName="AgeDay"
+                                                            <input name="AgeDay" formControlName="AgeDay"  [(ngModel)]="registerObj.ageDay"
                                                                 placeholder="Age (D)" matInput
                                                                 type="number" maxlength="2" #aged
                                                                 (keydown)="onEnteraged($event)"
@@ -303,7 +303,7 @@
                                                   
                                                     <mat-form-field appearance="outline">
                                                         <mat-label>AadharCard Number</mat-label>
-                                                        <input name="AadharCardNo" formControlName="AadharCardNo"
+                                                        <input name="AadharCardNo" formControlName="AadharCardNo"  [(ngModel)]="registerObj.aadharCardNo"
                                                             placeholder="AadharCard Number" matInput
                                                             
                                                             #AadharCardNo (keydown)="onEnterAadharCardNo($event)"
@@ -319,7 +319,7 @@
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <mat-form-field appearance="outline">
                                                         <mat-label>Address</mat-label>
-                                                        <input name="Address" formControlName="Address"
+                                                        <input name="Address" formControlName="Address"  [(ngModel)]="registerObj.address"
                                                             placeholder="Address" matInput #address
                                                             (keydown)="onEnteraddress($event)"
                                                           >
@@ -330,7 +330,7 @@
                                                 </div>
 
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <!-- <mat-form-field appearance="outline">
+                                                    <mat-form-field appearance="outline">
                                                         <mat-label>Area Name</mat-label>
                                                         <input matAutocompletePosition="below" type="text"
                                                             placeholder="Select Area" matInput formControlName="AreaId"
@@ -347,14 +347,14 @@
                                                             <mat-option
                                                                 *ngFor="let option of filteredOptionsArea | async"
                                                                 [value]="option">
-                                                                {{option.AreaName}}
+                                                                {{option.text}}
                                                             </mat-option>
                                                         </mat-autocomplete>
-                                                    </mat-form-field> -->
+                                                    </mat-form-field>
                                                 </div>
 
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <!-- <mat-form-field appearance="outline">
+                                                    <mat-form-field appearance="outline">
                                                         <mat-label>City</mat-label>
                                                         <input matAutocompletePosition="below" type="text"
                                                             placeholder="Select City" matInput #city
@@ -373,39 +373,39 @@
                                                                 *ngFor="let option of filteredOptionsCity | async"
                                                                 [value]="option"
                                                                 (onSelectionChange)="onChangeCityList(option)">
-                                                                {{option.CityName}}
+                                                                {{option.text}}
                                                             </mat-option>
                                                         </mat-autocomplete>
-                                                    </mat-form-field> -->
+                                                    </mat-form-field>
                                                 </div>
 
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <!-- <mat-form-field appearance="outline">
+                                                    <mat-form-field appearance="outline">
                                                         <mat-label>State Name</mat-label>
                                                         <mat-select formControlName="StateId" name="StateId"
                                                             (selectionChange)="onChangeCountryList($event.value)">
                                                             <mat-option></mat-option>
                                                             <mat-option *ngFor="let m of stateList" [value]="m">
-                                                                {{m.StateName}}
+                                                                {{m.text}}
                                                             </mat-option>
                                                         </mat-select>
-                                                    </mat-form-field> -->
+                                                    </mat-form-field>
                                                 </div>
 
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <!-- <mat-form-field appearance="outline">
+                                                    <mat-form-field appearance="outline">
                                                         <mat-label>Country Name</mat-label>
                                                         <mat-select formControlName="CountryId">
                                                             <mat-option></mat-option>
                                                             <mat-option *ngFor="let g of countryList" [value]="g">
-                                                                {{g.CountryName}}
+                                                                {{g.text}}
                                                             </mat-option>
                                                         </mat-select>
-                                                    </mat-form-field> -->
+                                                    </mat-form-field>
                                                 </div>
 
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <!-- <mat-form-field appearance="outline">
+                                                    <mat-form-field appearance="outline">
                                                         <mat-label>Marital Status</mat-label>
                                                         <input matAutocompletePosition="below" type="text"
                                                             placeholder="Select Mstatus" matInput #mstatus
@@ -423,10 +423,10 @@
                                                             <mat-option
                                                                 *ngFor="let option of filteredOptionsMstatus | async"
                                                                 [value]="option">
-                                                                {{option.MaritalStatusName}}
+                                                                {{option.text}}
                                                             </mat-option>
                                                         </mat-autocomplete>
-                                                    </mat-form-field> -->
+                                                    </mat-form-field>
                                                 </div>
                                                 
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -434,7 +434,7 @@
                                                        
                                                         <mat-form-field appearance="outline">
                                                             <mat-label>Mobile Number</mat-label>
-                                                            <input name="MobileNo" formControlName="MobileNo" #mobile
+                                                            <input name="MobileNo" formControlName="MobileNo" #mobile  [(ngModel)]="registerObj.mobileNo"
                                                                 placeholder="Mobile Number" matInput required
                                                                 max="9999999999"
                                                                 min="1000000000" autocomplete="off" maxlength="10"
@@ -450,7 +450,7 @@
 
                                                         <mat-form-field appearance="outline">
                                                             <mat-label>Phone Number</mat-label>
-                                                            <input name="PhoneNo" formControlName="PhoneNo" #phone
+                                                            <input name="PhoneNo" formControlName="PhoneNo" #phone  [(ngModel)]="registerObj.phoneNo"
                                                                 placeholder="Phone Number" matInput
                                                                max="9999999999"
                                                                 min="1000000000" autocomplete="off" maxlength="10"
@@ -466,7 +466,7 @@
 
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                                                    <!-- <mat-form-field appearance="outline">
+                                                    <mat-form-field appearance="outline">
                                                         <mat-label>Religion Name</mat-label>
                                                         <input matAutocompletePosition="below" type="text"
                                                             placeholder="Select Religion" matInput #religion
@@ -484,10 +484,10 @@
                                                             <mat-option
                                                                 *ngFor="let option of filteredOptionsReligion | async"
                                                                 [value]="option">
-                                                                {{option.ReligionName}}
+                                                                {{option.text}}
                                                             </mat-option>
                                                         </mat-autocomplete>
-                                                    </mat-form-field> -->
+                                                    </mat-form-field>
                                                 </div>
 
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -555,7 +555,7 @@
                                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
 
 
-                                                <!-- <mat-form-field appearance="outline">
+                                                <mat-form-field appearance="outline">
                                                     <mat-label>Patient Type</mat-label>
                                                     <input matAutocompletePosition="below" type="text"
                                                         placeholder="Select Patient Type" [(ngModel)]="vPatientTypeID"
@@ -575,15 +575,15 @@
                                                             *ngFor="let option of filteredOptionsPatientType | async"
                                                             [value]="option"
                                                             (onSelectionChange)="onChangePatient(option)">
-                                                            {{option.PatientType}}
+                                                            {{option.text}}
                                                         </mat-option>
                                                     </mat-autocomplete>
-                                                </mat-form-field> -->
+                                                </mat-form-field>
                                             </div>
 
                                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                                                <!-- <mat-form-field appearance="outline">
+                                                <mat-form-field appearance="outline">
                                                     <mat-label>Tariff Name</mat-label>
                                                     <input matAutocompletePosition="below" type="text"
                                                         placeholder="Select Tariff Type" matInput #tariff required
@@ -600,15 +600,15 @@
                                                         [displayWith]="getOptionTextTariff">
                                                         <mat-option *ngFor="let option of filteredOptionsTarrif | async"
                                                             [value]="option">
-                                                            {{option.TariffName}}
+                                                            {{option.text}}
                                                         </mat-option>
                                                     </mat-autocomplete>
-                                                </mat-form-field> -->
+                                                </mat-form-field>
                                             </div>
 
                                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
                                                 *ngIf="isCompanySelected">
-                                                <!-- <mat-form-field appearance="outline">
+                                                <mat-form-field appearance="outline">
                                                     <mat-label>Company Name </mat-label>
                                                     <input matAutocompletePosition="below" type="text"
                                                         placeholder="Select Company" matInput
@@ -624,15 +624,15 @@
                                                         <mat-option
                                                             *ngFor="let option of filteredOptionsCompany | async"
                                                             [value]="option">
-                                                            {{option.CompanyName}}
+                                                            {{option.text}}
                                                         </mat-option>
                                                     </mat-autocomplete>
-                                                </mat-form-field> -->
+                                                </mat-form-field>
                                             </div>
 
                                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
                                                 *ngIf="isCompanySelected">
-                                                <!-- <mat-form-field appearance="outline">
+                                                <mat-form-field appearance="outline">
                                                     <mat-label>Sub Company Name </mat-label>
                                                     <input matAutocompletePosition="below" type="text"
                                                         placeholder="Select SubCompany" matInput
@@ -649,14 +649,14 @@
                                                         <mat-option
                                                             *ngFor="let option of filteredOptionsSubCompany | async"
                                                             [value]="option">
-                                                            {{option.CompanyName}}
+                                                            {{option.text}}
                                                         </mat-option>
                                                     </mat-autocomplete>
-                                                </mat-form-field> -->
+                                                </mat-form-field>
                                             </div>
 
                                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                <!-- <mat-form-field appearance="outline">
+                                                <mat-form-field appearance="outline">
                                                     <mat-label>Department</mat-label>
                                                     <input matAutocompletePosition="below" type="text"
                                                         placeholder="Select Department" matInput #dept
@@ -676,14 +676,14 @@
                                                         <mat-option *ngFor="let option of filteredOptionsDep | async"
                                                             [value]="option"
                                                             (onSelectionChange)="OnChangeDoctorList(option)">
-                                                            {{option.DepartmentName}}
+                                                            {{option.text}}
                                                         </mat-option>
                                                     </mat-autocomplete>
-                                                </mat-form-field> -->
+                                                </mat-form-field>
                                             </div>
 
                                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                <!-- <mat-form-field appearance="outline">
+                                                <mat-form-field appearance="outline">
                                                     <mat-label>Doctor Name</mat-label>
                                                     <input matAutocompletePosition="below" type="text"
                                                         placeholder="Pick one" matInput #deptdoc
@@ -702,19 +702,17 @@
                                                         <mat-option *ngFor="let option of filteredOptionsDoc | async"
                                                             [value]="option"
                                                             (onSelectionChange)="isDoctorSelected = true;">
-                                                            {{option.Doctorname }} <b>|</b> {{option.DepartmentName }}
-                                                            <b>|</b> {{option.DoctorId
-                                                            }}
+                                                            {{option.text }}
                                                         </mat-option>
                                                     </mat-autocomplete>
-                                                </mat-form-field> -->
+                                                </mat-form-field>
 
 
 
                                             </div>
 
                                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                <!-- <mat-form-field appearance="outline">
+                                                <mat-form-field appearance="outline">
                                                     <mat-label>Ref Doctor Name</mat-label>
                                                     <input matAutocompletePosition="below" type="text"
                                                         placeholder="Select Ref Doctor " matInput #refdoc
@@ -730,14 +728,14 @@
                                                         [displayWith]="getOptionTextRefDoc">
                                                         <mat-option *ngFor="let option of filteredOptionsRefDoc | async"
                                                             [value]="option">
-                                                            {{option.DoctorName}}
+                                                            {{option.text}}
                                                         </mat-option>
                                                     </mat-autocomplete>
-                                                </mat-form-field> -->
+                                                </mat-form-field>
                                             </div>
 
                                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                <!-- <mat-form-field appearance="outline">
+                                                <mat-form-field appearance="outline">
                                                     <mat-label>Purpose</mat-label>
                                                     <input matAutocompletePosition="below" type="text"
                                                         placeholder="Select Purpose" matInput #purpose
@@ -753,10 +751,10 @@
                                                         <mat-option
                                                             *ngFor="let option of filteredOptionsPurpose | async"
                                                             [value]="option">
-                                                            {{option.PurposeName}}
+                                                            {{option.text}}
                                                         </mat-option>
                                                     </mat-autocomplete>
-                                                </mat-form-field> -->
+                                                </mat-form-field>
                                             </div>
 
                                         </div>

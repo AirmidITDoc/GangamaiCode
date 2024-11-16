@@ -210,8 +210,8 @@ public getPatientTypeCombo() {
     }
 
     public Regstrationtupdate(Param: any, showLoader = true) {
-      if (Param.regID) {
-          return this._httpClient1.PutData("OutPatient/RegistrationUpdate" + Param.regID, Param, showLoader);
+      if (Param.regId) {
+          return this._httpClient1.PutData("OutPatient/RegistrationUpdate" + Param.regId, Param, showLoader);
       } else return this._httpClient1.PostData("OutPatient/RegistrationUpdate", Param, showLoader);
   }
     
@@ -222,5 +222,11 @@ public getPatientTypeCombo() {
     public getMaster(mode,Id) {
       return this._httpClient1.GetData("Dropdown/GetBindDropDown?mode="+mode+"&Id="+Id);
   }
+
+  
+  public getcityMaster(Id,version) {
+    debugger
+    return this._httpClient1.GetData("CityMaster?Id="+Id+"&version="+version);
+}
 
 }

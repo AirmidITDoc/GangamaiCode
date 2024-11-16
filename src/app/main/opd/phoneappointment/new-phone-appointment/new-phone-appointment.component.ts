@@ -24,47 +24,17 @@ import { ToastrService } from 'ngx-toastr';
 export class NewPhoneAppointmentComponent implements OnInit {
   phoneappForm: FormGroup
   hasSelectedContacts: boolean;
-  ConfigcityList: any = [];
-  cityList: any = [];
-  PrefixList: any = [];
-  _cityList: any = [];
-  selectedState = "";
-  selectedStateID: any;
-  stateList: any = [];
-  ReligionList: any = [];
-  MaritalStatusList: any = [];
-  PatientTypeList: any = [];
-  RelationshipList: any = [];
-  TariffList: any = [];
-  selectedCountry: any;
-  selectedCountryID: any;
-  countryList: any = [];
-  getAppointmentList = [];
-  AreaList: any = [];
-  GenderList: any = [];
+  
   DepartmentList: any = [];
   DoctorList: any = [];
   Doctor1List: any = [];
-  Doctor2List: any = [];
-  WardList: any = [];
-  BedList: any = [];
-  BedClassList: any = [];
-  HospitalList: any = [];
-  CompanyList: any = [];
-  SubTPACompList: any = [];
-  selectedGender = "";
-  selectedGenderID: any;
-  capturedImage: any;
+  
 
   hospitalFormGroup: FormGroup;
   // registerObj = new AdmissionPersonlModel({});
   options = [];
   filteredOptions: any;
   noOptionFound: boolean = false;
-  selectedHName: any;
-  selectedPrefixId: any;
-  buttonColor: any;
-  isCompanySelected: boolean = false;
   public now: Date = new Date();
   isLoading: string = '';
   screenFromString = 'admission-form';
@@ -97,7 +67,9 @@ export class NewPhoneAppointmentComponent implements OnInit {
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-
+  // New Api
+  autocompleteMode1: string = "Department";
+  autocompleteMode2: string = "ConDoctor";
 
   constructor(private _fuseSidebarService: FuseSidebarService,
     public _phoneAppointListService: PhoneAppointListService,
@@ -112,31 +84,14 @@ export class NewPhoneAppointmentComponent implements OnInit {
 
   doctorNameCmbList: any = [];
 
-  public doctorFilterCtrl: FormControl = new FormControl();
-  public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-  //department filter
-  public departmentFilterCtrl: FormControl = new FormControl();
-  public filteredDepartment: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-  private _onDestroy = new Subject<void>();
 
   ngOnInit(): void {
 
     this.getDepartmentList();
+    this.getDoctor2List();
     this.minDate = new Date();
 
-    this.doctorFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterDoctor();
-      });
-
-    this.departmentFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterDepartment();
-      });
+  
     this.getPhoneschduleList();
 
     this.phoneappForm = this._phoneAppointListService.createphoneForm();
@@ -174,70 +129,23 @@ export class NewPhoneAppointmentComponent implements OnInit {
 
   getOptionTextDep(option) {
 
-    return option && option.departmentName ? option.departmentName : '';
+    return option && option.text ? option.text : '';
   }
 
   getOptionTextDoc(option) {
 
-    return option && option.Doctorname ? option.Doctorname : '';
+    return option && option.text ? option.text : '';
 
   }
 
-
-  private filterDepartment() {
-
-    if (!this.DepartmentList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.departmentFilterCtrl.value;
-    if (!search) {
-      this.filteredDepartment.next(this.DepartmentList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredDepartment.next(
-      this.DepartmentList.filter(bank => bank.departmentName.toLowerCase().indexOf(search) > -1)
-    );
-  }
-
-  // doctorone filter code  
-  private filterDoctor() {
-
-    if (!this.DoctorList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.doctorFilterCtrl.value;
-    if (!search) {
-      this.filteredDoctor.next(this.DoctorList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredDoctor.next(
-      this.DoctorList.filter(bank => bank.Doctorname.toLowerCase().indexOf(search) > -1)
-    );
-  }
-
-  // OnChangeDoctorList(departmentObj) {
-  //   this._phoneAppointListService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(data => { this.DoctorList = data; })
-  // }
 
   private _filterDoc(value: any): string[] {
     if (value) {
-      const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
+      const filterValue = value && value.text ? value.text.toLowerCase() : value.toLowerCase();
       this.isDoctorSelected = false;
-      return this.optionsDoc.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
+      return this.Doctor1List.filter(option => option.text.toLowerCase().includes(filterValue));
     }
-    // const filterValue = value.toLowerCase();
-    // this.isDoctorSelected = false;
-    // return this.optionsDoc.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
+  
   }
 
 
@@ -247,10 +155,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
     this._phoneAppointListService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(
       data => {
         this.DoctorList = data;
-
-        // this.filteredDoctor.next(this.DoctorList.slice());
-        this.optionsDoc = this.DoctorList.slice();
-        this.filteredOptionsDoc = this.phoneappForm.get('doctorId').valueChanges.pipe(
+        this.filteredOptionsDoc = this.phoneappForm.get('DoctorId').valueChanges.pipe(
           startWith(''),
           map(value => value ? this._filterDoc(value) : this.DoctorList.slice()),
         );
@@ -261,9 +166,9 @@ export class NewPhoneAppointmentComponent implements OnInit {
 
   private _filterDep(value: any): string[] {
     if (value) {
-      const filterValue = value && value.departmentName ? value.departmentName.toLowerCase() : value.toLowerCase();
+      const filterValue = value && value.text ? value.text.toLowerCase() : value.toLowerCase();
       // this.isDepartmentSelected = false;
-      return this.optionsDep.filter(option => option.departmentName.toLowerCase().includes(filterValue));
+      return this.optionsDep.filter(option => option.text.toLowerCase().includes(filterValue));
     }
 
   }
@@ -271,16 +176,35 @@ export class NewPhoneAppointmentComponent implements OnInit {
 
 
   getDepartmentList() {
-    this._phoneAppointListService.getDepartmentCombo().subscribe(data => {
+    var mode="Department"
+    this._phoneAppointListService.getMaster(mode,1).subscribe(data => {
       this.DepartmentList = data;
       this.optionsDep = this.DepartmentList.slice();
-      this.filteredOptionsDep = this.phoneappForm.get('departmentId').valueChanges.pipe(
+      this.filteredOptionsDep = this.phoneappForm.get('Departmentid').valueChanges.pipe(
         startWith(''),
         map(value => value ? this._filterDep(value) : this.DepartmentList.slice()),
       );
       // this.filteredDepartment.next(this.DepartmentList.slice());
     });
   }
+
+
+  getDoctor2List() {
+    var mode="ConDoctor"
+    this._phoneAppointListService.getMaster(mode,1).subscribe(data => {
+      this.Doctor1List = data;
+     this.filteredOptionsDoc = this.phoneappForm.get('DoctorId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterDoc(value) : this.Doctor1List.slice()),
+      );
+      
+    });
+  }
+
+
+
+
+
 
   OnSubmit() {
     debugger
@@ -290,23 +214,21 @@ export class NewPhoneAppointmentComponent implements OnInit {
       "regNo": '',
       "appDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
       "appTime": this.dateTimeObj.time,
-      "firstName": this.phoneappForm.get('firstName').value || '',
-      "middleName": this.phoneappForm.get('middleName').value || '',
-      "lastName": this.phoneappForm.get('lastName').value || '',
-      "address": this.phoneappForm.get('address').value || '',
-      "mobileNo": this.phoneappForm.get('mobileNo').value.toString() || '',
-      "phAppDate": this.datePipe.transform(this.phoneappForm.get('phAppDate').value, "yyyy-MM-dd"),
+      "firstName": this.phoneappForm.get('FirstName').value || '',
+      "middleName": this.phoneappForm.get('MiddleName').value || '',
+      "lastName": this.phoneappForm.get('LastName').value || '',
+      "address": this.phoneappForm.get('Address').value || '',
+      "mobileNo": this.phoneappForm.get('MobileNo').value.toString() || '',
+      "phAppDate": this.datePipe.transform(this.phoneappForm.get('PhAppDate').value, "yyyy-MM-dd"),
       "phAppTime": this.dateTimeObj.time,// this.datePipe.transform(this.phoneappForm.get('phAppTime').value, "yyyy-MM-dd 00:00:00.000"),
-      "departmentId": this.phoneappForm.get('departmentId').value || 0,
-      "doctorId": this.phoneappForm.get('doctorId').value || 0,
+      "departmentId": this.phoneappForm.get('Departmentid').value.value || 0,
+      "doctorId": this.phoneappForm.get('DoctorId').value.value || 0,
       "addedBy": 1,// this.accountService.currentUserValue.user.id,
       "updatedBy": 1,// this.accountService.currentUserValue.user.id,
 
     }
     console.log(m_data);
-    console.log(this.phoneappForm.value);
-
-
+  
     this._phoneAppointListService.phoneMasterSave(m_data).subscribe((response) => {
       this.toastr.success(response.message);
       this.onClear(true);
@@ -413,6 +335,18 @@ Phappcancle(data){
 });
 }
 
+
+
+// new Api
+
+
+selectChangedepartment(obj: any){
+  console.log(obj);
+}
+
+selectChangedoctor(obj: any){
+  console.log(obj);
+}
 }
 
 export class PhoneschlistMaster {

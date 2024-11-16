@@ -34,26 +34,26 @@ export class RegistrationComponent implements OnInit {
         apiUrl: "OutPatient/RegistrationList",
         columnsList: [
             { heading: "Code", key: "regId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "Prefix", key: "prefixId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "gender", key: "genderId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "PrefixId", key: "prefixId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "GenderId", key: "genderId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
             { heading: "First Name", key: "firstName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "Middle Name", key: "middleName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "Last Name", key: "lastName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "AgeYear", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "AgeMonth", key: "ageMonth", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "AgeDay", key: "ageDay", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "AgeYear", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' , width: 50 },
+            { heading: "AgeMonth", key: "ageMonth", sort: true, align: 'left', emptySign: 'NA', width: 50  },
+            { heading: "AgeDay", key: "ageDay", sort: true, align: 'left', emptySign: 'NA', width: 50  },
             { heading: "RegTime", key: "regTime", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "PhoneNo", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "AreaId", key: "areaId", sort: true, align: 'left', emptySign: 'NA', width: 50  },
-            { heading: "City", key: "city", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "CityeNam", key: "city", sort: true, align: 'left', emptySign: 'NA', width: 50 },
             { heading: "CityId", key: "cityId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
             { heading: "StateId", key: "stateId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
             { heading: "CountryId", key: "countryId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
             { heading: "ReligionId", key: "religionId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
             { heading: "MaritalStatusId", key: "maritalStatusId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "aadharCardNo", key: "aadharCardNo", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "ReligionId", key: "religionId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "aadharCardNo", key: "aadharCardNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "IsCharity", key: "isCharity", sort: true, align: 'left', emptySign: 'NA', width: 50 },
             //  { heading: "IsConsolidatedDr", key: "isConsolidatedDr", sort: true, align: 'left', emptySign: 'NA' },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -85,7 +85,7 @@ export class RegistrationComponent implements OnInit {
             } //Action 1-view, 2-Edit,3-delete
         ],
         sortField: "RegId",
-        sortOrder: 0,
+        sortOrder: 1,
         filters: [
             { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
@@ -107,12 +107,12 @@ export class RegistrationComponent implements OnInit {
 
     }
     onSave(row: any = null) {
-        debugger
+        
         let that = this;
         const dialogRef = this._matDialog.open(NewRegistrationComponent,
             {
                 maxWidth: "95vw",
-                height: '75%',
+                height: '65%',
                 width: '90%',
                 data: row
             });
