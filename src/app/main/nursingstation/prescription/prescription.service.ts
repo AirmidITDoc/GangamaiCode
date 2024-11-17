@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { ApiCaller } from 'app/core/services/apiCaller';
 import { Observable } from 'rxjs/internal/Observable';
 
 @Injectable({
@@ -11,7 +12,7 @@ export class PrescriptionService {
   mysearchform: FormGroup;
   mypreretunForm: FormGroup;
   constructor(
-    public _httpClient:HttpClient,
+    public _httpClient:HttpClient, public _httpClient1:ApiCaller,
     private _formBuilder: FormBuilder
   ) { 
     this.mysearchform= this.SearchFilterFrom();
@@ -106,4 +107,8 @@ export class PrescriptionService {
   // public getItemlist(Param){
   //   return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IPDrugName",Param)
   // }
+
+  public deactivateTheStatus(m_data) {
+    return this._httpClient1.PostData("PhoneApp", m_data);
+  }
 }

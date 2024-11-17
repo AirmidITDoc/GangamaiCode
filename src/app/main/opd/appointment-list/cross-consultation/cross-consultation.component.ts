@@ -14,15 +14,13 @@ import { map, startWith } from 'rxjs/operators';
 })
 export class CrossConsultationComponent implements OnInit {
   crossconForm:FormGroup;
-  date: Date;
+  date= new Date().toISOString();
   screenFromString = 'admission-form';
-  Doctor1List:any=[];
-  DepartmentList:any=[];
-  isDepartmentSelected: boolean = false;
-  isDoctorSelected: boolean = false;
 
-  filteredOptionsDoc: Observable<string[]>;
-  filteredOptionsDep: Observable<string[]>;
+  autocompleteModedepartment: string = "Department";
+  autocompleteModedeptdoc: string = "ConDoctor";
+
+
   constructor( public _AppointmentlistService: AppointmentlistService, private formBuilder: FormBuilder,
     public dialogRef: MatDialogRef<CrossConsultationComponent>,   public datePipe: DatePipe,
     public _matDialog: MatDialog, public toastr: ToastrService
@@ -30,21 +28,7 @@ export class CrossConsultationComponent implements OnInit {
 
   ngOnInit(): void {
     this.crossconForm = this.createCrossConForm();
-    this.getDepartmentList();
-
-    this.getDoctor1List();
-
-
-    this.filteredOptionsDep = this.crossconForm.get('Departmentid').valueChanges.pipe(
-      startWith(''),
-      map(value => value ? this._filterDep(value) : this.DepartmentList.slice()),
-  );
-
-
-  this.filteredOptionsDoc = this.crossconForm.get('DoctorID').valueChanges.pipe(
-      startWith(''),
-      map(value => value ? this._filterDoc(value) : this.Doctor1List.slice()),
-  );
+   
   }
 
 
@@ -56,7 +40,7 @@ export class CrossConsultationComponent implements OnInit {
       DoctorID:  ['', [
         Validators.required,
       ]],
-      VisitDate: '',
+      VisitDate:  [(new Date()).toISOString()],
       VisitTime: '',
       AuthorityName: '',
       ABuckleNo: '',
@@ -70,97 +54,6 @@ export class CrossConsultationComponent implements OnInit {
   }
 
 
-  getDepartmentList() {
-    var mode="Department"
-           this._AppointmentlistService.getMaster(mode,1).subscribe(data => {
-               this.DepartmentList = data;
-               console.log(data)
-              
-               this.filteredOptionsDep = this.crossconForm.get('Departmentid').valueChanges.pipe(
-                   startWith(''),
-                   map(value => value ? this._filterDep(value) : this.DepartmentList.slice()),
-               );
-             
-           });
-   
-       }
-
-       
-       private _filterDep(value: any): string[] {
-        if (value) {
-            const filterValue = value && value.text ? value.text.toLowerCase() : value.toLowerCase();
-            return this.DepartmentList.filter(option => option.text.toLowerCase().includes(filterValue));
-        }
-
-    }
-           
-    getDoctor1List() {
-      var mode="ConDoctor"
-     this._AppointmentlistService.getMaster(mode,1).subscribe(data => {
-         this.Doctor1List = data;
-          this.filteredOptionsDoc = this.crossconForm.get('DoctorID').valueChanges.pipe(
-             startWith(''),
-             map(value => value ? this._filterDoc(value) : this.Doctor1List.slice()),
-         );
-
-     });
- }
-
- private _filterDoc(value: any): string[] {
-  if (value) {
-      const filterValue = value && value.text ? value.text.toLowerCase() : value.toLowerCase();
-      return this.Doctor1List.filter(option => option.text.toLowerCase().includes(filterValue));
-  }
-
-}
-
-
-getOptionTextDep(option) {
-
-  return option && option.text ? option.text : '';
-}
-
-
-getOptionTextDoc(option) {
-
-  return option && option.text ? option.text : '';
-
-}
-
-public onEnterdept(event): void {
-  if (event.which === 13) {
-      // if (value == undefined) {
-      //     this.toastr.warning('Please Enter Valid Department.', 'Warning !', {
-      //         toastClass: 'tostr-tost custom-toast-warning',
-      //     });
-      //     return;
-      // } else {
-          // this.deptdoc.nativeElement.focus();
-      // }
-  }
-}
-OnChangeDoctorList(departmentObj) {
-  debugger
-         
-          // this._AppointmentlistService.getDoctorMasterCombo(departmentObj.DepartmentId).subscribe(
-          //     data => {
-          //         this.DoctorList = data;
-          //         console.log(data)
-          //         this.optionsDoc = this.DoctorList.slice();
-          //         this.filteredOptionsDoc = this.VisitFormGroup.get('DoctorID').valueChanges.pipe(
-          //             startWith(''),
-          //             map(value => value ? this._filterDoc(value) : this.DoctorList.slice()),
-          //         );
-          //     })
-  
-          // if (this.configService.configParams.DoctorId) {
-  
-              // this.configService.configParams.DoctorId = 269;
-              // const toSelectDoc = this.DoctorList.find(c => c.DoctorId == this.configService.configParams.DoctorId);
-              // this.VisitFormGroup.get('DoctorID').setValue(toSelectDoc);
-              // this.doctorset();
-          // }
-      }
 
   onSubmit() {
     debugger
@@ -172,7 +65,7 @@ OnChangeDoctorList(departmentObj) {
             "visitTime":"2024-09-18T11:24:02.656Z",//this.dateTimeObj.time,
             "unitId": 0,
             "patientTypeId": 0,
-            "consultantDocId":this.crossconForm.get('DoctorID').value.value || 0,
+            "consultantDocId":this.deptdocId,
             "refDocId": 0,
             "tariffId": 0,
             "companyId": 0,
@@ -182,7 +75,7 @@ OnChangeDoctorList(departmentObj) {
             "isCancelled": true,
             "isCancelledDate":"2024-09-18T11:24:02.656Z",
             "classId": 0,
-            "departmentId":this.crossconForm.get('Departmentid').value.value || 0,
+            "departmentId":this.departmentId,
             "patientOldNew": 0,
             "firstFollowupVisit": 0,
             "appPurposeId": 0,
@@ -205,5 +98,17 @@ OnChangeDoctorList(departmentObj) {
   }
   onClose(){
     this.dialogRef.close();
+  }
+
+  departmentId:any=0;
+  deptdocId=0;
+  selectChangedepartment(obj: any){
+    console.log(obj);
+    this.departmentId=obj.value
+  }
+  
+  selectChangedeptdoc(obj: any){
+    console.log(obj);
+    this.deptdocId=obj.value
   }
 }

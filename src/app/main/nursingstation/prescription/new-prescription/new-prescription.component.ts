@@ -10,7 +10,6 @@ import { RegInsert } from 'app/main/opd/appointment/appointment.component';
 import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { PrescriptionList } from '../prescription.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { ToastrService } from 'ngx-toastr';
 import { DatePipe } from '@angular/common';

@@ -103,51 +103,12 @@
   
                   <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
   
-  
-                    <!-- <mat-form-field appearance="outline" fxFlex>
-                      <mat-label>Department</mat-label>
-                      <input matAutocompletePosition="below" type="text" placeholder="Select Department" matInput
-                        formControlName="Departmentid" [matAutocomplete]="autoDep" required #dept (keydown)="onEnterdept($event,vDepartmentid.Departmentid)" [(ngModel)]="vDepartmentid">
-                      <span matSuffix style="display: flex;">
-                        <mat-icon class="mat-icon-close"
-                          (click)="phoneappForm.get('Departmentid').setValue(''); isDepartmentSelected = false;">close</mat-icon>
-                        <mat-icon class="mat-icon-close"
-                          (click)="phoneappForm.get('Departmentid').setValue(''); isDepartmentSelected = false;">search</mat-icon>
-                      </span>
-  
-                      <mat-autocomplete #autoDep="matAutocomplete" [displayWith]="getOptionTextDep">
-                        <mat-option *ngFor="let option of filteredOptionsDep | async" [value]="option"
-                          (onSelectionChange)="OnChangeDoctorList(option)">
-                          {{option.text}}
-                        </mat-option>
-                      </mat-autocomplete>
-                    </mat-form-field>
-   -->
    <br/><br/><br/>
    <airmid-autocomplete [mode]="autocompleteMode1" (selectDdlObject)="selectChangedepartment($event)"></airmid-autocomplete>
    <br/><br/><br/>
    <airmid-autocomplete [mode]="autocompleteMode2" (selectDdlObject)="selectChangedoctor($event)"></airmid-autocomplete>
 
-
-                    <!-- <mat-form-field appearance="outline" fxFlex>
-                      <mat-label>Doctor Name</mat-label>
-                      <input matAutocompletePosition="below" type="text" placeholder="Pick one" matInput [(ngModel)]="vDoctorId" (keydown)="onEnterdeptdoc($event,vDoctorId.DoctorId)"
-                        formControlName="DoctorId" [matAutocomplete]="autoDoctor" required #docname>
-                      <span matSuffix style="display: flex;">
-                        <mat-icon class="mat-icon-close"
-                          (click)="phoneappForm.get('DoctorId').setValue(''); isDoctorSelected = false;">close</mat-icon>
-                        <mat-icon class="mat-icon-close"
-                          (click)="phoneappForm.get('DoctorId').setValue(''); isDoctorSelected = false;">search</mat-icon>
-                      </span>
-  
-                      <mat-autocomplete #autoDoctor="matAutocomplete" [displayWith]="getOptionTextDoc">
-                        <mat-option *ngFor="let option of filteredOptionsDoc | async" [value]="option"
-                          (onSelectionChange)="isDoctorSelected = true;">
-                          {{option.text }}
-                        </mat-option>
-                      </mat-autocomplete>
-                    </mat-form-field>
-                             -->
+                 
                 
                 </div>
                 <br/><br/>

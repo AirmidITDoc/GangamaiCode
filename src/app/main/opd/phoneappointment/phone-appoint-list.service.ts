@@ -77,7 +77,7 @@ export class PhoneAppointListService {
       ]],
       Address: ['', Validators.required],
       MobileNo:'',
-      PhAppDate: '',
+      PhAppDate: [(new Date()).toISOString()],
       PhAppTime: '',
       Departmentid: '',
       DoctorId: '',

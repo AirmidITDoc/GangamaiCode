@@ -16,14 +16,11 @@ export class EditRefranceDoctorComponent implements OnInit {
 
 
   RefrancedrForm: FormGroup;
-  DepartmentList: any = []
-  Doctor1List: any = []
-  isDoctorSelected: boolean = false;
 
-  filteredOptionsDoc: Observable<string[]>;
-  VisitId:any=0;
-  RegId:any=0;
+  VisitId: any = 0;
+  RegId: any = 0;
 
+  autocompleteModerefdoc: string = "RefDoctor";
   constructor(
     public _AppointmentlistService: AppointmentlistService,
     public dialogRef: MatDialogRef<EditRefranceDoctorComponent>,
@@ -35,10 +32,9 @@ export class EditRefranceDoctorComponent implements OnInit {
   ngOnInit(): void {
     this.RefrancedrForm = this._AppointmentlistService.createRefranceDrForm();
 
-    this.getDoctor1List();
-    if(this.data){
-this.RegId=this.data.regId
-this.VisitId=this.data.visitId
+    if (this.data) {
+      this.RegId = this.data.regId
+      this.VisitId = this.data.visitId
     }
 
     var m_data = {
@@ -52,50 +48,16 @@ this.VisitId=this.data.visitId
 
 
 
-    this.filteredOptionsDoc = this.RefrancedrForm.get('DoctorID').valueChanges.pipe(
-      startWith(''),
-      map(value => value ? this._filterDoc(value) : this.Doctor1List.slice()),
-    );
-
-
   }
 
 
-
-  private _filterDoc(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.text ? value.text.toLowerCase() : value.toLowerCase();
-      this.isDoctorSelected = false;
-      return this.Doctor1List.filter(option => option.text.toLowerCase().includes(filterValue));
-    }
-
-  }
-
-  getOptionTextDoc(option) {
-
-    return option && option.text ? option.text : '';
-
-  }
-
-  getDoctor1List() {
-    var mode = "RefDoctor"
-    this._AppointmentlistService.getMaster(mode, 1).subscribe(data => {
-      this.Doctor1List = data;
-      this.Doctor1List = this.Doctor1List.slice();
-      this.filteredOptionsDoc = this.RefrancedrForm.get('DoctorID').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterDoc(value) : this.Doctor1List.slice()),
-      );
-
-    });
-  }
 
   onSubmit() {
     // if (this.RefrancedrForm.valid) {
     debugger
     var m_data = {
       "visitId": this.VisitId,
-      "regId":this.RegId,
+      "regId": this.RegId,
       "refDocId": this.RefrancedrForm.get("DoctorID").value.value || 0
 
     }
@@ -123,5 +85,10 @@ this.VisitId=this.data.visitId
 
   onClose() {
     this.dialogRef.close();
+  }
+  refdocId = 0
+  selectChangerefdoc(obj: any) {
+    console.log(obj);
+    this.refdocId = obj.value
   }
 }

@@ -44,6 +44,7 @@ import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { EditConsultantDoctorComponent } from './edit-consultant-doctor/edit-consultant-doctor.component';
 import { EditRefranceDoctorComponent } from './edit-refrance-doctor/edit-refrance-doctor.component';
 import { CrossConsultationComponent } from './cross-consultation/cross-consultation.component';
+import { ImageViewComponent } from './image-view/image-view.component';
 
 const routes: Routes = [
     {
@@ -53,7 +54,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [AppointmentListComponent, NewAppointmentComponent, EditConsultantDoctorComponent, EditRefranceDoctorComponent, CrossConsultationComponent],
+    declarations: [AppointmentListComponent, NewAppointmentComponent, EditConsultantDoctorComponent, EditRefranceDoctorComponent, CrossConsultationComponent, ImageViewComponent],
     imports: [
         RouterModule.forChild(routes),
         SharedModule,

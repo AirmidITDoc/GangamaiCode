@@ -1105,6 +1105,18 @@ public BedtransferUpdate(Param: any, showLoader = true) {
   } else return this._httpClient1.PostData("BedTransfer/InsertSP", Param, showLoader);
 }
 
+public DichargeInsert(Param: any, showLoader = true) {
+  if (Param.dischargeId) {
+      return this._httpClient1.PutData("DischargeSP/IPDischargeInsert" + Param.dischargeId, Param, showLoader);
+  } else return this._httpClient1.PostData("DischargeSP/IPDischargeInsert", Param, showLoader);
+}
+
+public DichargeUpdate(Param: any, showLoader = true) {
+  if (Param.dischargeId) {
+      return this._httpClient1.PutData("DischargeSP/IPDischargeUpdate" + Param.dischargeId, Param, showLoader);
+  } else return this._httpClient1.PostData("DischargeSP/IPDischargeUpdate", Param, showLoader);
+}
+
 public getMaster(mode,Id) {
 return this._httpClient1.GetData("Dropdown/GetBindDropDown?mode="+mode+"&Id="+Id);
 }

@@ -15,14 +15,13 @@ import { Observable } from 'rxjs';
 export class EditConsultantDoctorComponent implements OnInit {
 
   ConsdrForm: FormGroup;
-  filteredOptionsDoc: Observable<string[]>;
-  Doctor2List:any=[];
-  DepartmentList:any=[];
-  isDoctorSelected: boolean = false;
-  isDepartmentSelected: boolean = false;
-  filteredOptionsDep: Observable<string[]>;
+
   VisitId:any=0;
   RegId:any=0;
+
+  autocompleteModedepartment: string = "Department";
+  autocompleteModedeptdoc: string = "ConDoctor";
+
 
   constructor(
       public _AppointmentlistService: AppointmentlistService,
@@ -34,8 +33,7 @@ export class EditConsultantDoctorComponent implements OnInit {
  
   ngOnInit(): void {
       this.ConsdrForm = this._AppointmentlistService.createConsultatDrForm();
-      this.getDepartmentList();
-      this.getDoctor2List();
+    
       if(this.data){
         this.RegId=this.data.regId
         this.VisitId=this.data.visitId
@@ -52,86 +50,9 @@ export class EditConsultantDoctorComponent implements OnInit {
       this.ConsdrForm.patchValue(m_data);
 
 
-      this.filteredOptionsDep = this.ConsdrForm.get('Departmentid').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterDep(value) : this.DepartmentList.slice()),
-    );
-
-      this.filteredOptionsDoc = this.ConsdrForm.get('DoctorID').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterDoc(value) : this.Doctor2List.slice()),
-    );
-
   }
 
 
-  getDepartmentList() {
-    var mode="Department"
-           this._AppointmentlistService.getMaster(mode,1).subscribe(data => {
-               this.DepartmentList = data;
-               console.log(data)
-              this.filteredOptionsDep = this.ConsdrForm.get('Departmentid').valueChanges.pipe(
-                   startWith(''),
-                   map(value => value ? this._filterDep(value) : this.DepartmentList.slice()),
-               );
-             
-           });
-   
-       }
-
-       
-
-  getDoctor2List() {
-    var mode="ConDoctor"
-    this._AppointmentlistService.getMaster(mode,1).subscribe(data => { this.Doctor2List = data; })
-}
-
-
-private _filterDoc(value: any): string[] {
-  if (value) {
-      const filterValue = value && value.text ? value.text.toLowerCase() : value.toLowerCase();
-      this.isDoctorSelected = false;
-      return this.Doctor2List.filter(option => option.text.toLowerCase().includes(filterValue));
-  }
-
-}
- 
-private _filterDep(value: any): string[] {
-  if (value) {
-      const filterValue = value && value.text ? value.text.toLowerCase() : value.toLowerCase();
-      return this.DepartmentList.filter(option => option.text.toLowerCase().includes(filterValue));
-  }
-
-}
-
-
-getOptionTextDoc(option) {
-
-  return option && option.text ? option.text : '';
-
-}
-getOptionTextDep(option) {
-
-  return option && option.text ? option.text : '';
-}
-
-OnChangeDoctorList1(departmentObj) {
-
-  this.isDepartmentSelected = true;
-  // this._AppointmentlistService.getDoctorMasterCombo(departmentObj).subscribe(
-  //     data => {
-  //         this.DoctorList = data;
-
-  //         this.optionsDoc = this.DoctorList.slice();
-  //         this.filteredOptionsDoc = this.VisitFormGroup.get('DoctorID').valueChanges.pipe(
-  //             startWith(''),
-  //             map(value => value ? this._filterDoc(value) : this.DoctorList.slice()),
-  //         );
-  //     })
-
-  
-
-}
 
   onSubmit() {
       // if (this.ConsdrForm.valid) {
@@ -139,8 +60,8 @@ OnChangeDoctorList1(departmentObj) {
         var m_data={
           "visitId":2,// this.VisitId,
           "regId":1,// this.RegId,
-          "consultantDocId":this.ConsdrForm.get("DoctorID").value.value || 0,
-           "departmentId": this.ConsdrForm.get("Departmentid").value.value || 0
+          "consultantDocId":this.deptdocId,
+           "departmentId": this.departmentId
         }
         console.log(m_data)
           this._AppointmentlistService.EditConDoctor(m_data).subscribe((response) => {
@@ -152,20 +73,7 @@ OnChangeDoctorList1(departmentObj) {
       // }
   }
 
-  
-public onEnterdept(event): void {
-  if (event.which === 13) {
-      // if (value == undefined) {
-      //     this.toastr.warning('Please Enter Valid Department.', 'Warning !', {
-      //         toastClass: 'tostr-tost custom-toast-warning',
-      //     });
-      //     return;
-      // } else {
-          // this.deptdoc.nativeElement.focus();
-      // }
-  }
-}
-  
+ 
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
       this.dateTimeObj = dateTimeObj;
@@ -179,5 +87,17 @@ public onEnterdept(event): void {
 
   onClose(){
     this.dialogRef.close();
+  }
+
+  departmentId:any=0;
+  deptdocId=0;
+  selectChangedepartment(obj: any){
+    console.log(obj);
+    this.departmentId=obj.value
+  }
+  
+  selectChangedeptdoc(obj: any){
+    console.log(obj);
+    this.deptdocId=obj.value
   }
 }

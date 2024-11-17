@@ -42,31 +42,13 @@ export class NewPhoneAppointmentComponent implements OnInit {
   sIsLoading: string = '';
   minDate: Date;
   vMobile: any;
-  isDepartmentSelected: boolean = false;
-  isDoctorSelected: boolean = false;
-
+  
   vDepartmentid: any = '';
   vDoctorId: any = '';
 
 
-  optionsDep: any[] = [];
-  optionsDoc: any[] = [];
-
-  filteredOptionsDep: Observable<string[]>;
-  filteredOptionsDoc: Observable<string[]>;
-
-
-  displayedColumns = [
-
-    'AppDate',
-    'Cnt',
-
-  ];
-  dataSource = new MatTableDataSource<PhoneschlistMaster>();
   isChecked = true;
 
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
   // New Api
   autocompleteMode1: string = "Department";
   autocompleteMode2: string = "ConDoctor";
@@ -82,17 +64,9 @@ export class NewPhoneAppointmentComponent implements OnInit {
   }
 
 
-  doctorNameCmbList: any = [];
-
-
   ngOnInit(): void {
 
-    this.getDepartmentList();
-    this.getDoctor2List();
     this.minDate = new Date();
-
-  
-    this.getPhoneschduleList();
 
     this.phoneappForm = this._phoneAppointListService.createphoneForm();
     var m_data = {
@@ -124,88 +98,6 @@ export class NewPhoneAppointmentComponent implements OnInit {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
 
-
-
-
-  getOptionTextDep(option) {
-
-    return option && option.text ? option.text : '';
-  }
-
-  getOptionTextDoc(option) {
-
-    return option && option.text ? option.text : '';
-
-  }
-
-
-  private _filterDoc(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.text ? value.text.toLowerCase() : value.toLowerCase();
-      this.isDoctorSelected = false;
-      return this.Doctor1List.filter(option => option.text.toLowerCase().includes(filterValue));
-    }
-  
-  }
-
-
-  OnChangeDoctorList(departmentObj) {
-
-    this.isDepartmentSelected = true;
-    this._phoneAppointListService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(
-      data => {
-        this.DoctorList = data;
-        this.filteredOptionsDoc = this.phoneappForm.get('DoctorId').valueChanges.pipe(
-          startWith(''),
-          map(value => value ? this._filterDoc(value) : this.DoctorList.slice()),
-        );
-      })
-  }
-
-
-
-  private _filterDep(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.text ? value.text.toLowerCase() : value.toLowerCase();
-      // this.isDepartmentSelected = false;
-      return this.optionsDep.filter(option => option.text.toLowerCase().includes(filterValue));
-    }
-
-  }
-
-
-
-  getDepartmentList() {
-    var mode="Department"
-    this._phoneAppointListService.getMaster(mode,1).subscribe(data => {
-      this.DepartmentList = data;
-      this.optionsDep = this.DepartmentList.slice();
-      this.filteredOptionsDep = this.phoneappForm.get('Departmentid').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterDep(value) : this.DepartmentList.slice()),
-      );
-      // this.filteredDepartment.next(this.DepartmentList.slice());
-    });
-  }
-
-
-  getDoctor2List() {
-    var mode="ConDoctor"
-    this._phoneAppointListService.getMaster(mode,1).subscribe(data => {
-      this.Doctor1List = data;
-     this.filteredOptionsDoc = this.phoneappForm.get('DoctorId').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterDoc(value) : this.Doctor1List.slice()),
-      );
-      
-    });
-  }
-
-
-
-
-
-
   OnSubmit() {
     debugger
   
@@ -221,8 +113,8 @@ export class NewPhoneAppointmentComponent implements OnInit {
       "mobileNo": this.phoneappForm.get('MobileNo').value.toString() || '',
       "phAppDate": this.datePipe.transform(this.phoneappForm.get('PhAppDate').value, "yyyy-MM-dd"),
       "phAppTime": this.dateTimeObj.time,// this.datePipe.transform(this.phoneappForm.get('phAppTime').value, "yyyy-MM-dd 00:00:00.000"),
-      "departmentId": this.phoneappForm.get('Departmentid').value.value || 0,
-      "doctorId": this.phoneappForm.get('DoctorId').value.value || 0,
+      "departmentId": this.vDepartmentid,
+      "doctorId": this.vDoctorId,
       "addedBy": 1,// this.accountService.currentUserValue.user.id,
       "updatedBy": 1,// this.accountService.currentUserValue.user.id,
 
@@ -241,18 +133,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
     this.dialogRef.close(val);
   }
 
-  getPhoneschduleList() {
-    this.sIsLoading = 'loading-data';
-    this._phoneAppointListService.getPhoenappschdulelist().subscribe(Visit => {
-      this.dataSource.data = Visit as PhoneschlistMaster[];
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
-      this.sIsLoading = '';
-    },
-      error => {
-        this.sIsLoading = '';
-      });
-  }
+
 
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
@@ -301,32 +182,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
       this.dept.nativeElement.focus();
     }
   }
-  public onEnterdept(event, value): void {
-
-    if (event.which === 13) {
-      if (value == undefined) {
-        this.toastr.warning('Please Enter Valid Department.', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-      } else {
-        this.docname.nativeElement.focus();
-      }
-    }
-  }
-  public onEnterdeptdoc(event, value): void {
-
-    if (event.which === 13) {
-      if (value == undefined) {
-        this.toastr.warning('Please Enter Valid Department Dosctor', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-      } else {
-        // this.button.nativeElement.focus();
-      }
-    }
-  }
+  
 
 Phappcancle(data){
   this._phoneAppointListService.phoneMasterCancle(data.phoneAppId).subscribe((response: any) => {
@@ -342,10 +198,12 @@ Phappcancle(data){
 
 selectChangedepartment(obj: any){
   console.log(obj);
+  this.vDepartmentid=obj.value
 }
 
 selectChangedoctor(obj: any){
   console.log(obj);
+  this.vDoctorId=obj.value
 }
 }
 
