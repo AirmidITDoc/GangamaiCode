@@ -12,6 +12,8 @@ import { IssueTrackerService } from '../issue-tracker.service';
 import { IssueTrackerList } from '../issue-tracker.component';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { ImageViewComponent } from 'app/main/opd/appointment/image-view/image-view.component';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-new-issue-tracker',
@@ -40,6 +42,14 @@ export class NewIssueTrackerComponent implements OnInit {
   vIssueRaised:any;
   vIssueAssigned:any;
   IsReviewStatus:any = 0;
+  vIssueRaisedDate: any;
+  IsReviwed:any;
+
+  displayedColumns1 = [
+    'DocumentName',
+    'DocumentPath', 
+];
+
 
   @ViewChild('attachments') attachment: any;
   imageForm = new FormGroup({
@@ -60,10 +70,40 @@ export class NewIssueTrackerComponent implements OnInit {
   ) { }
 
   ngOnInit(): void { 
+    this.vIssueRaisedDate = this.datePipe.transform(new Date(), 'MM/dd/YYYY');
+ 
     if (this.data) {
       this.registerObj = this.data.Obj;
-      this.setDropdownObjs();
-      console.log(this.registerObj)
+      this.vIssueRaisedDate = this.datePipe.transform(this.registerObj.IssueDate, 'MM/dd/YYYY'); 
+      console.log(this.registerObj) 
+      this._IssueTracker.userFormGroup.get('IssueName').disable();
+      this._IssueTracker.userFormGroup.get('IssueDescription').disable();
+      this.setDropdownObjs();   
+
+      if(this.registerObj.ReviewStatusId == 1){
+        this._IssueTracker.userFormGroup.get('CodeRelease').setValue('true');
+        this.isChecked = true;
+        this.IsRelease = 1;
+      }else{
+        this._IssueTracker.userFormGroup.get('CodeRelease').setValue('false');
+        this.IsRelease = 0;
+        this.isChecked = false;
+      }
+
+      
+      if(this.registerObj.ReleaseStatus == 1){
+        this._IssueTracker.userFormGroup.get('vIsReviweStatus').setValue('true');
+        this.IsReviewStatus = 1;
+        this.IsReviwed = true;
+      }else{
+        this._IssueTracker.userFormGroup.get('vIsReviweStatus').setValue('false');
+        this.IsReviewStatus = 0;
+        this.IsReviwed = false;
+      }
+
+    }else{
+      this._IssueTracker.userFormGroup.get('IssueName').enable();
+      this._IssueTracker.userFormGroup.get('IssueDescription').enable(); 
     }
 
     this.getHospitalList();
@@ -73,17 +113,17 @@ export class NewIssueTrackerComponent implements OnInit {
   }
 
   setDropdownObjs() {
-    const toSelectIssueStatus = this.ConstanyTypeList.find(c => c.Name == this.registerObj.IssueStatus);
-    this._IssueTracker.userFormGroup.get('IssueStatus').setValue(toSelectIssueStatus);
-    console.log(this.registerObj.IssueStatus);
+    // const toSelectIssueStatus = this.ConstanyTypeList.find(c => c.Name == this.registerObj.StatusName);
+    // this._IssueTracker.userFormGroup.get('IssueStatus').setValue(toSelectIssueStatus);
+    // console.log(this.registerObj.StatusName);
 
-    const toSelectIssueAssigned = this.IssueAssignedList.find(c => c.Name == this.registerObj.IssueAssigned);
-    this._IssueTracker.userFormGroup.get('IssueStatus').setValue(toSelectIssueAssigned);
-    console.log(this.registerObj.IssueAssigned);
+    // const toSelectIssueAssigned = this.IssueAssignedList.find(c => c.Name == this.registerObj.IssueAssigned);
+    // this._IssueTracker.userFormGroup.get('IssueStatus').setValue(toSelectIssueAssigned);
+    // console.log(this.registerObj.IssueAssigned);
 
-    const toSelectIssueRaised = this.IssueRaisedList.find(c => c.Name == this.registerObj.IssueRaised);
-    this._IssueTracker.userFormGroup.get('IssueStatus').setValue(toSelectIssueRaised);
-    console.log(this.registerObj.IssueRaised);
+    // const toSelectIssueRaised = this.IssueRaisedList.find(c => c.Name == this.registerObj.IssueRaised);
+    // this._IssueTracker.userFormGroup.get('IssueStatus').setValue(toSelectIssueRaised);
+    // console.log(this.registerObj.IssueRaised);
   }
 
   getDateTime(dateTimeObj) {
@@ -99,6 +139,12 @@ getHospitalList() {
       map(value => value ? this._filterCustomer(value) : this.CustomerList.slice()),
     ); 
     this._IssueTracker.userFormGroup.get('CustomerId').setValue(this.CustomerList[0]);
+
+    if (this.data) {
+      const toSelectCustomer = this.CustomerList.find(c => c.CustomerName == this.registerObj.CustomerName);
+      this._IssueTracker.userFormGroup.get('CustomerId').setValue(toSelectCustomer);
+      console.log(this.registerObj.StatusName);
+    }
   });
 } 
 getOptionTextCutomers(option) {
@@ -120,9 +166,9 @@ private _filterCustomer(value: any): string[] {
       this.ConstanyTypeList = data;
       console.log(this.ConstanyTypeList);
       if (this.data) {
-        const toSelectIssueStatus = this.ConstanyTypeList.find(c => c.Name == this.registerObj.IssueStatus);
+        const toSelectIssueStatus = this.ConstanyTypeList.find(c => c.Name == this.registerObj.StatusName);
         this._IssueTracker.userFormGroup.get('IssueStatus').setValue(toSelectIssueStatus);
-        console.log(this.registerObj.IssueStatus);
+        console.log(this.registerObj.StatusName);
       }
     });
   }
@@ -135,9 +181,9 @@ private _filterCustomer(value: any): string[] {
       this.IssueAssignedList = data;
       console.log(this.IssueAssignedList);
       if (this.data) {
-        const toSelectIssueAssigned = this.IssueAssignedList.find(c => c.Name == this.registerObj.IssueAssigned);
+        const toSelectIssueAssigned = this.IssueAssignedList.find(c => c.Name == this.registerObj.AssignedByName);
         this._IssueTracker.userFormGroup.get('IssueAssigned').setValue(toSelectIssueAssigned);
-        console.log(this.registerObj.IssueAssigned);
+        console.log(this.registerObj.AssignedByName);
       }
     });
   }
@@ -149,21 +195,29 @@ private _filterCustomer(value: any): string[] {
       this.IssueRaisedList = data;
       console.log(this.IssueRaisedList);
       if (this.data) {
-        const toSelectIssueRaised = this.IssueRaisedList.find(c => c.Name == this.registerObj.IssueRaised);
+        const toSelectIssueRaised = this.IssueRaisedList.find(c => c.Name == this.registerObj.RaisedByName);
         this._IssueTracker.userFormGroup.get('IssueRaised').setValue(toSelectIssueRaised);
-        console.log(this.registerObj.IssueRaised);
+        console.log(this.registerObj.RaisedByName);
       }
     });
   }
   IsRelease: any;
   onChangeIsactive(SiderOption) {
    // this.IsRelease = SiderOption.checked;
+   console.log(this._IssueTracker.userFormGroup.get('CodeRelease').value)
     if (SiderOption.checked == true) {
       this.IsRelease = 1;
     }else{
       this.IsRelease = 0;
-    }
-    
+    } 
+  }
+  chkRevieStatus(SiderOption){
+    console.log(this._IssueTracker.userFormGroup.get('vIsReviweStatus').value)
+    if(SiderOption.checked == true){
+      this.IsReviewStatus = 1;
+    }else{
+      this.IsReviewStatus = 0;
+    } 
   }
   onImageChange(event) {
     let Imgflag = "";
@@ -189,18 +243,55 @@ private _filterCustomer(value: any): string[] {
         imgFileSource: this.images
       });
       // }
+      console.log(this.images)
+      console.log(this.imgDataSource.data)
       this.attachment.nativeElement.value = '';
     }
   }
-  chkRevieStatus(event){
-    if(event.checked){
-      this.IsReviewStatus = 1;
-    }else{
-      this.IsReviewStatus = 0;
-    } 
-  }
-  
+  imgArr: string[] = [];
+  onImageFileChange(events: any) { 
+    if (events.target.files && events.target.files[0]) {
+        let filesAmount = events.target.files.length;
+        for (let i = 0; i < filesAmount; i++) {
+            this.imgArr.push(events.target.files[i].name);
+            this.readFile(events.target.files[i], events.target.files[i].name);
+        }
+        this.attachment.nativeElement.value = '';
+    }
+}
+readFile(f: File, name: string) {
+    var reader = new FileReader();
+    reader.onload = (event: any) => {
+        this.images.push({ url: event.target.result, name: name, Id: 0 });
+        this.imgDataSource.data = this.images;
+        this.imageForm.patchValue({
+            imgFileSource: this.images
+        });
+        console.log(this.imgDataSource.data);
+    }
+    reader.readAsDataURL(f);
+}
+onViewImage(ele: any, type: string) {
 
+  let fileType;
+  if (ele) {
+
+      const dialogRef = this._matDialog.open(ImageViewComponent,
+          {
+              width: '900px',
+              height: '900px',
+              data: {
+                  docData: type == 'img' ? ele : ele.doc,
+                  type: type == 'img' ? "image" : ele.type
+              }
+          }
+      );
+      dialogRef.afterClosed().subscribe(result => {
+
+      });
+  }
+}
+ImageURL:any;
   OnSave() {
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
@@ -261,6 +352,12 @@ private _filterCustomer(value: any): string[] {
         toastClass: 'tostr-tost custom-toast-warning',
       });
     } 
+    this.imgDataSource.data.forEach(element =>{
+      console.log(element)
+      console.log(element.url)
+      this.ImageURL = element.url
+      console.log(this.ImageURL)
+    })
 
     if (!this.registerObj.IssueId) { 
 
@@ -277,11 +374,11 @@ private _filterCustomer(value: any): string[] {
         insertIssueTrackerObj['statusId'] =   this._IssueTracker.userFormGroup.get('IssueStatus').value.ConstantId  || 0
         insertIssueTrackerObj['devComment'] = this._IssueTracker.userFormGroup.get('DevComment').value || ''; 
         insertIssueTrackerObj['comment'] =    this._IssueTracker.userFormGroup.get('Comment').value || '';
-        insertIssueTrackerObj['reviewStatusId'] =  this.IsReviewStatus || 0 ;  
+        insertIssueTrackerObj['reviewStatusId'] =  this._IssueTracker.userFormGroup.get('CodeRelease').value || 0 ;  
         insertIssueTrackerObj['releaseStatus'] =  this.IsRelease || 0;  
         insertIssueTrackerObj['resolvedDate'] =  formattedDate ; 
         insertIssueTrackerObj['resolvedTime'] = formattedTime ;
-        insertIssueTrackerObj['documentUpload'] =  this._IssueTracker.userFormGroup.get('imageFile').value || '';   
+        insertIssueTrackerObj['documentUpload'] =   this.ImageURL  || '';   
         insertIssueTrackerObj['createdBy'] = this._loggedService.currentUserValue.user.id || 0;  
         insertIssueTrackerObj['createdDate'] = formattedTime ;
         insertIssueTrackerObj['modifiedDate'] = formattedTime;
@@ -326,11 +423,16 @@ private _filterCustomer(value: any): string[] {
       UpdateIssueTrackerObj['comment'] =    this._IssueTracker.userFormGroup.get('Comment').value || '';
       UpdateIssueTrackerObj['reviewStatusId'] =  this.IsReviewStatus || 0 ;    
       UpdateIssueTrackerObj['releaseStatus'] =  this.IsRelease || 0;  
-      UpdateIssueTrackerObj['resolvedDate'] =  formattedDate ; 
-      UpdateIssueTrackerObj['resolvedTime'] = formattedTime ;
+      if(this._IssueTracker.userFormGroup.get('IssueStatus').value.Name == 'CLOSE'){
+        UpdateIssueTrackerObj['resolvedDate'] =  formattedDate ; 
+        UpdateIssueTrackerObj['resolvedTime'] = formattedTime ;
+      }else{
+        UpdateIssueTrackerObj['resolvedDate'] =  "01/01/1900"; 
+        UpdateIssueTrackerObj['resolvedTime'] = "01/01/1900";
+      } 
       UpdateIssueTrackerObj['documentUpload'] =  this._IssueTracker.userFormGroup.get('imageFile').value || '';   
       UpdateIssueTrackerObj['createdBy'] = this._loggedService.currentUserValue.user.id; 
-      UpdateIssueTrackerObj['createdDate'] = formattedTime ;
+      UpdateIssueTrackerObj['createdDate'] = formattedDate ;
       UpdateIssueTrackerObj['modifiedDate'] = formattedTime;
       UpdateIssueTrackerObj['modifiedBy'] = this._loggedService.currentUserValue.user.id || 0;  
 

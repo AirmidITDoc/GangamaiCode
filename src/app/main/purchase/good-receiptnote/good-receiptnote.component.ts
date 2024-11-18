@@ -656,9 +656,66 @@ export class GoodReceiptnoteComponent implements OnInit {
         // });
         // //this.getGRNList();
     }
+
+
+    EditSupplier:boolean=false;
+    ExpDateenableEditing(row:GRNList) {
+      row.EditSupplier = true;
+      row.SupplierName = ''; 
+    }
+    supplieredisableEditing(row:GRNList) {
+      row.EditSupplier = false;
+      this.getGRNList();
+    }
+    EditSupplierId:any;
+    DropDownValue(Obj){ 
+      console.log(Obj)
+      console.log(Obj.SupplierId)
+      this.EditSupplierId = Obj.SupplierId;
+ 
+    }
+    OnSaveEditSupplier(contact){
+      console.log(contact)
+    let Query 
+    Query = "update T_GRNHeader set SupplierId = " + this.EditSupplierId  + "where grnid =" + contact.GRNID ;
+    this._GRNService.UpdateSupplierName(Query).subscribe(response =>{
+      if (response) {
+        this.toastr.success('Record Updated Successfully.', 'Updated !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        });
+        this.getGRNList();
+      }
+      else {
+        this.toastr.error('Record Data not Updated !, Please check error..', 'Error !', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
+      }  
+    });
+    }
+    editfilteredOptionssupplier:any;
+    EditSupplierName(contact) {
+        console.log(contact)
+        var m_data = {
+            'SupplierName': `${this._GRNService.GRNSearchGroup.get('EditSupplierId').value}%`
+        }
+        //console.log(m_data)
+        this._GRNService.getSupplierSearchList(m_data).subscribe(data => {
+            this.editfilteredOptionssupplier = data;
+            //  console.log(this.filteredOptionssupplier)
+            if (this.filteredOptionssupplier.length == 0) {
+                this.noOptionFoundsupplier = true;
+            } else {
+                this.noOptionFoundsupplier = false;
+            }
+        });
+         console.log(this._GRNService.GRNSearchGroup.get('EditSupplierId').value)
+         contact.SupplierName = ''; 
+   
+    }  
 }
 
 export class GRNList {
+    EditSupplier:any;
     GrnNumber: number;
     GRNDate: number;
     GRNTime: any;

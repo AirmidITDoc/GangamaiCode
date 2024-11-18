@@ -59,24 +59,32 @@
                                     </mat-autocomplete>
                                   </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex>
+                                <!-- <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Issue Raised Date</mat-label>
                                     <input matInput [matDatepicker]="picker1" placeholder="Choose a date" #IssueRaisedDate
                                         formControlName="IssueRaisedDate" (keydown)="onEnterIssueRaisedDate($event)">
                                     <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                                     <mat-datepicker #picker1></mat-datepicker>
+                                </mat-form-field> -->
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Issue RaisedDate</mat-label>
+                                    <input name="IssueRaisedDate" formControlName="IssueRaisedDate" matInput required #IssueRaisedDate
+                                        [(ngModel)]="vIssueRaisedDate" (keydown)="onEnterIssueRaisedDate($event)" readonly>
                                 </mat-form-field>
                             </div>
 
                             <div class="img-container">
-                                <input formControlName="imageFile" type="file" #attachments accept="image/*" multiple
-                                    name="file" id="file" class="inputfile" (change)="onImageChange($event)"
-                                    style="margin-right: 10px;" />
+                                <input formControlName="imageFile" type="file" #attachments
+                                accept="image/*,application/pdf" multiple name="file" id="file"
+                                class="inputfile" (change)="onImageFileChange($event)"
+                                style="margin-right: 10px;" />
 
                                 <label class="file-lable1" for="file">
                                     <mat-icon style="margin-right: 15px; font-size: 30px;">cloud_upload</mat-icon>
                                     Browse
-                                </label>
+                                </label> 
+                                
                             </div>
                         </div>
 
@@ -86,14 +94,15 @@
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Issue Name</mat-label>
                                     <input name="IssueName" formControlName="IssueName" matInput required #IssueName
-                                        [(ngModel)]="registerObj.IssueName" (keydown)="onEnterIssueName($event)">
+                                    [(ngModel)]="registerObj.IssueName"  
+                                     (keydown)="onEnterIssueName($event)">
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Issue Description</mat-label>
                                     <textarea rows="4" name="IssueDescription" formControlName="IssueDescription"
-                                        matInput [(ngModel)]="registerObj.IssueDescription" #Issuedescrip
-                                        (keydown)="onEnterIssueDescrip($event)" required></textarea>
+                                      matInput   #Issuedescrip required
+                                     [(ngModel)]="registerObj.IssueDescription" (keydown)="onEnterIssueDescrip($event)"></textarea>
                                 </mat-form-field>
 
                                 <div fxLayout="row" fxLayoutGap="5px">
@@ -158,23 +167,21 @@
                                 </div>
                             </div>
 
-                            <div fxLayout="row" fxLayoutGap="10px" style="padding: 5px;">
-                               
+                            <div fxLayout="row" fxLayoutGap="10px" style="padding: 5px;"> 
                             
                                 <div class="slide-toggle mb-2">
                                     <mat-slide-toggle name="CodeRelease" (change)="onChangeIsactive($event)" formControlName="CodeRelease"
                                         [(ngModel)]="isChecked">
                                         IsCodeRelease
                                     </mat-slide-toggle>
-                                </div>
 
-                                <div>
-                                    <mat-checkbox fxFlex="15%"  [checked] formControlName="vIsReviweStatus"
-                                    (change)="chkRevieStatus($event)"  >Reviwe Status</mat-checkbox>
-                                </div>
+                                    <mat-slide-toggle name="vIsReviweStatus" (change)="chkRevieStatus($event)" formControlName="vIsReviweStatus"
+                                    [(ngModel)]="IsReviwed">
+                                    Reviwe Status
+                                </mat-slide-toggle>
+                                </div> 
                             </div>
-
-                        <!-- </mat-card> -->
+ 
                     </form> 
 
                     <div class="issuetracker-footer-buttons gap-8 " fxLayout="row" fxLayoutAlign="end">
@@ -182,6 +189,49 @@
                         <button class="btn btn-primary"  (click)="OnSave()"
                             [disabled]="_IssueTracker.userFormGroup.invalid">Save</button>
                     </div> 
+
+
+                    <!-- <mat-table #table matSort [dataSource]="imgDataSource" class="table2 auto-height-table h-400"
+                    [@animateStagger]="{value:'50'}">
+
+                    <ng-container matColumnDef="DocumentName">
+                        <mat-header-cell *matHeaderCellDef style="margin-right: 5px;">
+                            Document Name
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let contact">
+                            {{contact.name}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="DocumentPath">
+                        <mat-header-cell *matHeaderCellDef>
+                            Document Path
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let contact">
+                            <img [src]="contact.url" style="width: 80px;height: 40px;margin: 3px;"
+                                (click)="onViewImage(contact.url, 'img')"
+                                *ngIf="!contact.name.endsWith('.pdf');else content" />
+                            <ng-template #content>
+                                <button mat-icon-button (click)="viewPdf(contact)" color="warn">
+                                    <mat-icon>visibility</mat-icon>
+                                </button></ng-template>
+                        </mat-cell>
+                    </ng-container> 
+                  
+
+                    <ng-container matColumnDef="noData">
+                        <mat-footer-cell *matFooterCellDef colspan="6">
+                            <span>No Data Found</span>
+                        </mat-footer-cell>
+                    </ng-container>
+
+                    <mat-header-row class="accent" *matHeaderRowDef="displayedColumns1;">
+                    </mat-header-row>
+                    <mat-row *matRowDef="let contact; columns: displayedColumns1;"></mat-row>
+                    <mat-footer-row *matFooterRowDef="['noData']"
+                        [ngClass]="{'hide':!(imgDataSource!=null && imgDataSource.data.length==0)}">
+                    </mat-footer-row>
+                </mat-table> -->
                 </div>
             </div>
         </div>

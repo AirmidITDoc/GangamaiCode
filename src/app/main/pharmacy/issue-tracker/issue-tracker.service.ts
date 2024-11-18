@@ -36,24 +36,28 @@ export class IssueTrackerService {
       IssueAssigned: '',
       DevComment:'',
       Comment:'',
+      vIsReviweStatus:''
 
-      start: [(new Date()).toISOString()],
-      end: [(new Date()).toISOString()],
     });
   }
 
   createmyFrom() {
     return this._formBuilder.group({
+      start: [''],
+      end: [''],
+      CustomerId:'',
       IssueStatus: '',
       IssueAssigned: '',
-
+      IssueRaised:'',
+      CodeRelease:'',
+      vIsReviweStatus:''
     });
   }
-  public getIssuTrackerList(loader = true){ 
+  public getIssuTrackerList(vdata,loader = true){ 
     if (loader) {
       this._loaderService.show();
   }
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IssueTrackerInformation", {});
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IssueTrackerInformation",vdata);
   }
   public InsertIssueTracker(Param) {
     return this._httpClient.post("InventoryTransaction/IssueTrackerSave", Param)
@@ -62,11 +66,13 @@ export class IssueTrackerService {
     return this._httpClient.post("InventoryTransaction/IssueTrackerUpdate", Param)
   }
   public getConstantsList(Params) {
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Constants", Params);
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Constants ", Params);
   }
   //Hospital Combobox List
   public getCustomerNameList() {
     return this._httpClient.post("Generic/GetByProc?procName=rtrv_CustomerList", {});
   }
-
+  public UpdateStatusName(data) {
+    return this._httpClient.post("Generic/ExecByQueryStatement?query="+data, {});
+  }
 }

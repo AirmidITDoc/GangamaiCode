@@ -1134,6 +1134,15 @@
                                     </div>
                                     <div class="action-content-right modal-footer" fxLayout="row"
                                         fxLayoutAlign="end center">
+
+                                        
+                                        <mat-radio-group aria-label="Select an option" formControlName="BillType"
+                                        name="regRadio">
+                                        <mat-radio-button value="1">IP FinalBill
+                                        </mat-radio-button>
+                                        <mat-radio-button value="2">IP FinalBill With SR</mat-radio-button>
+                                        </mat-radio-group>
+
                                         <div class="button-row-group">
                                             <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
                                           

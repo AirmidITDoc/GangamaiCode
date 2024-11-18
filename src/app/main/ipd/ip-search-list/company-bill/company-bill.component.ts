@@ -339,7 +339,8 @@ export class CompanyBillComponent implements OnInit {
         AdminPer: [''],
         AdminAmt: [''],
         Admincheck:[''],
-        CompanyDiscAmt:['']
+        CompanyDiscAmt:[''],
+        BillType:['1']
       });
     }
   //Service Date
@@ -1592,8 +1593,12 @@ export class CompanyBillComponent implements OnInit {
         this._IpSearchListService.InsertIPDraftBilling(submitData).subscribe(response => {
           if (response) {
             Swal.fire('Draft Bill successfully!', 'Company Draft bill generated successfully !', 'success').then((result) => {
+ 
               if (result.isConfirmed) {
-                this.viewgetDraftBillReportPdf(response);
+                if(this.Ipbillform.get("BillType").value==1)
+                this.viewgetDraftFinalBillReportPdf(response);
+              else if(this.Ipbillform.get("BillType").value==2)
+                this.viewgetDraftFinalBillWithSRReportPdf(response);
               }
             });
           } else {
@@ -1608,9 +1613,26 @@ export class CompanyBillComponent implements OnInit {
       this._matDialog.closeAll();
     }
      //For testing 
-     viewgetDraftBillReportPdf(AdmissionID) {
-      this._IpSearchListService.getCompanyDraftBillReceipt(
-        AdmissionID
+     viewgetDraftFinalBillReportPdf(DRNo) {
+      this._IpSearchListService.getCompanyFInalBill(
+        DRNo
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "IP Draft Bill  Viewer"
+            }
+          });
+      });
+    }
+
+    viewgetDraftFinalBillWithSRReportPdf(DRNo) {
+      this._IpSearchListService.getCompanyFInalBillWithSR(
+        DRNo
       ).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,
           {

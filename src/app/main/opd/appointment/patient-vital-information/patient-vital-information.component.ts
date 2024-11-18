@@ -133,18 +133,18 @@ export class PatientVitalInformationComponent implements OnInit {
     //   });
     //   return;
     // }
-    if (this.vPulse == '' || this.vPulse == undefined || this.vPulse == null || this.vPulse == '') {
-      this.toastr.warning('Please select Pulse', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    if (this.vBP == '' || this.vBP == undefined || this.vBP == null || this.vBP == '') {
-      this.toastr.warning('Please select BP', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }   
+    // if (this.vPulse == '' || this.vPulse == undefined || this.vPulse == null || this.vPulse == '') {
+    //   this.toastr.warning('Please select Pulse', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
+    // if (this.vBP == '' || this.vBP == undefined || this.vBP == null || this.vBP == '') {
+    //   this.toastr.warning('Please select BP', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }   
     // if (this.vTemp == '' || this.vTemp == undefined || this.vTemp == null || this.vTemp == '') {
     //   this.toastr.warning('Please select Temp', 'Warning !', {
     //     toastClass: 'tostr-tost custom-toast-warning',

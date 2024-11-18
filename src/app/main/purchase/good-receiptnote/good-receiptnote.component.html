@@ -189,14 +189,59 @@
                                                     </mat-cell>
                                                 </ng-container>
 
+                                                <!-- <ng-container matColumnDef="SupplierName">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                        class="w-230">
+                                                        SupplierName</mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-230">
+                                                        <span>{{contact.SupplierName}}</span>
+                                                        <span><mat-icon matTooltip="Edit Supplier" (click)="EditSupplierName(row)">edit</mat-icon></span>
+                                                    </mat-cell>
+                                                </ng-container> -->
+
                                                 <ng-container matColumnDef="SupplierName">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
                                                         class="w-230">
                                                         SupplierName</mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-230">
                                                         <span>{{contact.SupplierName}}</span>
+                                                        <ng-container *ngIf="!contact.EditSupplier; else showInput">
+                                                            <button mat-icon-button (click)="ExpDateenableEditing(contact)" class="clear-button">
+                                                                <mat-icon>edit</mat-icon></button>
+                                                        </ng-container>
+                                                        <ng-template #showInput>
+                                                            <!-- <mat-select (selectionChange)="DropDownValue(contact,$event.value)" class="w-60">
+                                                                <mat-option *ngFor="let m of ConstanyTypeList" [(ngModel)]="contact.Name" [value]="m">
+                                                                    {{m.SupplierName}}
+                                                                </mat-option>
+                                                            </mat-select> -->
+                                                            <form [formGroup]="_GRNService.GRNSearchGroup">
+                                                            <mat-form-field appearance="legacy" class="w-150">
+                                                                <mat-label>Select Supplier</mat-label>
+                                                                <input matAutocompletePosition="below" type="text"
+                                                                    placeholder="Select Supplier" matInput formControlName="EditSupplierId"
+                                                                    [matAutocomplete]="autoSupllieredit" required
+                                                                    (input)="EditSupplierName(contact)"> 
+                                                                <mat-autocomplete #autoSupllieredit="matAutocomplete"
+                                                                    [displayWith]="getOptionTextSupplier" class="supplier-auto-complete"
+                                                                    (optionSelected)='DropDownValue($event.option.value)'>
+                                                                    <mat-option *ngFor="let option of editfilteredOptionssupplier"
+                                                                        [value]="option">
+                                                                        {{option.SupplierName}}
+                                                                    </mat-option>
+                                                                </mat-autocomplete>
+                                                            </mat-form-field>&nbsp;
+                                                            </form>
+
+                                                            <mat-icon matTooltip="Close" (click)="supplieredisableEditing(contact)">cancel</mat-icon>
+                                                        
+                                                            <buttom mati-icon-button (click)="OnSaveEditSupplier(contact)" matTooltip="Save">
+                                                                <mat-icon class="active-icon green-600 s-16">check</mat-icon>
+                                                            </buttom>
+                                                        
+                                                        </ng-template>
                                                     </mat-cell>
-                                                </ng-container>
+                                                </ng-container>  
 
                                                 <ng-container matColumnDef="TotalAmount">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
@@ -345,14 +390,14 @@
                                                     </mat-footer-cell>
                                                 </ng-container>
                                                 <!-- Min width is required for fit content in cell. -->
-                                                <mat-header-row class="accent min-width-1800"
+                                                <mat-header-row class="accent min-width-1900"
                                                     *matHeaderRowDef="displayedColumns; sticky: true">
                                                 </mat-header-row>
 
                                                 <mat-row *matRowDef="let contact; columns: displayedColumns;"
-                                                    class="contact min-width-1800"
-                                                    [@animate]="{value:'*',params:{y:'100%'}}"
-                                                    (click)="getGrnItemDetailList(contact)"></mat-row>
+                                                    class="contact min-width-1900"
+                                                    (click)="getGrnItemDetailList(contact)"  [@animate]="{value:'*',params:{y:'100%'}}"
+                                             ></mat-row>
                                                 <mat-footer-row *matFooterRowDef="['loading']"
                                                     [ngClass]="{'hide':!(sIsLoading == 'loading-data')}"></mat-footer-row>
                                                 <mat-footer-row *matFooterRowDef="['noData']"

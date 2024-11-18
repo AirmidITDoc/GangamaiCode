@@ -62,7 +62,7 @@ export class GoodReceiptnoteService {
       Verify: 0,
       start: [new Date().toISOString()],
       end: [new Date().toISOString()],
-
+      EditSupplierId:''
     });
   }
   getGRNForm() {
@@ -153,7 +153,10 @@ export class GoodReceiptnoteService {
   public getPurchaseItemList(Param) { //Rtrv_ItemList_by_Supplier_Name
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ItemList_by_Supplier_Name", Param);
   }
-  public getGRNList(Param) {
+  public getGRNList(Param,loader = true){ 
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_GRNList_by_Name", Param);
   }
 
@@ -231,5 +234,11 @@ export class GoodReceiptnoteService {
   }
   public checkGSTPer(data) {
     return this._httpClient.post("Generic/GetBySelectQuery?query="+data,  {});
+  }
+  public UpdateSupplierName(data,loader = true){ 
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.post("Generic/ExecByQueryStatement?query="+data, {});
   }
 }

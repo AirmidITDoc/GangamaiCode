@@ -37,49 +37,152 @@
     
     
     <div class="content">
+        <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" class="fuse-search-sidebar">
+            <div class="sidebar-content">
+                <!-- SIDEBAR HEADER -->
+                <div class="sidebar-header accent" fxLayout="row" fxLayoutAlign="start center">
+                    <span class="search-title">Search Facility</span>
+                    <!-- / USER -->
+                </div>
+                <div class="sidebar-body">
+                    <div class="sidebar-form">
+                        <form [formGroup]="_IssueTracker.MyFrom">
+                            <div fxLayout="column" fxLayoutAlign="start none"> 
 
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Enter a date range</mat-label>
+                                    <mat-date-range-input [rangePicker]="picker">
+                                        <input matStartDate formControlName="start" placeholder="Start date">
+                                        <input matEndDate formControlName="end" placeholder="End date" (dateChange)="getIssuTrackerList()">
+                                    </mat-date-range-input>
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-date-range-picker #picker></mat-date-range-picker>
+                                </mat-form-field>
+                        
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Customer Name</mat-label>
+                                    <input matAutocompletePosition="below" type="text" placeholder="Select Customer" matInput #CustomerId
+                                        formControlName="CustomerId" [matAutocomplete]="autoCutomers">
+                                    <span matSuffix style="display: flex;">
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="_IssueTracker.MyFrom.get('CustomerId').setValue(''); isCustomerSelected = false;">close</mat-icon>
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="_IssueTracker.MyFrom.get('CustomerId').setValue(''); isCustomerSelected = false;">search</mat-icon>
+                                    </span>
+                                    <mat-autocomplete #autoCutomers="matAutocomplete" [displayWith]="getOptionTextCutomers">
+                                        <mat-option *ngFor="let option of filteredOptionsCustomer | async" [value]="option">
+                                            {{option.CustomerName}}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+                        
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Issue Raised</mat-label>
+                                    <mat-select formControlName="IssueRaised" name="IssueRaised">
+                                        <mat-option></mat-option>
+                                        <mat-option *ngFor="let m of IssueRaisedList" [value]="m">
+                                            {{m.Name}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                        
+                                <mat-form-field appearance="outline" fxFlex="20%">
+                                    <mat-label>Issue Status</mat-label>
+                                    <mat-select formControlName="IssueStatus" name="IssueStatus">
+                                        <mat-option></mat-option>
+                                        <mat-option *ngFor="let m of ConstanyTypeList" [value]="m">
+                                            {{m.Name}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                        
+                                <mat-form-field appearance="outline" fxFlex="20%">
+                                    <mat-label>Issue Assigned</mat-label>
+                                    <mat-select formControlName="IssueAssigned" name="IssueAssigned">
+                                        <mat-option></mat-option>
+                                        <mat-option *ngFor="let m of ConstanyAssignedList" [value]="m">
+                                            {{m.Name}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field> 
+                                
+                                    <div class="slide-toggle mb-2">
+                                        <mat-slide-toggle name="CodeRelease" (change)="onChangeIsactive($event)" formControlName="CodeRelease" >
+                                            IsCodeRelease
+                                        </mat-slide-toggle>
+                                    </div>
+                                    <div class="slide-toggle mb-2">
+                                        <mat-slide-toggle name="vIsReviweStatus" (change)="chkRevieStatus($event)" formControlName="vIsReviweStatus">
+                                            Reviwe Status
+                                        </mat-slide-toggle>
+                                    </div> 
+
+                                    <div class="action-buttons mt-12">
+                                        <button mat-raised-button (click)="onClear()" class="clear-button"
+                                            matTooltip="close">
+                                            <mat-icon>close</mat-icon>
+                                        </button>
+                                        <button mat-raised-button class="search-button" (click)="getIssuTrackerList()"
+                                            matTooltip="search">
+                                            <mat-icon>search</mat-icon>
+                                        </button>
+                                    </div> 
+                            </div>
+                        
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </fuse-sidebar>
         <div class="center p-12 pb-56" fxFlexAlign="start center">
 
             <div class="content-card" style="border-radius:4px; ">
 
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
-                    <div fxFlex.gt-sm="100%" fxFlex>
-                        <!-- <div fxlayout="row">
-                            <form [formGroup]="_IssueTracker.MyFrom">
-                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
-                                <div fxFlex.gt-sm="100%" fxFlex style="margin-left: 8px;">
-
-                                    <mat-form-field appearance="outline" fxFlex="20%" style="margin-left: 8px;">
-                                        <mat-label>Issue Status</mat-label>
-                                        <mat-select formControlName="IssueStatus" name="IssueStatus" required>
-                                            <mat-option></mat-option>
-                                            <mat-option *ngFor="let m of ConstanyTypeList" [value]="m">
-                                                {{m.Name}}
-                                            </mat-option>
-                                        </mat-select>
-                                    </mat-form-field>&nbsp;&nbsp;
-
-                                    <mat-form-field appearance="outline" fxFlex="20%">
-                                        <mat-label>Issue Assigned</mat-label>
-                                        <mat-select formControlName="IssueAssigned" name="IssueAssigned" required>
-                                            <mat-option></mat-option>
-                                            <mat-option *ngFor="let m of ConstanyAssignedList" [value]="m">
-                                                {{m.Name}}
-                                            </mat-option>
-                                        </mat-select>
-                                    </mat-form-field>&nbsp;&nbsp;
-                                    <button mat-raised-button style="margin-top: 10px;" (click)="getIssuTrackerList()"><mat-icon>search</mat-icon> Search</button>
-                                </div>
-                            </div>
-                        </form>
-                        </div> -->
+                    <div fxFlex.gt-sm="100%" fxFlex> 
 
                         <div fxlayout="row">
                             <div style="width: 100%;"> 
-
-                                 <mat-table #table class="table1" matSort [dataSource]="dsIssueTracker"
-                                    [@animateStagger]="{value:'50'}" style="overflow:auto;">
-
+                                <div class="info-badge-top pb-2 border-bottom">
+                                    <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
+                                        <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                            <mat-icon class="pill red-600 s-16">circle</mat-icon>
+                                            <span>: Open</span>
+                                        </div>
+                                        <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                            <mat-icon class="pill blue-600 s-16">circle</mat-icon>
+                                            <span>: Work In Progress</span>
+                                        </div>
+                                        <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                            <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                                            <span>: Hold</span>
+                                        </div>
+                                        <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                            <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                                            <span>: Close</span>
+                                        </div>
+                        
+                                    </div>
+                                </div>
+                                <mat-table #table class="table1" matSort [dataSource]="dsIssueTracker" [@animateStagger]="{value:'50'}"
+                                    style="overflow:auto;">
+                        
+                                    <ng-container matColumnDef="Status" sticky>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-50">
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-50">
+                                            <mat-icon *ngIf="contact.StatusId == '2'" matTooltip="Status Close"
+                                                class="pill green-600 s-16">circle</mat-icon>
+                                            <mat-icon *ngIf="contact.StatusId == '1'" matTooltip="Status Open"
+                                                class="pill red-600 s-16">circle</mat-icon>
+                                            <mat-icon *ngIf="contact.StatusId == '4'" matTooltip="Status Hold"
+                                                class="pill orange-600 s-16">circle</mat-icon>
+                                            <mat-icon *ngIf="contact.StatusId == '3'" matTooltip="Status Working In Progress"
+                                                class="pill blue-600 s-16">circle</mat-icon>
+                                        </mat-cell>
+                                    </ng-container>
+                        
                                     <ng-container matColumnDef="IssueNo" sticky>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-90">
                                             Issue No
@@ -88,110 +191,158 @@
                                             {{contact.IssueNo || '-'}}
                                         </mat-cell>
                                     </ng-container>
-
+                        
                                     <ng-container matColumnDef="IssueRaisedDate" sticky>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-160">
-                                            IssueRaised Date</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-160">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
+                                            Raised Date</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
                                             {{contact.IssueDate | date: 'dd/MM/yyyy'}}- {{contact.IssueTime | date:'shortTime'}}
                                         </mat-cell>
                                     </ng-container>
-
-
+                        
+                                    <ng-container matColumnDef="CustomerName" sticky>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-180">
+                                            Customer Name</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
+                                            {{contact.CustomerName}}
+                                        </mat-cell>
+                                    </ng-container>
+                        
                                     <ng-container matColumnDef="IssueName" sticky>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-180">
                                             Issue Name</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180"
+                                        matTooltip="{{contact.IssueName}}">
                                             {{contact.IssueName}}
                                         </mat-cell>
-                                    </ng-container> 
-
-                                    <ng-container matColumnDef="IssueDescription"  >
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-250">
+                                    </ng-container>
+                        
+                                    <ng-container matColumnDef="IssueDescription">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-300">
                                             Issue Description </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250"
-                                        matTooltip="contact.IssueDescription">
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-300"
+                                         matTooltip="{{contact.IssueDescription}}"
+                                         matTooltipClass="example-tooltip-uppercase"
+                                         aria-label="Button that shows a red tooltip"
+                                        >
+                                         <mat-icon     (click)="onViewImage(contact.DocumentUpload, 'img')" >visibility</mat-icon>
                                             {{contact.IssueDescription || '-'}}
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="RaisedByName"  >
+                                    <!-- <ng-container matColumnDef="DocumentPath">
+                                        <mat-header-cell *matHeaderCellDef>
+                                            Document Path
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact">
+                                            <img [src]="contact.DocumentUpload" style="width: 80px;height: 40px;margin: 3px;"
+                                                (click)="onViewImage(contact.DocumentUpload, 'img')"
+                                              />
+                                      
+                                        </mat-cell>
+                                    </ng-container>  -->
+                        
+                                    <ng-container matColumnDef="RaisedByName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
                                             Raised ByName</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
                                             {{contact.RaisedByName || '-'}}
                                         </mat-cell>
                                     </ng-container>
-
-                                    <ng-container matColumnDef="AssignedByName"  >
+                        
+                                    <ng-container matColumnDef="AssignedByName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
                                             Assigned ByName</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
                                             {{contact.AssignedByName || '-'}}
                                         </mat-cell>
                                     </ng-container>
-
-                                    <ng-container matColumnDef="UploadImagePath">
+                        
+                                    <!-- <ng-container matColumnDef="UploadImagePath">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            Document</mat-header-cell>
+                                             </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             <mat-icon>visibility</mat-icon>
-                                            {{contact.DocumentUpload}} 
+                                            {{contact.DocumentUpload}}
                                         </mat-cell>
-                                    </ng-container> 
-
+                                    </ng-container> -->
+                        
                                     <ng-container matColumnDef="IssueStatus" sticky>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-160">
                                             Status Name </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-160">
                                             {{contact.StatusName || '-'}}
+                                            <ng-container *ngIf="!contact.StatusEditable; else showInput">
+                                                <button mat-icon-button (click)="StatusenableEditing(contact)" class="clear-button">
+                                                    <mat-icon>edit</mat-icon></button>
+                                            </ng-container>
+                                            <ng-template #showInput>
+                                                <mat-form-field appearance="legacy" class="w-100">
+                                                    <mat-label>Iselect Status</mat-label>
+                                                <mat-select (selectionChange)="DropDownValue(contact,$event.value)">
+                                                    <mat-option *ngFor="let m of ConstanyTypeList" [(ngModel)]="contact.Name" [value]="m">
+                                                        {{m.Name}}
+                                                    </mat-option>
+                                                </mat-select>
+                                              </mat-form-field>
+                                                <mat-icon matTooltip="Close" (click)="StatusdisableEditing(contact)">cancel</mat-icon>
+                                            
+                                                <buttom mati-icon-button (click)="OnSaveeditstatusName(contact)" matTooltip="Save">
+                                                    <mat-icon class="active-icon green-600 s-16">check</mat-icon>
+                                                </buttom>
+                                            
+                                            </ng-template>
                                         </mat-cell>
-                                    </ng-container>
-
+                                    </ng-container>  
+                        
                                     <ng-container matColumnDef="DevComment">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-140">
                                             DevComment </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-140"
-                                              >
+                                        matTooltip="{{contact.DevComment}}">
                                             {{contact.DevComment || '-'}}
                                         </mat-cell>
                                     </ng-container>
- 
- 
+                        
                                     <ng-container matColumnDef="Comment">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-140">
                                             Comment </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-140">
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-140"
+                                        matTooltip="{{contact.Comment}}">
                                             {{contact.Comment || '-'}}
                                         </mat-cell>
                                     </ng-container>
-
-                                    
+                        
                                     <ng-container matColumnDef="ReleaseStatus">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-90">
                                             ReleaseStatus </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-90">
-                                            {{contact.ReleaseStatus || '-'}}
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-90"> 
+                                            <button mat-icon-button>
+                                                <mat-icon matTooltip="Release Status Close" *ngIf="contact.ReleaseStatus==1"
+                                                    class="active-icon green-500 s-16">check_circle</mat-icon>
+                                                <mat-icon matTooltip="Release Status Pending" *ngIf="contact.ReleaseStatus==0"
+                                                    class="active-icon red-500 s-16">hourglass_empty</mat-icon>
+                                            </button>
                                         </mat-cell>
                                     </ng-container>
-
+                        
                                     <ng-container matColumnDef="ResolvedDate">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-110">
                                             Resolved Date</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.ResolvedDate | date: 'dd/MM/yyyy'}}
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-110">
+                                            {{contact.ResolvedDate || '-'}}
                                         </mat-cell>
                                         <!-- - {{contact.ResolvedTime | date:'shortTime'}} -->
                                     </ng-container>
-
+                        
                                     <ng-container matColumnDef="AddedBy">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-90">
                                             AddedBy </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-90">
                                             {{contact.CreatedBy || '-'}}
                                         </mat-cell>
                                     </ng-container>
-
+                        
                                     <ng-container matColumnDef="AddedDatetime">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
                                             AddedByDate </mat-header-cell>
@@ -199,15 +350,15 @@
                                             {{contact.CreatedDate | date: 'dd/MM/yyyy'}}
                                         </mat-cell>
                                     </ng-container>
-
+                        
                                     <ng-container matColumnDef="ModifiedBy">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-90">
                                             ModifiedBy </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-90">
                                             {{contact.ModifiedBy || '-'}}
                                         </mat-cell>
                                     </ng-container>
-
+                        
                                     <ng-container matColumnDef="ModifiedDate">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
                                             ModifiedDate </mat-header-cell>
@@ -215,48 +366,46 @@
                                             {{contact.ModifiedDate | date: 'dd/MM/yyyy'}}
                                         </mat-cell>
                                     </ng-container>
-
-                                    <ng-container matColumnDef="Action" StickyEnd>
-                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm
-                                            style="color: white;" class="w-100">Action
+                        
+                                    <ng-container matColumnDef="Action" stickyEnd>
+                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;" class="w-90">Action
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" class="w-100">
-                                            <button mat-icon-button (click)="onEdit(contact)" matTooltip="Edit"> 
+                                        <mat-cell *matCellDef="let contact" class="w-90">
+                                            <button mat-icon-button (click)="onEdit(contact)" matTooltip="Edit">
                                                 <mat-icon>edit</mat-icon>
                                             </button>
-                                            
+                        
                                         </mat-cell>
                                     </ng-container>
-
+                        
                                     <ng-container matColumnDef="loading">
                                         <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
                                         </mat-header-cell>
                                     </ng-container>
-
+                        
                                     <ng-container matColumnDef="noData">
                                         <mat-footer-cell *matFooterCellDef colspan="6">
                                             no data found...
                                         </mat-footer-cell>
                                     </ng-container>
-
-                                    <mat-header-row class="accent min-width-2050" *matHeaderRowDef="displayedColumns; sticky: true">
+                        
+                                    <mat-header-row class="accent min-width-2350" *matHeaderRowDef="displayedColumns; sticky: true">
                                     </mat-header-row>
-                                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact min-width-2050"
-                                        [@animate]="{value:'*',params:{y:'100%'}}"   appHighlight></mat-row>
-                                    <mat-footer-row *matFooterRowDef="['loading']"
-                                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact min-width-2350"
+                                        [@animate]="{value:'*',params:{y:'100%'}}" appHighlight
+                                        ></mat-row>
+                                    <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                                     </mat-footer-row>
                                     <mat-footer-row *matFooterRowDef="['noData']"
                                         [ngClass]="{'hide':!(dsIssueTracker!=null && dsIssueTracker.data.length==0)}">
                                     </mat-footer-row>
-
+                        
                                 </mat-table>
-
-                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16"
-                                    showFirstLastButtons>
-                                </mat-paginator> 
+                        
+                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16" showFirstLastButtons>
+                                </mat-paginator>
                             </div>
-                        </div> 
+                        </div>
                     </div>
                 </div> 
             </div>

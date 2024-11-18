@@ -1086,11 +1086,17 @@ public getIpDraftBillclasswise(AdmissionID,loader = true){
 
 
 
-public getCompanyDraftBillReceipt(AdmissionID,loader = true){
+public getCompanyFInalBill(DRNo,loader = true){
   if (loader) {
     this._loaderService.show();
 }
-  return this._httpClient.get("IPReport/view-IPCompanyBill?AdmissionID=" + AdmissionID);
+  return this._httpClient.get("InPatient/view-IP-IPCompanyFinalBill?AdmissionID=" + DRNo);
+}
+public getCompanyFInalBillWithSR(DRNo,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
+  return this._httpClient.get("InPatient/view-IPCompanyFinalBillWithSR?AdmissionID=" + DRNo);
 }
 
 
