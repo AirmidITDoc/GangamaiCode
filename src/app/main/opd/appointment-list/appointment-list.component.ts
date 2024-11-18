@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
@@ -10,12 +10,18 @@ import { AppointmentlistService } from './appointmentlist.service';
 import { EditRefranceDoctorComponent } from './edit-refrance-doctor/edit-refrance-doctor.component';
 import { EditConsultantDoctorComponent } from './edit-consultant-doctor/edit-consultant-doctor.component';
 import { CrossConsultationComponent } from './cross-consultation/cross-consultation.component';
+import { fuseAnimations } from '@fuse/animations';
+import { DischargeComponent } from 'app/main/ipd/ip-search-list/discharge/discharge.component';
+import { BedTransferComponent } from 'app/main/ipd/ip-search-list/bed-transfer/bed-transfer.component';
+import { NewOPBillingComponent } from '../OPBilling/new-opbilling/new-opbilling.component';
 
 
 @Component({
   selector: 'app-appointment-list',
   templateUrl: './appointment-list.component.html',
-  styleUrls: ['./appointment-list.component.scss']
+  styleUrls: ['./appointment-list.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations,
 })
 export class AppointmentListComponent implements OnInit {
 
@@ -29,10 +35,9 @@ export class AppointmentListComponent implements OnInit {
             { heading: "visitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA' ,width:150},
             { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' ,width:250 },
             { heading: "RegId", key: "regId", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-           
             { heading: "DateofBirth", key: "dateofBirth", sort: true, align: 'left', emptySign: 'NA' ,width:150},
             { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA' ,width:150},
-          //  { heading: "IsConsolidatedDr", key: "isConsolidatedDr", sort: true, align: 'left', emptySign: 'NA' },
+        //    { heading: "IsConsolidatedDr", key: "isConsolidatedDr", sort: true, align: 'left', emptySign: 'NA' },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
@@ -92,7 +97,7 @@ export class AppointmentListComponent implements OnInit {
             {
                 maxWidth: "95vw",
                 height: '95%',
-                width: '99%',
+                width: '90%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
@@ -144,6 +149,57 @@ export class AppointmentListComponent implements OnInit {
             {
                 maxWidth: "55vw",
                 height: '45%',
+                width: '80%',
+                // data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
+        });
+    }
+
+    EditBedtransfer(){
+        debugger
+        let that = this;
+        const dialogRef = this._matDialog.open(BedTransferComponent,
+            {
+                maxWidth: "65vw",
+                height: '45%',
+                width: '80%',
+                // data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
+        });
+    }
+
+    EditDischarge(){
+        debugger
+        let that = this;
+        const dialogRef = this._matDialog.open(DischargeComponent,
+            {
+                maxWidth: "75vw",
+                height: '45%',
+                width: '80%',
+                // data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
+        });
+    }
+
+    EditOpBill(){
+        debugger
+        let that = this;
+        const dialogRef = this._matDialog.open(NewOPBillingComponent,
+            {
+                maxWidth: "95vw",
+                height: '95%',
                 width: '80%',
                 // data: row
             });

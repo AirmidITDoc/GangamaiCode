@@ -7,11 +7,15 @@ import { MatSort } from '@angular/material/sort';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { DatePipe } from '@angular/common';
 import { NewPrescriptionreturnComponent } from './new-prescriptionreturn/new-prescriptionreturn.component';
-import { MatDialog } from '@angular/material/dialog';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import Swal from 'sweetalert2';
 import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
-
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-prescription-return',
   templateUrl: './prescription-return.component.html',
@@ -20,219 +24,86 @@ import { ExcelDownloadService } from 'app/main/shared/services/excel-download.se
   animations: fuseAnimations
 })
 export class PrescriptionReturnComponent implements OnInit {
-
+  confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   hasSelectedContacts: boolean;
-  SpinLoading:boolean=false;
-  displayedColumns: string[] = [
-    'action',
-    'Date',
-    'RegNo',
-    'PatientName',
-    'Vst_Adm_Date',
-    'StoreName',
-    'IPMedID'
-
-  ]
-
-  displayColumns: string[] =[
-    'ItemName',
-    'BatchNo',
-    'Qty'
-  ]
-
-
-  dsprescritionretList = new MatTableDataSource<PrescriptionretList>();
-  dsprescriptionretdetList=new MatTableDataSource<PrescriptionretdetList>();
 
   
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  sIsLoading: string = "";
-  constructor(public _PrescriptionReturnService:PrescriptionReturnService,
-    private _fuseSidebarService: FuseSidebarService,
-    private dialog:MatDialog,
-    private reportDownloadService: ExcelDownloadService,
-    public _matDialog:MatDialog,
-    public datePipe: DatePipe,
-    ) { }
+  gridConfig: gridModel = {
+      apiUrl: "Nursing/LabRequestList",
+      columnsList: [
+          { heading: "Code", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+          { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' ,width:250},
+          // { heading: "BillTime", key: "billTime", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+          // { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA',width:50 },
+          // { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+          // { heading: "VisitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+          // { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+          // { heading: "TotalAmt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA',width:50 },
+          // { heading: "Net Pay", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+          
+          {
+              heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                  {
+                      action: gridActions.edit, callback: (data: any) => {
+                          this.onSave(data);
+                      }
+                  }, {
+                      action: gridActions.delete, callback: (data: any) => {
+                          this.confirmDialogRef = this._matDialog.open(
+                              FuseConfirmDialogComponent,
+                              {
+                                  disableClose: false,
+                              }
+                          );
+                          this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+                          this.confirmDialogRef.afterClosed().subscribe((result) => {
+                              if (result) {
+                                  let that = this;
+                                  this._PrescriptionReturnService.deactivateTheStatus(data.RequestId).subscribe((response: any) => {
+                                      this.toastr.success(response.message);
+                                      that.grid.bindGridData();
+                                  });
+                              }
+                              this.confirmDialogRef = null;
+                          });
+                      }
+                  }]
+          } //Action 1-view, 2-Edit,3-delete
+      ],
+      sortField: "RequestId",
+      sortOrder: 0,
+      filters: [
+          { fieldName: "FromDate", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
+          { fieldName: "ToDate", fieldValue: "11/01/2024", opType: OperatorComparer.Equals },
+          { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+          { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+          { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+         // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+      ],
+      row: 25
+  }
 
+
+  constructor(public _PrescriptionReturnService: PrescriptionReturnService, public _matDialog: MatDialog,
+      public toastr : ToastrService,) {}
   ngOnInit(): void {
-    this.getPriscriptionretList();
   }
 
-    // toggle sidebar
-    toggleSidebar(name): void {
-      this._fuseSidebarService.getSidebar(name).toggleOpen();
-  }
-
-  PType:any;
-  onChangePrescriptionType(event) {
-    if (event.value == 'Pending') {
-      this.PType = 0;
-      this.getPriscriptionretList();
-    }
-    else{
-      this.PType = 1;
-      this.getPriscriptionretList();
-    }
-  }
-  keyPressCharater(event){
-    var inp = String.fromCharCode(event.keyCode);
-    if (/^\d*\.?\d*$/.test(inp)) {
-      return true;
-    } else {
-      event.preventDefault();
-      return false;
-    }
-  }
-
-  getPriscriptionretList(){
-    // debugger
-    var vdata={
-      FromDate:this.datePipe.transform(this._PrescriptionReturnService.mySearchForm.get('startdate').value,"yyyy-dd-MM 00:00:00.000") || '01/2/2023',
-      ToDate:this.datePipe.transform(this._PrescriptionReturnService.mySearchForm.get('enddate').value,"yyyy-dd-MM 00:00:00.000") || '01/2/2023',
-      Reg_No: this._PrescriptionReturnService.mySearchForm.get('RegNo').value || 0,
-      // Type :this.PType || 0
-    }
-    console.log(vdata)
-    this._PrescriptionReturnService.getPriscriptionretList(vdata).subscribe(data =>{
-      this.dsprescritionretList.data = data as PrescriptionretList[];
-      this.dsprescritionretList.sort = this.sort;
-      this.dsprescritionretList.paginator = this.paginator;
-     // console.log(this.dsprescritionretList.data);
-  })
-  }
-
-  getPreiscriptionretdetList(Param){
-    var vdata={
-      PresReId: Param
-    }
-    this._PrescriptionReturnService.getPreiscriptionretdetList(vdata).subscribe(data =>{
-      this.dsprescriptionretdetList.data = data as PrescriptionretdetList[];
-      this.dsprescriptionretdetList.sort = this.sort;
-      this.dsprescriptionretdetList.paginator = this.paginator;
-       //console.log(this.dsprescriptionretdetList.data);
-    })
-  }
-
-  onSelect(Parama){
-     console.log(Parama.PresReId);
-    this.getPreiscriptionretdetList(Parama.PresReId)
-  }
-
-  //window
-  OpenNewPrescriptionret(){
-    this.dialog.open(NewPrescriptionreturnComponent,{
-        height: '85vh',
-        width: '70vw'
-    })
-  }
-
-  exportReportPdf() {
-    let actualData = [];
-    this.dsprescritionretList.data.forEach(e => {
-      var tempObj = [];
-      tempObj.push(e.Date);
-      tempObj.push(e.RegNo);
-      tempObj.push(e.PatientName);
-      tempObj.push(e.Vst_Adm_Date);
-      tempObj.push(e.StoreName);
-      tempObj.push(e.IPMedID);
-     
-      actualData.push(tempObj);
-    });
-    let headers = [['Date', 'RegNo', 'PatientName', 'Vst_Adm_Date', 'StoreName', 'IPMedID']];
-    this.reportDownloadService.exportPdfDownload(headers, actualData, 'IP Prescription Return List');
-  }
-
-  exportIpprescriptionReturnReportExcel(){
-    this.sIsLoading == 'loading-data'
-    let exportHeaders = ['Date', 'RegNo', 'PatientName', 'Vst_Adm_Date', 'StoreName', 'IPMedID'];
-    this.reportDownloadService.getExportJsonData(this.dsprescritionretList.data, exportHeaders, 'Ip prescription  Return List Datewise');
-    this.dsprescritionretList.data = [];
-    this.sIsLoading = '';
-  }
-
-
-
-  viewgetIpprescriptionreturnReportPdf(row) {
-    // debugger
-    setTimeout(() => {
-      this.SpinLoading =true;
-    this._PrescriptionReturnService.getIpPrescriptionreturnview(
-      row.PresReId
-    ).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
+  onSave(row: any = null) {
+    let that = this;
+    const dialogRef = this._matDialog.open(NewPrescriptionreturnComponent,
         {
-          maxWidth: "95vw",
-          height: '850px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "IP Prescription Return Viewer"
-          }
+            maxWidth: "75vw",
+            height: '75%',
+            width: '70%',
+            data: row
         });
-        dialogRef.afterClosed().subscribe(result => {
-          this.SpinLoading = false;
-        });
-        dialogRef.afterClosed().subscribe(result => {
-          this.SpinLoading = false;
-        });
+    dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+            that.grid.bindGridData();
+        }
     });
-   
-    },100);
   }
 
-
-  PresItemlist:any =[];
-  deleteTableRow(element) {
-    if(!element.IsClosed){
-    // if (this.key == "Delete") {
-      let index = this.PresItemlist.indexOf(element);
-      if (index >= 0) {
-        this.PresItemlist.splice(index, 1);
-        this.dsprescritionretList.data = [];
-        this.dsprescritionretList.data = this.PresItemlist;
-      }
-      Swal.fire('Success !', ' Row Deleted Successfully', 'success');
-
-    }
-    else{
-      Swal.fire('Row can not Delete Billed Prescription!');
-
-    }
-  }
-
-}
-
-export class PrescriptionretList{
-  RegNo :any;
-  PatientName: string;
-  Date:any;
-  Vst_Adm_Date:any;
-  StoreName:any;
-  IPMedID:any;
-  IsClosed:any;
-
-  constructor(PrescriptionretList) {
-    this.RegNo=PrescriptionretList.RegNo || 0;
-    this.PatientName=PrescriptionretList.PatientName || '';
-    this.Date=PrescriptionretList.Date  || '01/01/1900';
-    this.Vst_Adm_Date=PrescriptionretList.Vst_Adm_Date || '01/01/1900';
-    this.StoreName = PrescriptionretList.StoreName || '';
-    this.IPMedID = PrescriptionretList.IPMedID || 0;
- this.IsClosed = PrescriptionretList.IsClosed || 0;
-  }
-}
-
-export class PrescriptionretdetList{
-  ItemName: any;
-  Qty: any;
-  BatchNo:any
-
-  constructor(PrescriptionretdetList){
-    this.ItemName=PrescriptionretdetList.ItemName || '';
-    this.Qty=PrescriptionretdetList.Qty || 0;
-    this.BatchNo=PrescriptionretdetList.BatchNo || 0;
-    }
 }

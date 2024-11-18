@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class PrescriptionReturnService {
   PrecReturnSearchGroup :FormGroup;
   constructor(
-    public _httpClient:HttpClient,
+    public _httpClient:HttpClient,   public _httpClient1:ApiCaller,
     private _FormBuilder:FormBuilder
   ) { this.mySearchForm=this.SearchFilterForm();
     this.PrecReturnSearchGroup= this.PrescriptionRetSearchFrom();
@@ -88,6 +89,11 @@ export class PrescriptionReturnService {
 public getIpPrescriptionreturnview(PresReId){
   return this._httpClient.get("InPatient/view-IP_PrescriptionReturn?PresReId=" + PresReId);
 }
+
+public deactivateTheStatus(m_data) {
+  return this._httpClient1.PostData("PhoneApp", m_data);
+}
+
 }
 
 

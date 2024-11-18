@@ -4,6 +4,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppointmentlistService } from '../appointmentlist.service';
 import { ToastrService } from 'ngx-toastr';
 import { DatePipe } from '@angular/common';
+import { map, startWith } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-edit-consultant-doctor',
@@ -13,6 +15,14 @@ import { DatePipe } from '@angular/common';
 export class EditConsultantDoctorComponent implements OnInit {
 
   ConsdrForm: FormGroup;
+
+  VisitId:any=0;
+  RegId:any=0;
+
+  autocompleteModedepartment: string = "Department";
+  autocompleteModedeptdoc: string = "ConDoctor";
+
+
   constructor(
       public _AppointmentlistService: AppointmentlistService,
       public dialogRef: MatDialogRef<EditConsultantDoctorComponent>,
@@ -23,6 +33,13 @@ export class EditConsultantDoctorComponent implements OnInit {
  
   ngOnInit(): void {
       this.ConsdrForm = this._AppointmentlistService.createConsultatDrForm();
+    
+      if(this.data){
+        this.RegId=this.data.regId
+        this.VisitId=this.data.visitId
+            }
+
+            
       var m_data = {
         doctorID: this.data?.doctorID,
         departmentid: this.data?.departmentid,
@@ -31,18 +48,22 @@ export class EditConsultantDoctorComponent implements OnInit {
          // isDeleted: JSON.stringify(this.data?.isActive),
       };
       this.ConsdrForm.patchValue(m_data);
+
+
   }
 
- 
+
+
   onSubmit() {
       // if (this.ConsdrForm.valid) {
         debugger
         var m_data={
-          "visitId": 0,
-          "regId": 0,
-          "consultantDocId":this.ConsdrForm.get("DoctorID").value || 0,
-           "departmentId": this.ConsdrForm.get("Departmentid").value || 0
+          "visitId":2,// this.VisitId,
+          "regId":1,// this.RegId,
+          "consultantDocId":this.deptdocId,
+           "departmentId": this.departmentId
         }
+        console.log(m_data)
           this._AppointmentlistService.EditConDoctor(m_data).subscribe((response) => {
               this.toastr.success(response.message);
               this.onClear(true);
@@ -52,7 +73,7 @@ export class EditConsultantDoctorComponent implements OnInit {
       // }
   }
 
-  
+ 
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
       this.dateTimeObj = dateTimeObj;
@@ -66,5 +87,17 @@ export class EditConsultantDoctorComponent implements OnInit {
 
   onClose(){
     this.dialogRef.close();
+  }
+
+  departmentId:any=0;
+  deptdocId=0;
+  selectChangedepartment(obj: any){
+    console.log(obj);
+    this.departmentId=obj.value
+  }
+  
+  selectChangedeptdoc(obj: any){
+    console.log(obj);
+    this.deptdocId=obj.value
   }
 }

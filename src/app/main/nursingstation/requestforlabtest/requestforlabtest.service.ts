@@ -1,6 +1,7 @@
 import { HttpBackend, HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { ApiCaller } from 'app/core/services/apiCaller';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -13,7 +14,7 @@ export class RequestforlabtestService {
   
 
   constructor(
-    public _httpClient:HttpClient,
+    public _httpClient:HttpClient,public _httpClient1:ApiCaller,
     private _FormBuilder:FormBuilder,
     private handler: HttpBackend
   ) { this.mySearchForm = this.SearchFilterForm();}
@@ -81,6 +82,11 @@ export class RequestforlabtestService {
   public getLabrequestview(RequestId){
     return this._httpClient.get("InPatient/view-IP-Labrequest?RequestId=" + RequestId);
   }
+
+  public deactivateTheStatus(m_data) {
+    return this._httpClient1.PostData("PhoneApp", m_data);
+  }
+  
 }
 
 

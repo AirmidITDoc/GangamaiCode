@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { LoaderService } from 'app/core/components/loader/loader.service';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
@@ -11,98 +12,99 @@ export class AppointmentlistService {
   personalFormGroup: FormGroup;
   VisitFormGroup: FormGroup;
 
-  constructor(public _httpClient1: ApiCaller,private _formBuilder: FormBuilder,) {  
-    this.personalFormGroup=this.createPesonalForm();
-    this.VisitFormGroup = this.createVisitdetailForm(); }
+  constructor(public _httpClient1: ApiCaller,private _formBuilder: FormBuilder,   private _loaderService: LoaderService,) {  
+    // this.personalFormGroup=this.createPesonalForm();
+    // this.VisitFormGroup = this.createVisitdetailForm(); 
+    }
 
   
   // new APi
   
 
-      createPesonalForm(): FormGroup {
-        return this._formBuilder.group({
-      regId: [""],
-      regDate: [""],
-      regTime: [""],
-      prefixId: [""],
-      firstName: ['', [
-        Validators.required,
-        Validators.maxLength(50),
-        // Validators.pattern("^[a-zA-Z._ -]*$"),
-        Validators.pattern('^[a-zA-Z () ]*$')
-      ]],
-      middleName: ['', [
-      ]],
-      lastName: ['', [
-        Validators.required,
-      ]],
-      genderId: [""],
-      address: [""],
-      city: [""],
-      pinNo: [""],
-      dateOfBirth: [''],
-      age: [""],
-      phoneNo: ['', [
-        Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
-        Validators.minLength(10),
-        Validators.maxLength(10)
-      ]],
-      mobileNo: ['', [Validators.required, Validators.pattern("^[0-9]*$"),
-      Validators.minLength(10),
-      Validators.maxLength(10),]],
-      ageYear: ['', [
-        Validators.required,
-        Validators.pattern("^[0-9]*$")]],
-      ageMonth: ['', Validators.pattern("[0-9]+")],
-      ageDay: ['', Validators.pattern("[0-9]+")],
+  //     createPesonalForm(): FormGroup {
+  //       return this._formBuilder.group({
+  //     regId: [""],
+  //     regDate: [""],
+  //     regTime: [""],
+  //     prefixId: [""],
+  //     firstName: ['', [
+  //       Validators.required,
+  //       Validators.maxLength(50),
+  //       // Validators.pattern("^[a-zA-Z._ -]*$"),
+  //       Validators.pattern('^[a-zA-Z () ]*$')
+  //     ]],
+  //     middleName: ['', [
+  //     ]],
+  //     lastName: ['', [
+  //       Validators.required,
+  //     ]],
+  //     genderId: [""],
+  //     address: [""],
+  //     city: [""],
+  //     pinNo: [""],
+  //     dateOfBirth: [(new Date()).toISOString()],
+  //     age: [""],
+  //     phoneNo: ['', [
+  //       Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
+  //       Validators.minLength(10),
+  //       Validators.maxLength(10)
+  //     ]],
+  //     mobileNo: ['', [Validators.required, Validators.pattern("^[0-9]*$"),
+  //     Validators.minLength(10),
+  //     Validators.maxLength(10),]],
+  //     ageYear: ['', [
+  //       Validators.required,
+  //       Validators.pattern("^[0-9]*$")]],
+  //     ageMonth: ['', Validators.pattern("[0-9]+")],
+  //     ageDay: ['', Validators.pattern("[0-9]+")],
 
-      countryId: [''],
-      stateId: [""],
-      cityId: [""],
-      maritalStatusId: [""],
-      religionId: [""],
-      isCharity: [""],
-      areaId: [""],
-      isSeniorCitizen: [""],
-      aadharCardNo: [""],
-      panCardNo: ["", [Validators.pattern("/^([A-Z]){5}([0-9]){4}([A-Z]){1}$/"),
-      Validators.minLength(10),
-      Validators.maxLength(10)]],
+  //     countryId: [''],
+  //     stateId: [""],
+  //     cityId: [""],
+  //     maritalStatusId: [""],
+  //     religionId: [""],
+  //     isCharity: [""],
+  //     areaId: [""],
+  //     isSeniorCitizen: [""],
+  //     aadharCardNo: [""],
+  //     panCardNo: ["", [Validators.pattern("/^([A-Z]){5}([0-9]){4}([A-Z]){1}$/"),
+  //     Validators.minLength(10),
+  //     Validators.maxLength(10)]],
 
-      photo: [""],
+  //     photo: [""],
 
 
-    });
+  //   });
 
-  }
+  // }
 
 
  
-      createVisitdetailForm(): FormGroup {
-        return this._formBuilder.group({
-      visitId: [""],
-      regId: [""],
-      VisitDate: [""],
-      VisitTime: [""],
-      unitId: [""],
-      patientTypeId: [""],
-      consultantDocId: [""],
-      refDocId: [""],
-      tariffId: [""],
-      companyId: [""],
-      isCancelled: [""],
-      isCancelledBy: [""],
-      isCancelledDate: [""],
-      classId: [""],
-      departmentId: [""],
-      patientOldNew: [""],
-      firstFollowupVisit: [""],
-      appPurposeId: [""],
-      followupDate: [""],
-      crossConsulFlag: [""],
-      phoneAppId: [""],
-    });
-  }
+  //     createVisitdetailForm(): FormGroup {
+  //       return this._formBuilder.group({
+  //     visitId: [""],
+  //     regId: [""],
+  //     VisitDate: [""],
+  //     VisitTime: [""],
+  //     unitId: [""],
+  //     patientTypeId: [""],
+  //     consultantDocId: [""],
+  //     refDocId: [""],
+  //     tariffId: [""],
+  //     companyId: [""],
+  //     isCancelled: [""],
+  //     isCancelledBy: [""],
+  //     isCancelledDate: [""],
+  //     classId: [""],
+  //     departmentId: [""],
+  //     patientOldNew: [""],
+  //     firstFollowupVisit: [""],
+  //     appPurposeId: [""],
+  //     followupDate: [""],
+  //     crossConsulFlag: [""],
+  //     phoneAppId: [""],
+  //   });
+  // }
 createSearchForm(): FormGroup {
   return this._formBuilder.group({
       patientNameSearch: [""],
@@ -113,22 +115,22 @@ createSearchForm(): FormGroup {
 
 createConsultatDrForm() {
   return this._formBuilder.group({
-    doctorID: '',
-    departmentid: ''
+    DoctorID: '',
+    Departmentid: ''
   });
 }
 
 createRefranceDrForm() {
   return this._formBuilder.group({
-    refDoctorId: ['', [
+    DoctorID: ['', [
       Validators.required]],
    
   });
 }
 
 initializeFormGroup() {
-  this.createPesonalForm();
-  this.createVisitdetailForm();
+  // this.createPesonalForm();
+  // this.createVisitdetailForm();
 }
 
   getCrossConValidationMessages() {
@@ -140,23 +142,38 @@ initializeFormGroup() {
         ]
     };
 }
+public documentuploadInsert(employee, loader = true){
+  if (loader) {
+      this._loaderService.show();
+  }
+  return this._httpClient1.PutData("InPatient/DocAttachment", employee);
+}
 
-public appointmentSave(Param: any, showLoader = true) {
+public NewappointmentSave(Param: any, showLoader = true) {
     if (Param.visitID) {
         return this._httpClient1.PutData("VisitDetail/Insert" + Param.visitID, Param, showLoader);
     } else return this._httpClient1.PostData("VisitDetail/Insert", Param, showLoader);
 }
 
-public EditConDoctor(Param: any, showLoader = true) {
+public RregisteredappointmentSave(Param: any, showLoader = true) {
   if (Param.visitID) {
-      return this._httpClient1.PutData("ConsRefDoctor/ConsultantDoctorUpdate" + Param.visitID, Param, showLoader);
-  } else return this._httpClient1.PostData("ConsRefDoctor/ConsultantDoctorUpdate", Param, showLoader);
+      return this._httpClient1.PutData("VisitDetail/Insert" + Param.visitID, Param, showLoader);
+  } else return this._httpClient1.PostData("VisitDetail/Insert", Param, showLoader);
+}
+
+public EditConDoctor(Param: any, showLoader = true) {
+  // if (Param.visitId) {
+  //     return this._httpClient1.PutData("ConsRefDoctor/ConsultantDoctorUpdate" + Param.visitId, Param, showLoader);
+  // } else
+   return this._httpClient1.PostData("ConsRefDoctor/ConsultantDoctorUpdate", Param, showLoader);
 }
 
 public EditRefDoctor(Param: any, showLoader = true) {
-  if (Param.visitID) {
-      return this._httpClient1.PutData("ConsRefDoctor/RefDoctorUpdate" + Param.visitID, Param, showLoader);
-  } else return this._httpClient1.PostData("ConsRefDoctor/RefDoctorUpdate", Param, showLoader);
+  // if (Param.visitId) {
+  //     return this._httpClient1.PutData("ConsRefDoctor/RefDoctorUpdate" + Param.visitId, Param, showLoader);
+  // } else 
+  
+  return this._httpClient1.PostData("ConsRefDoctor/RefDoctorUpdate", Param, showLoader);
 }
 
 public deactivateTheStatus(m_data) {
@@ -167,6 +184,10 @@ public crossconsultSave(Param: any, showLoader = true) {
   if (Param.visitID) {
       return this._httpClient1.PutData("CrossConsultation/CrossConsultationInsert" + Param.visitID, Param, showLoader);
   } else return this._httpClient1.PostData("CrossConsultation/CrossConsultationInsert", Param, showLoader);
+}
+
+public getMaster(mode,Id) {
+  return this._httpClient1.GetData("Dropdown/GetBindDropDown?mode="+mode+"&Id="+Id);
 }
 }
 

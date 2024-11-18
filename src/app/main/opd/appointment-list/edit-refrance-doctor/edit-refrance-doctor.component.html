@@ -105,63 +105,12 @@
                                 </div>
                                 <div class="form-body">
                                     <div fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
+                                        <airmid-autocomplete [mode]="autocompleteModerefdoc" (selectDdlObject)="selectChangerefdoc($event)"></airmid-autocomplete>
 
-                                        <!-- <mat-form-field appearance="outline" fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="40%">
-                                            <mat-label>Department</mat-label>
-                                            <input matAutocompletePosition="below" type="text"
-                                                placeholder="Select Department" matInput #dept
-                                                [(ngModel)]="vDepartmentid" (keydown)="onEnterdept($event)"
-                                                formControlName="Departmentid" [matAutocomplete]="autoDep1" required>
-                                            <span matSuffix style="display: flex;">
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="searchFormGroup.get('Departmentid').setValue(''); isDepartmentSelected = false;">close</mat-icon>
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="searchFormGroup.get('Departmentid').setValue(''); isDepartmentSelected = false;">search</mat-icon>
-                                            </span>
-
-                                            <mat-autocomplete #autoDep1="matAutocomplete"
-                                                [displayWith]="getOptionTextDep">
-                                                <mat-option *ngFor="let option of filteredOptionsDep | async"
-                                                    [value]="option" (onSelectionChange)="OnChangeDoctorList(option)">
-                                                    {{option.DepartmentName}}
-                                                </mat-option>
-                                            </mat-autocomplete>
-                                        </mat-form-field> -->
-
-
-
-                                        <!-- 
-                                        <mat-form-field appearance="outline" fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="40%">
-                                            <mat-label>Doctor Name</mat-label>
-                                            <input matAutocompletePosition="below" type="text"
-                                                placeholder="Select Doctor" matInput required formControlName="DoctorID"
-                                                [matAutocomplete]="autoDoctor" required>
-                                            <span matSuffix style="display: flex;">
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="searchFormGroup.get('DoctorID').setValue(''); isDoctorSelected = false;">close</mat-icon>
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="searchFormGroup.get('DoctorID').setValue(''); isDoctorSelected = false;">search</mat-icon>
-                                            </span>
-
-                                            <mat-autocomplete #autoDoctor="matAutocomplete"
-                                                [displayWith]="getOptionTextDoc">
-                                                <mat-option *ngFor="let option of filteredOptionsDoc | async"
-                                                    [value]="option">
-                                                    {{option.Doctorname }} <b>|</b> {{option.DepartmentName }} <b>|</b>
-                                                    {{option.DoctorId}}
-                                                </mat-option>
-                                            </mat-autocomplete>
-                                        </mat-form-field> -->
-
-
-
-                                        <airmid-textbox label="Ref Doctor name" formControlName="refDoctorId" [value]=""
-                                            [formGroup]="RefrancedrForm" [maxLength]="300">
-                                        </airmid-textbox>
                                     </div>
                                 </div>
                             </div>
-                            <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" style="margin-left:800px;">
+                            <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" style="margin-left:440px;">
 
                                 <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
                                 <button class="btn btn-primary " color="accent" (click)="onSubmit()">
