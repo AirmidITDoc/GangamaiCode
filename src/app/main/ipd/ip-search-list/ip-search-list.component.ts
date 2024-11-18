@@ -288,7 +288,15 @@ export class IPSearchListComponent implements OnInit {
           console.log('The dialog was closed - Insert Action', result);
         });
       } else {
-        Swal.fire("Bil Generatd !")
+        //Swal.fire("Bil Generatd !")
+        Swal.fire({
+          title: 'Selected Patient Bill Is Already Generated', 
+          icon: "warning",
+          showCancelButton: false,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Ok!" 
+      })
       }
     }
     else if (m == "Discharge Summary") {
