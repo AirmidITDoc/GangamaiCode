@@ -1837,7 +1837,7 @@ debugger
   }
 getSearchItemList() {   
       var m_data = {
-        "ItemName": '%',//`${this._OPReportsService.userForm.get('ItemId').value}%`,
+        "ItemName": `${this._OPReportsService.userForm.get('ItemId').value}%`,
       //  "StoreId": this._loggedUser.currentUserValue.user.storeId
       }
     

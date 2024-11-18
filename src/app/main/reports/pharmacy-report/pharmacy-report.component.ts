@@ -483,7 +483,7 @@ var data={
   getSearchItemList() {   
     debugger
     var m_data = {
-      "ItemName": '%'//`${this._OPReportsService.userForm.get('ItemId').value}%`,
+      "ItemName": `${this._PharmacyreportService.userForm.get('ItemId').value}%`,
     //  "StoreId": this._loggedUser.currentUserValue.user.storeId
     }
   this._PharmacyreportService.getItemlist(m_data).subscribe(data => {
@@ -976,6 +976,7 @@ debugger
     }, 100);
   }
   viewgetItemWiseDailySalesReportPdf(){
+    
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
       this.AdList = true;
@@ -993,7 +994,7 @@ debugger
        let StoreId=0;
        if (this._PharmacyreportService.userForm.get('StoreId').value)
          StoreId = this._PharmacyreportService.userForm.get('StoreId').value.StoreId
-      
+       debugger
        
       this._PharmacyreportService.getItemwisedailysales(
         this.datePipe.transform(this._PharmacyreportService.userForm.get('startdate').value, "yyyy-MM-dd") || '01/01/1900',

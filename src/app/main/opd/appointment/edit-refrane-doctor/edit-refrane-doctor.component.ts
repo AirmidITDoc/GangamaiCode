@@ -161,7 +161,30 @@ export class EditRefraneDoctorComponent implements OnInit {
     });
 
   }
+  onCancleRefDoc (){
+    this.RefDoctorId =0;
+   let query = '';
+   if (this.data.FormName == "Appointment") {
+      query = "Update VisitDetails set RefDocId= " + this.RefDoctorId + " where Visitid=" + this.VisitId + " ";
+   }
+ 
+    console.log(query);
+    this._OpAppointmentService.UpdateQueryByStatement(query).subscribe(response => {
+      if (response) {
+        Swal.fire('Congratulations !', 'Refrance Doctor Data  Successfully !', 'success').then((result) => {
+          if (result.isConfirmed) {
+            this._matDialog.closeAll();
 
+          }
+        });
+      } else {
+        Swal.fire('Error !', 'Refrance Doctor Data  not Updated', 'error');
+      }
+      // this.isLoading = '';
+
+    });
+
+  }
   
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;

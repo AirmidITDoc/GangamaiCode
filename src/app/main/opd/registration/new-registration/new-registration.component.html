@@ -142,8 +142,8 @@
 
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>AadharCard Number</mat-label>
-                                            <input name="AadharCardNo" formControlName="AadharCardNo" #AadharCardNo placeholder="Mobile Number" matInput required [(ngModel)]="registerObj.AadharCardNo" max="999999999999" min="100000000011"
-                                             autocomplete="off" maxlength="12" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);" required="required" value="987665868811" 
+                                            <input name="AadharCardNo" formControlName="AadharCardNo" #AadharCardNo placeholder="AadharCardNo" matInput  [(ngModel)]="registerObj.AadharCardNo" max="999999999999" min=""
+                                             autocomplete="off" maxlength="12" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);"  value="987665868811" 
                                              (keydown.enter)="onEnterAadharCardNo($event)" (blur)="onEnterAadharCardNo($event)">
                                             
                                         </mat-form-field>

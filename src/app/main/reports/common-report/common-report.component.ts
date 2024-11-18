@@ -868,7 +868,7 @@ if(ServiceId != 0){
             width: '100%',
             data: {
               base64: res["base64"] as string,
-              title: "Service Wise Report Withh Bill Viewer"
+              title: "Service Wise Report With Bill Viewer"
             }
           });
 

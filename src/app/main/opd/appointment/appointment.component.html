@@ -685,6 +685,8 @@
                                                             First Name is required Enter only
                                                             Alphabets</mat-error>
                                                     </mat-form-field>
+
+                                                    
                                                 </div>
 
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -848,10 +850,10 @@
                                                             #AadharCardNo (keydown)="onEnterAadharCardNo($event)"
                                                             type="number"
                                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);">
-                                                        <mat-error class="error"
+                                                        <!-- <mat-error class="error"
                                                             *ngIf="personalFormGroup.get('AadharCardNo').invalid && personalFormGroup.get('AadharCardNo').touched">Aadhar
                                                             number is required
-                                                        </mat-error>
+                                                        </mat-error> -->
                                                     </mat-form-field>
                                                 </div>
 

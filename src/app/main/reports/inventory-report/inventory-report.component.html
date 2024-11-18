@@ -238,7 +238,7 @@
                                     </div>
                                     <div *ngIf="FlagItemSelected" style="margin-left:2%;">
 
-
+<!-- 
 
                                         <mat-form-field appearance="outline" fxFlex="40%">
                                             <mat-label>Item Name</mat-label>
@@ -258,6 +258,25 @@
                                                     {{option.ItemName}}
                                                 </mat-option>
                                             </mat-autocomplete>
+                                        </mat-form-field> -->
+
+                                        <mat-form-field appearance="outline" fxFlex="40%;">
+                                            <input type="text" name="ItemId" formControlName="ItemId"
+                                                placeholder="ItemName" matInput [matAutocomplete]="auto"
+                                                (input)="getSearchItemList()" maxlength="10">
+                                            <span matSuffix style="display: flex;">
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_OPReportsService.userForm.get('ItemId').setValue(''); isItemIdSelected = false;">close</mat-icon>
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_OPReportsService.userForm.get('ItemId').setValue(''); isItemIdSelected = false;">search</mat-icon>
+                                            </span>
+                                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionItemText">
+                                                <mat-option *ngFor="let option of filteredOptionsItem"
+                                                    [value]="option">
+                                                    {{option.ItemName}}
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                          
                                         </mat-form-field>
 
                                     </div>

@@ -151,12 +151,16 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" style="margin-left:800px;">
+                            <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" style="margin-left:600px;">
                                 <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
                                 <button class="btn btn-primary " color="accent" (click)="onSubmit()"
                                     [disabled]="searchFormGroup.invalid">
                                     <span>Save</span>
                                 </button>
+                                <button class="btn btn-primary " color="accent" (click)="onCancleRefDoc()"
+                                [disabled]="searchFormGroup.invalid">
+                                <span>Cancle</span>
+                            </button>
                             </div>
                         </mat-card>
                     </div>

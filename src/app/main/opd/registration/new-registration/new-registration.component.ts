@@ -546,7 +546,8 @@ debugger
     this._registerService.getDoctorMaster2Combo().subscribe(data => { this.Doctor2List = data; })
   }
   onSubmit() {
-    
+    debugger
+    if (this.registerObj.Age != 0  || this.registerObj.AgeMonth != 0 || this.registerObj.AgeDay != 0) {
     this.isLoading = 'submit';
     if (!this.registerObj.RegId && this.RegID ==0) {
       var m_data = {
@@ -579,7 +580,7 @@ debugger
           "ReligionId": this.personalFormGroup.get('ReligionId').value ? this.personalFormGroup.get('ReligionId').value.ReligionId : 0,
           "AreaId": this.personalFormGroup.get('AreaId').value ? this.personalFormGroup.get('AreaId').value.AreaId : 0,
           "isSeniorCitizen": 0,
-          "Aadharcardno": this.personalFormGroup.get('AadharCardNo').value ? this.personalFormGroup.get('AadharCardNo').value : 0,
+          "Aadharcardno": this.personalFormGroup.get('AadharCardNo').value ? this.personalFormGroup.get('AadharCardNo').value : '',
           "pancardno": this.personalFormGroup.get('PanCardNo').value ? this.personalFormGroup.get('PanCardNo').value : 0,
           "Photo": ''//
         }
@@ -606,7 +607,7 @@ debugger
     //   }
     //   if(this.Submitflag)
     //     this.registerObj.RegId= this.RegId;
-debugger
+
       var m_data1 = {
         "opdRegistrationUpdate": {
           "RegID": this.registerObj.RegID,
@@ -634,7 +635,7 @@ debugger
           "ReligionId": this.personalFormGroup.get('ReligionId').value ? this.personalFormGroup.get('ReligionId').value.ReligionId : 0,
           "AreaId": this.personalFormGroup.get('AreaId').value ? this.personalFormGroup.get('AreaId').value.AreaId : 0,
           // "isSeniorCitizen":0,
-          "aadharcardno": this.personalFormGroup.get('AadharCardNo').value ? this.personalFormGroup.get('AadharCardNo').value : 0,
+          "aadharcardno": this.personalFormGroup.get('AadharCardNo').value ? this.personalFormGroup.get('AadharCardNo').value : '',
           "pancardno": this.personalFormGroup.get('PanCardNo').value ? this.personalFormGroup.get('PanCardNo').value : 0,
           "Photo": ''// this.file.name || '',
         }
@@ -659,7 +660,9 @@ debugger
 
       });
 
-      
+    }else{
+      Swal.fire("Enter Age Properly..")
+    }
     }
   // }
   getOptionTextPrefix(option) {
