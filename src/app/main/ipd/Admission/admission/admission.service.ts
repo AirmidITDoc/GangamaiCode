@@ -183,6 +183,9 @@ export class AdmissionService {
 
 
 
+
+
+
   public AdmissionNewInsert(employee) {
     return this._httpClient.post("InPatient/AdmissionNewInsert", employee);
   }
@@ -492,7 +495,10 @@ export class AdmissionService {
   public deactivateTheStatus(m_data) {
     return this._httpClient1.PostData("VisitDetail", m_data);
 }
-
+//new admission api 
+public getMaster(mode,Id) {
+  return this._httpClient1.GetData("Dropdown/GetBindDropDown?mode="+mode+"&Id="+Id);
+}
 }
 
 

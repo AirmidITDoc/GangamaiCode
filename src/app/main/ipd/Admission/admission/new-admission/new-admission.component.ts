@@ -1,6 +1,6 @@
 import { Component, ElementRef, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { Admission, AdmissionPersonlModel, Bed } from '../admission.component';
-import { ReplaySubject, Subject, Subscription } from 'rxjs';
+import { Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
 import { AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.component';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
@@ -9,9 +9,12 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { AdmissionService } from '../admission.service';
-import { takeUntil } from 'rxjs/operators';
+import { map, startWith, takeUntil } from 'rxjs/operators';
 import { IPDSearcPatienthComponent } from 'app/main/ipd/ipdsearc-patienth/ipdsearc-patienth.component';
 import Swal from 'sweetalert2';
+import { MatSelect } from '@angular/material/select';
+import { ToastrService } from 'ngx-toastr';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-new-admission',
@@ -24,16 +27,69 @@ export class NewAdmissionComponent implements OnInit {
   savedValue: number = null;
   isLoadings = false;
   isOpen = false;
-  loadID = 0;
-
+  loadID = 0; 
   reportPrintObj: Admission;
   subscriptionArr: Subscription[] = [];
-  printTemplate: any;
-
+  printTemplate: any; 
   selectedAdvanceObj: AdvanceDetailObj;
   sIsLoading: string = '';
   submitted = false;
-  msg: any = [];
+  msg: any = []; 
+
+  selectedState = "";
+  selectedStateID: any;
+  selectedCountry: any;
+  selectedCountryID: any;
+  selectedHName: any;
+  seelctedHospID: any; 
+  selectedGender = "";
+  selectedGenderID: any;
+  capturedImage: any;
+  isLinear = true; 
+ 
+  newRegSelected: any = 'registration';
+
+  options = []; 
+  noOptionFound: boolean = false;
+  registerObj = new AdmissionPersonlModel({});
+  bedObj = new Bed({});
+  selectedPrefixId: any;
+ 
+  public now: Date = new Date();
+  isLoading: string = '';
+  screenFromString = 'admission-form';
+
+  @Input() panelWidth: string | number;
+  @ViewChild('admissionFormStepper') admissionFormStepper: MatStepper;
+  @ViewChild('multiUserSearch') multiUserSearchInput: ElementRef;
+
+ 
+
+ 
+
+  constructor(public _AdmissionService: AdmissionService,
+    private accountService: AuthenticationService,
+    public _matDialog: MatDialog,
+    public dialogRef: MatDialogRef<NewAdmissionComponent>,
+    public datePipe: DatePipe,
+    private formBuilder: FormBuilder,
+    private router: Router,
+    public toastr: ToastrService,
+    @Inject(MAT_DIALOG_DATA) public data: any 
+  ) {
+    dialogRef.disableClose = true;
+  }
+
+
+  personalFormGroup: FormGroup;
+  hospitalFormGroup: FormGroup;
+  wardFormGroup: FormGroup;
+  otherFormGroup: FormGroup;
+  searchFormGroup: FormGroup;
+  registration: any;
+  matDialogRef: any;  
+
+
   HospitalList: any = [];
   PatientTypeList: any = [];
   TariffList: any = [];
@@ -49,558 +105,190 @@ export class NewAdmissionComponent implements OnInit {
   DoctorList: any = [];
   Doctor1List: any = [];
   Doctor2List: any = [];
+  RefDoctorList: any = [];
   WardList: any = [];
   BedList: any = [];
   BedClassList: any = [];
-
-  ConfigCityId = 2;
+  doctorNameCmbList: any = [];
   ConfigcityList: any = [];
   _cityList: any = [];
   cityList: any = [];
   stateList: any = [];
   countryList: any = [];
+  searchDoctorList: any = []; 
+ 
 
-  selectedState = "";
-  selectedStateID: any;
-  selectedCountry: any;
-  selectedCountryID: any;
-  selectedHName: any;
-  seelctedHospID: any;
-
-  selectedGender = "";
-  selectedGenderID: any;
-  capturedImage: any;
-  isLinear = true;
-  personalFormGroup: FormGroup;
-  hospitalFormGroup: FormGroup;
-  wardFormGroup: FormGroup;
-  otherFormGroup: FormGroup;
-  searchFormGroup: FormGroup;
-  registration: any;
-  isRegSearchDisabled: boolean = true;
-  newRegSelected: any = 'registration';
-
-  options = [];
+  filteredOptionsCity: Observable<string[]>;
+  filteredOptionsPrefix: Observable<string[]>;
+  filteredOptionsReligion: Observable<string[]>;
+  filteredOptionsMarital: Observable<string[]>;
+  filteredOptionsArea: Observable<string[]>; 
+  filteredOptionsCompany: Observable<string[]>;
+  filteredOptionsSubCompany: Observable<string[]>;
+  filteredOptionssearchDoctor: Observable<string[]>;
+  filteredOptionsRegSearch: Observable<string[]>;
+  filteredOptionsPatientType:any;
+  filteredOptionsTarrif: Observable<string[]>;
+  filteredOptionsRefrenceDoc: Observable<string[]>;
+  filteredOptionsDep: Observable<string[]>;
+  filteredOptionsDoc: Observable<string[]>;
+  filteredOptionsDoc1: Observable<string[]>;
+  filteredOptionsRefDoc: Observable<string[]>;
+  filteredOptionsWard: Observable<string[]>;
+  filteredOptionsBed: Observable<string[]>;
+  filteredOptionsDoc2: Observable<string[]>;
+  filteredOptionsRelation: Observable<string[]>;
   filteredOptions: any;
-  noOptionFound: boolean = false;
-  registerObj = new AdmissionPersonlModel({});
-  bedObj = new Bed({});
-  selectedPrefixId: any;
-
-  isCompanySelected: boolean = false;
-  public now: Date = new Date();
-  isLoading: string = '';
-  screenFromString = 'admission-form';
-
-  @Input() panelWidth: string | number;
-  @ViewChild('admissionFormStepper') admissionFormStepper: MatStepper;
-  @ViewChild('multiUserSearch') multiUserSearchInput: ElementRef;
-
-
-  public bankFilterCtrl: FormControl = new FormControl();
-  public filteredPrefix: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-  public cityFilterCtrl: FormControl = new FormControl();
-  public filteredCity: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-  public departmentFilterCtrl: FormControl = new FormControl();
-  public filteredDepartment: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-  //religion filter
-  public religionFilterCtrl: FormControl = new FormControl();
-  public filteredReligion: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-  //maritalstatus filter
-  public maritalstatusFilterCtrl: FormControl = new FormControl();
-  public filteredMaritalstatus: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-  //area filter
-  public areaFilterCtrl: FormControl = new FormControl();
-  public filteredArea: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-  //ward filter
-  public wardFilterCtrl: FormControl = new FormControl();
-  public filteredWard: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-  //company filter
-  public companyFilterCtrl: FormControl = new FormControl();
-  public filteredCompany: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-
-  //hospital filter
-  public hospitalFilterCtrl: FormControl = new FormControl();
-  public filteredHospital: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-  //hospital filter
-  public bedFilterCtrl: FormControl = new FormControl();
-  public filteredBed: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-  //doctorone filter
-  public doctoroneFilterCtrl: FormControl = new FormControl();
-  public filteredDoctorone: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-
-  //doctorone filter
-  public doctorFilterCtrl: FormControl = new FormControl();
-  public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-
-  //doctorone filter
-  public doctortwoFilterCtrl: FormControl = new FormControl();
-  public filteredDoctortwo: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-
-  private _onDestroy = new Subject<void>();
-
-  constructor(public _AdmissionService: AdmissionService,
-    private accountService: AuthenticationService,
-    public _matDialog: MatDialog,
-    public dialogRef: MatDialogRef<NewAdmissionComponent>,
-    public datePipe: DatePipe,
-    private formBuilder: FormBuilder,
-    private router: Router,
-    @Inject(MAT_DIALOG_DATA) public data: any
-    //public _regIns: RegInsert
-  ) {
-    dialogRef.disableClose = true;
-  }
-
-  ngOnInit(): void {
-    
   
-    this.isAlive = true;
-    // this.personalFormGroup = this.createPesonalForm();
-    // this.hospitalFormGroup = this.createHospitalForm();
-    // this.wardFormGroup = this.wardForm();
-    // this.otherFormGroup = this.otherForm();
+  
+  vPrefixID: any = 0;
+  vMaritalStatusId: any = 0;
+  vReligionId: any = 0;
+  vAreaId: any = 0;
+  vCityId: any = 0; 
+  vPatientTypeID: any = 0;
+  vTariffId: any = 0;
+  vDoctorId: any = 0;
+  vDoctorID: any = 0;
+  vDepartmentid: any = 0;
+  vCompanyId: any = 0;
+  vSubCompanyId: any = 0;
+  vadmittedDoctor1: any = 0;
+  vadmittedDoctor2: any = 0;
+  vrefDoctorId: any = 0;
+  vRoomId: any = 0;
+  vBedId: any = 0;
+  vClassId: any = 0;
+  vRelationshipId: any = 0; 
+  patienttype:any = 1;
+  saveflag: boolean = false;
+  currentDate = new Date();
+  
+  isRegIdSelected: boolean = false;
+  isWardSelected: boolean = false;
+  isPrefixSelected: boolean = false;
+  isCitySelected: boolean = false;
+  isCompanySelected: boolean = false;
+  isSubCompanySelected: boolean = false;
+  isDepartmentSelected: boolean = false;
+  isAdmittedDoctor1Selected: boolean = false;
+  isAdmittedDoctor2Selected: boolean = false;
+  isRefDoctorSelected: boolean = false;
+  isDoctorSelected: boolean = false;
+  isAreaSelected: boolean = false;
+  isReligionSelected: boolean = false;
+  isMaritalSelected: boolean = false;
+  isRelationshipSelected: boolean = false;
+  isSearchdoctorSelected: boolean = false;
+  isRegSearchDisabled: boolean = true;
+  ispatienttypeSelected: boolean = false;
+  isTariffIdSelected: boolean = false;
+  Regflag: boolean = false;
+  showtable: boolean = false;
+  Regdisplay: boolean = false;
+  
 
-    this.personalFormGroup = this.createPesonalForm();
-    // this.personalFormGroup.markAllAsTouched();
 
-    this.hospitalFormGroup = this.createHospitalForm();
-    // this.hospitalFormGroup.markAllAsTouched();
-    
-    this.wardFormGroup = this.wardForm();
-    // this.wardFormGroup.markAllAsTouched();
-    
-    this.otherFormGroup = this.otherForm();
-    // this.otherFormGroup.markAllAsTouched()
+
+  optionsPrefix: any[] = [];
+  optionsDep: any[] = [];
+  optionsCity: any[] = [];
+  optionsDoc: any[] = [];
+  optionsDoc2: any[] = [];
+  optionsRefDoc: any[] = [];
+  optionsWard: any[] = [];
+  optionsBed: any[] = [];
+  optionsRelation: any[] = [];
+  optionsArea: any[] = [];
+  optionsReligion: any[] = [];
+  optionsMarital: any[] = [];
+  optionsCompany: any[] = [];
+  optionsSubCompany: any[] = [];
+  optionsSearchDoc: any[] = [];
+  optionRegSearch: any[] = [];
+  optionsubCompany: any[] = [];
+  optionsPatientType: any[] = [];
+  optionsTariff: any[] = [];
+  RefoptionsDoc: any[] = [];
+  optionsAdDoc1: any[] = [];
+  optionsAdDoc2: any[] = [];
+  V_SearchRegList: any = [];
+
+
+  ngOnInit(): void { 
+  
+    this.isAlive = true; 
+
+    this.personalFormGroup = this.createPesonalForm();  
+    this.hospitalFormGroup = this.createHospitalForm();  
+    this.wardFormGroup = this.wardForm();  
+    this.otherFormGroup = this.otherForm(); 
 
 
     this.searchFormGroup = this.createSearchForm();
 
-    this.getHospitalList();
+    if (this.data) { 
+        console.log(this.data)
+        this.registerObj = this.data.row;
+        console.log(this.registerObj)
+       // this.registerObj.PrefixID=this.registerObj.PrefixID;  
+ 
+    
+    }
+
+
+  
     this.getPrefixList();
-    this.getPatientTypeList();
-    this.getTariffList();
-    this.getAreaList();
     this.getMaritalStatusList();
     this.getReligionList();
-    this.getDepartmentList();
-    this.getCompanyList();
-    this.getSubTPACompList();
-    this.getConfigCityList();
+    this.getGenderMasterList();
+    // this.getDepartmentList();
+    // this.getCompanyList();
+    // this.getSubTPACompList();
+    // this.getConfigCityList();
     this.getRelationshipList();
-    this.getCityList();
-    this.getDoctorList();
-    this.getDoctor1List();
-    this.getDoctor2List();
-    this.getWardList();
+     this.getcityList1();
+    // this.getDoctorList();
 
-    this.bankFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterPrefix();
-
-      });
-
-    this.cityFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterCity();
-      });
+    // this.getDoctor1List();
+    // this.getDoctor2List();
+    // this.getWardList(); 
+    // this.getHospitalList(); 
+    // this.getPatientTypeList();
+    // this.getTariffList();
+    this.getAreaList(); 
 
 
-
-    this.departmentFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(serviceData => {
-        if (serviceData && this.isLoading) {
-          this.filteredDepartment = serviceData.filteredDepartment === null ? [] : serviceData.filteredDepartment;
-          this.isLoadings = false;
-          if (this.filteredDepartment && this.filteredDepartment && this.savedValue !== null && this.filteredDepartment) {
-            this.departmentFilterCtrl.setValue(this.savedValue);
-          }
-          if (serviceData.error) {
-            this.departmentFilterCtrl.setValue(this.savedValue);
-            this.departmentFilterCtrl.setErrors({ 'serviceFail': serviceData.error });
-
-          }
-        }
-        this.filterDepartment();
-      });
-
-
-    this.religionFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterReligion();
-      });
-
-    this.maritalstatusFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterMaritalstatus();
-      });
-
-    this.areaFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterArea();
-      });
-
-    this.wardFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterWard();
-      });
-
-
-    this.hospitalFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterHospital();
-      });
-
-    this.bedFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterBed();
-      });
-
-    this.companyFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterCompany();
-      });
-
-    this.doctoroneFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterDoctorone();
-      });
-
-    this.doctortwoFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterDoctortwo();
-      });
-
-    this.doctorFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterDoctor();
-      });
-
-      if (this.data) {
-
-        this.registerObj = this.data.PatObj;
-  
-        console.log(this.registerObj);
-  
-        this.setDropdownObjs();
-      }
-  
-  }
-
-  private filterPrefix() {
-
-    if (!this.PrefixList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.bankFilterCtrl.value;
-    if (!search) {
-      this.filteredPrefix.next(this.PrefixList.slice());
-      return;
-    } else {
-      search = search.toLowerCase();
-    }
-    // filter the banks
-    this.filteredPrefix.next(
-      this.PrefixList.filter(bank => bank.PrefixName.toLowerCase().indexOf(search) > -1)
-    );
-  }
-
-  private filterCity() {
-    // debugger;
-    if (!this.cityList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.cityFilterCtrl.value;
-    if (!search) {
-      this.filteredCity.next(this.cityList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredCity.next(
-      this.cityList.filter(bank => bank.CityName.toLowerCase().indexOf(search) > -1)
-    );
-  }
-
-  private filterDepartment() {
-    // debugger;
-
-    if (!this.DepartmentList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.departmentFilterCtrl.value;
-    if (!search) {
-      this.filteredDepartment.next(this.DepartmentList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredDepartment.next(
-      this.DepartmentList.filter(bank => bank.DepartmentName.toLowerCase().indexOf(search) > -1)
+    this.filteredOptionsPrefix = this.personalFormGroup.get('PrefixID').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterPrex(value)), 
     );
 
-  }
-
-
-  getOptionsText(option) {
-    // debugger;
-    if (!option)
-      return '';
-    return option.ServiceName + ' ' + option.Price + ' (' + option.TariffId + ')';
-
-
-  }
-
-  // religion filter code
-  private filterReligion() {
-
-    if (!this.ReligionList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.religionFilterCtrl.value;
-    if (!search) {
-      this.filteredReligion.next(this.ReligionList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredReligion.next(
-      this.ReligionList.filter(bank => bank.ReligionName.toLowerCase().indexOf(search) > -1)
-    );
-  }
-  // maritalstatus filter code
-  private filterMaritalstatus() {
-
-    if (!this.MaritalStatusList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.maritalstatusFilterCtrl.value;
-    if (!search) {
-      this.filteredMaritalstatus.next(this.MaritalStatusList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredMaritalstatus.next(
-      this.MaritalStatusList.filter(bank => bank.MaritalStatusName.toLowerCase().indexOf(search) > -1)
+    this.filteredOptionsArea = this.personalFormGroup.get('AreaId').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterArea(value)), 
     );
 
-  }
-  // area filter code  
-  private filterArea() {
+    this.filteredOptionsMarital = this.personalFormGroup.get('MaritalStatusId').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterMarital(value)),
+    ); 
+    
+    this.filteredOptionsReligion = this.personalFormGroup.get('ReligionId').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterReligion(value)),
+    );  
 
-    if (!this.AreaList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.areaFilterCtrl.value;
-    if (!search) {
-      this.filteredArea.next(this.AreaList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredArea.next(
-      this.AreaList.filter(bank => bank.AreaName.toLowerCase().indexOf(search) > -1)
+    this.filteredOptionsRelation = this.otherFormGroup.get('RelationshipId').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterRelationship(value)), 
     );
 
-  }
-
-  // ward filter code  
-  private filterWard() {
-
-    if (!this.WardList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.wardFilterCtrl.value;
-    if (!search) {
-      this.filteredWard.next(this.WardList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredWard.next(
-      this.WardList.filter(bank => bank.RoomName.toLowerCase().indexOf(search) > -1)
+    this.filteredOptionsCity = this.personalFormGroup.get('CityId').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterCity(value)),
     );
 
-  }
-
-  // bed filter code  
-  private filterBed() {
-
-    if (!this.BedList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.bedFilterCtrl.value;
-    if (!search) {
-      this.filteredBed.next(this.BedList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredBed.next(
-      this.BedList.filter(bank => bank.BedName.toLowerCase().indexOf(search) > -1)
-    );
-
-  }
-
-  // company filter code  
-  private filterCompany() {
-
-    if (!this.CompanyList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.companyFilterCtrl.value;
-    if (!search) {
-      this.filteredCompany.next(this.CompanyList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredCompany.next(
-      this.CompanyList.filter(bank => bank.CompanyName.toLowerCase().indexOf(search) > -1)
-    );
-
-  }
-
-  // hospital filter code  
-  private filterHospital() {
-
-    if (!this.HospitalList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.hospitalFilterCtrl.value;
-    if (!search) {
-      this.filteredHospital.next(this.HospitalList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredHospital.next(
-      this.HospitalList.filter(bank => bank.HospitalName.toLowerCase().indexOf(search) > -1)
-    );
-
-  }
-
-
-  // doctorone filter code  
-  private filterDoctor() {
-    if (!this.DoctorList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.doctorFilterCtrl.value;
-    if (!search) {
-      this.filteredDoctor.next(this.DoctorList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredDoctor.next(
-      this.DoctorList.filter(bank => bank.Doctorname.toLowerCase().indexOf(search) > -1)
-    );
-  }
-
-  // doctorone filter code  
-  private filterDoctorone() {
-
-    if (!this.Doctor1List) {
-      return;
-    }
-    // get the search keyword
-    let search = this.doctoroneFilterCtrl.value;
-    if (!search) {
-      this.filteredDoctorone.next(this.Doctor1List.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredDoctorone.next(
-      this.Doctor1List.filter(bank => bank.DoctorName.toLowerCase().indexOf(search) > -1)
-    );
-  }
-
-
-  // doctorone filter code  
-  private filterDoctortwo() {
-
-    if (!this.Doctor2List) {
-      return;
-    }
-    // get the search keyword
-    let search = this.doctortwoFilterCtrl.value;
-    if (!search) {
-      this.filteredDoctortwo.next(this.Doctor2List.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredDoctortwo.next(
-      this.Doctor2List.filter(bank => bank.DoctorName.toLowerCase().indexOf(search) > -1)
-    );
-  }
-
-  ngOnDestroys() {
-    this.isAlive = false;
   }
 
   createPesonalForm() {
@@ -642,8 +330,7 @@ export class NewAdmissionComponent implements OnInit {
       StateName: '',
       CountryId: ''
     });
-  }
-
+  } 
   createHospitalForm() {
     return this.formBuilder.group({
       HospitalID: '',
@@ -660,16 +347,14 @@ export class NewAdmissionComponent implements OnInit {
       DoctorIdOne: '',
       DoctorIdTwo: ''
     });
-  }
-
+  } 
   wardForm() {
     return this.formBuilder.group({
       RoomId: '',
       BedId: '',
       ClassId: '',
     });
-  }
-
+  } 
   otherForm() {
     return this.formBuilder.group({
       RelativeName: '',
@@ -677,505 +362,1140 @@ export class NewAdmissionComponent implements OnInit {
       RelatvieMobileNo: ['', [Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
       RelationshipId: '',
     });
-  }
-
+  } 
   createSearchForm() {
     return this.formBuilder.group({
       regRadio: ['registration'],
       RegId: [{ value: '', disabled: this.isRegSearchDisabled }]
     });
+  } 
+  dateTimeObj: any;
+  getDateTime(dateTimeObj) {
+    console.log('dateTimeObj==', dateTimeObj);
+    this.dateTimeObj = dateTimeObj;
   }
 
-  // getSearchList() {
-  //   if (this.searchFormGroup.get('RegId').value.length >= 3) {
-  //     this.filteredOptions = this.searchFormGroup.get('RegId').valueChanges.pipe(
-  //       startWith(''),
-  //       debounceTime(400),
-  //       distinctUntilChanged(),
-  //       switchMap(val => {
-  //         return this.filterData(val || '')
-  //       })
-  //     );
-  //   }
-  // }
-
-  getSearchList() {
-    var m_data = {
-      "F_Name": `${this.searchFormGroup.get('RegId').value}%`,
-      "L_Name": '%',
-      "Reg_No": '0',
-      "From_Dt": '01/01/1900',
-      "To_Dt": '01/01/1900',
-      "MobileNo": '%'
-    }
-    if (this.searchFormGroup.get('RegId').value.length >= 1) {
-      this._AdmissionService.getRegistrationList(m_data).subscribe(resData => {
-        // debugger;
-
-        this.filteredOptions = resData;
-        console.log(resData);
-        if (this.filteredOptions.length == 0) {
-          this.noOptionFound = true;
-        } else {
-          this.noOptionFound = false;
-        }
-
-      });
-    }
-
-  }
-
-  getOptionText(option) {
-    if (!option) return '';
-    return option.FirstName + ' ' + option.LastName + ' (' + option.RegId + ')';
-  }
-  getSelectedObj(obj) {
-    console.log('obj==', obj);
+///New Admission 
+//Radio btn
+onChangeReg(event) {
+  if (event.value == 'registration') {
+    this.Regflag = false;
+    this.personalFormGroup.get('RegId').reset();
+    this.personalFormGroup.get('RegId').disable();
+    this.isRegSearchDisabled = true;
     this.registerObj = new AdmissionPersonlModel({});
-    let a, b, c;
+    this.personalFormGroup.reset();
 
-    a = obj.AgeDay.trim();;
-    b = obj.AgeMonth.trim();
-    c = obj.AgeYear.trim();
-    console.log(a, b, c);
-    obj.AgeDay = a;
-    obj.AgeMonth = b;
-    obj.AgeYear = c;
-    this.registerObj = obj;
-    this.setDropdownObjs();
-  }
+    this.personalFormGroup = this.createPesonalForm();
+    this.personalFormGroup.markAllAsTouched();
 
-  // getSelectedObj(obj) {
-  //   // console.log('obj==', obj);
+    this.hospitalFormGroup = this.createHospitalForm();
+    this.hospitalFormGroup.markAllAsTouched();
 
-  //   let a,b,c ;
+    this.wardFormGroup = this.wardForm();
+    this.wardFormGroup.markAllAsTouched();
 
-  //   a =obj.AgeDay.trim();;
-  //   b =obj.AgeMonth.trim();
-  //   c =obj.AgeYear.trim();
-  //   console.log(a,b,c);
-  //   obj.AgeDay=a;
-  //   obj.AgeMonth=b;
-  //   obj.AgeYear=c;
-  //   this.registerObj = new AdmissionPersonlModel({});
-  //   let a,b,c ;
+    this.otherFormGroup = this.otherForm();
+    this.otherFormGroup.markAllAsTouched()
 
-  //   a =obj.AgeDay.trim();;
-  //   b =obj.AgeMonth.trim();
-  //   c =obj.AgeYear.trim();
-  //   console.log(a,b,c);
-  //   obj.AgeDay=a;
-  //   obj.AgeMonth=b;
-  //   obj.AgeYear=c;
-  //   this.registerObj = obj;
-  //   this.setDropdownObjs();
-  // }
-
-  setDropdownObjs() {
-    debugger
-    const toSelect = this.PrefixList.find(c => c.PrefixID == this.registerObj.PrefixID);
-    this.personalFormGroup.get('PrefixID').setValue(toSelect);
-
-    const toSelectMarital = this.MaritalStatusList.find(c => c.MaritalStatusId == this.registerObj.MaritalStatusId);
-    this.personalFormGroup.get('MaritalStatusId').setValue(toSelectMarital);
-
-    const toSelectReligion = this.ReligionList.find(c => c.ReligionId == this.registerObj.ReligionId);
-    this.personalFormGroup.get('ReligionId').setValue(toSelectReligion);
-
-    const toSelectArea = this.AreaList.find(c => c.AreaId == this.registerObj.AreaId);
-    this.personalFormGroup.get('AreaId').setValue(toSelectArea);
-
-    const toSelectCity = this.cityList.find(c => c.CityId == this.registerObj.CityId);
-    this.personalFormGroup.get('CityId').setValue(toSelectCity);
-
-    this.onChangeGenderList(this.personalFormGroup.get('PrefixID').value);
-    this.onChangeCityList(this.registerObj.CityId);
-
-    this.personalFormGroup.updateValueAndValidity();
-  }
-
- 
-
-  onChangeReg(event) {
-    if (event.value == 'registration') {
-      this.searchFormGroup.get('RegId').reset();
-      this.searchFormGroup.get('RegId').disable();
-      this.isRegSearchDisabled = true;
-      this.registerObj = new AdmissionPersonlModel({});
-      this.personalFormGroup.reset();
-
-      this.personalFormGroup = this.createPesonalForm();
-      this.personalFormGroup.markAllAsTouched();
-      
-      this.hospitalFormGroup = this.createHospitalForm();
-      this.hospitalFormGroup.markAllAsTouched();
-
-      this.wardFormGroup = this.wardForm();
-      this.wardFormGroup.markAllAsTouched();
-
-      this.otherFormGroup = this.otherForm();
-      this.otherFormGroup.markAllAsTouched()
-
+    this.getPrefixList();
     this.getHospitalList();
     this.getPrefixList();
     this.getPatientTypeList();
     this.getTariffList();
+    this.getAreaList();
+    this.getMaritalStatusList();
+    this.getReligionList();
+    this.getDepartmentList();
+    this.getRelationshipList(); 
+    // this.getDoctorList();
+    this.getDoctor1List();
+    this.getDoctor2List();
+    this.getWardList();
+    this.getCompanyList();
+    this.getSubTPACompList();
+    this.getcityList1();
 
-    } else {
-      this.searchFormGroup.get('RegId').enable();
-      this.isRegSearchDisabled = false;
 
-      this.personalFormGroup = this.createPesonalForm();
-      this.personalFormGroup.markAllAsTouched();
+    this.Regdisplay = false;
+    this.showtable = false;
 
-      this.hospitalFormGroup = this.createHospitalForm();
-      this.hospitalFormGroup.markAllAsTouched();
+  } else {
+    this.Regdisplay = true;
+    this.Regflag = true;
+    this.searchFormGroup.get('RegId').enable();
+    this.isRegSearchDisabled = false;
 
-      this.wardFormGroup = this.wardForm();
-      this.wardFormGroup.markAllAsTouched();
-      
-      this.otherFormGroup = this.otherForm();
-      this.otherFormGroup.markAllAsTouched();
+    this.personalFormGroup = this.createPesonalForm();
+    this.personalFormGroup.markAllAsTouched();
 
-      this.getHospitalList();
-      this.getPrefixList();
-      this.getPatientTypeList();
-      this.getTariffList();
-    }
+    this.hospitalFormGroup = this.createHospitalForm();
+    this.hospitalFormGroup.markAllAsTouched();
+
+    this.wardFormGroup = this.wardForm();
+    this.wardFormGroup.markAllAsTouched();
+
+    this.otherFormGroup = this.otherForm();
+    this.otherFormGroup.markAllAsTouched();
+
+    this.getPrefixList();
+    this.getHospitalList();
+    this.getPrefixList();
+    this.getPatientTypeList();
+    this.getTariffList();
+    this.getAreaList();
+    this.getMaritalStatusList();
+    this.getReligionList();
+    this.getDepartmentList();
+    this.getRelationshipList(); 
+    //this.getDoctorList();
+    this.getDoctor1List();
+    this.getDoctor2List();
+    this.getWardList();
+    this.getCompanyList();
+    this.getSubTPACompList();
+    this.getcityList1();
+
+       this.showtable = true;
   }
 
-  item1: any;
-  item2: any;
-  onClick(event: any) {
-    this.item1 = "";
-    event.stopPropagation();
-  }
+  const todayDate = new Date();
+  const dob = new Date(this.currentDate);
+  const timeDiff = Math.abs(Date.now() - dob.getTime());
+  this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
+  this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
+  this.registerObj.AgeDay = Math.abs(todayDate.getDate() - dob.getDate());
+  this.registerObj.DateofBirth = this.currentDate;
+  this.personalFormGroup.get('DateOfBirth').setValue(this.currentDate);
 
-  getHospitalList() {
-    this._AdmissionService.getHospitalCombo().subscribe(data => {
-      this.HospitalList = data;
-      this.hospitalFormGroup.get('HospitalId').setValue(this.HospitalList[0]);
-    });
-  }
+}
+//register patient list
 
-
-  getCompanyList() {
-    this._AdmissionService.getCompanyCombo().subscribe(data => { this.CompanyList = data; })
+getSearchList() {
+  var m_data = {
+    "Keyword": `${this.searchFormGroup.get('RegId').value}%` || '%'
   }
-  getSubTPACompList() {
-    this._AdmissionService.getSubTPACompCombo().subscribe(data => { this.SubTPACompList = data; })
-  }
-  getRelationshipList() {
-    this._AdmissionService.getRelationshipCombo().subscribe(data => { this.RelationshipList = data; })
-  }
-  getPrefixList() {
-    this._AdmissionService.getPrefixCombo().subscribe(data => {
-      this.PrefixList = data;
-      this.filteredPrefix.next(this.PrefixList.slice());
-    });
-  }
-
-  getTariffList() {
-    this._AdmissionService.getTariffCombo().subscribe(data => {
-      this.TariffList = data;
-      this.hospitalFormGroup.get('TariffId').setValue(this.TariffList[0]);
-    });
-  }
-
-  getAreaList() {
-    this._AdmissionService.getAreaCombo().subscribe(data => {
-      this.AreaList = data;
-      this.filteredArea.next(this.AreaList.slice());
-      this.filteredArea.next(this.AreaList.slice());
-
-    })
-  }
-
-  getMaritalStatusList() {
-    this._AdmissionService.getMaritalStatusCombo().subscribe(data => {
-      this.MaritalStatusList = data;
-      this.filteredMaritalstatus.next(this.MaritalStatusList.slice());
-      
-    })
-  }
-
-  getReligionList() {
-    this._AdmissionService.getReligionCombo().subscribe(data => {
-      this.ReligionList = data;
-      this.filteredReligion.next(this.ReligionList.slice());
-    })
-
-  }
-
-  getDepartmentList() {
-    let cData = this._AdmissionService.getDepartmentCombo().subscribe(data => {
-      this.DepartmentList = data;
-      this.filteredDepartment.next(this.DepartmentList.slice());
-    });
-  }
-
-  getCityList() {
-    let cData = this._AdmissionService.getCityList().subscribe(data => {
-      this.cityList = data;
-      this.filteredCity.next(this.cityList.slice());
-    });
-  }
-
-  getDoctorList() {
-    this._AdmissionService.getDoctorMaster().subscribe(
-      data => {
-        this.DoctorList = data;
-        console.log(data)
-        // data => {
-        //   this.DoctorList = data;
-        this.filteredDoctor.next(this.DoctorList.slice());
-      })
-  }
-
-  getDoctor1List() {
-    this._AdmissionService.getDoctorMaster1Combo().subscribe(data => {
-      this.Doctor1List = data;
-      console.log(this.Doctor1List);
-      this.filteredDoctorone.next(this.Doctor1List.slice());
-    })
-  }
-  getDoctor2List() {
-    this._AdmissionService.getDoctorMaster2Combo().subscribe(data => {
-      this.Doctor2List = data;
-      this.filteredDoctortwo.next(this.Doctor2List.slice())
-    })
-  }
-
-  getWardList() {
-    this._AdmissionService.getWardCombo().subscribe(data => {
-      this.WardList = data;
-      this.filteredWard.next(this.WardList.slice());
-    })
-  }
-
-  // getPatientTypeList() {
-  //   this._AdmissionService.getPatientTypeCombo().subscribe(data => {
-  //     this.PatientTypeList = data;
-  //     this.hospitalFormGroup.get('PatientTypeId').setValue(this.PatientTypeList[0]);
-  //     this.onChangePatient(this.PatientTypeList[0]);
-  //   });
-  // }
-
-  getPatientTypeList() {
-    this._AdmissionService.getPatientTypeCombo().subscribe(data => {
-      this.PatientTypeList = data;
-      this.hospitalFormGroup.get('PatientTypeID').setValue(this.PatientTypeList[0]);
-    })
-  }
-
-
-  onChangeCityList(CityId) {
-    if (CityId > 0) {
-      this._AdmissionService.getStateList(CityId).subscribe(data => {
-        this.stateList = data;
-        this.selectedState = this.stateList[0].StateName;
-        this.selectedStateID = this.stateList[0].StateId;
-        // const stateListObj = this.stateList.find(s => s.StateId == this.selectedStateID);
-        this.personalFormGroup.get('StateId').setValue(this.stateList[0]);
-        this.onChangeCountryList(this.selectedStateID);
-      });
-    } else {
-      this.selectedState = null;
-      this.selectedStateID = null;
-      this.selectedCountry = null;
-      this.selectedCountryID = null;
-    }
-  }
-  onChangeCountryList(StateId) {
-    if (StateId > 0) {
-      this._AdmissionService.getCountryList(StateId).subscribe(data => {
-        this.countryList = data;
-        this.selectedCountry = this.countryList[0].CountryName;
-        this.personalFormGroup.get('CountryId').setValue(this.countryList[0]);
-        this.personalFormGroup.updateValueAndValidity();
-      });
-    }
-  }
-  // RegistrationListComponent
-  searchRegList() {
-    const dialogRef = this._matDialog.open(IPDSearcPatienthComponent,
-      {
-        maxWidth: "80vw",
-        height: '630px', width: '100%',
-      });
-
-    dialogRef.afterClosed().subscribe(result => {
-      // console.log('The dialog was closed - Insert Action', result);
-      if (result) {
-        this.registerObj = result as AdmissionPersonlModel;
-        // this.setDropdownObjs();
-        this._matDialog.closeAll();
+  if (this.searchFormGroup.get('RegId').value.length >= 1) {
+    this._AdmissionService.getRegistrationList(m_data).subscribe(resData => {
+      this.filteredOptions = resData;
+      this.V_SearchRegList = this.filteredOptions;
+      console.log(this.V_SearchRegList)
+      if (this.filteredOptions.length == 0) {
+        this.noOptionFound = true;
+      } else {
+        this.noOptionFound = false;
       }
-      //this.getRegistrationList();
+    });
+  } 
+}
+//Hospital list
+getHospitalList() {
+  this._AdmissionService.getHospitalCombo().subscribe(data => {
+    this.HospitalList = data;
+    this.searchFormGroup.get('HospitalId').setValue(this.HospitalList[0]);
+  });
+}
+//prefix 
+getPrefixList() { 
+   var mode="Prefix"; 
+
+  this._AdmissionService.getMaster(mode,1).subscribe(data => {
+    this.PrefixList = data;
+    console.log(data)
+    // if (this.data) {
+    //   const ddValue = this.PrefixList.filter(c => c.PrefixID == this.registerObj.PrefixID);
+    //   this.personalFormGroup.get('PrefixID').setValue(ddValue[0]);
+    //   this.personalFormGroup.updateValueAndValidity();
+    //   return;
+    // }
+  });
+ // this.onChangeGenderList(this.registerObj);
+}
+
+getGenderMasterList() {
+  var mode="GenderByPrefix";
+  this._AdmissionService.getMaster(mode,1).subscribe(data => {
+    this.GenderList = data;
+    console.log(data)
+    // const ddValue = this.GenderList.find(c => c.GenderId == this.data.registerObj.GenderId);
+    // this.personalFormGroup.get('GenderId').setValue(ddValue);
+  })
+} 
+
+onChangeGenderList(prefixObj) {
+  if (prefixObj) {
+    this._AdmissionService.getGenderCombo(prefixObj.PrefixID).subscribe(data => {
+      this.GenderList = data;
+      this.personalFormGroup.get('GenderId').setValue(this.GenderList[0]);
+      this.selectedGenderID = this.GenderList[0].GenderId;
     });
   }
+}
+//Date 
+dateStyle?: string = 'Date';
+OnChangeDobType(e) {
+    this.dateStyle = e.value;
+}
+CalcDOB(mode, e) {
+    let d = new Date();
+    if (mode == "Day") {
+        d.setDate(d.getDate() - Number(e.target.value));
+        this.registerObj.DateofBirth = d;
+        //this.personalFormGroup.get('DateOfBirth').setValue(moment().add(Number(e.target.value), 'days').format("DD-MMM-YYYY"));
+    }
+    else if (mode == "Month") {
+        d.setMonth(d.getMonth() - Number(e.target.value));
+        this.registerObj.DateofBirth = d;
+    }
+    else if (mode == "Year") {
+        d.setFullYear(d.getFullYear() - Number(e.target.value));
+        this.registerObj.DateofBirth = d;
+    }
+    let todayDate=new Date();
+    const timeDiff = Math.abs(Date.now() - this.registerObj.DateofBirth.getTime());
+    this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
+    this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - this.registerObj.DateofBirth.getMonth());
+    this.registerObj.AgeDay = Math.abs(todayDate.getDate() - this.registerObj.DateofBirth.getDate());
+}
 
-  getConfigCityList() {
+onChangeDateofBirth(DateOfBirth) { 
+  if (DateOfBirth) {
+    const todayDate = new Date();
+    const dob = new Date(DateOfBirth);
+    const timeDiff = Math.abs(Date.now() - dob.getTime());
+    this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
+    this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
+    this.registerObj.AgeDay = Math.abs(todayDate.getDate() - dob.getDate());
+    this.registerObj.DateofBirth = DateOfBirth;
+    this.personalFormGroup.get('DateOfBirth').setValue(DateOfBirth);
+  } 
+}
+//marital status
+getMaritalStatusList() { 
+  var mode="MaritalStatus";
+  this._AdmissionService.getMaster(mode,1).subscribe(data => {
+    this.MaritalStatusList = data;
+    console.log(this.MaritalStatusList) 
+  }) 
+}
+//Religion
+getReligionList() {
+  var mode="Religion";
+  this._AdmissionService.getMaster(mode,1).subscribe(data => {
+    this.ReligionList = data;
+    console.log(this.ReligionList) 
+  }) 
+}
+//Area 
+getAreaList() { 
+  var mode="Area";
+  this._AdmissionService.getMaster(mode,1).subscribe(data => {
+    this.AreaList = data;
+    console.log(this.AreaList) 
+  }) 
+}
+//City
+getcityList1() {
+  var mode="City";
+  this._AdmissionService.getMaster(mode,1).subscribe(data => {
+    this.cityList = data;
+    console.log(this.cityList) 
+  })  
+}
 
-    this._AdmissionService.getHospitalCombo().subscribe(data => {
-      this.ConfigcityList = data;
-      this.selectedHName = this.ConfigcityList[0].HospitalName
-
+onChangeCityList(CityObj) {
+  if (CityObj) {
+    this._AdmissionService.getStateList(CityObj.CityId).subscribe((data: any) => {
+      this.stateList = data;
+      this.selectedState = this.stateList[0].StateName;
+      this.selectedStateID = this.stateList[0].StateId;
+      this.personalFormGroup.get('StateId').setValue(this.stateList[0]);
+      this.selectedStateID = this.stateList[0].StateId;
+      this.onChangeCountryList(this.selectedStateID);
     });
   }
+  else {
+    this.selectedState = null;
+    this.selectedStateID = null;
+    this.selectedCountry = null;
+    this.selectedCountryID = null;
+  }
+} 
+onChangeCountryList(StateId) {
+  if (StateId > 0) {
+    this._AdmissionService.getCountryList(StateId).subscribe(data => {
+      this.countryList = data;
+      this.selectedCountry = this.countryList[0].CountryName;
+      this.personalFormGroup.get('CountryId').setValue(this.countryList[0]);
+      this.personalFormGroup.updateValueAndValidity();
+    });
+  }
+}
+//PatientType 
+getPatientTypeList() {
+  this._AdmissionService.getPatientTypeCombo().subscribe(data => {
+    this.PatientTypeList = data;
+    this.optionsPatientType = this.PatientTypeList.slice();
+    this.filteredOptionsPatientType = this.hospitalFormGroup.get('PatientTypeID').valueChanges.pipe(
+      startWith(''),
+      map(value => value ? this._filterPatientType(value) : this.PatientTypeList.slice()), 
+    ); 
+  });
+  this.hospitalFormGroup.get('PatientTypeID').setValue(this.PatientTypeList[0]);
+  this.hospitalFormGroup.updateValueAndValidity();
 
-  onChangeDateofBirth(DateOfBirth) {
-    if (DateOfBirth) {
-      const todayDate = new Date();
-      const dob = new Date(DateOfBirth);
-      const timeDiff = Math.abs(Date.now() - dob.getTime());
-      this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
-      this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
-      this.registerObj.AgeDay = Math.abs(todayDate.getDate() - dob.getDate());
-      this.registerObj.DateofBirth = DateOfBirth;
-      this.personalFormGroup.get('DateOfBirth').setValue(DateOfBirth);
+}
+onChangePatient(value) {
+
+  if (value.PatientTypeId != 2) {
+    this.isCompanySelected = false;
+    this.hospitalFormGroup.get('CompanyId').clearValidators();
+    this.hospitalFormGroup.get('SubCompanyId').clearValidators();
+    this.hospitalFormGroup.get('CompanyId').updateValueAndValidity();
+    this.hospitalFormGroup.get('SubCompanyId').updateValueAndValidity(); 
+    this.patienttype = 1; 
+  } 
+   if (value.PatientTypeId == 2) {
+    this.isCompanySelected = true;
+    this.hospitalFormGroup.get('CompanyId').reset();
+    this.hospitalFormGroup.get('CompanyId').setValidators([Validators.required]);
+    this.hospitalFormGroup.get('SubCompanyId').setValidators([Validators.required]);
+    this.patienttype = 2; 
+  } 
+}
+//Tariff
+getTariffList() {
+  this._AdmissionService.getTariffCombo().subscribe(data => {
+    this.TariffList = data;
+    this.optionsTariff = this.TariffList.slice();
+    this.filteredOptionsTarrif = this.hospitalFormGroup.get('TariffId').valueChanges.pipe(
+      startWith(''),
+      map(value => value ? this._filterTariff(value) : this.TariffList.slice()),
+    ); 
+  });
+  this.hospitalFormGroup.get('TariffId').setValue(this.TariffList[0]);
+}
+//Department
+getDepartmentList() {
+  this._AdmissionService.getDepartmentCombo().subscribe(data => {
+    this.DepartmentList = data;
+    this.optionsDep = this.DepartmentList.slice();
+    this.filteredOptionsDep = this.hospitalFormGroup.get('Departmentid').valueChanges.pipe(
+      startWith(''),
+      map(value => value ? this._filterDep(value) : this.DepartmentList.slice()),
+    ); 
+  });
+}
+OnChangeDoctorList(departmentObj) { 
+  this.hospitalFormGroup.get('DoctorId').reset(); 
+  this.isDepartmentSelected = true;
+  this._AdmissionService.getDoctorMasterCombo(departmentObj.DepartmentId).subscribe(
+    data => {
+      this.DoctorList = data;
+      this.optionsDoc = this.DoctorList.slice();
+      this.filteredOptionsDoc = this.hospitalFormGroup.get('DoctorId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterDoc(value) : this.DoctorList.slice()),
+      );
+    })
+}
+// Adm Doc
+getDoctor1List() {
+  this._AdmissionService.getDoctorMaster1Combo().subscribe(data => {
+    this.Doctor1List = data;
+    this.optionsAdDoc1 = this.Doctor1List.slice();
+    this.filteredOptionsDoc1 = this.hospitalFormGroup.get('admittedDoctor1').valueChanges.pipe(
+      startWith(''),
+      map(value => value ? this._filteradmittedDoctor1(value) : this.Doctor1List.slice()),
+    );
+  });
+}
+getDoctor2List() {
+  this._AdmissionService.getDoctorMaster2Combo().subscribe(data => {
+    this.Doctor2List = data;
+    this.optionsAdDoc2 = this.Doctor2List.slice();
+    this.filteredOptionsDoc2 = this.hospitalFormGroup.get('admittedDoctor2').valueChanges.pipe(
+      startWith(''),
+      map(value => value ? this._filteradmittedDoctor2(value) : this.Doctor2List.slice()),
+    ); 
+  });
+  }
+  //Ref Doc
+  getRefDoctorList() {
+    this._AdmissionService.getDoctorMaster2Combo().subscribe(data => {
+      this.RefDoctorList = data;
+      this.optionsRefDoc = this.RefDoctorList.slice();
+      this.filteredOptionsRefrenceDoc = this.hospitalFormGroup.get('refDoctorId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterRefdoc(value) : this.RefDoctorList.slice()),
+      ); 
+    });
     }
 
+
+//Company and sub compnay 
+getCompanyList() {
+  this._AdmissionService.getCompanyCombo().subscribe(data => {
+    this.CompanyList = data;
+    this.optionsCompany = this.CompanyList.slice();
+    this.filteredOptionsCompany = this.hospitalFormGroup.get('CompanyId').valueChanges.pipe(
+      startWith(''),
+      map(value => value ? this._filterCompany(value) : this.CompanyList.slice()),
+    ); 
+  });
+} 
+getSubTPACompList() {
+  this._AdmissionService.getSubTPACompCombo().subscribe(data => {
+    this.SubTPACompList = data;
+    this.optionsSubCompany = this.SubTPACompList.slice();
+    this.filteredOptionsSubCompany = this.hospitalFormGroup.get('SubCompanyId').valueChanges.pipe(
+      startWith(''),
+      map(value => value ? this._filterSubCompany(value) : this.SubTPACompList.slice()),
+    ); 
+  });
+}
+// WardName
+getWardList() {
+  this._AdmissionService.getWardCombo().subscribe(data => {
+    this.WardList = data;
+    this.optionsWard = this.WardList.slice();
+    this.filteredOptionsWard = this.wardFormGroup.get('RoomId').valueChanges.pipe(
+      startWith(''),
+      map(value => value ? this._filterWard(value) : this.WardList.slice()),
+    ); 
+  });
+} 
+// Bed Name
+OnChangeBedList(wardObj) { 
+  this._AdmissionService.getBedCombo(wardObj.RoomId).subscribe(data => {
+    this.BedList = data;
+    this.optionsBed = this.BedList.slice();
+    this.filteredOptionsBed = this.wardFormGroup.get('BedId').valueChanges.pipe(
+      startWith(''),
+      map(value => value ? this._filterBed(value) : this.BedList.slice()),
+    );
+  });
+  this._AdmissionService.getBedClassCombo(wardObj.ClassID).subscribe(data => {
+    this.BedClassList = data;
+    this.wardFormGroup.get('ClassId').setValue(this.BedClassList[0]);
+  })
+} 
+onBedChange(value) {
+  this.bedObj = value;
+}
+//RelativeName
+getRelationshipList() { 
+  var mode="Relationship";
+  this._AdmissionService.getMaster(mode,1).subscribe(data => {
+    this.RelationshipList = data;
+    console.log(this.RelationshipList) 
+  })
+}
+
+///Filters
+private _filterPrex(value: any): string[] {
+  if (value) {
+    const filterValue = value && value.text ? value.text.toLowerCase() : value.toLowerCase();
+    return this.PrefixList.filter(option => option.text.toLowerCase().includes(filterValue));
   }
+} 
+private _filterReligion(value: any): string[] {
+  if (value) {
+    const filterValue = value && value.text ? value.text.toLowerCase() : value.toLowerCase();
+    return this.ReligionList.filter(option => option.text.toLowerCase().includes(filterValue));
+  } 
+} 
+private _filterMarital(value: any): string[] {
+  if (value) {
+    const filterValue = value && value.text ? value.text.toLowerCase() : value.toLowerCase();
+    return this.MaritalStatusList.filter(option => option.text.toLowerCase().includes(filterValue));
+  } 
+}
+private _filterCity(value: any): string[] {
+  if (value) {
+    const filterValue = value && value.text ? value.text.toLowerCase() : value.toLowerCase();
+    return this.cityList.filter(option => option.text.toLowerCase().includes(filterValue));
+  } 
+}
+private _filterDoc(value: any): string[] {
+  if (value) {
+    const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
+    this.isDoctorSelected = false;
+    return this.optionsDoc.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
+  } 
+}  
+private _filterSearchdoc(value: any): string[] {
+  if (value) {
+    const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
+    return this.optionsSearchDoc.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
+  } 
+} 
+private _filterWard(value: any): string[] {
+  if (value) {
+    const filterValue = value && value.RoomName ? value.RoomName.toLowerCase() : value.toLowerCase();
+    return this.optionsWard.filter(option => option.RoomName.toLowerCase().includes(filterValue));
+  } 
+} 
+private _filterBed(value: any): string[] {
+  if (value) {
+    const filterValue = value && value.BedName ? value.BedName.toLowerCase() : value.toLowerCase();
+    return this.optionsBed.filter(option => option.BedName.toLowerCase().includes(filterValue));
+  } 
+} 
+private _filterRelationship(value: any): string[] {
+  if (value) {
+    const filterValue = value && value.text ? value.text.toLowerCase() : value.toLowerCase();
+    return this.RelationshipList.filter(option => option.text.toLowerCase().includes(filterValue));
+  } 
+} 
+private _filterArea(value: any): string[] {
+  if (value) {
+    const filterValue = value && value.text ? value.text.toLowerCase() : value.toLowerCase();
+    return this.AreaList.filter(option => option.text.toLowerCase().includes(filterValue));
+  } 
+}
+private _filterPatientType(value: any): string[] {
+  if (value) {
+    const filterValue = value && value.PatientType ? value.PatientType.toLowerCase() : value.toLowerCase();
+    return this.optionsPatientType.filter(option => option.PatientType.toLowerCase().includes(filterValue));  
+  } 
+} 
+private _filterTariff(value: any): string[] {
+  if (value) {
+    const filterValue = value && value.TariffName ? value.TariffName.toLowerCase() : value.toLowerCase(); 
+    return this.optionsTariff.filter(option => option.TariffName.toLowerCase().includes(filterValue));
+  } 
+}
+private _filterDep(value: any): string[] {
+  if (value) {
+    const filterValue = value && value.DepartmentName ? value.DepartmentName.toLowerCase() : value.toLowerCase();
+    return this.optionsDep.filter(option => option.DepartmentName.toLowerCase().includes(filterValue));
+  } 
+}
+private _filteradmittedDoctor1(value: any): string[] {
+  if (value) {
+    const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
+    return this.optionsAdDoc1.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
+  } 
+} 
+private _filteradmittedDoctor2(value: any): string[] {
+if (value) {
+  const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
+  return this.optionsAdDoc2.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
+} 
+} 
+private _filterRefdoc(value: any): string[] {
+if (value) {
+  const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
+  return this.optionsRefDoc.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
+} 
+}
+private _filterSubCompany(value: any): string[] {
+  if (value) {
+    const filterValue = value && value.CompanyName ? value.CompanyName.toLowerCase() : value.toLowerCase();
+    return this.optionsSubCompany.filter(option => option.CompanyName.toLowerCase().includes(filterValue));
+  } 
+}
 
-  onChangeGenderList(prefixObj) {
-    if (prefixObj) {
-      this._AdmissionService.getGenderCombo(prefixObj.PrefixID).subscribe(data => {
-        this.GenderList = data;
-        this.personalFormGroup.get('GenderId').setValue(this.GenderList[0]);
+private _filterCompany(value: any): string[] {
+  if (value) {
+    const filterValue = value && value.CompanyName ? value.CompanyName.toLowerCase() : value.toLowerCase();
+    return this.optionsCompany.filter(option => option.CompanyName.toLowerCase().includes(filterValue));
+  } 
+}
 
-        this.selectedGenderID = this.GenderList[0].GenderId;
+ 
+//getOptions
+getOptionTextDropdown(option) {
+  return option && option.text ? option.text : '';
+} 
+getOptionTextCity1(option) {
+  return option && option.CityName ? option.CityName : '';
+} 
+getOptionTextDep(option) {
+  return option && option.DepartmentName ? option.DepartmentName : '';
+} 
+getOptionTextRefDoc(option) {
+  return option && option.Doctorname ? option.Doctorname : '';
+} 
+getOptionTextAdDoc1(option) {
+  return option && option.Doctorname ? option.Doctorname : '';
+} 
+getOptionTextDoc(option) {
+  return option && option.Doctorname ? option.Doctorname : '';
+} 
+
+getOptionTextWard(option) {
+  return option && option.RoomName ? option.RoomName : '';
+} 
+getOptionTextDoc2(option) {
+  return option && option.Doctorname ? option.Doctorname : '';
+} 
+getOptionTextArea(option) {
+  return option && option.text ? option.text : '';
+} 
+getOptionTextReligion(option) {
+  return option && option.ReligionName ? option.ReligionName : '';
+} 
+getOptionTextMarital(option) {
+  return option && option.text ? option.text : ''; 
+} 
+getOptionTextBed(option) {
+  return option && option.BedName ? option.BedName : '';
+}
+getOptionTextRelationship(option) { 
+  return option && option.RelationshipName ? option.RelationshipName : '';
+} 
+getOptionTextCompany(option) {
+  return option && option.CompanyName ? option.CompanyName : '';
+} 
+getOptionTextSubCompany(option) { 
+  return option && option.CompanyName ? option.CompanyName : '';
+}
+getOptionTextpatienttype(option) {
+  return option && option.PatientType ? option.PatientType : '';
+} 
+getOptionTextTariff(option) {
+  return option && option.TariffName ? option.TariffName : '';
+}
+getOptionText(option) {
+  if (!option) return '';
+  return option.FirstName + ' ' + option.LastName + ' (' + option.RegId + ')';
+} 
+
+
+AdmittedRegId: any = 0;
+chekAdmittedpatient(obj) {
+  
+  this.AdmittedRegId = obj.RegId;
+
+  let Query = "select isnull(RegID,0) as RegID from Admission where RegID =  " + this.AdmittedRegId + " and Admissionid not in(select Admissionid from Discharge) "
+  console.log(Query)
+  this._AdmissionService.getRegIdDetailforAdmission(Query).subscribe(data => {
+    this.registerObj = data[0];
+    console.log(this.registerObj);
+    if (this.registerObj != undefined) {
+      this.AdmittedRegId = 0;
+      Swal.fire("selected patient is already admitted!!..")
+      this.onReset();
+      this.personalFormGroup.get('RegId').reset();
+      this.regno.nativeElement.focus();
+            } else {
+      this.getSelectedObj(obj);
+    }
+  });
+
+}
+getSelectedObj(obj) { 
+  this.registerObj = new AdmissionPersonlModel({}); 
+  obj.AgeDay = obj.AgeDay.trim();
+  obj.AgeMonth = obj.AgeMonth.trim();
+  obj.AgeYear = obj.AgeYear.trim();
+  this.registerObj = obj;
+  console.log(this.registerObj ); 
+  // this.PatientName = obj.PatientName;
+  // this.RegId = obj.RegId;
+  // this.RegNo = obj.RegNo;
+  this.vReligionId=obj.ReligionId;
+  this.vAreaId=obj.AreaId
+  this.vMaritalStatusId=obj.MaritalStatusId; 
+  this.onChangeDateofBirth(this.registerObj.DateofBirth)
+  this.setDropdownObjs(); 
+}
+setDropdownObjs() {
+
+  const toSelect = this.PrefixList.find(c => c.PrefixID == this.registerObj.PrefixID);
+  this.personalFormGroup.get('PrefixID').setValue(toSelect);
+
+  const toSelectMarital = this.MaritalStatusList.find(c => c.MaritalStatusId == this.registerObj.MaritalStatusId);
+  this.personalFormGroup.get('MaritalStatusId').setValue(toSelectMarital);
+
+  const toSelectReligion = this.ReligionList.find(c => c.ReligionId == this.registerObj.ReligionId);
+  this.personalFormGroup.get('ReligionId').setValue(toSelectReligion);
+
+  const toSelectArea = this.AreaList.find(c => c.AreaId == this.registerObj.AreaId);
+  this.personalFormGroup.get('AreaId').setValue(toSelectArea);
+
+  const toSelectCity = this.cityList.find(c => c.CityId == this.registerObj.CityId);
+  this.personalFormGroup.get('CityId').setValue(toSelectCity); 
+
+  this.onChangeGenderList(this.personalFormGroup.get('PrefixID').value);
+  this.onChangeCityList(this.registerObj);
+
+  this.personalFormGroup.updateValueAndValidity();
+}
+
+
+
+
+@ViewChild('fname') fname: ElementRef;
+@ViewChild('mname') mname: ElementRef;
+@ViewChild('lname') lname: ElementRef;
+@ViewChild('agey') agey: ElementRef;
+@ViewChild('aged') aged: ElementRef;
+@ViewChild('agem') agem: ElementRef;
+@ViewChild('phone') phone: ElementRef;
+@ViewChild('mobile') mobile: ElementRef;
+@ViewChild('address') address: ElementRef;
+@ViewChild('pan') pan: ElementRef;
+@ViewChild('area') area: ElementRef;
+
+@ViewChild('bday') bday: ElementRef;
+// @ViewChild('AadharCardNo') AadharCardNo: MatSelect;
+@ViewChild('AadharCardNo') AadharCardNo: ElementRef;
+@ViewChild('mstatus') mstatus: ElementRef;
+@ViewChild('religion') religion: ElementRef;
+@ViewChild('city') city: ElementRef;
+@ViewChild('admitdoc1') admitdoc1: ElementRef;
+@ViewChild('ptype') ptype: ElementRef;
+@ViewChild('tariff') tariff: ElementRef;
+@ViewChild('dept') dept: ElementRef;
+@ViewChild('deptdoc') deptdoc: ElementRef;
+@ViewChild('refdoc') refdoc: ElementRef;
+@ViewChild('admitdoc2') admitdoc2: ElementRef;
+@ViewChild('admitdoc3') admitdoc3: MatSelect; 
+@ViewChild('ward') ward: ElementRef;
+@ViewChild('bed') bed: ElementRef;
+@ViewChild('class') class: MatSelect;
+@ViewChild('relativename') relativename: ElementRef;
+@ViewChild('relativeadd') relativeadd: ElementRef;
+@ViewChild('relativemobile') relativemobile: ElementRef;
+@ViewChild('relation') relation: ElementRef;
+@ViewChild('regno') regno: ElementRef; 
+add: boolean = false;
+@ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
+@ViewChild('savebutton', { static: true }) savebutton: HTMLButtonElement;
+
+
+
+
+public onEnterprefix(event): void {
+  if (event.which === 13) {
+    this.fname.nativeElement.focus();
+  }
+}
+public onEnterfname(event): void {
+  if (event.which === 13) {
+    this.mname.nativeElement.focus();
+  }
+}
+public onEntermname(event): void {
+  if (event.which === 13) {
+    this.lname.nativeElement.focus();
+  }
+}
+public onEnterlname(event): void {
+  if (event.which === 13) {
+    this.agey.nativeElement.focus();
+    // if(this.mstatus) this.mstatus.focus();
+  }
+} 
+
+public onEntermstatus(event): void {
+  if (event.which === 13) { 
+    this.mobile.nativeElement.focus(); 
+  }
+}
+
+public onEnterreligion(event): void {
+  if (event.which === 13) {
+
+    // this.ptype.nativeElement.focus();
+  }
+}
+public onEnterbday(event): void {
+  if (event.which === 13) {
+    this.agey.nativeElement.focus();
+
+  }
+} 
+public onEnteragey(event,value): void {
+  if (event.which === 13) {
+    this.agem.nativeElement.focus(); 
+    this.ageyearcheck(value);
+  }
+}
+public onEnteragem(event): void {
+  if (event.which === 13) {
+    this.aged.nativeElement.focus();
+  }
+}
+public onEnteraged(event): void {
+  if (event.which === 13) {
+    this.AadharCardNo.nativeElement.focus();
+  }
+} 
+public onEnterAadharCardNo(event): void {
+  if (event.which === 13) {
+    this.address.nativeElement.focus();
+  }
+}
+
+public onEnterphone(event): void {
+  if (event.which === 13) {
+    this.religion.nativeElement.focus();  
+  }
+}
+public onEntermobile(event): void {
+  if (event.which === 13) {
+    this.phone.nativeElement.focus();
+  }
+}
+
+public onEnteraddress(event): void {
+  if (event.which === 13) {
+    this.area.nativeElement.focus();
+  }
+}
+
+public onEnterarea(event): void {
+  if (event.which === 13) {
+    this.city.nativeElement.focus();
+  }
+}
+
+public onEntercity(event): void {
+  if (event.which === 13) {
+    // if (this.hname) this.hname.focus();
+
+    this.mstatus.nativeElement.focus();
+  }
+}
+
+ageyearcheck(event) {
+    
+  if (parseInt(event) > 100) {
+    this.toastr.warning('Please Enter Valid Age.', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+
+    this.agey.nativeElement.focus();
+  }
+  return; 
+}
+ 
+public onEnterpan(event): void {
+  if (event.which === 13) {
+    this.AadharCardNo.nativeElement.focus();
+  }
+}
+public onEnterptype(event, value): void {
+  if (event.which === 13) { 
+    if (value == undefined) {
+      this.toastr.warning('Please Enter Valid PType.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
       });
-    }
-  }
-
-  OnChangeDoctorList(departmentObj) {
-    // debugger;
-    console.log("departmentObj", departmentObj)
-    this._AdmissionService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(
-      data => {
-        this.DoctorList = data;
-        console.log(this.DoctorList);
-        this.filteredDoctor.next(this.DoctorList.slice());
-      })
-  }
-
-
-  openChanged(event) {
-    this.isOpen = event;
-    this.isLoading = event;
-    if (event) {
-      this.savedValue = this.departmentFilterCtrl.value;
-      this.options = [];
-      this.departmentFilterCtrl.reset();
-      this._AdmissionService.getDepartmentCombo();
-    }
-  }
-
-  OnChangeBedList(wardObj) {
-    console.log(wardObj);
-    this._AdmissionService.getBedCombo(wardObj.RoomId).subscribe(data => {
-      this.BedList = data;
-      this.filteredBed.next(this.BedList.slice());
-    })
-    this._AdmissionService.getBedClassCombo(wardObj.RoomId).subscribe(data => {
-      this.BedClassList = data;
-      this.wardFormGroup.get('ClassId').setValue(this.BedClassList[0]);
-    })
-  }
-
-  onBedChange(value) {
-    this.bedObj = value;
-  }
-
-  getRegistrationList() {
-    //this.parentFunction.emit("Rachana Sungar");
-
-    var m_data = {
-
-      "F_Name": 'p%',
-      "L_Name": '%',
-      "Reg_No": '0',
-
-    }
-    console.log(m_data);
-    this._AdmissionService.getRegistrationList(m_data).subscribe(Visit => {
-
-    });
-  }
-
-  onSubmit() {
-    this.submitted = true;
-
-  }
-
-  takePicture() {
-    // debugger;
-    // const dialogRef = this._matDialog.open(CameraComponent, {
-    //   width: '600px',
-    //   height: '400px',
-    //   disableClose: true
-    // });
-    // dialogRef.afterClosed().subscribe(result => {
-    //   //  console.log('The dialog was closed - Insert Action', result._imageAsDataUrl);
-    //   this.capturedImage = result && result.imageAsBase64 ? 'data:image/jpeg;base64,' + result.imageAsBase64 : '';
-    //   //  this.getRadiologytemplateMasterList();
-    // });
-  }
-
-  onChangePatient(value) {
-    console.log(value);
-
-    if (value.PatientTypeId == 2) {
-      this.hospitalFormGroup.get('CompanyId').clearValidators();
-      this.hospitalFormGroup.get('SubCompanyId').clearValidators();
-      this.hospitalFormGroup.get('CompanyId').updateValueAndValidity();
-      this.hospitalFormGroup.get('SubCompanyId').updateValueAndValidity();
-      this.isCompanySelected = true;
+      return;
     } else {
-      this.hospitalFormGroup.get('CompanyId').setValidators([Validators.required]);
-      // this.VisitFormGroup.get('SubCompanyId').setValidators([Validators.required]);
-      this.isCompanySelected = false;
+      this.tariff.nativeElement.focus(); 
     }
   }
+}
+ 
+public onEnterptariff(event, value): void {
+  if (event.which === 13) { 
+    if (value == undefined) {
+      this.toastr.warning('Please Enter Valid Tariff.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    } else {
+      this.dept.nativeElement.focus(); 
+    }
+  }
+} 
+public onEnterdept(event, value): void {
+  if (event.which === 13) {
+    if (value == undefined) {
+      this.toastr.warning('Please Enter Valid Department.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    } else {
+      this.deptdoc.nativeElement.focus();
+    }
+  }
+} 
+public onEnterdeptdoc(event): void {
+  if (event.which === 13) { 
+      this.admitdoc1.nativeElement.focus(); 
+  } 
+} 
+public onEnteradmitdoc1(event): void {
+  if (event.which === 13) { 
+    this.admitdoc2.nativeElement.focus(); 
+  }
+}
+public onEnteradmitdoc2(event): void {
+  if (event.which === 13) { 
+    this.refdoc.nativeElement.focus(); 
+  }
+}
+public onEnterrefdoc(event): void {
+  if (event.which === 13) { 
+    this.ward.nativeElement.focus(); 
+  }
+}
+public onEnterward(event, value): void {
+  if (event.which === 13) { 
+    if (value == undefined) {
+      this.toastr.warning('Please Enter Valid Ward', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    } else {
+      this.bed.nativeElement.focus();
+    }
+  }
+}
 
-  onClose() {
-    this._AdmissionService.mySaveForm.reset();
-    this.dialogRef.close();
+public onEnterbed(event, value): void {
+  if (event.which === 13) {
+    this.relativename.nativeElement.focus();
+  }
+}
+public onEnterclass(event): void {
+  // if (event.which === 13) {
+
+  //   this.relativename.nativeElement.focus();
+  // }
+}
+public onEnterrelativename(event): void {
+  if (event.which === 13) { 
+    this.relativeadd.nativeElement.focus();
+  }
+} 
+public onEnterrelativeadd(event): void {
+  if (event.which === 13) { 
+    this.relativemobile.nativeElement.focus();
+  }
+} 
+public onEnterrelativemobile(event): void {
+  if (event.which === 13) { 
+    this.relation.nativeElement.focus(); 
+  } 
+} 
+public onEnterrelation(event): void { 
+  if (event.which === 13 || this.otherFormGroup.get('RelationshipId').value) {
+    if(!this.personalFormGroup.invalid && !this.hospitalFormGroup.invalid && !this.wardFormGroup.invalid && !this.otherFormGroup.invalid)
+   this.saveflag=true;
+  } 
+  if(this.savebutton) this.savebutton.focus();
+}
+setSaveflag(){ 
+  if(this.otherFormGroup.get('RelationshipId').value){
+    if(!this.RelationshipList.some(item => item.RelationshipName ===this.otherFormGroup.get('RelationshipId').value.RelationshipName)){
+      this.toastr.warning('Please Select valid RelationshipName', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    } 
+  }
+  this.saveflag=true;
+}
+onNewSave(){
+  if ((this.vPrefixID == '' || this.vPrefixID == null || this.vPrefixID == undefined)) {
+    this.toastr.warning('Please select valid Prefix ', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  }
+  if ((this.vCityId == '' || this.vCityId == null || this.vCityId == undefined)) {
+    this.toastr.warning('Please select valid City', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  }
+  if ((this.vPatientTypeID == '' || this.vPatientTypeID == null || this.vPatientTypeID == undefined)) {
+    this.toastr.warning('Please select PatientType', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
   }
 
-  nextClicked(formGroupName) {
-    // debugger;
-    if (formGroupName.invalid) {
-      const controls = formGroupName.controls;
-      Object.keys(controls).forEach(controlsName => {
-        const controlField = formGroupName.get(controlsName);
-        if (controlField && controlField.invalid) {
-          controlField.markAsTouched({ onlySelf: true });
-        }
+  if ((this.vDepartmentid == '' || this.vDepartmentid == null || this.vDepartmentid == undefined)) {
+    this.toastr.warning('Please Select Department', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  }
+  if ((this.vDoctorId == '' || this.vDoctorId == null || this.vDoctorId == undefined)) {
+    this.toastr.warning('Please Select Doctor', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  }
+  const ischeckprefix = this.PrefixList.some(item => item.PrefixName ===this.personalFormGroup.get('PrefixID').value.PrefixName)
+  if(!ischeckprefix){
+    this.toastr.warning('Please Select valid Prefix', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  }
+  if(this.personalFormGroup.get('AreaId').value){
+    if(!this.AreaList.some(item => item.AreaName ===this.personalFormGroup.get('AreaId').value.AreaName)){
+      this.toastr.warning('Please Select valid AreaName', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    if (formGroupName == this.otherFormGroup) {
-      this.submitAdmissionForm();
+  }
+  if(!this.cityList.some(item => item.CityName ===this.personalFormGroup.get('CityId').value.CityName)){
+    this.toastr.warning('Please Select valid City', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  }
+  if(this.personalFormGroup.get('MaritalStatusId').value){
+    if(!this.MaritalStatusList.some(item => item.MaritalStatusName ===this.personalFormGroup.get('MaritalStatusId').value.MaritalStatusName)){
+      this.toastr.warning('Please Select valid MaritalStatus', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
       return;
     }
-    this.admissionFormStepper.next();
+  }
+  if(this.personalFormGroup.get('ReligionId').value){
+    if(!this.ReligionList.some(item => item.ReligionName ===this.personalFormGroup.get('ReligionId').value.ReligionName)){
+      this.toastr.warning('Please Select valid ReligionName', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
   }
 
+  if(!this.TariffList.some(item => item.TariffName ===this.hospitalFormGroup.get('TariffId').value.TariffName)){
+    this.toastr.warning('Please Select valid TariffName', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  }
+ 
+  if(!this.DepartmentList.some(item => item.departmentName ===this.hospitalFormGroup.get('Departmentid').value.departmentName)){
+    this.toastr.warning('Please Select valid departmentName', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  }
+  if(!this.DoctorList.some(item => item.Doctorname ===this.hospitalFormGroup.get('DoctorId').value.Doctorname)){
+    this.toastr.warning('Please Select valid Doctorname', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  }
+  if(this.hospitalFormGroup.get('admittedDoctor1').value){
+    if(!this.Doctor1List.some(item => item.Doctorname ===this.hospitalFormGroup.get('admittedDoctor1').value.Doctorname)){
+      this.toastr.warning('Please Select valid AdmitDoctorName11', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+  }
+  if(this.hospitalFormGroup.get('admittedDoctor2').value){
+    if(!this.Doctor2List.some(item => item.Doctorname ===this.hospitalFormGroup.get('admittedDoctor2').value.Doctorname)){
+      this.toastr.warning('Please Select valid AdmitDoctorName2', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+  }
+  if(this.hospitalFormGroup.get('refDoctorId').value){
+    if(!this.Doctor1List.some(item => item.Doctorname ===this.hospitalFormGroup.get('refDoctorId').value.Doctorname)){
+      this.toastr.warning('Please Select valid RefDoctor', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+  }
+ 
+  if(this.hospitalFormGroup.get('CompanyId').value){
+    if(!this.CompanyList.some(item => item.CompanyName ===this.hospitalFormGroup.get('CompanyId').value.CompanyName)){
+      this.toastr.warning('Please Select valid CompanyName', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+  }
+  if(this.hospitalFormGroup.get('SubCompanyId').value){
+    if(!this.SubTPACompList.some(item => item.CompanyName ===this.hospitalFormGroup.get('SubCompanyId').value.CompanyName)){
+      this.toastr.warning('Please Select valid SubCompany', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+  }
+  if(this.wardFormGroup.get('RoomId').value){
+    if(!this.WardList.some(item => item.RoomName ===this.wardFormGroup.get('RoomId').value.RoomName)){
+      this.toastr.warning('Please Select valid WardName', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+  }
 
+  if(!this.wardFormGroup.get('BedId').value){
+    if(this.vBedId == '' || this.vBedId == null || this.vBedId == undefined || this.vBedId == 0){
+      this.toastr.warning('Please Select BedName', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+  }  
+  if(this.wardFormGroup.get('BedId').value){
+    if(!this.BedList.some(item => item.BedName ===this.wardFormGroup.get('BedId').value.BedName)){
+      this.toastr.warning('Please Select valid BedName', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+  }
+  if(this.otherFormGroup.get('RelationshipId').value){
+    if(!this.RelationshipList.some(item => item.RelationshipName ===this.otherFormGroup.get('RelationshipId').value.RelationshipName)){
+      this.toastr.warning('Please Select valid RelationshipName', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+  } 
+  if ((!this.personalFormGroup.invalid && !this.hospitalFormGroup.invalid && !this.wardFormGroup.invalid && !this.otherFormGroup.invalid)) {
+ 
+    Swal.fire({
+      title: 'Do you want to Save the Admission ',
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Save!" 
 
-  //   - New Admission 
-  // 1. insert_Registration_1_1
-  // 2.insert_Admission_1
-  // 3. Insert_IPSMSTemplete_1  ===IP Admission Msg For Patient
-  // 4. Insert_IPSMSTemplete_1 === 'IP Admission Msg For Doctor
-  // 5. Insert_IPSMSTemplete_1 === '  IP Admission Msg For RefDoctor
-  // 6. UpdateQuery = "Update BedMaster set IsAvailible=0 where Bedid=" + txtBedID.Text.Trim + ""
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) { 
+       this.OnSaveAdmission();
+      }
+    }) 
+  }
+}
+ 
+CompanyId: any = 0;
+SubCompanyId: any = 0;
+OnSaveAdmission() { 
+  if (this.patienttype != 2) {
+    this.CompanyId = 0;
+    this.SubCompanyId = 0;
+  } else if (this.patienttype == 2) {
+    
+    this.CompanyId = this.hospitalFormGroup.get('CompanyId').value.CompanyId;
+    this.SubCompanyId = this.hospitalFormGroup.get('SubCompanyId').value.SubCompanyId;
 
+    if ((this.CompanyId == 0 || this.CompanyId == undefined || this.SubCompanyId == 0)) {
+      this.toastr.warning('Please select Company.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+  }
 
-  submitAdmissionForm() {
-    // debugger;
+  if (!this.personalFormGroup.invalid && !this.hospitalFormGroup.invalid && !this.wardFormGroup.invalid && !this.otherFormGroup.invalid) {
     if (this.searchFormGroup.get('regRadio').value == "registration") {
       //Api
       this.isLoading = 'submit';
@@ -1183,14 +1503,14 @@ export class NewAdmissionComponent implements OnInit {
       let regInsert = {};
       let admissionNewInsert = {};
       regInsert['RegId'] = 0;
-      regInsert['regDate'] = this.dateTimeObj.date //this.registerObj.RegDate;
-      regInsert['regTime'] = this.dateTimeObj.time;
-      regInsert['prefixId'] = this.personalFormGroup.get('PrefixID').value.PrefixID;
+      regInsert['regDate'] = this.dateTimeObj.date || '01/01/1900',
+        regInsert['regTime'] = this.dateTimeObj.time || '01/01/1900',
+        regInsert['prefixId'] = this.personalFormGroup.get('PrefixID').value.PrefixID;
       regInsert['firstName'] = this.registerObj.FirstName || '';
       regInsert['middleName'] = this.registerObj.MiddleName || '';
       regInsert['lastName'] = this.registerObj.LastName || '';
       regInsert['address'] = this.registerObj.Address || '';
-      regInsert['city'] = this.personalFormGroup.get('CityId').value.CityName;
+      regInsert['city'] = this.personalFormGroup.get('CityId').value.CityId;
       regInsert['PinNo'] = '';
       regInsert['dateOfBirth'] = this.registerObj.DateofBirth;
       regInsert['age'] = this.registerObj.AgeYear;//this.registerObj.Age;
@@ -1206,24 +1526,25 @@ export class NewAdmissionComponent implements OnInit {
       regInsert['stateId'] = this.personalFormGroup.get('StateId').value.StateId;
       regInsert['cityId'] = this.personalFormGroup.get('CityId').value.CityId;
       regInsert['maritalStatusId'] = this.personalFormGroup.get('MaritalStatusId').value ? this.personalFormGroup.get('MaritalStatusId').value.MaritalStatusId : 0;
-      regInsert['isCharity'] = false;
+      regInsert['isCharity'] = this.otherFormGroup.get('IsCharity').value ? this.otherFormGroup.get('IsCharity').value : false;
       regInsert['religionId'] = this.personalFormGroup.get('ReligionId').value ? this.personalFormGroup.get('ReligionId').value.ReligionId : 0;
       regInsert['areaId'] = this.personalFormGroup.get('AreaId').value ? this.personalFormGroup.get('AreaId').value.AreaId : 0;
-      regInsert['IsSeniorCitizen'] = 1;//this.personalFormGroup.get('IsSeniorCitizen').value ? this.personalFormGroup.get('ReligionId').value.ReligionId : 0;
-      // regInsert['aadharCardNo'] = this.personalFormGroup.get('AadharCardNo').value ? this.personalFormGroup.get('AadharCardNo').value : 0;
-      // regInsert['panCardNo'] = this.personalFormGroup.get('Pancardno').value ? this.personalFormGroup.get('Pancardno').value : 0;
+      regInsert['IsSeniorCitizen'] = this.otherFormGroup.get('IsSenior').value ? this.otherFormGroup.get('IsSenior').value : 0;
+      regInsert['aadharCardNo'] = this.personalFormGroup.get('AadharCardNo').value ? this.personalFormGroup.get('AadharCardNo').value : 0;
+      regInsert['panCardNo'] = this.personalFormGroup.get('Pancardno').value ? this.personalFormGroup.get('Pancardno').value : 0;
+      // regInsert['Photo']=''
 
       submissionObj['regInsert'] = regInsert;
 
       admissionNewInsert['admissionID'] = 0;
       admissionNewInsert['regId'] = 0; //this.registerObj.RegId;
-      admissionNewInsert['admissionDate'] = this.dateTimeObj.date;
-      admissionNewInsert['admissionTime'] = this.dateTimeObj.time;
+      admissionNewInsert['admissionDate'] = this.dateTimeObj.date || '01/01/1900',
+        admissionNewInsert['admissionTime'] = this.dateTimeObj.time || '01/01/1900',
 
-      admissionNewInsert['patientTypeId'] = this.hospitalFormGroup.get('PatientTypeID').value.PatientTypeId || 0;//tTypeId ? this.hospitalFormGroup.get('PatientTypeID').value.PatientTypeID : 0;
-      admissionNewInsert['hospitalID'] = this.hospitalFormGroup.get('HospitalId').value.HospitalId ? this.hospitalFormGroup.get('HospitalId').value.HospitalId : 1;
+        admissionNewInsert['patientTypeId'] = this.hospitalFormGroup.get('PatientTypeID').value.PatientTypeId || 0;//tTypeId ? this.hospitalFormGroup.get('PatientTypeID').value.PatientTypeID : 0;
+      admissionNewInsert['hospitalID'] = this.searchFormGroup.get('HospitalId').value.HospitalId || 1;  //? this.hospitalFormGroup.get('HospitalId').value.HospitalId : 0;
       admissionNewInsert['docNameId'] = this.hospitalFormGroup.get('DoctorId').value.DoctorId || 0;//? this.hospitalFormGroup.get('DoctorId').value.DoctorId : 0;
-      admissionNewInsert['refDocNameId'] = this.hospitalFormGroup.get('DoctorID').value.DoctorID || 0;// ? this.hospitalFormGroup.get('DoctorIdOne').value.DoctorIdOne : 0;
+      admissionNewInsert['refDocNameId'] = this.hospitalFormGroup.get('refDoctorId').value.DoctorId || 0;//? this.hospitalFormGroup.get('DoctorIdOne').value.DoctorIdOne : 0;
 
       admissionNewInsert['wardID'] = this.wardFormGroup.get('RoomId').value.RoomId ? this.wardFormGroup.get('RoomId').value.RoomId : 0;
       admissionNewInsert['bedid'] = this.wardFormGroup.get('BedId').value.BedId ? this.wardFormGroup.get('BedId').value.BedId : 0;
@@ -1232,59 +1553,52 @@ export class NewAdmissionComponent implements OnInit {
 
       admissionNewInsert['isDischarged'] = 0;
       admissionNewInsert['isBillGenerated'] = 0;
-      admissionNewInsert['companyId'] = this.hospitalFormGroup.get('CompanyId').value.CompanyId ? this.hospitalFormGroup.get('CompanyId').value.CompanyId : 0;
+      admissionNewInsert['CompanyId'] = this.CompanyId;//this.hospitalFormGroup.get('CompanyId').value.CompanyId ? this.hospitalFormGroup.get('CompanyId').value.CompanyId : 0;
       admissionNewInsert['tariffId'] = this.hospitalFormGroup.get('TariffId').value.TariffId ? this.hospitalFormGroup.get('TariffId').value.TariffId : 0;
 
       admissionNewInsert['classId'] = this.wardFormGroup.get('ClassId').value.ClassId ? this.wardFormGroup.get('ClassId').value.ClassId : 0;
-      admissionNewInsert['departmentId'] = this.hospitalFormGroup.get('Departmentid').value.Departmentid;// ? this.hospitalFormGroup.get('DepartmentId').value.DepartmentId : 0;
+      admissionNewInsert['departmentId'] = this.hospitalFormGroup.get('Departmentid').value.DepartmentId;// ? this.hospitalFormGroup.get('DepartmentId').value.DepartmentId : 0;
       admissionNewInsert['relativeName'] = this.otherFormGroup.get('RelativeName').value ? this.otherFormGroup.get('RelativeName').value : '';
       admissionNewInsert['relativeAddress'] = this.otherFormGroup.get('RelativeAddress').value ? this.otherFormGroup.get('RelativeAddress').value : '';
 
-      admissionNewInsert['phoneNo'] = this.personalFormGroup.get('PhoneNo').value ? this.personalFormGroup.get('PhoneNo').value : '';
-      admissionNewInsert['mobileNo'] = this.otherFormGroup.get('RelatvieMobileNo').value ? this.personalFormGroup.get('MobileNo').value : '';
-      admissionNewInsert['relationshipId'] = this.otherFormGroup.get('RelationshipId').value.RelationshipId ? this.otherFormGroup.get('RelationshipId').value.RelationshipId : 0;
+      admissionNewInsert['phoneNo'] = this.personalFormGroup.get('MobileNo').value ? this.personalFormGroup.get('MobileNo').value : '';
+      admissionNewInsert['mobileNo'] = this.otherFormGroup.get('RelatvieMobileNo').value ? this.otherFormGroup.get('RelatvieMobileNo').value : '';
+      admissionNewInsert['relationshipId'] = this.otherFormGroup.get('RelationshipId').value.RelationshipId || 0;
       admissionNewInsert['addedBy'] = this.accountService.currentUserValue.user.id;
 
-      admissionNewInsert['isMLC'] = false;
+      admissionNewInsert['isMLC'] = this.otherFormGroup.get('IsMLC').value || false;
       admissionNewInsert['motherName'] = '';
-      admissionNewInsert['admittedDoctor1'] = this.hospitalFormGroup.get('DoctorId').value.DoctorId ? this.hospitalFormGroup.get('DoctorId').value.DoctorId : 0;
-      admissionNewInsert['admittedDoctor2'] = this.hospitalFormGroup.get('DoctorID').value.DoctorID ? this.hospitalFormGroup.get('DoctorID').value.DoctorID : 0;
+      admissionNewInsert['admittedDoctor1'] = this.hospitalFormGroup.get('admittedDoctor1').value.DoctorId ? this.hospitalFormGroup.get('admittedDoctor1').value.DoctorId : 0;
+      admissionNewInsert['admittedDoctor2'] = this.hospitalFormGroup.get('admittedDoctor2').value.DoctorId ? this.hospitalFormGroup.get('admittedDoctor2').value.DoctorId : 0;
       admissionNewInsert['RefByTypeId'] = 0;
       admissionNewInsert['RefByName'] = 0;
-      admissionNewInsert['SubTpaComId'] = this.hospitalFormGroup.get('SubCompanyId').value.SubCompanyId ? this.hospitalFormGroup.get('SubCompanyId').value.SubCompanyId : 0;
+      admissionNewInsert['SubTpaComId'] = this.SubCompanyId;//this.hospitalFormGroup.get('SubCompanyId').value.SubCompanyId ? this.hospitalFormGroup.get('SubCompanyId').value.SubCompanyId : 0;
       admissionNewInsert['PolicyNo'] = 0;
       admissionNewInsert['AprovAmount'] = 0;
-      admissionNewInsert['CompDOD'] = this.dateTimeObj.date;
-      admissionNewInsert['IsPackagePatient'] = 0;
-
-
-
+      admissionNewInsert['CompDOD'] = this.dateTimeObj.date || '01/01/1900',
+        admissionNewInsert['IsPackagePatient'] = 0;
+      admissionNewInsert['isOpToIPConv'] = this.otherFormGroup.get('OPIPChange').value,
+        admissionNewInsert['RefDoctorDept'] = this.hospitalFormGroup.get('Departmentid').value.DepartmentName || '';
       submissionObj['admissionNewInsert'] = admissionNewInsert;
 
-      // let Query="Update M_DischargeTypeMaster set IsDeleted=1 where DischargeTypeId="+DischargeTypeId;
+      let BedStatusUpdate = {};
+      BedStatusUpdate['BedId'] = this.wardFormGroup.get('BedId').value.BedId ? this.wardFormGroup.get('BedId').value.BedId : 0;
 
-      let query = "Update BedMaster set IsAvailible=0 where BedId=" + this.wardFormGroup.get('BedId').value.BedId;
+      submissionObj['bedStatusUpdate'] = BedStatusUpdate;
+
       console.log(submissionObj);
-
-      // this._AdmissionService.deactivateTheStatus(Query).subscribe(data => this.msg =data);
-
-
-      // submissionObj['bedUpdate'] = { bedId: this.bedObj.BedId ? this.bedObj.BedId : 0 };
-      // console.log(submissionObj);
       this._AdmissionService.AdmissionNewInsert(submissionObj).subscribe(response => {
-        console.log(response);
-        if (response) {
-          Swal.fire('Congratulations !', 'Admission save Successfully !', 'success').then((result) => {
-            if (result.isConfirmed) {
-              let m = response;
-              this.getPrint(m);
-              // console.log( this.getPrint(m));
-              this._matDialog.closeAll();
 
-            }
-          });
+        if (response) { 
+          this.toastr.success('Admission save Successfully !', 'Congratulations !', {
+            toastClass: 'tostr-tost custom-toast-success',
+          });   
+              this.getAdmittedPatientCasepaperview(response, true);
+              this.onReset(); 
         } else {
-          Swal.fire('Error !', 'Admission not saved', 'error');
+          this.toastr.success('Admission not saved', 'error', {
+            toastClass: 'tostr-tost custom-toast-success',
+          }); 
         }
         this.isLoading = '';
       });
@@ -1297,17 +1611,16 @@ export class NewAdmissionComponent implements OnInit {
       let submissionObj = {};
       let admissionInsert = {};
 
-      //      submissionObj['regUpdate'] = RegistraionUpdate;
-      // debugger;
+
       admissionInsert['admissionID'] = 0;
       admissionInsert['regId'] = this.registerObj.RegId;
-      admissionInsert['admissionDate'] = this.dateTimeObj.date;
-      admissionInsert['admissionTime'] = this.dateTimeObj.time;
+      admissionInsert['admissionDate'] = this.dateTimeObj.date || '01/01/1900',
+        admissionInsert['admissionTime'] = this.dateTimeObj.time || '01/01/1900',
 
-      admissionInsert['patientTypeId'] = this.hospitalFormGroup.get('PatientTypeID').value.PatientTypeID ? this.hospitalFormGroup.get('PatientTypeID').value.PatientTypeID : 0;
-      admissionInsert['hospitalID'] = this.hospitalFormGroup.get('HospitalID').value.HospitalID ? this.hospitalFormGroup.get('HospitalID').value.HospitalID : 0;
-      admissionInsert['docNameId'] = this.hospitalFormGroup.get('DoctorId').value.DoctorId ? this.hospitalFormGroup.get('DoctorId').value.DoctorId : 0;
-      admissionInsert['refDocNameId'] = this.hospitalFormGroup.get('DoctorID').value.DoctorID ? this.hospitalFormGroup.get('DoctorID').value.DoctorID : 0;
+        admissionInsert['patientTypeId'] = this.hospitalFormGroup.get('PatientTypeID').value.PatientTypeId || 0;//tTypeId ? this.hospitalFormGroup.get('PatientTypeID').value.PatientTypeID : 0;
+      admissionInsert['hospitalID'] = this.searchFormGroup.get('HospitalId').value.HospitalId || 1;  //? this.hospitalFormGroup.get('HospitalId').value.HospitalId : 0;
+      admissionInsert['docNameId'] = this.hospitalFormGroup.get('DoctorId').value.DoctorId || 0;//? this.hospitalFormGroup.get('DoctorId').value.DoctorId : 0;
+      admissionInsert['refDocNameId'] = this.hospitalFormGroup.get('refDoctorId').value.DoctorId || 0;//? this.hospitalFormGroup.get('DoctorIdOne').value.DoctorIdOne : 0;
 
       admissionInsert['wardID'] = this.wardFormGroup.get('RoomId').value.RoomId ? this.wardFormGroup.get('RoomId').value.RoomId : 0;
       admissionInsert['bedid'] = this.wardFormGroup.get('BedId').value.BedId ? this.wardFormGroup.get('BedId').value.BedId : 0;
@@ -1316,159 +1629,175 @@ export class NewAdmissionComponent implements OnInit {
 
       admissionInsert['isDischarged'] = 0;
       admissionInsert['isBillGenerated'] = 0;
-      admissionInsert['companyId'] = this.hospitalFormGroup.get('CompanyId').value.CompanyId ? this.hospitalFormGroup.get('CompanyId').value.CompanyId : 0;
+      admissionInsert['CompanyId'] = this.CompanyId;//this.hospitalFormGroup.get('CompanyId').value.CompanyId ? this.hospitalFormGroup.get('CompanyId').value.CompanyId : 0;
       admissionInsert['tariffId'] = this.hospitalFormGroup.get('TariffId').value.TariffId ? this.hospitalFormGroup.get('TariffId').value.TariffId : 0;
 
       admissionInsert['classId'] = this.wardFormGroup.get('ClassId').value.ClassId ? this.wardFormGroup.get('ClassId').value.ClassId : 0;
-      admissionInsert['departmentId'] = this.hospitalFormGroup.get('Departmentid').value.Departmentid ? this.hospitalFormGroup.get('Departmentid').value.Departmentid : 0;
+      admissionInsert['departmentId'] = this.hospitalFormGroup.get('Departmentid').value.DepartmentId;// ? this.hospitalFormGroup.get('DepartmentId').value.DepartmentId : 0;
       admissionInsert['relativeName'] = this.otherFormGroup.get('RelativeName').value ? this.otherFormGroup.get('RelativeName').value : '';
       admissionInsert['relativeAddress'] = this.otherFormGroup.get('RelativeAddress').value ? this.otherFormGroup.get('RelativeAddress').value : '';
 
-      admissionInsert['phoneNo'] = this.personalFormGroup.get('PhoneNo').value ? this.personalFormGroup.get('PhoneNo').value : '';
-      admissionInsert['mobileNo'] = this.otherFormGroup.get('RelatvieMobileNo').value ? this.personalFormGroup.get('MobileNo').value : '';
-      admissionInsert['relationshipId'] = this.otherFormGroup.get('RelationshipId').value.RelationshipId ? this.otherFormGroup.get('RelationshipId').value.RelationshipId : 0;
+      admissionInsert['phoneNo'] = this.personalFormGroup.get('MobileNo').value ? this.personalFormGroup.get('MobileNo').value : '';
+      admissionInsert['mobileNo'] = this.otherFormGroup.get('RelatvieMobileNo').value ? this.otherFormGroup.get('RelatvieMobileNo').value : '';
+      admissionInsert['relationshipId'] = this.otherFormGroup.get('RelationshipId').value.RelationshipId || 0;
       admissionInsert['addedBy'] = this.accountService.currentUserValue.user.id;
 
-      admissionInsert['isMLC'] = false;
+      admissionInsert['isMLC'] = this.otherFormGroup.get('IsMLC').value || false;
       admissionInsert['motherName'] = '';
-      admissionInsert['admittedDoctor1'] = this.hospitalFormGroup.get('DoctorIdOne').value.DoctorIdOne ? this.hospitalFormGroup.get('DoctorIdOne').value.DoctorId : 0;
-      admissionInsert['admittedDoctor2'] = this.hospitalFormGroup.get('DoctorIdTwo').value.DoctorIdTwo ? this.hospitalFormGroup.get('DoctorIdTwo').value.DoctorId : 0;
-
+      admissionInsert['admittedDoctor1'] = this.hospitalFormGroup.get('admittedDoctor1').value.DoctorId ? this.hospitalFormGroup.get('admittedDoctor1').value.DoctorId : 0;
+      admissionInsert['admittedDoctor2'] = this.hospitalFormGroup.get('admittedDoctor2').value.DoctorId ? this.hospitalFormGroup.get('admittedDoctor2').value.DoctorId : 0;
       admissionInsert['RefByTypeId'] = 0;
       admissionInsert['RefByName'] = 0;
-      admissionInsert['SubTpaComId'] = 0;
-      admissionInsert['PolicyNo'] = 0; //this.hospitalFormGroup.get('PolicyNo').value.DoctorIdOne ? this.hospitalFormGroup.get('DoctorIdOne').value.DoctorId : 0;
-      admissionInsert['AprovAmount'] = 0; //this.hospitalFormGroup.get('DoctorIdTwo').value.DoctorIdTwo ? this.hospitalFormGroup.get('DoctorIdTwo').value.DoctorId : 0;
+      admissionInsert['SubTpaComId'] = this.SubCompanyId;//this.hospitalFormGroup.get('SubCompanyId').value.SubCompanyId ? this.hospitalFormGroup.get('SubCompanyId').value.SubCompanyId : 0;
+      admissionInsert['PolicyNo'] = 0;
+      admissionInsert['AprovAmount'] = 0;
+      admissionInsert['CompDOD'] = this.dateTimeObj.date || '01/01/1900',
+        admissionInsert['IsPackagePatient'] = 0;
+      admissionInsert['isOpToIPConv'] = this.otherFormGroup.get('OPIPChange').value,
 
-      admissionInsert['CompDOD'] = this.dateTimeObj.date;
-      admissionInsert['IsPackagePatient'] = 0;
+        admissionInsert['RefDoctorDept'] = this.hospitalFormGroup.get('Departmentid').value.DepartmentName || '';
+
+      submissionObj['admissionNewInsert'] = admissionInsert;
+
+      let BedStatusUpdate = {};
+      BedStatusUpdate['BedId'] = this.wardFormGroup.get('BedId').value.BedId ? this.wardFormGroup.get('BedId').value.BedId : 0;
+
+      submissionObj['bedStatusUpdate'] = BedStatusUpdate;
 
 
-      submissionObj['admissionInsert'] = admissionInsert;
-      submissionObj['bedUpdate'] = { bedId: this.bedObj.BedId ? this.bedObj.BedId : 0 };
       console.log(submissionObj);
       this._AdmissionService.AdmissionRegisteredInsert(submissionObj).subscribe(response => {
-        console.log(submissionObj);
-        if (response) {
-          // this.toastr.success('Congratulations !', 'Admission save Successfully !');
-          Swal.fire('Congratulations !', 'Admission Of Registered Patient Successfully !', 'success').then((result) => {
-            if (result.isConfirmed) {
-              this._matDialog.closeAll();
 
-            }
-          });
+      
+        if (response) { 
+          this.toastr.success('Admission Of Registered Patient Successfully !', 'Congratulations !', {
+            toastClass: 'tostr-tost custom-toast-success',
+          });   
+              this._matDialog.closeAll();
+              this.getAdmittedPatientCasepaperview(response, true);
+              this.onReset();
         } else {
-          Swal.fire('Error !', 'Admission not saved', 'error');
+          this.toastr.success('Admission not saved', 'error', {
+            toastClass: 'tostr-tost custom-toast-success',
+          }); 
         }
         this.isLoading = '';
       });
 
     }
-
   }
-
-
-
-  getTemplate() {
-    let query = 'select tempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp a where TempId=13';
-    this._AdmissionService.getTemplate(query).subscribe((resData: any) => {
-      this.printTemplate = resData[0].TempDesign;
-
-      let keysArray = ['HospitalName', 'HospitalAddress', 'Phone', 'EmailId', 'FirstName', 'MiddleName', 'LastName',
-        'AdmissionId', 'RegNo', 'PatientName', 'AgeDay', 'AgeMonth', 'Age', 'GenderName', 'MaritalStatusName', 'Address',
-        'MobileNo', 'IsMLC', 'PhoneNo', 'AdmissionTime', 'IPDNo', 'CompanyName',
-        'DepartmentName', 'AdmittedDoctorName', 'AdmittedDoctor1', 'BedName', 'AdmittedDoctor2',
-        'RelationshipName', 'RefDoctorName', 'RelativePhoneNo', 'IsReimbursement', 'TariffName',
-        'RelativeName', 'Aadharcardno', 'RelativeAddress']; // resData[0].TempKeys;
-      for (let i = 0; i < keysArray.length; i++) {
-        let reString = "{{" + keysArray[i] + "}}";
-        let re = new RegExp(reString, "g");
-        this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
-      }
-      /// this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(this.reportPrintObj.AdvanceAmount));
-      //  this.printTemplate = this.printTemplate.replace('StrAdvanceAmount','₹' + (this.reportPrintObj.AdvanceAmount.toFixed(2)));
-      this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.reportPrintObj.AdmissionDate));
-      this.printTemplate = this.printTemplate.replace('StrAdmissionDate', this.transform1(this.reportPrintObj.AdmissionDate));
-
-      this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
-
-      setTimeout(() => {
-        this.print();
-      }, 1000);
-    });
-  }
-
-  transform1(value: string) {
-    var datePipe = new DatePipe("en-US");
-    value = datePipe.transform(value, 'dd/MM/yyyy hh:mm a');
-    return value;
-  }
-
-  transform2(value: string) {
-    var datePipe = new DatePipe("en-US");
-    value = datePipe.transform((new Date), 'dd/MM/yyyy h:mm a');
-    return value;
-  }
-
-
-  getPrint(el) {
-    console.log(el);
-    debugger;
-    var D_data = {
-      "AdmissionId": el,
-      // "AdmissionId": 5,
-    }
-    // console.log(D_data);
-    let printContents; //`<div style="padding:20px;height:550px"><div><div style="display:flex"><img src="http://localhost:4200/assets/images/logos/Airmid_NewLogo.jpeg" width="90"><div><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="color:#464343">6158, Siddheshwar peth, near zilla parishad, solapur-3 phone no.: (0217) 2323001 / 02</div><div style="color:#464343">www.yashodharahospital.org</div></div></div><div style="border:1px solid grey;border-radius:16px;text-align:center;padding:8px;margin-top:5px"><span style="font-weight:700">IP ADVANCE RECEIPT</span></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex;justify-content:space-between"><div style="display:flex"><div style="width:100px;font-weight:700">Advance No</div><div style="width:10px;font-weight:700">:</div><div>6817</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Reg. No</div><div style="width:10px;font-weight:700">:</div><div>117399</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Date</div><div style="width:10px;font-weight:700">:</div><div>26/06/2019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3:15:49PM</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex;width:477px"><div style="width:100px;font-weight:700">Patient Name</div><div style="width:10px;font-weight:700">:</div><div>Mrs. Suglabai Dhulappa Waghmare</div></div><div style="display:flex"><div style="width:60px;font-weight:700">IPD No</div><div style="width:10px;font-weight:700">:</div><div>IP/53757/2019</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:100px;font-weight:700">DOA</div><div style="width:10px;font-weight:700">:</div><div>30/10/2019</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:100px;font-weight:700">Patient Type</div><div style="width:10px;font-weight:700">:</div><div>Self</div></div></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Advacne Amount</div><div style="width:10px;font-weight:700">:</div><div>4,000.00</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:150px;font-weight:700">Amount in Words</div><div style="width:10px;font-weight:700">:</div><div>FOUR THOUSANDS RUPPEE ONLY</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Reason of Advance</div><div style="width:10px;font-weight:700">:</div><div></div></div></div></div><div style="position:relative;top:100px;text-align:right"><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="font-weight:700;font-size:16px">Cashier</div><div>Paresh Manlor</div></div></div>`;
-    this.subscriptionArr.push(
-      this._AdmissionService.getAdmissionPrint(D_data).subscribe(res => {
-        this.reportPrintObj = res[0] as Admission;
-        this.getTemplate();
-        console.log(this.reportPrintObj);
-
-      })
-    );
-  }
-
-  // PRINT 
-  print() {
-    // HospitalName, HospitalAddress, AdvanceNo, PatientName
-    let popupWin, printContents;
-    // printContents =this.printTemplate; // document.getElementById('print-section').innerHTML;
-
-    popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
-    // popupWin.document.open();
-    popupWin.document.write(` <html>
-    <head><style type="text/css">`);
-    popupWin.document.write(`
-      </style>
-          <title></title>
-      </head>
-    `);
-    popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
-    </html>`);
-    popupWin.document.close();
-  }
-
-
-
-  onDoctorOneChange(value) {
-    console.log(this.hospitalFormGroup.get('DoctorIdOne').value);
-  }
-
-  backClicked() {
-    this.admissionFormStepper.previous();
-  }
-
-  dateTimeObj: any;
-  getDateTime(dateTimeObj) {
-    console.log('dateTimeObj==', dateTimeObj);
-    this.dateTimeObj = dateTimeObj;
-  }
-
-  ngOnDestroy() {
-    this._onDestroy.next();
-    this._onDestroy.complete();
-  }
+  this.onClose();
 }
-//
+onClose() {
+
+  this.searchFormGroup.get('RegId').reset();
+  this.searchFormGroup.get('RegId').disable(); 
+  this.isCompanySelected = false;
+  this.hospitalFormGroup.get('CompanyId').setValue(this.CompanyList[-1]);
+  this.hospitalFormGroup.get('CompanyId').clearValidators();
+  this.hospitalFormGroup.get('SubCompanyId').clearValidators();
+  this.hospitalFormGroup.get('CompanyId').updateValueAndValidity();
+  this.hospitalFormGroup.get('SubCompanyId').updateValueAndValidity();
+  this.patienttype = 1;
+  this.personalFormGroup.get('CityId').reset();
+}
+onReset() {
+  // this._AdmissionService.mySaveForm.reset();
+  this.personalFormGroup.get('RegId').reset();
+  this.personalFormGroup.get('RegId').disable();
+
+  if (this.searchFormGroup.get('regRadio').value == "registration")
+    this.searchFormGroup.get('RegId').disable();
+  else
+    this.searchFormGroup.get('RegId').enable();
+
+
+  this.registerObj = new AdmissionPersonlModel({});
+  this.personalFormGroup.reset();
+
+  this.personalFormGroup = this.createPesonalForm();
+  this.personalFormGroup.markAllAsTouched();
+
+  this.hospitalFormGroup = this.createHospitalForm();
+  this.hospitalFormGroup.markAllAsTouched();
+
+  this.wardFormGroup = this.wardForm();
+  this.wardFormGroup.markAllAsTouched();
+
+  this.otherFormGroup = this.otherForm();
+  this.otherFormGroup.markAllAsTouched()
+
+  this.getPrefixList();
+  // this.getHospitalList();
+  this.getPrefixList();
+  this.getPatientTypeList();
+  this.getTariffList();
+  this.getAreaList();
+  this.getMaritalStatusList();
+  this.getReligionList();
+  this.getDepartmentList();
+  this.getRelationshipList();
+
+  // this.getDoctorList();
+  this.getDoctor1List();
+  this.getDoctor2List();
+  this.getWardList();
+  this.getCompanyList();
+  this.getSubTPACompList();
+  this.getcityList1(); 
+ 
+  this.isCompanySelected = false;
+  this.hospitalFormGroup.get('CompanyId').setValue(this.CompanyList[-1]);
+  this.hospitalFormGroup.get('CompanyId').clearValidators();
+  this.hospitalFormGroup.get('SubCompanyId').clearValidators();
+  this.hospitalFormGroup.get('CompanyId').updateValueAndValidity();
+  this.hospitalFormGroup.get('SubCompanyId').updateValueAndValidity();
+
+
+}
+AdList: boolean = false;
+SpinLoading: boolean = false;
+getAdmittedPatientCasepaperview(AdmissionId, flag) {
+  this.sIsLoading = 'loading-data';
+  debugger
+  let AdmissionID
+  if (flag) {
+    AdmissionID = AdmissionId
+  } else {
+    AdmissionID = AdmissionId.AdmissionID
+  }
+
+  setTimeout(() => {
+    this.SpinLoading = true;
+    this.AdList = true;
+    this._AdmissionService.getAdmittedPatientCasepaaperView(
+      AdmissionID
+    ).subscribe(res => {
+      const matDialog = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Admission Paper  Viewer"
+          }
+        });
+
+      matDialog.afterClosed().subscribe(result => {
+        this.AdList = false;
+        this.sIsLoading = ' ';
+      });
+    });
+
+  }, 100); 
+}
+
+
+
+
+ 
+ 
+ 
+}
+

@@ -71,7 +71,7 @@ confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
             heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                 {
                     action: gridActions.edit, callback: (data: any) => {
-                        this.onSave(data);
+                        this.EditAdmission(data);
                     }
                 }, {
                     action: gridActions.delete, callback: (data: any) => {
@@ -113,6 +113,33 @@ confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
        // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
     ],
     row: 25
+    }
+
+    NewAdmission(){ 
+      //this.advanceDataStored.storage = new AdmissionPersonlModel(this.registerObj);
+      const dialogRef = this._matDialog.open(NewAdmissionComponent,
+        {
+          maxWidth: "100%",
+          height: '95%',
+          width: '95%', 
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed - Insert Action', result); 
+      });
+    }
+    
+    EditAdmission(row){ 
+      //this.advanceDataStored.storage = new AdmissionPersonlModel(this.registerObj);
+      const dialogRef = this._matDialog.open(NewAdmissionComponent,
+        {
+          maxWidth: "100%",
+          height: '95%',
+          width: '95%', 
+          data: row
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed - Insert Action', result); 
+      });
     }
 
 onSave(data){}
@@ -3053,7 +3080,7 @@ export class Bed {
       this.BedName = Bed.BedName || '';
     }
   }
-}
+} 
 
 export class AdmissionPersonlModel {
   AadharCardNo: any;
@@ -3280,7 +3307,7 @@ TemplateResultInHTML:any;
       this.RefDocName = AdmissionPersonl.RefDocName || '';
       this.RelativePhoneNo = AdmissionPersonl.RelativePhoneNo || '';
       this.DepartmentId=AdmissionPersonl.DepartmentId || 0;
-      this.IsOpToIPconv=AdmissionPersonl.IsOpToIPconv || '';
+      this.IsOpToIPconv=AdmissionPersonl.IsOpToIPconv || 0;
       this.RelativeName=AdmissionPersonl.RelativeName || '';
       this.RelativeAddress=AdmissionPersonl.RelativeAddress || ''
       this.ClassName=AdmissionPersonl.ClassName || ''
