@@ -3469,9 +3469,9 @@ export class RegInsert {
             this.PhoneNo = RegInsert.PhoneNo || "";
             this.MobileNo = RegInsert.MobileNo || "";
             this.AddedBy = RegInsert.AddedBy || "";
-            this.AgeYear = RegInsert.AgeYear || "";
-            this.AgeMonth = RegInsert.AgeMonth || "";
-            this.AgeDay = RegInsert.AgeDay || "";
+            this.AgeYear = RegInsert.AgeYear || 0;
+            this.AgeMonth = RegInsert.AgeMonth || 0;
+            this.AgeDay = RegInsert.AgeDay || 0;
             this.CountryId = RegInsert.CountryId || "";
             this.StateId = RegInsert.StateId || "";
             this.CityId = RegInsert.CityId || "";

@@ -642,7 +642,7 @@ console.log(event.value)
       this.viewgetMonthlypurchaseGrnPdf();
     }
     else if (this.ReportName == 'GRN Report') {
-      this.viewgetGRNReportPdf();
+      this.viewGrnReport();
     } 
     else if (this.ReportName == 'GRN Report - NABH') {
       this.viewgetGRNReportNABHPdf();
@@ -1320,8 +1320,19 @@ debugger
      }, 100);
    }
  
+
+
+viewGrnReport(){
+  debugger
+  if(this._OPReportsService.userForm.get("ReportType").value=='0')
+    this.viewgetGRNReportdetailPdf()
+  else
+  this.viewgetGRNReportsummaryPdf()
+}
+
+
    
-   viewgetGRNReportPdf() {
+viewgetGRNReportdetailPdf() {
     let StoreId =0
 
     if (this._OPReportsService.userForm.get('StoreId').value)
@@ -1336,6 +1347,47 @@ debugger
     setTimeout(() => {
       this.SpinLoading = true;
       this._OPReportsService.getGRNReportlist(
+        this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",StoreId,SupplierId
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "95vw",
+            height: '850px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "GRN REPORT Viewer"
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+      });
+
+    }, 100);
+  }
+
+  viewgetGRNReportsummaryPdf() {
+    let StoreId =0
+
+    if (this._OPReportsService.userForm.get('StoreId').value)
+     StoreId = this._OPReportsService.userForm.get('StoreId').value.StoreId
+    
+    let SupplierId =0
+
+    if (this._OPReportsService.userForm.get('SupplierName').value)
+      SupplierId = this._OPReportsService.userForm.get('SupplierName').value.SupplierId
+    
+
+    setTimeout(() => {
+      this.SpinLoading = true;
+      this._OPReportsService.getGRNReportsummarylist(
         this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
         this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",StoreId,SupplierId
       ).subscribe(res => {

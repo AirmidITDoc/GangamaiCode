@@ -570,6 +570,18 @@ return this._httpClient.get("OPReport/view-OPDoctorWiseNewOldPatientReport?FromD
   }
     return this._httpClient.get("InventoryReports/view-GRNReport?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId+"&SupplierID="+SupplierID);
   }
+
+
+  
+
+  
+  public getGRNReportsummarylist(FromDate,ToDate,StoreId,SupplierID,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.get("InventoryReports/view-GRNReportSummary?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId+"&SupplierID="+SupplierID);
+  }
+
   
   public getGRNReportNABH(FromDate,ToDate,StoreId,loader = true){
     if (loader) {
