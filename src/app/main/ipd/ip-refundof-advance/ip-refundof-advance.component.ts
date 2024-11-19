@@ -183,12 +183,12 @@ export class IPRefundofAdvanceComponent implements OnInit {
       this.PatientType = this.selectedAdvanceObj.PatientType
       this.DOA = this.selectedAdvanceObj.DOA 
       this.IPDNo = this.selectedAdvanceObj.IPDNo 
-      this.getRefundofAdvanceListRegIdwise();
+      //this.getRefundofAdvanceListRegIdwise();
     }
    
    // this.getRefundofAdvanceListRegIdwise();
-    this.getReturndetails();
-    this.getCashCounterComboList();
+    // this.getReturndetails();
+    // this.getCashCounterComboList();
   }
 
   createSearchForm() {
@@ -264,7 +264,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
     this.DOA = obj.DOA 
     this.IPDNo = obj.IPDNo 
     this.onEdit(obj);
-    this.getRefundofAdvanceListRegIdwise();
+    //this.getRefundofAdvanceListRegIdwise();
   }
 
   getOptionText1(option) {
@@ -291,14 +291,14 @@ export class IPRefundofAdvanceComponent implements OnInit {
       "RegID":this.vRegId
     }
     console.log(m_data)
-    this.isLoadingStr = 'loading';
-    this._IpSearchListService.getRefundofAdvanceList(m_data).subscribe(data => {
-      this.dsrefundlist.data = data as IPRefundofAdvance[];
-      console.log(this.dsrefundlist.data)
-      this.dsrefundlist.sort = this.sort;
-      this.dsrefundlist.paginator = this.paginator;
-      this.isLoadingStr = this.dsrefundlist.data.length == 0 ? 'no-data' : '';
-    });
+    //this.isLoadingStr = 'loading';
+    // this._IpSearchListService.getRefundofAdvanceList(m_data).subscribe(data => {
+    //   this.dsrefundlist.data = data as IPRefundofAdvance[];
+    //   console.log(this.dsrefundlist.data)
+    //   this.dsrefundlist.sort = this.sort;
+    //   this.dsrefundlist.paginator = this.paginator;
+    //   this.isLoadingStr = this.dsrefundlist.data.length == 0 ? 'no-data' : '';
+    // });
   }
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);

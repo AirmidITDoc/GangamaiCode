@@ -41,6 +41,8 @@ import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { IPAdvanceComponent } from '../../ip-search-list/ip-advance/ip-advance.component';
+import { IPRefundofAdvanceComponent } from '../../ip-refundof-advance/ip-refundof-advance.component';
 
 
 @Component({
@@ -2822,6 +2824,28 @@ this.getAdmittedPatientList_1()
         });
       
        
+  }
+  NewAdvance(){  
+    const dialogRef = this._matDialog.open(IPAdvanceComponent,
+      {
+        maxWidth: "100%",
+        height: '90%',
+        width: '80%', 
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result); 
+    });
+  }
+  NewRefdvance(){  
+    const dialogRef = this._matDialog.open(IPRefundofAdvanceComponent,
+      {
+        maxWidth: "100%",
+        height: '90%',
+        width: '80%', 
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result); 
+    });
   }
 }
 

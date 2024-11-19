@@ -214,7 +214,25 @@ export class NewAdmissionComponent implements OnInit {
   optionsAdDoc2: any[] = [];
   V_SearchRegList: any = [];
 
-
+  autocompleteModeprefix: string = "Prefix";
+  autocompleteModemaritalstatus: string = "MaritalStatus";
+  autocompleteModearea: string = "Area";
+  autocompleteModecity: string = "City";
+  autocompleteModereligion: string = "Religion";
+  autocompleteModegender: string = "GenderByPrefix";
+  autocompleteModestatus: string = "StateByCity";
+  autocompleteModecountry: string = "CountryByState";
+  autocompleteModerelationship: string = "Relationship";
+  autocompleteModepatienttype: string = "PatientType";
+  autocompleteModetariff: string = "Tariff";
+  autocompleteModeDepartment: string = "Department";
+  autocompleteModeRefDoctor: string = "RefDoctor";
+  autocompleteModeDoctor: string = "ConDoctor";
+  autocompleteModeCompany: string = "Company";
+  autocompleteModeSubCompany: string = "SubCompany";
+  autocompleteModeWardName: string = "Room";
+  autocompleteModeBedName: string = "Bed";
+  autocompleteModeClass: string = "Class";
   ngOnInit(): void { 
   
     this.isAlive = true; 
@@ -222,9 +240,7 @@ export class NewAdmissionComponent implements OnInit {
     this.personalFormGroup = this.createPesonalForm();  
     this.hospitalFormGroup = this.createHospitalForm();  
     this.wardFormGroup = this.wardForm();  
-    this.otherFormGroup = this.otherForm(); 
-
-
+    this.otherFormGroup = this.otherForm();  
     this.searchFormGroup = this.createSearchForm();
 
     if (this.data) { 
@@ -232,12 +248,8 @@ export class NewAdmissionComponent implements OnInit {
         this.registerObj = this.data.row;
         console.log(this.registerObj)
        // this.registerObj.PrefixID=this.registerObj.PrefixID;  
- 
-    
-    }
-
-
   
+    } 
     this.getPrefixList();
     this.getMaritalStatusList();
     this.getReligionList();
@@ -290,6 +302,106 @@ export class NewAdmissionComponent implements OnInit {
     );
 
   }
+  prefixId = 0;
+  MaritalStatusId = 0;
+  areaId = 0;
+  cityId = 0;
+  religionId = 0;
+  genderId = 0;
+  stateId = 0;
+  CountryId = 0;
+  RelationshipId = 0;
+  PatientTypeId = 0;
+  TariffId = 0;
+  DepartmentId = 0;
+  RefDoctorId = 0;
+  ConDoctorId = 0;
+  CompanyID =0;
+  SubCompanyID=0;
+  RoomId=0;
+  BedId=0;
+  ClassId=0;
+  selectChangeprefix(obj: any){
+    console.log(obj);
+    this.prefixId=obj.value
+  }
+  selectChangemarital(obj: any){
+    console.log(obj);
+    this.MaritalStatusId=obj.value
+  }
+  selectChangearea(obj: any){
+    console.log(obj);
+    this.areaId=obj.value
+  }
+  selectChangecity(obj: any){
+    console.log(obj);
+    this.cityId=obj.value
+  }
+  selectChangereligion(obj: any){
+    console.log(obj);
+    this.religionId=obj.value
+  }
+  selectChangegender(obj: any){
+    console.log(obj);
+    this.genderId=obj.value
+  }
+  selectChangestate(obj: any){
+    console.log(obj);
+    this.stateId=obj.value
+  }
+  selectChangeCountry(obj: any){
+    console.log(obj);
+    this.CountryId=obj.value
+  }
+  selectChangeRelationship(obj: any){
+    console.log(obj);
+    this.RelationshipId=obj.value
+  }
+  selectChangePatientType(obj: any){
+    console.log(obj);
+    this.PatientTypeId=obj.value
+  }
+  selectChangeTariff(obj: any){
+    console.log(obj);
+    this.TariffId=obj.value
+  }
+  selectChangeDepartment(obj: any){
+    console.log(obj);
+    this.DepartmentId=obj.value
+  }
+  selectChangeRefDoctor(obj: any){
+    console.log(obj);
+    this.RefDoctorId=obj.value
+  }
+  selectChangeConDoctor(obj: any){
+    console.log(obj);
+    this.ConDoctorId=obj.value
+  }
+  selectChangeCompany(obj: any){
+    console.log(obj);
+    this.CompanyID=obj.value
+  }
+  selectChangeSubCompany(obj: any){
+    console.log(obj);
+    this.SubCompanyID=obj.value
+  }
+  selectChangeRoom(obj: any){
+    console.log(obj);
+    this.RoomId=obj.value
+  }
+  selectChangeBed(obj: any){
+    console.log(obj);
+    this.BedId=obj.value
+  }
+  selectChangeClass(obj: any){
+    console.log(obj);
+    this.ClassId=obj.value
+  }
+
+
+
+
+
 
   createPesonalForm() {
     return this.formBuilder.group({
