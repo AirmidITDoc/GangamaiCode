@@ -1797,10 +1797,11 @@ export class AdmissionComponent implements OnInit {
             this.toastr.success('Admission save Successfully !', 'Congratulations !', {
               toastClass: 'tostr-tost custom-toast-success',
             });   
-            if(this.otherFormGroup.get("template").value)
-                this.getAdmittedPatientCasepaperview(response, true);
-              else
-              this.getAdmittedPatientCasepaperTempview(response, true);
+            this.getAdmittedPatientCasepaperview(response, true);
+            // if(this.otherFormGroup.get("template").value)
+            //     this.getAdmittedPatientCasepaperview(response, true);
+            //   else
+            //   this.getAdmittedPatientCasepaperTempview(response, true);
                 this.onReset(); 
           } else {
             this.toastr.success('Admission not saved', 'error', {
@@ -1881,10 +1882,6 @@ export class AdmissionComponent implements OnInit {
               toastClass: 'tostr-tost custom-toast-success',
             });   
                 this._matDialog.closeAll();
-                // this.getAdmittedPatientCasepaperview(response, true);
-                if(this.otherFormGroup.get("template").value)
-                  this.getAdmittedPatientCasepaperview(response, true);
-                else
                 this.getAdmittedPatientCasepaperTempview(response, true);
                 this.onReset();
           } else {
