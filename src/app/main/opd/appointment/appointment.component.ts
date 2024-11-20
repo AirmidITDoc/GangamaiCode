@@ -1984,7 +1984,7 @@ debugger
                         Swal.fire('Congratulations !', 'New Appoinment save Successfully !', 'success').then((result) => {
                         });
 
-                        this.viewgetPatientAppointmentReportPdf(response, false);
+                        this.viewgetPatientAppointmentTemplateReportPdf(response, false);
                     }
                 } else {
                     Swal.fire('Error !', 'Appoinment not saved', 'error');
@@ -2102,7 +2102,7 @@ debugger
             if (response) {
                 Swal.fire('Congratulations !', 'Registered Appoinment Saved Successfully  !', 'success').then((result) => {
                     if (result.isConfirmed) {
-                        this.viewgetPatientAppointmentReportPdf(response, false);
+                        this.viewgetPatientAppointmentTemplateReportPdf(response, false);
                     }
                     this.getVisitList1();
                 });
