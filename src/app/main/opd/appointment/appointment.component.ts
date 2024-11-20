@@ -759,8 +759,8 @@ export class AppointmentComponent implements OnInit {
             IsHealthCard: '',
             Days: '',
             HealthcardDate: [new Date().toISOString()],
-            HealthCardNo: ''
-
+            HealthCardNo: '',
+          
         });
 
     }
@@ -800,7 +800,9 @@ export class AppointmentComponent implements OnInit {
             // Doctorname: '',
             // RefDocName: '',
             // ClassId: '',
-            PurposeId: ''
+            PurposeId: '',
+            template:''
+
         });
     }
     IsPhoneAppflag: boolean = true;
@@ -1259,7 +1261,7 @@ export class AppointmentComponent implements OnInit {
 
     getVisitList1() {
         
-debugger
+
         console.log(this._AppointmentSreviceService.myFilterform.get("DoctorId").value)
         var D_data = {
             F_Name: this._AppointmentSreviceService.myFilterform.get("FirstName").value.trim() + "%" || "%",
@@ -1691,6 +1693,13 @@ debugger
             });
         }
     }
+    Istemplate=false;
+    chkTemplate(event){
+        if (event.checked) 
+        this.Istemplate=true
+    else
+    this.Istemplate=true
+    }
 
     onNewSave() {
         if ((this.vPrefixID == '' || this.vPrefixID == null || this.vPrefixID == undefined)) {
@@ -1984,7 +1993,12 @@ debugger
                         Swal.fire('Congratulations !', 'New Appoinment save Successfully !', 'success').then((result) => {
                         });
 
-                        this.viewgetPatientAppointmentReportPdf(response, false);
+                        // this.viewgetPatientAppointmentReportPdf(response, false);
+                        debugger
+                        if(!this.Istemplate)
+                            this.viewgetPatientAppointmentReportPdf(response, false);
+                          else
+                          this.viewgetPatientAppointmentTemplateReportPdf(response, false);
                     }
                 } else {
                     Swal.fire('Error !', 'Appoinment not saved', 'error');
@@ -2102,7 +2116,12 @@ debugger
             if (response) {
                 Swal.fire('Congratulations !', 'Registered Appoinment Saved Successfully  !', 'success').then((result) => {
                     if (result.isConfirmed) {
-                        this.viewgetPatientAppointmentReportPdf(response, false);
+                        // this.viewgetPatientAppointmentReportPdf(response, false);
+                        debugger
+                        if(!this.Istemplate)
+                            this.viewgetPatientAppointmentReportPdf(response, false);
+                          else
+                          this.viewgetPatientAppointmentTemplateReportPdf(response, false);
                     }
                     this.getVisitList1();
                 });

@@ -640,6 +640,13 @@
                                         <mat-radio-button value="false">Death Summary</mat-radio-button>
                                     </mat-radio-group>
                                 </div>
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <div fxLayout="row" class="gap-8">
+                                        <mat-checkbox formControlName="template" (change)="chkTemplate($event)"
+                                        style="padding: 15px;"> Is Template Print
+                                    </mat-checkbox>&nbsp;
+                                    </div>
+                                </div>
                             </mat-card>
                         </div>
                     </div>

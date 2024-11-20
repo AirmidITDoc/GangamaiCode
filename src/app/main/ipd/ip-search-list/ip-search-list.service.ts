@@ -225,7 +225,8 @@ constructor(public _httpClient:HttpClient,
       DoctorName1: '',
     
       DoctorIdOne: '',
-      DoctorIdTwo: ''
+      DoctorIdTwo: '',
+      template:''
     });
   }
 

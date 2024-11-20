@@ -424,12 +424,11 @@
                                                             <mat-icon>cached icon</mat-icon>
                                                         </button>
                                                         <button mat-icon-button matTooltip="Vital Information"
-                                                        *ngIf="contact.IsCancelled==0"
-                                                        (click)="VitalInfo(contact)">
-                                                        <mat-icon  [disabled]="contact.IsCancelled"
-                                                            class="disabled-icon">
-                                                            perm_identity</mat-icon>
-                                                    </button>
+                                                            *ngIf="contact.IsCancelled==0" (click)="VitalInfo(contact)">
+                                                            <mat-icon [disabled]="contact.IsCancelled"
+                                                                class="disabled-icon">
+                                                                perm_identity</mat-icon>
+                                                        </button>
                                                         <button mat-icon-button matTooltip="print i card"
                                                             (click)="printIcard(contact)"
                                                             *ngIf="contact.IsCancelled==0">
@@ -686,7 +685,7 @@
                                                             Alphabets</mat-error>
                                                     </mat-form-field>
 
-                                                    
+
                                                 </div>
 
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -790,7 +789,7 @@
                                                             <input name="AgeYear" formControlName="AgeYear"
                                                                 placeholder="Age (Y)" matInput
                                                                 [(ngModel)]="registerObj.AgeYear"
-                                                                (ngModelChange)="registerObj.AgeYear = $event" 
+                                                                (ngModelChange)="registerObj.AgeYear = $event"
                                                                 maxlength="3" #agey readonly
                                                                 (keyup)="ageyearcheck(registerObj.AgeYear)"
                                                                 (keydown)="onEnteragey($event,registerObj.AgeYear)"
@@ -1059,25 +1058,30 @@
 
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <div fxLayout="row" class="gap-8">
-                                                        <mat-checkbox formControlName="IsHealthCard" (change)="chkHealthcard($event)"
-                                                             style="padding: 15px;">IsHealthCard
-                                                        </mat-checkbox>&nbsp;  
-                                                    </div> 
+                                                        <mat-checkbox formControlName="IsHealthCard"
+                                                            (change)="chkHealthcard($event)"
+                                                            style="padding: 15px;">IsHealthCard
+                                                        </mat-checkbox>&nbsp;
+                                                    </div>
                                                 </div>
-                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%"> 
-                                                        <mat-form-field appearance="outline" *ngIf="Healthcardflag">
-                                                            <mat-label>Follow Up Date</mat-label>
-                                                            <input matInput [matDatepicker]="pickerHealthcard" placeholder="Choose a date" formControlName="HealthcardDate"
-                                                                [(ngModel)]="HealthCardExpDate">
-                                                            <mat-datepicker-toggle matSuffix [for]="pickerHealthcard"></mat-datepicker-toggle>
-                                                            <mat-datepicker #pickerHealthcard></mat-datepicker>
-                                                        </mat-form-field> 
+                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <mat-form-field appearance="outline" *ngIf="Healthcardflag">
+                                                        <mat-label>Follow Up Date</mat-label>
+                                                        <input matInput [matDatepicker]="pickerHealthcard"
+                                                            placeholder="Choose a date" formControlName="HealthcardDate"
+                                                            [(ngModel)]="HealthCardExpDate">
+                                                        <mat-datepicker-toggle matSuffix
+                                                            [for]="pickerHealthcard"></mat-datepicker-toggle>
+                                                        <mat-datepicker #pickerHealthcard></mat-datepicker>
+                                                    </mat-form-field>
                                                 </div>
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <mat-form-field appearance="outline" *ngIf="Healthcardflag">
                                                         <mat-label>Health Card No.</mat-label>
-                                                        <input type="text" placeholder="Enter Health Card No" matInput #healthcard [(ngModel)]="vhealthCardNo"
-                                                            formControlName="HealthCardNo"  (keypress)="keyPressAlphanumeric($event)">
+                                                        <input type="text" placeholder="Enter Health Card No" matInput
+                                                            #healthcard [(ngModel)]="vhealthCardNo"
+                                                            formControlName="HealthCardNo"
+                                                            (keypress)="keyPressAlphanumeric($event)">
                                                     </mat-form-field>
                                                 </div>
                                                 <!-- </div> -->
@@ -1324,12 +1328,23 @@
                                                         </mat-option>
                                                     </mat-autocomplete>
                                                 </mat-form-field>
-                                            </div>
 
+                                               
+                                            </div>
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <div fxLayout="row" class="gap-8">
+                                                    <mat-checkbox formControlName="template" (change)="chkTemplate($event)"
+                                                    style="padding: 15px;"> Is Template Print
+                                                </mat-checkbox>&nbsp;
+                                                </div>
+                                            </div>
                                         </div>
+
+
                                     </form>
                                 </mat-expansion-panel>
                             </mat-accordion>
+
                             <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
                                 <!-- (click)="nextClicked(VisitFormGroup)" -->
                                 <button class="btn btn-danger-outline" (click)="onClose()">Reset</button>

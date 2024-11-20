@@ -544,6 +544,17 @@ bp:any=1000;
     this._matDialog.closeAll();
   }
   ClinicalFInding:any;
+
+
+  Istemplate=false;
+  chkTemplate(event){
+      if (event.checked) 
+      this.Istemplate=true
+  else
+  this.Istemplate=true
+  }
+
+
 OnSave(){
   debugger
  
@@ -714,7 +725,12 @@ OnSave(){
         Swal.fire('Congratulations !', 'Discharge Summary Updated Successfully !', 'success').then((result) => {
           if (result.isConfirmed) {
             this._matDialog.closeAll();
-            this.viewgetDischargesummaryPdf(this.vAdmissionId,);
+            debugger
+            // this.viewgetDischargesummaryPdf(this.vAdmissionId,);
+            if(!this.Istemplate)
+              this.viewgetDischargesummaryPdf(this.vAdmissionId);
+            else
+            this.viewgetDischargesummaryTempPdf(this.vAdmissionId);
           }
         });
       } else {
