@@ -501,7 +501,7 @@ public onEnteraddress(event): void {
                 middleName: this._doctorService.myform.get("MiddleName").value.trim() || "",
                 lastName: this._doctorService.myform.get("LastName").value.trim() || "",
                 dateOfBirth: this.registerObj.DateofBirth,//this.datePipe.transform(this.registerObj.DateofBirth, 'MM/dd/yyyy') || '01/01/1900',
-                City: this._doctorService.myform.get("CityId").value.CityName || "",
+                City: this._doctorService.myform.get("CityId").value.CityId|| 0,
                 address: this._doctorService.myform.get("Address").value || "",
                 phone: this._doctorService.myform.get("Phone").value || "0",
                 mobile: this._doctorService.myform.get("MobileNo").value || "",
@@ -514,11 +514,11 @@ public onEnteraddress(event): void {
                 passportNo: this._doctorService.myform.get("PassportNo").value || "0",
                 esino: this._doctorService.myform.get("ESINO").value || "0",
                 regNo: this._doctorService.myform.get("RegNo").value || "0",
-                // regDate:this.registerObj.RegDate,// this._doctorService.myform.get("RegDate").value || '01/01/1900',//this.datePipe.transform(this.registerObj.RegDate, 'MM/dd/yyyy') || '01/01/1900',
+                regDate:this.registerObj.RegDate,// this._doctorService.myform.get("RegDate").value || '01/01/1900',//this.datePipe.transform(this.registerObj.RegDate, 'MM/dd/yyyy') || '01/01/1900',
                 mahRegNo: this._doctorService.myform.get("MahRegNo").value || "0",
                 PanCardNo: this._doctorService.myform.get("Pancardno").value || "0",
                 AadharCardNo:  this._doctorService.myform.get("AadharCardNo").value || "0",
-                // mahRegDate:this.registerObj.MahRegDate,// this.datePipe.transform(this.registerObj.MahRegDate, 'MM/dd/yyyy') || '01/01/1900',
+                mahRegDate:this.registerObj.MahRegDate,// this.datePipe.transform(this.registerObj.MahRegDate, 'MM/dd/yyyy') || '01/01/1900',
                 isInHouseDoctor: true,
                 isOnCallDoctor: true,
                 Addedby: this.accountService.currentUserValue.user.id,
@@ -527,6 +527,7 @@ public onEnteraddress(event): void {
                 Departments: data2
             };
             console.log(m_data)
+            debugger
             if (!this._doctorService.myform.get("DoctorId").value) {
                 this._doctorService.doctortMasterInsert(m_data).subscribe((data) => {
                     if (data) {

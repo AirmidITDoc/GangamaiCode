@@ -168,7 +168,7 @@ export class DoctorMasterComponent implements OnInit {
 
     onAdd() {
         const dialogRef = this._matDialog.open(NewDoctorComponent, {
-            maxWidth: "85vw",
+            maxWidth: "95vw",
             maxHeight: "98vh",
             width: "100%",
             height: "100%",
@@ -261,6 +261,7 @@ export class DoctorMaster {
     Education:any;
     ESINO:any;
     Signature:string;
+    HospitalName:any;
 
     /**
      * Constructor
@@ -311,7 +312,7 @@ export class DoctorMaster {
             this.isInHouseDoctor= DoctorMaster.isInHouseDoctor || "";
             this.ESINO= DoctorMaster.ESINO || "";
             this.Signature=DoctorMaster.Signature||"";
-          
+            this.HospitalName=DoctorMaster.HospitalName||"";
         }
     }
 }
