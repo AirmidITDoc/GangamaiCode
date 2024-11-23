@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { SupplierMasterComponent } from "./supplier-master.component";
 import { RouterModule, Routes } from "@angular/router";
 import { SupplierFormMasterComponent } from "./supplier-form-master/supplier-form-master.component";
@@ -31,6 +31,9 @@ import { MatBadgeModule } from "@angular/material/badge";
 import { SupplierMasterService } from "./supplier-master.service";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { MatChipsModule } from "@angular/material/chips";
+
+import { SharedModule } from "app/main/shared/shared.module";
+import { MatDialogModule } from "@angular/material/dialog";
 const routes: Routes = [
     {
         path: "**",
@@ -71,9 +74,11 @@ const routes: Routes = [
         MatBadgeModule,
         MatSelectModule,
         MatDatepickerModule,
-        MatChipsModule
+        MatChipsModule,
+        SharedModule,
+        MatDialogModule,
     ],
-    providers: [SupplierMasterService],
+    providers: [SupplierMasterService, DatePipe],
     entryComponents: [SupplierMasterComponent],
 })
 export class SupplierMasterModule {}

@@ -29,6 +29,7 @@
        
         <mat-card>
             <div fxFlex="100" fxLayout="row wrap">
+
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Supplier Type</mat-label>
@@ -48,6 +49,7 @@
                         </mat-autocomplete>
                     </mat-form-field>
                 </div>
+
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                         <mat-label>Supplier Name</mat-label>
@@ -58,7 +60,6 @@
                         Alphabets</span> -->
                     </mat-form-field>
                     <!-- [ngClass]="{ 'is-invalid': submitted && f.SupplierType.errors }" -->
-
 
                 </div>
                 
@@ -74,8 +75,8 @@
                             digits Mobile number is
                             required</mat-error>
                     </mat-form-field>
-
                 </div>
+
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                         <mat-label>Phone Number</mat-label>
@@ -88,8 +89,6 @@
                             digits Mobile number is
                             required</mat-error>
                     </mat-form-field>
-
-
                 </div>
 
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -100,6 +99,7 @@
                         <!-- <mat-error>Please enter Address </mat-error> -->
                     </mat-form-field>
                 </div>
+
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                         <mat-label>Taluka</mat-label>
@@ -107,8 +107,9 @@
                             (keydown)="onEnterTaluka($event)" #Taluka>
                     </mat-form-field>
                 </div>
+
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <mat-form-field appearance="outline" fxFlex style="margin-right: 10px;">
+                    <!-- <mat-form-field appearance="outline" fxFlex style="margin-right: 10px;">
                         <mat-label>City</mat-label>
                         <input matAutocompletePosition="below" type="text" placeholder="Select City" matInput #city
                             formControlName="CityId" [matAutocomplete]="autoCity" required
@@ -125,11 +126,13 @@
                                 {{option.CityName}}
                             </mat-option>
                         </mat-autocomplete>
-                    </mat-form-field>
+                    </mat-form-field> -->
+
+                    <airmid-autocomplete [mode]="autocompleteModecity" (selectDdlObject)="selectChangecity($event)" ></airmid-autocomplete>
                 </div>
                
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                    <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                         <mat-label>State Name</mat-label>
                         <mat-select formControlName="StateId" name="StateId"
                             (selectionChange)="onChangeCountryList($event.value)">
@@ -138,12 +141,14 @@
                                 {{m.StateName}}
                             </mat-option>
                         </mat-select>
-                    </mat-form-field>
+                    </mat-form-field> -->
+
+                    <airmid-autocomplete [mode]="autocompleteModestate" (selectDdlObject)="selectChangestate($event)" ></airmid-autocomplete>
                 </div>
 
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                    <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                         <mat-label>Country Name</mat-label>
                         <mat-select formControlName="CountryId">
                             <mat-option></mat-option>
@@ -151,8 +156,9 @@
                                 {{g.CountryName}}
                             </mat-option>
                         </mat-select>
-                    </mat-form-field>
+                    </mat-form-field> -->
 
+                    <airmid-autocomplete [mode]="autocompleteModecountry" (selectDdlObject)="selectChangecountry($event)"></airmid-autocomplete>
                 </div>
 
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -182,6 +188,7 @@
         <mat-card>
             <!-- oninput="this.value = this.value.replace(/['^[a-zA-Z0-9]*$']/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);" -->
             <div fxFlex="100" fxLayout="row wrap">
+
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                         <mat-label>Fax</mat-label>
@@ -189,6 +196,7 @@
                             (keydown)="onEnterfax($event)" #Fax>
                     </mat-form-field>
                 </div>
+
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                         <mat-label>Email</mat-label>
@@ -197,6 +205,7 @@
                         <span class="error" *ngIf="f.Email.invalid && f.Email.touched">Email required in Format</span>
                     </mat-form-field>
                 </div>
+
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                         <mat-label>Freight</mat-label>
@@ -222,8 +231,9 @@
                             (keydown)="onEnterCreditPeriod($event)" #creditp [(ngModel)]="vCreditPeriod">
                     </mat-form-field>
                 </div>
+
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                    <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                         <mat-label>ModeOfPayment</mat-label>
                         <input matAutocompletePosition="below" type="text" placeholder="Select ModeOfPayment" matInput
                             formControlName="ModeOfPayment" [matAutocomplete]="autoModeofpayment" required
@@ -240,10 +250,12 @@
                                 {{option.ModeOfPayment}}
                             </mat-option>
                         </mat-autocomplete>
-                    </mat-form-field>
+                    </mat-form-field> -->
+
+                    <airmid-autocomplete [mode]="autocompleteModeofpayment" (selectDdlObject)="selectChangemodeofpayment($event)" ></airmid-autocomplete>
                 </div>
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                    <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                         <mat-label>TermOfPayment</mat-label>
                         <input matAutocompletePosition="below" type="text" placeholder="Select TermOfPayment" matInput
                             formControlName="TermOfPayment" [matAutocomplete]="autoTermofpayment"
@@ -260,7 +272,9 @@
                                 {{option.TermsOFPayment}}
                             </mat-option>
                         </mat-autocomplete>
-                    </mat-form-field>
+                    </mat-form-field> -->
+
+                    <airmid-autocomplete [mode]="autocompleteModetermofpayment" (selectDdlObject)="selectChangetermofpayment($event)" ></airmid-autocomplete>
                 </div>
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
@@ -338,7 +352,7 @@
                         </mat-autocomplete>
                     </mat-form-field> -->
 
-                    <mat-form-field appearance="outline" fxFlex>
+                    <!-- <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Bank Name</mat-label>
                         <input matAutocompletePosition="below" type="text" placeholder="Select BankName" matInput
                             formControlName="BankName" [matAutocomplete]="autoBank1"
@@ -354,7 +368,9 @@
                                 {{option.BankName}}
                             </mat-option>
                         </mat-autocomplete>
-                    </mat-form-field>
+                    </mat-form-field> -->
+
+                    <airmid-autocomplete [mode]="autocompleteModebankName" (selectDdlObject)="selectChangebankName($event)" ></airmid-autocomplete>
                 </div>
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
@@ -413,16 +429,18 @@
                         <input name="BankNo" formControlName="OpeningBal" placeholder="Enter OpeningBal" matInput
                              [(ngModel)]="vOpeningBal" #OpeningBal (keydown)="onEnterOpeningBal($event)"
                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,10);">
-                        <mat-error class="error"
+                        
+                            <mat-error class="error"
                             *ngIf="_supplierService.myform.get('OpeningBal').invalid && _supplierService.myform.get('OpeningBal').touched">Only
                             digits number is
                             required</mat-error>
                     </mat-form-field>
+
                 </div>
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                  
                     <!-- data-toggle="dropup" -->
-                    <mat-form-field appearance="outline" fxFlex class="dropup">
+                    <!-- <mat-form-field appearance="outline" fxFlex class="dropup">
                         <mat-label>Store Name</mat-label>
                         <input matAutocompletePosition="up" type="text" placeholder="Select Store" 
                             [(ngModel)]="vStoreId" matInput #Store
@@ -440,9 +458,9 @@
                                     (click)="$event.stopPropagation()"> {{option.StoreName}}</mat-checkbox>
                             </mat-option>
                         </mat-autocomplete>
-                    </mat-form-field>
+                    </mat-form-field> -->
                    
-
+                    <airmid-autocomplete [mode]="autocompleteModestoreName" (selectDdlObject)="selectChangestoreName($event)" ></airmid-autocomplete>
                 </div>
                 <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <mat-chip-list #chipList>

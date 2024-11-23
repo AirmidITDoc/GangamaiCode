@@ -1,6 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { gridRequest } from "app/core/models/gridRequest";
+import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
     providedIn: "root",
@@ -8,8 +10,9 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 export class TariffMasterService {
     myform: FormGroup;
     myformSearch: FormGroup;
+
     constructor(
-        private _httpClient: HttpClient,
+        private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder
     ) {
         this.myform = this.createTariffForm();
@@ -35,20 +38,23 @@ export class TariffMasterService {
         this.createTariffForm();
     }
 
-    public getTariffMasterList(param) {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_tariffNameList_by_Name",
-            param
-        );
+    public getTariffMasterList(param: gridRequest, showLoader=true) {
+        return this._httpClient.PostData("TarrifMaster/List", param, showLoader);
     }
 
-    public tariffMasterInsert(param) {
-        return this._httpClient.post("Billing/TeriffSave", param);
-    }
+    // public tariffMasterInsert(param) {
+    //     return this._httpClient.post("Billing/TeriffSave", param);
+    // }
 
-    public tariffMasterUpdate(param) {
-        return this._httpClient.post("Billing/TariffUpdate", param);
+    // public tariffMasterUpdate(param) {
+    //     return this._httpClient.post("Billing/TariffUpdate", param);
+    // }
+
+    // New code
+    public deactivateTheStatus(m_data) {
+        return this._httpClient.PostData("ClassMaster", m_data);
     }
+    // 
 
     populateForm(param) {
         this.myform.patchValue(param);

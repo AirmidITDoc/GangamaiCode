@@ -31,11 +31,11 @@ export class ConcessionReasonMasterComponent implements OnInit {
         gridConfig: gridModel = {
             apiUrl: "ConcessionReasonMaster/List",
             columnsList: [
-                { heading: "Code", key: "concessionId", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "Concession Reason ", key: "concessionReason", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+                { heading: "Code", key: "concessionId", sort: true, align: 'left', emptySign: 'NA',width:200 },
+                { heading: "Concession Reason ", key: "concessionReason", sort: true, align: 'left', emptySign: 'NA',width:600 },
+                { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center",width:200 },
                 {
-                    heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                    heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:200, actions: [
                         {
                             action: gridActions.edit, callback: (data: any) => {
                                 this.onSave(data);
