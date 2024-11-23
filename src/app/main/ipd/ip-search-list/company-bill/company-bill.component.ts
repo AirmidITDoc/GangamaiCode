@@ -1646,9 +1646,38 @@ export class CompanyBillComponent implements OnInit {
           });
       });
     }
- 
-
-
+  getPharmacybill() {
+    this._IpSearchListService.getPharmacybill(
+      this.selectedAdvanceObj.AdmissionID
+    ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "IP Draft Bill  Viewer"
+          }
+        });
+    });
+  }
+  getPharmacybillWithSR() {
+    this._IpSearchListService.getPharmacybillWithSR(
+      this.selectedAdvanceObj.AdmissionID
+    ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "IP Draft Bill  Viewer"
+          }
+        });
+    });
+  }
 
     tabChanged = (tabChangeEvent: MatTabChangeEvent): void => {
   
@@ -1742,6 +1771,32 @@ export class CompanyBillComponent implements OnInit {
          this.getChargesList(); 
         }); 
     }
+    getConvertHospitalBill(){
+      if(!this.dataSource.data.length){
+        this.toastr.warning('Charge List is Blank', 'warning!', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return
+      }
+      let CompanyUpdate = {};
+      CompanyUpdate['admId'] =  this.selectedAdvanceObj.AdmissionID || 0
+      var SubmitObj={
+        "companyupdate": CompanyUpdate
+      }
+      console.log(SubmitObj)
+      this._IpSearchListService.getConvertHospitalBill(SubmitObj).subscribe(data =>{
+        if(data){
+          this.toastr.success('Record Converted Successfully.', 'Save !', {
+            toastClass: 'tostr-tost custom-toast-success',
+          });
+          this.getChargesList(); 
+        } else {
+          this.toastr.error('API Error!', 'Error!', {
+            toastClass: 'tostr-tost custom-toast-error',
+          });
+        }
+      })
+    } 
   }
   
   export class Bill {

@@ -206,6 +206,16 @@
                                     </button>
                                 </div>
                             </div>
+
+
+                            <div class="button-row-group" style="margin-top: 5px;">
+                                <button mat-raised-button  (click)="getPharmacybill()">
+                                    <mat-icon>print</mat-icon> Sales Bill</button>
+                              
+                                <button mat-raised-button  (click)="getPharmacybillWithSR()"
+                                     > <mat-icon>print</mat-icon>SalesBill WithReturn</button>
+
+                            </div>
                             <!-- <div class="cash-container gap-12" style="padding-top: 8px;">
                                 <div class="net-amt-section">
                                     <div class="net-amt">
@@ -1126,16 +1136,21 @@
                                 <div fxLayout="row" fxLayoutAlign="space-between center">
                                     <div class="action-content-left" fxLayout="row" class="gap-24"
                                         fxLayoutAlign="start center">
+
+                                        <button mat-raised-button (click)="getConvertHospitalBill()">Convert Hospital Bill</button> 
+                                        
                                         <mat-checkbox formControlName="Admincheck" (checked)=true
                                             (change)="AdminStatus($event)">
                                             Admin
                                         </mat-checkbox> 
 
+
+
                                     </div>
                                     <div class="action-content-right modal-footer" fxLayout="row"
                                         fxLayoutAlign="end center">
 
-                                        
+                                       
                                         <mat-radio-group aria-label="Select an option" formControlName="BillType"
                                         name="regRadio">
                                         <mat-radio-button value="1">IP FinalBill

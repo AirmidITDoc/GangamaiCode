@@ -412,7 +412,10 @@ constructor(public _httpClient:HttpClient,
     });
   }
 
-
+  public getConvertHospitalBill(employee)
+  {    
+    return this._httpClient.post("InPatient/Updatet_Comp_HBill",employee);
+  }
   public advanceHeaderInsert(employee)
   {    
     return this._httpClient.post("InPatient/IPAdvance",employee);
@@ -1098,6 +1101,19 @@ public getCompanyFInalBillWithSR(DRNo,loader = true){
     this._loaderService.show();
 }
   return this._httpClient.get("InPatient/view-IPCompanyFinalBillWithSR?AdmissionID=" + DRNo);
+}
+
+public getPharmacybill(OP_IP_ID,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
+  return this._httpClient.get("IPReport/view-IPSalesBillReport?OP_IP_ID=" + OP_IP_ID);
+}
+public getPharmacybillWithSR(OP_IP_ID,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
+  return this._httpClient.get("IPReport/view-IPSalesBillWithReturnReport?OP_IP_ID=" + OP_IP_ID);
 }
 
 

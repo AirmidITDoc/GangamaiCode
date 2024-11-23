@@ -726,6 +726,13 @@
                                                             <input matInput formControlName="PaidbacktoPatient"
                                                                 [(ngModel)]="v_PaidbacktoPatient" readonly>
                                                         </mat-form-field>
+
+                                                       
+                                                         <div style="padding: 15px;">
+                                                            <mat-checkbox fxFlex="15%"   [checked] formControlName="IsPurchaseWsie"
+                                                                (change)="getPurchaseRateWise()">PurchaseRateWsie
+                                                            </mat-checkbox>
+                                                        </div>
                                                     </div>
                                                     <div class="sales-radio-buttons gap-8" fxLayout="row"
                                                         fxLayoutAlign="space-between center">

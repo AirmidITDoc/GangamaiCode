@@ -60,9 +60,7 @@ export class CompanyInformationComponent implements OnInit {
     this._AdmissionService.getCompanyIdDetail(Query).subscribe(data => {
       this.registerObj1 = data[0];
       console.log(this.registerObj1);
-    });
-
-    
+    }); 
     }
     this.companyFormGroup = this.createCompanyForm();
   }
@@ -125,11 +123,9 @@ export class CompanyInformationComponent implements OnInit {
         "hDiscAmt": this.companyFormGroup.get('DiscByManagement').value || 0,
         "c_OutsideInvestAmt": this.companyFormGroup.get('InvestigationPaid').value || 0,
         "recoveredByPatient": this.companyFormGroup.get('RecoverAmtbyPatient').value || 0,
-        "medicalApreAmt": this.companyFormGroup.get('MedicalAmt').value.SubCompanyId || 0,
-        "C_FinalBillAmt": this.companyFormGroup.get('BillToTpa').value || 0
-
-      }
-
+        "medicalApreAmt": this.companyFormGroup.get('MedicalAmt').value || 0,
+        "C_FinalBillAmt": this.companyFormGroup.get('BillToTpa').value || 0 
+      } 
     }
     console.log(m_data)
 

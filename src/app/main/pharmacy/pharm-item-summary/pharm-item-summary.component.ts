@@ -61,9 +61,14 @@ export class PharmItemSummaryComponent implements OnInit {
   printflag:boolean=false;
   
   @ViewChild(MatSort) sort: MatSort;
-  @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  //@ViewChild('paginator', { static: true }) public paginator: MatPaginator;
   @ViewChild('secondPaginator', { static: true }) public secondPaginator: MatPaginator;
+  @ViewChild('BatchPaginator', { static: true }) public BatchPaginator: MatPaginator;
+  @ViewChild('WithoutBatPaginator', { static: true }) public WithoutBatPaginator: MatPaginator;
   @ViewChild('thirdPaginator', { static: true }) public thirdPaginator: MatPaginator;
+
+ 
 
   constructor(
     public _PharmaitemsummaryService: PharmaitemsummaryService,
@@ -78,10 +83,11 @@ export class PharmItemSummaryComponent implements OnInit {
   }
   UIForm:FormGroup;
   ngOnInit(): void {
-    this.gePharStoreList();
-
-    this.geItemWithbatchexpList();
+  
     this.searchFormGroup = this.createSearchForm();
+    this.gePharStoreList();
+    this.getItemList();
+    //this.geItemWithbatchexpList();
   }
   chosenYearHandler(event){
     this.chosenYear = event.getFullYear();
@@ -95,16 +101,17 @@ export class PharmItemSummaryComponent implements OnInit {
       BatchRadio: ['Batch'],
     });
   }
-  onChangeReg(event) {
+  onChangeReg(event) { 
     if (event.value == 'Batch') {
       this.Itemflag=true;
     }
+    this.getItemList();
   }
 
   getItemList(){
-    if(this.searchFormGroup.get("BatchRadio").value == 'Batch'){
+    if(this.searchFormGroup.get("BatchRadio").value == 'Batch'){ 
       this.geItemWithbatchexpList();
-    }else if(this.searchFormGroup.get("BatchRadio").value == 'NoBatch'){
+    }else if(this.searchFormGroup.get("BatchRadio").value == 'NoBatch'){ 
       this.geItemWithoutbatchexpList();
     }
   }
@@ -125,38 +132,59 @@ export class PharmItemSummaryComponent implements OnInit {
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
+  resultsLength = 0;
   geItemWithbatchexpList() {
     var vdata = {
       "NonMovingDay": this._PharmaitemsummaryService.SearchGroup.get("NonMovingDay").value || 0,
-      "StoreId" : this.accountService.currentUserValue.user.storeId || this._PharmaitemsummaryService.SearchGroup.get("StoreId").value.StoreId
+      "StoreId" : this.accountService.currentUserValue.user.storeId || this._PharmaitemsummaryService.SearchGroup.get("StoreId").value.StoreId,
+      "Start":(this.paginator?.pageIndex??0),
+      "Length":(this.paginator?.pageSize??35)
     }
-   this._PharmaitemsummaryService.getItemBatchexpwiseList(vdata).subscribe(data => {
-      this.dsNonMovItemWithexpdate.data = data as Itemmovment[];
-      this.dsNonMovItemWithexpdate.sort = this.sort;
-      this.dsNonMovItemWithexpdate.paginator = this.paginator;
-      this.sIsLoading = '';
-    },
-      error => {
-        this.sIsLoading = '';
-      });
+    console.log(vdata)
+    setTimeout(() => {
+      this._PharmaitemsummaryService.getItemWithoutBatchexpwiseList(vdata).subscribe(
+        (Visit) => {
+          this.dsNonMovItemWithexpdate.data = Visit["Table1"] ?? [] as Itemmovment[];
+          console.log(this.dsNonMovItemWithexpdate.data)
+          this.dsNonMovItemWithexpdate.sort = this.sort;
+          this.resultsLength = Visit["Table"][0]["total_row"]; 
+          this.isLoadingStr = this.dsNonMovItemWithexpdate.data.length == 0 ? 'no-data' : '';
+          this.sIsLoading = ''; 
+        },
+        (error) => {
+          this.sIsLoading = '';
+        }
+      );
+    }, 1000);  
   }
-
+ 
 
   geItemWithoutbatchexpList() {
     this.sIsLoading = 'loading-data';
     var vdata = {
-      "NonMovingDay": this._PharmaitemsummaryService.SearchGroup.get("NonMovingDay").value,
-      "StoreId": this.accountService.currentUserValue.user.storeId || this._PharmaitemsummaryService.SearchGroup.get("StoreId").value.StoreId
+      "NonMovingDay": this._PharmaitemsummaryService.SearchGroup.get("NonMovingDay").value  || 0,
+      "StoreId": this.accountService.currentUserValue.user.storeId || this._PharmaitemsummaryService.SearchGroup.get("StoreId").value.StoreId,
+      "Start":(this.paginator?.pageIndex??0),
+      "Length":(this.paginator?.pageSize??35)
     }
-      this._PharmaitemsummaryService.getItemWithoutBatchexpwiseList(vdata).subscribe(data => {
-      this.dsNonMovItemWithoutexpdate.data = data as Itemmovment[];
-      this.dsNonMovItemWithoutexpdate.sort = this.sort;
-      this.dsNonMovItemWithoutexpdate.paginator = this.paginator;
-      this.sIsLoading = '';
-    },
-      error => {
-        this.sIsLoading = '';
-      });
+    console.log(vdata)
+    setTimeout(() => {
+      this._PharmaitemsummaryService.getItemWithoutBatchexpwiseList(vdata).subscribe(
+        (Visit) => {
+          debugger
+          this.dsNonMovItemWithoutexpdate.data = Visit["Table1"] ?? [] as Itemmovment[];
+          console.log(this.dsNonMovItemWithoutexpdate.data)
+          //this.dsNonMovItemWithoutexpdate.sort = this.sort;
+          this.resultsLength = Visit["Table"][0]["total_row"];
+          // this.dsNonMovItemWithexpdate.paginator = this.paginator;
+          this.isLoadingStr = this.dsNonMovItemWithoutexpdate.data.length == 0 ? 'no-data' : '';
+          this.sIsLoading = '';  
+        },
+        (error) => {
+          this.sIsLoading = '';
+        }
+      );
+    }, 1000); 
   }  
  
   onClear(){
@@ -166,8 +194,8 @@ export class PharmItemSummaryComponent implements OnInit {
   getItemExpdatewiseList() {
     // this.sIsLoading = 'loading-data';
     var vdata = {
-     "ExpMonth":this.chosenMonth || 0,
-     "ExpYear": this.chosenYear  || 'YYYY',     
+     "ExpMonth": this.chosenMonth || 0,
+     "ExpYear":  this.chosenYear  || 'YYYY',     
      "StoreID": this.accountService.currentUserValue.user.storeId || 0        
     } 
     console.log(vdata)

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { LoaderService } from 'app/core/components/loader/loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,8 @@ export class PharmaitemsummaryService {
 
   constructor(
     public _httpClient: HttpClient,
-    private _formBuilder: FormBuilder
+    private _formBuilder: FormBuilder,
+    public _loadService : LoaderService
   ) { 
     this.userFormGroup = this.createUserForm();
     this.SearchGroup= this.createSearchFrom();
@@ -49,13 +51,22 @@ export class PharmaitemsummaryService {
     })
   }
  
-  public getItemBatchexpwiseList(Param){
+  public getItemBatchexpwiseList(Param,loader = true){
+    if(loader){
+      this._loadService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=m_PharSales_NonMovingItemList",Param);
   }
-  public getItemWithoutBatchexpwiseList(Param){
+  public getItemWithoutBatchexpwiseList(Param,loader = true){
+    if(loader){
+      this._loadService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=m_PharSales_NonMovingItemListWithoutBatchNo",Param);
   }
-  public getItemexpdatewise(Param){
+  public getItemexpdatewise(Param,loader = true){
+    if(loader){
+      this._loadService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=m_Phar_ItemExpReportMonthWise",Param)
   }
   public getLoggedStoreList(Param){
@@ -63,7 +74,10 @@ export class PharmaitemsummaryService {
   }
 
 
-  public getNonMovingItemview(NonMovingDay,StoreId ){
+  public getNonMovingItemview(NonMovingDay,StoreId,loader = true){
+    if(loader){
+      this._loadService.show();
+    }
     return this._httpClient.get("InventoryTransaction/view-NonMovingItem?NonMovingDay=" + NonMovingDay + "&StoreId=" +StoreId );
   }
 

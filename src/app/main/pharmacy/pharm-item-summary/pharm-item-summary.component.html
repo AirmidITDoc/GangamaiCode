@@ -56,6 +56,7 @@
                                                 matTooltip="search"
                                                 [disabled]="_PharmaitemsummaryService.SearchGroup.invalid">
                                                 <mat-icon class="searchiconbutton">search</mat-icon>
+                                                
                                             </button>
 
                                             <button mat-raised-button (click)="exportNonItemwithbatchReportExcel()"
@@ -93,16 +94,17 @@
 
                     <div class="content-card" style="border-radius:4px; ">
                         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
-                            <form [formGroup]="searchFormGroup" style="padding: 6px 6px 5px 5px;" fusePerfectScrollbar>
+                            <form [formGroup]="searchFormGroup" style="padding: 6px 6px 5px 5px;">
                                 <mat-radio-group aria-label="Select an option" formControlName="BatchRadio"
-                                    name="BatchRadio" (change)="onChangeReg($event)" fxFlex="100%" fxFlex.xs="100%">
+                                    name="BatchRadio" (change)="getItemList()" fxFlex="100%" fxFlex.xs="100%">
                                     <mat-radio-button value="Batch">With BatchExp </mat-radio-button>
                                     <mat-radio-button value="NoBatch">Without BatchExp</mat-radio-button>
                                 </mat-radio-group>
                             </form>
                         </div>
 
-                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px" *ngIf="Itemflag">
+                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px" 
+                        *ngIf="searchFormGroup.get('BatchRadio').value == 'Batch'">
                             <div fxFlex.gt-sm="100%" fxFlex>
 
                                 <div fxlayout="row">
@@ -113,9 +115,9 @@
                                             <div class="spinner-border text-danger"></div>
 
                                         </div>
-
-                                        <mat-table #table class="table1" matSort [dataSource]="dsNonMovItemWithexpdate"
-                                            [@animateStagger]="{value:'50'}" style="overflow:auto;width: 100%;">
+                                        <mat-table #table matSort class="table1" [dataSource]="dsNonMovItemWithexpdate"
+                                        [@animateStagger]="{value:'50'}" style="overflow:auto;width: 100%;"> 
+                                        
 
                                             <ng-container matColumnDef="ItemName">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
@@ -138,7 +140,7 @@
                                                     BatchExpDate
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.BatchExpDate}}
+                                                    {{contact.BatchExpDate | date:'dd/MM/yyyy'}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -186,11 +188,10 @@
                                                 [ngClass]="{'hide':!(dsNonMovItemWithexpdate!=null && dsNonMovItemWithexpdate.data.length==0)}">
                                             </mat-footer-row>
 
-                                        </mat-table>
-
-                                        <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="15"
-                                            showFirstLastButtons>
-                                        </mat-paginator>
+                                        </mat-table> 
+                                        <mat-paginator [pageSizeOptions]="[35, 50, 75, 100]" [pageSize]="35"
+                                        [length]="resultsLength" showFirstLastButtons (page)="getItemList()">
+                                       </mat-paginator>
                                     </div>
                                 </div>
                             </div>
@@ -198,7 +199,8 @@
 
 
 
-                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px" *ngIf="!Itemflag">
+                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px"
+                         *ngIf="searchFormGroup.get('BatchRadio').value == 'NoBatch'">
                             <div fxFlex.gt-sm="100%" fxFlex>
 
                                 <div fxlayout="row">
@@ -210,7 +212,7 @@
 
                                         </div>
 
-                                        <mat-table #table class="table1" matSort
+                                        <mat-table #table class="table2" matSort
                                             [dataSource]="dsNonMovItemWithoutexpdate" [@animateStagger]="{value:'50'}"
                                             style="overflow:auto;width: 100%;">
 
@@ -274,11 +276,11 @@
                                                 [ngClass]="{'hide':!(dsNonMovItemWithoutexpdate!=null && dsNonMovItemWithoutexpdate.data.length==0)}">
                                             </mat-footer-row>
 
-                                        </mat-table>
+                                        </mat-table> 
 
-                                        <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="15"
-                                            showFirstLastButtons>
-                                        </mat-paginator>
+                                        <mat-paginator [pageSizeOptions]="[35, 50, 75, 100]" [pageSize]="35"
+                                        [length]="resultsLength" showFirstLastButtons (page)="getItemList()">
+                                    </mat-paginator>
                                     </div>
                                 </div>
                             </div>
@@ -356,7 +358,7 @@
                                         <mat-form-field appearance="outline" fxFlex="15%">
                                             <mat-label>Exp Year</mat-label>
                                             <input matInput name="ExpYear" formControlName="ExpYear">
-                                        </mat-form-field>&nbsp;
+                                        </mat-form-field>
 
                                         <mat-form-field appearance="outline" fxFlex="15%">
                                             <mat-label>Exp Month</mat-label>

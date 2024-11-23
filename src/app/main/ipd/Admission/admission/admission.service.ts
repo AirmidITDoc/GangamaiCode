@@ -496,10 +496,16 @@ export class AdmissionService {
   
 
 
-  public CompanyUpdate(param) {
+  public CompanyUpdate(param,loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.post("InPatient/CompanyInformationUpdate", param);
   }
-  public getCompanyDetailsView(AdmissionId) {
+  public getCompanyDetailsView(AdmissionId,loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  }
 
     return this._httpClient.get("InPatient/view-CompanyInformation?AdmissionId=" + AdmissionId);
   }

@@ -1119,13 +1119,21 @@ export class SalesHospitalComponent implements OnInit {
       RegID1: '',
       PaidbyPatient: '',
       PaidbacktoPatient: '',
-      roundoffAmt: '0'
-
+      roundoffAmt: '0',
+      IsPurchaseWsie:''
 
       // Credit: [0]
     });
   }
-
+  getPurchaseRateWise(){
+    debugger
+    if(!this.saleSelectedDatasource.data.length){
+      this.ItemSubform.get('IsPurchaseWsie').enable();
+   
+    }else{
+      this.ItemSubform.get('IsPurchaseWsie').disable();
+    } 
+  }
 
   getConcessionReasonList() {
     this._salesService.getConcessionCombo().subscribe(data => {
@@ -1673,6 +1681,7 @@ export class SalesHospitalComponent implements OnInit {
         this.sIsLoading = '';
         this.saleSelectedDatasource.data = this.Itemchargeslist;
         this.ItemFormreset();
+        this.getPurchaseRateWise();
       }
       this.itemid.nativeElement.focus();
       this.add = false;
@@ -1708,7 +1717,12 @@ export class SalesHospitalComponent implements OnInit {
 
         this.BatchNo = result.BatchNo;
         this.BatchExpDate = this.datePipe.transform(result.BatchExpDate, "MM-dd-yyyy");
-        this.MRP = result.UnitMRP;
+        if(this.ItemSubform.get('IsPurchaseWsie').value == true){
+          this.MRP = result.PurchaseRate;
+        }else{
+          this.MRP = result.UnitMRP;
+        }
+    
         this.Qty = '';
         this.Bal = result.BalanceAmt;
         this.GSTPer = result.VatPercentage;
@@ -1789,7 +1803,7 @@ export class SalesHospitalComponent implements OnInit {
     this.ItemSubform.get('ConcessionId').clearValidators();
     this.ItemSubform.get('ConcessionId').updateValueAndValidity();
     this.ItemSubform.get('ConcessionId').disable();
-
+    this.ItemSubform.get('IsPurchaseWsie').enable();
     this.saleSelectedDatasource.data = [];
     this.ItemStkNot = [];
     this.getDraftorderList();
@@ -1954,7 +1968,7 @@ export class SalesHospitalComponent implements OnInit {
       this.ItemSubform.get('PatientName').enable();
       this.ItemSubform.updateValueAndValidity();
       this.paymethod = false;
-      this.OP_IPType = 2;
+      this.OP_IPType = 2;  
     }
   }
   onChangePaymentMode(event) {
@@ -2063,7 +2077,7 @@ export class SalesHospitalComponent implements OnInit {
       this.saleSelectedDatasource.data = this.Itemchargeslist;
     }
     Swal.fire('Success !', 'ItemList Row Deleted Successfully', 'success');
-
+    this.getPurchaseRateWise();
     // }
   }
 
@@ -2198,7 +2212,7 @@ export class SalesHospitalComponent implements OnInit {
 
     if (this.ItemSubform.get('PatientType').value == 'External') {
       SalesInsert['oP_IP_Type'] = 2;
-      SalesInsert['oP_IP_ID'] = this.OP_IP_Id;
+      SalesInsert['oP_IP_ID'] =  0;
     } else if (this.ItemSubform.get('PatientType').value == 'OP') {
       SalesInsert['oP_IP_Type'] = 0;
       SalesInsert['oP_IP_ID'] = this.OP_IP_Id;
@@ -2228,7 +2242,11 @@ export class SalesHospitalComponent implements OnInit {
     SalesInsert['wardId'] = 0;
     SalesInsert['bedID'] = 0;
     SalesInsert['discper_H'] = 0;
-    SalesInsert['isPurBill'] = 0;
+    if(this.ItemSubform.get('IsPurchaseWsie').value == true){
+      SalesInsert['isPurBill'] = 1;
+    }else{
+      SalesInsert['isPurBill'] = 0;
+    } 
     SalesInsert['isBillCheck'] = 0;
     SalesInsert['salesHeadName'] = ""
     SalesInsert['salesTypeId'] = 0;
@@ -2269,7 +2287,12 @@ export class SalesHospitalComponent implements OnInit {
       salesDetailInsert['sgstAmt'] = element.SGSTAmt;
       salesDetailInsert['igstPer'] = element.IgstPer
       salesDetailInsert['igstAmt'] = element.IGSTAmt
-      salesDetailInsert['isPurRate'] = 0;
+      if(this.ItemSubform.get('IsPurchaseWsie').value == true){
+        salesDetailInsert['isPurRate'] = 1;
+      }else{
+        salesDetailInsert['isPurRate'] = 0;
+      }
+    
       salesDetailInsert['stkID'] = element.StockId;
       salesDetailInsertarr.push(salesDetailInsert);
     });
@@ -2429,7 +2452,7 @@ export class SalesHospitalComponent implements OnInit {
 
     if (this.ItemSubform.get('PatientType').value == 'External') {
       SalesInsert['oP_IP_Type'] = 2;
-      SalesInsert['oP_IP_ID'] = this.OP_IP_Id;
+      SalesInsert['oP_IP_ID'] = 0;
     } else if (this.ItemSubform.get('PatientType').value == 'OP') {
       SalesInsert['oP_IP_Type'] = 0;
       SalesInsert['oP_IP_ID'] = this.OP_IP_Id;
@@ -2459,7 +2482,11 @@ export class SalesHospitalComponent implements OnInit {
     SalesInsert['wardId'] = 0;
     SalesInsert['bedID'] = 0;
     SalesInsert['discper_H'] = 0;
-    SalesInsert['isPurBill'] = 0;
+    if(this.ItemSubform.get('IsPurchaseWsie').value == true){
+      SalesInsert['isPurBill'] = 1;
+    }else{
+      SalesInsert['isPurBill'] = 0;
+    }  
     SalesInsert['isBillCheck'] = 0;
     SalesInsert['salesHeadName'] = ""
     SalesInsert['salesTypeId'] = 0;
@@ -2499,7 +2526,11 @@ export class SalesHospitalComponent implements OnInit {
       salesDetailInsert['sgstAmt'] = element.SGSTAmt;
       salesDetailInsert['igstPer'] = element.IgstPer
       salesDetailInsert['igstAmt'] = element.IGSTAmt
-      salesDetailInsert['isPurRate'] = 0;
+      if(this.ItemSubform.get('IsPurchaseWsie').value == true){
+        salesDetailInsert['isPurRate'] = 1;
+      }else{
+        salesDetailInsert['isPurRate']= 0;
+      }  
       salesDetailInsert['stkID'] = element.StockId;
       salesDetailInsertarr.push(salesDetailInsert);
     });
@@ -2647,7 +2678,7 @@ export class SalesHospitalComponent implements OnInit {
     salesInsertCredit['time'] = this.dateTimeObj.time;
     if (this.ItemSubform.get('PatientType').value == 'External') {
       salesInsertCredit['oP_IP_Type'] = 2;
-      salesInsertCredit['oP_IP_ID'] = this.OP_IP_Id;
+      salesInsertCredit['oP_IP_ID'] = 0;
     } else if (this.ItemSubform.get('PatientType').value == 'OP') {
       salesInsertCredit['oP_IP_Type'] = 0;
       salesInsertCredit['oP_IP_ID'] = this.OP_IP_Id;
@@ -2678,7 +2709,11 @@ export class SalesHospitalComponent implements OnInit {
     salesInsertCredit['wardId'] = 0;
     salesInsertCredit['bedID'] = 0;
     salesInsertCredit['discper_H'] = 0;
-    salesInsertCredit['isPurBill'] = 0;
+    if(this.ItemSubform.get('IsPurchaseWsie').value == true){
+      salesInsertCredit['isPurBill']  = 1;
+    }else{
+      salesInsertCredit['isPurBill']  = 0;
+    }   
     salesInsertCredit['isBillCheck'] = 0;
     salesInsertCredit['salesHeadName'] = ""
     salesInsertCredit['salesTypeId'] = 0;
@@ -2717,7 +2752,11 @@ export class SalesHospitalComponent implements OnInit {
       salesDetailInsertCredit['sgstAmt'] = element.SGSTAmt;
       salesDetailInsertCredit['igstPer'] = element.IgstPer
       salesDetailInsertCredit['igstAmt'] = element.IGSTAmt
-      salesDetailInsertCredit['isPurRate'] = 0;
+      if(this.ItemSubform.get('IsPurchaseWsie').value == true){
+        salesDetailInsertCredit['isPurRate']  = 1;
+      }else{
+        salesDetailInsertCredit['isPurRate']  = 0;
+      }    
       salesDetailInsertCredit['stkID'] = element.StockId;
       salesDetailInsertCreditarr.push(salesDetailInsertCredit);
     });
