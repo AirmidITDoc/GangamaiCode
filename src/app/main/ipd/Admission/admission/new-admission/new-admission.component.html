@@ -30,7 +30,7 @@
     <div class="modal-body-container">
       <form [formGroup]="searchFormGroup">
         <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="5px" fxLayoutAlign="space-between center"
-          style="padding: 0 20px;">
+          style="padding: 0 16px;">
           <div class="radio-container">
             <mat-radio-group aria-label="Select an option" formControlName="regRadio" name="regRadio"
               (change)="onChangeReg($event)">
@@ -92,14 +92,14 @@
 
             <div fxLayout="row wrap" fxLayoutGap="12px grid">
 
-              <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+              <div fxFlex="21.5%" fxFlex.xs="100%" fxFlex.sm="33%">
 
                 <airmid-autocomplete [mode]="autocompleteModeprefix"
                   (selectDdlObject)="selectChangeprefix($event)"></airmid-autocomplete>
-
-              </div>
+                </div>
+              
               <!--  [(ngModel)]="registerObj.firstName" -->
-              <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+              <div fxFlex="18.5%" fxFlex.xs="100%" fxFlex.sm="33%">
                 <mat-form-field appearance="outline" fxFlex>
                   <mat-label>First Name</mat-label>
                   <input name="FirstName" formControlName="FirstName" placeholder="First Name" matInput required
@@ -111,7 +111,7 @@
                 </mat-form-field>
               </div>
               <!--  [(ngModel)]="registerObj.middleName" -->
-              <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+              <div fxFlex="19%" fxFlex.xs="100%" fxFlex.sm="33%">
                 <mat-form-field appearance="outline" fxFlex>
                   <mat-label>Middle Name</mat-label>
                   <input name="MiddleName" formControlName="MiddleName" placeholder="Middle Name"
@@ -125,7 +125,7 @@
                 </mat-form-field>
               </div>
               <!--   [(ngModel)]="registerObj.lastName"-->
-              <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+              <div fxFlex="19%" fxFlex.xs="100%" fxFlex.sm="33%">
                 <mat-form-field appearance="outline" fxFlex>
                   <mat-label>Last Name</mat-label>
                   <input name="LastName" formControlName="LastName" placeholder="Last Name"
@@ -139,7 +139,7 @@
                 </mat-form-field>
               </div>
 
-              <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+              
                 <!-- <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Gender</mat-label>
                     <mat-select formControlName="GenderId">
@@ -154,11 +154,11 @@
                     </mat-error>
                   </mat-form-field> -->
 
-
+                  <div fxFlex="21.5%" fxFlex.xs="100%" fxFlex.sm="33%">
                 <airmid-autocomplete [mode]="autocompleteModegender"
                   (selectDdlObject)="selectChangegender($event)"></airmid-autocomplete>
-
-              </div>
+                    </div>
+            
 
               <div fxFlex="20%" fxFlex.xs="100%">
                 <mat-button-toggle-group [(ngModel)]="dateStyle" (change)="OnChangeDobType($event)"
@@ -237,17 +237,17 @@
                 </mat-form-field>
               </div>
 
-              <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+              <div fxFlex="21.5%" fxFlex.xs="100%" fxFlex.sm="33%">
                 <airmid-autocomplete [mode]="autocompleteModemaritalstatus"
                   (selectDdlObject)="selectChangemarital($event)"></airmid-autocomplete>
               </div>
 
-              <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+              <div fxFlex="21.5%" fxFlex.xs="100%" fxFlex.sm="33%">
                 <airmid-autocomplete [mode]="autocompleteModereligion"
                   (selectDdlObject)="selectChangereligion($event)"></airmid-autocomplete>
               </div>
 
-              <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+              <mat-form-field appearance="outline" fxFlex="19%" fxFlex.xs="100%" fxFlex.sm="33%">
                 <mat-label>Pan Card No</mat-label>
                 <input name="Pancardno" formControlName="Pancardno" placeholder="PanCardNo Number" matInput
                   [(ngModel)]="registerObj.Pancardno" #pan maxlength="10" (keydown)="onEnterpan($event)">
@@ -257,7 +257,7 @@
               </mat-form-field>
 
 
-              <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+              <mat-form-field appearance="outline" fxFlex="19%" fxFlex.xs="100%" fxFlex.sm="33%">
                 <mat-label>AadharCard Number</mat-label>
                 <input name="AadharCardNo" formControlName="AadharCardNo" placeholder="AadharCard Number" matInput
                   [(ngModel)]="registerObj.AadharCardNo" #AadharCardNo (keydown)="onEnterAadharCardNo($event)"
@@ -268,7 +268,7 @@
                 </mat-error>
               </mat-form-field>
 
-              <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+              <mat-form-field appearance="outline" fxFlex="19%" fxFlex.xs="100%" fxFlex.sm="33%">
                 <mat-label>Mobile Number</mat-label>
                 <input name="MobileNo" formControlName="MobileNo" placeholder="Mobile Number" matInput required #mobile
                   (keydown)="onEntermobile($event)" [(ngModel)]="registerObj.MobileNo"
@@ -280,7 +280,7 @@
                   required</mat-error>
               </mat-form-field>
 
-              <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+              <mat-form-field appearance="outline" fxFlex="19%" fxFlex.xs="100%" fxFlex.sm="33%">
                 <mat-label>Address</mat-label>
                 <input name="Address" formControlName="Address" placeholder="Address" matInput #address
                   (keydown)="onEnteraddress($event)" [(ngModel)]="registerObj.Address">
@@ -289,17 +289,17 @@
                   enter Address </mat-error>
               </mat-form-field>
 
-              <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+              <div fxFlex="21.5%" fxFlex.xs="100%" fxFlex.sm="33%">
                 <airmid-autocomplete [mode]="autocompleteModearea"
                   (selectDdlObject)="selectChangearea($event)"></airmid-autocomplete>
               </div>
 
-              <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+              <div fxFlex="21.5%" fxFlex.xs="100%" fxFlex.sm="33%">
                 <airmid-autocomplete [mode]="autocompleteModecity"
                   (selectDdlObject)="selectChangecity($event)"></airmid-autocomplete>
               </div>
 
-              <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+              <div fxFlex="21.5%" fxFlex.xs="100%" fxFlex.sm="33%">
                 <airmid-autocomplete [mode]="autocompleteModestatus"
                   (selectDdlObject)="selectChangestate($event)"></airmid-autocomplete>
               </div>
@@ -324,7 +324,7 @@
                     </mat-option>
                   </mat-select>
                 </mat-form-field> -->
-              <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+              <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="33%">
                 <airmid-autocomplete [mode]="autocompleteModecountry"
                   (selectDdlObject)="selectChangeCountry($event)"></airmid-autocomplete>
               </div>
@@ -343,22 +343,22 @@
         <mat-card>
           <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="12px grid" style="padding: 10px 0;">
 
-            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+            <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="33%">
               <airmid-autocomplete [mode]="autocompleteModepatienttype"
                 (selectDdlObject)="selectChangePatientType($event)"></airmid-autocomplete>
             </div>
 
-            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+            <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="33%">
               <airmid-autocomplete [mode]="autocompleteModetariff"
                 (selectDdlObject)="selectChangeTariff($event)"></airmid-autocomplete>
             </div>
 
-            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+            <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="33%">
               <airmid-autocomplete [mode]="autocompleteModeDepartment"
                 (selectDdlObject)="selectChangeDepartment($event)"></airmid-autocomplete>
             </div>
 
-            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+            <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="33%">
               <airmid-autocomplete [mode]="autocompleteModeDoctor"
                 (selectDdlObject)="selectChangeConDoctor($event)"></airmid-autocomplete>
             </div>
@@ -374,7 +374,7 @@
                 <mat-icon class="mat-icon-close"
                   (click)="hospitalFormGroup.get('admittedDoctor1').setValue(''); isAdmittedDoctor1Selected = false;">search</mat-icon>
               </span>
-              <mat-autocomplete #autoRefdoc="matAutocomplete" [displayWith]="getOptionTextAdDoc1">
+              <mat-autocomplete #autoRefdoc="matAutocomplete" >
                 <mat-option *ngFor="let option of filteredOptionsDoc1 | async" [value]="option">
                   {{option.Doctorname}}
                 </mat-option>
@@ -392,26 +392,26 @@
                 <mat-icon class="mat-icon-close"
                   (click)="hospitalFormGroup.get('admittedDoctor2').setValue(''); isAdmittedDoctor2Selected = false;">search</mat-icon>
               </span>
-              <mat-autocomplete #autodoc2="matAutocomplete" [displayWith]="getOptionTextDoc2">
+              <mat-autocomplete #autodoc2="matAutocomplete"  >
                 <mat-option *ngFor="let option of filteredOptionsDoc2 | async" [value]="option">
                   {{option.Doctorname}}
                 </mat-option>
               </mat-autocomplete>
             </mat-form-field>
 
-            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+            <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="33%">
               <airmid-autocomplete [mode]="autocompleteModeRefDoctor"
                 (selectDdlObject)="selectChangeRefDoctor($event)"></airmid-autocomplete>
             </div>
 
             <ng-container *ngIf="isCompanySelected">
 
-              <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+              <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="33%">
                 <airmid-autocomplete [mode]="autocompleteModeCompany"
                   (selectDdlObject)="selectChangeCompany($event)"></airmid-autocomplete>
               </div>
 
-              <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+              <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="33%">
                 <airmid-autocomplete [mode]="autocompleteModeSubCompany"
                   (selectDdlObject)="selectChangeSubCompany($event)"></airmid-autocomplete>
               </div>
@@ -429,17 +429,17 @@
         <mat-card>
           <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="12px grid" style="padding: 10px 0;">
 
-            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+            <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="33%">
               <airmid-autocomplete [mode]="autocompleteModeWardName"
                 (selectDdlObject)="selectChangeRoom($event)"></airmid-autocomplete>
             </div>
 
-            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+            <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="33%">
               <airmid-autocomplete [mode]="autocompleteModeBedName"
                 (selectDdlObject)="selectChangeBed($event)"></airmid-autocomplete>
             </div>
 
-            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+            <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="33%">
               <airmid-autocomplete [mode]="autocompleteModeClass"
                 (selectDdlObject)="selectChangeClass($event)"></airmid-autocomplete>
             </div>
@@ -509,7 +509,7 @@
           </div>
           <!-- [disabled]="personalFormGroup.invalid || hospitalFormGroup.invalid || wardFormGroup.invalid || otherFormGroup.invalid" -->
           <div class="next-div button-row-group">
-            <button class="btn btn-primary" color="accent" (click)="onNewSave()" [disabled]="!saveflag" #savebutton>
+            <button class="btn btn-primary" color="accent" (click)="OnSaveAdmission()"  #savebutton>
               <span>Save</span>
             </button>
             <button class="btn btn-danger-outline" (click)="onReset()">Reset</button>

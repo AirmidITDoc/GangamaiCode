@@ -1,4 +1,6 @@
-<mat-select [formControl]="ddlCtrl" placeholder="Search..." #singleSelect
+<mat-form-field appearance="outline" style="width: 300px;border: 1px;padding-right: 10px;">
+    <mat-label>Enter Value</mat-label>
+<mat-select [formControl]="ddlCtrl" placeholder="Enter Value..." #singleSelect
     (selectionChange)="onDdlChange($event)" msInfiniteScroll>
     <ngx-mat-select-search 
     [formControl]="ddlFilterCtrl"
@@ -9,3 +11,4 @@
         {{ddl.text}}
     </mat-option>
 </mat-select>
+</mat-form-field>
