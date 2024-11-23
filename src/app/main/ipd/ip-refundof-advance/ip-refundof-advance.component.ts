@@ -184,8 +184,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
       this.DOA = this.selectedAdvanceObj.DOA 
       this.IPDNo = this.selectedAdvanceObj.IPDNo 
       //this.getRefundofAdvanceListRegIdwise();
-    }
-   
+    } 
    // this.getRefundofAdvanceListRegIdwise();
     // this.getReturndetails();
     // this.getCashCounterComboList();
@@ -196,8 +195,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
       RegId: [''],
       CashCounterID:['']
     });
-  }
-
+  } 
 
   getRefundtotSum1(element) {
     let netAmt1;
