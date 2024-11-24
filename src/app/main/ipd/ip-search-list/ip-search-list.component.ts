@@ -1,6 +1,6 @@
 import { DatePipe, Time } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -27,7 +27,10 @@ import { CompanyInformationComponent } from '../company-information/company-info
 import { IPRefundofAdvanceComponent } from '../ip-refundof-advance/ip-refundof-advance.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { OPIPFeedbackComponent } from '../Feedback/opip-feedback/opip-feedback.component';
-
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
+import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 
 
 @Component({
@@ -39,6 +42,71 @@ import { OPIPFeedbackComponent } from '../Feedback/opip-feedback/opip-feedback.c
 })
 export class IPSearchListComponent implements OnInit {
   // ----- spinner loading 
+
+  confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    
+    gridConfig: gridModel = {
+        apiUrl: "Admission/AdmissionList",
+        columnsList: [
+            { heading: "Code", key: "admissionId", sort: true, align: 'left', emptySign: 'NA' , width:50 },
+            { heading: "RegId", key: "regId", sort: true, align: 'left', emptySign: 'NA' , width:50 },
+            // { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "AdmissionTime", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', width:150  },
+            { heading: "PatientTypeId", key: "patientTypeId", sort: true, align: 'left', emptySign: 'NA' , width:150 },
+           
+            { heading: "DocNameId", key: "docNameId", sort: true, align: 'left', emptySign: 'NA' , width:150 },
+            { heading: "Ipdno", key: "ipdno", sort: true, align: 'left', emptySign: 'NA' , width:150 },
+          //  { heading: "IsConsolidatedDr", key: "isConsolidatedDr", sort: true, align: 'left', emptySign: 'NA' },
+          {
+            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                {
+                    action: gridActions.edit, callback: (data: any) => {
+                        this.onSave(data);
+                    }
+                }, {
+                    action: gridActions.delete, callback: (data: any) => {
+                        this.confirmDialogRef = this._matDialog.open(
+                            FuseConfirmDialogComponent,
+                            {
+                                disableClose: false,
+                            }
+                        );
+                        this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+                        this.confirmDialogRef.afterClosed().subscribe((result) => {
+                            if (result) {
+                                let that = this;
+                                this._IpSearchListService.deactivateTheStatus(data.AdmissionId).subscribe((response: any) => {
+                                    this.toastr.success(response.message);
+                                    that.grid.bindGridData();
+                                });
+                            }
+                            this.confirmDialogRef = null;
+                        });
+                    }
+                }]
+        } //Action 1-view, 2-Edit,3-delete
+    ],
+    sortField: "AdmissionId",
+    sortOrder: 0,
+    filters: [
+        { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+        { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+        { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "From_Dt", fieldValue: "01/01/2024", opType: OperatorComparer.Equals },
+        { fieldName: "To_Dt", fieldValue: "11/01/2024", opType: OperatorComparer.Equals },
+        { fieldName: "Admtd_Dschrgd_All", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "M_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+        { fieldName: "IPNo", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+       // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+    ],
+    row: 25
+    }
+
+
   isLoadingStr: string = '';
   isLoading: String = '';
 
@@ -103,7 +171,7 @@ export class IPSearchListComponent implements OnInit {
 
   ngOnInit(): void {
     //this.onClear();
-    this.getAdmittedPatientList();
+    // this.getAdmittedPatientList();
     if (this._ActRoute.url == '/ipd/ipadvance') {
       this.menuActions.push('Advance');
       this.menuActions.push('Bed Transfer');
@@ -162,7 +230,7 @@ export class IPSearchListComponent implements OnInit {
     }, 500);
     this.MouseEvent = true;
   }
-
+  onSave(data){}
 
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
@@ -380,7 +448,7 @@ export class IPSearchListComponent implements OnInit {
           maxHeight: "95%", width: '100%', height: "100%"
         });
       dialogRef.afterClosed().subscribe(result => {
-        this.getAdmittedPatientList();
+        // this.getAdmittedPatientList();
       });
       // }else Swal.fire("Bill already Generated")
     }
@@ -418,7 +486,7 @@ export class IPSearchListComponent implements OnInit {
           maxHeight: "99%", width: '100%', height: "100%"
         });
       dialogRef.afterClosed().subscribe(result => {
-        this.getAdmittedPatientList();
+        // this.getAdmittedPatientList();
       });
       // }else Swal.fire("Bill already Generated")
     }
@@ -437,7 +505,7 @@ export class IPSearchListComponent implements OnInit {
           });
         dialogRef.afterClosed().subscribe(result => {
           console.log('The dialog was closed - Insert Action', result);
-          this.getAdmittedPatientList();
+        //   this.getAdmittedPatientList();
         });
       } else { Swal.fire("Final Bill Already Generated") }
     }
@@ -459,7 +527,7 @@ export class IPSearchListComponent implements OnInit {
           });
         dialogRef.afterClosed().subscribe(result => {
           console.log('The dialog was closed - Insert Action', result);
-          this.getAdmittedPatientList();
+        //   this.getAdmittedPatientList();
         });
       } else {
         console.log(contact)
@@ -509,7 +577,7 @@ export class IPSearchListComponent implements OnInit {
           });
         dialogRef.afterClosed().subscribe(result => {
           console.log('The dialog was closed - Insert Action', result);
-          this.getAdmittedPatientList();
+        //   this.getAdmittedPatientList();
         });
       } else {
         console.log(contact)
@@ -556,7 +624,7 @@ export class IPSearchListComponent implements OnInit {
         });
       dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed - Insert Action', result);
-         this.getAdmittedPatientList();
+        //  this.getAdmittedPatientList();
       });
     } else if (m == "Medical CasePaper") {
       console.log(" This is for Case Paper pop : " + m);
@@ -590,7 +658,7 @@ export class IPSearchListComponent implements OnInit {
     this._IpSearchListService.myFilterform.get("FirstName").setValue('');
     this._IpSearchListService.myFilterform.get("MiddleName").setValue('');
     this._IpSearchListService.myFilterform.get("LastName").setValue('');
-    this.getAdmittedPatientList();
+    // this.getAdmittedPatientList();
   }
 
 

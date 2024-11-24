@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class CanteenRequestService {
   
   constructor(
     public _formbuilder:FormBuilder,
-    public _httpClient:HttpClient
+    public _httpClient:HttpClient, public _httpClient1:ApiCaller
   )
    { this.MyForm = this.createMyForm(),
      this.SearchMyForm = this.createsearchForm(),
@@ -75,5 +76,8 @@ export class CanteenRequestService {
     }
     public CanteenReqSave(param){
       return this._httpClient.post('InPatient/CanteenRequest',param);
+    }
+    public deactivateTheStatus(m_data) {
+      return this._httpClient1.PostData("PhoneApp", m_data);
     }
 }

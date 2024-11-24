@@ -37,13 +37,31 @@
                     <airmid-table [gridConfig]="gridConfig" class="content">
                         <ng-container filters>
 
-                                                   
                             <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>RequestId</mat-label>
-                                <input matInput placeholder="Search RequestId" autocomplete="off"
+                                <mat-label>From Date</mat-label>
+                                <input matInput placeholder="Search From Date" autocomplete="off"
                                     [(ngModel)]="gridConfig.filters[0].fieldValue" />
                                 <button mat-button matSuffix mat-icon-button aria-label="Clear"
                                     (click)="gridConfig.filters[0].fieldValue=''">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>To Date</mat-label>
+                                <input matInput placeholder="Search To Date" autocomplete="off"
+                                    [(ngModel)]="gridConfig.filters[1].fieldValue" />
+                                <button mat-button matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="gridConfig.filters[1].fieldValue=''">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>            
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Reg_No</mat-label>
+                                <input matInput placeholder="Search Reg_No" autocomplete="off"
+                                    [(ngModel)]="gridConfig.filters[3].fieldValue" />
+                                <button mat-button matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="gridConfig.filters[3].fieldValue=''">
                                     <mat-icon>close</mat-icon>
                                 </button>
                             </mat-form-field>
@@ -59,8 +77,8 @@
 
                                                    
                             <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>RequestId</mat-label>
-                                <input matInput placeholder="Search RequestId" autocomplete="off"
+                                <mat-label>IpMedID</mat-label>
+                                <input matInput placeholder="Search IpMedID" autocomplete="off"
                                     [(ngModel)]="gridConfig.filters[0].fieldValue" />
                                 <button mat-button matSuffix mat-icon-button aria-label="Clear"
                                     (click)="gridConfig.filters[0].fieldValue=''">

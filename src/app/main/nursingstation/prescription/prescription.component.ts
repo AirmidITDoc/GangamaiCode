@@ -42,19 +42,17 @@ export class PrescriptionComponent implements OnInit {
 
   
   gridConfig: gridModel = {
-      apiUrl: "Nursing/PrescriptionList",
+      apiUrl: "Nursing/PrescriptionWardList",
       columnsList: [
-          { heading: "Code", key: "requestId", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-          { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA' ,width:250},
-          // { heading: "BillTime", key: "billTime", sort: true, align: 'left', emptySign: 'NA' ,width:150},
-          // { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA',width:50 },
-          // { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' ,width:150},
-          // { heading: "VisitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA' ,width:150},
-          // { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA' ,width:150},
-          // { heading: "TotalAmt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA',width:50 },
-          // { heading: "Net Pay", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-          
-          {
+          { heading: "Code", key: "presReId", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+          { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' ,width:450},
+          { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' ,width:100},
+          { heading: "PrscTime", key: "presTime", sort: true, align: 'left', emptySign: 'NA',width:150 },
+          { heading: "OP_IP_Id", key: "oP_IP_Id", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+          { heading: "AdmissionDate", key: "admissionDate", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+          { heading: "StoreName", key: "storeName", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+          { heading: "oP_IP_Type", key: "oP_IP_Type", sort: true, align: 'left', emptySign: 'NA',width:50 },
+        {
               heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                   {
                       action: gridActions.edit, callback: (data: any) => {
@@ -72,7 +70,7 @@ export class PrescriptionComponent implements OnInit {
                           this.confirmDialogRef.afterClosed().subscribe((result) => {
                               if (result) {
                                   let that = this;
-                                  this._PrescriptionService.deactivateTheStatus(data.RequestId).subscribe((response: any) => {
+                                  this._PrescriptionService.deactivateTheStatus(data.presReId).subscribe((response: any) => {
                                       this.toastr.success(response.message);
                                       that.grid.bindGridData();
                                   });
@@ -83,13 +81,13 @@ export class PrescriptionComponent implements OnInit {
                   }]
           } //Action 1-view, 2-Edit,3-delete
       ],
-      sortField: "RequestId",
+      sortField: "PresReId",
       sortOrder: 0,
       filters: [
-        //   { fieldName: "FromDate", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
-          { fieldName: "RequestId", fieldValue: "0", opType: OperatorComparer.Equals },
-        //   { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-          { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+          { fieldName: "FromDate", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
+          { fieldName: "ToDate", fieldValue: "01/01/2025", opType: OperatorComparer.Equals },
+          { fieldName: "Reg_No", fieldValue: "13936", opType: OperatorComparer.Equals },
+        { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
           { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
          // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
       ],
@@ -97,18 +95,13 @@ export class PrescriptionComponent implements OnInit {
   }
 
   gridConfig1: gridModel = {
-    apiUrl: "Nursing/LabRequestList",
+    apiUrl: "Nursing/PrescriptionDetailList",
     columnsList: [
-        { heading: "Code", key: "requestId", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-        { heading: "Item Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' ,width:250},
-        // { heading: "BillTime", key: "billTime", sort: true, align: 'left', emptySign: 'NA' ,width:150},
-        // { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA',width:50 },
-        // { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' ,width:150},
-        // { heading: "VisitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA' ,width:150},
-        // { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA' ,width:150},
-        // { heading: "TotalAmt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA',width:50 },
-        // { heading: "Net Pay", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-        
+        { heading: "Code", key: "ipMedID", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+        { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA' ,width:450},
+        { heading: "MedicalRecoredId", key: "medicalRecoredId", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+        { heading: "OP_IP_ID", key: "oP_IP_ID", sort: true, align: 'left', emptySign: 'NA',width:150 },
+       
         {
             heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                 {
@@ -127,7 +120,7 @@ export class PrescriptionComponent implements OnInit {
                         this.confirmDialogRef.afterClosed().subscribe((result) => {
                             if (result) {
                                 let that = this;
-                                this._PrescriptionService.deactivateTheStatus(data.RequestId).subscribe((response: any) => {
+                                this._PrescriptionService.deactivateTheStatus(data.ipMedID).subscribe((response: any) => {
                                     this.toastr.success(response.message);
                                     that.grid.bindGridData();
                                 });
@@ -138,11 +131,11 @@ export class PrescriptionComponent implements OnInit {
                 }]
         } //Action 1-view, 2-Edit,3-delete
     ],
-    sortField: "RequestId",
+    sortField: "ipMedID",
     sortOrder: 0,
     filters: [
       //   { fieldName: "FromDate", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
-        { fieldName: "RequestId", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "ipMedID", fieldValue: "113582", opType: OperatorComparer.Equals },
       //   { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
         { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
         { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }

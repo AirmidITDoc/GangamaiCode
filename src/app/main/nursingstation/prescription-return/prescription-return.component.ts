@@ -33,9 +33,9 @@ export class PrescriptionReturnComponent implements OnInit {
       apiUrl: "Nursing/PrescriptionReturnList",
       columnsList: [
           { heading: "Code", key: "presReId", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-          { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA' ,width:250},
-          { heading: "BatchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA' ,width:150},
-          { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA',width:50 },
+          { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA' ,width:550},
+          { heading: "BatchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA' ,width:250},
+          { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA',width:150 },
           // { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' ,width:150},
           // { heading: "VisitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA' ,width:150},
           // { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA' ,width:150},
@@ -75,7 +75,7 @@ export class PrescriptionReturnComponent implements OnInit {
       sortOrder: 0,
       filters: [
        
-          { fieldName: "PresReId", fieldValue: "0", opType: OperatorComparer.Equals },
+          { fieldName: "PresReId", fieldValue: "8", opType: OperatorComparer.Equals },
          { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
           { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
          // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
@@ -86,9 +86,9 @@ export class PrescriptionReturnComponent implements OnInit {
     apiUrl: "Nursing/PrescriptionReturnList",
     columnsList: [
         { heading: "Code", key: "presReId", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-        { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA' ,width:250},
+        { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA' ,width:450},
         { heading: "BatchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA' ,width:150},
-        { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA',width:50 },
+        { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA',width:150 },
         // { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' ,width:150},
         // { heading: "VisitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA' ,width:150},
         // { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA' ,width:150},
@@ -128,9 +128,9 @@ export class PrescriptionReturnComponent implements OnInit {
     sortOrder: 0,
     filters: [
      
-        { fieldName: "PresReId", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "PresReId", fieldValue: "8", opType: OperatorComparer.Equals },
        { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-        { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+        { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
        // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
     ],
     row: 25

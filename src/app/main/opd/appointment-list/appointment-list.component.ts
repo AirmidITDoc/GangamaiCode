@@ -14,6 +14,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { DischargeComponent } from 'app/main/ipd/ip-search-list/discharge/discharge.component';
 import { BedTransferComponent } from 'app/main/ipd/ip-search-list/bed-transfer/bed-transfer.component';
 import { NewOPBillingComponent } from '../OPBilling/new-opbilling/new-opbilling.component';
+import { NewRegistrationComponent } from '../registration/new-registration/new-registration.component';
 
 
 @Component({
@@ -38,7 +39,6 @@ export class AppointmentListComponent implements OnInit {
             { heading: "FirstName", key: "firstName", sort: true, align: 'left', emptySign: 'NA' ,width:100 },
             { heading: "MiddleName", key: "middleName", sort: true, align: 'left', emptySign: 'NA' ,width:100 },
             { heading: "LastName", key: "lastName", sort: true, align: 'left', emptySign: 'NA' ,width:100 },
-         
             { heading: "DateofBirth", key: "dateofBirth", sort: true, align: 'left', emptySign: 'NA' ,width:150},
             { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA' ,width:300},
             { heading: "MaritalStatusId", key: "maritalStatusId", sort: true, align: 'left', emptySign: 'NA' ,width:50},
@@ -56,7 +56,7 @@ export class AppointmentListComponent implements OnInit {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
+                            this.onRegistrationEdit(data);
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
@@ -111,6 +111,25 @@ export class AppointmentListComponent implements OnInit {
             {
                 maxWidth: "95vw",
                 height: '95%',
+                width: '90%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
+        });
+    }
+
+    
+
+    onRegistrationEdit(row: any = null) {
+        debugger
+        let that = this;
+        const dialogRef = this._matDialog.open(NewRegistrationComponent,
+            {
+                maxWidth: "95vw",
+                height: '65%',
                 width: '90%',
                 data: row
             });

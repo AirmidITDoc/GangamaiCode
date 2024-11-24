@@ -50,8 +50,8 @@ export class NewAppointmentComponent implements OnInit {
         let todayDate=new Date();
         const timeDiff = Math.abs(Date.now() - this.registerObj.DateofBirth.getTime());
         this.registerObj.ageYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
-        this.registerObj.ageMonth = Math.abs(todayDate.getMonth() - this.registerObj.DateofBirth.getMonth());
-        this.registerObj.ageDay = Math.abs(todayDate.getDate() - this.registerObj.DateofBirth.getDate());
+        this.registerObj.ageMonth = Math.abs(todayDate.getMonth() - this.registerObj.dateofBirth.getMonth());
+        this.registerObj.ageDay = Math.abs(todayDate.getDate() - this.registerObj.dateofBirth.getDate());
     }
     msg: any;
     // isLoading = true;
@@ -231,7 +231,7 @@ export class NewAppointmentComponent implements OnInit {
         public datePipe: DatePipe,
         private formBuilder: FormBuilder,
         public matDialog: MatDialog,
-        public toastr: ToastrService,
+        public toastr: ToastrService,  @Inject(MAT_DIALOG_DATA) public data: any 
        
     ) {
         
@@ -254,6 +254,9 @@ export class NewAppointmentComponent implements OnInit {
             this.menuActions.push("Update Referred Doctor");
         }
 
+        if(this.data)
+            this.registerObj=this.data;
+        console.log(this.registerObj)
         this.CalcDOB('',null);
     }
 
@@ -728,9 +731,9 @@ var mode="Company"
             "mobileNo": this.personalFormGroup.get('MobileNo').value || '',
             "addedBy": 0,
             "updatedBy": 0,
-            "ageYear":  this.personalFormGroup.get('AgeYear').value.toString() || '',
-            "ageMonth":  this.personalFormGroup.get('AgeMonth').value.toString() || '',
-            "ageDay":  this.personalFormGroup.get('AgeDay').value.toString() || '',
+            "ageYear":  this.personalFormGroup.get('AgeYear').value || '',
+            "ageMonth":  this.personalFormGroup.get('AgeMonth').value || '',
+            "ageDay":  this.personalFormGroup.get('AgeDay').value || '',
             "countryId": this.countryId,
             "stateId": this.stateId,
             "cityId": this.cityId,
@@ -739,8 +742,8 @@ var mode="Company"
             "religionId": this.regilionId,
             "areaId":this.areaId,
             "isSeniorCitizen": true,
-            "aadharCardNo": this.personalFormGroup.get('AadharCardNo').value.toString() || '',
-            "panCardNo": this.personalFormGroup.get('PanCardNo').value.toString() || '',
+            "aadharCardNo": this.personalFormGroup.get('AadharCardNo').value || '',
+            "panCardNo": this.personalFormGroup.get('PanCardNo').value || '',
             "photo":  " "
           },
           "Visit": {
@@ -831,9 +834,9 @@ var mode="Company"
                 "mobileNo": this.personalFormGroup.get('MobileNo').value || '',
                 "addedBy": 0,
                 "updatedBy": 0,
-                "ageYear":  this.personalFormGroup.get('AgeYear').value.toString() || '',
-                "ageMonth":  this.personalFormGroup.get('AgeMonth').value.toString() || '',
-                "ageDay":  this.personalFormGroup.get('AgeDay').value.toString() || '',
+                "ageYear":  this.personalFormGroup.get('AgeYear').value || '',
+                "ageMonth":  this.personalFormGroup.get('AgeMonth').value || '',
+                "ageDay":  this.personalFormGroup.get('AgeDay').value || '',
                 "countryId": this.countryId,
                 "stateId": this.stateId,
                 "cityId": this.cityId,
@@ -842,8 +845,8 @@ var mode="Company"
                 "religionId": this.regilionId,
                 "areaId":this.areaId,
                 "isSeniorCitizen": true,
-                "aadharCardNo": this.personalFormGroup.get('AadharCardNo').value.toString() || '',
-                "panCardNo": this.personalFormGroup.get('PanCardNo').value.toString() || '',
+                "aadharCardNo": this.personalFormGroup.get('AadharCardNo').value || '',
+                "panCardNo": this.personalFormGroup.get('PanCardNo').value || '',
                 "photo":  " "
             },
             "Visit": {

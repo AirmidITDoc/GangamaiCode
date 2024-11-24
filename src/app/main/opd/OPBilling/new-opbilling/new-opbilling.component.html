@@ -17,10 +17,10 @@
 
 
                     <!-- <span  style="margin-left:400px;" hidden><app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date></span>   -->
-                    <!-- <span class="material-icons" style="cursor: pointer; margin-left: 1100px; color: #fff;"
+                    <span class="material-icons" style="cursor: pointer; margin-left: 1100px; color: #fff;"
                         (click)="onClose()">
                         close
-                    </span> -->
+                    </span>
                 </div>
                 <div class="close-icon">
                     <span class="material-icons" style="cursor: pointer;margin-left: 950px;" (click)="onClose()">
@@ -57,25 +57,9 @@
                                         </mat-autocomplete> 
                                     </mat-form-field>
 
-                                    <mat-form-field appearance="outline" fxFlex>
-                                        <mat-label>Cash Counter</mat-label>
-                                        <input matAutocompletePosition="below" type="text" placeholder="Select Cash Counter"
-                                             matInput formControlName="CashCounterID"
-                                            [matAutocomplete]="autoSearchCashCounter" #CashCounterName >
-                                        <span matSuffix style="display: flex;">
-                                            <mat-icon class="mat-icon-close"
-                                                (click)="searchFormGroup.get('CashCounterID').setValue(''); isCashCounterSelected = false;">close</mat-icon>
-                                            <mat-icon class="mat-icon-close"
-                                                (click)="searchFormGroup.get('CashCounterID').setValue(''); isCashCounterSelected = false;">search</mat-icon>
-                                        </span>
-                                        <mat-autocomplete #autoSearchCashCounter="matAutocomplete"
-                                            [displayWith]="getOptionTextCashCounter">
-                                            <mat-option *ngFor="let option of filteredOptionsCashCounter| async"
-                                                [value]="option">
-                                                {{option.CashCounterName}}
-                                            </mat-option>
-                                        </mat-autocomplete>
-                                    </mat-form-field>
+                                  
+                                    <airmid-autocomplete [mode]="autocompleteModecashcounter" (selectDdlObject)="selectChangecashcounter($event)"></airmid-autocomplete>
+
             
                                     <span style="margin-right: 40px;">
                                         <app-common-date [screenFrom]="screenFromString"
@@ -180,7 +164,7 @@
                                     <form [formGroup]="registeredForm" style="display: flex;" #f="ngForm" #aForm
                                         class="mat-form-field-auto">
                                         <div fxLayout="row" fxLayoutGap="5px">
-            
+<!--             
                                             <mat-form-field appearance="outline" style="width:500px;" #myInput>
                                                 <input type="text" name="SrvcName" formControlName="SrvcName" #Servicename
                                                     placeholder="Service Name" matInput [matAutocomplete]="auto"
@@ -219,7 +203,10 @@
                                                     Required field cannot be left blank
                                                 </mat-error>
                                             </mat-form-field>
-            
+             -->
+
+             <airmid-autocomplete [mode]="autocompleteModeservice" (selectDdlObject)="selectChangeService($event)"></airmid-autocomplete>
+
                                             <mat-form-field appearance="outline" #Price fxFlex="10%">
                                                 <mat-label>Price</mat-label>
                                                 <input matInput [(ngModel)]="vPrice" name="price" #price
@@ -249,7 +236,7 @@
                                                     TotalAmount is required</mat-error>
                                             </mat-form-field>
             
-                                            <mat-form-field appearance="outline" fxFlex *ngIf="isDoctor">
+                                            <!-- <mat-form-field appearance="outline" fxFlex >
                                                 <mat-label>Doctor Name</mat-label>
                                                 <input matAutocompletePosition="below" type="text" placeholder="Select Doctor"
                                                     (keydown)="onEnterdoctor($event)" matInput formControlName="DoctorID"
@@ -267,8 +254,12 @@
                                                         {{option.Doctorname}}
                                                     </mat-option>
                                                 </mat-autocomplete>
-                                            </mat-form-field>
+                                            </mat-form-field> -->
             
+                                            <airmid-autocomplete [mode]="autocompleteModedoctor" (selectDdlObject)="selectChangedoctor($event)" *ngIf="isDoctor"></airmid-autocomplete>
+
+                
+
                                             <mat-form-field appearance="outline" fxFlex="5%">
                                                 <mat-label>Disc %</mat-label>
                                                 <input matInput placeholder="Percentage" formControlName="ChargeDiscPer"
@@ -703,7 +694,7 @@
                                         <mat-form-field appearance="outline" class="Consession-field" fxFlex>
                                             <mat-label>Total Amount</mat-label>
                                             <input matInput [(ngModel)]="vFinalTotalAmt" name="FinalTotalAmt"
-                                                formControlName="FinalTotalAmt" readonly> 
+                                                formControlName="FinalTotalAmt" > 
                                         </mat-form-field>
              
                                                 
@@ -750,7 +741,7 @@
                                     <!-- [disabled]="BillingForm.invalid" -->
                                     <div class="action-btns gap-8" fxLayout="row">
                                         <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                                        <button class="btn btn-primary" (click)="onSaveOPBill2()" [disabled]="savebtn">Save</button>
+                                        <button class="btn btn-primary" (click)="onSaveOPBill2()">Save</button>
                                     </div>
                                 </div>
                             </div>

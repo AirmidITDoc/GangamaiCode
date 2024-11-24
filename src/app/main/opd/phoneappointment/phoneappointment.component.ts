@@ -38,10 +38,10 @@ export class PhoneappointmentComponent implements OnInit {
   gridConfig: gridModel = {
       apiUrl: "PhoneAppointment2/PhoneAppList",
       columnsList: [
-          { heading: "Code", key: "phoneAppId", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+          { heading: "Code", key: "phoneAppId", sort: true, align: 'left', emptySign: 'NA',width:50 },
+          { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA',width:450 },
+          { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA',width:250 },
+          { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center",width:150},
           {
               heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                   {

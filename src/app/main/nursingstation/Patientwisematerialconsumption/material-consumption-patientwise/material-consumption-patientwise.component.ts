@@ -1,12 +1,11 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatAccordion } from '@angular/material/expansion';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
+
 import { NotificationServiceService } from 'app/core/notification-service.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
@@ -14,6 +13,13 @@ import { PatientwiseMaterialConsumptionService } from '../patientwise-material-c
 import { map, startWith, takeUntil } from 'rxjs/operators';
 import { NewPatientwiseMaterialconsumptionComponent } from '../new-patientwise-materialconsumption/new-patientwise-materialconsumption.component';
 import { fuseAnimations } from '@fuse/animations';
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-material-consumption-patientwise',
@@ -23,222 +29,144 @@ import { fuseAnimations } from '@fuse/animations';
   animations: fuseAnimations
 })
 export class MaterialConsumptionPatientwiseComponent implements OnInit {
-
-  step = 0;
-  @ViewChild(MatAccordion) accordion: MatAccordion;
-  sIsLoading: string = '';
-  isStoreselected: boolean = false;
-  Fileterform:FormGroup;
-  screenFromString = 'admission-form';
-  msg:any;
-  SearchName : string;
-  storelist:any=[];
-  filteredOptionsStore: Observable<string[]>;
-  optionsStore: any[] = [];
- 
-  private _onDestroy = new Subject<void>();
-  
-  displayedColumns: string[] = [
-    // 'RegNo',
-    'ConsumptionDate',
-    'MaterialConsumptionId',
-    // 'FromStoreId',
-    'StoreName',
-    'RegNo',
-    'PatientName',
-    'AddedBy',
-    'Remark',
- 
-    'action'
-  ];
-
-  @ViewChild(MatSort) sort:MatSort;
-  @ViewChild(MatPaginator) paginator:MatPaginator;
-
   confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+  hasSelectedContacts: boolean;
+  autocompleteModestore: string = "Store";
 
-  // @Input() childName: string [];
-  // @Output() parentFunction:EventEmitter<any> = new EventEmitter();
-
-  dataSource = new MatTableDataSource<MaterialDetail>();
-  isLoading: String = '';
   
-  constructor(public _NursingStationService:PatientwiseMaterialConsumptionService,
-    private accountService: AuthenticationService,
-    public notification:NotificationServiceService,
-    public _matDialog: MatDialog,
-    private _formBuilder: FormBuilder,
-    public datePipe: DatePipe,
-    // public dialogRef: MatDialogRef<PatientwiseMaterialConsumptionComponent>, 
-    ) { }
+  gridConfig: gridModel = {
+      apiUrl: "Nursing/PrescriptionWardList",
+      columnsList: [
+          { heading: "Code", key: "MaterialConsumptionId", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+          { heading: "ConsumptionNo", key: "consumptionNo", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+          { heading: "ConsumptionDate", key: "consumptionTime", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+          { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA' ,width:250},
+          { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+          
+         { heading: "FromStoreId", key: "fromStoreId", sort: true, align: 'left', emptySign: 'NA',width:150 },
+          { heading: "StoreName", key: "storeName", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+          { heading: "AdmissionDate", key: "admissionDate", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+          { heading: "StoreName", key: "storeName", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+          { heading: "oP_IP_Type", key: "oP_IP_Type", sort: true, align: 'left', emptySign: 'NA',width:50 },
+        {
+              heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                  {
+                      action: gridActions.edit, callback: (data: any) => {
+                          this.onSave(data);
+                      }
+                  }, {
+                      action: gridActions.delete, callback: (data: any) => {
+                          this.confirmDialogRef = this._matDialog.open(
+                              FuseConfirmDialogComponent,
+                              {
+                                  disableClose: false,
+                              }
+                          );
+                          this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+                          this.confirmDialogRef.afterClosed().subscribe((result) => {
+                              if (result) {
+                                  let that = this;
+                                  this._PatientwiseMaterialConsumptionService.deactivateTheStatus(data.MaterialConsumptionId).subscribe((response: any) => {
+                                      this.toastr.success(response.message);
+                                      that.grid.bindGridData();
+                                  });
+                              }
+                              this.confirmDialogRef = null;
+                          });
+                      }
+                  }]
+          } //Action 1-view, 2-Edit,3-delete
+      ],
+      sortField: "MaterialConsumptionId",
+      sortOrder: 0,
+      filters: [
+          { fieldName: "FromDate", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
+          { fieldName: "ToDate", fieldValue: "01/01/2025", opType: OperatorComparer.Equals },
+          { fieldName: "ToStoreId", fieldValue: "13936", opType: OperatorComparer.Equals },
+        { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+          { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+         // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+      ],
+      row: 25
+  }
 
-  ngOnInit(): void {
-   this.Fileterform=this.filterForm();
-
-   this.getStorelist();
-
-    this.sIsLoading = 'loading-data';
-   
-    var m_data={
-    
-      "ToStoreId": this.accountService.currentUserValue.user.storeId,//this._NursingStationService.myFilterform.get("StoreId").value.StoreId || 0,
-      "From_Dt" : '01/01/1900',//this.datePipe.transform(this._NursingStationService.myFilterform.get("start").value,"yyyy-MM-dd 00:00:00.000") ||  
-      "To_Dt" :'01/01/1900',//  this.datePipe.transform(this._NursingStationService.myFilterform.get("end").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',  
+  gridConfig1: gridModel = {
+    apiUrl: "Nursing/PrescriptionDetailList",
+    columnsList: [
+        { heading: "Code", key: "ipMedID", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+        { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA' ,width:450},
+        { heading: "ToStoreId", key: "v", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+        { heading: "OP_IP_ID", key: "oP_IP_ID", sort: true, align: 'left', emptySign: 'NA',width:150 },
+       
+        {
+            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                {
+                    action: gridActions.edit, callback: (data: any) => {
+                        this.onSave(data);
+                    }
+                }, {
+                    action: gridActions.delete, callback: (data: any) => {
+                        this.confirmDialogRef = this._matDialog.open(
+                            FuseConfirmDialogComponent,
+                            {
+                                disableClose: false,
+                            }
+                        );
+                        this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+                        this.confirmDialogRef.afterClosed().subscribe((result) => {
+                            if (result) {
+                                let that = this;
+                                this._PatientwiseMaterialConsumptionService.deactivateTheStatus(data.ipMedID).subscribe((response: any) => {
+                                    this.toastr.success(response.message);
+                                    that.grid.bindGridData();
+                                });
+                            }
+                            this.confirmDialogRef = null;
+                        });
+                    }
+                }]
+        } //Action 1-view, 2-Edit,3-delete
+    ],
+    sortField: "ToStoreId",
+    sortOrder: 0,
+    filters: [
       
-       }
-       console.log(m_data);
-      setTimeout(() => {
-        this.sIsLoading = 'loading-data';
-        this._NursingStationService.getpatientwisematerialconsumptionList(m_data).subscribe(Visit=> {
-          
-          this.dataSource.data = Visit as MaterialDetail[];
-          console.log(this.dataSource.data);
-          this.dataSource.sort =this.sort;
-          this.dataSource.paginator=this.paginator;
-        
-          this.sIsLoading = ' ';
-        },
-          error => {
-            this.sIsLoading = '';
-          });
-      }, 50);
-
-     
+        { fieldName: "ToStoreId", fieldValue: "113582", opType: OperatorComparer.Equals },
+        { fieldName: "FromDate", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
+        { fieldName: "ToDate", fieldValue: "01/01/2025", opType: OperatorComparer.Equals },
+        { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+       // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+    ],
+    row: 25
+}
+  constructor(public _PatientwiseMaterialConsumptionService: PatientwiseMaterialConsumptionService, public _matDialog: MatDialog,
+      public toastr : ToastrService,) {}
+  ngOnInit(): void {
   }
 
-  filterForm(): FormGroup {
-    return this._formBuilder.group({
-      StoreId: '',
-      StoreName:'' ,
-     
-      start: [new Date().toISOString()],
-      end: [new Date().toISOString()],
+  onSave(row: any = null) {
+    let that = this;
+    const dialogRef = this._matDialog.open(NewPatientwiseMaterialconsumptionComponent,
+        {
+            maxWidth: "75vw",
+            height: '75%',
+            width: '70%',
+            data: row
+        });
+    dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+            that.grid.bindGridData();
+        }
     });
   }
 
-  
-
-  getRegistrationList()
-   {
-   
-    this.sIsLoading = 'loading-data';
-   
-    var m_data={
-     
-      "ToStoreId": this.Fileterform.get("StoreId").value.StoreId || this.accountService.currentUserValue.user.storeId,
-      "From_Dt" : '01/01/1900',//this.datePipe.transform(this.Fileterform.get("start").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900', 
-      "To_Dt" : '01/01/1900',// this.datePipe.transform(this.Fileterform.get("end").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',  
-    
-       }
-       console.log(m_data);
-      setTimeout(() => {
-        this.sIsLoading = 'loading-data';
-        this._NursingStationService.getpatientwisematerialconsumptionList(m_data).subscribe(Visit=> {
-          
-          this.dataSource.data = Visit as MaterialDetail[];
-          console.log(this.dataSource.data);
-          this.dataSource.sort =this.sort;
-          this.dataSource.paginator=this.paginator;
-        
-          this.sIsLoading = ' ';
-        
-          
-        },
-          error => {
-            this.sIsLoading = '';
-          });
-      }, 50);
-    }
-  
-
-  onClear(){
-    this.Fileterform.get('StoreId').reset();
-    // this.Fileterform.get('LastName').reset();
-    // this.Fileterform.get('RegNo').reset();
-   
+  StoreId=0
+  selectChangestore(obj: any){
+    console.log(obj);
+    this.StoreId=obj.value
   }
   
-  onClose() {
-    this.Fileterform.reset();
-    this._matDialog.closeAll();
-  }
-
-  dateTimeObj: any;
-  getDateTime(dateTimeObj) {
-    console.log('dateTimeObj==', dateTimeObj);
-    this.dateTimeObj = dateTimeObj;
-  }
-
-
-getOptionTextStore(option) {
-  return option && option.StoreName ? option.StoreName : '';
+  EditConsumption(){}
 }
-
-getStorelist() {
-  var vdata = {
-    Id: this.accountService.currentUserValue.user.storeId
-  }
-  this._NursingStationService.getLoggedStoreList(vdata).subscribe(data => {
-    this.storelist = data;
-    this.optionsStore = this.storelist.slice();
-    this.filteredOptionsStore = this.Fileterform.get('StoreId').valueChanges.pipe(
-      startWith(''),
-      map(value => value ? this._filterStore(value) : this.storelist.slice()),
-    );
-
-  });
-}
-
-private _filterStore(value: any): string[] {
-  if (value) {
-    const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
-    return this.optionsStore.filter(option => option.StoreName.toLowerCase().includes(filterValue));
-  }
-
-}
-
-
-NewMaterial() {
-  const dialogRef = this._matDialog.open(NewPatientwiseMaterialconsumptionComponent,
-    {
-        height: '70vh',
-        width: '70vw'
-    });
-  dialogRef.afterClosed().subscribe(result => {
-   
-  });
-}
-} 
-
-export class MaterialDetail {
- 
-  ConsumptionDate: Date;
-  MaterialConsumptionId: number;
-  FromStoreId: number;
-  StoreName: string;
-  RegNo: number;
-  PatientName: string;
-  Remark:string;
-  AddedBy: string;
-  
-  /**
-   * Constructor
-   *
-   * @param MaterialDetail
-   */
-
-  constructor(MaterialDetail) {
-      {
-          this.ConsumptionDate = MaterialDetail.ConsumptionDate || '';
-          this.MaterialConsumptionId = MaterialDetail.MaterialConsumptionId || 0;
-          this.FromStoreId = MaterialDetail.FromStoreId || 0;
-          this.RegNo = MaterialDetail.RegNo || '';
-          this.PatientName = MaterialDetail.PatientName || '';
-          this.Remark = MaterialDetail.Remark || '';
-          this.AddedBy = MaterialDetail.AddedBy || '';
-         
-         
-      }
-  }
-}
-
