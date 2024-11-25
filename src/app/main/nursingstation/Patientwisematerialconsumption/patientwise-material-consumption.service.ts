@@ -1,13 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PatientwiseMaterialConsumptionService {
 
-  constructor(public _httpClient: HttpClient,
+  constructor(public _httpClient: HttpClient,public _httpClient1: ApiCaller,
     public _formBuilder: FormBuilder) { }
 
   
@@ -36,4 +37,7 @@ export class PatientwiseMaterialConsumptionService {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
   }
 
+  public deactivateTheStatus(m_data) {
+    return this._httpClient1.PostData("PhoneApp", m_data);
+  }
 }

@@ -1,6 +1,7 @@
 import { HttpBackend, HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ApiCaller } from 'app/core/services/apiCaller';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -12,7 +13,7 @@ export class SampleCollectionService {
   sampldetailform: FormGroup;
 
   constructor( private _formBuilder: FormBuilder,
-    private handler: HttpBackend,private _httpClient: HttpClient,)
+    private handler: HttpBackend,private _httpClient: HttpClient,private _httpClient1: ApiCaller,)
    {  this.myformSearch = this.createSearchForm();
     
     this.sampldetailform = this.createSampledetailForm();
@@ -147,5 +148,10 @@ export class SampleCollectionService {
         }));
       }
 
+
+      public deactivateTheStatus(m_data) {
+        return this._httpClient1.PostData("PhoneApp", m_data);
+      }
+      
 }
 

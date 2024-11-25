@@ -101,6 +101,7 @@ export class NewRegistrationComponent implements OnInit {
       
       console.log(this.data)
       this.registerObj = this.data;
+      this.RegID=this.data.regId
       
       this.cityId=this.data.cityId;
       this.isDisabled = true
@@ -336,7 +337,7 @@ export class NewRegistrationComponent implements OnInit {
         "Photo": ''
 
       }
-      console.log(m_data);
+      console.log(m_data1);
 
       this._registerService.Regstrationtupdate(m_data1).subscribe((response) => {
         this.toastr.success(response.message);
@@ -346,8 +347,6 @@ export class NewRegistrationComponent implements OnInit {
       });
     }
   }
-
-
 
   
 

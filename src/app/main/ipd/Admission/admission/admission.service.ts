@@ -499,6 +499,13 @@ export class AdmissionService {
 public getMaster(mode,Id) {
   return this._httpClient1.GetData("Dropdown/GetBindDropDown?mode="+mode+"&Id="+Id);
 }
+
+
+public InsertNewAdmission(Param: any, showLoader = true) {
+  if (Param.admissionId) {
+      return this._httpClient1.PutData("Admission/AdmissionInsertSP" + Param.admissionId, Param, showLoader);
+  } else return this._httpClient1.PostData("Admission/AdmissionInsertSP", Param, showLoader);
+}
 }
 
 

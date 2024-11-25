@@ -24,11 +24,11 @@ export class ServiceMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "BankMaster/List",
         columnsList: [
-            { heading: "Code", key: "bankId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Bank Name", key: "bankName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+            { heading: "Code", key: "bankId", sort: true, align: 'left', emptySign: 'NA',width:200 },
+            { heading: "Bank Name", key: "bankName", sort: true, align: 'left', emptySign: 'NA',width:600 },
+            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center",width:200 },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:200, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data) // EDIT Records

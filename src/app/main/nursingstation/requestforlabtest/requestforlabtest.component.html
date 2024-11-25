@@ -52,5 +52,27 @@
             
             </ng-container>
         </airmid-table>
+       
+    </div>
+    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+        <airmid-table [gridConfig]="gridConfig1" class="content">
+            <ng-container filters>
+
+             
+                                          
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>RequestId</mat-label>
+                    <input matInput placeholder="Search RequestId" autocomplete="off"
+                        [(ngModel)]="gridConfig.filters[0].fieldValue" />
+                    <button mat-button matSuffix mat-icon-button aria-label="Clear"
+                        (click)="gridConfig.filters[0].fieldValue=''">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
+
+
+
+            </ng-container>
+        </airmid-table>
     </div>
 </div>

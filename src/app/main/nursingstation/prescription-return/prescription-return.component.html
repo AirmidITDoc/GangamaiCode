@@ -8,11 +8,11 @@
             <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
             </mat-icon>
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-               Lab Request List
+              Prescription Return List
             </span>
         </div>
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="onSave()">New Phone App
+            <button mat-raised-button (click)="onSave()">New Prescription Return
             </button>
         </div>
 
@@ -27,7 +27,7 @@
                     <div class="top-header-info">
                         <div class="top-header-title">
                             <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                               Lab Request
+                                Prescription Return
                             </span>
                         </div>
                     </div>
@@ -38,9 +38,10 @@
                         <ng-container filters>
 
                          
+                                                      
                             <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>From Date</mat-label>
-                                <input matInput placeholder="Search From Date" autocomplete="off"
+                                <mat-label>RequestId</mat-label>
+                                <input matInput placeholder="Search RequestId" autocomplete="off"
                                     [(ngModel)]="gridConfig.filters[0].fieldValue" />
                                 <button mat-button matSuffix mat-icon-button aria-label="Clear"
                                     (click)="gridConfig.filters[0].fieldValue=''">
@@ -48,27 +49,28 @@
                                 </button>
                             </mat-form-field>
 
+
+
+                        </ng-container>
+                    </airmid-table>
+                </div>
+              
+                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                    <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                        Prescription Return Detail List
+                    </span>
+                    <airmid-table [gridConfig]="gridConfig1" class="content">
+                        <ng-container filters>
+
                             <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>To Date</mat-label>
-                                <input matInput placeholder="Search To Date" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[1].fieldValue" />
+                                <mat-label>RequestId</mat-label>
+                                <input matInput placeholder="Search RequestId" autocomplete="off"
+                                    [(ngModel)]="gridConfig.filters[0].fieldValue" />
                                 <button mat-button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[1].fieldValue=''">
+                                    (click)="gridConfig.filters[0].fieldValue=''">
                                     <mat-icon>close</mat-icon>
                                 </button>
                             </mat-form-field>
-
-                          
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>RegNo</mat-label>
-                                <input matInput placeholder="Search RegNo" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[2].fieldValue" />
-                                <button mat-button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[2].fieldValue=''">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
-
 
                         </ng-container>
                     </airmid-table>

@@ -88,6 +88,7 @@
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Age (Y)</mat-label>
                                                 <input name="AgeYear" formControlName="AgeYear" placeholder="Age (Y)" matInput [ngModel]="registerObj.ageYear" (ngModelChange)="registerObj.ageYear = $event" required type="number" maxlength="4" #agey (keydown)="onEnteragey($event)" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
+                                                
                                                 <mat-error *ngIf="personalFormGroup.get('AgeYear').invalid && personalFormGroup.get('AgeYear').touched">Please
                                                     enter Age Year </mat-error>
                                             </mat-form-field>

@@ -26,6 +26,10 @@ import { element } from 'protractor';
 import { ToastrService } from 'ngx-toastr';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 import { OpPaymentComponent } from '../op-payment/op-payment.component';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
+import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 type NewType = Observable<any[]>;
 
 
@@ -156,9 +160,128 @@ export class NewOPRefundofbillComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
+
+  // newApi?
+
+  confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+  
+  gridConfig: gridModel = {
+      apiUrl: "RefundOfBill/AppOPBilllistforrefundList",
+      columnsList: [
+          { heading: "Code", key: "billNo", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+          { heading: "RegId", key: "regId", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+          { heading: "VisitId", key: "visitId", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+          { heading: "TotalAmt ", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' ,width:100 },
+          { heading: "ConcessionAmt", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA' ,width:100 },
+          { heading: "NetPayableAmt ", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' ,width:100 },
+          { heading: "RefundAmount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+          { heading: "BalanceAmt ", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' ,width:300},
+          { heading: "pBillNo ", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+          // { heading: "RefundAmount ", key: "refundAmount ", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+          // { heading: "BalanceAmt", key: "balanceAmt ", sort: true, align: 'left', emptySign: 'NA' ,width:100},
+          // { heading: "BillDate ", key: "billDate ", sort: true, align: 'left', emptySign: 'NA' ,width:50 },
+       
+          {
+              heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                  {
+                      action: gridActions.edit, callback: (data: any) => {
+                          this.onSave(data);
+                      }
+                  }, {
+                      action: gridActions.delete, callback: (data: any) => {
+                          this.confirmDialogRef = this._matDialog.open(
+                              FuseConfirmDialogComponent,
+                              {
+                                  disableClose: false,
+                              }
+                          );
+                          this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+                          this.confirmDialogRef.afterClosed().subscribe((result) => {
+                              if (result) {
+                                  let that = this;
+                                  this._OpSearchListService.deactivateTheStatus(data.billNo).subscribe((response: any) => {
+                                      this.toastr.success(response.message);
+                                      that.grid.bindGridData();
+                                  });
+                              }
+                              this.confirmDialogRef = null;
+                          });
+                      }
+                  }]
+          } //Action 1-view, 2-Edit,3-delete
+      ],
+      sortField: "RegId",
+      sortOrder: 0,
+      filters: [
+          { fieldName: "RegId", fieldValue: "10", opType: OperatorComparer.Equals },
+          { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+          { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
+         // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+      ],
+      row: 25
+  }
+
+  gridConfig1: gridModel = {
+    apiUrl: "RefundOfBill/AppOPBillservicedetailList",
+    columnsList: [
+        { heading: "Code", key: "chargesId", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+        { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+      
+        { heading: "ChargesDate", key: "chargesDate", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+        { heading: "ServieceId", key: "serviceId", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+        { heading: "ServiceName ", key: "serviceName", sort: true, align: 'left', emptySign: 'NA' ,width:200 },
+        { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA' ,width:100 },
+        { heading: "Qty ", key: "qty", sort: true, align: 'left', emptySign: 'NA' ,width:100 },
+        { heading: "TotalAmt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' ,width:100},
+        { heading: "NetAmount ", key: "netAmount", sort: true, align: 'left', emptySign: 'NA' ,width:100},
+        { heading: "BalAmt ", key: "balAmt", sort: true, align: 'left', emptySign: 'NA' ,width:100},
+        { heading: "DoctorId ", key: "doctorId", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+        { heading: "ChargesDocName ", key: "chargesDocName", sort: true, align: 'left', emptySign: 'NA' ,width:250},
+        { heading: "RefundAmount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA' ,width:100},
+        // { heading: "BalanceAmount ", key: "balanceAmount ", sort: true, align: 'left', emptySign: 'NA' ,width:50 },
+     
+        {
+            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                {
+                    action: gridActions.edit, callback: (data: any) => {
+                        this.onSave(data);
+                    }
+                }, {
+                    action: gridActions.delete, callback: (data: any) => {
+                        this.confirmDialogRef = this._matDialog.open(
+                            FuseConfirmDialogComponent,
+                            {
+                                disableClose: false,
+                            }
+                        );
+                        this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+                        this.confirmDialogRef.afterClosed().subscribe((result) => {
+                            if (result) {
+                                let that = this;
+                                this._OpSearchListService.deactivateTheStatus(data.billNo).subscribe((response: any) => {
+                                    this.toastr.success(response.message);
+                                    that.grid.bindGridData();
+                                });
+                            }
+                            this.confirmDialogRef = null;
+                        });
+                    }
+                }]
+        } //Action 1-view, 2-Edit,3-delete
+    ],
+    sortField: "BillNo",
+    sortOrder: 0,
+    filters: [
+        { fieldName: "BillNo", fieldValue: "216265", opType: OperatorComparer.Equals },
+        { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+       // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+    ],
+    row: 25
+}
   constructor(public _OpSearchListService: OPSearhlistService,
-    // public _IpSearchListService: IpSearchListService,
-    private _ActRoute: Router,
+  private _ActRoute: Router,
     public _matDialog: MatDialog,
     // private advanceDataStored: AdvanceDataStored,
     public datePipe: DatePipe,
@@ -430,7 +553,7 @@ getServicetotSum(element) {
   return netAmt; 
   }
  
-onSave() {
+onSave(row: any = null) {
 
   if(this.TotalRefundAmount == ' ' || this.TotalRefundAmount == null || this.TotalRefundAmount == undefined){
     this.toastr.warning('Please check refund amount .', 'Warning !', {
@@ -490,34 +613,13 @@ onSave() {
 
         let PatientHeaderObj = {};
 
-        // PatientHeaderObj['Date'] = this.dateTimeObj.date; 
-        // PatientHeaderObj['NetPayAmount'] = this.TotalRefundAmount;
-        // PatientHeaderObj['PatientName'] = this.PatientName;
-        // PatientHeaderObj['Age'] = this.AgeYear; 
-        // PatientHeaderObj['UHIDNO'] = this.RegNo;
-
-        const insertRefund = new InsertRefund(InsertRefundObj);
-
-        // const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
-        //   {
-        //     maxWidth: "80vw",
-        //     height: '600px',
-        //     width: '80%',
-        //     data: {
-        //       vPatientHeaderObj: PatientHeaderObj,
-        //       FromName: "Advance-Refund",
-        //       advanceObj: PatientHeaderObj
-        //     }
-        //   });
-        // let PatientHeaderObj = {};
+             const insertRefund = new InsertRefund(InsertRefundObj);
 
         PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
         PatientHeaderObj['PatientName'] = this.PatientName ;
         PatientHeaderObj['RegNo'] =this.RegNo,
         PatientHeaderObj['DoctorName'] = this.Doctorname;
         PatientHeaderObj['CompanyName'] = this.CompanyName;
-        // PatientHeaderObj['DepartmentName'] = this.Departmen;
-        // PatientHeaderObj['OPD_IPD_Id'] =  this.IPDNo;
         PatientHeaderObj['Age'] =  this.AgeYear;
         PatientHeaderObj['NetPayAmount'] = this.TotalRefundAmount; 
         const dialogRef = this._matDialog.open(OpPaymentComponent,
@@ -534,34 +636,51 @@ onSave() {
 
         dialogRef.afterClosed().subscribe(result => {
           // console.log('============================== Return Adv ===========');
-          let submitData = {
-            "insertRefund": insertRefund,
-            "insertOPRefundDetails": RefundDetailarr,
-            "update_AddCharges_RefundAmount": AddchargesRefundAmountarr,
-            "insertOPPayment": result.submitDataPay.ipPaymentInsert
-          };
+          // let submitData = {
+          //   "insertRefund": insertRefund,
+          //   "insertOPRefundDetails": RefundDetailarr,
+          //   "update_AddCharges_RefundAmount": AddchargesRefundAmountarr,
+          //   "insertOPPayment": result.submitDataPay.ipPaymentInsert
+          // };
 
+
+          let submitData = {
+            "refund": {
+              "refundId": 0,
+              "refundDate":  this.dateTimeObj.date,
+              "refundTime": this.dateTimeObj.date,
+              "refundNo": "",
+              "billId": this.BillNo,
+              "advanceId": 0,
+              "opdipdtype": true,
+              "opdipdid":this.vOPIPId,
+              "refundAmount": parseInt(this.RefundOfBillFormGroup.get('TotalRefundAmount').value),
+              "remark": this.RefundOfBillFormGroup.get('Remark').value,
+              "transactionId": 1,
+              "addedBy": 0,
+              "isCancelled": true,
+              "isCancelledBy": 0,
+              "isCancelledDate":  "2024-09-18T11:24:02.656Z",
+              "tRefundDetails":RefundDetailarr,
+              "addCharges": AddchargesRefundAmountarr,
+            "payment": result.submitDataPay.ipPaymentInsert
+          }
+        }
           console.log(submitData)
-          this._OpSearchListService.InsertOPRefundBilling(submitData).subscribe(response => {
-            if (response) {
-              Swal.fire('Congratulations !', 'OP Refund Bill data saved Successfully !', 'success').then((result) => {
-                if (result.isConfirmed) {
-                  this.viewgetOPRefundofbillPdf(response);
-                  this.getWhatsappshareRefundbill(response,this.vMobileNo);
-                }
-              });
-            } else {
-              Swal.fire('Error !', 'OP Refund Bill data not saved', 'error');
-            }
-            this.isLoading = '';
+                  this._OpSearchListService.InsertOPRefundBilling(submitData).subscribe((response) => {
+            this.toastr.success(response.message);
+            this.viewgetOPRefundofbillPdf(response);
+            this.getWhatsappshareRefundbill(response,this.vMobileNo);
+            this.onClear(true);
+          }, (error) => {
+            this.toastr.error(error.message);
           });
+
+
 
         });
       }
-      // else {
-      //   Swal.fire("Refund Amount is More than RefundBalance")
-      // }
-
+     
       this.dataSource.data = [];
       this.dataSource1.data = [];
       this.dataSource2.data = [];
@@ -578,7 +697,10 @@ onSave() {
       this.RegNo = '';
     }
   }
-
+  onClear(val: boolean) {
+    // this.personalform.reset();
+     // this.dialogRef.close(val);
+   }
 
   SpinLoading: boolean = false;
   viewgetOPRefundofbillPdf(RefundId) {
@@ -648,17 +770,7 @@ onSave() {
 
     this._matDialog.closeAll();
   }
-  getBillingClassCombo() {
-    this._OpSearchListService.getClassList({ "Id": this.selectedAdvanceObj.ClassId }).subscribe(data => {
-      this.BillingClassCmbList = data;
-      this.myserviceForm.get('BillingClassId').setValue(this.BillingClassCmbList[0]);
-    });
-  }
-  // getAdmittedDoctorCombo() {
-  //   this._OpSearchListService.getAdmittedDoctorCombo().subscribe(data => {
-  //     this.doctorNameCmbList = data
-  //   });
-  // }
+ 
   updatedVal(e) {
     if (e && e.length >= 2) {
       this.showAutocomplete = true;

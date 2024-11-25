@@ -16,6 +16,12 @@ import { RadiologyTemplateReportComponent } from './radiology-template-report/ra
 import { fuseAnimations } from '@fuse/animations';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
+import { ToastrService } from 'ngx-toastr';
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
+import {  MatDialogRef } from "@angular/material/dialog";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 
 @Component({
   selector: 'app-radiology-order-list',
@@ -26,260 +32,112 @@ import { ExcelDownloadService } from 'app/main/shared/services/excel-download.se
 })
 export class RadiologyOrderListComponent implements OnInit {
 
-  click: boolean = false;
-  MouseEvent = true;
-  CategoryList: any = [];
-  screenFromString = 'opd-casepaper';
-  PatientTypeList: any = [];
-  myFilterform: FormGroup;
-  isLoading = true;
-  msg: any;
-  step = 0;
-  dataArray = {};
-  sIsLoading: string = '';
-  hasSelectedContacts: boolean;
-  menuActions: Array<string> = [];
-  reportdata: any = [];
-  templateHeading: any;
-  currentDate = new Date();
-  reportPrintObj: RadiologyPrint;
-  subscriptionArr: Subscription[] = [];
-  printTemplate: any;
-  SBillNo: any;
-  SOPIPtype: any;
-  SFromDate: any;
-  dateTimeObj: any;
-  setStep(index: number) {
-    this.step = index;
+
+  confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+  
+
+  gridConfig: gridModel = {
+      apiUrl: "PhoneAppointment2/PhoneAppList",
+      columnsList: [
+          { heading: "Code", key: "RadReportId", sort: true, align: 'left', emptySign: 'NA',width:50 },
+          { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA',width:250 },
+          { heading: "RadTime", key: "radTime", sort: true, align: 'left', emptySign: 'NA',width:150 },
+          { heading: "Visit_Adm_ID", key: "visit_Adm_ID", type: gridColumnTypes.status, align: "center",width:50 },
+         
+          { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA',width:50 },
+          { heading: "GenderName", key: "genderName", sort: true, align: 'left', emptySign: 'NA',width:50 },
+          { heading: "PatientType", key: "patientType", type: gridColumnTypes.status, align: "center" ,width:50},
+          { heading: "AgeYear", key: "ageYear", type: gridColumnTypes.status, align: "center",width:50 },
+          { heading: "ConsultantDoctor", key: "consultantDoctor", type: gridColumnTypes.status, align: "center",width:150 },
+          { heading: "VisitTime", key: "visitTime", sort: true, align: 'left', emptySign: 'NA',width:150 },
+          { heading: "RadTestID", key: "radTestID", sort: true, align: 'left', emptySign: 'NA',width:50 },
+          { heading: "TestName", key: "testName", type: gridColumnTypes.status, align: "center",width:250 },
+          { heading: "OPD_IPD_Type", key: "oPD_IPD_Type", sort: true, align: 'left', emptySign: 'NA',width:50 },
+          { heading: "PBillNo", key: "pBillNo", type: gridColumnTypes.status, align: "center",width:50 },
+          { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA',width:150 },
+          { heading: "OP_IP_Number", key: "oP_IP_Number", type: gridColumnTypes.status, align: "center",width:50 },
+          { heading: "TestId", key: "testId", sort: true, align: 'left', emptySign: 'NA',width:50 },
+          { heading: "ChargeId", key: "chargeId", type: gridColumnTypes.status, align: "center",width:50 },
+          { heading: "CategoryName", key: "categoryName", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+          { heading: "OPD_IPD_ID", key: "oPD_IPD_ID", type: gridColumnTypes.status, align: "center",width:50 },
+         
+          { heading: "IsCompleted", key: "isCompleted", type: gridColumnTypes.status, align: "center" ,width:50},
+        
+          {
+              heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                  {
+                      action: gridActions.edit, callback: (data: any) => {
+                          this.onSave(data);
+                      }
+                  }, {
+                      action: gridActions.delete, callback: (data: any) => {
+                          this.confirmDialogRef = this._matDialog.open(
+                              FuseConfirmDialogComponent,
+                              {
+                                  disableClose: false,
+                              }
+                          );
+                          this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+                          this.confirmDialogRef.afterClosed().subscribe((result) => {
+                              if (result) {
+                                  let that = this;
+                                  this._RadioloyOrderlistService.deactivateTheStatus(data.radReportId).subscribe((response: any) => {
+                                      this.toastr.success(response.message);
+                                      that.grid.bindGridData();
+                                  });
+                              }
+                              this.confirmDialogRef = null;
+                          });
+                      }
+                  }]
+          } //Action 1-view, 2-Edit,3-delete
+      ],
+      sortField: "RadReportId",
+      sortOrder: 0,
+      filters: [
+        { fieldName: "F_Name ", fieldValue: "%", opType: OperatorComparer.Equals },
+        { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Equals },
+         { fieldName: "Reg_No", fieldValue: "30", opType: OperatorComparer.Equals },
+        { fieldName: "From_Dt", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
+        { fieldName: "To_Dt", fieldValue: "01/01/2024", opType: OperatorComparer.Equals },
+        { fieldName: "IsCompleted", fieldValue: "1", opType: OperatorComparer.Equals },
+        { fieldName: "OP_IP_Type", fieldValue: "1", opType: OperatorComparer.Equals },
+        { fieldName: "CategoryId", fieldValue: "1", opType: OperatorComparer.Equals },
+        { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
+      ],
+      row: 25
   }
-  SearchName: string; 
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-
-
-  dataSource = new MatTableDataSource<RadioPatientList>();
-  displayedColumns: string[] = [
-    'OP_Ip_Type',
-    'IsCompleted',
-    'PatientType', 
-    'RadDate',
-    'RegNo',
-    'PatientName',
-    'DoctorName', 
-    'AgeGender',
-    'ServiceName',
-    'PBillNo',
-    'MobileNo',
-    'CompanyName',
-    'RefDoctorName',
-    'action'
-
-  ];
-
-  dataSource1 = new MatTableDataSource<RadioPatientList>(); 
-  constructor( 
-    private formBuilder: FormBuilder,
-    public _RadiologyOrderListService: RadioloyOrderlistService,
-    private _ActRoute: Router,
-    public _matDialog: MatDialog,
-    private advanceDataStored: AdvanceDataStored,
-    public datePipe: DatePipe,
-    public _SampleService: RadioloyOrderlistService,
-    private accountService: AuthenticationService,
-    private _fuseSidebarService: FuseSidebarService,
-    private reportDownloadService: ExcelDownloadService,
+  constructor(
+      public _RadioloyOrderlistService: RadioloyOrderlistService,
+      public _matDialog: MatDialog,
+     //private accountService: AuthenticationService,
+      private _fuseSidebarService: FuseSidebarService,
+      public toastr: ToastrService,
   ) { }
 
   ngOnInit(): void {
-    //this.getcaterorylist();
-    this.getRadiologyPatientsList(); 
-  } 
-  toggleSidebar(name): void {
-    this._fuseSidebarService.getSidebar(name).toggleOpen();
-  } 
-
-  getcaterorylist() {
-    this._RadiologyOrderListService.getCategoryNameCombo().subscribe((data) =>{
-      this.CategoryList = data
-    }) 
-  }
-
-  onClose() {
-    //  this.dialogRef.close();
-  }
-
-  SearchTest() {
-    var m_data = {
-      "BillNo": this.SBillNo,
-      "OP_IP_Type": this.SOPIPtype,
-      "IsCompleted": this._SampleService.myformSearch.get("TestStatusSearch").value || 0,
-      // "From_Dt": this.datePipe.transform(this.SFromDate, "yyyy-MM-dd "),
-    }
-    console.log(m_data);
-    //  setTimeout(() => {
-    this._SampleService.getTestList(m_data).subscribe(Visit => {
-      this.dataSource1.data = Visit as RadioPatientList[];
-      console.log(this.dataSource1.data);
-      this.dataSource1.sort = this.sort;
-      this.dataSource1.paginator = this.paginator;
-      this.sIsLoading = '';
-      this.click = false;
-    },
-      error => {
-        this.sIsLoading = '';
-      });
-  }
-  
- 
-  getDateTime(dateTimeObj) {
-    this.dateTimeObj = dateTimeObj;
-  }
- 
-  onShow(event: MouseEvent) { 
-    this.click = !this.click;  
-    setTimeout(() => {
-      {
-        this.sIsLoading = 'loading-data'; 
-        this.getRadiologyPatientsList();
-      }
-
-    }, 500);
-    this.MouseEvent = true;
-    this.click = true; 
-  } 
-  onClear() { 
-    this._RadiologyOrderListService.myformSearch.get('FirstNameSearch').reset();
-    this._RadiologyOrderListService.myformSearch.get('LastNameSearch').reset();
-    this._RadiologyOrderListService.myformSearch.get('RegNoSearch').reset();
-    this._RadiologyOrderListService.myformSearch.get('StatusSearch').reset();
-    this._RadiologyOrderListService.myformSearch.get('PatientTypeSearch').reset();
-    this._RadiologyOrderListService.myformSearch.get('CategoryId').reset();
-  } 
-  getRadiologyPatientsList() {
-    this.sIsLoading = 'loading-data';
-    var m_data = {
-      "F_Name": (this._RadiologyOrderListService.myformSearch.get("FirstNameSearch").value).trim() + '%' || '%',
-      "L_Name": (this._RadiologyOrderListService.myformSearch.get("LastNameSearch").value).trim() + '%' || '%',
-      "Reg_No": this._RadiologyOrderListService.myformSearch.get("RegNoSearch").value || 0,
-      "From_Dt": this.datePipe.transform(this._RadiologyOrderListService.myformSearch.get("start").value, "MM-dd-yyyy") || '01/01/1900',
-      "To_Dt": this.datePipe.transform(this._RadiologyOrderListService.myformSearch.get("end").value, "MM-dd-yyyy") || '01/01/1900',
-      "IsCompleted": this._RadiologyOrderListService.myformSearch.get("StatusSearch").value || 0,
-      "OP_IP_Type": this._RadiologyOrderListService.myformSearch.get("PatientTypeSearch").value || 0,
-      "CategoryId": this._RadiologyOrderListService.myformSearch.get("CategoryId").value || 0,
-    }
-    console.log(m_data);
-    this._RadiologyOrderListService.getRadiologyOrderList(m_data).subscribe(Visit => {
-      this.dataSource.data = Visit as RadioPatientList[];
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
-      console.log(this.dataSource.data);
-      this.sIsLoading = '';
-      this.click = false; 
-    },
-      error => {
-        this.sIsLoading = '';
-      });
-
-  }
-
-  onSearchClear() {
-    this._RadiologyOrderListService.myformSearch.reset({ RegNoSearch: '', FirstNameSearch: '', LastNameSearch: '', PatientTypeSearch: '', StatusSearch: '' });
-  }
-
-  getRecord(contact): void {
-    console.log(contact);
-       
-    this.advanceDataStored.storage = new RadiologyPrint(contact);
-    const dialogRef = this._matDialog.open(ResultEntryComponent,
-      {
-        maxWidth: "90%",
-        height: '95%',
-        width: '100%',
-        data: contact,
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
-      this.getRadiologyPatientsList();
-    });
-  }
-
-  getView(contact) {
       
-    this.advanceDataStored.storage = new RadiologyPrint(contact);
-
-    const dialogRef = this._matDialog.open(RadiologyTemplateReportComponent,
-      {
-        maxWidth: "95vw",
-        maxHeight: "130vh", 
-        width: '100%',
-        height: "100%"
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
-      //  this.getRadiologytemplateMasterList();
-    });
   }
 
-
-
-  onEdit(row, m) {
-
-    this.SBillNo = m.PBillNo;
-    this.SOPIPtype = m.OPD_IPD_Type;
-    this.SFromDate = this.datePipe.transform(m.PathDate, "yyyy-MM-dd ");
- 
-  }
-
- 
-  viewgetRadioloyTemplateReportPdf(obj) {
-    debugger
-    this._RadiologyOrderListService.getRadiologyTempReport(
-      obj.RadReportId,0
-      ).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "Radiology Template  Viewer"
+onSave(row: any = null) {
+      
+      let that = this;
+      const dialogRef = this._matDialog.open(RadiologyTemplateReportComponent,
+          {
+              maxWidth: "75vw",
+              height: '75%',
+              width: '70%',
+              data: row
+          });
+      dialogRef.afterClosed().subscribe(result => {
+          if (result) {
+              that.grid.bindGridData();
           }
-        });
-    });
+      });
   }
-  
-
-
-  exportReportExcel() {
-    let exportHeaders = ['OP_Ip_Type', 'IsCompleted', 'RadDate', 'RegNo', 'PatientName', 'Doctorname', 'AgeGender', 'ServiceName','PBillNo','MobileNo','CompanyName','RefDoctorName'];
-    this.reportDownloadService.getExportJsonData(this.dataSource.data, exportHeaders, 'Radiology List');
-  }
-
-  exportReportPdf() {
-    let actualData = [];
-    this.dataSource.data.forEach(e => {
-      var tempObj = [];
-      tempObj.push(e.OP_Ip_Type);
-      tempObj.push(e.IsCompleted);
-      tempObj.push(e.RadDate);
-      tempObj.push(e.RegNo);
-      tempObj.push(e.PatientName);
-      tempObj.push(e.Doctorname);
-      tempObj.push(e.AgeGender);
-      tempObj.push(e.ServiceName);
-      tempObj.push(e.PBillNo);
-      tempObj.push(e.MobileNo);
-      tempObj.push(e.CompanyName);
-      tempObj.push(e.RefDoctorName);
-      
-      actualData.push(tempObj);
-    });
-    let headers = [['OP_Ip_Type', 'IsCompleted', 'RadDate', 'RegNo', 'PatientName', 'Doctorname', 'AgeGender', 'ServiceName','PBillNo','MobileNo','CompanyName','RefDoctorName']];
-    this.reportDownloadService.exportPdfDownload(headers, actualData, 'Radiology List');
-  }
-
-} 
+}
 
 
 export class RadioPatientList {
@@ -299,6 +157,7 @@ OP_Ip_Type: any;
 IsCompleted: any;
 DoctorName: any;
 AgeGender: any;
+ServiceId: any;
 ServiceName: any;
 MobileNo: any;
 CompanyName: any;
@@ -324,6 +183,7 @@ IsActive:any;
     this.IsCompleted = RadioPatientList.IsCompleted || '0';
     this.DoctorName = RadioPatientList.DoctorName || '';
     this.AgeGender = RadioPatientList.AgeGender;
+    this.ServiceId = RadioPatientList.ServiceId || 0;
     this.ServiceName = RadioPatientList.ServiceName;
     this.MobileNo = RadioPatientList.MobileNo || '';
     this.CompanyName = RadioPatientList.CompanyName;
@@ -407,6 +267,7 @@ export class RadiologyPrint {
   AgeMonth:any;
   ServiceId:any;
   TemplateId:any;
+  OPD_IPD_Type:any;
 
   constructor(RadiologyPrint) {
     this.RadDate = RadiologyPrint.RadDate || '';
@@ -453,6 +314,7 @@ export class RadiologyPrint {
 
     this.RadTestID = RadiologyPrint.RadTestID || '';
     this.ServiceId = RadiologyPrint.ServiceId || 0;
+    this.OPD_IPD_Type= RadiologyPrint.OPD_IPD_Type || 0;
   }
 
 }

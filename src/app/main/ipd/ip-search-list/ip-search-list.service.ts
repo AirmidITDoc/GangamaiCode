@@ -1120,6 +1120,10 @@ public DichargeUpdate(Param: any, showLoader = true) {
 public getMaster(mode,Id) {
 return this._httpClient1.GetData("Dropdown/GetBindDropDown?mode="+mode+"&Id="+Id);
 }
+
+public deactivateTheStatus(m_data) {
+  return this._httpClient1.PostData("Admission", m_data);
+}
 }
 
 // Set NODE_OPTIONS="--max-old-space-size=8192"
