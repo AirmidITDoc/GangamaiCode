@@ -30,12 +30,12 @@ export class SubGroupMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "SubGroupMaster/List",
         columnsList: [
-            { heading: "Code", key: "subGroupId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Sub Group  Name", key: "subGroupName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Group Name", key: "groupId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+            { heading: "Code", key: "subGroupId", sort: true, align: 'left', emptySign: 'NA',width:150 },
+            { heading: "Sub Group  Name", key: "subGroupName", sort: true, align: 'left', emptySign: 'NA',width:500 },
+            { heading: "Group Name", key: "groupId", sort: true, align: 'left', emptySign: 'NA',width:200 },
+            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center",width:170 },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:170, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);

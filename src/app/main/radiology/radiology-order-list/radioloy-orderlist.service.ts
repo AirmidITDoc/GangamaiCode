@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class RadioloyOrderlistService {
   
   
   
-  constructor(public _httpClient:HttpClient,
+  constructor(public _httpClient:HttpClient,public _httpClient1:ApiCaller,
       private _formBuilder: FormBuilder
       ) {
         this.myformSearch=this.filterForm();
@@ -139,6 +140,10 @@ export class RadioloyOrderlistService {
     }
     getTemplateCombo() {
       return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RadioTemplateMasterForCombo", {})
+    }
+
+    public deactivateTheStatus(m_data) {
+      return this._httpClient1.PostData("PhoneApp", m_data);
     }
     
 }

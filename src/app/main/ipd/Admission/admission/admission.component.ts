@@ -35,12 +35,14 @@ import { connectableObservableDescriptor } from 'rxjs/internal/observable/Connec
 import { CompanyInformationComponent } from '../../company-information/company-information.component';
 import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
 import { ThemeService } from 'ng2-charts';
-import { AdvanceDetailObj } from '../../ip-search-list/ip-search-list.component';
+
 import { OPIPFeedbackComponent } from '../../Feedback/opip-feedback/opip-feedback.component';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { IPAdvanceComponent } from '../../ip-search-list/ip-advance/ip-advance.component';
+import { IPRefundofAdvanceComponent } from '../../ip-refundof-advance/ip-refundof-advance.component';
 
 
 @Component({
@@ -2806,22 +2808,44 @@ this.getAdmittedPatientList_1()
   
   feedback(contact){
     
-        this.advanceDataStored.storage = new AdvanceDetailObj(contact);
-        this._AdmissionService.populateForm(contact);
-        const dialogRef = this._matDialog.open(OPIPFeedbackComponent,
-          {
-           maxWidth: "95vw",
-          maxHeight: "115vh", width: '100%', height: "100%",
-            data: {
-              Obj: contact
-            }
-          });
-        dialogRef.afterClosed().subscribe(result => {
-          console.log('The dialog was closed - Insert Action', result);
+        // this.advanceDataStored.storage = new AdvanceDetailObj(contact);
+        // this._AdmissionService.populateForm(contact);
+        // const dialogRef = this._matDialog.open(OPIPFeedbackComponent,
+        //   {
+        //    maxWidth: "95vw",
+        //   maxHeight: "115vh", width: '100%', height: "100%",
+        //     data: {
+        //       Obj: contact
+        //     }
+        //   });
+        // dialogRef.afterClosed().subscribe(result => {
+        //   console.log('The dialog was closed - Insert Action', result);
           
-        });
+        // });
       
        
+  }
+  NewAdvance(){  
+    const dialogRef = this._matDialog.open(IPAdvanceComponent,
+      {
+        maxWidth: "100%",
+        height: '90%',
+        width: '80%', 
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result); 
+    });
+  }
+  NewRefdvance(){  
+    const dialogRef = this._matDialog.open(IPRefundofAdvanceComponent,
+      {
+        maxWidth: "100%",
+        height: '90%',
+        width: '80%', 
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result); 
+    });
   }
 }
 

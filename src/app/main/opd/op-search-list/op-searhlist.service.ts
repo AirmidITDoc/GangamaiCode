@@ -305,14 +305,28 @@ public getConcessionCombo()
     return this._httpClient.post("OutPatient/OPBillWithPaymentCashCounter", employee)
   }
 
-  public InsertOPBillingCredit(employee) : Observable<any> {
-    return this._httpClient.post("OutPatient/OPBillingWithCreditCashCounter", employee)
-  }
+ 
   
-  public InsertOPRefundBilling(employee) {
-    return this._httpClient.post("OutPatient/OPRefundBill", employee)
+  // public InsertOPRefundBilling(employee) {
+  //   return this._httpClient.post("OutPatient/OPRefundBill", employee)
+  // }
+
+ 
+  public InsertOPBillingCredit(Param: any, showLoader = true) {
+    // if (Param.refundId) {
+   
+        return this._httpClient1.PostData("Billing/OPCreditBillingInsert", Param, showLoader);
+    // }
+    //  else return this._httpClient1.PostData("RefundOfBill/IPInsert", Param, showLoader);
   }
 
+  public InsertOPRefundBilling(Param: any, showLoader = true) {
+    if (Param.refundId) {
+        return this._httpClient1.PutData("RefundOfBill/IPInsert" + Param.refundId, Param, showLoader);
+    }
+    //  else return this._httpClient1.PostData("RefundOfBill/IPInsert", Param, showLoader);
+  }
+  
   public getRefundBrowsePrint(RefundId) {
     return this._httpClient.post("Generic/GetByProc?procName=rptOPRefundofBillPrint", RefundId)
   } 
@@ -526,4 +540,10 @@ public OpBillInsertSave(Param: any, showLoader = true) {
       {value: 'card', viewValue: 'Card'} 
     ];
   }
+
+  // new Api?
+  public deactivateTheStatus(m_data) {
+    return this._httpClient1.PostData("VisitDetail", m_data);
+}
+
 }

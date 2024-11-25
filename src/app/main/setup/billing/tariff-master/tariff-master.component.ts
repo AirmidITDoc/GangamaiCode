@@ -6,6 +6,12 @@ import { MatSort } from "@angular/material/sort";
 import { fuseAnimations } from "@fuse/animations";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { NewTariffComponent } from "./new-tariff/new-tariff.component";
 
 @Component({
     selector: "app-tariff-master",
@@ -15,184 +21,84 @@ import { ToastrService } from "ngx-toastr";
     animations: fuseAnimations,
 })
 export class TariffMasterComponent implements OnInit {
-    TariffMasterList: any;
-    msg: any;
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    
+    gridConfig: gridModel = {
+        apiUrl: "TarrifMaster/List",
+        columnsList: [
+            { heading: "Code", key: "tariffId", sort: true, align: 'left', emptySign: 'NA', width:160 },
 
-    @ViewChild(MatSort) sort: MatSort;
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-
-    displayedColumns: string[] = [
-        "TariffId",
-        "TariffName",
-
-        "IsDeleted",
-        "action",
-    ];
-
-    DSTariffMasterList = new MatTableDataSource<TariffMaster>();
-
-    constructor(public _tariffService: TariffMasterService,
-        public toastr : ToastrService,) {}
-
-    ngOnInit(): void {
-        this.getTariffMasterList();
-    }
-    onSearch() {
-        this.getTariffMasterList();
-    }
-
-    onSearchClear() {
-        this._tariffService.myformSearch.reset({
-            TariffNameSearch: "",
-            IsDeletedSearch: "2",
-        });
-        this.getTariffMasterList();
-    }
-    getTariffMasterList() {
-        var param = {
-            TariffName:
-                this._tariffService.myformSearch
-                    .get("TariffNameSearch")
-                    .value.trim() || "%",
-        };
-        this._tariffService.getTariffMasterList(param).subscribe((Menu) => {
-            this.DSTariffMasterList.data = Menu as TariffMaster[];
-            this.DSTariffMasterList.sort = this.sort;
-            this.DSTariffMasterList.paginator = this.paginator;
-        });
-    }
-
-    onClear() {
-        this._tariffService.myform.reset({ IsDeleted: "false" });
-        this._tariffService.initializeFormGroup();
-    }
-
-    onSubmit() {
-        if (this._tariffService.myform.valid) {
-            if (!this._tariffService.myform.get("TariffId").value) {
-                var m_data = {
-                    tariffMasterInsert: {
-                        tariffName: this._tariffService.myform
-                            .get("TariffName")
-                            .value.trim(),
-                        isActive: Boolean(
-                            JSON.parse(
-                                this._tariffService.myform.get("IsDeleted")
-                                    .value
-                            )
-                        ),
-                    },
-                };
-
-                this._tariffService
-                    .tariffMasterInsert(m_data)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                            this.getTariffMasterList();
-                            // Swal.fire(
-                            //     "Saved !",
-                            //     "Record saved Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getTariffMasterList();
-                            //     }
-                            // });
-                        } else {
-                            this.toastr.error('Tariff Master Data not saved !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                        }
-                        this.getTariffMasterList();
-                    },error => {
-                        this.toastr.error('Tariff Data not saved !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
-            } else {
-                var m_dataUpdate = {
-                    tariffMasterUpdate: {
-                        tariffId:
-                            this._tariffService.myform.get("TariffId").value,
-                        tariffName:
-                            this._tariffService.myform.get("TariffName").value,
-                        isActive: Boolean(
-                            JSON.parse(
-                                this._tariffService.myform.get("IsDeleted")
-                                    .value
-                            )
-                        ),
-                    },
-                };
-
-                this._tariffService
-                    .tariffMasterUpdate(m_dataUpdate)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record updated Successfully.', 'updated !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                              this.getTariffMasterList();
-                            // Swal.fire(
-                            //     "Updated !",
-                            //     "Record updated Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getTariffMasterList();
-                            //     }
-                            // });
-                        } else {
-                            this.toastr.error('Tariff Master Data not Updated !, Please check API error..', 'Updated !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
+            { heading: "TariffName", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width:700 },
+           
+            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center",width:160 },
+            
+            {
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:160, actions: [
                     
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            this.onSave(data) // EDIT Records
                         }
-                        this.getTariffMasterList();
-                    },error => {
-                        this.toastr.error('Tariff Data not Updated !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
+                    }, {
+                        action: gridActions.delete, callback: (data: any) => {
+                            this.onDeactive(data.tariffId); // DELETE Records
+                        }
+                    }]
+            } //Action 1-view, 2-Edit,3-delete
+        ],
+        sortField: "tariffId",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "tariffName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+        ],
+        row: 25
+    }
+
+    constructor(
+        public _TariffMasterService: TariffMasterService,
+        public toastr: ToastrService, public _matDialog: MatDialog
+    ) { }
+
+    ngOnInit(): void { }
+
+    onSave(row: any = null) {
+        debugger
+        let that = this;
+        const dialogRef = this._matDialog.open(NewTariffComponent,
+            {
+                maxWidth: "45vw",
+                height: '35%',
+                width: '70%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                // that.grid.bindGridData();
             }
-            this.onClear();
-        }
+        });
     }
-    onEdit(row) {
-        var m_data = {
-            TariffId: row.tariffId,
-            TariffName: row.tariffName.trim(),
-            IsDeleted: JSON.stringify(row.IsActive),
-            //  UpdatedBy: row.UpdatedBy,
-        };
-        this._tariffService.populateForm(m_data);
-    }
-}
 
-export class TariffMaster {
-    TariffId: number;
-    TariffName: string;
-    IsDeleted: boolean;
-    // AddedBy: number;
-    // UpdatedBy: number;
-
-    /**
-     * Constructor
-     *
-     * @param TariffMaster
-     */
-    constructor(TariffMaster) {
-        {
-            this.TariffId = TariffMaster.TariffId || "";
-            this.TariffName = TariffMaster.TariffName || "";
-            this.IsDeleted = TariffMaster.IsDeleted || "false";
-            // this.AddedBy = TariffMaster.AddedBy || "";
-            // this.UpdatedBy = TariffMaster.UpdatedBy || "";
-        }
+    onDeactive(tariffId){
+        this.confirmDialogRef = this._matDialog.open(
+            FuseConfirmDialogComponent,
+            {
+                disableClose: false,
+            }
+        );
+        this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+        this.confirmDialogRef.afterClosed().subscribe((result) => {
+            if (result) {
+                this._TariffMasterService.deactivateTheStatus(tariffId).subscribe((response: any) => {
+                    if (response.StatusCode == 200) {
+                        this.toastr.success(response.Message);
+                        // this.getGenderMasterList();
+                        // How to refresh Grid.
+                    }
+                });
+            }
+            this.confirmDialogRef = null;
+        });
     }
+
 }

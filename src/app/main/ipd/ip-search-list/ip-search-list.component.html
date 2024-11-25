@@ -1,349 +1,102 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" dynamicTableHeight
-    fusePerfectScrollbar>
-
-    <mat-toolbar class="accent top-header">
-        <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
-            <button mat-icon-button class="sidebar-toggle " fxHide.gt-sm (click)="toggleSidebar('app-main')">
-                <mat-icon>menu</mat-icon>
-            </button>
-            <mat-icon class="logo-icon " [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
-            </mat-icon>
-            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                IP Search List
-            </span>
-        </div>
-    </mat-toolbar>
-    <!-- / HEADER -->
-    <!-- SELECTED BAR -->
-    <app-main class="accent-600" *ngIf="hasSelectedContacts" [@slideInTop]></app-main>
-    <!-- / SELECTED BAR -->
-    <!-- CONTENT -->
-    <div class="content">
-        <!-- SIDEBAR -->
-        <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" class="fuse-search-sidebar">
-            <div class="sidebar-content">
-                <!-- SIDEBAR HEADER -->
-                <div class="sidebar-header accent" fxLayout="row" fxLayoutAlign="start center">
-                    <span class="search-title">Search Facility</span>
-                    <!-- / USER -->
-                </div>
-                <!-- / SIDEBAR HEADER -->
-                <!-- SIDEBAR CONTENT -->
-                <div class="sidebar-body">
-                    <div class="sidebar-form">
-                        <form [formGroup]="_IpSearchListService.myFilterform" fusePerfectScrollbar>
-                            <div fxLayout="column" fxLayoutAlign="start none">
-                                <mat-form-field appearance="outline">
-                                    <mat-label>Enter a date range</mat-label>
-                                    <mat-date-range-input [rangePicker]="picker">
-                                        <input matStartDate formControlName="start" placeholder="Start date">
-                                        <input matEndDate formControlName="end" placeholder="End date"
-                                            (dateChange)="getAdmittedPatientList()">
-                                    </mat-date-range-input>
-                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                    <mat-date-range-picker #picker></mat-date-range-picker>
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>RegNo</mat-label>
-                                    <input name="RegNo" formControlName="RegNo" matInput
-                                        (keyup)="getAdmittedPatientList()">
-                                    <span class="error" *ngIf="f.FirstName.invalid && f.RegNo.touched">RegNo is
-                                        required Enter only Digits</span>
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>First Name</mat-label>
-                                    <input name="FirstName" formControlName="FirstName" matInput
-                                        (keyup)="getAdmittedPatientList()">
-                                    <span class="error" *ngIf="f.FirstName.invalid && f.FirstName.touched">FirstName is
-                                        required Enter only Alphabets</span>
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Middle Name</mat-label>
-                                    <input name="MiddleName" formControlName="MiddleName" matInput
-                                        (keyup)="getAdmittedPatientList()">
-                                    <span class="error" *ngIf="f.MiddleName.invalid && f.MiddleName.touched">
-                                        MiddleName is required Enter only Alphabets</span>
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Last Name</mat-label>
-                                    <input name="LastName" formControlName="LastName" matInput
-                                        (keyup)="getAdmittedPatientList()">
-                                    <span class="error" *ngIf="f.LastName.invalid && f.LastName.touched">
-                                        LastName is required Enter only Alphabets</span>
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Mobile Number</mat-label>
-                                    <input name="MobileNo" formControlName="MobileNo" matInput type="number"
-                                        (keyup)="getAdmittedPatientList()">
-                                    <span class="error" *ngIf="f.MobileNo.invalid && f.MobileNo.touched">MobileNo is
-                                        required Enter only Digits</span>
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>IPDNo</mat-label>
-                                    <input name="IPDNo" formControlName="IPDNo" matInput type="number"
-                                        (keyup)="getAdmittedPatientList()">
-                                    <span class="error" *ngIf="f.IPDNo.invalid && f.IPDNo.touched">IPDNo is
-                                        required Enter only Digits</span>
-                                </mat-form-field>
-                                <div class="slide-toggle mb-2">
-                                    <mat-slide-toggle name="IsDischarge" (change)="onChangeIsactive($event)"
-                                        formControlName="IsDischarge" [(ngModel)]="isChecked">
-                                        IsDischarge
-                                    </mat-slide-toggle>
-                                </div>
-
-
-
-
-                            </div>
-                        </form>
-                            <div style="margin-top: 10px;">
-                                <button mat-raised-button (click)="onClear()" class="clearbutton" matTooltip="Close">
-                                    <mat-icon class="cleariconbutton">close</mat-icon>
-                                </button>
-
-                                <button mat-raised-button class="searchButton" (click)="getAdmittedPatientList()"
-                                    [disabled]="click" matTooltip="Search">
-                                    <mat-icon class="searchiconbutton">search</mat-icon>
-                                </button>
-
-                            </div>
-
-
-                     
-                    </div>
-                </div>
-            </div>
-        </fuse-sidebar>
-        <!-- / SIDEBAR -->
-        <!-- CENTER -->
-        <!-- CENTER -->
-
-        <div class="center p-12 pb-56" fxFlexAlign="start center">
-
-            <div class="content-card" style="border-radius:4px; ">
-                <div fxlayout="row">
-                    <div style="width: 100%;">
-
-                        <mat-table #table matSort table="table1" [dataSource]="dataSource"
-                            [@animateStagger]="{value:'50'}">
-
-
-                            <ng-container matColumnDef="button" sticky>
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
-
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-
-                                    <mat-icon *ngIf="contact.PatientType =='Self'"
-                                        matTooltip="Patient Category Self">account_box
-                                    </mat-icon>
-
-                                    <mat-icon *ngIf="contact.PatientType !== 'Self'"
-                                        matTooltip="Patient Category Company">business
-                                    </mat-icon>
-
-                                </mat-cell>
-                            </ng-container>
-
-
-                            <ng-container matColumnDef="IsBillGenerated" sticky>
-                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-80" style="color: white;">Bill
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" class="w-80">
-                                    <mat-icon *ngIf="contact.IsBillGenerated=='1'; else noMLC "
-                                        matTooltip="Bill Generated" class="pill green-600 s-16">
-                                    </mat-icon>
-                                    <ng-template #noMLC>
-                                        <span>--</span>
-                                    </ng-template>
-
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="IsMLC">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-80"
-                                    fxShow.gt-sm>IsMLC</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-80">
-                                    <button mat-icon-button *ngIf="contact.IsMLC==1; else noMLC " matTooltip="IsMLC"
-                                        (click)="NewMLc(contact)">
-                                        <mat-icon>edit</mat-icon>
-                                    </button>
-                                    <button mat-icon-button *ngIf="contact.IsMLC==1; else noMLC "
-                                        matTooltip="Print MLC paper">
-                                        <mat-icon>print</mat-icon>
-                                    </button>
-
-                                    <ng-template #noMLC>
-                                        <span>--</span>
-                                    </ng-template>
-                                    <!-- <span> {{contact.IsMLC}}</span> -->
-                                </mat-cell>
-                            </ng-container>
-
-
-                            <ng-container matColumnDef="RegNo" sticky>
-                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-80"
-                                    fxShow.gt-sm>RegNo</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-80">
-                                    <span> {{contact.RegNo}}</span>
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="PatientName">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200"
-                                    fxShow.gt-sm>PatientName</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
-                                    <span> {{contact.PatientName}}</span>
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="DOA">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header>Date</mat-header-cell>
-                                <mat-cell *matCellDef="let contact">
-                                    <span> {{contact.DOA}} - {{contact.DOT}}</span>
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="IPDNo">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header>IPDNo
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact">
-                                    <span> {{contact.IPDNo}}</span>
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="Doctorname">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200">Doctor
-                                    Name
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" class="w-200">
-                                    <span>{{contact.Doctorname}}</span>
-                                </mat-cell>
-                            </ng-container>
-
-
-                            <ng-container matColumnDef="RefDocName">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-150">Ref Doc
-                                    Name
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" class="w-150">
-                                    <span> {{contact.RefDocName || '--'}}</span>
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="PatientType">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header>PatientType
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact">
-                                    <span> {{contact.PatientType}}</span>
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="CompanyName">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header>CompanyName
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact">
-
-                                    <span> {{contact.CompanyName || '--'}}</span>
-
-                                    <button mat-icon-button *ngIf="!contact.CompanyName==''">
-                                        <mat-icon>edit</mat-icon>
-                                    </button>
-
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="buttons1" stickyEnd>
-                                <mat-header-cell *matHeaderCellDef class="table-actions w-150">Action</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" class="w-150" >
-                                    <div fxLayout="row">
-                                       
-                                        <button mat-icon-button (click)="printDischargeslip(contact)"  *ngIf="contact.IsDischarged"
-                                            matTooltip="Discharge Slip Print">
-                                            <mat-icon>
-                                                <img width="20px" height="6px" src="assets/images/logos/dischargesummary.jpeg" style="background:-moz-linear-gradient(00,9,22);"> 
-                                            </mat-icon> 
-                                        </button>
-                                        <button mat-icon-button (click)="printDischargesummary(contact)"  *ngIf="contact.IsDischarged"
-                                            matTooltip="Discharge Summary Print">
-                                            <mat-icon>
-                                                <img width="20px" height="6px" src="assets/images/logos/discharge.jpeg" style="background-color: transparent;">
-                                            </mat-icon>
-    
-                                        </button>
-
-                                                                    
-                                        <button mat-icon-button
-                                        (click)="getfeedback(contact)"
-                                        matTooltip="NewFeedback">
-                                        <mat-icon style="color: black;">feedback</mat-icon>
-                                    </button>
-                                    </div>
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="buttons" stickyEnd>
-                                <mat-header-cell *matHeaderCellDef class="table-actions w-100">Action</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" class="w-100">
-                                    <div fxFlex="row" fxLayoutAlign="start center">
-                                        <button class="menu-btn" mat-icon-button [matMenuTriggerFor]="moreMenu"
-                                            aria-label="More" (click)="$event.stopPropagation();">
-                                            <mat-icon class="secondary-text">more_vert</mat-icon>
-                                        </button>
-                                        <mat-menu #moreMenu="matMenu">
-                                            <ng-container *ngFor="let m of menuActions, let i=index">
-
-                                                <button mat-menu-item aria-label="remove"
-                                                    (click)="getRecord(contact,m)">
-                                                    <span>{{m}}</span>
-                                                </button>
-                                            </ng-container>
-                                        </mat-menu>
-                                    </div>
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="loading">
-                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                </mat-header-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="noData">
-                                <mat-footer-cell *matFooterCellDef colspan="6">
-                                    <!-- <mat-spinner style="float:left;" *ngIf="isLoadingStr=='loading'" [diameter]='30'>
-                                    </mat-spinner> -->
-                                    <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
-                                </mat-footer-cell>
-                            </ng-container>
-
-                            <mat-header-row class="accent min-width-1500"
-                                *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                            <mat-row class="min-width-1500" *matRowDef="let contact; columns: displayedColumns;"
-                                [ngClass]="contact.PatientType !== 'Self' ? 'self-row' : ''"
-                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                            <mat-footer-row *matFooterRowDef="['loading']"
-                                [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
-                            <mat-footer-row *matFooterRowDef="['noData']"
-                                [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
-
-                        </mat-table>
-                        <mat-paginator [pageSizeOptions]="[35, 50, 75, 100]" [pageSize]="35" [length]="resultsLength"
-                            showFirstLastButtons (page)="getAdmittedPatientList()">
-                        </mat-paginator>
-                    </div>
-                </div>
+<div fusePerfectScrollbar
+    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+    dynamicTableHeight>
+    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center ">
+        <div class="top-header-info">
+            <div class="top-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                   Ip Search List
+                </span>
             </div>
         </div>
-        <!-- CENTER -->
+       <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+       
     </div>
-    <!-- / USER -->
-    <!-- / CENTER -->
-    <!-- / CONTENT-->
+    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+        <airmid-table [gridConfig]="gridConfig" class="content">
+            <ng-container filters>
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>First Name</mat-label>
+                    <input matInput placeholder="Search First Name" autocomplete="off"
+                        [(ngModel)]="gridConfig.filters[0].fieldValue" />
+                    <button mat-button matSuffix mat-icon-button aria-label="Clear"
+                        (click)="gridConfig.filters[0].fieldValue=''">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>Last Name</mat-label>
+                    <input matInput placeholder="Search Last Name" autocomplete="off"
+                        [(ngModel)]="gridConfig.filters[1].fieldValue" />
+                    <button mat-button matSuffix mat-icon-button aria-label="Clear"
+                        (click)="gridConfig.filters[1].fieldValue=''">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>From Date</mat-label>
+                    <input matInput placeholder="Search From Date" autocomplete="off"
+                        [(ngModel)]="gridConfig.filters[2].fieldValue" />
+                    <button mat-button matSuffix mat-icon-button aria-label="Clear"
+                        (click)="gridConfig.filters[2].fieldValue=''">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>To Date</mat-label>
+                    <input matInput placeholder="Search To Date" autocomplete="off"
+                        [(ngModel)]="gridConfig.filters[3].fieldValue" />
+                    <button mat-button matSuffix mat-icon-button aria-label="Clear"
+                        (click)="gridConfig.filters[3].fieldValue=''">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
+
+                <!-- <mat-form-field appearance="outline">
+                    <mat-label>Enter a date range</mat-label>
+                    <mat-date-range-input [rangePicker]="picker">
+                        <input matStartDate formControlName="start"  [(ngModel)]="gridConfig.filters[0].fieldValue" 
+                            placeholder="Start date">
+                        <input matEndDate formControlName="end" placeholder="End date"
+                        [(ngModel)]="gridConfig.filters[0].fieldValue" />
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+                </mat-form-field> -->
+                
+
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>M_Name</mat-label>
+                    <input matInput placeholder="Search M_Name" autocomplete="off"
+                        [(ngModel)]="gridConfig.filters[5].fieldValue" />
+                    <button mat-button matSuffix mat-icon-button aria-label="Clear"
+                        (click)="gridConfig.filters[5].fieldValue=''">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>IPNo</mat-label>
+                    <input matInput placeholder="Search IPNo" autocomplete="off"
+                        [(ngModel)]="gridConfig.filters[6].fieldValue" />
+                    <button mat-button matSuffix mat-icon-button aria-label="Clear"
+                        (click)="gridConfig.filters[6].fieldValue=''">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
+                <mat-radio-group value="" [(ngModel)]="gridConfig.filters[4].fieldValue" fxLayoutAlign="center center">
+                    <mat-radio-button mat-fab value="1">Admtd_Dschrgd_All</mat-radio-button>
+                    <mat-radio-button mat-fab value="0">Not Admtd_Dschrgd_All</mat-radio-button>
+                </mat-radio-group>
+                <!-- <mat-radio-group value="" [(ngModel)]="gridConfig.filters[1].fieldValue" fxLayoutAlign="center center">
+                    <mat-radio-button value="">All</mat-radio-button>
+                    <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
+                    <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
+                </mat-radio-group> -->
+            </ng-container>
+        </airmid-table>
+    </div>
 </div>

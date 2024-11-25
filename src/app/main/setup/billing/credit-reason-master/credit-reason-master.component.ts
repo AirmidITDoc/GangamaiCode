@@ -25,11 +25,11 @@ export class CreditReasonMasterComponent implements OnInit {
       gridConfig: gridModel = {
           apiUrl: "CreditReasonMaster/List",
           columnsList: [
-              { heading: "Code", key: "creditId", sort: true, align: 'left', emptySign: 'NA' },
-              { heading: "credit Reason ", key: "creditReason", sort: true, align: 'left', emptySign: 'NA' },
-              { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+              { heading: "Code", key: "creditId", sort: true, align: 'left', emptySign: 'NA',width:200 },
+              { heading: "credit Reason ", key: "creditReason", sort: true, align: 'left', emptySign: 'NA', width:600 },
+              { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center",width:200 },
               {
-                  heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                  heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:200, actions: [
                       {
                           action: gridActions.edit, callback: (data: any) => {
                               this.onSave(data);

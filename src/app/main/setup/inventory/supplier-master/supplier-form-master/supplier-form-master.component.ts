@@ -97,6 +97,15 @@ export class SupplierFormMasterComponent implements OnInit {
   vCreditPeriod:any;
     private _onDestroy = new Subject<void>();
 
+    // new API
+    autocompleteModecity:string="City";    
+    autocompleteModestate: string = "State";
+    autocompleteModecountry: string = "CountryByState";
+    autocompleteModeofpayment: string= "PaymentMode";
+    autocompleteModetermofpayment: string= "TermofPayment";
+    autocompleteModebankName: string="Bank";
+    autocompleteModestoreName: string="Store";
+
     constructor(
         public _supplierService: SupplierMasterService,
         public toastr : ToastrService,
@@ -108,12 +117,12 @@ export class SupplierFormMasterComponent implements OnInit {
     }
 
   ngOnInit(): void {
-    this.getSupplierTypeMasterList();
-    this.getModeofpaymentCombobox();
-    this.getTermofpaymentCombobox();
-    this.getCountryNameCombobox();
-    this.getBankNameList();
-    this.getCityNameCombobox();
+    // this.getSupplierTypeMasterList();
+    // this.getModeofpaymentCombobox();
+    // this.getTermofpaymentCombobox();
+    // this.getCountryNameCombobox();
+    // this.getBankNameList();
+    // this.getCityNameCombobox();
    
 
     if (this.data) {
@@ -558,50 +567,53 @@ var m = {
     //     return;
     // }
     // else {
-      if ((this.vSupplierName == undefined || this.vSupplierName == undefined || this.vSupplierName == undefined)) {
-        this.toastr.warning('Please enter SupplierName.', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-    }
-    if ((this.vAddress == undefined || this.vAddress == undefined || this.vAddress == undefined)) {
-        this.toastr.warning('Please enter Address.', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-    }
-    if ((this.vMobile == undefined || this.vMobile == undefined || this.vMobile == undefined)) {
-        this.toastr.warning('Please enter Mobile..', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-    }
-    if (( this._supplierService.myform.get("CityId").value.CityId == undefined ||
-     this._supplierService.myform.get("CityId").value.CityId == undefined ||
-       this._supplierService.myform.get("CityId").value.CityId == undefined)) {
-        this.toastr.warning('Please select  City.', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-    }
-    if ((this.vEmail == undefined || this.vEmail == undefined || this.vEmail == undefined)) {
-      this.toastr.warning('Please enter Email..', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-  }
-  if ((this.vModeofpay == undefined || this.vModeofpay == undefined || this.vModeofpay == undefined)) {
-      this.toastr.warning('Please select Modeofpay.', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-  }
-  if (this.selectedItems.length==0) {
-    this.toastr.warning('Please select Store.', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-    });
-    return;
-}
+
+// validation
+
+//       if ((this.vSupplierName == undefined || this.vSupplierName == undefined || this.vSupplierName == undefined)) {
+//         this.toastr.warning('Please enter SupplierName.', 'Warning !', {
+//             toastClass: 'tostr-tost custom-toast-warning',
+//         });
+//         return;
+//     }
+//     if ((this.vAddress == undefined || this.vAddress == undefined || this.vAddress == undefined)) {
+//         this.toastr.warning('Please enter Address.', 'Warning !', {
+//             toastClass: 'tostr-tost custom-toast-warning',
+//         });
+//         return;
+//     }
+//     if ((this.vMobile == undefined || this.vMobile == undefined || this.vMobile == undefined)) {
+//         this.toastr.warning('Please enter Mobile..', 'Warning !', {
+//             toastClass: 'tostr-tost custom-toast-warning',
+//         });
+//         return;
+//     }
+//     if (( this._supplierService.myform.get("CityId").value.CityId == undefined ||
+//      this._supplierService.myform.get("CityId").value.CityId == undefined ||
+//        this._supplierService.myform.get("CityId").value.CityId == undefined)) {
+//         this.toastr.warning('Please select  City.', 'Warning !', {
+//             toastClass: 'tostr-tost custom-toast-warning',
+//         });
+//         return;
+//     }
+//     if ((this.vEmail == undefined || this.vEmail == undefined || this.vEmail == undefined)) {
+//       this.toastr.warning('Please enter Email..', 'Warning !', {
+//           toastClass: 'tostr-tost custom-toast-warning',
+//       });
+//       return;
+//   }
+//   if ((this.vModeofpay == undefined || this.vModeofpay == undefined || this.vModeofpay == undefined)) {
+//       this.toastr.warning('Please select Modeofpay.', 'Warning !', {
+//           toastClass: 'tostr-tost custom-toast-warning',
+//       });
+//       return;
+//   }
+//   if (this.selectedItems.length==0) {
+//     this.toastr.warning('Please select Store.', 'Warning !', {
+//         toastClass: 'tostr-tost custom-toast-warning',
+//     });
+//     return;
+// }
 
     let termsofPayment = 0;
     if (this._supplierService.myform.get("TermOfPayment").value)
@@ -624,139 +636,190 @@ var m = {
             
               
                 var data2 = [];
-                this.selectedItems.forEach((element) => {
+                // this.selectedItems.forEach((element) => {
                     let deptInsertObj = {};
-                    deptInsertObj['StoreId'] = element.StoreId
-                    deptInsertObj['SupplierId'] = !this._supplierService.myform.get("SupplierId").value ? "0" : this._supplierService.myform.get("SupplierId").value || "0";
+                    deptInsertObj['assignId'] = 1//element.StoreId
+                    // deptInsertObj['storeId'] = element.StoreId
+                    deptInsertObj['storeId'] = 1 //this.storeId || "0";
+                    deptInsertObj['supplierId'] = 0,//!this._supplierService.myform.get("SupplierId").value ? "0" : this._supplierService.myform.get("SupplierId").value || "0";
                     data2.push(deptInsertObj);
-                });
+                // });
+                console.log("Insert data2:",data2);
 
 
-                var m_data = {
+                // var m_data = {
                  
-                    insertSupplierMaster: {
-                      supplierName: this._supplierService.myform.get("SupplierName").value,
-                      contactPerson:this._supplierService.myform.get("ContactPerson").value || "%",
-                      address:this._supplierService.myform.get("Address").value || "%",
-                      cityId: this._supplierService.myform.get("CityId").value.CityId,
-                      stateId:this._supplierService.myform.get("StateId").value.StateId,
-                      countryId:this._supplierService.myform.get("CountryId").value.CountryId,
-                      creditPeriod:this._supplierService.myform.get("CreditPeriod").value || "0",
-                      mobile:this._supplierService.myform.get("Mobile").value || "0",
-                      phone:this._supplierService.myform.get("Phone").value || "0",
-                      fax:this._supplierService.myform.get("Fax").value || "0",
-                      email:this._supplierService.myform.get("Email").value || "%",
-                      modeofPayment:this._supplierService.myform.get("ModeOfPayment").value.id || "0",
-                      termsofPayment:termsofPayment || "0",
-                      currencyId:this._supplierService.myform.get("CurrencyId").value || "0",
-                      octroi:0,
-                      freight:this._supplierService.myform.get("Freight").value ||"0",
-                      isDeleted: Boolean(JSON.parse(this._supplierService.myform.get("IsDeleted").value)),
-                      addedby:this._loggedService.currentUserValue.user.id || 0,
-                      gstNo: this._supplierService.myform.get("GSTNo").value || 0,
-                      supplierId:this._supplierService.myform.get("SupplierId").value || 0,
-                      panNo: this._supplierService.myform.get("PanNo").value || 0
-                        // pinCode:this._supplierService.myform.get("Pincode").value || "0",
-                        // taluka:this._supplierService.myform.get("Taluka").value || "0",
-                        // licNo:this._supplierService.myform.get("LicNo").value || "0",
-                        // expDate: this.registerObj.ExpDate,//this._supplierService.myform.get("ExpDate").value.ExpDate || "",
-                        // dlNo:this._supplierService.myform.get("DlNo").value || "0",
-                        // BankId:BankId || "0",
-                        // bankname:bankname|| " ",
-                        // branch:this._supplierService.myform.get("BankBranch").value || "0",
-                        // bankNo:this._supplierService.myform.get("BankNo").value || "0",
-                        // ifsccode:this._supplierService.myform.get("IFSCcode").value || "0",
-                        // venderTypeId:venderTypeId || "0",
-                        // openingBalance:this._supplierService.myform.get("OpeningBal").value || "0",
-                        // TaxNature:this._supplierService.myform.get("TaxNature").value || "0",
-                    },
-                    insertAssignSupplierToStore: data2,
-                };
-               
-             
-                console.log(m_data);
-                this._supplierService.insertSupplierMaster(m_data).subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });   
-                              this.Savebtn=false;
-                        } else {
-                            this.toastr.error('Supplier-from Master Master Data not saved !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                        }
-                    });
-            } else {
-              
-                var data3 = [];
-                this.selectedItems.forEach((element) => {
-                    let deptInsertObj = {};
-                    deptInsertObj['StoreId'] = element.StoreId
-                    deptInsertObj['SupplierId'] = !this._supplierService.myform.get("SupplierId").value ? "0" : this._supplierService.myform.get("SupplierId").value || "0";
-                    data3.push(deptInsertObj);
+                //     insertSupplierMaster: {
+                //       supplierName: this._supplierService.myform.get("SupplierName").value,
+                //       contactPerson:this._supplierService.myform.get("ContactPerson").value || "%",
+                //       address:this._supplierService.myform.get("Address").value || "%",
+                //       cityId: this._supplierService.myform.get("CityId").value.CityId,
+                //       stateId:this._supplierService.myform.get("StateId").value.StateId,
+                //       countryId:this._supplierService.myform.get("CountryId").value.CountryId,
+                //       creditPeriod:this._supplierService.myform.get("CreditPeriod").value || "0",
+                //       mobile:this._supplierService.myform.get("Mobile").value || "0",
+                //       phone:this._supplierService.myform.get("Phone").value || "0",
+                //       fax:this._supplierService.myform.get("Fax").value || "0",
+                //       email:this._supplierService.myform.get("Email").value || "%",
+                //       modeofPayment:this._supplierService.myform.get("ModeOfPayment").value.id || "0",
+                //       termsofPayment:termsofPayment || "0",
+                //       currencyId:this._supplierService.myform.get("CurrencyId").value || "0",
+                //       octroi:0,
+                //       freight:this._supplierService.myform.get("Freight").value ||"0",
+                //       isDeleted: Boolean(JSON.parse(this._supplierService.myform.get("IsDeleted").value)),
+                //       addedby:this._loggedService.currentUserValue.user.id || 0,
+                //       gstNo: this._supplierService.myform.get("GSTNo").value || 0,
+                //       supplierId:this._supplierService.myform.get("SupplierId").value || 0,
+                //       panNo: this._supplierService.myform.get("PanNo").value || 0
+                //         // pinCode:this._supplierService.myform.get("Pincode").value || "0",
+                //         // taluka:this._supplierService.myform.get("Taluka").value || "0",
+                //         // licNo:this._supplierService.myform.get("LicNo").value || "0",
+                //         // expDate: this.registerObj.ExpDate,//this._supplierService.myform.get("ExpDate").value.ExpDate || "",
+                //         // dlNo:this._supplierService.myform.get("DlNo").value || "0",
+                //         // BankId:BankId || "0",
+                //         // bankname:bankname|| " ",
+                //         // branch:this._supplierService.myform.get("BankBranch").value || "0",
+                //         // bankNo:this._supplierService.myform.get("BankNo").value || "0",
+                //         // ifsccode:this._supplierService.myform.get("IFSCcode").value || "0",
+                //         // venderTypeId:venderTypeId || "0",
+                //         // openingBalance:this._supplierService.myform.get("OpeningBal").value || "0",
+                //         // TaxNature:this._supplierService.myform.get("TaxNature").value || "0",
+                //     },
+                //     insertAssignSupplierToStore: data2,
+                // };
+               debugger
+                var mdata =
+                {
+                
+                  "supplierId": 0,
+                  "supplierName": this._supplierService.myform.get("SupplierName").value,
+                  "contactPerson":"a",// this._supplierService.myform.get("Mobile").value || " ",
+                  "address": this._supplierService.myform.get("Address").value || " ",
+                  "cityId" : 1,//parseInt(this.cityId),
+                  "stateId": 1, //this.stateId,
+                  "countryId": this._supplierService.myform.get("CountryId").value.value || "0",
+                  "creditPeriod": this._supplierService.myform.get("CreditPeriod").value || "0",
+                  "mobile": this._supplierService.myform.get("Mobile").value.toString() || "",
+                  "phone": this._supplierService.myform.get("Phone").value.toString() || "",
+                  "fax": this._supplierService.myform.get("Fax").value || "0",
+                  "email": this._supplierService.myform.get("Email").value || "%",
+                  "modeofPayment": this._supplierService.myform.get("ModeOfPayment").value || "0",
+                  "termofPayment": this._supplierService.myform.get("TermOfPayment").value || "0",
+                  "currencyId": this._supplierService.myform.get("CurrencyId").value || "0",
+                  "octroi": 0,
+                  "freight": this._supplierService.myform.get("Freight").value ||"0",
+                  "gstNo": this._supplierService.myform.get("GSTNo").value || 0,
+                  "panNo": this._supplierService.myform.get("PanNo").value || 0,
+                  "supplierTime": "10:00:00 AM",//this._supplierService.myform.get("SupplierType").value || 0,
+                  "mAssignSupplierToStores":data2
+                }
+                console.log("Insert mdata:",mdata);
+                
+                
+                //console.log(m_data);
+
+                this._supplierService.SupplierSave(mdata).subscribe((response) => {
+                  this.toastr.success(response.message);
+                 // this.onClear(true);
+                }, (error) => {
+                  this.toastr.error(error.message);
                 });
-                console.log(data3);
-                var m_dataUpdate = {
-                    updateSupplierMaster: {
-                        supplierID:this._supplierService.myform.get("SupplierId").value || 0,
-                        supplierName: this._supplierService.myform.get("SupplierName").value,
-                        contactPerson:this._supplierService.myform.get("ContactPerson").value || "%",
-                        address:this._supplierService.myform.get("Address").value || "%",
-                        cityId: this._supplierService.myform.get("CityId").value.CityId,
-                        stateID:this._supplierService.myform.get("StateId").value.StateId,
-                        countryId:this._supplierService.myform.get("CountryId").value.CountryId,
-                        creditPeriod:this._supplierService.myform.get("CreditPeriod").value || "0",
-                        mobile:this._supplierService.myform.get("Mobile").value || "0",
-                        phone:this._supplierService.myform.get("Phone").value || "0",
-                        fax:this._supplierService.myform.get("Fax").value || "0",
-                        email:this._supplierService.myform.get("Email").value || "%",
-                        modeofPayment:this._supplierService.myform.get("ModeOfPayment").value.id || "0",
-                        termsofPayment:termsofPayment || "0",
-                        currencyId:this._supplierService.myform.get("CurrencyId").value || "0",
-                        octroi:0,
-                        freight:this._supplierService.myform.get("Freight").value ||"0",
-                        isDeleted: Boolean(JSON.parse(this._supplierService.myform.get("IsDeleted").value)),
-                        updatedBy:this._loggedService.currentUserValue.user.id || 0,
-                        gstNo: this._supplierService.myform.get("GSTNo").value || 0, 
-                        panNo: this._supplierService.myform.get("PanNo").value || 0
-                        // pinCode:this._supplierService.myform.get("Pincode").value || "0",
-                        // taluka:this._supplierService.myform.get("Taluka").value || "0",
-                        // licNo:this._supplierService.myform.get("LicNo").value || "0",
-                        // expDate:this._supplierService.myform.get("ExpDate").value || "0",
-                        // dlNo:this._supplierService.myform.get("DlNo").value || "0",
-                        // BankId:BankId || "0",
-                        // bankname:bankname|| " ",
-                        // branch:this._supplierService.myform.get("BankBranch").value || "0",
-                        // bankNo:this._supplierService.myform.get("BankNo").value || "0",
-                        // ifsccode:this._supplierService.myform.get("IFSCcode").value || "0",
-                        // venderTypeId:venderTypeId || "0",
-                        // openingBalance:this._supplierService.myform.get("OpeningBal").value || "0"
-                    },
-                    deleteAssignSupplierToStore: {
-                        supplierId:
-                            this._supplierService.myform.get("SupplierId").value,
-                    },
-                    insertAssignSupplierToStore: data3,
-                };
-                console.log(m_dataUpdate);
-                this._supplierService
-                    .updateSupplierMaster(m_dataUpdate)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record updated Successfully.', 'updated !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });  
-                               this.Savebtn=false;
-                        } else {
-                            this.toastr.error('Supplier-from Master Master Data not updated !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                        }
-                    });
-            }
+            } 
+            // else {
+              
+            //     var data3 = [];
+            //     this.selectedItems.forEach((element) => {
+            //         let deptInsertObj = {};
+            //         deptInsertObj['assignId'] = 1//element.StoreId
+            //         deptInsertObj['StoreId'] = element.StoreId
+            //         deptInsertObj['SupplierId'] = !this._supplierService.myform.get("SupplierId").value ? "0" : this._supplierService.myform.get("SupplierId").value || "0";
+            //         data3.push(deptInsertObj);
+            //     });
+
+            //     console.log("update data3:",data3);
+
+            //     // var m_dataUpdate = {
+            //     //     updateSupplierMaster: {
+            //     //         supplierID:this._supplierService.myform.get("SupplierId").value || 0,
+            //     //         supplierName: this._supplierService.myform.get("SupplierName").value,
+            //     //         contactPerson:this._supplierService.myform.get("ContactPerson").value || "%",
+            //     //         address:this._supplierService.myform.get("Address").value || "%",
+            //     //         cityId: this._supplierService.myform.get("CityId").value.CityId,
+            //     //         stateID:this._supplierService.myform.get("StateId").value.StateId,
+            //     //         countryId:this._supplierService.myform.get("CountryId").value.CountryId,
+            //     //         creditPeriod:this._supplierService.myform.get("CreditPeriod").value || "0",
+            //     //         mobile:this._supplierService.myform.get("Mobile").value || "0",
+            //     //         phone:this._supplierService.myform.get("Phone").value || "0",
+            //     //         fax:this._supplierService.myform.get("Fax").value || "0",
+            //     //         email:this._supplierService.myform.get("Email").value || "%",
+            //     //         modeofPayment:this._supplierService.myform.get("ModeOfPayment").value.id || "0",
+            //     //         termsofPayment:termsofPayment || "0",
+            //     //         currencyId:this._supplierService.myform.get("CurrencyId").value || "0",
+            //     //         octroi:0,
+            //     //         freight:this._supplierService.myform.get("Freight").value ||"0",
+            //     //         isDeleted: Boolean(JSON.parse(this._supplierService.myform.get("IsDeleted").value)),
+            //     //         updatedBy:this._loggedService.currentUserValue.user.id || 0,
+            //     //         gstNo: this._supplierService.myform.get("GSTNo").value || 0, 
+            //     //         panNo: this._supplierService.myform.get("PanNo").value || 0
+            //     //         // pinCode:this._supplierService.myform.get("Pincode").value || "0",
+            //     //         // taluka:this._supplierService.myform.get("Taluka").value || "0",
+            //     //         // licNo:this._supplierService.myform.get("LicNo").value || "0",
+            //     //         // expDate:this._supplierService.myform.get("ExpDate").value || "0",
+            //     //         // dlNo:this._supplierService.myform.get("DlNo").value || "0",
+            //     //         // BankId:BankId || "0",
+            //     //         // bankname:bankname|| " ",
+            //     //         // branch:this._supplierService.myform.get("BankBranch").value || "0",
+            //     //         // bankNo:this._supplierService.myform.get("BankNo").value || "0",
+            //     //         // ifsccode:this._supplierService.myform.get("IFSCcode").value || "0",
+            //     //         // venderTypeId:venderTypeId || "0",
+            //     //         // openingBalance:this._supplierService.myform.get("OpeningBal").value || "0"
+            //     //     },
+            //     //     deleteAssignSupplierToStore: {
+            //     //         supplierId:
+            //     //             this._supplierService.myform.get("SupplierId").value,
+            //     //     },
+            //     //     insertAssignSupplierToStore: data3,
+            //     // };
+
+            //     var mdataUpdate={
+            //       "supplierId": 0,
+            //       "supplierName": this._supplierService.myform.get("SupplierName").value,
+            //       "contactPerson": this._supplierService.myform.get("Mobile").value || "%",
+            //       "address": this._supplierService.myform.get("Address").value || "%",
+            //       "cityId": this._supplierService.myform.get("CityId").value.value,
+            //       "stateId": this._supplierService.myform.get("StateId").value.value,
+            //       "countryId": this._supplierService.myform.get("CountryId").value.value,
+            //       "creditPeriod": this._supplierService.myform.get("CreditPeriod").value || "0",
+            //       "mobile": this._supplierService.myform.get("Mobile").value || "0",
+            //       "phone": this._supplierService.myform.get("Phone").value || "0",
+            //       "fax": this._supplierService.myform.get("Fax").value || "0",
+            //       "email": this._supplierService.myform.get("Email").value || "%",
+            //       "modeofPayment": this._supplierService.myform.get("ModeOfPayment").value || "0",
+            //       "termofPayment": this._supplierService.myform.get("TermOfPayment").value || "0",
+            //       "currencyId": this._supplierService.myform.get("CurrencyId").value || "0",
+            //       "octroi": 0,
+            //       "freight": this._supplierService.myform.get("Freight").value ||"0",
+            //       "gstNo": this._supplierService.myform.get("GSTNo").value || 0,
+            //       "panNo": this._supplierService.myform.get("PanNo").value || 0,
+            //       "supplierTime": this._supplierService.myform.get("SupplierType").value || 0,
+            //       "mAssignSupplierToStores":data3
+            //     }
+
+            //     console.log(mdataUpdate);
+            //     this._supplierService.updateSupplierMaster(mdataUpdate).subscribe((data) => {
+            //             this.msg = data;
+            //             if (data) {
+            //                 this.toastr.success('Record updated Successfully.', 'updated !', {
+            //                     toastClass: 'tostr-tost custom-toast-success',
+            //                   });  
+            //                    this.Savebtn=false;
+            //             } else {
+            //                 this.toastr.error('Supplier-from Master Master Data not updated !, Please check API error..', 'Error !', {
+            //                     toastClass: 'tostr-tost custom-toast-error',
+            //                   });
+            //             }
+            //         });
+            // }
             this.onClose();
         // }
     }
@@ -890,10 +953,6 @@ var m = {
     }
   }
   
- 
-  
-
-
   public onEnterfax(event): void {
     if (event.which === 13) {
        this.Email.nativeElement.focus();
@@ -1030,4 +1089,41 @@ public onEnterStore(event): void {
         this._supplierService.myform.reset();
         this.dialogRef.close();
     }
+
+    // new API
+    
+  cityId=0;
+  cityName='';  
+  stateId=0;
+  countryId=0;
+  modeOfPaymentId=0;
+  termOfPaymentId=0;
+  bankId=0;
+  storeId=0;
+
+  selectChangecity(obj:any){
+    console.log(obj)
+    this.cityId=obj.value;
+    this.cityName=obj.text;
+  }
+  selectChangestate(obj: any){
+    console.log(obj);
+    this.stateId=obj.value
+  }
+  selectChangecountry(obj: any){
+    console.log(obj);
+    this.countryId=obj.value;
+  }
+  selectChangemodeofpayment(obj:any){
+    this.modeOfPaymentId=obj.value;
+  }
+  selectChangetermofpayment(obj:any){
+    this.termOfPaymentId=obj.value;
+  }
+  selectChangebankName(obj:any){
+    this.bankId=obj.value;
+  }
+  selectChangestoreName(obj:any){
+    this.storeId=obj.value;
+  }
 }

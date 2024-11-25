@@ -47,6 +47,7 @@ export class GenderMasterService {
     }
 
     public deactivateTheStatus(m_data) {
+        debugger
         return this._httpClient.DeleteData("Gender?Id=" + m_data.toString());
     }
 }

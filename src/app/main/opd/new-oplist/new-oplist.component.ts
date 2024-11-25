@@ -6,6 +6,8 @@ import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/conf
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { OPListService } from './oplist.service';
+import { NewOPBillingComponent } from '../OPBilling/new-opbilling/new-opbilling.component';
+import { NewOPRefundofbillComponent } from '../op-search-list/new-oprefundofbill/new-oprefundofbill.component';
 
 
 @Component({
@@ -207,4 +209,39 @@ gridConfig2: gridModel = {
   onSave(row: any = null) {
   }
 
+
+
+  EditRefund(){
+    debugger
+    let that = this;
+    const dialogRef = this._matDialog.open(NewOPRefundofbillComponent,
+        {
+            maxWidth: "95vw",
+            height: '95%',
+            width: '80%',
+            // data: row
+        });
+    dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+            that.grid.bindGridData();
+        }
+    });
+}
+
+EditOPBill(){
+    debugger
+    let that = this;
+    const dialogRef = this._matDialog.open(NewOPBillingComponent,
+        {
+            maxWidth: "95vw",
+            height: '95%',
+            width: '80%',
+            // data: row
+        });
+    dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+            that.grid.bindGridData();
+        }
+    });
+}
 }

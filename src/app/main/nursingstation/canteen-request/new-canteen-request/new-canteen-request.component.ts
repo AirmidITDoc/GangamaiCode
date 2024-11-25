@@ -9,7 +9,6 @@ import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { MatTableDataSource } from '@angular/material/table';
-import { CanteenList } from '../canteen-request.component';
 import { element } from 'protractor';
 
 @Component({
@@ -68,9 +67,6 @@ export class NewCanteenRequestComponent implements OnInit {
   Chargelist:any=[];
   vStoredId:any;
   vOpDId:any;
-
-  dsItemList = new MatTableDataSource<CanteenItemList>(); 
-  dsCanteenDateList = new MatTableDataSource<CanteenList>();
 
   constructor(
     public _CanteenRequestservice:CanteenRequestService,
@@ -236,6 +232,7 @@ export class NewCanteenRequestComponent implements OnInit {
       this.ItemId = obj.ItemID; 
    
   }
+  dsItemList:any;
   onAdd() {
     if ((this.vQty == '' || this.vQty == null || this.vQty == undefined)) {
       this.toastr.warning('Please enter a qty', 'Warning !', {
@@ -407,6 +404,7 @@ export class NewCanteenRequestComponent implements OnInit {
       });
     });
   }
+  dsCanteenDateList:any;
   onClose(){
     this._matDialog.closeAll();
     this._CanteenRequestservice.ItemForm.reset();

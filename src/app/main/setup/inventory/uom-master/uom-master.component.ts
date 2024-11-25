@@ -29,11 +29,11 @@ export class UomMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "UnitOfMeasurement/List",
         columnsList: [
-            { heading: "Code", key: "unitofMeasurementId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Unit Name", key: "unitofMeasurementName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+            { heading: "Code", key: "unitofMeasurementId", width:150, sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Unit Name", key: "unitofMeasurementName", width:700, sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsDeleted", key: "isActive", width:150, type: gridColumnTypes.status, align: "center" },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action", width:150, align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);

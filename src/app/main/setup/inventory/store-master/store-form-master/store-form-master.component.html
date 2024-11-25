@@ -1,16 +1,16 @@
-<!-- <div class="modal-wrapper grid-container">
+<div class="modal-wrapper grid-container">
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Currency Master</span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> State Master</span>
             </div>
             <div class="modal-header-right">
-                <div class="close-icon">
+                <!-- <div class="close-icon">
                     <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
                         matTooltip="Close">
                         <mat-icon>close</mat-icon>
                     </button>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
@@ -20,11 +20,11 @@
                 <input type="hidden" name="currencyId" formControlName="currencyId">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                     <airmid-textbox 
-                        label="Currency name"
-                        formControlName="currencyName"
+                        label="Store name"
+                        formControlName="storeName"
                         [value]=""
                         [formGroup]="storeForm"
-                        [validations]="_CurrencymasterService.getValidationMessages().currencyName"
+                        [validations]="_StoreMasterService.getValidationMessages().storeName"
                         [maxLength]="300">
                     </airmid-textbox> 
                 </div>
@@ -46,4 +46,4 @@
             </button>
         </div>
     </div>
-</div> -->
+</div>

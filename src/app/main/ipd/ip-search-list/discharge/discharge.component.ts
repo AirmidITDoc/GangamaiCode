@@ -27,28 +27,35 @@ import { ConfigService } from 'app/core/services/config.service';
 })
 export class DischargeComponent implements OnInit {
 
+  
   isLoading: string = '';
-  DischargeTypeList: any = [];
+  
   currentDate = new Date();
-  screenFromString = 'discharge';
+  // screenFromString = 'discharge';
+  screenFromString = 'OP-billing';
   selectedAdvanceObj: AdvanceDetailObj;
   DischargeId: any;
   Today: Date = new Date();
   registerObj: any;
-  isDoctorSelected: boolean = false;
-  isDistypeSelected: boolean = false;
-  isModeSelected: boolean = false;
-  // filteredOptionsDoctorname: Observable<string[]>;
-  filteredOptionsDoctorname:any;
-  filteredOptionsModename: Observable<string[]>;
-  filteredOptionsDisctype: Observable<string[]>;
-  DoctorNameList: any = [];
-  ModeNameList: any = [];
+
+  
   dateTimeObj: any;
   vAdmissionId:any; 
+  vMode:any=0;
+  vDoctorId:any=0;
+  vDescType:any=0;
+  vAdmissionID:any=20;
+  vBedId=101;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+
+
+     // New Api
+     autocompletcondoc: string = "ConDoctor";
+     autocompletedichargetype: string = "DichargeType";
+     autocompletemode: string = "Mode";
+
 
   constructor(
     public _IpSearchListService: IPSearchListService,
@@ -61,10 +68,7 @@ export class DischargeComponent implements OnInit {
     public _ConfigService : ConfigService,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) { 
-    this.getDoctorNameList();
-    this.getDischargetypeCombo();
-    this.getModeNameList();
-
+  
     if (this.advanceDataStored.storage) {
      // debugger
        this.selectedAdvanceObj = this.advanceDataStored.storage;
@@ -78,8 +82,8 @@ export class DischargeComponent implements OnInit {
     if (this.advanceDataStored.storage) { 
       this.vAdmissionId = this.registerObj.AdmissionID;
       // this.setdropdownvalue();
-      this.getRtrvDischargelist()
-      this.getCheckBalanceAmt();
+      // this.getRtrvDischargelist()
+      // this.getCheckBalanceAmt();
     } 
   }
 
@@ -91,205 +95,114 @@ export class DischargeComponent implements OnInit {
  
   RtrvDischargeList:any=[];
   vComments:any;
-getRtrvDischargelist(){
-  let Query = "select DischargeId,DischargeTypeId,DischargedDocId,ModeOfDischargeid from Discharge where AdmissionID=" + this.selectedAdvanceObj.AdmissionID + " ";
-  console.log(Query)
-  this._IpSearchListService.getDischargeId(Query).subscribe(data => {
-    this.RtrvDischargeList = data ;
-    this.DischargeId = this.RtrvDischargeList[0].DischargeId || 0
-   // this.vComments = this.RtrvDischargeList.
-    this.Rtevdropdownvalue();
-    console.log(this.RtrvDischargeList); 
-  });
-}
-Rtevdropdownvalue(){
-  debugger
-  if(this.RtrvDischargeList[0].DischargeTypeId){
-     const toSelect = this.DischargeTypeList.find(c => c.DischargeTypeId == this.RtrvDischargeList[0].DischargeTypeId);
-     console.log(toSelect)
-     this._IpSearchListService.mySaveForm.get('DischargeTypeId').setValue(toSelect);
-  }
-  if(this.RtrvDischargeList[0].ModeOfDischargeid){
-    const toSelect = this.ModeNameList.find(c => c.ModeOfDischargeId == this.RtrvDischargeList[0].ModeOfDischargeid);
-    console.log(toSelect)
-    this._IpSearchListService.mySaveForm.get('ModeId').setValue(toSelect);
- }
-}
-optionsDoctor:any[]=[];
-  getDoctorNameList() {
-    this._IpSearchListService.getDoctorMaster1Combo().subscribe(data => {
-      this.DoctorNameList = data;
-      this.optionsDoctor = this.DoctorNameList.slice();
-      this.filteredOptionsDoctorname = this._IpSearchListService.mySaveForm.get('DoctorID').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterDoctorname(value) : this.DoctorNameList.slice()),
-      ); 
-      
-      if (this.registerObj) {
-        const ddValue= this.DoctorNameList.filter(item => item.DoctorID ==  this.registerObj.DocNameID);
-        //console.log(ddValue)
-        this._IpSearchListService.mySaveForm.get('DoctorID').setValue(ddValue[0]);
-        this._IpSearchListService.mySaveForm.updateValueAndValidity();
-      }
-    });
-  }
-
-  private _filterDoctorname(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
-      return this.DoctorNameList.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
-    }
-  }
-  optionsModeofDischarge:any[]=[];
-  getModeNameList() {
-    this._IpSearchListService.getModenameListCombo().subscribe(data => {
-      this.ModeNameList = data;
-      this.optionsModeofDischarge = this.ModeNameList.slice();
-      this.filteredOptionsModename = this._IpSearchListService.mySaveForm.get('ModeId').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterModeName(value) : this.ModeNameList.slice()),
-      );
-    });
-  }
-  private _filterModeName(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.ModeOfDischargeName ? value.ModeOfDischargeName.toLowerCase() : value.toLowerCase();
-      return this.ModeNameList.filter(option => option.ModeOfDischargeName.toLowerCase().includes(filterValue));
-    }
-  }
-  
-  optionsDischargeType: any[] = [];
-  getDischargetypeCombo() {
-    this._IpSearchListService.getDischargetypeCombo().subscribe(data => {
-      this.DischargeTypeList = data;
-      this.optionsDischargeType = this.DischargeTypeList.slice();
-      this.filteredOptionsDisctype = this._IpSearchListService.mySaveForm.get('DischargeTypeId').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterDischargeType(value) : this.DischargeTypeList.slice()),
-      );
-
-    });
-  }
+  IsCancelled:any;
+// getRtrvDischargelist(){
+//   let Query = "select IsCancelled, DischargeId,DischargeTypeId,DischargedDocId,ModeOfDischargeid from Discharge where AdmissionID=" + this.selectedAdvanceObj.AdmissionID + " ";
+//   console.log(Query)
+//   this._IpSearchListService.getDischargeId(Query).subscribe(data => {
+//     this.RtrvDischargeList = data ;
+//     this.IsCancelled = this.RtrvDischargeList[0].IsCancelled || 0
+//     if(this.IsCancelled == '1'){
+//       this.DischargeId = 0
+//     }else{
+//       this.DischargeId = this.RtrvDischargeList[0].DischargeId || 0
+//     }
+//    // this.vComments = this.RtrvDischargeList.
+//     this.Rtevdropdownvalue();
+//     console.log(this.RtrvDischargeList); 
+//   });
+// }
 
 
-  private _filterDischargeType(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.DischargeTypeName ? value.DischargeTypeName.toLowerCase() : value.toLowerCase();
-      return this.DischargeTypeList.filter(option => option.DischargeTypeName.toLowerCase().includes(filterValue));
-    }
-  }
-  getOptionTextDoctor(option) {
-    return option && option.DoctorName ? option.DoctorName : '';
-  }
-  getOptionTextDisctype(option) {
-    return option && option.DischargeTypeName ? option.DischargeTypeName : '';
-  }
-  getOptionTextMode(option) {
-    return option && option.ModeOfDischargeName ? option.ModeOfDischargeName : '';
-  }
-  CheckBalanceAmt:any=0;
-  getCheckBalanceAmt(){ 
-      let Query = "select Isnull(SUM(BalanceAmount),0) as BalAmt from T_SalesHeader where BalanceAmount <>0 and OP_IP_Type=1 and OP_IP_ID=" + this.vAdmissionId
-      this._IpSearchListService.getCheckBalanceAmt(Query).subscribe((data) =>{
-        console.log(data)
-        this.CheckBalanceAmt = data[0].BalAmt; 
-        console.log(this.CheckBalanceAmt)
-      })
-  }
-  vDoctorId:any;
-  vDescType:any;
   onDischarge() {
     this.isLoading = 'submit';
-    if(this.vDoctorId == '' || this.vDoctorId == null || this.vDoctorId == undefined) {
+
+    const formattedDate = this.datePipe.transform(this.dateTimeObj.date,"yyyy-MM-dd");
+    const formattedTime = formattedDate+this.dateTimeObj.time;
+
+    if(this.vDoctorId == 0) {
       this.toastr.warning('Please select Doctor', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    if(!this.DoctorNameList.find(item => item.DoctorName ==  this._IpSearchListService.mySaveForm.get('DoctorID').value.DoctorName)){
-      this.toastr.warning('Please select valid Doctor Name', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    if(this.vDescType == '' || this.vDescType == null || this.vDescType == undefined) {
-      this.toastr.warning('Please select Discharge Type', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    if(!this.DischargeTypeList.find(item => item.DischargeTypeName ==  this._IpSearchListService.mySaveForm.get('DischargeTypeId').value.DischargeTypeName)){
-      this.toastr.warning('Please select valid Discharge Type', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
+    // if(!this.DoctorNameList.find(item => item.DoctorName ==  this._IpSearchListService.mySaveForm.get('DoctorID').value.DoctorName)){
+    //   this.toastr.warning('Please select valid Doctor Name', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
+    // if(this.vDescType == 0) {
+    //   this.toastr.warning('Please select Discharge Type', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
+    // if(!this.DischargeTypeList.find(item => item.DischargeTypeName ==  this._IpSearchListService.mySaveForm.get('DischargeTypeId').value.DischargeTypeName)){
+    //   this.toastr.warning('Please select valid Discharge Type', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
     if(this._IpSearchListService.mySaveForm.get('ModeId').value){
-    if(!this.ModeNameList.find(item => item.ModeOfDischargeName ==  this._IpSearchListService.mySaveForm.get('ModeId').value.ModeOfDischargeName)){
-      this.toastr.warning('Please select valid Mode Of Discharge', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
+    // if(!this.ModeNameList.find(item => item.ModeOfDischargeName ==  this._IpSearchListService.mySaveForm.get('ModeId').value.ModeOfDischargeName)){
+    //   this.toastr.warning('Please select valid Mode Of Discharge', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
   }
-  debugger
-  if(this._ConfigService.configParams.chkPharmacyDue == '0'){
-    console.log(this._ConfigService.configParams.chkPharmacyDue )
-    if(this.CheckBalanceAmt > 0){
-      Swal.fire({
-        title: '"Please clear all pharmacy dues ' + this.CheckBalanceAmt,
-        text: "If the pharmacy dues cannot be discharged!",
-        icon: "warning", 
-        confirmButtonColor: "#d33", 
-        confirmButtonText: "Ok" 
-      })
-      return
-    }
-  }
+  
+  // if(this._ConfigService.configParams.chkPharmacyDue == '0'){
+  //   console.log(this._ConfigService.configParams.chkPharmacyDue )
+  //   if(this.CheckBalanceAmt > 0){
+  //     Swal.fire({
+  //       title: '"Please clear all pharmacy dues ' + this.CheckBalanceAmt,
+  //       text: "If the pharmacy dues cannot be discharged!",
+  //       icon: "warning", 
+  //       confirmButtonColor: "#d33", 
+  //       confirmButtonText: "Ok" 
+  //     })
+  //     return
+  //   }
+  // }
 
     
     let ModeOfDischarge = 0
     if(this._IpSearchListService.mySaveForm.get('ModeId').value)
       ModeOfDischarge = this._IpSearchListService.mySaveForm.get('ModeId').value.ModeOfDischargeId;
-     
+ 
     if (!this.DischargeId) {
       var m_data = {
-        "insertIPDDischarg": {
+        "dischargeModel": {
           "dischargeId": 0,
-          "admissionId": this.selectedAdvanceObj.AdmissionID,
-          "dischargeDate": this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || '01/01/1900',//this._IpSearchListService.mySaveForm.get("DischargeDate").value,// this.datePipe.transform(this._IpSearchListService.mySaveForm.get("DischargeDate").value,"yyyy-Mm-dd") || this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',,
-          "dischargeTime": this.datePipe.transform(this.currentDate, 'hh:mm:ss') || '01/01/1900',//this._IpSearchListService.mySaveForm.get("DischargeDate").value,//this.datePipe.transform(this._IpSearchListService.mySaveForm.get("DischargeDate").value,"hh-mm-ss") || this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',,
-          "dischargeTypeId": this._IpSearchListService.mySaveForm.get("DischargeTypeId").value.DischargeTypeId || 0,
-          "dischargedDocId": this._IpSearchListService.mySaveForm.get("DoctorID").value.DoctorID || 0,
-          "dischargedRMOID": 0, // this._IpSearchListService.mySaveForm.get("DischargedRMOID").value,
-          "modeOfDischargeId": ModeOfDischarge , 
-          "createdBy": this.accountService.currentUserValue.user.id,
+          "admissionId": this.vAdmissionID,
+          "dischargeDate": formattedDate || '01/01/1900' , // this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || '01/01/1900', 
+          "dischargeTime": formattedTime || '01/01/1900', //this.datePipe.transform(this.currentDate, 'hh:mm:ss') || '01/01/1900', 
+          "dischargeTypeId": this.vDescType,
+          "dischargedDocId":this.vDoctorId,
+          "dischargedRMOID": 0,
+          "modeOfDischargeId":  this.vMode, 
+          "createdBy":2,// this.accountService.currentUserValue.user.id,
         }, 
-        "updateAdmission": {
-          "admissionID": this.selectedAdvanceObj.AdmissionID,
+        "dischargeAdmissionModel": {
+          "admissionID": this.vAdmissionID,
           "isDischarged": 1,
-          "dischargeDate": this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || '01/01/1900',// this._IpSearchListService.mySaveForm.get("DischargeDate").value ,//this.datePipe.transform(this._IpSearchListService.mySaveForm.get("DischargeDate").value,"yyyy-Mm-dd") || this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',,
-          "dischargeTime": this.datePipe.transform(this.currentDate, 'hh:mm:ss') || '01/01/1900',// this._IpSearchListService.mySaveForm.get("DischargeDate").value,//this.datePipe.transform(this._IpSearchListService.mySaveForm.get("DischargeDate").value,"hh-mm-ss") || this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',,
+          "dischargeDate":formattedDate || '01/01/1900', // this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || '01/01/1900',
+          "dischargeTime":formattedTime || '01/01/1900',//this.datePipe.transform(this.currentDate, 'hh:mm:ss') || '01/01/1900', 
         },
-        "dischargeBedRelease": {
-          "bedId": this.selectedAdvanceObj.BedId,
+        "bedModel": {
+          "bedId": this.vBedId,
         }
       }
       console.log(m_data);
-      this._IpSearchListService.DischargeInsert(m_data).subscribe(response => {
-        if (response) {
-          Swal.fire('Congratulations !', 'Discharge save Successfully !', 'success').then((result) => {
-            if (result.isConfirmed) { 
-              this._matDialog.closeAll();
-              console.log(response)
-              this.viewgetCheckoutslipPdf(response)
-            }
-          });
-        } else {
-          Swal.fire('Error !', 'Discharge  not saved', 'error');
-        }
-        this.isLoading = '';
+      this._IpSearchListService.DichargeInsert(m_data).subscribe((response) => {
+        this.toastr.success(response.message);
+        this.onClear(true);
+      }, (error) => {
+        this.toastr.error(error.message);
       });
+  
     }
     else {
       let ModeOfDischargeUpdate = 0
@@ -299,35 +212,27 @@ optionsDoctor:any[]=[];
       var m_data1 = {
         "updateIPDDischarg": {
           "DischargeId": this.DischargeId,
-          "DischargeDate":this.dateTimeObj.date , // this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || '01/01/1900',//this.datePipe.transform(this._IpSearchListService.mySaveForm.get("DischargeDate").value,"yyyy-Mm-dd") || this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',,
-          "DischargeTime":this.dateTimeObj.time , //  this.datePipe.transform(this.currentDate, 'hh:mm:ss') || '01/01/1900',//this.datePipe.transform(this._IpSearchListService.mySaveForm.get("DischargeDate").value,"hh-mm-ss") || this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',,
-          "DischargeTypeId": this._IpSearchListService.mySaveForm.get("DischargeTypeId").value.DischargeTypeId || 0,
-          "DischargedDocId": this._IpSearchListService.mySaveForm.get("DoctorID").value.DoctorID || 0,
+          "DischargeDate":formattedDate || '01/01/1900', // this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') 
+          "DischargeTime":formattedTime || '01/01/1900', //  this.datePipe.transform(this.currentDate, 'hh:mm:ss')  
+          "DischargeTypeId":this.vDescType,
+          "DischargedDocId":this.vDoctorId,
           "DischargedRMOID": 0, // this._IpSearchListService.mySaveForm.get("DischargedRMOID").value,
-          "Modeofdischarge": ModeOfDischargeUpdate,
+          "Modeofdischarge": this.vMode,
           "updatedBy": this.accountService.currentUserValue.user.id,
         },
         "updateAdmission": {
           "admissionID": this.selectedAdvanceObj.AdmissionID || 0,
           "isDischarged": 1,
-          "dischargeDate":this.dateTimeObj.date ,// this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || '01/01/1900',//this.datePipe.transform(this._IpSearchListService.mySaveForm.get("DischargeDate").value,"yyyy-Mm-dd") || this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',,
-          "dischargeTime":this.dateTimeObj.time , // this.datePipe.transform(this.currentDate, 'hh:mm:ss') || '01/01/1900',//this.datePipe.transform(this._IpSearchListService.mySaveForm.get("DischargeDate").value,"hh-mm-ss") || this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',,
+          "dischargeDate":formattedDate || '01/01/1900' ,// this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')  
+          "dischargeTime":formattedTime || '01/01/1900', // this.datePipe.transform(this.currentDate, 'hh:mm:ss')  
         }
       }
       console.log(m_data1);
-      this._IpSearchListService.DischargeUpdate(m_data1).subscribe(response => {
-        if (response) {
-          Swal.fire('Congratulations !', 'Discharge Update Successfully !', 'success').then((result) => {
-            if (result.isConfirmed) {
-              let m = response;
-              this._matDialog.closeAll();
-              this.viewgetCheckoutslipPdf(this.selectedAdvanceObj.AdmissionID)
-            }
-          });
-        } else {
-          Swal.fire('Error !', 'Discharge  not Update', 'error');
-        }
-        this.isLoading = '';
+      this._IpSearchListService.DichargeUpdate(m_data).subscribe((response) => {
+        this.toastr.success(response.message);
+        this.onClear(true);
+      }, (error) => {
+        this.toastr.error(error.message);
       });
     }
     this._IpSearchListService.mySaveForm.reset();
@@ -341,22 +246,27 @@ optionsDoctor:any[]=[];
     this.DischargedateTimeObj = DischargedateTimeObj;
   }
 
-  viewgetCheckoutslipPdf(AdmId) {
+  onClear(val: boolean) {
+    // this.personalform.reset();
+     // this.dialogRef.close(val);
+   }
 
-    this._IpSearchListService.getIpDischargeReceipt(
-      AdmId
-    ).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "CHECK OUT SLIP Viewer"
-          }
-        });
-    });
+  // new Api
+
+
+  selectChangecondoc(obj: any){
+    console.log(obj);
+    this.vDoctorId=obj.value
+  }
+  
+  selectChangedichargetype(obj: any){
+    console.log(obj);
+    this.vDescType =obj.value
+  }
+  
+  selectChangemode(obj: any){
+    console.log(obj);
+    this.vMode=obj.value
   }
 }
 

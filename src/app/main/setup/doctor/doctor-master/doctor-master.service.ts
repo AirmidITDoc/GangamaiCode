@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable()
 export class DoctorMasterService {
@@ -8,7 +9,7 @@ export class DoctorMasterService {
     myformSearch: FormGroup;
 
     constructor(
-        private _httpClient: HttpClient,
+        private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder
     ) {
         this.myform = this.createdDoctormasterForm();
@@ -127,22 +128,22 @@ export class DoctorMasterService {
     }
 
     public getDoctorMasterList(Param) {
-        return this._httpClient.post("Generic/GetDataSetByProc?procName=m_Rtrv_DoctorMasterList_Pagi", Param);
+        return this._httpClient.PostData("Generic/GetDataSetByProc?procName=m_Rtrv_DoctorMasterList_Pagi", Param);
     }
 
     public getSignature(Param) {
-        return this._httpClient.get("DoctorMaster/get-file?FileName=" + Param);
+        return this._httpClient.GetData("DoctorMaster/get-file?FileName=" + Param);
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.post(
+        return this._httpClient.PostData(
             "Generic/ExecByQueryStatement?query=" + m_data,
             {}
         );
     }
 
     public getDepartmentCombobox() {
-        return this._httpClient.post(
+        return this._httpClient.PostData(
             "Generic/GetByProc?procName=m_Rtrv_DepartmentListDocMasterForCombo",
             {}
         );
@@ -156,41 +157,53 @@ export class DoctorMasterService {
     // }
 
     public getPrefixMasterCombo() {
-        return this._httpClient.post(
+        return this._httpClient.PostData(
             "Generic/GetByProc?procName=RetrievePrefixMasterForCombo",
             {}
         );
     }
 
     public getGenderCombo(Id) {
-        return this._httpClient.post("Generic/GetByProc?procName=Retrieve_SexMasterForCombo_Conditional", { "Id": Id })
+        return this._httpClient.PostData("Generic/GetByProc?procName=Retrieve_SexMasterForCombo_Conditional", { "Id": Id })
     }
 
     public getDoctortypeMasterCombo() {
-        return this._httpClient.post(
+        return this._httpClient.PostData(
             "Generic/GetByProc?procName=RetrieveDoctorTypeMasterForCombo",
             {}
         );
     }
 
     public doctortMasterInsert(param) {
-        return this._httpClient.post("DoctorMaster/DoctorSave", param);
+        return this._httpClient.PostData("DoctorMaster/DoctorSave", param);
     }
 
     public doctortMasterUpdate(param) {
-        return this._httpClient.post("DoctorMaster/DoctorUpdate", param);
+        return this._httpClient.PostData("DoctorMaster/DoctorUpdate", param);
     }
 
+//     public doctortMasterInsert(Param: any, showLoader = true) {
+//         if (Param.regID) {
+//             return this._httpClient.PutData("DoctorMaster/DoctorSave" + Param.regID, Param, showLoader);
+//         } else return this._httpClient.PostData("DoctorMaster/DoctorSave", Param, showLoader);
+//     }
+
+//     public doctortMasterUpdate(Param: any, showLoader = true) {
+//       if (Param.regId) {
+//           return this._httpClient.PutData("DoctorMaster/DoctorUpdate" + Param.regId, Param, showLoader);
+//       } else return this._httpClient.PostData("DoctorMaster/DoctorUpdate", Param, showLoader);
+//   }
+
     public assignDoctorDepartmentDet(param) {
-        return this._httpClient.post("DoctorMaster/DoctorSave", param);
+        return this._httpClient.PostData("DoctorMaster/DoctorSave", param);
     }
 
     public deleteAssignSupplierToStore(param) {
-        return this._httpClient.post("DoctorMaster/DoctorUpdate", param);
+        return this._httpClient.PostData("DoctorMaster/DoctorUpdate", param);
     }
 
     public getDocDeptwiseList(emp) {
-        return this._httpClient.post(
+        return this._httpClient.PostData(
             "Generic/GetByProc?procName=m_Rtrv_M_DoctorDepartmentDet",
             emp
         );
@@ -198,7 +211,7 @@ export class DoctorMasterService {
     //  city list
     public getCityList() {
 
-        return this._httpClient.post("Generic/GetByProc?procName=RetrieveCityMasterForCombo", {})
+        return this._httpClient.PostData("Generic/GetByProc?procName=RetrieveCityMasterForCombo", {})
     }
     populateForm(param) {
         this.myform.patchValue(param);

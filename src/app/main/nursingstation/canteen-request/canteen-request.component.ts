@@ -3,12 +3,18 @@ import { fuseAnimations } from '@fuse/animations';
 import { CanteenRequestService } from './canteen-request.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { DatePipe } from '@angular/common';
-import { MatDialog } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { NewCanteenRequestComponent } from './new-canteen-request/new-canteen-request.component';
+import { ToastrService } from 'ngx-toastr';
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+
+
 
 @Component({
   selector: 'app-canteen-request',
@@ -18,141 +24,138 @@ import { NewCanteenRequestComponent } from './new-canteen-request/new-canteen-re
   animations: fuseAnimations
 })
 export class CanteenRequestComponent implements OnInit {
-  displayedColumns = [
-    'Date',
-    'RegNo',
-    'PatientName',
-    'VisitAdmDate',
-    'WardName',
-    'AddUserName',
-    'IsBillgenerates',
-    'action',
-  ];
-  displayedColumns1 = [
-    'ItemName',
-    'Qty' 
-  ];
+  confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+  hasSelectedContacts: boolean;
 
-  sIsLoading: string = '';
-  isLoading = true;
-
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
-  @ViewChild('secondPaginator', { static: true }) public secondPaginator: MatPaginator;
-
-  dsCanteenSearchList = new MatTableDataSource<CanteenList>();
-  dsCanteenDetailList = new MatTableDataSource<CanteenDetList>();
   
-  constructor(
-    public _CanteenRequestservice:CanteenRequestService,
-    private _loggedService: AuthenticationService,
-    public datePipe: DatePipe,
-    public _matDialog: MatDialog,
-    public toastr: ToastrService,
+  gridConfig: gridModel = {
+      apiUrl: "Nursing/PrescriptionWardList",
+      columnsList: [
+          { heading: "Code", key: "reqId", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+          { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' ,width:450},
+          { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' ,width:100},
+          { heading: "AdmissionTime", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA',width:150 },
+          { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+          { heading: "OP_IP_ID", key: "oP_IP_ID", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+          { heading: "OPD_IPD_Type", key: "oPD_IPD_Type", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+          { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA',width:50 },
+          { heading: "IsBillGenerated", key: "isBillGenerated", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+          { heading: "WardName", key: "wardName", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+          { heading: "BedName", key: "bedName", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+        
+        {
+              heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                  {
+                      action: gridActions.edit, callback: (data: any) => {
+                          this.onSave(data);
+                      }
+                  }, {
+                      action: gridActions.delete, callback: (data: any) => {
+                          this.confirmDialogRef = this._matDialog.open(
+                              FuseConfirmDialogComponent,
+                              {
+                                  disableClose: false,
+                              }
+                          );
+                          this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+                          this.confirmDialogRef.afterClosed().subscribe((result) => {
+                              if (result) {
+                                  let that = this;
+                                  this._CanteenRequestService.deactivateTheStatus(data.presReId).subscribe((response: any) => {
+                                      this.toastr.success(response.message);
+                                      that.grid.bindGridData();
+                                  });
+                              }
+                              this.confirmDialogRef = null;
+                          });
+                      }
+                  }]
+          } //Action 1-view, 2-Edit,3-delete
+      ],
+      sortField: "ReqId",
+      sortOrder: 0,
+      filters: [
+          { fieldName: "FromDate", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
+          { fieldName: "ToDate", fieldValue: "01/01/2025", opType: OperatorComparer.Equals },
+          { fieldName: "Reg_No", fieldValue: "13936", opType: OperatorComparer.Equals },
+        { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+          { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+         // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+      ],
+      row: 25
+  }
 
-  ) { }
-
+  gridConfig1: gridModel = {
+    apiUrl: "Nursing/PrescriptionDetailList",
+    columnsList: [
+        { heading: "Code", key: "reqId", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+        { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA' ,width:450},
+        { heading: "UnitMRP", key: "unitMRP", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+        { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA',width:150 },
+       
+        {
+            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                {
+                    action: gridActions.edit, callback: (data: any) => {
+                        this.onSave(data);
+                    }
+                }, {
+                    action: gridActions.delete, callback: (data: any) => {
+                        this.confirmDialogRef = this._matDialog.open(
+                            FuseConfirmDialogComponent,
+                            {
+                                disableClose: false,
+                            }
+                        );
+                        this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+                        this.confirmDialogRef.afterClosed().subscribe((result) => {
+                            if (result) {
+                                let that = this;
+                                this._CanteenRequestService.deactivateTheStatus(data.ipMedID).subscribe((response: any) => {
+                                    this.toastr.success(response.message);
+                                    that.grid.bindGridData();
+                                });
+                            }
+                            this.confirmDialogRef = null;
+                        });
+                    }
+                }]
+        } //Action 1-view, 2-Edit,3-delete
+    ],
+    sortField: "ReqId",
+    sortOrder: 0,
+    filters: [
+      
+        { fieldName: "ReqId", fieldValue: "ReqId", opType: OperatorComparer.Equals },
+        { fieldName: "FromDate", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
+        { fieldName: "ToDate", fieldValue: "01/01/2025", opType: OperatorComparer.Equals },
+        { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+       // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+    ],
+    row: 25
+}
+  constructor(public _CanteenRequestService: CanteenRequestService, public _matDialog: MatDialog,
+      public toastr : ToastrService,) {}
   ngOnInit(): void {
-    this.getCanteenList();
-  } 
-  getCanteenList() {
-    var Param = { 
-      "FromDate": this.datePipe.transform(this._CanteenRequestservice.SearchMyForm.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      "ToDate": this.datePipe.transform(this._CanteenRequestservice.SearchMyForm.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      "Reg_No": this._CanteenRequestservice.SearchMyForm.get("RegNo").value || 0,
-    }
-    console.log(Param)
-    this._CanteenRequestservice.getCanteenList(Param).subscribe(data => {
-      this.dsCanteenSearchList.data = data as CanteenList[];
-      console.log(this.dsCanteenSearchList.data)
-      this.dsCanteenSearchList.sort = this.sort;
-      this.dsCanteenSearchList.paginator = this.paginator;
-      this.sIsLoading = '';
-    },
-      error => {
-        this.sIsLoading = '';
-      });
   }
-  getCanteenDetList(Params) {
-    var Param = {
-      "ReqId": Params.ReqId
-    }
-    this._CanteenRequestservice.getCanteenDetList(Param).subscribe(data => {
-      this.dsCanteenDetailList.data = data as CanteenDetList[];
-      console.log(this.dsCanteenDetailList.data)
-      this.dsCanteenDetailList.sort = this.sort;
-      this.dsCanteenDetailList.paginator = this.secondPaginator;
-      this.sIsLoading = '';
-    },
-      error => {
-        this.sIsLoading = '';
-      });
-  }
-  onClear(){
 
-  }
-  newRequest(){ 
+  onSave(row: any = null) {
+    let that = this;
     const dialogRef = this._matDialog.open(NewCanteenRequestComponent,
-      {
-        maxWidth: "100%",
-        height: '95%',
-        width: '75%', 
-      });
+        {
+            maxWidth: "75vw",
+            height: '75%',
+            width: '70%',
+            data: row
+        });
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
-      this.getCanteenList();
+        if (result) {
+            that.grid.bindGridData();
+        }
     });
   }
-}
-export class CanteenList {
-  IndentNo: Number;
-  IndentDate: number;
-  FromStoreName: string;
-  ToStoreName: string;
-  Addedby: number;
-  IsInchargeVerify: string;
-  CanteenList: any;
-  FromStoreId: boolean;
 
-  /**
-   * Constructor
-   *
-   * @param CanteenList
-   */
-  constructor(CanteenList) {
-    {
-      this.IndentNo = CanteenList.IndentNo || 0;
-      this.IndentDate = CanteenList.IndentDate || 0;
-      this.FromStoreName = CanteenList.FromStoreName || "";
-      this.ToStoreName = CanteenList.ToStoreName || "";
-      this.Addedby = CanteenList.Addedby || 0;
-      this.IsInchargeVerify = CanteenList.IsInchargeVerify || "";
-      this.CanteenList = CanteenList.CanteenList || "";
-      this.FromStoreId = CanteenList.FromStoreId || "";
-
-    }
-  }
-}
-export class CanteenDetList {
-
-  ItemName: string;
-  Qty: number;
-  IssQty: number;
-  BalQty: any;
-  StoreName: any;
-  /**
-   * Constructor
-   *
-   * @param CanteenDetList
-   */
-  constructor(CanteenDetList) {
-    {
-
-      this.ItemName = CanteenDetList.ItemName || "";
-      this.Qty = CanteenDetList.Qty || 0;
-      this.IssQty = CanteenDetList.IssQty || 0;
-      this.BalQty = CanteenDetList.BalQty || 0;
-      this.StoreName = CanteenDetList.StoreName || '';
-    }
-  }
+  NewRequest(){}
 }

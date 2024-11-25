@@ -14,6 +14,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { DischargeComponent } from 'app/main/ipd/ip-search-list/discharge/discharge.component';
 import { BedTransferComponent } from 'app/main/ipd/ip-search-list/bed-transfer/bed-transfer.component';
 import { NewOPBillingComponent } from '../OPBilling/new-opbilling/new-opbilling.component';
+import { NewRegistrationComponent } from '../registration/new-registration/new-registration.component';
 
 
 @Component({
@@ -32,17 +33,30 @@ export class AppointmentListComponent implements OnInit {
         apiUrl: "VisitDetail/AppVisitList",
         columnsList: [
             { heading: "Code", key: "visitId", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-            { heading: "visitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA' ,width:150},
-            { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' ,width:250 },
+            { heading: "visitDate", key: "visitTime", sort: true, align: 'left', emptySign: 'NA' ,width:100},
             { heading: "RegId", key: "regId", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+            { heading: "PrefixId", key: "prefixId", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+            { heading: "FirstName", key: "firstName", sort: true, align: 'left', emptySign: 'NA' ,width:100 },
+            { heading: "MiddleName", key: "middleName", sort: true, align: 'left', emptySign: 'NA' ,width:100 },
+            { heading: "LastName", key: "lastName", sort: true, align: 'left', emptySign: 'NA' ,width:100 },
             { heading: "DateofBirth", key: "dateofBirth", sort: true, align: 'left', emptySign: 'NA' ,width:150},
-            { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA' ,width:150},
-        //    { heading: "IsConsolidatedDr", key: "isConsolidatedDr", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA' ,width:300},
+            { heading: "MaritalStatusId", key: "maritalStatusId", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+            { heading: "PatientTypeId", key: "patientTypeId", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+            { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA' ,width:50 },
+            { heading: "OpdNo", key: "opdNo", sort: true, align: 'left', emptySign: 'NA' ,width:100},
+            { heading: "TariffId", key: "tariffId", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+            { heading: "TariffName", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' ,width:100},
+            { heading: "DepartmentId", key: "departmentId", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+            { heading: "AppPurposeId", key: "appPurposeId", sort: true, align: 'left', emptySign: 'NA' ,width:100},
+            { heading: "CompanyId", key: "companyId", sort: true, align: 'left', emptySign: 'NA' ,width:50 },
+            { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA' ,width:100},
+           
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
+                            this.onRegistrationEdit(data);
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
@@ -67,17 +81,17 @@ export class AppointmentListComponent implements OnInit {
                     }]
             } //Action 1-view, 2-Edit,3-delete
         ],
-        sortField: "visitId",
+        sortField: "VisitId",
         sortOrder: 0,
         filters: [
             { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "From_Dt", fieldValue: "11/01/2024", opType: OperatorComparer.Equals },
+            { fieldName: "From_Dt", fieldValue: "11/01/2023", opType: OperatorComparer.Equals },
             { fieldName: "To_Dt", fieldValue: "11/01/2024", opType: OperatorComparer.Equals },
-            { fieldName: "IsMark", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "IsMark", fieldValue: "1", opType: OperatorComparer.Equals },
+            { fieldName: "Start", fieldValue: "1", opType: OperatorComparer.Equals },
             { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
            // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ],
@@ -97,6 +111,25 @@ export class AppointmentListComponent implements OnInit {
             {
                 maxWidth: "95vw",
                 height: '95%',
+                width: '90%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
+        });
+    }
+
+    
+
+    onRegistrationEdit(row: any = null) {
+        debugger
+        let that = this;
+        const dialogRef = this._matDialog.open(NewRegistrationComponent,
+            {
+                maxWidth: "95vw",
+                height: '65%',
                 width: '90%',
                 data: row
             });

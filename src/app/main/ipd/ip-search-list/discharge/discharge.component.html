@@ -31,7 +31,7 @@
                 <div fxFlex.gt-sm="100%" fxFlex>
                     <div fxlayout="row" style="background-color: white; padding: 5px 5px 5px 5px;">
                         <!-- ================================ LABEL HEADER  -->
-                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 9px; height: fit-content;">
+                        <!-- <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 9px; height: fit-content;">
                             <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
                                 <div class="patient-info-container">
                                     <div class="patient-info-box">
@@ -105,7 +105,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </mat-card>
+                        </mat-card> -->
                     </div>
                 </div>
             </form>
@@ -118,63 +118,27 @@
                 <form [formGroup]="_IpSearchListService.mySaveForm">
                     <div class="dialog-content-wrapper">
                         <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 9px; height: fit-content;">
-                                <div fxlayout="row" fxFlex>
+                                <div fxlayout="row">
                                     <div class="patient-info-title border-bottom pb-2">
                                         <span class="h1">Discharge Information</span>
                                     </div>
-
+                                </div>
                                     <!-- <div style="width:55%;margin-left: 50px;margin-bottom: 30px;font-weight: bolder;">
                                         <ejs-datetimepicker #ejDateTimePicker [(ngModel)]="Today"
                                             formControlName="DischargeDate" placeholder="Select DischargeDate Date/Time"
                                             name="datetimepicker" floatLabelType='Auto' style="width:85%;height:60px;">
                                         </ejs-datetimepicker>
                                     </div> -->
-
+                                    <div fxlayout="row">
                                     <div fxLayoutGap="4px">
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>Doctor Name</mat-label>
-                                            <input matAutocompletePosition="below" type="text"
-                                                placeholder="Select Doctor Name" matInput formControlName="DoctorID"
-                                                [matAutocomplete]="autoDoctor" required [(ngModel)]="vDoctorId">
-                                            <span matSuffix style="display: flex;">
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="_IpSearchListService.mySaveForm.get('DoctorID').setValue(''); isDoctorSelected = false;">close</mat-icon>
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="_IpSearchListService.mySaveForm.get('DoctorID').setValue(''); isDoctorSelected = false;">search</mat-icon>
-                                            </span>
-                                            <mat-autocomplete #autoDoctor="matAutocomplete"
-                                                [displayWith]="getOptionTextDoctor">
-                                                <mat-option *ngFor="let option of filteredOptionsDoctorname | async"
-                                                    [value]="option">
-                                                    {{option.DoctorName}}
-                                                </mat-option>
-                                            </mat-autocomplete>
-                                        </mat-form-field>
+                                        <airmid-autocomplete [mode]="autocompletcondoc" (selectDdlObject)="selectChangecondoc($event)"></airmid-autocomplete>
 
-                                        
+                                        <airmid-autocomplete [mode]="autocompletedichargetype" (selectDdlObject)="selectChangedichargetype($event)"></airmid-autocomplete>
+                    
+                                        <airmid-autocomplete [mode]="autocompletemode" (selectDdlObject)="selectChangemode($event)"></airmid-autocomplete>
+                                               
 
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>Discharge Type Name</mat-label>
-                                            <input matAutocompletePosition="below" type="text"
-                                                placeholder="Select DischargeTypeName" matInput
-                                                formControlName="DischargeTypeId" [matAutocomplete]="autoDisctype"
-                                                required [(ngModel)]="vDescType">
-                                            <span matSuffix style="display: flex;">
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="_IpSearchListService.mySaveForm.get('DischargeTypeId').setValue(''); isDistypeSelected = false;">close</mat-icon>
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="_IpSearchListService.mySaveForm.get('DischargeTypeId').setValue(''); isDistypeSelected = false;">search</mat-icon>
-                                            </span>
-                                            <mat-autocomplete #autoDisctype="matAutocomplete"
-                                                [displayWith]="getOptionTextDisctype">
-                                                <mat-option *ngFor="let option of filteredOptionsDisctype | async"
-                                                    [value]="option">
-                                                    {{option.DischargeTypeName}}
-                                                </mat-option>
-                                            </mat-autocomplete>
-                                        </mat-form-field>
-
-                                        <mat-form-field appearance="outline" fxFlex>
+                                        <!-- <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Mode</mat-label>
                                             <input matAutocompletePosition="below" type="text"
                                                 placeholder="Select Doctor Name" matInput formControlName="ModeId"
@@ -192,18 +156,9 @@
                                                     {{option.ModeOfDischargeName}}
                                                 </mat-option>
                                             </mat-autocomplete>
-                                        </mat-form-field>
-
-                                        <!-- <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>Mode</mat-label>
-                                            <mat-select formControlName="ModeId" name="ModeId">
-                                                <mat-option></mat-option>
-                                                <mat-option *ngFor="let m of ModeNameList" [value]="m">
-                                                    {{m.ModeOfDischargeName}}
-                                                </mat-option>
-                                            </mat-select>
                                         </mat-form-field> -->
-
+                                    </div>
+                                        <div fxlayout="row">
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Comments</mat-label>
                                             <input name="Comments" formControlName="Comments"

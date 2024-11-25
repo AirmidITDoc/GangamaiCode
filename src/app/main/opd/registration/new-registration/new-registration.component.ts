@@ -104,6 +104,7 @@ export class NewRegistrationComponent implements OnInit {
           });        
       console.log(this.data)
       this.registerObj = this.data;
+      this.RegID=this.data.regId
       
       this.cityId=this.data.cityId;
       this.isDisabled = true
@@ -307,7 +308,6 @@ export class NewRegistrationComponent implements OnInit {
             "aadharcardno": this.personalFormGroup.get('AadharCardNo').value ? this.personalFormGroup.get('AadharCardNo').value : 0,
             "pancardno": "",// this.personalFormGroup.get('PanCardNo').value.toString()  ? this.personalFormGroup.get('PanCardNo').value.toString()  : 0,
             "Photo": ''
-
         }
         console.log(m_data);
 
@@ -363,8 +363,6 @@ export class NewRegistrationComponent implements OnInit {
         }
     }
   }
-
-
 
   
 
