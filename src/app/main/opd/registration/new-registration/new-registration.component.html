@@ -31,9 +31,13 @@
                                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                      
-                                        <airmid-autocomplete [mode]="autocompleteModeprefix" (selectDdlObject)="selectChangeprefix($event)"></airmid-autocomplete>
-
+                                        <!-- <airmid-autocomplete [label]="'Prefix'"  [ddlCtrl]="f.PrefixId"  [selectedValue]="data?.prefixId"
+                                         [mode]="autocompleteModeprefix" (selectDdlObject)="selectChangeprefix($event)"></airmid-autocomplete> -->
+                                         <airmid-autocomplete label="Prefix" formControlName="PrefixId" [value]="data?.prefixId"
+                                            [formGroup]="personalFormGroup"
+                                            [validations]="getValidationMessages().PrefixId"
+                                            [mode]="autocompleteModeprefix" (selectDdlObject)="selectChangeprefix($event)">
+                                        </airmid-autocomplete>
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -70,7 +74,10 @@
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                    
-                                        <airmid-autocomplete [mode]="autocompleteModegender" (selectDdlObject)="selectChangegender($event)"></airmid-autocomplete>
+                                        <!-- <airmid-autocomplete [mode]="autocompleteModegender" (selectDdlObject)="selectChangegender($event)"></airmid-autocomplete> -->
+                                        <!-- <airmid-autocomplete [label]="'Gender'"  [ddlCtrl]="f.GenderId"  [selectedValue]="data?.genderId"
+                                         [mode]="autocompleteModegender" (selectDdlObject)="selectChangeprefix($event)"></airmid-autocomplete> -->
+
 
                                     </div>
 

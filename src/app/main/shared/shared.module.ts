@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TrimPipe } from './pipes/trim.pipe';
 import { CommonDateComponent } from './componets/common-date/common-date.component';
@@ -82,6 +82,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
     AirmidTextboxComponent,
     AirmidAutocompleteComponent
   ],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   entryComponents: []
 })
 export class SharedModule { }

@@ -197,7 +197,7 @@ export class EditRegistrationComponent implements OnInit {
       RegId: '',
       RegNo: '',
       PrefixId: '',
-      PrefixID: '',
+      PrefixID: new FormControl('', [Validators.required]),
       FirstName: ['', [
         Validators.required,
         Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
@@ -372,6 +372,7 @@ export class EditRegistrationComponent implements OnInit {
 
     this._registerService.getPrefixCombo().subscribe(data => {
       this.PrefixList = data;
+      debugger
       this.filteredPrefix.next(this.PrefixList.slice());
       if (this.data) {
         const ddValue = this.PrefixList.find(c => c.PrefixID == this.data.registerObj.PrefixID);
