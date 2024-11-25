@@ -26,11 +26,11 @@ export class GenderMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "Gender/List",
         columnsList: [
-            { heading: "Code", key: "genderId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "Gender Name", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" , width: 200},
+            { heading: "Code", key: "genderId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Gender Name", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width:700 },
+            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" , width:200},
             {
-                heading: "Action", key: "action", align: "right", width: 400, type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action", align: "right", width:100, type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);

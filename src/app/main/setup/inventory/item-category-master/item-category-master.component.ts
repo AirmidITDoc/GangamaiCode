@@ -34,12 +34,12 @@ export class ItemCategoryMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "ItemCategoryMaster/List",
         columnsList: [
-            { heading: "Code", key: "itemCategoryId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Category Name", key: "itemCategoryName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "ItemType Name", key: "itemTypeId", sort: true, align: 'left', emptySign: 'NA' },
-           { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+            { heading: "Code", key: "itemCategoryId", sort: true, width:150, align: 'left', emptySign: 'NA' },
+            { heading: "Category Name", key: "itemCategoryName", sort: true, width:400, align: 'left', emptySign: 'NA' },
+            { heading: "ItemType Name", key: "itemTypeId", sort: true, width:400, align: 'left', emptySign: 'NA' },
+           { heading: "IsDeleted", key: "isActive", width:100, type: gridColumnTypes.status, align: "center" },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action", width:100, align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);

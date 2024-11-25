@@ -25,12 +25,8 @@
                         [validations]="_StateMasterService.getValidationMessages().stateName" [maxLength]="300">
                     </airmid-textbox>
 
+                    <airmid-autocomplete [mode]="autocompleteModecountry" (selectDdlObject)="selectChangecountry($event)"></airmid-autocomplete>
 
-
-
-                    <airmid-textbox label="Countery Id" formControlName="countryId" [value]="" [formGroup]="stateForm"
-                        [validations]="_StateMasterService.getValidationMessages().stateName" [maxLength]="300">
-                    </airmid-textbox>
                 </div>
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                     <mat-radio-group name="isDeleted" formControlName="isDeleted" value='false'>

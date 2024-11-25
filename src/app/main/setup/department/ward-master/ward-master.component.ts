@@ -29,14 +29,14 @@ export class WardMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "WardMaster/List",
         columnsList: [
-            { heading: "Code", key: "roomId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Room Name", key: "roomName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Room Type", key: "roomType", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Location", key: "locationId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsAvailible", key: "isAvailible", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "ClassId", key: "classId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
-           { heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+            { heading: "Code", key: "roomId", sort: true, align: 'left', emptySign: 'NA', width:100 },
+            { heading: "Room Name", key: "roomName", sort: true, align: 'left', emptySign: 'NA', width:450 },
+            { heading: "Room Type", key: "roomType", sort: true, align: 'left', emptySign: 'NA', width:100 },
+            { heading: "Location", key: "locationId", sort: true, align: 'left', emptySign: 'NA', width:100 },
+            { heading: "IsAvailible", key: "isAvailible", sort: true, align: 'left', emptySign: 'NA', width:100 },
+            { heading: "ClassId", key: "classId", sort: true, align: 'left', emptySign: 'NA', width:100 },
+            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width:100 },
+           { heading: "Action", key: "action", align: "right", width:100, type: gridColumnTypes.action, actions: [
                 {
                     action: gridActions.edit, callback: (data: any) => {
                         this.onSave(data);

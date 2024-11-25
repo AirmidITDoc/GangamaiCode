@@ -33,12 +33,12 @@ export class RelationshipMasterComponent implements OnInit {
         gridConfig: gridModel = {
             apiUrl: "RelationshipMaster/List",
             columnsList: [
-                { heading: "Code", key: "relationshipId", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "Relation Name", key: "relationshipName", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Code", key: "relationshipId", sort: true, align: 'left', emptySign: 'NA', width:150 },
+                { heading: "Relation Name", key: "relationshipName", sort: true, align: 'left', emptySign: 'NA', width:800 },
             
-                { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+                { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width:100 },
                 {
-                    heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                    heading: "Action", key: "action", align: "right", width:100, type: gridColumnTypes.action, actions: [
                         {
                             action: gridActions.edit, callback: (data: any) => {
                                 this.onSave(data);

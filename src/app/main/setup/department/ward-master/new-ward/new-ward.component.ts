@@ -15,16 +15,25 @@ export class NewWardComponent implements OnInit {
     public dialogRef: MatDialogRef<NewWardComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public toastr: ToastrService) { }
+
+    autocompleteModelocation: string = "locationName";
+    autocompleteModeclass: string = "className";
+    autocompleteModeroomType: string = "roomType"
+
+    locationId =0;
+    classId = 0;
+    roomType = 0;
+
     
   ngOnInit(): void {
     this.roomForm = this._WardMasterService.createWardForm();
     var m_data = {
       roomId: this.data?.roomId || 0,
       roomName: this.data?.roomName.trim(),
-      roomType: this.data?.roomType,
-      locationId: this.data?.locationId,
+      roomType: this.data?.roomType || this.roomType,
+      locationId: this.data?.locationId || this.locationId,
       isAvailable: JSON.stringify(this.data?.isAvailable),
-      classId: this.data?.classId
+      classId: this.data?.classId || this.classId
       
       //  isDeleted: JSON.stringify(this.data?.isActive),
     };
@@ -43,6 +52,21 @@ export class NewWardComponent implements OnInit {
         });
     }
 }
+
+selectChangelocation(obj: any){
+    console.log(obj);
+    this.locationId=obj.value
+  }
+
+  selectChangeclass(obj: any){
+    console.log(obj);
+    this.classId=obj.value
+  }
+
+  selectChangeroomType(obj: any){
+    console.log(obj);
+    this.roomType=obj.value
+  }
 
 onClear(val: boolean) {
     this.roomForm.reset();
