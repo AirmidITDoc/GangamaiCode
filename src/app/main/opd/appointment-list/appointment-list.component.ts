@@ -15,6 +15,7 @@ import { DischargeComponent } from 'app/main/ipd/ip-search-list/discharge/discha
 import { BedTransferComponent } from 'app/main/ipd/ip-search-list/bed-transfer/bed-transfer.component';
 import { NewOPBillingComponent } from '../OPBilling/new-opbilling/new-opbilling.component';
 import { NewRegistrationComponent } from '../registration/new-registration/new-registration.component';
+import { DatePipe } from '@angular/common';
 
 
 @Component({
@@ -28,37 +29,64 @@ export class AppointmentListComponent implements OnInit {
 
   confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    
+    fromDate= this.datePipe.transform(new Date(), "dd/MM/yyyy")
+    toDate=this.datePipe.transform(new Date(), "dd/MM/yyyy")
     gridConfig: gridModel = {
         apiUrl: "VisitDetail/AppVisitList",
         columnsList: [
             { heading: "Code", key: "visitId", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-            { heading: "visitDate", key: "visitTime", sort: true, align: 'left', emptySign: 'NA' ,width:100},
-            { heading: "RegId", key: "regId", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-            { heading: "PrefixId", key: "prefixId", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-            { heading: "FirstName", key: "firstName", sort: true, align: 'left', emptySign: 'NA' ,width:100 },
-            { heading: "MiddleName", key: "middleName", sort: true, align: 'left', emptySign: 'NA' ,width:100 },
-            { heading: "LastName", key: "lastName", sort: true, align: 'left', emptySign: 'NA' ,width:100 },
+            { heading: "visitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+            { heading: "RegId", key: "regId", sort: true, align: 'left', emptySign: 'NA' ,width:30},
+            { heading: "PrefixId", key: "prefixId", sort: true, align: 'left', emptySign: 'NA' ,width:30},
+            { heading: "FirstName", key: "firstName", sort: true, align: 'left', emptySign: 'NA' ,width:80 },
+            { heading: "MiddleName", key: "middleName", sort: true, align: 'left', emptySign: 'NA' ,width:80 },
+            { heading: "LastName", key: "lastName", sort: true, align: 'left', emptySign: 'NA' ,width:80 },
             { heading: "DateofBirth", key: "dateofBirth", sort: true, align: 'left', emptySign: 'NA' ,width:150},
-            { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA' ,width:300},
-            { heading: "MaritalStatusId", key: "maritalStatusId", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-            { heading: "PatientTypeId", key: "patientTypeId", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+            { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA' ,width:250},
+            { heading: "MaritalStatusId", key: "maritalStatusId", sort: true, align: 'left', emptySign: 'NA' ,width:30,hidden:true},
+            { heading: "PatientTypeId", key: "patientTypeId", sort: true, align: 'left', emptySign: 'NA' ,width:30},
             { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA' ,width:50 },
-            { heading: "OpdNo", key: "opdNo", sort: true, align: 'left', emptySign: 'NA' ,width:100},
-            { heading: "TariffId", key: "tariffId", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-            { heading: "TariffName", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' ,width:100},
-            { heading: "DepartmentId", key: "departmentId", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-            { heading: "AppPurposeId", key: "appPurposeId", sort: true, align: 'left', emptySign: 'NA' ,width:100},
-            { heading: "CompanyId", key: "companyId", sort: true, align: 'left', emptySign: 'NA' ,width:50 },
+            { heading: "OpdNo", key: "opdNo", sort: true, align: 'left', emptySign: 'NA' ,width:30},
+            { heading: "TariffId", key: "tariffId", sort: true, align: 'left', emptySign: 'NA' ,width:30},
+            { heading: "TariffName", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' ,width:80},
+            { heading: "DepartmentId", key: "departmentId", sort: true, align: 'left', emptySign: 'NA' ,width:30},
+            { heading: "AppPurposeId", key: "appPurposeId", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+            { heading: "CompanyId", key: "companyId", sort: true, align: 'left', emptySign: 'NA' ,width:30 },
             { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA' ,width:100},
            
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action", align: "right",width:300,type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onRegistrationEdit(data);
                         }
-                    }, {
+                    }, 
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            this.EditConsultdr();
+                        }
+                    }, 
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            this.Editrefrancedr();
+                        }
+                    },
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            this.Editcrossconsult();
+                        }
+                    },
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            this.EditBedtransfer();
+                        }
+                    },
+                    {
+                        action: gridActions.view, callback: (data: any) => {
+                            this.viewgetPatientAppointmentReportPdf(data,data);
+                        }
+                    },
+                    {
                         action: gridActions.delete, callback: (data: any) => {
                             this.confirmDialogRef = this._matDialog.open(
                                 FuseConfirmDialogComponent,
@@ -88,7 +116,7 @@ export class AppointmentListComponent implements OnInit {
             { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "From_Dt", fieldValue: "11/01/2023", opType: OperatorComparer.Equals },
+            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "To_Dt", fieldValue: "11/01/2024", opType: OperatorComparer.Equals },
             { fieldName: "IsMark", fieldValue: "1", opType: OperatorComparer.Equals },
             { fieldName: "Start", fieldValue: "1", opType: OperatorComparer.Equals },
@@ -99,7 +127,24 @@ export class AppointmentListComponent implements OnInit {
     }
 
     constructor(public _AppointmentlistService: AppointmentlistService, public _matDialog: MatDialog,
-        public toastr : ToastrService,) {}
+        public toastr : ToastrService, public datePipe: DatePipe) {}
+
+        onChangeDate(selectDate){
+            if (selectDate) {
+                
+                this.fromDate= this.datePipe.transform(this.gridConfig.filters[4].fieldValue, "MM/dd/yyyy")
+                console.log(this.fromDate);
+                this.gridConfig.filters[4].fieldValue=this.fromDate
+            }
+        }
+        onChangeDate1(selectDate){
+            if (selectDate) {
+             
+                this.toDate= this.datePipe.transform(this.gridConfig.filters[4].fieldValue, "MM/dd/yyyy")
+                console.log(this.toDate);
+                this.gridConfig.filters[5].fieldValue=this.toDate
+            }
+        }
 
     ngOnInit(): void {
       
@@ -241,5 +286,32 @@ export class AppointmentListComponent implements OnInit {
                 that.grid.bindGridData();
             }
         });
+    }
+
+    
+    viewgetPatientAppointmentReportPdf(obj, Pflag) {
+       
+        // setTimeout(() => {
+        //     this.AdList = true;
+        //     this._opappointmentService.getAppointmentReport(
+        //         VisitId
+        //     ).subscribe(res => {
+        //         const dialogRef = this._matDialog.open(PdfviewerComponent,
+        //             {
+        //                 maxWidth: "85vw",
+        //                 height: '750px',
+        //                 width: '100%',
+        //                 data: {
+        //                     base64: res["base64"] as string,
+        //                     title: "Appointment  Viewer"
+        //                 }
+        //             });
+        //         dialogRef.afterClosed().subscribe(result => {
+        //             this.AdList = false;
+        //         });
+        //     });
+
+        // }, 100);
+        // this.chkprint = false;
     }
 }

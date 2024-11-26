@@ -75,26 +75,7 @@ export class CityMasterComponent implements OnInit {
         row: 25
     }
     autocompleteMode: string = "CityMaster";
-    public autocompleteOptions: any[] = [
-        {text: 'Bank A (Solapur)', value: 'S'},
-        {text: 'Bank B (Satara)', value: 'B'},
-        {text: 'Bank C (Pune)', value: 'C'},
-        {text: 'Bank D (Sangali)', value: 'D'},
-        {text: 'Bank E (Kolhapur)', value: 'K'},
-        {text: 'Bank F (Mumbai)', value: 'F'},
-        {text: 'Bank G (Dellhi)', value: 'G'},
-        {text: 'Bank H (Jalgaon)', value: 'H'},
-        {text: 'Bank I (Nagpur)', value: 'I'},
-        {text: 'Bank J (Nanded)', value: 'J'},
-        // {text: 'Bank Kolombia (United States of America)', value: 'K'},
-        // {text: 'Bank L (Germany)', value: 'L'},
-        // {text: 'Bank M (Germany)', value: 'M'},
-        // {text: 'Bank N (Germany)', value: 'N'},
-        // {text: 'Bank O (Germany)', value: 'O'},
-        // {text: 'Bank P (Germany)', value: 'P'},
-        // {text: 'Bank Q (Germany)', value: 'Q'},
-        // {text: 'Bank R (Germany)', value: 'R'}
-      ];
+
     constructor(
         public _CityMasterService: CityMasterService,
         public toastr: ToastrService, public _matDialog: MatDialog

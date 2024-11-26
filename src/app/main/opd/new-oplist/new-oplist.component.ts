@@ -41,7 +41,18 @@ export class NewOPListComponent implements OnInit {
                       action: gridActions.edit, callback: (data: any) => {
                           this.onSave(data);
                       }
-                  }, {
+                  },
+                  {
+                    action: gridActions.print, callback: (data: any) => {
+                        this.viewgetOPBillReportPdf(data);
+                    }
+                },
+                {
+                    action: gridActions.view, callback: (data: any) => {
+                        this.getWhatsappshareBill(data);
+                    }
+                },
+                 {
                       action: gridActions.delete, callback: (data: any) => {
                           this.confirmDialogRef = this._matDialog.open(
                               FuseConfirmDialogComponent,
@@ -100,6 +111,16 @@ export class NewOPListComponent implements OnInit {
                 {
                     action: gridActions.edit, callback: (data: any) => {
                         this.onSave(data);
+                    }
+                },
+                {
+                    action: gridActions.print, callback: (data: any) => {
+                        this.viewgetOPPaymentReportPdf(data);
+                    }
+                },
+                {
+                    action: gridActions.view, callback: (data: any) => {
+                        this.getWhatsappsharePaymentReceipt(data);
                     }
                 }, {
                     action: gridActions.delete, callback: (data: any) => {
@@ -163,6 +184,16 @@ gridConfig2: gridModel = {
                     action: gridActions.edit, callback: (data: any) => {
                         this.onSave(data);
                     }
+                },
+                {
+                    action: gridActions.print, callback: (data: any) => {
+                        this.viewgetOPRefundBillReportPdf(data);
+                    }
+                },
+                {
+                    action: gridActions.view, callback: (data: any) => {
+                        this.getWhatsappshareRefundBill(data);
+                    }
                 }, {
                     action: gridActions.delete, callback: (data: any) => {
                         this.confirmDialogRef = this._matDialog.open(
@@ -209,7 +240,14 @@ gridConfig2: gridModel = {
   onSave(row: any = null) {
   }
 
+  viewgetOPBillReportPdf(Id){}
+  getWhatsappshareBill(Id){}
 
+  viewgetOPPaymentReportPdf(Id){}
+  getWhatsappsharePaymentReceipt(Id){}
+
+  viewgetOPRefundBillReportPdf(Id){}
+  getWhatsappshareRefundBill(Id){}
 
   EditRefund(){
     debugger

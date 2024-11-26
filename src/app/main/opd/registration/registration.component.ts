@@ -42,13 +42,13 @@ export class RegistrationComponent implements OnInit {
             { heading: "AgeYear", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' , width: 30 },
             { heading: "AgeMonth", key: "ageMonth", sort: true, align: 'left', emptySign: 'NA', width: 30  },
             { heading: "AgeDay", key: "ageDay", sort: true, align: 'left', emptySign: 'NA', width: 30  },
-            { heading: "RegTime", key: "regTime", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "RegTime", key: "regTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "PhoneNo", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "AreaId", key: "areaId", sort: true, align: 'left', emptySign: 'NA', width: 30  },
             { heading: "CityId", key: "cityId", sort: true, align: 'left', emptySign: 'NA', width: 30 },
             { heading: "CityeName", key: "city", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-           { heading: "StateId", key: "stateId", sort: true, align: 'left', emptySign: 'NA', width: 30 },
+            { heading: "StateId", key: "stateId", sort: true, align: 'left', emptySign: 'NA', width: 30 },
             { heading: "CountryId", key: "countryId", sort: true, align: 'left', emptySign: 'NA', width: 30 },
             { heading: "ReligionId", key: "religionId", sort: true, align: 'left', emptySign: 'NA', width: 30 },
             { heading: "MaritalStatusId", key: "maritalStatusId", sort: true, align: 'left', emptySign: 'NA', width: 30 },
@@ -61,7 +61,13 @@ export class RegistrationComponent implements OnInit {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
                         }
-                    }, {
+                    },
+                    {
+                        action: gridActions.print, callback: (data: any) => {
+                            this.getAdmittedPatientCasepaperview(data);
+                        }
+                    },
+                     {
                         action: gridActions.delete, callback: (data: any) => {
                             this.confirmDialogRef = this._matDialog.open(
                                 FuseConfirmDialogComponent,
@@ -122,7 +128,7 @@ export class RegistrationComponent implements OnInit {
             }
         });
     }
-
+    getAdmittedPatientCasepaperview(Id){}
 }
 
 

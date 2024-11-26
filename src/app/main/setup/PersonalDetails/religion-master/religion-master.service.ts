@@ -27,7 +27,7 @@ export class ReligionMasterService {
         return this._formBuilder.group({
             religionId: [""],
             religionName: [""],
-            isDeleted: ["true"],
+            isDeleted: [""],
             AddedBy: [""],
             UpdatedBy: [""],
         });
@@ -58,7 +58,7 @@ export class ReligionMasterService {
 
     
     public deactivateTheStatus(m_data) {
-        return this._httpClient.PostData("ReligionMaster", m_data);
+        return this._httpClient.DeleteData("ReligionMaster?Id=" + m_data.toString());
     }
 
 
