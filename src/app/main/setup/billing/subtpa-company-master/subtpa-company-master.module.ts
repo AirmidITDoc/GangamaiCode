@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { RouterModule, Routes } from "@angular/router";
 import { SubtpaCompanyMasterComponent } from "./subtpa-company-master.component";
 import { SubtpaCompanyMasterService } from "./subtpa-company-master.service";
@@ -25,6 +25,8 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCheckboxModule } from "@angular/material/checkbox";
+import { NewSubtapComponent } from './new-subtap/new-subtap.component';
+import { MatDialogModule } from "@angular/material/dialog";
 
 const routes: Routes = [
     {
@@ -34,7 +36,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [SubtpaCompanyMasterComponent],
+    declarations: [SubtpaCompanyMasterComponent, NewSubtapComponent],
     imports: [
         RouterModule.forChild(routes),
 
@@ -62,8 +64,9 @@ const routes: Routes = [
         MatAutocompleteModule,
         SharedModule,
         NgxMatSelectSearchModule,
+        
     ],
-    providers: [SubtpaCompanyMasterService],
+    providers: [SubtpaCompanyMasterService, DatePipe],
     entryComponents: [SubtpaCompanyMasterComponent],
 })
 export class SubtpaCompanyMasterModule {}

@@ -33,15 +33,37 @@ export class NewSubgroupComponent implements OnInit {
       };
       this.subgroupForm.patchValue(m_data);
   }
+
+
+
+  
   onSubmit() {
-      if (this.subgroupForm.valid) {
-        debugger
-          this._SubGroupMasterService.SubGroupMasterSave(this.subgroupForm.value).subscribe((response) => {
-              this.toastr.success(response.message);
-              this.onClear(true);
-          }, (error) => {
-              this.toastr.error(error.message);
-          });
+      // if (this.subgroupForm.valid) {
+      //   debugger
+      //     this._SubGroupMasterService.SubGroupMasterSave(this.subgroupForm.value).subscribe((response) => {
+      //         this.toastr.success(response.message);
+      //         this.onClear(true);
+      //     }, (error) => {
+      //         this.toastr.error(error.message);
+      //     });
+      // }
+      debugger
+      if(!this.subgroupForm.get("subGroupId").value){
+        var mdata={
+            "subGroupId": 0,
+            "groupId": this.groupId || 0,
+            "subGroupName": this.subgroupForm.get("subGroupName").value || "",
+        }
+        console.log("sub group:", mdata);
+
+        this._SubGroupMasterService.SubGroupMasterSave(mdata).subscribe((response)=>{
+          this.toastr.success(response.message);
+          this.onClear(true);
+        }, (error)=>{
+          this.toastr.error(error.message);
+        })
+      } else{
+        // update
       }
   }
 

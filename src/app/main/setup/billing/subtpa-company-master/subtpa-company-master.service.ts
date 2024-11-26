@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
     providedIn: "root",
@@ -9,7 +10,7 @@ export class SubtpaCompanyMasterService {
     myform: FormGroup;
     myformSearch: FormGroup;
     constructor(
-        private _httpClient: HttpClient,
+        private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder
     ) {
         this.myform = this.createsubtpacompanyForm();
@@ -30,7 +31,7 @@ export class SubtpaCompanyMasterService {
                 ],
             ],
             PinNo: ["", [Validators.minLength(6), Validators.maxLength(6)]],
-            PhoneNo: [
+            Phone: [
                 "",
                 [
                     Validators.required,
@@ -39,7 +40,7 @@ export class SubtpaCompanyMasterService {
                     Validators.maxLength(15),
                 ],
             ],
-            MobileNo: [
+            Mobile: [
                 "",
                 [
                     Validators.required,
@@ -57,13 +58,13 @@ export class SubtpaCompanyMasterService {
                     Validators.maxLength(15),
                 ],
             ],
-            IsDeleted: ["false"],
-            AddedBy: ["0"],
-            UpdatedBy: ["0"],
-            IsCancelled: ["false"],
-            IsCancelledBy: [""],
-            IsCancelledDate: [""],
-            AddedByName: [""],
+            isDeleted: ["false"],
+            // AddedBy: ["0"],
+            // UpdatedBy: ["0"],
+            // IsCancelled: ["false"],
+            // IsCancelledBy: [""],
+            // IsCancelledDate: [""],
+            // AddedByName: [""],
         });
     }
     createSearchForm(): FormGroup {
@@ -78,27 +79,34 @@ export class SubtpaCompanyMasterService {
     }
 
     public getSubtpacompanyMasterList(param) {
-        return this._httpClient.post(
+        return this._httpClient.PostData(
             "Generic/GetByProc?procName=Rtrv_M_SubTPACompanyMasterList_by_Name",
             param
         );
     }
     public getCompanytypeCombobox() {
-        return this._httpClient.post(
+        return this._httpClient.PostData(
             "Generic/GetByProc?procName=RetrieveCompanyTypeMasterForCombo ",
             {}
         );
     }
 
-    public subTpaCompanyMasterInsert(param) {
-        return this._httpClient.post("Billing/SubTpaCompanySave", param);
+    public subTpaCompanyMasterInsert(Param: any, showLoader = true) {
+        // return this._httpClient.PostData("Billing/SubTpaCompanySave", param);
+        if (Param.regID) {
+            return this._httpClient.PutData("SubTpaCompany/" + Param.regID, Param, showLoader);
+        } else return this._httpClient.PostData("SubTpaCompany", Param, showLoader);
     }
 
     public subTpaCompanyMasterUpdate(param) {
-        return this._httpClient.post("Billing/SubTpaCompanyUpdate", param);
+        return this._httpClient.PostData("Billing/SubTpaCompanyUpdate", param);
     }
 
     populateForm(param) {
         this.myform.patchValue(param);
+    }
+
+    public deactivateTheStatus(m_data) {
+        return this._httpClient.DeleteData("SubTpaCompany?Id=" + m_data.toString());
     }
 }

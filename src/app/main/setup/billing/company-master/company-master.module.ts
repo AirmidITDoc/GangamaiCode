@@ -27,6 +27,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { CompanyMasterListComponent } from "./company-master-list/company-master-list.component";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatDialogModule } from "@angular/material/dialog";
+import { MatCardModule } from "@angular/material/card";
 
 const routes: Routes = [
     {
@@ -56,6 +57,7 @@ const routes: Routes = [
         FuseSharedModule,
         FuseSidebarModule,
         MatDialogModule,
+        MatCardModule,
     ],
     providers: [CompanyMasterService,DatePipe],
 

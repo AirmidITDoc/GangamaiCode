@@ -63,13 +63,16 @@ export class BankMasterService {
 
     public bankMasterSave(Param: any, showLoader = true) {
         if (Param.bankId) {
-            return this._httpClient.PutData("bank/" + Param.bankId, Param, showLoader);
-        } else return this._httpClient.PostData("bank", Param, showLoader);
+            return this._httpClient.PutData("BankMaster/" + Param.bankId, Param, showLoader);
+        } else return this._httpClient.PostData("BankMaster", Param, showLoader);
     }
 
+ 
+
     public deactivateTheStatus(m_data) {
-        return this._httpClient.PostData("bank", m_data);
+        return this._httpClient.DeleteData("BankMaster?Id=" + m_data.toString());
     }
+
 
     populateForm(param) {
         this.myform.patchValue(param);

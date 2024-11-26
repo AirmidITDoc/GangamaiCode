@@ -58,6 +58,6 @@ export class SubGroupMasterService {
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.PostData("SubGroupMaster", m_data);
+        return this._httpClient.DeleteData("SubGroupMaster?Id=" + m_data.toString());
     }
 }

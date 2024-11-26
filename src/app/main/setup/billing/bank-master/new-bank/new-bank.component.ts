@@ -33,14 +33,23 @@ export class NewBankComponent implements OnInit {
   }
 
   onSubmit(){
-    if(this.bankForm.valid){
+    if(!this.bankForm.get("bankId").value){
       debugger
+      var mdata=
+      {
+        "bankId": 0,
+        "bankName": this.bankForm.get("bankName").value || ""
+      }
+      console.log("bank json:", mdata);
+
       this._BankMasterService.bankMasterSave(this.bankForm.value).subscribe((response)=>{
         this.toastr.success(response.message);
         this.onClear(true);
       }, (error)=>{
         this.toastr.error(error.message);
       });
+    } else{
+      //update
     }
   }
 

@@ -9,6 +9,14 @@ import { takeUntil } from "rxjs/operators";
 import { fuseAnimations } from "@fuse/animations";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { NewSubtapComponent } from "./new-subtap/new-subtap.component";
+
+
 
 @Component({
     selector: "app-subtpa-company-master",
@@ -18,6 +26,92 @@ import { ToastrService } from "ngx-toastr";
     animations: fuseAnimations,
 })
 export class SubtpaCompanyMasterComponent implements OnInit {
+    
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+
+    gridConfig: gridModel = {
+        apiUrl: "SubTpaCompany/List",
+        columnsList: [
+            { heading: "Code", key: "subCompanyId", sort: true, align: 'left', emptySign: 'NA', width:100 },
+            { heading: "TypeName", key: "compTypeId", sort: true, align: 'left', emptySign: 'NA', width:100 },
+            { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width:150 },
+            { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width:250 },
+            { heading: "City", key: "city", sort: true, align: 'left', emptySign: 'NA', width:100 },
+            { heading: "PinNo", key: "pinNo", sort: true, align: 'left', emptySign: 'NA', width:100 },
+            { heading: "PhoneNo", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', width:100 },
+            { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width:100 },
+            { heading: "FaxNo", key: "faxNo", sort: true, align: 'left', emptySign: 'NA', width:100 },
+            // {heading: "UserName", key:"", sort: true, align: 'left', emptySign: 'NA', width:100}
+           
+            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center",width:100 },
+            
+            {
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:160, actions: [
+                    
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            this.onSave(data) // EDIT Records
+                        }
+                    }, {
+                        action: gridActions.delete, callback: (data: any) => {
+                            this.onDeactive(data.subCompanyId); // DELETE Records
+                        }
+                    }]
+            } //Action 1-view, 2-Edit,3-delete
+        ],
+        sortField: "subCompanyId",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "companyName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+        ],
+        row: 25
+    }
+
+    constructor(
+        public _subtpacompanyService: SubtpaCompanyMasterService,
+        public toastr: ToastrService, public _matDialog: MatDialog
+    ) { }
+
+    onSave(row: any = null) {
+        debugger
+        let that = this;
+        const dialogRef = this._matDialog.open(NewSubtapComponent,
+            {
+                maxWidth: "45vw",
+                height: '70%',
+                width: '70%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                // that.grid.bindGridData();
+            }
+        });
+    }
+
+    onDeactive(subCompanyId){
+        this.confirmDialogRef = this._matDialog.open(
+            FuseConfirmDialogComponent,
+            {
+                disableClose: false,
+            }
+        );
+        this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+        this.confirmDialogRef.afterClosed().subscribe((result) => {
+            if (result) {
+                this._subtpacompanyService.deactivateTheStatus(subCompanyId).subscribe((response: any) => {
+                    if (response.StatusCode == 200) {
+                        this.toastr.success(response.Message);
+                        // this.getGenderMasterList();
+                        // How to refresh Grid.
+                    }
+                });
+            }
+            this.confirmDialogRef = null;
+        });
+    }
+    
     submitted = false;
     CompanytypecmbList: any = [];
     msg: any;
@@ -44,9 +138,6 @@ export class SubtpaCompanyMasterComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    constructor(public _subtpacompanyService: SubtpaCompanyMasterService,
-        public toastr : ToastrService,) {}
-
     //company filter
     public companytypeFilterCtrl: FormControl = new FormControl();
     public filteredCompanytype: ReplaySubject<any> = new ReplaySubject<any>(1);
@@ -55,7 +146,7 @@ export class SubtpaCompanyMasterComponent implements OnInit {
 
     ngOnInit(): void {
         this.getSubtpacompanyMasterList();
-        this.getCompanytypeNameCombobox();
+        // this.getCompanytypeNameCombobox();
 
         this.companytypeFilterCtrl.valueChanges
             .pipe(takeUntil(this._onDestroy))
@@ -118,17 +209,17 @@ export class SubtpaCompanyMasterComponent implements OnInit {
             });
     }
 
-    getCompanytypeNameCombobox() {
-        this._subtpacompanyService
-            .getCompanytypeCombobox()
-            .subscribe((data) => {
-                this.CompanytypecmbList = data;
-                this.filteredCompanytype.next(this.CompanytypecmbList.slice());
-                this._subtpacompanyService.myform
-                    .get("SubCompanyId")
-                    .setValue(this.CompanytypecmbList[0]);
-            });
-    }
+    // getCompanytypeNameCombobox() {
+    //     this._subtpacompanyService
+    //         .getCompanytypeCombobox()
+    //         .subscribe((data) => {
+    //             this.CompanytypecmbList = data;
+    //             this.filteredCompanytype.next(this.CompanytypecmbList.slice());
+    //             this._subtpacompanyService.myform
+    //                 .get("SubCompanyId")
+    //                 .setValue(this.CompanytypecmbList[0]);
+    //         });
+    // }
 
     onClear() {
         this._subtpacompanyService.myform.reset({ IsDeleted: "false" });

@@ -54,6 +54,6 @@ export class BillingClassMasterService {
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.PostData("ClassMaster", m_data);
+        return this._httpClient.DeleteData("ClassMaster?Id=" + m_data.toString());
     }
 }
