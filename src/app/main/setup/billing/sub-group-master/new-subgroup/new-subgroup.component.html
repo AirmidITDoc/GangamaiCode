@@ -25,9 +25,12 @@
                         [validations]="_SubGroupMasterService.getValidationMessages().subGroupName"
                         [maxLength]="300">
                     </airmid-textbox>
-                    <airmid-textbox label="Group name" formControlName="groupId" [value]=""
+
+                    <!-- <airmid-textbox label="Group name" formControlName="groupId" [value]=""
                         [formGroup]="subgroupForm" [maxLength]="300">
-                    </airmid-textbox>
+                    </airmid-textbox> -->
+
+                    <airmid-autocomplete [mode]="autocompleteModegroupName" (selectDdlObject)="selectChangegroupName($event)" ></airmid-autocomplete>
 
                 </div>
 

@@ -21,9 +21,9 @@ export class TariffMasterService {
 
     createTariffForm(): FormGroup {
         return this._formBuilder.group({
-            TariffId: [""],
-            TariffName: [""],
-            IsDeleted: ["false"],
+            tariffId: [""],
+            tariffName: [""],
+            isDeleted: ["false"],
             // AddedBy: ["0"],
             // UpdatedBy: ["0"],
         });
@@ -36,6 +36,15 @@ export class TariffMasterService {
     }
     initializeFormGroup() {
         this.createTariffForm();
+    }
+    getValidationMessages(){
+        return{
+            tariffName: [
+                { name: "required", Message: "Class Name is required" },
+                { name: "maxlength", Message: "Class name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        }
     }
 
     public getTariffMasterList(param: gridRequest, showLoader=true) {
@@ -52,11 +61,17 @@ export class TariffMasterService {
 
     // New code
     public deactivateTheStatus(m_data) {
-        return this._httpClient.PostData("ClassMaster", m_data);
+        return this._httpClient.PostData("TarrifMaster", m_data);
     }
     // 
 
     populateForm(param) {
         this.myform.patchValue(param);
+    }
+
+    public tariffMasterSave(Param: any, showLoader = true) {
+        if (Param.tariffId) {
+            return this._httpClient.PutData("TarrifMaster/" + Param.tariffId, Param, showLoader);
+        } else return this._httpClient.PostData("TarrifMaster", Param, showLoader);
     }
 }

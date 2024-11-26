@@ -36,8 +36,8 @@ export class SupplierMasterComponent implements OnInit {
             {heading: "Mobile", key: "mobile", sort:true, align:'left',emptySign: 'NA', width:100 },
             {heading: "Phone", key: "phone", sort:true, align:'left',emptySign: 'NA', width:100 },
             {heading: "Fax", key: "fax", sort:true, align:'left',emptySign: 'NA', width:100 },
-            {heading: "Email", key: "email", sort:true, align:'left',emptySign: 'NA', width:250 },
-            {heading: "GSTNo", key: "gstNo", sort:true, align:'left',emptySign: 'NA', width:200 },
+            {heading: "Email", key: "email", sort:true, align:'left',emptySign: 'NA', width:200 },
+            {heading: "GSTNo", key: "gstNo", sort:true, align:'left',emptySign: 'NA', width:150 },
             {heading: "PanNo", key: "panNo", sort:true, align:'left',emptySign: 'NA', width:100 },
             // {heading: "User Name", key: "", sort:true, align:'left',emptySign: 'NA' },
             { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width:100 },
@@ -87,7 +87,7 @@ export class SupplierMasterComponent implements OnInit {
     onSave(obj:any=null){
         const dialogRef = this._matDialog.open(SupplierFormMasterComponent,
             {
-                maxWidth: "95vw",
+                maxWidth: "100vw",
                 height: '95%',
                 width: '70%',
                 data: obj

@@ -15,7 +15,7 @@
         <input type="hidden" name="ServiceId" formControlName="ServiceId" style="top:155px;">
 
         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="b-service-master" style="padding-top: 10px;">
-            <mat-form-field appearance="outline" fxFlex>
+            <!-- <mat-form-field appearance="outline" fxFlex>
                 <mat-label>Group Name</mat-label>
                 <mat-select formControlName="GroupId" placeholder="Bank" #singleSelect disableOptionCentering="true"
                     required>
@@ -27,9 +27,13 @@
                         {{element.GroupName}}
                     </mat-option>
                 </mat-select>
-            </mat-form-field>&nbsp;&nbsp;
+            </mat-form-field> -->
 
-            <mat-form-field appearance="outline" fxFlex>
+            <airmid-autocomplete [mode]="autocompleteModegroupName" (selectDdlObject)="selectChangegroupName($event)" ></airmid-autocomplete>
+            
+            &nbsp;&nbsp;
+
+            <!-- <mat-form-field appearance="outline" fxFlex>
                 <mat-label>SubGroup Name</mat-label>
                 <mat-select formControlName="SubGroupId" placeholder="Bank" #singleSelect disableOptionCentering="true">
                     <mat-option>
@@ -40,7 +44,9 @@
                         {{element.SubGroupName}}
                     </mat-option>
                 </mat-select>
-            </mat-form-field>
+            </mat-form-field> -->
+
+            <airmid-autocomplete [mode]="autocompleteModesubGroupName" (selectDdlObject)="selectChangesubGroupName($event)" ></airmid-autocomplete>
         </div>
 
 
@@ -83,7 +89,7 @@
 
         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
 
-            <mat-form-field appearance="outline" fxFlex>
+            <!-- <mat-form-field appearance="outline" fxFlex>
                 <mat-label>Tariff Name</mat-label>
                 <mat-select formControlName="TariffId" placeholder="Bank" #singleSelect disableOptionCentering="true">
                     <mat-option>
@@ -94,7 +100,10 @@
                         {{element.TariffName}}
                     </mat-option>
                 </mat-select>
-            </mat-form-field>&nbsp;&nbsp;
+            </mat-form-field> -->
+            <airmid-autocomplete [mode]="autocompleteModetariff" (selectDdlObject)="selectChangetariff($event)"></airmid-autocomplete>
+            
+            &nbsp;&nbsp;
             <mat-form-field appearance="outline" fxFlex>
                 <input matInput [matDatepicker]="picker3" placeholder="Choose an Effective Date" name="EffectiveDate"
                     formControlName="EffectiveDate">

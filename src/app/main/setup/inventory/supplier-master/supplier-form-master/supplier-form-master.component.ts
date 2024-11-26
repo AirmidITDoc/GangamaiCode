@@ -1108,7 +1108,7 @@ public onEnterStore(event): void {
   }
   selectChangestate(obj: any){
     console.log(obj);
-    this.stateId=obj.value
+    this.stateId=obj.value;
   }
   selectChangecountry(obj: any){
     console.log(obj);

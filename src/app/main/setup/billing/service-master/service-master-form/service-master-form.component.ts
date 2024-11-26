@@ -56,6 +56,11 @@ public filteredSubgroupname: ReplaySubject<any> = new ReplaySubject<any>(1);
 private _onDestroy = new Subject<void>();
   getServiceMasterList: any;
 
+  // new api
+  autocompleteModegroupName:string="GroupName";
+  autocompleteModesubGroupName:string="SubGroupName";
+  autocompleteModetariff: string = "Tariff";
+
   constructor(public _serviceMasterService: ServiceMasterService,
     public toastr : ToastrService,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -459,7 +464,22 @@ keyPressCharater(event){
     }
     
   }
- 
+
+  // new api
+  groupId=0;
+  subGroupId=0;
+  tariffId=0;
+
+  selectChangegroupName(obj:any){
+    this.groupId=obj.value;
+  }
+  selectChangesubGroupName(obj:any){
+    this.subGroupId=obj.value;
+  }
+  selectChangetariff(obj: any){
+    console.log(obj);
+    this.tariffId=obj.value
+  }
 
 
 }

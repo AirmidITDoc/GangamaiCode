@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { BankMasterService } from '../bank-master.service';
 
 @Component({
   selector: 'app-new-bank',
@@ -7,11 +11,45 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NewBankComponent implements OnInit {
 
-  constructor() { }
+  bankForm: FormGroup;
+
+  constructor(
+    public _BankMasterService: BankMasterService,
+    public dialogRef: MatDialogRef<NewBankComponent>,
+      @Inject(MAT_DIALOG_DATA) public data: any,
+      public toastr: ToastrService
+  ) { }
 
   ngOnInit(): void {
+    this.bankForm=this._BankMasterService.createBankForm();
+    
+    var m_data = {
+      bankId: this.data?.bankId,
+     bankName: this.data?.bankName.trim(),
+     isDeleted: JSON.stringify(this.data?.isActive),
+    };
+    this.bankForm.patchValue(m_data);
+    console.log("mdata:", m_data)
   }
-  onSubmit() {
+
+  onSubmit(){
+    if(this.bankForm.valid){
+      debugger
+      this._BankMasterService.bankMasterSave(this.bankForm.value).subscribe((response)=>{
+        this.toastr.success(response.message);
+        this.onClear(true);
+      }, (error)=>{
+        this.toastr.error(error.message);
+      });
+    }
+  }
+
+  onClear(val: boolean) {
+    this.bankForm.reset();
+    this.dialogRef.close(val);
+}
+
+  // onSubmit() {
     // if (this._bankService.myform.valid) {
     //     if (!this._bankService.myform.get("BankId").value) {
     //         var m_data = {
@@ -89,5 +127,5 @@ export class NewBankComponent implements OnInit {
     //     }
     //     this.onClear();
     // }
-}
+// }
 }

@@ -17,6 +17,7 @@ import {  MatDialogRef } from "@angular/material/dialog";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
+import { compact } from "lodash";
 
 
 
@@ -98,8 +99,8 @@ export class CompanyMasterComponent implements OnInit {
         let that = this;
         const dialogRef = this._matDialog.open(CompanyMasterListComponent,
             {
-                maxWidth: "45vw",
-                height: '35%',
+                maxWidth: "95vw",
+                height: '85%',
                 width: '70%',
                 data: row
             });
@@ -110,3 +111,22 @@ export class CompanyMasterComponent implements OnInit {
         });
     }
 }
+
+export class CompanyMaster{
+    Address: string;
+    Mobile: any;
+    Phone: String;
+    Fax: String;
+    PinCode: any;
+
+    constructor(CompanyMaster){
+        {
+            this.Address=CompanyMaster.Address || "";
+            this.Mobile = CompanyMaster.Mobile || "";
+            this.Phone = CompanyMaster.Phone || "";
+            this.Fax = CompanyMaster.Fax || "";
+            this.PinCode = CompanyMaster.PinCode || 0;
+        }
+    }
+}
+CompanyMaster

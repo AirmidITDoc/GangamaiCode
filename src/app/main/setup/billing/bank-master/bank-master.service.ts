@@ -10,6 +10,7 @@ import { ApiCaller } from "app/core/services/apiCaller";
 export class BankMasterService {
     myform: FormGroup;
     myformSearch: FormGroup;
+
     constructor(
         private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder
@@ -20,12 +21,12 @@ export class BankMasterService {
 
     createBankForm(): FormGroup {
         return this._formBuilder.group({
-            BankId: [""],
-            BankName: [""],
-            IsDeleted: ["false"],
-            AddedBy: ["0"],
-            UpdatedBy: ["0"],
-            AddedByName: [""],
+            bankId: [""],
+            bankName: [""],
+            isDeleted: ["false"],
+            // AddedBy: ["0"],
+            // UpdatedBy: ["0"],
+            // AddedByName: [""],
         });
     }
     createSearchForm(): FormGroup {
@@ -39,16 +40,31 @@ export class BankMasterService {
         this.createBankForm();
     }
 
+    getValidationMessages(){
+        return{
+            bankName: [
+                { name: "required", Message: "Class Name is required" },
+                { name: "maxlength", Message: "Class name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        }
+    }
    
     public getbankMasterList(param: gridRequest, showLoader = true) {
         return this._httpClient.PostData("BankMaster/List", param, showLoader);
     }
 
-    public bankMasterSave(Param: any, id: string ,showLoader = true) {
-        if(id)
-            return this._httpClient.PutData("bank/"+ id, Param, showLoader);
-        else
-            return this._httpClient.PostData("bank", Param, showLoader);       
+    // public bankMasterSave(Param: any, id: string ,showLoader = true) {
+    //     if(id)
+    //         return this._httpClient.PutData("bank/"+ id, Param, showLoader);
+    //     else
+    //         return this._httpClient.PostData("bank", Param, showLoader);       
+    // }
+
+    public bankMasterSave(Param: any, showLoader = true) {
+        if (Param.bankId) {
+            return this._httpClient.PutData("bank/" + Param.bankId, Param, showLoader);
+        } else return this._httpClient.PostData("bank", Param, showLoader);
     }
 
     public deactivateTheStatus(m_data) {

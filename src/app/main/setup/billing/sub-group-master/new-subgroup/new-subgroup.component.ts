@@ -11,7 +11,10 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 })
 export class NewSubgroupComponent implements OnInit {
 
+  autocompleteModegroupName:string="GroupName";
+
   subgroupForm: FormGroup;
+
   constructor(
       public _SubGroupMasterService: SubGroupMasterService,
       public dialogRef: MatDialogRef<NewSubgroupComponent>,
@@ -46,4 +49,13 @@ export class NewSubgroupComponent implements OnInit {
       this.subgroupForm.reset();
       this.dialogRef.close(val);
   }
+
+  //new api
+
+  groupId=0;
+
+  selectChangegroupName(obj:any){
+    this.groupId=obj.value;
+  }
+
 }

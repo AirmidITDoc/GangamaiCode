@@ -1,0 +1,130 @@
+<div class="modal-wrapper grid-container">
+    <!-- Modal header -->
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Company Master</span>
+            </div>
+            <div class="modal-header-right">
+
+                <div fxLayout="row" fxLayoutALign="end start">
+                    <!-- <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
+                    </app-common-date> -->
+                    <button mat-icon-button (click)="onClose()" aria-label="Close dialog">
+                        <mat-icon>close</mat-icon>
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+<mat-card>
+
+    <form [formGroup]="_CompanyMasterService.myform" fxLayout="column" style="padding: 5px 5px 0px 5px;">
+        <!-- <input type="hidden" name="SupplierId" formControlName="SupplierId"> -->
+       
+        <mat-card>
+            <div fxFlex="100" fxLayout="row wrap">
+
+                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <airmid-autocomplete [mode]="autocompleteModeCompany" (selectDdlObject)="selectChangeCompany($event)"></airmid-autocomplete>
+                </div>
+
+                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <airmid-autocomplete [mode]="autocompleteModetypeName" (selectDdlObject)="selectChangetypeName($event)" ></airmid-autocomplete>
+                </div>
+                
+                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <airmid-autocomplete [mode]="autocompleteModetariff" (selectDdlObject)="selectChangetariff($event)"></airmid-autocomplete>
+                </div>
+
+                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                        <mat-label>Address</mat-label>
+                        <input name="Address" placeholder="EnterAddress" formControlName="Address" matInput
+                            (keydown)="onEnterAddress($event)" #Address required [(ngModel)]="vAddress">
+                        <!-- <mat-error>Please enter Address </mat-error> -->
+                    </mat-form-field>
+                </div>
+
+                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">                    
+                    <airmid-autocomplete [mode]="autocompleteModecity" (selectDdlObject)="selectChangecity($event)" ></airmid-autocomplete>
+                </div>
+
+                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                        <mat-label>PinNo</mat-label>
+                        <input name="PinNo" placeholder="Enter PinNo" formControlName="PinNo" matInput
+                            (keydown)="onEnterPin($event)" #Pan [(ngModel)]="vPincode">
+                    </mat-form-field>
+                </div>
+
+                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                        <mat-label>Phone Number</mat-label>
+                        <input name="Phone" formControlName="Phone" placeholder="Phone Number" matInput required
+                            [(ngModel)]="registerObj.Phone" #phone (keydown)="onEnterphone($event)"
+                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
+                            type="number" value="Mobile.length">
+                        <mat-error class="error"
+                            *ngIf="_supplierService.myform.get('Phone').invalid && _supplierService.myform.get('Phone').touched">10
+                            digits Mobile number is
+                            required</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                        <mat-label>Mobile Number</mat-label>
+                        <input name="Phone" formControlName="Phone" placeholder="Phone Number" matInput required
+                            [(ngModel)]="registerObj.Phone" #phone (keydown)="onEnterphone($event)"
+                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
+                            type="number" value="Mobile.length">
+                        <mat-error class="error"
+                            *ngIf="_supplierService.myform.get('Phone').invalid && _supplierService.myform.get('Phone').touched">10
+                            digits Mobile number is
+                            required</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                        <mat-label>Fax</mat-label>
+                        <input name="Fax" placeholder="Select Fax" formControlName="Fax" matInput
+                            (keydown)="onEnterfax($event)" #Fax>
+                    </mat-form-field>
+                </div>
+
+            </div>
+
+        </mat-card>
+    </form>
+
+
+    <div class="row row-container" style="width: 100%;">
+        <div class="sales-radio-buttons gap-8" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <form [formGroup]="_CompanyMasterService.myform">
+                <div class="sales-radio-buttons gap-2" fxLayout="row">
+                    <mat-checkbox aria-label="Msm" formControlName="MsmNo" (checked)=true (change)="onChangeMsm($event)"
+                        style="font-weight: bold;margin-right: 20px;">MSME
+                    </mat-checkbox>
+                    <mat-checkbox aria-label="Mode" formControlName="CreateApproval" (checked)=true
+                        (change)="onChangeMode($event)" style="font-weight: bold;margin-right: 20px;">Create / Approval
+                    </mat-checkbox>
+                </div>
+            </form>
+
+            <div class="sales-footer-buttons gap-8" fxLayout="row">
+                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                <button class="btn btn-primary" color="accent" (click)="onSubmit()"  [disabled]="Savebtn">
+                    <span>Save</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+</mat-card>
+    <!-- Modal footer -->
+
+</div>
