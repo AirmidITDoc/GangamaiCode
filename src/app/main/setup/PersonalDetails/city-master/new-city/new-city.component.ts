@@ -13,6 +13,10 @@ export class NewCityComponent implements OnInit {
  
     cityForm: FormGroup;
     stateId = 0;
+    cityId = 0;
+    cityName = '';
+
+
         constructor(
         public _CityMasterService: CityMasterService,
         public dialogRef: MatDialogRef<NewCityComponent>,
@@ -24,18 +28,28 @@ export class NewCityComponent implements OnInit {
 
     ngOnInit(): void {
         this.cityForm = this._CityMasterService.createCityForm();
-        var m_data = {
+      if(this.data){
+            this.cityId= this.data?.cityId,
+            this.cityName= this.data?.cityName.trim(),
+            this.stateId= this.data?.stateId
+            // this.isActive= JSON.stringify(this.data?.isActive)
+        }
+        var mdata={
             cityId: this.data?.cityId,
             cityName: this.data?.cityName.trim(),
             stateId: this.data?.stateId || this.stateId,
-            isDeleted: JSON.stringify(this.data?.isActive),
-        };
-        this.cityForm.patchValue(m_data);
+            isActive: JSON.stringify(this.data?.isActive)}
+            this.cityForm.patchValue(mdata);
     }
     onSubmit() {
         if (this.cityForm.valid) {
-            
-            this._CityMasterService.cityMasterSave(this.cityForm.value).subscribe((response) => {
+            var mdata={
+                "cityId": this.cityId,
+                "cityName": this.cityForm.get("cityName").value,
+                "stateId": this.stateId
+            }
+            debugger
+            this._CityMasterService.cityMasterSave(mdata).subscribe((response) => {
                 this.toastr.success(response.message);
                 this.onClear(true);
             }, (error) => {
@@ -51,6 +65,7 @@ export class NewCityComponent implements OnInit {
 
     selectChangestate(obj: any){
         console.log(obj);
-        this.stateId=obj.value
+        this.stateId=obj
+        debugger
       }
   }
