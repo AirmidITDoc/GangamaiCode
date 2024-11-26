@@ -117,6 +117,7 @@ export class IPSearchListComponent implements OnInit {
     else if (this._ActRoute.url == '/ipd/dischargesummary') {
       this.menuActions.push('Discharge');
       this.menuActions.push('Discharge Summary');
+      this.menuActions.push('Discharge Summary Template');
     }
     else if (this._ActRoute.url == '/ipd/refund/iprefundofadvance' || this._ActRoute.url == '/ipd/refund/iprefundofbill') {
 
@@ -300,6 +301,22 @@ export class IPSearchListComponent implements OnInit {
       }
     }
     else if (m == "Discharge Summary") {
+      console.log(contact);
+      this.advanceDataStored.storage = new AdvanceDetailObj(contact);
+      this._IpSearchListService.populateForm1(contact);
+      const dialogRef = this._matDialog.open(DischargeSummaryComponent,
+        {
+
+          maxWidth: "95vw",
+          height: '90vh',
+          width: '100%',
+
+        });
+
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed - Insert Action', result);
+      });
+    } else if (m == "Discharge Summary Template") {
       console.log(contact);
       this.advanceDataStored.storage = new AdvanceDetailObj(contact);
       this._IpSearchListService.populateForm1(contact);

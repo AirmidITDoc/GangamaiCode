@@ -832,7 +832,7 @@
                                                         <mat-label>Pan Card No</mat-label>
                                                         <input name="PanCardNo" formControlName="PanCardNo"
                                                             placeholder="PanCardNo Number" matInput
-                                                            [(ngModel)]="registerObj.PanCardNo" #pan
+                                                            [(ngModel)]="registerObj.PanCardNo" #paPdfn
                                                             (keydown)="onEnterpan($event)">
                                                         <mat-error class="error"
                                                             *ngIf="personalFormGroup.get('PanCardNo').invalid && personalFormGroup.get('PanCardNo').touched">12

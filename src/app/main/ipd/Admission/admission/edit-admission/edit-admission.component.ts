@@ -897,12 +897,12 @@ export class EditAdmissionComponent implements OnInit {
       ReferDocNameId = this.hospitalFormGroup.get('refDoctorId').value.DoctorId; 
     }
 
-    debugger
+    
     var m_data = {
       "admissionNewUpdate": {
         "AdmissionId": this.AdmissionID,// this.hospitalFormGroup.get('AdmissionId').value || 0,
-        "AdmissionDate": this.dateTimeObj.date,// this.hospitalFormGroup.get('AdmissionDate').value || "2021-03-31",
-        "AdmissionTime": this.dateTimeObj.time,//this.personalFormGroup.get('AppTime').value || "2021-03-31",
+        "AdmissionDate": this.registerObj1.AdmissionDate,// this.dateTimeObj.date,// this.hospitalFormGroup.get('AdmissionDate').value || "2021-03-31",
+        "AdmissionTime":  this.registerObj1.AdmissionTime,//this.personalFormGroup.get('AppTime').value || "2021-03-31",
         "PatientTypeId": this.hospitalFormGroup.get('PatientTypeID').value.PatientTypeId || 0,
         "HospitalId": this.registerObj1.HospitalId || 1,
         "CompanyId": this.CompanyId, //this.hospitalFormGroup.get('CompanyId').value.CompanyId || 0,
@@ -927,7 +927,7 @@ export class EditAdmissionComponent implements OnInit {
 
     }
     console.log(m_data)
-
+    debugger
     this._AdmissionService.AdmissionUpdate(m_data).subscribe(response => {
       if (response) {
         Swal.fire('Congratulations !', 'Admission Data Updated Successfully !', 'success').then((result) => {
