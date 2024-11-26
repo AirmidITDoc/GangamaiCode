@@ -20,23 +20,31 @@
     </div>
 <mat-card>
 
-    <form [formGroup]="_CompanyMasterService.myform" fxLayout="column" style="padding: 5px 5px 0px 5px;">
-        <!-- <input type="hidden" name="SupplierId" formControlName="SupplierId"> -->
+    <form [formGroup]="companyForm" fxLayout="column" style="padding: 5px 5px 0px 5px;">
+
+        <input type="hidden" name="CompanyId" formControlName="CompanyId">
        
         <mat-card>
-            <div fxFlex="100" fxLayout="row wrap">
+            <div fxFlex="100" fxLayout="column">
 
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <airmid-autocomplete [mode]="autocompleteModeCompany" (selectDdlObject)="selectChangeCompany($event)"></airmid-autocomplete>
-                </div>
+                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                        <mat-label>Company Name</mat-label>
+                        <input name="CompanyName" placeholder="Enter CompanyName" formControlName="CompanyName" matInput
+                            (keydown)="onEnterCompany($event)" #Address required [(ngModel)]="vCompanyName">
+                        <!-- <mat-error>Please enter Address </mat-error> -->
+                    </mat-form-field>
+                <!-- </div>
 
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%"> -->
                     <airmid-autocomplete [mode]="autocompleteModetypeName" (selectDdlObject)="selectChangetypeName($event)" ></airmid-autocomplete>
                 </div>
                 
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                 <!-- in payload there is no tariff -->
+
+                <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <airmid-autocomplete [mode]="autocompleteModetariff" (selectDdlObject)="selectChangetariff($event)"></airmid-autocomplete>
-                </div>
+                </div> -->
 
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
@@ -45,55 +53,59 @@
                             (keydown)="onEnterAddress($event)" #Address required [(ngModel)]="vAddress">
                         <!-- <mat-error>Please enter Address </mat-error> -->
                     </mat-form-field>
-                </div>
+                <!-- </div>
 
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">                    
+                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%"> -->
                     <airmid-autocomplete [mode]="autocompleteModecity" (selectDdlObject)="selectChangecity($event)" ></airmid-autocomplete>
-                </div>
+                 </div>
 
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%"> 
                     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                         <mat-label>PinNo</mat-label>
                         <input name="PinNo" placeholder="Enter PinNo" formControlName="PinNo" matInput
-                            (keydown)="onEnterPin($event)" #Pan [(ngModel)]="vPincode">
+                            (keydown)="onEnterPin($event)" #Pin [(ngModel)]="vPincode">
                     </mat-form-field>
-                </div>
+                <!-- </div>
 
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%"> -->
                     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                         <mat-label>Phone Number</mat-label>
                         <input name="Phone" formControlName="Phone" placeholder="Phone Number" matInput required
-                            [(ngModel)]="registerObj.Phone" #phone (keydown)="onEnterphone($event)"
-                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
-                            type="number" value="Mobile.length">
-                        <mat-error class="error"
-                            *ngIf="_supplierService.myform.get('Phone').invalid && _supplierService.myform.get('Phone').touched">10
-                            digits Mobile number is
-                            required</mat-error>
+                                [(ngModel)]="vPhone" #Phone (keydown)="onEnterPhone($event)"
+                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
+                                type="number" value="Phone.length">
+                        <!-- <mat-error class="error"
+                            *ngIf="companyForm.get('Phone').invalid && companyForm.get('Phone').touched">10
+                            digits Phone number is
+                            required</mat-error> -->
                     </mat-form-field>
                 </div>
 
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                <!-- in payload there is no mobile -->
+
+                <!--<div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                         <mat-label>Mobile Number</mat-label>
-                        <input name="Phone" formControlName="Phone" placeholder="Phone Number" matInput required
-                            [(ngModel)]="registerObj.Phone" #phone (keydown)="onEnterphone($event)"
+                        <input name="Mobile" formControlName="Mobile" placeholder="Mobile Number" matInput required
+                            [(ngModel)]="vMobile" #Mobile (keydown)="onEntermobile($event)"
                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
                             type="number" value="Mobile.length">
                         <mat-error class="error"
-                            *ngIf="_supplierService.myform.get('Phone').invalid && _supplierService.myform.get('Phone').touched">10
+                            *ngIf="companyForm.get('Mobile').invalid && companyForm.get('Mobile').touched">10
                             digits Mobile number is
                             required</mat-error>
-                    </mat-form-field>
-                </div>
+                    </mat-form-field> 
+                </div>-->
 
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                 <!-- in payload there is no fax -->
+                <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                         <mat-label>Fax</mat-label>
                         <input name="Fax" placeholder="Select Fax" formControlName="Fax" matInput
                             (keydown)="onEnterfax($event)" #Fax>
                     </mat-form-field>
-                </div>
+                </div> -->
 
             </div>
 
@@ -104,7 +116,7 @@
     <div class="row row-container" style="width: 100%;">
         <div class="sales-radio-buttons gap-8" fxLayout="row" fxLayoutAlign="space-between center">
 
-            <form [formGroup]="_CompanyMasterService.myform">
+            <form [formGroup]="companyForm">
                 <div class="sales-radio-buttons gap-2" fxLayout="row">
                     <mat-checkbox aria-label="Msm" formControlName="MsmNo" (checked)=true (change)="onChangeMsm($event)"
                         style="font-weight: bold;margin-right: 20px;">MSME

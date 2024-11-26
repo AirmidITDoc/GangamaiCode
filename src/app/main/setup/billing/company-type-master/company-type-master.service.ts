@@ -53,6 +53,6 @@ export class CompanyTypeMasterService {
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.PostData("CompanyTypeMaster", m_data);
+        return this._httpClient.DeleteData("CompanyTypeMaster?Id=" + m_data.toString());
     }
 }

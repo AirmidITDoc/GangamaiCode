@@ -58,6 +58,6 @@ export class CashCounterMasterService {
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.PostData("CashCounter", m_data);
+        return this._httpClient.DeleteData("CashCounter?Id=" + m_data.toString());
     }
 }

@@ -55,6 +55,6 @@ export class ConcessionReasonMasterService {
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.PostData("ConcessionReasonMaster", m_data);
+        return this._httpClient.DeleteData("ConcessionReasonMaster?Id=" + m_data.toString());
     }
 }

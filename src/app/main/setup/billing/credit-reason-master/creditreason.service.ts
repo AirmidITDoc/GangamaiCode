@@ -54,6 +54,6 @@ export class CreditreasonService {
   }
 
   public deactivateTheStatus(m_data) {
-      return this._httpClient.PostData("CreditReasonMaster", m_data);
-  }
+    return this._httpClient.DeleteData("CreditReasonMaster?Id=" + m_data.toString());
+}
 }

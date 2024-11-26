@@ -59,6 +59,6 @@ export class GroupMasterService {
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.PostData("GroupMaster", m_data);
+        return this._httpClient.DeleteData("GroupMaster?Id=" + m_data.toString());
     }
 }

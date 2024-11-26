@@ -12,6 +12,12 @@ import { MatSort } from "@angular/material/sort";
 import { ToastrService } from "ngx-toastr";
 import { element } from "protractor";
 import { NONE_TYPE } from "@angular/compiler";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
+import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
+import { compact } from "lodash";
 
 @Component({
     selector: "app-service-master-form",
@@ -23,6 +29,55 @@ import { NONE_TYPE } from "@angular/compiler";
   
   export class ServiceMasterFormComponent implements OnInit {
    
+    gridConfig: gridModel = {
+      apiUrl: "ClassMaster/List",
+  columnsList: [
+      { heading: "Code", key: "classId", sort: true, align: 'left', emptySign: 'NA', width:160 },
+      { heading: "Billing Class Name", key: "className", sort: true, align: 'left', emptySign: 'NA', width:700 },
+     
+     { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center",width:160 },
+           {
+              heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:160, actions: [
+                  {
+                      action: gridActions.edit, callback: (data: any) => {
+                          this.onSave(data);
+                      }
+                  }, {
+                      action: gridActions.delete, callback: (data: any) => {
+                          this.confirmDialogRef = this._matDialog.open(
+                              FuseConfirmDialogComponent,
+                              {
+                                  disableClose: false,
+                              }
+                          );
+                          this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+                          this.confirmDialogRef.afterClosed().subscribe((result) => {
+                              if (result) {
+                                  let that = this;
+                                  this._serviceMasterService.deactivateTheStatus(data.classId).subscribe((response: any) => {
+                                      this.toastr.success(response.message);
+                                      that.grid.bindGridData();
+                                  });
+                              }
+                              this.confirmDialogRef = null;
+                          });
+                      }
+                  }]
+          } //Action 1-view, 2-Edit,3-delete
+      ],
+      sortField: "classId",
+      sortOrder: 0,
+      filters: [
+          { fieldName: "className", fieldValue: "", opType: OperatorComparer.Contains },
+          { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+      ],
+      row: 25
+  }
+  private _matDialog: any;
+
+  onSave(row: any=null){
+    
+  }
   isEditMode: boolean = false;
   showEmg: boolean = false;
   showDoctor: boolean = false;
@@ -60,6 +115,8 @@ private _onDestroy = new Subject<void>();
   autocompleteModegroupName:string="GroupName";
   autocompleteModesubGroupName:string="SubGroupName";
   autocompleteModetariff: string = "Tariff";
+  confirmDialogRef: any;
+  grid: any;
 
   constructor(public _serviceMasterService: ServiceMasterService,
     public toastr : ToastrService,

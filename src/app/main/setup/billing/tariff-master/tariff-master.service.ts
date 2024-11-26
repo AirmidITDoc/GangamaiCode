@@ -61,7 +61,7 @@ export class TariffMasterService {
 
     // New code
     public deactivateTheStatus(m_data) {
-        return this._httpClient.PostData("TarrifMaster", m_data);
+        return this._httpClient.DeleteData("TarrifMaster?Id=" + m_data.toString());
     }
     // 
 
