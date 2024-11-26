@@ -33,12 +33,12 @@ export class TemplateMasterComponent implements OnInit {
   gridConfig: gridModel = {
       apiUrl: "PathologyTemplate/List",
       columnsList: [
-          { heading: "Code", key: "templateId", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "Template Name", key: "templateName", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "Template Desc", key: "templateDesc", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+          { heading: "Code", key: "templateId",width: 150, sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "Template Name", key: "templateName",width: 400, sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "Template Desc", key: "templateDesc",width: 400, sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "IsDeleted", key: "isActive",width: 100, type: gridColumnTypes.status, align: "center" },
           {
-            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+            heading: "Action", key: "action",width: 100, align: "right", type: gridColumnTypes.action, actions: [
                 {
                     action: gridActions.edit, callback: (data: any) => {
                         this.onSave(data);

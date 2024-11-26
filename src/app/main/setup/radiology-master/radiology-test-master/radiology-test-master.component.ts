@@ -34,15 +34,15 @@ export class RadiologyTestMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "RadiologyTest/List",
         columnsList: [
-            { heading: "Code", key: "testId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Test Name", key: "testName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "print Test Name", key: "printTestName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Category Name", key: "categoryId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Service Name", key: "serviceId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Code", key: "testId",width: 150, sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Test Name", key: "testName",width: 200, sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "print Test Name", key: "printTestName",width: 200, sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Category Name", key: "categoryId",width: 200, sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Service Name", key: "serviceId",width: 200, sort: true, align: 'left', emptySign: 'NA' },
             
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+            { heading: "IsDeleted", key: "isActive",width: 100, type: gridColumnTypes.status, align: "center" },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action",width: 100, align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data) // EDIT Records

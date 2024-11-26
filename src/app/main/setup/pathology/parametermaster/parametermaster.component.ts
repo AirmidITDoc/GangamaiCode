@@ -28,13 +28,13 @@ import { ToastrService } from "ngx-toastr";
 })
 export class ParametermasterComponent implements OnInit {
     gridConfig: gridModel = {
-        apiUrl: "PathCategoryMaster/List",
+        apiUrl: "PathParameterMaster/List",
         columnsList: [
-            { heading: "Code", key: "parameterId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Parameter Name", key: "parameterName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+            { heading: "Code", key: "parameterId",width: 150, sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Parameter Name", key: "parameterName",width: 800, sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsDeleted", key: "isActive",width: 100, type: gridColumnTypes.status, align: "center" },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action",width: 100, align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onAdd(data) // EDIT Records

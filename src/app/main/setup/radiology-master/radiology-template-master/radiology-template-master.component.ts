@@ -33,6 +33,7 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations
 })
+
 export class RadiologyTemplateMasterComponent implements OnInit {
   confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
@@ -41,13 +42,13 @@ export class RadiologyTemplateMasterComponent implements OnInit {
   gridConfig: gridModel = {
       apiUrl: "RadiologyTemplate/List",
       columnsList: [
-          { heading: "Code", key: "templateId", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "Template Name", key: "templateName", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "Template Desc", key: "templateDesc", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "Code", key: "templateId",width: 150, sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "Template Name", key: "templateName",width: 400, sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "Template Desc", key: "templateDesc",width: 400, sort: true, align: 'left', emptySign: 'NA' },
           
-          { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+          { heading: "IsDeleted", key: "isActive",width: 100, type: gridColumnTypes.status, align: "center" },
           {
-            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+            heading: "Action", key: "action",width: 100, align: "right", type: gridColumnTypes.action, actions: [
                 {
                     action: gridActions.edit, callback: (data: any) => {
                         this.onSave(data);

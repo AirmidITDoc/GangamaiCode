@@ -19,7 +19,7 @@ export class NewBedComponent implements OnInit {
       public toastr: ToastrService
   ) { }
 
-  autocompleteModeroomId: string = "roomId";
+  autocompleteModeroom: string = "Room";        //roomId = room
 
   roomId = 0;
 

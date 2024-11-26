@@ -37,7 +37,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     RadiologyTemplateFormComponent,
-    RadiologyTemplateMasterComponent
+    // RadiologyTemplateMasterComponent
   ],
   imports: [
     CommonModule,
