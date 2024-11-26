@@ -9,6 +9,8 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './new-state-master.component.html',
   styleUrls: ['./new-state-master.component.scss']
 })
+
+
 export class NewStateMasterComponent implements OnInit {
 
   stateForm: FormGroup;
@@ -19,13 +21,17 @@ export class NewStateMasterComponent implements OnInit {
       public toastr: ToastrService
   ) { }
 
+  autocompleteModecountry: string = "Country";
+
+  countryId = 0;
 
   ngOnInit(): void {
       this.stateForm = this._StateMasterService.createStateForm();
+      
       var m_data = {
         stateId: this.data?.stateId,
         stateName: this.data?.stateName.trim(),
-        countryId: this.data?.countryId,
+        countryId: this.data?.countryId || this.countryId ,
           isDeleted: JSON.stringify(this.data?.isActive),
       };
       this.stateForm.patchValue(m_data);
@@ -39,6 +45,11 @@ export class NewStateMasterComponent implements OnInit {
               this.toastr.error(error.message);
           });
       }
+  }
+
+  selectChangecountry(obj: any){
+    console.log(obj);
+    this.countryId=obj.value
   }
 
   onClear(val: boolean) {

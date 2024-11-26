@@ -12,20 +12,22 @@ import { FormGroup } from '@angular/forms';
 export class NewCityComponent implements OnInit {
  
     cityForm: FormGroup;
-    constructor(
+    stateId = 0;
+        constructor(
         public _CityMasterService: CityMasterService,
         public dialogRef: MatDialogRef<NewCityComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
         public toastr: ToastrService
     ) { }
   
-  
+    autocompleteModestate: string = "State";
+
     ngOnInit(): void {
         this.cityForm = this._CityMasterService.createCityForm();
         var m_data = {
             cityId: this.data?.cityId,
             cityName: this.data?.cityName.trim(),
-            stateId: this.data?.stateId,
+            stateId: this.data?.stateId || this.stateId,
             isDeleted: JSON.stringify(this.data?.isActive),
         };
         this.cityForm.patchValue(m_data);
@@ -46,4 +48,9 @@ export class NewCityComponent implements OnInit {
         this.cityForm.reset();
         this.dialogRef.close(val);
     }
+
+    selectChangestate(obj: any){
+        console.log(obj);
+        this.stateId=obj.value
+      }
   }

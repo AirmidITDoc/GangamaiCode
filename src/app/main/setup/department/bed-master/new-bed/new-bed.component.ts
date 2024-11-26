@@ -18,13 +18,18 @@ export class NewBedComponent implements OnInit {
       @Inject(MAT_DIALOG_DATA) public data: any,
       public toastr: ToastrService
   ) { }
+
+  autocompleteModeroomId: string = "roomId";
+
+  roomId = 0;
+
  
   ngOnInit(): void {
       this.bedForm = this._BedMasterService.createBedForm();
       var m_data = {
         bedId: this.data?.bedId,
         bedName: this.data?.bedName.trim(),
-        roomId: this.data?.roomId,
+        roomId: this.data?.roomId || this.roomId,
         isAvailible: JSON.stringify(this.data?.isAvailible),
          // isDeleted: JSON.stringify(this.data?.isActive),
       };
@@ -40,6 +45,11 @@ export class NewBedComponent implements OnInit {
               this.toastr.error(error.message);
           });
       }
+  }
+
+  selectChangeroomId(obj: any){
+    console.log(obj);
+    this.roomId=obj.value
   }
 
   onClear(val: boolean) {

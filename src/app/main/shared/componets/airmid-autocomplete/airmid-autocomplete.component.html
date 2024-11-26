@@ -1,14 +1,23 @@
-<mat-form-field appearance="outline" style="width: 300px;border: 1px;padding-right: 10px;">
-    <mat-label>Enter Value</mat-label>
-<mat-select [formControl]="ddlCtrl" placeholder="Enter Value..." #singleSelect
-    (selectionChange)="onDdlChange($event)" msInfiniteScroll>
-    <ngx-mat-select-search 
-    [formControl]="ddlFilterCtrl"
-    placeholderLabel="Search..."
-    noEntriesFoundLabel="No results found"
-    ></ngx-mat-select-search>
-    <mat-option *ngFor="let ddl of filteredDdls | async" [value]="ddl">
-        {{ddl.text}}
-    </mat-option>
-</mat-select>
+<mat-form-field appearance="outline" fxFlex>
+    <mat-label>{{label}}</mat-label>
+    <mat-select [formControl]="control" placeholder="Search..." #singleSelect 
+        (selectionChange)="onDdlChange($event)"  [debounceTime] = "300" [threshold]="'10%'"  msInfiniteScroll>
+        <mat-option>
+        <ngx-mat-select-search 
+            [formControl]="ddlFilterCtrl"
+            placeholderLabel="Search..."
+            noEntriesFoundLabel="No results found"
+           ></ngx-mat-select-search>
+        </mat-option>
+        <mat-option *ngFor="let ddl of filteredDdls | async" [value]="ddl.value">
+            {{ddl.text}} - {{ddl.value}} = {{selectedValue}}
+        </mat-option>
+    </mat-select>
+    <div *ngIf="formGroup?.controls[formControlName]?.invalid && control?.touched && validations?.length>0">
+        <div *ngFor="let item of validations">
+            <mat-error *ngIf="formGroup.get(formControlName).hasError(item.name)">
+                {{item.Message}}
+            </mat-error>
+        </div>
+    </div>
 </mat-form-field>
