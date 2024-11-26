@@ -22,9 +22,9 @@
                     <airmid-textbox label="City name" formControlName="cityName" [value]="" [formGroup]="cityForm"
                         [validations]="_CityMasterService.getValidationMessages().cityName" [maxLength]="300">
                     </airmid-textbox>
-                    <airmid-textbox label="State Id" formControlName="stateId" [value]="" [formGroup]="cityForm"
-                       [maxLength]="300">
-                    </airmid-textbox>
+                    <airmid-autocomplete [mode]="autocompleteModestate" (selectDdlObject)="selectChangestate($event)"></airmid-autocomplete>
+
+                    
                 </div>
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                     <mat-radio-group name="isDeleted" formControlName="isDeleted" value='false'>

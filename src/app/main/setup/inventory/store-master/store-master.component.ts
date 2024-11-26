@@ -91,7 +91,6 @@ export class StoreMasterComponent implements OnInit {
             ],
             row: 25
         }
-    
      
         ngOnInit(): void { }
         onSave(row: any = null) {

@@ -14,30 +14,30 @@
             <button mat-raised-button (click)="onSave($event)">New Appointment
             </button>
         </div>
-        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+        <!-- <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
             <button mat-raised-button (click)="EditConsultdr()">Edit Consultant Dr
             </button>
         </div>
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
             <button mat-raised-button (click)="Editrefrancedr()">Edit Refrance Dr
             </button>
-        </div>
-        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+        </div> -->
+        <!-- <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
             <button mat-raised-button (click)="Editcrossconsult()">Cross Consult
             </button>
-        </div>
-        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+        </div> -->
+        <!-- <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
             <button mat-raised-button (click)="EditBedtransfer()">Bedtransfer
             </button>
-        </div>
-        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+        </div> -->
+        <!-- <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
             <button mat-raised-button (click)="EditDischarge()">Discharge
             </button>
         </div>
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
             <button mat-raised-button (click)="EditOpBill()">OpBill
             </button>
-        </div>
+        </div> -->
         
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
@@ -94,27 +94,35 @@
                         <mat-icon>close</mat-icon>
                     </button>
                 </mat-form-field>
-                <mat-form-field appearance="outline" fxFlex>
+                <!-- <mat-form-field appearance="outline" fxFlex>
                     <mat-label>From Date</mat-label>
-                    <input matInput placeholder="Search From Date" autocomplete="off"
+                    <input matInput placeholder="Search From Date" autocomplete="off" [value]="fromtDate"
                         [(ngModel)]="gridConfig.filters[4].fieldValue" />
                     <button mat-button matSuffix mat-icon-button aria-label="Clear"
                         (click)="gridConfig.filters[4].fieldValue=''">
                         <mat-icon>close</mat-icon>
                     </button>
+                </mat-form-field> -->
+                <!-- [value]="fromtDate" -->
+                <mat-form-field appearance="outline">
+                    <mat-label>From Date</mat-label>
+                    <input matInput [matDatepicker]="validFromPicker"  [value]="fromDate"
+                    placeholder="mm/dd/yyyy" [(ngModel)]="gridConfig.filters[4].fieldValue" (dateChange)="onChangeDate($event.value)"/>
+                    <mat-datepicker-toggle matSuffix
+                        [for]="validFromPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #validFromPicker></mat-datepicker>
                 </mat-form-field>
 
-                <mat-form-field appearance="outline" fxFlex>
+                <mat-form-field appearance="outline">
                     <mat-label>To Date</mat-label>
-                    <input matInput placeholder="Search To Date" autocomplete="off"
-                        [(ngModel)]="gridConfig.filters[5].fieldValue" />
-                    <button mat-button matSuffix mat-icon-button aria-label="Clear"
-                        (click)="gridConfig.filters[5].fieldValue=''">
-                        <mat-icon>close</mat-icon>
-                    </button>
+                    <input matInput [matDatepicker]="validFromPicker1"  [value]="toDate"
+                    placeholder="mm/dd/yyyy" [(ngModel)]="gridConfig.filters[5].fieldValue" (dateChange)="onChangeDate1($event.value)"/>
+                    <mat-datepicker-toggle matSuffix
+                        [for]="validFromPicker1"></mat-datepicker-toggle>
+                    <mat-datepicker #validFromPicker1></mat-datepicker>
                 </mat-form-field>
 
-              
+                              
             </ng-container>
         </airmid-table>
     </div>

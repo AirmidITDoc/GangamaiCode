@@ -37,11 +37,11 @@ export class DischargetypeMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "DischargeType/List",
         columnsList: [
-            { heading: "Code", key: "dischargeTypeId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "DischargeType Name", key: "dischargeTypeName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+            { heading: "Code", key: "dischargeTypeId", sort: true, align: 'left', emptySign: 'NA', width:100 },
+            { heading: "DischargeType Name", key: "dischargeTypeName", sort: true, align: 'left', emptySign: 'NA', width:850 },
+            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width:100 },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action", align: "right", width:100, type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);

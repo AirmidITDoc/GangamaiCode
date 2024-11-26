@@ -98,7 +98,10 @@ export class NewRegistrationComponent implements OnInit {
     this.searchFormGroup = this.createSearchForm();
 
        if (this.data) {
-      
+        debugger
+        this.personalFormGroup.patchValue({
+            PrefixId: this.data.prefixId
+          });        
       console.log(this.data)
       this.registerObj = this.data;
       this.RegID=this.data.regId
@@ -134,12 +137,18 @@ export class NewRegistrationComponent implements OnInit {
     console.log("closed")
 
   }
+  getValidationMessages() {
+    return {
+        PrefixId: [
+            { name: "required", Message: "cashCounter Name is required" }
+        ]
+    };
+}
   createPesonalForm() {
     return this.formBuilder.group({
       RegId: '',
       RegNo: '',
       PrefixId: '',
-      PrefixID: '',
       FirstName: ['', [
         Validators.required,
         Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
@@ -152,7 +161,8 @@ export class NewRegistrationComponent implements OnInit {
         Validators.required,
         Validators.pattern("^[A-Za-z () ]*[a-zA-z() ]*$"),
       ]],
-      GenderId: '',
+      //GenderId: '',
+      GenderId: new FormControl('', [Validators.required]),
       Address: '',
       DateOfBirth: [{ value: this.registerObj.DateofBirth }],
       AgeYear: ['', [
@@ -231,7 +241,7 @@ export class NewRegistrationComponent implements OnInit {
         });
 
     // const toSelect = this.PrefixList.find(c => c.value == this.registerObj.prefixId);
-    // this.personalFormGroup.get('PrefixID').setValue(toSelect);
+    // this.personalFormGroup.get('PrefixId').setValue(toSelect);
 
     // const toSelectMarital = this.MaritalStatusList.find(c => c.value == this.registerObj.maritalStatusId);
     // this.personalFormGroup.get('MaritalStatusId').setValue(toSelectMarital);
@@ -257,94 +267,100 @@ export class NewRegistrationComponent implements OnInit {
 
   OnSubmit() {
     
-    // if(!isNaN(this.vDepartmentid.Departmentid) && !isNaN(this.vDoctorId.DoctorId)){
-    if (this.RegID == 0) {
-      debugger
-      var m_data = {
-        "regID": 0,
-        "regDate": this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || this.dateTimeObj.date,
-        "regTime":this.dateTimeObj.time,//this.datePipe.transform(this.dateTimeObj.time, 'hh:mm:ss'),// this.dateTimeObj.time,// this._registerService.mySaveForm.get("RegTime").value || "2021-03-31T12:27:24.771Z",
-        "prefixId":this.PrefixId,// this.personalFormGroup.get('PrefixID').value.value,
-        "firstName": this.personalFormGroup.get("FirstName").value || "",
-        "middleName": this.personalFormGroup.get("MiddleName").value || "",
-        "lastName": this.personalFormGroup.get("LastName").value || "",
-        "address": this.personalFormGroup.get("Address").value || "",
-        "city":this.cityName,// this.personalFormGroup.get('CityId').value.text || '',
-        "pinNo": '0',// this._registerService.mySaveForm.get("PinNo").value || "0",
-        "dateOfBirth":"2021-03-31T12:27:24.771Z",// this.datePipe.transform(this.registerObj.DateofBirth, "MM-dd-yyyy"),// this.registerObj.DateofBirth || "2021-03-31",
-        "age": this.personalFormGroup.get("AgeYear").value.toString() || "0",
-        "genderID":this.genderId,// this.personalFormGroup.get('GenderId').value.value || 0,
-        "phoneNo": this.personalFormGroup.get("PhoneNo").value || "0",
-        "mobileNo": this.personalFormGroup.get("MobileNo").value || "0",
-        "addedBy": 1,// this.accountService.currentUserValue.user.id,
-        "updatedBy": 1,//this.accountService.currentUserValue.user.id,
-        "ageYear": this.personalFormGroup.get("AgeYear").value.toString() || "0",// this._registerService.mySaveForm.get("AgeYear").value.trim() || "%",
-        "ageMonth": this.personalFormGroup.get("AgeMonth").value.toString() || "",
-        "ageDay": this.personalFormGroup.get("AgeDay").value.toString() || "",
-        "countryId":this.PrefixId,// this.personalFormGroup.get('CountryId').value.value,
-        "stateId":this.stateId,// this.personalFormGroup.get('StateId').value.value,
-        "cityId": this.cityId,//this.personalFormGroup.get('CityId').value.value,
-        "maritalStatusId":this.mstausId,// this.personalFormGroup.get('MaritalStatusId').value ? this.personalFormGroup.get('MaritalStatusId').value.value : 0,
-        "isCharity": false,//Boolean(JSON.parse(this.personalFormGroup.get("IsCharity").value)) || "0",
-        "religionId": this.regilionId,//this.personalFormGroup.get('ReligionId').value ? this.personalFormGroup.get('ReligionId').value.value : 0,
-        "areaId": this.areaId,//// this.personalFormGroup.get('AreaId').value ? this.personalFormGroup.get('AreaId').value.AreaId : 0,
-        "isSeniorCitizen": false,
-        "aadharcardno": this.personalFormGroup.get('AadharCardNo').value ? this.personalFormGroup.get('AadharCardNo').value : 0,
-        "pancardno": "",// this.personalFormGroup.get('PanCardNo').value.toString()  ? this.personalFormGroup.get('PanCardNo').value.toString()  : 0,
-        "Photo": ''
-
-      }
-      console.log(m_data);
-
-      this._registerService.RegstrationtSave(m_data).subscribe((response) => {
-        this.toastr.success(response.message);
-        this.onClear(true);
-      }, (error) => {
-        this.toastr.error(error.message);
-      });
+    if(this.personalFormGroup.invalid){
+        this.toastr.warning('please check from is invalid', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return;
     } else {
-      var m_data1 = {
-        "regID": this.RegID,
-        "regDate": this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || this.dateTimeObj.date,
-        "regTime":this.dateTimeObj.time,//this.datePipe.transform(this.dateTimeObj.time, 'hh:mm:ss'),// this.dateTimeObj.time,// this._registerService.mySaveForm.get("RegTime").value || "2021-03-31T12:27:24.771Z",
-        "prefixId":this.PrefixId,// this.personalFormGroup.get('PrefixID').value.value,
-        "firstName": this.personalFormGroup.get("FirstName").value || "",
-        "middleName": this.personalFormGroup.get("MiddleName").value || "",
-        "lastName": this.personalFormGroup.get("LastName").value || "",
-        "address": this.personalFormGroup.get("Address").value || "",
-        "city":this.cityName,// this.personalFormGroup.get('CityId').value.text || '',
-        "pinNo": '0',// this._registerService.mySaveForm.get("PinNo").value || "0",
-        "dateOfBirth":"2021-03-31T12:27:24.771Z",// this.datePipe.transform(this.registerObj.DateofBirth, "MM-dd-yyyy"),// this.registerObj.DateofBirth || "2021-03-31",
-        "age": this.personalFormGroup.get("AgeYear").value.toString() || "0",
-        "genderID":this.genderId,// this.personalFormGroup.get('GenderId').value.value || 0,
-        "phoneNo": this.personalFormGroup.get("PhoneNo").value || "0",
-        "mobileNo": this.personalFormGroup.get("MobileNo").value || "0",
-        "addedBy": 1,// this.accountService.currentUserValue.user.id,
-      //  "updatedBy": 1,//this.accountService.currentUserValue.user.id,
-        "ageYear": this.personalFormGroup.get("AgeYear").value.toString() || "0",// this._registerService.mySaveForm.get("AgeYear").value.trim() || "%",
-        "ageMonth": this.personalFormGroup.get("AgeMonth").value.toString() || "",
-        "ageDay": this.personalFormGroup.get("AgeDay").value.toString() || "",
-        "countryId":this.PrefixId,// this.personalFormGroup.get('CountryId').value.value,
-        "stateId":this.stateId,// this.personalFormGroup.get('StateId').value.value,
-        "cityId": this.cityId,//this.personalFormGroup.get('CityId').value.value,
-        "maritalStatusId":this.mstausId,// this.personalFormGroup.get('MaritalStatusId').value ? this.personalFormGroup.get('MaritalStatusId').value.value : 0,
-        "isCharity": false,//Boolean(JSON.parse(this.personalFormGroup.get("IsCharity").value)) || "0",
-        "religionId": this.regilionId,//this.personalFormGroup.get('ReligionId').value ? this.personalFormGroup.get('ReligionId').value.value : 0,
-        "areaId": this.areaId,//// this.personalFormGroup.get('AreaId').value ? this.personalFormGroup.get('AreaId').value.AreaId : 0,
-        "isSeniorCitizen": false,
-        "aadharcardno": this.personalFormGroup.get('AadharCardNo').value ? this.personalFormGroup.get('AadharCardNo').value : 0,
-        "pancardno": "",// this.personalFormGroup.get('PanCardNo').value.toString()  ? this.personalFormGroup.get('PanCardNo').value.toString()  : 0,
-        "Photo": ''
+        // if(!isNaN(this.vDepartmentid.Departmentid) && !isNaN(this.vDoctorId.DoctorId)){
+        if (this.RegID == 0) {
+        debugger
+        var m_data = {
+            "regID": 0,
+            "regDate": this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || this.dateTimeObj.date,
+            "regTime":this.dateTimeObj.time,//this.datePipe.transform(this.dateTimeObj.time, 'hh:mm:ss'),// this.dateTimeObj.time,// this._registerService.mySaveForm.get("RegTime").value || "2021-03-31T12:27:24.771Z",
+            "prefixId": this.personalFormGroup.get('PrefixId').value,
+            "firstName": this.personalFormGroup.get("FirstName").value || "",
+            "middleName": this.personalFormGroup.get("MiddleName").value || "",
+            "lastName": this.personalFormGroup.get("LastName").value || "",
+            "address": this.personalFormGroup.get("Address").value || "",
+            "city":this.cityName,// this.personalFormGroup.get('CityId').value.text || '',
+            "pinNo": '0',// this._registerService.mySaveForm.get("PinNo").value || "0",
+            "dateOfBirth":"2021-03-31T12:27:24.771Z",// this.datePipe.transform(this.registerObj.DateofBirth, "MM-dd-yyyy"),// this.registerObj.DateofBirth || "2021-03-31",
+            "age": (this.personalFormGroup.get("AgeYear")?.value || "0").toString() ,
+            "genderID":this.genderId,// this.personalFormGroup.get('GenderId').value.value || 0,
+            "phoneNo": this.personalFormGroup.get("PhoneNo").value || "0",
+            "mobileNo": this.personalFormGroup.get("MobileNo").value || "0",
+            "addedBy": 1,// this.accountService.currentUserValue.user.id,
+            "updatedBy": 1,//this.accountService.currentUserValue.user.id,
+            "ageYear": (this.personalFormGroup.get("AgeYear")?.value || "0").toString() ,// this._registerService.mySaveForm.get("AgeYear").value.trim() || "%",
+            "ageMonth": (this.personalFormGroup.get("AgeMonth").value || "").toString() ,
+            "ageDay": (this.personalFormGroup.get("AgeDay").value || "").toString(),
+            "countryId":this.PrefixId,// this.personalFormGroup.get('CountryId').value.value,
+            "stateId": 5,//this.stateId,// this.personalFormGroup.get('StateId').value.value,
+            "cityId":  1,//this.cityId,//this.personalFormGroup.get('CityId').value.value,
+            "maritalStatusId":this.mstausId,// this.personalFormGroup.get('MaritalStatusId').value ? this.personalFormGroup.get('MaritalStatusId').value.value : 0,
+            "isCharity": false,//Boolean(JSON.parse(this.personalFormGroup.get("IsCharity").value)) || "0",
+            "religionId": this.regilionId,//this.personalFormGroup.get('ReligionId').value ? this.personalFormGroup.get('ReligionId').value.value : 0,
+            "areaId": this.areaId,//// this.personalFormGroup.get('AreaId').value ? this.personalFormGroup.get('AreaId').value.AreaId : 0,
+            "isSeniorCitizen": false,
+            "aadharcardno": this.personalFormGroup.get('AadharCardNo').value ? this.personalFormGroup.get('AadharCardNo').value : 0,
+            "pancardno": "",// this.personalFormGroup.get('PanCardNo').value.toString()  ? this.personalFormGroup.get('PanCardNo').value.toString()  : 0,
+            "Photo": ''
+        }
+        console.log(m_data);
 
-      }
-      console.log(m_data1);
+        this._registerService.RegstrationtSave(m_data).subscribe((response) => {
+            this.toastr.success(response.message);
+            this.onClear(true);
+        }, (error) => {
+            this.toastr.error(error.message);
+        });
+        } else {
+        var m_data1 = {
+            "regID": this.RegID,
+            "regDate": this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || this.dateTimeObj.date,
+            "regTime":this.dateTimeObj.time,//this.datePipe.transform(this.dateTimeObj.time, 'hh:mm:ss'),// this.dateTimeObj.time,// this._registerService.mySaveForm.get("RegTime").value || "2021-03-31T12:27:24.771Z",
+            "prefixId":this.PrefixId,// this.personalFormGroup.get('PrefixId').value.value,
+            "firstName": this.personalFormGroup.get("FirstName").value || "",
+            "middleName": this.personalFormGroup.get("MiddleName").value || "",
+            "lastName": this.personalFormGroup.get("LastName").value || "",
+            "address": this.personalFormGroup.get("Address").value || "",
+            "city":this.cityName,// this.personalFormGroup.get('CityId').value.text || '',
+            "pinNo": '0',// this._registerService.mySaveForm.get("PinNo").value || "0",
+            "dateOfBirth":"2021-03-31T12:27:24.771Z",// this.datePipe.transform(this.registerObj.DateofBirth, "MM-dd-yyyy"),// this.registerObj.DateofBirth || "2021-03-31",
+            "age": this.personalFormGroup.get("AgeYear").value.toString() || "0",
+            "genderID":this.genderId,// this.personalFormGroup.get('GenderId').value.value || 0,
+            "phoneNo": this.personalFormGroup.get("PhoneNo").value || "0",
+            "mobileNo": this.personalFormGroup.get("MobileNo").value || "0",
+            "addedBy": 1,// this.accountService.currentUserValue.user.id,
+        //  "updatedBy": 1,//this.accountService.currentUserValue.user.id,
+            "ageYear": this.personalFormGroup.get("AgeYear").value.toString() || "0",// this._registerService.mySaveForm.get("AgeYear").value.trim() || "%",
+            "ageMonth": this.personalFormGroup.get("AgeMonth").value.toString() || "",
+            "ageDay": this.personalFormGroup.get("AgeDay").value.toString() || "",
+            "countryId":this.PrefixId,// this.personalFormGroup.get('CountryId').value.value,
+            "stateId":this.stateId,// this.personalFormGroup.get('StateId').value.value,
+            "cityId": this.cityId,//this.personalFormGroup.get('CityId').value.value,
+            "maritalStatusId":this.mstausId,// this.personalFormGroup.get('MaritalStatusId').value ? this.personalFormGroup.get('MaritalStatusId').value.value : 0,
+            "isCharity": false,//Boolean(JSON.parse(this.personalFormGroup.get("IsCharity").value)) || "0",
+            "religionId": this.regilionId,//this.personalFormGroup.get('ReligionId').value ? this.personalFormGroup.get('ReligionId').value.value : 0,
+            "areaId": this.areaId,//// this.personalFormGroup.get('AreaId').value ? this.personalFormGroup.get('AreaId').value.AreaId : 0,
+            "isSeniorCitizen": false,
+            "aadharcardno": this.personalFormGroup.get('AadharCardNo').value ? this.personalFormGroup.get('AadharCardNo').value : 0,
+            "pancardno": "",// this.personalFormGroup.get('PanCardNo').value.toString()  ? this.personalFormGroup.get('PanCardNo').value.toString()  : 0,
+            "Photo": ''
 
-      this._registerService.Regstrationtupdate(m_data1).subscribe((response) => {
-        this.toastr.success(response.message);
-        this.onClear(true);
-      }, (error) => {
-        this.toastr.error(error.message);
-      });
+        }
+        console.log(m_data);
+
+        this._registerService.Regstrationtupdate(m_data1).subscribe((response) => {
+            this.toastr.success(response.message);
+            this.onClear(true);
+        }, (error) => {
+            this.toastr.error(error.message);
+        });
+        }
     }
   }
 
@@ -571,7 +587,7 @@ cityName='';
 
    selectChangeprefix(obj: any){
     console.log(obj);
-this.PrefixId=obj.value
+// this.PrefixId=obj.value
   }
   
   selectChangegender(obj: any){
