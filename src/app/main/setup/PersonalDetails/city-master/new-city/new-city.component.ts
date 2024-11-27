@@ -1,13 +1,16 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { CityMasterService } from '../city-master.service';
 import { ToastrService } from 'ngx-toastr';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FormGroup } from '@angular/forms';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
   selector: 'app-new-city',
   templateUrl: './new-city.component.html',
-  styleUrls: ['./new-city.component.scss']
+  styleUrls: ['./new-city.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations,
 })
 export class NewCityComponent implements OnInit {
  

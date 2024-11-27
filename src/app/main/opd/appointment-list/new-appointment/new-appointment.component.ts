@@ -651,7 +651,116 @@ var mode="Company"
     }
   
 
-   
+    getValidationMessages() {
+        return {
+            PrefixId: [
+                { name: "required", Message: "Prefix Name is required" }
+            ]
+        };
+    }
+
+
+    getValidationAreaMessages() {
+        return {
+            AreaId: [
+                { name: "required", Message: "Area Name is required" }
+            ]
+        };
+      }
+      getValidationCityMessages() {
+        return {
+            CityId: [
+                { name: "required", Message: "City Name is required" }
+            ]
+        };
+      }
+      getValidationStateMessages() {
+        return {
+            StateId: [
+                { name: "required", Message: "State Name is required" }
+            ]
+        };
+      }
+      // getValidationMessages() {
+      //   return {
+      //       PrefixId: [
+      //           { name: "required", Message: "cashCounter Name is required" }
+      //       ]
+      //   };
+      // }
+      getValidationReligionMessages() {
+        return {
+          ReligionId: [
+                { name: "required", Message: "Religion Name is required" }
+            ]
+        };
+      }
+      getValidationCountryMessages() {
+        return {
+          CountryId: [
+                { name: "required", Message: "Country Name is required" }
+            ]
+        };
+      }
+      getValidationMstatusMessages() {
+        return {
+          MaritalStatusId: [
+                { name: "required", Message: "Mstatus Name is required" }
+            ]
+        };
+      }
+      
+      getValidationPatientTypeMessages() {
+        return {
+            PatientTypeID: [
+                { name: "required", Message: "Country Name is required" }
+            ]
+        };
+      }
+      getValidationTariffMessages() {
+        return {
+            TariffId: [
+                { name: "required", Message: "Mstatus Name is required" }
+            ]
+        };
+      }
+
+      getValidationDepartmentMessages() {
+        return {
+            Departmentid: [
+                { name: "required", Message: "Department Name is required" }
+            ]
+        };
+      }
+      
+      getValidationdeptDocMessages() {
+        return {
+            DoctorID: [
+                { name: "required", Message: "Doctor Name is required" }
+            ]
+        };
+      }
+      getValidationRefDocMessages() {
+        return {
+            refDocId: [
+                { name: "required", Message: "Ref Doctor Name is required" }
+            ]
+        };
+      }
+      getValidationPurposeMessages() {
+        return {
+            PurposeId: [
+                { name: "required", Message: "Purpose Name is required" }
+            ]
+        };
+      }
+    //   getValidationPurposeMessages() {
+    //     return {
+    //         PurposeId: [
+    //             { name: "required", Message: "Purpose Name is required" }
+    //         ]
+    //     };
+    //   }
 
     onNewSave() {
      

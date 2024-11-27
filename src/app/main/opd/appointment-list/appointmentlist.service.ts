@@ -189,6 +189,17 @@ public crossconsultSave(Param: any, showLoader = true) {
 public getMaster(mode,Id) {
   return this._httpClient1.GetData("Dropdown/GetBindDropDown?mode="+mode+"&Id="+Id);
 }
+
+getRegistrationValidationMessages() {
+      return {
+          patientName: [
+              { name: "required", Message: "Patient Name is required" },
+              { name: "maxlength", Message: "Patient name should not be greater than 50 char." },
+              { name: "pattern", Message: "Special char not allowed." }
+          ]
+      };
+  }
+
 }
 
 

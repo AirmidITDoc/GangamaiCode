@@ -70,7 +70,7 @@ export class NewRegistrationComponent implements OnInit {
     autocompleteModearea: string = "Area";
     autocompleteModecity: string = "City";
     autocompleteModestate: string = "State";
-    autocompleteModecountry: string = "CountryByState";
+    autocompleteModecountry: string = "Country";
     autocompleteModemstatus: string = "MaritalStatus";
     autocompleteModereligion: string = "Religion";
 
@@ -140,10 +140,62 @@ export class NewRegistrationComponent implements OnInit {
   getValidationMessages() {
     return {
         PrefixId: [
-            { name: "required", Message: "cashCounter Name is required" }
+            { name: "required", Message: "Prefix Name is required" }
         ]
     };
 }
+getValidationAreaMessages() {
+  return {
+      AreaId: [
+          { name: "required", Message: "Area Name is required" }
+      ]
+  };
+}
+getValidationCityMessages() {
+  return {
+      CityId: [
+          { name: "required", Message: "City Name is required" }
+      ]
+  };
+}
+getValidationStateMessages() {
+  return {
+      StateId: [
+          { name: "required", Message: "State Name is required" }
+      ]
+  };
+}
+// getValidationMessages() {
+//   return {
+//       PrefixId: [
+//           { name: "required", Message: "cashCounter Name is required" }
+//       ]
+//   };
+// }
+getValidationReligionMessages() {
+  return {
+    ReligionId: [
+          { name: "required", Message: "Religion Name is required" }
+      ]
+  };
+}
+getValidationCountryMessages() {
+  return {
+    CountryId: [
+          { name: "required", Message: "Country Name is required" }
+      ]
+  };
+}
+getValidationMstatusMessages() {
+  return {
+    MaritalStatusId: [
+          { name: "required", Message: "Mstatus Name is required" }
+      ]
+  };
+}
+
+
+
   createPesonalForm() {
     return this.formBuilder.group({
       RegId: '',
@@ -266,13 +318,13 @@ export class NewRegistrationComponent implements OnInit {
   }
 
   OnSubmit() {
-    
-    if(this.personalFormGroup.invalid){
-        this.toastr.warning('please check from is invalid', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          return;
-    } else {
+    console.log(this.personalFormGroup.get('PrefixId').value)
+    // if(this.personalFormGroup.invalid){
+    //     this.toastr.warning('please check from is invalid', 'Warning !', {
+    //         toastClass: 'tostr-tost custom-toast-warning',
+    //       });
+    //       return;
+    // } else {
         // if(!isNaN(this.vDepartmentid.Departmentid) && !isNaN(this.vDoctorId.DoctorId)){
         if (this.RegID == 0) {
         debugger
@@ -289,7 +341,7 @@ export class NewRegistrationComponent implements OnInit {
             "pinNo": '0',// this._registerService.mySaveForm.get("PinNo").value || "0",
             "dateOfBirth":"2021-03-31T12:27:24.771Z",// this.datePipe.transform(this.registerObj.DateofBirth, "MM-dd-yyyy"),// this.registerObj.DateofBirth || "2021-03-31",
             "age": (this.personalFormGroup.get("AgeYear")?.value || "0").toString() ,
-            "genderID":this.genderId,// this.personalFormGroup.get('GenderId').value.value || 0,
+            "genderID": this.personalFormGroup.get('GenderId').value || 0,
             "phoneNo": this.personalFormGroup.get("PhoneNo").value || "0",
             "mobileNo": this.personalFormGroup.get("MobileNo").value || "0",
             "addedBy": 1,// this.accountService.currentUserValue.user.id,
@@ -297,18 +349,19 @@ export class NewRegistrationComponent implements OnInit {
             "ageYear": (this.personalFormGroup.get("AgeYear")?.value || "0").toString() ,// this._registerService.mySaveForm.get("AgeYear").value.trim() || "%",
             "ageMonth": (this.personalFormGroup.get("AgeMonth").value || "").toString() ,
             "ageDay": (this.personalFormGroup.get("AgeDay").value || "").toString(),
-            "countryId":this.PrefixId,// this.personalFormGroup.get('CountryId').value.value,
-            "stateId": 5,//this.stateId,// this.personalFormGroup.get('StateId').value.value,
-            "cityId":  1,//this.cityId,//this.personalFormGroup.get('CityId').value.value,
-            "maritalStatusId":this.mstausId,// this.personalFormGroup.get('MaritalStatusId').value ? this.personalFormGroup.get('MaritalStatusId').value.value : 0,
+            "countryId":1,// this.personalFormGroup.get('CountryId').value,
+            "stateId": this.personalFormGroup.get('StateId').value,
+            "cityId": this.personalFormGroup.get('CityId').value,
+            "maritalStatusId":this.personalFormGroup.get('MaritalStatusId').value ? this.personalFormGroup.get('MaritalStatusId').value : 0,
             "isCharity": false,//Boolean(JSON.parse(this.personalFormGroup.get("IsCharity").value)) || "0",
-            "religionId": this.regilionId,//this.personalFormGroup.get('ReligionId').value ? this.personalFormGroup.get('ReligionId').value.value : 0,
-            "areaId": this.areaId,//// this.personalFormGroup.get('AreaId').value ? this.personalFormGroup.get('AreaId').value.AreaId : 0,
+            "religionId": this.personalFormGroup.get('ReligionId').value ? this.personalFormGroup.get('ReligionId').value : 0,
+            "areaId": this.personalFormGroup.get('AreaId').value ? this.personalFormGroup.get('AreaId').value : 0,
             "isSeniorCitizen": false,
             "aadharcardno": this.personalFormGroup.get('AadharCardNo').value ? this.personalFormGroup.get('AadharCardNo').value : 0,
             "pancardno": "",// this.personalFormGroup.get('PanCardNo').value.toString()  ? this.personalFormGroup.get('PanCardNo').value.toString()  : 0,
             "Photo": ''
         }
+        debugger
         console.log(m_data);
 
         this._registerService.RegstrationtSave(m_data).subscribe((response) => {
@@ -361,7 +414,7 @@ export class NewRegistrationComponent implements OnInit {
             this.toastr.error(error.message);
         });
         }
-    }
+    // }
   }
 
   
@@ -582,7 +635,7 @@ stateId=0;
 countryId=0;
 regilionId=0;
 mstausId=0;
-cityName='';
+cityName='Pune';
 
 
    selectChangeprefix(obj: any){
@@ -592,36 +645,38 @@ cityName='';
   
   selectChangegender(obj: any){
     console.log(obj);
-    this.genderId=obj.value
+    this.genderId=obj
   }
 
   selectChangearea(obj: any){
     console.log(obj);
-    this.areaId=obj.value
+    this.areaId=obj
   }
   
   selectChangecity(obj: any){
+    debugger
     console.log(obj);
-    this.cityId=obj.value
-    this.cityName=obj.text
+    this.cityId=obj
+    // this.cityName=obj.text
   }
   selectChangestate(obj: any){
+    debugger
     console.log(obj);
-    this.stateId=obj.value
+    this.stateId=obj
   }
   
   selectChangecountry(obj: any){
     console.log(obj);
-    this.countryId=obj.value
+    this.countryId=obj
   }
 
   selectChangemstatus(obj: any){
     console.log(obj);
-    this.mstausId=obj.value
+    this.mstausId=obj
   }
   
   selectChangereligion(obj: any){
     console.log(obj);
-    this.regilionId=obj.value
+    this.regilionId=obj
   }
 }

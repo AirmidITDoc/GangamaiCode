@@ -43,7 +43,7 @@ export class AppointmentListComponent implements OnInit {
             { heading: "LastName", key: "lastName", sort: true, align: 'left', emptySign: 'NA' ,width:80 },
             { heading: "DateofBirth", key: "dateofBirth", sort: true, align: 'left', emptySign: 'NA' ,width:150},
             { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA' ,width:250},
-            { heading: "MaritalStatusId", key: "maritalStatusId", sort: true, align: 'left', emptySign: 'NA' ,width:30,hidden:true},
+            { heading: "MaritalStatusId", key: "maritalStatusId", sort: true, align: 'left', emptySign: 'NA' ,width:30},
             { heading: "PatientTypeId", key: "patientTypeId", sort: true, align: 'left', emptySign: 'NA' ,width:30},
             { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA' ,width:50 },
             { heading: "OpdNo", key: "opdNo", sort: true, align: 'left', emptySign: 'NA' ,width:30},
@@ -116,7 +116,8 @@ export class AppointmentListComponent implements OnInit {
             { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+            // { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+            { fieldName: "From_Dt", fieldValue: "11/11/2024", opType: OperatorComparer.Equals },
             { fieldName: "To_Dt", fieldValue: "11/01/2024", opType: OperatorComparer.Equals },
             { fieldName: "IsMark", fieldValue: "1", opType: OperatorComparer.Equals },
             { fieldName: "Start", fieldValue: "1", opType: OperatorComparer.Equals },
@@ -131,7 +132,7 @@ export class AppointmentListComponent implements OnInit {
 
         onChangeDate(selectDate){
             if (selectDate) {
-                
+                debugger
                 this.fromDate= this.datePipe.transform(this.gridConfig.filters[4].fieldValue, "MM/dd/yyyy")
                 console.log(this.fromDate);
                 this.gridConfig.filters[4].fieldValue=this.fromDate
@@ -140,7 +141,7 @@ export class AppointmentListComponent implements OnInit {
         onChangeDate1(selectDate){
             if (selectDate) {
              
-                this.toDate= this.datePipe.transform(this.gridConfig.filters[4].fieldValue, "MM/dd/yyyy")
+                this.toDate= this.datePipe.transform(this.gridConfig.filters[5].fieldValue, "MM/dd/yyyy")
                 console.log(this.toDate);
                 this.gridConfig.filters[5].fieldValue=this.toDate
             }

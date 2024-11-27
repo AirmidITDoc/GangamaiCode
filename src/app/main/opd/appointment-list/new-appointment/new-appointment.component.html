@@ -125,9 +125,11 @@
                                                 fxLayoutGap="12px grid">
 
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-autocomplete [mode]="autocompleteModeprefix"
-                                                        (selectDdlObject)="selectChangeprefix($event)"></airmid-autocomplete>
-
+                                                    <airmid-autocomplete label="Prefix" formControlName="PrefixId" [value]="data?.prefixId"
+                                                    [formGroup]="personalFormGroup"
+                                                    [validations]="getValidationMessages().PrefixId"
+                                                    [mode]="autocompleteModeprefix" (selectDdlObject)="selectChangeprefix($event)">
+                                                </airmid-autocomplete>
                                                 </div>
 
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -292,33 +294,43 @@
                                                 </div>
 
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-autocomplete [mode]="autocompleteModearea"
-                                                        (selectDdlObject)="selectChangearea($event)"></airmid-autocomplete>
-
+                                                     <airmid-autocomplete label="Area" formControlName="AreaId" [value]="data?.areaId"
+                                                    [formGroup]="personalFormGroup"
+                                                    [validations]="getValidationAreaMessages().AreaId"
+                                                    [mode]="autocompleteModearea" (selectDdlObject)="selectChangearea($event)">
+                                                </airmid-autocomplete>
                                                 </div>
 
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-autocomplete [mode]="autocompleteModecity"
-                                                        (selectDdlObject)="selectChangecity($event)"></airmid-autocomplete>
-
+                                                    <airmid-autocomplete label="City" formControlName="CityId" [value]="data?.cityId"
+                                        [formGroup]="personalFormGroup"
+                                        [validations]="getValidationCityMessages().CityId"
+                                        [mode]="autocompleteModecity" (selectDdlObject)="selectChangecity($event)">
+                                    </airmid-autocomplete>
                                                 </div>
 
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-autocomplete [mode]="autocompleteModestate"
-                                                        (selectDdlObject)="selectChangestate($event)"></airmid-autocomplete>
-
+                                                    <airmid-autocomplete label="State" formControlName="StateId" [value]="data?.state"
+                                        [formGroup]="personalFormGroup"
+                                        [validations]="getValidationStateMessages().StateId"
+                                        [mode]="autocompleteModestate" (selectDdlObject)="selectChangestate($event)">
+                                    </airmid-autocomplete>
                                                 </div>
 
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-autocomplete [mode]="autocompleteModecountry"
-                                                        (selectDdlObject)="selectChangecountry($event)"></airmid-autocomplete>
-
+                                                    <airmid-autocomplete label="Country" formControlName="CountryId" [value]="data?.countryId"
+                                                    [formGroup]="personalFormGroup"
+                                                    [validations]="getValidationCountryMessages().CountryId"
+                                                    [mode]="autocompleteModecountry" (selectDdlObject)="selectChangecountry($event)">
+                                                </airmid-autocomplete>
                                                 </div>
 
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-autocomplete [mode]="autocompleteModemstatus"
-                                                        (selectDdlObject)="selectChangemstatus($event)"></airmid-autocomplete>
-
+                                                    <airmid-autocomplete label="MaritalStatusId" formControlName="MaritalStatusId" [value]="data?.maritalStatusId"
+                                                    [formGroup]="personalFormGroup"
+                                                    [validations]="getValidationMstatusMessages().MaritalStatusId"
+                                                    [mode]="autocompleteModemstatus" (selectDdlObject)="selectChangemstatus($event)">
+                                                </airmid-autocomplete>
                                                 </div>
 
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -359,9 +371,13 @@
 
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                                                    <airmid-autocomplete [mode]="autocompleteModereligion"
-                                                        (selectDdlObject)="selectChangereligion($event)"></airmid-autocomplete>
-
+                                                    <!-- <airmid-autocomplete [mode]="autocompleteModereligion"
+                                                        (selectDdlObject)="selectChangereligion($event)"></airmid-autocomplete> -->
+                                                        <airmid-autocomplete label="RelidionId" formControlName="RelidionId" [value]="data?.relidionId"
+                                                        [formGroup]="personalFormGroup"
+                                                        [validations]="getValidationReligionMessages().ReligionId"
+                                                        [mode]="autocompleteModemstatus" (selectDdlObject)="selectChangemstatus($event)">
+                                                    </airmid-autocomplete>
                                                 </div>
 
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -432,62 +448,98 @@
 
 
                                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                <airmid-autocomplete [mode]="autocompleteModepatienttype"
-                                                    (selectDdlObject)="selectChangepatienttype($event)"></airmid-autocomplete>
-
+                                                <!-- <airmid-autocomplete [mode]="autocompleteModepatienttype"
+                                                    (selectDdlObject)="selectChangepatienttype($event)"></airmid-autocomplete> -->
+                                                    <airmid-autocomplete label="PatientTypeID" formControlName="PatientTypeID" [value]="data?.patientTypeID"
+                                                    [formGroup]="VisitFormGroup"
+                                                    [validations]="getValidationPatientTypeMessages().PatientTypeID"
+                                                    [mode]="autocompleteModepatienttype" (selectDdlObject)="selectChangepatienttype($event)">
+                                                </airmid-autocomplete>
                                             </div>
 
                                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                                                <airmid-autocomplete [mode]="autocompleteModetariff"
-                                                    (selectDdlObject)="selectChangetariff($event)"></airmid-autocomplete>
+                                                <!-- <airmid-autocomplete [mode]="autocompleteModetariff"
+                                                    (selectDdlObject)="selectChangetariff($event)"></airmid-autocomplete> -->
+                                                    <airmid-autocomplete label="TariffId" formControlName="TariffId" [value]="data?.trariffId"
+                                                    [formGroup]="VisitFormGroup"
+                                                    [validations]="getValidationTariffMessages().TariffId"
+                                                    [mode]="autocompleteModetariff" (selectDdlObject)="selectChangetariff($event)">
+                                                </airmid-autocomplete>
+                                            </div>
+
+                                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
+                                                *ngIf="isCompanySelected">
+
+                                                <!-- <airmid-autocomplete [mode]="autocompleteModecompany"
+                                                    (selectDdlObject)="selectChangecompany($event)"></airmid-autocomplete> -->
+                                                    <airmid-autocomplete label="CompanyId" formControlName="CompanyId" [value]="data?.companyId"
+                                                    [formGroup]="VisitFormGroup"
+                                                    [validations]="getValidationMessages().CompanyId"
+                                                    [mode]="autocompleteModecompany" (selectDdlObject)="selectChangecompany($event)">
+                                                </airmid-autocomplete>
+
 
                                             </div>
 
                                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
                                                 *ngIf="isCompanySelected">
 
-                                                <airmid-autocomplete [mode]="autocompleteModecompany"
-                                                    (selectDdlObject)="selectChangecompany($event)"></airmid-autocomplete>
+                                                <!-- <airmid-autocomplete [mode]="autocompleteModesubcompany"
+                                                    (selectDdlObject)="selectChangesubcompany($event)"></airmid-autocomplete> -->
 
-
-
-                                            </div>
-
-                                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
-                                                *ngIf="isCompanySelected">
-
-                                                <airmid-autocomplete [mode]="autocompleteModesubcompany"
-                                                    (selectDdlObject)="selectChangesubcompany($event)"></airmid-autocomplete>
+                                                    <airmid-autocomplete label="SubCompanyId" formControlName="SubCompanyId" [value]="data?.subCompanyId"
+                                                    [formGroup]="VisitFormGroup"
+                                                    [validations]="getValidationMessages().SubCompanyId"
+                                                    [mode]="autocompleteModesubcompany" (selectDdlObject)="selectChangesubcompany($event)">
+                                                </airmid-autocomplete>
 
                                             </div>
 
                                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                                                <airmid-autocomplete [mode]="autocompleteModedepartment"
-                                                    (selectDdlObject)="selectChangedepartment($event)"></airmid-autocomplete>
+                                                <!-- <airmid-autocomplete [mode]="autocompleteModedepartment"
+                                                    (selectDdlObject)="selectChangedepartment($event)"></airmid-autocomplete> -->
 
+                                                    <airmid-autocomplete label="Departmentid" formControlName="Departmentid" [value]="data?.departmentId"
+                                                    [formGroup]="VisitFormGroup"
+                                                    [validations]="getValidationDepartmentMessages().Departmentid"
+                                                    [mode]="autocompleteModedepartment" (selectDdlObject)="selectChangedepartment($event)">
+                                                </airmid-autocomplete>
                                             </div>
 
                                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                                                <airmid-autocomplete [mode]="autocompleteModedeptdoc"
-                                                    (selectDdlObject)="selectChangedeptdoc($event)"></airmid-autocomplete>
+                                                <!-- <airmid-autocomplete [mode]="autocompleteModedeptdoc"
+                                                    (selectDdlObject)="selectChangedeptdoc($event)"></airmid-autocomplete> -->
 
+                                                    <airmid-autocomplete label="DoctorID" formControlName="DoctorID" [value]="data?.doctorID"
+                                                    [formGroup]="VisitFormGroup"
+                                                    [validations]="getValidationdeptDocMessages().DoctorID"
+                                                    [mode]="autocompleteModedeptdoc" (selectDdlObject)="selectChangedeptdoc($event)">
+                                                </airmid-autocomplete>
                                             </div>
 
                                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                                                <airmid-autocomplete [mode]="autocompleteModerefdoc"
-                                                    (selectDdlObject)="selectChangerefdoc($event)"></airmid-autocomplete>
-
+                                                <!-- <airmid-autocomplete [mode]="autocompleteModerefdoc"
+                                                    (selectDdlObject)="selectChangerefdoc($event)"></airmid-autocomplete> -->
+                                                    <airmid-autocomplete label="RefDocId" formControlName="RefDocId" [value]="data?.refDocId"
+                                                    [formGroup]="VisitFormGroup"
+                                                    [validations]="getValidationRefDocMessages().refDocId"
+                                                    [mode]="autocompleteModerefdoc" (selectDdlObject)="selectChangerefdoc($event)">
+                                                </airmid-autocomplete>
                                             </div>
 
                                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                                                <airmid-autocomplete [mode]="autocompleteModepurpose"
-                                                    (selectDdlObject)="selectChangepurpose($event)"></airmid-autocomplete>
-
+                                                <!-- <airmid-autocomplete [mode]="autocompleteModepurpose"
+                                                    (selectDdlObject)="selectChangepurpose($event)"></airmid-autocomplete> -->
+                                                    <airmid-autocomplete label="PurposeId" formControlName="PurposeId" [value]="data?.purposeId"
+                                                    [formGroup]="VisitFormGroup"
+                                                    [validations]="getValidationPurposeMessages().PurposeId"
+                                                    [mode]="autocompleteModepurpose" (selectDdlObject)="selectChangepurpose($event)">
+                                                </airmid-autocomplete>
                                             </div>
 
                                         </div>

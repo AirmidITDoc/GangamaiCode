@@ -94,19 +94,29 @@
                         <mat-icon>close</mat-icon>
                     </button>
                 </mat-form-field>
-                <!-- <mat-form-field appearance="outline" fxFlex>
+                <mat-form-field appearance="outline" fxFlex>
                     <mat-label>From Date</mat-label>
-                    <input matInput placeholder="Search From Date" autocomplete="off" [value]="fromtDate"
+                    <input matInput placeholder="Search From Date" autocomplete="off" 
                         [(ngModel)]="gridConfig.filters[4].fieldValue" />
                     <button mat-button matSuffix mat-icon-button aria-label="Clear"
                         (click)="gridConfig.filters[4].fieldValue=''">
                         <mat-icon>close</mat-icon>
                     </button>
-                </mat-form-field> -->
+                </mat-form-field>
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>To Date</mat-label>
+                    <input matInput placeholder="Search To Date" autocomplete="off"
+                        [(ngModel)]="gridConfig.filters[5].fieldValue" />
+                    <button mat-button matSuffix mat-icon-button aria-label="Clear"
+                        (click)="gridConfig.filters[5].fieldValue=''">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
+
                 <!-- [value]="fromtDate" -->
-                <mat-form-field appearance="outline">
+                <!-- <mat-form-field appearance="outline">
                     <mat-label>From Date</mat-label>
-                    <input matInput [matDatepicker]="validFromPicker"  [value]="fromDate"
+                    <input matInput [matDatepicker]="validFromPicker"  [(ngModel)]="fromDate"
                     placeholder="mm/dd/yyyy" [(ngModel)]="gridConfig.filters[4].fieldValue" (dateChange)="onChangeDate($event.value)"/>
                     <mat-datepicker-toggle matSuffix
                         [for]="validFromPicker"></mat-datepicker-toggle>
@@ -120,7 +130,7 @@
                     <mat-datepicker-toggle matSuffix
                         [for]="validFromPicker1"></mat-datepicker-toggle>
                     <mat-datepicker #validFromPicker1></mat-datepicker>
-                </mat-form-field>
+                </mat-form-field> -->
 
                               
             </ng-container>
