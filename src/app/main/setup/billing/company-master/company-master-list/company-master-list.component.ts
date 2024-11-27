@@ -101,7 +101,8 @@ export class CompanyMasterListComponent implements OnInit {
     cityName='';
 
     
-
+    onChangeMsm(event){}
+    onChangeMode(event){}
     selectChangetypeName(obj:any){
         this.typeId=obj;
     }

@@ -82,7 +82,7 @@ export class AppointmentListComponent implements OnInit {
                         }
                     },
                     {
-                        action: gridActions.view, callback: (data: any) => {
+                        action: gridActions.print, callback: (data: any) => {
                             this.viewgetPatientAppointmentReportPdf(data,data);
                         }
                     },
