@@ -1,0 +1,462 @@
+// .header {
+//     display: flex;
+//     justify-content: space-between;
+//     background-color: #3C9CE5;
+//     align-items: center;
+//     padding: 10px 20px;
+//     color: white;
+// }
+
+// .case-paper-body {
+//     padding: 8px 20px;
+// }
+
+// ::ng-deep .mat-tab-label-active {
+//     background-color: #bec4be!important;
+//     opacity: 1!important;
+//     color: white;
+// }
+
+// ::ng-deep .mat-tab-header {
+//     // margin: 5px 15px;
+//     width: fit-content;
+//     border: 1px solid #aeb0b1 !important;
+//     border-radius: 5px;
+// }
+
+// ::ng-deep .mat-ink-bar {
+//     display: none;
+// }
+
+// ::ng-deep .mat-tab-label-active {
+//     background-color: #9ea59e !important;
+//     border-radius: 5px;
+// }
+
+// ::ng-deep .mat-tab-label {
+//     height: 25px !important;
+//     min-width: 128px !important;
+//     color: black !important;
+//     // font-size: 14px;
+//     font-weight: 600;
+// }
+
+// .clinical-info-body {
+//     display: flex;
+//     // height:auto;
+// }
+
+// .clinical-info-1 {
+//     //width: 50%;
+//      width:100%;
+//     // border: 1px solid #d2d1d1;
+//     // margin-right: 3px;
+//     // padding: 0 6px;
+// }
+
+// .grid-container {
+//     display: grid;
+//     grid-template-columns: auto auto;
+//     grid-column-gap: 10px;
+//     margin-top: 5px;
+// }
+
+// .history-div-field ::ng-deep.mat-form-field-appearance-outline .mat-form-field-infix {
+//     height: 40px !important;
+//     padding: 0.5em 0 !important;
+// }
+
+// .visit-btns-div {
+//     position: absolute;
+//     bottom: 7px;
+//     align-items: revert;
+//     /* width: 100%; */
+//     // right: 7px; 
+// }
+
+// .prescription-header {
+//     display: flex;
+//     align-items: center;
+//     // justify-content: space-between;
+// }
+
+// .select-div {
+//     width: 30%;
+// }
+
+// .select-div ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
+//     height: 40px !important;
+//     align-items: center !important;
+// }
+
+// .presc-label {
+//     font-size: 17px;
+//     color: #bf3131;
+//     font-weight: 500;
+// }
+// .mat-drawer-content {
+//     position: relative;
+//     z-index: 1;
+//     display: block;
+//    // height: 100vh;
+// }
+
+// .mat-drawer {
+//     width: 300px;
+// }
+// .select-field {
+//     // width: 100px;
+//     width: 84%;
+//     margin-right: 5px;
+//     position: relative;
+//     top: 5px;
+// }
+
+// // .prescription-body {
+// //     display: flex;
+// //     align-items: center;
+// // }
+
+// .prescription-body ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
+//     height: 40px !important;
+//     align-items: center !important;
+// }
+
+// .prescription-body button {
+//     position: relative;
+//     top: -3px;
+// }
+
+// .footer-container {
+//     margin-top: 10px;
+// }
+
+// .mat-column-drugName, .mat-column-doseName, .mat-column-doseOptional, .mat-column-days1, .mat-column-days2, .mat-column-days3, .mat-column-doseOptional3, .mat-column-instruction { 
+//     ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
+//         height: 30px !important;
+//         padding: 0 !important;
+//     }
+// }
+
+
+// .mat-row {
+//     // padding: 5px 0 2px 0;
+//     margin: 7px 0 5px 0px;
+// }
+
+// .mat-column-drugName {
+//     width: 300px;
+//     max-width: 300px;
+//     min-width: 300px;
+// }
+
+// .mat-column-action {
+//     width: 100px;
+//     max-width: 100px;
+//     min-width: 100px;
+// }
+
+// app-case-paper {
+//     ::ng-deep.mat-select-panel-wrap {
+//         position: relative !important;
+//         top: 35px !important;
+//         left: 30px !important;
+//     }
+
+    
+// }
+
+// .footer-btn {
+//     width: 80px;
+//     font-size: 16px;
+//     font-weight: 700px;
+//     padding: 10px;
+//     color:  rgb(247, 97, 97);
+//     border-radius: 16px;
+//     background-color:white;
+//     border-color: rgb(247, 97, 97);
+//     cursor: pointer;
+// }
+// .footer-btn:hover{
+//     background-color: rgb(247, 97, 97);
+//     color: white;
+   
+// }
+
+// .next-btn {
+//     width: 80px;
+//     font-size: 16px;
+//     font-weight: 700px;
+//     padding: 10px;
+//     margin-right: 5px;
+//     color: #039be5 ;
+//     border-radius: 16px;
+//      border: 1px solid #039be5 ;
+//       background-color: white;
+//    // background-color: hsl(204, 92%, 38%);
+//     //border:2px solid #0430c2;
+   
+//     cursor: pointer;
+//    // border-radius: 16%;
+// }
+// .next-btn:hover{
+//     background-color: #039be5 ;
+//    // border: 1px solid rgb(247, 97, 97);
+//     color:  white;
+   
+// }
+
+// button:disabled {
+//     color: white;
+//    background-color: #7bd3ff  !important;
+//    //background-color: #b7e6fd ;
+//     border-radius: 2px;
+//    // border: 1px solid #CCCCCC;
+//    border: 1px solid  #b7e6fd ;
+// }
+// .print-btn{
+//     width: 80px;
+//     font-size: 16px;
+//     font-weight: 700px;
+//     padding: 10px;
+//     margin-right: 5px;
+//     color: black;
+//     border-radius: 16px;
+//      border: 1px solid black;
+//       background-color: white;
+//    // background-color: hsl(204, 92%, 38%);
+//     //border:2px solid #0430c2;
+//     cursor: pointer;
+// }
+// .print-btn:hover{
+//     background-color: black;
+//     color: white;
+   
+// }
+
+
+// .new-btn{
+//     width: 80px;
+//     font-size: 16px;
+//     font-weight: 700px;
+//     padding: 10px;
+//     margin-right: 5px;
+//     color: gray;
+//     border-radius: 16px;
+//     border: 1px solid gray;
+//       background-color: white;
+//       cursor: pointer;
+   
+// }
+// .new-btn:hover{
+//     background-color: gray;
+//     color: white;
+   
+// }
+// #table1{
+
+//     // height: 150px !important;
+      
+//     width: 100%;
+//     // background: transparent;
+//     // box-shadow: none;
+
+//     .mat-column-VisitId {
+//         width:30px;
+//         max-width:70px;
+//         min-width:70px;
+//         text-align: left;
+//        // background-color: #3C9CE5;
+//     }
+//     .mat-column-VisitDate {
+//         width:80px;
+//         max-width:80px;
+//         min-width:80px;
+//        // background-color: #7ee76b;
+//     }
+//     .mat-column-DocName{
+//         width:80px;
+//         max-width:80px;
+//         min-width:80px;
+//        // background-color: #d3b21f;
+//     }
+// }
+//     .service-table1{
+       
+//         .mat-column-DrugName {
+//             width:300px;
+//             max-width:300px;
+//             min-width:300px;
+//             text-align: left;
+//             white-space: nowrap; 
+//             overflow: hidden;
+//             text-overflow: ellipsis; 
+//             overflow: hidden !important;
+//             display: inline-block;
+//             justify-content:left;
+//             margin-right: 10px; 
+            
+//         }
+//         .mat-column-DoseName {
+//             width: 40px;
+//             max-width:40px;
+//             min-width:40px;
+//             justify-content:left;
+//             text-align: left;
+//         }
+//         .mat-column-QtyPerDay {
+//             width:40px;
+//             max-width:40px;
+//             min-width:40px;
+//             justify-content:center;
+//         }
+//         .mat-column-TotalQty {
+//             width: 40px;
+//             max-width:40px;
+//             min-width:40px;
+//             justify-content:center;
+//         }
+
+//         .mat-header-row {
+//             width:600px;
+//             max-width:600px;
+//             min-width:600px;  
+//             min-height:30px;     
+//         }
+//         .mat-row {
+//             width:600px;
+//             max-width:600px;
+//             min-width:600px;            
+//         }
+//     }
+
+//     fieldset {
+//         border-color: #039be5;// #fff9f9;
+//     }
+//     .fieldset-div {
+//         background-color: #191a1c21;
+//     }
+//     legend {
+//         padding: 10px;
+//         font-size: 20px;
+//     }
+    
+//     // .payment-container {
+//     //     width: 50% !important;
+//     //     min-width: 50% !important;
+//     //     max-width: 50% !important;
+//     // }
+    
+//     .flex-item, .patient-sub {
+//         flex-basis: 100%;
+//     }
+//     .flex-item-middle{
+//         width: 5px;
+//         margin-right: 8px;
+//     }
+//     .item-header {
+//         width: 200px;
+//     }
+//     .field-row {
+//         align-items: center;
+//     }
+//     .add-icon {
+//         width: 30px;
+//         height: 30px;
+//         border: 4px solid #3f94a6;
+//         border-radius: 50%;
+//         display: flex;
+//         justify-content: center;
+//     }
+//     .enable-1-add {
+//         cursor: pointer;
+//         pointer-events: visible;
+//     }
+//     .disable-1-add {
+//         pointer-events: none;
+//         // cursor: ar;
+//     }
+//     .remove-icon {
+//         width: 30px;
+//         height: 30px;
+//         font-size: 40px;
+//         border: 4px solid #a64f3f;
+//         border-radius: 50%;
+//         display: flex;
+//         justify-content: center;
+//         cursor: pointer;
+//     }
+    
+//     .footer-div {
+//         float: right;
+//         margin-top: 20px;
+//     }
+    
+//     .next-btn {
+//         width: 80px;
+//         font-size: 16px;
+//         font-weight: 700px;
+//         padding: 10px;
+//         margin-right: 5px;
+//         color: #039be5 ;
+//         border-radius: 16px;
+//          border: 1px solid #039be5 ;
+//           background-color: white;
+//        // background-color: hsl(204, 92%, 38%);
+//         //border:2px solid #0430c2;
+       
+//         cursor: pointer;
+//         border-radius: 16%;
+//     }
+//     .next-btn:hover{
+//         background-color: #039be5 ;
+//        // border: 1px solid rgb(247, 97, 97);
+//         color:  white;
+       
+//     }
+    
+//     button:disabled {
+//         color: white;
+//        background-color: #7bd3ff  !important;
+//        //background-color: #b7e6fd ;
+//         border-radius: 2px;
+//        // border: 1px solid #CCCCCC;
+//        border: 1px solid  #b7e6fd ;
+//     }
+    
+//     .footer-btn {
+//         width: 80px;
+//         font-size: 16px;
+//         font-weight: 700px;
+//         padding: 10px;
+//         color:  rgb(247, 97, 97);
+//         border-radius: 16px;
+//         background-color:white;
+//         border-color: rgb(247, 97, 97);
+//         cursor: pointer;
+//     }
+//     .footer-btn:hover{
+//         background-color: rgb(247, 97, 97);
+//         color: white;
+       
+//     }
+    
+//     .patient-details mat-error {
+//         margin-top: 10px;
+//         font-size: 14px;
+//     }
+    
+//     .patient-bill-info {
+//         display: flex;
+//     }
+//     .labels-h3 {
+//         font-size: 18px;
+//         font-weight: bold;
+//     }
+//     .labels-h6 {
+//         font-size: 18px;
+//     }
+//     .form-field-labels {
+//         font-size: 16px;
+//     }
+     

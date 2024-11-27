@@ -38,8 +38,8 @@
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>From Date</mat-label>
-                    <input matInput placeholder="Search From Date" autocomplete="off"
+                    <mat-label>RegNo</mat-label>
+                    <input matInput placeholder="Search RegNo" autocomplete="off"
                         [(ngModel)]="gridConfig.filters[2].fieldValue" />
                     <button mat-button matSuffix mat-icon-button aria-label="Clear"
                         (click)="gridConfig.filters[2].fieldValue=''">
@@ -47,9 +47,10 @@
                     </button>
                 </mat-form-field>
 
+
                 <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>To Date</mat-label>
-                    <input matInput placeholder="Search To Date" autocomplete="off"
+                    <mat-label>From Date</mat-label>
+                    <input matInput placeholder="Search From Date" autocomplete="off"
                         [(ngModel)]="gridConfig.filters[3].fieldValue" />
                     <button mat-button matSuffix mat-icon-button aria-label="Clear"
                         (click)="gridConfig.filters[3].fieldValue=''">
@@ -57,11 +58,9 @@
                     </button>
                 </mat-form-field>
 
-               
-
                 <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>RegNo</mat-label>
-                    <input matInput placeholder="Search RegNo" autocomplete="off"
+                    <mat-label>To Date</mat-label>
+                    <input matInput placeholder="Search To Date" autocomplete="off"
                         [(ngModel)]="gridConfig.filters[4].fieldValue" />
                     <button mat-button matSuffix mat-icon-button aria-label="Clear"
                         (click)="gridConfig.filters[4].fieldValue=''">
@@ -69,6 +68,9 @@
                     </button>
                 </mat-form-field>
 
+               
+
+            
                 <mat-form-field appearance="outline" fxFlex>
                     <mat-label>MobileNo</mat-label>
                     <input matInput placeholder="Search MobileNo" autocomplete="off"

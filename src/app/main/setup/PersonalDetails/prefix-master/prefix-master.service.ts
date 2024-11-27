@@ -31,7 +31,7 @@ export class PrefixMasterService {
             prefixName: [""],
             // SexID: [" "],
             // GenderName: [""],
-            isActive: ["true"],
+            isActive: [""],
             // AddedBy: ["0"],
             // UpdatedBy: ["0"],
         });

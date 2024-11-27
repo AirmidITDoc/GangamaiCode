@@ -13,7 +13,7 @@
                     </button>
                 </div>
                 <div fxLayout="row" fxLayoutGap="5px" >
-                    <app-common-date [screenFrom]="screenFromString" style="float:right"
+                    <app-common-date [screenFrom]="screenFromString" style="float:right" hidden:true
                         (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
 
                 </div>
@@ -22,12 +22,13 @@
     </div>
 
     <!-- Modal body -->
+    <mat-card>
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
             <form [formGroup]="crossconForm">
                 <div fxLayout="column" class="gap-12">
                     <div class="modal-card-container">
-                        <!-- <mat-card>
+                         <mat-card>
                             <div class="patient-info-container">
                                 <div class="patient-sub">
                                     <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
@@ -37,18 +38,18 @@
                                                 <span class="patient-col-key">UHID No
                                                 </span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{selectedAdvanceObj.RegId}}</span>
+                                                <span class="patient-col-value">{{data.regId}}</span>
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Patient Name
                                                 </span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{selectedAdvanceObj.PatientName}}</span>
+                                                <span class="patient-col-value">{{data.patientName}}</span>
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Doctor Name</span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{selectedAdvanceObj.Doctorname}}</span>
+                                                <span class="patient-col-value">{{data.doctorname}}</span>
                                             </div>
                                         </div>
                                         <div fxLayout="column" fxLayoutGap="10px"> 
@@ -56,18 +57,18 @@
                                             <div class="patient-col">
                                                 <span class="patient-col-key">OPD No</span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{selectedAdvanceObj.OPDNo}}</span>
+                                                <span class="patient-col-value">{{data.opdNo}}</span>
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Age | Sex
                                                 </span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{selectedAdvanceObj.AgeYear}}Y|{{selectedAdvanceObj.AgeMonth}}M|{{selectedAdvanceObj.AgeDay}} D | {{selectedAdvanceObj.GenderName}}</span>
+                                                <span class="patient-col-value">{{data.ageYear}}Y|{{data.ageMonth}}M|{{data.ageDay}} D | {{data.GenderName}}</span>
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Department</span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{selectedAdvanceObj.DepartmentName}}</span>
+                                                <span class="patient-col-value">{{data.departmentName}}</span>
                                             </div>
                                           
                                            
@@ -78,27 +79,27 @@
                                                 <span class="patient-col-key">Patient Type | Tarrif
                                                 </span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{selectedAdvanceObj.PatientType}} | {{selectedAdvanceObj.TarrifName}}</span>
+                                                <span class="patient-col-value">{{data.patientType}} | {{data.tariffName}}</span>
                                             </div> 
                                             <div class="patient-col" >
                                                 <span class="patient-col-key">Company Name</span>
                                                 <span>:</span>
-                                                <span class="patient-col-value" style="color: orange;">{{selectedAdvanceObj.CompanyName}}</span>
+                                                <span class="patient-col-value" style="color: orange;">{{data.companyName}}</span>
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Ref-Doctor Name
                                                 </span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{selectedAdvanceObj.RefDocName}}</span>
+                                                <span class="patient-col-value">{{data.refDocName}}</span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </mat-card> -->
+                        </mat-card> 
                     </div>
                     <div class="modal-card-container">
-                        <mat-card>
+                       
                             <div fxLayout="column" class="gap-8">
                                 <div class="form-title mb-2 border-bottom pb-2">
                                     <span class="h3 font-weight-600">Cross Consultation Information</span>
@@ -112,15 +113,22 @@
                                                 [ngModel]="date | date:'yyyy-MM-ddTHH:mm'" />
                                         </mat-form-field>
 
-                                        
-                                        <airmid-autocomplete [mode]="autocompleteModedepartment" (selectDdlObject)="selectChangedepartment($event)"></airmid-autocomplete>
-
-                                        <airmid-autocomplete [mode]="autocompleteModedeptdoc" (selectDdlObject)="selectChangedeptdoc($event)"></airmid-autocomplete>
-
+                                        <!-- [value]="data?.departmentId"  [value]="data?.DoctorID"-->
+                                     <airmid-autocomplete label="Departmentid" formControlName="Departmentid" 
+                                        [formGroup]="crossconForm"
+                                        [validations]="getValidationDeptMessages().Departmentid"
+                                        [mode]="autocompleteModedepartment" (selectDdlObject)="selectChangedepartment($event)">
+                                    </airmid-autocomplete>
+                                     
+                                        <airmid-autocomplete label="DoctorID" formControlName="DoctorID"
+                                        [formGroup]="crossconForm"
+                                        [validations]="getValidationdoctorMessages().DoctorID"
+                                        [mode]="autocompleteModedeptdoc" (selectDdlObject)="selectChangedeptdoc($event)">
+                                    </airmid-autocomplete>
                                     </div>
                                 </div>
                             </div>
-                        </mat-card>
+                       
                     </div>
                 </div>
             </form>
@@ -136,4 +144,5 @@
             </div>
         </div>
     </div>
+</mat-card>
 </div>

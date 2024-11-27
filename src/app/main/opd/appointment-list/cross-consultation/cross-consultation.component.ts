@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { AppointmentlistService } from '../appointmentlist.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { DatePipe } from '@angular/common';
 import { Observable } from 'rxjs';
@@ -22,11 +22,15 @@ export class CrossConsultationComponent implements OnInit {
 
 
   constructor( public _AppointmentlistService: AppointmentlistService, private formBuilder: FormBuilder,
-    public dialogRef: MatDialogRef<CrossConsultationComponent>,   public datePipe: DatePipe,
+    public dialogRef: MatDialogRef<CrossConsultationComponent>,   public datePipe: DatePipe, @Inject(MAT_DIALOG_DATA) public data: any,
     public _matDialog: MatDialog, public toastr: ToastrService
-  ) { }
+  ) {  if(this.data){
+    debugger
+    console.log(this.data)
+  }}
 
   ngOnInit(): void {
+   
     this.crossconForm = this.createCrossConForm();
    
   }
@@ -54,6 +58,21 @@ export class CrossConsultationComponent implements OnInit {
   }
 
 
+  getValidationDeptMessages() {
+    return {
+      Departmentid: [
+            { name: "required", Message: "Department Name is required" }
+        ]
+    };
+  }
+  
+  getValidationdoctorMessages() {
+    return {
+      DoctorID: [
+            { name: "required", Message: "Doctor Name is required" }
+        ]
+    };
+  }
 
   onSubmit() {
     debugger
@@ -104,11 +123,11 @@ export class CrossConsultationComponent implements OnInit {
   deptdocId=0;
   selectChangedepartment(obj: any){
     console.log(obj);
-    this.departmentId=obj.value
+    this.departmentId=obj
   }
   
   selectChangedeptdoc(obj: any){
     console.log(obj);
-    this.deptdocId=obj.value
+    this.deptdocId=obj
   }
 }

@@ -50,7 +50,13 @@ export class EditRefranceDoctorComponent implements OnInit {
 
   }
 
-
+  getValidationDoctorMessages() {
+    return {
+      DoctorID: [
+            { name: "required", Message: "Doctor Name is required" }
+        ]
+    };
+  }
 
   onSubmit() {
     // if (this.RefrancedrForm.valid) {
@@ -89,6 +95,6 @@ export class EditRefranceDoctorComponent implements OnInit {
   refdocId = 0
   selectChangerefdoc(obj: any) {
     console.log(obj);
-    this.refdocId = obj.value
+    this.refdocId = obj
   }
 }

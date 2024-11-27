@@ -54,6 +54,22 @@ export class EditConsultantDoctorComponent implements OnInit {
 
 
 
+  getValidationDeptMessages() {
+    return {
+      departmentid: [
+            { name: "required", Message: "Department Name is required" }
+        ]
+    };
+  }
+  
+  getValidationdoctorMessages() {
+    return {
+      DoctorID: [
+            { name: "required", Message: "Doctor Name is required" }
+        ]
+    };
+  }
+  
   onSubmit() {
       // if (this.ConsdrForm.valid) {
         debugger
@@ -93,11 +109,11 @@ export class EditConsultantDoctorComponent implements OnInit {
   deptdocId=0;
   selectChangedepartment(obj: any){
     console.log(obj);
-    this.departmentId=obj.value
+    this.departmentId=obj
   }
   
   selectChangedeptdoc(obj: any){
     console.log(obj);
-    this.deptdocId=obj.value
+    this.deptdocId=obj
   }
 }

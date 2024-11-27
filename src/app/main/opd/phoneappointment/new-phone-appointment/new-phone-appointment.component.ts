@@ -50,8 +50,8 @@ export class NewPhoneAppointmentComponent implements OnInit {
   isChecked = true;
 
   // New Api
-  autocompleteMode1: string = "Department";
-  autocompleteMode2: string = "ConDoctor";
+  autocompletedepartment: string = "Department";
+  autocompleteModedoctor: string = "ConDoctor";
 
   constructor(private _fuseSidebarService: FuseSidebarService,
     public _phoneAppointListService: PhoneAppointListService,
@@ -96,6 +96,23 @@ export class NewPhoneAppointmentComponent implements OnInit {
 
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
+  }
+
+  
+  getValidationDeptMessages() {
+    return {
+      departmentId: [
+            { name: "required", Message: "Department Name is required" }
+        ]
+    };
+  }
+  
+  getValidationdoctorMessages() {
+    return {
+      doctorId: [
+            { name: "required", Message: "Doctor Name is required" }
+        ]
+    };
   }
 
   OnSubmit() {

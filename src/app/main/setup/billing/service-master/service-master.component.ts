@@ -10,6 +10,7 @@ import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 
 
 @Component({
@@ -21,6 +22,7 @@ import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 })
 export class ServiceMasterComponent implements OnInit {
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
         apiUrl: "BankMaster/List",
         columnsList: [
@@ -28,14 +30,30 @@ export class ServiceMasterComponent implements OnInit {
             { heading: "Bank Name", key: "bankName", sort: true, align: 'left', emptySign: 'NA',width:600 },
             { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center",width:200 },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:200, actions: [
+                heading: "Action", key: "action", align: "right", width:100, type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data) // EDIT Records
+                            this.onSave(data);
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this.onDeactive(data.bankId); // DELETE Records
+                            this.confirmDialogRef = this._matDialog.open(
+                                FuseConfirmDialogComponent,
+                                {
+                                    disableClose: false,
+                                }
+                            );
+                            this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+                            this.confirmDialogRef.afterClosed().subscribe((result) => {
+                                if (result) {
+                                    let that = this;
+                                    this._serviceMasterService.deactivateTheStatus(data.cityId).subscribe((response: any) => {
+                                        this.toastr.success(response.message);
+                                        that.grid.bindGridData();
+                                    });
+                                }
+                                this.confirmDialogRef = null;
+                            });
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
@@ -80,52 +98,6 @@ export class ServiceMasterComponent implements OnInit {
     }
 
   
-    onEdit(row) {
-        console.log(row);
-        var m_data = {
-            ServiceId: row.ServiceId,
-            ServiceShortDesc: row.ServiceShortDesc.trim(),
-            ServiceName: row.ServiceName.trim(),
-            Price: row.Price,
-            IsEditable: JSON.stringify(row.IsEditable),
-            CreditedtoDoctor: JSON.stringify(row.CreditedtoDoctor),
-            IsPathology: JSON.stringify(row.IsPathology),
-            IsRadiology: JSON.stringify(row.IsRadiology),
-            IsDeleted: JSON.stringify(row.IsDeleted),
-            PrintOrder: row.PrintOrder,
-            IsPackage: JSON.stringify(row.IsPackage),
-            SubGroupId: row.SubGroupId,
-            DoctorId: row.DoctorId,
-            IsEmergency: JSON.stringify(row.IsEmergency),
-            EmgAmt: row.EmgAmt,
-            EmgPer: row.EmgPer,
-            IsDocEditable: JSON.stringify(row.IsDocEditable),
-            UpdatedBy: row.UpdatedBy,
-            GroupId: row.GroupId,
-            GroupName:row.GroupName,
-            IsActive: row.IsActive,
-            TariffId: row.TariffId,
-            TariffName: row.TariffName
-        };
-
-        console.log(m_data);
-        this._serviceMasterService.populateForm(m_data);
-
-        const dialogRef = this._matDialog.open(ServiceMasterFormComponent, {
-            maxWidth: "80vw",
-            maxHeight: "90vh",
-            width: "100%",
-            data : {
-                registerObj : row,
-              }
-             });
-      
-        dialogRef.afterClosed().subscribe((result) => {
-            console.log("The dialog was closed - Insert Action", result);
-            
-        });
-    }
-
    
     onSave(row:any = null) {
         const dialogRef = this._matDialog.open(ServiceMasterFormComponent,
@@ -136,35 +108,12 @@ export class ServiceMasterComponent implements OnInit {
             data: row
         });
         dialogRef.afterClosed().subscribe(result => {
-            if(result){
-                // this.getGenderMasterList();
-                // How to refresh Grid.
-            }
+           
             console.log('The dialog was closed - Action', result);
         });
     }
 
-    onDeactive(bankId) {
-        this.confirmDialogRef = this._matDialog.open(
-            FuseConfirmDialogComponent,
-            {
-                disableClose: false,
-            }
-        );
-        this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-        this.confirmDialogRef.afterClosed().subscribe((result) => {
-            if (result) {
-                this._serviceMasterService.deactivateTheStatus(bankId).subscribe((response: any) => {
-                    if (response.StatusCode == 200) {
-                        this.toastr.success(response.Message);
-                        // this.getGenderMasterList();
-                        // How to refresh Grid.
-                    }
-                });
-            }
-            this.confirmDialogRef = null;
-        });
-    }
+  
 }
 
 export class ServiceMaster {

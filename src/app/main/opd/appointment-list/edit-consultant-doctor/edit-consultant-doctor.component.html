@@ -24,7 +24,7 @@
                     <div class="modal-card-container">
                         <mat-card>
                             <div class="patient-info-container">
-                                <!-- <div class="patient-sub">
+                                <div class="patient-sub">
                                     <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
                                         fxLayoutAlign="space-between">
                                         <div fxLayout="column" fxLayoutGap="10px">
@@ -32,18 +32,18 @@
                                                 <span class="patient-col-key">UHID No
                                                 </span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{PatientHeaderObj.RegId}}</span>
+                                                <span class="patient-col-value">{{data.regId}}</span>
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Patient Name
                                                 </span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{PatientHeaderObj.PatientName}}</span>
+                                                <span class="patient-col-value">{{data.patientName}}</span>
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Doctor Name</span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{PatientHeaderObj.Doctorname}}</span>
+                                                <span class="patient-col-value">{{data.doctorname}}</span>
                                             </div>
                                         </div>
                                         <div fxLayout="column" fxLayoutGap="10px">
@@ -51,21 +51,21 @@
                                             <div class="patient-col">
                                                 <span class="patient-col-key">OPD No</span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{PatientHeaderObj.OPDNo}}</span>
+                                                <span class="patient-col-value">{{data.opdNo}}</span>
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Age | Sex
                                                 </span>
                                                 <span>:</span>
                                                 <span
-                                                    class="patient-col-value">{{PatientHeaderObj.AgeYear}}Y|{{PatientHeaderObj.AgeMonth}}M|{{PatientHeaderObj.AgeDay}}
-                                                    D | {{PatientHeaderObj.GenderName}}</span>
+                                                    class="patient-col-value">{{data.ageYear}}Y|{{data.ageMonth}}M|{{data.ageDay}}
+                                                    D | {{data.genderName}}</span>
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Department</span>
                                                 <span>:</span>
                                                 <span
-                                                    class="patient-col-value">{{PatientHeaderObj.DepartmentName}}</span>
+                                                    class="patient-col-value">{{data.departmentName}}</span>
                                             </div>
 
 
@@ -76,24 +76,24 @@
                                                 <span class="patient-col-key">Patient Type | Tarrif
                                                 </span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{PatientHeaderObj.PatientType}} |
-                                                    {{PatientHeaderObj.TarrifName}}</span>
+                                                <span class="patient-col-value">{{data.patientType}} |
+                                                    {{data.tariffName}}</span>
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Company Name</span>
                                                 <span>:</span>
                                                 <span class="patient-col-value"
-                                                    style="color: orange;">{{PatientHeaderObj.CompanyName}}</span>
+                                                    style="color: orange;">{{data.companyName}}</span>
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Ref-Doctor Name
                                                 </span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{PatientHeaderObj.RefDocName}}</span>
+                                                <span class="patient-col-value">{{data.refDocName}}</span>
                                             </div>
                                         </div>
                                     </div>
-                                </div> -->
+                                </div>
                             </div>
                         </mat-card>
                     </div>
@@ -106,16 +106,24 @@
                                 <div class="form-body">
                                     <div fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
 
-                                        <airmid-autocomplete [mode]="autocompleteModedepartment" (selectDdlObject)="selectChangedepartment($event)"></airmid-autocomplete>
-
-                                        <airmid-autocomplete [mode]="autocompleteModedeptdoc" (selectDdlObject)="selectChangedeptdoc($event)"></airmid-autocomplete>
-
-
+                                        <!-- <airmid-autocomplete [mode]="autocompleteModedepartment" (selectDdlObject)="selectChangedepartment($event)"></airmid-autocomplete> -->
+                                        <airmid-autocomplete label="departmentid" formControlName="departmentid" [value]="data?.departmentid"
+                                        [formGroup]="ConsdrForm"
+                                        [validations]="getValidationDeptMessages().departmentid"
+                                        [mode]="autocompleteModedepartment" (selectDdlObject)="selectChangedepartment($event)">
+                                    </airmid-autocomplete>
+                                        <!-- <airmid-autocomplete [mode]="autocompleteModedeptdoc" (selectDdlObject)="selectChangedeptdoc($event)"></airmid-autocomplete> -->
+                                        
+                                        <airmid-autocomplete label="DoctorID" formControlName="DoctorID" [value]="data?.doctorID"
+                                        [formGroup]="ConsdrForm"
+                                        [validations]="getValidationdoctorMessages().DoctorID"
+                                        [mode]="autocompleteModedeptdoc" (selectDdlObject)="selectChangedeptdoc($event)">
+                                    </airmid-autocomplete>
                                     
                                     </div>
                                 </div>
                             </div>
-                            <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" style="margin-left:400px;">
+                            <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" style="margin-left:600px;">
 
                                 <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
                                 <button class="btn btn-primary " color="accent" (click)="onSubmit()">

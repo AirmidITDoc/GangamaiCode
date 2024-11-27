@@ -22,7 +22,7 @@ export class BillingClassMasterService {
         return this._formBuilder.group({
             classId: [""],
             className: [""],
-            isDeleted: ["false"],
+            isDeleted: [""],
             // AddedBy: ["0"],
             // UpdatedBy: ["0"],
             // AddedByName: [""],
