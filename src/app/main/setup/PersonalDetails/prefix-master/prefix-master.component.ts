@@ -10,6 +10,8 @@ import { NewPrefixComponent } from "./new-prefix/new-prefix.component";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 
 
 @Component({
@@ -22,17 +24,44 @@ import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 export class PrefixMasterComponent implements OnInit {
     PrefixMasterList: any;
     msg: any;
-   
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     gridConfig: gridModel = {
         apiUrl: "Prefix/List",
         columnsList: [
-            { heading: "Code", key: "PrefixID", sort: false, align: 'left', emptySign: 'NA', width:150 },
-            { heading: "Prefix Name", key: "PrefixName", sort: true, align: 'left', emptySign: 'NA', width:450 },
-            { heading: "Gender Name", key: "SexID", sort: true, align: 'left', emptySign: 'NA', width:300 },
-            { heading: "IsActive", key: "isActive", type: 'status', align: "center", width:200 },
+            { heading: "Code", key: "prefixId", sort: false, align: 'left', emptySign: 'NA', width:150 },
+            { heading: "Prefix Name", key: "prefixName", sort: true, align: 'left', emptySign: 'NA', width:450 },
+            { heading: "Gender Name", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width:300 },
+            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" , width:200},
          
-            { heading: "Action", key: "action", align: "right", type: "action", action: [2, 3] } //Action 1-view, 2-Edit,3-delete
+            {
+                heading: "Action", key: "action", align: "right", width:100, type: gridColumnTypes.action, actions: [
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            this.onSave(data);
+                        }
+                    }, {
+                        action: gridActions.delete, callback: (data: any) => {
+                            this.confirmDialogRef = this._matDialog.open(
+                                FuseConfirmDialogComponent,
+                                {
+                                    disableClose: false,
+                                }
+                            );
+                            this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+                            this.confirmDialogRef.afterClosed().subscribe((result) => {
+                                if (result) {
+                                    let that = this;
+                                    this._PrefixMasterService.deactivateTheStatus(data.PrefixID).subscribe((response: any) => {
+                                        this.toastr.success(response.message);
+                                        that.grid.bindGridData();
+                                    });
+                                }
+                                this.confirmDialogRef = null;
+                            });
+                        }
+                    }]
+            } //Action 1-view, 2-Edit,3-delete
         ],
         sortField: "PrefixID",
         sortOrder: 0,
@@ -55,74 +84,22 @@ export class PrefixMasterComponent implements OnInit {
         this._PrefixMasterService.initializeFormGroup();
     }
 
-  
-    changeStatus(status: any) {
-        switch (status.id) {
-            case 1:
-                //this.onEdit(status.data)
-                break;
-            case 2:
-                this.onEdit(status.data)
-                break;
-            case 5:
-                this.onDeactive(status.data.PrefixID);
-                break;
-            default:
-                break;
-        }
-    }
-    onEdit(row) {
-        var m_data = {
-            PrefixID: row.PrefixID,
-            PrefixName: row.PrefixName.trim(),
-            isDeleted: JSON.stringify(row.isActive),
-        };
-        this._PrefixMasterService.populateForm(m_data);
-    }
-    onDeactive(PrefixID) {
-        debugger
-        this.confirmDialogRef = this._matDialog.open(
-            FuseConfirmDialogComponent,
-            {
-                disableClose: false,
-            }
-        );
-        this.confirmDialogRef.componentInstance.confirmMessage =
-            "Are you sure you want to deactive?";
-        this.confirmDialogRef.afterClosed().subscribe((result) => {
-            debugger
-            if (result) {
-                this._PrefixMasterService.deactivateTheStatus(PrefixID).subscribe((data: any) => {
-                    this.msg = data
-                    if (data.StatusCode == 200) {
-                        this.toastr.success(
-                            "Record updated Successfully.",
-                            "updated !",
-                            {
-                                toastClass:
-                                    "tostr-tost custom-toast-success",
-                            }
-                        );
-                        // this.getGenderMasterList();
-                    }
-                });
-            }
-            this.confirmDialogRef = null;
-        });
-    }
-
-    NewPrefix(){
+    onSave(row: any = null) {
+        let that = this;
         const dialogRef = this._matDialog.open(NewPrefixComponent,
             {
-              maxWidth: "85vw",
-              height: '65%',
-              width: '70%',
+                maxWidth: "45vw",
+                height: '35%',
+                width: '70%',
+                data: row
             });
-          dialogRef.afterClosed().subscribe(result => {
-             console.log('The dialog was closed - Insert Action', result);
-            
-          });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
+        });
     }
+   
 }
 
 export class PrefixMaster {

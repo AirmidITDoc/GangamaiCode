@@ -27,13 +27,13 @@ export class PrefixMasterService {
 
     createPrefixForm(): FormGroup {
         return this._formBuilder.group({
-            prefixID: [""],
-            PrefixName: [""],
-            SexID: [" "],
-            GenderName: [""],
-            IsActive: ["true"],
-            AddedBy: ["0"],
-            UpdatedBy: ["0"],
+            prefixId: [""],
+            prefixName: [""],
+            // SexID: [" "],
+            // GenderName: [""],
+            isActive: ["true"],
+            // AddedBy: ["0"],
+            // UpdatedBy: ["0"],
         });
     }
     initializeFormGroup() {
@@ -54,7 +54,7 @@ export class PrefixMasterService {
 
     getValidationMessages() {
         return {
-            genderName: [
+            prefixName: [
                 { name: "required", Message: "Prefix Name is required" },
                 { name: "maxlength", Message: "Prefix name should not be greater than 50 char." },
                 { name: "pattern", Message: "Special char not allowed." }
@@ -69,7 +69,6 @@ export class PrefixMasterService {
 
 
     public deactivateTheStatus(m_data) {
-        //return this._httpClient.delete("Gender?Id=" + m_data, {});
-        return this._httpClient.PostData("Prefix", m_data);
+      return this._httpClient.DeleteData("Prefix?Id=" + m_data.toString());
     }
 }
