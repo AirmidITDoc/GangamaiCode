@@ -33,9 +33,9 @@ export class SubGroupMasterComponent implements OnInit {
             { heading: "Code", key: "subGroupId", sort: true, align: 'left', emptySign: 'NA',width:150 },
             { heading: "Sub Group  Name", key: "subGroupName", sort: true, align: 'left', emptySign: 'NA',width:500 },
             { heading: "Group Name", key: "groupId", sort: true, align: 'left', emptySign: 'NA',width:200 },
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center",width:170 },
+            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center",width:160 },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:170, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:165, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);

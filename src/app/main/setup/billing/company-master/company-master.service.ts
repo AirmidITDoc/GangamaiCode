@@ -20,7 +20,7 @@ export class CompanyMasterService {
     createCompanymasterForm(): FormGroup {
         return this._formBuilder.group({
             companyId: [""],
-            CompanyName: [""],
+            CompanyName: ["", Validators.required],
             compTypeId: [""],
             TypeName: [""],
             Address: ["", Validators.required],
@@ -31,7 +31,7 @@ export class CompanyMasterService {
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
                 ],
             ],
-            PinNo: ["", [Validators.minLength(6), Validators.maxLength(6)]],
+            PinNo: ["", [Validators.minLength(6), Validators.maxLength(6)], Validators.required],
             Phone: [
                 "",
                 [

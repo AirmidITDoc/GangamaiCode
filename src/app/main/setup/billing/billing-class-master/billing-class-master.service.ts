@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
@@ -21,8 +21,8 @@ export class BillingClassMasterService {
     createClassForm(): FormGroup {
         return this._formBuilder.group({
             classId: [""],
-            className: [""],
-            isDeleted: [""],
+            className: ["", Validators.required],
+            isActive: ["true"],
             // AddedBy: ["0"],
             // UpdatedBy: ["0"],
             // AddedByName: [""],

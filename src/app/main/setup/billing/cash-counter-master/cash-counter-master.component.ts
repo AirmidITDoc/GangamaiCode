@@ -30,12 +30,12 @@ export class CashCounterMasterComponent implements OnInit {
         apiUrl: "CashCounter/List",
         columnsList: [
             { heading: "Code", key: "cashCounterId", sort: true, align: 'left', emptySign: 'NA', width:150 },
-            { heading: "Cash Counter Name", key: "cashCounterName", sort: true, align: 'left', emptySign: 'NA', width:500 },
+            { heading: "Cash Counter Name", key: "cashCounterName", sort: true, align: 'left', emptySign: 'NA', width:430 },
             { heading: "Prefix Name", key: "prefix", sort: true, align: 'left', emptySign: 'NA', width:200 },
-            { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA', width:170 },
-           // { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+            { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA', width:160 },
+           { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:160, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:170, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
@@ -84,7 +84,7 @@ export class CashCounterMasterComponent implements OnInit {
         const dialogRef = this._matDialog.open(NewCashCounterComponent,
             {
                 maxWidth: "45vw",
-                height: '35%',
+                height: '40%',
                 width: '70%',
                 data: row
             });

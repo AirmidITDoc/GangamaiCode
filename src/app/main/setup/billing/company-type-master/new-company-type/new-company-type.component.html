@@ -21,14 +21,13 @@
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                     <airmid-textbox label="Company typeName " formControlName="typeName" [value]="" [formGroup]="companttypeForm"
                         [validations]="_CompanyTypeMasterService.getValidationMessages().typeName" [maxLength]="300">
-                    </airmid-textbox>
-                   
+                    </airmid-textbox>                   
 
                 </div>
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                   
+                
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">                   
 
-                    <mat-radio-group name="isDeleted" formControlName="isDeleted" value='true'>
+                    <mat-radio-group name="isActive" formControlName="isActive" value='true'>
                         <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive
                         </mat-radio-button>
                         <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsDeactive

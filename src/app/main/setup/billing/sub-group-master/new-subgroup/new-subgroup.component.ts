@@ -29,7 +29,7 @@ export class NewSubgroupComponent implements OnInit {
         subGroupId: this.data?.subGroupId,
         subGroupName: this.data?.subGroupName.trim(),
         groupId: this.data?.groupId,
-        isDeleted: JSON.stringify(this.data?.isActive),
+        isActive: JSON.stringify(this.data?.isActive),
       };
       this.subgroupForm.patchValue(m_data);
   }
@@ -79,5 +79,7 @@ export class NewSubgroupComponent implements OnInit {
   selectChangegroupName(obj:any){
     this.groupId=obj.value;
   }
+
+ 
 
 }

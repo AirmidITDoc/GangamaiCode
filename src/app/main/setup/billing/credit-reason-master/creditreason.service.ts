@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
@@ -20,8 +20,8 @@ export class CreditreasonService {
   createCreditreasonForm(): FormGroup {
       return this._formBuilder.group({
         creditId: [""],
-        creditReason: [""],
-          isDeleted: ["false"],
+        creditReason: ["", Validators.required],
+          isActive: ["true"],
           AddedBy: ["0"],
           UpdatedBy: ["0"],
           AddedByName: [""],

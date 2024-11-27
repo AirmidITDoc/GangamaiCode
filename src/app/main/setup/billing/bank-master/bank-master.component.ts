@@ -11,6 +11,7 @@ import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { NewBankComponent } from "./new-bank/new-bank.component";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 
 
 @Component({
@@ -22,6 +23,8 @@ import { NewBankComponent } from "./new-bank/new-bank.component";
 })
 export class BankMasterComponent implements OnInit {
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    
     gridConfig: gridModel = {
         apiUrl: "BankMaster/List",
         columnsList: [
@@ -29,14 +32,30 @@ export class BankMasterComponent implements OnInit {
             { heading: "Bank Name", key: "bankName", sort: true, align: 'left', emptySign: 'NA',width:600 },
             { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center",width:200 },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:200, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:180, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data) // EDIT Records
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this.onDeactive(data.bankId); // DELETE Records
+                            this.confirmDialogRef = this._matDialog.open(
+                                FuseConfirmDialogComponent,
+                                {
+                                    disableClose: false,
+                                }
+                            );
+                            this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+                            this.confirmDialogRef.afterClosed().subscribe((result) => {
+                                if (result) {
+                                    let that = this;
+                                    this._bankService.deactivateTheStatus(data.bankId).subscribe((response: any) => {
+                                            this.toastr.success(response.Message);
+                                            that.grid.bindGridData;
+                                    });
+                                }
+                                this.confirmDialogRef = null;
+                            });
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
@@ -72,6 +91,7 @@ export class BankMasterComponent implements OnInit {
   
 
     onSave(row:any = null) {
+        let that = this;
         const dialogRef = this._matDialog.open(NewBankComponent,
         {
             maxWidth: "45vw",
@@ -81,34 +101,12 @@ export class BankMasterComponent implements OnInit {
         });
         dialogRef.afterClosed().subscribe(result => {
             if(result){
-                // this.getGenderMasterList();
-                // How to refresh Grid.
+                that.grid.bindGridData();
             }
             console.log('The dialog was closed - Action', result);
         });
     }
 
-    onDeactive(bankId) {
-        this.confirmDialogRef = this._matDialog.open(
-            FuseConfirmDialogComponent,
-            {
-                disableClose: false,
-            }
-        );
-        this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-        this.confirmDialogRef.afterClosed().subscribe((result) => {
-            if (result) {
-                this._bankService.deactivateTheStatus(bankId).subscribe((response: any) => {
-                    if (response.StatusCode == 200) {
-                        this.toastr.success(response.Message);
-                        // this.getGenderMasterList();
-                        // How to refresh Grid.
-                    }
-                });
-            }
-            this.confirmDialogRef = null;
-        });
-    }
 
     onEdit(row) {
         var m_data = {
