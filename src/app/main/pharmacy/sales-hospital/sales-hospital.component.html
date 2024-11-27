@@ -729,7 +729,7 @@
 
                                                        
                                                          <div style="padding: 15px;">
-                                                            <mat-checkbox fxFlex="15%"   [checked] formControlName="IsPurchaseWsie"
+                                                            <mat-checkbox fxFlex="15%" [checked] formControlName="IsPurchaseWsie"
                                                                 (change)="getPurchaseRateWise()">PurchaseRateWsie
                                                             </mat-checkbox>
                                                         </div>
@@ -1642,8 +1642,7 @@
                     <div style="display:flex;align-items: center;">
                         <span style="width:90px;display:inline-block;">Total GST</span>
                         <span style="margin:0 5px">:</span>
-                        <span>₹ {{reportPrintObjList[0]?.CGSTAmt + reportPrintObjList[0]?.SGSTAmt +
-                            reportPrintObjList[0]?.IGSTAmt}}</span>
+                        <span>₹ {{reportPrintObjList[0]?.TotalGst}}</span>
                     </div>
                     <div style="display:flex;align-items: center;">
                         <span style="width:90px;display:inline-block;">Round off</span>
@@ -1865,8 +1864,7 @@
                     <div style="display:flex;align-items: center;">
                         <span style="width:90px;display:inline-block;">Total GST</span>
                         <span style="margin:0 5px">:</span>
-                        <span>₹ {{reportPrintObjList[0]?.CGSTAmt + reportPrintObjList[0]?.SGSTAmt +
-                            reportPrintObjList[0]?.IGSTAmt}}</span>
+                        <span>₹ {{reportPrintObjList[0]?.TotalGst}}</span>
                     </div>
                     <div style="display:flex;align-items: center;">
                         <span style="width:90px;display:inline-block;">Round off</span>

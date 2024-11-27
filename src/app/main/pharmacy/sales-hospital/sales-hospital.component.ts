@@ -4441,7 +4441,7 @@ export class Printsal {
   HospitalEmailId: any;
   SalesReturnNo: any;
   RoundOff: any;
-
+  TotalGst: any;
 
   Consructur(Printsal) {
     this.PatientName = Printsal.PatientName || '';
@@ -4521,6 +4521,7 @@ export class Printsal {
     this.ConversionFactor = Printsal.ConversionFactor || '';
     this.SalesReturnNo = Printsal.SalesReturnNo || 0;
     this.RoundOff = Printsal.RoundOff || 0;
+    this.TotalGst = Printsal.TotalGst || 0;
   }
 }
 
