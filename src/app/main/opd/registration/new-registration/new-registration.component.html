@@ -36,11 +36,11 @@
                                         <!-- <airmid-autocomplete [label]="'Prefix'"  [ddlCtrl]="f.PrefixId"  [selectedValue]="data?.prefixId"
                                          [mode]="autocompleteModeprefix" (selectDdlObject)="selectChangeprefix($event)"></airmid-autocomplete> -->
                                         <airmid-autocomplete label="Prefix" formControlName="PrefixId"
-                                            [value]="data?.prefixId" [formGroup]="personalFormGroup"
+                                             [formGroup]="personalFormGroup"
                                             [validations]="getValidationMessages().PrefixId"
-                                            [mode]="autocompleteModeprefix"
-                                            (selectDdlObject)="selectChangeprefix($event)">
+                                            [mode]="autocompleteModeprefix">
                                         </airmid-autocomplete>
+                                    test=>    {{personalFormGroup.controls["PrefixId"].value}}
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
