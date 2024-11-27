@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { gridRequest } from "app/core/models/gridRequest";
 import { ApiCaller } from "app/core/services/apiCaller";
 
@@ -21,10 +21,10 @@ export class SubGroupMasterService {
     createSubgroupForm(): FormGroup {
         return this._formBuilder.group({
             subGroupId: [""],
-            subGroupName: [""],
+            subGroupName: ["", Validators.required],
             groupId: [""],
             //GroupName: [""],
-            isDeleted: ["false"],
+            isActive: ["true"],
             // UpdatedBy: ["0"],
             // AddedByName: [""],
         });
@@ -50,6 +50,13 @@ export class SubGroupMasterService {
             ]
         };
     }
+    // getValidationGroupName(){
+    //     return{
+    //       groupId:[
+    //         { name: "required", Message: "Group Name is required" }
+    //       ]
+    //     }
+    //   }
 
     public SubGroupMasterSave(Param: any, showLoader = true) {
         if (Param.subGroupId) {

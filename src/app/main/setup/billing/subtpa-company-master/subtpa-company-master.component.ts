@@ -28,6 +28,7 @@ import { NewSubtapComponent } from "./new-subtap/new-subtap.component";
 export class SubtpaCompanyMasterComponent implements OnInit {
     
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
     gridConfig: gridModel = {
         apiUrl: "SubTpaCompany/List",
@@ -54,7 +55,23 @@ export class SubtpaCompanyMasterComponent implements OnInit {
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this.onDeactive(data.subCompanyId); // DELETE Records
+                            this.confirmDialogRef = this._matDialog.open(
+                                FuseConfirmDialogComponent,
+                                {
+                                    disableClose: false,
+                                }
+                            );
+                            this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+                            this.confirmDialogRef.afterClosed().subscribe((result) => {
+                                if (result) {
+                                    let that = this;
+                                    this._subtpacompanyService.deactivateTheStatus(data.subCompanyId).subscribe((response: any) => {
+                                            this.toastr.success(response.Message);
+                                            that.grid.bindGridData();
+                                    });
+                                }
+                                this.confirmDialogRef = null;
+                            });
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
@@ -85,30 +102,8 @@ export class SubtpaCompanyMasterComponent implements OnInit {
             });
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
-                // that.grid.bindGridData();
+                that.grid.bindGridData();
             }
-        });
-    }
-
-    onDeactive(subCompanyId){
-        this.confirmDialogRef = this._matDialog.open(
-            FuseConfirmDialogComponent,
-            {
-                disableClose: false,
-            }
-        );
-        this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-        this.confirmDialogRef.afterClosed().subscribe((result) => {
-            if (result) {
-                this._subtpacompanyService.deactivateTheStatus(subCompanyId).subscribe((response: any) => {
-                    if (response.StatusCode == 200) {
-                        this.toastr.success(response.Message);
-                        // this.getGenderMasterList();
-                        // How to refresh Grid.
-                    }
-                });
-            }
-            this.confirmDialogRef = null;
         });
     }
     

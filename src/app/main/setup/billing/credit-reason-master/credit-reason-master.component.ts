@@ -29,7 +29,7 @@ export class CreditReasonMasterComponent implements OnInit {
               { heading: "credit Reason ", key: "creditReason", sort: true, align: 'left', emptySign: 'NA', width:600 },
               { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center",width:200 },
               {
-                  heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:200, actions: [
+                  heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:190, actions: [
                       {
                           action: gridActions.edit, callback: (data: any) => {
                               this.onSave(data);

@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { gridRequest } from "app/core/models/gridRequest";
 import { ApiCaller } from "app/core/services/apiCaller";
 
@@ -22,10 +22,10 @@ export class CashCounterMasterService {
     createcashcounterForm(): FormGroup {
         return this._formBuilder.group({
             cashCounterId: [""],
-            cashCounterName: [""],
-            prefix: [""],
-            billNo: [""],
-           // isDeleted: ["false"],
+            cashCounterName: ["", Validators.required],
+            prefix: ["", Validators.required],
+            billNo: ["", Validators.required],
+           isActive: ["true"],
             // AddedBy: ["0"],
             // UpdatedBy: ["0"],
         });
@@ -44,10 +44,21 @@ export class CashCounterMasterService {
     getValidationMessages() {
         return {
             cashCounterName: [
-                { name: "required", Message: "cashCounter Name is required" },
-                { name: "maxlength", Message: "cashCounter name should not be greater than 50 char." },
+                { name: "required", Message: "CashCounter Name is required" },
+                { name: "maxlength", Message: "CashCounter name should not be greater than 50 char." },
                 { name: "pattern", Message: "Special char not allowed." }
-            ]
+            ],
+            prefix: [
+                { name: "required", Message: "Prefix Name is required" },
+                { name: "maxlength", Message: "Prefix name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ],
+            billNo: [
+                { name: "required", Message: "BillNo Name is required" },
+                { name: "maxlength", Message: "BillNo name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ],
+
         };
     }
 

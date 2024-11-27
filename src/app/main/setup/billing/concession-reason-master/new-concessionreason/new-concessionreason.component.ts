@@ -26,7 +26,7 @@ export class NewConcessionreasonComponent implements OnInit {
       var m_data = {
         concessionId: this.data?.concessionId,
         concessionReason: this.data?.concessionReason.trim(),
-          isDeleted: JSON.stringify(this.data?.isActive),
+        isActive: JSON.stringify(this.data?.isActive),
       };
       this.concessionForm.patchValue(m_data);
   }

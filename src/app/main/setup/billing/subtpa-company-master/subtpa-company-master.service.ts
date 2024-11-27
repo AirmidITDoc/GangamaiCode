@@ -30,7 +30,7 @@ export class SubtpaCompanyMasterService {
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
                 ],
             ],
-            PinNo: ["", [Validators.minLength(6), Validators.maxLength(6)]],
+            PinNo: ["", [Validators.required,Validators.minLength(6), Validators.maxLength(6)]],
             Phone: [
                 "",
                 [
@@ -53,12 +53,13 @@ export class SubtpaCompanyMasterService {
                 "",
                 [
                     Validators.required,
-                    Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
+                    // Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
+                    Validators.pattern("^[+]?[0-9]*[- ()0-9]*$"),
                     Validators.minLength(10),
                     Validators.maxLength(15),
                 ],
             ],
-            isDeleted: ["false"],
+            isActive: ["true"],
             // AddedBy: ["0"],
             // UpdatedBy: ["0"],
             // IsCancelled: ["false"],

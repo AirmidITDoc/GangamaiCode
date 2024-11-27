@@ -32,17 +32,23 @@
 
                     <airmid-autocomplete [mode]="autocompleteModegroupName" (selectDdlObject)="selectChangegroupName($event)" ></airmid-autocomplete>
 
+                    <!-- <airmid-autocomplete [mode]="autocompleteModegroupName" formControlName="groupId" 
+                        (selectDdlObject)="selectChangegroupName($event)"
+                        [value]="data?.groupId" [formGroup]="subgroupForm"
+                        [validations]="getValidationGroupName().groupId">
+                    </airmid-autocomplete> -->
+                    
                 </div>
 
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-
                     
-                    <!-- <mat-radio-group name="isDeleted" formControlName="isDeleted" value='true'>
+                    <mat-radio-group name="isActive" formControlName="isActive" value='true'>
                         <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive
                         </mat-radio-button>
                         <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsDeactive
                         </mat-radio-button>
-                    </mat-radio-group> -->
+                    </mat-radio-group>
+
                 </div>
             </form>
         </div>
