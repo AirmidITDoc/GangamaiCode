@@ -151,7 +151,7 @@ export class AirmidAutocompleteComponent implements OnInit {
         
     }
     public onDdlChange($event){
-        this.formGroup.controls[this.formControlName].value=$event;
+        this.formGroup.controls[this.formControlName].setValue($event.value);
         this.selectDdlObject.emit($event.value);
     }
 }
