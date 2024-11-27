@@ -14,7 +14,8 @@
     <form [formGroup]="_serviceMasterService.myform" style="padding-left: 10px; padding-right: 10px;">
         <input type="hidden" name="ServiceId" formControlName="ServiceId" style="top:155px;">
 
-        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="b-service-master" style="padding-top: 10px;">
+        <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="b-service-master" style="padding-top: 10px;"> -->
+        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
             <!-- <mat-form-field appearance="outline" fxFlex>
                 <mat-label>Group Name</mat-label>
                 <mat-select formControlName="GroupId" placeholder="Bank" #singleSelect disableOptionCentering="true"
@@ -136,69 +137,8 @@
                     <div style="min-width: 100%;">
 
                         <div style="max-width:1800px; overflow-x: scroll; overflow-y: hidden;">
-                            <mat-table #table matSort [dataSource]="DSServicedetailList"
-                                [@animateStagger]="{value:'50'}" style="overflow:auto;height: 300px;">
-
-
-                                <ng-container matColumnDef="ClassId">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.ClassId}}
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="ClassName">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Class Name</mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.ClassName}}
-                                    </mat-cell>
-                                </ng-container>
-
-
-                                <ng-container matColumnDef="ClassRate">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ClassRate
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                        <mat-form-field appearance="legacy">
-                                            <input matInput [(ngModel)]="element.ClassRate" OnlyNumber
-                                                (keyup)="gettableclassrate(element,$event.value)"
-                                                (keypress)="keyPressCharater($event)">
-                                        </mat-form-field>
-                                    </mat-cell>
-                                </ng-container>
-
-                                <!-- <ng-container matColumnDef="action" stickyEnd>
-                                <mat-header-cell *matHeaderCellDef class="table-actions" style="color: white;">
-                                    Action
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let row">
-                                    <button mat-icon-button (click)="onEdit(row)"><mat-icon
-                                            title="Edit Menu">launch</mat-icon></button>
-                                    <button mat-icon-button (click)="onDeactive(row.BankId)"
-                                        color="warn"><mat-icon>delete_outline</mat-icon></button>
-                                </mat-cell>
-                            </ng-container> -->
-
-                                <ng-container matColumnDef="loading">
-                                    <mat-footer-cell *matFooterCellDef colspan="6">
-                                        loading data...
-                                    </mat-footer-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="noData">
-                                    <mat-footer-cell *matFooterCellDef colspan="6">
-                                        no data found...
-                                    </mat-footer-cell>
-                                </ng-container>
-
-                                <mat-header-row class="accent"
-                                    *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                                <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
-                                    [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                <mat-footer-row *matFooterRowDef="['loading']"
-                                    [ngClass]="{'hide':DSServicedetailList!=null}"></mat-footer-row>
-                                <mat-footer-row *matFooterRowDef="['noData']"
-                                    [ngClass]="{'hide':!(DSServicedetailList!=null && DSServicedetailList.data.length==0)}"></mat-footer-row>
-                            </mat-table>
+                            <airmid-table [gridConfig]="gridConfig" class="content">
+                            </airmid-table>
 
                         </div>
                     </div>

@@ -35,7 +35,7 @@ export class TestmasterComponent implements OnInit {
     
     
     gridConfig: gridModel = {
-        apiUrl: "Gender/List",
+        apiUrl: "PathTestMaster/List",
         columnsList: [
             { heading: "Code", key: "testId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Test Name", key: "testName", sort: true, align: 'left', emptySign: 'NA' },

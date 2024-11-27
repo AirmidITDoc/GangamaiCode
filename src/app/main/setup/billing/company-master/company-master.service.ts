@@ -20,7 +20,7 @@ export class CompanyMasterService {
     createCompanymasterForm(): FormGroup {
         return this._formBuilder.group({
             companyId: [""],
-            companyName: [""],
+            CompanyName: [""],
             compTypeId: [""],
             TypeName: [""],
             Address: ["", Validators.required],
@@ -32,7 +32,7 @@ export class CompanyMasterService {
                 ],
             ],
             PinNo: ["", [Validators.minLength(6), Validators.maxLength(6)]],
-            PhoneNo: [
+            Phone: [
                 "",
                 [
                     Validators.required,
@@ -94,6 +94,6 @@ export class CompanyMasterService {
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.PostData("CompanyMaster", m_data);
+        return this._httpClient.DeleteData("CompanyMaster?Id=" + m_data.toString());
     }
 }

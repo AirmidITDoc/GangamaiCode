@@ -49,7 +49,7 @@
                                             <ng *ngFor="let sta of row.actions">
                                                 <button mat-icon-button *ngIf="sta.action == GridAction.view"
                                                     (click)="sta.callback(element)" style="color:blue;">
-                                                    <mat-icon title="View">eyes</mat-icon>
+                                                    <mat-icon title="View">remove_red_eye</mat-icon>
                                                 </button>
                                                 <button mat-icon-button *ngIf="sta.action == GridAction.edit"
                                                     (click)="sta.callback(element)" style="color:black;">
@@ -59,6 +59,10 @@
                                                     (click)="sta.callback(element)" color="warn">
                                                     <mat-icon>delete_outline</mat-icon>
                                                 </button>
+                                                <button mat-icon-button *ngIf="sta.action == GridAction.print"
+                                                    (click)="sta.callback(element)" color="#5e35b1">
+                                                    <mat-icon>print</mat-icon>
+                                                </button>                                                
                                             </ng>
                                         </ng>
                                     </ng>

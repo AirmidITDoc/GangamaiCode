@@ -75,7 +75,7 @@ export class ServiceMasterService {
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.PostData("bank", m_data);
+        return this._httpClient.DeleteData("bank?Id=" + m_data.toString());
     }
 
     populateForm(param) {

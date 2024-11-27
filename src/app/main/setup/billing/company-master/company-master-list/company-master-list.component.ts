@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewEncapsulation } from "@angular/core";
+import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
 import { ReplaySubject, Subject, observable } from "rxjs";
 import { CompanyMasterService } from "../company-master.service";
@@ -10,7 +10,7 @@ import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
 
 import { MatSelect } from "@angular/material/select";
-import { size } from "lodash";
+import { size, values } from "lodash";
 import { AuthenticationService } from "app/core/services/authentication.service";
 
 
@@ -29,13 +29,13 @@ export class CompanyMasterListComponent implements OnInit {
     vPincode:any;
     vPhone:any;    
     vMobile:any;
-    vFaxNo:any; 
+    vFaxNo:any;
+    vCompanyName:any; 
 
     // new Api
-    autocompleteModetypeName:string="TypeName";
+    autocompleteModetypeName:string="CompanyType";
     autocompleteModetariff: string = "Tariff";
-    autocompleteModeCompany: string = "Company";
-    autocompleteModecity:string="City";
+        autocompleteModecity:string="City";
 
     companyForm: FormGroup;
 
@@ -47,50 +47,44 @@ export class CompanyMasterListComponent implements OnInit {
     ) { }
    
     ngOnInit(): void {
-        // this.companyForm = this._CompanyMasterService.createCompanymasterForm();
-        // var m_data = {
-        //   itemCategoryId: this.data?.itemCategoryId,
-        //   itemCategoryName: this.data?.itemCategoryName.trim(),
-        //   itemTypeId: this.data?.itemTypeId,
-        // //   isconsolidated: JSON.stringify(this.data?.isconsolidated),
-        // //   isConsolidatedDR: JSON.stringify(this.data?.isConsolidatedDR),
-        // // isDeleted: JSON.stringify(this.data?.isActive),
-        // };
-        // this.companyForm.patchValue(m_data);
+        this.companyForm = this._CompanyMasterService.createCompanymasterForm();
         if(this.data){
             this.registerObj=this.data.registerObj;
 
             this.vAddress=this.data.registerObj.Address;
-            this.vMobile= this.data.registerObj.Mobile.trim();
+            // this.vMobile= this.data.registerObj.Mobile.trim();
             this.vPhone=this.data.registerObj.Phone.trim();
-            this.vPincode = (this.registerObj.PinCode);
-            this.vFaxNo=this.data.registerObj.Fax;
+            this.vPincode = this.data.registerObj.PinCode;
+            // this.vFaxNo=this.data.registerObj.Fax;
         }
     }
-    onSubmit() {
-        // if (this.companyForm.valid) {
-        //   debugger
-        //     this._CompanyMasterService.companyMasterSave(this.companyForm.value).subscribe((response) => {
-        //         this.toastr.success(response.message);
-        //         this.onClear(true);
-        //     }, (error) => {
-        //         this.toastr.error(error.message);
-        //     });
-        // }
-
-        this.companyForm = this._CompanyMasterService.createCompanymasterForm();
-        var m_data = 
+    Savebtn:boolean=false;
+    onSubmit() {  
+        debugger       
+        if(!this.companyForm.get("companyId").value){
+            debugger
+        var m_data =
             {
                 "companyId": 0,
-                "compTypeId": 0,
-                "companyName": "string",
-                "address": "string",
-                "city": "string",
-                "pinNo": "string",
-                "phoneNo": this._CompanyMasterService.myform.get("PhoneNo").value || ""
+                "compTypeId": this.typeId || 0,
+                "companyName":this.companyForm.get("CompanyName").value || " ",
+                "address": this.companyForm.get("Address").value || " ",
+                "city": this.cityName || "ABC",
+                "pinNo": this.companyForm.get("PinNo").value || "",
+                "phoneNo": this.companyForm.get("Phone").value.toString() || "0"
               }
-              console.log(m_data)
-        this.companyForm.patchValue(m_data);
+
+              console.log("Company Insert:",m_data)
+
+            this._CompanyMasterService.companyMasterSave(m_data).subscribe((response) => {
+            this.toastr.success(response.message);
+           this.onClear(true);
+          }, (error) => {
+            this.toastr.error(error.message);
+          });
+        } else{
+            // update
+        }
     }
   
     onClear(val: boolean) {
@@ -100,29 +94,62 @@ export class CompanyMasterListComponent implements OnInit {
 
     // new api
     companyId=0;
+    companyName='';
     typeId=0;
     tariffId=0;
     cityId=0;
     cityName='';
 
-    selectChangeCompany(obj: any){
-        console.log(obj);
-        this.companyId=obj.value
-      }
+    
 
     selectChangetypeName(obj:any){
-        this.typeId=obj.value;
+        this.typeId=obj;
     }
 
     selectChangetariff(obj: any){
         console.log(obj);
-        this.tariffId=obj.value
+        this.tariffId=obj
     }
 
     selectChangecity(obj: any){
         console.log(obj);
-        this.cityId=obj.value
-        this.cityName=obj.text
+        this.cityId=obj
+        // this.cityName=obj.text
+        // console.log("cityname:", obj.text)
+      }
+
+      onClose(){
+        this.companyForm.reset();
+        this.dialogRef.close();
+      }
+
+    @ViewChild('pin') pin: ElementRef;
+    @ViewChild('phone') phone: ElementRef;
+    @ViewChild('address') address: ElementRef;
+    @ViewChild('company') company: ElementRef;
+
+    public onEnterAddress(event): void {
+        if (event.which === 13) {
+           this.address.nativeElement.focus();
+        }
+      }
+  
+      public onEnterPin(event): void {
+        if (event.which === 13) {
+           this.pin.nativeElement.focus();
+        }
+      }
+  
+      public onEnterPhone(event): void {
+        if (event.which === 13) {
+           this.phone.nativeElement.focus();
+        }
+      }
+
+      public onEnterCompany(event): void {
+        if (event.which === 13) {
+           this.company.nativeElement.focus();
+        }
       }
   }
   
