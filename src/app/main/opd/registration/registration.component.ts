@@ -56,18 +56,23 @@ export class RegistrationComponent implements OnInit {
             { heading: "IsCharity", key: "isCharity", sort: true, align: 'left', emptySign: 'NA', width: 50 },
             //  { heading: "IsConsolidatedDr", key: "isConsolidatedDr", sort: true, align: 'left', emptySign: 'NA' },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, width: 130, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
                         }
                     },
                     {
+                        action: gridActions.view, callback: (data: any) => {
+                            // Set the view record logic.
+                        }
+                    },                    
+                    {
                         action: gridActions.print, callback: (data: any) => {
                             this.getAdmittedPatientCasepaperview(data);
                         }
                     },
-                     {
+                    {
                         action: gridActions.delete, callback: (data: any) => {
                             this.confirmDialogRef = this._matDialog.open(
                                 FuseConfirmDialogComponent,
