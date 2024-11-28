@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ViewEncapsulation, HostListener, Inject }
 import { ServiceMaster, ServiceMasterComponent, Servicedetail } from "../service-master.component";
 import { fuseAnimations } from "@fuse/animations";
 import { MatTableDataSource } from "@angular/material/table";
-import { FormControl, Validators } from "@angular/forms";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ReplaySubject, Subject } from "rxjs";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { ServiceMasterService } from "../service-master.service";
@@ -28,7 +28,7 @@ import { compact } from "lodash";
   })
   
   export class ServiceMasterFormComponent implements OnInit {
-   
+    serviceform:FormGroup;
     gridConfig: gridModel = {
       apiUrl: "ClassMaster/List",
   columnsList: [
@@ -139,7 +139,7 @@ private _onDestroy = new Subject<void>();
     ];
     
   ngOnInit(): void {
-
+this.serviceform=this._serviceMasterService.createServicemasterForm();
   //  this.getGroupNameCombobox();
   //  this.getDoctorNameCombobox();
   //  this.getSubgroupNameCombobox();

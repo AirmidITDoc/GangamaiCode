@@ -200,6 +200,13 @@ getRegistrationValidationMessages() {
       };
   }
 
+  public getAppointmenttemplateReport(Param: any, showLoader = true) {
+    
+        return this._httpClient1.PutData("Report/ViewReport" +  Param, showLoader);
+    
+}
+  
+
 }
 
 

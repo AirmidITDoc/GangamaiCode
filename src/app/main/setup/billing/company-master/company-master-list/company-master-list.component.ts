@@ -119,6 +119,22 @@ export class CompanyMasterListComponent implements OnInit {
         // console.log("cityname:", obj.text)
       }
 
+      getValidationCityMessages() {
+        return {
+          City: [
+                { name: "required", Message: "City Name is required" }
+            ]
+        };
+    }
+
+    getValidationtariffessages() {
+      return {
+        TariffId: [
+              { name: "required", Message: "Tariff Name is required" }
+          ]
+      };
+  }
+
       onClose(){
         this.companyForm.reset();
         this.dialogRef.close();

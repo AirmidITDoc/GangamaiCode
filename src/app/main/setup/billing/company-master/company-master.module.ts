@@ -61,6 +61,6 @@ const routes: Routes = [
     ],
     providers: [CompanyMasterService,DatePipe],
 
-    entryComponents: [CompanyMasterService],
+    entryComponents: [CompanyMasterComponent],
 })
 export class CompanyMasterModule {}

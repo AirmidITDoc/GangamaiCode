@@ -47,6 +47,14 @@ export class NewStateMasterComponent implements OnInit {
       }
   }
 
+  getValidationCountryMessages() {
+    return {
+      countryId: [
+            { name: "required", Message: "Country Name is required" }
+        ]
+    };
+}
+
   selectChangecountry(obj: any){
     console.log(obj);
     this.countryId=obj.value

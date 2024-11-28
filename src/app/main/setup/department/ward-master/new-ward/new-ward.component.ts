@@ -16,9 +16,9 @@ export class NewWardComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public toastr: ToastrService) { }
 
-    autocompleteModelocation: string = "locationName";
+    autocompleteModelocation: string = "Location";
     autocompleteModeclass: string = "Class";
-    autocompleteModeroomType: string = "Room"
+    autocompleteModeroomId: string = "Room"; 
 
     locationId =0;
     classId = 0;
@@ -51,6 +51,33 @@ export class NewWardComponent implements OnInit {
         });
     }
 }
+
+getValidationlocationMessages() {
+  return {
+    locationId: [
+          { name: "required", Message: "Location Name is required" }
+      ]
+  };
+}
+
+
+getValidationclassMessages() {
+  return {
+    classId: [
+          { name: "required", Message: "Class Name is required" }
+      ]
+  };
+}
+
+
+getValidationroomMessages() {
+  return {
+    roomId: [
+          { name: "required", Message: "Room Name is required" }
+      ]
+  };
+}
+
 
 selectChangelocation(obj: any){
     console.log(obj);

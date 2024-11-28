@@ -20,10 +20,10 @@ export class AreaMasterService {
 
     createAreaForm(): FormGroup {
         return this._formBuilder.group({
-            AreaId: [""],
-            AreaName: [""],
-            CityId: [""],
-            CityName: [""],
+            areaId: [""],
+            areaName: [""],
+            cityId: [""],
+            cityName: [""],
             IsActive: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
