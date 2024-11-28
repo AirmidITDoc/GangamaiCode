@@ -27,6 +27,7 @@
                         [validations]="_AreaMasterService.getValidationMessages().areaName"
                         [maxLength]="300">
                     </airmid-textbox> 
+                    <airmid-autocomplete [mode]="autocompleteModecity" (selectDdlObject)="selectChangecity($event)"></airmid-autocomplete>
                 </div>
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                     <mat-radio-group name="isActive" formControlName="isActive" value='false'>

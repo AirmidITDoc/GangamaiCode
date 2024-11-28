@@ -19,6 +19,9 @@ export class NewAreaComponent implements OnInit {
       public toastr: ToastrService
   ) { }
 
+  autocompleteModecity: string = "City";
+
+  cityId = 0;
 
   ngOnInit(): void {
       this.areaForm = this._AreaMasterService.createAreaForm();
@@ -43,5 +46,10 @@ export class NewAreaComponent implements OnInit {
   onClear(val: boolean) {
       this.areaForm.reset();
       this.dialogRef.close(val);
+  }
+
+  selectChangecity(obj: any){
+    console.log(obj);
+    this.cityId=obj
   }
 }
