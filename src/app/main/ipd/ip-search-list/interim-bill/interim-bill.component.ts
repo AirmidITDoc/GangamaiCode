@@ -854,7 +854,7 @@ export class InterimBillComponent implements OnInit {
   }
 
   calculatePersc() { 
-    if (this.InterimFormGroup.get("discPer").value > 0) {
+    if (this.InterimFormGroup.get("discPer").value > 0 || this.InterimFormGroup.get("discPer").value < 101) {
       let discAmt = Math.round((this.vTotalBillAmt * parseInt(this.formDiscPersc)) / 100);
       this.b_disAmount = discAmt;
       this.vNetAmount = (this.vTotalBillAmt - discAmt).toString();
@@ -865,8 +865,10 @@ export class InterimBillComponent implements OnInit {
       this.InterimFormGroup.get('ConcessionId').enable;
       // this.Consession = false;
     }
-    if (this.InterimFormGroup.get("discPer").value == 0 || this.InterimFormGroup.get("discPer").value == '') {
+    if (this.InterimFormGroup.get("discPer").value == 0 || this.InterimFormGroup.get("discPer").value == ''
+     || this.InterimFormGroup.get("discPer").value > 100) {
       this.b_disAmount = 0;
+      this.formDiscPersc = '';
       this.vNetAmount = this.vTotalBillAmt;
       this.InterimFormGroup.get('NetpayAmount').setValue(this.vNetAmount);
       this.ConShow = false;

@@ -12,25 +12,30 @@
                 Issue tracker
             </span>
         </div>
-        <button mat-raised-button style="background-color: white;color: brown;margin-left:400px !important" (click)="CustomerList()">
-            Customer Info List
-        </button>
 
-        <button mat-raised-button (click)="NewCustomer()" fxLayoutAlign="center center" class="py-8">
-            <mat-icon>add</mat-icon>New Customer
-        </button>
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
+        
+            <button mat-raised-button style="background-color: white;color: brown;" (click)="CustomerList()">
+                Customer Info List
+            </button>
+        
+            <button mat-raised-button (click)="NewCustomer()" style="background-color: white;color: brown;">
+                <mat-icon>add</mat-icon>New Customer
+            </button>
+        
+            <button mat-raised-button style="background-color: white;color: brown;" (click)="CustomerbillList()">
+                Customer Bill List
+            </button>
+        
+            <button mat-raised-button style="background-color: white;color: brown;" (click)="NewCustomerBill()">
+                <mat-icon>add</mat-icon> New Bill
+            </button>
+        
+            <button mat-raised-button style="background-color: white;color: brown;" (click)="OpenPopUp()">
+                <mat-icon>add</mat-icon>New Issue tracker
+            </button>
+        </div>
 
-        <button mat-raised-button style="background-color: white;color: brown;" (click)="CustomerbillList()">
-            Customer Bill List
-        </button>
-
-        <button mat-raised-button style="background-color: white;color: brown;" (click)="NewCustomerBill()">
-            New Bill
-        </button>
-
-        <button mat-raised-button style="background-color: white;color: brown;" (click)="OpenPopUp()">
-            New Issue tracker
-        </button>
     </mat-toolbar>
 
 
@@ -147,20 +152,20 @@
                                 <div class="info-badge-top pb-2 border-bottom">
                                     <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
                                         <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                                            <mat-icon class="pill red-600 s-16">circle</mat-icon>
-                                            <span>: Open</span>
-                                        </div>
+                                            <mat-icon class="pill red-600 s-16">circle</mat-icon> 
+                                            <span class="red-600-fg"> Open : {{VNewcount}}</span>
+                                        </div> 
                                         <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
                                             <mat-icon class="pill blue-600 s-16">circle</mat-icon>
-                                            <span>: Work In Progress</span>
+                                            <span class="blue-600-fg"> Work In Progress : {{vWorkInProgressCount}}</span> 
                                         </div>
                                         <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
                                             <mat-icon class="pill orange-600 s-16">circle</mat-icon>
-                                            <span>: Hold</span>
+                                            <span class="orange-600-fg"> Hold : {{vHoldCount}}</span> 
                                         </div>
                                         <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
                                             <mat-icon class="pill green-600 s-16">circle</mat-icon>
-                                            <span>: Close</span>
+                                            <span class="green-600-fg"> Close : {{vCloseCount}}</span>  
                                         </div>
                         
                                     </div>
@@ -371,10 +376,10 @@
                                         <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;" class="w-90">Action
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" class="w-90">
-                                            <button mat-icon-button (click)="onEdit(contact)" matTooltip="Edit">
+                                            <button mat-icon-button (click)="onEdit(contact)" matTooltip="Edit"
+                                            *ngIf="contact.StatusId != '2'">
                                                 <mat-icon>edit</mat-icon>
-                                            </button>
-                        
+                                            </button> 
                                         </mat-cell>
                                     </ng-container>
                         

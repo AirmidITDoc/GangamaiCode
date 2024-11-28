@@ -274,7 +274,7 @@
                                         <input name="formDiscPer" formControlName="discPer"
                                             (keyup.enter)="setFocus('discAmount')" id="discPer" placeholder="Disc (%)"
                                             (keyup)="calculatePersc()" matInput [(ngModel)]="formDiscPersc" type="text" OnlyNumber
-                                            maxlength="2"  (keypress)="keyPressCharater($event)"  >
+                                            maxlength="3"  (keypress)="keyPressCharater($event)"  >
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex="10%">

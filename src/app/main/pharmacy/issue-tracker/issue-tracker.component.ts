@@ -94,7 +94,38 @@ export class IssueTrackerComponent implements OnInit {
     // console.log('dateTimeObj==', dateTimeObj);
     this.dateTimeObj = dateTimeObj;
   }
+  Vtotalcount = 0;
+  VNewcount = 0;
+  vCloseCount = 0;
+  vHoldCount = 0;
+  vWorkInProgressCount = 0;
+  IssuelistCount(data) {
+      this.Vtotalcount = 0;
+      this.VNewcount = 0;
+      this.vCloseCount = 0;
+      this.vHoldCount = 0;
+      this.vWorkInProgressCount = 0;
+      // console.log(data)
+      this.Vtotalcount;
 
+      for (var i = 0; i < data.length; i++) {
+          if (data[i].StatusId == 1) {
+              this.VNewcount = this.VNewcount + 1;
+          }
+          else if (data[i].StatusId == 2) {
+              this.vCloseCount = this.vCloseCount + 1;
+          }
+          if (data[i].StatusId ==  4) {
+              this.vHoldCount = this.vHoldCount + 1;
+          }
+          if (data[i].StatusId == 3) {
+              this.vWorkInProgressCount = this.vWorkInProgressCount + 1;
+          }
+
+          this.Vtotalcount = this.Vtotalcount + 1;
+      }
+
+  }
   getIssuTrackerList() { 
     let StatusId = 0
     if(this._IssueTracker.MyFrom.get('IssueStatus').value){
@@ -123,6 +154,9 @@ export class IssueTrackerComponent implements OnInit {
     this._IssueTracker.getIssuTrackerList(vdata).subscribe(data => {
       this.dsIssueTracker.data = data as IssueTrackerList[];
       console.log(this.dsIssueTracker.data)
+      if (this.dsIssueTracker.data.length > 0) {
+        this.IssuelistCount(this.dsIssueTracker.data);
+    }
       this.dsIssueTracker.sort = this.sort;
       this.dsIssueTracker.paginator = this.paginator;
       this.sIsLoading = '';

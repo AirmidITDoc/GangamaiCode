@@ -261,11 +261,22 @@ export class BedTransferComponent implements OnInit {
       return;
     }
     if ((this.vBedId == '' || this.vBedId == null || this.vBedId == undefined)) {
-      this.toastr.warning('Please select valid Bed', 'Warning !', {
+      this.toastr.warning('Please select BedName', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
+    } 
+
+    if (this.Bedtransfer.get('BedId').value) {
+      if (!this.BedList.some(item => item.BedName === this.Bedtransfer.get('BedId').value.BedName)) {
+        this.toastr.warning('Please Select valid BedName', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
     }
+ 
+  
     if ((this.vClassId == '' || this.vClassId == null || this.vClassId == undefined)) {
       this.toastr.warning('Please select Class', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',

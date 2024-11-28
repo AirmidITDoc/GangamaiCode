@@ -675,6 +675,18 @@ onTemplDetAdd(){
       });
       return;
     }
+    if (this.vHeight == '' || this.vHeight == undefined || this.vHeight == null || this.vHeight == '') {
+      this.toastr.warning('Please enter Height', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if (this.vWeight == '' || this.vWeight == undefined || this.vWeight == null || this.vWeight == '') {
+      this.toastr.warning('Please enter Weight', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
     if (this.dsItemList.data.length == 0) {
       Swal.fire('Error !', 'Please add prescription', 'error');
       return
