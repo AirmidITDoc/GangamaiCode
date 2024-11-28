@@ -33,10 +33,10 @@ export class CityMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "CityMaster/List",
         columnsList: [
-            { heading: "Code", key: "cityId", sort: true, align: 'left', emptySign: 'NA', width:150 },
+        { heading: "Code", key: "cityId", sort: true, align: 'left', emptySign: 'NA', width:150 },
         { heading: "City Name", key: "cityName", sort: true, align: 'left', emptySign: 'NA', width:400 },
         { heading: "State Name", key: "stateId", sort: true, align: 'left', emptySign: 'NA', width:400 },
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width:100 },
+        { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width:100 },
             {
                 heading: "Action", key: "action", align: "right", width:100, type: gridColumnTypes.action, actions: [
                     {

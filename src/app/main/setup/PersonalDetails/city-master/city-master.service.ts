@@ -24,7 +24,7 @@ export class CityMasterService {
             // StateName: [""],
             // countryId: [""],
             // CountryName: [""],
-             isActive: [""],
+             isActive: ["true"],
             // AddedBy: ["0"],
             // UpdatedBy: ["0"],
         });

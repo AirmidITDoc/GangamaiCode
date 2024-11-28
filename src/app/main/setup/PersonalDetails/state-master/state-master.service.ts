@@ -22,7 +22,7 @@ export class StateMasterService {
             stateName: [""],
             countryId: [""],
             countryName: [""],
-            isDeleted: ["true"],
+            isActive: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
         });

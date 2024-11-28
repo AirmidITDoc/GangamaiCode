@@ -19,9 +19,9 @@ export class NewMaritalstatusComponent implements OnInit {
   ngOnInit(): void {
     this.maritalForm = this._MaritalstatusMasterService.createMaritalForm();
     var m_data = {
-      maritalStatusId: this.data?.maritalStatusId,
-      maritalStatusName: this.data?.maritalStatusName.trim(),
-        isDeleted: JSON.stringify(this.data?.isActive),
+    maritalStatusId: this.data?.maritalStatusId,
+    maritalStatusName: this.data?.maritalStatusName.trim(),
+    isDeleted: JSON.stringify(this.data?.isActive),
     };
     this.maritalForm.patchValue(m_data);
   }

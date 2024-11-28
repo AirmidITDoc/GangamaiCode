@@ -27,7 +27,7 @@ export class GenderMasterService {
                 Validators.maxLength(50),
                 Validators.pattern('^[a-zA-Z () ]*$')
             ]],
-            isDeleted: [""],
+            isActive: ["true"],
         });
     }
     getValidationMessages() {

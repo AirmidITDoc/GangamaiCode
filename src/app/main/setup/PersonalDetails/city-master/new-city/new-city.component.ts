@@ -67,6 +67,5 @@ export class NewCityComponent implements OnInit {
     selectChangestate(obj: any){
         console.log(obj);
         this.stateId=obj
-        debugger
       }
-  }
+}

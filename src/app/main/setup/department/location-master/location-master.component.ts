@@ -26,16 +26,14 @@ export class LocationMasterComponent implements OnInit {
     constructor(public _locationService: LocationMasterService,public _matDialog: MatDialog,
         public toastr : ToastrService,) {}
 
-     
-        
+ 
             gridConfig: gridModel = {
                 apiUrl:"LocationMaster/List",
                 columnsList: [
                     { heading: "Code", key: "locationId", sort: true, align: 'left', emptySign: 'NA',width:150 },
                     { heading: "Location Name", key: "locationName", sort: true, align: 'left', emptySign: 'NA', width:800 },
-               
-                { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width:100 },
-                {
+                    { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width:100 },
+                    {
                     heading: "Action", key: "action", align: "right", width:100, type: gridColumnTypes.action, actions: [
                         {
                             action: gridActions.edit, callback: (data: any) => {
@@ -72,11 +70,7 @@ export class LocationMasterComponent implements OnInit {
             ],
             row: 25
         }
-        
-    
-    
-        ngOnInit(): void {
-            
+        ngOnInit(): void {   
         }
     
         onSave(row: any = null) {

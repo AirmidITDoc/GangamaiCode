@@ -31,7 +31,7 @@ export class PrefixMasterService {
             prefixName: [""],
             // SexID: [" "],
             // GenderName: [""],
-            isActive: [""],
+            isActive: ["true"],
             // AddedBy: ["0"],
             // UpdatedBy: ["0"],
         });
@@ -62,11 +62,9 @@ export class PrefixMasterService {
         };
     }
 
-
     populateForm(param) {
         this.myform.patchValue(param);
     }
-
 
     public deactivateTheStatus(m_data) {
       return this._httpClient.DeleteData("Prefix?Id=" + m_data.toString());

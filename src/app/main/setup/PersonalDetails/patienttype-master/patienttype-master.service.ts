@@ -26,7 +26,7 @@ export class PatienttypeMasterService {
         return this._formBuilder.group({
             patientTypeId: [""],
             patientType: [""],
-            isActive: [""],
+            isActive: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
         });

@@ -23,7 +23,7 @@ export class DepartmentMasterService {
         return this._formBuilder.group({
             departmentId: [""],
             departmentName: [""],
-            isDeleted: ["false"],
+            isActive: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
         });

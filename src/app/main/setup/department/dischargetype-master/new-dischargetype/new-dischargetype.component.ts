@@ -25,7 +25,7 @@ export class NewDischargetypeComponent implements OnInit {
       var m_data = {
         dischargeTypeId: this.data?.dischargeTypeId,
         dischargeTypeName: this.data?.dischargeTypeName.trim(),
-          isDeleted: JSON.stringify(this.data?.isActive),
+        isDeleted: JSON.stringify(this.data?.isActive),
       };
       this.dischargetypeForm.patchValue(m_data);
   }

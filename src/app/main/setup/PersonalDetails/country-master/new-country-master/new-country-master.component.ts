@@ -19,9 +19,9 @@ export class NewCountryMasterComponent implements OnInit {
   ngOnInit(): void {
     this.countryForm = this._CountryMasterService.createCountryForm();
     var m_data = {
-        countryId: this.data?.countryId,
-       countryName: this.data?.countryName.trim(),
-        isDeleted: JSON.stringify(this.data?.isActive),
+    countryId: this.data?.countryId,
+    countryName: this.data?.countryName.trim(),
+    isDeleted: JSON.stringify(this.data?.isActive),
     };
     this.countryForm.patchValue(m_data);
   }
