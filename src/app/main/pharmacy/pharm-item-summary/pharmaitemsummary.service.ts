@@ -55,13 +55,13 @@ export class PharmaitemsummaryService {
     if(loader){
       this._loadService.show();
     }
-    return this._httpClient.post("Generic/GetByProc?procName=m_PharSales_NonMovingItemList",Param);
+    return this._httpClient.post("Generic/GetDataSetByProc?procName=m_PharSales_NonMovingItemList",Param);
   }
   public getItemWithoutBatchexpwiseList(Param,loader = true){
     if(loader){
       this._loadService.show();
     }
-    return this._httpClient.post("Generic/GetByProc?procName=m_PharSales_NonMovingItemListWithoutBatchNo",Param);
+    return this._httpClient.post("Generic/GetDataSetByProc?procName=m_PharSales_NonMovingItemListWithoutBatchNo",Param);
   }
   public getItemexpdatewise(Param,loader = true){
     if(loader){

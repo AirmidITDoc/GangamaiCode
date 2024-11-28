@@ -900,12 +900,12 @@ debugger
     InsertBillUpdateBillNoObj['discComments'] = ConcessionReason;
     InsertBillUpdateBillNoObj['cashCounterId'] = this.searchFormGroup.get('CashCounterID').value.CashCounterId || 0;
 
-    let Billdetsarr = [];
+    let Billdetsarr = []; 
     this.dataSource.data.forEach((element) => {
       let BillDetailsInsertObj = {};
       BillDetailsInsertObj['BillNo'] = 0;
       BillDetailsInsertObj['ChargesId'] = element.ServiceId;
-      Billdetsarr.push(BillDetailsInsertObj);
+      Billdetsarr.push(BillDetailsInsertObj); 
     });
 
     let InsertAdddetArr = [];
@@ -973,6 +973,7 @@ debugger
        InsertPackageDetObj['isPackage'] = 1,
        InsertPackageDetObj['isSelfOrCompanyService'] = false,
        InsertPackageDetObj['packageId'] = element.ServiceId,
+       InsertPackageDetObj['BillNo'] = 0,
        InsertPackageDetails.push(InsertPackageDetObj);
    }); 
 

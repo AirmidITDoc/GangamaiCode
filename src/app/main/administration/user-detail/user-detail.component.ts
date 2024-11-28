@@ -120,7 +120,8 @@ export class UserDetailComponent implements OnInit {
       PharExpOpt:'',
       PharIPOpt:'',
       PharOPOpt:'',
-  
+      IsDicslimit:'',
+      DiscLimitPer:''
     });
 
   }
@@ -333,6 +334,15 @@ export class UserDetailComponent implements OnInit {
     }else{
       this.docflag = false
       this.DoctorId=0;
+    }            
+  }
+  DisclimitFlag: boolean = false;
+  chkDiscLimit(event) { 
+    if (event.checked  == true) {
+      this.DisclimitFlag = true 
+    }else{
+      this.DisclimitFlag = false
+      this.UserForm.get('DiscLimitPer').setValue('')
     }            
   }
   onClose() {

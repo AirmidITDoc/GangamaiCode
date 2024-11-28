@@ -235,6 +235,18 @@
                                                 </mat-autocomplete>
                                             </mat-form-field>
                                         </div>
+
+                                        <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="30%" >
+                                            <mat-checkbox formControlName="IsDicslimit" (change)="chkDiscLimit($event)" 
+                                                    style="padding: 10px;">IsDiscountLimit
+                                            </mat-checkbox>&nbsp;
+                                            
+                                            <mat-form-field appearance="outline" fxFlex *ngIf="DisclimitFlag">
+                                                <mat-label>Discount %</mat-label>
+                                                <input matAutocompletePosition="below" type="text" matInput  
+                                                    formControlName="DiscLimitPer" > 
+                                            </mat-form-field>
+                                        </div>
                                         <!-- <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%" *ngIf="docflag"> 
 
                                             <mat-form-field appearance="outline" fxFlex >

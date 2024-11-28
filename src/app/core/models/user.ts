@@ -23,8 +23,8 @@ export class LoginUser {
     DoctorID : number;
     IsPOVerify :boolean;
     IsGRNVerify :boolean;
-    IsCollection :boolean;
-    IsBedStatus :boolean;
+    isCollection :boolean;
+    isBedStatus :boolean;
     IsCurrentStk :boolean;
     IsPatientInfo :boolean;
     IsDateInterval :boolean;
