@@ -29,13 +29,15 @@
                     </airmid-textbox> 
                 </div>
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <mat-radio-group name="isActive" formControlName="isActive" value='false'>
-                        <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive
+                    <mat-radio-group name="isActive" formControlName="isActive"  value="1">
+                        <mat-radio-button value='1' class="mr-sm-12" fxFlex>IsActive
                         </mat-radio-button>
-                        <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsDeactive
+                        <mat-radio-button value='0' class="mr-sm-12" fxFlex>IsDeactive
                         </mat-radio-button>
                     </mat-radio-group>
                 </div>
+
+
             </form>
         </div>
         <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">

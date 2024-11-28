@@ -1,0 +1,1292 @@
+<div class="simple page-layout inner-scroll inner-sidebar left-sidebar">
+    <mat-toolbar style="width: 100%;justify-content: space-between;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                Medical Record
+            </span>
+        </div>
+        <div class="close-icon">
+           
+            <!-- <app-common-date [screenFrom]="screenFromString"
+                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date> -->
+            <!-- <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button> -->
+        </div>
+    </mat-toolbar>
+    <div class="content">
+        <div class="center p-12 pb-56" style="border-radius: 4px;">
+            <div class="modal-card-container">
+
+                <div fxFlexFill fxLayout="column" fxLayoutGap="8px">
+                    <form [formGroup]="searchFormGroup">
+                        <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="5px">
+
+                            <mat-form-field class=searchRegId appearance="outline"
+                                style="width:800px !important;margin-left:20px;">
+                                <input type="text" name="RegId" formControlName="RegId"
+                                    placeholder="Patient Name (enter 2 char)/ MR No/ Mobile No " matInput
+                                    [matAutocomplete]="autoReg" (input)="getSearchList()" maxlength="10">
+                                <span matSuffix style="display: flex;">
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">search</mat-icon>
+                                </span>
+                                <mat-autocomplete #autoReg="matAutocomplete" [displayWith]="getOptionText1"
+                                    (optionSelected)='getSelectedObj1($event.option.value)'>
+                                    <mat-option *ngFor="let option of PatientListfilteredOptions" [value]="option">
+                                        {{option.RegNo}} |{{option.FirstName}} {{option.MiddleName}}
+                                        {{option.LastName}} |
+                                        {{option.MobileNo}} | {{option.DoctorName}} | {{option.OPDNo}}
+                                    </mat-option>
+                                </mat-autocomplete>
+                                <!-- <mat-error *ngIf="searchFormGroup.get('ItemId').hasError('required')">
+                                                                                              Required field cannot be left blank
+                                                                                             </mat-error> -->
+                            </mat-form-field>
+
+                            <span style="margin-right: 40px;">
+                                <app-common-date [screenFrom]="screenFromString"
+                                    (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                            </span>
+                        </div>
+                    </form>
+                    <div class="modal-card-container">
+                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 6px;">
+                            <div class="patient-info-sales my-8">
+                                <div class="sales-patient-info-title">
+                                    <span style="font-weight: 700;">
+                                        Patient Information
+                                    </span>
+                                </div>
+                                <hr>
+                                <div class="Ipd-patient-info" fxFlexFill fxLayout="row"
+                                    fxLayoutAlign="space-between center" class="patient-info">
+                                    <div class="patient-sub">
+                                        <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
+                                            fxLayoutAlign="space-between">
+                                            <div fxLayout="column" fxLayoutGap="6px">
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">UHID No
+                                                    </span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{RegNo}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Patient Name
+                                                    </span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{PatientName}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Doctor Name</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{Doctorname}}</span>
+                                                </div>
+                                            </div>
+                                            <div fxLayout="column" fxLayoutGap="6px">
+
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">OPD No</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{vOPDNo}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Age | Sex
+                                                    </span>
+                                                    <span>:</span>
+                                                    <span
+                                                        class="patient-col-value">{{AgeYear}}Y|{{AgeMonth}}M|{{AgeDay}}
+                                                        D | {{GenderName}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Department</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{DepartmentName}}</span>
+                                                </div>
+                                            </div>
+                                            <div fxLayout="column" fxLayoutGap="6px" style="margin-right: 100px;">
+
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Patient Type | Tarrif
+                                                    </span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{PatientType}} |
+                                                        {{Tarrifname}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Company Name</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value"
+                                                        style="color: orange;">{{CompanyName}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Ref-Doctor Name
+                                                    </span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{RefDocName}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-card>
+                    </div>
+
+                    <mat-tab-group>
+                        <mat-tab label="Prescription">
+                            <div class="content" style="overflow: auto;">
+                                <div fxLayout="column" fxFlexFill fxLayoutGap="8px">
+
+                                    <mat-card style="padding: 5px;">
+                                        <form [formGroup]="caseFormGroup">
+                                            <div fxLayout="column" fxLayoutGap="6px">
+                                                <div class="prescription-title">
+                                                    Vitals
+                                                </div>
+                                                <hr>
+                                                <div fxLayout="row" fxLayoutGap="4px">
+                                                    <mat-form-field appearance="outline" fxFlex="10%">
+                                                        <mat-label>Height</mat-label>
+                                                        <!-- <span matTextPrefix>cm</span> -->
+                                                        <input name="Height" formControlName="Height"
+                                                            placeholder="Height in m" [(ngModel)]="vHeight" matInput
+                                                            #EHeight (keydown)="onEnterHeight($event)" type="text"
+                                                            OnlyNumber (keyup)="getBMIcalculation()"
+                                                            (keypress)="keyPressCharater($event)">
+                                                        <span matSuffix style="font-size: x-large;"> | cm</span>
+                                                    </mat-form-field>
+
+                                                    <mat-form-field appearance="outline" fxFlex="10%">
+                                                        <mat-label>Weight</mat-label>
+                                                        <input name="Weight" formControlName="Weight"
+                                                            placeholder="Weight in Kg" [(ngModel)]="vWeight" matInput
+                                                            #EWeight (keydown)="onEnterWeight($event)" type="text"
+                                                            OnlyNumber (keyup)="getBMIcalculation()"
+                                                            (keypress)="keyPressCharater($event)">
+                                                        <span matSuffix style="font-size: x-large;"> | kg</span>
+                                                    </mat-form-field>
+
+                                                    <mat-form-field appearance="outline" fxFlex="10%">
+                                                        <mat-label>BMI</mat-label>
+                                                        <input name="BMI" formControlName="BMI" placeholder="BMI"
+                                                            matInput [(ngModel)]="vBMI" #EBMI
+                                                            (keydown)="onEnterBMI($event)" type="text" OnlyNumber
+                                                            readonly>
+                                                        <!-- <mat-icon matSuffix>KG</mat-icon> -->
+                                                    </mat-form-field>
+
+                                                    <mat-form-field appearance="outline" fxFlex="10%">
+                                                        <mat-label>BSL</mat-label>
+                                                        <input name="BSL" formControlName="BSL" placeholder="BSL"
+                                                            matInput [(ngModel)]="vBSL" #EBSL
+                                                            (keydown)="onEnterBSL($event)" type="text" OnlyNumber
+                                                            (keypress)="keyPressCharater($event)">
+                                                        <!-- <mat-icon matSuffix>KG</mat-icon> -->
+                                                    </mat-form-field>
+
+                                                    <mat-form-field appearance="outline" fxFlex="10%">
+                                                        <mat-label>SpO2</mat-label>
+                                                        <input name="SpO2" formControlName="SpO2" placeholder="SpO2"
+                                                            [(ngModel)]="vSpO2" matInput #ESpO2
+                                                            (keydown)="onEnterSpO2($event)" type="text" OnlyNumber
+                                                            (keypress)="keyPressCharater($event)">
+                                                        <!-- <mat-icon matSuffix>KG</mat-icon> -->
+                                                    </mat-form-field>
+
+                                                    <mat-form-field appearance="outline" fxFlex="10%">
+                                                        <mat-label>Pulse</mat-label>
+                                                        <input name="Pulse" formControlName="Pulse" placeholder="Pulse"
+                                                            [(ngModel)]="vPulse" matInput #EPulse
+                                                            (keydown)="onEnterPulse($event)" type="text" OnlyNumber
+                                                            (keypress)="keyPressCharater($event)">
+                                                        <span matSuffix style="font-size: x-large;"> |bpm</span>
+                                                    </mat-form-field>
+
+                                                    <mat-form-field appearance="outline" fxFlex="13%">
+                                                        <mat-label>BP</mat-label>
+                                                        <input name="BP" formControlName="BP" placeholder="BP" matInput
+                                                            #EBP [(ngModel)]="vBP" (keydown)="onEnterBP($event)"
+                                                            type="text" OnlyNumber (keypress)="keyPressOk($event)">
+                                                        <span matSuffix style="font-size: x-large;"> |mmHg</span>
+                                                    </mat-form-field>
+
+                                                    <mat-form-field appearance="outline" fxFlex="10%">
+                                                        <mat-label>Temp</mat-label>
+                                                        <input name="Temp" formControlName="Temp" placeholder="Temp"
+                                                            [(ngModel)]="vTemp" matInput #ETemp
+                                                            (keydown)="onEnterTemp($event)" type="text" OnlyNumber
+                                                            (keypress)="keyPressCharater($event)">
+                                                        <span matSuffix style="font-size: x-large;"> | F</span>
+                                                    </mat-form-field>
+                                                </div>
+
+                                                <div fxLayout="row" class="gap-8">
+                                                    <mat-form-field appearance="outline" fxFlex>
+                                                        <mat-label>ChiefComplaint</mat-label>
+                                                        <textarea rows="6" name="ChiefComplaint"
+                                                            formControlName="ChiefComplaint"
+                                                            placeholder="ChiefComplaint" [(ngModel)]="vChiefComplaint"
+                                                            matInput #ChiefComp
+                                                            (keydown)="onEnterChiefComplaint($event)"></textarea>
+                                                    </mat-form-field>
+
+                                                    <mat-form-field appearance="outline" fxFlex>
+                                                        <mat-label>Diagnosis</mat-label>
+                                                        <textarea rows="6" name="Diagnosis" formControlName="Diagnosis"
+                                                            placeholder="Diagnosis" [(ngModel)]="vDiagnosis" matInput
+                                                            #ChiefComp
+                                                            (keydown)="onEnterChiefComplaint($event)"></textarea>
+                                                    </mat-form-field>
+
+                                                      <mat-form-field appearance="outline" fxFlex>
+                                                        <mat-label>Examination</mat-label>
+                                                        <textarea rows="6" name="Examination"
+                                                            formControlName="Examination" placeholder="Examination"
+                                                            [(ngModel)]="vExamination" matInput #ChiefComp
+                                                            (keydown)="onEnterChiefComplaint($event)"></textarea>
+                                                    </mat-form-field>
+
+                                                    <!-- <mat-form-field appearance="outline" class="example-chip-list" fxFlex>
+                                                        <mat-label>ChiefComplaint</mat-label>
+                                                        <mat-chip-list #chipList aria-label="ChiefComplaint selection">
+                                                            <mat-chip *ngFor="let item of addCheiflist" [selectable]="selectable" [removable]="removable"
+                                                                (removed)="removeCheif(item)">
+                                                                {{ item}} 
+                                                                <mat-icon *ngIf="removable" (click)="removeCheif(item)">close</mat-icon>
+                                                            </mat-chip> 
+                                                            <input   style="height: 40px;"
+                                                            placeholder="New ChiefComplaint..."
+                                                            formControlName="CheifComplaintControl"
+                                                            [matAutocomplete]="autoChips"
+                                                            [matChipInputFor]="chipList"
+                                                            (matChipInputTokenEnd)="addCheif($event)" />
+                                                        </mat-chip-list>
+                                                        <mat-autocomplete #autoChips="matAutocomplete"  (optionSelected)="selectedobjCheif($event.option.value)" >
+                                                            <mat-option *ngFor="let option of HistoryList" [value]="option" >
+                                                                {{option.ChiefComplaint}}
+                                                            </mat-option>
+                                                        </mat-autocomplete>
+                                                    </mat-form-field>   -->
+
+                                                    <!-- <mat-form-field appearance="outline" class="example-chip-list" fxFlex>
+                                                        <mat-label>Diagnosis</mat-label>
+                                                        <mat-chip-list #chipListdiagno aria-label="Diagnosis selection">
+                                                            <mat-chip *ngFor="let item of addDiagnolist" [selectable]="selectable" [removable]="removable"
+                                                                (removed)="removeDiagno(item)">
+                                                                {{ item}} 
+                                                                <mat-icon *ngIf="removable" (click)="removeDiagno(item)">close</mat-icon>
+                                                            </mat-chip> 
+                                                            <input  style="height: 40px;"
+                                                            placeholder="New Diagnosis..."
+                                                            formControlName="DiagnosisControl"
+                                                            [matAutocomplete]="autoDiagnosis"
+                                                            [matChipInputFor]="chipListdiagno"
+                                                            (matChipInputTokenEnd)="addDiagnos($event)"   />
+                                                        </mat-chip-list>
+                                                        <mat-autocomplete #autoDiagnosis="matAutocomplete"  (optionSelected)="selectedobjDiagno($event.option.value)" >
+                                                            <mat-option *ngFor="let option of HistoryList" [value]="option" >
+                                                                {{option.Diagnosis}}
+                                                            </mat-option>
+                                                        </mat-autocomplete>
+                                                    </mat-form-field>   -->
+
+                                                    <!-- <mat-form-field appearance="outline" class="example-chip-list" fxFlex>
+                                                        <mat-label>Examination</mat-label>
+                                                        <mat-chip-list #chipListexamin aria-label="Examination selection">
+                                                            <mat-chip *ngFor="let item of addExaminlist" [selectable]="selectable" [removable]="removable"
+                                                                (removed)="removeExamin(item)">
+                                                                {{ item}} 
+                                                                <mat-icon *ngIf="removable" (click)="removeExamin(item)">close</mat-icon>
+                                                            </mat-chip> 
+                                                            <input  style="height: 40px;"
+                                                            placeholder="New Examination..."
+                                                            formControlName="ExaminationControl"
+                                                            [matAutocomplete]="autoExamin"
+                                                            [matChipInputFor]="chipListexamin"
+                                                            (matChipInputTokenEnd)="addExamina($event)" />
+                                                        </mat-chip-list>
+                                                        <mat-autocomplete #autoExamin="matAutocomplete"  (optionSelected)="selectedobjExamin($event.option.value)" >
+                                                            <mat-option *ngFor="let option of HistoryList" [value]="option" >
+                                                                {{option.Examination}}
+                                                            </mat-option>
+                                                        </mat-autocomplete>
+                                                    </mat-form-field>  -->
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </mat-card>
+
+                                    <mat-card fxLayout="column" style="padding: 5px;">
+                                        <form [formGroup]="caseFormGroup">
+                                            <div class="investigation-title">
+                                                <span style="font-weight: 700;">
+                                                    Request For Test
+                                                </span>
+                                            </div>
+                                            <hr>
+                                            <div fxLayout="row" fxLayoutGap="6px">
+                                                <div fxLayout="column" fxLayoutGap="6px" fxFlex="35%">
+                                                    <!-- <mat-radio-group aria-label="Select an option" formControlName="IsPathRad" name="IsPathRad"
+                                                        (change)="getServiceList()" fxLayoutGap="10px">
+                                                        <mat-radio-button value="1">Pathology </mat-radio-button>&nbsp;
+                                                        <mat-radio-button value="2">Radiology</mat-radio-button>&nbsp;
+                                                        <mat-radio-button value="3">Other Services</mat-radio-button>&nbsp;
+                                                    </mat-radio-group> -->
+
+                                                    <mat-form-field appearance="outline" fxFlex>
+                                                        <mat-label>Service list</mat-label>
+                                                        <input matAutocompletePosition="below" type="text"
+                                                            placeholder="Select Service" [(ngModel)]="vServiceId"
+                                                            matInput formControlName="Serviceid"
+                                                            [matAutocomplete]="autoService" (input)="getServiceList()">
+                                                        <span matSuffix style="display: flex;">
+                                                            <mat-icon class="mat-icon-close"
+                                                                (click)="caseFormGroup.get('Serviceid').setValue(''); isServiceIdSelected = false;">close</mat-icon>
+                                                            <mat-icon class="mat-icon-close"
+                                                                (click)="caseFormGroup.get('Serviceid').setValue(''); isServiceIdSelected = false;">search</mat-icon>
+                                                        </span>
+
+                                                        <mat-autocomplete #autoService="matAutocomplete"
+                                                            [displayWith]="getOptionTextService">
+                                                            <mat-option *ngFor="let option of FilteredServicec"
+                                                                [value]="option">
+                                                                <mat-checkbox [checked]="option.selected"
+                                                                    (change)="toggleSelection(option)"
+                                                                    (click)="$event.stopPropagation()">
+                                                                    {{option.ServiceName}}</mat-checkbox>
+                                                            </mat-option>
+                                                        </mat-autocomplete>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div fxLayout="column" fxLayoutGap="6px" fxFlex="50%">
+                                                    <mat-chip-list #chipList>
+                                                        <mat-chip *ngFor="let item of selectedItems">
+                                                            {{ item.ServiceName }} <mat-icon
+                                                                (click)="remove(item)">close</mat-icon>
+                                                        </mat-chip>
+                                                    </mat-chip-list>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </mat-card>
+
+                                    <mat-card style="padding: 5px;">
+                                        <div fxLayout="column" style="margin-left: 10px;">
+
+                                            <div>
+                                                <div class="prescription-title" fxLayoutAlign="space-between">
+                                                    <span style="font-weight: 700;margin: 6px 10px 0px 5px">
+                                                        Prescription List
+                                                    </span>
+                                                    <div fxLayout="row" fxLayoutGap="6px">
+                                                        <button mat-raised-button (click)="getPreviousPrescriptionlist()">
+                                                            <mat-icon>first_page</mat-icon>
+                                                            Load Previous</button>
+                                            
+                                                        <button mat-raised-button (click)="SaveTemplate()">
+                                                            <mat-icon>save</mat-icon>
+                                                            Save Template</button>
+                                                    </div>
+                                                </div>
+                                                <hr>
+                                                <form [formGroup]="MedicineItemForm">
+                                                    <div fxLayout="row" class="gap-8">
+                                                        <mat-form-field appearance="outline" fxFlex="30%">
+                                                            <mat-label>Drug Name</mat-label>
+                                                            <input type="text" name="ItemId" formControlName="ItemId" #itemid (keydown)="onEnterItem($event)"
+                                                                placeholder="Item Name " matInput [matAutocomplete]="auto" (input)="getSearchItemList()" required>
+                                                            <span matSuffix style="display: flex;">
+                                                                <mat-icon class="mat-icon-close"
+                                                                    (click)="MedicineItemForm.get('ItemId').setValue(''); isItemIdSelected = false;">
+                                                                    close </mat-icon>
+                                                                <mat-icon class="mat-icon-close"
+                                                                    (click)="MedicineItemForm.get('ItemId').setValue(''); isItemIdSelected = false;">search</mat-icon>
+                                                            </span>
+                                                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionItemText"
+                                                                (optionSelected)='getSelectedObjItem($event.option.value)'>
+                                                                <mat-option *ngFor="let option of filteredOptionsItem" [value]="option">
+                                                                    {{option.ItemId}} | {{option.ItemName}}
+                                                                    |{{option.BalanceQty}}
+                                                                </mat-option>
+                                                            </mat-autocomplete>
+                                                            <mat-error class="error"
+                                                                *ngIf="MedicineItemForm.get('ItemId').invalid && MedicineItemForm.get('ItemId').touched">
+                                                                Select ItemName
+                                                            </mat-error>
+                                                        </mat-form-field>
+                                            
+                                                        <mat-form-field appearance="outline" fxFlex="12%">
+                                                            <mat-label>Dose Name</mat-label>
+                                                            <input matAutocompletePosition="below" type="text" placeholder="Select Dose Name" matInput
+                                                                formControlName="DoseId" [matAutocomplete]="autodose" required #dosename
+                                                                (keydown)="onEnterDose($event)">
+                                                            <span matSuffix style="display: flex;">
+                                                                <mat-icon class="mat-icon-close"
+                                                                    (click)="MedicineItemForm.get('DoseId').setValue(''); isDoseSelected = false;">close</mat-icon>
+                                                                <mat-icon class="mat-icon-close"
+                                                                    (click)="MedicineItemForm.get('DoseId').setValue(''); isDoseSelected = false;">search</mat-icon>
+                                                            </span>
+                                                            <mat-autocomplete #autodose="matAutocomplete" [displayWith]="getOptionTextDose">
+                                                                <mat-option *ngFor="let option of filteredOptionsDosename | async" [value]="option">
+                                                                    {{option.DoseName}}
+                                                                </mat-option>
+                                                            </mat-autocomplete>
+                                                        </mat-form-field>
+                                            
+                                            
+                                                        <mat-form-field appearance="outline" fxFlex="6%">
+                                                            <mat-label>Day</mat-label>
+                                                            <input type="text" OnlyNumber [(ngModel)]="vDay" name="Day" required (keydown)="onEnterqty($event)"
+                                                                formControlName="Day" matInput required #Day (keypress)="keyPressAlphanumeric($event)">
+                                                        </mat-form-field>
+                                            
+                                                        <!-- (keydown)="onEnterremark($event)" -->
+                                                        <mat-form-field appearance="outline" fxFlex="20%">
+                                                            <mat-label>Instruction</mat-label>
+                                                            <input type="text" name="Instruction" [(ngModel)]="vInstruction" formControlName="Instruction" matInput
+                                                                #Instruction (keydown)="onEnterremark($event)">
+                                                        </mat-form-field>
+                                            
+                                                        <div class="input-add-button">
+                                                            <div matTooltip="Select Drug to enable this button!!" [matTooltipPosition]="'above'">
+                                                                <button #addbutton class="btn btn-primary btn-with-icon" (click)="onAdd()">
+                                                                    <span class="btn-icon">
+                                                                        <mat-icon> add </mat-icon>
+                                                                    </span>
+                                                                    <span>Add</span>
+                                                                </button>
+                                                            </div>
+                                                        </div>&nbsp;
+                                            
+                                                        <mat-divider [vertical]="true"></mat-divider>&nbsp;
+                                            
+                                                        <mat-form-field appearance="outline" fxFlex="20%">
+                                                            <mat-label>Template List</mat-label>
+                                                            <input matAutocompletePosition="below" type="text" placeholder="Select Template" matInput
+                                                                formControlName="TemplateId" [matAutocomplete]="autotemplate" required [(ngModel)]="vTemplateId"
+                                                                    >
+                                                            <span matSuffix style="display: flex;">
+                                                                <mat-icon class="mat-icon-close"
+                                                                    (click)="MedicineItemForm.get('TemplateId').setValue(''); isTemplateSelected = false;">close</mat-icon>
+                                                                <mat-icon class="mat-icon-close"
+                                                                    (click)="MedicineItemForm.get('TemplateId').setValue(''); isTemplateSelected = false;">search</mat-icon>
+                                                            </span>
+                                                            <mat-autocomplete #autotemplate="matAutocomplete" [displayWith]="getOptionTextTemplate">
+                                                                <mat-option *ngFor="let option of filteredtemplate | async" [value]="option">
+                                                                    {{option.PresTemplatename}}
+                                                                </mat-option>
+                                                            </mat-autocomplete>
+                                                        </mat-form-field>
+                                            
+                                                        <div class="input-add-button">
+                                                            <div matTooltip="Select Drug to enable this button!!" [matTooltipPosition]="'above'">
+                                                                <button #addbutton class="btn btn-primary btn-with-icon" (click)="onTemplDetAdd()">
+                                                                    <span class="btn-icon">
+                                                                        <mat-icon> add </mat-icon>
+                                                                    </span>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="modal-card-container table-container">
+                                                <div class="table" fxFlex="100%">
+                                                    <mat-table class="mat-table-1 h-230" matSort
+                                                        [dataSource]="dsItemList" [@animateStagger]="{value:'50'}"
+                                                        style="overflow: auto;">
+
+                                                        <ng-container matColumnDef="ItemName">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                                fxShow.gt-sm>
+                                                                Drug Name</mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                <span> {{element.DrugName}}</span>
+                                                            </mat-cell>
+                                                        </ng-container>
+
+                                                        <ng-container matColumnDef="DoseName">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                                fxShow.gt-sm>
+                                                                Dose Name</mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                <span> {{element.DoseName}}</span>
+                                                            </mat-cell>
+                                                        </ng-container>
+
+                                                        <ng-container matColumnDef="Days">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                                fxShow.gt-sm>
+                                                                Days</mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                <span> {{element.Days}}</span>
+                                                            </mat-cell>
+                                                        </ng-container>  
+
+                                                        <ng-container matColumnDef="Remark">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                fxShow.gt-sm>Instruction
+                                                            </mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                                                <mat-form-field appearance="legacy">
+                                                                    <input matInput [(ngModel)]="element.Instruction"
+                                                                        type="text">
+                                                                </mat-form-field>
+                                                            </mat-cell>
+                                                        </ng-container>
+
+                                                        <!-- <ng-container matColumnDef="Remark">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                Instruction</mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                <mat-form-field appearance="legacy">
+                                                                    <input matInput [(ngModel)]="element.Instruction" type="text">
+                                                                </mat-form-field>
+                                                                <span> {{element.Instruction}}</span>
+                                                            </mat-cell>
+                                                        </ng-container> -->
+
+                                                        <!-- <ng-container matColumnDef="DoseName1">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                                                DoseName1
+                                                            </mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                                        
+                                                                <mat-select placeholder="DoseName1" (selectionChange)="getdoseDetailValue1(element,$event.value)">
+                                                                    <mat-option *ngFor="let Result of doseresults" [(ngModel)]="element.DoseName1" [value]="Result.DoseName">
+                                                                        {{ Result.DoseName }}
+                                                                    </mat-option>
+                                                                </mat-select>
+                                                            </mat-cell>
+                                                        </ng-container> -->
+
+                                                        <!-- <ng-container matColumnDef="Day1">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">Days
+                                                            </mat-header-cell>
+                                                            <mat-cell class="w-80" *matCellDef="let element" fxShow.gt-sm>
+                                                                <mat-form-field appearance="legacy">
+                                                                    <input matInput [(ngModel)]="element.Day1" (keypress)="keyPressAlphanumeric($event)">
+                                                                </mat-form-field>
+                                                            </mat-cell>
+                                                        </ng-container> -->
+
+                                                        <!-- <ng-container matColumnDef="DoseName2">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                                                DoseName2
+                                                            </mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                                        
+                                                                <mat-select placeholder="DoseName1" (selectionChange)="getdoseDetailValue2(element,$event.value)">
+                                                                    <mat-option *ngFor="let Result of doseresults" [(ngModel)]="element.DoseName2" [value]="Result.DoseName">
+                                                                        {{ Result.DoseName }}
+                                                                    </mat-option>
+                                                                </mat-select>
+                                                            </mat-cell>
+                                                        </ng-container> -->
+
+                                                        <!-- <ng-container matColumnDef="Day2">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">Days
+                                                            </mat-header-cell>
+                                                            <mat-cell class="w-80" *matCellDef="let element" fxShow.gt-sm>
+                                                                <mat-form-field appearance="legacy">
+                                                                    <input matInput [(ngModel)]="element.Day2" (keypress)="keyPressAlphanumeric($event)">
+                                                                </mat-form-field>
+                                                            </mat-cell>
+                                                        </ng-container> -->
+
+                                                        <ng-container matColumnDef="Action" stickyEnd>
+                                                            <mat-header-cell *matHeaderCellDef
+                                                                class="table-actions">Action
+                                                            </mat-header-cell>
+                                                            <mat-cell *matCellDef="let contact">
+                                                                <ng-container class="actions">
+                                                                    <mat-icon (click)="deleteTableRow($event ,contact)"
+                                                                        color="warn">
+                                                                        delete
+                                                                    </mat-icon>
+                                                                </ng-container>
+                                                            </mat-cell>
+                                                        </ng-container>
+
+                                                        <mat-header-row class="accent"
+                                                            *matHeaderRowDef="displayedItemColumn; sticky: true">
+                                                        </mat-header-row>
+                                                        <mat-row *matRowDef="let row; columns: displayedItemColumn;"
+                                                            class="element"
+                                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                                    </mat-table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </mat-card>
+
+                                    <mat-card fxLayout="column" style="padding: 5px;">
+                                        <form [formGroup]="MedicineItemForm">
+                                            <div class="consultunt-title">
+                                                <span style="font-weight: 700;">
+                                                    Refer To Another Doctor
+                                                </span>
+                                            </div>
+                                            <hr>
+                                            <div fxLayout="row" fxLayoutGap="6px">
+                                                <!-- <mat-form-field appearance="outline" fxFlex="30%">
+                                                                                                                <mat-label>Department</mat-label>
+                                                                                                                <input matAutocompletePosition="below" type="text" placeholder="Select Department" matInput #dept
+                                                                                                                   (keydown)="onEnterdept($event)" formControlName="Departmentid"
+                                                                                                                    [matAutocomplete]="autoDep" required>
+                                                                                                                <span matSuffix style="display: flex;">
+                                                                                                                    <mat-icon class="mat-icon-close"
+                                                                                                                        (click)="MedicineItemForm.get('Departmentid').setValue(''); isDepartmentSelected = false;">close</mat-icon>
+                                                                                                                    <mat-icon class="mat-icon-close"
+                                                                                                                        (click)="MedicineItemForm.get('Departmentid').setValue(''); isDepartmentSelected = false;">search</mat-icon>
+                                                                                                                </span>
+                                                                                            
+                                                                                                                <mat-autocomplete #autoDep="matAutocomplete" [displayWith]="getOptionTextDep">
+                                                                                                                    <mat-option *ngFor="let option of filteredOptionsDep | async" [value]="option"
+                                                                                                                        (onSelectionChange)="OnChangeDoctorList(option)">
+                                                                                                                        {{option.DepartmentName}}
+                                                                                                                    </mat-option>
+                                                                                                                </mat-autocomplete>
+                                                                                                            </mat-form-field> -->
+
+
+                                                <mat-form-field appearance="outline" fxFlex="30%">
+                                                    <mat-label>Doctor Name</mat-label>
+                                                    <input matAutocompletePosition="below" type="text"
+                                                        placeholder="Pick one" matInput #deptdoc [(ngModel)]="vDoctorId"
+                                                        formControlName="DoctorID" [matAutocomplete]="autoDoctor"
+                                                        required (input)="getAdmittedDoctorCombo()">
+                                                    <span matSuffix style="display: flex;">
+                                                        <mat-icon class="mat-icon-close"
+                                                            (click)="MedicineItemForm.get('DoctorID').setValue(''); isDoctorSelected = false;">close</mat-icon>
+                                                        <mat-icon class="mat-icon-close"
+                                                            (click)="MedicineItemForm.get('DoctorID').setValue(''); isDoctorSelected = false;">search</mat-icon>
+                                                    </span>
+
+                                                    <mat-autocomplete #autoDoctor="matAutocomplete"
+                                                        [displayWith]="getOptionTextDoctor">
+                                                        <mat-option *ngFor="let option of filteredOptionsDoc"
+                                                            [value]="option"
+                                                            (onSelectionChange)="isDoctorSelected = true;">
+                                                            {{option.Doctorname }}
+                                                            <!-- <b>|</b> {{option.DepartmentName }}
+                                                            <b>|</b> {{option.DoctorId
+                                                            }} -->
+                                                        </mat-option>
+                                                    </mat-autocomplete>
+                                                </mat-form-field>
+
+
+                                            </div>
+                                        </form>
+                                    </mat-card>
+
+                                    <mat-card fxLayout="column" style="padding: 5px;">
+                                        <form [formGroup]="MedicineItemForm">
+                                            <div class="consultunt-title">
+                                                <span style="font-weight: 700;">
+                                                    Follow Up Visit Date
+                                                </span>
+                                            </div>
+                                            <hr>
+                                            <div fxLayout="row" fxLayoutGap="6px">
+                                                <div fxFlex="13%">
+                                                    <mat-button-toggle-group [(ngModel)]="dateStyle"
+                                                        (change)="OnChangeDobType($event)" aria-label="Font Style"
+                                                        formControlName="dateStylebtn"  >
+                                                        <!-- <mat-button-toggle value="Date">Date</mat-button-toggle> -->
+                                                        <mat-button-toggle value="Day">Day</mat-button-toggle>
+                                                        <mat-button-toggle value="Month">Month</mat-button-toggle>
+                                                        <mat-button-toggle value="Year">Year</mat-button-toggle>
+                                                    </mat-button-toggle-group>
+                                                </div>
+
+                                                <mat-form-field appearance="outline" fxFlex="10%"
+                                                    *ngIf="dateStyle=='Day'  || dateStyle=='Month' || dateStyle=='Year'">
+                                                    <mat-label *ngIf="dateStyle=='Day'">Follow Up Days</mat-label>
+                                                    <mat-label *ngIf="dateStyle=='Month'">Follow Up Month</mat-label>
+                                                    <mat-label *ngIf="dateStyle=='Year'">Follow Up Year</mat-label>
+                                                    <input name="Days" formControlName="Days" placeholder="Days"
+                                                        matInput [(ngModel)]="vDays" (keyup)="onDaysChange()">
+                                                </mat-form-field>
+
+                                                <!-- <mat-form-field appearance="outline" fxFlex="10%" *ngIf="dateStyle=='Month'">
+                                                    <mat-label>Follow Up Month</mat-label>
+                                                    <input name="FollowupMonths" formControlName="FollowupMonths" placeholder="Months"
+                                                     matInput [(ngModel)]="vMonths"
+                                                        (keyup)="onDaysChange()">
+                                                </mat-form-field>
+
+                                                <mat-form-field appearance="outline" fxFlex="10%" *ngIf="dateStyle=='Year'">
+                                                    <mat-label>Follow Up Year</mat-label>
+                                                    <input name="FollowupYears" formControlName="FollowupYears" placeholder="Years" 
+                                                    matInput [(ngModel)]="vYears"
+                                                        (keyup)="onDaysChange()">
+                                                </mat-form-field> -->
+
+                                                <mat-form-field appearance="outline" fxFlex="20%">
+                                                    <mat-label>Follow Up Date</mat-label>
+                                                    <input matInput [matDatepicker]="picker1"
+                                                        placeholder="Choose a date" formControlName="start"
+                                                        [(ngModel)]="specificDate">
+                                                    <mat-datepicker-toggle matSuffix
+                                                        [for]="picker1"></mat-datepicker-toggle>
+                                                    <mat-datepicker #picker1></mat-datepicker>
+                                                </mat-form-field>
+
+                                            </div>
+                                        </form>
+                                    </mat-card>
+
+                                    <mat-card fxLayout="column" style="padding: 5px;">
+                                        <form [formGroup]="MedicineItemForm">
+                                            <div class="advice-title">
+                                                <span style="font-weight: 700;">
+                                                    Advice
+                                                </span>
+                                            </div>
+                                            <hr>
+                                            <div fxLayout="row" fxLayoutGap="6px">
+                                                <mat-form-field appearance="outline" fxFlex>
+                                                    <mat-label>Remark</mat-label>
+                                                    <textarea rows="1" name="Remark" formControlName="Remark"
+                                                        placeholder="Remark" matInput></textarea>
+                                                </mat-form-field>
+                                            </div>
+                                        </form>
+                                    </mat-card>
+
+                                    <div fxLayout="row" fxLayoutAlign="space-between">
+                                        <form [formGroup]="caseFormGroup" fxLayoutAlign="space-between">
+                                            <mat-radio-group aria-label="Select an option"
+                                                formControlName="LetteHeadRadio" (change)="LetterheadFilter($event)"
+                                                fxLayout="row">
+                                                <mat-radio-button value="LetterHead"> Letter Head</mat-radio-button>
+                                                <mat-radio-button value="NormalHead">Print Normal</mat-radio-button>
+                                            </mat-radio-group>
+
+                                            <mat-radio-group aria-label="Select an option"
+                                                formControlName="LangaugeRadio" (change)="onChangeLangaugeRadio($event)"
+                                                fxLayout="row">
+                                                <mat-radio-button value="false">Print In Marathi</mat-radio-button>
+                                                <mat-radio-button value="True">Print In English</mat-radio-button>
+                                            </mat-radio-group>
+                                        </form>
+
+                                        <div class="sales-footer-buttons gap-6" fxLayout="row">
+                                            <button class="btn btn-danger-outline" (click)="onClear()">Reset</button>
+                                            <button class="btn btn-primary " (click)="onSave()">Save</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-tab>
+
+
+                        <!-- old visit info -->
+                        <mat-tab label="Previous Visit Information">
+                          <ng-template mat-tab-label>
+                                Previous Visit Information
+                            </ng-template>  
+                             <!--  <div fxlayout="column">
+                                <div fxFlex.gt-sm="30%">
+                                    <div fxLayout="column" fxLayoutGap="6px">
+                                        <div fxLayout="row" fxLayoutAlign="start" style="padding: 5px;">
+                                            <button mat-raised-button fxLayoutAlign="center center" class="py-8"
+                                                (click)="viewgetOpprescriptionReportPdf()"
+                                                [disabled]="!dataSource1.data.length">
+                                                <mat-icon>print</mat-icon><span>Previous Report</span>
+                                            </button>&nbsp;&nbsp;&nbsp;
+                                            <button mat-raised-button fxLayoutAlign="center center" class="py-8"
+                                                [disabled]="!dataSource1.data.length">
+                                                <img width="25" height="8px"
+                                                    src="assets/images/logos/WhatsApp.png"><span>WhatsApp</span>
+                                            </button>
+                                        </div>
+
+                                        <div fxlayout="row">
+                                            <div fxFlex.gt-sm="99%" fxLayoutGap="5px" fxLayout="column">
+                                                <mat-card style="padding: 6px;">
+                                                    <div class="visited-title">
+                                                        <span style="font-weight: 700;">
+                                                            Visit List
+                                                        </span>
+                                                    </div>
+                                                    <hr>
+                                                    <mat-table class="table1" matSort [dataSource]="dataSource1"
+                                                        [@animateStagger]="{value:'50'}"
+                                                        style="height:350px !important;overflow: auto;">
+
+                                                        <ng-container matColumnDef="VisitId">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                                fxShow.gt-sm class="w-90">
+                                                                VisitID </mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm
+                                                                class="w-90">
+                                                                {{element.VisitId}} </mat-cell>
+                                                        </ng-container>
+
+                                                        <ng-container matColumnDef="VisitTime">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                                fxShow.gt-sm class="w-130">
+                                                                VisitDate
+                                                            </mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm
+                                                                class="w-130">
+                                                                {{element.VisitTime | date:"dd/MM/yyyy H:mm"}}
+                                                            </mat-cell>
+                                                        </ng-container>
+
+                                                        <ng-container matColumnDef="DocName">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                                fxShow.gt-sm>
+                                                                DoctorName </mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                {{element.DocName }} </mat-cell>
+                                                        </ng-container>
+
+                                                        <ng-container matColumnDef="loading">
+                                                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                                                loading data...
+                                                            </mat-footer-cell>
+                                                        </ng-container>
+
+                                                        <ng-container matColumnDef="noData">
+                                                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                                                <span>No Data Found</span>
+                                                            </mat-footer-cell>
+                                                        </ng-container>
+
+                                                        <mat-header-row class="accent"
+                                                            *matHeaderRowDef="displayedVisitColumns; sticky: true">
+                                                        </mat-header-row>
+                                                        <mat-row *matRowDef="let row; columns: displayedVisitColumns;"
+                                                            class="element" [@animate]="{value:'*',params:{y:'100%'}}"
+                                                            (click)="getPrescriptionListFill1(row.VisitId)"></mat-row>
+                                                        <mat-footer-row *matFooterRowDef="['loading']"
+                                                            [ngClass]="{'hide':dataSource1!=null}"></mat-footer-row>
+                                                        <mat-footer-row *matFooterRowDef="['noData']"
+                                                            [ngClass]="{'hide':!(dataSource1!=null && dataSource1.data.length==0)}">
+                                                        </mat-footer-row>
+                                                    </mat-table>
+                                                    <mat-paginator #paginator [pageSizeOptions]="[10, 25, 75, 100]"
+                                                        [pageSize]="10">
+                                                    </mat-paginator>
+                                                </mat-card>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div fxFlex.gt-sm="70%">
+                                    <div fxLayout="column" fxLayoutGap="6px">
+
+                                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 6px;">
+                                            <div class="patient-info-sales my-8">
+                                                <div class="sales-patient-info-title">
+                                                    <span style="font-weight: 700;">
+                                                        Visit Information
+                                                    </span>
+                                                </div>
+                                                <hr>
+                                                <div class="Ipd-patient-info" fxFlexFill fxLayout="row"
+                                                    fxLayoutAlign="space-between center" class="patient-info">
+                                                    <div class="patient-sub">
+                                                        <div class="patient-info-row patient-info-1-111 pt-4"
+                                                            fxLayout="row" fxLayoutAlign="space-between">
+                                                            <div fxLayout="column" fxLayoutGap="6px">
+                                                                <div class="patient-col">
+                                                                    <span class="patient-col-key">Height
+                                                                    </span>
+                                                                    <span>:</span>
+                                                                    <span class="patient-col-value">{{preHeight}}</span>
+                                                                </div>
+
+                                                                <div class="patient-col">
+                                                                    <span class="patient-col-key">SPO2
+                                                                    </span>
+                                                                    <span>:</span>
+                                                                    <span class="patient-col-value">{{preSPO}}</span>
+                                                                </div>
+
+
+                                                            </div>
+                                                            <div fxLayout="column" fxLayoutGap="6px">
+
+                                                                <div class="patient-col">
+                                                                    <span class="patient-col-key">Weight
+                                                                    </span>
+                                                                    <span>:</span>
+                                                                    <span class="patient-col-value">{{preWeight}}</span>
+                                                                </div>
+
+                                                                <div class="patient-col">
+                                                                    <span class="patient-col-key">Temprature</span>
+                                                                    <span>:</span>
+                                                                    <span class="patient-col-value">{{preTemp}}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div fxLayout="column" fxLayoutGap="6px"
+                                                                style="margin-right: 100px;">
+
+                                                                <div class="patient-col">
+                                                                    <span class="patient-col-key">BMI</span>
+                                                                    <span>:</span>
+                                                                    <span class="patient-col-value">{{PreBMI}}</span>
+                                                                </div>
+
+                                                                <div class="patient-col">
+                                                                    <span class="patient-col-key">BSL</span>
+                                                                    <span>:</span>
+                                                                    <span class="patient-col-value">{{preBSL}}</span>
+                                                                </div>
+
+                                                            </div>
+                                                            <div fxLayout="column" fxLayoutGap="6px"
+                                                                style="margin-right: 100px;">
+
+                                                                <div class="patient-col">
+                                                                    <span class="patient-col-key">Pulse
+                                                                    </span>
+                                                                    <span>:</span>
+                                                                    <span class="patient-col-value">{{prePulse}}</span>
+                                                                </div>
+
+                                                                <div class="patient-col">
+                                                                    <span class="patient-col-key">BP</span>
+                                                                    <span>:</span>
+                                                                    <span class="patient-col-value">{{preBP}}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </mat-card>
+
+                                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 6px;">
+                                            <div class="cheifcomplain-title">
+                                                <span style="font-weight: 700;">
+                                                    ChiefComplaint
+                                                </span>
+                                            </div>
+                                            <hr>
+                                            <div fxLayout="column" fxLayoutGap="6px">
+                                                <span class="patient-col-value">{{preCheifComplaint}}</span>
+                                            </div>
+                                        </mat-card>
+
+                                        <div fxlayout="row">
+                                            <div fxFlex.gt-sm="99%" fxLayoutGap="5px" fxlayout="column">
+                                                <mat-card style="padding: 6px;">
+                                                    <div class="prescription-title">
+                                                        <span style="font-weight: 700;">
+                                                            Prescription List
+                                                        </span>
+                                                    </div>
+                                                    <hr>
+                                                    <mat-table class="mat-table-1 h-180" matSort
+                                                        [dataSource]="dsItemList1" [@animateStagger]="{value:'50'}"
+                                                        style="overflow: auto;">
+
+                                                        <ng-container matColumnDef="ItemName">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                                fxShow.gt-sm>
+                                                                Drug Name</mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                <span> {{element.ItemName}}</span>
+                                                            </mat-cell>
+                                                        </ng-container>
+
+                                                        <ng-container matColumnDef="DoseName">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                                fxShow.gt-sm>
+                                                                Dose Name</mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                <span> {{element.DoseName}}</span>
+                                                            </mat-cell>
+                                                        </ng-container>
+
+                                                        <ng-container matColumnDef="Days">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                                fxShow.gt-sm>
+                                                                Days</mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                <span> {{element.Days}}</span>
+                                                            </mat-cell>
+                                                        </ng-container>
+
+                                                        <ng-container matColumnDef="Remark">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                                fxShow.gt-sm>
+                                                                Instruction</mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                <span> {{element.Instruction}}</span>
+                                                            </mat-cell>
+                                                        </ng-container> 
+
+                                                        <ng-container matColumnDef="loading">
+                                                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                                                loading data...
+                                                            </mat-footer-cell>
+                                                        </ng-container>
+
+                                                        <ng-container matColumnDef="noData">
+                                                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                                                <span>No Data Found</span>
+                                                            </mat-footer-cell>
+                                                        </ng-container>
+
+                                                        <mat-header-row class="accent"
+                                                            *matHeaderRowDef="displayedpreviousColumn; sticky: true">
+                                                        </mat-header-row>
+                                                        <mat-row *matRowDef="let row; columns: displayedpreviousColumn;"
+                                                            class="element"
+                                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                                    </mat-table>
+                                                </mat-card>
+                                            </div>
+                                        </div>
+
+                                        <mat-card fxLayout="column" style="padding: 5px;">
+                                            <form [formGroup]="MedicineItemForm">
+                                                <div class="consultunt-title">
+                                                    <span style="font-weight: 700;">
+                                                        Follow Up Visit Date
+                                                    </span>
+                                                </div>
+                                                <hr>
+                                                <div fxLayout="row" fxLayoutGap="6px">
+
+
+                                                    <mat-form-field appearance="outline" fxFlex="20%">
+                                                        <input matInput [matDatepicker]="picker2"
+                                                            placeholder="Choose a date" formControlName="start"
+                                                            [(ngModel)]="preFollowupDate">
+                                                        <mat-datepicker-toggle matSuffix
+                                                            [for]="picker2"></mat-datepicker-toggle>
+                                                        <mat-datepicker #picker2></mat-datepicker>
+                                                    </mat-form-field>
+
+                                                    <mat-form-field appearance="outline" fxFlex>
+                                                        <mat-label>Remark</mat-label>
+                                                        <textarea rows="1" name="Remark" formControlName="Remark"
+                                                            placeholder="Remark" matInput></textarea>
+                                                    </mat-form-field>
+                                                </div>
+                                            </form>
+                                        </mat-card>
+                                    </div>
+                                </div>
+                            </div> -->
+                        </mat-tab>
+ 
+
+
+                        <!-- new visit info -->
+                        <mat-tab label="Previous Visit Info">
+                            <ng-template mat-tab-label>
+                                Previous Visit Info
+                            </ng-template>
+                            <div class="center p-12">
+                                <div fxlayout="row" fxLayout="column" fxFlexFill fxLayoutGap="10px">
+                        
+                                    <div *ngFor="let date of uniqueDates">
+                                        <mat-card style="padding: 6px;">
+                                            <div fxLayout="column" fxLayoutGap="6px">
+                                                <div>
+                                                    <div class="visit-info-title" fxLayoutAlign="space-between">
+                                                        <span style="font-weight: 900;color: blueviolet;">
+                                                            Visit Date : {{ date | date: 'dd/MM/YYYY' }}
+                                                            <!-- {{ date | date:' fullDate'}}  -->
+                                                        </span>
+                                                        <span style="font-weight: 900;color: blueviolet;">
+                                                            Visit Information
+                                                        </span>
+                                                        <div class="gap-8">
+                                                            <mat-icon (click)="viewgetOpprescriptionReportPdf()" matTooltip="Print">print</mat-icon>
+                                                            <img width="25" height="8px" src="assets/images/logos/WhatsApp.png">
+                                                        </div>
+                                                    </div>
+                                                    <hr>
+                                                    <div *ngFor="let patient of getPatientsForDate(date)">
+                                                        <div class="Ipd-patient-info" fxFlexFill fxLayout="row" fxLayoutAlign="space-between center"
+                                                            class="patient-info">
+                                                            <div class="patient-sub">
+                                                                <div class="patient-info-row patient-info-1-111 pt-4" fxLayout="column" fxLayoutAlign="space-between">
+                                                                    <div fxLayout="row" fxLayoutAlign="space-between">
+                                                                        <div class="patient-col">
+                                                                            <span class="patient-col-key">Height
+                                                                            </span>
+                                                                            <span>:</span>
+                                                                            <span class="patient-col-value">{{patient.PHeight}}
+                                                                                <span matSuffix style="font-size: 13px;"> | cm</span>
+                                                                            </span>
+                                                                            
+                                                                        </div>
+                                                
+                                                                        <div class="patient-col">
+                                                                            <span class="patient-col-key">Weight
+                                                                            </span>
+                                                                            <span>:</span>
+                                                                            <span class="patient-col-value">{{patient.PWeight}}
+                                                                                <span matSuffix style="font-size:13px;"> | Kg</span>
+                                                                            </span>
+                                                                        </div>
+                                                
+                                                                        <div class="patient-col">
+                                                                            <span class="patient-col-key">BMI</span>
+                                                                            <span>:</span>
+                                                                            <span class="patient-col-value">{{patient.BMI}}</span>
+                                                                        </div>
+                                                
+                                                                        <div class="patient-col">
+                                                                            <span class="patient-col-key">SPO2
+                                                                            </span>
+                                                                            <span>:</span>
+                                                                            <span class="patient-col-value">{{patient.SpO2}}</span>
+                                                                        </div>
+                                                
+                                                                        <div class="patient-col">
+                                                                            <span class="patient-col-key">BSL</span>
+                                                                            <span>:</span>
+                                                                            <span class="patient-col-value">{{patient.BSL}}</span>
+                                                                        </div>
+                                                
+                                                                        <div class="patient-col">
+                                                                            <span class="patient-col-key">Pulse
+                                                                            </span>
+                                                                            <span>:</span>
+                                                                            <span class="patient-col-value">{{patient.Pulse}}
+                                                                                <span matSuffix style="font-size: 13px;"> | bpm</span>
+                                                                            </span>
+                                                                        </div>
+                                                
+                                                                        <div class="patient-col">
+                                                                            <span class="patient-col-key">BP</span>
+                                                                            <span>:</span>
+                                                                            <span class="patient-col-value">{{patient.BP}}
+                                                                                <span matSuffix style="font-size: 13px;"> | mmHg</span>
+                                                                            </span>
+                                                                        </div>
+                                                
+                                                                        <div class="patient-col">
+                                                                            <span class="patient-col-key">Temprature</span>
+                                                                            <span>:</span>
+                                                                            <span class="patient-col-value">{{patient.Temp}}
+                                                                                <span matSuffix style="font-size: 13px;"> | F</span>
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                   <div style="border: 1px solid rgb(203, 203, 203);width: 100%;"></div>
+                                                                    <div>
+                                                                        <div fxLayout="row" fxLayoutGap="6px">
+                                                                            <div class="patient-col">
+                                                                                <span class="patient-col-key">ChiefComplaint
+                                                                                </span>
+                                                                                <span>:</span>
+                                                                                <span class="patient-col-value">{{patient.ChiefComplaint}}</span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div fxLayout="column" fxLayoutGap="6px">
+                                                                            <div class="patient-col">
+                                                                                <span class="patient-col-key">Diagnosis</span>
+                                                                                <span>:</span>
+                                                                                <span class="patient-col-value">{{patient.Diagnosis}}</span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div fxLayout="column" fxLayoutGap="6px">
+                                                                            <div class="patient-col">
+                                                                                <span class="patient-col-key">Examination
+                                                                                </span>
+                                                                                <span>:</span>
+                                                                                <span class="patient-col-value">{{patient.Examination}}</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div style="border: 1px solid rgb(203, 203, 203);width: 100%;"></div>
+                                                <div fxFlex.gt-sm="100%" fxlayout="column">
+                                                    <div class="prescription-title">
+                                                        <span style="font-weight: 700;">
+                                                            Prescription List
+                                                        </span>
+                                                    </div>
+                                                    <hr>
+                                                    <table mat-table [dataSource]="getFirstPatientForDate(date)" class="mat-table-1 h-220"
+                                                        [@animateStagger]="{value:'50'}" style="width: 100%;overflow: auto">
+                                        
+                                                        <ng-container matColumnDef="ItemName">
+                                                            <mat-header-cell *matHeaderCellDef>ItemName
+                                                            </mat-header-cell>
+                                                            <mat-cell *matCellDef="let patient">
+                                                                <span> {{patient.DrugName}}</span>
+                                                            </mat-cell>
+                                                        </ng-container>
+                                        
+                                                        <ng-container matColumnDef="DoseName">
+                                                            <mat-header-cell *matHeaderCellDef>DoseName
+                                                            </mat-header-cell>
+                                                            <mat-cell *matCellDef="let patient">
+                                                                <span> {{patient.DoseName}}</span>
+                                                            </mat-cell>
+                                                        </ng-container>
+                                        
+                                                        <ng-container matColumnDef="Days">
+                                                            <mat-header-cell *matHeaderCellDef>Days
+                                                            </mat-header-cell>
+                                                            <mat-cell *matCellDef="let patient">
+                                                                <span> {{patient.Days}}</span>
+                                                            </mat-cell>
+                                                        </ng-container>
+                                        
+                                                        <ng-container matColumnDef="Remark">
+                                                            <mat-header-cell *matHeaderCellDef>Instruction
+                                                            </mat-header-cell>
+                                                            <mat-cell *matCellDef="let patient">
+                                                                <span> {{patient.Instruction}}</span>
+                                                            </mat-cell>
+                                                        </ng-container>
+                                        
+                                                        <ng-container matColumnDef="loading">
+                                                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                                                loading data...
+                                                            </mat-footer-cell>
+                                                        </ng-container>
+                                        
+                                                        <ng-container matColumnDef="noData">
+                                                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                                                <span>No Data Found</span>
+                                                            </mat-footer-cell>
+                                                        </ng-container>
+                                        
+                                                        <mat-header-row class="accent" *matHeaderRowDef="displayedpreviousColumn; sticky: true">
+                                                        </mat-header-row>
+                                                        <mat-row *matRowDef="let row; columns: displayedpreviousColumn;" class="element"
+                                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </mat-card>
+                                    </div> 
+                                </div>
+                            </div>
+                        </mat-tab> 
+                    </mat-tab-group>
+                </div> 
+            </div>
+        </div>
+    </div>
+</div>

@@ -63,17 +63,17 @@ export class AppointmentListComponent implements OnInit {
                     }, 
                     {
                         action: gridActions.edit, callback: (data: any) => {
-                            this.EditConsultdr();
+                            this.EditConsultdr(data);
                         }
                     }, 
                     {
                         action: gridActions.edit, callback: (data: any) => {
-                            this.Editrefrancedr();
+                            this.Editrefrancedr(data);
                         }
                     },
                     {
                         action: gridActions.edit, callback: (data: any) => {
-                            this.Editcrossconsult();
+                            this.Editcrossconsult(data);
                         }
                     },
                     {
@@ -117,7 +117,7 @@ export class AppointmentListComponent implements OnInit {
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
             // { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-            { fieldName: "From_Dt", fieldValue: "11/11/2024", opType: OperatorComparer.Equals },
+            { fieldName: "From_Dt", fieldValue: "11/11/2023", opType: OperatorComparer.Equals },
             { fieldName: "To_Dt", fieldValue: "11/01/2024", opType: OperatorComparer.Equals },
             { fieldName: "IsMark", fieldValue: "1", opType: OperatorComparer.Equals },
             { fieldName: "Start", fieldValue: "1", opType: OperatorComparer.Equals },
@@ -187,15 +187,15 @@ export class AppointmentListComponent implements OnInit {
     }
 
 
-    EditConsultdr(){
+    EditConsultdr(row){
         debugger
         let that = this;
         const dialogRef = this._matDialog.open(EditConsultantDoctorComponent,
             {
-                maxWidth: "45vw",
-                height: '45%',
+                maxWidth: "55vw",
+                height: '55%',
                 width: '80%',
-                // data: row
+                data: row
             });
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
@@ -204,15 +204,15 @@ export class AppointmentListComponent implements OnInit {
         });
     }
 
-    Editrefrancedr(){
+    Editrefrancedr(row){
         debugger
         let that = this;
         const dialogRef = this._matDialog.open(EditRefranceDoctorComponent,
             {
-                maxWidth: "45vw",
-                height: '45%',
+                maxWidth: "55vw",
+                height: '55%',
                 width: '80%',
-                // data: row
+                data: row
             });
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
@@ -221,15 +221,15 @@ export class AppointmentListComponent implements OnInit {
         });
     }
 
-    Editcrossconsult(){
+    Editcrossconsult(row){
         debugger
         let that = this;
         const dialogRef = this._matDialog.open(CrossConsultationComponent,
             {
-                maxWidth: "55vw",
-                height: '45%',
+                maxWidth: "65vw",
+                height: '60%',
                 width: '80%',
-                // data: row
+                data: row
             });
         dialogRef.afterClosed().subscribe(result => {
             if (result) {

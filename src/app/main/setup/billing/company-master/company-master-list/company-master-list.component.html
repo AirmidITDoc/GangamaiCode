@@ -6,14 +6,11 @@
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Company Master</span>
             </div>
             <div class="modal-header-right">
-
-                <div fxLayout="row" fxLayoutALign="end start">
-                    <!-- <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
-                    </app-common-date> -->
-                    <button mat-icon-button (click)="onClose()" aria-label="Close dialog">
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                        matTooltip="Close">
                         <mat-icon>close</mat-icon>
                     </button>
-
                 </div>
             </div>
         </div>

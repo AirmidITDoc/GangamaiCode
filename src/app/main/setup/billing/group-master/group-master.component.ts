@@ -29,12 +29,12 @@ export class GroupMasterComponent implements OnInit {
         apiUrl: "GroupMaster/List",
         columnsList: [
             { heading: "Code", key: "groupId", sort: true, align: 'left', emptySign: 'NA',width:100 },
-            { heading: "Group Name", key: "groupName", sort: true, align: 'left', emptySign: 'NA',width:500 },
+            { heading: "Group Name", key: "groupName", sort: true, align: 'left', emptySign: 'NA',width:470 },
             { heading: "Isconsolidated", key: "isconsolidated", sort: true, align: 'left', emptySign: 'NA',width:150 },
             { heading: "IsConsolidatedDr", key: "isConsolidatedDr", sort: true, align: 'left', emptySign: 'NA', width:150 },
             { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center",width:150 },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:140, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:150, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);

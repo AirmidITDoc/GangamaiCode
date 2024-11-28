@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { gridRequest } from "app/core/models/gridRequest";
 import { ApiCaller } from "app/core/services/apiCaller";
 
@@ -22,8 +22,8 @@ export class BankMasterService {
     createBankForm(): FormGroup {
         return this._formBuilder.group({
             bankId: [""],
-            bankName: [""],
-            isDeleted: ["false"],
+            bankName: ["", Validators.required],
+            isActive: ["true"],
             // AddedBy: ["0"],
             // UpdatedBy: ["0"],
             // AddedByName: [""],
@@ -43,8 +43,8 @@ export class BankMasterService {
     getValidationMessages(){
         return{
             bankName: [
-                { name: "required", Message: "Class Name is required" },
-                { name: "maxlength", Message: "Class name should not be greater than 50 char." },
+                { name: "required", Message: "Bank Name is required" },
+                { name: "maxlength", Message: "Bank name should not be greater than 50 char." },
                 { name: "pattern", Message: "Special char not allowed." }
             ]
         }

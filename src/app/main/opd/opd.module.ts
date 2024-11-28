@@ -42,10 +42,10 @@ const appRoutes: Routes = [
 //     path: "browse-opd-payment-receipt",
 //     loadChildren: () => import("./browse-payment-list/browsepayment.module").then((m) => m.browsepaymentModule),
 // },
-// {
-//     path: "medicalrecords",
-//     loadChildren: () => import("./new-casepaper/casepaper.module").then((m) => m.CasepaperModule),
-// },
+{
+    path: "medicalrecords",
+    loadChildren: () => import("./new-casepaper/casepaper.module").then((m) => m.CasepaperModule),
+},
 {
     path: "bill",
     loadChildren: () => import("./op-search-list/opsearchlist.module").then((m) => m.opseachlistModule),

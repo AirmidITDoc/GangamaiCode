@@ -44,7 +44,7 @@ export class CompanyMasterComponent implements OnInit {
             { heading: "pinNo", key: "pinNo", sort: true, align: 'left', emptySign: 'NA',width:100 },
             { heading: "PhoneNo", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA',width:150 },
            
-           { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center",width:100 },
+           { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center",width:110 },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:100, actions: [
                     {

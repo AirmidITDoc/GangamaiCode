@@ -25,23 +25,32 @@
                         [validations]="_CashCounterMasterService.getValidationMessages().cashCounterName"
                         [maxLength]="300">
                     </airmid-textbox>
+
                     <airmid-textbox label="prefix name" formControlName="prefix" [value]=""
-                        [formGroup]="cashcounterForm" [maxLength]="300">
+                        [formGroup]="cashcounterForm"
+                        [validations]="_CashCounterMasterService.getValidationMessages().prefix"
+                         [maxLength]="300">
                     </airmid-textbox>
 
                 </div>
 
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
 
-                    <airmid-textbox label="billNo" formControlName="billNo" [value]="" [formGroup]="cashcounterForm"
+                    <airmid-textbox label="billNo" formControlName="billNo" [value]="" 
+                    [formGroup]="cashcounterForm"
+                    [validations]="_CashCounterMasterService.getValidationMessages().billNo"
                         [maxLength]="300">
                     </airmid-textbox>
-                    <!-- <mat-radio-group name="isDeleted" formControlName="isDeleted" value='true'>
+                </div>
+
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <mat-radio-group name="isActive" formControlName="isActive" value='true'>
                         <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive
                         </mat-radio-button>
                         <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsDeactive
                         </mat-radio-button>
-                    </mat-radio-group> -->
+                    </mat-radio-group>
+
                 </div>
             </form>
         </div>

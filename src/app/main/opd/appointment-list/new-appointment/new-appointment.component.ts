@@ -227,6 +227,7 @@ export class NewAppointmentComponent implements OnInit {
         public dialogRef: MatDialogRef<NewAppointmentComponent>,
               public _matDialog: MatDialog,
               private _ActRoute: Router,
+              private _fuseSidebarService: FuseSidebarService,
               public _WhatsAppEmailService: WhatsAppEmailService,
         public datePipe: DatePipe,
         private formBuilder: FormBuilder,
@@ -356,6 +357,10 @@ export class NewAppointmentComponent implements OnInit {
     }
     IsPhoneAppflag: boolean = true;
 
+    // toggle sidebar
+    toggleSidebar(name): void {
+        this._fuseSidebarService.getSidebar(name).toggleOpen();
+    }
     onChangeReg(event) {
         //
         if (event.value == 'registration') {

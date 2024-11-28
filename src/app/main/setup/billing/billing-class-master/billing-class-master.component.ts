@@ -34,7 +34,7 @@ export class BillingClassMasterComponent implements OnInit {
        
        { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center",width:160 },
              {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:160, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:155, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);

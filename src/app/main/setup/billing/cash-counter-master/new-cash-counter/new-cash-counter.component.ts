@@ -26,7 +26,7 @@ export class NewCashCounterComponent implements OnInit {
         cashCounterName: this.data?.cashCounterName.trim(),
         prefix: this.data?.prefix,
         billNo: this.data?.billNo,
-     //  isDeleted: JSON.stringify(this.data?.isActive),
+        isActive: JSON.stringify(this.data?.isActive),
       };
       this.cashcounterForm.patchValue(m_data);
   }

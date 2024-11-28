@@ -17,96 +17,101 @@
     </div>
 
     <!-- Modal body -->
-    <div class="modal-body" fusePerfectScrollbar>
-        <div class="modal-body-container">
-            <form [formGroup]="RefrancedrForm">
-                <div fxLayout="column" class="gap-12">
-                    <div class="modal-card-container">
-                        <mat-card>
-                            <div class="patient-info-container">
-                                <!-- <div class="patient-sub">
-                                    <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
-                                        fxLayoutAlign="space-between">
-                                        <div fxLayout="column" fxLayoutGap="10px">
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">UHID No
-                                                </span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{PatientHeaderObj.RegId}}</span>
+    <mat-card>
+        <div class="modal-body" fusePerfectScrollbar>
+            <div class="modal-body-container">
+                <form [formGroup]="RefrancedrForm">
+                    <div fxLayout="column" class="gap-12">
+                        <div class="modal-card-container">
+                            <mat-card>
+                                <div class="patient-info-container">
+                                    <div class="patient-sub">
+                                        <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
+                                            fxLayoutAlign="space-between">
+                                            <div fxLayout="column" fxLayoutGap="10px">
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">UHID No
+                                                    </span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{data.regId}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Patient Name
+                                                    </span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{data.patientName}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Doctor Name</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{data.doctorname}}</span>
+                                                </div>
                                             </div>
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">Patient Name
-                                                </span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{PatientHeaderObj.PatientName}}</span>
-                                            </div>
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">Doctor Name</span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{PatientHeaderObj.Doctorname}}</span>
-                                            </div>
-                                        </div>
-                                        <div fxLayout="column" fxLayoutGap="10px">
+                                            <div fxLayout="column" fxLayoutGap="10px">
 
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">OPD No</span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{PatientHeaderObj.OPDNo}}</span>
-                                            </div>
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">Age | Sex
-                                                </span>
-                                                <span>:</span>
-                                                <span
-                                                    class="patient-col-value">{{PatientHeaderObj.AgeYear}}Y|{{PatientHeaderObj.AgeMonth}}M|{{PatientHeaderObj.AgeDay}}
-                                                    D | {{PatientHeaderObj.GenderName}}</span>
-                                            </div>
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">Department</span>
-                                                <span>:</span>
-                                                <span
-                                                    class="patient-col-value">{{PatientHeaderObj.DepartmentName}}</span>
-                                            </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">OPD No</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{data.opdNo}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Age | Sex
+                                                    </span>
+                                                    <span>:</span>
+                                                    <span
+                                                        class="patient-col-value">{{data.ageYear}}Y|{{data.ageMonth}}M|{{data.ageDay}}
+                                                        D | {{data.denderName}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Department</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{data.departmentName}}</span>
+                                                </div>
 
 
-                                        </div>
-                                        <div fxLayout="column" fxLayoutGap="10px" style="margin-right: 100px;">
+                                            </div>
+                                            <div fxLayout="column" fxLayoutGap="10px" style="margin-right: 100px;">
 
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">Patient Type | Tarrif
-                                                </span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{PatientHeaderObj.PatientType}} |
-                                                    {{PatientHeaderObj.TarrifName}}</span>
-                                            </div>
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">Company Name</span>
-                                                <span>:</span>
-                                                <span class="patient-col-value"
-                                                    style="color: orange;">{{PatientHeaderObj.CompanyName}}</span>
-                                            </div>
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">Ref-Doctor Name
-                                                </span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{PatientHeaderObj.RefDocName}}</span>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Patient Type | Tarrif
+                                                    </span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{data.patientType}} |
+                                                        {{data.tariffName}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Company Name</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value"
+                                                        style="color: orange;">{{data.companyName}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Ref-Doctor Name
+                                                    </span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{data.refDocName}}</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div> -->
-                            </div>
-                        </mat-card>
-                    </div>
-                    <div class="modal-card-container">
-                        <mat-card>
+                                </div>
+                            </mat-card>
+                        </div>
+                        <div class="modal-card-container">
+
                             <div fxLayout="column" class="gap-8">
                                 <div class="form-title mb-2 border-bottom pb-2">
                                     <span class="h3 font-weight-600"> Ref Doctor Information</span>
                                 </div>
                                 <div class="form-body">
                                     <div fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
-                                        <airmid-autocomplete [mode]="autocompleteModerefdoc" (selectDdlObject)="selectChangerefdoc($event)"></airmid-autocomplete>
-
+                                        <!-- <airmid-autocomplete [mode]="autocompleteModerefdoc" (selectDdlObject)="selectChangerefdoc($event)"></airmid-autocomplete> -->
+                                        <airmid-autocomplete label="DoctorID" formControlName="DoctorID"
+                                            [value]="data?.doctorID" [formGroup]="RefrancedrForm"
+                                            [validations]="getValidationDoctorMessages().DoctorID"
+                                            [mode]="autocompleteModerefdoc"
+                                            (selectDdlObject)="selectChangerefdoc($event)">
+                                        </airmid-autocomplete>
                                     </div>
                                 </div>
                             </div>
@@ -117,13 +122,13 @@
                                     <span>Save</span>
                                 </button>
                             </div>
-                        </mat-card>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
 
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </mat-card>
     <!-- Modal footer -->
 
 </div>

@@ -1,0 +1,198 @@
+<duv class="simple page-layout inner-scroll inner-sidebar left-sidebar">
+    <mat-toolbar class="accent" style="width: 100%;height: 40px;justify-content: space-between;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                Previous Prescription List
+            </span>
+        </div>
+    </mat-toolbar>
+    <div class="content">
+        <div class="center p-12 pb-56" style="border-radius: 4px;">
+            <div class="content-card">
+                <div fxlayout="row" fxLayout="column" fxFlexFill fxLayoutGap="10px"> 
+
+                    
+                        <!-- <div *ngFor="let date of groupedData | keyvalue">
+                          
+                            <mat-card style="padding: 6px;" column="column">
+                            <div class="consultunt-title" fxLayoutAlign="space-between">
+                                <span style="font-weight: 700;color: blueviolet;">
+                                   Visit Date : {{ date.key | date:'dd/MM/YYYY'}}
+                                </span>
+                                <mat-icon (click)="getCopyPreviouseList()" matTooltip="Copy">file_copy</mat-icon>
+                            </div>
+                            <hr>
+                            <table mat-table [dataSource]="date.value" class="mat-table-1 h-230"
+                                [@animateStagger]="{value:'50'}" style="width: 100%;overflow: auto">
+
+                                <ng-container matColumnDef="ItemName">
+                                    <mat-header-cell *matHeaderCellDef>ItemName
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element">
+                                        <span> {{element.DrugName}}</span>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="DoseName">
+                                    <mat-header-cell *matHeaderCellDef>DoseName
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element">
+                                        <span> {{element.DoseName}}</span>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="Days">
+                                    <mat-header-cell *matHeaderCellDef>Days
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element">
+                                        <span> {{element.Days}}</span>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="Remark">
+                                    <mat-header-cell *matHeaderCellDef>Instruction
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element">
+                                        <span> {{element.Instruction}}</span>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <mat-header-row class="accent" *matHeaderRowDef="displayedItemColumn; sticky: true">
+                                </mat-header-row>
+                                <mat-row *matRowDef="let row; columns: displayedItemColumn;" class="element"
+                                    [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                            </table>
+                           </mat-card> 
+                        </div> -->
+                  
+
+                        <div *ngFor="let date of uniqueDates">
+                            <mat-card style="padding: 6px;">
+                                <div fxLayout="column" fxLayoutGap="6px"> 
+                                    <div fxFlex.gt-sm="100%" fxlayout="column">
+                                        <div class="visit-info-title" fxLayoutAlign="space-between">
+                                            <span style="font-weight: 900;color: blueviolet;">
+                                                Visit Date : {{ date | date: 'dd/MM/YYYY' }} 
+                                            </span> 
+                                            <mat-icon  matTooltip="Copy" (click)="getCopyPreviouseList(date)">file_copy</mat-icon>
+                                        </div>
+                                        <hr>
+                                        <table mat-table [dataSource]="getFirstPatientForDate(date)" class="mat-table-1 h-220"
+                                            [@animateStagger]="{value:'50'}" style="width: 100%;overflow: auto">
+                            
+                                            <ng-container matColumnDef="ItemName">
+                                                <mat-header-cell *matHeaderCellDef>ItemName
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let patient">
+                                                    <span> {{patient.DrugName}}</span>
+                                                </mat-cell>
+                                            </ng-container>
+                            
+                                            <ng-container matColumnDef="DoseName">
+                                                <mat-header-cell *matHeaderCellDef>DoseName
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let patient">
+                                                    <span> {{patient.DoseName}}</span>
+                                                </mat-cell>
+                                            </ng-container>
+                            
+                                            <ng-container matColumnDef="Days">
+                                                <mat-header-cell *matHeaderCellDef>Days
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let patient">
+                                                    <span> {{patient.Days}}</span>
+                                                </mat-cell>
+                                            </ng-container>
+                            
+                                            <ng-container matColumnDef="Remark">
+                                                <mat-header-cell *matHeaderCellDef>Instruction
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let patient">
+                                                    <span> {{patient.Instruction}}</span>
+                                                </mat-cell>
+                                            </ng-container>
+                            
+                                            <ng-container matColumnDef="loading">
+                                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                                    loading data...
+                                                </mat-footer-cell>
+                                            </ng-container>
+                            
+                                            <ng-container matColumnDef="noData">
+                                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                                    <span>No Data Found</span>
+                                                </mat-footer-cell>
+                                            </ng-container>
+                            
+                                            <mat-header-row class="accent" *matHeaderRowDef="displayedItemColumn; sticky: true">
+                                            </mat-header-row>
+                                            <mat-row *matRowDef="let row; columns: displayedItemColumn;" class="element"
+                                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                        </table>
+                                    </div>
+                                </div>
+                            </mat-card>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</duv>
+
+
+ <!-- <mat-card style="padding: 6px;">
+                        <div class="info-badge-top pb-2 border-bottom">
+                            <div fxLayout="row" fxLayoutAlign="end center" class="gap-8">
+                                <button mat-raised-button (click)="getCopyPreviouseList()">
+                                    <mat-icon>file_copy</mat-icon>
+                                    Copy</button>
+                            </div>
+                        </div>
+
+                        <mat-table class="mat-table-1 h-230" matSort [dataSource]="dsItemList"
+                        [@animateStagger]="{value:'50'}">
+
+                        <ng-container matColumnDef="ItemName">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                Drug Name</mat-header-cell>
+                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                <span> {{element.ItemName}}</span>
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="DoseName">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                Dose Name</mat-header-cell>
+                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                <span> {{element.DoseName}}</span>
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Days">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                Days</mat-header-cell>
+                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                <span> {{element.Days}}</span>
+                            </mat-cell>
+                        </ng-container> 
+
+                        <ng-container matColumnDef="Remark">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Instruction
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let element" fxShow.gt-sm> 
+                                <span> {{element.Instruction}}</span> 
+                            </mat-cell>
+                        </ng-container>  
+
+                        <mat-header-row class="accent" *matHeaderRowDef="displayedItemColumn; sticky: true">
+                        </mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedItemColumn;" class="element"
+                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                    </mat-table>
+                    </mat-card> -->

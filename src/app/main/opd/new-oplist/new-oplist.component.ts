@@ -26,9 +26,9 @@ export class NewOPListComponent implements OnInit {
       apiUrl: "VisitDetail/OPBillList",
       columnsList: [
           { heading: "Code", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-          { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' ,width:250},
+          { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' ,width:200},
           { heading: "BillTime", key: "billTime", sort: true, align: 'left', emptySign: 'NA' ,width:150},
-          { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA',width:50 },
+          { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA',width:80 },
           { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' ,width:150},
           { heading: "VisitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA' ,width:150},
           { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA' ,width:150},
@@ -36,7 +36,7 @@ export class NewOPListComponent implements OnInit {
           { heading: "Net Pay", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' ,width:50},
           
           {
-              heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+              heading: "Action", key: "action", align: "right",width:200, type: gridColumnTypes.action, actions: [
                   {
                       action: gridActions.edit, callback: (data: any) => {
                           this.onSave(data);
@@ -107,7 +107,7 @@ export class NewOPListComponent implements OnInit {
         { heading: "AdvUsedPay", key: "advUsedPay", sort: true, align: 'left', emptySign: 'NA' ,width:50},
         { heading: "OnlinePay", key: "onlinePay", sort: true, align: "center",width:50 },
         {
-            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+            heading: "Action", key: "action", align: "right",width:200, type: gridColumnTypes.action, actions: [
                 {
                     action: gridActions.edit, callback: (data: any) => {
                         this.onSave(data);
@@ -179,7 +179,7 @@ gridConfig2: gridModel = {
         // { heading: "AdvUsedPay", key: "advUsedPay", sort: true, align: 'left', emptySign: 'NA' },
         // { heading: "OnlinePay", key: "onlinePay", sort: true, align: "center" },
         {
-            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+            heading: "Action", key: "action", align: "right",width:200, type: gridColumnTypes.action, actions: [
                 {
                     action: gridActions.edit, callback: (data: any) => {
                         this.onSave(data);

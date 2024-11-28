@@ -42,6 +42,29 @@
                                             <mat-icon *ngIf="!getStatus(element[row.key])"
                                                 class="active-icon red-500 s-16">close</mat-icon>
                                         </ng>
+                                        <ng *ngSwitchCase="GridColumnType.image">
+                                            <div class="profile_image_wrapper">
+                                                <img class="showImage" height="50px" width="50px" [src]="element[row.key] ? element[row.key] : 'assets/images/noimage.jpg'" >
+                                            </div>
+                                        </ng>
+                                        <ng *ngSwitchCase="GridColumnType.date">
+                                            {{ element[row.key] ? (element[row.key] | date: dateType.MEDIUM_DATE) : '-'}}
+                                        </ng>
+                                        <ng *ngSwitchCase="GridColumnType.time">
+                                            {{ element[row.key] ? (element[row.key] | date: dateType.SHORT_TIME) : '-'}}
+                                        </ng>
+                                        <ng *ngSwitchCase="GridColumnType.dateWithTime">
+                                            {{ element[row.key] ? (element[row.key] | date: dateType.DATE_WITH_TIME) : '-'}}
+                                        </ng>
+                                        <ng *ngSwitchCase="GridColumnType.dateByTime">
+                                            {{ element[row.key] ? (element[row.key] | date: dateType.DATE__TIME) : '-'}}
+                                        </ng>
+                                        <ng *ngSwitchCase="GridColumnType.wordBreak">
+                                            <a class="table-link bold break-spaces" test="{{element[row.key] | json}}"
+                                              (click)="$event.stopPropagation();actionLink.emit({action: row.actionType, data: element})"
+                                              >{{ element[row.key]}}
+                                            </a>
+                                        </ng>
                                         <ng *ngSwitchDefault>
                                             {{ element[row.key]}}
                                         </ng>

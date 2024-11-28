@@ -26,9 +26,10 @@ export class NewGroupComponent implements OnInit {
       //   printSeqNo: this.data?.printSeqNo,
       //   isconsolidated: JSON.stringify(this.data?.isconsolidated),
       //   isConsolidatedDR: JSON.stringify(this.data?.isConsolidatedDR),
-      // isDeleted: JSON.stringify(this.data?.isActive),
+      isDeleted: JSON.stringify(this.data?.isActive),
       };
       this.groupForm.patchValue(m_data);
+      console.log("group m_data:", m_data)
   }
   onSubmit() {
       if (this.groupForm.valid) {

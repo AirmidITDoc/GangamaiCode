@@ -24,7 +24,7 @@ export class NewClassComponent implements OnInit {
       var m_data = {
         classId: this.data?.classId,
        className: this.data?.className.trim(),
-       isDeleted: JSON.stringify(this.data?.isActive),
+       isActive: JSON.stringify(this.data?.isActive),
       };
       this.classForm.patchValue(m_data);
   }

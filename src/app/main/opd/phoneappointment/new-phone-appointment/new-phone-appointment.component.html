@@ -104,11 +104,18 @@
                   <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
   
    <br/><br/><br/>
-   <airmid-autocomplete [mode]="autocompleteMode1" (selectDdlObject)="selectChangedepartment($event)"></airmid-autocomplete>
-   <br/><br/><br/>
-   <airmid-autocomplete [mode]="autocompleteMode2" (selectDdlObject)="selectChangedoctor($event)"></airmid-autocomplete>
-
-                 
+  
+   <airmid-autocomplete label="departmentId" formControlName="departmentId" [value]="data?.departmentId"
+   [formGroup]="phoneappForm"
+   [validations]="getValidationDeptMessages().departmentId"
+   [mode]="autocompletedepartment" (selectDdlObject)="selectChangedepartment($event)">
+</airmid-autocomplete>
+<br/><br/><br/>
+   <airmid-autocomplete label="doctorId" formControlName="doctorId" [value]="data?.doctorId"
+   [formGroup]="phoneappForm"
+   [validations]="getValidationdoctorMessages().doctorId"
+   [mode]="autocompleteModedoctor" (selectDdlObject)="selectChangedoctor($event)">
+</airmid-autocomplete>
                 
                 </div>
                 <br/><br/>
