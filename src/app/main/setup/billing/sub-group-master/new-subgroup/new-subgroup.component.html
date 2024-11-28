@@ -30,13 +30,13 @@
                         [formGroup]="subgroupForm" [maxLength]="300">
                     </airmid-textbox> -->
 
-                    <airmid-autocomplete [mode]="autocompleteModegroupName" (selectDdlObject)="selectChangegroupName($event)" ></airmid-autocomplete>
+                    <!-- <airmid-autocomplete [mode]="autocompleteModegroupName" (selectDdlObject)="selectChangegroupName($event)" ></airmid-autocomplete> -->
 
-                    <!-- <airmid-autocomplete [mode]="autocompleteModegroupName" formControlName="groupId" 
-                        (selectDdlObject)="selectChangegroupName($event)"
-                        [value]="data?.groupId" [formGroup]="subgroupForm"
-                        [validations]="getValidationGroupName().groupId">
-                    </airmid-autocomplete> -->
+                    <airmid-autocomplete label="Group Name" formControlName="groupId"
+                    [formGroup]="subgroupForm"
+                    [validations]="getValidationGroupNameMessages().groupId"
+                    [mode]="autocompleteModegroupName">
+                </airmid-autocomplete>
                     
                 </div>
 

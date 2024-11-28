@@ -19,7 +19,7 @@
 
     <form [formGroup]="companyForm" fxLayout="column" style="padding: 5px 5px 0px 5px;">
 
-        <input type="hidden" name="CompanyId" formControlName="CompanyId">
+        <input type="hidden" name="companyId" formControlName="companyId">
        
         <mat-card>
             <div fxFlex="100" fxLayout="column">
@@ -34,13 +34,21 @@
                 <!-- </div>
 
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%"> -->
-                    <airmid-autocomplete [mode]="autocompleteModetypeName" (selectDdlObject)="selectChangetypeName($event)" ></airmid-autocomplete>
+                    <!-- <airmid-autocomplete label="Company Type" formControlName="compTypeId"
+                        [formGroup]="companyForm"
+                        [validations]="getValidationCompanyTypeMessages().compTypeId"
+                        [mode]="autocompleteModetypeName">
+                    </airmid-autocomplete> -->
                 </div>
                 
                  <!-- in payload there is no tariff -->
 
                 <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <airmid-autocomplete [mode]="autocompleteModetariff" (selectDdlObject)="selectChangetariff($event)"></airmid-autocomplete>
+                    <airmid-autocomplete label="Tariff Name" formControlName="TariffId"
+                        [formGroup]="companyForm"
+                        [validations]="getValidationTariffMessages().TariffId"
+                        [mode]="autocompleteModetariff">
+                    </airmid-autocomplete>
                 </div> -->
 
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -53,7 +61,18 @@
                 <!-- </div>
 
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%"> -->
-                    <airmid-autocomplete [mode]="autocompleteModecity" (selectDdlObject)="selectChangecity($event)" ></airmid-autocomplete>
+                    <!-- <airmid-autocomplete label="City" formControlName="City"
+                        [formGroup]="companyForm"
+                        [validations]="getValidationCityMessages().City"
+                        [mode]="autocompleteModecity">
+                    </airmid-autocomplete> -->
+
+
+                    <!-- <airmid-autocomplete label="City" formControlName="City"
+                    [formGroup]="companyForm"
+                    [validations]="getValidationCityMessages().City"
+                    [mode]="autocompleteModecity" (selectDdlObject)="selectChangecity($event)">
+                </airmid-autocomplete> -->
                  </div>
 
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%"> 

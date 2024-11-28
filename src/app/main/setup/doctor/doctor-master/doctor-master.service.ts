@@ -106,8 +106,8 @@ export class DoctorMasterService {
             AddedBy: [""],
             UpdatedBy: [""],
             AddedByName: [""],
-            Pancardno: [""],
-            AadharCardNo: [""],
+            Pancardno: ["", Validators.required],
+            AadharCardNo: ["", Validators.required],
             AgeYear:[""],
             AgeMonth:[""],
             AgeDay:[""],
@@ -174,19 +174,15 @@ export class DoctorMasterService {
         );
     }
 
-    public doctortMasterInsert(param) {
-        return this._httpClient.PostData("DoctorMaster/DoctorSave", param);
+    public doctortMasterInsert(Param: any, showLoader = true) {
+        if (Param.doctorId) {
+            return this._httpClient.PutData("DoctoreMaster/" + Param.doctorId, Param, showLoader);
+        } else return this._httpClient.PostData("DoctoreMaster", Param, showLoader);
     }
 
     public doctortMasterUpdate(param) {
         return this._httpClient.PostData("DoctorMaster/DoctorUpdate", param);
     }
-
-//     public doctortMasterInsert(Param: any, showLoader = true) {
-//         if (Param.regID) {
-//             return this._httpClient.PutData("DoctorMaster/DoctorSave" + Param.regID, Param, showLoader);
-//         } else return this._httpClient.PostData("DoctorMaster/DoctorSave", Param, showLoader);
-//     }
 
 //     public doctortMasterUpdate(Param: any, showLoader = true) {
 //       if (Param.regId) {

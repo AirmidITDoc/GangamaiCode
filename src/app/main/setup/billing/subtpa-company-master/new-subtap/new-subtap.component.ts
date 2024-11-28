@@ -61,7 +61,7 @@ export class NewSubtapComponent implements OnInit {
           "compTypeId": this.typeId || 0,
           "companyName": this.subTpaForm.get('CompanyName').value || "",
           "address": this.subTpaForm.get('Address').value || "",
-          "city": this.cityName || "0",
+          "city": this.subTpaForm.get('City').value || "0",
           "pinNo": this.subTpaForm.get('PinNo').value || "",
           "phoneNo": this.subTpaForm.get('Phone').value.toString() || "",
           "mobileNo": this.subTpaForm.get('Mobile').value.toString() || "",
@@ -96,6 +96,20 @@ export class NewSubtapComponent implements OnInit {
       console.log(obj);
       this.cityId=obj.value
       this.cityName=obj.text
+    }
+    getValidationCompanyMessages(){
+      return{
+        CompTypeId: [
+          { name: "required", Message: "Company Name is required" }
+        ]
+      }
+    }
+    getValidationCityMessages(){
+      return{
+        City: [
+          { name: "required", Message: "City Name is required" }
+        ]
+      }
     }
 
     onClose(){

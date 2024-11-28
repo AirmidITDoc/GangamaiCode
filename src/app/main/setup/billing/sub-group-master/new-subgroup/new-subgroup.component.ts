@@ -51,7 +51,7 @@ export class NewSubgroupComponent implements OnInit {
       if(!this.subgroupForm.get("subGroupId").value){
         var mdata={
             "subGroupId": 0,
-            "groupId": this.groupId || 0,
+            "groupId": this.subgroupForm.get("groupId").value || 0,
             "subGroupName": this.subgroupForm.get("subGroupName").value || "",
         }
         console.log("sub group:", mdata);
@@ -78,6 +78,14 @@ export class NewSubgroupComponent implements OnInit {
 
   selectChangegroupName(obj:any){
     this.groupId=obj.value;
+  }
+
+  getValidationGroupNameMessages(){
+    return {
+      groupId: [
+          { name: "required", Message: "Group Name is required" }
+      ]
+  };
   }
 
  

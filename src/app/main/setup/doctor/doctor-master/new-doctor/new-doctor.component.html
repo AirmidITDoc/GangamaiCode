@@ -18,7 +18,7 @@
     </div>
 
     <mat-card>
-    <form [formGroup]="_doctorService.myform" fxLayout="column" style="padding: 5px 5px 0px 5px;">
+    <form [formGroup]="myForm" fxLayout="column" style="padding: 5px 5px 0px 5px;">
         <input type="hidden" name="DoctorId" formControlName="DoctorId">
 
         <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
@@ -32,18 +32,26 @@
                 <div fxFlex="85%" fxFlex.xs="100%" fxFlex.sm="80%" fxLayout="row wrap">
 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-autocomplete [mode]="autocompleteModeprefix" (selectDdlObject)="selectChangeprefix($event)"></airmid-autocomplete>
+                        <!-- <airmid-autocomplete [mode]="autocompleteModeprefix" (selectDdlObject)="selectChangeprefix($event)"></airmid-autocomplete> -->
+
+                        <airmid-autocomplete label="Prefix" formControlName="PrefixID"
+                                             [formGroup]="myForm"
+                                            [validations]="getValidationMessages().PrefixID"
+                                            [mode]="autocompleteModeprefix">
+                                        </airmid-autocomplete>
+
                     </div>
 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <mat-form-field appearance="outline" fxFlex>
                             <mat-label>First Name</mat-label>
                             <input name="FirstName" formControlName="FirstName" placeholder="First Name"
-                                [ngClass]="{ 'is-invalid': submitted && _doctorService.myform.get('FirstName').errors }"
+                                [ngClass]="{ 'is-invalid': submitted && myForm.get('FirstName').errors }"
                                 matInput #fname (keydown)="onEnterfname($event)" required
                                 [(ngModel)]="registerObj.firstName">
+
                           <mat-error class="error"
-                                *ngIf="_doctorService.myform.get('FirstName').invalid && _doctorService.myform.get('FirstName').touched">
+                                *ngIf="myForm.get('FirstName').invalid && myForm.get('FirstName').touched">
                                 First
                                 Name is required Enter
                                 only
@@ -55,12 +63,12 @@
                         <mat-form-field appearance="outline" fxFlex>
                             <mat-label>Middle Name</mat-label>
                             <input name="MiddleName" formControlName="MiddleName" placeholder="Middle Name"
-                                [ngClass]="{ 'is-invalid': submitted && _doctorService.myform.get('MiddleName').errors }"
+                                [ngClass]="{ 'is-invalid': submitted && myForm.get('MiddleName').errors }"
                                 matInput #mname (keydown)="onEntermname($event)" [(ngModel)]="registerObj.middleName"
                                 onkeypress=" (event.charCode > 64 && 
                                           event.charCode < 91) || (event.charCode > 96 && event.charCode < 123)">
                             <mat-error class="error"
-                                *ngIf="_doctorService.myform.get('MiddleName').invalid && _doctorService.myform.get('MiddleName').touched">
+                                *ngIf="myForm.get('MiddleName').invalid && myForm.get('MiddleName').touched">
                                 Middle Name is required
                                 Enter
                                 only Alphabets</mat-error>
@@ -71,12 +79,12 @@
                         <mat-form-field appearance="outline" fxFlex>
                             <mat-label>Last Name</mat-label>
                             <input name="LastName" formControlName="LastName" placeholder="Last Name"
-                                [ngClass]="{ 'is-invalid': submitted && _doctorService.myform.get('LastName').errors }"
+                                [ngClass]="{ 'is-invalid': submitted && myForm.get('LastName').errors }"
                                 matInput #lname (keydown)="onEnterlname($event)" required
                                 [(ngModel)]="registerObj.lastName" onkeypress=" (event.charCode > 64 && 
                                           event.charCode < 91) || (event.charCode > 96 && event.charCode < 123)">
                             <mat-error class="error"
-                                *ngIf="_doctorService.myform.get('LastName').invalid && _doctorService.myform.get('LastName').touched">Last
+                                *ngIf="myForm.get('LastName').invalid && myForm.get('LastName').touched">Last
                                 Name is required Enter
                                 only
                                 Alphabets</mat-error>
@@ -93,15 +101,22 @@
                                 </mat-option>
                             </mat-select>
                             <mat-error
-                                *ngIf="_doctorService.myform.get('GenderId').invalid && _doctorService.myform.get('GenderId').touched">
-                                <span *ngIf="_doctorService.myform.get('GenderId').hasError('required')">
+                                *ngIf="myForm.get('GenderId').invalid && myForm.get('GenderId').touched">
+                                <span *ngIf="myForm.get('GenderId').hasError('required')">
                                     Gender is required</span>
                             </mat-error>
                         </mat-form-field>
                     </div> -->
 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-autocomplete [mode]="autocompleteModegender" (selectDdlObject)="selectChangegender($event)"></airmid-autocomplete>
+                        <!-- <airmid-autocomplete [mode]="autocompleteModegender" (selectDdlObject)="selectChangegender($event)"></airmid-autocomplete> -->
+
+                        <airmid-autocomplete label="Gender" formControlName="GenderId"
+                                             [formGroup]="myForm"
+                                            [validations]="getValidationGenderMessages().GenderId"
+                                            [mode]="autocompleteModegender">
+                                        </airmid-autocomplete>
+
                     </div>
 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -155,7 +170,7 @@
                                     <input name="AgeYear" formControlName="AgeYear" placeholder="Age (Y)" matInput [(ngModel)]="registerObj.ageYear" (ngModelChange)="registerObj.ageYear = $event" required type="number" maxlength="4" #agey (keydown)="onEnteragey($event,registerObj.ageYear)" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
                                     
                                     <mat-error
-                                    *ngIf="_doctorService.myform.get('AgeYear').invalid && _doctorService.myform.get('AgeYear').touched">Please
+                                    *ngIf="myForm.get('AgeYear').invalid && myForm.get('AgeYear').touched">Please
                                     enter Age Year </mat-error>
                             </mat-form-field>
 
@@ -171,7 +186,7 @@
                                     oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,2);">
                                     
                                     <mat-error
-                                    *ngIf="_doctorService.myform.get('AgeMonth').invalid && _doctorService.myform.get('AgeMonth').touched">
+                                    *ngIf="myForm.get('AgeMonth').invalid && myForm.get('AgeMonth').touched">
                                     Please enter Age Month </mat-error>
                             </mat-form-field>
 
@@ -187,7 +202,7 @@
                                     oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,2);">
 
                                     <mat-error
-                                    *ngIf="_doctorService.myform.get('AgeDay').invalid && _doctorService.myform.get('AgeDay').touched">
+                                    *ngIf="myForm.get('AgeDay').invalid && myForm.get('AgeDay').touched">
                                     Please enter Age Day </mat-error>
                             </mat-form-field>
                         </div>
@@ -199,7 +214,7 @@
                             <input name="Pancardno" formControlName="Pancardno" placeholder="PanCardNo Number" matInput
                                 [(ngModel)]="registerObj.panCardNo" #pan maxlength="10" (keydown)="onEnterpan($event)">
                             <mat-error class="error"
-                                *ngIf="_doctorService.myform.get('Pancardno').invalid && _doctorService.myform.get('Pancardno').touched">10
+                                *ngIf="myForm.get('Pancardno').invalid && myForm.get('Pancardno').touched">10
                                 digits Pan Card No is required</mat-error>
                         </mat-form-field>
                     </div>
@@ -212,7 +227,7 @@
                                 (keydown)="onEnterAadharCardNo($event)"
                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);">
                             <mat-error class="error"
-                                *ngIf="_doctorService.myform.get('AadharCardNo').invalid && _doctorService.myform.get('AadharCardNo').touched">Aadhar
+                                *ngIf="myForm.get('AadharCardNo').invalid && myForm.get('AadharCardNo').touched">Aadhar
                                 number is required
                             </mat-error>
                         </mat-form-field>
@@ -226,7 +241,7 @@
                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
                                 required="required" value="9876658688">
                             <mat-error class="error"
-                                *ngIf="_doctorService.myform.get('MobileNo').invalid && _doctorService.myform.get('MobileNo').touched">10
+                                *ngIf="myForm.get('MobileNo').invalid && myForm.get('MobileNo').touched">10
                                 digits Mobile number is
                                 required</mat-error>
                         </mat-form-field>
@@ -238,7 +253,7 @@
                             <input name="Address" formControlName="Address" placeholder="Address" matInput #address
                                 (keydown)="onEnteraddress($event)" [(ngModel)]="registerObj.address">
                             <mat-error
-                                *ngIf="_doctorService.myform.get('Address').invalid && _doctorService.myform.get('Address').touched">Please
+                                *ngIf="myForm.get('Address').invalid && myForm.get('Address').touched">Please
                                 enter Address </mat-error>
                         </mat-form-field>
 
@@ -249,9 +264,9 @@
                                 [matAutocomplete]="autoCity" required>
                             <span matSuffix style="display: flex;">
                                 <mat-icon class="mat-icon-close"
-                                    (click)="_doctorService.myform.get('CityId').setValue(''); isCitySelected = false;">close</mat-icon>
+                                    (click)="myForm.get('CityId').setValue(''); isCitySelected = false;">close</mat-icon>
                                 <mat-icon class="mat-icon-close"
-                                    (click)="_doctorService.myform.get('CityId').setValue(''); isCitySelected = false;">search</mat-icon>
+                                    (click)="myForm.get('CityId').setValue(''); isCitySelected = false;">search</mat-icon>
                             </span>
                             <mat-autocomplete #autoCity="matAutocomplete" [displayWith]="getOptionTextCity">
                                 <mat-option *ngFor="let option of filteredOptionsCity | async" [value]="option">
@@ -271,9 +286,9 @@
                                 [matAutocomplete]="autoCity" required>
                             <span matSuffix style="display: flex;">
                                 <mat-icon class="mat-icon-close"
-                                    (click)="_doctorService.myform.get('CityId').setValue(''); isCitySelected = false;">close</mat-icon>
+                                    (click)="myForm.get('CityId').setValue(''); isCitySelected = false;">close</mat-icon>
                                 <mat-icon class="mat-icon-close"
-                                    (click)="_doctorService.myform.get('CityId').setValue(''); isCitySelected = false;">search</mat-icon>
+                                    (click)="myForm.get('CityId').setValue(''); isCitySelected = false;">search</mat-icon>
                             </span>
                             <mat-autocomplete #autoCity="matAutocomplete" [displayWith]="getOptionTextCity">
                                 <mat-option *ngFor="let option of filteredOptionsCity | async" [value]="option">
@@ -309,7 +324,7 @@
         </mat-card>
     </form>
     
-    <form [formGroup]="_doctorService.myform" fxLayout="column"  style="padding: 0px 5px 0px 5px;">
+    <form [formGroup]="myForm" fxLayout="column"  style="padding: 0px 5px 0px 5px;">
         <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
             class="top-header accent heading-container h-40 border-radius-4">
             <span style="font-size:15px;font-weight: bolder; color:white;padding:7px;">Education
@@ -318,7 +333,13 @@
         <mat-card>
            
             <div fxFlex="100" fxLayout="row wrap" >
-                <airmid-autocomplete [mode]="autocompleteModecity" (selectDdlObject)="selectChangecity($event)" ></airmid-autocomplete>
+                <!-- <airmid-autocomplete [mode]="autocompleteModecity" (selectDdlObject)="selectChangecity($event)" ></airmid-autocomplete> -->
+
+                <airmid-autocomplete label="City" formControlName="CityId"
+                                             [formGroup]="myForm"
+                                            [validations]="getValidationCityMessages().CityId"
+                                            [mode]="autocompleteModecity">
+                                        </airmid-autocomplete>
 
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <mat-form-field appearance="outline" fxFlex>
@@ -401,9 +422,9 @@
                             [matAutocomplete]="autoDoctorTypeId" required>
                         <span matSuffix style="display: flex;">
                             <mat-icon class="mat-icon-close"
-                                (click)="_doctorService.myform.get('DoctorTypeId').setValue(''); isdoctypeSelected = false;">close</mat-icon>
+                                (click)="myForm.get('DoctorTypeId').setValue(''); isdoctypeSelected = false;">close</mat-icon>
                             <mat-icon class="mat-icon-close"
-                                (click)="_doctorService.myform.get('DoctorTypeId').setValue(''); isdoctypeSelected = false;">search</mat-icon>
+                                (click)="myForm.get('DoctorTypeId').setValue(''); isdoctypeSelected = false;">search</mat-icon>
                         </span>
                         <mat-autocomplete #autoDoctorTypeId="matAutocomplete" [displayWith]="getOptionTextdoctype">
                             <mat-option *ngFor="let option of filteredDoctortype | async" [value]="option">
@@ -412,7 +433,13 @@
                         </mat-autocomplete>
                     </mat-form-field> -->
 
-                    <airmid-autocomplete [mode]="autocompleteModedoctorty" (selectDdlObject)="selectChangedoctorTy($event)" ></airmid-autocomplete>
+                    <!-- <airmid-autocomplete [mode]="autocompleteModedoctorty" (selectDdlObject)="selectChangedoctorTy($event)" ></airmid-autocomplete> -->
+
+                    <airmid-autocomplete label="DoctorType" formControlName="DoctorTypeId"
+                                             [formGroup]="myForm"
+                                            [validations]="getValidationDoctorTypeMessages().DoctorTypeId"
+                                            [mode]="autocompleteModedoctorty">
+                                        </airmid-autocomplete>
 
                 </div>
             </div>
@@ -420,7 +447,7 @@
     </form>
    
 
-    <form [formGroup]="_doctorService.myform" fxLayout="column"  style="padding: 0px 5px 0px 5px;">
+    <form [formGroup]="myForm" fxLayout="column"  style="padding: 0px 5px 0px 5px;">
 
         <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
             class="top-header accent heading-container h-40 border-radius-4">
@@ -430,7 +457,7 @@
           
             <div fxFlex>
                 <mat-card>
-                    <form [formGroup]="_doctorService.myform">
+                    <form [formGroup]="myForm">
                       
                         <div fxLayout="row">
                             <!-- <mat-form-field appearance="outline" fxFlex="30%">
@@ -441,9 +468,9 @@
                                     [matAutocomplete]="autoDep">
                                 <span matSuffix style="display: flex;">
                                     <mat-icon class="mat-icon-close"
-                                        (click)="_doctorService.myform.get('Departmentid').setValue(''); isDepartmentSelected = false;">close</mat-icon>
+                                        (click)="myForm.get('Departmentid').setValue(''); isDepartmentSelected = false;">close</mat-icon>
                                     <mat-icon class="mat-icon-close"
-                                        (click)="_doctorService.myform.get('Departmentid').setValue(''); isDepartmentSelected = false;">search</mat-icon>
+                                        (click)="myForm.get('Departmentid').setValue(''); isDepartmentSelected = false;">search</mat-icon>
                                 </span>
                                 <mat-autocomplete #autoDep="matAutocomplete" [displayWith]="getOptionTextDep">
                                     <mat-option *ngFor="let option of filteredOptionsDep | async" [value]="option">
@@ -457,7 +484,14 @@
                                     {{ item.DepartmentName }} <mat-icon (click)="remove(item)">close</mat-icon>
                                 </mat-chip>
                             </mat-chip-list> -->
-                            <airmid-autocomplete [mode]="autocompleteModedepartment" (selectDdlObject)="selectChangedep($event)" ></airmid-autocomplete>
+                            <!-- <airmid-autocomplete [mode]="autocompleteModedepartment" (selectDdlObject)="selectChangedep($event)" ></airmid-autocomplete> -->
+
+                            <airmid-autocomplete label="DepartmentName" formControlName="Departmentid"
+                                             [formGroup]="myForm"
+                                            [validations]="getValidationDepartmentMessages().Departmentid"
+                                            [mode]="autocompleteModedepartment">
+                                        </airmid-autocomplete>
+
                         </div>
                     </form>
                 </mat-card>
@@ -470,7 +504,7 @@
     <div class="row row-container" style="width: 100%;">
         <div class="sales-radio-buttons gap-8" fxLayout="row" fxLayoutAlign="space-between center">
 
-            <form [formGroup]="_doctorService.myform">
+            <form [formGroup]="myForm">
                 <div class="sales-radio-buttons gap-2" fxLayout="row">
                     <!-- <mat-slide-toggle name="IsConsultant" formControlName="IsConsultant"
                         [(ngModel)]="registerObj.IsConsultant">

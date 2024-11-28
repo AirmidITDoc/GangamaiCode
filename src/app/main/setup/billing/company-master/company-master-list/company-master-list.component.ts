@@ -35,7 +35,7 @@ export class CompanyMasterListComponent implements OnInit {
     // new Api
     autocompleteModetypeName:string="CompanyType";
     autocompleteModetariff: string = "Tariff";
-        autocompleteModecity:string="City";
+    autocompleteModecity: string = "City";
 
     companyForm: FormGroup;
 
@@ -118,6 +118,28 @@ export class CompanyMasterListComponent implements OnInit {
         // this.cityName=obj.text
         // console.log("cityname:", obj.text)
       }
+
+      getValidationCompanyTypeMessages(){
+        return{
+          compTypeId: [
+            { name: "required", Message: "Company Type is required" }
+          ]
+        }
+      }
+      getValidationCityMessages(){
+        return{
+          City: [
+            { name: "required", Message: "City Name is required" }
+          ]
+        }
+      }
+      // getValidationTariffMessages(){
+      //   return{
+      //     TariffId: [
+      //       { name: "required", Message: "Tariff Name is required" }
+      //     ]
+      //   }
+      // }
 
       onClose(){
         this.companyForm.reset();

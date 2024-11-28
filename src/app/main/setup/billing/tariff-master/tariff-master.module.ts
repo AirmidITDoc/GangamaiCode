@@ -55,6 +55,7 @@ const routes: Routes = [
         FuseConfirmDialogModule,
         FuseSidebarModule,
         SharedModule,
+        MatDialogModule
     ],
     providers: [TariffMasterService,DatePipe],
     entryComponents: [TariffMasterComponent],

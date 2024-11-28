@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { gridRequest } from "app/core/models/gridRequest";
 import { ApiCaller } from "app/core/services/apiCaller";
 
@@ -22,8 +22,8 @@ export class TariffMasterService {
     createTariffForm(): FormGroup {
         return this._formBuilder.group({
             tariffId: [""],
-            tariffName: [""],
-            isDeleted: ["false"],
+            tariffName: ["", Validators.required],
+            isActive: ["true"],
             // AddedBy: ["0"],
             // UpdatedBy: ["0"],
         });
@@ -40,8 +40,8 @@ export class TariffMasterService {
     getValidationMessages(){
         return{
             tariffName: [
-                { name: "required", Message: "Class Name is required" },
-                { name: "maxlength", Message: "Class name should not be greater than 50 char." },
+                { name: "required", Message: "Tariff Name is required" },
+                { name: "maxlength", Message: "Tariff name should not be greater than 50 char." },
                 { name: "pattern", Message: "Special char not allowed." }
             ]
         }

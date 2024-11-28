@@ -37,7 +37,11 @@
 
                     <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"> -->
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-autocomplete [mode]="autocompleteModetypeName" (selectDdlObject)="selectChangetypeName($event)" ></airmid-autocomplete>
+                        <airmid-autocomplete label="Company Type" formControlName="CompTypeId"
+                            [formGroup]="subTpaForm"
+                            [validations]="getValidationCompanyMessages().CompTypeId"
+                            [mode]="autocompleteModetypeName">
+                        </airmid-autocomplete>
                     </div>
 
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -50,7 +54,11 @@
                     </div>
 
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-autocomplete [mode]="autocompleteModecity" (selectDdlObject)="selectChangecity($event)" ></airmid-autocomplete>
+                        <airmid-autocomplete label="City Name" formControlName="City"
+                            [formGroup]="subTpaForm"
+                            [validations]="getValidationCityMessages().City"
+                            [mode]="autocompleteModecity">
+                        </airmid-autocomplete>
                     </div>
 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -95,7 +103,7 @@
                         <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                             <mat-label>Fax</mat-label>
                             <input name="FaxNo" placeholder="Select Fax" formControlName="FaxNo" matInput
-                                (keydown)="onEnterfax($event)" #FaxNo>
+                                (keydown)="onEnterfax($event)" #FaxNo maxlength="6" >
                         </mat-form-field>
                     </div>
 

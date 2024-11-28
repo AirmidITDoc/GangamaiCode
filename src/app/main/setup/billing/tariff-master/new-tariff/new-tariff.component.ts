@@ -26,21 +26,30 @@ export class NewTariffComponent implements OnInit {
     var m_data = {
       tariffId: this.data?.tariffId,
      tariffName: this.data?.tariffName.trim(),
-     isDeleted: JSON.stringify(this.data?.isActive),
+     isActive: JSON.stringify(this.data?.isActive),
     };
     this.tariffForm.patchValue(m_data);
     console.log("mdata:", m_data)
   }
 
   onSubmit(){
-    if(this.tariffForm.valid){
+    if(!this.tariffForm.get("tariffId").value){
       debugger
+      var mdata={
+        "tariffId": 0,
+        "tariffName": this.tariffForm.get("tariffName").value || "",
+        "isActive": Boolean(JSON.parse(this.tariffForm.get("isActive").value))
+      }
+      console.log("insert tariff:", mdata)
+      
       this._TariffMasterService.tariffMasterSave(this.tariffForm.value).subscribe((response)=>{
         this.toastr.success(response.message);
         this.onClear(true);
       }, (error)=>{
         this.toastr.error(error.message);
       });
+    } else{
+      //update
     }
   }
 

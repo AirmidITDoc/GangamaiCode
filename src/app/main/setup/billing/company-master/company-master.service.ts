@@ -7,13 +7,13 @@ import { ApiCaller } from "app/core/services/apiCaller";
     providedIn: "root",
 })
 export class CompanyMasterService {
-    myform: FormGroup;
+    companyForm: FormGroup;
     myformSearch: FormGroup;
     constructor(
         private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder
     ) {
-        this.myform = this.createCompanymasterForm();
+        this.companyForm = this.createCompanymasterForm();
         this.myformSearch = this.createSearchForm();
     }
 
@@ -24,13 +24,7 @@ export class CompanyMasterService {
             compTypeId: [""],
             TypeName: [""],
             Address: ["", Validators.required],
-            City: [
-                "",
-                [
-                    Validators.required,
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
-                ],
-            ],
+            City: [""],            
             PinNo: ["", [Validators.minLength(6), Validators.maxLength(6)], Validators.required],
             Phone: [
                 "",

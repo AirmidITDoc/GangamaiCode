@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ViewEncapsulation, HostListener, Inject }
 import { ServiceMaster, ServiceMasterComponent, Servicedetail } from "../service-master.component";
 import { fuseAnimations } from "@fuse/animations";
 import { MatTableDataSource } from "@angular/material/table";
-import { FormControl, Validators } from "@angular/forms";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ReplaySubject, Subject } from "rxjs";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { ServiceMasterService } from "../service-master.service";
@@ -29,6 +29,8 @@ import { compact } from "lodash";
   
   export class ServiceMasterFormComponent implements OnInit {
    
+    serviceForm : FormGroup;
+
     gridConfig: gridModel = {
       apiUrl: "ClassMaster/List",
   columnsList: [
@@ -146,7 +148,9 @@ private _onDestroy = new Subject<void>();
   //  this.getClassList()
   //  this.getServicewiseClassMasterList();
    //this.getTariffNameCombobox();
-   this._serviceMasterService.myform.get('EffectiveDate').setValue(new Date());
+   this.serviceForm=this._serviceMasterService.createServicemasterForm();
+
+   this.serviceForm.get('EffectiveDate').setValue(new Date());
 
 
 
@@ -259,8 +263,8 @@ private _onDestroy = new Subject<void>();
   //   this._serviceMasterService.getGroupMasterCombo().subscribe(data => {
   //     this.GroupcmbList = data;
   //     this.filteredGroupname.next(this.GroupcmbList.slice());
-  //     // this._serviceMasterService.myform.get('GroupId').setValue(this.GroupcmbList[0]);
-  //     this._serviceMasterService.myform.get('GroupId').setValue(this._serviceMasterService.edit_data['GroupId']);
+  //     // this.serviceForm.get('GroupId').setValue(this.GroupcmbList[0]);
+  //     this.serviceForm.get('GroupId').setValue(this._serviceMasterService.edit_data['GroupId']);
   //   });
   // }
   // getSubgroupNameCombobox(){
@@ -270,8 +274,8 @@ private _onDestroy = new Subject<void>();
   //   this._serviceMasterService.getSubgroupMasterCombo(data).subscribe(data => {
   //     this.SubGroupcmbList = data;
   //     this.filteredSubgroupname.next(this.SubGroupcmbList.slice());
-  //     // this._serviceMasterService.myform.get('SubGroupId').setValue(this.SubGroupcmbList[0]);
-  //     this._serviceMasterService.myform.get('SubGroupId').setValue(this._serviceMasterService.edit_data['SubGroupId']);
+  //     // this.serviceForm.get('SubGroupId').setValue(this.SubGroupcmbList[0]);
+  //     this.serviceForm.get('SubGroupId').setValue(this._serviceMasterService.edit_data['SubGroupId']);
   //   });
   // }
   // getTariffNameCombobox(){
@@ -279,8 +283,8 @@ private _onDestroy = new Subject<void>();
   //   this._serviceMasterService.getTariffMasterCombo().subscribe(data => {
   //     this.TariffcmbList = data;
   //     this.filteredTariff.next(this.TariffcmbList.slice());     
-  //    if(this.isEditMode)this._serviceMasterService.myform.get('TariffId').setValue(this._serviceMasterService.edit_data['TariffId']);      
-  //     else this._serviceMasterService.myform.get('TariffId').setValue(this.TariffcmbList[0].TariffId);
+  //    if(this.isEditMode)this.serviceForm.get('TariffId').setValue(this._serviceMasterService.edit_data['TariffId']);      
+  //     else this.serviceForm.get('TariffId').setValue(this.TariffcmbList[0].TariffId);
 
   //   });
   // }
@@ -314,13 +318,13 @@ private _onDestroy = new Subject<void>();
 
   
 
-  get f() { return this._serviceMasterService.myform.controls; }
+  get f() { return this.serviceForm.controls; }
 
   // getDoctorNameCombobox(){
   //   this._serviceMasterService.getDoctorMasterCombo().subscribe(data => {
   //     this.DoctorcmbList =data;
    
-  //     this._serviceMasterService.myform.get('DoctorId').setValue(this._serviceMasterService.edit_data['DoctorId']);   
+  //     this.serviceForm.get('DoctorId').setValue(this._serviceMasterService.edit_data['DoctorId']);   
   //   });  
   // }
   
@@ -331,24 +335,24 @@ private _onDestroy = new Subject<void>();
   onSubmit() {
     debugger;
   //   if (this.showEmg) {
-  //     this._serviceMasterService.myform.get('EmgAmt').setValidators([Validators.required,Validators.min(0)]);
-  //     this._serviceMasterService.myform.get('EmgPer').setValidators([Validators.required,Validators.min(0)]);
+  //     this.serviceForm.get('EmgAmt').setValidators([Validators.required,Validators.min(0)]);
+  //     this.serviceForm.get('EmgPer').setValidators([Validators.required,Validators.min(0)]);
       
   // } else {
-  //     this._serviceMasterService.myform.get('EmgAmt').clearValidators();
-  //     this._serviceMasterService.myform.get('EmgPer').clearValidators();
+  //     this.serviceForm.get('EmgAmt').clearValidators();
+  //     this.serviceForm.get('EmgPer').clearValidators();
   // }            
-  // this._serviceMasterService.myform.get('EmgAmt').updateValueAndValidity();
-  // this._serviceMasterService.myform.get('EmgPer').updateValueAndValidity();
-  //   if (this._serviceMasterService.myform.valid ) {
+  // this.serviceForm.get('EmgAmt').updateValueAndValidity();
+  // this.serviceForm.get('EmgPer').updateValueAndValidity();
+  //   if (this.serviceForm.valid ) {
 
   //     var clas_d = [];
   //     var class_det ={      
-  //       "serviceId":parseInt(this._serviceMasterService.myform.get("ServiceId").value || 0),
-  //       "tariffId":this._serviceMasterService.myform.get("TariffId").value || 0,
+  //       "serviceId":parseInt(this.serviceForm.get("ServiceId").value || 0),
+  //       "tariffId":this.serviceForm.get("TariffId").value || 0,
   //       "classId": 0,
   //       "classRate":0,
-  //       "effectiveDate":this._serviceMasterService.myform.get("EffectiveDate").value || "01/01/1900",
+  //       "effectiveDate":this.serviceForm.get("EffectiveDate").value || "01/01/1900",
   //    }
   //     this.DSServicedetailList.data.forEach(element => {
   //       debugger
@@ -360,31 +364,31 @@ private _onDestroy = new Subject<void>();
 
 
   //     let serviceMasterdata = {
-  //       "serviceShortDesc": this._serviceMasterService.myform.get("ServiceShortDesc").value,
-  //       "serviceName": (this._serviceMasterService.myform.get("ServiceName").value).trim(),
-  //       "price": parseInt(this._serviceMasterService.myform.get("Price").value || "0"),
-  //       "printOrder": parseInt(this._serviceMasterService.myform.get("PrintOrder").value),
-  //       "isEditable": String(this._serviceMasterService.myform.get("IsEditable").value) == 'false' ?  false : true ,
-  //       "creditedtoDoctor":  String (this._serviceMasterService.myform.get("CreditedtoDoctor").value) == 'false' ? false : true ,
-  //       "isPathology": String(this._serviceMasterService.myform.get("IsPathology").value) == 'false' ? 0:1,
-  //       "isRadiology": String(this._serviceMasterService.myform.get("IsRadiology").value) == 'false' ? 0:1,
-  //       "isActive": String(this._serviceMasterService.myform.get("IsActive").value) == 'false' ?  false : true ,
-  //       "isPackage": String(this._serviceMasterService.myform.get("IsPackage").value) == 'false' ? 0:1 ,
-  //       "isDocEditable": String(this._serviceMasterService.myform.get("IsDocEditable").value) == 'false' ? false : true,  
+  //       "serviceShortDesc": this.serviceForm.get("ServiceShortDesc").value,
+  //       "serviceName": (this.serviceForm.get("ServiceName").value).trim(),
+  //       "price": parseInt(this.serviceForm.get("Price").value || "0"),
+  //       "printOrder": parseInt(this.serviceForm.get("PrintOrder").value),
+  //       "isEditable": String(this.serviceForm.get("IsEditable").value) == 'false' ?  false : true ,
+  //       "creditedtoDoctor":  String (this.serviceForm.get("CreditedtoDoctor").value) == 'false' ? false : true ,
+  //       "isPathology": String(this.serviceForm.get("IsPathology").value) == 'false' ? 0:1,
+  //       "isRadiology": String(this.serviceForm.get("IsRadiology").value) == 'false' ? 0:1,
+  //       "isActive": String(this.serviceForm.get("IsActive").value) == 'false' ?  false : true ,
+  //       "isPackage": String(this.serviceForm.get("IsPackage").value) == 'false' ? 0:1 ,
+  //       "isDocEditable": String(this.serviceForm.get("IsDocEditable").value) == 'false' ? false : true,  
 
-  //       "isEmergency": String(this._serviceMasterService.myform.get("IsEmergency").value) == 'false' ? false : true ,
-  //       "emgAmt": parseInt(this._serviceMasterService.myform.get("EmgAmt").value ||"0"),
-  //       "emgPer": parseInt(this._serviceMasterService.myform.get("EmgPer").value ||"0"),
+  //       "isEmergency": String(this.serviceForm.get("IsEmergency").value) == 'false' ? false : true ,
+  //       "emgAmt": parseInt(this.serviceForm.get("EmgAmt").value ||"0"),
+  //       "emgPer": parseInt(this.serviceForm.get("EmgPer").value ||"0"),
         
-  //       "groupId": parseInt(this._serviceMasterService.myform.get("GroupId").value || 0),
-  //       "subgroupId": parseInt(this._serviceMasterService.myform.get("SubGroupId").value || 0),
-  //       "doctorId": this._serviceMasterService.myform.get("DoctorId").value ||0,        
+  //       "groupId": parseInt(this.serviceForm.get("GroupId").value || 0),
+  //       "subgroupId": parseInt(this.serviceForm.get("SubGroupId").value || 0),
+  //       "doctorId": this.serviceForm.get("DoctorId").value ||0,        
      
-  //       "serviceId":parseInt(this._serviceMasterService.myform.get("ServiceId").value || 0),                 
+  //       "serviceId":parseInt(this.serviceForm.get("ServiceId").value || 0),                 
   //     }
 
 
-  //     if (!this._serviceMasterService.myform.get("ServiceId").value) {
+  //     if (!this.serviceForm.get("ServiceId").value) {
 
        
   //       let m_data = {
@@ -418,8 +422,8 @@ private _onDestroy = new Subject<void>();
   //           "serviceMasterUpdate": serviceMasterdata,
   //           "serviceDetailInsert" :clas_d, 
   //           "serviceDetDelete": {
-  //             "serviceId": this._serviceMasterService.myform.get("ServiceId").value,
-  //             "tariffId":this._serviceMasterService.myform.get("TariffId").value,
+  //             "serviceId": this.serviceForm.get("ServiceId").value,
+  //             "tariffId":this.serviceForm.get("TariffId").value,
   //           },
   //       }
 
@@ -478,11 +482,11 @@ this.dialogRef.close();
       return { ...element, ClassRate: 0 }; // Create a new object with updated ClassRate
   });
   this.DSServicedetailList._updateChangeSubscription(); // Manually trigger change detection for MatTableDataSource
-  this._serviceMasterService.myform.reset();
-  this._serviceMasterService.myform.get('IsEditable').setValue(true);
-  this._serviceMasterService.myform.get('IsActive').setValue(true);
-  this._serviceMasterService.myform.get('EffectiveDate').setValue(new Date());
-  this._serviceMasterService.myform.get('TariffId').setValue(this.TariffcmbList[0].TariffId);
+  this.serviceForm.reset();
+  this.serviceForm.get('IsEditable').setValue(true);
+  this.serviceForm.get('IsActive').setValue(true);
+  this.serviceForm.get('EffectiveDate').setValue(new Date());
+  this.serviceForm.get('TariffId').setValue(this.TariffcmbList[0].TariffId);
 
 
 
@@ -498,7 +502,7 @@ keyPressCharater(event){
   }
 }
   onClose() {
-    this._serviceMasterService.myform.reset();
+    this.serviceForm.reset();
   
     this.dialogRef.close();
   }
@@ -536,6 +540,28 @@ keyPressCharater(event){
   selectChangetariff(obj: any){
     console.log(obj);
     this.tariffId=obj.value
+  }
+
+  getValidationGroupMessages(){
+    return {
+      GroupId: [
+          { name: "required", Message: "Group Name is required" }
+      ]
+  };
+  }
+  getValidationSubGroupMessages(){
+    return{
+      SubGroupId: [
+        { name: "required", Message: "SubGroup Name is required" }
+      ]
+    }
+  }
+  getValidationTariffMessages(){
+    return{
+      TariffId: [
+        { name: "required", Message: "Tariff Name is required" }
+      ]
+    }
   }
 
 

@@ -24,11 +24,39 @@ export class ServiceMasterComponent implements OnInit {
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
-        apiUrl: "BankMaster/List",
+        apiUrl: "BillingService/BillingList",
         columnsList: [
-            { heading: "Code", key: "bankId", sort: true, align: 'left', emptySign: 'NA',width:200 },
-            { heading: "Bank Name", key: "bankName", sort: true, align: 'left', emptySign: 'NA',width:600 },
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center",width:200 },
+            { heading: "Code", key: "serviceId", sort: true, align: 'left', emptySign: 'NA',width:200 },
+
+            { heading: "GroupId", key: "groupId", sort: true, align: 'left', emptySign: 'NA',width:200 },
+
+            { heading: "Group Name", key: "groupName", sort: true, align: 'left', emptySign: 'NA',width:200 },
+
+            { heading: "ServiceShortDesc", key: "serviceShortDesc", sort: true, align: 'left', emptySign: 'NA',width:200 },
+
+            { heading: "Service Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA',width:200 },
+
+            { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA',width:200 },
+
+            { heading: "IsEditable", key: "isEditable", sort: true, align: 'left', emptySign: 'NA',width:200 },
+
+            { heading: "CreditedtoDoctor", key: "creditedtoDoctor", sort: true, align: 'left', emptySign: 'NA',width:200 },
+
+            { heading: "IsPathology", key: "isPathology", sort: true, align: 'left', emptySign: 'NA',width:200 },
+
+            { heading: "IsRadiology", key: "isRadiology", sort: true, align: 'left', emptySign: 'NA',width:200 },
+
+            { heading: "PrintOrder", key: "printOrder", sort: true, align: 'left', emptySign: 'NA',width:200 },
+
+            { heading: "TariffId", key: "tariffId", sort: true, align: 'left', emptySign: 'NA',width:200 },
+
+            { heading: "TariffName", key: "tariffName", sort: true, align: 'left', emptySign: 'NA',width:200 },
+
+            { heading: "IsEmergency", key: "isEmergency", sort: true, align: 'left', emptySign: 'NA',width:200 },
+
+            { heading: "EmgAmt", key: "emgAmt", sort: true, align: 'left', emptySign: 'NA',width:200 },
+
+            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center",width:100 },
             {
                 heading: "Action", key: "action", align: "right", width:100, type: gridColumnTypes.action, actions: [
                     {
@@ -58,11 +86,14 @@ export class ServiceMasterComponent implements OnInit {
                     }]
             } //Action 1-view, 2-Edit,3-delete
         ],
-        sortField: "bankId",
+        sortField: "ServiceId",
         sortOrder: 0,
         filters: [
-            { fieldName: "BankName", fieldValue: "", opType: OperatorComparer.Contains },
-            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+            { fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.StartsWith },
+            { fieldName: "TariffId", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "GroupId", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "Start", fieldValue: "1", opType: OperatorComparer.Equals },
+            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
         ],
         row:25
     }
