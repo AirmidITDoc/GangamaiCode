@@ -40,6 +40,8 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     userStatusOptions: any[];
     user: any;
     currentDate: Date = new Date();
+    IsCollection: any;
+    IsBedStatus: any;
 
     // Private
     private _unsubscribeAll: Subject<any>;
@@ -135,6 +137,12 @@ export class ToolbarComponent implements OnInit, OnDestroy {
 
         this.user = this.accountService.currentUserValue;
         this.accountService.currentUser.subscribe((x) => (this.user = x));
+
+
+        this.IsCollection = this.accountService.currentUserValue.user.isCollection
+        this.IsBedStatus = this.accountService.currentUserValue.user.isBedStatus
+        console.log( this.IsCollection)
+        console.log(this.IsBedStatus)
     }
 
     logout() {

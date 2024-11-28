@@ -46,18 +46,20 @@
                                     </div>
                                 </button>
                                 <mat-menu #dashboardMenu="matMenu" [overlapTrigger]="false">
-                                    <button mat-menu-item (click)="navigateToDailyDashboard()">
+                                    <button mat-menu-item (click)="navigateToDailyDashboard()"
+                                    *ngIf="IsCollection == '1'">
                                         <span>Daily Dashboard</span>
                                     </button>
-                                    <button mat-menu-item class="" (click)="navigateToBedOccupancyDashboard()">
+                                    <button mat-menu-item class="" (click)="navigateToBedOccupancyDashboard()"
+                                    *ngIf="IsBedStatus == '1'">
                                         <span>Bed Occupancy Dashboard</span>
                                     </button>
-                                    <button mat-menu-item class="" (click)="navigateToRadiologyDashboard()">
+                                    <!-- <button mat-menu-item class="" (click)="navigateToRadiologyDashboard()">
                                         <span>Radiology Dashboard</span>
-                                    </button>
-                                    <button mat-menu-item class="" (click)="navigateToCashlessDashboard()">
+                                    </button> -->
+                                    <!-- <button mat-menu-item class="" (click)="navigateToCashlessDashboard()">
                                         <span>CashLess Dashboard</span>
-                                    </button>
+                                    </button> -->
                                     <button mat-menu-item class="" (click)="navigateToPharmacyDashboard()">
                                         <span>Pharmacy Dashboard</span>
                                     </button>

@@ -142,7 +142,7 @@ export class PharmItemSummaryComponent implements OnInit {
     }
     console.log(vdata)
     setTimeout(() => {
-      this._PharmaitemsummaryService.getItemWithoutBatchexpwiseList(vdata).subscribe(
+      this._PharmaitemsummaryService.getItemBatchexpwiseList(vdata).subscribe(
         (Visit) => {
           this.dsNonMovItemWithexpdate.data = Visit["Table1"] ?? [] as Itemmovment[];
           console.log(this.dsNonMovItemWithexpdate.data)
@@ -170,8 +170,7 @@ export class PharmItemSummaryComponent implements OnInit {
     console.log(vdata)
     setTimeout(() => {
       this._PharmaitemsummaryService.getItemWithoutBatchexpwiseList(vdata).subscribe(
-        (Visit) => {
-          debugger
+        (Visit) => { 
           this.dsNonMovItemWithoutexpdate.data = Visit["Table1"] ?? [] as Itemmovment[];
           console.log(this.dsNonMovItemWithoutexpdate.data)
           //this.dsNonMovItemWithoutexpdate.sort = this.sort;
