@@ -21,7 +21,7 @@ export class NewLocationComponent implements OnInit {
     var m_data = {
       locationId: this.data?.locationId,
       locationName: this.data?.locationName.trim(),
-        isDeleted: JSON.stringify(this.data?.isActive),
+      isDeleted: JSON.stringify(this.data?.isActive),
     };
     this.locationForm.patchValue(m_data);
   }

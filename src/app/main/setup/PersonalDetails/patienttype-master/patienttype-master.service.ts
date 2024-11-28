@@ -26,7 +26,7 @@ export class PatienttypeMasterService {
         return this._formBuilder.group({
             patientTypeId: [""],
             patientType: [""],
-            isDeleted: ["false"],
+            isActive: [""],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
         });
@@ -52,6 +52,7 @@ export class PatienttypeMasterService {
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.PostData("PatientType", m_data);
+        // return this._httpClient.PostData("PatientType", m_data);
+        return this._httpClient.DeleteData("PatientType?Id=" + m_data.toString());
     }
 }

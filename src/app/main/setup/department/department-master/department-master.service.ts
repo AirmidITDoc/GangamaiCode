@@ -58,6 +58,6 @@ export class DepartmentMasterService {
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.PostData("DepartmentMaster", m_data);
+        return this._httpClient.DeleteData("DepartmentMaster?Id=" + m_data.toString());
     }
 }

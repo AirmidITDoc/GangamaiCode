@@ -22,14 +22,10 @@ export class NewReligionMasterComponent implements OnInit {
     var m_data = {
       religionId: this.data?.religionId,
       religionName: this.data?.religionName.trim(),
-        isDeleted: JSON.stringify(this.data?.isActive),
+      isDeleted: JSON.stringify(this.data?.isActive),
     };
     this.religionForm.patchValue(m_data);
-
-    
   }
-
-
 
   onSubmit() {
     if (this.religionForm.valid) {
@@ -42,9 +38,9 @@ export class NewReligionMasterComponent implements OnInit {
     }
 }
 
-
 onClear(val: boolean) {
     this.religionForm.reset();
     this.dialogRef.close(val);
 }
+
 }

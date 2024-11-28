@@ -24,9 +24,9 @@ export class NewRelationshipComponent implements OnInit {
       var m_data = {
         relationshipId: this.data?.relationshipId || 0,
         relationshipName: this.data?.relationshipName.trim(),
-          isDeleted: JSON.stringify(this.data?.isActive),
-          addBy:10,
-          updatedBy:1
+        isDeleted: JSON.stringify(this.data?.isActive),
+        addBy:10,
+        updatedBy:1
       };
       this.relationshipForm.patchValue(m_data);
   }

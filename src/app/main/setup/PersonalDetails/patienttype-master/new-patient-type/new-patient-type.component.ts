@@ -25,7 +25,7 @@ export class NewPatientTypeComponent implements OnInit {
       var m_data = {
         patientTypeId: this.data?.patientTypeId,
         patientType: this.data?.patientType.trim(),
-          isDeleted: JSON.stringify(this.data?.isActive),
+        isDeleted: JSON.stringify(this.data?.isActive),
       };
       this.patienttypeForm.patchValue(m_data);
   }

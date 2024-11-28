@@ -27,9 +27,9 @@ export class ReligionMasterService {
         return this._formBuilder.group({
             religionId: [""],
             religionName: [""],
-            isDeleted: [""],
-            AddedBy: [""],
-            UpdatedBy: [""],
+            isActive: ["true"],
+            // AddedBy: [""],
+            // UpdatedBy: [""],
         });
     }
     initializeFormGroup() {
@@ -56,13 +56,12 @@ export class ReligionMasterService {
         } else return this._httpClient.PostData("ReligionMaster", Param, showLoader);
     }
 
-    
     public deactivateTheStatus(m_data) {
         return this._httpClient.DeleteData("ReligionMaster?Id=" + m_data.toString());
     }
 
-
     populateForm(param) {
         this.myform.patchValue(param);
     }
+
 }

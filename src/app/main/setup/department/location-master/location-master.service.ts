@@ -22,7 +22,7 @@ export class LocationMasterService {
         return this._formBuilder.group({
             locationId: [""],
             locationName: [""],
-            isDeleted: ["false"],
+            isActive: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
         });
@@ -55,6 +55,6 @@ export class LocationMasterService {
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.PostData("LocationMaster", m_data);
+        return this._httpClient.DeleteData("LocationMaster?Id=" + m_data.toString());
     }
 }

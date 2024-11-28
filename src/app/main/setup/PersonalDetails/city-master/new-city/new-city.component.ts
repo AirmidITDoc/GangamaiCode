@@ -19,7 +19,6 @@ export class NewCityComponent implements OnInit {
     cityId = 0;
     cityName = '';
 
-
         constructor(
         public _CityMasterService: CityMasterService,
         public dialogRef: MatDialogRef<NewCityComponent>,
@@ -51,7 +50,6 @@ export class NewCityComponent implements OnInit {
                 "cityName": this.cityForm.get("cityName").value,
                 "stateId": this.stateId
             }
-            debugger
             this._CityMasterService.cityMasterSave(mdata).subscribe((response) => {
                 this.toastr.success(response.message);
                 this.onClear(true);

@@ -68,6 +68,6 @@ export class DischargetypeMasterService {
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.PostData("DischargeType", m_data);
+        return this._httpClient.DeleteData("DischargeType?Id=" + m_data.toString());
     }
 }

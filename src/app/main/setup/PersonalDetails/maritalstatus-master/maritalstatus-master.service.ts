@@ -28,9 +28,9 @@ export class MaritalstatusMasterService {
         return this._formBuilder.group({
             maritalStatusId: [""],
             maritalStatusName: [""],
-            isDeleted: ["false"],
-            AddedBy: ["0"],
-            UpdatedBy: ["0"],
+            isActive: ["true"],
+            // AddedBy: ["0"],
+            // UpdatedBy: ["0"],
         });
     }
 
@@ -55,6 +55,6 @@ export class MaritalstatusMasterService {
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.PostData("MaritalStatus", m_data);
+        return this._httpClient.DeleteData("MaritalStatus?Id=" + m_data.toString());
     }
 }

@@ -35,8 +35,7 @@ export class RelationshipMasterComponent implements OnInit {
             columnsList: [
                 { heading: "Code", key: "relationshipId", sort: true, align: 'left', emptySign: 'NA', width:150 },
                 { heading: "Relation Name", key: "relationshipName", sort: true, align: 'left', emptySign: 'NA', width:800 },
-            
-                { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width:100 },
+                { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width:105 },
                 {
                     heading: "Action", key: "action", align: "right", width:100, type: gridColumnTypes.action, actions: [
                         {

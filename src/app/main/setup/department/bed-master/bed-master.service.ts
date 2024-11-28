@@ -55,6 +55,6 @@ export class BedMasterService {
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.PostData("BedMaster", m_data);
+        return this._httpClient.DeleteData("BedMaster?Id=" + m_data.toString());
     }
 }

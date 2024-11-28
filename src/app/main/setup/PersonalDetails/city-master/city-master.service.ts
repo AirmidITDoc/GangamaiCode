@@ -40,8 +40,6 @@ export class CityMasterService {
         this.createCityForm();
     }
 
-  
-   
     getValidationMessages() {
         return {
            cityName: [

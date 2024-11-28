@@ -19,11 +19,10 @@ export class NewBedComponent implements OnInit {
       public toastr: ToastrService
   ) { }
 
-  autocompleteModeroom: string = "Room";        //roomId = room
+  autocompleteModeroomId: string = "Room"; 
 
   roomId = 0;
 
- 
   ngOnInit(): void {
       this.bedForm = this._BedMasterService.createBedForm();
       var m_data = {
@@ -35,9 +34,9 @@ export class NewBedComponent implements OnInit {
       };
       this.bedForm.patchValue(m_data);
   }
+
   onSubmit() {
       if (this.bedForm.valid) {
-        debugger
           this._BedMasterService.bedMasterSave(this.bedForm.value).subscribe((response) => {
               this.toastr.success(response.message);
               this.onClear(true);

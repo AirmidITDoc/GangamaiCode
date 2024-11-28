@@ -28,9 +28,9 @@ export class CountryMasterService {
         return this._formBuilder.group({
             countryId: [""],
             countryName: [""],
-            isDeleted: ['true'],
-            AddedBy: ["0"],
-            UpdatedBy: ["0"],
+            isActive: ["true"],
+            // AddedBy: ["0"],
+            // UpdatedBy: ["0"],
         });
     }
 
@@ -55,6 +55,6 @@ export class CountryMasterService {
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.PostData("CountryMaster", m_data);
+        return this._httpClient.DeleteData("CountryMaster?Id=" + m_data.toString());
     }
 }

@@ -59,6 +59,6 @@ export class WardMasterService {
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.PostData("WardMaster", m_data);
+        return this._httpClient.DeleteData("WardMaster?Id=" + m_data.toString());
     }
 }

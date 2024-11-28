@@ -29,7 +29,7 @@
                     </airmid-textbox> 
                 </div>
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <mat-radio-group name="isDeleted" formControlName="isDeleted" value='false'>
+                    <mat-radio-group name="isActive" formControlName="isActive" value='false'>
                         <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive
                         </mat-radio-button>
                         <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsDeactive
@@ -39,7 +39,6 @@
             </form>
         </div>
         <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
-           
             <button class="btn btn-danger-outline" (click)="onClear(false)">Reset</button>
             <button class="btn btn-primary " color="accent" (click)="onSubmit()">
                 <span>Save</span>

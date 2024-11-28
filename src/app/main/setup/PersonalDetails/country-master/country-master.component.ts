@@ -68,12 +68,10 @@ export class CountryMasterComponent implements OnInit {
         row: 25
     }
 
-
     constructor(public _CountryService: CountryMasterService, public _matDialog: MatDialog,
         public toastr : ToastrService,) {}
 
-    ngOnInit(): void {
-            }
+    ngOnInit(): void {}
    
             onSave(row: any = null) {
                 let that = this;
@@ -90,5 +88,4 @@ export class CountryMasterComponent implements OnInit {
                     }
                 });
             }
-    
 }

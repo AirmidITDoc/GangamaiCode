@@ -22,9 +22,9 @@ export class RelationshipMasterService {
         return this._formBuilder.group({
             relationshipId: [""],
             relationshipName: [""],
-            isDeleted: ["true"],
-            addBy: ["0"],
-            updatedBy: ["0"],
+            isActive: ["true"],
+            // addBy: ["0"],
+            // updatedBy: ["0"],
         });
     }
 
@@ -56,6 +56,6 @@ export class RelationshipMasterService {
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.PostData("RelationshipMaster", m_data);
+        return this._httpClient.DeleteData("RelationshipMaster?Id=" + m_data.toString());
     }
 }

@@ -24,7 +24,7 @@ export class AreaMasterService {
             AreaName: [""],
             CityId: [""],
             CityName: [""],
-            IsDeleted: ["false"],
+            IsActive: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
         });
@@ -57,7 +57,7 @@ export class AreaMasterService {
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.PostData("AreaMaster", m_data);
+        return this._httpClient.DeleteData("AreaMaster?Id=" + m_data.toString());
     }
 }
 // Set NODE_OPTIONS="--max-old-space-size=8192"

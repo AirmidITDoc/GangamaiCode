@@ -55,6 +55,6 @@ export class StateMasterService {
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.PostData("StateMaster", m_data);
+        return this._httpClient.DeleteData("StateMaster?Id=" + m_data.toString());
     }
 }
