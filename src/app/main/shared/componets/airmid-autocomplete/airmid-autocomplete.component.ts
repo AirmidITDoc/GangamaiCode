@@ -1,6 +1,6 @@
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { Component, Input, OnInit, Output, ViewChild, EventEmitter, ChangeDetectorRef } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component, Input, OnInit, Output, ViewChild, EventEmitter, ChangeDetectorRef, Optional, Self } from '@angular/core';
+import { FormControl, FormGroup, NgControl } from '@angular/forms';
 import { MatSelect } from '@angular/material/select';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { ReplaySubject, Subject } from 'rxjs';
@@ -19,10 +19,10 @@ export class AirmidAutocompleteComponent implements OnInit {
     @Input() mode: string;
     @Output() selectDdlObject = new EventEmitter<any>();
     apiUrl: string = "Dropdown/GetBindDropDown?mode=";
-    
+
     control = new FormControl();
     @Input() formGroup: FormGroup;
-    @Input() formControlName:string;
+    @Input() formControlName: string;
     @Input() validations: [] = [];
     @Input() label: string = "";
 
@@ -55,6 +55,9 @@ export class AirmidAutocompleteComponent implements OnInit {
         this._required = coerceBooleanProperty(value);
         this.stateChanges.next();
     }
+    get errorState(): boolean {
+        return this.ngControl.control !== null ? !!this.ngControl.control : false;
+    }
 
     @Input()
     get value(): string {
@@ -65,7 +68,12 @@ export class AirmidAutocompleteComponent implements OnInit {
         this.stateChanges.next();
     }
 
-    constructor(private _httpClient: ApiCaller,private changeDetectorRefs: ChangeDetectorRef) {}
+    constructor(private _httpClient: ApiCaller, private changeDetectorRefs: ChangeDetectorRef, @Optional() @Self() public ngControl: NgControl | null) {
+        if (ngControl) {
+            // this.ngControl.valueAccessor = this;
+            // ngControl.valueAccessor = this;
+        }
+    }
 
     protected ddls: any[] = [];
     //public ddlCtrl: FormControl = new FormControl();
@@ -74,7 +82,7 @@ export class AirmidAutocompleteComponent implements OnInit {
     @ViewChild("singleSelect", { static: true }) singleSelect: MatSelect;
     protected _onDestroy = new Subject<void>();
     stateChanges: Subject<void> = new Subject();
-
+    
     ngOnInit() {
         this.bindGridAutoComplete();
         // listen for search field value changes
@@ -84,7 +92,7 @@ export class AirmidAutocompleteComponent implements OnInit {
                 this.filterDdls();
             });
 
-     
+
     }
     bindGridAutoComplete() {
         if (this.options?.length > 0) {
@@ -107,17 +115,19 @@ export class AirmidAutocompleteComponent implements OnInit {
                     this.filteredDdls.next(this.ddls.slice());
                     setTimeout(() => {
                         if (this.value) {
+                            debugger
+                            this.formGroup.controls[this.formControlName].setValue(this.value.toString());
                             this.control.setValue(this.value.toString());
                             this.stateChanges.next();
                             this.changeDetectorRefs.detectChanges();
-                        }                         
+                        }
                     }, 1000);
                 });
         }
-  
+
     }
     ngAfterViewInit() {
-        this.setInitialValue(); 
+        this.setInitialValue();
     }
     ngOnDestroy() {
         this._onDestroy.next();
@@ -148,9 +158,9 @@ export class AirmidAutocompleteComponent implements OnInit {
                 (ddl) => ddl.text.toLowerCase().indexOf(search) > -1
             )
         );
-        
+
     }
-    public onDdlChange($event){
+    public onDdlChange($event) {
         this.formGroup.controls[this.formControlName].setValue($event.value);
         this.selectDdlObject.emit($event.value);
     }
