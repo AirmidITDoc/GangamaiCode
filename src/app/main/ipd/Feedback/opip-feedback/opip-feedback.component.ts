@@ -256,6 +256,7 @@ getSelectedObjRegIP(obj) {
     this.registerObj = obj;
     this.PatientName = obj.FirstName + ' ' + obj.LastName;
     this.RegId = obj.RegID;
+    this.RegID = obj.RegID;
     this.OP_IP_Id = this.registerObj.AdmissionID;
     this.IPDNo = obj.IPDNo;
     this.RegNo =obj.RegNo;
@@ -345,12 +346,13 @@ registerObj:any;
 }
 
 onSubmit() {
-   
+   debugger
   if (this.RegID) {
+
     var m_data = {
       "patientFeedbackInsert": {
         "PatientFeedbackId": 0,
-        "OP_IP_ID": this.AdmissionID || "",
+        "OP_IP_ID": this.OP_IP_Id || "",
         "OP_IP_Type": this.OPD_IPD_Type || 0,
         "FeedbackCategory": this.registerObj1.FeedbackCategory || 0,
         "FeedbackRating": this.registerObj1.FeedbackRating || "",

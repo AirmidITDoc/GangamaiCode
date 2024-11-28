@@ -28,6 +28,7 @@ import { NewCasepaperComponent } from 'app/main/opd/new-casepaper/new-casepaper.
 import { IPRefundofAdvanceComponent } from '../ip-refundof-advance/ip-refundof-advance.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { OPIPFeedbackComponent } from '../Feedback/opip-feedback/opip-feedback.component';
+import { DischargesummaryTemplateComponent } from './dischargesummary-template/dischargesummary-template.component';
 
 
 
@@ -320,7 +321,7 @@ export class IPSearchListComponent implements OnInit {
       console.log(contact);
       this.advanceDataStored.storage = new AdvanceDetailObj(contact);
       this._IpSearchListService.populateForm1(contact);
-      const dialogRef = this._matDialog.open(DischargeSummaryComponent,
+      const dialogRef = this._matDialog.open(DischargesummaryTemplateComponent,
         {
 
           maxWidth: "95vw",

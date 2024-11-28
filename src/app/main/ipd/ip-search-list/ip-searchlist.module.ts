@@ -59,6 +59,8 @@ import { DiscountAfterFinalBillComponent } from './discount-after-final-bill/dis
 import { OPIPFeedbackComponent } from '../Feedback/opip-feedback/opip-feedback.component';
 import { CompanyBillComponent } from './company-bill/company-bill.component';
 import { UpdateCompanyDetailsComponent } from './company-bill/update-company-details/update-company-details.component';
+import { DischargesummaryTemplateComponent } from './dischargesummary-template/dischargesummary-template.component';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 
 
@@ -89,7 +91,8 @@ const routes: Routes = [
       DiscountAfterFinalBillComponent,
       // OPIPFeedbackComponent,
       CompanyBillComponent,
-      UpdateCompanyDetailsComponent
+      UpdateCompanyDetailsComponent,
+      DischargesummaryTemplateComponent
     ],
     imports: [
         RouterModule.forChild(routes),
@@ -130,6 +133,7 @@ const routes: Routes = [
         MatStepperModule,
         NgxMatSelectSearchModule,
         MatDatepickerModule,
+        AngularEditorModule,
         // MatStepper,
         //  MatStep,
         //  NgMultiSelectDropDownModule.forRoot(),

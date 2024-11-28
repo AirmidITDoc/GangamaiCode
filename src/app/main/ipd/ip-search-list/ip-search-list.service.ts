@@ -826,7 +826,9 @@ public updateIPDDischargSummary(employee)
       },
     ];
   }
-  
+  public gettemplateCombo(){
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Dischargetemplate",{})
+  }
 
   public CompanyDoctorList() {
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_DoctorListMaster" , {});  
