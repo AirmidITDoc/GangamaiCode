@@ -325,7 +325,7 @@ export class IPSearchListComponent implements OnInit {
         {
 
           maxWidth: "95vw",
-          height: '90vh',
+          height: '100vh',
           width: '100%',
 
         });

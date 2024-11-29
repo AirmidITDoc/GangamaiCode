@@ -107,24 +107,7 @@
                                 <div class="form-body">
                                     <div fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
 
-                                        <!-- <mat-form-field appearance="outline" fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="40%">
-                                            <mat-label>Ref Doctor Name</mat-label>
-                                            <input matAutocompletePosition="below" type="text" placeholder="Select Ref Doctor " matInput
-                                                 formControlName="refDoctorId"
-                                                [matAutocomplete]="autorefdoc">
-                                            <span matSuffix style="display: flex;">
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="searchFormGroup.get('refDoctorId').setValue(''); isRefDoctorSelected = false;">close</mat-icon>
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="searchFormGroup.get('refDoctorId').setValue(''); isRefDoctorSelected = false;">search</mat-icon>
-                                            </span>
-                                            <mat-autocomplete #autorefdoc="matAutocomplete" [displayWith]="getOptionTextRefDoc">
-                                                <mat-option *ngFor="let option of filteredOptionsRefrenceDoc | async" [value]="option">
-                                                    {{option.DoctorName}}
-                                                </mat-option>
-                                            </mat-autocomplete>
-                                        </mat-form-field> -->
-
+                                    
                                         <mat-form-field appearance="outline" fxFlex="40%" fxFlex.xs="100%"
                                             fxFlex.sm="40%">
                                             <mat-label>Ref Doctor Name</mat-label>
