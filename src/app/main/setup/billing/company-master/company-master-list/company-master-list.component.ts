@@ -26,10 +26,10 @@ export class CompanyMasterListComponent implements OnInit {
     registerObj = new CompanyMaster({});
 
     vAddress:any;
-    vPincode:any;
+    vPin:any;
     vPhone:any;    
     vMobile:any;
-    vFaxNo:any;
+    vFax:any;
     vCompanyName:any; 
 
     // new Api
@@ -54,14 +54,14 @@ export class CompanyMasterListComponent implements OnInit {
             this.vAddress=this.data.registerObj.Address;
             // this.vMobile= this.data.registerObj.Mobile.trim();
             this.vPhone=this.data.registerObj.Phone.trim();
-            this.vPincode = this.data.registerObj.PinCode;
+            this.vPin = this.data.registerObj.Pin;
             // this.vFaxNo=this.data.registerObj.Fax;
         }
     }
     Savebtn:boolean=false;
-    onSubmit() {  
+    OnSubmit() {  
         debugger       
-        if(!this.companyForm.get("companyId").value){
+        if(!this.companyForm.get("CompanyId").value){
             debugger
         var m_data =
             {
@@ -69,9 +69,12 @@ export class CompanyMasterListComponent implements OnInit {
                 "compTypeId": this.typeId || 0,
                 "companyName":this.companyForm.get("CompanyName").value || " ",
                 "address": this.companyForm.get("Address").value || " ",
-                "city": this.cityName || "ABC",
+                "city": this.companyForm.get("City").value || "ABC",
                 "pinNo": this.companyForm.get("PinNo").value || "",
-                "phoneNo": this.companyForm.get("Phone").value.toString() || "0"
+                "phoneNo": this.companyForm.get("PhoneNo").value.toString() || "0",
+                "mobileNo": this.companyForm.get("MobileNo").value.toString() || "0",
+                "faxNo": this.companyForm.get("FaxNo").value || "0",
+                "traiffId": this.companyForm.get("TariffId").value
               }
 
               console.log("Company Insert:",m_data)
@@ -127,7 +130,7 @@ export class CompanyMasterListComponent implements OnInit {
         };
     }
 
-    getValidationtariffessages() {
+    getValidationtariffMessages() {
       return {
         TariffId: [
               { name: "required", Message: "Tariff Name is required" }
@@ -143,30 +146,40 @@ export class CompanyMasterListComponent implements OnInit {
     @ViewChild('pin') pin: ElementRef;
     @ViewChild('phone') phone: ElementRef;
     @ViewChild('address') address: ElementRef;
-    @ViewChild('company') company: ElementRef;
+    @ViewChild('mobile') mobile: ElementRef;
+    @ViewChild('fax') fax: ElementRef;
 
-    public onEnterAddress(event): void {
-        if (event.which === 13) {
-           this.address.nativeElement.focus();
-        }
+    public onEnterCompany(event): void {
+      if (event.which === 13) {
+         this.address.nativeElement.focus();
       }
-  
-      public onEnterPin(event): void {
+    }
+    public onEnterAddress(event): void {
         if (event.which === 13) {
            this.pin.nativeElement.focus();
         }
       }
   
-      public onEnterPhone(event): void {
+      public onEnterPin(event): void {
         if (event.which === 13) {
            this.phone.nativeElement.focus();
         }
       }
-
-      public onEnterCompany(event): void {
+  
+      public onEnterPhone(event): void {
         if (event.which === 13) {
-           this.company.nativeElement.focus();
+           this.mobile.nativeElement.focus();
         }
+      }
+      public onEntermobile(event): void{
+        if (event.which === 13) {
+          this.fax.nativeElement.focus();
+       }
+      }
+      public onEnterfax(event): void{
+        if (event.which === 13) {
+          this.phone.nativeElement.focus();
+       }
       }
   }
   
