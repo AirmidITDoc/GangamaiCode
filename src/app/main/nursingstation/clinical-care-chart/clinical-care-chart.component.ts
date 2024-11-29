@@ -40,8 +40,7 @@ export class ClinicalCareChartComponent implements OnInit {
     'PatientName' 
   ]
   displayedPainAsse: string[] = [
-    'givendate',
-    'giventime',
+    'givendate', 
     'PainAssess',
     'Employeename',
     'Action'
@@ -294,6 +293,8 @@ vIPDNo:any;
     this.gettestList();
     this.getPrescriptionList();
     this.getRequesttList();
+    this.getpainAssesmentList();
+    this.getpainAssesmentWeightList();
   }
   PainList:any=[];
   OnAdd() {
@@ -324,6 +325,53 @@ vIPDNo:any;
       this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
         toastClass: 'tostr-tost custom-toast-success',
       });  
+  }
+  //pain assesment list 
+  getpainAssesmentList() {
+    var vdata = {
+      AdmissionId: this.registerObj.AdmissionID || 0
+    }
+    console.log(vdata);
+    this._ClinicalcareService.getpainAssesmentList(vdata).subscribe(data => {
+      this.dsPainsAssessment.data = data as PainAssesList[];
+      this.PainsAssessmentlist = data as PainAssesList[];
+      console.log(this.dsPainsAssessment.data);
+    })
+  }
+  PainsAssessmentlist:any=[];
+  PainWeightlist:any=[];
+  PaindeleteTableRow(event, element) { 
+    let index = this.PainsAssessmentlist.indexOf(element);
+    if (index >= 0) {
+      this.PainsAssessmentlist.splice(index, 1);
+      this.dsPainsAssessment.data = [];
+      this.dsPainsAssessment.data = this.PainsAssessmentlist;
+    }
+    this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
+      toastClass: 'tostr-tost custom-toast-success',
+    }); 
+  }
+  //pain weight assesment list 
+  getpainAssesmentWeightList() {
+    var vdata = {
+      AdmissionId: this.registerObj.AdmissionID || 0
+    }
+    console.log(vdata);
+    this._ClinicalcareService.getpainAssesmentWeightList(vdata).subscribe(data => {
+      this.dsPainsAssessment.data = data as PainAssesList[];
+      console.log(this.dsPainsAssessment.data);
+    })
+  }
+  PWeightdeleteTableRow(event, element) { 
+    let index = this.PainWeightlist.indexOf(element);
+    if (index >= 0) {
+      this.PainWeightlist.splice(index, 1);
+      this.dsPainsAssessment2.data = [];
+      this.dsPainsAssessment2.data = this.PainWeightlist;
+    }
+    this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
+      toastClass: 'tostr-tost custom-toast-success',
+    }); 
   }
   //IP Prescription list 
   getPrescriptionList(){
@@ -579,18 +627,27 @@ export class PatientList {
   }
 }
 export class PainAssesList {
-  givendate: any;
-  giventime: any;
-  PainAssess: any;
+  PainAssessmentDate: any;
+  PainAssessmentTime: any;
+  PainAssessementValue: any;
   Employeename: string; 
+  CreatedDate:any;
+  CreatedBy:any;
+  ModifiedBy:any;
+  PatWeightValue:any;
+  PatWeightDate:any;
+  PatWeightTime:any;
 
   constructor(PainAssesList) {
-    {
-
-      this.givendate = PainAssesList.givendate || 0;
-      this.giventime = PainAssesList.giventime || 0;
-      this.PainAssess = PainAssesList.PainAssess || 0;
+    { 
+      this.PainAssessmentDate = PainAssesList.PainAssessmentDate || 0;
+      this.PainAssessmentTime = PainAssesList.PainAssessmentTime || 0;
+      this.PainAssessementValue = PainAssesList.PainAssessementValue || 0;
       this.Employeename = PainAssesList.Employeename || ""; 
+      this.CreatedDate = PainAssesList.CreatedDate || 0;
+      this.PatWeightValue = PainAssesList.PatWeightValue || 0;
+      this.PatWeightDate = PainAssesList.PatWeightDate || 0;
+      this.PatWeightTime = PainAssesList.PatWeightTime || 0;
     }
   }
 }

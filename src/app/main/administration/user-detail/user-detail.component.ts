@@ -74,6 +74,15 @@ export class UserDetailComponent implements OnInit {
       this.vPharExpOpt = this.registerObj.PharExpOpt;
       this.vPharIPOpt = this.registerObj.PharIPOpt;
       this.vPharOPOpt = this.registerObj.PharOPOpt;
+      if(this.registerObj.isDiscApply == true){
+        this.UserForm.get('IsDicslimit').setValue(true)
+        this.DisclimitFlag = true;
+        this.UserForm.get('DiscLimitPer').setValue(this.registerObj.DiscApplyPer)
+      }else{
+        this.UserForm.get('IsDicslimit').setValue(false)
+        this.DisclimitFlag = false;
+        this.UserForm.get('DiscLimitPer').setValue('')
+      }
     }
     console.log(this.registerObj)
     this.getDoctorlist1();
@@ -258,6 +267,14 @@ export class UserDetailComponent implements OnInit {
   getOptionTextwebroleName(option) {
     return option && option.RoleName ? option.RoleName : '';
   }
+  chkdisclimit(){
+    if(this.UserForm.get('DiscLimitPer').value > 100){
+      this.toastr.warning('Enter Discount % lessthan 100 or graterthan 0', 'warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      this.UserForm.get('DiscLimitPer').setValue('');
+    }
+  }
   @ViewChild('fname') fname: ElementRef;
   @ViewChild('lname') lname: ElementRef;
   @ViewChild('loginname') loginname: ElementRef;
@@ -409,8 +426,17 @@ export class UserDetailComponent implements OnInit {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
-    }
-  debugger
+    }  
+    if(this.UserForm.get('IsDicslimit').value == true){ 
+      if ((this.UserForm.get('DiscLimitPer').value == '' || this.UserForm.get('DiscLimitPer').value == 0 
+      || this.UserForm.get('DiscLimitPer').value == undefined)) {
+        this.toastr.warning('Please enter a Discount % ', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      } 
+    }  
+
     let PharmExpOpt = 0;
     let PharmIPOpt = false;
     let PharmOPOpt = false; 
@@ -420,7 +446,11 @@ export class UserDetailComponent implements OnInit {
       PharmIPOpt = this.UserForm.get('PharIPOpt').value 
       PharmOPOpt = this.UserForm.get('PharOPOpt').value 
 
-
+      let isDiscApply = 0
+      if(this.UserForm.get('IsDicslimit').value == true){
+        isDiscApply =  1
+        } 
+         
     this.mobileno = parseInt(this.UserForm.get('MobileNo').value) ||  0;
     if (this.vUserId == 0) {
       this.isLoading = 'submit'; 
@@ -438,11 +468,11 @@ export class UserDetailComponent implements OnInit {
           "doctorID":  this.DoctorId ,
           "isPOVerify": this.UserForm.get('Poverify').value || 0,
           "isGRNVerify": this.UserForm.get('Grnverify').value || 0,
-          "isCollection": true,
+          "isCollection": this.UserForm.get('CollectionInformation').value || 0,
           "isBedStatus": this.UserForm.get('BedStatus').value  || 0,
           "isCurrentStk": this.UserForm.get('CurrentStock').value || 0,
           "isPatientInfo": this.UserForm.get('PatientInformation').value || 0,
-          "isDateInterval": true,
+          "isDateInterval": false,
           "isDateIntervalDays": 0,
           "mailId": this.UserForm.get('MailId').value || 0,
           "MailDomain": " ",// this.UserForm.get('MailDomain').value || 0,
@@ -455,8 +485,10 @@ export class UserDetailComponent implements OnInit {
           "PharIPOpt": PharmIPOpt,
           "PharOPOpt": PharmOPOpt ,  
           "unitId": this.UserForm.get('HospitalId').value.HospitalId || 0,  
-          "mobileNo": this.mobileno
-          //"CollectionInformation": this.UserForm.get('CollectionInformation').value || '', 
+          "mobileNo": this.mobileno,
+          "isDiscApply":  isDiscApply, 
+          "discApplyPer": this.UserForm.get('DiscLimitPer').value || 0 
+         
           // "ViewBrowseBill": this.UserForm.get('ViewBrowseBill').value || 0, 
           //"IsPharmacyBalClearnace": this.UserForm.get('IsPharmacyBalClearnace').value || 0,
         
@@ -493,19 +525,17 @@ export class UserDetailComponent implements OnInit {
           "StoreId": this.UserForm.get('StoreId').value.StoreId || 0,
           "RoleId": this.UserForm.get('RoleId').value.RoleId || 0,
           "isDoctorType":this.UserForm.get('IsDoctor').value || 0,
-          "doctorID":  this.DoctorId ,
-          // "Status": this.UserForm.get('Status').value || '',
+          "doctorID":  this.DoctorId , 
           "isPOVerify": this.UserForm.get('Poverify').value || 0,
           "isPOInchargeVerify": this.UserForm.get('Ipoverify').value || 0,
           "isGRNVerify": this.UserForm.get('Grnverify').value || 0,
           "isBedStatus": this.UserForm.get('BedStatus').value || 0,
-          "isCollection": true,
+          "isCollection":  this.UserForm.get('CollectionInformation').value || 0,
           "isIndentVerify": this.UserForm.get('Indentverify').value || 0,
-          "isInchIndVfy": this.UserForm.get('IIverify').value || 0,
-          // "CollectionInformation": this.UserForm.get('CollectionInformation').value || '',
+          "isInchIndVfy": this.UserForm.get('IIverify').value || 0, 
           "isCurrentStk": this.UserForm.get('CurrentStock').value || 0,
           "isPatientInfo": this.UserForm.get('PatientInformation').value || 0,
-          "isDateInterval": true,
+          "isDateInterval": false,
           "isDateIntervalDays": 0,
           "mailId": this.UserForm.get('MailId').value || 0,
           "MailDomain": '',//this.UserForm.get('MailDomain').value || 0,
@@ -517,7 +547,9 @@ export class UserDetailComponent implements OnInit {
           "PharIPOpt": PharmIPOpt,
           "PharOPOpt":PharmOPOpt ,   
           "unitId": this.UserForm.get('HospitalId').value.HospitalId || 0,  
-          "mobileNo": this.mobileno
+          "mobileNo": this.mobileno,
+          "isDiscApply": isDiscApply, 
+          "discApplyPer": this.UserForm.get('DiscLimitPer').value || 0 
         }
       }
 
@@ -568,7 +600,8 @@ export class UserDetail {
   Indentverify: any;
   IIverify: any;
   DoctorID: any;
-
+  isDiscApply:any;
+  DiscApplyPer:any;
   FirstName: any;
   LastName: any;
   IsActive: boolean;

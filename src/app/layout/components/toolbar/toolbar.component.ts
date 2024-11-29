@@ -141,8 +141,8 @@ export class ToolbarComponent implements OnInit, OnDestroy {
 
         this.IsCollection = this.accountService.currentUserValue.user.isCollection
         this.IsBedStatus = this.accountService.currentUserValue.user.isBedStatus
-        console.log( this.IsCollection)
-        console.log(this.IsBedStatus)
+        // console.log( this.IsCollection)
+        // console.log(this.IsBedStatus)
     }
 
     logout() {

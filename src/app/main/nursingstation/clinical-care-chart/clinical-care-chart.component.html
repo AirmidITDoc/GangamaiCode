@@ -128,40 +128,39 @@
                                                                                 <ng-container matColumnDef="givendate">
                                                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                                                                         fxShow.gt-sm>
-                                                                                        Given Date </mat-header-cell>
+                                                                                        PainAssessment Date/Time </mat-header-cell>
                                                                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                                        {{element.PatientName}} </mat-cell>
-                                                                                </ng-container>
-                            
-                                                                                <ng-container matColumnDef="giventime">
-                                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                                                        fxShow.gt-sm>
-                                                                                        Given TIme </mat-header-cell>
-                                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                                        {{element.PatientName}} </mat-cell>
-                                                                                </ng-container>
+                                                                                     {{element.PainAssessmentDate | date:'dd/MM/YYYY'}}-{{element.PainAssessmentTime | date:'HH:mm'}}</mat-cell>
+                                                                                </ng-container> 
                             
                                                                                 <ng-container matColumnDef="PainAssess">
                                                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                                                                         fxShow.gt-sm>
                                                                                         Pain Assessment </mat-header-cell>
                                                                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                                        {{element.PatientName}} </mat-cell>
+                                                                                        {{element.PainAssessementValue}} </mat-cell>
                                                                                 </ng-container>
                             
                                                                                 <ng-container matColumnDef="Employeename">
                                                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                                                                         fxShow.gt-sm>
-                                                                                        Employee name </mat-header-cell>
+                                                                                        CreatedBy</mat-header-cell>
                                                                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                                        {{element.PatientName}} </mat-cell>
+                                                                                        {{element.CreatedBy}} </mat-cell>
                                                                                 </ng-container>
+
                                                                                 <ng-container matColumnDef="Action">
                                                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                                                        fxShow.gt-sm>
+                                                                                        fxShow.gt-sm class="w-60">
                                                                                         Action </mat-header-cell>
-                                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                                        {{element.Action}} </mat-cell>
+                                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-60">
+                                                                                        <ng-container class="actions">
+                                                                                            <mat-icon (click)="PaindeleteTableRow($event ,contact)"
+                                                                                                color="warn">
+                                                                                                delete
+                                                                                            </mat-icon>
+                                                                                        </ng-container> 
+                                                                                    </mat-cell>
                                                                                 </ng-container>
                             
                                                                                 <ng-container matColumnDef="loading">
@@ -179,7 +178,7 @@
                                                                                 <mat-header-row class="accent"
                                                                                     *matHeaderRowDef="displayedPainAsse; sticky: true">
                                                                                 </mat-header-row>
-                                                                                <mat-row *matRowDef="let row; columns: displayedColumns;"
+                                                                                <mat-row *matRowDef="let element; columns: displayedColumns;"
                                                                                     class="element"
                                                                                     [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                                                                 <mat-footer-row *matFooterRowDef="['noData']"
@@ -213,38 +212,43 @@
                                                                                     style="height:40px;overflow: auto;margin-bottom: 10px;">
                             
                                                                                     <ng-container matColumnDef="givendate">
-                                                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-90">
-                                                                                            Date </mat-header-cell>
-                                                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-90">
-                                                                                            {{element.givendate}}-{{element.giventime}} </mat-cell>
+                                                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                                                            fxShow.gt-sm>
+                                                                                            PainAssessment Date/Time </mat-header-cell>
+                                                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                                            {{element.PatWeightDate | date:'dd/MM/YYYY'}}-
+                                                                                            {{element.PatWeightTime | date:'shortTime'}}-</mat-cell>
                                                                                     </ng-container> 
-
+                                
                                                                                     <ng-container matColumnDef="PainAssess">
                                                                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                                                                             fxShow.gt-sm>
-                                                                                         Weight</mat-header-cell>
+                                                                                          PWeight </mat-header-cell>
                                                                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                                            {{element.PainAssess}} </mat-cell>
+                                                                                            {{element.PatWeightValue}} </mat-cell>
                                                                                     </ng-container>
-                            
+                                
                                                                                     <ng-container matColumnDef="Employeename">
                                                                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                                                                             fxShow.gt-sm>
-                                                                                           Patient Name </mat-header-cell>
+                                                                                            CreatedBy</mat-header-cell>
                                                                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                                            {{element.Employeename}} </mat-cell>
+                                                                                            {{element.CreatedBy}} </mat-cell>
                                                                                     </ng-container>
-
-                                                                                    <ng-container matColumnDef="Action" stickyEnd>
+    
+                                                                                    <ng-container matColumnDef="Action">
                                                                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                                                                             fxShow.gt-sm class="w-60">
                                                                                             Action </mat-header-cell>
-                                                                                        <!-- <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-60">
-                                                                                            <button mat-icon-button (click)="deleteTableRow(row)" color="warn">
-                                                                                                <mat-icon>delete_outline</mat-icon>
-                                                                                            </button>
-                                                                                        </mat-cell> -->
-                                                                                    </ng-container>
+                                                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-60">
+                                                                                            <ng-container class="actions">
+                                                                                                <mat-icon (click)="PWeightdeleteTableRow($event ,contact)"
+                                                                                                    color="warn">
+                                                                                                    delete
+                                                                                                </mat-icon>
+                                                                                            </ng-container> 
+                                                                                        </mat-cell>
+                                                                                    </ng-container>  
                             
                                                                                     <ng-container matColumnDef="loading">
                                                                                         <mat-header-cell *matFooterCellDef colspan="6"
@@ -261,7 +265,7 @@
                                                                                     <mat-header-row class="accent"
                                                                                         *matHeaderRowDef="displayedPainAsse2; sticky: true">
                                                                                     </mat-header-row>
-                                                                                    <mat-row *matRowDef="let row; columns: displayedPainAsse2;"
+                                                                                    <mat-row *matRowDef="let element; columns: displayedPainAsse2;"
                                                                                         class="element"
                                                                                         [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                                                                     <mat-footer-row *matFooterRowDef="['noData']"

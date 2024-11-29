@@ -900,12 +900,35 @@ debugger
     InsertBillUpdateBillNoObj['discComments'] = ConcessionReason;
     InsertBillUpdateBillNoObj['cashCounterId'] = this.searchFormGroup.get('CashCounterID').value.CashCounterId || 0;
 
-    let Billdetsarr = []; 
+    // let Billdetsarr = []; 
+    // this.dataSource.data.forEach((element) => {
+    //   let BillDetailsInsertObj = {};
+    //   BillDetailsInsertObj['BillNo'] = 0;
+    //   BillDetailsInsertObj['ChargesId'] = element.ServiceId;
+    //   Billdetsarr.push(BillDetailsInsertObj); 
+    // });
+
+    
+    let Billdetsarr = [];
+    debugger
     this.dataSource.data.forEach((element) => {
       let BillDetailsInsertObj = {};
       BillDetailsInsertObj['BillNo'] = 0;
       BillDetailsInsertObj['ChargesId'] = element.ServiceId;
-      Billdetsarr.push(BillDetailsInsertObj); 
+      Billdetsarr.push(BillDetailsInsertObj);
+      if(element.IsPackage == '1'){
+        this.SavePackageList = this.dsPackageDet.data.filter(item => item.ServiceId == element.ServiceId);
+        if(this.SavePackageList.length > 0){ 
+          this.SavePackageList.forEach((element) => {
+            let BillDetailsInsertObj = {};
+            BillDetailsInsertObj['BillNo'] = 0;
+            BillDetailsInsertObj['ChargesId'] = element.PackageServiceId;
+            Billdetsarr.push(BillDetailsInsertObj); 
+          });
+        } 
+        this.SavePackageList = []; 
+      } 
+      console.log(Billdetsarr)
     });
 
     let InsertAdddetArr = [];
@@ -952,7 +975,7 @@ debugger
        InsertPackageDetObj['ChargesDate'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
        InsertPackageDetObj['opD_IPD_Type'] = 0,
        InsertPackageDetObj['opD_IPD_Id'] = this.vOPIPId,
-       InsertPackageDetObj['serviceId'] = element.ServiceId,
+       InsertPackageDetObj['serviceId'] = element.PackageServiceId,
        InsertPackageDetObj['price'] = element.Price,
        InsertPackageDetObj['qty'] = element.Qty,
        InsertPackageDetObj['totalAmt'] = element.TotalAmt,

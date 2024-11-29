@@ -336,6 +336,16 @@
                                                         class="w-150">
                                                         <span>{{contact.CompanyName ? contact.CompanyName :
                                                             '--'}}</span>
+
+                                                            <button mat-icon-button
+                                                            *ngIf="contact.CompanyName !=''; else nocompany "
+                                                            matTooltip="Company"
+                                                            (click)="getEditCompany(contact)">
+                                                            <mat-icon>edit</mat-icon>
+                                                        </button>
+                                                        <ng-template #nocompany>
+                                                            <span>--</span>
+                                                        </ng-template>
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -475,7 +485,7 @@
                                                 </mat-header-row>
                                                 <mat-row class=" min-width-2200" #table1Row
                                                     *matRowDef="let contact; columns: displayedColumns;"
-                                                    [ngClass]="contact.IsCancelled == '1' ? 'self-row' : ''"
+                                                    [ngClass]="contact.PatientType !== 'Self' ? 'self-row' : ''"
                                                     [@animate]="{value:'*',params:{y:'100%'}}">
                                                 </mat-row>
                                                 <!-- <mat-row *matRowDef="let contact; columns: displayedColumns;" [ngClass]="{'make-gold': contact.IsCancelled }"></mat-row> -->
