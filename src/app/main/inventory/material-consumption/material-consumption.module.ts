@@ -95,10 +95,7 @@ const routes: Routes = [
         
   ],
   providers: [
-    
     DatePipe,
-    
-  
 ],
 entryComponents: [
   MaterialConsumptionComponent,

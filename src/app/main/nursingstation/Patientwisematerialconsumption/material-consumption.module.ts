@@ -35,7 +35,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatStepperModule } from '@angular/material/stepper';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-import { MaterialConsumptionPatientwiseComponent } from './material-consumption-patientwise/material-consumption-patientwise.component';
+import { MaterialConsumptionPatientwiseComponent } from './material-consumption-patientwise.component';
 import { NewPatientwiseMaterialconsumptionComponent } from './new-patientwise-materialconsumption/new-patientwise-materialconsumption.component';
 import { PatientwiseMaterialConsumptionService } from './patientwise-material-consumption.service';
 

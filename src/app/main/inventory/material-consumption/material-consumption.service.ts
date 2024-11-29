@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class MaterialConsumptionService {
   FinalMaterialForm : FormGroup;
 
   constructor(
-    public _httpClient: HttpClient,
+    public _httpClient: HttpClient, public _httpClient1: ApiCaller,
     private _formBuilder: FormBuilder
   ) { 
     this.userFormGroup = this.createUserForm();
@@ -77,5 +78,9 @@ export class MaterialConsumptionService {
     return this._httpClient.get("InPatient/view-MaterialConsumption?MaterialConsumptionId=" + MaterialConsumptionId);
   }
 
+  // NewApi
+  public deactivateTheStatus(m_data) {
+    return this._httpClient1.PostData("BedMaster", m_data);
+  }
 
 }

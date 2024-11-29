@@ -27,7 +27,6 @@ import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 
 
-
 @Component({
   selector: 'app-prescription',
   templateUrl: './prescription.component.html',
@@ -45,15 +44,15 @@ export class PrescriptionComponent implements OnInit {
       apiUrl: "Nursing/PrescriptionWardList",
       columnsList: [
           { heading: "Code", key: "presReId", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-          { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' ,width:450},
+          { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' ,width:350},
           { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' ,width:100},
           { heading: "PrscTime", key: "presTime", sort: true, align: 'left', emptySign: 'NA',width:150 },
-          { heading: "OP_IP_Id", key: "oP_IP_Id", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+          { heading: "OP_IP_Id", key: "oP_IP_Id", sort: true, align: 'left', emptySign: 'NA' ,width:80},
           { heading: "AdmissionDate", key: "admissionDate", sort: true, align: 'left', emptySign: 'NA' ,width:150},
-          { heading: "StoreName", key: "storeName", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+          { heading: "StoreName", key: "storeName", sort: true, align: 'left', emptySign: 'NA' ,width:100},
           { heading: "oP_IP_Type", key: "oP_IP_Type", sort: true, align: 'left', emptySign: 'NA',width:50 },
-        {
-              heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+          { heading: "Action", key: "action",width:50, align: "right", type: gridColumnTypes.action, 
+            actions: [
                   {
                       action: gridActions.edit, callback: (data: any) => {
                           this.onSave(data);
@@ -97,13 +96,11 @@ export class PrescriptionComponent implements OnInit {
   gridConfig1: gridModel = {
     apiUrl: "Nursing/PrescriptionDetailList",
     columnsList: [
-        { heading: "Code", key: "ipMedID", sort: true, align: 'left', emptySign: 'NA' ,width:150},
-        { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA' ,width:450},
+        { heading: "Code", key: "ipMedID", sort: true, align: 'left', emptySign: 'NA' ,width:100},
+        { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA' ,width:720},
         { heading: "MedicalRecoredId", key: "medicalRecoredId", sort: true, align: 'left', emptySign: 'NA' ,width:150},
-        { heading: "OP_IP_ID", key: "oP_IP_ID", sort: true, align: 'left', emptySign: 'NA',width:150 },
-       
-        {
-            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+        { heading: "OP_IP_ID", key: "oP_IP_ID", sort: true, align: 'left', emptySign: 'NA',width:100 }, 
+        { heading: "Action", key: "action", width:100, align: "right", type: gridColumnTypes.action, actions: [
                 {
                     action: gridActions.edit, callback: (data: any) => {
                         this.onSave(data);
