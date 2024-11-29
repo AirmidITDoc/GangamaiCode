@@ -244,7 +244,7 @@
                                             <mat-form-field appearance="outline" fxFlex *ngIf="DisclimitFlag">
                                                 <mat-label>Discount %</mat-label>
                                                 <input matAutocompletePosition="below" type="text" matInput  
-                                                    formControlName="DiscLimitPer" > 
+                                                    formControlName="DiscLimitPer" (keyup)="chkdisclimit()"> 
                                             </mat-form-field>
                                         </div>
                                         <!-- <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%" *ngIf="docflag"> 
@@ -337,7 +337,7 @@
                                                     <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">
                                                         <mat-checkbox formControlName="CollectionInformation"
                                                             [(ngModel)]="registerObj.IsCollection">
-                                                            Collection Information</mat-checkbox>
+                                                            Daily Dashboard</mat-checkbox>
                                                     </div>
                                                     <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">
                                                         <mat-checkbox formControlName="PatientInformation"
@@ -352,7 +352,7 @@
                                                     <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">
                                                         <mat-checkbox formControlName="BedStatus"
                                                             [(ngModel)]="registerObj.IsBedStatus">
-                                                            Bed Status</mat-checkbox>
+                                                            Bed Occupaincy Dashboard</mat-checkbox>
                                                     </div>
                                                     <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%"> 
                                                         <mat-checkbox formControlName="IsPharmacyBalClearnace"
@@ -363,7 +363,7 @@
                                                     <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">
                                                         <mat-checkbox formControlName="CurrentStock"
                                                             [(ngModel)]="registerObj.IsCurrentStk">
-                                                            Current Stock
+                                                           Pharmacy Dashboard
                                                         </mat-checkbox>
                                                     </div>
                                                     <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">

@@ -885,7 +885,7 @@ export class InterimBillComponent implements OnInit {
     this.disamt = this.InterimFormGroup.get('concessionAmt').value || 0;
     let Netamt = this.vNetAmount;
 
-    if (this.disamt > 0 && this.disamt < this.vNetAmount) {
+    if (this.disamt > 0 &&  parseFloat(this.disamt) <= parseFloat(this.vNetAmount)) {
       this.ConShow = true;
       
       if (Netamt > 0) {
@@ -905,7 +905,7 @@ export class InterimBillComponent implements OnInit {
       this.InterimFormGroup.get('ConcessionId').clearValidators();
       this.InterimFormGroup.get('ConcessionId').updateValueAndValidity();
     }
-    if (this.disamt == 0 || this.disamt == null || this.disamt == '') {
+    else if(this.disamt == 0 || this.disamt == null || this.disamt == '' || parseFloat(this.disamt) > parseFloat(this.vNetAmount)) {
       this.b_disAmount = '';
       this.vNetAmount =Netamt;
       this.ConShow = false;

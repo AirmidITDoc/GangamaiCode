@@ -11,6 +11,8 @@ import { AdvanceDetailObj } from '../ip-search-list/ip-search-list.component';
 import Swal from 'sweetalert2';
 import { AdmissionPersonlModel } from '../Admission/admission/admission.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { ToasterService } from 'app/main/shared/services/toaster.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-company-information',
@@ -35,7 +37,7 @@ export class CompanyInformationComponent implements OnInit {
     private formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private accountService: AuthenticationService,
-
+    public toastr: ToastrService,
     public _matDialog: MatDialog,
     private advanceDataStored: AdvanceDataStored,
 
@@ -67,8 +69,7 @@ export class CompanyInformationComponent implements OnInit {
 
 
 
-  createCompanyForm() {
-
+  createCompanyForm() { 
     return this.formBuilder.group({
       PolicyNo: [''],
       MemberNo: [''],
@@ -107,6 +108,21 @@ export class CompanyInformationComponent implements OnInit {
 
 
   Save() {
+    if (this.companyFormGroup.get('PolicyNo').value == '' || this.companyFormGroup.get('PolicyNo').value == undefined 
+    || this.companyFormGroup.get('PolicyNo').value == 0 ) {
+      this.toastr.warning('Please enter Policy No', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if  (this.companyFormGroup.get('ClaimNo').value == '' || this.companyFormGroup.get('ClaimNo').value == undefined 
+    || this.companyFormGroup.get('ClaimNo').value == 0 ) {
+      this.toastr.warning('Please enter Claim No', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+
     var m_data = {
       "companyUpdate": {
         "AdmissionId": this.AdmissionID,

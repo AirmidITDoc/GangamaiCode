@@ -205,4 +205,16 @@ export class ClinicalCareChartService {
     }
       return this._httpClient.post("Generic/GetByProc?procName=Rtrv_IP_Prescriptio_Det",Param)
     }
+    public getpainAssesmentList(Param,loader = true){
+      if (loader) {
+        this._loaderService.show();
+    }
+      return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_NursingPainAssessment",Param)
+    }
+    public getpainAssesmentWeightList(Param,loader = true){
+      if (loader) {
+        this._loaderService.show();
+    }
+      return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_NursingWeight",Param)
+    }
 }

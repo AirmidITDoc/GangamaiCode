@@ -2731,7 +2731,7 @@ this.getAdmittedPatientList_1()
     const dialogRef = this._matDialog.open(CompanyInformationComponent,
       {
         maxWidth: "70vw",
-        height: '730px',
+        height: '740px',
         width: '100%',
         data: {
           registerObj: row,

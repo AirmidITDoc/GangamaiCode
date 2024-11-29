@@ -49,6 +49,7 @@ import moment, { invalid } from "moment";
 import { values } from "lodash";
 import { WhatsAppEmailService } from "app/main/shared/services/whats-app-email.service";
 import { PatientVitalInformationComponent } from "./patient-vital-information/patient-vital-information.component";
+import { CompanyInformationComponent } from "app/main/ipd/company-information/company-information.component";
 
 export class DocData {
     doc: any;
@@ -3323,7 +3324,29 @@ export class AppointmentComponent implements OnInit {
         console.log(Newcount)
         return Newcount;
     }
-
+    getEditCompany(row) {
+    
+        this.advanceDataStored.storage = new VisitMaster(row);
+        console.log(row)
+        this._registrationService.populateFormpersonal(row);
+        this.registerObj["RegId"]=row.RegID;
+        this.registerObj["RegID"]=row.RegID;
+        
+        const dialogRef = this._matDialog.open(CompanyInformationComponent,
+          {
+            maxWidth: "70vw",
+            height: '730px',
+            width: '100%',
+            data: {
+              registerObj: row,
+              Submitflag: true
+            }
+          });
+          dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
+            this.getVisitList1(); 
+          });
+      }
 }
 
 export class DocumentUpload {
