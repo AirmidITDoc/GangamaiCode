@@ -28,9 +28,7 @@ import { compact } from "lodash";
   })
   
   export class ServiceMasterFormComponent implements OnInit {
-   
-    serviceForm : FormGroup;
-
+    serviceform:FormGroup;
     gridConfig: gridModel = {
       apiUrl: "ClassMaster/List",
   columnsList: [
@@ -141,7 +139,7 @@ private _onDestroy = new Subject<void>();
     ];
     
   ngOnInit(): void {
-
+this.serviceform=this._serviceMasterService.createServicemasterForm();
   //  this.getGroupNameCombobox();
   //  this.getDoctorNameCombobox();
   //  this.getSubgroupNameCombobox();

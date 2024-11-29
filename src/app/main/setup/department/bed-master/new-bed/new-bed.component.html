@@ -22,7 +22,14 @@
                     <airmid-textbox label="Bed name" formControlName="bedName" [value]="" [formGroup]="bedForm"
                         [validations]="_BedMasterService.getValidationMessages().bedName" [maxLength]="300">
                     </airmid-textbox>
-                    <airmid-autocomplete [mode]="autocompleteModeroomId" (selectDdlObject)="selectChangeroomId($event)"></airmid-autocomplete>
+                    <!-- <airmid-autocomplete [mode]="autocompleteModeroomId" (selectDdlObject)="selectChangeroomId($event)"></airmid-autocomplete> -->
+               
+                    <airmid-autocomplete label="roomId" formControlName="roomId"
+                    [value]="data?.roomId" [formGroup]="bedForm"
+                    [validations]="getValidationroomeMessages().roomId"
+                    [mode]="autocompleteModeroomId"
+                    (selectDdlObject)="selectChangeroomId($event)">
+                </airmid-autocomplete>
                 </div>
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                     <mat-radio-group name="isAvailable" formControlName="isAvailible" value='true'>

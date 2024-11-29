@@ -24,9 +24,31 @@
                     </airmid-textbox>
                 </div>
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <airmid-autocomplete [mode]="autocompleteModelocation" (selectDdlObject)="selectChangelocation($event)"></airmid-autocomplete>
+                    <!-- <airmid-autocomplete [mode]="autocompleteModelocation" (selectDdlObject)="selectChangelocation($event)"></airmid-autocomplete>
                     <airmid-autocomplete [mode]="autocompleteModeclass" (selectDdlObject)="selectChangeclass($event)"></airmid-autocomplete>
-                    <airmid-autocomplete [mode]="autocompleteModeroomType" (selectDdlObject)="selectChangeroomType($event)"></airmid-autocomplete>
+                    <airmid-autocomplete [mode]="autocompleteModeroomType" (selectDdlObject)="selectChangeroomType($event)"></airmid-autocomplete> -->
+              
+                    <airmid-autocomplete label="locationId" formControlName="locationId"
+                    [value]="data?.locationId" [formGroup]="roomForm"
+                    [validations]="getValidationlocationMessages().locationId"
+                    [mode]="autocompleteModelocation"
+                    (selectDdlObject)="selectChangelocation($event)">
+                </airmid-autocomplete>
+
+                <airmid-autocomplete label="classId" formControlName="classId"
+                [value]="data?.classId" [formGroup]="roomForm"
+                [validations]="getValidationclassMessages().classId"
+                [mode]="autocompleteModeclass"
+                (selectDdlObject)="selectChangeclass($event)">
+            </airmid-autocomplete>
+
+            <airmid-autocomplete label="roomId" formControlName="roomId"
+            [value]="data?.roomId" [formGroup]="roomForm"
+            [validations]="getValidationroomMessages().roomId"
+            [mode]="autocompleteModeroomId"
+            (selectDdlObject)="selectChangeroomType($event)">
+        </airmid-autocomplete>
+              
                 </div>
 
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">

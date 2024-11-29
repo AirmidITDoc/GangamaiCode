@@ -61,8 +61,7 @@
                                         </ng>
                                         <ng *ngSwitchCase="GridColumnType.wordBreak">
                                             <a class="table-link bold break-spaces" test="{{element[row.key] | json}}"
-                                              (click)="$event.stopPropagation();actionLink.emit({action: row.actionType, data: element})"
-                                              >{{ element[row.key]}}
+                                              (click)="$event.stopPropagation();actionLink.emit({action: row.actionType, data: element})">{{ element[row.key]}}
                                             </a>
                                         </ng>
                                         <ng *ngSwitchDefault>

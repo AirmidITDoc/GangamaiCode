@@ -686,13 +686,7 @@ var mode="Company"
             ]
         };
       }
-      // getValidationMessages() {
-      //   return {
-      //       PrefixId: [
-      //           { name: "required", Message: "cashCounter Name is required" }
-      //       ]
-      //   };
-      // }
+     
       getValidationReligionMessages() {
         return {
           ReligionId: [
@@ -759,14 +753,21 @@ var mode="Company"
             ]
         };
       }
-    //   getValidationPurposeMessages() {
-    //     return {
-    //         PurposeId: [
-    //             { name: "required", Message: "Purpose Name is required" }
-    //         ]
-    //     };
-    //   }
+      getValidationcompanyMessages() {
+        return {
+            CompanyId: [
+                { name: "required", Message: "Company Name is required" }
+            ]
+        };
+      }
 
+    getValidationsubcompanyMessages() {
+        return {
+            SubCompanyId: [
+                { name: "required", Message: "SubCompany Name is required" }
+            ]
+        };
+      }
     onNewSave() {
      
         if ((!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid)) {

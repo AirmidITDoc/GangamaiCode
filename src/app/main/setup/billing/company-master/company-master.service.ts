@@ -13,20 +13,26 @@ export class CompanyMasterService {
         private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder
     ) {
-        this.companyForm = this.createCompanymasterForm();
+        // this.companyForm = this.createCompanymasterForm();
         this.myformSearch = this.createSearchForm();
     }
 
     createCompanymasterForm(): FormGroup {
         return this._formBuilder.group({
-            companyId: [""],
-            CompanyName: ["", Validators.required],
-            compTypeId: [""],
+            CompanyId: [""],
+            CompanyName: [""],
+            CompTypeId: [""],
             TypeName: [""],
             Address: ["", Validators.required],
-            City: [""],            
-            PinNo: ["", [Validators.minLength(6), Validators.maxLength(6)], Validators.required],
-            Phone: [
+            City: [
+                "",
+                [
+                    Validators.required,
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+                ],
+            ],
+            PinNo: ["", [Validators.minLength(6), Validators.maxLength(6)]],
+            PhoneNo: [
                 "",
                 [
                     Validators.required,

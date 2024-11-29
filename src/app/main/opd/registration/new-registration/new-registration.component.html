@@ -36,7 +36,7 @@
                                         <!-- <airmid-autocomplete [label]="'Prefix'"  [ddlCtrl]="f.PrefixId"  [selectedValue]="data?.prefixId"
                                          [mode]="autocompleteModeprefix" (selectDdlObject)="selectChangeprefix($event)"></airmid-autocomplete> -->
                                         <airmid-autocomplete label="Prefix" formControlName="PrefixId"
-                                             [formGroup]="personalFormGroup"
+                                             [formGroup]="personalFormGroup" [value]="PrefixId"
                                             [validations]="getValidationMessages().PrefixId"
                                             [mode]="autocompleteModeprefix">
                                         </airmid-autocomplete>
@@ -181,7 +181,7 @@
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                                        <!-- <airmid-autocomplete [mode]="autocompleteModearea" (selectDdlObject)="selectChangearea($event)"></airmid-autocomplete> -->
+                                     
                                         <airmid-autocomplete label="Area" formControlName="AreaId"
                                             [value]="data?.areaId" [formGroup]="personalFormGroup"
                                             [validations]="getValidationAreaMessages().AreaId"
@@ -192,7 +192,7 @@
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                                        <!-- <airmid-autocomplete [mode]="autocompleteModecity" (selectDdlObject)="selectChangecity($event)" ></airmid-autocomplete> -->
+                                     
                                         <airmid-autocomplete label="City" formControlName="CityId"
                                             [value]="data?.cityId" [formGroup]="personalFormGroup"
                                             [validations]="getValidationCityMessages().CityId"

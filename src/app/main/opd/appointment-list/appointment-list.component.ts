@@ -16,6 +16,7 @@ import { BedTransferComponent } from 'app/main/ipd/ip-search-list/bed-transfer/b
 import { NewOPBillingComponent } from '../OPBilling/new-opbilling/new-opbilling.component';
 import { NewRegistrationComponent } from '../registration/new-registration/new-registration.component';
 import { DatePipe } from '@angular/common';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 
 @Component({
@@ -35,14 +36,14 @@ export class AppointmentListComponent implements OnInit {
         apiUrl: "VisitDetail/AppVisitList",
         columnsList: [
             { heading: "Code", key: "visitId", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-            { heading: "visitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+            { heading: "visitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA' ,width:170,type:8},
             { heading: "RegId", key: "regId", sort: true, align: 'left', emptySign: 'NA' ,width:30},
             { heading: "PrefixId", key: "prefixId", sort: true, align: 'left', emptySign: 'NA' ,width:30},
             { heading: "FirstName", key: "firstName", sort: true, align: 'left', emptySign: 'NA' ,width:80 },
             { heading: "MiddleName", key: "middleName", sort: true, align: 'left', emptySign: 'NA' ,width:80 },
             { heading: "LastName", key: "lastName", sort: true, align: 'left', emptySign: 'NA' ,width:80 },
-            { heading: "DateofBirth", key: "dateofBirth", sort: true, align: 'left', emptySign: 'NA' ,width:150},
-            { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA' ,width:250},
+            { heading: "DateofBirth", key: "dateofBirth", sort: true, align: 'left', emptySign: 'NA' ,width:100,type:6},
+            { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA' ,width:200,type:10},
             { heading: "MaritalStatusId", key: "maritalStatusId", sort: true, align: 'left', emptySign: 'NA' ,width:30},
             { heading: "PatientTypeId", key: "patientTypeId", sort: true, align: 'left', emptySign: 'NA' ,width:30},
             { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA' ,width:50 },
@@ -83,7 +84,7 @@ export class AppointmentListComponent implements OnInit {
                     },
                     {
                         action: gridActions.print, callback: (data: any) => {
-                            this.viewgetPatientAppointmentReportPdf(data,data);
+                            this.viewgetPatientAppointmentReportPdf(data);
                         }
                     },
                     {
@@ -290,29 +291,53 @@ export class AppointmentListComponent implements OnInit {
     }
 
     
-    viewgetPatientAppointmentReportPdf(obj, Pflag) {
-       
-        // setTimeout(() => {
-        //     this.AdList = true;
-        //     this._opappointmentService.getAppointmentReport(
-        //         VisitId
-        //     ).subscribe(res => {
-        //         const dialogRef = this._matDialog.open(PdfviewerComponent,
-        //             {
-        //                 maxWidth: "85vw",
-        //                 height: '750px',
-        //                 width: '100%',
-        //                 data: {
-        //                     base64: res["base64"] as string,
-        //                     title: "Appointment  Viewer"
-        //                 }
-        //             });
-        //         dialogRef.afterClosed().subscribe(result => {
-        //             this.AdList = false;
-        //         });
-        //     });
+    viewgetPatientAppointmentReportPdf(obj) {
+      var data=  {
+        //     "searchFields": [
+        //       {
+        //         "fieldName": "FromDate",
+        //         "fieldValue": "11-11-2023",
+        //         "opType": "13"
+        //       },
+        //    {
+        //         "fieldName": "ToDate",
+        //         "fieldValue": "11-15-2023",
+        //         "opType": "13"
+        //       }
+        //     ],
+        //     "mode": "Registrationreport"
+        //   }
 
-        // }, 100);
+      
+          searchFields: [
+                { fieldName: "FromDate", fieldValue: "11/11/2023", opType: OperatorComparer.Equals },
+              { fieldName: "ToDate", fieldValue: "11/01/2024", opType: OperatorComparer.Equals },
+            
+          ],
+        "mode": "Registrationreport"
+        }
+console.log(data)
+        setTimeout(() => {
+            
+            this._AppointmentlistService.getAppointmenttemplateReport(data
+            ).subscribe(res => {
+                const dialogRef = this._matDialog.open(PdfviewerComponent,
+                    {
+                        maxWidth: "85vw",
+                        height: '750px',
+                        width: '100%',
+                        data: {
+                            base64: res["base64"] as string,
+                            title: "Appointment  Viewer"
+                        }
+                    });
+                dialogRef.afterClosed().subscribe(result => {
+                    
+                });
+            });
+
+        }, 100);
         // this.chkprint = false;
+
     }
 }

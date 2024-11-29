@@ -27,10 +27,10 @@ export class NewOPListComponent implements OnInit {
       columnsList: [
           { heading: "Code", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' ,width:50},
           { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' ,width:200},
-          { heading: "BillTime", key: "billTime", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+          { heading: "BillTime", key: "billTime", sort: true, align: 'left', emptySign: 'NA' ,width:150,type:8},
           { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA',width:80 },
           { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' ,width:150},
-          { heading: "VisitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+          { heading: "VisitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA' ,width:150,type:6},
           { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA' ,width:150},
           { heading: "TotalAmt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA',width:50 },
           { heading: "Net Pay", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' ,width:50},
@@ -168,7 +168,7 @@ gridConfig2: gridModel = {
     columnsList: [
         { heading: "Code", key: "RefundId", sort: true, align: 'left', emptySign: 'NA' ,width:50},
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' ,width:250},
-        { heading: "RefundDate", key: "RefundDate", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+        { heading: "RefundDate", key: "RefundDate", sort: true, align: 'left', emptySign: 'NA' ,width:150,type:8},
         // { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
         // { heading: "OpdNo", key: "opdNo", sort: true, align: "center" },
         // { heading: "BillAmount", key: "billAmount", sort: true, align: 'left', emptySign: 'NA' },

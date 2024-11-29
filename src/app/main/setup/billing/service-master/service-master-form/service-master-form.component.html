@@ -11,12 +11,12 @@
 </div>
 
 <mat-card>
-    <form [formGroup]="serviceForm" style="padding-left: 10px; padding-right: 10px;">
+    <form [formGroup]="serviceform" style="padding-left: 10px; padding-right: 10px;">
         <input type="hidden" name="ServiceId" formControlName="ServiceId" style="top:155px;">
 
         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="b-service-master" style="padding-top: 10px;">
             <mat-form-field appearance="outline" fxFlex>
-                <!-- <mat-label>Group Name</mat-label>
+                <mat-label>Group Name</mat-label>
                 <mat-select formControlName="GroupId" placeholder="Bank" #singleSelect disableOptionCentering="true"
                     required>
                     <mat-option>
@@ -26,15 +26,11 @@
                     <mat-option *ngFor="let element of filteredGroupname | async" [value]="element.GroupId">
                         {{element.GroupName}}
                     </mat-option>
-                </mat-select> -->
-                <airmid-autocomplete label="Group Name" formControlName="GroupId" [formGroup]="serviceForm"
-                [validations]="getValidationGroupMessages().GroupId" [mode]="autocompleteModegroupName">
-            </airmid-autocomplete>
-
+                </mat-select>
             </mat-form-field>&nbsp;&nbsp;
 
             <mat-form-field appearance="outline" fxFlex>
-                <!-- <mat-label>SubGroup Name</mat-label>
+                <mat-label>SubGroup Name</mat-label>
                 <mat-select formControlName="SubGroupId" placeholder="Bank" #singleSelect disableOptionCentering="true">
                     <mat-option>
                         <ngx-mat-select-search [formControl]="subgroupnameFilterCtrl" [placeholderLabel]="'Search'"
@@ -43,10 +39,7 @@
                     <mat-option *ngFor="let element of filteredSubgroupname | async" [value]="element.SubGroupId">
                         {{element.SubGroupName}}
                     </mat-option>
-                </mat-select> -->
-                <airmid-autocomplete label="SubGroup Name" formControlName="SubGroupId" [formGroup]="serviceForm"
-                [validations]="getValidationSubGroupMessages().SubGroupId" [mode]="autocompleteModesubGroupName">
-            </airmid-autocomplete>
+                </mat-select>
             </mat-form-field>
         </div>
 
@@ -91,7 +84,7 @@
         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
 
             <mat-form-field appearance="outline" fxFlex>
-                <!-- <mat-label>Tariff Name</mat-label>
+                <mat-label>Tariff Name</mat-label>
                 <mat-select formControlName="TariffId" placeholder="Bank" #singleSelect disableOptionCentering="true">
                     <mat-option>
                         <ngx-mat-select-search [formControl]="tariffFilterCtrl" [placeholderLabel]="'Search'"
@@ -100,11 +93,7 @@
                     <mat-option *ngFor="let element of filteredTariff | async" [value]="element.TariffId">
                         {{element.TariffName}}
                     </mat-option>
-                </mat-select> -->
-                <airmid-autocomplete label="Tariff Name" formControlName="TariffId" [formGroup]="serviceForm"
-                [validations]="getValidationTariffMessages().TariffId" [mode]="autocompleteModetariff">
-            </airmid-autocomplete>
-
+                </mat-select>
             </mat-form-field>&nbsp;&nbsp;
             <mat-form-field appearance="outline" fxFlex>
                 <input matInput [matDatepicker]="picker3" placeholder="Choose an Effective Date" name="EffectiveDate"
@@ -138,70 +127,8 @@
                     <div style="min-width: 100%;">
 
                         <div style="max-width:1800px; overflow-x: scroll; overflow-y: hidden;">
-                            <mat-table #table matSort [dataSource]="DSServicedetailList"
-                                [@animateStagger]="{value:'50'}" style="overflow:auto;height: 300px;">
-
-
-                                <ng-container matColumnDef="ClassId">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.ClassId}}
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="ClassName">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Class Name</mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.ClassName}}
-                                    </mat-cell>
-                                </ng-container>
-
-
-                                <ng-container matColumnDef="ClassRate">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ClassRate
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                        <mat-form-field appearance="legacy">
-                                            <input matInput [(ngModel)]="element.ClassRate" OnlyNumber
-                                                (keyup)="gettableclassrate(element,$event.value)"
-                                                (keypress)="keyPressCharater($event)">
-                                        </mat-form-field>
-                                    </mat-cell>
-                                </ng-container>
-
-                                <!-- <ng-container matColumnDef="action" stickyEnd>
-                                <mat-header-cell *matHeaderCellDef class="table-actions" style="color: white;">
-                                    Action
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let row">
-                                    <button mat-icon-button (click)="onEdit(row)"><mat-icon
-                                            title="Edit Menu">launch</mat-icon></button>
-                                    <button mat-icon-button (click)="onDeactive(row.BankId)"
-                                        color="warn"><mat-icon>delete_outline</mat-icon></button>
-                                </mat-cell>
-                            </ng-container> -->
-
-                                <ng-container matColumnDef="loading">
-                                    <mat-footer-cell *matFooterCellDef colspan="6">
-                                        loading data...
-                                    </mat-footer-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="noData">
-                                    <mat-footer-cell *matFooterCellDef colspan="6">
-                                        no data found...
-                                    </mat-footer-cell>
-                                </ng-container>
-
-                                <mat-header-row class="accent"
-                                    *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                                <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
-                                    [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                <mat-footer-row *matFooterRowDef="['loading']"
-                                    [ngClass]="{'hide':DSServicedetailList!=null}"></mat-footer-row>
-                                <mat-footer-row *matFooterRowDef="['noData']"
-                                    [ngClass]="{'hide':!(DSServicedetailList!=null && DSServicedetailList.data.length==0)}"></mat-footer-row>
-                            </mat-table>
-
+                            <airmid-table [gridConfig]="gridConfig" class="content">
+                            </airmid-table>
                         </div>
                     </div>
 
@@ -210,7 +137,7 @@
             </div>
         </div>
     </div>
-    <form [formGroup]="serviceForm">
+    <form [formGroup]="serviceform">
         <div class="p-10 pb-24" fusePerfectScrollbar>
             <!-- CONTENT -->
             <div class="content-card">

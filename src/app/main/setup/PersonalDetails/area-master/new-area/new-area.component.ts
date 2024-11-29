@@ -42,7 +42,14 @@ export class NewAreaComponent implements OnInit {
           });
       }
   }
-
+  
+  getValidationCityMessages() {
+    return {
+        cityId: [
+            { name: "required", Message: "City Name is required" }
+        ]
+    };
+}
   onClear(val: boolean) {
       this.areaForm.reset();
       this.dialogRef.close(val);

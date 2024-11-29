@@ -3,156 +3,140 @@
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Company Master</span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Company</span>
             </div>
             <div class="modal-header-right">
-                <div class="close-icon">
-                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
-                        matTooltip="Close">
-                        <mat-icon>close</mat-icon>
-                    </button>
+                <div class="comman-date-container">
+                    <!-- <div class="comman-date">
+                        <app-common-date [screenFrom]="screenFromString"
+                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                    </div>
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                            matTooltip="Close">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div> -->
                 </div>
             </div>
         </div>
     </div>
 <mat-card>
+    <form [formGroup]="companyForm">
+        <input type="hidden" name="CompanyId" formControlName="CompanyId">
 
-    <form [formGroup]="companyForm" fxLayout="column" style="padding: 5px 5px 0px 5px;">
+        <br />
+        <br />
+        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
 
-        <input type="hidden" name="companyId" formControlName="companyId">
-       
-        <mat-card>
-            <div fxFlex="100" fxLayout="column">
+            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                <input name="CompanyName" placeholder="Select Company Name" formControlName="CompanyName" matInput
+                    required>
+                <mat-error>Please enter Company Name </mat-error>
+            </mat-form-field>
 
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                        <mat-label>Company Name</mat-label>
-                        <input name="CompanyName" placeholder="Enter CompanyName" formControlName="CompanyName" matInput
-                            (keydown)="onEnterCompany($event)" #Address required [(ngModel)]="vCompanyName">
-                        <!-- <mat-error>Please enter Address </mat-error> -->
-                    </mat-form-field>
-                <!-- </div>
+        </div>
+        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
 
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%"> -->
-                    <!-- <airmid-autocomplete label="Company Type" formControlName="compTypeId"
-                        [formGroup]="companyForm"
-                        [validations]="getValidationCompanyTypeMessages().compTypeId"
-                        [mode]="autocompleteModetypeName">
-                    </airmid-autocomplete> -->
-                </div>
-                
-                 <!-- in payload there is no tariff -->
+            <!-- <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Type Name</mat-label>
+                <mat-select formControlName="CompTypeId" placeholder="Bank" #singleSelect>
+                    <mat-option>
+                        <ngx-mat-select-search [formControl]="companytypeFilterCtrl" [placeholderLabel]="'Search'"
+                            [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let element of filteredCompanytype | async" [value]="element">
+                        {{element.TypeName}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field> -->
 
-                <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <airmid-autocomplete label="Tariff Name" formControlName="TariffId"
-                        [formGroup]="companyForm"
-                        [validations]="getValidationTariffMessages().TariffId"
-                        [mode]="autocompleteModetariff">
-                    </airmid-autocomplete>
-                </div> -->
-
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                        <mat-label>Address</mat-label>
-                        <input name="Address" placeholder="EnterAddress" formControlName="Address" matInput
-                            (keydown)="onEnterAddress($event)" #Address required [(ngModel)]="vAddress">
-                        <!-- <mat-error>Please enter Address </mat-error> -->
-                    </mat-form-field>
-                <!-- </div>
-
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%"> -->
-                    <!-- <airmid-autocomplete label="City" formControlName="City"
-                        [formGroup]="companyForm"
-                        [validations]="getValidationCityMessages().City"
-                        [mode]="autocompleteModecity">
-                    </airmid-autocomplete> -->
+            <!-- <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Tariff Name</mat-label>
+                <mat-select formControlName="TariffId" placeholder="Bank" #singleSelect>
+                    <mat-option>
+                        <ngx-mat-select-search [formControl]="tariffFilterCtrl" [placeholderLabel]="'Search'"
+                            [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let element of filteredTariff | async" [value]="element">
+                        {{element.TariffName}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field> -->
+        </div>
 
 
-                    <!-- <airmid-autocomplete label="City" formControlName="City"
-                    [formGroup]="companyForm"
-                    [validations]="getValidationCityMessages().City"
-                    [mode]="autocompleteModecity" (selectDdlObject)="selectChangecity($event)">
-                </airmid-autocomplete> -->
-                 </div>
+        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
 
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%"> 
-                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                        <mat-label>PinNo</mat-label>
-                        <input name="PinNo" placeholder="Enter PinNo" formControlName="PinNo" matInput
-                            (keydown)="onEnterPin($event)" #Pin [(ngModel)]="vPincode">
-                    </mat-form-field>
-                <!-- </div>
+            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                <input name="Address" placeholder="Select Address"
+                    [ngClass]="{ 'is-invalid': submitted && f.Address.errors }" formControlName="Address" matInput
+                    required>
+                <!-- <span class="error" *ngIf="f.Address.invalid && f.Address.touched">Address is required </span> -->
+            </mat-form-field>
 
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%"> -->
-                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                        <mat-label>Phone Number</mat-label>
-                        <input name="Phone" formControlName="Phone" placeholder="Phone Number" matInput required
-                                [(ngModel)]="vPhone" #Phone (keydown)="onEnterPhone($event)"
-                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
-                                type="number" value="Phone.length">
-                        <!-- <mat-error class="error"
-                            *ngIf="companyForm.get('Phone').invalid && companyForm.get('Phone').touched">10
-                            digits Phone number is
-                            required</mat-error> -->
-                    </mat-form-field>
-                </div>
 
-                <!-- in payload there is no mobile -->
+            <airmid-autocomplete label="City" formControlName="City"
+             [formGroup]="companyForm"
+            [validations]="getValidationCityMessages().City"
+            [mode]="autocompleteModecity" (selectDdlObject)="selectChangecity($event)">
+        </airmid-autocomplete>
 
-                <!--<div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                        <mat-label>Mobile Number</mat-label>
-                        <input name="Mobile" formControlName="Mobile" placeholder="Mobile Number" matInput required
-                            [(ngModel)]="vMobile" #Mobile (keydown)="onEntermobile($event)"
-                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
-                            type="number" value="Mobile.length">
-                        <mat-error class="error"
-                            *ngIf="companyForm.get('Mobile').invalid && companyForm.get('Mobile').touched">10
-                            digits Mobile number is
-                            required</mat-error>
-                    </mat-form-field> 
-                </div>-->
+            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                <input name="PinNo" placeholder="Select PinNo" [ngClass]="{ 'is-invalid': submitted && f.PinNo.errors }"
+                    formControlName="PinNo" maxlength="6" matInput>
+                <!-- <span class="error" *ngIf="f.PinNo.invalid && f.PinNo.touched">PinNo is required Enter only Digits</span> -->
+            </mat-form-field>
 
-                 <!-- in payload there is no fax -->
-                <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                        <mat-label>Fax</mat-label>
-                        <input name="Fax" placeholder="Select Fax" formControlName="Fax" matInput
-                            (keydown)="onEnterfax($event)" #Fax>
-                    </mat-form-field>
-                </div> -->
+        </div>
 
-            </div>
 
-        </mat-card>
+        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+
+
+            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                <input name="PhoneNo" placeholder="Select PhoneNo"
+                    [ngClass]="{ 'is-invalid': submitted && f.PhoneNo.errors }" maxlength="10" formControlName="PhoneNo"
+                    matInput>
+                <!-- <span class="error" *ngIf="f.PhoneNo.invalid && f.PhoneNo.touched">PhoneNo is required Enter only
+                Digits</span> -->
+            </mat-form-field>
+
+
+            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                <input name="MobileNo" placeholder="Select Mobile No "
+                    [ngClass]="{ 'is-invalid': submitted && f.MobileNo.errors }" formControlName="MobileNo"
+                    maxlength="10" matInput required>
+                <!-- <span class="error" *ngIf="f.MobileNo.invalid && f.MobileNo.touched">MobileNo is required Enter only 10
+                Digits</span> -->
+            </mat-form-field>
+
+
+            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                <input name="FaxNo" placeholder="Select FaxNo" [ngClass]="{ 'is-invalid': submitted && f.FaxNo.errors }"
+                    formControlName="FaxNo" maxlength="10" matInput>
+                <!-- <span class="error" *ngIf="f.FaxNo.invalid && f.FaxNo.touched">FaxNo is required Enter only Digits</span> -->
+            </mat-form-field>
+        </div>
+
+        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+            <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
+                <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsActive</mat-radio-button>
+            </mat-radio-group>
+        </div>
+
     </form>
 
-
-    <div class="row row-container" style="width: 100%;">
-        <div class="sales-radio-buttons gap-8" fxLayout="row" fxLayoutAlign="space-between center">
-
-            <form [formGroup]="companyForm">
-                <div class="sales-radio-buttons gap-2" fxLayout="row">
-                    <mat-checkbox aria-label="Msm" formControlName="MsmNo" (checked)=true (change)="onChangeMsm($event)"
-                        style="font-weight: bold;margin-right: 20px;">MSME
-                    </mat-checkbox>
-                    <mat-checkbox aria-label="Mode" formControlName="CreateApproval" (checked)=true
-                        (change)="onChangeMode($event)" style="font-weight: bold;margin-right: 20px;">Create / Approval
-                    </mat-checkbox>
-                </div>
-            </form>
-
-            <div class="sales-footer-buttons gap-8" fxLayout="row">
-                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                <button class="btn btn-primary" color="accent" (click)="onSubmit()"  [disabled]="Savebtn">
-                    <span>Save</span>
-                </button>
+    <div class="modal-footer">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-buttons">
+                <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                <button type="button" class="btn btn-primary" (click)="OnSubmit()">Save</button>
             </div>
         </div>
     </div>
-
 </mat-card>
-    <!-- Modal footer -->
-
 </div>
+
+  

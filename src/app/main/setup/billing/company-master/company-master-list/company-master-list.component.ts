@@ -119,27 +119,21 @@ export class CompanyMasterListComponent implements OnInit {
         // console.log("cityname:", obj.text)
       }
 
-      getValidationCompanyTypeMessages(){
-        return{
-          compTypeId: [
-            { name: "required", Message: "Company Type is required" }
-          ]
-        }
-      }
-      getValidationCityMessages(){
-        return{
+      getValidationCityMessages() {
+        return {
           City: [
-            { name: "required", Message: "City Name is required" }
+                { name: "required", Message: "City Name is required" }
+            ]
+        };
+    }
+
+    getValidationtariffessages() {
+      return {
+        TariffId: [
+              { name: "required", Message: "Tariff Name is required" }
           ]
-        }
-      }
-      // getValidationTariffMessages(){
-      //   return{
-      //     TariffId: [
-      //       { name: "required", Message: "Tariff Name is required" }
-      //     ]
-      //   }
-      // }
+      };
+  }
 
       onClose(){
         this.companyForm.reset();

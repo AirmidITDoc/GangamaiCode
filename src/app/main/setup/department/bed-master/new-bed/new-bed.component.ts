@@ -35,6 +35,16 @@ export class NewBedComponent implements OnInit {
       this.bedForm.patchValue(m_data);
   }
 
+
+  getValidationroomeMessages() {
+    return {
+      roomId: [
+            { name: "required", Message: "Room Name is required" }
+        ]
+    };
+  }
+
+
   onSubmit() {
       if (this.bedForm.valid) {
           this._BedMasterService.bedMasterSave(this.bedForm.value).subscribe((response) => {
