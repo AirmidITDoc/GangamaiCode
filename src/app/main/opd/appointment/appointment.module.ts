@@ -52,6 +52,7 @@ import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
 import {NgxPrintModule} from 'ngx-print';
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { PatientVitalInformationComponent } from './patient-vital-information/patient-vital-information.component';
+import { UpdateRegisteredPatientInfoComponent } from './update-registered-patient-info/update-registered-patient-info.component';
 
 const routes: Routes = [
     {
@@ -72,6 +73,7 @@ const routes: Routes = [
         VisitDetailsComponent,
         CrossConsultationComponent,
         PatientVitalInformationComponent,
+        UpdateRegisteredPatientInfoComponent,
         
     ],
     imports: [

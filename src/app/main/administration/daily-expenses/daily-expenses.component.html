@@ -1,0 +1,181 @@
+<div id="contacts" class="page-layout simple inner-scroll inner-sidebar right-sidebar" dynamicTableHeight>
+    <mat-toolbar style="width: 100%;height: 40px;justify-content: space-between;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                style="color: white;">
+                Daily Expenses
+            </span>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="end" class="left-icon">
+            <button mat-raised-button (click)="addNewExpenses()" fxLayoutAlign="center center" class="btn btn-with-icon py-4"> 
+                <span>New</span>
+            </button>
+        </div>
+    </mat-toolbar>
+
+    <div class="content">
+        <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm">
+            <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center"
+                style="margin-top: 3%">
+                <span class="search-title">Search Facility</span>
+            </div>
+            <div class="nav material2">
+                <form [formGroup]="_DailyExpensesService.DailyExpensesForm" fusePerfectScrollbar>
+                    <div fxLayout="column" fxLayoutAlign="start none">
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Enter a date range</mat-label>
+                            <mat-date-range-input [rangePicker]="picker">
+                                <input matStartDate formControlName="startdate"
+                                    placeholder="Start date">
+                                <input matEndDate formControlName="enddate" placeholder="End date"
+                                    (dateChange)="getDailyExpensesList()">
+                            </mat-date-range-input>
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-date-range-picker #picker></mat-date-range-picker>
+                        </mat-form-field> 
+
+                        <div style="margin-top: 10px;">
+                            <button mat-raised-button class="clearbutton" matTooltip="close">
+                                <mat-icon class="cleariconbutton">close</mat-icon>
+                            </button>&nbsp;&nbsp;
+                            <button mat-raised-button class="searchButton" matTooltip="search"
+                                (click)="getDailyExpensesList()">
+                                <mat-icon class="searchiconbutton">search</mat-icon>
+                            </button>
+                        </div> 
+                    </div> 
+                </form> 
+            </div>
+        </fuse-sidebar>
+
+        <div class="center p-12 pb-56" style="border-radius: 4px;">
+            <div class="content-card">
+                <div fxLayout="row" fxLayout="column" fxFlexFill fxLayoutGap="10px">
+                    <mat-table class="table1" matSort [dataSource]="dsDailyExpenses"
+                    [@animateStagger]="{value:'50'}" style="overflow: auto;"> 
+                    
+
+                    <ng-container matColumnDef="ExpensesDate" sticky>
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
+                            class="w-160">
+                           Expense Date/Time
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-160">
+                            {{contact.RExpDate | date:'dd/MM/YYYY'}}-{{contact.ExpTime}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="HeadName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
+                            Head Name</mat-header-cell>
+                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200"
+                        matTooltip="{{contact.HeadName}}"
+                        matTooltipClass="example-tooltip-uppercase"
+                        aria-label="Button that shows a red tooltip">
+                            {{contact.HeadName}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="PersonName" sticky>
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
+                            Person Name</mat-header-cell>
+                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200"
+                        matTooltip="{{contact.PersonName}}"
+                        matTooltipClass="example-tooltip-uppercase"
+                        aria-label="Button that shows a red tooltip">
+                            {{contact.PersonName}}
+                        </mat-cell>
+                    </ng-container>
+
+                      <ng-container matColumnDef="ExpAmount">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-110">
+                            Exp Amount</mat-header-cell>
+                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-110">
+                            {{contact.ExpAmount | currency:'INR'}}
+                        </mat-cell>
+                    </ng-container> 
+
+                    <ng-container matColumnDef="Narration">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-250">
+                            Reason</mat-header-cell>
+                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250"
+                        matTooltip="{{contact.Narration}}"
+                        matTooltipClass="example-tooltip-uppercase"
+                        aria-label="Button that shows a red tooltip">
+                            {{contact.Narration || '-'}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="UserName" sticky>
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
+                            UserName</mat-header-cell>
+                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
+                            {{contact.UserName || '-'}}
+                        </mat-cell>
+                    </ng-container> 
+
+                    <ng-container matColumnDef="ExpensesType">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
+                            Exp Type </mat-header-cell>
+                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
+                            {{contact.ExpensesType || '-'}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- <ng-container matColumnDef="VoucharNo">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
+                            Vouchar No</mat-header-cell>
+                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
+                            {{contact.VoucharNo}}
+                        </mat-cell>
+                    </ng-container> --> 
+                 
+
+                    <ng-container matColumnDef="action" stickyEnd>
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
+                            class="w-70">
+                            Action
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-70">
+                            <mat-icon>print</mat-icon>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="loading">
+                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                        </mat-header-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="noData">
+                        <mat-footer-cell *matFooterCellDef colspan="6">
+                            no data found...
+                        </mat-footer-cell>
+                    </ng-container>
+
+                    <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+                    </mat-header-row>
+                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                        [@animate]="{value:'*',params:{y:'100%'}}"
+                        [ngClass]="{'red-row': contact.IsCancelled === 1}"></mat-row>
+                    <mat-footer-row *matFooterRowDef="['loading']"
+                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                    </mat-footer-row>
+                    <mat-footer-row *matFooterRowDef="['noData']"
+                        [ngClass]="{'hide':!(dsDailyExpenses!=null && dsDailyExpenses.data.length==0)}">
+                    </mat-footer-row>
+                </mat-table>
+                <mat-paginator [pageSizeOptions]="[35, 50, 75, 100]" [pageSize]="35"
+                             showFirstLastButtons>
+                </mat-paginator>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

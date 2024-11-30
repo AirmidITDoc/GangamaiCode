@@ -1,17 +1,39 @@
 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll appointment-section mat-error-fix"
     dynamicTableHeight fusePerfectScrollbar>
-    <mat-toolbar class="accent top-header" fusePerfectScrollbar>
-        <div fxLayout="row" style="align-items: center;">
+    <mat-toolbar class="accent h-60"  style="width: 100%;height: 60px;justify-content: space-between;">
+        <div fxLayout="row" faLayoutAlign="start center">
             <button mat-icon-button class="sidebar-toggle mr-12" fxHide.gt-sm (click)="toggleSidebar('app-main')">
                 <mat-icon>menu</mat-icon>
             </button>
             <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
-            </mat-icon>
-
-        </div>
-
+            </mat-icon> 
+        </div>  
         <div fxLayout="row" fxLayoutGap="5px">
-            <app-common-date [screenFrom]="screenFromString" style="float:right"
+            <form [formGroup]="searchFormGroup">
+            <mat-form-field class=searchRegId appearance="outline" fxflex="30" style="color: white;">
+                <mat-label>Registered Patient</mat-label>
+                <input type="text" name="RegId" formControlName="RegId"
+                    placeholder="Patient Name (enter 2 char) " matInput [matAutocomplete]="RegisteredAuto"
+                    (input)="getSearchList()" maxlength="10">
+                <span matSuffix style="display: flex;">
+                    <mat-icon class="mat-icon-close"
+                        (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                    <mat-icon class="mat-icon-close"
+                        (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">search</mat-icon>
+                </span>
+                <mat-autocomplete #RegisteredAuto="matAutocomplete" [displayWith]="getOptionText"
+                    (optionSelected)='getSelectedObjNew($event.option.value)'>
+                    <mat-option *ngFor="let option of PatientListfilteredOptions"
+                        [value]="option">
+                        {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} |
+                        {{option.RegNo}} |
+                        {{option.MobileNo}}
+                    </mat-option>
+                </mat-autocomplete>
+               
+            </mat-form-field>
+        </form>
+            <app-common-date [screenFrom]="screenFromString" style="float:right;margin-top: 5px;" 
                 (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
 
         </div>

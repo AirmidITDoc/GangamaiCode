@@ -339,14 +339,15 @@ onAddPackageService() {
           IsPathology: element.IsPathology || 0,
           IsRadiology: element.IsRadiology || 0,
           PackageId: element.PackageId || 0,
-          PackageServiceId: element.PackageServiceId || 0,  
+          PackageServiceId: this.registerObj.ServiceId || '',  
           PacakgeServiceName:this.registerObj.ServiceName || '',
           BillwiseTotalAmt:this.vBillWiseTotalAmt || 0,
           DoctorId: element.DoctorId,
           DoctorName: element.DoctorName , 
         }); 
     }); 
-     this.dialogRef.close(this.SavePacList) 
+     this.dialogRef.close(this.SavePacList)
+     this.vBillWiseTotalAmt = '' 
   }
   onClose(){
     this.dialogRef.close();

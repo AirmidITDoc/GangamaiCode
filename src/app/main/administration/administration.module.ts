@@ -12,7 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { CdkTreeModule } from '@angular/cdk/tree';
 import { CdkTableModule } from '@angular/cdk/table';
 import { MatTreeModule } from '@angular/material/tree';
-import { SharedModule } from '../shared/shared.module';
+import { SharedModule } from '../shared/shared.module'; 
 
 
 const appRoutes: Routes = [
@@ -68,6 +68,10 @@ const appRoutes: Routes = [
 {
   path: "Template Description",
   loadChildren: () => import("./template-description/temp-desc.module").then((m) => m.TempDescModule),
+},
+{
+  path: "dailyexpenses",
+  loadChildren: () => import("./daily-expenses/daily-expenses.module").then((m) => m.DailyExpensesModule),
 },
 ];
 
