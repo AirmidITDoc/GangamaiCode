@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { gridRequest } from "app/core/models/gridRequest";
 import { ApiCaller } from "app/core/services/apiCaller";
 
@@ -20,16 +20,23 @@ export class DrugmasterService {
     createDrugForm(): FormGroup {
         return this._formBuilder.group({
             DrugId: [""],
-            DrugName: [""],
+            DrugName: ["", Validators.required],
             GenericId: [""],
-            GenericName: [""],
+            GenericName: ["", Validators.required],
             ClassId: [""],
-            ClassName: [""],
-            IsDeleted: ["false"],
+            ClassName: ["", Validators.required],
+            isActive: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
             AddedByName: [""],
         });
+    }
+    getValidationMessages(){
+        return{
+            DrugName: [
+                { name: "required", Message: "Drug Name is required" }
+            ]
+        }
     }
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
@@ -40,16 +47,16 @@ export class DrugmasterService {
 
     initializeFormGroup() {
         this.createDrugForm();
-    }
-
-  
+    } 
 
     public getdrugMasterList(param: gridRequest, showLoader = true) {
         return this._httpClient.PostData("DrugMaster/List", param, showLoader);
     }
 
     public drugMasterInsert(Param: any, showLoader = true) {
-        return this._httpClient.PostData("Drug", Param, showLoader);
+        if (Param.DrugId) {
+            return this._httpClient.PutData("DrugMaster/" + Param.DrugId, Param, showLoader);
+        } else return this._httpClient.PostData("DrugMaster", Param, showLoader);
     }
 
     public drugMasterUpdate(id: number , Param: any, showLoader = true) {

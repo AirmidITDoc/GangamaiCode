@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { gridRequest } from "app/core/models/gridRequest";
 import { ApiCaller } from "app/core/services/apiCaller";
 
@@ -19,16 +19,29 @@ export class DosemasterService {
     createDoseForm(): FormGroup {
         return this._formBuilder.group({
             DoseId: [""],
-            DoseName: [""],
-            DoseNameInEnglish: [""],
+            DoseName: ["", Validators.required],
+            DoseNameInEnglish: ["", Validators.required],
 
-            DoseQtyPerDay: [""],
+            DoseQtyPerDay: ["", Validators.required],
 
-            IsDeleted: ["false"],
+            isActive: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
             AddedByName: [""],
         });
+    }
+    getValidationMessages(){
+        return{
+            DoseName: [
+                { name: "required", Message: "Dose Name is required" }
+            ],
+            DoseNameInEnglish: [
+                { name: "required", Message: "DoseNameInEnglish is required" }
+            ],
+            DoseQtyPerDay: [
+                { name: "required", Message: "DoseQtyPerDay is required" }
+            ],
+        }
     }
 
     createSearchForm(): FormGroup {
@@ -47,7 +60,9 @@ export class DosemasterService {
     }
 
     public doseMasterInsert(Param: any, showLoader = true) {
-        return this._httpClient.PostData("DoseMaster", Param, showLoader);
+        if (Param.DoseId) {
+            return this._httpClient.PutData("DoseMaster/" + Param.DoseId, Param, showLoader);
+        } else return this._httpClient.PostData("DoseMaster", Param, showLoader);
     }
 
     public doseMasterUpdate(id: number , Param: any, showLoader = true) {

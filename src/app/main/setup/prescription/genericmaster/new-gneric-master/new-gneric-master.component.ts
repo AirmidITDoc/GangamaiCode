@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { GenericmasterService } from '../genericmaster.service';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-new-gneric-master',
@@ -7,11 +11,44 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NewGnericMasterComponent implements OnInit {
 
-  constructor() { }
+  genericForm:FormGroup;
+
+  constructor(
+    public _GenericMasterService: GenericmasterService,
+      public dialogRef: MatDialogRef<NewGnericMasterComponent>,
+      @Inject(MAT_DIALOG_DATA) public data: any,
+      public toastr: ToastrService
+  ) { }
 
   ngOnInit(): void {
+    this.genericForm=this._GenericMasterService.createGenericForm();
+    var m_data={
+      GenericId:this.data?.GenericId,
+      GenericName:this.data?.GenericName,      
+      isActive: JSON.stringify(this.data?.isActive)
+    };
+    this.genericForm.patchValue(m_data);    
+    console.log("mdata:", m_data)
   }
-//   onSubmit() {
+  onSubmit() {
+    if(!this.genericForm.get("GenericId").value){
+      debugger
+      var mdata=
+      {
+        "genericId": 0,
+        "genericName": this.genericForm.get("GenericName").value || ""
+      }
+      console.log("generic json:", mdata);
+
+      this._GenericMasterService.genericMasterInsert(this.genericForm.value).subscribe((response)=>{
+        this.toastr.success(response.message);
+        this.onClear(true);
+      }, (error)=>{
+        this.toastr.error(error.message);
+      });
+    } else{
+      //update
+    }
 //     if (this._GenericService.myForm.valid) {
 //         if (!this._GenericService.myForm.get("GenericId").value) {
 //             var m_data = {
@@ -107,5 +144,9 @@ export class NewGnericMasterComponent implements OnInit {
 //         }
 //         this.onClear();
 //     }
-// }
+ }
+ onClear(val: boolean) {
+  this.genericForm.reset();
+  this.dialogRef.close(val);
+}
 }

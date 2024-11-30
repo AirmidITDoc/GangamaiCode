@@ -1,61 +1,51 @@
-<!-- <div fxFlex.gt-sm="35%" fxFlex style="background-color: white;">
-    <div class="dialog-content-wrapper">
-        <div mat-dialog-content class="p-24 pb-0 m-0">
-            <form [formGroup]="_drugService.myform">
-                <h3>{{_drugService.myform.controls.DrugId.value?"Modify Prefix Master":"New Prefix
-                    Master"}}</h3>
+<div class="modal-wrapper grid-container">
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Drug Master</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                        matTooltip="Close">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <form [formGroup]="drugForm">
 
                 <input type="hidden" name="DrugId" formControlName="DrugId">
 
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                        <mat-label>Drug Name</mat-label>
-                        <input name="DrugName" formControlName="DrugName" matInput required>
-                        <mat-error>Please enter Drug Name </mat-error>
-                    </mat-form-field>
-                </div>
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <airmid-textbox label="Drug Name" formControlName="DrugName" [value]=""
+                        [formGroup]="drugForm"
+                        [validations]="_durgMasterService.getValidationMessages().DrugName"
+                         [maxLength]="300">
+                    </airmid-textbox>
 
+                    <airmid-autocomplete label="Generic Name" formControlName="GenericId"
+                        [formGroup]="drugForm"
+                        [validations]="getValidationGeneric().GenericId"
+                        [mode]="autocompleteModeClass" (selectDdlObject)="selectChangeClass($event)">
+                    </airmid-autocomplete>
 
-                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                        <mat-label>GenericName</mat-label>
-                        <mat-select formControlName="GenericId" placeholder="Bank" #singleSelect
-                            required>
-                            <mat-option>
-                                <ngx-mat-select-search [formControl]="genericFilterCtrl"
-                                    [placeholderLabel]="'Search'"
-                                    [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                            </mat-option>
-                            <mat-option *ngFor="let element of filteredGeneric | async"
-                                [value]="element">
-                                {{element.GenericName}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
+                <!-- </div>
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"> -->
+
+                    <airmid-autocomplete label="Class Name" formControlName="ClassId"
+                        [formGroup]="drugForm"
+                        [validations]="getValidationClass().ClassId"
+                        [mode]="autocompleteModeGenericName" (selectDdlObject)="selectChangeGeneric($event)">
+                    </airmid-autocomplete>
 
                 </div>
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-
-
-                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                        <mat-label>Class Name</mat-label>
-                        <mat-select formControlName="ClassId" placeholder="Bank" #singleSelect
-                            required>
-                            <mat-option>
-                                <ngx-mat-select-search [formControl]="classFilterCtrl"
-                                    [placeholderLabel]="'Search'"
-                                    [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                            </mat-option>
-                            <mat-option *ngFor="let element of filteredClass | async"
-                                [value]="element">
-                                {{element.ClassName}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-
-                </div>
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
+                    <mat-radio-group name="isActive" formControlName="isActive" value='true'>
                         <mat-radio-button value='true' class="mr-sm-12"
                             fxFlex>IsActive</mat-radio-button>
                         <mat-radio-button value='false' class="mr-sm-12"
@@ -64,12 +54,13 @@
                 </div>
             </form>
         </div>
-        <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
-            <div class="button-row">
-                <button mat-raised-button color="primary" type="submit" (click)="onSubmit()"
-                    [disabled]="_drugService.myform.invalid">Save</button>
-                <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
-            </div>
+
+        <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
+
+            <button class="btn btn-danger-outline" (click)="onClear(false)">Reset</button>
+            <button class="btn btn-primary " color="accent" (click)="onSubmit()">
+                <span>Save</span>
+            </button>
         </div>
     </div>
-</div> -->
+</div>

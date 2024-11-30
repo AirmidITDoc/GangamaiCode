@@ -86,7 +86,7 @@
             <mat-form-field appearance="outline" fxFlex>
                 <mat-label>Pin Code</mat-label>
                 <input name="PinNo" formControlName="PinNo" placeholder="Pin Code" matInput
-                    required #pin (keydown)="onEnterPin($event)" [(ngModel)]="vPin">
+                    required #pin (keydown)="onEnterPin($event)" maxlength="6" [(ngModel)]="vPin">
             </mat-form-field>
 
         </div>
@@ -113,7 +113,7 @@
             <mat-form-field appearance="outline" fxFlex>
                 <mat-label>Fax Number</mat-label>
                 <input name="FaxNo" formControlName="FaxNo" placeholder="Fax Number" matInput
-                    required #fax (keydown)="onEnterfax($event)" [(ngModel)]="vFax">
+                    required #fax (keydown)="onEnterfax($event)" maxlength="15" minlength="10" [(ngModel)]="vFax">
             </mat-form-field>
 
             <airmid-autocomplete label="TariffId" formControlName="TariffId"

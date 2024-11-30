@@ -11,6 +11,7 @@ import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { NewGnericMasterComponent } from "./new-gneric-master/new-gneric-master.component";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 
 
 @Component({
@@ -22,21 +23,40 @@ import { NewGnericMasterComponent } from "./new-gneric-master/new-gneric-master.
 })
 export class GenericmasterComponent implements OnInit {
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    
     gridConfig: gridModel = {
         apiUrl: "GenericMaster/List",
         columnsList: [
             { heading: "Code", key: "genericId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Generic Name", key: "genericName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Generic Name", key: "genericName", sort: true, align: 'left', emptySign: 'NA', width:500 },
             { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:200, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
-                            debugger
+                            this.onSave(data);
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            debugger
+                            this.confirmDialogRef = this._matDialog.open(
+                                FuseConfirmDialogComponent,
+                                {
+                                    disableClose: false,
+                                }
+                            );
+                            this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+                            this.confirmDialogRef.afterClosed().subscribe((result) => {
+                                debugger
+                                if (result) {
+                                    let that = this;
+                                    this._GenericService.deactivateTheStatus(data.genericId).subscribe((data: any) => {
+                                    this.toastr.success(data.message)
+                                    that.grid.bindGridData();
+                                    });
+                                }
+                                this.confirmDialogRef = null;
+                            });
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
@@ -69,10 +89,6 @@ export class GenericmasterComponent implements OnInit {
     }
    
 
-    onClear() {
-        this._GenericService.myForm.reset({ IsDeleted: "false" });
-        this._GenericService.initializeFormGroup();
-    }
     changeStatus(status: any) {
         switch (status.id) {
             case 1:
@@ -91,45 +107,23 @@ export class GenericmasterComponent implements OnInit {
     
     onDeactive(genericId) {
         debugger
-        this.confirmDialogRef = this._matDialog.open(
-            FuseConfirmDialogComponent,
-            {
-                disableClose: false,
-            }
-        );
-        this.confirmDialogRef.componentInstance.confirmMessage =
-            "Are you sure you want to deactive?";
-        this.confirmDialogRef.afterClosed().subscribe((result) => {
-            debugger
-            if (result) {
-                this._GenericService.deactivateTheStatus(genericId).subscribe((data: any) => {
-                   // this.msg = data
-                    if (data.StatusCode == 200) {
-                        this.toastr.success(
-                            "Record updated Successfully.",
-                            "updated !",
-                            {
-                                toastClass:
-                                    "tostr-tost custom-toast-success",
-                            }
-                        );
-                        // this.getGenderMasterList();
-                    }
-                });
-            }
-            this.confirmDialogRef = null;
-        });
+        
     }
 
-    newgenricmaster() {
+    onSave(row: any = null) {
+        debugger
+        let that = this;
         const dialogRef = this._matDialog.open(NewGnericMasterComponent,
             {
                 maxWidth: "45vw",
                 height: '35%',
                 width: '70%',
+                data:row
             });
         dialogRef.afterClosed().subscribe(result => {
-            console.log('The dialog was closed - Insert Action', result);
+            if(result){
+                that.grid.bindGridData();
+            }
 
         });
     }

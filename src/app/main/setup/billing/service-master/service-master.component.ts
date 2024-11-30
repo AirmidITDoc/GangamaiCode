@@ -26,9 +26,9 @@ export class ServiceMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "BillingService/BillingList",
         columnsList: [
-            { heading: "Code", key: "serviceId", sort: true, align: 'left', emptySign: 'NA',width:200 },
+            { heading: "Code", key: "serviceId", sort: true, align: 'left', emptySign: 'NA',width:100 },
 
-            { heading: "GroupId", key: "groupId", sort: true, align: 'left', emptySign: 'NA',width:200 },
+            { heading: "GroupId", key: "groupId", sort: true, align: 'left', emptySign: 'NA',width:100 },
 
             { heading: "Group Name", key: "groupName", sort: true, align: 'left', emptySign: 'NA',width:200 },
 
@@ -36,25 +36,25 @@ export class ServiceMasterComponent implements OnInit {
 
             { heading: "Service Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA',width:200 },
 
-            { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA',width:200 },
+            { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA',width:100 },
 
-            { heading: "IsEditable", key: "isEditable", sort: true, align: 'left', emptySign: 'NA',width:200 },
+            { heading: "IsEditable", key: "isEditable", sort: true, align: 'left', emptySign: 'NA',width:100 },
 
-            { heading: "CreditedtoDoctor", key: "creditedtoDoctor", sort: true, align: 'left', emptySign: 'NA',width:200 },
+            { heading: "CreditedtoDoctor", key: "creditedtoDoctor", sort: true, align: 'left', emptySign: 'NA',width:100 },
 
-            { heading: "IsPathology", key: "isPathology", sort: true, align: 'left', emptySign: 'NA',width:200 },
+            { heading: "IsPathology", key: "isPathology", sort: true, align: 'left', emptySign: 'NA',width:100 },
 
-            { heading: "IsRadiology", key: "isRadiology", sort: true, align: 'left', emptySign: 'NA',width:200 },
+            { heading: "IsRadiology", key: "isRadiology", sort: true, align: 'left', emptySign: 'NA',width:100 },
 
-            { heading: "PrintOrder", key: "printOrder", sort: true, align: 'left', emptySign: 'NA',width:200 },
+            { heading: "PrintOrder", key: "printOrder", sort: true, align: 'left', emptySign: 'NA',width:100 },
 
-            { heading: "TariffId", key: "tariffId", sort: true, align: 'left', emptySign: 'NA',width:200 },
+            { heading: "TariffId", key: "tariffId", sort: true, align: 'left', emptySign: 'NA',width:100 },
 
             { heading: "TariffName", key: "tariffName", sort: true, align: 'left', emptySign: 'NA',width:200 },
 
-            { heading: "IsEmergency", key: "isEmergency", sort: true, align: 'left', emptySign: 'NA',width:200 },
+            { heading: "IsEmergency", key: "isEmergency", sort: true, align: 'left', emptySign: 'NA',width:100 },
 
-            { heading: "EmgAmt", key: "emgAmt", sort: true, align: 'left', emptySign: 'NA',width:200 },
+            { heading: "EmgAmt", key: "emgAmt", sort: true, align: 'left', emptySign: 'NA',width:100 },
 
             { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center",width:100 },
             {
