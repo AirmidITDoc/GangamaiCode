@@ -131,6 +131,7 @@ export class ServiceMasterComponent implements OnInit {
   
    
     onSave(row:any = null) {
+        let that = this;
         const dialogRef = this._matDialog.open(ServiceMasterFormComponent,
         {
             maxWidth: "95vw",
@@ -139,7 +140,9 @@ export class ServiceMasterComponent implements OnInit {
             data: row
         });
         dialogRef.afterClosed().subscribe(result => {
-           
+            if (result) {
+                that.grid.bindGridData();
+            }
             console.log('The dialog was closed - Action', result);
         });
     }

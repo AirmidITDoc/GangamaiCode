@@ -571,13 +571,22 @@ public onEnteraddress(event): void {
                           
             var data2 = [];
             // this.selectedItems.forEach((element) => {
-                let DocInsertObj = {};
-                // DocInsertObj['DepartmentId'] = element.DepartmentId;
-                    DocInsertObj["docDeptId"]=1,
-                    DocInsertObj['doctorId'] = this.myForm.get("DoctorId").value ? "0" : this.myForm.get("DoctorId").value || "0";
-                    DocInsertObj['departmentId'] = this.myForm.get("Departmentid").value ? "0" : this.myForm.get("Departmentid").value || "0";
-                    data2.push(DocInsertObj);
+            //     let DocInsertObj = {};
+            //     // DocInsertObj['DepartmentId'] = element.DepartmentId;
+            //         DocInsertObj["docDeptId"]=1,
+            //         DocInsertObj['doctorId'] = this.myForm.get("DoctorId").value ? "0" : this.myForm.get("DoctorId").value || "0";
+            //         DocInsertObj['departmentId'] = this.myForm.get("Departmentid").value ? "0" : this.myForm.get("Departmentid").value || "0";
+            //         data2.push(DocInsertObj);
             // });
+
+            this.selectedItems.forEach((element) => {
+                        let DocInsertObj = {};
+                        // DocInsertObj['DepartmentId'] = element.DepartmentId;
+                        DocInsertObj["docDeptId"]=1
+                        DocInsertObj['departmentId'] = this.departmentId;
+                        DocInsertObj['doctorId'] = !this.myForm.get("DoctorId").value ? "0" : this.myForm.get("DoctorId").value || "0";
+                        data2.push(DocInsertObj);
+                    });
             console.log("Insert data2:",data2);
 
             var mdata =

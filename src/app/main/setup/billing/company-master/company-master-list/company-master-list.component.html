@@ -29,10 +29,11 @@
         <br />
         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
 
-            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                <input name="CompanyName" placeholder="Select Company Name" formControlName="CompanyName" matInput
-                    required>
-                <mat-error>Please enter Company Name </mat-error>
+            <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Company Name</mat-label>
+                <input name="CompanyName" formControlName="CompanyName" placeholder="Company Name"
+                    matInput (keydown)="onEnterCompany($event)"
+                    [(ngModel)]="vCompanyName">
             </mat-form-field>
 
         </div>
@@ -68,11 +69,11 @@
 
         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
 
-            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                <input name="Address" placeholder="Select Address"
-                    [ngClass]="{ 'is-invalid': submitted && f.Address.errors }" formControlName="Address" matInput
-                    required>
-                <!-- <span class="error" *ngIf="f.Address.invalid && f.Address.touched">Address is required </span> -->
+            <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Address</mat-label>
+                <input name="Address" formControlName="Address" placeholder="Address"
+                    matInput #address (keydown)="onEnterAddress($event)"
+                    [(ngModel)]="vAddress">
             </mat-form-field>
 
 
@@ -82,11 +83,10 @@
             [mode]="autocompleteModecity" (selectDdlObject)="selectChangecity($event)">
         </airmid-autocomplete>
 
-
-            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                <input name="PinNo" placeholder="Select PinNo" [ngClass]="{ 'is-invalid': submitted && f.PinNo.errors }"
-                    formControlName="PinNo" maxlength="6" matInput>
-                <!-- <span class="error" *ngIf="f.PinNo.invalid && f.PinNo.touched">PinNo is required Enter only Digits</span> -->
+            <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Pin Code</mat-label>
+                <input name="PinNo" formControlName="PinNo" placeholder="Pin Code" matInput
+                    required #pin (keydown)="onEnterPin($event)" [(ngModel)]="vPin">
             </mat-form-field>
 
         </div>
@@ -94,30 +94,35 @@
 
         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
 
-
-            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                <input name="PhoneNo" placeholder="Select PhoneNo"
-                    [ngClass]="{ 'is-invalid': submitted && f.PhoneNo.errors }" maxlength="10" formControlName="PhoneNo"
-                    matInput>
-                <!-- <span class="error" *ngIf="f.PhoneNo.invalid && f.PhoneNo.touched">PhoneNo is required Enter only
-                Digits</span> -->
+            <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Phone Number</mat-label>
+                <input name="PhoneNo" formControlName="PhoneNo" placeholder="Mobile Number" matInput
+                    required #phone (keydown)="onEnterPhone($event)" [(ngModel)]="vPhone"
+                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
+                    required="required" value="9876658688">
             </mat-form-field>
 
-
-            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                <input name="MobileNo" placeholder="Select Mobile No "
-                    [ngClass]="{ 'is-invalid': submitted && f.MobileNo.errors }" formControlName="MobileNo"
-                    maxlength="10" matInput required>
-                <!-- <span class="error" *ngIf="f.MobileNo.invalid && f.MobileNo.touched">MobileNo is required Enter only 10
-                Digits</span> -->
+           <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Mobile Number</mat-label>
+                <input name="MobileNo" formControlName="MobileNo" placeholder="Mobile Number" matInput
+                    required #mobile (keydown)="onEntermobile($event)" [(ngModel)]="vMobile"
+                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
+                    required="required" value="9876658688">
             </mat-form-field>
 
-
-            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                <input name="FaxNo" placeholder="Select FaxNo" [ngClass]="{ 'is-invalid': submitted && f.FaxNo.errors }"
-                    formControlName="FaxNo" maxlength="10" matInput>
-                <!-- <span class="error" *ngIf="f.FaxNo.invalid && f.FaxNo.touched">FaxNo is required Enter only Digits</span> -->
+            <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Fax Number</mat-label>
+                <input name="FaxNo" formControlName="FaxNo" placeholder="Fax Number" matInput
+                    required #fax (keydown)="onEnterfax($event)" [(ngModel)]="vFax">
             </mat-form-field>
+
+            <airmid-autocomplete label="TariffId" formControlName="TariffId"
+                [formGroup]="companyForm"
+                [validations]="getValidationtariffMessages().TariffId"
+                [mode]="autocompleteModetariff"
+                (selectDdlObject)="selectChangetariff($event)">
+            </airmid-autocomplete> 
+            <!-- <span class="error" *ngIf="f.FaxNo.invalid && f.FaxNo.touched">FaxNo is required Enter only Digits</span> -->
         </div>
 
         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">

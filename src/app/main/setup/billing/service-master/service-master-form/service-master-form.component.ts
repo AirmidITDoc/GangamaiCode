@@ -18,6 +18,7 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
 import { compact } from "lodash";
+import { error } from "console";
 
 @Component({
     selector: "app-service-master-form",
@@ -28,7 +29,7 @@ import { compact } from "lodash";
   })
   
   export class ServiceMasterFormComponent implements OnInit {
-    serviceform:FormGroup;
+    serviceForm:FormGroup;
     gridConfig: gridModel = {
       apiUrl: "ClassMaster/List",
   columnsList: [
@@ -139,7 +140,7 @@ private _onDestroy = new Subject<void>();
     ];
     
   ngOnInit(): void {
-this.serviceform=this._serviceMasterService.createServicemasterForm();
+this.serviceForm=this._serviceMasterService.createServicemasterForm();
   //  this.getGroupNameCombobox();
   //  this.getDoctorNameCombobox();
   //  this.getSubgroupNameCombobox();
@@ -445,6 +446,58 @@ this.serviceform=this._serviceMasterService.createServicemasterForm();
      
   //   }
   
+  if(!this.serviceForm.get("ServiceId").value){
+
+    var data1=[];
+    var clas_d = [];
+    var class_det ={      
+      "serviceId":parseInt(this.serviceForm.get("ServiceId").value || 0),
+      "tariffId":this.serviceForm.get("TariffId").value || 0,
+      "classId": 0,
+      "classRate":0,
+      "effectiveDate":this.serviceForm.get("EffectiveDate").value || "01/01/1900",
+   }
+    // this.DSServicedetailList.data.forEach(element => {
+    //   debugger
+    //   let c =  JSON.parse(JSON.stringify(class_det));
+    //   c['classId'] = element.ClassId;
+    //   c['classRate'] = element.ClassRate || 0;        
+    //   clas_d.push(c)
+    // });
+
+    console.log("ServiceInsert data1:",data1);
+
+    var mdata={
+      "serviceId": 0,
+      "groupId": this.groupId || 0,
+      "serviceShortDesc": this.serviceForm.get("ServiceShortDesc").value,
+      "serviceName": this.serviceForm.get("ServiceName").value,
+      "price":  parseInt(this.serviceForm.get("Price").value),
+      "isEditable": true,
+      "creditedtoDoctor": true,
+      "isPathology":  0,
+      "isRadiology": 0,
+      "printOrder": parseInt(this.serviceForm.get("PrintOrder").value),
+      "isPackage": 0,
+      "subGroupId": this.subGroupId || 0,
+      "doctorId": 0,
+      "isEmergency": true,
+      "emgAmt": 0,
+      "emgPer": 0,
+      "isDocEditable": true,
+      "serviceDetails": data1
+    }
+    console.log("insert mdata:", mdata);
+    this._serviceMasterService.serviceMasterInsert(mdata).subscribe((response)=>{
+      this.toastr.success(response.message);
+      this.onClear(true);
+    },(error)=>{
+      this.toastr.error(error.message);
+    })
+    
+  }else{
+    //update
+  }
 this.dialogRef.close();
     
   }
@@ -475,7 +528,7 @@ this.dialogRef.close();
     this._serviceMasterService.populateForm(m_data);
   }
 
-  onClear() {
+  onClear(val:boolean) {
     this.DSServicedetailList.data = this.DSServicedetailList.data.map(element => {
       return { ...element, ClassRate: 0 }; // Create a new object with updated ClassRate
   });
@@ -547,7 +600,7 @@ keyPressCharater(event){
       ]
   };
   }
-  getValidationSubGroupMessages(){
+  getValidationSubGroupNameMessages(){
     return{
       SubGroupId: [
         { name: "required", Message: "SubGroup Name is required" }

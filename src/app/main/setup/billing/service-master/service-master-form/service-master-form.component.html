@@ -11,36 +11,23 @@
 </div>
 
 <mat-card>
-    <form [formGroup]="serviceform" style="padding-left: 10px; padding-right: 10px;">
+    <form [formGroup]="serviceForm" style="padding-left: 10px; padding-right: 10px;">
         <input type="hidden" name="ServiceId" formControlName="ServiceId" style="top:155px;">
 
         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="b-service-master" style="padding-top: 10px;">
-            <mat-form-field appearance="outline" fxFlex>
-                <mat-label>Group Name</mat-label>
-                <mat-select formControlName="GroupId" placeholder="Bank" #singleSelect disableOptionCentering="true"
-                    required>
-                    <mat-option>
-                        <ngx-mat-select-search [formControl]="groupnameFilterCtrl" [placeholderLabel]="'Search'"
-                            [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                    </mat-option>
-                    <mat-option *ngFor="let element of filteredGroupname | async" [value]="element.GroupId">
-                        {{element.GroupName}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>&nbsp;&nbsp;
 
-            <mat-form-field appearance="outline" fxFlex>
-                <mat-label>SubGroup Name</mat-label>
-                <mat-select formControlName="SubGroupId" placeholder="Bank" #singleSelect disableOptionCentering="true">
-                    <mat-option>
-                        <ngx-mat-select-search [formControl]="subgroupnameFilterCtrl" [placeholderLabel]="'Search'"
-                            [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                    </mat-option>
-                    <mat-option *ngFor="let element of filteredSubgroupname | async" [value]="element.SubGroupId">
-                        {{element.SubGroupName}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
+            <airmid-autocomplete label="Group Name" formControlName="GroupId"
+                [formGroup]="serviceForm"
+                [validations]="getValidationGroupMessages().GroupId"
+                [mode]="autocompleteModesubGroupName">
+            </airmid-autocomplete>
+
+            <airmid-autocomplete label="SubGroup Name" formControlName="SubGroupId"
+                [formGroup]="serviceForm"
+                [validations]="getValidationSubGroupNameMessages().SubGroupId"
+                [mode]="autocompleteModegroupName">
+            </airmid-autocomplete>
+
         </div>
 
 
@@ -72,7 +59,8 @@
             </mat-form-field>&nbsp;&nbsp;
 
             <mat-form-field appearance="outline" fxFlex>
-                <input name="ServiceShortDesc" placeholder="Select ServiceShortDesc" formControlName="ServiceShortDesc"
+                <mat-label>ServiceShortDesc</mat-label>
+                <input name="ServiceShortDesc" placeholder="ServiceShortDesc" formControlName="ServiceShortDesc"
                     matInput>
                 <mat-error>Please enter ServiceShortDesc </mat-error>
             </mat-form-field>
@@ -83,18 +71,14 @@
 
         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
 
-            <mat-form-field appearance="outline" fxFlex>
-                <mat-label>Tariff Name</mat-label>
-                <mat-select formControlName="TariffId" placeholder="Bank" #singleSelect disableOptionCentering="true">
-                    <mat-option>
-                        <ngx-mat-select-search [formControl]="tariffFilterCtrl" [placeholderLabel]="'Search'"
-                            [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                    </mat-option>
-                    <mat-option *ngFor="let element of filteredTariff | async" [value]="element.TariffId">
-                        {{element.TariffName}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>&nbsp;&nbsp;
+            <airmid-autocomplete label="TariffId" formControlName="TariffId"
+                [formGroup]="serviceForm"  [value]="TariffId"
+                [validations]="getValidationTariffMessages().TariffId"
+                [mode]="autocompleteModetariff">
+            </airmid-autocomplete> 
+
+            
+
             <mat-form-field appearance="outline" fxFlex>
                 <input matInput [matDatepicker]="picker3" placeholder="Choose an Effective Date" name="EffectiveDate"
                     formControlName="EffectiveDate">
@@ -137,7 +121,7 @@
             </div>
         </div>
     </div>
-    <form [formGroup]="serviceform">
+    <form [formGroup]="serviceForm">
         <div class="p-10 pb-24" fusePerfectScrollbar>
             <!-- CONTENT -->
             <div class="content-card">
