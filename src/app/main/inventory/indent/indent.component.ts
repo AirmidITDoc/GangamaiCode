@@ -39,13 +39,13 @@ export class IndentComponent implements OnInit {
   gridConfig: gridModel = {
       apiUrl: "Indent/IndentList",
   columnsList: [
-      { heading: "Code", key: "indentNo", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "From StoreId", key: "fromStoreId", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "To StoreId", key: "toStoreId", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "FromStoreName", key: "fromStoreName", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "Code", key: "indentNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+      { heading: "From StoreId", key: "fromStoreId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+      { heading: "To StoreId", key: "toStoreId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+      { heading: "FromStoreName", key: "fromStoreName", sort: true, align: 'left', emptySign: 'NA', width: 700 },
         //  { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
           {
-              heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+              heading: "Action", key: "action", width: 50, align: "right", type: gridColumnTypes.action, actions: [
                   {
                       action: gridActions.edit, callback: (data: any) => {
                           this.onSave(data);
