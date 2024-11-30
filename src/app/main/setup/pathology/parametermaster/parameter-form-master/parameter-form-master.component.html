@@ -161,15 +161,14 @@
                                             <mat-card-content>
                                                 <div>
                                                     <div fxLayoutAlign="space-between" style="padding:5px">
-                                                        <mat-form-field appearance="outline" fxFlex="20%">
-                                                            <mat-label>Gender</mat-label>
-                                                            <mat-select placeholder="Select Gender Name" name="SexID"
-                                                                formControlName="SexID">
-                                                                <mat-option *ngFor="let M of GendercmbList" [value]="M">
-                                                                    {{ M.GenderName }}
-                                                                </mat-option>
-                                                            </mat-select>
-                                                        </mat-form-field>
+                                                       
+                                                        <airmid-autocomplete label="SexID" formControlName="SexID"
+                                                    [formGroup]="_ParameterService.myform"
+                                                    [validations]="getValidationGenderMessages().SexID"
+                                                    [mode]="autocompleteModeGender"
+                                                    (selectDdlObject)="selectChangeGender($event)">
+                                                </airmid-autocomplete>
+
 
                                                         <mat-form-field appearance="outline" fxFlex="10%">
                                                             <mat-label>Min Age</mat-label>

@@ -37,8 +37,6 @@ export class PrescriptionService {
     })
   }
 
-
-
   public getPrintPrecriptionlist(Param){
     return this._httpClient.post("Generic/GetByProc?procName=rptIPDPrecriptionPrint",Param)
   }
@@ -51,12 +49,10 @@ export class PrescriptionService {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_IP_Prescriptio_Det",Param)
   }
 
-
   public getItemlist(Param){//m_Rtrv_IPDrugName,Retrieve_ItemName_BalanceQty
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ItemName_BalanceQty",Param)
   }
 
-  
   public getPharmacyStoreList(){
     return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_PharStoreList",{});
   }

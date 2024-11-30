@@ -162,12 +162,12 @@ export class ParametermasterComponent implements OnInit {
         });
         })
     }
-
+    
     onAdd(row:any = null) {
         const dialogRef = this._matDialog.open(ParameterFormMasterComponent,
         {
-            maxWidth: "45vw",
-            height: '35%',
+            maxWidth: "100vw",
+            height: '100%',
             width: '70%',
             data: row
         });

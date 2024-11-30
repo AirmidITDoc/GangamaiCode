@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { TestmasterComponent } from "./testmaster.component";
 import { RouterModule, Routes } from "@angular/router";
 import { TestFormMasterComponent } from "./test-form-master/test-form-master.component";
@@ -87,7 +87,7 @@ const routes: Routes = [
         NgxMatSelectSearchModule,
         MatBadgeModule,
     ],
-    providers: [TestmasterService],
+    providers: [DatePipe,TestmasterService],
     entryComponents: [TestmasterComponent],
 })
 export class TestmasterModule {}

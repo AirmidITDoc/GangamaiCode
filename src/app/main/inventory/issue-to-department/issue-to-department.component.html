@@ -2,23 +2,20 @@
     dynamicTableHeight>
     <mat-toolbar class="top-header accent">
         <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
-            <button mat-icon-button class="sidebar-toggle ">
+            <!-- <button mat-icon-button class="sidebar-toggle ">
                 <mat-icon>menu</mat-icon>
-            </button>
+            </button> -->
             <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
             </mat-icon>
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
                 Issue To Department List
             </span>
         </div>
-
     </mat-toolbar>
-
 
     <mat-tab-group>
 
         <mat-tab label="issue To Department List">
-
             <div fusePerfectScrollbar
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                 dynamicTableHeight>

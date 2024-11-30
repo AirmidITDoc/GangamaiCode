@@ -62,7 +62,7 @@ export class ParameterFormMasterComponent implements OnInit {
     dsTemparoryList = new MatTableDataSource<PathDescriptiveMaster>();
     dataSource = new MatTableDataSource<PathDescriptiveMaster>();
     dsParameterAgeList = new MatTableDataSource<PathParaRangeAgeMaster>();
-
+    autocompleteModeGender:String="Gender";
     constructor(
         public _ParameterService: ParametermasterService,
         private accountService: AuthenticationService,
@@ -190,6 +190,18 @@ export class ParameterFormMasterComponent implements OnInit {
         else this.onAdd(event);
 
 
+    }
+    getValidationGenderMessages() {
+        return {
+            SexID: [
+                { name: "required", Message: "Religion Name is required" }
+            ]
+        };
+    }
+
+    selectChangeGender(obj: any) {
+        console.log(obj);
+        // this.refdocId = obj.value
     }
 
 
@@ -335,6 +347,7 @@ export class ParameterFormMasterComponent implements OnInit {
                     isDefaultValue: this._ParameterService.descform.get("DefaultValue").value ? true : false,
                     addedby: this.accountService.currentUserValue.user.id,
                     defaultValue: this._ParameterService.descform.get("DefaultValue").value ? this._ParameterService.descform.get("DefaultValue").value.trim() : "%",
+             
                 };
                 data2.push(data);
             }
@@ -378,6 +391,19 @@ export class ParameterFormMasterComponent implements OnInit {
             parameterID: this._ParameterService.myform.get("ParameterID").value || 0,
             isPrintDisSummary: Boolean(JSON.parse(this._ParameterService.myform.get("IsPrintDisSummary").value))
         }
+
+        // var mdata={
+        //     {
+        //         "parameterId": 0,
+        //         "parameterShortName": "shilpaAirmid",
+        //         "parameterName": "sss",
+        //         "printParameterName": "abc",
+        //         "unitId": 0,
+        //         "isNumeric": 0,
+        //         "isPrintDisSummary": true
+        //       }
+              
+        // }
 
         var m_data = {}
 

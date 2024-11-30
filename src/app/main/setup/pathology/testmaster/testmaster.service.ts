@@ -70,18 +70,14 @@ export class TestmasterService {
     }
     createTemplateForm(): FormGroup {
         return this._formBuilder.group({
-          
             TemplateId:[""],
             TemplateName:[""],
-          
         });
-      }
+    }
       
     initializeFormGroup() {
         this.createPathtestForm();
     }
-
-  
     
     getValidationMessages() {
         return {
