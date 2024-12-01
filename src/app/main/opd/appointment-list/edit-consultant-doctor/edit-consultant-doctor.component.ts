@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppointmentlistService } from '../appointmentlist.service';
@@ -6,11 +6,14 @@ import { ToastrService } from 'ngx-toastr';
 import { DatePipe } from '@angular/common';
 import { map, startWith } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
   selector: 'app-edit-consultant-doctor',
   templateUrl: './edit-consultant-doctor.component.html',
-  styleUrls: ['./edit-consultant-doctor.component.scss']
+  styleUrls: ['./edit-consultant-doctor.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations,
 })
 export class EditConsultantDoctorComponent implements OnInit {
 
@@ -18,7 +21,8 @@ export class EditConsultantDoctorComponent implements OnInit {
 
   VisitId:any=0;
   RegId:any=0;
-
+  Departmentid=0;
+  DoctorID=0;
   autocompleteModedepartment: string = "Department";
   autocompleteModedeptdoc: string = "ConDoctor";
 
@@ -56,7 +60,7 @@ export class EditConsultantDoctorComponent implements OnInit {
 
   getValidationDeptMessages() {
     return {
-      departmentid: [
+      Departmentid: [
             { name: "required", Message: "Department Name is required" }
         ]
     };
@@ -71,13 +75,13 @@ export class EditConsultantDoctorComponent implements OnInit {
   }
   
   onSubmit() {
-      // if (this.ConsdrForm.valid) {
+      if (this.ConsdrForm.valid) {
         debugger
         var m_data={
-          "visitId":2,// this.VisitId,
-          "regId":1,// this.RegId,
-          "consultantDocId":this.deptdocId,
-           "departmentId": this.departmentId
+          "visitId":this.VisitId,
+          "regId":this.RegId,
+          "consultantDocId":this.ConsdrForm.get('DoctorID').value,
+           "departmentId":this.ConsdrForm.get('Departmentid').value,
         }
         console.log(m_data)
           this._AppointmentlistService.EditConDoctor(m_data).subscribe((response) => {
@@ -86,7 +90,7 @@ export class EditConsultantDoctorComponent implements OnInit {
           }, (error) => {
               this.toastr.error(error.message);
           });
-      // }
+      }
   }
 
  

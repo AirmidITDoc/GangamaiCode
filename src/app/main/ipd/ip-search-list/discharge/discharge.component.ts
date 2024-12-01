@@ -2,7 +2,7 @@ import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angula
 import { fuseAnimations } from '@fuse/animations';
 import { AdvanceDetailObj, Discharge, IPSearchListComponent } from '../ip-search-list.component';
 import { MatPaginator } from '@angular/material/paginator';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatSort } from '@angular/material/sort';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
@@ -29,7 +29,7 @@ export class DischargeComponent implements OnInit {
 
   
   isLoading: string = '';
-  
+  DischargeForm:FormGroup;
   currentDate = new Date();
   // screenFromString = 'discharge';
   screenFromString = 'OP-billing';
@@ -38,7 +38,9 @@ export class DischargeComponent implements OnInit {
   Today: Date = new Date();
   registerObj: any;
 
-  
+  RtrvDischargeList:any=[];
+  vComments:any;
+  IsCancelled:any;
   dateTimeObj: any;
   vAdmissionId:any; 
   vMode:any=0;
@@ -69,9 +71,9 @@ export class DischargeComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) { 
   
-    if (this.advanceDataStored.storage) {
-     // debugger
-       this.selectedAdvanceObj = this.advanceDataStored.storage;
+    if (this.data) {
+    
+       this.selectedAdvanceObj = this.data;
        this.registerObj =  this.advanceDataStored.storage;
        console.log(this.registerObj);
  
@@ -79,11 +81,10 @@ export class DischargeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.DischargeForm=this._IpSearchListService.DischargesaveForm();
     if (this.advanceDataStored.storage) { 
       this.vAdmissionId = this.registerObj.AdmissionID;
-      // this.setdropdownvalue();
-      // this.getRtrvDischargelist()
-      // this.getCheckBalanceAmt();
+   
     } 
   }
 
@@ -93,25 +94,7 @@ export class DischargeComponent implements OnInit {
   }
 
  
-  RtrvDischargeList:any=[];
-  vComments:any;
-  IsCancelled:any;
-// getRtrvDischargelist(){
-//   let Query = "select IsCancelled, DischargeId,DischargeTypeId,DischargedDocId,ModeOfDischargeid from Discharge where AdmissionID=" + this.selectedAdvanceObj.AdmissionID + " ";
-//   console.log(Query)
-//   this._IpSearchListService.getDischargeId(Query).subscribe(data => {
-//     this.RtrvDischargeList = data ;
-//     this.IsCancelled = this.RtrvDischargeList[0].IsCancelled || 0
-//     if(this.IsCancelled == '1'){
-//       this.DischargeId = 0
-//     }else{
-//       this.DischargeId = this.RtrvDischargeList[0].DischargeId || 0
-//     }
-//    // this.vComments = this.RtrvDischargeList.
-//     this.Rtevdropdownvalue();
-//     console.log(this.RtrvDischargeList); 
-//   });
-// }
+ 
 
 
   onDischarge() {
@@ -253,6 +236,29 @@ export class DischargeComponent implements OnInit {
 
   // new Api
 
+  getValidationModeMessages() {
+    return {
+      Modeofdischarge: [
+            { name: "required", Message: "Mode Name is required" }
+        ]
+    };
+}
+
+
+getValidationConDoc() {
+    return {
+      DoctorID: [
+            { name: "required", Message: "Doctor Name is required" }
+        ]
+    };
+}
+getValidationdisChargetypeMessages() {
+    return {
+      DischargeTypeId: [
+            { name: "required", Message: "Discharge Type Name is required" }
+        ]
+    };
+}
 
   selectChangecondoc(obj: any){
     console.log(obj);

@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoaderService } from 'app/core/components/loader/loader.service';
@@ -12,7 +13,9 @@ export class AppointmentlistService {
   personalFormGroup: FormGroup;
   VisitFormGroup: FormGroup;
 
-  constructor(public _httpClient1: ApiCaller,private _formBuilder: FormBuilder,   private _loaderService: LoaderService,) {  
+  constructor(public _httpClient1: ApiCaller,private _formBuilder: FormBuilder,   private _loaderService: LoaderService,
+    public _httpClient: HttpClient,
+  ) {  
     // this.personalFormGroup=this.createPesonalForm();
     // this.VisitFormGroup = this.createVisitdetailForm(); 
     }
@@ -151,28 +154,23 @@ public documentuploadInsert(employee, loader = true){
 
 public NewappointmentSave(Param: any, showLoader = true) {
     if (Param.visitID) {
-        return this._httpClient1.PutData("VisitDetail/Insert" + Param.visitID, Param, showLoader);
-    } else return this._httpClient1.PostData("VisitDetail/Insert", Param, showLoader);
+        return this._httpClient1.PutData("VisitDetail/AppVisitInsert" + Param.visitID, Param, showLoader);
+    } else return this._httpClient1.PostData("VisitDetail/AppVisitInsert", Param, showLoader);
 }
 
 public RregisteredappointmentSave(Param: any, showLoader = true) {
   if (Param.visitID) {
-      return this._httpClient1.PutData("VisitDetail/Insert" + Param.visitID, Param, showLoader);
-  } else return this._httpClient1.PostData("VisitDetail/Insert", Param, showLoader);
+      return this._httpClient1.PutData("VisitDetail/AppVisitInsert" + Param.visitID, Param, showLoader);
+  } else return this._httpClient1.PostData("VisitDetail/AppVisitInsert", Param, showLoader);
 }
 
 public EditConDoctor(Param: any, showLoader = true) {
-  // if (Param.visitId) {
-  //     return this._httpClient1.PutData("ConsRefDoctor/ConsultantDoctorUpdate" + Param.visitId, Param, showLoader);
-  // } else
+
    return this._httpClient1.PostData("ConsRefDoctor/ConsultantDoctorUpdate", Param, showLoader);
 }
 
 public EditRefDoctor(Param: any, showLoader = true) {
-  // if (Param.visitId) {
-  //     return this._httpClient1.PutData("ConsRefDoctor/RefDoctorUpdate" + Param.visitId, Param, showLoader);
-  // } else 
-  
+ 
   return this._httpClient1.PostData("ConsRefDoctor/RefDoctorUpdate", Param, showLoader);
 }
 
@@ -207,6 +205,19 @@ getRegistrationValidationMessages() {
 }
   
 
+
+// new API?
+
+public getAppointmentList(employee) {
+  return this._httpClient1.PostData("VisitDetail/AppVisitList", employee)
+}  
+
+public Appointmentcancle(employee, loader = true) {
+  if (loader) {
+      this._loaderService.show();
+  }
+  return this._httpClient.post("OutPatient/AppointmentCancle", employee);
+}
 }
 
 

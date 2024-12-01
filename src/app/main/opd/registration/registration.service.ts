@@ -35,11 +35,12 @@ export class RegistrationService {
       ]],
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
-      MobileNo:['', [
-        Validators.pattern("^[0-9]*$"),
-        Validators.minLength(10),
-        Validators.maxLength(10),
-      ]],   
+      MobileNo:['']
+      //   , [
+      //   Validators.pattern("^[0-9]*$"),
+      //   Validators.minLength(10),
+      //   Validators.maxLength(10),
+      // ]],   
     });
   }
   createPesonalForm() {
@@ -228,6 +229,8 @@ public getPatientTypeCombo() {
     debugger
     return this._httpClient1.GetData("CityMaster?Id="+Id+"&version="+version);
 }
-
+public getNewRegistrationList(employee) {
+  return this._httpClient1.PostData("OutPatient/RegistrationList", employee)
+}  
 }
 // Set NODE_OPTIONS="--max-old-space-size=8192"

@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { AppointmentlistService } from '../appointmentlist.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -6,17 +6,21 @@ import { ToastrService } from 'ngx-toastr';
 import { DatePipe } from '@angular/common';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
   selector: 'app-cross-consultation',
   templateUrl: './cross-consultation.component.html',
-  styleUrls: ['./cross-consultation.component.scss']
+  styleUrls: ['./cross-consultation.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations,
 })
 export class CrossConsultationComponent implements OnInit {
   crossconForm:FormGroup;
   date= new Date().toISOString();
   screenFromString = 'admission-form';
-
+  Departmentid=0;
+  DoctorID=0;
   autocompleteModedepartment: string = "Department";
   autocompleteModedeptdoc: string = "ConDoctor";
 
@@ -76,15 +80,15 @@ export class CrossConsultationComponent implements OnInit {
 
   onSubmit() {
     debugger
-  
+    if (this.crossconForm.valid) {
     var m_data = {
       "visitId": 0,
             "regId": 0,
-            "visitDate":"2024-09-18T11:24:02.656Z",//  this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
-            "visitTime":"2024-09-18T11:24:02.656Z",//this.dateTimeObj.time,
+            "visitDate": this.datePipe.transform(this.crossconForm.get("VisitDate").value, 'yyyy-MM-dd') || this.dateTimeObj.date,
+            "visitTime":"2024-09-18T11:24:02.656Z",// this.datePipe.transform(this.crossconForm.get("VisitDate").value, 'yyyy-MM-dd HH:mm:ss'),
             "unitId": 0,
             "patientTypeId": 0,
-            "consultantDocId":this.deptdocId,
+            "consultantDocId":this.crossconForm.get('DoctorID').value,
             "refDocId": 0,
             "tariffId": 0,
             "companyId": 0,
@@ -94,7 +98,7 @@ export class CrossConsultationComponent implements OnInit {
             "isCancelled": true,
             "isCancelledDate":"2024-09-18T11:24:02.656Z",
             "classId": 0,
-            "departmentId":this.departmentId,
+            "departmentId":this.crossconForm.get('Departmentid').value,
             "patientOldNew": 0,
             "firstFollowupVisit": 0,
             "appPurposeId": 0,
@@ -109,6 +113,7 @@ export class CrossConsultationComponent implements OnInit {
     }, (error) => {
       this.toastr.error(error.message);
     });
+  }
   }
 
   onClear(val: boolean) {

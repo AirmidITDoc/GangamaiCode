@@ -506,6 +506,12 @@ public InsertNewAdmission(Param: any, showLoader = true) {
       return this._httpClient1.PutData("Admission/AdmissionInsertSP" + Param.admissionId, Param, showLoader);
   } else return this._httpClient1.PostData("Admission/AdmissionInsertSP", Param, showLoader);
 }
+
+
+public getAdmittedPatientListNew(employee) {
+  return this._httpClient1.PostData("Admission/AdmissionList", employee)
+}  
+
 }
 
 

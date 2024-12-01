@@ -303,6 +303,7 @@ export class AppointmentComponent implements OnInit {
     displayedColumns = [
         "PatientOldNew",
         "RegNoWithPrefix",
+        "CrossConsultation",
         "PatientName",
         "DVisitDate",
         "OPDNo",

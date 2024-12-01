@@ -31,7 +31,7 @@ constructor(public _httpClient:HttpClient,public _httpClient1:ApiCaller,
       this.myFilterform=this.filterForm();
       this.myShowAdvanceForm = this.showAdvanceForm();
       this.paymentForm =this.showPaymentForm();
-      this.mySaveForm=this.saveForm();
+      // this.mySaveForm=this.DischargesaveForm();
       this.bsaveForm=this.bedsaveForm();
       this.psaveForm=this.presaveForm();
       this.myRefundBillForm=this.refundBillForm();
@@ -281,7 +281,7 @@ constructor(public _httpClient:HttpClient,public _httpClient1:ApiCaller,
     });
   }
 
-  saveForm(): FormGroup{
+  DischargesaveForm(): FormGroup{
     return this._formBuilder.group({
      RegNo: '',
      DoctorID:'',

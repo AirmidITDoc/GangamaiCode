@@ -173,6 +173,7 @@ export class ServiceMaster {
     UpdatedBy: number;
     AddedByName: string;
     IsDeleted:any;
+    
     /**
      * Constructor
      *

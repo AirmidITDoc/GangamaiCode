@@ -115,13 +115,13 @@
 
                                         <!-- [value]="data?.departmentId"  [value]="data?.DoctorID"-->
                                      <airmid-autocomplete label="Departmentid" formControlName="Departmentid" 
-                                        [formGroup]="crossconForm"
+                                        [formGroup]="crossconForm"  [value]="Departmentid" 
                                         [validations]="getValidationDeptMessages().Departmentid"
                                         [mode]="autocompleteModedepartment" (selectDdlObject)="selectChangedepartment($event)">
                                     </airmid-autocomplete>
                                      
                                         <airmid-autocomplete label="DoctorID" formControlName="DoctorID"
-                                        [formGroup]="crossconForm"
+                                        [formGroup]="crossconForm"  [value]="DoctorID"
                                         [validations]="getValidationdoctorMessages().DoctorID"
                                         [mode]="autocompleteModedeptdoc" (selectDdlObject)="selectChangedeptdoc($event)">
                                     </airmid-autocomplete>
