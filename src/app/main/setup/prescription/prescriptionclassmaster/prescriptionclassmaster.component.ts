@@ -11,6 +11,7 @@ import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { NewPrescriptionClassComponent } from "./new-prescription-class/new-prescription-class.component";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 
 
 @Component({
@@ -22,21 +23,42 @@ import { NewPrescriptionClassComponent } from "./new-prescription-class/new-pres
 })
 export class PrescriptionclassmasterComponent implements OnInit {
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    
     gridConfig: gridModel = {
         apiUrl: "Priscriptionclass/List",
         columnsList: [
-            { heading: "Code", key: "classId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Class Name", key: "className", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+            { heading: "Code", key: "classId", sort: true, align: 'left', emptySign: 'NA', width:200 },
+            { heading: "Class Name", key: "className", sort: true, align: 'left', emptySign: 'NA', width:500 },
+            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width:200 },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:200, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
-                            debugger
+                            this.onSave(data)
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             debugger
+                            this.confirmDialogRef = this._matDialog.open(
+                                FuseConfirmDialogComponent,
+                                {
+                                    disableClose: false,
+                                }
+                            );
+                            this.confirmDialogRef.componentInstance.confirmMessage =
+                                "Are you sure you want to deactive?";
+                            this.confirmDialogRef.afterClosed().subscribe((result) => {
+                                debugger
+                                if (result) {
+                                    let that=this;
+                                    this._PrescriptionclassService.deactivateTheStatus(data.classId).subscribe((data: any) => {
+                                        this.toastr.success(data.message);
+                                        that.grid.bindGridData();
+                                    });
+                                }
+                                this.confirmDialogRef = null;
+                            });
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
@@ -53,6 +75,24 @@ export class PrescriptionclassmasterComponent implements OnInit {
         public _PrescriptionclassService: PrescriptionclassmasterService,public _matDialog: MatDialog,
         public toastr : ToastrService,
     ) {}
+
+    onSave(row: any = null) {
+        debugger
+        let that = this;
+        const dialogRef = this._matDialog.open(NewPrescriptionClassComponent,
+            {
+                maxWidth: "45vw",
+                height: '35%',
+                width: '70%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
+        });
+    }
+
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -60,7 +100,6 @@ export class PrescriptionclassmasterComponent implements OnInit {
        
     }
   
-
     onSearchClear() {
         this._PrescriptionclassService.myformSearch.reset({
             TemplateNameSearch: "",
@@ -72,11 +111,9 @@ export class PrescriptionclassmasterComponent implements OnInit {
     onSearch() {
        
     }
-  
-
      
     onClear() {
-        this._PrescriptionclassService.myForm.reset({ IsDeleted: "false" });
+        this._PrescriptionclassService.prescriptionForm.reset({ IsDeleted: "false" });
         this._PrescriptionclassService.initializeFormGroup();
     }
 
@@ -94,66 +131,21 @@ export class PrescriptionclassmasterComponent implements OnInit {
         this._PrescriptionclassService.populateForm(m_data1);
     }
 
-    changeStatus(status: any) {
-        switch (status.id) {
-            case 1:
-                //this.onEdit(status.data)
-                break;
-            case 2:
-                this.onEdit(status.data)
-                break;
-            case 5:
-                this.onDeactive(status.data.classId);
-                break;
-            default:
-                break;
-        }
-    }
-    
-    onDeactive(classId) {
-        debugger
-        this.confirmDialogRef = this._matDialog.open(
-            FuseConfirmDialogComponent,
-            {
-                disableClose: false,
-            }
-        );
-        this.confirmDialogRef.componentInstance.confirmMessage =
-            "Are you sure you want to deactive?";
-        this.confirmDialogRef.afterClosed().subscribe((result) => {
-            debugger
-            if (result) {
-                this._PrescriptionclassService.deactivateTheStatus(classId).subscribe((data: any) => {
-                   // this.msg = data
-                    if (data.StatusCode == 200) {
-                        this.toastr.success(
-                            "Record updated Successfully.",
-                            "updated !",
-                            {
-                                toastClass:
-                                    "tostr-tost custom-toast-success",
-                            }
-                        );
-                        
-                    }
-                });
-            }
-            this.confirmDialogRef = null;
-        });
-    }
-
-    newgPrescriptionClassmaster() {
-        const dialogRef = this._matDialog.open(NewPrescriptionClassComponent,
-            {
-                maxWidth: "45vw",
-                height: '35%',
-                width: '70%',
-            });
-        dialogRef.afterClosed().subscribe(result => {
-            console.log('The dialog was closed - Insert Action', result);
-
-        });
-    }
+    // changeStatus(status: any) {
+    //     switch (status.id) {
+    //         case 1:
+    //             //this.onEdit(status.data)
+    //             break;
+    //         case 2:
+    //             this.onEdit(status.data)
+    //             break;
+    //         // case 5:
+    //         //     this.onDeactive(status.data.classId);
+    //         //     break;
+    //         default:
+    //             break;
+    //     }
+    // }
 }
 export class PrescriptionClassMaster {
     classId: number;

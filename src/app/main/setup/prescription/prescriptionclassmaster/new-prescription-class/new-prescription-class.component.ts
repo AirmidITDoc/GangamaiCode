@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { PrescriptionclassmasterService } from '../prescriptionclassmaster.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-new-prescription-class',
@@ -7,26 +11,58 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NewPrescriptionClassComponent implements OnInit {
 
-  constructor() { }
+  prescriptionForm:FormGroup;
+
+  constructor(
+    public _PrescriptionclassService: PrescriptionclassmasterService,
+        public dialogRef: MatDialogRef<NewPrescriptionClassComponent>,
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        public toastr: ToastrService
+  ) { }
 
   ngOnInit(): void {
+    this.prescriptionForm=this._PrescriptionclassService.createPrescriptionclassForm();
+    var m_data={
+      templateId:this.data?.TemplateId,
+      templateName:this.data?.TemplateName,
+      templateDesc:this.data?.TemplateDesc,
+      isActive: JSON.stringify(this.data?.isActive),
+    };
+    this.prescriptionForm.patchValue(m_data);
   }
-//   onSubmit() {
-//     if (this._PrescriptionclassService.myForm.valid) {
+  onSubmit() {
+    if(!this.prescriptionForm.get("TemplateId").value){
+      var mdata={
+        "classId": 0,
+        "className": this.prescriptionForm.get("TemplateName").value || ""
+      }
+      console.log("class json:", mdata);
+
+      this._PrescriptionclassService.prescriptionClassMasterSave(this.prescriptionForm.value).subscribe((response)=>{
+        this.toastr.success(response.message);
+        this.onClear(true);
+      }, (error)=>{
+        this.toastr.error(error.message);
+      });
+    } else{
+      //update
+    }
+    
+//     if (this.prescriptionForm.valid) {
 //         if (
-//             !this._PrescriptionclassService.myForm.get("TemplateId").value
+//             !this.prescriptionForm.get("TemplateId").value
 //         ) {
 //             var m_data = {
 //                 prescriptionTemplateMasterInsert: {
-//                     templateName: this._PrescriptionclassService.myForm
+//                     templateName: this.prescriptionForm
 //                         .get("TemplateName")
 //                         .value.trim(),
-//                     templateDesc: this._PrescriptionclassService.myForm
+//                     templateDesc: this.prescriptionForm
 //                         .get("TemplateDesc")
 //                         .value.trim(),
 //                     isDeleted: Boolean(
 //                         JSON.parse(
-//                             this._PrescriptionclassService.myForm.get(
+//                             this.prescriptionForm.get(
 //                                 "IsDeleted"
 //                             ).value
 //                         )
@@ -67,18 +103,18 @@ export class NewPrescriptionClassComponent implements OnInit {
 //             var m_dataUpdate = {
 //                 prescriptionTemplateMasterUpdate: {
 //                     templateId:
-//                         this._PrescriptionclassService.myForm.get(
+//                         this.prescriptionForm.get(
 //                             "TemplateId"
 //                         ).value,
-//                     templateName: this._PrescriptionclassService.myForm
+//                     templateName: this.prescriptionForm
 //                         .get("TemplateName")
 //                         .value.trim(),
-//                     templateDesc: this._PrescriptionclassService.myForm
+//                     templateDesc: this.prescriptionForm
 //                         .get("TemplateDesc")
 //                         .value.trim(),
 //                     isDeleted: Boolean(
 //                         JSON.parse(
-//                             this._PrescriptionclassService.myForm.get(
+//                             this.prescriptionForm.get(
 //                                 "IsDeleted"
 //                             ).value
 //                         )
@@ -118,5 +154,9 @@ export class NewPrescriptionClassComponent implements OnInit {
 //         }
 //         this.onClear();
 //     }
-// }
+}
+onClear(val: boolean) {
+  this.prescriptionForm.reset();
+  this.dialogRef.close(val);
+}
 }

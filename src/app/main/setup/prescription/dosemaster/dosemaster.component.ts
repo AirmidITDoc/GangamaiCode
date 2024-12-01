@@ -11,6 +11,7 @@ import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/conf
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { NewDoseMasterComponent } from "./new-dose-master/new-dose-master.component";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 
 @Component({
     selector: "app-dosemaster",
@@ -21,24 +22,44 @@ import { NewDoseMasterComponent } from "./new-dose-master/new-dose-master.compon
 })
 export class DosemasterComponent implements OnInit {
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+
     gridConfig: gridModel = {
         apiUrl: "DoseMaster/List",
         columnsList: [
-            { heading: "Code", key: "doseId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Dose Name", key: "doseName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Dose Name English", key: "doseNameInEnglish", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Dose Name Marathi ", key: "doseNameInMarathi", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
-            { heading: "Qty/Day", key: "doseQtyPerDay", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Code", key: "doseId", sort: true, align: 'left', emptySign: 'NA', width:100 },
+            { heading: "Dose Name", key: "doseName", sort: true, align: 'left', emptySign: 'NA', width:250 },
+            { heading: "Dose Name English", key: "doseNameInEnglish", sort: true, align: 'left', emptySign: 'NA' , width:250},
+            { heading: "Dose Name Marathi ", key: "doseNameInMarathi", sort: true, align: 'left', emptySign: 'NA', width:250 },
+            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center",width:110 },
+            { heading: "Qty/Day", key: "doseQtyPerDay", sort: true, align: 'left', emptySign: 'NA',width:100 },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:110, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
-                            debugger
+                           this.onSave(data);
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             debugger
+                            this.confirmDialogRef = this._matDialog.open(
+                                FuseConfirmDialogComponent,
+                                {
+                                    disableClose: false,
+                                }
+                            );
+                            this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+                            this.confirmDialogRef.afterClosed().subscribe((result) => {
+                                debugger
+                                if (result) {
+                                    let that=this;
+                                    this._DoseService.deactivateTheStatus(data.doseId).subscribe((data: any) => {
+                                        this.toastr.success(data.message)
+                                        that.grid.bindGridData();
+                                    });
+                                }
+                                this.confirmDialogRef = null;
+                            });
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
@@ -92,64 +113,34 @@ export class DosemasterComponent implements OnInit {
         this._DoseService.populateForm(m_data1);
     }
 
-    changeStatus(status: any) {
-        switch (status.id) {
-            case 1:
-                //this.onEdit(status.data)
-                break;
-            case 2:
-                this.onEdit(status.data)
-                break;
-            case 5:
-                this.onDeactive(status.data.doseId);
-                break;
-            default:
-                break;
-        }
-    }
-   
-    onDeactive(doseId) {
-        debugger
-        this.confirmDialogRef = this._matDialog.open(
-            FuseConfirmDialogComponent,
-            {
-                disableClose: false,
-            }
-        );
-        this.confirmDialogRef.componentInstance.confirmMessage =
-            "Are you sure you want to deactive?";
-        this.confirmDialogRef.afterClosed().subscribe((result) => {
-            debugger
-            if (result) {
-                this._DoseService.deactivateTheStatus(doseId).subscribe((data: any) => {
-                    
-                    if (data.StatusCode == 200) {
-                        this.toastr.success(
-                            "Record updated Successfully.",
-                            "updated !",
-                            {
-                                toastClass:
-                                    "tostr-tost custom-toast-success",
-                            }
-                        );
-                        // this.getGenderMasterList();
-                    }
-                });
-            }
-            this.confirmDialogRef = null;
-        });
-    }
+    // changeStatus(status: any) {
+    //     switch (status.id) {
+    //         case 1:
+    //             //this.onEdit(status.data)
+    //             break;
+    //         case 2:
+    //             this.onEdit(status.data)
+    //             break;
+    //         case 5:
+    //             this.onDeactive(status.data.doseId);
+    //             break;
+    //         default:
+    //             break;
+    //     }
+    // }
 
-    newDosemaster() {
+    onSave(row: any=null) {
+        let that = this;
         const dialogRef = this._matDialog.open(NewDoseMasterComponent,
             {
                 maxWidth: "45vw",
-                height: '35%',
+                height: '40%',
                 width: '70%',
             });
         dialogRef.afterClosed().subscribe(result => {
-            console.log('The dialog was closed - Insert Action', result);
-
+            if(result){
+                that.grid.bindGridData();
+            }
         });
     }
 }

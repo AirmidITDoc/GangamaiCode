@@ -11,16 +11,18 @@
             </div>
         </div>
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="newgPrescriptionClassmaster()">New Prescription Class
+            <button mat-raised-button (click)="onSave()">New Prescription Class
             </button>
         </div>
     </div>
+
+    
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-        <airmid-table [gridConfig]="gridConfig" (status)="changeStatus($event)" class="content">
+        <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
                 <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Prescription Class Name</mat-label>
-                    <input matInput placeholder="Search Prescription Class Name" autocomplete="off"
+                    <input matInput placeholder="Search Class Name" autocomplete="off"
                         [(ngModel)]="gridConfig.filters[0].fieldValue" />
                     <button mat-button matSuffix mat-icon-button aria-label="Clear"
                         (click)="gridConfig.filters[0].fieldValue=''">

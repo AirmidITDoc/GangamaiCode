@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
+import { DosemasterService } from '../dosemaster.service';
 
 @Component({
   selector: 'app-new-dose-master',
@@ -7,9 +11,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NewDoseMasterComponent implements OnInit {
 
-  constructor() { }
+  doseForm:FormGroup;
+
+  constructor(
+    public _doseMasterService: DosemasterService,
+    public dialogRef: MatDialogRef<NewDoseMasterComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public toastr: ToastrService
+) { }
 
   ngOnInit(): void {
+    this.doseForm=this._doseMasterService.createDoseForm();
+    var m_data={
+      DoseId:this.data?.DrugId,
+      DoseName:this.data?.DrugName, 
+    };
+    this.doseForm.patchValue(m_data);    
+    console.log("dose mdata:", m_data)
   }
 
 
@@ -29,7 +47,25 @@ export class NewDoseMasterComponent implements OnInit {
 // }
 
 
-// onSubmit() {
+onSubmit() {
+  if(!this.doseForm.get("DoseId").value){
+    debugger
+    var mdata=
+    {
+      "doseId": 0,
+      "doseName": this.doseForm.get("DoseName").value || "",
+    }
+    console.log("dose json:", mdata);
+
+    this._doseMasterService.doseMasterInsert(this.doseForm.value).subscribe((response)=>{
+      this.toastr.success(response.message);
+      this.onClear(true);
+    }, (error)=>{
+      this.toastr.error(error.message);
+    });
+  } else{
+    //update
+  }
 //   if (this._DoseService.myForm.valid) {
 //       if (!this._DoseService.myForm.get("DoseId").value) {
 //           var m_data = {
@@ -132,5 +168,9 @@ export class NewDoseMasterComponent implements OnInit {
 //       }
 //       this.onClear();
 //   }
-// }
+}
+onClear(val: boolean) {
+  this.doseForm.reset();
+  this.dialogRef.close(val);
+}
 }

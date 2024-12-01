@@ -1,27 +1,26 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { gridRequest } from "app/core/models/gridRequest";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable()
 export class GenericmasterService {
-    myForm: FormGroup;
+    genericForm: FormGroup;
     myformSearch: FormGroup;
     constructor(
         private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder
     ) {
-        this.myForm = this.createGenericForm();
+        this.genericForm = this.createGenericForm();
         this.myformSearch = this.createSearchForm();
     }
 
     createGenericForm(): FormGroup {
         return this._formBuilder.group({
             GenericId: [""],
-            GenericName: [""],
-
-            IsDeleted: ["false"],
+            GenericName: ["", Validators.required],
+            isActive: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
             AddedByName: [""],
@@ -38,6 +37,15 @@ export class GenericmasterService {
         this.createGenericForm();
     }
 
+    getValidationMessages(){
+        return{
+            GenericName: [
+                { name: "required", Message: "Generic Name is required" },
+                { name: "maxlength", Message: "Generic Name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        }
+    }
   
 
     public getgenericMasterList(param: gridRequest, showLoader = true) {
@@ -45,7 +53,9 @@ export class GenericmasterService {
     }
 
     public genericMasterInsert(Param: any, showLoader = true) {
-        return this._httpClient.PostData("generic", Param, showLoader);
+        if (Param.GenericId) {
+            return this._httpClient.PutData("GenericMaster/" + Param.GenericId, Param, showLoader);
+        } else return this._httpClient.PostData("GenericMaster", Param, showLoader);
     }
 
     public genericMasterUpdate(id: number , Param: any, showLoader = true) {
@@ -58,6 +68,6 @@ export class GenericmasterService {
         return this._httpClient.PostData("generic", m_data);
     }
     populateForm(param) {
-        this.myForm.patchValue(param);
+        this.genericForm.patchValue(param);
     }
 }

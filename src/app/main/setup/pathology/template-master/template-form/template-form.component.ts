@@ -16,6 +16,9 @@ import { FormGroup } from '@angular/forms';
 })
 export class TemplateFormComponent implements OnInit {
     templateForm: FormGroup;
+
+    vTemplateName:any;
+    TemplateId = 0;
     constructor(
         public _TemplateServieService: TemplateServieService,
         public dialogRef: MatDialogRef<TemplateFormComponent>,
@@ -38,16 +41,17 @@ export class TemplateFormComponent implements OnInit {
           debugger
             this._TemplateServieService.templateMasterSave(this.templateForm.value).subscribe((response) => {
                 this.toastr.success(response.message);
-                this.onClear(true);
+                this.onClear();
             }, (error) => {
                 this.toastr.error(error.message);
             });
         }
     }
-  
-    onClear(val: boolean) {
-        this.templateForm.reset();
-        this.dialogRef.close(val);
-    }
+    onClose(){}
+    onClear(){}
+    // onClear(val: boolean) {
+    //     this.templateForm.reset();
+    //     this.dialogRef.close(val);
+    // }
   }
   

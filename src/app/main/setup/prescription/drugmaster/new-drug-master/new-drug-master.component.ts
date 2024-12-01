@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { DrugmasterService } from '../drugmaster.service';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-new-drug-master',
@@ -7,14 +11,56 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NewDrugMasterComponent implements OnInit {
 
-  constructor() { }
+  drugForm:FormGroup;
+
+  autocompleteModeClass: string = "Class";  
+  autocompleteModeGenericName: string = "GenericName";
+
+  constructor(
+      public _durgMasterService: DrugmasterService,
+      public dialogRef: MatDialogRef<NewDrugMasterComponent>,
+      @Inject(MAT_DIALOG_DATA) public data: any,
+      public toastr: ToastrService
+  ) { }
 
   ngOnInit(): void {
     // this.getGenericNameCombobox();
     // this.getClassNameCombobox();
+    this.drugForm=this._durgMasterService.createDrugForm();
+    var m_data={
+      DrugId:this.data?.DrugId,
+      DrugName:this.data?.DrugName, 
+      GenericId:this.data?.GenericId, 
+      ClassId:this.data?.ClassId,      
+      isActive: JSON.stringify(this.data?.isActive)
+    };
+    this.drugForm.patchValue(m_data);    
+    console.log("drug mdata:", m_data)
 
   }
-//   onSubmit() {
+  onSubmit() {
+    if(!this.drugForm.get("DrugId").value){
+      debugger
+      var mdata=
+      {
+        "drugId": 0,
+        "drugName": this.drugForm.get("DrugName").value || "",
+        "genericId": parseInt(this.drugForm.get("GenericId").value) || 0,
+        "classId": parseInt(this.drugForm.get("ClassId").value) || 0,
+        "isActive": true
+      }
+      console.log("drug json:", mdata);
+
+      this._durgMasterService.drugMasterInsert(this.drugForm.value).subscribe((response)=>{
+        this.toastr.success(response.message);
+        this.onClear(true);
+      }, (error)=>{
+        this.toastr.error(error.message);
+      });
+    } else{
+      //update
+    }
+
 //     if (this._drugService.myform.valid) {
 //         if (!this._drugService.myform.get("DrugId").value) {
 //             var m_data = {
@@ -117,5 +163,38 @@ export class NewDrugMasterComponent implements OnInit {
 //         }
 //         this.onClear();
 //     }
-// }
+}
+
+onClear(val: boolean) {
+  this.drugForm.reset();
+  this.dialogRef.close(val);
+}
+
+ClassId=0;
+GenericId=0;
+
+selectChangeClass(obj: any){
+  console.log(obj);
+  this.ClassId=obj.value
+}
+selectChangeGeneric(obj: any){
+  console.log(obj);
+  this.ClassId=obj.value
+}
+
+getValidationGeneric(){
+  return {
+    GenericId: [
+          { name: "required", Message: "Generic Name is required" }
+      ]
+  };
+}
+getValidationClass(){
+  return {
+    ClassId: [
+          { name: "required", Message: "Class Name is required" }
+      ]
+  };
+}
+
 }

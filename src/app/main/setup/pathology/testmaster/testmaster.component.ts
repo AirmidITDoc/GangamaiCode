@@ -37,11 +37,10 @@ export class TestmasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "PathTestMaster/List",
         columnsList: [
-            { heading: "Code", key: "testId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Test Name", key: "testName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
-            {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+            { heading: "Code", key: "testId", sort: true, align: 'left', emptySign: 'NA', width :100 },
+            { heading: "Test Name", key: "testName", sort: true, align: 'left', emptySign: 'NA', width :850 },
+            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width :100 },
+            { heading: "Action", key: "action", align: "right", width :100, type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
@@ -58,7 +57,7 @@ export class TestmasterComponent implements OnInit {
                             this.confirmDialogRef.afterClosed().subscribe((result) => {
                                 if (result) {
                                     let that = this;
-                                    this._TestService.deactivateTheStatus(data.unitId).subscribe((response: any) => {
+                                    this._TestService.deactivateTheStatus(data.testId).subscribe((response: any) => {
                                         this.toastr.success(response.message);
                                         that.grid.bindGridData();
                                     });
