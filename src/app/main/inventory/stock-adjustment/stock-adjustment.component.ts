@@ -35,12 +35,12 @@ import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 
 export class StockAdjustmentComponent implements OnInit {
 
- confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     hasSelectedContacts: boolean;
    
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
-        apiUrl: "StockAdjustment/StockAdjustmentList",
+    apiUrl: "StockAdjustment/StockAdjustmentList",
     columnsList: [
         { heading: "StockId", key: "stockId", sort: true, align: 'left', emptySign: 'NA',width :50 },
         { heading: "ItemId", key: "itemId", sort: true, align: 'left', emptySign: 'NA',width :50 },

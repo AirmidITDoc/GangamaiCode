@@ -147,7 +147,7 @@
                                                 <mat-label>Price</mat-label>
                                                 <input matInput [(ngModel)]="b_price" name="bPrice" #price
                                                     (keyup)="calculateTotalAmtbyprice()" formControlName="price"
-                                                    required type="number" id="Price" #price
+                                                    required type="number" id="Price"
                                                     (keydown)="onEnterorice($event)"
                                                     oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);">
                                                 <mat-error

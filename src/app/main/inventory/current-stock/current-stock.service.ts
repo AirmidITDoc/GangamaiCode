@@ -146,4 +146,8 @@ export class CurrentStockService {
   public getSalesReturnDetailSummeryList(param){
     return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_Phar_SalesRetrunList_CurrentDet",param);
   }
+
+  public deactivateTheStatus(m_data) {
+    // return this._httpClient.Post("VisitDetail", m_data);
+  }
 }
