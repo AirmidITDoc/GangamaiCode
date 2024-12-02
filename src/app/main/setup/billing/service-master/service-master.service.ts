@@ -84,6 +84,18 @@ export class ServiceMasterService {
         } else return this._httpClient.PostData("BillingService/InsertEDMX", Param, showLoader);
     }
 
+    public getClassMasterList(param) {
+        return this._httpClient.PostData("ClassMaster/List",param);
+    }
+
+    // public getServicewiseClassMasterList(param,loader = true) {
+    //     if (loader) {
+    //         this._loaderService.show();
+    //     }
+    //     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ServiceClassdetail",param
+    //     );
+    // }
+
     populateForm(param) {
         debugger;
         this.myform.patchValue(param);
