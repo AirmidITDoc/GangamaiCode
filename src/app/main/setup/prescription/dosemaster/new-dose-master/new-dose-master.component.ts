@@ -54,6 +54,9 @@ onSubmit() {
     {
       "doseId": 0,
       "doseName": this.doseForm.get("DoseName").value || "",
+      "doseNameInEnglish": this.doseForm.get("DoseNameInEnglish").value,
+      "doseNameInMarathi": "pqr",
+      "doseQtyPerDay": parseInt(this.doseForm.get("DoseQtyPerDay").value )     
     }
     console.log("dose json:", mdata);
 

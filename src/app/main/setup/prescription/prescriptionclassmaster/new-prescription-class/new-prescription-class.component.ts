@@ -23,18 +23,17 @@ export class NewPrescriptionClassComponent implements OnInit {
   ngOnInit(): void {
     this.prescriptionForm=this._PrescriptionclassService.createPrescriptionclassForm();
     var m_data={
-      templateId:this.data?.TemplateId,
-      templateName:this.data?.TemplateName,
-      templateDesc:this.data?.TemplateDesc,
+      ClassId:this.data?.ClassId,
+      ClassName:this.data?.ClassName,
       isActive: JSON.stringify(this.data?.isActive),
     };
     this.prescriptionForm.patchValue(m_data);
   }
   onSubmit() {
-    if(!this.prescriptionForm.get("TemplateId").value){
+    if(!this.prescriptionForm.get("ClassId").value){
       var mdata={
         "classId": 0,
-        "className": this.prescriptionForm.get("TemplateName").value || ""
+        "className": this.prescriptionForm.get("ClassName").value || ""
       }
       console.log("class json:", mdata);
 

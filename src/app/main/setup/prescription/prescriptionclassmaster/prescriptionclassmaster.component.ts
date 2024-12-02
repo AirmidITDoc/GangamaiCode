@@ -29,10 +29,10 @@ export class PrescriptionclassmasterComponent implements OnInit {
         apiUrl: "Priscriptionclass/List",
         columnsList: [
             { heading: "Code", key: "classId", sort: true, align: 'left', emptySign: 'NA', width:200 },
-            { heading: "Class Name", key: "className", sort: true, align: 'left', emptySign: 'NA', width:500 },
+            { heading: "Class Name", key: "className", sort: true, align: 'left', emptySign: 'NA', width:550 },
             { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width:200 },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:200, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:230, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data)

@@ -1,3 +1,4 @@
+
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
@@ -18,10 +19,9 @@ export class PrescriptionclassmasterService {
 
     createPrescriptionclassForm(): FormGroup {
         return this._formBuilder.group({
-            TemplateId: [""],
-            TemplateName: ["", Validators.required],
-            TemplateDesc: ["", Validators.required],
-            isActive: ["true"],
+            ClassId: [""],
+            ClassName: ["", Validators.required, Validators.pattern("^[A-Za-z ]+$")],
+            isActive: ["true"]
             // AddedBy: ["0"],
             // UpdatedBy: ["0"],
             // AddedByName: [""],
@@ -39,22 +39,17 @@ export class PrescriptionclassmasterService {
 
     getValidationMessages() {
         return {
-            TemplateName: [
-                { name: "required", Message: "TemplateName is required" },
-                { name: "maxlength", Message: "TemplateName should not be greater than 50 char." },
+            ClassName: [
+                { name: "required", Message: "Class Name is required" },
+                { name: "maxlength", Message: "Class Name should not be greater than 50 char." },
                 { name: "pattern", Message: "Special char not allowed." }
-            ],
-            TemplateDesc: [
-                { name: "required", Message: "TemplateDesc is required" },
-                { name: "maxlength", Message: "TemplateDesc should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ],
+            ]
         };
     }
 
     public prescriptionClassMasterSave(Param: any, showLoader = true) {
-        if (Param.TemplateId) {
-            return this._httpClient.PutData("Priscriptionclass/" + Param.TemplateId, Param, showLoader);
+        if (Param.classId) {
+            return this._httpClient.PutData("Priscriptionclass/" + Param.ClassId, Param, showLoader);
         } else return this._httpClient.PostData("Priscriptionclass", Param, showLoader);
     }
    

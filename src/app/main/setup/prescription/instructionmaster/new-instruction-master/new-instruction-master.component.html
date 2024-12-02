@@ -2,7 +2,7 @@
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> New Prescription class Master</span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Instruction Master</span>
             </div>
             <div class="modal-header-right">
                 <div class="close-icon">
@@ -17,18 +17,17 @@
 
 <div class="modal-body" fusePerfectScrollbar>
     <div class="modal-body-container">
-            <form [formGroup]="prescriptionForm">
+            <form [formGroup]="instructionForm">
 
-                <input type="hidden" name="ClassId" formControlName="ClassId">
+                <input type="hidden" name="InstructionId" formControlName="InstructionId">
 
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <airmid-textbox label="Class Name" formControlName="ClassName" [value]=""
-                        [formGroup]="prescriptionForm"
-                        [validations]="_PrescriptionclassService.getValidationMessages().ClassName"
-                        [maxLength]="300">
+                    <airmid-textbox label="Instruction Name" formControlName="InstructionName" [value]=""
+                        [formGroup]="instructionForm"
+                        [validations]="_InstructionMasterService.getValidationMessages().InstructionName"
+                         [maxLength]="300">
                     </airmid-textbox>
                 </div>
-
 
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                     <mat-radio-group name="isActive" formControlName="isActive" value='true'>
@@ -40,13 +39,13 @@
                 </div>
             </form>
         </div>
-        
-        <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
 
-            <button class="btn btn-danger-outline" (click)="onClear(false)">Reset</button>
-            <button class="btn btn-primary " color="accent" (click)="onSubmit()">
-                <span>Save</span>
-            </button>
-        </div>
+            <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
+
+                <button class="btn btn-danger-outline" (click)="onClear(false)">Reset</button>
+                <button class="btn btn-primary " color="accent" (click)="onSubmit()">
+                    <span>Save</span>
+                </button>
+            </div>
     </div>
 </div>

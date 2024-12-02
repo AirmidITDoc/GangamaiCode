@@ -26,18 +26,30 @@
                         [formGroup]="doseForm"
                         [validations]="_doseMasterService.getValidationMessages().DoseName"
                          [maxLength]="300">
+                         <mat-error class="error"
+                               *ngIf="doseForm.get('DoseName').invalid && doseForm.get('DoseName').touched">
+                               DoseName is required Enter only Alphabets
+                         </mat-error>
                     </airmid-textbox>
                 
                     <airmid-textbox label="DoseNameInEnglish" formControlName="DoseNameInEnglish" [value]=""
                         [formGroup]="doseForm"
                         [validations]="_doseMasterService.getValidationMessages().DoseNameInEnglish"
                          [maxLength]="300">
+                         <mat-error class="error"
+                               *ngIf="doseForm.get('DoseNameInEnglish').invalid && doseForm.get('DoseNameInEnglish').touched">
+                               DoseNameInEnglish is required Enter only Alphabets
+                         </mat-error>
                     </airmid-textbox>
 
                     <airmid-textbox label="DoseQtyPerDay" formControlName="DoseQtyPerDay" [value]=""
                         [formGroup]="doseForm"
                         [validations]="_doseMasterService.getValidationMessages().DoseQtyPerDay"
                          [maxLength]="300">
+                         <mat-error class="error"
+                               *ngIf="doseForm.get('DoseQtyPerDay').invalid && doseForm.get('DoseQtyPerDay').touched">
+                               DoseQtyPerDay number is required
+                         </mat-error>
                     </airmid-textbox>
                 </div>
 

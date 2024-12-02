@@ -17,6 +17,7 @@ import { AddformulaComponent } from "./addformula/addformula.component";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { ToastrService } from "ngx-toastr";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 
 
 @Component({
@@ -27,11 +28,28 @@ import { ToastrService } from "ngx-toastr";
     animations: fuseAnimations,
 })
 export class ParametermasterComponent implements OnInit {
+    
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    
     gridConfig: gridModel = {
         apiUrl: "PathParameterMaster/List",
         columnsList: [
             { heading: "Code", key: "parameterId",width: 150, sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Parameter Name", key: "parameterName",width: 800, sort: true, align: 'left', emptySign: 'NA' },
+
+            { heading: "Parameter Name", key: "parameterName",width: 200, sort: true, align: 'left', emptySign: 'NA' },
+
+            { heading: "Short Name", key: "parameterShortName",width: 200, sort: true, align: 'left', emptySign: 'NA' },
+
+            { heading: "PrintParameterName", key: "printParameterName",width: 200, sort: true, align: 'left', emptySign: 'NA' },
+            
+            { heading: "Unit Name", key: "unitId",width: 200, sort: true, align: 'left', emptySign: 'NA' },
+
+            { heading: "IsNumeric", key: "isNumeric",width: 100, sort: true, align: 'left', emptySign: 'NA' },
+
+            { heading: "IsPrintDisSummary", key: "isPrintDisSummary",width: 100, sort: true, align: 'left', emptySign: 'NA' },
+            
+            { heading: "AddedBy", key: "addedBy",width: 100, sort: true, align: 'left', emptySign: 'NA' },
+
             { heading: "IsDeleted", key: "isActive",width: 100, type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action",width: 100, align: "right", type: gridColumnTypes.action, actions: [
@@ -41,7 +59,23 @@ export class ParametermasterComponent implements OnInit {
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this.onDeactive(data.genderId); // DELETE Records
+                            this.confirmDialogRef = this._matDialog.open(
+                                FuseConfirmDialogComponent,
+                                {
+                                    disableClose: false,
+                                }
+                            );
+                            this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+                            this.confirmDialogRef.afterClosed().subscribe((result) => {
+                                if (result) {
+                                        let that = this;
+                                        this._ParameterService.deactivateTheStatus(data.parameterId).subscribe((response: any) => {
+                                            this.toastr.success(response.message);
+                                            that.grid.bindGridData();
+                                        });
+                                }
+                                this.confirmDialogRef = null;
+                            });
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
@@ -87,27 +121,27 @@ export class ParametermasterComponent implements OnInit {
         this._ParameterService.initializeFormGroup();
     }
 
-    onDeactive(parameterId) {
-        this.confirmDialogRef = this._matDialog.open(
-            FuseConfirmDialogComponent,
-            {
-                disableClose: false,
-            }
-        );
-        this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-        this.confirmDialogRef.afterClosed().subscribe((result) => {
-            if (result) {
-                this._ParameterService.deactivateTheStatus(parameterId).subscribe((response: any) => {
-                    if (response.StatusCode == 200) {
-                        this.toastr.success(response.Message);
-                        // this.getGenderMasterList();
-                        // How to refresh Grid.
-                    }
-                });
-            }
-            this.confirmDialogRef = null;
-        });
-    }
+    // onDeactive(parameterId) {
+    //     this.confirmDialogRef = this._matDialog.open(
+    //         FuseConfirmDialogComponent,
+    //         {
+    //             disableClose: false,
+    //         }
+    //     );
+    //     this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+    //     this.confirmDialogRef.afterClosed().subscribe((result) => {
+    //         if (result) {
+    //             this._ParameterService.deactivateTheStatus(parameterId).subscribe((response: any) => {
+    //                 if (response.StatusCode == 200) {
+    //                     this.toastr.success(response.Message);
+    //                     // this.getGenderMasterList();
+    //                     // How to refresh Grid.
+    //                 }
+    //             });
+    //         }
+    //         this.confirmDialogRef = null;
+    //     });
+    // }
 
     onEdit(row) {
         console.log()
@@ -164,6 +198,8 @@ export class ParametermasterComponent implements OnInit {
     }
     
     onAdd(row:any = null) {
+        debugger
+        let that = this;
         const dialogRef = this._matDialog.open(ParameterFormMasterComponent,
         {
             maxWidth: "100vw",
@@ -173,7 +209,7 @@ export class ParametermasterComponent implements OnInit {
         });
         dialogRef.afterClosed().subscribe(result => {
             if(result){
-             
+                that.grid.bindGridData();
             }
             console.log('The dialog was closed - Action', result);
         });
@@ -235,7 +271,7 @@ export class ParametermasterComponent implements OnInit {
 }
 
 export class PathparameterMaster {
-    parameterId: number;
+    ParameterID: number;
     ParameterShortName: string;
     ParameterName: string;
     PrintParameterName: string;
@@ -257,7 +293,7 @@ export class PathparameterMaster {
      */
     constructor(PathparameterMaster) {
         {
-            this.parameterId = PathparameterMaster.parameterId || "";
+            this.ParameterID = PathparameterMaster.parameterId || "";
             this.ParameterShortName = PathparameterMaster.ParameterShortName || "";
             this.ParameterName = PathparameterMaster.ParameterName || "";
             this.MethodName = PathparameterMaster.MethodName || "";

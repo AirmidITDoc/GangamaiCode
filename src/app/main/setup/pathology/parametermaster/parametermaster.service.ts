@@ -2,6 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { LoaderService } from "app/core/components/loader/loader.service";
+import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
     providedIn: "root",
@@ -17,7 +18,7 @@ export class ParametermasterService {
 
 
     constructor(
-        private _httpClient: HttpClient,
+        private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder,
         private _loaderService: LoaderService,
     ) {
@@ -33,15 +34,15 @@ export class ParametermasterService {
             ParameterID: [""],
             ParameterName: [
                 "",
-                [Validators.pattern("^[A-Za-z ]*$")],
+                [Validators.required,Validators.pattern("^[A-Za-z ]*$")],
             ],
             ParameterShortName: [
                 "",
-                [Validators.pattern("^[A-Za-z ]*$")],
+                [Validators.required,Validators.pattern("^[A-Za-z ]*$")],
             ],
             PrintParameterName: [
                 "",
-                [Validators.pattern("^[A-Za-z ]*$")],
+                [Validators.required,Validators.pattern("^[A-Za-z ]*$")],
             ],
             MethodName: ["",
              [Validators.pattern("^[A-Za-z ]*$")],
@@ -91,7 +92,7 @@ export class ParametermasterService {
         return this._formBuilder.group({
             ParameterNameSearch: [""],
             Formula: [""],
-            ParameterId:[""],
+            ParameterID:[""],
             Formulapara:[""],
             OPrator:[""],
             parameterName:[""],
@@ -101,7 +102,7 @@ export class ParametermasterService {
 
     public getStateList(CityId,loader = true) {
       
-        return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StateMasterForCombo_Conditional", { "Id": CityId })
+        return this._httpClient.PostData("Generic/GetByProc?procName=Retrieve_StateMasterForCombo_Conditional", { "Id": CityId })
       }
 
     initializeFormGroup() {
@@ -113,33 +114,37 @@ export class ParametermasterService {
         if (loader) {
             this._loaderService.show();
         }
-        return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PathParameterMaster_by_Name",
+        return this._httpClient.PostData("Generic/GetByProc?procName=m_Rtrv_PathParameterMaster_by_Name",
             m_data);
     }
      // Unit Master Combobox List
      public getUnitMasterCombo() {
-        return this._httpClient.post(
+        return this._httpClient.PostData(
             "Generic/GetByProc?procName=m_Rtrv_UnitMasterForCombo",{});
     }
      // Gender Master Combobox List
    
 
     public getGenderMasterCombo() { 
-        return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_GenderMasterForCombo",{});
+        return this._httpClient.PostData("Generic/GetByProc?procName=m_Rtrv_GenderMasterForCombo",{});
     }
 
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.post(
+        return this._httpClient.PostData(
             "Generic/ExecByQueryStatement?query=" + m_data, {});
     }
 
-    public insertParameterMaster(param) {
-        return this._httpClient.post("PathologyMaster/ParameterAgeWiseMasterSave", param);
+    public insertParameterMaster(Param: any, showLoader = true) {
+        if (Param.ParameterID) {
+            return this._httpClient.PutData("PathParameterMaster/" + Param.ParameterID, Param, showLoader);
+        } else 
+        
+        return this._httpClient.PostData("PathParameterMaster", Param, showLoader);
     }
 
     public updateParameterMaster(param) {
-        return this._httpClient.post("PathologyMaster/ParameterAgeWiseMasterUpdate", param);
+        return this._httpClient.PostData("PathologyMaster/ParameterAgeWiseMasterUpdate", param);
     }
 
     //detail of Range Master
@@ -153,7 +158,7 @@ export class ParametermasterService {
 
     // Gender Master Combobox List
     public getParameterMaster1Combo() {
-        return this._httpClient.post(
+        return this._httpClient.PostData(
             "Generic/GetByProc?procName=Rtrv_PathParameterList_by_Name",
             {}
         );
@@ -162,26 +167,26 @@ export class ParametermasterService {
    
 
     public deleteAssignParameterToRange(param) {
-        return this._httpClient.post("Pathology/ParameterUpdate", param);
+        return this._httpClient.PostData("Pathology/ParameterUpdate", param);
     }
 
     // public getNumericMasterItem(param){
     //     return this._httpClient.post(
     //         "Generic/GetByProc?procName=Rtrv_PathParameterRangeWithAge",
-    //         { ParameterId: param }
+    //         { ParameterID: param }
     //     ); 
     // }
     public getTableData(param){
         if(this.is_numeric) {
-            return this._httpClient.post(
+            return this._httpClient.PostData(
                 "Generic/GetByProc?procName=m_Rtrv_PathParameterRangeWithAge",
-                { ParameterId: param }
+                { ParameterID: param }
             ); 
         }
         else{
-        return this._httpClient.post(
+        return this._httpClient.PostData(
             "Generic/GetByProc?procName=m_Rtrv_PathDescriptiveValues_1",
-            { ParameterId: param }
+            { ParameterID: param }
         ); 
     }
     }
@@ -189,33 +194,33 @@ export class ParametermasterService {
     //Descriptive
 
     public getDescriptiveMasterList() {
-        return this._httpClient.post(
+        return this._httpClient.PostData(
             "Generic/GetByProc?procName=m_Rtrv_PathParameterDescriptiveMaster_by_Name",
             { ParameterName: "%" }
         );
     }
 
     public InsertParameterRangeMaster(param) {
-        return this._httpClient.post("ParameterAgeWiseMasterSave", param);
+        return this._httpClient.PostData("ParameterAgeWiseMasterSave", param);
     }
 
     public getParameterMasterCombo(param) {
-        return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PathParameterList_by_Name",param );
+        return this._httpClient.PostData("Generic/GetByProc?procName=m_Rtrv_PathParameterList_by_Name",param );
     }
     public getParameterMasterforformulaList(param,loader = true) {
         if (loader) {
             this._loaderService.show();
         }
-        return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_PathParaformulaList_by_Name",param );
+        return this._httpClient.PostData("Generic/GetByProc?procName=m_rtrv_PathParaformulaList_by_Name",param );
     }
     
 
     public deleteAssignParameterToDescriptive(param) {
-        return this._httpClient.post("Pathology/ParameterUpdate", param);
+        return this._httpClient.PostData("Pathology/ParameterUpdate", param);
     }
 
     public insertDescriptiveMaster(param) {
-        return this._httpClient.post("Pathology/DescriptiveSave", param);
+        return this._httpClient.PostData("Pathology/DescriptiveSave", param);
     }
 
     populateForm(param) {

@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
     providedIn: "root",
@@ -9,7 +10,7 @@ export class InstructionmasterService {
     myForm: FormGroup;
     myformSearch: FormGroup;
     constructor(
-        private _httpClient: HttpClient,
+        private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder
     ) {
         this.myForm = this.createInstructionForm();
@@ -19,13 +20,20 @@ export class InstructionmasterService {
     createInstructionForm(): FormGroup {
         return this._formBuilder.group({
             InstructionId: [""],
-            InstructionName: [""],
+            InstructionName: ["", Validators.required, Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")],
 
-            IsDeleted: ["false"],
+            isActive: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
             AddedByName: [""],
         });
+    }
+    getValidationMessages(){
+        return{
+            InstructionName: [
+                { name: "required", Message: "Instruction Name is required" }
+            ]
+        }
     }
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
@@ -37,22 +45,30 @@ export class InstructionmasterService {
         this.createInstructionForm();
     }
 
-    public getInstructionMasterList(param) {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_M_PrescriptionInstructionMaster",
-            param
-        );
-    }
+    // public getInstructionMasterList(param) {
+    //     return this._httpClient.PostData(
+    //         "Generic/GetByProc?procName=Rtrv_M_PrescriptionInstructionMaster",
+    //         param
+    //     );
+    // }
 
-    public insertInstructionMaster(param) {
-        return this._httpClient.post("Prescription/InstructionSave", param);
+    public instructionMasterInsert(Param: any, showLoader = true) {
+        if (Param.InstructionId) {
+            return this._httpClient.PutData("InstructionMastere/" + Param.InstructionId, Param, showLoader);
+        } else
+        
+        return this._httpClient.PostData("InstructionMastere", Param, showLoader);
     }
 
     public updateInstructionMaster(param) {
-        return this._httpClient.post("Prescription/InstructionUpdate", param);
+        return this._httpClient.PostData("Prescription/InstructionUpdate", param);
     }
 
     populateForm(param) {
         this.myForm.patchValue(param);
+    }
+    public deactivateTheStatus(m_data) {
+        //return this._httpClient.delete("generic?Id=" + m_data, {});
+        return this._httpClient.PostData("generic", m_data);
     }
 }

@@ -19,6 +19,23 @@
             </button>
         </div>
     </mat-toolbar>
+    <!-- <div class="modal-wrapper grid-container">
+        <div class="modal-header accent">
+            <div class="modal-header-content">
+                <div class="modal-header-title">
+                    <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> New Parameter Master</span>
+                </div>
+                <div class="modal-header-right">
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                            matTooltip="Close">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+
     <div class="content">
         <div class="center p-24 pb-56" fusePerfectScrollbar>
             <div class="content-card">
@@ -26,13 +43,13 @@
                     <div fxFlex.gt-sm="100%" fxFlex>
                         <div fxlayout="row" style=" background-color: white;
                              padding: 2px 2px 2px 2px;">
-                            <form [formGroup]="_ParameterService.myform">
+                            <form [formGroup]="parameterForm">
 
                                 <div fxlayout="row" style=" padding: 1px 1px 1px 1px;">
                                     <input type="hidden" name="ParameterID" formControlName="ParameterID">
 
                                     <div>
-                                        <mat-form-field appearance="outline" fxFlex="65%">
+                                        <!-- <mat-form-field appearance="outline" fxFlex="65%">
                                             <mat-label>Parameter ShortName</mat-label>
                                             <input name="ParameterShortName" placeholder="Select ParameterShort Name"
                                                 formControlName="ParameterShortName" required
@@ -41,8 +58,19 @@
                                             <span class="error"
                                                 *ngIf="f.ParameterShortName.invalid && f.ParameterShortName.touched">ParameterShortName
                                                 Enter only Alphabets</span>
+                                        </mat-form-field> -->
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>ParameterShortName</mat-label>
+                                            <input name="ParameterShortName" formControlName="ParameterShortName" placeholder="ParameterShortName"
+                                                matInput (keydown)="onEnterParameterShortName($event)" #parameterShortName
+                                                [(ngModel)]="vParameterShortName">
+                                                <mat-error
+                                                *ngIf="parameterForm.get('ParameterShortName').invalid && parameterForm.get('ParameterShortName').touched">
+                                                ParameterShortName is required Enter only
+                                                Alphabets</mat-error>
                                         </mat-form-field>
-                                        <mat-form-field appearance="outline" fxFlex="65%">
+
+                                        <!-- <mat-form-field appearance="outline" fxFlex="65%">
                                             <mat-label>Parameter Name</mat-label>
                                             <input name="ParameterName" placeholder="Select Parameter Name"
                                                 formControlName="ParameterName"
@@ -51,11 +79,21 @@
                                             <span class="error"
                                                 *ngIf="f.ParameterName.invalid && f.ParameterName.touched">ParameterName
                                                 Enter only Alphabets</span>
+                                        </mat-form-field> -->
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>ParameterName</mat-label>
+                                            <input name="ParameterName" formControlName="ParameterName" placeholder="ParameterName"
+                                                matInput (keydown)="onEnterParameterName($event)" #parameterName
+                                                [(ngModel)]="vParameterName">
+                                                <mat-error
+                                                *ngIf="parameterForm.get('ParameterName').invalid && parameterForm.get('ParameterName').touched">
+                                                Parameter Name is required Enter only
+                                                Alphabets</mat-error>
                                         </mat-form-field>
 
                                     </div>
                                     <div>
-                                        <mat-form-field appearance="outline" fxFlex="65%">
+                                        <!-- <mat-form-field appearance="outline" fxFlex="65%">
                                             <mat-label>PrintParameter Name</mat-label>
                                             <input name="PrintParameterName" placeholder="Select PrintParameterName"
                                                 formControlName="PrintParameterName" matInput required
@@ -63,8 +101,30 @@
                                             <span class="error"
                                                 *ngIf="f.PrintParameterName.invalid && f.PrintParameterName.touched">PrintParameterName
                                                 required Enter only alphabets</span>
+                                        </mat-form-field> -->
+
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>PrintParameterName</mat-label>
+                                            <input name="PrintParameterName" formControlName="PrintParameterName" placeholder="PrintParameterName"
+                                                matInput (keydown)="onEnterPrintParameterName($event)" #printParameterName
+                                                [(ngModel)]="vPrintParameterName">
+                                                <mat-error
+                                                *ngIf="parameterForm.get('PrintParameterName').invalid && parameterForm.get('PrintParameterName').touched">
+                                                PrintParameter Name is required Enter only
+                                                Alphabets</mat-error>
                                         </mat-form-field>
-                                        <mat-form-field appearance="outline" fxFlex="65%">
+
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>MethodName</mat-label>
+                                            <input name="MethodName" formControlName="MethodName" placeholder="MethodName"
+                                                matInput (keydown)="onEnterMethodName($event)" #methodName
+                                                [(ngModel)]="vMethodName">
+                                                <mat-error
+                                                *ngIf="parameterForm.get('MethodName').invalid && parameterForm.get('MethodName').touched">
+                                                Method Name is required Enter only
+                                                Alphabets</mat-error>
+                                        </mat-form-field>
+                                        <!-- <mat-form-field appearance="outline" fxFlex="65%">
                                             <mat-label>Method Name</mat-label>
                                             <input name="MethodName" placeholder="Select MethodName"
                                                 formControlName="MethodName" matInput
@@ -73,29 +133,43 @@
                                                 *ngIf="f.MethodName.invalid && f.MethodName.touched">MethodName Enter
                                                 Only Alphabets
                                             </span>
-                                        </mat-form-field>
+                                        </mat-form-field> -->
+
                                     </div>
                                     <div>
 
-                                        <mat-form-field appearance="outline" fxFlex="65%">
+                                        <!-- <mat-form-field appearance="outline" fxFlex="65%">
                                             <mat-label>Formula</mat-label>
                                             <input name="Formula" placeholder="Select Formula" formControlName="Formula"
                                                 matInput [ngClass]="{ 'is-invalid': submitted && f.Formula.errors }">
                                             <span class="error" *ngIf="f.Formula.invalid && f.Formula.touched">Formula
                                                 required Enter only alphabets</span>
+                                        </mat-form-field> -->
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Formula</mat-label>
+                                            <input name="Formula" formControlName="Formula" placeholder="Formula"
+                                                matInput (keydown)="onEnterFormula($event)" #formula
+                                                [(ngModel)]="vFormula">
                                         </mat-form-field>
 
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>UnitId</mat-label>
+                                            <input name="UnitId" formControlName="UnitId" placeholder="UnitId"
+                                                matInput (keydown)="onEnterUnitId($event)" #unitId
+                                                [(ngModel)]="vUnitId">
+                                                
+                                        </mat-form-field>
 
-                                        <mat-form-field appearance="outline" fxFlex="50%">
+                                        <!-- <mat-form-field appearance="outline" fxFlex="50%">
                                             <mat-label>UnitName</mat-label>
                                             <input matAutocompletePosition="below" type="text"
                                                 placeholder="Select UnitName" matInput formControlName="UnitId"
                                                 [matAutocomplete]="autoUnitId" required>
                                             <span matSuffix style="display: flex;">
                                                 <mat-icon class="mat-icon-close"
-                                                    (click)="_ParameterService.myform.get('UnitId').setValue(''); isunitSelected = false;">close</mat-icon>
+                                                    (click)="parameterForm.get('UnitId').setValue(''); isunitSelected = false;">close</mat-icon>
                                                 <mat-icon class="mat-icon-close"
-                                                    (click)="_ParameterService.myform.get('UnitId').setValue(''); isunitSelected = false;">search</mat-icon>
+                                                    (click)="parameterForm.get('UnitId').setValue(''); isunitSelected = false;">search</mat-icon>
                                             </span>
                                             <mat-autocomplete #autoUnitId="matAutocomplete"
                                                 [displayWith]="getOptionTextUnit">
@@ -104,7 +178,8 @@
                                                     {{option.UnitName}}
                                                 </mat-option>
                                             </mat-autocomplete>
-                                        </mat-form-field>
+                                        </mat-form-field> -->
+
                                     </div>
                                     <div fxLayoutAlign="space-between">
                                         <mat-radio-group name="IsNumeric" formControlName="IsNumeric"
@@ -447,7 +522,7 @@
                 </div>
                 <!-- [disabled]="_ParameterService.myform.invalid" -->
 
-                <div fxLayoutGap="5px">
+                <!-- <div fxLayoutGap="5px">
 
                     <div class="footer-navigation-container">
                         <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px">
@@ -456,6 +531,14 @@
                         </div>
                     </div>
 
+                </div> -->
+                <div class="modal-footer">
+                    <div class="footer-navigation-container">
+                        <div class="modal-footer-buttons">
+                            <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                            <button type="button" class="btn btn-primary" (click)="onSubmit()">Save</button>
+                        </div>
+                    </div>
                 </div>
 
             </div>

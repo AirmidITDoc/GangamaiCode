@@ -20,7 +20,7 @@ export class DrugmasterService {
     createDrugForm(): FormGroup {
         return this._formBuilder.group({
             DrugId: [""],
-            DrugName: ["", Validators.required],
+            DrugName: ["", Validators.required, Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")],
             GenericId: [""],
             GenericName: ["", Validators.required],
             ClassId: [""],

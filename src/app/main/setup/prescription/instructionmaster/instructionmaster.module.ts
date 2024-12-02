@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { InstructionmasterComponent } from "./instructionmaster.component";
 import { RouterModule, Routes } from "@angular/router";
 import { MatButtonModule } from "@angular/material/button";
@@ -19,6 +19,10 @@ import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { FuseSharedModule } from "@fuse/shared.module";
 import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
 import { InstructionmasterService } from "./instructionmaster.service";
+import { NewInstructionMasterComponent } from './new-instruction-master/new-instruction-master.component';
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { SharedModule } from "app/main/shared/shared.module";
+import { MatDialogModule } from "@angular/material/dialog";
 
 const routes: Routes = [
     {
@@ -28,13 +32,14 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [InstructionmasterComponent],
+    declarations: [InstructionmasterComponent, NewInstructionMasterComponent],
     imports: [
         RouterModule.forChild(routes),
 
         MatButtonModule,
         MatCheckboxModule,
-
+        SharedModule,
+        MatButtonModule,
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
@@ -50,8 +55,9 @@ const routes: Routes = [
         FuseSharedModule,
         FuseConfirmDialogModule,
         FuseSidebarModule,
+        MatDialogModule,
     ],
-    providers: [InstructionmasterService],
+    providers: [InstructionmasterService, DatePipe],
     entryComponents: [InstructionmasterComponent],
 })
 export class InstructionmasterModule {}
