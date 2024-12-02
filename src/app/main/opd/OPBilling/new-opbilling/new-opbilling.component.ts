@@ -1460,6 +1460,19 @@ debugger
   OriginalPackageService:any = [];
   TotalPrice:any = 0; 
 getPacakgeDetail(contact){
+  let deleteservice;
+  deleteservice = this.dsPackageDet.data
+  this.dsPackageDet.data.forEach(element => {
+    deleteservice = deleteservice.filter(item => item.ServiceId !== element.ServiceId)
+    console.log(deleteservice)   
+    this.dsPackageDet.data =  deleteservice
+ 
+    this.OriginalPackageService = this.dataSource.data.filter(item => item.ServiceId !== element.ServiceId)
+    this.EditedPackageService = this.dataSource.data.filter(item => item.ServiceId === element.ServiceId)
+    console.log(this.OriginalPackageService)
+    console.log(this.EditedPackageService)
+  });
+
   const dialogRef = this._matDialog.open(OpPackageBillInfoComponent,
     {
       maxWidth: "100%",

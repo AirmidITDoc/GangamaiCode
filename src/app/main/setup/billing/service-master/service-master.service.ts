@@ -61,10 +61,11 @@ export class ServiceMasterService {
         this.createServicemasterForm();
     }
 
-    public getServiceMasterList(param) {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_ServList", param
-        );
+    public getServiceMasterList(param, loader = true) {
+        if (loader) {
+            this._loaderService.show();
+        }
+        return this._httpClient.post("Generic/GetByProc?procName=Rtrv_ServList", param);
     }
 
     public getServiceMasterList_Pagn(Param, loader = true) {

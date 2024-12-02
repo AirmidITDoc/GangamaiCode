@@ -24,6 +24,7 @@ import { BrowseOpdPaymentReceipt } from '../browse-payment-list/browse-payment-l
 import { RefundMaster } from '../browse-refund-list/browse-refund-list.component';
 import { OpPaymentComponent } from '../op-search-list/op-payment/op-payment.component';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 
 
@@ -60,7 +61,7 @@ export class BrowseOPBillComponent implements OnInit {
   SpinLoading: boolean = false;
   AdList: boolean = false;
   vMobileNo:any;
-
+  menuActions: Array<string> = [];
   isLoading = true;
   sIsLoading: string = '';
   displayedColumns = [
@@ -164,9 +165,16 @@ dataSource2 = new MatTableDataSource<RefundMaster>();
     private applicationRef: ApplicationRef,
     public _WhatsAppEmailService:WhatsAppEmailService,
     public toastr: ToastrService,
+    private _ActRoute: Router
   ) { }
 
   ngOnInit(): void {
+    if (this._ActRoute.url == '/opd/browse-opd-bills') {
+      this.menuActions.push('Print Final Bill');
+      this.menuActions.push('Print FinalBill With Package Details'); 
+    } 
+ 
+
     this.getBrowseOPDBillsList();
     this.getBrowseOpdPaymentReceiptList();
     this.getBrowseOPDReturnList();
@@ -389,6 +397,33 @@ dataSource2 = new MatTableDataSource<RefundMaster>();
       // this.SpinLoading =true;
       this.AdList = true;
       this._BrowseOPDBillsService.getOpBillReceipt(
+        contact.BillNo
+      ).subscribe(res => {
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "OP BILL Viewer"
+            }
+          });
+        matDialog.afterClosed().subscribe(result => {
+          this.AdList = false;
+          this.sIsLoading = '';
+        });
+      });
+
+    }, 100);
+  }
+
+  viewgetOPBillWithPackageReportPdf(contact) {
+    this.sIsLoading = 'loading-data';
+    setTimeout(() => {
+      // this.SpinLoading =true;
+      this.AdList = true;
+      this._BrowseOPDBillsService.getOpBillWithPackageReceipt(
         contact.BillNo
       ).subscribe(res => {
         const matDialog = this._matDialog.open(PdfviewerComponent,
@@ -828,6 +863,17 @@ PaymentId=Id.PaymentId
     });
    
     },100);
+  }
+
+  getRecord1(contact, m): void {
+    debugger
+    if (m == "Print Final Bill"){
+      this.viewgetOPBillReportPdf(contact.BillNo) 
+    } 
+    else if(m == "Print FinalBill With Package Details"){
+      this.viewgetOPBillWithPackageReportPdf(contact) 
+  }
+
   }
  
   keyPressCharater(event){

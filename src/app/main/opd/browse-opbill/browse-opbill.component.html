@@ -443,10 +443,10 @@
                                         <mat-header-cell *matHeaderCellDef class="table-actions w-150">Action
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact">
-                                            <button mat-icon-button (click)="viewgetOPBillReportPdf(contact)"
+                                            <!-- <button mat-icon-button (click)="viewgetOPBillReportPdf(contact)"
                                                 matTooltip="print">
                                                 <mat-icon>print</mat-icon>
-                                            </button>
+                                            </button> -->
                                             <button mat-icon-button class="material-icons"
                                                 (click)="getRecord(contact,'EMAIL')" matTooltip="email">
                                                 <mat-icon>email</mat-icon>
@@ -460,6 +460,18 @@
                                                 (click)="getWhatsappshareSales(contact)">
                                                 <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
                                             </button>
+
+                                            <button class="menu-btn" mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More"
+                                                    (click)="$event.stopPropagation();">
+                                                    <mat-icon class="secondary-text">more_vert</mat-icon>
+                                                </button>
+                                                <mat-menu #moreMenu="matMenu">
+                                                    <ng-container *ngFor="let m of menuActions, let i=index">
+                                                        <button mat-menu-item aria-label="remove" (click)="getRecord1(contact,m)">
+                                                            <span>{{m}}</span>
+                                                        </button>
+                                                    </ng-container>
+                                                </mat-menu>
 
                                         </mat-cell>
                                     </ng-container>

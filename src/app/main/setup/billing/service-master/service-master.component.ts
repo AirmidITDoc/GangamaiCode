@@ -7,6 +7,7 @@ import { ServiceMasterService } from "./service-master.service";
 import { MatDialog } from "@angular/material/dialog";
 import { ServiceMasterFormComponent } from "./service-master-form/service-master-form.component";
 import { ToastrService } from "ngx-toastr";
+import { AddPackageDetComponent } from "./add-package-det/add-package-det.component";
 
 @Component({
     selector: "app-service-master",
@@ -26,24 +27,18 @@ export class ServiceMasterComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    displayedColumns: string[] = [
-        "ServiceId",
+    displayedColumns: string[] = [  
         "ServiceName",
         "ServiceShortDesc",
         "GroupName",
         "PrintOrder",
-        "Price",
-        "DoctorId",
-        "IsDocEditable",
-        "TariffId",
-        "SubGroupId",
-        "EmgAmt",
-        "EmgPer",
-        // "AddedByName",
+        "Price",  
+        "EmgAmt",  
         "IsEditable",
         "CreditedtoDoctor",
         "IsPathology",
         "IsRadiology",
+        'Ispackage',
         "IsDeleted",
         "action",
     ];
@@ -87,10 +82,12 @@ export class ServiceMasterComponent implements OnInit {
             Start:(this.paginator?.pageIndex??1),
             Length:(this.paginator?.pageSize??30),
         };
+        console.log(param)
         this._serviceMasterService.getServiceMasterList_Pagn(param).subscribe(
             (data) => {
                 this.DSServiceMasterList.data = data["Table1"]??[] as ServiceMaster[];
                 this.DSServiceMasterList.sort = this.sort;
+                console.log( this.DSServiceMasterList.data)
                 this.resultsLength= data["Table"][0]["total_row"];
             },
             (error) => (this.isLoading = false)
@@ -341,9 +338,8 @@ export class ServiceMasterComponent implements OnInit {
         this._serviceMasterService.populateForm(m_data);
 
         const dialogRef = this._matDialog.open(ServiceMasterFormComponent, {
-            maxWidth: "80vw",
-            maxHeight: "90vh",
-            width: "100%",
+            height: "96%",
+            width: '85%',  
             data : {
                 registerObj : row,
               }
@@ -356,16 +352,34 @@ export class ServiceMasterComponent implements OnInit {
     }
 
     onAdd() {
-        const dialogRef = this._matDialog.open(ServiceMasterFormComponent, {
-            maxWidth: "80vw",
-            maxHeight: "90vh",
-            width: "100%",
-            
+        const dialogRef = this._matDialog.open(ServiceMasterFormComponent, { 
+            height: "96%",
+            width: '85%',  
         });
         dialogRef.afterClosed().subscribe((result) => {
             this.getServiceMasterList();
         });
     }
+    onAddPackageDet(element) {
+        if(element.IsPackage == 1){
+            const dialogRef = this._matDialog.open(AddPackageDetComponent, {
+                height: "70%",
+                width: '70%',
+                data:{
+                    Obj:element
+                }
+            });
+            dialogRef.afterClosed().subscribe((result) => {
+                this.getServiceMasterList();
+            });
+        }else{
+            this.toastr.warning('Please select check box ', 'warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+              }); 
+        }
+        
+    }
+  
 }
 
 export class ServiceMaster {

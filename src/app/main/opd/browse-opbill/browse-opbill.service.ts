@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { LoaderService } from 'app/core/components/loader/loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,8 @@ export class BrowseOPBillService {
 
   constructor(
     public _httpClient:HttpClient,
-    private _formBuilder: FormBuilder
+    private _formBuilder: FormBuilder,
+    public _loaderService:LoaderService
   ) { 
     this.myFilterbillform=this.myFilterbillbrowseform();
     this.myFilterpayform=this.myFilterpaymentbrowseform();
@@ -96,8 +98,17 @@ export class BrowseOPBillService {
   return this._httpClient.post("OutPatient/OpSettlement", emp);
  }
 
- public getOpBillReceipt(BillNo){
+ public getOpBillReceipt(BillNo, loader = true) {
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("OutPatient/view-Op-BillReceipt?BillNo="+BillNo);
+}
+public getOpBillWithPackageReceipt(BillNo, loader = true) {
+  if (loader) {
+    this._loaderService.show();
+}
+  return this._httpClient.get("OutPatient/view-OPBillWithPackagePrint?BillNo="+BillNo);
 }
 
 public getDailycollectionview(FromDate,ToDate,AddedById){

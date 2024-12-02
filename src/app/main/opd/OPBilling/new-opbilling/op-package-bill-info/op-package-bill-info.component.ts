@@ -252,7 +252,7 @@ onAddPackageService() {
   this.PacakgeList.push(
     {
       ChargesId: 0,// this.serviceId,
-      ServiceId: this.PackageForm.get('SrvcName').value.ServiceId || 0,
+      ServiceId: this.registerObj.ServiceId, //this.PackageForm.get('SrvcName').value.ServiceId || 0,
       ServiceName:this.PackageForm.get('SrvcName').value.ServiceName || '',
       Price: 0,
       Qty: 1,
@@ -263,7 +263,9 @@ onAddPackageService() {
       DoctorId: this.ChargeDoctorId,
       DoctorName: this.ChargesDoctorname , 
       IsPathology: this.IsPathology || 0,
-      IsRadiology: this.IsRadiology || 0  
+      IsRadiology: this.IsRadiology || 0,
+      PackageServiceId: this.PackageForm.get('SrvcName').value.ServiceId || 0,
+
     });
   this.isLoading = '';
   this.dsPackageDet.data = this.PacakgeList; 
@@ -339,11 +341,11 @@ onAddPackageService() {
           IsPathology: element.IsPathology || 0,
           IsRadiology: element.IsRadiology || 0,
           PackageId: element.PackageId || 0,
-          PackageServiceId: this.registerObj.ServiceId || '',  
+          PackageServiceId: element.PackageServiceId || '',  
           PacakgeServiceName:this.registerObj.ServiceName || '',
           BillwiseTotalAmt:this.vBillWiseTotalAmt || 0,
-          DoctorId: element.DoctorId,
-          DoctorName: element.DoctorName , 
+          DoctorId: element.DoctorId || 0,
+          DoctorName: element.DoctorName || '', 
         }); 
     }); 
      this.dialogRef.close(this.SavePacList)

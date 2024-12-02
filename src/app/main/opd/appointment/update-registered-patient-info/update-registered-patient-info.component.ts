@@ -256,7 +256,7 @@ export class UpdateRegisteredPatientInfoComponent implements OnInit {
 
 
  
- 
+    sanitizeImagePreview;
     filterReligion: any;
     filterMaritalstatus: any;
     filterArea: any;

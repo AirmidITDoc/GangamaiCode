@@ -56,7 +56,8 @@ public filteredSubgroupname: ReplaySubject<any> = new ReplaySubject<any>(1);
 private _onDestroy = new Subject<void>();
   getServiceMasterList: any;
 
-  constructor(public _serviceMasterService: ServiceMasterService,
+  constructor(
+    public _serviceMasterService: ServiceMasterService,
     public toastr : ToastrService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ServiceMasterComponent>,
@@ -308,16 +309,13 @@ private _onDestroy = new Subject<void>();
         "isRadiology": String(this._serviceMasterService.myform.get("IsRadiology").value) == 'false' ? 0:1,
         "isActive": String(this._serviceMasterService.myform.get("IsActive").value) == 'false' ?  false : true ,
         "isPackage": String(this._serviceMasterService.myform.get("IsPackage").value) == 'false' ? 0:1 ,
-        "isDocEditable": String(this._serviceMasterService.myform.get("IsDocEditable").value) == 'false' ? false : true,  
-
+        "isDocEditable": String(this._serviceMasterService.myform.get("IsDocEditable").value) == 'false' ? false : true,   
         "isEmergency": String(this._serviceMasterService.myform.get("IsEmergency").value) == 'false' ? false : true ,
         "emgAmt": parseInt(this._serviceMasterService.myform.get("EmgAmt").value ||"0"),
-        "emgPer": parseInt(this._serviceMasterService.myform.get("EmgPer").value ||"0"),
-        
+        "emgPer": parseInt(this._serviceMasterService.myform.get("EmgPer").value ||"0"), 
         "groupId": parseInt(this._serviceMasterService.myform.get("GroupId").value || 0),
         "subgroupId": parseInt(this._serviceMasterService.myform.get("SubGroupId").value || 0),
-        "doctorId": this._serviceMasterService.myform.get("DoctorId").value ||0,        
-     
+        "doctorId": this._serviceMasterService.myform.get("DoctorId").value ||0,       
         "serviceId":parseInt(this._serviceMasterService.myform.get("ServiceId").value || 0),                 
       }
 

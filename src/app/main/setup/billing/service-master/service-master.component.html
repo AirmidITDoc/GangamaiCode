@@ -12,10 +12,12 @@
             </span>
         </div>
         <div fxLayout="row" fxLayoutGap="5px">
-                <button mat-raised-button (click)="onAdd()"
-                    style="background-color: aliceblue;color: brown;">Add
-
+                <button mat-raised-button (click)="onAdd()" style="background-color: aliceblue;color: brown;">
+                    <mat-icon>add</mat-icon>New Service
                 </button>
+                <!-- <button mat-raised-button  (click)="onAddPackageDet()" style="background-color: aliceblue;color: brown;">
+                    <mat-icon>add_box</mat-icon>Package 
+                </button> -->
             </div>
     </mat-toolbar>
     <!-- / HEADER -->
@@ -36,9 +38,8 @@
 
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                     <div fxFlex.gt-sm="100%" fxFlex>
-
-                        <div fxlayout="row" style="background-color: white;padding: 5px 10px 5px 10px;"
-                            fxLayoutGap="3px">
+                        <mat-card style="padding: 8px;">
+                        <div fxlayout="row"fxLayoutGap="3px">
                             <form [formGroup]="_serviceMasterService.myformSearch">
                                 <div class="dialog-content-wrapper">
                                     <mat-form-field class="mr-sm-12" fxFlex>
@@ -63,143 +64,150 @@
                                     </button>
                                 </div>
                             </form>
-                        </div>
-
-
-
+                        </div>  
 
                         <div style="width: 100%;">
                             <mat-table #table matSort [dataSource]="DSServiceMasterList"
-                                [@animateStagger]="{value:'50'}" style="overflow:auto">
+                                [@animateStagger]="{value:'50'}" style="overflow:auto">  
 
-                                <ng-container matColumnDef="ServiceId">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-200">Code
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-200"> {{element.ServiceId}}
+                                <ng-container matColumnDef="ServiceName" sticky>
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-230">
+                                         Service Name </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-230"
+                                    matTooltip="{{element.ServiceName}}"
+                                     matTooltipClass="example-tooltip-uppercase"
+                                     aria-label="Button that shows a red tooltip"> 
+                                        {{element.ServiceName}}
                                     </mat-cell>
                                 </ng-container>
 
-                                <ng-container matColumnDef="ServiceName">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200"> Service Name </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-200"> {{element.ServiceName}}
+                                <ng-container matColumnDef="ServiceShortDesc" sticky>
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-180">
+                                        ServiceShortDesc
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-180"
+                                    matTooltip="{{element.ServiceShortDesc}}"
+                                    matTooltipClass="example-tooltip-uppercase"
+                                    aria-label="Button that shows a red tooltip">
+                                     {{element.ServiceShortDesc || '-'}}
                                     </mat-cell>
                                 </ng-container>
 
-                                <ng-container matColumnDef="ServiceShortDesc">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200">ServiceShortDesc
+                                <ng-container matColumnDef="GroupName" sticky>
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-160">
+                                        GroupName
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-200"> {{element.ServiceShortDesc}}
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="GroupName">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-200">GroupName
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-200"> {{element.GroupName}}
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-160"
+                                    matTooltip="{{element.GroupName}}" 
+                                    matTooltipClass="example-tooltip-uppercase"
+                                    aria-label="Button that shows a red tooltip">
+                                     {{element.GroupName}}
                                     </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="PrintOrder">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>PrintOrder
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-110">
+                                        PrintOrder
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.PrintOrder}}
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-110"> 
+                                        {{element.PrintOrder}}
                                     </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="Price">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Price </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.Price}} </mat-cell>
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-110"> 
+                                        Price </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-110"> 
+                                        {{element.Price | currency:"INR"}} </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="EmgAmt">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header> EAmt </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.EmgAmt}} </mat-cell>
-                                </ng-container>
-                                <ng-container matColumnDef="EmgPer">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Emg% </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.EmgPer}} </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="DoctorId">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header>DoctorId</mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.DoctorId}}
-                                    </mat-cell>
-                                </ng-container>
-                                <ng-container matColumnDef="IsDocEditable">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header>IsDocEditable</mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.IsDocEditable}}
-                                    </mat-cell>
-                                </ng-container>
-                                <ng-container matColumnDef="TariffId">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header>TariffId</mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.TariffId}}
-                                    </mat-cell>
-                                </ng-container>
-                                <ng-container matColumnDef="SubGroupId">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header>SubGroupId</mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.SubGroupId}}
-                                    </mat-cell>
-                                </ng-container>
-
-                                <!-- <ng-container matColumnDef="AddedByName">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header> User Name </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.AddedByName}}
-                                    </mat-cell>
-                                </ng-container> -->
-
-
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-120"> 
+                                        EmergencyAmt </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-120">
+                                         {{element.EmgAmt | currency:"INR"}} </mat-cell>
+                                </ng-container>  
+  
                                 <ng-container matColumnDef="IsEditable">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm> IsEditable
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-100">
+                                         IsEditable
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                        <mat-icon *ngIf="!element.IsEditable"
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-100">
+                                        <mat-icon *ngIf="element.IsEditable" matTooltip="IsEditable"
                                             class="active-icon green-600 s-16">check_circle</mat-icon>
-                                        <mat-icon *ngIf="element.IsEditable"
+                                        <mat-icon *ngIf="!element.IsEditable"  
                                             class="active-icon red-500 s-16">close</mat-icon>
                                     </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="CreditedtoDoctor">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-110">
                                         CreditedtoDoctor </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-110">
+                                        <mat-icon *ngIf="element.CreditedtoDoctor" matTooltip="CreditedtoDoctor">
+                                        <img width="20px" height="15px" src="assets/images/logos/doctor.png"></mat-icon>
                                         <mat-icon *ngIf="!element.CreditedtoDoctor"
-                                            class="active-icon green-600 s-16">check_circle</mat-icon>
-                                        <mat-icon *ngIf="element.CreditedtoDoctor"
                                             class="active-icon red-500 s-16">close</mat-icon>
                                     </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="IsPathology">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header>IsPathology </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.IsPathology}}
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
+                                        IsPathology </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-100">  
+                                        <mat-icon *ngIf="element.IsPathology != 1"
+                                            class="active-icon red-500 s-16">close
+                                        </mat-icon>
+                                        <mat-icon *ngIf="element.IsPathology == 1" matTooltip="IsPathology">
+                                            <img width="22px" height="17px" src="assets/images/logos/pathology.png">
+                                        </mat-icon> 
                                     </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="IsRadiology">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header>IsRadiology</mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.IsRadiology}}
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
+                                        IsRadiology</mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-100">  
+                                        <mat-icon *ngIf="element.IsRadiology == 1" matTooltip="IsRadiology">
+                                            <img width="18px" height="14px" src="assets/images/logos/radiology.png">
+                                        </mat-icon>
+                                        <mat-icon *ngIf="element.IsRadiology != 1"
+                                            class="active-icon red-500 s-16">close
+                                        </mat-icon> 
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="Ispackage">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-100">
+                                         IsPackage
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-100">
+                                        <mat-icon *ngIf="element.IsPackage == '1' " matTooltip="EditPackage" (click)="onAddPackageDet(element)">
+                                            <img width="15px" height="10px" src="assets/images/logos/package.png"></mat-icon>
+                                        <mat-icon *ngIf="element.IsPackage != '1'"  
+                                            class="active-icon red-500 s-16">close</mat-icon>
                                     </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="IsDeleted">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm> IsActive
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-90">
+                                         IsActive
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                        <mat-icon *ngIf="!element.IsDeleted"
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-90">
+                                        <mat-icon *ngIf="!element.IsDeleted" matTooltip="IsActive"
                                             class="active-icon green-600 s-16">check_circle</mat-icon>
-                                        <mat-icon *ngIf="element.IsDeleted"
+                                        <mat-icon *ngIf="element.IsDeleted" matTooltip="IsDeactive"
                                             class="active-icon red-500 s-16">close</mat-icon>
                                     </mat-cell>
                                 </ng-container>
 
 
                                 <ng-container matColumnDef="action" stickyEnd>
-                                    <mat-header-cell *matHeaderCellDef class="table-actions" style="color: white;">
+                                    <mat-header-cell *matHeaderCellDef class="table-actions" style="color: white;" class="w-90">
                                         Action </mat-header-cell>
-                                    <mat-cell *matCellDef="let row">
+                                    <mat-cell *matCellDef="let row" class="w-90">
                                         <button mat-icon-button (click)="onEdit(row)"><mat-icon
-                                                title="Edit Menu">launch</mat-icon></button>
+                                                title="Edit Menu">edit</mat-icon></button>
                                         <button mat-icon-button (click)="onDeactive(row.ServiceId)"
                                             color="warn"><mat-icon>delete_outline</mat-icon></button>
 
@@ -216,13 +224,11 @@
                                     <mat-footer-cell *matFooterCellDef colspan="6">
                                         no data found...
                                     </mat-footer-cell>
-                                </ng-container>
+                                </ng-container> 
 
-
-
-                                <mat-header-row class="accent"
+                                <mat-header-row class="accent min-width-1550"
                                     *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                                <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
+                                <mat-row *matRowDef="let row; columns: displayedColumns;" class="element min-width-1550"
                                     [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
 
                                 <mat-footer-row *matFooterRowDef="['loading']"
@@ -234,18 +240,11 @@
                         </div>
                         <mat-paginator [pageSizeOptions]="[30, 50, 75, 100]" [pageSize]="30" [length]="resultsLength"
                             showFirstLastButtons (page)="getServiceMasterList()">
-                        </mat-paginator>
-
-                        <!-- <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
-                            showFirstLastButtons></mat-paginator> -->
-                    </div>
-
-
+                        </mat-paginator> 
+                    </mat-card>
+                    </div> 
                 </div>
-            </div>
-            <!-- / CONTENT -->
-        </div>
-        <!-- / CENTER -->
-    </div>
-    <!-- / CONTENT-->
+            </div> 
+        </div> 
+    </div> 
 </div>

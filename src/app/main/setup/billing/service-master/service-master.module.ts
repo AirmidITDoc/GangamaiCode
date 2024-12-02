@@ -29,6 +29,7 @@ import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { SharedModule } from "app/main/shared/shared.module";
 import { MatCardModule } from "@angular/material/card";
+import { AddPackageDetComponent } from './add-package-det/add-package-det.component';
 
 const routes: Routes = [
     {
@@ -38,7 +39,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [ServiceMasterComponent, ServiceMasterFormComponent],
+    declarations: [ServiceMasterComponent, ServiceMasterFormComponent, AddPackageDetComponent],
     imports: [
         RouterModule.forChild(routes),
         MatButtonModule,

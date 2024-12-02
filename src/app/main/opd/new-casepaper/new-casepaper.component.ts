@@ -1155,10 +1155,14 @@ onTemplDetAdd(){
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
       console.log(result)
+      if(result){
+        debugger
       this.dsCopyItemList.data = result
       console.log(this.dsCopyItemList.data)
-      this.dsItemList.data = [];
+     // this.dsItemList.data = [];
       this.dsCopyItemList.data.forEach(element => {
+          const chkitem = this.dsItemList.data.find(item=> item.DrugId == element.DrugId);
+        if(!chkitem){ 
 
         this.Chargelist.push(
           {
@@ -1195,7 +1199,14 @@ onTemplDetAdd(){
         this.dsItemList.data = this.Chargelist;
         console.log(this.Chargelist)
         console.log(this.dsItemList.data)
+      }else{
+        this.toastr.warning('This Drug is already added', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
       });
+    }
     });
   }
   SaveTemplate() {
