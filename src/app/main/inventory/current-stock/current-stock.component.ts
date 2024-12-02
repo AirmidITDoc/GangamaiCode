@@ -4,7 +4,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { CurrentStockService } from './current-stock.service';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { DatePipe } from '@angular/common';
 import { difference } from 'lodash';
@@ -18,6 +18,11 @@ import { ItemMovementSummeryComponent } from './item-movement-summery/item-movem
 import { IssueSummeryComponent } from './issue-summery/issue-summery.component';
 import { SalesSummeryComponent } from './sales-summery/sales-summery.component';
 import { SalesReturnSummeryComponent } from './sales-return-summery/sales-return-summery.component';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
+import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-current-stock',
@@ -28,8 +33,29 @@ import { SalesReturnSummeryComponent } from './sales-return-summery/sales-return
   
 })
 export class CurrentStockComponent implements OnInit {
+EditRefund() {
+throw new Error('Method not implemented.');
+}
+EditOPBill() {
+throw new Error('Method not implemented.');
+}
+
+
+    getWhatsappsharePaymentReceipt(data: any) {
+        throw new Error('Method not implemented.');
+    }
+    viewgetOPPaymentReportPdf(data: any) {
+        throw new Error('Method not implemented.');
+    }
+    onSave(data: any) {
+        throw new Error('Method not implemented.');
+    }
   isStoreSelected: boolean = false;
   filteredOptionsStorename: Observable<string[]>;
+
+  confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+  hasSelectedContacts: boolean;
   
   displayedColumns = [
     // 'action',
@@ -41,18 +67,97 @@ export class CurrentStockComponent implements OnInit {
     'BalanceQty',
     'ReturnQty'
   ];
-  displayedColumnsDayWise = [
-    'LedgerDate',
-    'ItemName',
-    'BatchNo',
-    'BatchExpDate',
-    'UnitMRP',
-    'PurUnitRate',
-    'LandedRate',
-    'ReceivedQty',
-    'IssueQty',
-    'BalanceQty',
-  ];
+
+ 
+  gridConfig: gridModel = {
+    apiUrl: "StockReportDayWise/StockReportDayWiseList",
+    columnsList: [
+        { heading: "stockId", key: "stockId", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+        { heading: "itemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+        { heading: "storeId", key: "storeId", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+        { heading: "itemId", key: "itemId", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+        { heading: "openingBalance", key: "openingBalance", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+        { heading: "receivedQty", key: "receivedQty", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+        { heading: "issueQty", key: "issueQty", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+        { heading: "balanceQty", key: "balanceQty", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+        { heading: "unitMRP", key: "unitMRP", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+        { heading: "purchaseRate", key: "purchaseRate", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+        { heading: "landedRate", key: "landedRate", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+        { heading: "vatPercentage", key: "vatPercentage", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+        { heading: "batchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA',width:150 },
+        { heading: "batchExpDate", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+        { heading: "purUnitRate", key: "purUnitRate", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+        { heading: "purUnitRateWF", key: "purUnitRateWF", sort: true, align: "center" ,width:50},
+        { heading: "cgstPer", key: "cgstPer", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+        { heading: "sgstPer", key: "sgstPer", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+        { heading: "igstPer", key: "igstPer",sort: true, align: "center" ,width:50},
+        { heading: "barCodeSeqNo", key: "barCodeSeqNo", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+        { heading: "iStkId", key: "iStkId", sort: true,align: "center" ,width:50},
+        { heading: "grnRetQty", key: "grnRetQty", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+        {
+            heading: "Action", key: "action", align: "right",width:200, type: gridColumnTypes.action, actions: [
+                {
+                    action: gridActions.edit, callback: (data: any) => {
+                        this.onSave(data);
+                    }
+                },
+                {
+                    action: gridActions.print, callback: (data: any) => {
+                        this.viewgetOPPaymentReportPdf(data);
+                    }
+                },
+                {
+                    action: gridActions.view, callback: (data: any) => {
+                        this.getWhatsappsharePaymentReceipt(data);
+                    }
+                }, {
+                    action: gridActions.delete, callback: (data: any) => {
+                        this.confirmDialogRef = this._matDialog.open(
+                            FuseConfirmDialogComponent,
+                            {
+                                disableClose: false,
+                            }
+                        );
+                        this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+                        this.confirmDialogRef.afterClosed().subscribe((result) => {
+                            if (result) {
+                                let that = this;
+                                // this._CurrentStockService.deactivateTheStatuspayment(data.visitId) .subscribe((response: any) => {
+                                //     this.toastr.success(response.message);
+                                //     that.grid.bindGridData();
+                                // });
+                            }
+                            this.confirmDialogRef = null;
+                        });
+                    }
+                }]
+        } //Action 1-view, 2-Edit,3-delete
+    ],
+    sortField: "itemId",
+    sortOrder: 0,
+    filters: [
+        { fieldName: "LedgerDate", fieldValue: "2023/10/17", opType: OperatorComparer.Contains },
+        { fieldName: "StoreId", fieldValue: "2", opType: OperatorComparer.Contains },
+        { fieldName: "ItemId", fieldValue: "580", opType: OperatorComparer.Equals },
+        { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
+    ],
+    row: 25
+}
+
+// DAY WISE REPORT
+//   displayedColumnsDayWise = [
+//     'LedgerDate',
+//     'ItemName',
+//     'BatchNo',
+//     'BatchExpDate',
+//     'UnitMRP',
+//     'PurUnitRate',
+//     'LandedRate',
+//     'ReceivedQty',
+//     'IssueQty',
+//     'BalanceQty',
+//   ];
   displayedColumnsItemWise = [
   //  'action',
     'ItemName',
@@ -104,6 +209,7 @@ export class CurrentStockComponent implements OnInit {
     public datePipe: DatePipe,
     private _loggedService: AuthenticationService,
     private accountService: AuthenticationService,
+    public toastr : ToastrService,
     
   ) { }
 

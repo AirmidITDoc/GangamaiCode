@@ -39,6 +39,12 @@ import { ItemMovementSummeryComponent } from './item-movement-summery/item-movem
 import { IssueSummeryComponent } from './issue-summery/issue-summery.component';
 import { SalesSummeryComponent } from './sales-summery/sales-summery.component';
 import { SalesReturnSummeryComponent } from './sales-return-summery/sales-return-summery.component';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
+import { NgxPrintModule } from 'ngx-print';
+import { WebcamModule } from 'ngx-webcam';
 
 const routes: Routes = [
   { 
@@ -59,51 +65,50 @@ const routes: Routes = [
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
-    CommonModule,
-    MatExpansionModule,
-    MatSlideToggleModule ,
-    MatListModule,
+    SharedModule,
     MatButtonModule,
     MatCheckboxModule,
-    MatDatepickerModule,
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
     MatMenuModule,
-    MatRippleModule,
     MatTableModule,
     MatToolbarModule,
     MatPaginatorModule,
     MatSortModule,
     MatSelectModule,
     MatRadioModule,
-    MatTabsModule,
-    MatCardModule,
-    MatDividerModule,
-    MatDialogModule,
-    FuseSharedModule,
-    FuseConfirmDialogModule,
-    FuseSidebarModule,
-    ReactiveFormsModule,
     MatSnackBarModule,
+    FuseSharedModule,
+    FuseSidebarModule,
+    MatDialogModule,
+
+    MatTabsModule,
+    MatDatepickerModule,
+    MatListModule,
+    MatSlideToggleModule,
+    MatDividerModule,
+    ReactiveFormsModule,
+
     MatStepperModule,
     MatAutocompleteModule,
     MatProgressSpinnerModule,
-    SharedModule,
+
     NgxMatSelectSearchModule,
-    MatBadgeModule,
-    MatSelectModule,
-    MatSelectModule,
-    MatChipsModule,
-    // NgMultiSelectDropDownModule.forRoot(),
-    MatTooltipModule
-        
+    MatCardModule,
+    MatListModule,
+    MatTooltipModule,
+    MatExpansionModule,
+    MatListModule,
+    WebcamModule,
+    ScrollingModule,
+    MatSidenavModule,
+    NgxQRCodeModule,
+    NgxPrintModule,
+    MatButtonToggleModule
   ],
   providers: [
-    
     DatePipe,
-    
-  
 ],
 entryComponents: [
   CurrentStockComponent,

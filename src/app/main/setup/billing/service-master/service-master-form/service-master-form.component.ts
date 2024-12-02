@@ -30,6 +30,7 @@ import { error } from "console";
   
   export class ServiceMasterFormComponent implements OnInit {
     serviceForm:FormGroup;
+    TariffId=0
     gridConfig: gridModel = {
       apiUrl: "ClassMaster/List",
   columnsList: [
