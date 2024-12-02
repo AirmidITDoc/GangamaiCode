@@ -827,7 +827,7 @@ export class DischargeSummary{
   DischargesummaryId:any;  
   Pathology:any;
   DocNameID:any;
- 
+  TemplateDescriptionHtml:any;
   
   constructor(DischargeSummary){
     this.DischargesummaryId=DischargeSummary.DischargesummaryId || 0,
@@ -851,6 +851,7 @@ export class DischargeSummary{
     this.DischargeSummaryTime=DischargeSummary.DischargeSummaryTime || 0,
     this.DoctorAssistantName=DischargeSummary.DoctorAssistantName || 0
     this.Pathology=DischargeSummary.Pathology || '';
+    this.TemplateDescriptionHtml=DischargeSummary.TemplateDescriptionHtml ||'';
   }
 }
 export class MedicineItemList {

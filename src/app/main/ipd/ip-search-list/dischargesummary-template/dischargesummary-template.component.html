@@ -12,6 +12,9 @@
                 Discharge Summary Template
             </span>
         </div>
+        <div class="comman-date">
+            <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+        </div>
         <div fxLayout="row" fxLayoutALign="end start">
             <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
                 <mat-icon>close</mat-icon>
@@ -139,8 +142,8 @@
                                         </span>
                                         <mat-autocomplete #autotemplate="matAutocomplete"
                                             [displayWith]="getOptionTexttemplate">
-                                            <mat-option *ngFor="let option of filteredOptionstemplate| async"
-                                                [value]="option">
+                                            <mat-option *ngFor="let option of filteredOptionstemplate | async"
+                                                [value]="option" style="color: blueviolet;">
                                                 {{TemplateName}}
                                             </mat-option>
                                         </mat-autocomplete>
@@ -205,12 +208,7 @@
 
                                 <div fxLayoutGap="5px">
 
-                                    <div class="footer-navigation-container">
-                                        <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px">
-                                            <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
-                                            <button class="btn btn-primary" (click)="onSubmit()">Save</button>
-                                        </div>
-                                    </div>
+                                   
 
                                 </div>
                             </form>
@@ -379,5 +377,18 @@
             </mat-card>
         </mat-tab>
     </mat-tab-group>
+    <div class="footer-navigation-container">
+       
+            <mat-radio-group name="IsNormalOrDeath" formcontrolName="IsNormalOrDeath"
+                aria-label="Select an option" [(ngModel)]="vIsNormalDeath"  >
+                <mat-radio-button value="True" >Normal </mat-radio-button>
+                <mat-radio-button value="false">Death Summary</mat-radio-button>
+            </mat-radio-group>
+       
 
+        <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px">
+            <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
+            <button class="btn btn-primary" (click)="onSubmit()">Save</button>
+        </div>
+    </div>
 </div>

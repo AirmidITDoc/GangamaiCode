@@ -622,6 +622,16 @@ public updateIPDDischargSummary(employee)
 {    
   return this._httpClient.post("InPatient/UpdateIPDischargeSummary",employee);
 }
+
+public insertIPDDischargSummarytemplate(employee)
+{    
+  return this._httpClient.post("InPatient/InsertIPDischargeSummaryTemplate",employee);
+}
+
+public updateIPDDischargSummaryTemplate(employee)
+{    
+  return this._httpClient.post("InPatient/UpdateIPDischargeSummarytemplate",employee);
+}
  // Search Window Option
 
  // Admitted Doctor Master Combobox List
@@ -827,7 +837,11 @@ public updateIPDDischargSummary(employee)
     ];
   }
   public gettemplateCombo(){
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Dischargetemplate",{})
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_DischargeTemplate",{})
+  }
+
+  public gettemplateCombo1(data){
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_DischargeTemplate1",data)
   }
 
   public CompanyDoctorList() {
