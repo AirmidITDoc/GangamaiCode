@@ -19,8 +19,11 @@
             <form [formGroup]="roomForm">
                 <input type="hidden" name="roomId" formControlName="roomId">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <airmid-textbox label="Room Name " formControlName="roomName" [value]="" [formGroup]="roomForm"
-                        [validations]="_WardMasterService.getValidationMessages().roomName" [maxLength]="300">
+                    <airmid-textbox 
+                    label="Room Name " 
+                    formControlName="roomName" 
+                    [value]="" [formGroup]="roomForm"
+                    [validations]="_WardMasterService.getValidationMessages().roomName" [maxLength]="300">
                     </airmid-textbox>
                 </div>
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
@@ -40,14 +43,14 @@
                 [validations]="getValidationclassMessages().classId"
                 [mode]="autocompleteModeclass"
                 (selectDdlObject)="selectChangeclass($event)">
-            </airmid-autocomplete>
+                </airmid-autocomplete>
 
-            <airmid-autocomplete label="roomId" formControlName="roomId"
-            [value]="data?.roomId" [formGroup]="roomForm"
-            [validations]="getValidationroomMessages().roomId"
-            [mode]="autocompleteModeroomId"
-            (selectDdlObject)="selectChangeroomType($event)">
-        </airmid-autocomplete>
+                <airmid-autocomplete label="roomId" formControlName="roomId"
+                [value]="data?.roomId" [formGroup]="roomForm"
+                [validations]="getValidationroomMessages().roomId"
+                [mode]="autocompleteModeroomId"
+                (selectDdlObject)="selectChangeroomType($event)">
+                </airmid-autocomplete>
               
                 </div>
 
