@@ -30,7 +30,7 @@ import { error } from "console";
   
   export class ServiceMasterFormComponent implements OnInit {
     serviceForm:FormGroup;
-    TariffId=0
+    TariffId=0;
     gridConfig: gridModel = {
       apiUrl: "ClassMaster/List",
   columnsList: [
@@ -85,7 +85,6 @@ import { error } from "console";
   showDoctor: boolean = false;
   submitted = false;
 
-  TariffId=0
   registerObj=new ServiceMaster({});
 
   butDisabled:boolean = false;
