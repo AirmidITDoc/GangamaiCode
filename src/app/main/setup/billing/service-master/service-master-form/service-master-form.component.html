@@ -31,24 +31,47 @@
                         <form [formGroup]="_serviceMasterService.myform" fxLayout="column" fxLayoutGap="6px">
                             <div fxLayout="row" fxLayoutGap="5px">
                 
-                                <input type="hidden" name="ServiceId" formControlName="ServiceId">
-                
-                
+                                <input type="hidden" name="ServiceId" formControlName="ServiceId"> 
+                               
+
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Group Name</mat-label>
-                                    <mat-select formControlName="GroupId" placeholder="Bank" #singleSelect disableOptionCentering="true"
-                                        required>
-                                        <mat-option>
-                                            <ngx-mat-select-search [formControl]="groupnameFilterCtrl" [placeholderLabel]="'Search'"
-                                                [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                                        </mat-option>
-                                        <mat-option *ngFor="let element of filteredGroupname | async" [value]="element.GroupId">
-                                            {{element.GroupName}}
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
+                                    <input matAutocompletePosition="below" type="text" placeholder="Select Group" matInput
+                                      formControlName="GroupId" [matAutocomplete]="autoGroupId" #GroupId
+                                       [(ngModel)]="vGroupId"     (keydown)="onEntergrpname($event)" >
+                                    <span matSuffix style="display: flex;">
+                                      <mat-icon class="mat-icon-close"
+                                        (click)="_serviceMasterService.myform.get('GroupId').setValue(''); isGroupIdSelected = false;">close</mat-icon>
+                                      <mat-icon class="mat-icon-close"
+                                        (click)="_serviceMasterService.myform.get('GroupId').setValue(''); isGroupIdSelected = false;">search</mat-icon>
+                                    </span>
+                                    <mat-autocomplete #autoGroupId="matAutocomplete" [displayWith]="getOptionTextgroupid">
+                                      <mat-option *ngFor="let option of filteredGroupname | async" [value]="option">
+                                        {{option.GroupName}}
+                                      </mat-option>
+                                    </mat-autocomplete>
+                                  </mat-form-field>
+
+                                  <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>SubGroup Name</mat-label>
+                                    <input matAutocompletePosition="below" type="text" placeholder="Select SubGroup" matInput
+                                      formControlName="SubGroupId" [matAutocomplete]="autoSubGroupId" #subGroupId
+                                       [(ngModel)]="vsubGroupId"     (keydown)="onEntersubGroup($event)" >
+                                    <span matSuffix style="display: flex;">
+                                      <mat-icon class="mat-icon-close"
+                                        (click)="_serviceMasterService.myform.get('SubGroupId').setValue(''); isSubGroupIdselected = false;">close</mat-icon>
+                                      <mat-icon class="mat-icon-close"
+                                        (click)="_serviceMasterService.myform.get('SubGroupId').setValue(''); isSubGroupIdselected = false;">search</mat-icon>
+                                    </span>
+                                    <mat-autocomplete #autoSubGroupId="matAutocomplete" [displayWith]="getOptionTextSubGroup">
+                                      <mat-option *ngFor="let option of filteredSubgroupname | async" [value]="option">
+                                        {{option.SubGroupName}}
+                                      </mat-option>
+                                    </mat-autocomplete>
+                                  </mat-form-field>
+                      
                 
-                                <mat-form-field appearance="outline" fxFlex="30%">
+                                <mat-form-field appearance="outline" fxFlex="15%">
                                     <input matInput [matDatepicker]="picker3" placeholder="Choose an Effective Date"
                                         name="EffectiveDate" formControlName="EffectiveDate">
                                     <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
@@ -62,17 +85,18 @@
                 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>ServiceName</mat-label>
-                                    <input name="ServiceName" formControlName="ServiceName" matInput required>
-                                    <span class="error" *ngIf="f.ServiceName.invalid && f.ServiceName.touched">Please enter the service
-                                        name</span>
+                                    <input name="ServiceName" formControlName="ServiceName" matInput required #ServiceName
+                                     [(ngModel)]="vServiceName"     (keydown)="onEnterServiceName($event)" >
+                                    <!-- <span class="error" *ngIf="f.ServiceName.invalid && f.ServiceName.touched">Please enter the service
+                                        name</span> -->
                                 </mat-form-field>
                 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Short Description</mat-label>
-                                    <input name="ServiceShortDesc" formControlName="ServiceShortDesc"
-                                        matInput  >
-                                    <span class="error" *ngIf="f.ServiceShortDesc.invalid && f.ServiceShortDesc.touched">Please enter the service
-                                        name</span>
+                                    <input name="ServiceShortDesc" formControlName="ServiceShortDesc" #ServiceShortDesc
+                                     [(ngModel)]="vServiceShortDesc"  matInput      (keydown)="onEnterServiceShortDesc($event)" >
+                                    <!-- <span class="error" *ngIf="f.ServiceShortDesc.invalid && f.ServiceShortDesc.touched">Please enter the service
+                                        name</span> -->
                                 </mat-form-field>
                             </div>
                 
@@ -80,32 +104,35 @@
                 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Price</mat-label>
-                                    <input name="Price" placeholder="Select Price" formControlName="Price" OnlyNumber
-                                        (keypress)="keyPressCharater($event)" [ngClass]="{ 'is-invalid': submitted && f.Price.errors }"
+                                    <input name="Price" placeholder="Select Price" formControlName="Price" OnlyNumber #Price
+                                        (keypress)="keyPressCharater($event)"      (keydown)="onEnterPrice($event)" 
                                         matInput required maxlength="5">
                                 </mat-form-field>
                 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>PrintOrder</mat-label>
                                     <input name="PrintOrder" placeholder="Select PrintOrder" formControlName="PrintOrder" matInput
-                                        required OnlyNumber (keypress)="keyPressCharater($event)"
-                                        [ngClass]="{ 'is-invalid': submitted && f.PrintOrder.errors }" min="0" maxlength="5">
-                                </mat-form-field>
-                
-                
+                                        required OnlyNumber (keypress)="keyPressCharater($event)" [(ngModel)]="vPrintOrder"
+                                         min="0" maxlength="5"     (keydown)="onEnterPrintOrder($event)" #PrintOrder> 
+                                </mat-form-field> 
+
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Tariff Name</mat-label>
-                                    <mat-select formControlName="TariffId" placeholder="Bank" #singleSelect
-                                        disableOptionCentering="true">
-                                        <mat-option>
-                                            <ngx-mat-select-search [formControl]="tariffFilterCtrl" [placeholderLabel]="'Search'"
-                                                [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                                        </mat-option>
-                                        <mat-option *ngFor="let element of filteredTariff | async" [value]="element.TariffId">
-                                            {{element.TariffName}}
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
+                                    <input matAutocompletePosition="below" type="text" placeholder="Select Group" matInput
+                                      formControlName="TariffId" [matAutocomplete]="autoTariffId" #TariffId
+                                       [(ngModel)]="vTariffId">
+                                    <span matSuffix style="display: flex;">
+                                      <mat-icon class="mat-icon-close"
+                                        (click)="_serviceMasterService.myform.get('TariffId').setValue(''); isTariffIdSelected = false;">close</mat-icon>
+                                      <mat-icon class="mat-icon-close"
+                                        (click)="_serviceMasterService.myform.get('TariffId').setValue(''); isTariffIdSelected = false;">search</mat-icon>
+                                    </span>
+                                    <mat-autocomplete #autoTariffId="matAutocomplete" [displayWith]="getOptionTextTariff">
+                                      <mat-option *ngFor="let option of filteredTariff | async" [value]="option">
+                                        {{option.TariffName}}
+                                      </mat-option>
+                                    </mat-autocomplete>
+                                  </mat-form-field>
                 
                             </div>
                         </form>
@@ -182,7 +209,7 @@
                     <form [formGroup]="_serviceMasterService.myform">
                         <div fxLayout="row" fxLayoutAlign="space-between">
                 
-                            <mat-checkbox name="IsDocEditable" (change)="onChange($event)" formControlName="IsDocEditable">
+                            <mat-checkbox name="IsDocEditable" formControlName="IsDocEditable" value='false'>
                                 Is Doc Editable For Service</mat-checkbox>
                 
                             <mat-checkbox name="IsEditable" formControlName="IsEditable" value='true'
@@ -202,8 +229,7 @@
                                 IsPathology</mat-checkbox>
                 
                             <mat-checkbox name="IsEmergency" [(ngModel)]="showEmg" value="true" formControlName="IsEmergency"
-                                (change)="emg_amt=''; emg_per=''">
-                                IsEmergency</mat-checkbox>
+                            > IsEmergency</mat-checkbox>
                 
                             <mat-checkbox name="CreditedtoDoctor" formControlName="CreditedtoDoctor" value='false'
                                 [(ngModel)]="showDoctor">
@@ -212,33 +238,40 @@
                         </div>
                         <hr>
                 
-                        <div fxFlexFill fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="6px">
-                
-                            <mat-form-field appearance="outline" fxFlex="20%" *ngIf="showDoctor">
+                        <div fxFlexFill fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="6px"> 
+
+                            <mat-form-field appearance="outline"  fxFlex="30%" *ngIf="showDoctor">
                                 <mat-label>Doctor Name</mat-label>
-                                <mat-select placeholder="Select Doctor Name" name="DoctorId" formControlName="DoctorId">
-                
-                                    <mat-option *ngFor="let M of DoctorcmbList" [value]="M.DoctorID">
-                                        {{ M.DoctorName }}
-                                    </mat-option>
-                                </mat-select>
-                                <mat-error>Please Select Doctor Name </mat-error>
-                            </mat-form-field>
+                                <input matAutocompletePosition="below" type="text" placeholder="Select Doctor" matInput
+                                  formControlName="DoctorId" [matAutocomplete]="autoDoctorId" #DoctorId
+                                   [(ngModel)]="vDoctorId">
+                                <span matSuffix style="display: flex;">
+                                  <mat-icon class="mat-icon-close"
+                                    (click)="_serviceMasterService.myform.get('DoctorId').setValue(''); isDoctorIdSelected = false;">close</mat-icon>
+                                  <mat-icon class="mat-icon-close"
+                                    (click)="_serviceMasterService.myform.get('DoctorId').setValue(''); isDoctorIdSelected = false;">search</mat-icon>
+                                </span>
+                                <mat-autocomplete #autoDoctorId="matAutocomplete" [displayWith]="getOptionTextDoctorId">
+                                  <mat-option *ngFor="let option of filteredDoctor | async" [value]="option">
+                                    {{option.DoctorName}}
+                                  </mat-option>
+                                </mat-autocomplete>
+                              </mat-form-field>
                 
                 
                             <div fxLayout="row" fxLayoutGap="4px" *ngIf="showEmg">
                                 <mat-form-field appearance="outline" fxFlex="50%">
                                     <mat-label>Emergency Amt</mat-label>
-                                    <input name="EmgAmt" placeholder="Select EmgAmt" [(ngModel)]="emg_amt" formControlName="EmgAmt"
-                                        matInput>
+                                    <input name="EmgAmt" placeholder="Select EmgAmt" [(ngModel)]="vemg_amt" formControlName="EmgAmt"
+                                        matInput     (keypress)="keyPressCharater($event)"  >
                                     <span class="error" *ngIf="f.EmgAmt.invalid && f.EmgAmt.touched">EmgAmt required
                                         only Digits</span>
                                 </mat-form-field>&nbsp;
                 
                                 <mat-form-field appearance="outline" fxFlex="50%">
                                     <mat-label>Emergency %</mat-label>
-                                    <input name="EmgPer" placeholder="Select EmgPer" [(ngModel)]="emg_per" formControlName="EmgPer"
-                                        matInput>
+                                    <input name="EmgPer" placeholder="Select EmgPer" [(ngModel)]="vemg_per" formControlName="EmgPer"
+                                        matInput     (keypress)="keyPressCharater($event)"  >
                                     <span class="error" *ngIf="f.EmgPer.invalid && f.EmgPer.touched">EmgPer required
                                         only Digits</span>
                                 </mat-form-field>

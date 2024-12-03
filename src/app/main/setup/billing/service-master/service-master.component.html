@@ -194,9 +194,9 @@
                                          IsActive
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-90">
-                                        <mat-icon *ngIf="!element.IsDeleted" matTooltip="IsActive"
+                                        <mat-icon *ngIf="element.IsActive" matTooltip="IsActive"
                                             class="active-icon green-600 s-16">check_circle</mat-icon>
-                                        <mat-icon *ngIf="element.IsDeleted" matTooltip="IsDeactive"
+                                        <mat-icon *ngIf="!element.IsActive" matTooltip="IsDeactive"
                                             class="active-icon red-500 s-16">close</mat-icon>
                                     </mat-cell>
                                 </ng-container>

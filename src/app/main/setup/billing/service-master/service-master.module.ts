@@ -1,35 +1,42 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { RouterModule, Routes } from "@angular/router";
-import { ServiceMasterComponent } from "./service-master.component";
-import { ServiceMasterFormComponent } from "./service-master-form/service-master-form.component";
-import { ServiceMasterService } from "./service-master.service";
+import { DatePipe } from "@angular/common";
 import { MatButtonModule } from "@angular/material/button";
-import { MatCheckboxModule } from "@angular/material/checkbox";
-import { MatIconModule } from "@angular/material/icon";
 import { MatFormFieldModule } from "@angular/material/form-field";
-import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatMenuModule } from "@angular/material/menu";
 import { MatRippleModule } from "@angular/material/core";
 import { MatTableModule } from "@angular/material/table";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatPaginatorModule } from "@angular/material/paginator";
-import { MatSelectModule } from "@angular/material/select";
-import { MatRadioModule } from "@angular/material/radio";
 import { MatSortModule } from "@angular/material/sort";
-import { MatSnackBarModule } from "@angular/material/snack-bar";
+import { MatSelectModule } from "@angular/material/select";
 import { FuseSharedModule } from "@fuse/shared.module";
 import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
-import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
-import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { ReactiveFormsModule } from "@angular/forms";
-import { MatStepperModule } from "@angular/material/stepper";
 import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
-import { MatAutocompleteModule } from "@angular/material/autocomplete";
-import { SharedModule } from "app/main/shared/shared.module";
+import { RouterModule, Routes } from "@angular/router";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatStepperModule } from "@angular/material/stepper";
+import { MatTabsModule } from "@angular/material/tabs";
+import { MatDividerModule } from "@angular/material/divider";
+import { MatRadioModule } from "@angular/material/radio";
 import { MatCardModule } from "@angular/material/card";
-import { AddPackageDetComponent } from './add-package-det/add-package-det.component';
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { MatAutocompleteModule } from "@angular/material/autocomplete";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
+import { MatSlideToggleModule } from "@angular/material/slide-toggle";
+import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatDialogModule } from "@angular/material/dialog";
+import { MatListModule } from "@angular/material/list";
+import { MatExpansionModule } from "@angular/material/expansion";
+import { SharedModule } from "app/main/shared/shared.module";
+import { MatCheckboxModule } from "@angular/material/checkbox"; 
+import { ScrollingModule } from "@angular/cdk/scrolling"; 
+import { ServiceMasterComponent } from "./service-master.component";
+import { ServiceMasterFormComponent } from "./service-master-form/service-master-form.component";
+import { AddPackageDetComponent } from "./add-package-det/add-package-det.component";
+import { ServiceMasterService } from "./service-master.service";
 
 const routes: Routes = [
     {
@@ -56,20 +63,31 @@ const routes: Routes = [
         MatSortModule,
         MatSelectModule,
         MatRadioModule,
-        MatSnackBarModule,
+        MatTabsModule,
+        FuseSidebarModule,
+        MatListModule,
+        MatSlideToggleModule,
+        MatDividerModule, 
         FuseSharedModule,
         FuseConfirmDialogModule,
-        FuseSidebarModule,
-        MatProgressSpinnerModule,
-        MatSlideToggleModule,
         ReactiveFormsModule,
+        MatSnackBarModule,
         MatStepperModule,
         MatAutocompleteModule,
+        MatProgressSpinnerModule,
         SharedModule,
         NgxMatSelectSearchModule,
-        MatCardModule
+        MatCardModule,
+        MatListModule,
+        MatTooltipModule,
+        MatExpansionModule,
+        MatListModule, 
+        ScrollingModule, 
+    ], 
+    providers: [
+    
+        DatePipe,
     ],
-    providers: [ServiceMasterService],
     entryComponents: [ServiceMasterComponent],
 })
 export class ServiceMasterModule {}

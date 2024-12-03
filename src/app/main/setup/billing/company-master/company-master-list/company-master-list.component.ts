@@ -1,13 +1,15 @@
-import { Component, OnInit, ViewEncapsulation } from "@angular/core";
+import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { FormControl } from "@angular/forms";
-import { ReplaySubject, Subject } from "rxjs";
+import { Observable, ReplaySubject, Subject } from "rxjs";
 import { CompanyMasterService } from "../company-master.service";
 import { CompanyMasterComponent } from "../company-master.component";
-import { MatDialogRef } from "@angular/material/dialog";
-import { takeUntil } from "rxjs/operators";
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { map, startWith, takeUntil } from "rxjs/operators";
 import { fuseAnimations } from "@fuse/animations";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
+import { AuthenticationService } from "app/core/services/authentication.service";
+import { DatePipe } from "@angular/common";
 
 @Component({
     selector: "app-company-master-list",
@@ -17,282 +19,326 @@ import { ToastrService } from "ngx-toastr";
     animations: fuseAnimations,
 })
 export class CompanyMasterListComponent implements OnInit {
+
+
+    vCompanyName:any;
+    vAddress:any;
+    vCity:any;
+    vPinNo:any;
+    vMobileNo:any;
+    vCompTypeId: any;
+    vTariffId: any;
+    vPhoneNo:any;
+    vFaxNo:any;
+    isCompTypeIdSelected: boolean = false;
+    isTariffIdSelected: boolean = false;
+    filteredcompType: Observable<string[]>;
+    filteredTarrifname: Observable<string[]>;
     submitted = false;
     CompanytypecmbList: any = [];
     TariffcmbList: any = [];
-    // SubGroupcmbList:any=[];
-
-    msg: any;
-    dataArray = {};
     isLoading = true;
+    registerObj:any;
 
-    //company filter
-    public companytypeFilterCtrl: FormControl = new FormControl();
-    public filteredCompanytype: ReplaySubject<any> = new ReplaySubject<any>(1);
 
-    //tariff filter
-    public tariffFilterCtrl: FormControl = new FormControl();
-    public filteredTariff: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-    private _onDestroy = new Subject<void>();
-    getCompanyMaster: any;
 
     constructor(
         public _companyService: CompanyMasterService,
-        public toastr : ToastrService,
-      //  public company : CompanyMasterComponent,
-
-        public dialogRef: MatDialogRef<CompanyMasterComponent>
-    ) {}
+        public toastr: ToastrService,
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        public dialogRef: MatDialogRef<CompanyMasterComponent>,
+        private _loggedService: AuthenticationService,
+        public _matDialog: MatDialog,
+        public datePipe: DatePipe,
+    ) { }
 
     ngOnInit(): void {
+        if(this.data){
+            this.registerObj = this.data.Obj
+            console.log(this.registerObj)
+            this.vCompanyName = this.registerObj.CompanyName
+            this.vAddress = this.registerObj.Address
+            this.vCity = this.registerObj.City
+            this.vMobileNo = this.registerObj.MobileNo
+            this.vPhoneNo = this.registerObj.PhoneNo
+            this.vPinNo = this.registerObj.PinNo
+            this.vFaxNo = this.registerObj.FaxNo  
+        }
+    
+        this.getTariffNameCombobox();
         this.geCompanytypeNameCombobox();
-        this.geTariffNameCombobox();
-        
-        //this.geSubgroupNameCombobox();
-
-        this.tariffFilterCtrl.valueChanges
-            .pipe(takeUntil(this._onDestroy))
-            .subscribe(() => {
-                this.filterTariff();
-            });
-
-        this.companytypeFilterCtrl.valueChanges
-            .pipe(takeUntil(this._onDestroy))
-            .subscribe(() => {
-                this.filterCompanytype();
-            });
     }
 
-    get f() {
-        return this._companyService.myform.controls;
+    getTariffNameCombobox() {
+        this._companyService.getTariffMasterCombo().subscribe(data => {
+            this.TariffcmbList = data;
+            this.filteredTarrifname = this._companyService.myform.get('TariffId').valueChanges.pipe(
+                startWith(''),
+                map(value => value ? this._filterTariff(value) : this.TariffcmbList.slice()),
+            );
+            if (this.data) {
+                const ddValue = this.TariffcmbList.filter(c => c.TraiffId == this.registerObj.TraiffId);
+                this._companyService.myform.get('TariffId').setValue(ddValue[0]);
+                return;
+            }
+        });
     }
-
-    private filterTariff() {
-        if (!this.TariffcmbList) {
-            return;
-        }
-        // get the search keyword
-        let search = this.tariffFilterCtrl.value;
-        if (!search) {
-            this.filteredTariff.next(this.TariffcmbList.slice());
-            return;
-        } else {
-            search = search.toLowerCase();
-        }
-        // filter the banks
-        this.filteredTariff.next(
-            this.TariffcmbList.filter(
-                (bank) => bank.TariffName.toLowerCase().indexOf(search) > -1
-            )
-        );
-    }
-
-    private filterCompanytype() {
-        // debugger;
-        if (!this.CompanytypecmbList) {
-            return;
-        }
-        // get the search keyword
-        let search = this.companytypeFilterCtrl.value;
-        if (!search) {
-            this.filteredCompanytype.next(this.CompanytypecmbList.slice());
-            return;
-        } else {
-            search = search.toLowerCase();
-        }
-        // filter
-        this.filteredCompanytype.next(
-            this.CompanytypecmbList.filter(
-                (bank) => bank.TypeName.toLowerCase().indexOf(search) > -1
-            )
-        );
-    }
-
     geCompanytypeNameCombobox() {
         this._companyService.getCompanytypeMasterCombo().subscribe((data) => {
             this.CompanytypecmbList = data;
-            this._companyService.myform.get("CompTypeId").setValue(this.CompanytypecmbList[0]);
+
+            this.filteredcompType = this._companyService.myform.get('CompTypeId').valueChanges.pipe(
+                startWith(''),
+                map(value => value ? this._filterCompType(value) : this.CompanytypecmbList.slice()),
+            );
+            if (this.data) {
+                const ddValue = this.CompanytypecmbList.filter(c => c.CompTypeId == this.registerObj.CompTypeId);
+                this._companyService.myform.get('CompTypeId').setValue(ddValue[0]);
+                return;
+            }
         });
     }
 
-    geTariffNameCombobox() {
-        this._companyService.getTariffMasterCombo().subscribe((data) => {
-            this.TariffcmbList = data;
-            this._companyService.myform
-                .get("TariffId")
-                .setValue(this.TariffcmbList[0]);
-        });
+    //filters
+    private _filterTariff(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.TariffName ? value.TariffName.toLowerCase() : value.toLowerCase();
+            return this.TariffcmbList.filter(option => option.TariffName.toLowerCase().includes(filterValue));
+        }
     }
-    
+    private _filterCompType(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.TypeName ? value.TypeName.toLowerCase() : value.toLowerCase();
+            return this.CompanytypecmbList.filter(option => option.TypeName.toLowerCase().includes(filterValue));
+        }
+    }
+    getOptionTextTariff(option) {
+        return option && option.TariffName ? option.TariffName : '';
+    }
+    getOptionTextCompType(option) {
+        return option && option.TypeName ? option.TypeName : '';
+    }
+
+
+
+
+
+
     onSubmit() {
         debugger
-        // if (this._companyService.myform.valid) {
-            if (!this._companyService.myform.get("CompanyId").value) {
-                var m_data = {
-                    companyMasterInsert: {
-                        compTypeId:
-                            this._companyService.myform.get("CompTypeId").value
-                                .CompanyTypeId,
-                        companyName: this._companyService.myform
-                            .get("CompanyName")
-                            .value.trim(),
-                        address: this._companyService.myform
-                            .get("Address")
-                            .value.trim(),
-                        city: this._companyService.myform
-                            .get("City")
-                            .value.trim(),
-                        pinNo: this._companyService.myform
-                            .get("PinNo")
-                            .value.trim(),
-                        phoneNo: this._companyService.myform
-                            .get("PhoneNo")
-                            .value.trim(),
-                        mobileNo: this._companyService.myform
-                            .get("MobileNo")
-                            .value.trim(),
-                        faxNo: this._companyService.myform
-                            .get("FaxNo")
-                            .value.trim(),
-                        tariffId:
-                            this._companyService.myform.get("TariffId").value
-                                .TariffId,
-                                isActive: Boolean(
-                            JSON.parse(
-                                this._companyService.myform.get("IsDeleted")
-                                    .value
-                            )
-                        ),
-                        addedBy: 10,
-                        updatedBy: 0,
-                        isCancelled: false,
-                        isCancelledBy: 0,
-                        isCancelledDate: "01/01/1900",
-                    },
-                };
-                debugger
-                console.log(m_data);
-                this._companyService
-                    .companyMasterInsert(m_data)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                              this.getCompanyMaster();
-                           
-                        } else {
-                            this.toastr.error('Company Master Data not saved !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                        }
-                        this.getCompanyMaster();
-                    },error => {
-                        this.toastr.error('Company Data not saved !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
-            } else {
-                var m_dataUpdate = {
-                    companyMasterUpdate: {
-                        companyId:
-                            this._companyService.myform.get("CompanyId").value,
-                        compTypeId:
-                            this._companyService.myform.get("CompTypeId").value
-                                .CompanyTypeId,
-                        companyName: this._companyService.myform
-                            .get("CompanyName")
-                            .value.trim(),
-                        address: this._companyService.myform
-                            .get("Address")
-                            .value.trim(),
-                        city: this._companyService.myform
-                            .get("City")
-                            .value.trim(),
-                        pinNo: this._companyService.myform
-                            .get("PinNo")
-                            .value.trim(),
-                        phoneNo: this._companyService.myform
-                            .get("PhoneNo")
-                            .value.trim(),
-                        mobileNo: this._companyService.myform
-                            .get("MobileNo")
-                            .value.trim(),
-                        faxNo: this._companyService.myform
-                            .get("FaxNo")
-                            .value.trim(),
-                        tariffId:
-                            this._companyService.myform.get("TariffId").value
-                                .TariffId,
-                        isActive: Boolean(
-                            JSON.parse(
-                                this._companyService.myform.get("IsDeleted")
-                                    .value
-                            )
-                        ),
-                        addedBy: 10,
-                        updatedBy: 1,
-                        isCancelled: false,
-                        isCancelledBy: 0,
-                        isCancelledDate: "01/01/1900",
-                    },
-                };
+  
+      
+          if ((this.vCompanyName == '' || this.vCompanyName == undefined || this.vCompanyName == null)) {
+            this.toastr.warning('Please enter Company Name.', 'Warning !', {
+              toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+          }
 
-                this._companyService
-                    .companyMasterUpdate(m_dataUpdate)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record updated Successfully.', 'updated !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                              this.getCompanyMaster();
-                           
-                        } else {
-                            this.toastr.error('Company Master Data not updated !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                            
-                        }
-                        this.getCompanyMaster();
-                    },error => {
-                        this.toastr.error('Company Data not Updated !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                       
-                     });
+          if ((this.vCompTypeId == '' || this.vCompTypeId == undefined || this.vCompTypeId == null)) {
+            this.toastr.warning('Please select Company Type.', 'Warning !', {
+              toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+          }
+          if (this._companyService.myform.get('CompTypeId').value) {
+            if (!this.CompanytypecmbList.some(item => item.TypeName === this._companyService.myform.get('CompTypeId').value.TypeName)) {
+              this.toastr.warning('Please Select valid Company Type', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+              });
+              return;
             }
-            this.onClose();
-        }
-    
-    // onEdit(row) {
-    //     var m_data = {
-    //         CompanyId: row.CompanyId,
-    //         CompTypeId: row.CompTypeId,
-    //         CompanyName: row.CompanyName.trim(),
-    //         Address: row.Address.trim(),
-    //         City: row.City.trim(),
-    //         PinNo: row.PinNo.trim(),
-    //         PhoneNo: row.PhoneNo.trim(),
-    //         MobileNo: row.MobileNo.trim(),
-    //         FaxNo: row.FaxNo.trim(),
-    //         TariffId: row.TariffId,
-    //         IsDeleted: JSON.stringify(row.IsDeleted),
-    //         UpdatedBy: row.UpdatedBy,
-    //         IsCancelled: JSON.stringify(row.IsCancelled),
-    //         IsCancelledBy: row.IsCancelledBy,
-    //         IsCancelledDate: row.IsCancelledDate,
-    //     };
-    //     this._companyService.populateForm(m_data);
-    // }
+          }
+          if ((this.vTariffId == '' || this.vTariffId == undefined || this.vTariffId == null)) {
+            this.toastr.warning('Please select Tariff Name.', 'Warning !', {
+              toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+          }
+          if (this._companyService.myform.get('TariffId').value) {
+            if (!this.TariffcmbList.some(item => item.TariffId === this._companyService.myform.get('TariffId').value.TariffId)) {
+              this.toastr.warning('Please Select valid Tariff Name', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+              });
+              return;
+            }
+          }
+          if ((this.vAddress == '' || this.vAddress == undefined || this.vAddress == null)) {
+            this.toastr.warning('Please enter Address', 'Warning !', {
+              toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+          }
+          if ((this.vCity == '' || this.vCity == undefined || this.vCity == null)) {
+            this.toastr.warning('Please enter Address', 'Warning !', {
+              toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+          }
+          if ((this.vMobileNo == '' || this.vMobileNo == undefined || this.vMobileNo == null)) {
+            this.toastr.warning('Please enter Mobile No', 'Warning !', {
+              toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+          } 
+       
+        if (!this._companyService.myform.get("CompanyId").value) {
+            var m_data = {
+                companyMasterInsert: {
+                    compTypeId:  this._companyService.myform.get("CompTypeId").value.CompanyTypeId || 0,
+                    companyName: this._companyService.myform.get("CompanyName").value ||'',
+                    address: this._companyService.myform.get("Address").value || '',
+                    city: this._companyService.myform .get("City").value || '',
+                    pinNo: this._companyService.myform.get("PinNo").value || 0,
+                    phoneNo: this._companyService.myform.get("PhoneNo").value || 0,
+                    mobileNo: this._companyService.myform.get("MobileNo").value || 0,
+                    faxNo: this._companyService.myform.get("FaxNo").value || 0,
+                    tariffId:this._companyService.myform.get("TariffId").value.TariffId || 0,
+                    isActive: Boolean(JSON.parse(this._companyService.myform.get("IsDeleted").value)),
+                    addedBy: 10,
+                    updatedBy: 0,
+                    isCancelled: false,
+                    isCancelledBy: 0,
+                    isCancelledDate: "01/01/1900",
+                },
+            };
+            debugger
+            console.log(m_data);
+            this._companyService.companyMasterInsert(m_data).subscribe((data) => {
+                    if (data) {
+                        this.toastr.success('Record Saved Successfully.', 'Saved !', {
+                            toastClass: 'tostr-tost custom-toast-success',
+                        });
+                        this.onClose();
+                    } else {
+                        this.toastr.error('Company Master Data not saved !, Please check API error..', 'Error !', {
+                            toastClass: 'tostr-tost custom-toast-error',
+                        });
+                        this.onClose();
+                    } 
+                }, error => {
+                    this.toastr.error('Company Data not saved !, Please check API error..', 'Error !', {
+                        toastClass: 'tostr-tost custom-toast-error',
+                    });
+                });
+        } else {
+            var m_dataUpdate = {
+                companyMasterUpdate: {
+                    companyId: this._companyService.myform.get("CompanyId").value || 0,
+                    compTypeId:  this._companyService.myform.get("CompTypeId").value.CompanyTypeId || 0,
+                    companyName: this._companyService.myform.get("CompanyName").value ||'',
+                    address: this._companyService.myform.get("Address").value || '',
+                    city: this._companyService.myform .get("City").value || '',
+                    pinNo: this._companyService.myform.get("PinNo").value || 0,
+                    phoneNo: this._companyService.myform.get("PhoneNo").value || 0,
+                    mobileNo: this._companyService.myform.get("MobileNo").value || 0,
+                    faxNo: this._companyService.myform.get("FaxNo").value || 0,
+                    tariffId:this._companyService.myform.get("TariffId").value.TariffId || 0,
+                    isActive: Boolean(JSON.parse(this._companyService.myform.get("IsDeleted").value)),
+                    addedBy: 10,
+                    updatedBy: 1,
+                    isCancelled: false,
+                    isCancelledBy: 0,
+                    isCancelledDate: "01/01/1900", 
+                },
+            };
 
-    onClear() {
-        this._companyService.myform.reset();
+            this._companyService.companyMasterUpdate(m_dataUpdate).subscribe((data) => {
+                    if (data) {
+                        this.toastr.success('Record updated Successfully.', 'updated !', {
+                            toastClass: 'tostr-tost custom-toast-success',
+                        });
+                        this.onClose(); 
+                    } else {
+                        this.toastr.error('Company Master Data not updated !, Please check API error..', 'Error !', {
+                            toastClass: 'tostr-tost custom-toast-error',
+                        });
+                    }
+                    this.onClose();
+                }, error => {
+                    this.toastr.error('Company Data not Updated !, Please check API error..', 'Error !', {
+                        toastClass: 'tostr-tost custom-toast-error',
+                    }); 
+                });
+        }
     }
+
     onClose() {
         this._companyService.myform.reset();
         this.dialogRef.close();
+    }
+
+    @ViewChild('CompTypeId') CompTypeId: ElementRef;
+    @ViewChild('TariffId') TariffId: ElementRef;
+    @ViewChild('address') address: ElementRef;
+    @ViewChild('City') City: ElementRef;
+    @ViewChild('PinNo') PinNo: ElementRef;
+    @ViewChild('PhoneNo') PhoneNo: ElementRef;
+    @ViewChild('MobileNo') MobileNo: ElementRef;
+    @ViewChild('FaxNo') FaxNo: ElementRef;
+  
+    public onEnterCompanyName(event): void {
+      if (event.which === 13) {
+        this.CompTypeId.nativeElement.focus();
+      }
+    } 
+    public onEntergrpname(event): void {
+        if (event.which === 13) {
+          this.TariffId.nativeElement.focus();
+        }
+      }
+
+      public onEntertariff(event): void {
+        if (event.which === 13) {
+          this.address.nativeElement.focus();
+        }
+      }
+      public onEnteraddress(event): void {
+        if (event.which === 13) {
+          this.City.nativeElement.focus();
+        }
+      }
+      public onEnterCity(event): void {
+        if (event.which === 13) {
+          this.PinNo.nativeElement.focus();
+        }
+      }
+      public onEnterPinNo(event): void {
+        if (event.which === 13) {
+          this.PhoneNo.nativeElement.focus();
+        }
+      }
+
+      public onEnterPhoneNo(event): void {
+        if (event.which === 13) {
+          this.MobileNo.nativeElement.focus();
+        }
+      }
+      public onEnterMobileNo(event): void {
+        if (event.which === 13) {
+          this.FaxNo.nativeElement.focus();
+        }
+      }
+    
+    get f() {
+        return this._companyService.myform.controls;
+    }
+    keyPressCharater(event){
+        const inp = String.fromCharCode(event.keyCode); 
+    if (/^[a-zA-Z]*$/.test(inp)) {
+        return true;  
+    } else {
+        event.preventDefault();  
+        return false;  
+    }
+      } 
+      keyPressAlphanumeric(event) {
+        var inp = String.fromCharCode(event.keyCode);
+        if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
     }
 }

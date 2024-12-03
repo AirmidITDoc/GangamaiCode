@@ -10,6 +10,7 @@ import { fuseAnimations } from "@fuse/animations";
 import { CompanyMasterListComponent } from "./company-master-list/company-master-list.component";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
+import { CompanyWiseServiceComponent } from "./company-wise-service/company-wise-service.component";
 
 @Component({
     selector: "app-company-master",
@@ -29,7 +30,8 @@ export class CompanyMasterComponent implements OnInit {
     displayedColumns: string[] = [
         "CompanyId",
         "CompanyName",
-        "TypeName",
+        "TypeName", 
+        "AssignServComp",
         "Address",
         "City",
         "PinNo",
@@ -111,10 +113,11 @@ export class CompanyMasterComponent implements OnInit {
         this._companyService.populateForm(m_data);
 
         const dialogRef = this._matDialog.open(CompanyMasterListComponent, {
-            maxWidth: "80vw",
-            maxHeight: "55vh",
-            width: "100%",
-            height: "100%",
+            width: "65%",
+            height: "60%",
+            data:{
+                Obj:row
+            }
         });
 
         dialogRef.afterClosed().subscribe((result) => {
@@ -125,10 +128,22 @@ export class CompanyMasterComponent implements OnInit {
 
     onAdd() {
         const dialogRef = this._matDialog.open(CompanyMasterListComponent, {
-            maxWidth: "80vw",
-            maxHeight: "55vh",
-            width: "100%",
-            height: "100%",
+            width: "65%",
+            height: "60%",
+        });
+
+        dialogRef.afterClosed().subscribe((result) => {
+            console.log("The dialog was closed - Insert Action", result);
+            this.getCompanyMaster();
+        });
+    }
+    AssignServCompany(row) {
+        const dialogRef = this._matDialog.open(CompanyWiseServiceComponent, {
+            width: "75%",
+            height: "70%",
+            data:{
+                Obj:row
+            }
         });
 
         dialogRef.afterClosed().subscribe((result) => {

@@ -4,10 +4,11 @@ import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
 import { ServiceMasterService } from "./service-master.service";
-import { MatDialog } from "@angular/material/dialog";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { ServiceMasterFormComponent } from "./service-master-form/service-master-form.component";
 import { ToastrService } from "ngx-toastr";
 import { AddPackageDetComponent } from "./add-package-det/add-package-det.component";
+import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 
 @Component({
     selector: "app-service-master",
@@ -23,7 +24,7 @@ export class ServiceMasterComponent implements OnInit {
     RadiologytemplateMasterList: any;
     isLoading = true;
     msg: any;
-
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -73,13 +74,10 @@ export class ServiceMasterComponent implements OnInit {
     resultsLength = 0;
     getServiceMasterList() {
         var param = {
-            ServiceName:
-                this._serviceMasterService.myformSearch
-                    .get("ServiceNameSearch")
-                    .value.trim() + "%" || "%",
+            ServiceName:this._serviceMasterService.myformSearch.get("ServiceNameSearch").value.trim() + "%" || "%",
             TariffId: 0,
             GroupId: 0,
-            Start:(this.paginator?.pageIndex??1),
+            Start:(this.paginator?.pageIndex??0),
             Length:(this.paginator?.pageSize??30),
         };
         console.log(param)
@@ -378,6 +376,30 @@ export class ServiceMasterComponent implements OnInit {
               }); 
         }
         
+    }
+
+
+    
+    onDeactive(ServiceId) {
+        this.confirmDialogRef = this._matDialog.open(
+            FuseConfirmDialogComponent,
+            {
+                disableClose: false,
+            }
+        );
+        this.confirmDialogRef.componentInstance.confirmMessage =
+            "Are you sure you want to deactive?";
+        this.confirmDialogRef.afterClosed().subscribe((result) => {
+            if (result) {
+                let Query =
+                    "Update ServiceMaster set IsActive=0 where ServiceId=" +
+                    ServiceId;
+                console.log(Query);
+                this._serviceMasterService.deactivateTheStatus(Query).subscribe((data) => (this.msg = data));
+                this.getServiceMasterList();
+            }
+            this.confirmDialogRef = null;
+        });
     }
   
 }

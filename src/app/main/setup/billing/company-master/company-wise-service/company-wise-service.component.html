@@ -1,0 +1,212 @@
+<div class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                Compnay Wise Service list
+            </span>
+        </div>
+
+        <div fxLayout="row" fxLayoutALign="end start">
+            <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+
+    <div class="content">
+
+        <div class="center p-12 pb-56" fxFlexAlign="start center">
+
+            <div class="content-card" style="border-radius:4px;">
+                <div fxLayout="column" fxFlexFill fxLayoutGap="10px">
+
+                    <mat-card style="padding: 5px;">
+
+                        <form [formGroup]="myFormGroup">
+                            <div fxLayout="column" fxLayoutGap="8px">
+                                
+                                    <mat-radio-group aria-label="Select an option" formControlName="IsPathRad" name="IsPathRad"
+                                        (change)="getServiceListdata()">
+                                        <mat-radio-button value="1">Pathology
+                                        </mat-radio-button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <mat-radio-button value="2">Radiology</mat-radio-button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <mat-radio-button value="3">Other
+                                            Services</mat-radio-button>&nbsp;&nbsp;&nbsp;
+                                    </mat-radio-group>
+                        
+                                    
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <input type="text" name="ServiceId" formControlName="ServiceId" placeholder="Service Name"
+                                                (keyup)="getServiceListdata()" matInput>
+                                            <span matSuffix style="display: flex;">
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="myFormGroup.get('ServiceId').setValue(''); isServiceIdSelected = false;">close</mat-icon>
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="myFormGroup.get('ServiceId').setValue(''); isServiceIdSelected = false;">search</mat-icon>
+                                            </span>
+                                            <mat-error class="error"
+                                                *ngIf="myFormGroup.get('ServiceId').invalid && myFormGroup.get('ServiceId').touched">
+                                                ServiceName is required
+                                            </mat-error>
+                                        </mat-form-field>
+                                 
+                               
+                            </div>
+                        </form>
+                       
+
+                        <div class="table-row gap-12" fxLayout="column" fxLayout.gt-sm="row">
+                            <!-- Table 1 -->
+                            <div class="table-left" fxFlex="100%" fxFlex.sm="100%" fxFlex.gt-sm="40%">
+                              
+                                    <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                                        class="backgroundBlur" style="height: 100%;">
+                                        <div class="spinner-border text-danger"></div>
+                                    </div>
+                                    <mat-table #table matSort [dataSource]="dsservicelist" class="h-280 fix-first-col"
+                                        [@animateStagger]="{value:'50'}">
+                                        <ng-container matColumnDef="ServiceName">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                class="w-270">
+                                                Service Name
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-270">
+                                                <span> {{contact.ServiceName}}</span>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="Action" stickyEnd>
+                                            <mat-header-cell *matHeaderCellDef style="color: white;" class="w-80">
+                                                Action</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" class="w-80">
+                                                <button mat-icon-button (click)="onSaveEntry(contact)" color="warn">
+                                                    <mat-icon>add</mat-icon>
+                                                </button>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="loading">
+                                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                                loading data...
+                                            </mat-footer-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="noData">
+                                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                                <!-- <mat-spinner class="spinner" [diameter]="35" [color]="blue"></mat-spinner> -->
+                                                <span>No Data Found</span>
+                                            </mat-footer-cell>
+                                        </ng-container>
+                                        <!-- [ngClass]="{'row-yellow': contact.ServiceName == 'CBC'}" -->
+                                        <mat-header-row class="accent"
+                                            *matHeaderRowDef="displayedServiceColumns; sticky: true">
+                                        </mat-header-row>
+                                        <mat-row *matRowDef="let contact; columns: displayedServiceColumns;"
+                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                        <mat-footer-row *matFooterRowDef="['loading']"
+                                            [ngClass]="{'hide':dsservicelist!=null}">
+                                        </mat-footer-row>
+                                        <mat-footer-row *matFooterRowDef="['noData']"
+                                            [ngClass]="{'hide':!(dsservicelist!=null && dsservicelist.data.length==0)}">
+                                        </mat-footer-row>
+                                    </mat-table>
+                             
+
+                            </div>
+                            <!-- Table 2 -->
+                            <div class="table-right" fxFlex="100%" fxFlex.sm="100%" fxFlex.gt-sm="60%">
+                               
+                                    <mat-table #table matSort [dataSource]="dscompanyserv" class="h-280"
+                                        [@animateStagger]="{value:'50'}">
+                                        <ng-container matColumnDef="ServiceName">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                Service Name
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                <span> {{contact.ServiceName}}</span>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="Qty">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                Qty
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                <mat-form-field appearance="legacy">
+                                                    <input matInput [(ngModel)]="contact.Qty" type="text" OnlyNumber
+                                                        (keyup)="gettablecalculation(contact)"
+                                                        (keypress)="keyPressAlphanumeric($event)">
+                                                </mat-form-field>
+                                            </mat-cell>  
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="Price">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                Price
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                <mat-form-field appearance="legacy">
+                                                    <input matInput [(ngModel)]="contact.Price" type="text" OnlyNumber
+                                                        (keyup)="gettablecalculation(contact)"
+                                                        (keypress)="keyPressAlphanumeric($event)">
+                                                </mat-form-field>
+                                            </mat-cell>  
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="buttons">
+                                            <mat-header-cell *matHeaderCellDef> Action
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let row">
+                                                <button mat-icon-button (click)="deleteTableRow(row)" color="warn">
+                                                    <mat-icon>delete_outline</mat-icon>
+                                                </button>
+                                                <!-- <button mat-icon-button (click)="onDeactive(row.RegId)" color="warn"><mat-icon>delete_outline</mat-icon></button>       -->
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="loading">
+                                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                                loading data...
+                                            </mat-footer-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="noData">
+                                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                                <!-- <mat-spinner class="spinner" [diameter]="35" [color]="blue"></mat-spinner> -->
+                                                <span>No Data Found</span>
+                                            </mat-footer-cell>
+                                        </ng-container>
+                                        <!-- [ngClass]="{'row-yellow': contact.ServiceName == 'CBC'}" -->
+                                        <mat-header-row class="accent"
+                                            *matHeaderRowDef="displayedServiceselected; sticky: true">
+                                        </mat-header-row>
+                                        <mat-row *matRowDef="let contact; columns: displayedServiceselected;"
+                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                        <mat-footer-row *matFooterRowDef="['loading']"
+                                            [ngClass]="{'hide':dscompanyserv!=null}">
+                                        </mat-footer-row>
+                                        <mat-footer-row *matFooterRowDef="['noData']"
+                                            [ngClass]="{'hide':!(dscompanyserv!=null && dscompanyserv.data.length==0)}">
+                                        </mat-footer-row>
+                                    </mat-table>
+                               
+                            </div>
+                        </div>
+                    </mat-card>
+                 
+
+                    <div fxLayput="row" fxLayoutAlign="end" fxLayoutGap="6px">
+                        <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                        <button class="btn btn-primary" (click)="onSubmit()">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

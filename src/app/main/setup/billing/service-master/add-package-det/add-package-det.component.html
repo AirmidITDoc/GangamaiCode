@@ -8,7 +8,7 @@
                 style="color: white;">account_box
             </mat-icon>
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
-              Package Details 
+                Package Details
             </span>
         </div>
 
@@ -24,6 +24,134 @@
         <div class="center p-12 pb-56" fxFlexAlign="start center">
 
             <div class="content-card" style="border-radius:4px;">
+                <div fxLayout="column" fxFlexFill fxLayoutGap="10px">
+
+                    <mat-card style="padding: 5px;">
+                        <form [formGroup]="PackageForm">
+                            <div fxLayout="row" fxLayoutGap="5px">
+
+                                <mat-form-field appearance="outline" fxFlex="20%">
+                                    <mat-label>Service Name</mat-label>
+                                    <input name="MainServiceName"  formControlName="MainServiceName"   
+                                        matInput [(ngModel)]="registerObj.ServiceName" readonly>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="40%">
+                                    <mat-label>Package Service Name</mat-label>
+                                    <input type="text" name="SrvcName" formControlName="SrvcName" #Servicename
+                                        placeholder="Package Service Name" matInput [matAutocomplete]="autoService"
+                                        (input)="getServiceListCombobox()" required id="myInput"
+                                        [(ngModel)]="vServiceId">
+                                    <span matSuffix style="display: flex;">
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="PackageForm.get('SrvcName').setValue(''); isServiceSelected = false;">close</mat-icon>
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="PackageForm.get('SrvcName').setValue(''); isServiceSelected = false;">search</mat-icon>
+                                    </span>
+                                    <mat-autocomplete #autoService="matAutocomplete" [displayWith]="getOptionText"
+                                        (optionSelected)='getSelectedObj($event.option.value)'>
+
+                                        <mat-option *ngFor="let option of filteredOptionsService" [value]="option">
+                                            {{option.ServiceName}} | Price {{option.Price}} |
+                                            <span fxLayoutGap="4px">
+                                                <mat-icon *ngIf="option.CreditedtoDoctor == true" matTooltip="IsDoctor">
+                                                    <img width="10px" height="6px" src="assets/images/logos/doctor.png">
+                                                </mat-icon> |
+                                                <mat-icon *ngIf="option.IsRadiology == true" matTooltip="IsRadiology">
+                                                    <img width="10px" height="6px"
+                                                        src="assets/images/logos/radiology.png">
+                                                </mat-icon>
+                                                <mat-icon *ngIf="option.IsPathology == true" matTooltip="IsPatholgy">
+                                                    <img width="10px" height="6px"
+                                                        src="assets/images/logos/pathology.png">
+                                                </mat-icon>
+                                                <mat-icon *ngIf="option.IsPackage == true" matTooltip="IsPackage">
+                                                    <img width="10px" height="6px"
+                                                        src="assets/images/logos/package.png">
+                                                </mat-icon>
+                                            </span>
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+
+                                <div matTooltip="Enter all data to enable this button!!" [matTooltipPosition]="'above'"
+                                    style="padding: 8px 20px 0px 20px;">
+                                    <button (click)="onAddPackageService()" class="btn btn-primary btn-with-icon py-8"
+                                        #addbutton>
+                                        <span class="btn-icon">
+                                            <mat-icon> add </mat-icon>
+                                        </span>
+                                    </button>
+                                </div>
+
+                            </div>
+                        </form>
+                    </mat-card>
+
+                    <mat-card style="padding: 5px;">
+                        <div fxFlex="100%">
+                            <mat-table #table1 matSort [dataSource]="dsPackageDet" [@animateStagger]="{value:'50'}"
+                                style="height:250px !important;overflow: auto;">
+
+                                <ng-container matColumnDef="ServiceName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
+                                        Service Name
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
+                                        <span> {{contact.ServiceName}}</span>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="PackageServiceName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
+                                        Package Service Name
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
+                                        <span> {{contact.PackageServiceName}}</span>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="action" stickyEnd>
+                                    <mat-header-cell *matHeaderCellDef style="color: white;"> Action
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let row">
+                                        <button mat-icon-button (click)="deleteTableRowPackage(row)" color="warn">
+                                            <mat-icon>delete_outline</mat-icon>
+                                        </button>
+                                    </mat-cell>
+                                </ng-container>
+
+
+                                <ng-container matColumnDef="loading">
+                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                        loading data...
+                                    </mat-footer-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="noData">
+                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                        <span>No Data Found</span>
+                                    </mat-footer-cell>
+                                </ng-container>
+
+                                <mat-header-row class="accent" *matHeaderRowDef="displayedColumnspackage; sticky: true">
+                                </mat-header-row>
+                                <mat-row *matRowDef="let contact; columns: displayedColumnspackage;"
+                                    [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dsPackageDet!=null}">
+                                </mat-footer-row>
+                                <mat-footer-row *matFooterRowDef="['noData']"
+                                    [ngClass]="{'hide':!(dsPackageDet!=null && dsPackageDet.data.length==0)}">
+                                </mat-footer-row>
+                            </mat-table>
+                        </div>
+                    </mat-card> 
+
+                    <div fxLayput="row" fxLayoutAlign="end" fxLayoutGap="6px">
+                        <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                        <button class="btn btn-primary" (click)="onSavePackage()">Save</button>
+                    </div>
+                </div> 
             </div>
         </div>
     </div>

@@ -142,9 +142,19 @@ export class ServiceMasterService {
         }
         return this._httpClient.post("Billing/ServiceUpdate", param);
     }
+    public deactivateTheStatus(param) {
+        return this._httpClient.post(
+            "Generic/ExecByQueryStatement?query=" + param,
+            {}
+        );
+    }
+      // Get billing Service List 
+  public getBillingServiceList(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ServicesList", employee)
+  }
 
     populateForm(param) {
-        debugger;
+       // debugger;
         this.myform.patchValue(param);
         this.edit_data = param;
         this.myform.get("IsPathology").setValue(param.IsPathology == "1" ? true : false);

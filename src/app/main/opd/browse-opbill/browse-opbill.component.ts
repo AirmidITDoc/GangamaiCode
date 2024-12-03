@@ -868,7 +868,7 @@ PaymentId=Id.PaymentId
   getRecord1(contact, m): void {
     debugger
     if (m == "Print Final Bill"){
-      this.viewgetOPBillReportPdf(contact.BillNo) 
+      this.viewgetOPBillReportPdf(contact) 
     } 
     else if(m == "Print FinalBill With Package Details"){
       this.viewgetOPBillWithPackageReportPdf(contact) 

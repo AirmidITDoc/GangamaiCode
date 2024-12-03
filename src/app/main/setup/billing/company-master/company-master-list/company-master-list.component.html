@@ -1,128 +1,158 @@
-<div class="dialog-content-wrapper">
-    <mat-toolbar matDialogTitle class="mat-accent m-0">
-        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
-            <h3>{{_companyService.myform.controls.CompanyId.value?"Modify Company Master":"New
-                Company Master"}}</h3>
-            <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog">
+<div class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                {{_companyService.myform.controls.CompanyId.value?"Modify Company Master":"New
+                Company Master"}}
+            </span>
+        </div>
+
+        <div fxLayout="row" fxLayoutALign="end start">
+            <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
                 <mat-icon>close</mat-icon>
             </button>
-        </mat-toolbar-row>
+        </div>
     </mat-toolbar>
-</div>
 
-<form [formGroup]="_companyService.myform">
-    <input type="hidden" name="CompanyId" formControlName="CompanyId">
+    <div class="content">
 
-    <br />
-    <br />
-    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+        <div class="center p-12 pb-56" fxFlexAlign="start center">
 
-        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-            <input name="CompanyName" placeholder="Select Company Name" formControlName="CompanyName" matInput required>
-            <mat-error>Please enter Company Name </mat-error>
-        </mat-form-field>
-
-
-
+            <div class="content-card" style="border-radius:4px;">
+                <div fxLayout="column" fxFlexFill fxLayoutGap="10px">
+                    <form [formGroup]="_companyService.myform">
+                        <mat-card style="padding: 5px;">
+                    
+                            <div fxLayout="column" fxLayoutGap="5px">
+                                <input type="hidden" name="CompanyId" formControlName="CompanyId">
+                    
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Company Name</mat-label>
+                                    <input name="CompanyName" placeholder="Select Company Name" formControlName="CompanyName" matInput
+                                        required type="text" (keydown)="onEnterCompanyName($event)"
+                                        (keypress)="keyPressCharater($event)" [(ngModel)]="vCompanyName">
+                                </mat-form-field>
+                    
+                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                    
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Type Name</mat-label>
+                                        <input matAutocompletePosition="below" type="text" placeholder="Select Company TYpe" matInput
+                                            formControlName="CompTypeId" [matAutocomplete]="autoCompTypeId" #CompTypeId
+                                            [(ngModel)]="vCompTypeId" (keydown)="onEntergrpname($event)">
+                                        <span matSuffix style="display: flex;">
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_companyService.myform.get('CompTypeId').setValue(''); isCompTypeIdSelected = false;">close</mat-icon>
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_companyService.myform.get('CompTypeId').setValue(''); isCompTypeIdSelected = false;">search</mat-icon>
+                                        </span>
+                                        <mat-autocomplete #autoCompTypeId="matAutocomplete" [displayWith]="getOptionTextCompType">
+                                            <mat-option *ngFor="let option of filteredcompType | async" [value]="option">
+                                                {{option.TypeName}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+                    
+                    
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Tariff Name</mat-label>
+                                        <input matAutocompletePosition="below" type="text" placeholder="Select Tariff" matInput
+                                            formControlName="TariffId" [matAutocomplete]="autoTariffId" #TariffId [(ngModel)]="vTariffId"
+                                            (keydown)="onEntertariff($event)">
+                                        <span matSuffix style="display: flex;">
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_companyService.myform.get('TariffId').setValue(''); isTariffIdSelected = false;">close</mat-icon>
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_companyService.myform.get('TariffId').setValue(''); isTariffIdSelected = false;">search</mat-icon>
+                                        </span>
+                                        <mat-autocomplete #autoTariffId="matAutocomplete" [displayWith]="getOptionTextTariff">
+                                            <mat-option *ngFor="let option of filteredTarrifname | async" [value]="option">
+                                                {{option.TariffName}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+                    
+                                </div>
+                    
+                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                    
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <input name="Address" placeholder="Select Address" #address formControlName="Address"
+                                            [(ngModel)]="vAddress" (keydown)="onEnteraddress($event)" matInput required>
+                                        <!-- <span class="error" *ngIf="f.Address.invalid && f.Address.touched">Address is required </span> -->
+                                    </mat-form-field>
+                    
+                    
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <input name="City" placeholder="Select City" formControlName="City" matInput required
+                                            (keydown)="onEnterCity($event)" #City [(ngModel)]="vCity"
+                                            (keypress)="keyPressCharater($event)">
+                                        <!-- <span class="error" *ngIf="f.City.invalid && f.City.touched">City is required Enter only Alphabets</span> -->
+                                    </mat-form-field>
+                    
+                    
+                                    <mat-form-field appearance="outline"  fxFlex>
+                                        <input name="PinNo" placeholder="Select PinNo" formControlName="PinNo" maxlength="6" matInput
+                                            (keydown)="onEnterPinNo($event)" #PinNo (keypress)="keyPressAlphanumeric($event)" OnlyNumber
+                                            [(ngModel)]="vPinNo">
+                                        <!-- <span class="error" *ngIf="f.PinNo.invalid && f.PinNo.touched">PinNo is required Enter only Digits</span> -->
+                                    </mat-form-field>
+                    
+                                </div>
+                    
+                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                    
+                                    <mat-form-field appearance="outline"  fxFlex>
+                                        <input name="PhoneNo" placeholder="Select PhoneNo" maxlength="10" formControlName="PhoneNo" matInput
+                                            (keydown)="onEnterPhoneNo($event)" #PhoneNo (keypress)="keyPressAlphanumeric($event)" OnlyNumber
+                                            [(ngModel)]="vPhoneNo">
+                                        <!-- <span class="error" *ngIf="f.PhoneNo.invalid && f.PhoneNo.touched">PhoneNo is required Enter only
+                                                                Digits</span> -->
+                                    </mat-form-field>
+                    
+                    
+                                    <mat-form-field appearance="outline"  fxFlex>
+                                        <input name="MobileNo" placeholder="Select Mobile No " formControlName="MobileNo" maxlength="10"
+                                            matInput required (keydown)="onEnterMobileNo($event)" #MobileNo
+                                            (keypress)="keyPressAlphanumeric($event)" [(ngModel)]="vMobileNo" OnlyNumber>
+                                        <!-- <span class="error" *ngIf="f.MobileNo.invalid && f.MobileNo.touched">MobileNo is required Enter only 10
+                                                                Digits</span> -->
+                                    </mat-form-field>
+                    
+                    
+                                    <mat-form-field appearance="outline"  fxFlex>
+                                        <input name="FaxNo" placeholder="Select FaxNo" formControlName="FaxNo" maxlength="10" matInput
+                                            #FaxNo (keypress)="keyPressAlphanumeric($event)" OnlyNumber [(ngModel)]="vFaxNo">
+                                        <!-- <span class="error" *ngIf="f.FaxNo.invalid && f.FaxNo.touched">FaxNo is required Enter only Digits</span> -->
+                                    </mat-form-field>
+                                </div>
+                    
+                    
+                    
+                            </div>
+                    
+                        </mat-card>
+                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                            <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
+                                <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsActive</mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                    </form> 
+                   
+                    <div fxLayput="row" fxLayoutAlign="end" fxLayoutGap="6px">
+                        <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                        <button class="btn btn-primary" (click)="onSubmit()">Save</button>
+                    </div>
+                </div> 
+            </div>
+        </div>
     </div>
-    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+</div> 
 
-        <mat-form-field appearance="outline" fxFlex>
-            <mat-label>Type Name</mat-label>
-            <mat-select formControlName="CompTypeId" placeholder="Bank" #singleSelect>
-                <mat-option>
-                    <ngx-mat-select-search [formControl]="companytypeFilterCtrl" [placeholderLabel]="'Search'"
-                        [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                </mat-option>
-                <mat-option *ngFor="let element of filteredCompanytype | async" [value]="element">
-                    {{element.TypeName}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" fxFlex>
-            <mat-label>Tariff Name</mat-label>
-            <mat-select formControlName="TariffId" placeholder="Bank" #singleSelect>
-                <mat-option>
-                    <ngx-mat-select-search [formControl]="tariffFilterCtrl" [placeholderLabel]="'Search'"
-                        [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                </mat-option>
-                <mat-option *ngFor="let element of filteredTariff | async" [value]="element">
-                    {{element.TariffName}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-    </div>
-
-
-    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-
-        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-            <input name="Address" placeholder="Select Address"
-                [ngClass]="{ 'is-invalid': submitted && f.Address.errors }" formControlName="Address" matInput required>
-            <span class="error" *ngIf="f.Address.invalid && f.Address.touched">Address is required </span>
-        </mat-form-field>
-
-
-        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-            <input name="City" placeholder="Select City" [ngClass]="{ 'is-invalid': submitted && f.City.errors }"
-                formControlName="City" matInput required>
-            <span class="error" *ngIf="f.City.invalid && f.City.touched">City is required Enter only Alphabets</span>
-        </mat-form-field>
-
-
-        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-            <input name="PinNo" placeholder="Select PinNo" [ngClass]="{ 'is-invalid': submitted && f.PinNo.errors }"
-                formControlName="PinNo" maxlength="6" matInput>
-            <span class="error" *ngIf="f.PinNo.invalid && f.PinNo.touched">PinNo is required Enter only Digits</span>
-        </mat-form-field>
-
-    </div>
-
-
-    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-
-
-        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-            <input name="PhoneNo" placeholder="Select PhoneNo"
-                [ngClass]="{ 'is-invalid': submitted && f.PhoneNo.errors }" maxlength="10" formControlName="PhoneNo"
-                matInput>
-            <span class="error" *ngIf="f.PhoneNo.invalid && f.PhoneNo.touched">PhoneNo is required Enter only
-                Digits</span>
-        </mat-form-field>
-
-
-        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-            <input name="MobileNo" placeholder="Select Mobile No "
-                [ngClass]="{ 'is-invalid': submitted && f.MobileNo.errors }" formControlName="MobileNo" maxlength="10"
-                matInput required>
-            <span class="error" *ngIf="f.MobileNo.invalid && f.MobileNo.touched">MobileNo is required Enter only 10
-                Digits</span>
-        </mat-form-field>
-
-
-        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-            <input name="FaxNo" placeholder="Select FaxNo" [ngClass]="{ 'is-invalid': submitted && f.FaxNo.errors }"
-                formControlName="FaxNo" maxlength="10" matInput>
-            <span class="error" *ngIf="f.FaxNo.invalid && f.FaxNo.touched">FaxNo is required Enter only Digits</span>
-        </mat-form-field>
-    </div>
-
-    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-        <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
-            <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsActive</mat-radio-button>
-        </mat-radio-group>
-    </div>
-
-</form>
-
-<div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
-    <div class="button-row">
-        <button mat-raised-button color="primary" type="submit" (click)="onSubmit()"
-            [disabled]="_companyService.myform.invalid">Save</button>
-        <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
-
-    </div>
-</div>
-
-<div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar></div>
+ 

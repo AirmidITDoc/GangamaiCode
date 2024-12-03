@@ -1,465 +1,504 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation, HostListener, Inject } from "@angular/core";
+import { Component, OnInit, ViewChild, ViewEncapsulation, HostListener, Inject, ElementRef } from "@angular/core";
 import { ServiceMaster, ServiceMasterComponent, Servicedetail } from "../service-master.component";
 import { fuseAnimations } from "@fuse/animations";
 import { MatTableDataSource } from "@angular/material/table";
 import { FormControl, Validators } from "@angular/forms";
-import { ReplaySubject, Subject } from "rxjs";
+import { Observable, ReplaySubject, Subject } from "rxjs";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { ServiceMasterService } from "../service-master.service";
 import { MatPaginator } from "@angular/material/paginator";
-import { takeUntil } from "rxjs/operators";
+import { map, startWith } from "rxjs/operators";
 import { MatSort } from "@angular/material/sort";
 import { ToastrService } from "ngx-toastr";
-import { element } from "protractor";
-import { NONE_TYPE } from "@angular/compiler";
+import { timeStamp } from "console";
 
 @Component({
-    selector: "app-service-master-form",
-    templateUrl: "./service-master-form.component.html",
-    styleUrls: ["./service-master-form.component.scss"],
-    encapsulation: ViewEncapsulation.None,
-    animations: fuseAnimations,
-  })
-  
-  export class ServiceMasterFormComponent implements OnInit {
-   
+  selector: "app-service-master-form",
+  templateUrl: "./service-master-form.component.html",
+  styleUrls: ["./service-master-form.component.scss"],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations,
+})
+
+export class ServiceMasterFormComponent implements OnInit {
+
+  displayedColumns: string[] = [
+    'ClassId',
+    'ClassName',
+    'ClassRate',
+  ];
+
+  vGroupId: any;
+  vTariffId: any;
+  vDoctorId: any;
+  vServiceName: any;
+  vServiceShortDesc: any;
+  vPrintOrder: any;
+  vsubGroupId: any;
+  isGroupIdSelected: boolean = false;
+  isTariffIdSelected: boolean = false;
+  isDoctorIdSelected: boolean = false;
   isEditMode: boolean = false;
   showEmg: boolean = false;
   showDoctor: boolean = false;
+  isSubGroupIdselected: boolean = false;
+
+
+  filteredGroupname: Observable<string[]>
+  filteredTariff: Observable<string[]>
+  filteredDoctor: Observable<string[]>
+  filteredSubgroupname: Observable<string[]>
+
+  registerObj = new ServiceMaster({});
   submitted = false;
-  GroupcmbList:any=[];
-  DoctorcmbList:any=[];
-  SubGroupcmbList:any=[];
-  ClasscmbList:any=[];
-  TariffcmbList:any=[];
+  GroupcmbList: any = [];
+  DoctorcmbList: any = [];
+  SubGroupcmbList: any = [];
+  ClasscmbList: any = [];
+  TariffcmbList: any = [];
+  vemg_amt:any;
+  vemg_per:any;
 
-  registerObj=new ServiceMaster({});
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  butDisabled:boolean = false;
-  msg:any;
-  emg_amt = "";
-  emg_per = "";
   DSServicedetailList = new MatTableDataSource<Servicedetail>();
-  
-  //tariff filter
-public tariffFilterCtrl: FormControl = new FormControl();
-public filteredTariff: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-  //groupname filter
-  public groupnameFilterCtrl: FormControl = new FormControl();
-  public filteredGroupname: ReplaySubject<any> = new ReplaySubject<any>(1);
-  
-  //subgroupname filter
-public subgroupnameFilterCtrl: FormControl = new FormControl();
-public filteredSubgroupname: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-private _onDestroy = new Subject<void>();
-  getServiceMasterList: any;
 
   constructor(
     public _serviceMasterService: ServiceMasterService,
-    public toastr : ToastrService,
+    public toastr: ToastrService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ServiceMasterComponent>,
-    ) {
-     
-      this.getClassList();
-     
-     }
+  ) { }
 
-    @ViewChild(MatSort) sort:MatSort;
-    @ViewChild(MatPaginator) paginator:MatPaginator;
-    
-    
-    displayedColumns: string[] = [
-      'ClassId',
-      'ClassName',
-      'ClassRate',
-    ];
-    
   ngOnInit(): void {
+    if (this.data) {
+      this.getServicewiseClassMasterList();
+      this.registerObj = this.data.registerObj;
+      this.vServiceName = this.registerObj.ServiceName
+      this.vPrintOrder = this.registerObj.PrintOrder
+      this.vServiceShortDesc = this.registerObj.ServiceShortDesc
+      //this.emg_amt = this.registerObj.EmgAmt
 
-   this.getGroupNameCombobox();
-   this.getDoctorNameCombobox();
-   this.getSubgroupNameCombobox();
-   this.getClassList()
-  //  this.getServicewiseClassMasterList();
-   this.getTariffNameCombobox();
-   this._serviceMasterService.myform.get('EffectiveDate').setValue(new Date());
-
-
-
-   this.groupnameFilterCtrl.valueChanges
-   .pipe(takeUntil(this._onDestroy))
-   .subscribe(() => {
-     this.filterGroupname();
-   });
-
-    
-   this.subgroupnameFilterCtrl.valueChanges
-   .pipe(takeUntil(this._onDestroy))
-   .subscribe(() => {
-     this.filterSubgroupname();
-   });
-
-   this.tariffFilterCtrl.valueChanges
-   .pipe(takeUntil(this._onDestroy))
-   .subscribe(() => {
-     this.filterTariff();
-
-   });
-   if (this.data) {
-    this.getServicewiseClassMasterList();
-    this.registerObj = this.data.registerObj;
-    
-}
-  }
-  @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
-    const focusedElement = document.activeElement as HTMLElement;
-    if (event.key === 'Enter' || event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
-        if (focusedElement.classList.contains('inputs')) {
-            let nextElement: HTMLElement | null = null;
-            if (event.key === 'ArrowRight' || event.key==='Enter') {
-                nextElement = focusedElement.closest('td')?.nextElementSibling as HTMLElement | null;
-            } else if (event.key === 'ArrowLeft') {
-                nextElement = focusedElement.closest('td')?.previousElementSibling as HTMLElement | null;
-            }
-            if (nextElement) {
-                const nextInputs = nextElement.querySelectorAll('.inputs');
-                if (nextInputs.length > 0) {
-                    (nextInputs[0] as HTMLInputElement).focus();
-                }
-            }
-        }
+      if (this.registerObj.CreditedtoDoctor == true) {
+        this._serviceMasterService.myform.get('CreditedtoDoctor').setValue(this.registerObj.CreditedtoDoctor) 
+        this.showDoctor = true;
+      } 
+      if (this.registerObj.IsEmergency == true) {
+        this._serviceMasterService.myform.get('IsEmergency').setValue(this.registerObj.IsEmergency) 
+        this.showEmg = true;
+        this.vemg_amt = this.registerObj.EmgPer
+        this.vemg_per = this.registerObj.EmgPer
+      }
     }
-}
 
-
-  private filterGroupname() {
-    // debugger;
-    if (!this.GroupcmbList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.groupnameFilterCtrl.value;
-    if (!search) {
-      this.filteredGroupname.next(this.GroupcmbList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredGroupname.next(
-      this.GroupcmbList.filter(bank => bank.GroupName.toLowerCase().indexOf(search) > -1)
-    );
+    this.getGroupNameCombobox();
+    this.getTariffNameCombobox();
+    this.getSubgroupNameCombobox();
+    this.getClassList() 
+    this.getDoctorNameCombobox();
+    //  this.getServicewiseClassMasterList(); 
+    this._serviceMasterService.myform.get('EffectiveDate').setValue(new Date());
   }
 
-  private filterSubgroupname() {
-    // debugger;
-    if (!this.SubGroupcmbList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.subgroupnameFilterCtrl.value;
-    if (!search) {
-      this.filteredSubgroupname.next(this.SubGroupcmbList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredSubgroupname.next(
-      this.SubGroupcmbList.filter(bank => bank.SubGroupName.toLowerCase().indexOf(search) > -1)
-    );
-  }
-
-  private filterTariff() {
-
-    if (!this.TariffcmbList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.tariffFilterCtrl.value;
-    if (!search) {
-      this.filteredTariff.next(this.TariffcmbList.slice());
-      return;
-    } else {
-      search = search.toLowerCase();
-    }
-    // filter the banks
-    this.filteredTariff.next(
-      this.TariffcmbList.filter(bank => bank.TariffName.toLowerCase().indexOf(search) > -1)
-    );
-  }
-  getGroupNameCombobox(){
-  
+  getGroupNameCombobox() {
     this._serviceMasterService.getGroupMasterCombo().subscribe(data => {
       this.GroupcmbList = data;
-      this.filteredGroupname.next(this.GroupcmbList.slice());
-      // this._serviceMasterService.myform.get('GroupId').setValue(this.GroupcmbList[0]);
-      this._serviceMasterService.myform.get('GroupId').setValue(this._serviceMasterService.edit_data['GroupId']);
+
+      this.filteredGroupname = this._serviceMasterService.myform.get('GroupId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterGroupName(value) : this.GroupcmbList.slice()),
+      );
+      if (this.data) {
+        const ddValue = this.GroupcmbList.filter(c => c.GroupId == this.data.registerObj.GroupId);
+        this._serviceMasterService.myform.get('GroupId').setValue(ddValue[0]);
+        return;
+      }
     });
   }
-  getSubgroupNameCombobox(){
-  var data={
-    SubGroupName:'%'
+  getTariffNameCombobox() {
+    this._serviceMasterService.getTariffMasterCombo().subscribe(data => {
+      this.TariffcmbList = data;
+      this.filteredTariff = this._serviceMasterService.myform.get('TariffId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterTariff(value) : this.TariffcmbList.slice()),
+      );
+      if (this.data) {
+        const ddValue = this.TariffcmbList.filter(c => c.TariffId == this.data.registerObj.TariffId);
+        this._serviceMasterService.myform.get('TariffId').setValue(ddValue[0]);
+        return;
+      }
+    });
   }
+  getDoctorNameCombobox() {
+    debugger
+    this._serviceMasterService.getDoctorMasterCombo().subscribe(data => {
+      this.DoctorcmbList = data;
+      this.filteredDoctor = this._serviceMasterService.myform.get('DoctorId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterDoctorName(value) : this.DoctorcmbList.slice()),
+      );
+
+      if (this.data) {
+        const ddValue = this.DoctorcmbList.filter(c => c.DoctorID == this.data.registerObj.DoctorId);
+        this._serviceMasterService.myform.get('DoctorId').setValue(ddValue[0]);
+        return;
+      }  
+    });
+   
+  }
+  getSubgroupNameCombobox() {
+    var data = {
+      SubGroupName: '%'
+    }
     this._serviceMasterService.getSubgroupMasterCombo(data).subscribe(data => {
       this.SubGroupcmbList = data;
-      this.filteredSubgroupname.next(this.SubGroupcmbList.slice());
-      // this._serviceMasterService.myform.get('SubGroupId').setValue(this.SubGroupcmbList[0]);
+      this.filteredSubgroupname = this._serviceMasterService.myform.get('SubGroupId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterSubGroupName(value) : this.SubGroupcmbList.slice()),
+      );
       this._serviceMasterService.myform.get('SubGroupId').setValue(this._serviceMasterService.edit_data['SubGroupId']);
     });
   }
-  getTariffNameCombobox(){
-    
-    this._serviceMasterService.getTariffMasterCombo().subscribe(data => {
-      this.TariffcmbList = data;
-      this.filteredTariff.next(this.TariffcmbList.slice());     
-     if(this.isEditMode)this._serviceMasterService.myform.get('TariffId').setValue(this._serviceMasterService.edit_data['TariffId']);      
-      else this._serviceMasterService.myform.get('TariffId').setValue(this.TariffcmbList[0].TariffId);
-
-    });
-  }
-  
   getClassList() {
     this._serviceMasterService.getClassMasterList().subscribe(Menu => {
-    
       this.DSServicedetailList.data = Menu as Servicedetail[];;
       this.DSServicedetailList.sort = this.sort;
-      this.DSServicedetailList.paginator = this.paginator;      
+      this.DSServicedetailList.paginator = this.paginator;
       console.log(this.DSServicedetailList.data)
     });
   }
-
-  gettableclassrate(element,ClassRate){
+  gettableclassrate(element, ClassRate) {
     console.log(element)
     // this.DSServicedetailList[element.ClassId]["ClassRate"]=ClassRate;
   }
-  classratearry=[];
   getServicewiseClassMasterList() {
-    var data={
-      ServiceId :this.data.registerObj.ServiceId || 0
+    var data = {
+      ServiceId: this.data.registerObj.ServiceId || 0
     }
     this._serviceMasterService.getServicewiseClassMasterList(data).subscribe(Menu => {
       this.DSServicedetailList.data = Menu as Servicedetail[];
       console.log(this.DSServicedetailList.data)
-      
     });
-    
   }
 
-  
 
-  get f() { return this._serviceMasterService.myform.controls; }
-
-  getDoctorNameCombobox(){
-    this._serviceMasterService.getDoctorMasterCombo().subscribe(data => {
-      this.DoctorcmbList =data;
-   
-      this._serviceMasterService.myform.get('DoctorId').setValue(this._serviceMasterService.edit_data['DoctorId']);   
-    });  
+  //filters
+  private _filterTariff(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.TariffName ? value.TariffName.toLowerCase() : value.toLowerCase();
+      return this.TariffcmbList.filter(option => option.TariffName.toLowerCase().includes(filterValue));
+    }
   }
-  
-  valuechange(event, cls){    
-    cls['ClassRate'] = parseInt(event.target.value);
+  private _filterGroupName(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.GroupName ? value.GroupName.toLowerCase() : value.toLowerCase();
+      return this.GroupcmbList.filter(option => option.GroupName.toLowerCase().includes(filterValue));
+    }
+  }
+  private _filterDoctorName(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
+      return this.DoctorcmbList.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
+    }
+  }
+  private _filterSubGroupName(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.SubGroupName ? value.SubGroupName.toLowerCase() : value.toLowerCase();
+      return this.SubGroupcmbList.filter(option => option.SubGroupName.toLowerCase().includes(filterValue));
+    }
   }
 
-  onSubmit() {
-    debugger;
+  //options
+  getOptionTextgroupid(option) {
+    return option && option.GroupName ? option.GroupName : '';
+  }
+  getOptionTextTariff(option) {
+    return option && option.TariffName ? option.TariffName : '';
+  }
+  getOptionTextDoctorId(option) {
+    return option && option.DoctorName ? option.DoctorName : '';
+  }
+  getOptionTextSubGroup(option) {
+    return option && option.SubGroupName ? option.SubGroupName : '';
+  }
+
+  //onsave
+
+
+  onSubmit() { 
+
+    if ((this.vGroupId == '' || this.vGroupId == undefined || this.vGroupId == null)) {
+      this.toastr.warning('Please select GroupName.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if (this._serviceMasterService.myform.get('GroupId').value) {
+      if (!this.GroupcmbList.some(item => item.GroupId === this._serviceMasterService.myform.get('GroupId').value.GroupId)) {
+        this.toastr.warning('Please Select valid GroupName', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
+
+    if ((this.vServiceName == '' || this.vServiceName == undefined || this.vServiceName == null)) {
+      this.toastr.warning('Please enter ServiceName.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if ((this.vServiceShortDesc == '' || this.vServiceShortDesc == undefined || this.vServiceShortDesc == null)) {
+      this.toastr.warning('Please enter Service Short Description', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if ((this.vPrintOrder == '' || this.vPrintOrder == undefined || this.vPrintOrder == '0')) {
+      this.toastr.warning('Please enter Print Order.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+
+    if ((this.vTariffId == '' || this.vTariffId == undefined || this.vTariffId == null)) {
+      this.toastr.warning('Please select Tariff Name.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if (this._serviceMasterService.myform.get('TariffId').value) {
+      if (!this.TariffcmbList.some(item => item.TariffId === this._serviceMasterService.myform.get('TariffId').value.TariffId)) {
+        this.toastr.warning('Please Select valid Tariff Name', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
+    if (this.showDoctor) {
+      if ((this.vDoctorId == '' || this.vDoctorId == undefined || this.vDoctorId == null)) {
+        this.toastr.warning('Please select Doctor Name.', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+      if (this._serviceMasterService.myform.get('DoctorId').value) {
+        if (!this.DoctorcmbList.some(item => item.DoctorName === this._serviceMasterService.myform.get('DoctorId').value.DoctorName)) {
+          this.toastr.warning('Please select valid DoctorName.', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return;
+        }
+      }
+    }
+
     if (this.showEmg) {
-      this._serviceMasterService.myform.get('EmgAmt').setValidators([Validators.required,Validators.min(0)]);
-      this._serviceMasterService.myform.get('EmgPer').setValidators([Validators.required,Validators.min(0)]);
-      
-  } else {
-      this._serviceMasterService.myform.get('EmgAmt').clearValidators();
-      this._serviceMasterService.myform.get('EmgPer').clearValidators();
-  }            
-  this._serviceMasterService.myform.get('EmgAmt').updateValueAndValidity();
-  this._serviceMasterService.myform.get('EmgPer').updateValueAndValidity();
-    if (this._serviceMasterService.myform.valid ) {
+      if ((this.vemg_amt == '' || this.vemg_amt == undefined || this.vemg_amt == '0')) {
+        this.toastr.warning('Please enter emergency amount.', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+      if ((this.vemg_per == '' || this.vemg_per == undefined || this.vemg_per == '0')) {
+        this.toastr.warning('Please select emergency %.', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
+
+    let subGroupId  = 0;
+    if(this._serviceMasterService.myform.get("SubGroupId").value)
+      subGroupId =  this._serviceMasterService.myform.get("SubGroupId").value.SubGroupId
+
+    
+    let doctorId  = 0;
+    if(this._serviceMasterService.myform.get("DoctorId").value)
+      doctorId = this._serviceMasterService.myform.get("DoctorId").value.DoctorID
+
+    if (this._serviceMasterService.myform.valid) {
+
+      let serviceMasterdata = {
+        "groupId": this._serviceMasterService.myform.get("GroupId").value.GroupId || 0,
+        "serviceShortDesc": this._serviceMasterService.myform.get("ServiceShortDesc").value || '',
+        "serviceName": this._serviceMasterService.myform.get("ServiceName").value || '',
+        "price": this._serviceMasterService.myform.get("Price").value || 0,
+        "isEditable": this._serviceMasterService.myform.get("IsEditable").value,
+        "creditedtoDoctor": this._serviceMasterService.myform.get("CreditedtoDoctor").value,
+        "isPathology": String(this._serviceMasterService.myform.get("IsPathology").value) == 'false' ? 0 : 1, 
+        "isRadiology": String(this._serviceMasterService.myform.get("IsRadiology").value) == 'false' ? 0 : 1, 
+        "isActive": this._serviceMasterService.myform.get("IsActive").value,
+        "printOrder": this._serviceMasterService.myform.get("PrintOrder").value || 0,
+        "isPackage":String(this._serviceMasterService.myform.get("IsPackage").value) == 'false' ? 0 : 1, 
+        "subgroupId": subGroupId,
+        "doctorId": doctorId,
+        "isEmergency": this._serviceMasterService.myform.get("IsEmergency").value,
+        "emgAmt": this._serviceMasterService.myform.get("EmgAmt").value || 0,
+        "emgPer": this._serviceMasterService.myform.get("EmgPer").value || 0,
+        "isDocEditable": String(this._serviceMasterService.myform.get("IsDocEditable").value) == 'false' ? false : true,
+        "serviceId": this._serviceMasterService.myform.get("ServiceId").value || 0
+      }
 
       var clas_d = [];
-      var class_det ={      
-        "serviceId":parseInt(this._serviceMasterService.myform.get("ServiceId").value || 0),
-        "tariffId":this._serviceMasterService.myform.get("TariffId").value || 0,
+      var serviceDetailInsert = {
+        "serviceId": this._serviceMasterService.myform.get("ServiceId").value || 0,
+        "tariffId": this._serviceMasterService.myform.get("TariffId").value.TariffId || 0,
         "classId": 0,
-        "classRate":0,
-        "effectiveDate":this._serviceMasterService.myform.get("EffectiveDate").value || "01/01/1900",
-     }
+        "classRate": 0,
+        "effectiveDate": this._serviceMasterService.myform.get("EffectiveDate").value || "01/01/1900",
+      }
       this.DSServicedetailList.data.forEach(element => {
-        debugger
-        let c =  JSON.parse(JSON.stringify(class_det));
+        let c = JSON.parse(JSON.stringify(serviceDetailInsert));
         c['classId'] = element.ClassId;
-        c['classRate'] = element.ClassRate || 0;        
+        c['classRate'] = element.ClassRate || 0;
         clas_d.push(c)
       });
 
-
-      let serviceMasterdata = {
-        "serviceShortDesc": this._serviceMasterService.myform.get("ServiceShortDesc").value,
-        "serviceName": (this._serviceMasterService.myform.get("ServiceName").value).trim(),
-        "price": parseInt(this._serviceMasterService.myform.get("Price").value || "0"),
-        "printOrder": parseInt(this._serviceMasterService.myform.get("PrintOrder").value),
-        "isEditable": String(this._serviceMasterService.myform.get("IsEditable").value) == 'false' ?  false : true ,
-        "creditedtoDoctor":  String (this._serviceMasterService.myform.get("CreditedtoDoctor").value) == 'false' ? false : true ,
-        "isPathology": String(this._serviceMasterService.myform.get("IsPathology").value) == 'false' ? 0:1,
-        "isRadiology": String(this._serviceMasterService.myform.get("IsRadiology").value) == 'false' ? 0:1,
-        "isActive": String(this._serviceMasterService.myform.get("IsActive").value) == 'false' ?  false : true ,
-        "isPackage": String(this._serviceMasterService.myform.get("IsPackage").value) == 'false' ? 0:1 ,
-        "isDocEditable": String(this._serviceMasterService.myform.get("IsDocEditable").value) == 'false' ? false : true,   
-        "isEmergency": String(this._serviceMasterService.myform.get("IsEmergency").value) == 'false' ? false : true ,
-        "emgAmt": parseInt(this._serviceMasterService.myform.get("EmgAmt").value ||"0"),
-        "emgPer": parseInt(this._serviceMasterService.myform.get("EmgPer").value ||"0"), 
-        "groupId": parseInt(this._serviceMasterService.myform.get("GroupId").value || 0),
-        "subgroupId": parseInt(this._serviceMasterService.myform.get("SubGroupId").value || 0),
-        "doctorId": this._serviceMasterService.myform.get("DoctorId").value ||0,       
-        "serviceId":parseInt(this._serviceMasterService.myform.get("ServiceId").value || 0),                 
-      }
-
-
-      if (!this._serviceMasterService.myform.get("ServiceId").value) {
-
-       
+      if (!this.registerObj.ServiceId) {
         let m_data = {
           "serviceMasterInsert": serviceMasterdata,
-          "serviceDetailInsert" :clas_d 
+          "serviceDetailInsert": clas_d
         }
         console.log(m_data);
 
         this._serviceMasterService.serviceMasterInsert(m_data).subscribe(data => {
-          this.msg = data;
           if (data) {
             this.toastr.success('Record Saved Successfully.', 'Saved !', {
-                toastClass: 'tostr-tost custom-toast-success',
-              });
-            
-        } else {
+              toastClass: 'tostr-tost custom-toast-success',
+            });
+            this.onClose();
+          } else {
             this.toastr.error('Service Master Data not saved !, Please check API error..', 'Error !', {
-                toastClass: 'tostr-tost custom-toast-error',
-              });  
-        }      
-    },error => {
-        this.toastr.error('Service Data not saved !, Please check API error..', 'Error !', {
-         toastClass: 'tostr-tost custom-toast-error',
-       });
-     });
-       
+              toastClass: 'tostr-tost custom-toast-error',
+            });
+          }
+        }, error => {
+          this.toastr.error('Service Data not saved !, Please check API error..', 'Error !', {
+            toastClass: 'tostr-tost custom-toast-error',
+          });
+        });
       }
-      else {
-        debugger;
-        var m_dataUpdate = {        
-            "serviceMasterUpdate": serviceMasterdata,
-            "serviceDetailInsert" :clas_d, 
-            "serviceDetDelete": {
-              "serviceId": this._serviceMasterService.myform.get("ServiceId").value,
-              "tariffId":this._serviceMasterService.myform.get("TariffId").value,
-            },
+      else {  
+      let serviceDetDelete = {
+        "serviceId": this.registerObj.ServiceId || 0,
+        "tariffId": this._serviceMasterService.myform.get("TariffId").value.TariffId || 0, 
+      } 
+
+        var m_dataUpdate = {
+          "serviceMasterUpdate": serviceMasterdata,
+          "serviceDetailInsert": clas_d,
+          "serviceDetDelete": serviceDetDelete 
         }
-
+        console.log(m_dataUpdate)
         this._serviceMasterService.serviceMasterUpdate(m_dataUpdate).subscribe(data => {
-          this.msg = data; 
-           if (data) {
+
+          if (data) {
             this.toastr.success('Record updated Successfully.', 'updated !', {
-                toastClass: 'tostr-tost custom-toast-success',
-              });                      
-        } else {
+              toastClass: 'tostr-tost custom-toast-success',
+            });
+            this.onClose();
+          } else {
             this.toastr.error('Service Master Data not updated !, Please check API error..', 'Error !', {
-                toastClass: 'tostr-tost custom-toast-error',
-              });
-        }      
-    },error => {
-        this.toastr.error('Service Data not Updated !, Please check API error..', 'Error !', {
-         toastClass: 'tostr-tost custom-toast-error',
-       });
-     });       
+              toastClass: 'tostr-tost custom-toast-error',
+            });
+          }
+        }, error => {
+          this.toastr.error('Service Data not Updated !, Please check API error..', 'Error !', {
+            toastClass: 'tostr-tost custom-toast-error',
+          });
+        });
       }
-     
     }
-  
-this.dialogRef.close();
-    
-  }
-  
-  
-  onEdit(row) {
-    this.isEditMode = true;
-    var m_data = {
-    "ServiceId":row.ServiceId,
-    "ServiceShortDesc":row.ServiceShortDesc.trim(),
-    "ServiceName":row.ServiceName.trim(),
-    "Price":row.Price,
-    "IsEditable":JSON.stringify(row.IsEditable),
-    "CreditedtoDoctor":JSON.stringify(row.CreditedtoDoctor),
-    "IsPathology":JSON.stringify(row.IsPathology),
-    "IsRadiology":JSON.stringify(row.IsRadiology),
-    "IsActive":JSON.stringify(row.IsActive),
-    "PrintOrder":row.PrintOrder,
-    "IsPackage":JSON.stringify(row.IsPackage),
-    "SubGroupId":row.SubGroupId,
-    "DoctorId":row.DoctorId,
-    "IsEmergency":JSON.stringify(row.IsEmergency),
-    "EmgAmt":row.EmgAmt,
-    "EmgPer":row.EmgPer,
-    "IsDocEditable":JSON.stringify(row.IsDocEditable),
-    "UpdatedBy":row.UpdatedBy,
-    }
-    this._serviceMasterService.populateForm(m_data);
   }
 
-  onClear() {
-    this.DSServicedetailList.data = this.DSServicedetailList.data.map(element => {
-      return { ...element, ClassRate: 0 }; // Create a new object with updated ClassRate
-  });
-  this.DSServicedetailList._updateChangeSubscription(); // Manually trigger change detection for MatTableDataSource
-  this._serviceMasterService.myform.reset();
-  this._serviceMasterService.myform.get('IsEditable').setValue(true);
-  this._serviceMasterService.myform.get('IsActive').setValue(true);
-  this._serviceMasterService.myform.get('EffectiveDate').setValue(new Date());
-  this._serviceMasterService.myform.get('TariffId').setValue(this.TariffcmbList[0].TariffId);
-
-
-
-}
-
-keyPressCharater(event){
-  var inp = String.fromCharCode(event.keyCode);
-  if (/^\d*\.?\d*$/.test(inp)) {
-    return true;
-  } else {
-    event.preventDefault();
-    return false;
-  }
-}
   onClose() {
     this._serviceMasterService.myform.reset();
-  
+    this._serviceMasterService.myform.get('IsEditable').setValue(true);
+    this._serviceMasterService.myform.get('IsActive').setValue(true);
+    this._serviceMasterService.myform.get('EffectiveDate').setValue(new Date());
+    this._serviceMasterService.myform.get('TariffId').setValue(this.TariffcmbList[0]);
     this.dialogRef.close();
   }
-  
-  
 
-  onChange(isChecked: boolean) {
+  @ViewChild('subGroupId') subGroupId: ElementRef;
+  @ViewChild('ServiceName') ServiceName: ElementRef;
+  @ViewChild('ServiceShortDesc') ServiceShortDesc: ElementRef;
+  @ViewChild('Price') Price: ElementRef;
+  @ViewChild('PrintOrder') PrintOrder: ElementRef;
+  @ViewChild('TariffId') TariffId: ElementRef;
 
-    console.log(isChecked);
-
-    if (isChecked==true)
-   {
-      this.butDisabled=true;
-     console.log(this.butDisabled);
-    } 
-    else
-     {
-      this.butDisabled=false;
-      console.log(this.butDisabled);
+  public onEntergrpname(event): void {
+    if (event.which === 13) {
+      this.subGroupId.nativeElement.focus();
     }
-    
   }
- 
+  public onEntersubGroup(event): void {
+    if (event.which === 13) {
+      this.ServiceName.nativeElement.focus();
+    }
+  }
 
+  public onEnterServiceName(event): void {
+    if (event.which === 13) {
+      this.ServiceShortDesc.nativeElement.focus();
+    }
+  }
+
+  public onEnterServiceShortDesc(event): void {
+    if (event.which === 13) {
+      this.Price.nativeElement.focus();
+    }
+  }
+
+  public onEnterPrice(event): void {
+    if (event.which === 13) {
+      this.PrintOrder.nativeElement.focus();
+    }
+  }
+  public onEnterPrintOrder(event): void {
+    if (event.which === 13) {
+      this.TariffId.nativeElement.focus();
+    }
+  }
+
+
+
+  keyPressCharater(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/^\d*\.?\d*$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
+
+  get f() { return this._serviceMasterService.myform.controls; }
+
+  valuechange(event, cls) {
+    cls['ClassRate'] = parseInt(event.target.value);
+  }
+  @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+    const focusedElement = document.activeElement as HTMLElement;
+    if (event.key === 'Enter' || event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
+      if (focusedElement.classList.contains('inputs')) {
+        let nextElement: HTMLElement | null = null;
+        if (event.key === 'ArrowRight' || event.key === 'Enter') {
+          nextElement = focusedElement.closest('td')?.nextElementSibling as HTMLElement | null;
+        } else if (event.key === 'ArrowLeft') {
+          nextElement = focusedElement.closest('td')?.previousElementSibling as HTMLElement | null;
+        }
+        if (nextElement) {
+          const nextInputs = nextElement.querySelectorAll('.inputs');
+          if (nextInputs.length > 0) {
+            (nextInputs[0] as HTMLInputElement).focus();
+          }
+        }
+      }
+    }
+  }
 
 }
 
- 
+
