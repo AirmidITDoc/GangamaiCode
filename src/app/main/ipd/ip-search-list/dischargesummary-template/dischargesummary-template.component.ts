@@ -121,6 +121,8 @@ export class DischargesummaryTemplateComponent implements OnInit {
       this.registerObj = this.advanceDataStored.storage;
       this.vAdmissionId = this.selectedAdvanceObj.AdmissionID;
       console.log(this.registerObj);
+      this.getDoctorList1();
+      this.getDoctorList2();
       this.getDischargeSummaryData(this.registerObj) 
       this.getPrescriptionList(this.registerObj)
     }
@@ -128,6 +130,7 @@ export class DischargesummaryTemplateComponent implements OnInit {
     this.getDoseList();
     this.getDoctorList1();
     this.getDoctorList2();
+    this.getdischargeIdbyadmission();
   }
 
   createdisctemplateForm(): FormGroup {
@@ -154,9 +157,9 @@ export class DischargesummaryTemplateComponent implements OnInit {
   optionstemplate: any[] = [];
   getTemplateList() {
     var data={
-      "DischargesummaryId":51//this.DischargeSummaryId
+      "DischargesummaryId":this.DischargeSummaryId
     }
-    this._IpSearchListService.gettemplateCombo1(data).subscribe(data => {
+    this._IpSearchListService.gettemplateCombo().subscribe(data => {
       this.TemplateList = data;
       console.log(this.TemplateList)
       this.optionstemplate = this.TemplateList.slice();
@@ -228,6 +231,7 @@ export class DischargesummaryTemplateComponent implements OnInit {
   }
 
   getDoctorList1() {
+    
     this._IpSearchListService.getDischaregDoctor1Combo().subscribe(data => {
       this.Doctor1List = data;
       this.filteredOptionDoctor1 = this.discSummary.get('DischargeDoctor1').valueChanges.pipe(
@@ -235,7 +239,7 @@ export class DischargesummaryTemplateComponent implements OnInit {
         map(value => value ? this._filterdoc1(value) : this.Doctor1List.slice()),
       );
       if (this.registerObj) {
-        const ddValue = this.Doctor1List.filter(item => item.DoctorId == this.registerObj.DocNameID);
+        const ddValue = this.Doctor1List.filter(item => item.DoctorId == this.registerObj.DischargeDoctor1);
         //console.log(ddValue)
         this.discSummary.get('DischargeDoctor1').setValue(ddValue[0]);
         this.discSummary.updateValueAndValidity();
@@ -243,6 +247,7 @@ export class DischargesummaryTemplateComponent implements OnInit {
     });
   }
   getDoctorList2() {
+    
     this._IpSearchListService.getDoctorMaster1Combo().subscribe(data => {
       this.Doctor2List = data;
       console.log(data)
@@ -250,7 +255,14 @@ export class DischargesummaryTemplateComponent implements OnInit {
         startWith(''),
         map(value => value ? this._filterdoc2(value) : this.Doctor2List.slice()),
       );
+      if (this.registerObj) {
+        const ddValue = this.Doctor1List.filter(item => item.DoctorId == this.registerObj.DischargeDoctor2);
+        //console.log(ddValue)
+        this.discSummary.get('DischargeDoctor2').setValue(ddValue[0]);
+        this.discSummary.updateValueAndValidity();
+      }
     });
+    
   }
 
 
@@ -275,6 +287,16 @@ export class DischargesummaryTemplateComponent implements OnInit {
     }
   }
 
+  getdischargeIdbyadmission(){
+    let Query = "Select DischargeId from Discharge where  AdmissionID=" + this.selectedAdvanceObj.AdmissionID + " ";
+ 
+    this._IpSearchListService.getDischargeId(Query).subscribe(data => {
+      this.registerObj = data[0];
+    this.vDischargeId=this.registerObj.DischargeId
+    console.log(data[0])
+    });
+  }
+
 
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);
@@ -288,7 +310,7 @@ export class DischargesummaryTemplateComponent implements OnInit {
 
 
   getPrescriptionList(el) {
-    // debugger
+    // 
     var m_data2 = {
       "AdmissionId": el.AdmissionID 
     }
@@ -362,7 +384,7 @@ export class DischargesummaryTemplateComponent implements OnInit {
 
 
   deleteTableRow(event, element) {
-    debugger
+    
     let index = this.Chargelist.indexOf(element);
     if (index >= 0) {
       this.Chargelist.splice(index, 1);
@@ -403,7 +425,7 @@ export class DischargesummaryTemplateComponent implements OnInit {
 
 
   onAddTemplate() {
-    debugger
+    
     this.vTemplateDesc = this.discSummary.get('TemplateId').value.TemplateDescription || ''
 
   }
@@ -420,7 +442,7 @@ export class DischargesummaryTemplateComponent implements OnInit {
   RetrDischargeSumryList: any = [];
   
   getDischargeSummaryData(el) {
-    debugger
+    
     var m_data2 = {
       "AdmissionId": el.AdmissionID 
     }
@@ -451,7 +473,7 @@ export class DischargesummaryTemplateComponent implements OnInit {
       // this.DocName3 = this.RetrDischargeSumryList[0].DischargeDoctor3
       // this.IsNormalDeath = this.RetrDischargeSumryList[0].IsNormalOrDeath
        this.getRetevDropdownvalue(); 
-       debugger
+       
       //  if(this.IsNormalDeath == 1){
       //   this.vIsNormalDeath = true;
       //   this.DischargesumForm.get("IsNormalOrDeath").setValue('True');
@@ -464,7 +486,7 @@ export class DischargesummaryTemplateComponent implements OnInit {
   }
 
   getRetevDropdownvalue(){
-    debugger
+    
     
       const ddValue1= this.Doctor1List.filter(item => item.DoctorID ==  this.DocName1);
       console.log(ddValue1) 
@@ -481,7 +503,7 @@ export class DischargesummaryTemplateComponent implements OnInit {
    
   }
   onSubmit(){
-    debugger
+    
    
     let DoctorName1 = 0;
     if(this.discSummary.get("DischargeDoctor1").value)

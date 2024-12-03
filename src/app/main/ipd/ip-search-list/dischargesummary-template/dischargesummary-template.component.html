@@ -377,18 +377,20 @@
             </mat-card>
         </mat-tab>
     </mat-tab-group>
+    <mat-card>
     <div class="footer-navigation-container">
-       
+        <form [formGroup]="discSummary">
             <mat-radio-group name="IsNormalOrDeath" formcontrolName="IsNormalOrDeath"
                 aria-label="Select an option" [(ngModel)]="vIsNormalDeath"  >
                 <mat-radio-button value="True" >Normal </mat-radio-button>
                 <mat-radio-button value="false">Death Summary</mat-radio-button>
             </mat-radio-group>
-       
+        </form>
 
         <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px">
             <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
             <button class="btn btn-primary" (click)="onSubmit()">Save</button>
         </div>
     </div>
+</mat-card>
 </div>
