@@ -95,7 +95,7 @@ export class NewRegistrationComponent implements OnInit {
         this.RegId = 0;
         this.personalFormGroup = this.createPesonalForm();
         this.searchFormGroup = this.createSearchForm();
-        this.PrefixId=6;
+        //this.PrefixId=6;
         if (this.data) {
             this.personalFormGroup.patchValue({
                 PrefixId: this.data.prefixId

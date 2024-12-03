@@ -1,4 +1,3 @@
-import { AppointmentComponent } from "./appointment.component";
 import { NgModule } from "@angular/core";
 import { DatePipe } from "@angular/common";
 import { MatButtonModule } from "@angular/material/button";
@@ -52,6 +51,7 @@ import {NgxPrintModule} from 'ngx-print';
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { PatientVitalInformationComponent } from './patient-vital-information/patient-vital-information.component';
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
+import { AppointmentComponent } from "./appointment.component";
 
 const routes: Routes = [
     {

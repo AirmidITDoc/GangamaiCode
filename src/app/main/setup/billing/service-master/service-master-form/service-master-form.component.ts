@@ -30,6 +30,7 @@ import { error } from "console";
   
   export class ServiceMasterFormComponent implements OnInit {
     serviceForm:FormGroup;
+    TariffId=0
     gridConfig: gridModel = {
       apiUrl: "ClassMaster/List",
   columnsList: [
@@ -83,12 +84,8 @@ import { error } from "console";
   showEmg: boolean = false;
   showDoctor: boolean = false;
   submitted = false;
-  GroupcmbList:any=[];
-  DoctorcmbList:any=[];
-  SubGroupcmbList:any=[];
-  ClasscmbList:any=[];
-  TariffcmbList:any=[];
 
+  TariffId=0
   registerObj=new ServiceMaster({});
 
   butDisabled:boolean = false;
@@ -97,19 +94,6 @@ import { error } from "console";
   emg_per = "";
   DSServicedetailList = new MatTableDataSource<Servicedetail>();
   
-  //tariff filter
-public tariffFilterCtrl: FormControl = new FormControl();
-public filteredTariff: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-  //groupname filter
-  public groupnameFilterCtrl: FormControl = new FormControl();
-  public filteredGroupname: ReplaySubject<any> = new ReplaySubject<any>(1);
-  
-  //subgroupname filter
-public subgroupnameFilterCtrl: FormControl = new FormControl();
-public filteredSubgroupname: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-private _onDestroy = new Subject<void>();
   getServiceMasterList: any;
 
   // new api
@@ -141,42 +125,22 @@ private _onDestroy = new Subject<void>();
     
   ngOnInit(): void {
 this.serviceForm=this._serviceMasterService.createServicemasterForm();
-  //  this.getGroupNameCombobox();
-  //  this.getDoctorNameCombobox();
-  //  this.getSubgroupNameCombobox();
-  //  this.getClassList()
+ 
+   this.getClassList()
   //  this.getServicewiseClassMasterList();
-   //this.getTariffNameCombobox();
+   
    this.serviceForm=this._serviceMasterService.createServicemasterForm();
 
    this.serviceForm.get('EffectiveDate').setValue(new Date());
 
 
 
-   this.groupnameFilterCtrl.valueChanges
-   .pipe(takeUntil(this._onDestroy))
-   .subscribe(() => {
-     this.filterGroupname();
-   });
-
-    
-   this.subgroupnameFilterCtrl.valueChanges
-   .pipe(takeUntil(this._onDestroy))
-   .subscribe(() => {
-     this.filterSubgroupname();
-   });
-
-   this.tariffFilterCtrl.valueChanges
-   .pipe(takeUntil(this._onDestroy))
-   .subscribe(() => {
-     this.filterTariff();
-
-   });
    if (this.data) {
    // this.getServicewiseClassMasterList();
     this.registerObj = this.data.registerObj;
     
 }
+
   }
   @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     const focusedElement = document.activeElement as HTMLElement;
@@ -198,105 +162,28 @@ this.serviceForm=this._serviceMasterService.createServicemasterForm();
     }
 }
 
-
-  private filterGroupname() {
-    // debugger;
-    if (!this.GroupcmbList) {
-      return;
+ 
+  getClassList() {
+    var param={
+      "first": 0,
+      "rows": 25,
+      sortField: "classId",
+      sortOrder: 0,
+      filters: [
+          { fieldName: "className", fieldValue: "", opType: OperatorComparer.Contains },
+          { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+      
+      ],
+      "exportType": "JSON"
     }
-    // get the search keyword
-    let search = this.groupnameFilterCtrl.value;
-    if (!search) {
-      this.filteredGroupname.next(this.GroupcmbList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredGroupname.next(
-      this.GroupcmbList.filter(bank => bank.GroupName.toLowerCase().indexOf(search) > -1)
-    );
-  }
-
-  private filterSubgroupname() {
-    // debugger;
-    if (!this.SubGroupcmbList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.subgroupnameFilterCtrl.value;
-    if (!search) {
-      this.filteredSubgroupname.next(this.SubGroupcmbList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredSubgroupname.next(
-      this.SubGroupcmbList.filter(bank => bank.SubGroupName.toLowerCase().indexOf(search) > -1)
-    );
-  }
-
-  private filterTariff() {
-
-    if (!this.TariffcmbList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.tariffFilterCtrl.value;
-    if (!search) {
-      this.filteredTariff.next(this.TariffcmbList.slice());
-      return;
-    } else {
-      search = search.toLowerCase();
-    }
-    // filter the banks
-    this.filteredTariff.next(
-      this.TariffcmbList.filter(bank => bank.TariffName.toLowerCase().indexOf(search) > -1)
-    );
-  }
-  // getGroupNameCombobox(){
-  
-  //   this._serviceMasterService.getGroupMasterCombo().subscribe(data => {
-  //     this.GroupcmbList = data;
-  //     this.filteredGroupname.next(this.GroupcmbList.slice());
-  //     // this.serviceForm.get('GroupId').setValue(this.GroupcmbList[0]);
-  //     this.serviceForm.get('GroupId').setValue(this._serviceMasterService.edit_data['GroupId']);
-  //   });
-  // }
-  // getSubgroupNameCombobox(){
-  // var data={
-  //   SubGroupName:'%'
-  // }
-  //   this._serviceMasterService.getSubgroupMasterCombo(data).subscribe(data => {
-  //     this.SubGroupcmbList = data;
-  //     this.filteredSubgroupname.next(this.SubGroupcmbList.slice());
-  //     // this.serviceForm.get('SubGroupId').setValue(this.SubGroupcmbList[0]);
-  //     this.serviceForm.get('SubGroupId').setValue(this._serviceMasterService.edit_data['SubGroupId']);
-  //   });
-  // }
-  // getTariffNameCombobox(){
+    this._serviceMasterService.getClassMasterList(param).subscribe(Menu => {
     
-  //   this._serviceMasterService.getTariffMasterCombo().subscribe(data => {
-  //     this.TariffcmbList = data;
-  //     this.filteredTariff.next(this.TariffcmbList.slice());     
-  //    if(this.isEditMode)this.serviceForm.get('TariffId').setValue(this._serviceMasterService.edit_data['TariffId']);      
-  //     else this.serviceForm.get('TariffId').setValue(this.TariffcmbList[0].TariffId);
-
-  //   });
-  // }
-  
-  // getClassList() {
-  //   this._serviceMasterService.getClassMasterList().subscribe(Menu => {
-    
-  //     this.DSServicedetailList.data = Menu as Servicedetail[];;
-  //     this.DSServicedetailList.sort = this.sort;
-  //     this.DSServicedetailList.paginator = this.paginator;      
-  //     console.log(this.DSServicedetailList.data)
-  //   });
-  // }
+      this.DSServicedetailList.data = Menu.data as Servicedetail[];;
+      this.DSServicedetailList.sort = this.sort;
+      this.DSServicedetailList.paginator = this.paginator;      
+      console.log(this.DSServicedetailList.data)
+    });
+  }
 
   gettableclassrate(element,ClassRate){
     console.log(element)
@@ -319,13 +206,7 @@ this.serviceForm=this._serviceMasterService.createServicemasterForm();
 
   get f() { return this.serviceForm.controls; }
 
-  // getDoctorNameCombobox(){
-  //   this._serviceMasterService.getDoctorMasterCombo().subscribe(data => {
-  //     this.DoctorcmbList =data;
-   
-  //     this.serviceForm.get('DoctorId').setValue(this._serviceMasterService.edit_data['DoctorId']);   
-  //   });  
-  // }
+  
   
   valuechange(event, cls){    
     cls['ClassRate'] = parseInt(event.target.value);
@@ -457,13 +338,13 @@ this.serviceForm=this._serviceMasterService.createServicemasterForm();
       "classRate":0,
       "effectiveDate":this.serviceForm.get("EffectiveDate").value || "01/01/1900",
    }
-    // this.DSServicedetailList.data.forEach(element => {
-    //   debugger
-    //   let c =  JSON.parse(JSON.stringify(class_det));
-    //   c['classId'] = element.ClassId;
-    //   c['classRate'] = element.ClassRate || 0;        
-    //   clas_d.push(c)
-    // });
+    this.DSServicedetailList.data.forEach(element => {
+      debugger
+      let c =  JSON.parse(JSON.stringify(class_det));
+      c['classId'] = element.ClassId;
+      c['classRate'] = element.ClassRate || 0;        
+      clas_d.push(c)
+    });
 
     console.log("ServiceInsert data1:",data1);
 
@@ -537,7 +418,7 @@ this.dialogRef.close();
   this.serviceForm.get('IsEditable').setValue(true);
   this.serviceForm.get('IsActive').setValue(true);
   this.serviceForm.get('EffectiveDate').setValue(new Date());
-  this.serviceForm.get('TariffId').setValue(this.TariffcmbList[0].TariffId);
+  // this.serviceForm.get('TariffId').setValue(this.TariffcmbList[0].TariffId);
 
 
 

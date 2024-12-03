@@ -20,7 +20,7 @@
             <ng-container filters>
                 <mat-form-field appearance="outline" fxFlex>
                     <mat-label>PatientType Name</mat-label>
-                    <input matInput placeholder="Search PatientType Name" autocomplete="off"
+                    <input matInput placeholder="Search PatientType Name" pattern="[a-zA-Z\s]*" autocomplete="off"
                         [(ngModel)]="gridConfig.filters[0].fieldValue" />
                     <button mat-button matSuffix mat-icon-button aria-label="Clear"
                         (click)="gridConfig.filters[0].fieldValue=''">

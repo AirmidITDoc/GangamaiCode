@@ -35,6 +35,7 @@ export class PatienttypeMasterService {
     initializeFormGroup() {
         this.createPatientTypeForm();
     }
+    
     getValidationMessages() {
         return {
             patientType: [
@@ -52,7 +53,6 @@ export class PatienttypeMasterService {
     }
 
     public deactivateTheStatus(m_data) {
-        // return this._httpClient.PostData("PatientType", m_data);
         return this._httpClient.DeleteData("PatientType?Id=" + m_data.toString());
     }
 }

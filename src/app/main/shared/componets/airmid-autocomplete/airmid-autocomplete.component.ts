@@ -70,8 +70,6 @@ export class AirmidAutocompleteComponent implements OnInit {
 
     constructor(private _httpClient: ApiCaller, private changeDetectorRefs: ChangeDetectorRef, @Optional() @Self() public ngControl: NgControl | null) {
         if (ngControl) {
-            // this.ngControl.valueAccessor = this;
-            // ngControl.valueAccessor = this;
         }
     }
 
@@ -82,7 +80,6 @@ export class AirmidAutocompleteComponent implements OnInit {
     @ViewChild("singleSelect", { static: true }) singleSelect: MatSelect;
     protected _onDestroy = new Subject<void>();
     stateChanges: Subject<void> = new Subject();
-    
     ngOnInit() {
         this.bindGridAutoComplete();
         // listen for search field value changes
@@ -97,13 +94,6 @@ export class AirmidAutocompleteComponent implements OnInit {
     bindGridAutoComplete() {
         if (this.options?.length > 0) {
             this.ddls = this.options as [];
-            //this.ddlCtrl.setValue(this.ddls[10]);
-            // if (this.selectedValue) {
-            //     debugger
-            //     this.ddlCtrl.setValue(this.selectedValue.toString());
-            //     this.stateChanges.next();
-            //     this.changeDetectorRefs.detectChanges();
-            // }    
             this.filteredDdls.next(this.ddls.slice());
 
         } else {
@@ -111,17 +101,13 @@ export class AirmidAutocompleteComponent implements OnInit {
                 .GetData(this.apiUrl + this.mode)
                 .subscribe((data: any) => {
                     this.ddls = data as [];
-                    //this.ddlCtrl.setValue(this.ddls[10]);  
                     this.filteredDdls.next(this.ddls.slice());
-                    setTimeout(() => {
                         if (this.value) {
-                            debugger
-                            this.formGroup.controls[this.formControlName].setValue(this.value.toString());
+                            this.formGroup.get(this.formControlName).setValue(this.value.toString());
                             this.control.setValue(this.value.toString());
                             this.stateChanges.next();
                             this.changeDetectorRefs.detectChanges();
                         }
-                    }, 1000);
                 });
         }
 
@@ -135,12 +121,13 @@ export class AirmidAutocompleteComponent implements OnInit {
         this.stateChanges.complete();
     }
     protected setInitialValue() {
-        this.filteredDdls
-            .pipe(take(1), takeUntil(this._onDestroy))
-            .subscribe(() => {
-                this.singleSelect.compareWith = (a: any, b: any) =>
-                    a && b && a.id === b.id;
-            });
+        // debugger
+        // this.filteredDdls
+        //     .pipe(take(1), takeUntil(this._onDestroy))
+        //     .subscribe(() => {
+        //         this.singleSelect.compareWith = (a: any, b: any) =>
+        //             a && b && a.id === b.id;
+        //     });
     }
     protected filterDdls() {
         if (!this.ddls) {
