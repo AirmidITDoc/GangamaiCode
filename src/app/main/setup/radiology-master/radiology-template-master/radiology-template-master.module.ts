@@ -55,7 +55,6 @@ const routes: Routes = [
     ],
     imports: [
        
-
     RouterModule.forChild(routes),
     CommonModule,
     MatTabsModule,

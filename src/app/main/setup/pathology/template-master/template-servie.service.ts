@@ -9,8 +9,8 @@ import { ApiCaller } from 'app/core/services/apiCaller';
 })
 export class TemplateServieService {
   myform: FormGroup;
-  
   myformSearch: FormGroup;
+
   constructor(
     private _httpClient: ApiCaller,
     private _formBuilder: FormBuilder
@@ -26,10 +26,9 @@ export class TemplateServieService {
     });
 }
 
-
 createTemplateForm(): FormGroup {
   return this._formBuilder.group({
-      templateId: [""],
+      templateId: [0],
       templateName: [""], 
       templateDesc:[""],
       templateDescInHtml:[""],

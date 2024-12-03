@@ -11,10 +11,12 @@ export class PatienttypeMasterService {
     constructor(
         private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder
-    ) {
+    )
+    {
         this.myForm = this.createPatientTypeForm();
         this.myformSearch = this.createSearchForm();
     }
+
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             PatientTypeSearch: [""],
@@ -23,6 +25,18 @@ export class PatienttypeMasterService {
     }
 
     createPatientTypeForm(): FormGroup {
+        /**
+         * RegNo: '',
+      FirstName:['', [
+        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+      ]],
+      LastName:['', [
+        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+      ]],
+      start: [(new Date()).toISOString()],
+      end: [(new Date()).toISOString()],
+      MobileNo:['']
+        */
         return this._formBuilder.group({
             patientTypeId: [""],
             patientType: [""],

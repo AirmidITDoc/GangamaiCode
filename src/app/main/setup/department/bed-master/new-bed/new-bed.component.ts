@@ -46,14 +46,35 @@ export class NewBedComponent implements OnInit {
 
 
   onSubmit() {
-      if (this.bedForm.valid) {
-          this._BedMasterService.bedMasterSave(this.bedForm.value).subscribe((response) => {
-              this.toastr.success(response.message);
-              this.onClear(true);
-          }, (error) => {
-              this.toastr.error(error.message);
-          });
-      }
+    if(!this.bedForm.get("bedId").value){
+        debugger
+    var m_data =
+        {
+            "bedId": 0,
+            "bedName": this.bedForm.get("bedName").value,
+            "roomId": parseInt(this.bedForm.get("roomId").value),
+            "isAvailible": true
+        }
+
+          console.log("BedMaster Insert:",m_data)
+
+        this._BedMasterService.bedMasterSave(m_data).subscribe((response) => {
+        this.toastr.success(response.message);
+       this.onClear(true);
+      }, (error) => {
+        this.toastr.error(error.message);
+      });
+    } else{
+        // update
+    }
+    //   if (this.bedForm.valid) {
+    //       this._BedMasterService.bedMasterSave(this.bedForm.value).subscribe((response) => {
+    //           this.toastr.success(response.message);
+    //           this.onClear(true);
+    //       }, (error) => {
+    //           this.toastr.error(error.message);
+    //       });
+    //   }
   }
 
   selectChangeroomId(obj: any){

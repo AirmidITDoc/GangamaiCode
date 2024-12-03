@@ -29,15 +29,15 @@ export class TemplateMasterComponent implements OnInit {
   confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     
-  
-  gridConfig: gridModel = {
-      apiUrl: "PathologyTemplate/List",
-      columnsList: [
-          { heading: "Code", key: "templateId",width: 150, sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "Template Name", key: "templateName",width: 400, sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "Template Desc", key: "templateDesc",width: 400, sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "IsDeleted", key: "isActive",width: 100, type: gridColumnTypes.status, align: "center" },
-          {
+
+    gridConfig: gridModel = {
+    apiUrl: "PathologyTemplate/List",
+    columnsList: [
+        { heading: "Code", key: "templateId",width: 150, sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Template Name", key: "templateName",width: 400, sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Template Desc", key: "templateDesc",width: 400, sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "IsDeleted", key: "isActive",width: 100, type: gridColumnTypes.status, align: "center" },
+        {
             heading: "Action", key: "action",width: 100, align: "right", type: gridColumnTypes.action, actions: [
                 {
                     action: gridActions.edit, callback: (data: any) => {
@@ -90,9 +90,9 @@ export class TemplateMasterComponent implements OnInit {
     let that = this;
     const dialogRef = this._matDialog.open(TemplateFormComponent,
         {
-            maxWidth: "50vw",
-            height: '50%',
-            width: '70%',
+            maxWidth: "85vw",
+            height: '95%',
+            width: '90%',
             data: row
         });
     dialogRef.afterClosed().subscribe(result => {

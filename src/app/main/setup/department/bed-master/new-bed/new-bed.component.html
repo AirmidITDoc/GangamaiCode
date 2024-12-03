@@ -19,8 +19,11 @@
             <form [formGroup]="bedForm">
                 <input type="hidden" name="bedId" formControlName="bedId">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <airmid-textbox label="Bed name" formControlName="bedName" [value]="" [formGroup]="bedForm"
-                        [validations]="_BedMasterService.getValidationMessages().bedName" [maxLength]="300">
+                    <airmid-textbox 
+                    label="Bed name" 
+                    formControlName="bedName" 
+                    [value]="" [formGroup]="bedForm"
+                    [validations]="_BedMasterService.getValidationMessages().bedName" [maxLength]="300">
                     </airmid-textbox>
                     <!-- <airmid-autocomplete [mode]="autocompleteModeroomId" (selectDdlObject)="selectChangeroomId($event)"></airmid-autocomplete> -->
                

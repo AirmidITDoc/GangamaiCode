@@ -19,8 +19,11 @@
             <form [formGroup]="cityForm">
                 <input type="hidden" name="cityId" formControlName="cityId">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <airmid-textbox label="City name" formControlName="cityName" [value]="" [formGroup]="cityForm"
-                        [validations]="_CityMasterService.getValidationMessages().cityName" [maxLength]="300">
+                    <airmid-textbox 
+                    label="City name" 
+                    formControlName="cityName" 
+                    [value]="" [formGroup]="cityForm"
+                    [validations]="_CityMasterService.getValidationMessages().cityName" [maxLength]="300">
                     </airmid-textbox>
                     <airmid-autocomplete [mode]="autocompleteModestate" (selectDdlObject)="selectChangestate($event)"></airmid-autocomplete>
                 </div>

@@ -19,9 +19,12 @@
             <form [formGroup]="locationForm">
                 <input type="hidden" name="locationId" formControlName="locationId">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <airmid-textbox label="Location Name " formControlName="locationName" [value]=""
-                        [formGroup]="locationForm"
-                        [validations]="_LocationMasterService.getValidationMessages().locationName" [maxLength]="300">
+                    <airmid-textbox 
+                    label="Location Name" 
+                    formControlName="locationName" 
+                    [value]=""
+                    [formGroup]="locationForm"
+                    [validations]="_LocationMasterService.getValidationMessages().locationName" [maxLength]="300">
                     </airmid-textbox>
                 </div>
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">

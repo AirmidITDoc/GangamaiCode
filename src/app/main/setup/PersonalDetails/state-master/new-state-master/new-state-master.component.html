@@ -21,8 +21,12 @@
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                  
                  
-                    <airmid-textbox label="State name" formControlName="stateName" [value]="" [formGroup]="stateForm"
-                        [validations]="_StateMasterService.getValidationMessages().stateName" [maxLength]="300">
+                    <airmid-textbox 
+                    label="State name" 
+                    formControlName="stateName" 
+                    [value]="" 
+                    [formGroup]="stateForm"
+                    [validations]="_StateMasterService.getValidationMessages().stateName" [maxLength]="300">
                     </airmid-textbox>
 
                     <!-- <airmid-autocomplete [mode]="autocompleteModecountry" (selectDdlObject)="selectChangecountry($event)"></airmid-autocomplete> -->

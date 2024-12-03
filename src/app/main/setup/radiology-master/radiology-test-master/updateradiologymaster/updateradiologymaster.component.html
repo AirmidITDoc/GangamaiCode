@@ -13,10 +13,18 @@
                 {{_radiologytestService.myform.controls.TestId.value?"Modify Radiology Test Master":
                 "New Radiology Test Master"}}
             </span>
-            <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog"
+            <div class="modal-header-left" >
+                <div  class="close-icon">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                     matTooltip="Close">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div> 
+            </div>
+            <!-- <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog"
             style="margin-left:900px;">
             <mat-icon>close</mat-icon>
-        </button>
+            </button> -->
         </div>
     </mat-toolbar>
 
@@ -194,8 +202,8 @@
                                 <div class="footer-navigation-container">
                                    
                                   <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px" style="margin-right: 10px;">
-                                    <mat-radio-button value='true' name="IsDeleted" [checked]="true"
-                                                    formControlName="IsDeleted">IsActive</mat-radio-button>
+                                    <!-- <mat-radio-button value='true' name="IsDeleted" [checked]="true"
+                                                    formControlName="IsDeleted">IsActive</mat-radio-button> -->
 
                                         <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
                                         <button class="btn btn-primary" (click)="onSubmit()"
