@@ -30,7 +30,7 @@ export class BedMasterComponent implements OnInit {
    
         @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
         gridConfig: gridModel = {
-            apiUrl: "BedMaster/List",
+        apiUrl: "BedMaster/List",
         columnsList: [
             { heading: "Code", key: "bedId", sort: true, align: 'left', emptySign: 'NA', width:150 },
             { heading: "Bed Name", key: "bedName", sort: true, align: 'left', emptySign: 'NA', width:600 },

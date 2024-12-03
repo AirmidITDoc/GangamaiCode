@@ -21,7 +21,7 @@ export class RadiologyTemplateMasterService {
 
   createRadiologytemplateForm(): FormGroup {
     return this._formBuilder.group({
-      templateId:[''],
+      templateId:[0],
       templateName:[''],
       templateDesc:[''],
       //IsDeleted:['true']

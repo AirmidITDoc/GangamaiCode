@@ -70,8 +70,8 @@ export class InventoryReportComponent implements OnInit {
     private _loggedUser: AuthenticationService,
     private formBuilder: FormBuilder
   ) {
-    this.UserId = this._loggedUser.currentUserValue.user.id;
-    this.UserName = this._loggedUser.currentUserValue.user.userName;
+    this.UserId = this._loggedUser.currentUserValue.userId;
+    this.UserName = this._loggedUser.currentUserValue.userName;
     console.log(this.UserId)
    }
 
@@ -1507,7 +1507,7 @@ export class InventoryReportComponent implements OnInit {
 
   GetUserList() {
     var data = {
-          "StoreId": this._loggedUser.currentUserValue.user.storeId
+          "StoreId": this._loggedUser.currentUserValue.storeId
         }
     this._OPReportsService.getUserdetailList(data).subscribe(data => {
       this.UserList = data;
@@ -1546,7 +1546,7 @@ export class InventoryReportComponent implements OnInit {
 getSearchItemList() {   
       var m_data = {
         "ItemName": '%',//`${this._OPReportsService.userForm.get('ItemId').value}%`,
-      //  "StoreId": this._loggedUser.currentUserValue.user.storeId
+      //  "StoreId": this._loggedUser.currentUserValue.storeId
       }
     
       this._OPReportsService.getItemlist(m_data).subscribe(data => {

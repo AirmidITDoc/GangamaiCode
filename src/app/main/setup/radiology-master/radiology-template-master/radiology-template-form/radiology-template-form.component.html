@@ -29,10 +29,15 @@
                 </div>
                 
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <airmid-textbox label="Template Desc" formControlName="templateDesc" [value]=""
+                  <!--   <airmid-textbox label="Template Desc" formControlName="templateDesc" [value]=""
                     [formGroup]="templateForm"
                     [maxLength]="300">
-                </airmid-textbox>
+                </airmid-textbox> -->
+
+                <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
+                style="height:300px;" [(ngModel)]="vTemplateDesc" required
+                formControlName="templateDesc"></angular-editor>
+
             
                 </div>
                 <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">

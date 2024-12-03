@@ -15,7 +15,20 @@ import { FormGroup } from '@angular/forms';
     animations: fuseAnimations,
 })
 export class TemplateFormComponent implements OnInit {
+    
     templateForm: FormGroup;
+    vTemplateDesc:any;
+    editorConfig: AngularEditorConfig = {
+    // color:true,
+    editable: true,
+    spellcheck: true,
+    height: '20rem',
+    minHeight: '20rem',
+    translate: 'yes',
+    placeholder: 'Enter text here...',
+    enableToolbar: true,
+    showToolbar: true,
+    };
 
     vTemplateName:any;
     TemplateId = 0;
@@ -53,5 +66,8 @@ export class TemplateFormComponent implements OnInit {
     //     this.templateForm.reset();
     //     this.dialogRef.close(val);
     // }
-  }
+    onBlur($event: any) {
+    throw new Error('Method not implemented.');
+    }
+}
   

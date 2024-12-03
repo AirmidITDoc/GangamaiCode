@@ -26,6 +26,9 @@
                         [formGroup]="patienttypeForm"
                         [validations]="_PatienttypeMasterService.getValidationMessages().patientType"
                         [maxLength]="300">
+                        <!-- <mat-error
+                        *ngIf="patienttypeForm.get('FirstName').invalid && patienttypeForm.get('FirstName').touched">
+                        First Name is required Enter only Alphabets</mat-error> -->
                     </airmid-textbox> 
                 </div>
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
@@ -39,7 +42,6 @@
             </form>
         </div>
         <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
-
             <button class="btn btn-danger-outline" (click)="onClear(false)">Reset</button>
             <button class="btn btn-primary " color="accent" (click)="onSubmit()">
                 <span>Save</span>

@@ -85,8 +85,8 @@ ServiceList: any = [];
     private _loggedUser: AuthenticationService,
     private formBuilder: FormBuilder
   ) {
-    this.UserId = this._loggedUser.currentUserValue.user.id;
-    this.UserName = this._loggedUser.currentUserValue.user.userName;
+    this.UserId = this._loggedUser.currentUserValue.userId;
+    this.UserName = this._loggedUser.currentUserValue.userName;
     console.log(this.UserId)
   }
 
@@ -1319,7 +1319,7 @@ ServiceList: any = [];
 
   GetUserList() {
     var data = {
-      "StoreId": this._loggedUser.currentUserValue.user.storeId
+      "StoreId": this._loggedUser.currentUserValue.storeId
     }
     this._OPReportsService.getUserdetailList(data).subscribe(data => {
       this.UserList = data;

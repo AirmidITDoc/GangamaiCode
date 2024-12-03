@@ -10,13 +10,13 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./new-ward.component.scss']
 })
 export class NewWardComponent implements OnInit {
-  roomForm: FormGroup;
-  constructor( public _WardMasterService: WardMasterService,
+    roomForm: FormGroup;
+    constructor( public _WardMasterService: WardMasterService,
     public dialogRef: MatDialogRef<NewWardComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public toastr: ToastrService) { }
 
-    autocompleteModelocation: string = "Location";
+    autocompleteModelocation: string = "City";
     autocompleteModeclass: string = "Class";
     autocompleteModeroomId: string = "Room"; 
 
@@ -40,16 +40,48 @@ export class NewWardComponent implements OnInit {
   }
 
   onSubmit() {
-    
-    if (this.roomForm.valid) {
-      debugger
-        this._WardMasterService.roomMasterSave(this.roomForm.value).subscribe((response) => {
-          this.toastr.success(response.message);
-            this.onClear(true);
-        }, (error) => {
-            this.toastr.error(error.message);
-        });
-    }
+    debugger
+    // if(!this.roomForm.get("roomId").value){
+        debugger
+        // {
+        //     "roomId": 0,
+        //     "roomName": "kiran",
+        //     "roomType": 0,
+        //     "locationId": 0,
+        //     "isAvailible": true,
+        //     "classId": 0
+        //   }
+        var mdata =
+        {
+            "roomId": 0,
+            "roomName": this.roomForm.get("roomName").value,
+            "roomType": this.roomForm.get("roomType").value,
+            "locationId": 0,
+            "isAvailible": true,
+            "classId": 0
+        }
+        console.log("WardMaster Insert:",mdata)
+
+        this._WardMasterService.roomMasterSave(mdata).subscribe((response) => {
+        this.toastr.success(response.message);
+       this.onClear(true);
+      }, (error) => {
+        this.toastr.error(error.message);
+      });
+    // } 
+    // else
+    // {
+    //     // update
+    // }
+    // if (this.roomForm.valid) {
+    // //   debugger
+    //     this._WardMasterService.roomMasterSave(this.roomForm.value).subscribe((response) => {
+    //       this.toastr.success(response.message);
+    //         this.onClear(true);
+    //     }, (error) => {
+    //         this.toastr.error(error.message);
+    //     });
+    // }
 }
 
 getValidationlocationMessages() {

@@ -24,6 +24,7 @@ import { NewAreaComponent } from "./new-area/new-area.component";
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations,
 })
+
 export class AreaMasterComponent implements OnInit {
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;

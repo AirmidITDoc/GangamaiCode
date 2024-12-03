@@ -26,6 +26,20 @@ import { FormGroup } from '@angular/forms';
 })
 export class RadiologyTemplateFormComponent implements OnInit {
   templateForm: FormGroup;
+  vTemplateDesc:any;
+  editorConfig: AngularEditorConfig = {
+    // color:true,
+    editable: true,
+    spellcheck: true,
+    height: '20rem',
+    minHeight: '20rem',
+    translate: 'yes',
+    placeholder: 'Enter text here...',
+    enableToolbar: true,
+    showToolbar: true,
+
+  };
+
   constructor(
       public _TemplateServieService: RadiologyTemplateMasterService,
       public dialogRef: MatDialogRef<RadiologyTemplateFormComponent>,
@@ -54,7 +68,9 @@ export class RadiologyTemplateFormComponent implements OnInit {
           });
       }
   }
-
+  onBlur(e: any) {
+    this.vTemplateDesc = e.target.innerHTML;
+  }
   onClear(val: boolean) {
       this.templateForm.reset();
       this.dialogRef.close(val);

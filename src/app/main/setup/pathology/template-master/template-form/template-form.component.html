@@ -39,25 +39,27 @@
                                             <mat-error>Please enter TestName </mat-error>
                                         </mat-form-field>
 
-                                        <div>
-                                            <mat-label>Template Details</mat-label>
+                                        <div  fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                            <!-- <mat-label>Template Details</mat-label> -->
+                                            <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
+                                            style="height:300px;" [(ngModel)]="vTemplateDesc" required
+                                            formControlName="templateDesc"></angular-editor>
                                             <!-- <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
                                                 style="height:200px;" [(ngModel)]="vTemplateDesc" required
                                                 formControlName="TemplateDesc"></angular-editor> -->
-
                                         </div>
                                     </div>
                                 </div>
 
                                 <div fxLayout="row" fxLayoutAlign="end">
 
-                                    <mat-radio-button value='true' [checked]="true" name="IsDeleted"
+                                    <!-- <mat-radio-button value='true' [checked]="true" name="IsDeleted"
                                         style="align-items: center;"
-                                        formControlName="IsDeleted">IsActive</mat-radio-button>
+                                        formControlName="IsDeleted">IsActive</mat-radio-button> -->
                                     <div class="modal-footer-buttons" fxLayoutGap="6px" style="padding: 8px;">
                                         <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
                                         <button class="btn btn-primary" (click)="onSubmit()"
-                                            [disabled]="_TemplateServieService.myform.invalid">Save</button>
+                                        [disabled]="_TemplateServieService.myform.invalid">Save</button>
                                     </div>
                                 </div>
                             </form>

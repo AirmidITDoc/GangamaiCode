@@ -82,8 +82,8 @@ export class RadiologyTestMasterComponent implements OnInit {
   onSave(row:any = null) {
     const dialogRef = this._matDialog.open(UpdateradiologymasterComponent,
     {
-        maxWidth: "45vw",
-        height: '35%',
+        maxWidth: "90vw",
+        height: '90%',
         width: '70%',
         data: row
     });

@@ -1,7 +1,13 @@
 export class User {
-    user: LoginUser;
+    userToken: string;
+    webRoleId: number;
+    userName: string;
+    userId: number;
+    permissions: any;
     token: string;
+    
     expires: string;
+    storeId: number;
 }
 
 export class LoginUser {
