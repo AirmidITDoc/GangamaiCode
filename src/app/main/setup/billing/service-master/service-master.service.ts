@@ -26,28 +26,42 @@ export class ServiceMasterService {
             ServiceId: [""],
             GroupId: [""],
             GroupName: [""],
-            ServiceShortDesc: [""],
-            ServiceName: [""],
-            Price: ["", Validators.pattern("[0-9]+")],
+            ServiceShortDesc: ["", 
+                [
+                    Validators.required,
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                ]
+            ],
+            ServiceName: ["",
+                [
+                    Validators.required,
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                ]
+            ],
+            Price: ["",[Validators.required, Validators.pattern("[0-9]+")]],
             IsEditable: ["0"],
             CreditedtoDoctor: ["0"],
             IsPathology: ["0"],
             IsRadiology: ["0"],
             IsDeleted: ["0"],
-            PrintOrder: ["", Validators.pattern("[0-9]+")],
+            PrintOrder: ["",[Validators.required, Validators.pattern("[0-9]+")]],
             IsPackage: ["0"],
             SubGroupId: [""],
             DoctorId: [""],
             FirstName: ["", Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")],
             IsEmergency: ["0"],
-            EmgAmt: ["", Validators.pattern("[0-9]+")],
-            EmgPer: ["", Validators.pattern("[0-9]+")],
+            EmgAmt: ["",[Validators.required, Validators.pattern("[0-9]+")]],
+            EmgPer: ["",[Validators.required, Validators.pattern("[0-9]+")]],
             IsDocEditable: ["0"],
             AddedBy: [""],
             UpdatedBy: [""],
             IsActive:[true],
             ServiceDetailId: [""],
-            TariffId: [""],
+            TariffId: ["",
+                [
+                    Validators.required
+                ]
+            ],
             ClassId: ["0"],
             ClassRate: ["0"],
             EffectiveDate: [""],

@@ -61,33 +61,41 @@ export class CompanyMasterListComponent implements OnInit {
     Savebtn:boolean=false;
     OnSubmit() {  
         debugger       
-        if(!this.companyForm.get("CompanyId").value){
-            debugger
-        var m_data =
-            {
-                "companyId": 0,
-                "compTypeId": this.typeId || 0,
-                "companyName":this.companyForm.get("CompanyName").value || " ",
-                "address": this.companyForm.get("Address").value || " ",
-                "city": this.companyForm.get("City").value || "ABC",
-                "pinNo": this.companyForm.get("PinNo").value || "",
-                "phoneNo": this.companyForm.get("PhoneNo").value.toString() || "0",
-                "mobileNo": this.companyForm.get("MobileNo").value.toString() || "0",
-                "faxNo": this.companyForm.get("FaxNo").value || "0",
-                "traiffId": this.companyForm.get("TariffId").value
-              }
-
-              console.log("Company Insert:",m_data)
-
-            this._CompanyMasterService.companyMasterSave(m_data).subscribe((response) => {
-            this.toastr.success(response.message);
-           this.onClear(true);
-          }, (error) => {
-            this.toastr.error(error.message);
-          });
+        if(this.companyForm.invalid){
+            this.toastr.warning('please check from is invalid', 'Warning !', {
+              toastClass:'tostr-tost custom-toast-warning',
+          })
+          return;
         } else{
-            // update
+          if(!this.companyForm.get("CompanyId").value){
+            debugger
+            var m_data =
+                {
+                    "companyId": 0,
+                    "compTypeId": this.typeId || 0,
+                    "companyName":this.companyForm.get("CompanyName").value || " ",
+                    "address": this.companyForm.get("Address").value || " ",
+                    "city": this.companyForm.get("City").value || "ABC",
+                    "pinNo": this.companyForm.get("PinNo").value || "",
+                    "phoneNo": this.companyForm.get("PhoneNo").value.toString() || "0",
+                    "mobileNo": this.companyForm.get("MobileNo").value.toString() || "0",
+                    "faxNo": this.companyForm.get("FaxNo").value || "0",
+                    "traiffId": this.companyForm.get("TariffId").value
+                  }
+
+                  console.log("Company Insert:",m_data)
+
+                this._CompanyMasterService.companyMasterSave(m_data).subscribe((response) => {
+                this.toastr.success(response.message);
+              this.onClear(true);
+              }, (error) => {
+                this.toastr.error(error.message);
+              });
+            } else{
+                // update
+            }
         }
+        
     }
   
     onClear(val: boolean) {
@@ -148,6 +156,7 @@ export class CompanyMasterListComponent implements OnInit {
     @ViewChild('address') address: ElementRef;
     @ViewChild('mobile') mobile: ElementRef;
     @ViewChild('fax') fax: ElementRef;
+    @ViewChild('companyN') companyN:ElementRef;
 
     public onEnterCompany(event): void {
       if (event.which === 13) {

@@ -26,10 +26,6 @@
                         [formGroup]="creditreasonForm"
                         [validations]="_CreditreasonService.getValidationMessages().creditReason"
                         [maxLength]="300">
-                        <mat-error
-                            *ngIf="creditreasonForm.get('creditReason').invalid && creditreasonForm.get('creditReason').touched">
-                                    UnitId is required Enter only Alphabets
-                        </mat-error>
                     </airmid-textbox> 
                 </div>
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">

@@ -42,7 +42,7 @@ export class NewTariffComponent implements OnInit {
       }
       console.log("insert tariff:", mdata)
       
-      this._TariffMasterService.tariffMasterSave(this.tariffForm.value).subscribe((response)=>{
+      this._TariffMasterService.tariffMasterSave(mdata).subscribe((response)=>{
         this.toastr.success(response.message);
         this.onClear(true);
       }, (error)=>{

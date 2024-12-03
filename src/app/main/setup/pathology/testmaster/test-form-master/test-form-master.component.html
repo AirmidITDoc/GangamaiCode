@@ -18,14 +18,109 @@
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
             <form [formGroup]="testForm">
-                <input type="hidden" name="testId" formControlName="testId">
+                <input type="hidden" name="TestId" formControlName="TestId">
+
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <airmid-textbox label="Test name" formControlName="testName" [value]=""
-                        [formGroup]="testForm"
-                        [validations]="_TestmasterService.getValidationMessages().testName"
-                        [maxLength]="300">
-                    </airmid-textbox>
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Test name" formControlName="TestName" [value]=""
+                            [formGroup]="testForm"
+                            [validations]="_TestmasterService.getValidationMessages().TestName"
+                            [maxLength]="300">
+                        </airmid-textbox>
+                    </div>
+
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="PrintTestName" formControlName="PrintTestName" [value]=""
+                            [formGroup]="testForm"
+                            [validations]="_TestmasterService.getValidationMessages().PrintTestName"
+                            [maxLength]="300">
+                        </airmid-textbox>
+                    </div>
+
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-autocomplete label="CategoryName" formControlName="CategoryId"
+                            [formGroup]="testForm"
+                            [validations]="getValidationCategoryMessages().CategoryId"
+                            [mode]="autocompleteModeCategoryId" 
+                            (selectDdlObject)="selectChangeCategoryId($event)">
+                        </airmid-autocomplete>
+                    </div>
+
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-autocomplete label="ServiceName" formControlName="ServiceID"
+                            [formGroup]="testForm"
+                            [validations]="getValidationServiceMessages().ServiceID"
+                            [mode]="autocompleteModeServiceID" 
+                            (selectDdlObject)="selectChangeServiceID($event)">
+                        </airmid-autocomplete>
+                    </div>
                  
+                </div>
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <mat-radio-group name="TestId" formControlName="TestId" value='true'>
+                        <mat-radio-button value='true' class="mr-sm-12" fxFlex>Test
+                        </mat-radio-button>
+
+                        <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsSubTest
+                        </mat-radio-button>
+
+                        <mat-radio-button value='false' class="mr-sm-12" fxFlex>Template Formate
+                        </mat-radio-button>
+                    </mat-radio-group>
+                </div>
+
+                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                    <mat-checkbox formControlName="IsSubTest" >IsSub Test </mat-checkbox>
+                    <airmid-table [gridConfig]="gridConfig" class="content">
+                        <!-- <ng-container filters>
+                            <mat-form-field appearance="outline" fxFlex>
+                                <input matInput placeholder="Search" autocomplete="off"
+                                    [(ngModel)]="gridConfig.filters[0].fieldValue" />
+                                <button mat-button matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="gridConfig.filters[0].fieldValue=''">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
+                        </ng-container> -->
+                    </airmid-table>
+                    
+                </div>
+
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="TechniqueName" formControlName="TechniqueName" [value]=""
+                            [formGroup]="testForm"
+                            [validations]="_TestmasterService.getValidationMessages().TechniqueName"
+                            [maxLength]="300">
+                        </airmid-textbox>
+                    </div>
+
+                    <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="MachineName" formControlName="MachineName" [value]=""
+                            [formGroup]="testForm"
+                            [validations]="_TestmasterService.getValidationMessages().MachineName"
+                            [maxLength]="300">
+                        </airmid-textbox>
+                    </div>
+                </div>
+
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <mat-form-field appearance="outline" fxFlex="71.5%">
+                            <mat-label>Foot Note</mat-label>
+                            <textarea matInput display="block" rows="2" formControlName="FootNote"
+                                name="FootNote">
+                            </textarea>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <mat-form-field appearance="outline" fxFlex="71.5%">
+                            <mat-label>Suggestion Note</mat-label>
+                            <textarea matInput display="block" rows="2" formControlName="SuggestionNote"
+                                name="SuggestionNote"></textarea>
+                        </mat-form-field>
+                    </div>
                 </div>
                 
                 <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
@@ -43,7 +138,7 @@
             
                 </div> -->
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <mat-radio-group name="isActive" formControlName="isActive" value='true'>
+                    <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='true'>
                         <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive
                         </mat-radio-button>
                         <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsDeactive

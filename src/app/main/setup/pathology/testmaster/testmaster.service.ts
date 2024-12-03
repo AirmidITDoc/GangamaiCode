@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
@@ -28,13 +28,33 @@ export class TestmasterService {
         return this._formBuilder.group({
 
             TestId: [""],
-            TestName: [""],
-            PrintTestName: [""],
+            TestName: ["",
+                [
+                    Validators.required,
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                ]
+            ],
+            PrintTestName: ["",
+                [
+                    Validators.required,
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                ]
+            ],
             CategoryId: [""],
-            TechniqueName: [""],
-            MachineName: [""],
-            SuggestionNote: [""],
-            FootNote: [""],
+            TechniqueName: ["",
+                [
+                    Validators.required,
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                ]
+            ],
+            MachineName: ["",
+                [
+                    Validators.required,
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                ]
+            ],
+            SuggestionNote: ["", Validators.required],
+            FootNote: ["", Validators.required],
             ServiceID: [""],
             ServiceName: [""],
             IsTemplateTest: ["0"],
@@ -81,18 +101,43 @@ export class TestmasterService {
     
     getValidationMessages() {
         return {
-            testName: [
-                { name: "required", Message: "Unit Name is required" },
-                { name: "maxlength", Message: "Unit name should not be greater than 50 char." },
+            TestName: [
+                { name: "required", Message: "TestName is required" },
+                { name: "maxlength", Message: "TestName should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ],
+            PrintTestName:[
+                { name: "required", Message: "PrintTestName is required" },
+                { name: "maxlength", Message: "PrintTestName should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ],
+            TechniqueName: [
+                { name: "required", Message: "TechniqueName is required" },
+                { name: "maxlength", Message: "TechniqueName should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ],
+            MachineName:[
+                { name: "required", Message: "MachineName is required" },
+                { name: "maxlength", Message: "MachineName should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ],
+            SuggestionNote:[
+                { name: "required", Message: "Suggestion is required" },
+                { name: "maxlength", Message: "Suggestion should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ],
+            FootNote:[
+                { name: "required", Message: "FootNote is required" },
+                { name: "maxlength", Message: "FootNote should not be greater than 50 char." },
                 { name: "pattern", Message: "Special char not allowed." }
             ]
         };
     }
 
     public unitMasterSave(Param: any, showLoader = true) {
-        if (Param.unitId) {
-            return this._httpClient.PutData("PathUnitMaster/" + Param.unitId, Param, showLoader);
-        } else return this._httpClient.PostData("PathUnitMaster", Param, showLoader);
+        if (Param.TestId) {
+            return this._httpClient.PutData("PathTestMaster/Insert" + Param.TestId, Param, showLoader);
+        } else return this._httpClient.PostData("PathTestMaster/Insert", Param, showLoader);
     }
 
     public deactivateTheStatus(m_data) {

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation, HostListener, Inject } from "@angular/core";
+import { Component, OnInit, ViewChild, ViewEncapsulation, HostListener, Inject, ElementRef } from "@angular/core";
 import { ServiceMaster, ServiceMasterComponent, Servicedetail } from "../service-master.component";
 import { fuseAnimations } from "@fuse/animations";
 import { MatTableDataSource } from "@angular/material/table";
@@ -30,7 +30,6 @@ import { error } from "console";
   
   export class ServiceMasterFormComponent implements OnInit {
     serviceForm:FormGroup;
-    TariffId=0
     gridConfig: gridModel = {
       apiUrl: "ClassMaster/List",
   columnsList: [
@@ -85,7 +84,7 @@ import { error } from "console";
   showDoctor: boolean = false;
   submitted = false;
 
-  TariffId=0
+  // TariffId=0
   registerObj=new ServiceMaster({});
 
   butDisabled:boolean = false;
@@ -93,7 +92,10 @@ import { error } from "console";
   emg_amt = "";
   emg_per = "";
   DSServicedetailList = new MatTableDataSource<Servicedetail>();
-  
+
+  vServiceName:any;
+  vServiceShortDesc:any;
+
   getServiceMasterList: any;
 
   // new api
@@ -138,7 +140,8 @@ this.serviceForm=this._serviceMasterService.createServicemasterForm();
    if (this.data) {
    // this.getServicewiseClassMasterList();
     this.registerObj = this.data.registerObj;
-    
+    this.vServiceName=this.data.registerObj.ServiceName;
+    this.vServiceShortDesc=this.data.registerObj.ServiceShortDesc;
 }
 
   }
@@ -326,63 +329,93 @@ this.serviceForm=this._serviceMasterService.createServicemasterForm();
   //     }
      
   //   }
-  
-  if(!this.serviceForm.get("ServiceId").value){
-
-    var data1=[];
-    var clas_d = [];
-    var class_det ={      
-      "serviceId":parseInt(this.serviceForm.get("ServiceId").value || 0),
-      "tariffId":this.serviceForm.get("TariffId").value || 0,
-      "classId": 0,
-      "classRate":0,
-      "effectiveDate":this.serviceForm.get("EffectiveDate").value || "01/01/1900",
-   }
-    this.DSServicedetailList.data.forEach(element => {
-      debugger
-      let c =  JSON.parse(JSON.stringify(class_det));
-      c['classId'] = element.ClassId;
-      c['classRate'] = element.ClassRate || 0;        
-      clas_d.push(c)
-    });
-
-    console.log("ServiceInsert data1:",data1);
-
-    var mdata={
-      "serviceId": 0,
-      "groupId": this.groupId || 0,
-      "serviceShortDesc": this.serviceForm.get("ServiceShortDesc").value,
-      "serviceName": this.serviceForm.get("ServiceName").value,
-      "price":  parseInt(this.serviceForm.get("Price").value),
-      "isEditable": true,
-      "creditedtoDoctor": true,
-      "isPathology":  0,
-      "isRadiology": 0,
-      "printOrder": parseInt(this.serviceForm.get("PrintOrder").value),
-      "isPackage": 0,
-      "subGroupId": this.subGroupId || 0,
-      "doctorId": 0,
-      "isEmergency": true,
-      "emgAmt": 0,
-      "emgPer": 0,
-      "isDocEditable": true,
-      "serviceDetails": data1
-    }
-    console.log("insert mdata:", mdata);
-    this._serviceMasterService.serviceMasterInsert(mdata).subscribe((response)=>{
-      this.toastr.success(response.message);
-      this.onClear(true);
-    },(error)=>{
-      this.toastr.error(error.message);
+  if (this.serviceForm.invalid) {
+      this.toastr.warning('please check from is invalid', 'Warning !', {
+        toastClass:'tostr-tost custom-toast-warning',
     })
-    
+    return;
   }else{
-    //update
+    if(!this.serviceForm.get("ServiceId").value){
+
+      var data1=[];
+      var clas_d = [];
+      var class_det ={      
+        "serviceId":parseInt(this.serviceForm.get("ServiceId").value || 0),
+        "tariffId":this.serviceForm.get("TariffId").value || 0,
+        "classId": 0,
+        "classRate":0,
+        "effectiveDate":this.serviceForm.get("EffectiveDate").value || "01/01/1900",
+     }
+      this.DSServicedetailList.data.forEach(element => {
+        debugger
+        let c =  JSON.parse(JSON.stringify(class_det));
+        c['classId'] = element.ClassId;
+        c['classRate'] = element.ClassRate || 0;        
+        clas_d.push(c)
+      });
+  
+      console.log("ServiceInsert data1:",data1);
+  
+      var mdata={
+        "serviceId": 0,
+        "groupId": this.groupId || 0,
+        "serviceShortDesc": this.serviceForm.get("ServiceShortDesc").value,
+        "serviceName": this.serviceForm.get("ServiceName").value,
+        "price":  parseInt(this.serviceForm.get("Price").value),
+        "isEditable": true,
+        "creditedtoDoctor": true,
+        "isPathology":  0,
+        "isRadiology": 0,
+        "printOrder": parseInt(this.serviceForm.get("PrintOrder").value),
+        "isPackage": 0,
+        "subGroupId": this.subGroupId || 0,
+        "doctorId": 0,
+        "isEmergency": true,
+        "emgAmt": 0,
+        "emgPer": 0,
+        "isDocEditable": true,
+        "serviceDetails": data1
+      }
+      console.log("insert mdata:", mdata);
+      this._serviceMasterService.serviceMasterInsert(mdata).subscribe((response)=>{
+        this.toastr.success(response.message);
+        this.onClear(true);
+      },(error)=>{
+        this.toastr.error(error.message);
+      })
+      
+    }else{
+      //update
+    }
   }
+  
+  // this.vServiceName = this.serviceForm.get('ServiceName').value
+  // if ((this.vServiceName == '' || this.vServiceName == null || this.vServiceName == undefined)) {
+  //     this.toastr.warning('Please select valid Service ', 'Warning !', {
+  //         toastClass: 'tostr-tost custom-toast-warning',
+  //     });
+  //     return;
+  // }
+
+
+  
 this.dialogRef.close();
     
   }
-  
+
+  @ViewChild('serviceName') serviceName: ElementRef;
+  @ViewChild('serviceShortDesc') serviceShortDesc: ElementRef;
+
+    public onEnterServiceName(event):void{
+        if (event.which === 13) {
+                this.serviceShortDesc.nativeElement.focus();
+            }
+    }
+    public onEnterServiceShortDesc(event):void{
+        if (event.which === 13) {
+         this.serviceName.nativeElement.focus();
+      }
+    }
   
   onEdit(row) {
     this.isEditMode = true;

@@ -39,7 +39,7 @@ export class NewInstructionMasterComponent implements OnInit {
       }
       console.log("Instruction json:", mdata);
 
-      this._InstructionMasterService.instructionMasterInsert(this.instructionForm.value).subscribe((response)=>{
+      this._InstructionMasterService.instructionMasterInsert(mdata).subscribe((response)=>{
         this.toastr.success(response.message);
         this.onClear(true);
       }, (error)=>{

@@ -26,6 +26,7 @@ export class ParameterFormMasterComponent implements OnInit {
     parameterForm:FormGroup;
 
     isPrintDisSummaryChecked: boolean = false;
+    autocompleteModeUnitId:string="Unit";
 
     ageType: string[] = ["Days", "Months", "Years"];
 
@@ -133,28 +134,38 @@ export class ParameterFormMasterComponent implements OnInit {
 
     onSubmit(){
         debugger
-        if(!this.parameterForm.get("ParameterID").value){
-            debugger
-            var m_data={
-                "parameterId": 0,
-                "parameterShortName": this.parameterForm.get("ParameterShortName").value || "",
-                "parameterName": this.parameterForm.get("ParameterName").value || "",
-                "printParameterName": this.parameterForm.get("PrintParameterName").value || "",
-                "unitId": 1,// parseInt(this.parameterForm.get("UnitId").value),
-                "isNumeric": 0,
-                "isPrintDisSummary": true
-              }
-              console.log("parameter Insert:",m_data)
-
-              this._ParameterService.insertParameterMaster(m_data).subscribe((response) => {
-              this.toastr.success(response.message);
-            //  this.onClear(true);
-            }, (error) => {
-              this.toastr.error(error.message);
-            });
-          } else{
-              // update
-          }
+        // if(this.parameterForm.valid){
+            if (this.parameterForm.invalid) {
+                this.toastr.warning('please check from is invalid', 'Warning !', {
+                    toastClass:'tostr-tost custom-toast-warning',
+                })
+                return;
+            }else{
+                if(!this.parameterForm.get("ParameterID").value){
+                    debugger
+                    var m_data={
+                        "parameterId": 0,
+                        "parameterShortName": this.parameterForm.get("ParameterShortName").value || "",
+                        "parameterName": this.parameterForm.get("ParameterName").value || "",
+                        "printParameterName": this.parameterForm.get("PrintParameterName").value || "",
+                        "unitId": 1,// parseInt(this.parameterForm.get("UnitId").value),
+                        "isNumeric": 0,
+                        "isPrintDisSummary": true
+                      }
+                      console.log("parameter Insert:",m_data)
+        
+                      this._ParameterService.insertParameterMaster(m_data).subscribe((response) => {
+                      this.toastr.success(response.message);
+                    //  this.onClear(true);
+                    }, (error) => {
+                      this.toastr.error(error.message);
+                    });
+                  } else{
+                      // update
+                  }
+            }
+        
+        this.dialogRef.close();
     }
 
     @ViewChild('parameterShortName') parameterShortName: ElementRef;
@@ -193,6 +204,17 @@ export class ParameterFormMasterComponent implements OnInit {
         if (event.which === 13) {
             this.unitId.nativeElement.focus();
          }
+    }
+    selectChangeUnitId(obj:any){
+        console.log(obj);
+        this.UnitId=obj;
+    }
+    getValidationUnitMessages(){
+        return {
+            UnitId: [
+                { name: "required", Message: "Unit is required" }
+            ]
+        };
     }
 
     getGenderNameCombobox() {

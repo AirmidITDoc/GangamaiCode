@@ -152,13 +152,18 @@
                                                 [(ngModel)]="vFormula">
                                         </mat-form-field>
 
-                                        <mat-form-field appearance="outline" fxFlex>
+                                        <!-- <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>UnitId</mat-label>
                                             <input name="UnitId" formControlName="UnitId" placeholder="UnitId"
                                                 matInput (keydown)="onEnterUnitId($event)" #unitId
                                                 [(ngModel)]="vUnitId">
                                                 
-                                        </mat-form-field>
+                                        </mat-form-field> -->
+                                        <airmid-autocomplete label="UnitId" formControlName="UnitId"
+                                            [formGroup]="parameterForm"
+                                            [validations]="getValidationUnitMessages().UnitId"
+                                            [mode]="autocompleteModeUnitId" (selectDdlObject)="selectChangeUnitId($event)">
+                                        </airmid-autocomplete>
 
                                         <!-- <mat-form-field appearance="outline" fxFlex="50%">
                                             <mat-label>UnitName</mat-label>

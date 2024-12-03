@@ -22,7 +22,7 @@ export class TariffMasterService {
     createTariffForm(): FormGroup {
         return this._formBuilder.group({
             tariffId: [""],
-            tariffName: ["", Validators.required],
+            tariffName: ["", Validators.required, Validators.pattern("^[A-Za-z ]*$")],
             isActive: ["true"],
             // AddedBy: ["0"],
             // UpdatedBy: ["0"],

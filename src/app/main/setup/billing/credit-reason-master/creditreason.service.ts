@@ -20,7 +20,7 @@ export class CreditreasonService {
   createCreditreasonForm(): FormGroup {
       return this._formBuilder.group({
         creditId: [""],
-        creditReason: ["", Validators.required,Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")],
+        creditReason: ["", Validators.required],
           isActive: ["true"],
           AddedBy: ["0"],
           UpdatedBy: ["0"],

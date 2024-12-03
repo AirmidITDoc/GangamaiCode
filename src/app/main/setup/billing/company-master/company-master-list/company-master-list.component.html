@@ -10,13 +10,13 @@
                     <!-- <div class="comman-date">
                         <app-common-date [screenFrom]="screenFromString"
                             (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
-                    </div>
+                    </div>-->
                     <div class="close-icon">
                         <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
                             matTooltip="Close">
                             <mat-icon>close</mat-icon>
                         </button>
-                    </div> -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -30,10 +30,14 @@
         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
 
             <mat-form-field appearance="outline" fxFlex>
-                <mat-label>Company Name</mat-label>
-                <input name="CompanyName" formControlName="CompanyName" placeholder="Company Name"
-                    matInput (keydown)="onEnterCompany($event)"
-                    [(ngModel)]="vCompanyName">
+                <mat-label>CompanyName</mat-label>
+                    <input name="CompanyName" formControlName="CompanyName" placeholder="CompanyName"
+                            matInput (keydown)="onEnterCompany($event)" #companyN
+                            [(ngModel)]="vCompanyName">
+                    <mat-error
+                        *ngIf="companyForm.get('CompanyName').invalid && companyForm.get('CompanyName').touched">
+                        company Name is required Enter only Alphabets
+                        </mat-error>
             </mat-form-field>
 
         </div>
@@ -74,6 +78,10 @@
                 <input name="Address" formControlName="Address" placeholder="Address"
                     matInput #address (keydown)="onEnterAddress($event)"
                     [(ngModel)]="vAddress">
+                    <mat-error
+                    *ngIf="companyForm.get('Address').invalid && companyForm.get('Address').touched">
+                    Address is required
+                    </mat-error>
             </mat-form-field>
 
 
@@ -87,6 +95,10 @@
                 <mat-label>Pin Code</mat-label>
                 <input name="PinNo" formControlName="PinNo" placeholder="Pin Code" matInput
                     required #pin (keydown)="onEnterPin($event)" maxlength="6" [(ngModel)]="vPin">
+                    <mat-error
+                    *ngIf="companyForm.get('PinNo').invalid && companyForm.get('PinNo').touched">
+                    PinNo is required Enter only Digits
+                    </mat-error>
             </mat-form-field>
 
         </div>
@@ -113,7 +125,11 @@
             <mat-form-field appearance="outline" fxFlex>
                 <mat-label>Fax Number</mat-label>
                 <input name="FaxNo" formControlName="FaxNo" placeholder="Fax Number" matInput
-                    required #fax (keydown)="onEnterfax($event)" maxlength="15" minlength="10" [(ngModel)]="vFax">
+                required #fax (keydown)="onEnterfax($event)" maxlength="15" minlength="10" [(ngModel)]="vFax">
+                <mat-error
+                    *ngIf="companyForm.get('FaxNo').invalid && companyForm.get('FaxNo').touched">
+                    FaxNo is required Enter only Digits
+                </mat-error>
             </mat-form-field>
 
             <airmid-autocomplete label="TariffId" formControlName="TariffId"

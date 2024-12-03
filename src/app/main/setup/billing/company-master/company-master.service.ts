@@ -20,10 +20,15 @@ export class CompanyMasterService {
     createCompanymasterForm(): FormGroup {
         return this._formBuilder.group({
             CompanyId: [""],
-            CompanyName: ["",Validators.required, Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")],
+            CompanyName: ["",
+                [
+                    Validators.required,
+                    Validators.pattern("^[A-Za-z]*$")
+                ]
+            ],
             CompTypeId: [""],
             TypeName: [""],
-            Address: ["", Validators.required, Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")],
+            Address: ["", Validators.required],
             City: [
                 "",
                 [
@@ -31,7 +36,14 @@ export class CompanyMasterService {
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
                 ],
             ],
-            PinNo: ["", [Validators.required,Validators.minLength(6), Validators.maxLength(6)]],
+            PinNo: ["", 
+                [
+                    Validators.required,
+                    Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
+                    Validators.minLength(6),
+                     Validators.maxLength(6)
+                    ]
+                ],
             PhoneNo: [
                 "",
                 [
@@ -59,7 +71,12 @@ export class CompanyMasterService {
                     Validators.maxLength(15),
                 ],
             ],
-            TariffId: [""],
+            TariffId: [
+                "",
+                [
+                    Validators.required
+                ]
+            ],
             TariffName: [""],
             IsCancelled: [""],
             IsCancelledBy: ["", Validators.pattern("[0-9]+")],

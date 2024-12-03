@@ -51,7 +51,7 @@ export class NewDrugMasterComponent implements OnInit {
       }
       console.log("drug json:", mdata);
 
-      this._durgMasterService.drugMasterInsert(this.drugForm.value).subscribe((response)=>{
+      this._durgMasterService.drugMasterInsert(mdata).subscribe((response)=>{
         this.toastr.success(response.message);
         this.onClear(true);
       }, (error)=>{
