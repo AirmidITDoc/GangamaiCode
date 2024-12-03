@@ -31,7 +31,7 @@ export class AuthenticationService {
     }
     public get currentUserValue(): User {
         return this.currentUserSubject.value;
-    }
+    }p
     getCaptcha(): Observable<any> {
         return this.http.GetData('Login/GetCaptcha',false);
     }

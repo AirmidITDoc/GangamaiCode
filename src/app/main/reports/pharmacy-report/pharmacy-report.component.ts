@@ -124,8 +124,8 @@ export class PharmacyReportComponent implements OnInit {
     private _loggedUser: AuthenticationService,
     private formBuilder: FormBuilder
   ) {
-    this.UserId = this._loggedUser.currentUserValue.user.id;
-    this.UserName = this._loggedUser.currentUserValue.user.userName;
+    this.UserId = this._loggedUser.currentUserValue.userId;
+    this.UserName = this._loggedUser.currentUserValue.userName;
     console.log(this.UserId)
   }
 
@@ -356,7 +356,7 @@ var data={
 
   GetUserList() {
     var data = {
-      "StoreId": this._loggedUser.currentUserValue.user.storeId
+      "StoreId": this._loggedUser.currentUserValue.storeId
     }
     this._PharmacyreportService.getUserdetailList(data).subscribe(data => {
       this.UserList = data;
@@ -392,7 +392,7 @@ var data={
     debugger
     var m_data = {
       "ItemName": '%'//`${this._OPReportsService.userForm.get('ItemId').value}%`,
-    //  "StoreId": this._loggedUser.currentUserValue.user.storeId
+    //  "StoreId": this._loggedUser.currentUserValue.storeId
     }
   this._PharmacyreportService.getItemlist(m_data).subscribe(data => {
       this.filteredOptionsItem = data;
@@ -461,7 +461,7 @@ var data={
     if (this._PharmacyreportService.userForm.get('UserId').value)
       AddUserId = this._PharmacyreportService.userForm.get('UserId').value.UserId
 
-    let storeId =this._loggedUser.currentUserValue.user.storeId;
+    let storeId =this._loggedUser.currentUserValue.storeId;
     if (this._PharmacyreportService.userForm.get('StoreId').value.StoreId)
       storeId = this._PharmacyreportService.userForm.get('StoreId').value.StoreId
 
@@ -501,7 +501,7 @@ var data={
       
     AddUserId = this._PharmacyreportService.userForm.get('UserId').value.UserId
 
-    let storeId =this._loggedUser.currentUserValue.user.storeId;
+    let storeId =this._loggedUser.currentUserValue.storeId;
     if (this._PharmacyreportService.userForm.get('StoreId').value.StoreId)
       storeId = this._PharmacyreportService.userForm.get('StoreId').value.StoreId
 
@@ -541,7 +541,7 @@ var data={
         
       AddUserId = this._PharmacyreportService.userForm.get('UserId').value.UserId
 
-      let storeId =this._loggedUser.currentUserValue.user.storeId;
+      let storeId =this._loggedUser.currentUserValue.storeId;
     if (this._PharmacyreportService.userForm.get('StoreId').value.StoreId)
       storeId = this._PharmacyreportService.userForm.get('StoreId').value.StoreId
 
@@ -582,7 +582,7 @@ var data={
     if (this._PharmacyreportService.userForm.get('UserId').value)
       AddUserId = this._PharmacyreportService.userForm.get('UserId').value.UserId
 
-    let storeId =this._loggedUser.currentUserValue.user.storeId;
+    let storeId =this._loggedUser.currentUserValue.storeId;
     if (this._PharmacyreportService.userForm.get('StoreId').value.StoreId)
       storeId = this._PharmacyreportService.userForm.get('StoreId').value.StoreId
 
@@ -627,7 +627,7 @@ var data={
       let Todate =  this.datePipe.transform(this._PharmacyreportService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
       
       this._PharmacyreportService.getSalesDetail_Patientwise(Frdate,Todate,    
-        0, 0, AddUserId, this._loggedUser.currentUserValue.user.storeId
+        0, 0, AddUserId, this._loggedUser.currentUserValue.storeId
       ).subscribe(res => {
         
         const dialogRef = this._matDialog.open(PdfviewerComponent,
@@ -657,7 +657,7 @@ var data={
       this._PharmacyreportService.getSalesReturnsummary(
         this.datePipe.transform(this._PharmacyreportService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
         this.datePipe.transform(this._PharmacyreportService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900', 0, 0,
-        this._loggedUser.currentUserValue.user.storeId
+        this._loggedUser.currentUserValue.storeId
       ).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,
           {
@@ -684,7 +684,7 @@ var data={
       let frdate= this.datePipe.transform(this._PharmacyreportService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
       let Todate =this.datePipe.transform(this._PharmacyreportService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
    debugger
-      this._PharmacyreportService.getSalesReturnPatientwise(frdate,Todate,0, 0,this._loggedUser.currentUserValue.user.storeId
+      this._PharmacyreportService.getSalesReturnPatientwise(frdate,Todate,0, 0,this._loggedUser.currentUserValue.storeId
       ).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,
           {
@@ -712,7 +712,7 @@ var data={
       this._PharmacyreportService.getSalesCredit(
         this.datePipe.transform(this._PharmacyreportService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
         this.datePipe.transform(this._PharmacyreportService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900', 0, 0, 0,
-        this._loggedUser.currentUserValue.user.storeId
+        this._loggedUser.currentUserValue.storeId
       ).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,
           {
@@ -743,7 +743,7 @@ var data={
       this._PharmacyreportService.getSalesCashBook(
         this.datePipe.transform(this._PharmacyreportService.userForm.get('startdate').value, "yyyy-MM-dd") || '01/01/1900',
         this.datePipe.transform(this._PharmacyreportService.userForm.get('enddate').value, "yyyy-MM-dd") || '01/01/1900', this.PaymentMode,
-        this._loggedUser.currentUserValue.user.storeId
+        this._loggedUser.currentUserValue.storeId
       ).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,
           {

@@ -29,6 +29,7 @@ export class NewCityComponent implements OnInit {
     autocompleteModestate: string = "State";
 
     ngOnInit(): void {
+        debugger
         this.cityForm = this._CityMasterService.createCityForm();
       if(this.data){
             this.cityId= this.data?.cityId,
@@ -44,6 +45,7 @@ export class NewCityComponent implements OnInit {
             this.cityForm.patchValue(mdata);
     }
     onSubmit() {
+        debugger
         if (this.cityForm.valid) {
             var mdata={
                 "cityId": this.cityId,
