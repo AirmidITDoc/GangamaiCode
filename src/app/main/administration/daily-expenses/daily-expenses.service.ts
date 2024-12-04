@@ -25,12 +25,13 @@ export class DailyExpensesService {
     return this._formbuild.group({
       startdate: [(new Date()).toISOString()],
       enddate: [(new Date()).toISOString()],
+      expType:'2'
     });
    }
    CreateNewExpenseForm(){
     return this._formbuild.group({ 
       expenseshead:'',
-      ExpType:'Cash',
+      ExpType:'0',
       VoucharNo:'',
       ExpAmount:'',
       Reason:'',
@@ -50,5 +51,17 @@ export class DailyExpensesService {
       this.loaderService.show();
     }
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_M_ExpHeadMasterForCombo",{});
+   }
+   public SaveDailyExpenses(data,loader = true){
+    if(loader){
+      this.loaderService.show();
+    }
+    return this._httpClient.post("Administration/SaveTExpenseParam",data);
+   }
+   public CancelDailyExpenses(data,loader = true){
+    if(loader){
+      this.loaderService.show();
+    }
+    return this._httpClient.post("Administration/CancleTExpenseParam",data);
    }
 }

@@ -161,12 +161,61 @@ export class CompanyWiseServiceComponent implements OnInit {
       element.NetAmount =  0 ;
     }  
   }
-  onSubmit(){
-
+  onSubmit(){  
+      if (this.dscompanyserv.data.length < 0) {
+        this.toastr.warning('Please assign service to company', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }  
+     let insert_CompanyServiceAssignMasterObj = [];
+      this.dscompanyserv.data.forEach(element =>{
+        let insert_CompanyServiceAssignMaster={
+          "companyId":this.registerObj.CompanyId || 0,
+          "serviceId": element.ServiceId || 0,
+          "servicePrice":element.Price || 0,
+          "serviceQty":element.Qty || 0,
+          "isActive": String(this.registerObj.IsActive) == 'false' ? 0:1,
+          "createdBy": 1,
+        }
+        insert_CompanyServiceAssignMasterObj.push(insert_CompanyServiceAssignMaster)
+      });
+  
+       let delete_CompantServiceDetails={
+        "companyId": this.registerObj.ServiceId || 0
+      }
+  
+      let submitData={
+        "insert_CompanyServiceAssignMaster":insert_CompanyServiceAssignMasterObj,
+        "delete_CompantServiceDetails":delete_CompantServiceDetails
+      }
+  
+      console.log(submitData)
+      this._companyService.SaveCompanyService(submitData).subscribe(reponse =>{
+        if(reponse){
+          this.toastr.success('Record Saved Successfully.', 'Saved !', {
+            toastClass: 'tostr-tost custom-toast-success',
+          });
+          this.onClose();
+        } else {
+          this.toastr.error('Record Data not saved !, Please check API error..', 'Error !', {
+            toastClass: 'tostr-tost custom-toast-error',
+          });
+          this.onClose();
+        }
+      }, error => {
+        this.toastr.error('Record Data not saved !, Please check API error..', 'Error !', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
+      });  
   }
   onClose(){
     this._matDialog.closeAll();
+    this.dscompanyserv.data = [];
+    this.dsservicelist.data = [];
+    this.myFormGroup.reset();
   }
+
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {

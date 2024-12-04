@@ -11,6 +11,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { error } from 'console';
 import { NewExpensesComponent } from './new-expenses/new-expenses.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-daily-expenses',
@@ -20,31 +21,32 @@ import { NewExpensesComponent } from './new-expenses/new-expenses.component';
   animations: fuseAnimations
 })
 export class DailyExpensesComponent implements OnInit {
-  displayedColumns:string[] = [
-   'ExpensesDate',
-   'HeadName',
-   'PersonName',
-   'ExpAmount',
-   'Narration',
-   'UserName', 
-   'ExpensesType',
-   //'VoucharNo', 
+  displayedColumns: string[] = [
+    'btn',
+    'ExpensesDate',
+    'HeadName',
+    'PersonName',
+    'ExpAmount',
+    'Narration',
+    'UserName',
+    'ExpensesType',
+    //'VoucharNo', 
     'action',
- ];
+  ];
 
- sIsLoading:string = '';
-  dsDailyExpenses =  new MatTableDataSource<DailyExpensesList>();
+  sIsLoading: string = '';
+  dsDailyExpenses = new MatTableDataSource<DailyExpensesList>();
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
-    public _DailyExpensesService:DailyExpensesService, 
-    private _fuseSidebarService: FuseSidebarService, 
+    public _DailyExpensesService: DailyExpensesService,
+    private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
     public _matDialog: MatDialog,
     public toastr: ToastrService,
-    private _loggedService: AuthenticationService, 
+    private _loggedService: AuthenticationService,
   ) { }
 
   ngOnInit(): void {
@@ -55,58 +57,99 @@ export class DailyExpensesComponent implements OnInit {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
   dateTimeObj: any;
-  getDateTime(dateTimeObj) { 
+  getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
-  getDailyExpensesList(){
+  getDailyExpensesList() {
     this.sIsLoading = 'loading-data';
-   var vdata={
-       "FromDate": this.datePipe.transform(this._DailyExpensesService.DailyExpensesForm.get('startdate').value ,'MM-dd-yyyy'),
-       "ToDate": this.datePipe.transform(this._DailyExpensesService.DailyExpensesForm.get("enddate").value, "MM-dd-yyyy"),
-       "ExpHeadId":0,
-       "ExpType":0
-    } 
-   
-  setTimeout(() => {
-    this.sIsLoading = 'loading-data';
-    console.log(vdata)
-    this._DailyExpensesService.getDailyExpensesList(vdata).subscribe(data=>{
-      this.dsDailyExpenses.data = data as DailyExpensesList[];
-      console.log(this.dsDailyExpenses.data);
-      this.dsDailyExpenses.sort = this.sort;
-      this.dsDailyExpenses.paginator = this.paginator; 
-      this.sIsLoading = ' ';  
-    },
-      error => {
-        this.sIsLoading = '';
-      });
-  }, 50); 
+    var vdata = {
+      "FromDate": this.datePipe.transform(this._DailyExpensesService.DailyExpensesForm.get('startdate').value, 'MM-dd-yyyy'),
+      "ToDate": this.datePipe.transform(this._DailyExpensesService.DailyExpensesForm.get("enddate").value, "MM-dd-yyyy"),
+      "ExpHeadId": 0,
+      "ExpType": this._DailyExpensesService.DailyExpensesForm.get("expType").value || 2
+    }
+
+    setTimeout(() => {
+      this.sIsLoading = 'loading-data';
+      console.log(vdata)
+      this._DailyExpensesService.getDailyExpensesList(vdata).subscribe(data => {
+        this.dsDailyExpenses.data = data as DailyExpensesList[];
+        console.log(this.dsDailyExpenses.data);
+        this.dsDailyExpenses.sort = this.sort;
+        this.dsDailyExpenses.paginator = this.paginator;
+        this.sIsLoading = ' ';
+      },
+        error => {
+          this.sIsLoading = '';
+        });
+    }, 50);
+  }
+
+  BillCancel(contact){ 
+  
+  }
+  CancelExpenses(contact) {
+
+    Swal.fire({
+      title: 'Do you want to cancel the Expenses',
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Cancel it!" 
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {  
+        let update_T_Expenses_IsCancel = {
+          "expId": contact.ExpID || 0,
+          "isCancelledBy": 1,
+        }
+        let submitData = {
+          "update_T_Expenses_IsCancel": update_T_Expenses_IsCancel
+        }
+        console.log(submitData)
+        this._DailyExpensesService.CancelDailyExpenses(submitData).subscribe(reponse => {
+          if (reponse) {
+            this.toastr.success('Record Saved Successfully.', 'Saved !', {
+              toastClass: 'tostr-tost custom-toast-success',
+            });
+            this.getDailyExpensesList();
+          } else {
+            this.toastr.error('Record Data not saved !, Please check API error..', 'Error !', {
+              toastClass: 'tostr-tost custom-toast-error',
+            });
+          }
+        });  
+      }else{
+        this.getDailyExpensesList(); 
+      }
+    }) 
   }
 
 
 
-
-  addNewExpenses(){ 
+  addNewExpenses() {
     const dialogRef = this._matDialog.open(NewExpensesComponent,
       {
         height: "60%",
-        width: '60%', 
+        width: '60%',
       });
     dialogRef.afterClosed().subscribe(result => {
-      this.getDailyExpensesList(); 
+      this.getDailyExpensesList();
     });
   }
 }
- 
-export class DailyExpensesList{
-  ExpensesDate:any;
-  PersonName:string;
-  ExpAmount:number;
+
+export class DailyExpensesList {
+  ExpensesDate: any;
+  PersonName: string;
+  ExpAmount: number;
   Narration: any;
   ExpensesType: any;
-  VoucharNo:number;
-  HeadName:any;
-  UserName:any;
+  VoucharNo: number;
+  HeadName: any;
+  UserName: any;
 
   constructor(DailyExpensesList) {
     {
@@ -116,8 +159,8 @@ export class DailyExpensesList{
       this.Narration = DailyExpensesList.Narration || '';
       this.ExpensesType = DailyExpensesList.ExpensesType || '';
       this.VoucharNo = DailyExpensesList.VoucharNo || 0;
-      this.HeadName = DailyExpensesList.HeadName || ''; 
-      this.UserName = DailyExpensesList.UserName || '';  
+      this.HeadName = DailyExpensesList.HeadName || '';
+      this.UserName = DailyExpensesList.UserName || '';
     }
   }
 }

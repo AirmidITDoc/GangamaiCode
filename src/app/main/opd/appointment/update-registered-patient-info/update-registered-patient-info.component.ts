@@ -1,25 +1,15 @@
 
 import { ChangeDetectorRef, Component, ElementRef, HostListener, Inject, Input, OnInit, SimpleChanges, ViewChild, ViewEncapsulation, } from "@angular/core";
-import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatSort } from "@angular/material/sort";
-import { MatTableDataSource } from "@angular/material/table";
+import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms"; 
 import { Observable, ReplaySubject, Subject, Subscription } from "rxjs"; 
-import { DatePipe, Time } from "@angular/common";
-import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
-import { ActivatedRoute, Router } from "@angular/router"; 
+import { DatePipe, Time } from "@angular/common"; 
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog"; 
 import Swal from "sweetalert2";
 import { fuseAnimations } from "@fuse/animations"; 
-import { map, startWith, takeUntil } from "rxjs/operators"; 
-import { AdvanceDataStored } from "app/main/ipd/advance"; 
+import { map, startWith, takeUntil } from "rxjs/operators";  
 import { MatStepper } from "@angular/material/stepper";
-import { AuthenticationService } from "app/core/services/authentication.service";
-import { HeaderComponent } from "app/main/shared/componets/header/header.component";
-import { ExcelDownloadService } from "app/main/shared/services/excel-download.service";
-import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
-import { MatSelect } from "@angular/material/select";
-import { AnyCnameRecord } from "dns";
+import { AuthenticationService } from "app/core/services/authentication.service"; 
+import { MatSelect } from "@angular/material/select"; 
 import { PdfviewerComponent } from "app/main/pdfviewer/pdfviewer.component";
 import { ImageCropComponent } from "app/main/shared/componets/image-crop/image-crop.component";
 import { ImageCroppedEvent } from "ngx-image-cropper"; 
@@ -31,8 +21,7 @@ import { ToastrService } from "ngx-toastr";
 import { Table } from "jspdf-autotable";
 import moment, { invalid } from "moment";
 import { values } from "lodash";
-import { WhatsAppEmailService } from "app/main/shared/services/whats-app-email.service";  
-import { CompanyInformationComponent } from "app/main/ipd/company-information/company-information.component"; 
+import { WhatsAppEmailService } from "app/main/shared/services/whats-app-email.service";   
 import { AppointmentSreviceService } from "../appointment-srevice.service";
 import { RegistrationService } from "../../registration/registration.service";
 import { ImageViewComponent } from "../image-view/image-view.component";
@@ -48,31 +37,7 @@ import { RegInsert } from "../appointment.component";
 })
 export class UpdateRegisteredPatientInfoComponent implements OnInit {
  
-    dateStyle?: string = 'Date';
-    OnChangeDobType(e) {
-        this.dateStyle = e.value;
-    }
-    CalcDOB(mode, e) {
-        let d = new Date();
-        if (mode == "Day") {
-            d.setDate(d.getDate() - Number(e.target.value));
-            this.registerObj.DateofBirth = d;
-            //this.personalFormGroup.get('DateOfBirth').setValue(moment().add(Number(e.target.value), 'days').format("DD-MMM-YYYY"));
-        }
-        else if (mode == "Month") {
-            d.setMonth(d.getMonth() - Number(e.target.value));
-            this.registerObj.DateofBirth = d;
-        }
-        else if (mode == "Year") {
-            d.setFullYear(d.getFullYear() - Number(e.target.value));
-            this.registerObj.DateofBirth = d;
-        }
-        let todayDate = new Date();
-        const timeDiff = Math.abs(Date.now() - this.registerObj.DateofBirth.getTime());
-        this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
-        this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - this.registerObj.DateofBirth.getMonth());
-        this.registerObj.AgeDay = Math.abs(todayDate.getDate() - this.registerObj.DateofBirth.getDate());
-    }
+ 
     msg: any;
     // isLoading = true;
     isRateLimitReached = false;
@@ -260,7 +225,7 @@ export class UpdateRegisteredPatientInfoComponent implements OnInit {
     filterReligion: any;
     filterMaritalstatus: any;
     filterArea: any;
-    filterHospital: any;
+ 
 
  
     constructor(
@@ -285,9 +250,11 @@ export class UpdateRegisteredPatientInfoComponent implements OnInit {
         this.personalFormGroup.markAsUntouched();
         this.VisitFormGroup = this.createVisitdetailForm();
         this.VisitFormGroup.markAsUntouched(); 
+
+        
         if(this.data){
           this.registerObj = this.data.obj;
-          console.log(   this.registerObj ) 
+          console.log(this.registerObj) 
           this.PatientName =  this.data.obj.PatientName;
           this.RegId =  this.registerObj.RegId;
 
@@ -303,8 +270,7 @@ export class UpdateRegisteredPatientInfoComponent implements OnInit {
         }  
         // this.getVisitList();
         this.getDoctorNameCombobox(); 
-        this.getHospitalList1();
-        this.getHospitalList(); 
+ 
         this.getPrefixList();
         this.getPatientTypeList();
         this.getTariffCombo();
@@ -319,13 +285,7 @@ export class UpdateRegisteredPatientInfoComponent implements OnInit {
         this.getDoctor2List();
         this.getPurposeList(); 
     
-
-        this.hospitalFilterCtrl.valueChanges
-            .pipe(takeUntil(this._onDestroy))
-            .subscribe(() => {
-                this.filterHospital();
-            });
-
+ 
         this.FirstName.markAsTouched();
         this.AreaId.markAsTouched();
 
@@ -353,6 +313,33 @@ export class UpdateRegisteredPatientInfoComponent implements OnInit {
         this.RegOrPhoneflag = 'Entry from Registration'
     } 
  
+    dateStyle?: string = 'Date';
+    OnChangeDobType(e) {
+        this.dateStyle = e.value;
+    }
+    CalcDOB(mode, e) {
+        let d = new Date();
+        if (mode == "Day") {
+            d.setDate(d.getDate() - Number(e.target.value));
+            this.registerObj.DateofBirth = d;
+            //this.personalFormGroup.get('DateOfBirth').setValue(moment().add(Number(e.target.value), 'days').format("DD-MMM-YYYY"));
+        }
+        else if (mode == "Month") {
+            d.setMonth(d.getMonth() - Number(e.target.value));
+            this.registerObj.DateofBirth = d;
+        }
+        else if (mode == "Year") {
+            d.setFullYear(d.getFullYear() - Number(e.target.value));
+            this.registerObj.DateofBirth = d;
+        }
+        let todayDate = new Date();
+        const timeDiff = Math.abs(Date.now() - this.registerObj.DateofBirth.getTime());
+        this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
+        this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - this.registerObj.DateofBirth.getMonth());
+        this.registerObj.AgeDay = Math.abs(todayDate.getDate() - this.registerObj.DateofBirth.getDate());
+    }
+
+
     getDoctor1List() {
         this._opappointmentService.getDoctorMaster1Combo().subscribe(data => {
             this.Doctor1List = data;
@@ -581,15 +568,7 @@ export class UpdateRegisteredPatientInfoComponent implements OnInit {
             PhoneRegId: ['']
         });
     }
-
-    getHospitalList() {
-        this._opappointmentService.getHospitalCombo().subscribe(data => {
-            this.HospitalList = data;
-            this.filteredHospital.next(this.HospitalList.slice());
-            this.VisitFormGroup.get('HospitalID').setValue(this.HospitalList[0]);
-        })
-    }
-
+ 
 
     getPrefixList() {
         this._registerService.getPrefixCombo().subscribe(data => {
@@ -1216,12 +1195,7 @@ export class UpdateRegisteredPatientInfoComponent implements OnInit {
         return this._AppointmentSreviceService.myFilterform.controls;
     }
   
-    getHospitalList1() {
-        this._opappointmentService.getHospitalCombo().subscribe(data => {
-            this.HospitalList1 = data;
-            this.VisitFormGroup.get('HospitalId').setValue(this.HospitalList1[0]);
-        })
-    } 
+  
     onDoctorOneChange(value) {
         console.log(this.VisitFormGroup.get('DoctorIdOne').value.reset(''));
     } 
@@ -1253,8 +1227,8 @@ export class UpdateRegisteredPatientInfoComponent implements OnInit {
         this.VisitFormGroup = this.createVisitdetailForm();
         this.VisitFormGroup.markAllAsTouched();
 
-        this.getHospitalList1();
-        this.getHospitalList();
+ 
+ 
         this.getTariffCombo();
         this.getPatientTypeList();
         this.getPrefixList();

@@ -113,7 +113,7 @@
                                             PinNo
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-120"> 
-                                            {{element.PinNo || '-'}}
+                                            {{element.PinNo || "-"}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -121,7 +121,7 @@
                                         <mat-header-cell *matHeaderCellDef mat-sort-header class="w-140"> 
                                             PhoneNo </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-140"> 
-                                            {{element.PhoneNo || '-'}}
+                                            {{element.PhoneNo || "-"}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -168,11 +168,11 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="IsDeleted">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-100"> 
+                                    <ng-container matColumnDef="IsDeleted" stickyEnd>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-80"> 
                                             IsActive
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-100">
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-80">
                                             <mat-icon *ngIf="element.IsActive"
                                                 class="active-icon green-600 s-16">check_circle</mat-icon>
                                             <mat-icon *ngIf="!element.IsActive"

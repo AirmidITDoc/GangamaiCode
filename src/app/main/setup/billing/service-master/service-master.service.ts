@@ -142,11 +142,19 @@ export class ServiceMasterService {
         }
         return this._httpClient.post("Billing/ServiceUpdate", param);
     }
-    public deactivateTheStatus(param) {
+    public deactivateTheStatus(param,loader = true) {
+        if (loader) {
+            this._loaderService.show();
+        }
         return this._httpClient.post(
-            "Generic/ExecByQueryStatement?query=" + param,
-            {}
-        );
+            "Generic/ExecByQueryStatement?query=" + param, {} );
+    }
+    
+    public SavePackagedet(param,loader = true) {
+        if (loader) {
+            this._loaderService.show();
+        }
+        return this._httpClient.post("Administration/InsertPackageDetails", param);
     }
       // Get billing Service List 
   public getBillingServiceList(employee) {

@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { CompanyMasterService } from "./company-master.service";
 import { ReplaySubject, Subject } from "rxjs";
 import { FormControl } from "@angular/forms";
-import { MatDialog } from "@angular/material/dialog";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { MatTableDataSource } from "@angular/material/table";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
@@ -11,6 +11,7 @@ import { CompanyMasterListComponent } from "./company-master-list/company-master
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
 import { CompanyWiseServiceComponent } from "./company-wise-service/company-wise-service.component";
+import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 
 @Component({
     selector: "app-company-master",
@@ -23,7 +24,7 @@ export class CompanyMasterComponent implements OnInit {
     //RadiologytemplateMasterList: any;
     isLoading = true;
     msg: any;
-
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -31,12 +32,12 @@ export class CompanyMasterComponent implements OnInit {
         "CompanyId",
         "CompanyName",
         "TypeName", 
-        "AssignServComp",
         "Address",
         "City",
-        "PinNo",
-        "PhoneNo",
+        "PinNo", 
         "MobileNo",
+        "PhoneNo", 
+        "AssignServComp",
         "FaxNo",
         "TariffName",
         "AddedBy",
@@ -149,6 +150,28 @@ export class CompanyMasterComponent implements OnInit {
         dialogRef.afterClosed().subscribe((result) => {
             console.log("The dialog was closed - Insert Action", result);
             this.getCompanyMaster();
+        });
+    }
+
+    onDeactive(CompanyId) {
+        this.confirmDialogRef = this._matDialog.open(
+            FuseConfirmDialogComponent,
+            {
+                disableClose: false,
+            }
+        );
+        this.confirmDialogRef.componentInstance.confirmMessage =
+            "Are you sure you want to deactive?";
+        this.confirmDialogRef.afterClosed().subscribe((result) => {
+            if (result) {
+                let Query =
+                    "Update CompanyMaster set IsActive=0 where CompanyId=" +
+                    CompanyId;
+                console.log(Query);
+                this._companyService.deactivateTheStatus(Query).subscribe((data) => (this.msg = data));
+                this.getCompanyMaster();
+            }
+            this.confirmDialogRef = null;
         });
     }
 }

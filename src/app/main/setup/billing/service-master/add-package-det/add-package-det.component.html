@@ -27,65 +27,62 @@
                 <div fxLayout="column" fxFlexFill fxLayoutGap="10px">
 
                     <mat-card style="padding: 5px;">
-                        <form [formGroup]="PackageForm">
-                            <div fxLayout="row" fxLayoutGap="5px">
+                       
+                            <div fxLayout="column" fxLayoutGap="5px">
 
-                                <mat-form-field appearance="outline" fxFlex="20%">
+                                <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Service Name</mat-label>
-                                    <input name="MainServiceName"  formControlName="MainServiceName"   
+                                    <input name="MainServiceName"  
                                         matInput [(ngModel)]="registerObj.ServiceName" readonly>
                                 </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex="40%">
-                                    <mat-label>Package Service Name</mat-label>
-                                    <input type="text" name="SrvcName" formControlName="SrvcName" #Servicename
-                                        placeholder="Package Service Name" matInput [matAutocomplete]="autoService"
-                                        (input)="getServiceListCombobox()" required id="myInput"
-                                        [(ngModel)]="vServiceId">
-                                    <span matSuffix style="display: flex;">
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="PackageForm.get('SrvcName').setValue(''); isServiceSelected = false;">close</mat-icon>
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="PackageForm.get('SrvcName').setValue(''); isServiceSelected = false;">search</mat-icon>
-                                    </span>
-                                    <mat-autocomplete #autoService="matAutocomplete" [displayWith]="getOptionText"
-                                        (optionSelected)='getSelectedObj($event.option.value)'>
-
-                                        <mat-option *ngFor="let option of filteredOptionsService" [value]="option">
-                                            {{option.ServiceName}} | Price {{option.Price}} |
-                                            <span fxLayoutGap="4px">
-                                                <mat-icon *ngIf="option.CreditedtoDoctor == true" matTooltip="IsDoctor">
-                                                    <img width="10px" height="6px" src="assets/images/logos/doctor.png">
-                                                </mat-icon> |
-                                                <mat-icon *ngIf="option.IsRadiology == true" matTooltip="IsRadiology">
-                                                    <img width="10px" height="6px"
-                                                        src="assets/images/logos/radiology.png">
-                                                </mat-icon>
-                                                <mat-icon *ngIf="option.IsPathology == true" matTooltip="IsPatholgy">
-                                                    <img width="10px" height="6px"
-                                                        src="assets/images/logos/pathology.png">
-                                                </mat-icon>
-                                                <mat-icon *ngIf="option.IsPackage == true" matTooltip="IsPackage">
-                                                    <img width="10px" height="6px"
-                                                        src="assets/images/logos/package.png">
-                                                </mat-icon>
-                                            </span>
-                                        </mat-option>
-                                    </mat-autocomplete>
-                                </mat-form-field>
-
-                                <div matTooltip="Enter all data to enable this button!!" [matTooltipPosition]="'above'"
-                                    style="padding: 8px 20px 0px 20px;">
-                                    <button (click)="onAddPackageService()" class="btn btn-primary btn-with-icon py-8"
-                                        #addbutton>
-                                        <span class="btn-icon">
-                                            <mat-icon> add </mat-icon>
+                                <form [formGroup]="PackageForm">
+                                    <mat-form-field appearance="outline" fxFlex="60%">
+                                        <mat-label>Package Service Name</mat-label>
+                                        <input type="text" name="SrvcName" formControlName="SrvcName" #Servicename placeholder="Package Service Name"
+                                            matInput [matAutocomplete]="autoService" (input)="getServiceListCombobox()" required id="myInput"
+                                            [(ngModel)]="vServiceId">
+                                        <span matSuffix style="display: flex;">
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="PackageForm.get('SrvcName').setValue(''); isServiceSelected = false;">close</mat-icon>
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="PackageForm.get('SrvcName').setValue(''); isServiceSelected = false;">search</mat-icon>
                                         </span>
-                                    </button>
-                                </div>
+                                        <mat-autocomplete #autoService="matAutocomplete" [displayWith]="getOptionText"
+                                            (optionSelected)='getSelectedObj($event.option.value)'>
+                                
+                                            <mat-option *ngFor="let option of filteredOptionsService" [value]="option">
+                                                {{option.ServiceName}} | Price {{option.Price}} |
+                                                <span fxLayoutGap="4px">
+                                                    <mat-icon *ngIf="option.CreditedtoDoctor == true" matTooltip="IsDoctor">
+                                                        <img width="10px" height="6px" src="assets/images/logos/doctor.png">
+                                                    </mat-icon> |
+                                                    <mat-icon *ngIf="option.IsRadiology == true" matTooltip="IsRadiology">
+                                                        <img width="10px" height="6px" src="assets/images/logos/radiology.png">
+                                                    </mat-icon>
+                                                    <mat-icon *ngIf="option.IsPathology == true" matTooltip="IsPatholgy">
+                                                        <img width="10px" height="6px" src="assets/images/logos/pathology.png">
+                                                    </mat-icon>
+                                                    <mat-icon *ngIf="option.IsPackage == true" matTooltip="IsPackage">
+                                                        <img width="10px" height="6px" src="assets/images/logos/package.png">
+                                                    </mat-icon>
+                                                </span>
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+                                
+                                    <div matTooltip="Enter all data to enable this button!!" [matTooltipPosition]="'above'"
+                                        style="padding: 8px 20px 0px 20px;">
+                                        <button (click)="onAddPackageService()" class="btn btn-primary btn-with-icon py-8" #addbutton>
+                                            <span class="btn-icon">
+                                                <mat-icon> add </mat-icon>
+                                            </span>
+                                        </button>
+                                    </div>
+                                </form>
 
                             </div>
-                        </form>
+                 
                     </mat-card>
 
                     <mat-card style="padding: 5px;">

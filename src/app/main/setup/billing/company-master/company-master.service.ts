@@ -12,7 +12,7 @@ export class CompanyMasterService {
     constructor(
         private _httpClient: HttpClient,
         private _formBuilder: FormBuilder,
-        public _loaderService:LoaderService
+        public _loaderService: LoaderService
     ) {
         this.myform = this.createCompanymasterForm();
         this.myformSearch = this.createSearchForm();
@@ -80,7 +80,7 @@ export class CompanyMasterService {
     }
 
     public getCompanyMasterList(param) {
-        return this._httpClient.post("Generic/GetByProc?procName=Rtrv_CompList_by_Name",param);
+        return this._httpClient.post("Generic/GetByProc?procName=Rtrv_CompList_by_Name", param);
     }
 
     public getCompanytypeMasterCombo() {
@@ -108,10 +108,24 @@ export class CompanyMasterService {
     populateForm(param) {
         this.myform.patchValue(param);
     }
-    public getServiceListDetails(Param ,loader = true){
+    public getServiceListDetails(Param, loader = true) {
         if (loader) {
-          this._loaderService.show();
-      }
-        return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PathRadServiceList",Param);
-      }
+            this._loaderService.show();
+        }
+        return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PathRadServiceList", Param);
+    }
+    public SaveCompanyService(Param, loader = true) {
+        if (loader) {
+            this._loaderService.show();
+        }
+        return this._httpClient.post("Administration/InsertCompanyServiceAssignMaster", Param);
+    }
+    public deactivateTheStatus(param, loader = true) {
+        if (loader) {
+            this._loaderService.show();
+        }
+        return this._httpClient.post(
+            "Generic/ExecByQueryStatement?query=" + param, {});
+    }
+
 }

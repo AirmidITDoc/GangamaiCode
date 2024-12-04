@@ -53,8 +53,8 @@
 
                             <mat-radio-group formControlName="ExpType" name="ExpType" style="padding: 10px;">
                             <!-- <mat-label>Type :</mat-label>&nbsp; -->
-                            <mat-radio-button value="Cash">Cash</mat-radio-button>
-                            <mat-radio-button value="Cheque">Cheque</mat-radio-button>
+                            <mat-radio-button value="0">Cash</mat-radio-button>
+                            <mat-radio-button value="1">Cheque</mat-radio-button>
                             </mat-radio-group>
 
                             <span style="margin-right: 40px;">
@@ -68,7 +68,8 @@
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Person Name</mat-label>
                                 <input matInput name="PersonName" formControlName="PersonName" required type="text" 
-                                [(ngModel)]="vPersonName" #PersonName (keydown)="onEnterPersonName($event)">
+                                [(ngModel)]="vPersonName" #PersonName (keydown)="onEnterPersonName($event)"
+                                (keypress)="keyPressCharater($event)">
                             </mat-form-field>
                         </div>
 
@@ -77,13 +78,15 @@
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Expenses Amount</mat-label>
                                 <input matInput name="ExpAmount" formControlName="ExpAmount" required type="text" 
-                                [(ngModel)]="vExpAmount" (keydown)="onEnterExpAmt($event)" #ExpAmount>
+                                [(ngModel)]="vExpAmount" (keydown)="onEnterExpAmt($event)" #ExpAmount 
+                                (keypress)="keyPressAlphanumeric($event)">
                             </mat-form-field>
                             
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Vouchar No</mat-label>
                                 <input matInput name="VoucharNo" formControlName="VoucharNo" required type="text" 
-                                [(ngModel)]="vVoucharNo" (keydown)="onEnterVoucharNo($event)" #VoucharNo>
+                                [(ngModel)]="vVoucharNo" (keydown)="onEnterVoucharNo($event)" #VoucharNo
+                                (keypress)="keyPressAlphanumeric($event)">
                             </mat-form-field>
                         </div>
 

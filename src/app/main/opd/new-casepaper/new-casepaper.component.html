@@ -799,13 +799,15 @@
                             <div class="center p-12">
                                 <div fxlayout="row" fxLayout="column" fxFlexFill fxLayoutGap="10px">
                         
-                                    <div *ngFor="let date of uniqueDates">
+                                    <div *ngFor="let visitId of uniqueVisitId">
+                                        
                                         <mat-card style="padding: 6px;">
                                             <div fxLayout="column" fxLayoutGap="6px">
                                                 <div>
                                                     <div class="visit-info-title" fxLayoutAlign="space-between">
                                                         <span style="font-weight: 900;color: blueviolet;">
-                                                            Visit Date : {{ date | date: 'dd/MM/YYYY' }}
+                                                            <!-- Visit Date : {{ date | date: 'dd/MM/YYYY' }} -->
+                                                            Visit Date : {{ date | date: 'dd/MM/YYYY' }} - {{visitId}}
                                                             <!-- {{ date | date:' fullDate'}}  -->
                                                         </span>
                                                         <span style="font-weight: 900;color: blueviolet;">
@@ -817,7 +819,7 @@
                                                         </div>
                                                     </div>
                                                     <hr>
-                                                    <div *ngFor="let patient of getPatientsForDate(date)">
+                                                    <div *ngFor="let patient of getPatientsForDate(visitId)">
                                                         <div class="Ipd-patient-info" fxFlexFill fxLayout="row" fxLayoutAlign="space-between center"
                                                             class="patient-info">
                                                             <div class="patient-sub">
@@ -925,7 +927,7 @@
                                                         </span>
                                                     </div>
                                                     <hr>
-                                                    <table mat-table [dataSource]="getFirstPatientForDate(date)" class="mat-table-1 h-220"
+                                                    <table mat-table [dataSource]="getFirstPatientForDate(visitId)" class="mat-table-1 h-220"
                                                         [@animateStagger]="{value:'50'}" style="width: 100%;overflow: auto">
                                         
                                                         <ng-container matColumnDef="ItemName">
@@ -980,6 +982,7 @@
                                                 </div>
                                             </div>
                                         </mat-card>
+                             
                                     </div> 
                                 </div>
                             </div>

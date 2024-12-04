@@ -1048,6 +1048,7 @@ onTemplDetAdd(){
 
   //datewise visit info and table data
   patients: any[] = []; // Using 'any' type for simplicity
+  uniqueVisitId: string[] = [];
   uniqueDates: string[] = [];
   displayedColumns: string[] = ['patientName', 'age', 'gender'];
   getnewVisistList(obj) {
@@ -1063,16 +1064,22 @@ onTemplDetAdd(){
     });
   }
   extractUniqueDates() {
-    const dates = this.patients.map(patient => patient.VisitDate);
-    this.uniqueDates = Array.from(new Set(dates));
+    const VisitId = this.patients.map(patient => patient.VisitId);
+    this.uniqueVisitId = Array.from(new Set(VisitId));
+    // console.log(this.uniqueVisitId)
+
+
+    // const Dates = this.patients.map(patient => patient.VisitDate);
+    // this.uniqueDates = Array.from(new Set(Dates));
   }
   //datewise table data
-  getFirstPatientForDate(date: string) {
-    return this.patients.filter(patient => patient.VisitDate === date); //
+  getFirstPatientForDate(VisitId: string) {
+    return this.patients.filter(patient => patient.VisitId === VisitId); //
+    
   }
   //datewise visit info date
-  getPatientsForDate(date: string) {
-    const patientsForDate = this.patients.filter(patient => patient.VisitDate === date);
+  getPatientsForDate(VisitId: string) {
+    const patientsForDate = this.patients.filter(patient => patient.VisitId === VisitId);
     return patientsForDate.length > 0 ? [patientsForDate[0]] : []; // 
   }
 

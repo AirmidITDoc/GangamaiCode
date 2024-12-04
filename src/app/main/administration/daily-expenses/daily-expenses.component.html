@@ -11,11 +11,11 @@
                 style="color: white;">
                 Daily Expenses
             </span>
-        </div>
-        <div fxLayout="row" fxLayoutAlign="end" class="left-icon">
-            <button mat-raised-button (click)="addNewExpenses()" fxLayoutAlign="center center" class="btn btn-with-icon py-4"> 
-                <span>New</span>
-            </button>
+        </div>  
+        <div fxLayout="row" >
+            <button mat-raised-button (click)="addNewExpenses()" style="background-color: aliceblue;color: brown;">
+                <mat-icon>add</mat-icon>Add
+            </button> 
         </div>
     </mat-toolbar>
 
@@ -41,6 +41,15 @@
                             <mat-date-range-picker #picker></mat-date-range-picker>
                         </mat-form-field> 
 
+                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                            <mat-radio-group formControlName="expType" name="expType"
+                                (change)="getDailyExpensesList()"> 
+                                <mat-radio-button value="2">All</mat-radio-button>
+                                <mat-radio-button value="0">Cash</mat-radio-button>
+                                <mat-radio-button value="1">Cheque</mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+
                         <div style="margin-top: 10px;">
                             <button mat-raised-button class="clearbutton" matTooltip="close">
                                 <mat-icon class="cleariconbutton">close</mat-icon>
@@ -58,9 +67,33 @@
         <div class="center p-12 pb-56" style="border-radius: 4px;">
             <div class="content-card">
                 <div fxLayout="row" fxLayout="column" fxFlexFill fxLayoutGap="10px">
+                    <div class="info-badge-top pb-2 border-bottom">
+                        <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">  
+                            <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                                <span>: Cash</span>
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                                <span>: Cheque</span>
+                            </div>
+                        </div>
+                    </div>
                     <mat-table class="table1" matSort [dataSource]="dsDailyExpenses"
                     [@animateStagger]="{value:'50'}" style="overflow: auto;"> 
                     
+                    <ng-container matColumnDef="btn" sticky>
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
+                            class="w-50"> 
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let contact" class="w-50">
+                            <mat-icon *ngIf="contact.ExpType == '1'" matTooltip="Cash"
+                                class="pill orange-600 s-16">circle</mat-icon>
+                            <mat-icon *ngIf="contact.ExpType == '0'" matTooltip="Cheque"
+                                class="pill green-600 s-16">circle</mat-icon>
+                        </mat-cell>
+                    </ng-container>
+
 
                     <ng-container matColumnDef="ExpensesDate" sticky>
                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
@@ -72,7 +105,7 @@
                         </mat-cell>
                     </ng-container>
 
-                    <ng-container matColumnDef="HeadName">
+                    <ng-container matColumnDef="HeadName" sticky>
                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
                             Head Name</mat-header-cell>
                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200"
@@ -122,9 +155,9 @@
                     </ng-container> 
 
                     <ng-container matColumnDef="ExpensesType">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
                             Exp Type </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
+                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
                             {{contact.ExpensesType || '-'}}
                         </mat-cell>
                     </ng-container>
@@ -140,11 +173,13 @@
 
                     <ng-container matColumnDef="action" stickyEnd>
                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                            class="w-70">
+                            class="w-80">
                             Action
                         </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-70">
-                            <mat-icon>print</mat-icon>
+                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-80">
+                            <mat-icon matTooltip="Cancel Expenses" (click)="CancelExpenses(contact)"
+                            *ngIf="contact.IsCancelledBy != '1'" >cancel_circle</mat-icon>
+                            <mat-icon matTooltip="Print" *ngIf="contact.IsCancelledBy != '1'">print</mat-icon>
                         </mat-cell>
                     </ng-container>
 
@@ -159,11 +194,11 @@
                         </mat-footer-cell>
                     </ng-container>
 
-                    <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+                    <mat-header-row class="accent min-width-1300" *matHeaderRowDef="displayedColumns; sticky: true">
                     </mat-header-row>
-                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact min-width-1300"
                         [@animate]="{value:'*',params:{y:'100%'}}"
-                        [ngClass]="{'red-row': contact.IsCancelled === 1}"></mat-row>
+                        [ngClass]="{'red-row': contact.IsCancelledBy == 1}"></mat-row>
                     <mat-footer-row *matFooterRowDef="['loading']"
                         [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                     </mat-footer-row>

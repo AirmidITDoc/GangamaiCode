@@ -8,6 +8,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-add-package-det',
@@ -109,8 +110,8 @@ onAddPackageService() {
     });
     return;
   } 
-  if (this.PackageForm.get('SrvcName').value) {
-    if (!this.filteredOptionsService.find(item => item.ServiceName == this.PackageForm.get('SrvcName').value.ServiceName)) {
+  if (this.dsPackageDet.data.length > 0) {
+    if (!this.dsPackageDet.data.find(item => item.PackageServiceId == this.PackageForm.get('SrvcName').value.ServiceId)) {
       this.toastr.warning('Please select valid Service Name', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -130,8 +131,9 @@ onAddPackageService() {
     });
   this.isLoading = '';
   this.dsPackageDet.data = this.PacakgeList;  
-  this.PackageForm.get('MainServiceName').setValue(this.registerObj.ServiceName);
   this.PackageForm.reset(); 
+  this.PackageForm.get('MainServiceName').setValue(this.registerObj.ServiceName);
+
 } 
   deleteTableRowPackage(element) {
     let index = this.PacakgeList.indexOf(element);
@@ -149,12 +151,49 @@ onAddPackageService() {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
+    } 
+   let InsertPackageObj = [];
+    this.dsPackageDet.data.forEach(element =>{
+      let InsertPackage={
+        "serviceId": element.ServiceId || 0,
+        "packageServiceId": element.PackageServiceId || 0
+      }
+      InsertPackageObj.push(InsertPackage)
+    });
+
+     let delete_PackageDetails={
+      "serviceId": this.registerObj.ServiceId || 0
     }
 
+    let submitData={
+      "insert_PackageDetails":InsertPackageObj,
+      "delete_PackageDetails":delete_PackageDetails
+    }
+
+    console.log(submitData)
+    this._serviceMasterService.SavePackagedet(submitData).subscribe(reponse =>{
+      if(reponse){
+        this.toastr.success('Record Saved Successfully.', 'Saved !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        });
+        this.onClose();
+      } else {
+        this.toastr.error('Record Data not saved !, Please check API error..', 'Error !', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
+        this.onClose();
+      }
+    }, error => {
+      this.toastr.error('Record Data not saved !, Please check API error..', 'Error !', {
+        toastClass: 'tostr-tost custom-toast-error',
+      });
+    }); 
   }
 
   onClose(){
     this._matDialog.closeAll();
+    this.PacakgeList.data = [];
+    this.PackageForm.reset();
   } 
 }
 export class PacakgeList{ 

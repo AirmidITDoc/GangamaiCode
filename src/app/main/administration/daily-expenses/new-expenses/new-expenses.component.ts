@@ -103,6 +103,40 @@ export class NewExpensesComponent implements OnInit {
       });
       return;
     }
+ 
+    let InserExpensesObj={
+      "expDate": this.dateTimeObj.date,
+      "expTime": this.dateTimeObj.time,
+      "expType": this._DailyExpensesService.NewExpensesForm.get('ExpType').value || '0',
+      "expAmount":this._DailyExpensesService.NewExpensesForm.get('ExpAmount').value || '',
+      "personName": this._DailyExpensesService.NewExpensesForm.get('PersonName').value || '',
+      "narration": this._DailyExpensesService.NewExpensesForm.get('Reason').value || '',
+      "isAddedby": 1,
+      "isCancelled": 0,
+      "voucharNo": this._DailyExpensesService.NewExpensesForm.get('VoucharNo').value || '',
+      "expHeadId":this._DailyExpensesService.NewExpensesForm.get('expenseshead').value.ExpHedId || ''
+    }  
+    let submitData={
+      "insert_T_Expense":InserExpensesObj 
+    } 
+    console.log(submitData)
+    this._DailyExpensesService.SaveDailyExpenses(submitData).subscribe(reponse =>{
+      if(reponse){
+        this.toastr.success('Record Saved Successfully.', 'Saved !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        });
+        this.onClose();
+      } else {
+        this.toastr.error('Record Data not saved !, Please check API error..', 'Error !', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
+        this.onClose();
+      }
+    }, error => {
+      this.toastr.error('Record Data not saved !, Please check API error..', 'Error !', {
+        toastClass: 'tostr-tost custom-toast-error',
+      });
+    });  
   }
   onClose(){
     this._matDialog.closeAll();
@@ -138,4 +172,22 @@ export class NewExpensesComponent implements OnInit {
       //this.loginname.nativeElement.focus();
     }
   } 
+  keyPressCharater(event) {
+    const inp = String.fromCharCode(event.keyCode);
+    if (/^[a-zA-Z]*$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
+  keyPressAlphanumeric(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
 }
