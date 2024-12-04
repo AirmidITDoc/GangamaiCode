@@ -129,7 +129,7 @@
                             <form [formGroup]="discSummary" style="border: blue;">
                                 <div fxFlexFill fxLayout="row">
 
-                                    <mat-form-field appearance="outline">
+                                    <!-- <mat-form-field appearance="outline">
                                         <mat-label>Template</mat-label>
                                         <input matAutocompletePosition="below" type="text" placeholder="Select Template"
                                             matInput formControlName="TemplateId" [matAutocomplete]="autotemplate"
@@ -145,6 +145,26 @@
                                             <mat-option *ngFor="let option of filteredOptionstemplate | async"
                                                 [value]="option" style="color: blueviolet;">
                                                 {{TemplateName}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field> -->
+                                    <!-- [readonly]="!discSummary.invalid" -->
+
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Template Name</mat-label>
+                                        <input matAutocompletePosition="below" type="text"  [(ngModel)]="vTemplateId"
+                                            placeholder="Enter Template Name" matInput formControlName="TemplateId"
+                                            [matAutocomplete]="autotemp" >
+                                        <span matSuffix style="display: flex;">
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="discSummary.get('TemplateId').setValue(''); istemplateSelected = false;">close</mat-icon>
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="discSummary.get('TemplateId').setValue(''); istemplateSelected = false;">search</mat-icon>
+                                        </span>
+                                        <mat-autocomplete #autotemp="matAutocomplete" [displayWith]="getOptionTexttemplate">
+                                            <mat-option *ngFor="let option of filteredOptionstemplate | async"
+                                                [value]="option">
+                                                {{option.TemplateName}}
                                             </mat-option>
                                         </mat-autocomplete>
                                     </mat-form-field>

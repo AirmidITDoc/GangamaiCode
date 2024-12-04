@@ -840,7 +840,7 @@ public updateIPDDischargSummaryTemplate(employee)
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_DischargeTemplate",{})
   }
 
-  public gettemplateCombo1(data){
+  public gettemplateCombofrDiscSumm(data){
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_DischargeTemplate1",data)
   }
 
@@ -1171,7 +1171,7 @@ getIpDischargeReceipt(AdmId){
  }
 
  getIpDischargesummaryTempReceipt(AdmissionID){
-  return this._httpClient.get("InPatient/view-DischargSummaryTemplate?AdmissionID=" + AdmissionID)
+  return this._httpClient.get("InPatient/view-NewDischargSummaryTemplate?AdmissionID=" + AdmissionID)
  }
 
 
