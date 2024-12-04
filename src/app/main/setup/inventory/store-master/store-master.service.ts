@@ -62,17 +62,23 @@ export class StoreMasterService {
                 { name: "required", Message: "storeName  is required" },
                 { name: "maxlength", Message: "storeName  should not be greater than 50 char." },
                 { name: "pattern", Message: "Special char not allowed." }
+            ],
+            storeShortName: [
+                { name: "required", Message: "storeShortName  is required" },
+                { name: "maxlength", Message: "storeShortName  should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
             ]
         };
     }
 
     public storeMasterSave(Param: any, showLoader = true) {
-        if (Param.currencyId) {
-            return this._httpClient.PutData("StoreMaster/" + Param.currencyId, Param, showLoader);
-        } else return this._httpClient.PostData("StoreMaster", Param, showLoader);
+        debugger
+        if (Param.storeId) {
+            return this._httpClient.PutData("Store/" + Param.storeId, Param, showLoader);
+        } else return this._httpClient.PostData("Store", Param, showLoader);
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.PostData("StoreMaster", m_data);
+        return this._httpClient.PostData("Store", m_data);
     }
 }
