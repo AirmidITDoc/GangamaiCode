@@ -33,6 +33,10 @@
                             <input name="CompanyName" placeholder="Enter CompanyName" formControlName="CompanyName" matInput
                                 (keydown)="onEnterCompany($event)" #CompanyName required [(ngModel)]="vCompany">
                         </mat-form-field>
+                        <mat-error
+                        *ngIf="subTpaForm.get('CompanyName').invalid && subTpaForm.get('CompanyName').touched">
+                        CompanyName is required Enter only Alphabets
+                        </mat-error>
                     </div>
 
                     <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"> -->
@@ -49,7 +53,10 @@
                             <mat-label>Address</mat-label>
                             <input name="Address" placeholder="EnterAddress" formControlName="Address" matInput
                                 (keydown)="onEnterAddress($event)" #Address required [(ngModel)]="vAddress">
-                            <!-- <mat-error>Please enter Address </mat-error> -->
+                                <mat-error
+                                *ngIf="subTpaForm.get('Address').invalid && subTpaForm.get('Address').touched">
+                                Address is required
+                                </mat-error>
                         </mat-form-field>
                     </div>
 
@@ -67,7 +74,10 @@
                             <mat-label>PinNo</mat-label>
                             <input name="PinNo" placeholder="Enter PinNo" formControlName="PinNo" matInput
                                 (keydown)="onEnterPin($event)" #PinNo required [(ngModel)]="vPinNo" maxlength="6">
-                            <!-- <mat-error>Please enter Address </mat-error> -->
+                                <mat-error
+                                *ngIf="subTpaForm.get('PinNo').invalid && subTpaForm.get('PinNo').touched">
+                                PinNo is required Enter only 6 Digits
+                                </mat-error>
                         </mat-form-field>
                     <!-- </div> -->
 
@@ -104,11 +114,15 @@
                             <mat-label>Fax</mat-label>
                             <input name="FaxNo" placeholder="Select Fax" formControlName="FaxNo" matInput
                                 (keydown)="onEnterfax($event)" #FaxNo maxlength="15" minlength="10" >
+                                <mat-error
+                                *ngIf="subTpaForm.get('PinNo').invalid && subTpaForm.get('PinNo').touched">
+                                FaxNo is required Enter only Digits
+                                </mat-error>
                         </mat-form-field>
                     </div>
 
                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                        <mat-radio-group name="isActive" formControlName="isActive" value='true'>
+                        <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='true'>
                             <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive
                             </mat-radio-button>
                             <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsDeactive

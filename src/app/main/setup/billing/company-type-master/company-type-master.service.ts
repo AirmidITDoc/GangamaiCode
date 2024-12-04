@@ -20,7 +20,12 @@ export class CompanyTypeMasterService {
     createcompanytypeForm(): FormGroup {
         return this._formBuilder.group({
             companyTypeId: [""],
-            typeName: ["", Validators.required],
+            typeName: ["", 
+                [
+                    Validators.required,
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                ]
+            ],
             isActive: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],

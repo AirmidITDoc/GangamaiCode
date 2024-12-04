@@ -29,6 +29,12 @@ export class NewClassComponent implements OnInit {
       this.classForm.patchValue(m_data);
   }
   onSubmit() {
+    if (this.classForm.invalid) {
+      this.toastr.warning('please check from is invalid', 'Warning !', {
+        toastClass:'tostr-tost custom-toast-warning',
+    })
+    return;
+    }else{
       if (this.classForm.valid) {
         debugger
           this._BillingClassMasterService.classMasterSave(this.classForm.value).subscribe((response) => {
@@ -38,6 +44,7 @@ export class NewClassComponent implements OnInit {
               this.toastr.error(error.message);
           });
       }
+    }     
   }
 
   onClear(val: boolean) {

@@ -22,7 +22,12 @@ export class BankMasterService {
     createBankForm(): FormGroup {
         return this._formBuilder.group({
             bankId: [""],
-            bankName: ["", Validators.required, Validators.pattern("^[A-Za-z ]*$")],
+            bankName: ["", 
+                [
+                    Validators.required,
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                ]
+            ],
             isActive: ["true"],
             // AddedBy: ["0"],
             // UpdatedBy: ["0"],

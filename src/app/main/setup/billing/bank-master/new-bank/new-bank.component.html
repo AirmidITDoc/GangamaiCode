@@ -21,12 +21,10 @@
                 <input type="hidden" name="bankId" formControlName="bankId">
 
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <airmid-textbox label="Bank name" formControlName="bankName" [value]="" [formGroup]="bankForm"
-                        [validations]="_BankMasterService.getValidationMessages().bankName" [maxLength]="300">
-                        <mat-error
-                        *ngIf="bankForm.get('bankName').invalid && bankForm.get('bankName').touched">
-                        Bank Name is required Enter only Alphabets
-                    </mat-error>
+                    <airmid-textbox label="Bank name" formControlName="bankName" [value]="" 
+                        [formGroup]="bankForm"
+                        [validations]="_BankMasterService.getValidationMessages().bankName" 
+                        [maxLength]="300">
                     </airmid-textbox>     
                                   
                 </div>

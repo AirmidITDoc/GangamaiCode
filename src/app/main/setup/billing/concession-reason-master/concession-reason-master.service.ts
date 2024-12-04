@@ -21,7 +21,12 @@ export class ConcessionReasonMasterService {
     createConcessionreasonForm(): FormGroup {
         return this._formBuilder.group({
             concessionId: [""],
-            concessionReason: ["", Validators.required],
+            concessionReason: ["", 
+                [
+                    Validators.required,
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                ]
+            ],
             isActive: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],

@@ -23,7 +23,7 @@ export class CompanyMasterService {
             CompanyName: ["",
                 [
                     Validators.required,
-                    Validators.pattern("^[A-Za-z]*$")
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
             CompTypeId: [""],
@@ -82,7 +82,7 @@ export class CompanyMasterService {
             IsCancelledBy: ["", Validators.pattern("[0-9]+")],
             IsCancelledDate: [""],
             AddedByName: [""],
-            isActive: ["true"],
+            IsDeleted: ["true"],
         });
     }
     createSearchForm(): FormGroup {

@@ -30,6 +30,12 @@ export class NewCompanyTypeComponent implements OnInit {
       this.companttypeForm.patchValue(m_data);
   }
   onSubmit() {
+    if (this.companttypeForm.invalid) {
+      this.toastr.warning('please check from is invalid', 'Warning !', {
+        toastClass:'tostr-tost custom-toast-warning',
+    })
+    return;
+    }else{
       if (this.companttypeForm.valid) {
         debugger
           this._CompanyTypeMasterService.companytypeMasterSave(this.companttypeForm.value).subscribe((response) => {
@@ -39,6 +45,7 @@ export class NewCompanyTypeComponent implements OnInit {
               this.toastr.error(error.message);
           });
       }
+    }      
   }
 
   onClear(val: boolean) {
