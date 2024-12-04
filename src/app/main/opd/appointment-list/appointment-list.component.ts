@@ -50,20 +50,23 @@ export class AppointmentListComponent implements OnInit {
           { heading: "visitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA' ,width:170,type:8},
           { heading: "RegId", key: "regId", sort: true, align: 'left', emptySign: 'NA' ,width:30},
           { heading: "PrefixId", key: "prefixId", sort: true, align: 'left', emptySign: 'NA' ,width:30},
-          { heading: "FirstName", key: "firstName", sort: true, align: 'left', emptySign: 'NA' ,width:80 },
-          { heading: "MiddleName", key: "middleName", sort: true, align: 'left', emptySign: 'NA' ,width:80 },
-          { heading: "LastName", key: "lastName", sort: true, align: 'left', emptySign: 'NA' ,width:80 },
-          { heading: "DateofBirth", key: "dateofBirth", sort: true, align: 'left', emptySign: 'NA' ,width:100,type:6},
+          { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA' ,width:200},
+
+          
+        //   { heading: "FirstName", key: "firstName", sort: true, align: 'left', emptySign: 'NA' ,width:80 },
+        //   { heading: "MiddleName", key: "middleName", sort: true, align: 'left', emptySign: 'NA' ,width:80 },
+        //   { heading: "LastName", key: "lastName", sort: true, align: 'left', emptySign: 'NA' ,width:80 },
+        //   { heading: "DateofBirth", key: "dateofBirth", sort: true, align: 'left', emptySign: 'NA' ,width:100,type:6},
           { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA' ,width:200,type:10},
           { heading: "MaritalStatusId", key: "maritalStatusId", sort: true, align: 'left', emptySign: 'NA' ,width:30},
-          { heading: "PatientTypeId", key: "patientTypeId", sort: true, align: 'left', emptySign: 'NA' ,width:30},
+        //   { heading: "PatientTypeId", key: "patientTypeId", sort: true, align: 'left', emptySign: 'NA' ,width:30},
           { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA' ,width:50 },
           { heading: "OpdNo", key: "opdNo", sort: true, align: 'left', emptySign: 'NA' ,width:30},
-          { heading: "TariffId", key: "tariffId", sort: true, align: 'left', emptySign: 'NA' ,width:30},
+        //   { heading: "TariffId", key: "tariffId", sort: true, align: 'left', emptySign: 'NA' ,width:30},
           { heading: "TariffName", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' ,width:80},
           { heading: "DepartmentId", key: "departmentId", sort: true, align: 'left', emptySign: 'NA' ,width:30},
           { heading: "AppPurposeId", key: "appPurposeId", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-          { heading: "CompanyId", key: "companyId", sort: true, align: 'left', emptySign: 'NA' ,width:30 },
+        //   { heading: "CompanyId", key: "companyId", sort: true, align: 'left', emptySign: 'NA' ,width:30 },
           { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA' ,width:100},
          
           {
@@ -100,23 +103,24 @@ export class AppointmentListComponent implements OnInit {
                   },
                   {
                       action: gridActions.delete, callback: (data: any) => {
-                          this.confirmDialogRef = this._matDialog.open(
-                              FuseConfirmDialogComponent,
-                              {
-                                  disableClose: false,
-                              }
-                          );
-                          this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-                          this.confirmDialogRef.afterClosed().subscribe((result) => {
-                              if (result) {
-                                  let that = this;
-                                  this._AppointmentlistService.deactivateTheStatus(data.visitId).subscribe((response: any) => {
-                                      this.toastr.success(response.message);
-                                      that.grid.bindGridData();
-                                  });
-                              }
-                              this.confirmDialogRef = null;
-                          });
+                        //   this.confirmDialogRef = this._matDialog.open(
+                        //       FuseConfirmDialogComponent,
+                        //       {
+                        //           disableClose: false,
+                        //       }
+                        //   );
+                        //   this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to Cancle Appointment?";
+                        //   this.confirmDialogRef.afterClosed().subscribe((result) => {
+                        //       if (result) {
+                        //           let that = this;
+                                //   this._AppointmentlistService.deactivateTheStatus(data.visitId).subscribe((response: any) => {
+                                //       this.toastr.success(response.message);
+                                //       that.grid.bindGridData();
+                                //   });
+                                this.AppointmentCancle(data);
+                        //       }
+                        //       this.confirmDialogRef = null;
+                        //   });
                       }
                   }]
           } //Action 1-view, 2-Edit,3-delete
@@ -128,9 +132,8 @@ export class AppointmentListComponent implements OnInit {
           { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
           { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
           { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
-          // { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
           { fieldName: "From_Dt", fieldValue: "11/11/2023", opType: OperatorComparer.Equals },
-          { fieldName: "To_Dt", fieldValue: "11/01/2024", opType: OperatorComparer.Equals },
+          { fieldName: "To_Dt", fieldValue: "12/04/2024", opType: OperatorComparer.Equals },
           { fieldName: "IsMark", fieldValue: "1", opType: OperatorComparer.Equals },
           { fieldName: "Start", fieldValue: "1", opType: OperatorComparer.Equals },
           { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
@@ -160,7 +163,7 @@ export class AppointmentListComponent implements OnInit {
       }
 
   ngOnInit(): void {
-    
+    this.getVisitList();
   }
   onSave(row: any = null) {
       
@@ -198,7 +201,96 @@ export class AppointmentListComponent implements OnInit {
       });
   }
 
+  fname="%"
+    lname="%"
+    fromdate="11/11/2022"
+    todate="11/11/2024"
+    RegNo="0"
+    DoctorId="0"
+    resultsLength = 0;
+    dataSource = new MatTableDataSource<VisitMaster>();
+  getVisitList() {
+  
+    // this.fname=this.myFilterform.get("FirstName").value
+    // this.lname=this.myFilterform.get("LastName").value
+    // this.fromdate=this.myFilterform.get("startdate").value
+    // this.todate=this.myFilterform.get("enddate").value
+    // this.RegNo=this.myFilterform.get("RegNo").value
+    // this.DoctorId=this.myFilterform.get("DoctorId").value
+    
+        var m_data = {
+          "first": 0,
+          "rows": 25,
+          sortField: "VisitId",
+          sortOrder: 0,
+          filters: [
+            { fieldName: "F_Name", fieldValue: this.fname, opType: OperatorComparer.Contains },
+            { fieldName: "L_Name", fieldValue: this.lname, opType: OperatorComparer.Contains },
+            { fieldName: "Reg_No", fieldValue: this.RegNo, opType: OperatorComparer.Equals },
+            { fieldName: "Doctor_Id", fieldValue: this.DoctorId, opType: OperatorComparer.Equals },
+            { fieldName: "From_Dt", fieldValue: this.fromdate, opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue: this.todate, opType: OperatorComparer.Equals },
+            { fieldName: "IsMark", fieldValue: "1", opType: OperatorComparer.Equals },
+            { fieldName: "Start", fieldValue: "1", opType: OperatorComparer.Equals },
+            { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals },
+    
+          ],
+          "exportType": "JSON"
+    
+        }
+    
+        console.log(m_data);
+        this._AppointmentlistService.getAppointmentList(m_data).subscribe(Visit => {
+          this.dataSource.data = Visit.data as VisitMaster[];
+            console.log(Visit);
+            if (this.dataSource.data.length > 0) {
+                this.Appointdetail(this.dataSource.data);
+                this.resultsLength =this.dataSource.data.length;
+              }
+        
+        },
+          error => {
+    
+          });
+    
 
+          
+      }
+
+
+
+  Vtotalcount = 0;
+  VNewcount = 0;
+  VFollowupcount = 0;
+  VBillcount = 0;
+  VCrossConscount = 0;
+  Appointdetail(data) {
+      this.Vtotalcount = 0;
+      this.VNewcount = 0;
+      this.VFollowupcount = 0;
+      this.VBillcount = 0;
+      this.VCrossConscount = 0;
+      // console.log(data)
+      this.Vtotalcount;
+
+      for (var i = 0; i < data.length; i++) {
+          if (data[i].PatientOldNew == 1) {
+              this.VNewcount = this.VNewcount + 1;
+          }
+          else if (data[i].PatientOldNew == 2) {
+              this.VFollowupcount = this.VFollowupcount + 1;
+          }
+          if (data[i].MPbillNo == 1 || data[i].MPbillNo == 2) {
+              this.VBillcount = this.VBillcount + 1;
+          }
+          if (data[i].CrossConsulFlag == 1) {
+              this.VCrossConscount = this.VCrossConscount + 1;
+          }
+
+          this.Vtotalcount = this.Vtotalcount + 1;
+      }
+
+  }
   EditConsultdr(row){
       
       let that = this;
@@ -300,6 +392,40 @@ export class AppointmentListComponent implements OnInit {
           }
       });
   }
+  AppointmentCancle(contact) {
+    Swal.fire({
+        title: 'Do you want to Cancle Appointment',
+        // showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'OK',
+
+    }).then((flag) => {
+
+
+        if (flag.isConfirmed) {
+            // let appointmentcancle = {};
+            // appointmentcancle['visitId'] = contact.VisitId;
+
+            let submitData = {
+                "visitId":contact.visitId
+
+            };
+            console.log(submitData);
+            this._AppointmentlistService.Appointmentcancle(submitData).subscribe(response => {
+                if (response) {
+                    Swal.fire('Appointment cancelled !', 'Appointment cancelled Successfully!', 'success').then((result) => {
+
+                    });
+                    this.getVisitList();
+                } else {
+                    Swal.fire('Error !', 'Appointment cancelled data not saved', 'error');
+                }
+             
+            });
+        }
+    });
+    this.getVisitList();
+}
 
   
   viewgetPatientAppointmentReportPdf(obj) {
@@ -351,4 +477,46 @@ console.log(data)
       // this.chkprint = false;
 
   }
+
+
+  objICard = {};
+  QrCode = "";
+  printIcard(row) {
+
+      this.objICard = row;
+      this.QrCode = row.RegId.toString();
+      setTimeout(() => {
+          this.OnPrint();
+      }, 100);
+  }
+  OnPrint() {
+
+      const printContents = document.getElementById("i-card").innerHTML;
+      const pageContent = `<!DOCTYPE html><html><head></head><body onload="window.print()">${printContents}</html>`;
+      let popupWindow: Window;
+      if (navigator.userAgent.toLowerCase().indexOf('chrome') > -1) {
+          popupWindow = window.open(
+              '',
+              '_blank',
+              'width=600,height=600,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no'
+          );
+          popupWindow.window.focus();
+          popupWindow.document.write(pageContent);
+          popupWindow.document.close();
+          popupWindow.onbeforeunload = event => {
+              popupWindow.close();
+          };
+          popupWindow.onabort = event => {
+              popupWindow.document.close();
+              popupWindow.close();
+          };
+      } else {
+          popupWindow = window.open('', '_blank', 'width=600,height=600');
+          popupWindow.document.open();
+          popupWindow.document.write(pageContent);
+          popupWindow.document.close();
+      }
+
+  }
+
 }

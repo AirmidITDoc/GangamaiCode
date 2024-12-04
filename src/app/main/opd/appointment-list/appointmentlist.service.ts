@@ -213,10 +213,10 @@ public getAppointmentList(employee) {
 }  
 
 public Appointmentcancle(employee, loader = true) {
-  if (loader) {
-      this._loaderService.show();
-  }
-  return this._httpClient.post("OutPatient/AppointmentCancle", employee);
+  // if (loader) {
+  //     this._loaderService.show();
+  // }
+  return this._httpClient1.PostData("VisitDetail/Cancel", employee);
 }
 }
 
