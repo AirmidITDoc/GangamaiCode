@@ -19,15 +19,15 @@ import { FormGroup } from "@angular/forms";
 })
 export class StoreFormMasterComponent implements OnInit {
     storeForm: FormGroup;
-  constructor(
+
+    constructor(
       public _StoreMasterService: StoreMasterService,
       public dialogRef: MatDialogRef<StoreFormMasterComponent>,
       @Inject(MAT_DIALOG_DATA) public data: any,
       public toastr: ToastrService
-  ) { }
+    ) { }
 
-
-  ngOnInit(): void {
+    ngOnInit(): void {
       this.storeForm = this._StoreMasterService.createStoremasterForm();
       var m_data = {
         storeId: this.data?.storeId,
@@ -35,20 +35,62 @@ export class StoreFormMasterComponent implements OnInit {
           isDeleted: JSON.stringify(this.data?.isActive),
       };
       this.storeForm.patchValue(m_data);
-  }
-  onSubmit() {
-      if (this.storeForm.valid) {
-          this._StoreMasterService.storeMasterSave(this.storeForm.value).subscribe((response) => {
-              this.toastr.success(response.message);
-              this.onClear(true);
-          }, (error) => {
-              this.toastr.error(error.message);
-          });
-      }
+    }
+    
+    onSubmit() {
+    /**
+     * {
+        "storeId": 0,
+        "storeShortName": "string",
+        "storeName": "string"
+        }
+     */
+    /**
+     * 
+            storeId
+            : 
+            0
+            storeName
+            : 
+            "HELLO"
+            storeShortName
+            : 
+            "HELLO"
+            [[Prototype]]
+            : 
+            Object
+     */
+        debugger
+        var m_data =
+        {
+            "storeId": 0,
+            "storeShortName": this.storeForm.get("storeShortName").value,
+            "storeName": this.storeForm.get("storeName").value,    
+        }
+
+        console.log("StoreCategoryMaster Insert:",m_data)
+        
+        this._StoreMasterService.storeMasterSave(m_data).subscribe((response) => {
+        this.toastr.success(response.message);
+        this.onClear(true);
+        }, (error) => {
+        this.toastr.error(error.message);
+        });
+
+
+    //   if (this.storeForm.valid) {
+    //       this._StoreMasterService.storeMasterSave(this.storeForm.value).subscribe((response) => {
+    //           this.toastr.success(response.message);
+    //           this.onClear(true);
+    //       }, (error) => {
+    //           this.toastr.error(error.message);
+    //       });
+    //   }
   }
 
   onClear(val: boolean) {
       this.storeForm.reset();
       this.dialogRef.close(val);
   }
+
 }
