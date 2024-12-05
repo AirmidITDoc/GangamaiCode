@@ -30,7 +30,7 @@ export class DoctortypeMasterComponent implements OnInit {
         apiUrl: "DoctorTypeMaster/List",
         columnsList: [
             { heading: "Code", key: "id", sort: true, align: 'left', emptySign: 'NA', width:200 },
-            { heading: "DoctorType Name", key: "doctorType", sort: true, align: 'left', emptySign: 'NA', width:600},
+            { heading: "DoctorType Name", key: "doctorType", sort: true, align: 'left', emptySign: 'NA', width:580},
             { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width:200 },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:200, actions: [

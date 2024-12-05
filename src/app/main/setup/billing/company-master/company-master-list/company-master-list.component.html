@@ -84,12 +84,13 @@
                     </mat-error>
             </mat-form-field>
 
-
-            <airmid-autocomplete label="City" formControlName="City"
-             [formGroup]="companyForm"
-            [validations]="getValidationCityMessages().City"
-            [mode]="autocompleteModecity" (selectDdlObject)="selectChangecity($event)">
-        </airmid-autocomplete>
+            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                <airmid-autocomplete label="City" formControlName="City"
+                    [formGroup]="companyForm"
+                    [validations]="getValidationCityMessages().City"
+                    [mode]="autocompleteModecity" (selectDdlObject)="selectChangecity($event)">
+                </airmid-autocomplete>
+            </div>
 
             <mat-form-field appearance="outline" fxFlex>
                 <mat-label>Pin Code</mat-label>
@@ -112,6 +113,10 @@
                     required #phone (keydown)="onEnterPhone($event)" [(ngModel)]="vPhone"
                     oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
                     required="required" value="9876658688">
+                    <mat-error class="error"
+                        *ngIf="companyForm.get('PhoneNo').invalid && companyForm.get('PhoneNo').touched">10
+                        digits Phone number is required
+                    </mat-error>
             </mat-form-field>
 
            <mat-form-field appearance="outline" fxFlex>
@@ -120,9 +125,13 @@
                     required #mobile (keydown)="onEntermobile($event)" [(ngModel)]="vMobile"
                     oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
                     required="required" value="9876658688">
+                    <mat-error class="error"
+                        *ngIf="companyForm.get('MobileNo').invalid && companyForm.get('MobileNo').touched">10
+                        digits Mobile number is required
+                    </mat-error>
             </mat-form-field>
 
-            <mat-form-field appearance="outline" fxFlex>
+            <!-- <mat-form-field appearance="outline" fxFlex>
                 <mat-label>Fax Number</mat-label>
                 <input name="FaxNo" formControlName="FaxNo" placeholder="Fax Number" matInput
                 required #fax (keydown)="onEnterfax($event)" maxlength="15" minlength="10" [(ngModel)]="vFax">
@@ -130,15 +139,17 @@
                     *ngIf="companyForm.get('FaxNo').invalid && companyForm.get('FaxNo').touched">
                     FaxNo is required Enter only Digits
                 </mat-error>
-            </mat-form-field>
+            </mat-form-field> -->
 
-            <airmid-autocomplete label="TariffId" formControlName="TariffId"
-                [formGroup]="companyForm"
-                [validations]="getValidationtariffMessages().TariffId"
-                [mode]="autocompleteModetariff"
-                (selectDdlObject)="selectChangetariff($event)">
-            </airmid-autocomplete> 
-            <!-- <span class="error" *ngIf="f.FaxNo.invalid && f.FaxNo.touched">FaxNo is required Enter only Digits</span> -->
+            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                <airmid-autocomplete label="TariffId" formControlName="TariffId"
+                    [formGroup]="companyForm"
+                    [validations]="getValidationtariffMessages().TariffId"
+                    [mode]="autocompleteModetariff"
+                    (selectDdlObject)="selectChangetariff($event)">
+                </airmid-autocomplete> 
+            </div>
+
         </div>
 
         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">

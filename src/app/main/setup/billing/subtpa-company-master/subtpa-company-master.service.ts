@@ -31,8 +31,7 @@ export class SubtpaCompanyMasterService {
             City: [
                 "",
                 [
-                    Validators.required,
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+                    Validators.required
                 ],
             ],
             PinNo: ["", 
