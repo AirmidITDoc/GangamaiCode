@@ -462,7 +462,11 @@ public onEnteraddress(event): void {
     remove(e) {
         this.toggleSelection(e);
     }
-
+    removeDepartment(item){
+        let removedIndex=this.myForm.value.Departmentid.findIndex(x=>x.value==item.value);
+        this.myForm.value.Departmentid.splice(removedIndex,1);
+        this.myForm.controls['Departmentid'].setValue(this.myForm.value.Departmentid);
+    }
 
     private _filterDep(value: any): string[] {
         if (value) {
@@ -576,28 +580,9 @@ public onEnteraddress(event): void {
             if (!this.myForm.get("DoctorId").value) {
                           
                 var data2 = [];
-                // this.selectedItems.forEach((element) => {
-                //     let DocInsertObj = {};
-                //     // DocInsertObj['DepartmentId'] = element.DepartmentId;
-                //         DocInsertObj["docDeptId"]=1,
-                //         DocInsertObj['doctorId'] = this.myForm.get("DoctorId").value ? "0" : this.myForm.get("DoctorId").value || "0";
-                //         DocInsertObj['departmentId'] = this.myForm.get("Departmentid").value ? "0" : this.myForm.get("Departmentid").value || "0";
-                //         data2.push(DocInsertObj);
-                // });
-    
-                // this.selectedItems.forEach((element) => {
-                            let DocInsertObj = {};
-                            // DocInsertObj['DepartmentId'] = element.DepartmentId;
-                            DocInsertObj["docDeptId"]=1
-                            DocInsertObj['departmentId'] = this.departmentId;
-                            DocInsertObj['doctorId'] = !this.myForm.get("DoctorId").value ? "0" : this.myForm.get("DoctorId").value || "0";
-                            data2.push(DocInsertObj);
-                        // });
-                        
-                console.log("Insert data2:",data2);
-    
+                for(let i=0;i<this.myForm.value.Departmentid.length;i++)
+                    data2.push({"doctorId":0,"departmentId":this.myForm.value.Departmentid[i].value});
                 var mdata =
-    
                 {              
                     "doctorId": 0,
                     "prefixId":this.myForm.get("PrefixID").value || "",
@@ -633,9 +618,6 @@ public onEnteraddress(event): void {
                     "aadharCardNo": this.myForm.get("AadharCardNo").value || "0",
                     "mDoctorDepartmentDets": data2
                 }
-                console.log("Insert mdata:",mdata);
-                
-    
                 this._doctorService.doctortMasterInsert(mdata).subscribe((response) => {
                     this.toastr.success(response.message);
                     this.onClear(true);
