@@ -456,7 +456,7 @@ export class ParameterFormMasterComponent implements OnInit {
     //                 parameterID: +this._ParameterService.descform.get("ParaId").value || 0,
     //                 parameterValues: val,
     //                 isDefaultValue: this._ParameterService.descform.get("DefaultValue").value ? true : false,
-    //                 addedby: this.accountService.currentUserValue.user.id,
+    //                 addedby: this.accountService.currentUserValue.userId,
     //                 defaultValue: this._ParameterService.descform.get("DefaultValue").value ? this._ParameterService.descform.get("DefaultValue").value.trim() : "%",
              
     //             };
@@ -469,7 +469,7 @@ export class ParameterFormMasterComponent implements OnInit {
     //             sexId: 0,
     //             minValue: "%",
     //             MaxValue: "%",
-    //             addedby: this.accountService.currentUserValue.user.id || 1,
+    //             addedby: this.accountService.currentUserValue.userId || 1,
     //             ageType: "%",
     //             minAge: 0,
     //             IsDeleted:this.parameterForm.get("IsDeleted").value ||1,
@@ -527,7 +527,7 @@ export class ParameterFormMasterComponent implements OnInit {
     //     }
 
     //     if (!this.parameterForm.get("ParameterID").value) {
-    //         PathParameterMasterInsert['addedby'] = this.accountService.currentUserValue.user.id || 1;
+    //         PathParameterMasterInsert['addedby'] = this.accountService.currentUserValue.userId || 1;
     //         m_data['pathParameterMasterInsert'] = PathParameterMasterInsert;
     //         console.log(m_data);
 
@@ -545,7 +545,7 @@ export class ParameterFormMasterComponent implements OnInit {
     //             } 
     //         });
     //     } else {
-    //         PathParameterMasterInsert['updatedby'] = this.accountService.currentUserValue.user.id || 1;
+    //         PathParameterMasterInsert['updatedby'] = this.accountService.currentUserValue.userId || 1;
     //         m_data['pathParameterMasterUpdate'] = PathParameterMasterInsert;
 
     //         console.log(m_data)

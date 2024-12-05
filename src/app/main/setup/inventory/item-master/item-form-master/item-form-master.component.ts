@@ -468,7 +468,7 @@ export class ItemFormMasterComponent implements OnInit {
            
             // if (this.data) {
                
-            //     this.data.registerObj.StoreId =this._loggedService.currentUserValue.user.storeId;
+            //     this.data.registerObj.StoreId =this._loggedService.currentUserValue.storeId;
             //     const ddValue = this.StorecmbList.filter(c => c.Storeid == this.data.registerObj.StoreId);
             //     this._itemService.myform.get('StoreId').setValue(ddValue[0]);
 
@@ -898,7 +898,7 @@ export class ItemFormMasterComponent implements OnInit {
                         currencyId: currencyId || 0,
                         taxPer: 0,
                         isDeleted: this._itemService.myform.get("IsDeleted").value || 0,
-                        addedBy: this._loggedService.currentUserValue.user.id || 0,
+                        addedBy: this._loggedService.currentUserValue.userId || 0,
                         isBatchRequired: this._itemService.myform.get("IsBatchRequired").value || 0,
                         minQty: this._itemService.myform.get("MinQty").value || 0,
                         maxQty: this._itemService.myform.get("MaxQty").value || 0,
@@ -954,7 +954,7 @@ export class ItemFormMasterComponent implements OnInit {
                 this.Savebtn = true;
                 var data3 = []; 
                 // var data4 = {
-                //     storeId: this._itemService.myform.get("StoreId").value.Storeid,//this._loggedService.currentUserValue.user.storeId,
+                //     storeId: this._itemService.myform.get("StoreId").value.Storeid,//this._loggedService.currentUserValue.storeId,
                 //     itemId: this._itemService.myform.get("ItemID").value || 0,
                 // };
 
@@ -986,7 +986,7 @@ export class ItemFormMasterComponent implements OnInit {
                         taxPer: 0,
                         isBatchRequired: 0,//Boolean(JSON.parse(this._itemService.myform.get("IsBatchRequired").value)),
                         isDeleted:  Boolean(JSON.parse(this._itemService.myform.get("IsDeleted").value)),
-                        upDatedBy: this._loggedService.currentUserValue.user.id || 0,
+                        upDatedBy: this._loggedService.currentUserValue.userId || 0,
                         minQty: this._itemService.myform.get("MinQty").value || "0",
                         maxQty: this._itemService.myform.get("MaxQty").value || "0",
                         reorder: this._itemService.myform.get("ReOrder").value || "0",

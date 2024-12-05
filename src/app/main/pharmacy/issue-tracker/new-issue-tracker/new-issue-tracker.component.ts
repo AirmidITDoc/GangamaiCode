@@ -202,7 +202,7 @@ export class NewIssueTrackerComponent implements OnInit {
       insertIssueTracker['issueStatus'] = this._IssueTracker.userFormGroup.get('IssueStatus').value.Name || '';
       insertIssueTracker['issueRaised'] = this._IssueTracker.userFormGroup.get('IssueRaised').value.Name || '';
       insertIssueTracker['issueAssigned'] = this._IssueTracker.userFormGroup.get('IssueAssigned').value.Name || '';
-      insertIssueTracker['addedby'] = this._loggedService.currentUserValue.user.id || 0;
+      insertIssueTracker['addedby'] = this._loggedService.currentUserValue.userId || 0;
 
 
       let submitData = {
@@ -242,7 +242,7 @@ export class NewIssueTrackerComponent implements OnInit {
       updateIssueTracker['issueStatus'] = this._IssueTracker.userFormGroup.get('IssueStatus').value.Name || '';
       updateIssueTracker['issueRaised'] = this._IssueTracker.userFormGroup.get('IssueRaised').value.Name || '';
       updateIssueTracker['issueAssigned'] = this._IssueTracker.userFormGroup.get('IssueAssigned').value.Name || '';
-      updateIssueTracker['updatedBy'] = this._loggedService.currentUserValue.user.id || 0;
+      updateIssueTracker['updatedBy'] = this._loggedService.currentUserValue.userId || 0;
 
       let submitData = {
         "updateIssueTracker": updateIssueTracker

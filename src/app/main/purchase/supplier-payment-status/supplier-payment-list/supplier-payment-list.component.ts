@@ -79,7 +79,7 @@ export class SupplierPaymentListComponent implements OnInit {
     getSupplierPayStatusList(){
       this.sIsLoading = '';
       var vdata={
-        'ToStoreId': this.accountService.currentUserValue.user.storeId || 0,
+        'ToStoreId': this.accountService.currentUserValue.storeId || 0,
         'From_Dt':this.datePipe.transform(this._SupplierPaymentStatusService.SupplierListForm.get('start').value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',
         'To_Dt':this.datePipe.transform(this._SupplierPaymentStatusService.SupplierListForm.get('end').value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',
         'IsPaymentProcess':this._SupplierPaymentStatusService.SupplierListForm.get('Status').value || 0,

@@ -131,7 +131,7 @@ export class GRNReturnComponent implements OnInit {
   }
   getStoreList() {
     var vdata = {
-      Id: this.accountService.currentUserValue.user.storeId
+      Id: this.accountService.currentUserValue.storeId
     }
     this._GRNReturnService.getLoggedStoreList(vdata).subscribe(data => {
       this.ToStoreList = data; 
@@ -160,7 +160,7 @@ export class GRNReturnComponent implements OnInit {
   getGRNReturnList() {
     this.sIsLoading = 'loading-data';
     var Param = {
-      "ToStoreId": this.accountService.currentUserValue.user.storeId || 0,
+      "ToStoreId": this.accountService.currentUserValue.storeId || 0,
       "From_Dt": this.datePipe.transform(this._GRNReturnService.GRNReturnSearchFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "To_Dt": this.datePipe.transform(this._GRNReturnService.GRNReturnSearchFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "SupplierId": this._GRNReturnService.GRNReturnSearchFrom.get('SupplierId').value.SupplierId || 0,
@@ -200,7 +200,7 @@ onClear() { }
 
     let updateGRNReturnVerifyStatus = {};
     updateGRNReturnVerifyStatus['grnReturnId'] = row.GRNReturnId;
-    updateGRNReturnVerifyStatus['isVerifiedUserId'] = this.accountService.currentUserValue.user.id;
+    updateGRNReturnVerifyStatus['isVerifiedUserId'] = this.accountService.currentUserValue.userId;
 
     let submitObj = {
       "updateGRNReturnVerifyStatus": updateGRNReturnVerifyStatus

@@ -153,8 +153,8 @@ OnAdd(){
     DocNoteTemplateInsertObj['TTime ']= this.dateTimeObj.time;
     DocNoteTemplateInsertObj['DoctorsNotes']= this._NursingStationService.myform.get("DoctorsNotes").value || '',
     
-    DocNoteTemplateInsertObj['doctNoteId'] =1,// this.accountService.currentUserValue.user.id
-    DocNoteTemplateInsertObj['IsAddedBy'] = this.accountService.currentUserValue.user.id
+    DocNoteTemplateInsertObj['doctNoteId'] =1,// this.accountService.currentUserValue.userId
+    DocNoteTemplateInsertObj['IsAddedBy'] = this.accountService.currentUserValue.userId
    
    
     // this.dialogRef.afterClosed().subscribe(result => {

@@ -102,7 +102,7 @@ export class NewMaterialConsumptionComponent implements OnInit {
   }
   gePharStoreList() {
     var vdata = {
-      Id: this.accountService.currentUserValue.user.storeId
+      Id: this.accountService.currentUserValue.storeId
     }
     this._MaterialConsumptionService.getLoggedStoreList(vdata).subscribe(data => {
       this.StoreList = data;
@@ -283,12 +283,12 @@ export class NewMaterialConsumptionComponent implements OnInit {
     materialConsumptionObj['materialConsumptionId'] = 0;
     materialConsumptionObj['consumptionDate'] =  formattedDate;
     materialConsumptionObj['consumptionTime'] = formattedTime;
-    materialConsumptionObj['fromStoreId'] =this._loggedService.currentUserValue.user.storeId;
+    materialConsumptionObj['fromStoreId'] =this._loggedService.currentUserValue.storeId;
     materialConsumptionObj['landedTotalAmount'] = parseInt(this.vLandedTotalAmount) || 0;
     materialConsumptionObj['purchaseTotal'] = parseInt(this.vPurTotalAmount) || 0;
     materialConsumptionObj['mrpTotal'] =parseInt(this.vMRPTotalAmount) || 0;
     materialConsumptionObj['remark'] = this._MaterialConsumptionService.FinalMaterialForm.get('Remark').value;
-    materialConsumptionObj['addedby'] =this.accountService.currentUserValue.user.id || 0;
+    materialConsumptionObj['addedby'] =this.accountService.currentUserValue.userId || 0;
 
     let insertMaterialConsDetail =[];
     this.dsNewmaterialList.data.forEach((element) =>{
@@ -315,7 +315,7 @@ export class NewMaterialConsumptionComponent implements OnInit {
       let updateCurrentStockObj = {};
       updateCurrentStockObj['itemId'] =element.ItemId;
       updateCurrentStockObj['issueQty'] =  element.UsedQty;
-      updateCurrentStockObj['storeID'] =this._loggedService.currentUserValue.user.storeId;
+      updateCurrentStockObj['storeID'] =this._loggedService.currentUserValue.storeId;
       updateCurrentStockObj['stkId'] = element.StockId ;
       updateCurrentStock.push(updateCurrentStockObj);
     })

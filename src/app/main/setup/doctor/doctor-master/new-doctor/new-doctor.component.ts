@@ -537,8 +537,8 @@ public onEnteraddress(event): void {
         //     //     // mahRegDate:this.registerObj.MahRegDate,// this.datePipe.transform(this.registerObj.MahRegDate, 'MM/dd/yyyy') || '01/01/1900',
         //     //     isInHouseDoctor: true,
         //     //     isOnCallDoctor: true,
-        //     //     Addedby: this.accountService.currentUserValue.user.id,
-        //     //     updatedBy: this.accountService.currentUserValue.user.id,
+        //     //     Addedby: this.accountService.currentUserValue.userId,
+        //     //     updatedBy: this.accountService.currentUserValue.userId,
         //     //     Signature: this.signature || '',
         //     //     Departments: data2
         //     // };

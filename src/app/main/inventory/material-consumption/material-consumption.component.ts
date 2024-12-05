@@ -129,7 +129,7 @@ export class MaterialConsumptionComponent implements OnInit {
           getMaterialConList() {
                 this.sIsLoading = 'loading-data';
                 var vdata = {
-                  "ToStoreId":this._loggedService.currentUserValue.user.storeId || 0,
+                  "ToStoreId":this._loggedService.currentUserValue.storeId || 0,
                    "From_Dt":this.datePipe.transform(this._MaterialConsumptionService.SearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
                    "To_Dt":this.datePipe.transform(this._MaterialConsumptionService.SearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
                 }
@@ -211,7 +211,7 @@ export class MaterialConsumptionComponent implements OnInit {
 //   getMaterialConList() {
 //     this.sIsLoading = 'loading-data';
 //     var vdata = {
-//       "ToStoreId":this._loggedService.currentUserValue.user.storeId || 0,
+//       "ToStoreId":this._loggedService.currentUserValue.storeId || 0,
 //        "From_Dt":this.datePipe.transform(this._MaterialConsumptionService.SearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
 //        "To_Dt":this.datePipe.transform(this._MaterialConsumptionService.SearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
 //     }
@@ -229,7 +229,7 @@ export class MaterialConsumptionComponent implements OnInit {
 //   }
 //   gePharStoreList() {
 //     var vdata = {
-//       Id: this._loggedService.currentUserValue.user.storeId
+//       Id: this._loggedService.currentUserValue.storeId
 //     }
 //     this._MaterialConsumptionService.getLoggedStoreList(vdata).subscribe(data => {
 //       this.StoreList = data;

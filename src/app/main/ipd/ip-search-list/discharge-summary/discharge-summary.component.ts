@@ -295,7 +295,7 @@ export class DischargeSummaryComponent implements OnInit {
   getSearchItemList() {   
       var m_data = {
         "ItemName": `${this.MedicineItemForm.get('ItemId').value}%`,
-        "StoreId": this.accountService.currentUserValue.user.storeId
+        "StoreId": this.accountService.currentUserValue.storeId
       }
       //console.log(m_data); 
       this._IpSearchListService.getItemlist(m_data).subscribe(data => {
@@ -587,7 +587,7 @@ OnSave(){
   insertIPDDischargSummaryObj['doctorAssistantName'] = this.DischargesumForm.get("DoctorAssistantName").value || '',
   insertIPDDischargSummaryObj['claimNumber'] =   this.DischargesumForm.get("ClaimNumber").value || 0,
   insertIPDDischargSummaryObj['preOthNumber'] =   this.DischargesumForm.get("PreOthNumber").value || 0,
-  insertIPDDischargSummaryObj['addedBy'] = this.accountService.currentUserValue.user.id,
+  insertIPDDischargSummaryObj['addedBy'] = this.accountService.currentUserValue.userId,
   insertIPDDischargSummaryObj['icD10CODE'] =  ''
   insertIPDDischargSummaryObj['otherConDrOpinions'] = this.DischargesumForm.get("OtherConDrOpinions").value || '',
   insertIPDDischargSummaryObj['conditionAtTheTimeOfDischarge'] = this.DischargesumForm.get("ConditionAtTheTimeOfDischarge").value || '',
@@ -614,8 +614,8 @@ OnSave(){
     insertIPPrescriptionDischargeObj['instruction'] = 0;
     insertIPPrescriptionDischargeObj['remark'] = 0;
     insertIPPrescriptionDischargeObj['isEnglishOrIsMarathi'] = 0;
-    insertIPPrescriptionDischargeObj['storeId'] = this.accountService.currentUserValue.user.storeId || 0;
-    insertIPPrescriptionDischargeObj['createdBy'] = this.accountService.currentUserValue.user.id,
+    insertIPPrescriptionDischargeObj['storeId'] = this.accountService.currentUserValue.storeId || 0;
+    insertIPPrescriptionDischargeObj['createdBy'] = this.accountService.currentUserValue.userId,
     insertIPPrescriptionDischarge.push(insertIPPrescriptionDischargeObj);
   });
   let SubmitData={
@@ -663,7 +663,7 @@ OnSave(){
   updateIPDDischargSummaryObj['doctorAssistantName'] = this.DischargesumForm.get("DoctorAssistantName").value || '',
   updateIPDDischargSummaryObj['claimNumber'] =  this.DischargesumForm.get("ClaimNumber").value || 0,
   updateIPDDischargSummaryObj['preOthNumber'] =   this.DischargesumForm.get("PreOthNumber").value || 0,
-  updateIPDDischargSummaryObj['updatedBy'] = this.accountService.currentUserValue.user.id,
+  updateIPDDischargSummaryObj['updatedBy'] = this.accountService.currentUserValue.userId,
   updateIPDDischargSummaryObj['icD10CODE'] =  ''
   updateIPDDischargSummaryObj['otherConDrOpinions'] = this.DischargesumForm.get("OtherConDrOpinions").value || '',
   updateIPDDischargSummaryObj['conditionAtTheTimeOfDischarge'] = this.DischargesumForm.get("ConditionAtTheTimeOfDischarge").value || '', 
@@ -692,8 +692,8 @@ OnSave(){
     insertIPPrescriptionDischargeObj['instruction'] = 0 ;
     insertIPPrescriptionDischargeObj['remark'] =0;
     insertIPPrescriptionDischargeObj['isEnglishOrIsMarathi'] = 0;
-    insertIPPrescriptionDischargeObj['storeId'] = this.accountService.currentUserValue.user.storeId || 0;
-    insertIPPrescriptionDischargeObj['createdBy'] = this.accountService.currentUserValue.user.id,
+    insertIPPrescriptionDischargeObj['storeId'] = this.accountService.currentUserValue.storeId || 0;
+    insertIPPrescriptionDischargeObj['createdBy'] = this.accountService.currentUserValue.userId,
     insertIPPrescriptionDischarge.push(insertIPPrescriptionDischargeObj);
   });
 

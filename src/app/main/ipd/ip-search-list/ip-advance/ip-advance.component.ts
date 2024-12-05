@@ -232,7 +232,7 @@ vAdvanceDetId:any;
       advanceHeaderObj['AdvanceAmount'] = this.advanceAmount;
       advanceHeaderObj['AdvanceUsedAmount'] = 0;
       advanceHeaderObj['BalanceAmount'] = this.advanceAmount;
-      advanceHeaderObj['AddedBy'] = this.accountService.currentUserValue.user.id;
+      advanceHeaderObj['AddedBy'] = this.accountService.currentUserValue.userId;
       advanceHeaderObj['IsCancelled'] = false;
       advanceHeaderObj['IsCancelledBy'] = '0';
       advanceHeaderObj['IsCancelledDate'] = '01/01/1900';
@@ -251,7 +251,7 @@ vAdvanceDetId:any;
       AdvanceDetObj['BalanceAmount'] = this.advanceAmount;
       AdvanceDetObj['RefundAmount'] = 0;
       AdvanceDetObj['ReasonOfAdvanceId'] = 0;
-      AdvanceDetObj['AddedBy'] = this.accountService.currentUserValue.user.id;
+      AdvanceDetObj['AddedBy'] = this.accountService.currentUserValue.userId;
       AdvanceDetObj['IsCancelled'] = false;
       AdvanceDetObj['IsCancelledBy'] = 0;
       AdvanceDetObj['IsCancelledDate'] = '01/01/1900';
@@ -344,7 +344,7 @@ vAdvanceDetId:any;
       //   Paymentobj['RefundId'] = 0;
       //   Paymentobj['TransactionType'] = 0;
       //   Paymentobj['Remark'] = "Cashpayment";
-      //   Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
+      //   Paymentobj['AddBy'] = this.accountService.currentUserValue.userId,
       //     Paymentobj['IsCancelled'] = 0;
       //   Paymentobj['IsCancelledBy'] = 0;
       //   Paymentobj['IsCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
@@ -402,7 +402,7 @@ vAdvanceDetId:any;
       AdvanceDetObj['BalanceAmount'] = this.advanceAmount;
       AdvanceDetObj['RefundAmount'] = 0;
       AdvanceDetObj['ReasonOfAdvanceId'] = 0;
-      AdvanceDetObj['AddedBy'] = this.accountService.currentUserValue.user.id;
+      AdvanceDetObj['AddedBy'] = this.accountService.currentUserValue.userId;
       AdvanceDetObj['IsCancelled'] = false;
       AdvanceDetObj['IsCancelledBy'] = 0;
       AdvanceDetObj['IsCancelledDate'] = '01/01/1900';
@@ -502,7 +502,7 @@ vAdvanceDetId:any;
       //   Paymentobj['RefundId'] = 0;
       //   Paymentobj['TransactionType'] = 0;
       //   Paymentobj['Remark'] = "Cashpayment";
-      //   Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
+      //   Paymentobj['AddBy'] = this.accountService.currentUserValue.userId,
       //     Paymentobj['IsCancelled'] = 0;
       //   Paymentobj['IsCancelledBy'] = 0;
       //   Paymentobj['IsCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',

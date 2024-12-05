@@ -302,7 +302,7 @@
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <airmid-autocomplete label="City" formControlName="CityId"
                                                         [formGroup]="personalFormGroup"  [value]="data?.cityId"
-                                                        [validations]="getValidationCityMessages().cityId"
+                                                        [validations]="getValidationCityMessages().CityId"
                                                         [mode]="autocompleteModecity"
                                                         (selectDdlObject)="selectChangecity($event)">
                                                     </airmid-autocomplete>
@@ -311,7 +311,7 @@
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <airmid-autocomplete label="State" formControlName="StateId"
                                                         [formGroup]="personalFormGroup"  [value]="data?.stateId"
-                                                        [validations]="getValidationStateMessages().stateId"
+                                                        [validations]="getValidationStateMessages().StateId"
                                                         [mode]="autocompleteModestate"
                                                         (selectDdlObject)="selectChangestate($event)">
                                                     </airmid-autocomplete>
@@ -465,7 +465,7 @@
                                                 <!-- [value]="TrariffId" -->
                                                  <airmid-autocomplete label="TariffId" formControlName="TariffId"
                                                     [formGroup]="VisitFormGroup"    [value]="data?.tariffId"
-                                                    [validations]="getValidationTariffMessages().TariffId"
+                                                    [validations]="getValidationTariffMessages().tariffId"
                                                     [mode]="autocompleteModetariff"
                                                     (selectDdlObject)="selectChangetariff($event)">
                                                 </airmid-autocomplete> 

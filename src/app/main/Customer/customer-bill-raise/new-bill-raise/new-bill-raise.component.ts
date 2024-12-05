@@ -152,7 +152,7 @@ if ((this.vAmount == '' || this.vAmount == null || this.vAmount == undefined)) {
   customerInvoiceRaiseInsert['customerId'] = this._CustomerBill.myform.get('CustomerId').value.CustomerId ||  0;
   customerInvoiceRaiseInsert['amount'] = this._CustomerBill.myform.get('Amount').value || 0;
   customerInvoiceRaiseInsert['invoiceRaisedId'] = 0;
-  customerInvoiceRaiseInsert['createdBy'] = this._loggedService.currentUserValue.user.id || 0;
+  customerInvoiceRaiseInsert['createdBy'] = this._loggedService.currentUserValue.userId || 0;
 
 
   let submitData = {
@@ -186,9 +186,9 @@ if ((this.vAmount == '' || this.vAmount == null || this.vAmount == undefined)) {
   customerInvoiceRaiseUpdate['invDate'] = this.datePipe.transform(this._CustomerBill.myform.get('InvoiceDate').value, 'MM/dd/YYYY');
   customerInvoiceRaiseUpdate['customerId'] = this._CustomerBill.myform.get('CustomerId').value.CustomerId ||  0;
   customerInvoiceRaiseUpdate['amount'] = this._CustomerBill.myform.get('Amount').value || 0;
-  customerInvoiceRaiseUpdate['createdBy'] = this._loggedService.currentUserValue.user.id || 0;
+  customerInvoiceRaiseUpdate['createdBy'] = this._loggedService.currentUserValue.userId || 0;
   customerInvoiceRaiseUpdate['createdOn'] = this.datePipe.transform(this._CustomerBill.myform.get('InvoiceDate').value, 'MM/dd/YYYY');
-  customerInvoiceRaiseUpdate['modifiedBy'] =this._loggedService.currentUserValue.user.id || 0;
+  customerInvoiceRaiseUpdate['modifiedBy'] =this._loggedService.currentUserValue.userId || 0;
   customerInvoiceRaiseUpdate['modifiedOn'] =  this.datePipe.transform(this._CustomerBill.myform.get('InvoiceDate').value, 'MM/dd/YYYY');
   customerInvoiceRaiseUpdate['invoiceRaisedId'] = 0;
 

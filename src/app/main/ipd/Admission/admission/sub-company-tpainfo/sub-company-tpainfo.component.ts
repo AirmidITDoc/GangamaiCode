@@ -207,7 +207,7 @@ export class SubCompanyTPAInfoComponent implements OnInit {
        "MobileNo": this.SubcompanyFormGroup.get("MobileNo").value || '',
       "FaxNo": this.SubcompanyFormGroup.get("FaxNo").value || 0,
       "IsActive": this.SubcompanyFormGroup.get("IsActive").value || 'true',
-      "AddedBy": this.accountService.currentUserValue.user.id,
+      "AddedBy": this.accountService.currentUserValue.userId,
       "IsCancelled":0,
       "IsCancelledBy":0,
       "IsCancelledDate":this.dateTimeObj.date
@@ -245,7 +245,7 @@ else{
        "MobileNo": this.SubcompanyFormGroup.get("MobileNo").value || '',
       "FaxNo": this.SubcompanyFormGroup.get("FaxNo").value || 0,
       "IsActive":  this.SubcompanyFormGroup.get("IsActive").value || '',
-      "UpdatedBy": this.accountService.currentUserValue.user.id,
+      "UpdatedBy": this.accountService.currentUserValue.userId,
       "IsCancelled":0,
       "IsCancelledBy":0,
       "IsCancelledDate":this.dateTimeObj.date

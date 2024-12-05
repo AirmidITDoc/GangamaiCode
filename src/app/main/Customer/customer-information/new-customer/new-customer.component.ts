@@ -121,7 +121,7 @@ if ((this.vMobileNo == '' || this.vMobileNo == null || this.vMobileNo == undefin
       customerInformationInsertObj['contactPersonMobileNo'] = this._CustomerInfo.myform.get('PersonMobileNo').value || 0;
       customerInformationInsertObj['installationDate'] = this._CustomerInfo.myform.get('InstallationDate').value;
       customerInformationInsertObj['amcDate'] = this._CustomerInfo.myform.get('InstallationDate').value;
-      customerInformationInsertObj['createdBy'] = this._loggedService.currentUserValue.user.id || 0;
+      customerInformationInsertObj['createdBy'] = this._loggedService.currentUserValue.userId || 0;
 
 
       let submitData = {
@@ -161,9 +161,9 @@ if ((this.vMobileNo == '' || this.vMobileNo == null || this.vMobileNo == undefin
         customerInformationUpdate['contactPersonMobileNo'] = this._CustomerInfo.myform.get('PersonMobileNo').value || 0;
         customerInformationUpdate['installationDate'] = this._CustomerInfo.myform.get('InstallationDate').value;
         customerInformationUpdate['amcDate'] = this._CustomerInfo.myform.get('InstallationDate').value;
-        customerInformationUpdate['createdBy'] = this._loggedService.currentUserValue.user.id || 0;
+        customerInformationUpdate['createdBy'] = this._loggedService.currentUserValue.userId || 0;
         customerInformationUpdate['createdDatetime'] = this._CustomerInfo.myform.get('InstallationDate').value;
-        customerInformationUpdate['modifiedBy'] = this._loggedService.currentUserValue.user.id || 0;
+        customerInformationUpdate['modifiedBy'] = this._loggedService.currentUserValue.userId || 0;
         customerInformationUpdate['modifieddatetime'] = this._CustomerInfo.myform.get('InstallationDate').value;
   
   

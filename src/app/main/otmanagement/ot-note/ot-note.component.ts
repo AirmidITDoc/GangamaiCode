@@ -563,7 +563,7 @@ export class OTNoteComponent implements OnInit {
             "anesthType": this._OtManagementService.otreservationFormGroup.get('AnesthType').value || '',
             "instruction": this._OtManagementService.otreservationFormGroup.get('Instruction').value || '',
             // "PatientName": this.PatientName || '',
-            "isAddedBy": this.accountService.currentUserValue.user.id || 0,
+            "isAddedBy": this.accountService.currentUserValue.userId || 0,
             "unBooking": false,// Boolean(JSON.parse(this.personalFormGroup.get("IsCharity").value)) || "0",
             // "isNormalOrFuture": 0
 
@@ -606,7 +606,7 @@ export class OTNoteComponent implements OnInit {
             "anesthType": this._OtManagementService.otreservationFormGroup.get('AnesthType').value || '',
             "instruction": this._OtManagementService.otreservationFormGroup.get('Instruction').value || '',
             // "PatientName": this.PatientName || '',
-            "IsUpdatedBy": this.accountService.currentUserValue.user.id || 0,
+            "IsUpdatedBy": this.accountService.currentUserValue.userId || 0,
             "unBooking": false,// Boolean(JSON.parse(this.personalFormGroup.get("IsCharity").value)) || "0",
             
 

@@ -283,7 +283,7 @@ export class InPatientIssueComponent implements OnInit {
   }
   gePharStoreList() {
     var vdata = {
-      Id: this._loggedService.currentUserValue.user.storeId
+      Id: this._loggedService.currentUserValue.storeId
     }
     this._InPatientIssueService.getLoggedStoreList(vdata).subscribe(data => {
       this.Store1List = data;
@@ -424,7 +424,7 @@ export class InPatientIssueComponent implements OnInit {
   getPharItemList() {
     var m_data = {
       "ItemName": `${this._InPatientIssueService.IndentSearchGroup.get('ItemId').value}%`,
-      "StoreId": this._loggedService.currentUserValue.user.storeId || 0
+      "StoreId": this._loggedService.currentUserValue.storeId || 0
     }
     if (this._InPatientIssueService.IndentSearchGroup.get('ItemId').value.length >= 1) {
       this._InPatientIssueService.getItemList(m_data).subscribe(data => {
@@ -682,7 +682,7 @@ export class InPatientIssueComponent implements OnInit {
     if (contact.Qty != 0 && contact.Qty != null) {
       // console.log(contact.Qty);
       this.BalChkList = [];
-      this.StoreId = this._loggedService.currentUserValue.user.storeId
+      this.StoreId = this._loggedService.currentUserValue.storeId
 
       // let SelectQuery = "select isnull(BalanceQty,0) as BalanceQty from lvwCurrentBalQtyCheck where StoreId = " + this.StoreId + " AND ItemId = " + contact.ItemId + " AND  BatchNo='" + contact.BatchNo + "' AND  StockId=" + contact.StockId + ""
       let SelectQuery = "select isnull(BalanceQty,0) as BalanceQty from lvwCurrentBalQtyCheck where StoreId = " + this.StoreId + " AND ItemId = " + contact.ItemId + ""
@@ -874,7 +874,7 @@ export class InPatientIssueComponent implements OnInit {
     SalesInsert['isSellted'] = 0;
     SalesInsert['isPrint'] = 0;
     SalesInsert['unitID'] = 1;
-    SalesInsert['addedBy'] = this._loggedService.currentUserValue.user.id,
+    SalesInsert['addedBy'] = this._loggedService.currentUserValue.userId,
       SalesInsert['externalPatientName'] = this.PatientName || '';
     SalesInsert['doctorName'] = this.DoctorName || '';
     SalesInsert['storeId'] = this._InPatientIssueService.IndentSearchGroup.get('StoreId').value.storeid;
@@ -1020,7 +1020,7 @@ export class InPatientIssueComponent implements OnInit {
     SalesInsert['isPrint'] = 0;
     SalesInsert['isFree'] = 0;
     SalesInsert['unitID'] = 1;
-    SalesInsert['addedBy'] = this._loggedService.currentUserValue.user.id,
+    SalesInsert['addedBy'] = this._loggedService.currentUserValue.userId,
     SalesInsert['externalPatientName'] = this.PatientName || '';
     SalesInsert['doctorName'] = this.DoctorName || '';
     SalesInsert['storeId'] = this._InPatientIssueService.IndentSearchGroup.get('StoreId').value.storeid;
@@ -1081,7 +1081,7 @@ export class InPatientIssueComponent implements OnInit {
       let updateCurStkSales = {};
       updateCurStkSales['itemId'] = element.ItemId;
       updateCurStkSales['issueQty'] = element.Qty;
-      updateCurStkSales['storeID'] = this._loggedService.currentUserValue.user.storeId,
+      updateCurStkSales['storeID'] = this._loggedService.currentUserValue.storeId,
         updateCurStkSales['stkID'] = element.StockId;
       updateCurStkSalestarr.push(updateCurStkSales);
     });
@@ -1117,7 +1117,7 @@ export class InPatientIssueComponent implements OnInit {
     PaymentInsertobj['RefundId'] = 0;
     PaymentInsertobj['TransactionType'] = 4;
     PaymentInsertobj['Remark'] = '',
-    PaymentInsertobj['AddBy'] = this._loggedService.currentUserValue.user.id,
+    PaymentInsertobj['AddBy'] = this._loggedService.currentUserValue.userId,
     PaymentInsertobj['IsCancelled'] = 0;
     PaymentInsertobj['IsCancelledBy'] = 0;
     PaymentInsertobj['IsCancelledDate'] = '01/01/1900',
@@ -1250,7 +1250,7 @@ export class InPatientIssueComponent implements OnInit {
           SalesInsert['isPrint'] = 0;
           SalesInsert['isFree'] = 0;
           SalesInsert['unitID'] = 1;
-          SalesInsert['addedBy'] = this._loggedService.currentUserValue.user.id,
+          SalesInsert['addedBy'] = this._loggedService.currentUserValue.userId,
           SalesInsert['externalPatientName'] = this.PatientName || '';
           SalesInsert['doctorName'] = this.DoctorName || '';
           SalesInsert['storeId'] = this._InPatientIssueService.IndentSearchGroup.get('StoreId').value.storeid;
@@ -1309,7 +1309,7 @@ export class InPatientIssueComponent implements OnInit {
             let updateCurStkSales = {};
             updateCurStkSales['itemId'] = element.ItemId;
             updateCurStkSales['issueQty'] = element.Qty;
-            updateCurStkSales['storeID'] = this._loggedService.currentUserValue.user.storeId,
+            updateCurStkSales['storeID'] = this._loggedService.currentUserValue.storeId,
             updateCurStkSales['stkID'] = element.StockId;
             updateCurStkSalestarr.push(updateCurStkSales);
           });
@@ -1414,10 +1414,10 @@ export class InPatientIssueComponent implements OnInit {
     salesInsertCredit['isPrint'] = 0;
     salesInsertCredit['isFree'] = 0;
     salesInsertCredit['unitID'] = 1;
-    salesInsertCredit['addedBy'] = this._loggedService.currentUserValue.user.id,
+    salesInsertCredit['addedBy'] = this._loggedService.currentUserValue.userId,
     salesInsertCredit['externalPatientName'] = this.PatientName;
     salesInsertCredit['doctorName'] = "";
-    salesInsertCredit['storeId'] = this._loggedService.currentUserValue.user.storeId,
+    salesInsertCredit['storeId'] = this._loggedService.currentUserValue.storeId,
     salesInsertCredit['isPrescription'] = this.IPMedID || 0;
     salesInsertCredit['creditReason'] = '';
     salesInsertCredit['creditReasonID'] = 0;
@@ -1473,7 +1473,7 @@ export class InPatientIssueComponent implements OnInit {
       let updateCurStkSalesCredit = {};
       updateCurStkSalesCredit['itemId'] = element.ItemId;
       updateCurStkSalesCredit['issueQty'] = element.Qty;
-      updateCurStkSalesCredit['storeID'] = this._loggedService.currentUserValue.user.storeId,
+      updateCurStkSalesCredit['storeID'] = this._loggedService.currentUserValue.storeId,
         updateCurStkSalesCredit['stkID'] = element.StockId;
 
       updateCurStkSalesCreditarray.push(updateCurStkSalesCredit);
@@ -1659,7 +1659,7 @@ export class InPatientIssueComponent implements OnInit {
 
     var m_data = {
       "ItemId": contact.ItemId,
-      "StoreId": this._loggedService.currentUserValue.user.storeId || 0
+      "StoreId": this._loggedService.currentUserValue.storeId || 0
     }
     this._InPatientIssueService.getDraftBillItem(m_data).subscribe(draftdata => {
        console.log(draftdata)
@@ -1732,7 +1732,7 @@ export class InPatientIssueComponent implements OnInit {
   barcodeItemfetch() {
     var d = {
       "StockId": this._InPatientIssueService.IndentSearchGroup.get("Barcode").value || 0,
-      "StoreId": this._loggedService.currentUserValue.user.storeId || 0
+      "StoreId": this._loggedService.currentUserValue.storeId || 0
     }
     this._InPatientIssueService.getCurrentStockItem(d).subscribe(data => {
       this.tempDatasource.data = data as any;
@@ -1954,7 +1954,7 @@ export class InPatientIssueComponent implements OnInit {
         this.dsItemNameList1.data.forEach((contact) => {
           var m_data = {
             "ItemId": contact.ItemId,
-            "StoreId": this._loggedService.currentUserValue.user.storeId || 0
+            "StoreId": this._loggedService.currentUserValue.storeId || 0
           }
           this._InPatientIssueService.getDraftBillItem(m_data).subscribe(draftdata => {
             //console.log(draftdata)

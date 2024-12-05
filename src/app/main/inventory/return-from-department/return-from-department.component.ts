@@ -97,7 +97,7 @@ export class ReturnFromDepartmentComponent implements OnInit {
   getReturnToDepartmentList() {
     this.sIsLoading = 'loading-data';
     var vdata = {
-      "FromStoreId":this._loggedService.currentUserValue.user.storeId || 0,
+      "FromStoreId":this._loggedService.currentUserValue.storeId || 0,
       "ToStoreId": this._ReturnToDepartmentList.ReturnSearchGroup.get('ToStoreId').value.StoreId || 0,
       "From_Dt":this.datePipe.transform(this._ReturnToDepartmentList.ReturnSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "To_Dt": this.datePipe.transform(this._ReturnToDepartmentList.ReturnSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
@@ -143,7 +143,7 @@ export class ReturnFromDepartmentComponent implements OnInit {
 
   gePharStoreList() {
     var vdata = {
-      Id: this._loggedService.currentUserValue.user.storeId
+      Id: this._loggedService.currentUserValue.storeId
     }
     this._ReturnToDepartmentList.getLoggedStoreList(vdata).subscribe(data => {
       this.StoreList = data;

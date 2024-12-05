@@ -36,14 +36,14 @@ export class ChangePasswordComponent implements OnInit {
     public _matDialog: MatDialog,
     private formBuilder: FormBuilder,) {
     dialogRef.disableClose = true;
-    this.UserId= this.accountService.currentUserValue.user.id;
+    this.UserId= this.accountService.currentUserValue.userId;
   }
 
   ngOnInit(): void {
     this.changePasswordFormGroup = this.createchangePasswordForm();
-    this.fname = this.accountService.currentUserValue.user.firstName;
-    this.lname = this.accountService.currentUserValue.user.lastName;
-    this.Uname = this.accountService.currentUserValue.user.userName;
+    // this.fname = this.accountService.currentUserValue.user.firstName;
+    // this.lname = this.accountService.currentUserValue.user.lastName;
+    this.Uname = this.accountService.currentUserValue.userName;
   }
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
@@ -77,7 +77,7 @@ export class ChangePasswordComponent implements OnInit {
 
   changepassword() {
     let pass = this.changePasswordFormGroup.get('password').value;
-    let id = this.accountService.currentUserValue.user.id;
+    let id = this.accountService.currentUserValue.userId;
 
     // let UpdateUserPassword = "update LoginManager set Password ='" + pass + "' where UserId=" + id 
     let changePasswordObj = {};

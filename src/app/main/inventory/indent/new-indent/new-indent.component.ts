@@ -87,7 +87,7 @@ registerObj:any;
   }
   getFromStoreSearchList() {
     var data = {
-      "Id": this._loggedService.currentUserValue.user.storeId
+      "Id": this._loggedService.currentUserValue.storeId
     }
     this._IndentService.getFromStoreNameSearch(data).subscribe(data => {
       this.FromStoreList = data;
@@ -227,9 +227,9 @@ registerObj:any;
       let InsertIndentObj = {};
       InsertIndentObj['indentDate'] = formattedDate;
       InsertIndentObj['indentTime'] = formattedTime;
-      InsertIndentObj['fromStoreId'] = this._loggedService.currentUserValue.user.storeId;
+      InsertIndentObj['fromStoreId'] = this._loggedService.currentUserValue.storeId;
       InsertIndentObj['toStoreId'] = this._IndentService.newIndentFrom.get('ToStoreId').value.StoreId;
-      InsertIndentObj['addedby'] = this._loggedService.currentUserValue.user.id;
+      InsertIndentObj['addedby'] = this._loggedService.currentUserValue.userId;
       InsertIndentObj['comments'] = '';
 
       let InsertIndentDetObj = [];
@@ -273,7 +273,7 @@ registerObj:any;
       debugger
       let updateIndent = {};
       updateIndent['indentId'] = this.vIndentId;
-      updateIndent['fromStoreId'] = this._loggedService.currentUserValue.user.storeId;
+      updateIndent['fromStoreId'] = this._loggedService.currentUserValue.storeId;
       updateIndent['toStoreId'] = this._IndentService.newIndentFrom.get('ToStoreId').value.StoreId;
 
       let insertIndentDetail = [];

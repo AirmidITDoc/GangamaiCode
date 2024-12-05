@@ -76,7 +76,7 @@ export class BatchAndExpDateAdjustmentComponent implements OnInit {
   }
   gePharStoreList() {
     var vdata = {
-      Id: this._loggedService.currentUserValue.user.storeId
+      Id: this._loggedService.currentUserValue.storeId
     }
     this._BatchAndExpDateService.getLoggedStoreList(vdata).subscribe(data => {
       this.StoreList = data;

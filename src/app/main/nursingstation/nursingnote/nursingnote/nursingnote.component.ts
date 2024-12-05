@@ -226,7 +226,7 @@ export class NursingnoteComponent implements OnInit {
     nursingTemplateInsert['nursTempName'] = this._NursingStationService.myform.get("TemplateDesc").value || '',
     nursingTemplateInsert['IsDeleted']= 0,
     nursingTemplateInsert['TemplateDesc']= this._NursingStationService.myform.get("TemplateDesc").value || '',
-    nursingTemplateInsert['AddedBy'] = this.accountService.currentUserValue.user.id
+    nursingTemplateInsert['AddedBy'] = this.accountService.currentUserValue.userId
    
    
     // this.dialogRef.afterClosed().subscribe(result => {

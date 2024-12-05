@@ -110,7 +110,7 @@ export class PharmItemSummaryComponent implements OnInit {
   }
  gePharStoreList() {
     var vdata = {
-      Id: this.accountService.currentUserValue.user.storeId
+      Id: this.accountService.currentUserValue.storeId
     }
     this._PharmaitemsummaryService.getLoggedStoreList(vdata).subscribe(data => {
       this.Store1List = data;
@@ -128,7 +128,7 @@ export class PharmItemSummaryComponent implements OnInit {
   geItemWithbatchexpList() {
     var vdata = {
       "NonMovingDay": this._PharmaitemsummaryService.SearchGroup.get("NonMovingDay").value || 0,
-      "StoreId" : this.accountService.currentUserValue.user.storeId || this._PharmaitemsummaryService.SearchGroup.get("StoreId").value.StoreId
+      "StoreId" : this.accountService.currentUserValue.storeId || this._PharmaitemsummaryService.SearchGroup.get("StoreId").value.StoreId
     }
    this._PharmaitemsummaryService.getItemBatchexpwiseList(vdata).subscribe(data => {
       this.dsNonMovItemWithexpdate.data = data as Itemmovment[];
@@ -146,7 +146,7 @@ export class PharmItemSummaryComponent implements OnInit {
     this.sIsLoading = 'loading-data';
     var vdata = {
       "NonMovingDay": this._PharmaitemsummaryService.SearchGroup.get("NonMovingDay").value,
-      "StoreId": this.accountService.currentUserValue.user.storeId || this._PharmaitemsummaryService.SearchGroup.get("StoreId").value.StoreId
+      "StoreId": this.accountService.currentUserValue.storeId || this._PharmaitemsummaryService.SearchGroup.get("StoreId").value.StoreId
     }
       this._PharmaitemsummaryService.getItemWithoutBatchexpwiseList(vdata).subscribe(data => {
       this.dsNonMovItemWithoutexpdate.data = data as Itemmovment[];
@@ -168,7 +168,7 @@ export class PharmItemSummaryComponent implements OnInit {
     var vdata = {
      "ExpMonth":this.chosenMonth || 0,
      "ExpYear": this.chosenYear  || 'YYYY',     
-     "StoreID": this.accountService.currentUserValue.user.storeId || 0        
+     "StoreID": this.accountService.currentUserValue.storeId || 0        
     } 
     console.log(vdata)
     setTimeout(() => {
@@ -224,7 +224,7 @@ export class PharmItemSummaryComponent implements OnInit {
   // viewgetDaywisestockReportPdf() {
   //   this.sIsLoading == 'loading-data'
   //   // let LedgerDate =  this.datePipe.transform(this._PharmaitemsummaryService.userFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
-  //   // let StoreId =this.accountService.currentUserValue.user.storeId || this._PharmaitemsummaryService.userFormGroup.get("StoreId").value.StoreId || 0
+  //   // let StoreId =this.accountService.currentUserValue.storeId || this._PharmaitemsummaryService.userFormGroup.get("StoreId").value.StoreId || 0
   //   setTimeout(() => {
   //     this.SpinLoading =true;
   //   //  this.AdList=true;
@@ -254,7 +254,7 @@ export class PharmItemSummaryComponent implements OnInit {
   // viewgetCurrentstockReportPdf() {
   //   this.sIsLoading == 'loading-data'
   //   let ItemName = this._PharmaitemsummaryService.SearchGroup.get("ItemCategory").value + '%' || "%"
-  //   let StoreId = this.accountService.currentUserValue.user.storeId || this._PharmaitemsummaryService.SearchGroup.get("StoreId").value.StoreId || 0
+  //   let StoreId = this.accountService.currentUserValue.storeId || this._PharmaitemsummaryService.SearchGroup.get("StoreId").value.StoreId || 0
   //   setTimeout(() => {
   //     this.SpinLoading =true;
   //  this._PharmaitemsummaryService.getCurrentstockview(
@@ -285,7 +285,7 @@ export class PharmItemSummaryComponent implements OnInit {
 // let Expyear =  parseInt(this._PharmaitemsummaryService.userFormGroup.get("ExpYear").value) || 0
 // let ExpMonth =  parseInt(this._PharmaitemsummaryService.userFormGroup.get("ExpMonth").value) || 0
 
-// let ToStoreId = this.accountService.currentUserValue.user.storeId || parseInt(this._PharmaitemsummaryService.userFormGroup.get("StoreId").value.StoreId) || 0
+// let ToStoreId = this.accountService.currentUserValue.storeId || parseInt(this._PharmaitemsummaryService.userFormGroup.get("StoreId").value.StoreId) || 0
 
 //     this.sIsLoading == 'loading-data'
 
@@ -316,7 +316,7 @@ debugger
   let Expyear =  parseInt(this._PharmaitemsummaryService.userFormGroup.get("ExpYear").value) || 0
   let ExpMonth =  parseInt(this._PharmaitemsummaryService.userFormGroup.get("ExpMonth").value) || 0
   
-  let ToStoreId = this.accountService.currentUserValue.user.storeId || parseInt(this._PharmaitemsummaryService.userFormGroup.get("StoreId").value.StoreId) || 0
+  let ToStoreId = this.accountService.currentUserValue.storeId || parseInt(this._PharmaitemsummaryService.userFormGroup.get("StoreId").value.StoreId) || 0
   
   setTimeout(() => {
     // this.SpinLoading =true;
@@ -352,7 +352,7 @@ VNonMovdaysflag:boolean=true
 viewgetNonMovingReportPdf() {
     debugger
 
-let FromStoreId = this.accountService.currentUserValue.user.storeId || this._PharmaitemsummaryService.userFormGroup.get("StoreId").value.StoreId || 0
+let FromStoreId = this.accountService.currentUserValue.storeId || this._PharmaitemsummaryService.userFormGroup.get("StoreId").value.StoreId || 0
 
 let NonMDays = parseInt(this._PharmaitemsummaryService.SearchGroup.get("NonMovingDay").value) || 0
 

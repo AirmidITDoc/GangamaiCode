@@ -552,7 +552,7 @@ export class CompanyBillComponent implements OnInit {
           "docAmt": 0,
           "hospitalAmt": this.FAmount,// this.vServiceNetAmount,
           "isGenerated": 0,
-          "addedBy": this.accountService.currentUserValue.user.id,
+          "addedBy": this.accountService.currentUserValue.userId,
           "isCancelled": 0,
           "isCancelledBy": 0,
           "isCancelledDate": "01/01/1900",
@@ -943,7 +943,7 @@ export class CompanyBillComponent implements OnInit {
         "docAmt": 0,
         "hospitalAmt": 0, 
         "isGenerated": 0,
-        "addedBy": this.accountService.currentUserValue.user.id,
+        "addedBy": this.accountService.currentUserValue.userId,
         "isCancelled": 0,
         "isCancelledBy": 0,
         "isCancelledDate": "01/01/1900",
@@ -1486,7 +1486,7 @@ export class CompanyBillComponent implements OnInit {
         if (flag.isConfirmed) {
           let Chargescancle = {};
           Chargescancle['ChargesId'] = contact.ChargesId;
-          Chargescancle['userId'] = this.accountService.currentUserValue.user.id;
+          Chargescancle['userId'] = this.accountService.currentUserValue.userId;
   
           let submitData = {
             "deleteCharges": Chargescancle
@@ -1577,7 +1577,7 @@ export class CompanyBillComponent implements OnInit {
         InsertDraftBillOb['BalanceAmt'] = this.Ipbillform.get('FinalAmount').value || 0;
         InsertDraftBillOb['BillDate'] = this.dateTimeObj.date;
         InsertDraftBillOb['OPD_IPD_Type'] = 1;
-        InsertDraftBillOb['AddedBy'] = this.accountService.currentUserValue.user.id,
+        InsertDraftBillOb['AddedBy'] = this.accountService.currentUserValue.userId,
         InsertDraftBillOb['TotalAdvanceAmount'] = 0;
         InsertDraftBillOb['BillTime'] = this.dateTimeObj.time;
         InsertDraftBillOb['ConcessionReasonId'] = this.Ipbillform.get('ConcessionId').value.ConcessionId || 0

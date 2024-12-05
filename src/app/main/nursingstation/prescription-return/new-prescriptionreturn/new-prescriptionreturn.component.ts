@@ -109,7 +109,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
   getSearchItemList() {  
       var m_data = {
         "ItemName": `${this.ItemSubform.get('ItemId').value}%`,
-        "StoreId": this._loggedService.currentUserValue.user.storeId
+        "StoreId": this._loggedService.currentUserValue.storeId
       }
       console.log(m_data);
       // if (this.ItemForm.get('ItemId').value.length >= 2) {
@@ -339,11 +339,11 @@ export class NewPrescriptionreturnComponent implements OnInit {
     // debugger
     ipPrescriptionReturnH['presDate'] = this.datePipe.transform((new Date), 'dd/MM/yyyy');//this.dateTimeObj.date;
     ipPrescriptionReturnH['presTime'] = this.datePipe.transform((new Date), 'dd/MM/yyyy h:mm a');
-    ipPrescriptionReturnH['toStoreId'] = this._loggedService.currentUserValue.user.storeId;
+    ipPrescriptionReturnH['toStoreId'] = this._loggedService.currentUserValue.storeId;
     ipPrescriptionReturnH['admissionId'] = this.OP_IP_Id || 1;
     ipPrescriptionReturnH['oP_IP_Id'] = this.RegId ||1;
     ipPrescriptionReturnH['oP_IP_Type'] = 1;
-    ipPrescriptionReturnH['addedby'] = this._loggedService.currentUserValue.user.id;
+    ipPrescriptionReturnH['addedby'] = this._loggedService.currentUserValue.userId;
     ipPrescriptionReturnH['isdeleted'] = 0;
     ipPrescriptionReturnH['isclosed'] = 1;
     ipPrescriptionReturnH['presReId'] = 0;

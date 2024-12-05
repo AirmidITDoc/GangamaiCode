@@ -132,8 +132,8 @@ export class NewPhoneAppointmentComponent implements OnInit {
       "phAppTime": this.dateTimeObj.time,// this.datePipe.transform(this.phoneappForm.get('phAppTime').value, "yyyy-MM-dd 00:00:00.000"),
       "departmentId": this.vDepartmentid,
       "doctorId": this.vDoctorId,
-      "addedBy": 1,// this.accountService.currentUserValue.user.id,
-      "updatedBy": 1,// this.accountService.currentUserValue.user.id,
+      "addedBy": 1,// this.accountService.currentUserValue.userId,
+      "updatedBy": 1,// this.accountService.currentUserValue.userId,
 
     }
     console.log(m_data);

@@ -1203,8 +1203,8 @@ export class AdmissionNewComponent implements OnInit {
       regInsert['genderID'] = this.personalFormGroup.get('GenderId').value.GenderId;
       regInsert['phoneNo'] = this.registerObj.PhoneNo || '';
       regInsert['mobileNo'] = this.registerObj.MobileNo || '';
-      regInsert['addedBy'] = this.accountService.currentUserValue.user.id;
-      regInsert['UpdatedBy'] = 0,// this.accountService.currentUserValue.user.id;
+      regInsert['addedBy'] = this.accountService.currentUserValue.userId;
+      regInsert['UpdatedBy'] = 0,// this.accountService.currentUserValue.userId;
         regInsert['ageYear'] = this.registerObj.AgeYear || '';
       regInsert['ageMonth'] = this.registerObj.AgeMonth || '';
       regInsert['ageDay'] = this.registerObj.AgeDay || '';
@@ -1249,7 +1249,7 @@ export class AdmissionNewComponent implements OnInit {
       admissionNewInsert['phoneNo'] = this.personalFormGroup.get('PhoneNo').value ? this.personalFormGroup.get('PhoneNo').value : '';
       admissionNewInsert['mobileNo'] = this.otherFormGroup.get('RelatvieMobileNo').value ? this.personalFormGroup.get('MobileNo').value : '';
       admissionNewInsert['relationshipId'] = this.otherFormGroup.get('RelationshipId').value.RelationshipId ? this.otherFormGroup.get('RelationshipId').value.RelationshipId : 0;
-      admissionNewInsert['addedBy'] = this.accountService.currentUserValue.user.id;
+      admissionNewInsert['addedBy'] = this.accountService.currentUserValue.userId;
 
       admissionNewInsert['isMLC'] = false;
       admissionNewInsert['motherName'] = '';
@@ -1333,7 +1333,7 @@ export class AdmissionNewComponent implements OnInit {
       admissionInsert['phoneNo'] = this.personalFormGroup.get('PhoneNo').value ? this.personalFormGroup.get('PhoneNo').value : '';
       admissionInsert['mobileNo'] = this.otherFormGroup.get('RelatvieMobileNo').value ? this.personalFormGroup.get('MobileNo').value : '';
       admissionInsert['relationshipId'] = this.otherFormGroup.get('RelationshipId').value.RelationshipId ? this.otherFormGroup.get('RelationshipId').value.RelationshipId : 0;
-      admissionInsert['addedBy'] = this.accountService.currentUserValue.user.id;
+      admissionInsert['addedBy'] = this.accountService.currentUserValue.userId;
 
       admissionInsert['isMLC'] = false;
       admissionInsert['motherName'] = '';

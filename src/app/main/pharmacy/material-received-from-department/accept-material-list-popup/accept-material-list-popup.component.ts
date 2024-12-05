@@ -150,7 +150,7 @@ export class AcceptMaterialListPopupComponent implements OnInit {
    
     let materialAcceptIssueHeader = {};
     materialAcceptIssueHeader['issueId'] = parseInt(this.registerObj.IssueId);
-    materialAcceptIssueHeader['acceptedBy'] =this._loggedService.currentUserValue.user.id;
+    materialAcceptIssueHeader['acceptedBy'] =this._loggedService.currentUserValue.userId;
     materialAcceptIssueHeader['IsAccepted'] = this.Acceptedchk;
 
     

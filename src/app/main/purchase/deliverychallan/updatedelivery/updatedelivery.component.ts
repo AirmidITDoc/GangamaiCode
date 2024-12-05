@@ -306,7 +306,7 @@ export class UpdatedeliveryComponent implements OnInit {
   gePharStoreList() {
 
     var vdata = {
-      Id: this.accountService.currentUserValue.user.storeId
+      Id: this.accountService.currentUserValue.storeId
     }
     this._DeliveryService.getLoggedStoreList(vdata).subscribe(data => {
       this.StoreList = data;
@@ -1152,7 +1152,7 @@ export class UpdatedeliveryComponent implements OnInit {
     let grnSaveObj = {};
     grnSaveObj['grnDate'] = this.dateTimeObj.date;
     grnSaveObj['grnTime'] = this.dateTimeObj.time;
-    grnSaveObj['storeId'] = this.accountService.currentUserValue.user.storeId;
+    grnSaveObj['storeId'] = this.accountService.currentUserValue.storeId;
     grnSaveObj['supplierID'] = this._DeliveryService.userFormGroup.get('SupplierId').value.SupplierId || this.SupplierId;
     grnSaveObj['invoiceNo'] = this._DeliveryService.userFormGroup.get('InvoiceNo').value || 0;
     grnSaveObj['deliveryNo'] = 0;
@@ -1167,7 +1167,7 @@ export class UpdatedeliveryComponent implements OnInit {
     grnSaveObj['receivedBy'] = this._DeliveryService.DeliveryFinalForm.get('ReceivedBy').value || '';
     grnSaveObj['isVerified'] = false;
     grnSaveObj['isClosed'] = false;
-    grnSaveObj['addedBy'] = this.accountService.currentUserValue.user.id || 0;
+    grnSaveObj['addedBy'] = this.accountService.currentUserValue.userId || 0;
     grnSaveObj['invDate'] = this._DeliveryService.userFormGroup.get('DateOfInvoice').value.DateOfInvoice || '01/01/1900';
     grnSaveObj['debitNote'] = this._DeliveryService.DeliveryFinalForm.get('DebitAmount').value || 0;
     grnSaveObj['creditNote'] = this._DeliveryService.DeliveryFinalForm.get('CreditAmount').value || 0;
@@ -1316,7 +1316,7 @@ export class UpdatedeliveryComponent implements OnInit {
     let grnSaveObj = {};
     grnSaveObj['grnDate'] = this.dateTimeObj.date;
     grnSaveObj['grnTime'] = this.dateTimeObj.time;
-    grnSaveObj['storeId'] = this.accountService.currentUserValue.user.storeId;
+    grnSaveObj['storeId'] = this.accountService.currentUserValue.storeId;
     grnSaveObj['supplierID'] = this._DeliveryService.userFormGroup.get('SupplierId').value.SupplierId || this.SupplierId;
     grnSaveObj['invoiceNo'] = this._DeliveryService.userFormGroup.get('InvoiceNo').value || 0;
     grnSaveObj['deliveryNo'] = 0;
@@ -1331,7 +1331,7 @@ export class UpdatedeliveryComponent implements OnInit {
     grnSaveObj['receivedBy'] = this._DeliveryService.DeliveryFinalForm.get('ReceivedBy').value || '';
     grnSaveObj['isVerified'] = false;
     grnSaveObj['isClosed'] = false;
-    grnSaveObj['addedBy'] = this.accountService.currentUserValue.user.id || 0;
+    grnSaveObj['addedBy'] = this.accountService.currentUserValue.userId || 0;
     grnSaveObj['invDate'] = this._DeliveryService.userFormGroup.get('DateOfInvoice').value.DateOfInvoice || '01/01/1900';
     grnSaveObj['debitNote'] = this._DeliveryService.DeliveryFinalForm.get('DebitAmount').value || 0;
     grnSaveObj['creditNote'] = this._DeliveryService.DeliveryFinalForm.get('CreditAmount').value || 0;
@@ -1485,7 +1485,7 @@ export class UpdatedeliveryComponent implements OnInit {
     let grnSaveObj = {};
     grnSaveObj['grnDate'] = this.dateTimeObj.date;
     grnSaveObj['grnTime'] = this.dateTimeObj.time;
-    grnSaveObj['storeId'] = this.accountService.currentUserValue.user.storeId;
+    grnSaveObj['storeId'] = this.accountService.currentUserValue.storeId;
     grnSaveObj['supplierID'] = this._DeliveryService.userFormGroup.get('SupplierId').value.SupplierId || this.SupplierId;
     grnSaveObj['invoiceNo'] = this._DeliveryService.userFormGroup.get('InvoiceNo').value || 0;
     grnSaveObj['deliveryNo'] = 0;
@@ -1500,7 +1500,7 @@ export class UpdatedeliveryComponent implements OnInit {
     grnSaveObj['receivedBy'] = this._DeliveryService.DeliveryFinalForm.get('ReceivedBy').value || '';
     grnSaveObj['isVerified'] = false;
     grnSaveObj['isClosed'] = false;
-    grnSaveObj['addedBy'] = this.accountService.currentUserValue.user.id || 0;
+    grnSaveObj['addedBy'] = this.accountService.currentUserValue.userId || 0;
     grnSaveObj['invDate'] = this.datePipe.transform(this._DeliveryService.userFormGroup.get('DateOfInvoice').value, "yyyy-MM-dd");
     grnSaveObj['debitNote'] = this._DeliveryService.DeliveryFinalForm.get('DebitAmount').value || 0;
     grnSaveObj['creditNote'] = this._DeliveryService.DeliveryFinalForm.get('CreditAmount').value || 0;
@@ -1629,7 +1629,7 @@ export class UpdatedeliveryComponent implements OnInit {
     updateGRNHeaderObj['grnid'] = this.registerObj.GRNID;
     updateGRNHeaderObj['grnDate'] = this.dateTimeObj.date;
     updateGRNHeaderObj['grnTime'] = this.dateTimeObj.time;
-    updateGRNHeaderObj['storeId'] = this.accountService.currentUserValue.user.storeId || 0;
+    updateGRNHeaderObj['storeId'] = this.accountService.currentUserValue.storeId || 0;
     updateGRNHeaderObj['supplierID'] = this._DeliveryService.userFormGroup.get('SupplierId').value.SupplierId || 0;
     updateGRNHeaderObj['invoiceNo'] = this._DeliveryService.userFormGroup.get('InvoiceNo').value || 0;
     updateGRNHeaderObj['deliveryNo'] = 0;
@@ -1642,7 +1642,7 @@ export class UpdatedeliveryComponent implements OnInit {
     updateGRNHeaderObj['netAmount'] = this._DeliveryService.DeliveryFinalForm.get('NetPayamt').value || 0;
     updateGRNHeaderObj['remark'] = this._DeliveryService.DeliveryFinalForm.get('Remark').value || '';
     updateGRNHeaderObj['receivedBy'] = this._DeliveryService.DeliveryFinalForm.get('ReceivedBy').value || '';
-    updateGRNHeaderObj['updatedBy'] = this.accountService.currentUserValue.user.id,
+    updateGRNHeaderObj['updatedBy'] = this.accountService.currentUserValue.userId,
       updateGRNHeaderObj['invDate'] = this.dateTimeObj.date;
     updateGRNHeaderObj['debitNote'] = this._DeliveryService.DeliveryFinalForm.get('DebitAmount').value || 0;
     updateGRNHeaderObj['creditNote'] = this._DeliveryService.DeliveryFinalForm.get('CreditAmount').value || 0;
@@ -2134,7 +2134,7 @@ export class UpdatedeliveryComponent implements OnInit {
   }
   msg:any;
   checkInvoice(){
-    let Query = "select InvoiceNo from T_GRNHeader Where SupplierId="+this.vcheckSupplierId + "and StoreId=" + this.accountService.currentUserValue.user.storeId;
+    let Query = "select InvoiceNo from T_GRNHeader Where SupplierId="+this.vcheckSupplierId + "and StoreId=" + this.accountService.currentUserValue.storeId;
     console.log(Query)
     this._DeliveryService.getCheckInvoiceNo(Query).subscribe(data =>{
       this.msg = data

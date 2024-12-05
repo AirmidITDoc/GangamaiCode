@@ -90,7 +90,7 @@ chargelist:any=[];
     let insert_TemplateHObj = {};
     insert_TemplateHObj['presId'] = 0;
     insert_TemplateHObj['presTemplateName'] = this.TemplateForm.get('TemplateName').value || '';
-    insert_TemplateHObj['isAddBy'] =  this._loggedService.currentUserValue.user.id;
+    insert_TemplateHObj['isAddBy'] =  this._loggedService.currentUserValue.userId;
     insert_TemplateHObj['isDeleted'] = 0;
     insert_TemplateHObj['oP_IP_Type'] =  0;
 

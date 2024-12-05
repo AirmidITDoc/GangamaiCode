@@ -262,7 +262,7 @@ export class ItemMovemnentComponent implements OnInit {
 //       }
 //   gePharStoreList() {
 //     var vdata = {
-//       Id: this._loggedService.currentUserValue.user.storeId
+//       Id: this._loggedService.currentUserValue.storeId
 //     }
 //     // console.log(vdata);
 //     this._ItemMovemnentService.getLoggedStoreList(vdata).subscribe(data => {

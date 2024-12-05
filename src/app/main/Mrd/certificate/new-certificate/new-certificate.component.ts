@@ -349,7 +349,7 @@ export class NewCertificateComponent implements OnInit {
             "responsiblePersonName": this.createMrdcertificate.get('ResponsiblePersonName').value || '',
             "smcNo": this.createMrdcertificate.get('SMCNo').value || '',
             "diagnsis": this.createMrdcertificate.get('Diagnsis').value || '',
-            "addedBy": this.accountService.currentUserValue.user.id
+            "addedBy": this.accountService.currentUserValue.userId
 
 
           }

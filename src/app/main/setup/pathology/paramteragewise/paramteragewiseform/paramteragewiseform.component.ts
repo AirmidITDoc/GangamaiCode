@@ -253,7 +253,7 @@ insertParameterMasterRangeWise["addedby"]=0
                             this._ParameterageService.myIsNumericform
                                 .get("MaxValue")
                                 .value || "%",
-                     addedby:  this.accountService.currentUserValue.user.id ,
+                     addedby:  this.accountService.currentUserValue.userId ,
                     },
                     
                 };
@@ -293,7 +293,7 @@ insertParameterMasterRangeWise["addedby"]=0
                                 .get("MaxValue")
                                 .value.trim() || "%",
                         isDeleted: 0, // Boolean(JSON.parse(this._ParameterageService.myform.get("IsDeleted").value)),
-                        addedby:  this.accountService.currentUserValue.user.id ,
+                        addedby:  this.accountService.currentUserValue.userId ,
                     },
                    
                 };
@@ -329,7 +329,7 @@ insertParameterMasterRangeWise["addedby"]=0
     //         insertParameterMasterAgeWise['sexId'] = element.GenderName;//this._ParameterageService.myIsNumericform.get('SexID').value.GenderName;
     //         insertParameterMasterAgeWise['minValue'] = element.MinValue;//this._ParameterageService.myIsNumericform.get("MinValue").value;
     //         insertParameterMasterAgeWise['maxvalue'] = element.Maxvalue;//this._ParameterageService.myIsNumericform.get("Maxvalue").value;
-    //         insertParameterMasterAgeWise['addedby'] = this.accountService.currentUserValue.user.id;
+    //         insertParameterMasterAgeWise['addedby'] = this.accountService.currentUserValue.userId;
     //         insertParameterMasterAgeWiseObj.push(insertParameterMasterAgeWise);
     //     });
     //     let submitData = {
@@ -365,7 +365,7 @@ insertParameterMasterRangeWise["addedby"]=0
     //         updateParameterMasterAgeWise['sexId'] = element.GenderName;//this._ParameterageService.myIsNumericform.get('SexID').value.GenderName;
     //         updateParameterMasterAgeWise['minValue'] = element.MinValue;//this._ParameterageService.myIsNumericform.get("MinValue").value;
     //         updateParameterMasterAgeWise['maxvalue'] = element.Maxvalue;//this._ParameterageService.myIsNumericform.get("Maxvalue").value;
-    //         updateParameterMasterAgeWise['addedby'] = this.accountService.currentUserValue.user.id;
+    //         updateParameterMasterAgeWise['addedby'] = this.accountService.currentUserValue.userId;
     //         updateParameterMasterAgeWiseObj.push(updateParameterMasterAgeWise);
     //     });
     //     let submitData = {
@@ -406,7 +406,7 @@ insertParameterMasterRangeWise["addedby"]=0
     //                         .value.GenderId,
     //                     minValue: this._ParameterageService.myIsNumericform.get("MinValue").value,
     //                     maxValue: this._ParameterageService.myIsNumericform.get("Maxvalue").value,
-    //                     addedBy: this.accountService.currentUserValue.user.id,
+    //                     addedBy: this.accountService.currentUserValue.userId,
     //                 },
     //             };
     //             console.log(m_data);
@@ -631,7 +631,7 @@ insertParameterMasterRangeWise["addedby"]=0
                         parameterID: +this._ParameterageService.myIsDescriptiveform.get("ParaId").value || 0,
                         parameterValues: val,
                         isDefaultValue: this._ParameterageService.myIsDescriptiveform.get("DefaultValue").value?true:false,
-                        addedby: this.accountService.currentUserValue.user.id,
+                        addedby: this.accountService.currentUserValue.userId,
                         defaultValue:this._ParameterageService.myIsDescriptiveform.get("DefaultValue").value ? this._ParameterageService.myIsDescriptiveform.get("DefaultValue").value.trim() : "%",
                     };
                     data2.push(data);
@@ -643,7 +643,7 @@ insertParameterMasterRangeWise["addedby"]=0
                     sexId: 0,
                     minValue: "%",
                     MaxValue: "%",
-                    addedby: this.accountService.currentUserValue.user.id ||1,
+                    addedby: this.accountService.currentUserValue.userId ||1,
                     ageType: "%",
                     minAge: 0,
                     maxAge: 0
@@ -684,7 +684,7 @@ insertParameterMasterRangeWise["addedby"]=0
             }   
             
             if (!this._ParameterageService.myform.get("ParameterID").value) {
-                PathParameterMasterInsert['addedby'] = this.accountService.currentUserValue.user.id || 1;
+                PathParameterMasterInsert['addedby'] = this.accountService.currentUserValue.userId || 1;
                m_data['pathParameterMasterInsert'] = PathParameterMasterInsert;
                console.log(m_data);
                 
@@ -712,7 +712,7 @@ insertParameterMasterRangeWise["addedby"]=0
                 });
             });    
             }else{
-                PathParameterMasterInsert['updatedby'] = this.accountService.currentUserValue.user.id || 1;
+                PathParameterMasterInsert['updatedby'] = this.accountService.currentUserValue.userId || 1;
                 m_data['pathParameterMasterUpdate'] = PathParameterMasterInsert;
 
                 

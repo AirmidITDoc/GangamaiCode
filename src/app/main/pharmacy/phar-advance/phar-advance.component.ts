@@ -89,7 +89,7 @@ export class PharAdvanceComponent implements OnInit {
       "L_Name": this._PharAdvanceService.SearchGroupForm.get("L_Name").value + '%' || "%",
       "Reg_No": this._PharAdvanceService.SearchGroupForm.get("RegNo").value ||  0,
       "PBillNo": this._PharAdvanceService.SearchGroupForm.get("AdvanceNo").value || '0',
-      "StoreId":  this._loggedService.currentUserValue.user.storeId || 0
+      "StoreId":  this._loggedService.currentUserValue.storeId || 0
     }
     console.log(Param)
     this._PharAdvanceService.getIPAdvanceList(Param).subscribe(data => {
@@ -114,7 +114,7 @@ export class PharAdvanceComponent implements OnInit {
       "F_Name": this._PharAdvanceService.SearchRefundForm.get("F_Name").value + '%' || "%",
       "L_Name": this._PharAdvanceService.SearchRefundForm.get("L_Name").value + '%' || "%",
       "Reg_No": this._PharAdvanceService.SearchRefundForm.get("RegNo").value ||  0,
-      "StoreId":  this._loggedService.currentUserValue.user.storeId || 0
+      "StoreId":  this._loggedService.currentUserValue.storeId || 0
     }
     console.log(Param)
     this._PharAdvanceService.getIPAdvanceRefList(Param).subscribe(data => {

@@ -407,7 +407,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
     IPRefundofAdvanceObj['RefundAmount'] = this.NewRefundAmount;
     IPRefundofAdvanceObj['Remark'] = this.RefundOfAdvanceFormGroup.get("Remark").value;
     IPRefundofAdvanceObj['TransactionId'] = 2;
-    IPRefundofAdvanceObj['AddedBy'] = this.accountService.currentUserValue.user.id,
+    IPRefundofAdvanceObj['AddedBy'] = this.accountService.currentUserValue.userId,
       IPRefundofAdvanceObj['IsCancelled'] = false;
     IPRefundofAdvanceObj['IsCancelledBy'] = 0;
     IPRefundofAdvanceObj['IsCancelledDate'] = '01/01/1900';

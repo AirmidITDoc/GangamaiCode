@@ -1065,7 +1065,7 @@ export class PatientAppointmentComponent implements OnInit {
       registrationSave['genderID'] = this.personalFormGroup.get('GenderId').value.GenderId;
       registrationSave['phoneNo'] = this.personalFormGroup.get('PhoneNo').value || 0;
       registrationSave['mobileNo'] = this.registerObj.MobileNo;
-      registrationSave['addedBy'] = this.accountService.currentUserValue.user.id;
+      registrationSave['addedBy'] = this.accountService.currentUserValue.userId;
     // registrationSave['RegNo'] = 0;//this.registerObj.RegId;
       registrationSave['ageYear'] = this.registerObj.AgeYear;
       registrationSave['ageMonth'] = this.registerObj.AgeMonth;
@@ -1095,7 +1095,7 @@ export class PatientAppointmentComponent implements OnInit {
 
       visitSave['TariffId'] = this.VisitFormGroup.get('TariffId').value.TariffId ? this.VisitFormGroup.get('TariffId').value.TariffId : 0;
       visitSave['CompanyId'] = this.VisitFormGroup.get('CompanyId').value.CompanyId ? this.VisitFormGroup.get('CompanyId').value.CompanyId : 0;
-      visitSave['AddedBy'] = this.accountService.currentUserValue.user.id;
+      visitSave['AddedBy'] = this.accountService.currentUserValue.userId;
       visitSave['updatedBy'] = 0,//this.VisitFormGroup.get('RelationshipId').value.RelationshipId ? this.VisitFormGroup.get('RelationshipId').value.RelationshipId : 0;
       visitSave['IsCancelled'] = 0;
       visitSave['IsCancelledBy'] = 0;
@@ -1158,7 +1158,7 @@ export class PatientAppointmentComponent implements OnInit {
       registrationUpdate['genderID'] = this.personalFormGroup.get('GenderId').value.GenderId;
       registrationUpdate['phoneNo'] = this.personalFormGroup.get('PhoneNo').value || 0;
       registrationUpdate['mobileNo'] = this.registerObj.MobileNo;
-      registrationUpdate['updatedBy'] = this.accountService.currentUserValue.user.id;
+      registrationUpdate['updatedBy'] = this.accountService.currentUserValue.userId;
       registrationUpdate['ageYear'] = this.registerObj.AgeYear;
       registrationUpdate['ageMonth'] = this.registerObj.AgeMonth;
       registrationUpdate['ageDay'] = this.registerObj.AgeDay;
@@ -1182,7 +1182,7 @@ export class PatientAppointmentComponent implements OnInit {
 
       visitUpdate['TariffId'] = this.VisitFormGroup.get('TariffId').value.TariffId ? this.VisitFormGroup.get('TariffId').value.TariffId : 0;
       visitUpdate['CompanyId'] = this.VisitFormGroup.get('CompanyId').value.CompanyId ? this.VisitFormGroup.get('CompanyId').value.CompanyId : 0;
-      visitUpdate['AddedBy'] = this.accountService.currentUserValue.user.id;
+      visitUpdate['AddedBy'] = this.accountService.currentUserValue.userId;
       visitUpdate['updatedBy'] = 0,//this.VisitFormGroup.get('RelationshipId').value.RelationshipId ? this.VisitFormGroup.get('RelationshipId').value.RelationshipId : 0;
       visitUpdate['IsCancelled'] = 0;
       visitUpdate['IsCancelledBy'] = 0;

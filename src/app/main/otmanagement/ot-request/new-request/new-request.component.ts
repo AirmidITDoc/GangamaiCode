@@ -640,7 +640,7 @@ export class NewRequestComponent implements OnInit {
             "DepartmentId": this._OtManagementService.otreservationFormGroup.get('DepartmentId').value.Departmentid || 0,
             "CategoryId": this._OtManagementService.otreservationFormGroup.get('SurgeryCategoryId').value.SurgeryCategoryId || 0,
             "AddedDateTime": this.dateTimeObj.date,
-            "AddedBy ": this.accountService.currentUserValue.user.id || 0,
+            "AddedBy ": this.accountService.currentUserValue.userId || 0,
             "IsCancelled": 0,//this.personalFormGroup.get('IsCancelled ').value || '',
             "SiteDescId": this._OtManagementService.otreservationFormGroup.get('SiteDescId').value.SiteDescId || 0
 
@@ -680,7 +680,7 @@ export class NewRequestComponent implements OnInit {
             "CategoryId ": this._OtManagementService.otreservationFormGroup.get('SurgeryCategoryId').value.SurgeryCategoryId || 0,
 
             "AddedDateTime ": this.dateTimeObj.time,
-            "AddedBy ": this.accountService.currentUserValue.user.id || 0,
+            "AddedBy ": this.accountService.currentUserValue.userId || 0,
             "IsCancelled ": 0,//this.personalFormGroup.get('IsCancelled ').value || '',
             "SiteDescId ": this._OtManagementService.otreservationFormGroup.get('SiteDescId').value.SiteDescId || 0,
 

@@ -297,7 +297,7 @@ export class InterimBillComponent implements OnInit {
   //     insertBillUpdateBillNo1obj['balanceAmt'] = 0;
   //   insertBillUpdateBillNo1obj['billDate'] = this.dateTimeObj.date;
   //   insertBillUpdateBillNo1obj['opD_IPD_Type'] = 1,
-  //     insertBillUpdateBillNo1obj['AddedBy'] = this.accountService.currentUserValue.user.id;
+  //     insertBillUpdateBillNo1obj['AddedBy'] = this.accountService.currentUserValue.userId;
   //   insertBillUpdateBillNo1obj['totalAdvanceAmount'] = 0;
   //   insertBillUpdateBillNo1obj['billTime'] = this.dateTimeObj.date;
   //   insertBillUpdateBillNo1obj['concessionReasonId'] = this.vConcessionId || 0,
@@ -348,7 +348,7 @@ export class InterimBillComponent implements OnInit {
   //   Paymentobj['RefundId'] = 0;
   //   Paymentobj['TransactionType'] = 0;
   //   Paymentobj['Remark'] = "Cashpayment";
-  //   Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
+  //   Paymentobj['AddBy'] = this.accountService.currentUserValue.userId,
   //     Paymentobj['IsCancelled'] = 0;
   //   Paymentobj['IsCancelledBy'] = 0;
   //   Paymentobj['IsCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
@@ -428,7 +428,7 @@ export class InterimBillComponent implements OnInit {
       insertBillUpdateBillNo1obj['balanceAmt'] = 0;
     insertBillUpdateBillNo1obj['billDate'] = this.dateTimeObj.date;
     insertBillUpdateBillNo1obj['opD_IPD_Type'] = 1;
-      insertBillUpdateBillNo1obj['AddedBy'] = this.accountService.currentUserValue.user.id || 0;
+      insertBillUpdateBillNo1obj['AddedBy'] = this.accountService.currentUserValue.userId || 0;
     insertBillUpdateBillNo1obj['totalAdvanceAmount'] = this.selectedAdvanceObj.AdvTotalAmount;
     insertBillUpdateBillNo1obj['billTime'] = this.dateTimeObj.date;
     insertBillUpdateBillNo1obj['concessionReasonId'] = this.InterimFormGroup.get('ConcessionId').value.ConcessionId || 0,
@@ -480,7 +480,7 @@ export class InterimBillComponent implements OnInit {
       Paymentobj['RefundId'] = 0;
       Paymentobj['TransactionType'] = 0;
       Paymentobj['Remark'] = "Cashpayment";
-      Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
+      Paymentobj['AddBy'] = this.accountService.currentUserValue.userId,
       Paymentobj['IsCancelled'] = 0;
       Paymentobj['IsCancelledBy'] = 0;
       Paymentobj['IsCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
@@ -544,7 +544,7 @@ export class InterimBillComponent implements OnInit {
       Paymentobj['RefundId'] = 0;
       Paymentobj['TransactionType'] = 0;
       Paymentobj['Remark'] = "Cashpayment";
-      Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
+      Paymentobj['AddBy'] = this.accountService.currentUserValue.userId,
         Paymentobj['IsCancelled'] = 0;
       Paymentobj['IsCancelledBy'] = 0;
       Paymentobj['IsCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
@@ -696,7 +696,7 @@ export class InterimBillComponent implements OnInit {
   //   insertBillUpdateBillNo1obj['balanceAmt'] = 0;
   //   insertBillUpdateBillNo1obj['billDate'] = this.dateTimeObj.date;
   //   insertBillUpdateBillNo1obj['opD_IPD_Type'] = 1,
-  //   insertBillUpdateBillNo1obj['AddedBy'] =  this.accountService.currentUserValue.user.id ;
+  //   insertBillUpdateBillNo1obj['AddedBy'] =  this.accountService.currentUserValue.userId ;
   //   insertBillUpdateBillNo1obj['totalAdvanceAmount'] = 0;
   //   insertBillUpdateBillNo1obj['billTime'] = this.dateTimeObj.date;
   //   insertBillUpdateBillNo1obj['concessionReasonId'] = this.InterimFormGroup.get('ConcessionId').value.concessionReasonId || 0,
@@ -795,7 +795,7 @@ export class InterimBillComponent implements OnInit {
   //   Paymentobj['RefundId'] = 0;
   //   Paymentobj['TransactionType'] = 0;
   //   Paymentobj['Remark'] = "Cashpayment";
-  //   Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
+  //   Paymentobj['AddBy'] = this.accountService.currentUserValue.userId,
   //     Paymentobj['IsCancelled'] = 0;
   //   Paymentobj['IsCancelledBy'] = 0;
   //   Paymentobj['IsCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
