@@ -87,7 +87,7 @@ export class GrnReturnWithoutgrnComponent implements OnInit {
   }
   gePharStoreList() {
     var vdata = {
-      Id: this._loggedService.currentUserValue.user.storeId
+      Id: this._loggedService.currentUserValue.storeId
     }
     this._GRNReturnService.getLoggedStoreList(vdata).subscribe(data => {
       this.StoreList = data;
@@ -114,7 +114,7 @@ export class GrnReturnWithoutgrnComponent implements OnInit {
 
   getGRNReturnList() {
     var Param = {
-      "ToStoreId": this._loggedService.currentUserValue.user.storeId || 0,
+      "ToStoreId": this._loggedService.currentUserValue.storeId || 0,
       "From_Dt": this.datePipe.transform(this._GRNReturnService.GRNReturnSearchFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "To_Dt": this.datePipe.transform(this._GRNReturnService.GRNReturnSearchFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "SupplierId": this._GRNReturnService.GRNReturnSearchFrom.get('SupplierId').value.SupplierId || 0 ,
@@ -199,7 +199,7 @@ export class GrnReturnWithoutgrnComponent implements OnInit {
 
     let updateGRNReturnVerifyStatus = {};
     updateGRNReturnVerifyStatus['grnReturnId'] = row.GRNReturnId;
-    updateGRNReturnVerifyStatus['isVerifiedUserId'] = this._loggedService.currentUserValue.user.id;
+    updateGRNReturnVerifyStatus['isVerifiedUserId'] = this._loggedService.currentUserValue.userId;
 
     let submitObj = {
       "updateGRNReturnVerifyStatus": updateGRNReturnVerifyStatus

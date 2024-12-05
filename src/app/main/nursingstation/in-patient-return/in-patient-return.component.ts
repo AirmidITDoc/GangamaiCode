@@ -165,7 +165,7 @@ export class InPatientReturnComponent implements OnInit {
         {
       var Param = {
         "RegNo":  this.vRegNo || 0,
-        "StoreId":  this.accountService.currentUserValue.user.storeId || 0,
+        "StoreId":  this.accountService.currentUserValue.storeId || 0,
         "ItemName":  `${this._InPatientReturnService.userFormGroup.get('ItemName').value}%`, 
         "BatchNo":  0
       }
@@ -184,7 +184,7 @@ export class InPatientReturnComponent implements OnInit {
     else{
       var Param = {
         "RegNo":  this.vRegNo || 0,
-        "StoreId":  this.accountService.currentUserValue.user.storeId || 0,
+        "StoreId":  this.accountService.currentUserValue.storeId || 0,
         "ItemName":  `${this._InPatientReturnService.userFormGroup.get('ItemName').value}%`, 
         "BatchNo":  0
       }
@@ -410,8 +410,8 @@ export class InPatientReturnComponent implements OnInit {
       salesReturnHeader['IsPrint'] = 0,
       salesReturnHeader['IsFree'] = 0;
       salesReturnHeader['UnitID'] = 1;
-      salesReturnHeader['addedBy'] = this.accountService.currentUserValue.user.id,
-      salesReturnHeader['StoreID'] = this.accountService.currentUserValue.user.storeId,
+      salesReturnHeader['addedBy'] = this.accountService.currentUserValue.userId,
+      salesReturnHeader['StoreID'] = this.accountService.currentUserValue.storeId,
       salesReturnHeader['Narration'] = "";
       salesReturnHeader['SalesReturnId'] = 0
   
@@ -459,7 +459,7 @@ export class InPatientReturnComponent implements OnInit {
         let updateCurStkSalesCredit = {};
         updateCurStkSalesCredit['itemId'] = element.ItemId;
         updateCurStkSalesCredit['issueQty'] = element.ReturnQty;
-        updateCurStkSalesCredit['storeID'] = this.accountService.currentUserValue.user.storeId,
+        updateCurStkSalesCredit['storeID'] = this.accountService.currentUserValue.storeId,
         updateCurStkSalesCredit['stkID'] = element.StkID;
         updateCurStkSalesCreditarray.push(updateCurStkSalesCredit);
       });
@@ -501,7 +501,7 @@ export class InPatientReturnComponent implements OnInit {
       PaymentInsertobj['RefundId'] = 0;
       PaymentInsertobj['TransactionType'] = 5;
       PaymentInsertobj['Remark'] = '',
-      PaymentInsertobj['AddBy'] = this.accountService.currentUserValue.user.id,
+      PaymentInsertobj['AddBy'] = this.accountService.currentUserValue.userId,
       PaymentInsertobj['IsCancelled'] = 0;
       PaymentInsertobj['IsCancelledBy'] = 0;
       PaymentInsertobj['IsCancelledDate'] = '01/01/1900',

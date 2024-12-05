@@ -132,7 +132,7 @@ export class OPAdvanceComponent implements OnInit {
     AdvanceDetObj['BalanceAmount'] =parseInt(this.advanceAmount);
     AdvanceDetObj['RefundAmount'] = 0;
     AdvanceDetObj['ReasonOfAdvanceId'] = 0;
-    AdvanceDetObj['AddedBy'] =  this.accountService.currentUserValue.user.id ;
+    AdvanceDetObj['AddedBy'] =  this.accountService.currentUserValue.userId ;
     AdvanceDetObj['IsCancelled'] = false;
     AdvanceDetObj['IsCancelledBy'] = 0;
     AdvanceDetObj['IsCancelledDate'] = '01/01/1900';

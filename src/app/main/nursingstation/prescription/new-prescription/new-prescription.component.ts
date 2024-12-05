@@ -594,7 +594,7 @@ export class NewPrescriptionComponent implements OnInit {
       insertIP_Prescription['totalQty'] =element.Qty || 0;
       insertIP_Prescription['remark'] = element.Remark || '';
       insertIP_Prescription['isClosed'] = false;
-      insertIP_Prescription['isAddBy'] = this._loggedService.currentUserValue.user.id;
+      insertIP_Prescription['isAddBy'] = this._loggedService.currentUserValue.userId;
       insertIP_Prescription['storeId'] =  this.myForm.get('StoreId').value.StoreId || 0;
       insertIP_Prescription['wardID'] = this.WardId// this.myForm.get('WardName').value.RoomId || 0;
       insertIP_Prescriptionarray.push(insertIP_Prescription);

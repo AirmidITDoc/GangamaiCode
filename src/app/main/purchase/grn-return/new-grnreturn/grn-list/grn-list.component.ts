@@ -83,7 +83,7 @@ export class GrnListComponent implements OnInit {
       "SupplierId": this._GRNReturnHeaderList.GRNListFrom.get('SupplierId').value.SupplierId || 0,
       "From_Dt": this.datePipe.transform(this._GRNReturnHeaderList.GRNListFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "To_Dt": this.datePipe.transform(this._GRNReturnHeaderList.GRNListFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      "StoreId":this._loggedService.currentUserValue.user.storeId || 0,
+      "StoreId":this._loggedService.currentUserValue.storeId || 0,
     }
    // console.log(Param);
     this._GRNReturnHeaderList.getGRNList(Param).subscribe(data => {

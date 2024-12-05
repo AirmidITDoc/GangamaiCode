@@ -355,7 +355,7 @@ onSubmit() {
         "FeedbackCategory": this.registerObj1.FeedbackCategory || 0,
         "FeedbackRating": this.registerObj1.FeedbackRating || "",
         "FeedbackComments ": this._FeedbackService.MyfeedbackForm.get('FeedbackComments').value || '',
-        "AddedBy": this.accountService.currentUserValue.user.id,
+        "AddedBy": this.accountService.currentUserValue.userId,
             
       }
     }
@@ -392,7 +392,7 @@ onSubmit() {
 //           "GenderID": this._EmergencyListService.MyForm.get('GenderId').value.GenderId || 0,
 //           "PhoneNo": this._EmergencyListService.MyForm.get("PhoneNo").value || "",
 //           "MobileNo": this._EmergencyListService.MyForm.get("MobileNo").value || "0",
-//           "UpdatedBy": this.accountService.currentUserValue.user.id,
+//           "UpdatedBy": this.accountService.currentUserValue.userId,
 //           "AgeYear": this._EmergencyListService.MyForm.get("AgeYear").value || "0",
 //           "AgeMonth": this._EmergencyListService.MyForm.get("AgeMonth").value || "0",
 //           "AgeDay": this._EmergencyListService.MyForm.get("AgeDay").value || "0",

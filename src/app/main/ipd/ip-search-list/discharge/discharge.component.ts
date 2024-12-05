@@ -166,7 +166,7 @@ export class DischargeComponent implements OnInit {
           "dischargedDocId":this.vDoctorId,
           "dischargedRMOID": 0,
           "modeOfDischargeId":  this.vMode, 
-          "createdBy":2,// this.accountService.currentUserValue.user.id,
+          "createdBy":2,// this.accountService.currentUserValue.userId,
         }, 
         "dischargeAdmissionModel": {
           "admissionID": this.vAdmissionID,
@@ -201,7 +201,7 @@ export class DischargeComponent implements OnInit {
           "DischargedDocId":this.vDoctorId,
           "DischargedRMOID": 0, // this._IpSearchListService.mySaveForm.get("DischargedRMOID").value,
           "Modeofdischarge": this.vMode,
-          "updatedBy": this.accountService.currentUserValue.user.id,
+          "updatedBy": this.accountService.currentUserValue.userId,
         },
         "updateAdmission": {
           "admissionID": this.selectedAdvanceObj.AdmissionID || 0,

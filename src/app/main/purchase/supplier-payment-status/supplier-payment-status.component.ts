@@ -73,7 +73,7 @@ export class SupplierPaymentStatusComponent implements OnInit {
   }
   getStoreList() {
     var vdata = {
-      Id: this.accountService.currentUserValue.user.storeId
+      Id: this.accountService.currentUserValue.storeId
     }
     this._SupplierPaymentStatusService.getLoggedStoreList(vdata).subscribe(data => {
       this.ToStoreList = data;
@@ -100,7 +100,7 @@ export class SupplierPaymentStatusComponent implements OnInit {
   getSupplierPayStatusList(){
     this.sIsLoading = '';
     var vdata={
-      'ToStoreId': this.accountService.currentUserValue.user.storeId || 0,
+      'ToStoreId': this.accountService.currentUserValue.storeId || 0,
       'From_Dt':this.datePipe.transform(this._SupplierPaymentStatusService.SearchFormGroup.get('start').value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       'To_Dt':this.datePipe.transform(this._SupplierPaymentStatusService.SearchFormGroup.get('end').value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       'IsPaymentProcess':this._SupplierPaymentStatusService.SearchFormGroup.get('Status').value || 0,

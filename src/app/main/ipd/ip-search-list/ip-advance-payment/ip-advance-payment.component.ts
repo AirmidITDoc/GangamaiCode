@@ -673,7 +673,7 @@ export class IPAdvancePaymentComponent implements OnInit {
         Paymentobj['RefundId'] = 0;
         Paymentobj['TransactionType'] = 0;
         Paymentobj['Remark'] = this.paymentForm.get('commentsController').value;
-        Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
+        Paymentobj['AddBy'] = this.accountService.currentUserValue.userId,
           Paymentobj['IsCancelled'] = 0;
         Paymentobj['IsCancelledBy'] = 0;
         Paymentobj['IsCancelledDate'] = this.dateTimeObj.date;
@@ -710,7 +710,7 @@ export class IPAdvancePaymentComponent implements OnInit {
         Paymentobj['RefundId'] = 0;
         Paymentobj['TransactionType'] = 0;
         Paymentobj['Remark'] = this.paymentForm.get('commentsController').value;
-        Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
+        Paymentobj['AddBy'] = this.accountService.currentUserValue.userId,
           Paymentobj['IsCancelled'] = 0;
         Paymentobj['IsCancelledBy'] = 0;
         Paymentobj['IsCancelledDate'] = this.dateTimeObj.date;
@@ -747,7 +747,7 @@ export class IPAdvancePaymentComponent implements OnInit {
         Paymentobj['RefundId'] = 0;
         Paymentobj['TransactionType'] = 0;
         Paymentobj['Remark'] = this.paymentForm.get('commentsController').value;
-        Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
+        Paymentobj['AddBy'] = this.accountService.currentUserValue.userId,
           Paymentobj['IsCancelled'] = 0;
         Paymentobj['IsCancelledBy'] = 0;
         Paymentobj['IsCancelledDate'] = this.dateTimeObj.date;
@@ -784,7 +784,7 @@ export class IPAdvancePaymentComponent implements OnInit {
         Paymentobj['RefundId'] = 0;
         Paymentobj['TransactionType'] = 1;
         Paymentobj['Remark'] = this.paymentForm.get('commentsController').value;
-        Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
+        Paymentobj['AddBy'] = this.accountService.currentUserValue.userId,
         Paymentobj['IsCancelled'] = 0;
         Paymentobj['IsCancelledBy'] = 0;
         Paymentobj['IsCancelledDate'] = this.dateTimeObj.date;
@@ -821,7 +821,7 @@ export class IPAdvancePaymentComponent implements OnInit {
         Paymentobj['RefundId'] = 0;
         Paymentobj['TransactionType'] = 0;
         Paymentobj['Remark'] = this.paymentForm.get('commentsController').value;
-        Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
+        Paymentobj['AddBy'] = this.accountService.currentUserValue.userId,
           Paymentobj['IsCancelled'] = 0;
         Paymentobj['IsCancelledBy'] = 0;
         Paymentobj['IsCancelledDate'] = this.dateTimeObj.date;
@@ -882,7 +882,7 @@ export class IPAdvancePaymentComponent implements OnInit {
       Paymentobj['RefundId'] = 0;
       Paymentobj['TransactionType'] = 2;
       Paymentobj['Remark'] = '',//'REMArk';
-      Paymentobj['AddBy'] = '',// this.accountService.currentUserValue.user.id,
+      Paymentobj['AddBy'] = '',// this.accountService.currentUserValue.userId,
       Paymentobj['IsCancelled'] = 0;
       Paymentobj['IsCancelledBy'] = 0;
       Paymentobj['IsCancelledDate'] = '',//this.dateTimeObj.date;
@@ -942,7 +942,7 @@ export class IPAdvancePaymentComponent implements OnInit {
   //       Paymentobj['RefundId'] = 0;
   //       Paymentobj['TransactionType'] = 0;
   //       Paymentobj['Remark'] = this.paymentForm.get('commentsController').value;
-  //       Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
+  //       Paymentobj['AddBy'] = this.accountService.currentUserValue.userId,
   //       Paymentobj['IsCancelled'] = 0;
   //       Paymentobj['IsCancelledBy'] = 0;
   //       Paymentobj['IsCancelledDate'] = this.dateTimeObj.date;

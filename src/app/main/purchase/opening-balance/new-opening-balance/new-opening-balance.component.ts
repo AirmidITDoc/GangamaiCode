@@ -62,7 +62,7 @@ export class NewOpeningBalanceComponent implements OnInit {
   }
   gePharStoreList() {
     var vdata = {
-      Id: this._loggedService.currentUserValue.user.storeId
+      Id: this._loggedService.currentUserValue.storeId
     }
     console.log(vdata);
     this._OpeningBalanceService.getLoggedStoreList(vdata).subscribe(data => {
@@ -226,8 +226,8 @@ vExpDate1:any='';
     let insert_OpeningTransaction_Header_1 = {};
     insert_OpeningTransaction_Header_1['openingDate'] = this.dateTimeObj.date;
     insert_OpeningTransaction_Header_1['openingTime'] = this.dateTimeObj.time;
-    insert_OpeningTransaction_Header_1['storeId'] = this._loggedService.currentUserValue.user.storeId;
-    insert_OpeningTransaction_Header_1['addedby'] = this._loggedService.currentUserValue.user.id,
+    insert_OpeningTransaction_Header_1['storeId'] = this._loggedService.currentUserValue.storeId;
+    insert_OpeningTransaction_Header_1['addedby'] = this._loggedService.currentUserValue.userId,
       insert_OpeningTransaction_Header_1['openingHId'] = 0;
 
 
@@ -235,7 +235,7 @@ vExpDate1:any='';
     this.dsItemNameList.data.forEach((element) => {
       debugger
       let openingBalanceParamInsertObj = {};
-      openingBalanceParamInsertObj['storeId'] = this._loggedService.currentUserValue.user.storeId;
+      openingBalanceParamInsertObj['storeId'] = this._loggedService.currentUserValue.storeId;
       openingBalanceParamInsertObj['openingDate'] = this.dateTimeObj.date;
       openingBalanceParamInsertObj['openingTime'] = this.dateTimeObj.time;
       openingBalanceParamInsertObj['openingDocNo'] = 0;
@@ -246,7 +246,7 @@ vExpDate1:any='';
       openingBalanceParamInsertObj['perUnitMrp'] = this.vMRP || 0
       openingBalanceParamInsertObj['vatPer'] = this.vGST || 0
       openingBalanceParamInsertObj['balQty'] = this.vBalQty || 0
-      openingBalanceParamInsertObj['addedby'] = this._loggedService.currentUserValue.user.id,
+      openingBalanceParamInsertObj['addedby'] = this._loggedService.currentUserValue.userId,
       openingBalanceParamInsertObj['updatedby'] = 0;
       openingBalanceParamInsertObj['openingId'] = 0;
       openingBalanceParamInsertdetail.push(openingBalanceParamInsertObj);

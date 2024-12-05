@@ -49,7 +49,7 @@ export class ReorderlevelsummaryComponent implements OnInit {
   }
   getReorderlvlList(){
     var vdata={
-      'StoreID':this._loggedService.currentUserValue.user.storeId || 0,
+      'StoreID':this._loggedService.currentUserValue.storeId || 0,
       'ReOderQty':this._Reorderlevelsummery.SearchFrom.get('ReorderQty').value,
       'vType': this._Reorderlevelsummery.SearchFrom.get('Type').value
     }

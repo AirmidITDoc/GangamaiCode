@@ -136,7 +136,7 @@ export class ItemMovementSummeryComponent implements OnInit {
   }
   gePharStoreList() {
     var vdata = {
-      Id: this._loggedService.currentUserValue.user.storeId
+      Id: this._loggedService.currentUserValue.storeId
     }
     this._CurrentStockService.getLoggedStoreList(vdata).subscribe(data => {
       this.StoreList = data;

@@ -1172,7 +1172,7 @@ chekgstper(obj){
     }
     gePharStoreList() {
         var vdata = {
-            Id: this.accountService.currentUserValue.user.storeId
+            Id: this.accountService.currentUserValue.storeId
         }
         this._GRNList.getLoggedStoreList(vdata).subscribe(data => {
             this.StoreList = data;
@@ -1343,7 +1343,7 @@ chekgstper(obj){
         let grnSaveObj = {};
         grnSaveObj['grnDate'] = this.dateTimeObj.date;
         grnSaveObj['grnTime'] = this.dateTimeObj.time;
-        grnSaveObj['storeId'] = this.accountService.currentUserValue.user.storeId;
+        grnSaveObj['storeId'] = this.accountService.currentUserValue.storeId;
         grnSaveObj['supplierID'] = this._GRNList.userFormGroup.get('SupplierId').value.SupplierId || this.SupplierId;
         grnSaveObj['invoiceNo'] = this._GRNList.userFormGroup.get('InvoiceNo').value || 0;
         grnSaveObj['deliveryNo'] = 0;
@@ -1358,7 +1358,7 @@ chekgstper(obj){
         grnSaveObj['receivedBy'] = this._GRNList.GRNFinalForm.get('ReceivedBy').value || '';
         grnSaveObj['isVerified'] = false;
         grnSaveObj['isClosed'] = false;
-        grnSaveObj['addedBy'] = this.accountService.currentUserValue.user.id || 0;
+        grnSaveObj['addedBy'] = this.accountService.currentUserValue.userId || 0;
         grnSaveObj['invDate'] = this._GRNList.userFormGroup.get('DateOfInvoice').value.DateOfInvoice || '01/01/1900';
         grnSaveObj['debitNote'] = this._GRNList.GRNFinalForm.get('DebitAmount').value || 0;
         grnSaveObj['creditNote'] = this._GRNList.GRNFinalForm.get('CreditAmount').value || 0;
@@ -1510,7 +1510,7 @@ chekgstper(obj){
         let grnSaveObj = {};
         grnSaveObj['grnDate'] = this.dateTimeObj.date;
         grnSaveObj['grnTime'] = this.dateTimeObj.time;
-        grnSaveObj['storeId'] = this.accountService.currentUserValue.user.storeId;
+        grnSaveObj['storeId'] = this.accountService.currentUserValue.storeId;
         grnSaveObj['supplierID'] = this._GRNList.userFormGroup.get('SupplierId').value.SupplierId || 0;
         grnSaveObj['invoiceNo'] = this._GRNList.userFormGroup.get('InvoiceNo').value || 0;
         grnSaveObj['deliveryNo'] = 0;
@@ -1525,7 +1525,7 @@ chekgstper(obj){
         grnSaveObj['receivedBy'] = this._GRNList.GRNFinalForm.get('ReceivedBy').value || '';
         grnSaveObj['isVerified'] = false;
         grnSaveObj['isClosed'] = false;
-        grnSaveObj['addedBy'] = this.accountService.currentUserValue.user.id || 0;
+        grnSaveObj['addedBy'] = this.accountService.currentUserValue.userId || 0;
         grnSaveObj['invDate'] = this._GRNList.userFormGroup.get('DateOfInvoice').value.DateOfInvoice || '01/01/1900';
         grnSaveObj['debitNote'] = this._GRNList.GRNFinalForm.get('DebitAmount').value || 0;
         grnSaveObj['creditNote'] = this._GRNList.GRNFinalForm.get('CreditAmount').value || 0;
@@ -1690,7 +1690,7 @@ chekgstper(obj){
         let grnSaveObj = {};
         grnSaveObj['grnDate'] = this.dateTimeObj.date;
         grnSaveObj['grnTime'] = this.dateTimeObj.time;
-        grnSaveObj['storeId'] = this.accountService.currentUserValue.user.storeId;
+        grnSaveObj['storeId'] = this.accountService.currentUserValue.storeId;
         grnSaveObj['supplierID'] = this._GRNList.userFormGroup.get('SupplierId').value.SupplierId || this.SupplierId;
         grnSaveObj['invoiceNo'] = this._GRNList.userFormGroup.get('InvoiceNo').value || 0;
         grnSaveObj['deliveryNo'] = 0;
@@ -1705,7 +1705,7 @@ chekgstper(obj){
         grnSaveObj['receivedBy'] = this._GRNList.GRNFinalForm.get('ReceivedBy').value || '';
         grnSaveObj['isVerified'] = false;
         grnSaveObj['isClosed'] = false;
-        grnSaveObj['addedBy'] = this.accountService.currentUserValue.user.id || 0;
+        grnSaveObj['addedBy'] = this.accountService.currentUserValue.userId || 0;
         grnSaveObj['invDate'] = this.datePipe.transform(this._GRNList.userFormGroup.get('DateOfInvoice').value, "yyyy-MM-dd");
         grnSaveObj['debitNote'] = this._GRNList.GRNFinalForm.get('DebitAmount').value || 0;
         grnSaveObj['creditNote'] = this._GRNList.GRNFinalForm.get('CreditAmount').value || 0;
@@ -1836,7 +1836,7 @@ chekgstper(obj){
         updateGRNHeaderObj['grnid'] = this.registerObj.GRNID;
         updateGRNHeaderObj['grnDate'] = this.dateTimeObj.date;
         updateGRNHeaderObj['grnTime'] = this.dateTimeObj.time;
-        updateGRNHeaderObj['storeId'] = this.accountService.currentUserValue.user.storeId || 0;
+        updateGRNHeaderObj['storeId'] = this.accountService.currentUserValue.storeId || 0;
         updateGRNHeaderObj['supplierID'] = this._GRNList.userFormGroup.get('SupplierId').value.SupplierId || 0;
         updateGRNHeaderObj['invoiceNo'] = this._GRNList.userFormGroup.get('InvoiceNo').value || 0;
         updateGRNHeaderObj['deliveryNo'] = 0;
@@ -1849,7 +1849,7 @@ chekgstper(obj){
         updateGRNHeaderObj['netAmount'] = this._GRNList.GRNFinalForm.get('NetPayamt').value || 0;
         updateGRNHeaderObj['remark'] = this._GRNList.GRNFinalForm.get('Remark').value || '';
         updateGRNHeaderObj['receivedBy'] = this._GRNList.GRNFinalForm.get('ReceivedBy').value || '';
-        updateGRNHeaderObj['updatedBy'] = this.accountService.currentUserValue.user.id,
+        updateGRNHeaderObj['updatedBy'] = this.accountService.currentUserValue.userId,
             updateGRNHeaderObj['invDate'] = this.datePipe.transform(this._GRNList.userFormGroup.get('DateOfInvoice').value, "yyyy-MM-dd");
         updateGRNHeaderObj['debitNote'] = this._GRNList.GRNFinalForm.get('DebitAmount').value || 0;
         updateGRNHeaderObj['creditNote'] = this._GRNList.GRNFinalForm.get('CreditAmount').value || 0;
@@ -2401,7 +2401,7 @@ chekgstper(obj){
     }
     msg: any;
     checkInvoice() {
-        let Query = "select InvoiceNo from T_GRNHeader Where SupplierId=" + this.vcheckSupplierId + "and StoreId=" + this.accountService.currentUserValue.user.storeId;
+        let Query = "select InvoiceNo from T_GRNHeader Where SupplierId=" + this.vcheckSupplierId + "and StoreId=" + this.accountService.currentUserValue.storeId;
         console.log(Query)
         this._GRNList.getCheckInvoiceNo(Query).subscribe(data => {
             this.msg = data

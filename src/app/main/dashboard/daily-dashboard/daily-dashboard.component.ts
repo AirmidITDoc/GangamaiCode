@@ -137,8 +137,8 @@ export class DailyDashboardComponent implements OnInit {
   TodayOther:any;
   ngOnInit(): void {
 
-    this.username = this._accountServices.currentUserValue.user
-      ? this._accountServices.currentUserValue.user.firstName + ' ' + this._accountServices.currentUserValue.user.lastName
+    this.username = this._accountServices.currentUserValue.userName
+      ? this._accountServices.currentUserValue.userName
       : '';
 
     this.getDashboardSummary();

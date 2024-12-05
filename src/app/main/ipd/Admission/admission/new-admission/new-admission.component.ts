@@ -1137,8 +1137,8 @@ OnSaveAdmission() {
       regInsert['genderID'] = this.personalFormGroup.get('GenderId').value.GenderId;
       regInsert['phoneNo'] = this.registerObj.PhoneNo || '';
       regInsert['mobileNo'] = this.registerObj.MobileNo || '';
-      regInsert['addedBy'] = this.accountService.currentUserValue.user.id;
-      regInsert['UpdatedBy'] = 0,// this.accountService.currentUserValue.user.id;
+      regInsert['addedBy'] = this.accountService.currentUserValue.userId;
+      regInsert['UpdatedBy'] = 0,// this.accountService.currentUserValue.userId;
       regInsert['ageYear'] = this.registerObj.AgeYear || '';
       regInsert['ageMonth'] = this.registerObj.AgeMonth || '';
       regInsert['ageDay'] = this.registerObj.AgeDay || '';
@@ -1184,7 +1184,7 @@ OnSaveAdmission() {
       admissionNewInsert['phoneNo'] = this.personalFormGroup.get('MobileNo').value ? this.personalFormGroup.get('MobileNo').value : '';
       admissionNewInsert['mobileNo'] = this.otherFormGroup.get('RelatvieMobileNo').value ? this.otherFormGroup.get('RelatvieMobileNo').value : '';
       admissionNewInsert['relationshipId'] = this.otherFormGroup.get('RelationshipId').value.RelationshipId || 0;
-      admissionNewInsert['addedBy'] = this.accountService.currentUserValue.user.id;
+      admissionNewInsert['addedBy'] = this.accountService.currentUserValue.userId;
 
       admissionNewInsert['isMLC'] = this.otherFormGroup.get('IsMLC').value || false;
       admissionNewInsert['motherName'] = '';

@@ -400,7 +400,7 @@ public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
 //         InsertAddChargesObj['DocAmt'] = 0,
 //         InsertAddChargesObj['HospitalAmt'] = element.NetAmount,
 //         InsertAddChargesObj['IsGenerated'] = 0,
-//         InsertAddChargesObj['AddedBy'] = this.accountService.currentUserValue.user.id,
+//         InsertAddChargesObj['AddedBy'] = this.accountService.currentUserValue.userId,
 //         InsertAddChargesObj['IsCancelled'] = 0,
 //         InsertAddChargesObj['IsCancelledBy'] = 0,
 //         InsertAddChargesObj['IsCancelledDate'] = "01/01/1900",
@@ -491,14 +491,14 @@ public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
     // this.dataSource.data.forEach((element) => {
       let insertIP_Prescription = {};
       materialconsumptionInsert['materialConsumptionId'] = 0;
-      materialconsumptionInsert['fromStoreId'] =this.accountService.currentUserValue.user.storeId;
+      materialconsumptionInsert['fromStoreId'] =this.accountService.currentUserValue.storeId;
       materialconsumptionInsert['consumptionDate'] = this.dateTimeObj.date;
       materialconsumptionInsert['consumptionTime'] = this.dateTimeObj.time;
       materialconsumptionInsert['landedTotalAmount'] = 0;
       materialconsumptionInsert['purchaseTotal'] = 0;
       materialconsumptionInsert['mrpTotal'] = 0;
       materialconsumptionInsert['remark'] = 0;
-      materialconsumptionInsert['Addedby'] = this.accountService.currentUserValue.user.id;
+      materialconsumptionInsert['Addedby'] = this.accountService.currentUserValue.userId;
      
     submissionObj['materialconsumptionInsert'] = materialconsumptionInsert;
     
@@ -567,7 +567,7 @@ public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
         NetAmount: parseFloat(this.b_netAmount) || 0,
         ClassName: 'ss',//this.selectedAdvanceObj.ClassName || '',
         Remark:this.registeredForm.get('Remark').value || '',
-        ChargesAddedName:this.accountService.currentUserValue.user.id || 1,
+        ChargesAddedName:this.accountService.currentUserValue.userId || 1,
       });
     this.isLoading = '';
     // console.log(this.chargeslist);
@@ -620,7 +620,7 @@ public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
     //  console.log(element.ChargesId);
     //  var m_data= {
     //    "G_ChargesId":element.ChargesId,
-    //    "G_UserId": this.accountService.currentUserValue.user.id
+    //    "G_UserId": this.accountService.currentUserValue.userId
     //  }
     //  console.log(m_data);
     //  this._NursingStationService.deleteCharges(m_data).subscribe(data =>{ 

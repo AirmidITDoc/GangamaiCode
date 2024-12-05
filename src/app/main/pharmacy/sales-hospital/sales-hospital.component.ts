@@ -425,9 +425,9 @@ export class SalesHospitalComponent implements OnInit {
     // onChangePatientType('OP');
 
    
-    this.vPharExtOpt = this._loggedService.currentUserValue.user.pharExtOpt;
-    this.vPharOPOpt = this._loggedService.currentUserValue.user.pharOPOpt;
-    this.vPharIPOpt = this._loggedService.currentUserValue.user.pharIPOpt;
+    // this.vPharExtOpt = this._loggedService.currentUserValue.user.pharExtOpt;
+    // this.vPharOPOpt = this._loggedService.currentUserValue.user.pharOPOpt;
+    // this.vPharIPOpt = this._loggedService.currentUserValue.user.pharIPOpt;
 
    
     if (this.vPharExtOpt == true) { 
@@ -1114,7 +1114,7 @@ export class SalesHospitalComponent implements OnInit {
   getPharItemList() {
     var m_data = {
       "ItemName": `${this._salesService.IndentSearchGroup.get('ItemId').value}%`,
-      "StoreId": this._loggedService.currentUserValue.user.storeId || 0
+      "StoreId": this._loggedService.currentUserValue.storeId || 0
     }
     if (this._salesService.IndentSearchGroup.get('ItemId').value.length >= 1) {
       this._salesService.getItemList(m_data).subscribe(data => {
@@ -1148,7 +1148,7 @@ export class SalesHospitalComponent implements OnInit {
 
   gePharStoreList() {
     var vdata = {
-      Id: this._loggedService.currentUserValue.user.storeId
+      Id: this._loggedService.currentUserValue.storeId
     }
     this._salesService.getLoggedStoreList(vdata).subscribe(data => {
       this.Store1List = data;
@@ -2113,7 +2113,7 @@ export class SalesHospitalComponent implements OnInit {
     SalesInsert['isPrint'] = 0;
     SalesInsert['isFree'] = 0;
     SalesInsert['unitID'] = 1;
-    SalesInsert['addedBy'] = this._loggedService.currentUserValue.user.id,
+    SalesInsert['addedBy'] = this._loggedService.currentUserValue.userId,
     SalesInsert['externalPatientName'] = this.PatientName || '';
     SalesInsert['doctorName'] = this.DoctorName || '';
     SalesInsert['storeId'] = this._salesService.IndentSearchGroup.get('StoreId').value.storeid;
@@ -2174,7 +2174,7 @@ export class SalesHospitalComponent implements OnInit {
       let updateCurStkSales = {};
       updateCurStkSales['itemId'] = element.ItemId;
       updateCurStkSales['issueQty'] = element.Qty;
-      updateCurStkSales['storeID'] = this._loggedService.currentUserValue.user.storeId,
+      updateCurStkSales['storeID'] = this._loggedService.currentUserValue.storeId,
         updateCurStkSales['stkID'] = element.StockId;
       updateCurStkSalestarr.push(updateCurStkSales);
     });
@@ -2210,7 +2210,7 @@ export class SalesHospitalComponent implements OnInit {
     PaymentInsertobj['RefundId'] = 0;
     PaymentInsertobj['TransactionType'] = 4;
     PaymentInsertobj['Remark'] = '',
-    PaymentInsertobj['AddBy'] = this._loggedService.currentUserValue.user.id,
+    PaymentInsertobj['AddBy'] = this._loggedService.currentUserValue.userId,
     PaymentInsertobj['IsCancelled'] = 0;
     PaymentInsertobj['IsCancelledBy'] = 0;
     PaymentInsertobj['IsCancelledDate'] = '01/01/1900',
@@ -2356,7 +2356,7 @@ export class SalesHospitalComponent implements OnInit {
           SalesInsert['isPrint'] = 0;
           SalesInsert['isFree'] = 0;
           SalesInsert['unitID'] = 1;
-          SalesInsert['addedBy'] = this._loggedService.currentUserValue.user.id,
+          SalesInsert['addedBy'] = this._loggedService.currentUserValue.userId,
           SalesInsert['externalPatientName'] = this.PatientName || '';
           SalesInsert['doctorName'] = this.DoctorName || '';
           SalesInsert['storeId'] = this._salesService.IndentSearchGroup.get('StoreId').value.storeid;
@@ -2415,7 +2415,7 @@ export class SalesHospitalComponent implements OnInit {
             let updateCurStkSales = {};
             updateCurStkSales['itemId'] = element.ItemId;
             updateCurStkSales['issueQty'] = element.Qty;
-            updateCurStkSales['storeID'] = this._loggedService.currentUserValue.user.storeId,
+            updateCurStkSales['storeID'] = this._loggedService.currentUserValue.storeId,
             updateCurStkSales['stkID'] = element.StockId;
             updateCurStkSalestarr.push(updateCurStkSales);
           });
@@ -2530,10 +2530,10 @@ export class SalesHospitalComponent implements OnInit {
     salesInsertCredit['isPrint'] = 0;
     salesInsertCredit['isFree'] = 0;
     salesInsertCredit['unitID'] = 1;
-    salesInsertCredit['addedBy'] = this._loggedService.currentUserValue.user.id,
+    salesInsertCredit['addedBy'] = this._loggedService.currentUserValue.userId,
     salesInsertCredit['externalPatientName'] = this.PatientName;
     salesInsertCredit['doctorName'] = "";
-    salesInsertCredit['storeId'] = this._loggedService.currentUserValue.user.storeId,
+    salesInsertCredit['storeId'] = this._loggedService.currentUserValue.storeId,
     salesInsertCredit['isPrescription'] = this.IPMedID || 0;
     salesInsertCredit['creditReason'] = '';
     salesInsertCredit['creditReasonID'] = 0;
@@ -2589,7 +2589,7 @@ export class SalesHospitalComponent implements OnInit {
       let updateCurStkSalesCredit = {};
       updateCurStkSalesCredit['itemId'] = element.ItemId;
       updateCurStkSalesCredit['issueQty'] = element.Qty;
-      updateCurStkSalesCredit['storeID'] = this._loggedService.currentUserValue.user.storeId,
+      updateCurStkSalesCredit['storeID'] = this._loggedService.currentUserValue.storeId,
         updateCurStkSalesCredit['stkID'] = element.StockId;
 
       updateCurStkSalesCreditarray.push(updateCurStkSalesCredit);
@@ -2812,7 +2812,7 @@ export class SalesHospitalComponent implements OnInit {
     if (contact.Qty != 0 && contact.Qty != null) {
       // console.log(contact.Qty);
       this.BalChkList = [];
-      this.StoreId = this._loggedService.currentUserValue.user.storeId
+      this.StoreId = this._loggedService.currentUserValue.storeId
 
       // let SelectQuery = "select isnull(BalanceQty,0) as BalanceQty from lvwCurrentBalQtyCheck where StoreId = " + this.StoreId + " AND ItemId = " + contact.ItemId + " AND  BatchNo='" + contact.BatchNo + "' AND  StockId=" + contact.StockId + ""
       let SelectQuery = "select isnull(BalanceQty,0) as BalanceQty from lvwCurrentBalQtyCheck where StoreId = " + this.StoreId + " AND ItemId = " + contact.ItemId + ""
@@ -3028,7 +3028,7 @@ export class SalesHospitalComponent implements OnInit {
 
     var m_data = {
       "ItemId": contact.ItemId,
-      "StoreId": this._loggedService.currentUserValue.user.storeId || 0
+      "StoreId": this._loggedService.currentUserValue.storeId || 0
     }
     this._salesService.getDraftBillItem(m_data).subscribe(draftdata => {
        console.log(draftdata)
@@ -3168,7 +3168,7 @@ export class SalesHospitalComponent implements OnInit {
     SalesInsert['isSellted'] = 0;
     SalesInsert['isPrint'] = 0;
     SalesInsert['unitID'] = 1;
-    SalesInsert['addedBy'] = this._loggedService.currentUserValue.user.id,
+    SalesInsert['addedBy'] = this._loggedService.currentUserValue.userId,
       SalesInsert['externalPatientName'] = this.PatientName || '';
     SalesInsert['doctorName'] = this.DoctorName || '';
     SalesInsert['storeId'] = this._salesService.IndentSearchGroup.get('StoreId').value.storeid;
@@ -3533,7 +3533,7 @@ getSearchListIP() {
   barcodeItemfetch() {
     var d = {
       "StockId": this._salesService.IndentSearchGroup.get("Barcode").value || 0,
-      "StoreId": this._loggedService.currentUserValue.user.storeId || 0
+      "StoreId": this._loggedService.currentUserValue.storeId || 0
     }
     this._salesService.getCurrentStockItem(d).subscribe(data => {
       this.tempDatasource.data = data as any;
@@ -3761,7 +3761,7 @@ getSearchListIP() {
         this.dsItemNameList1.data.forEach((contact) => {
           var m_data = {
             "ItemId": contact.ItemId,
-            "StoreId": this._loggedService.currentUserValue.user.storeId || 0
+            "StoreId": this._loggedService.currentUserValue.storeId || 0
           }
           this._salesService.getDraftBillItem(m_data).subscribe(draftdata => {
             //console.log(draftdata)

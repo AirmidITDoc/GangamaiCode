@@ -105,7 +105,7 @@ export class GSTAdjustmentComponent implements OnInit {
  
   this.Savebtn = true;
   let insertGSTAdju = {};
-  insertGSTAdju['storeId'] = this._loggedService.currentUserValue.user.storeId || 0;
+  insertGSTAdju['storeId'] = this._loggedService.currentUserValue.storeId || 0;
   insertGSTAdju['itemId'] = this. registerObj.ItemId || 0;
   insertGSTAdju['stkId'] =this. registerObj.StockId || 0;
   insertGSTAdju['batchNo'] =  this. registerObj.BatchNo || '';
@@ -115,7 +115,7 @@ export class GSTAdjustmentComponent implements OnInit {
   insertGSTAdju['cgstPer'] = this._StockAdjustment.GSTAdjustment.get('NewCGSTPer').value ||  0;
   insertGSTAdju['sgstPer'] = this._StockAdjustment.GSTAdjustment.get('NewSGSTPer').value ||  0;
   insertGSTAdju['igstPer'] = this._StockAdjustment.GSTAdjustment.get('NewIGSTPer').value || 0;
-  insertGSTAdju['addedBy'] = this._loggedService.currentUserValue.user.id || 0;  
+  insertGSTAdju['addedBy'] = this._loggedService.currentUserValue.userId || 0;  
 
   let submitData = {
     "gstAdjustment": insertGSTAdju 

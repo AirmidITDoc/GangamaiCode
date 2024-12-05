@@ -100,9 +100,9 @@ export class SalesReturnBillSettlementComponent implements OnInit {
   vConditionIP:boolean=false;
 
   ngOnInit(): void {  
-    this.vPharExtOpt = this._loggedService.currentUserValue.user.pharExtOpt;
-    this.vPharOPOpt = this._loggedService.currentUserValue.user.pharOPOpt;
-    this.vPharIPOpt = this._loggedService.currentUserValue.user.pharIPOpt;
+    // this.vPharExtOpt = this._loggedService.currentUserValue.user.pharExtOpt;
+    // this.vPharOPOpt = this._loggedService.currentUserValue.user.pharOPOpt;
+    // this.vPharIPOpt = this._loggedService.currentUserValue.user.pharIPOpt;
  
     if (this.vPharExtOpt == true) {  
         this.vSelectedOption = 'External'; 

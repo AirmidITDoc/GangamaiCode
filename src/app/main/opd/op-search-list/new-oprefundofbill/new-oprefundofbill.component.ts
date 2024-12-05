@@ -578,7 +578,7 @@ onSave(row: any = null) {
         InsertRefundObj['RefundAmount'] = parseInt(this.RefundOfBillFormGroup.get('TotalRefundAmount').value);
         InsertRefundObj['Remark'] = this.RefundOfBillFormGroup.get('Remark').value;
         InsertRefundObj['TransactionId'] = 2;
-        InsertRefundObj['AddedBy'] = this.accountService.currentUserValue.user.id,
+        InsertRefundObj['AddedBy'] = this.accountService.currentUserValue.userId,
         InsertRefundObj['IsCancelled'] = 0;
         InsertRefundObj['IsCancelledBy'] = 0;
         InsertRefundObj['IsCancelledDate'] = this.dateTimeObj.date;
@@ -596,7 +596,7 @@ onSave(row: any = null) {
           InsertRefundDetailObj['RefundAmount'] =  element.RefundAmt || 0;
           InsertRefundDetailObj['DoctorId'] =  element.DoctorId
           InsertRefundDetailObj['Remark'] = this.RefundOfBillFormGroup.get('Remark').value || '';
-          InsertRefundDetailObj['AddBy'] = this.accountService.currentUserValue.user.id,
+          InsertRefundDetailObj['AddBy'] = this.accountService.currentUserValue.userId,
           InsertRefundDetailObj['ChargesId'] =element.ChargesId
           RefundDetailarr.push(InsertRefundDetailObj); 
         })  

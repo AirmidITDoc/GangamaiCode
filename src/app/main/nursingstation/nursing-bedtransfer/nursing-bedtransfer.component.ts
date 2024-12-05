@@ -330,7 +330,7 @@ public filteredBed: ReplaySubject<any> = new ReplaySubject<any>(1);
         "toBedId": this._BedtransferService.bsaveForm.get("BedId").value.BedId || 0,
         "toClassId":this._BedtransferService.bsaveForm.get("ClassId").value.classId || this.selectedAdvanceObj.ClassId,
         "remark": this._BedtransferService.bsaveForm.get("Remark").value,
-        "addedBy":this.accountService.currentUserValue.user.id,
+        "addedBy":this.accountService.currentUserValue.userId,
         "isCancelled": false,
         "isCancelledBy":1 
       }

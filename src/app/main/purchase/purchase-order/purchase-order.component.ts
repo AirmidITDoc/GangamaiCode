@@ -198,7 +198,7 @@ export class PurchaseOrderComponent implements OnInit {
 
   getPurchaseOrderList() {
     var Param = {
-      "ToStoreId": this.accountService.currentUserValue.user.storeId, //this._PurchaseOrder.PurchaseSearchGroup.get('FromStoreId').value.storeid || 0,
+      "ToStoreId": this.accountService.currentUserValue.storeId, //this._PurchaseOrder.PurchaseSearchGroup.get('FromStoreId').value.storeid || 0,
       "From_Dt": this.datePipe.transform(this._PurchaseOrder.PurchaseSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000"), 
       "To_Dt": this.datePipe.transform(this._PurchaseOrder.PurchaseSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") ,
       "IsVerify": this._PurchaseOrder.PurchaseSearchGroup.get("Status").value || 0,
@@ -279,7 +279,7 @@ export class PurchaseOrderComponent implements OnInit {
   getFromStoreSearch() {
 
     var data = {
-      Id: this.accountService.currentUserValue.user.storeId
+      Id: this.accountService.currentUserValue.storeId
     }
     this._PurchaseOrder.getFromStoreSearchList(data).subscribe(data => {
       this.FromStoreList = data;

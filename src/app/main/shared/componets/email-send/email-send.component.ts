@@ -88,7 +88,7 @@ export class EmailSendComponent implements OnInit {
   OnSend() {
     this.isLoading = 'submit';
     let Emailobj = {};
-    Emailobj['fromEmail'] = (this.accountService.currentUserValue.user.storeId).toString();
+    Emailobj['fromEmail'] = (this.accountService.currentUserValue.storeId).toString();
     Emailobj['fromName'] = "SS Medical";
     Emailobj['ToEmail'] = this._PurchaseOrder.POEmailFrom.get("ToMailId").value || '',
     Emailobj['cc'] = this._PurchaseOrder.POEmailFrom.get("CCName").value || '',

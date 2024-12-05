@@ -81,7 +81,7 @@ export class SalesSummaryComponent implements OnInit {
  
   getPharStoreList() {
     var vdata = {
-      Id: this._loggedService.currentUserValue.user.storeId
+      Id: this._loggedService.currentUserValue.storeId
     }
     this._DashboardService.getLoggedStoreList(vdata).subscribe(data => {
       this.FromStoreList = data;
@@ -104,7 +104,7 @@ export class SalesSummaryComponent implements OnInit {
     var Param = {
       "FromDate": this.datePipe.transform(this._DashboardService.DayWiseFrom.get('start').value,"MM-dd-yyyy"),
       "ToDate": this.datePipe.transform(this._DashboardService.DayWiseFrom.get('end').value,"MM-dd-yyyy"),
-      "StoreId": this._loggedService.currentUserValue.user.storeId
+      "StoreId": this._loggedService.currentUserValue.storeId
     }
     this._DashboardService.getPharDayWiseDashboard(Param).subscribe(data => {
       this.dsDayWiseList.data = data as DayWiseList[];
@@ -120,7 +120,7 @@ export class SalesSummaryComponent implements OnInit {
     var Param = {
       "FromDate": this.datePipe.transform(this._DashboardService.DayWiseFrom.get('start').value,"MM-dd-yyyy"),
       "ToDate": this.datePipe.transform(this._DashboardService.DayWiseFrom.get('end').value,"MM-dd-yyyy"),
-      "StoreId": this._loggedService.currentUserValue.user.storeId
+      "StoreId": this._loggedService.currentUserValue.storeId
     }
     this._DashboardService.getPharMonthWiseDashboard(Param).subscribe(data => {
       this.dsMonthWiseList.data = data as MonthWiseList[];

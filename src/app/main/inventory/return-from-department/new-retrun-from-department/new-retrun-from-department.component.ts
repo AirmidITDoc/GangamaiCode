@@ -108,7 +108,7 @@ export class NewRetrunFromDepartmentComponent implements OnInit {
   }
   gePharStoreList() {
     var vdata = {
-      Id: this._loggedService.currentUserValue.user.storeId
+      Id: this._loggedService.currentUserValue.storeId
     }
     this._ReturnToDepartmentList.getLoggedStoreList(vdata).subscribe(data => {
       this.StoreList = data;
@@ -134,7 +134,7 @@ export class NewRetrunFromDepartmentComponent implements OnInit {
     this.sIsLoading = 'loading-data';
     var vdata = {
       "FromStoreId": this._ReturnToDepartmentList.userFormGroup.get('ToStoreId').value.StoreId || 0,
-      "ToStoreId":  this._loggedService.currentUserValue.user.storeId || 0,
+      "ToStoreId":  this._loggedService.currentUserValue.storeId || 0,
       "FromDate": this.datePipe.transform(this._ReturnToDepartmentList.userFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "ToDate": this.datePipe.transform(this._ReturnToDepartmentList.userFormGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
     }
@@ -258,13 +258,13 @@ export class NewRetrunFromDepartmentComponent implements OnInit {
     let insertReturnDepartmentHeader = {};
     insertReturnDepartmentHeader['returnDate'] = this.dateTimeObj.date;
     insertReturnDepartmentHeader['returnTime'] = this.dateTimeObj.time;
-    insertReturnDepartmentHeader['fromStoreId'] = this._loggedService.currentUserValue.user.storeId
+    insertReturnDepartmentHeader['fromStoreId'] = this._loggedService.currentUserValue.storeId
     insertReturnDepartmentHeader['toStoreId'] = this._ReturnToDepartmentList.userFormGroup.get('ToStoreId').value.StoreId || 0;
     insertReturnDepartmentHeader['landedRateTotalAmount'] = this.vLandedTotalAmount || 0;
     insertReturnDepartmentHeader['mrpTotalAmount'] = this.vMRPTotalAmount || 0;
     insertReturnDepartmentHeader['purchaseTotalAmount'] = this.vPurTotalAmount || 0;
     insertReturnDepartmentHeader['totalVATAmount'] = this.vTotalvatAmount || 0;
-    insertReturnDepartmentHeader['addedby'] = this.accountService.currentUserValue.user.id || 0;
+    insertReturnDepartmentHeader['addedby'] = this.accountService.currentUserValue.userId || 0;
     insertReturnDepartmentHeader['remark'] = this._ReturnToDepartmentList.NewReturnFinalForm.get('Remark').value || '';
     insertReturnDepartmentHeader['returnId'] = 0;
 
@@ -275,7 +275,7 @@ export class NewRetrunFromDepartmentComponent implements OnInit {
       insertReturnDepartmentDetail['returnId'] = 0;
       insertReturnDepartmentDetail['issueId'] = element.IssueId;
       insertReturnDepartmentDetail['itemId'] = element.ItemId;
-      insertReturnDepartmentDetail['batchNo'] = this._loggedService.currentUserValue.user.storeId;
+      insertReturnDepartmentDetail['batchNo'] = this._loggedService.currentUserValue.storeId;
       insertReturnDepartmentDetail['batchExpDate'] = element.BatchExpDate;
       insertReturnDepartmentDetail['balQty'] =element.IssueQty || 0
       insertReturnDepartmentDetail['returnQty'] = element.ReturnQty || 0;

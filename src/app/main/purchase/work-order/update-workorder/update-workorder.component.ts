@@ -140,7 +140,7 @@ export class UpdateWorkorderComponent implements OnInit {
   }
   gePharStoreList() {
     var vdata = {
-      Id: this.accountService.currentUserValue.user.storeId
+      Id: this.accountService.currentUserValue.storeId
     }
     this._WorkOrderService.getLoggedStoreList(vdata).subscribe(data => {
       this.StoreList = data;
@@ -439,7 +439,7 @@ getTotalAmt(element) {
     let workorderHeaderInsertObj = {};
     workorderHeaderInsertObj['date'] = this.dateTimeObj.date;
     workorderHeaderInsertObj['time'] = this.dateTimeObj.time;
-    workorderHeaderInsertObj['storeId'] = this.accountService.currentUserValue.user.storeId;
+    workorderHeaderInsertObj['storeId'] = this.accountService.currentUserValue.storeId;
     workorderHeaderInsertObj['supplierID'] = this._WorkOrderService.WorkorderItemForm.get('SupplierName').value.SupplierId || 0;
     workorderHeaderInsertObj['totalAmount'] = this.FinalTotalAmount;
     workorderHeaderInsertObj['vatAmount'] = this.FinalVatAmount;
@@ -447,7 +447,7 @@ getTotalAmt(element) {
     workorderHeaderInsertObj['netAmount'] = this.FinalNetAmount;
     workorderHeaderInsertObj['isclosed'] = false;
     workorderHeaderInsertObj['remarks'] = this._WorkOrderService.WorkorderFinalForm.get('Remark').value || '';
-    workorderHeaderInsertObj['addedBy'] = this.accountService.currentUserValue.user.id,
+    workorderHeaderInsertObj['addedBy'] = this.accountService.currentUserValue.userId,
     workorderHeaderInsertObj['isCancelled'] =false,
     workorderHeaderInsertObj['isCancelledBy'] = 0;
     workorderHeaderInsertObj['woId'] = 0;
@@ -499,7 +499,7 @@ getTotalAmt(element) {
   else{
     let workorderHeaderUpdateObj = {};
     workorderHeaderUpdateObj['woId'] = this.registerObj.WOId;
-    workorderHeaderUpdateObj['storeId'] = this.accountService.currentUserValue.user.storeId;
+    workorderHeaderUpdateObj['storeId'] = this.accountService.currentUserValue.storeId;
     workorderHeaderUpdateObj['supplierID'] = this._WorkOrderService.WorkorderItemForm.get('SupplierName').value.SupplierId || 0;
     workorderHeaderUpdateObj['totalAmount'] = this.FinalTotalAmount;
     workorderHeaderUpdateObj['vatAmount'] = this.FinalVatAmount;
@@ -507,7 +507,7 @@ getTotalAmt(element) {
     workorderHeaderUpdateObj['netAmount'] = this.FinalNetAmount;
     workorderHeaderUpdateObj['isclosed'] = false;
     workorderHeaderUpdateObj['remarks'] = this._WorkOrderService.WorkorderFinalForm.get('Remark').value || '';
-    workorderHeaderUpdateObj['updatedBy'] = this.accountService.currentUserValue.user.id;
+    workorderHeaderUpdateObj['updatedBy'] = this.accountService.currentUserValue.userId;
     
     let InsertWorkDetailarrayObj = [];
     this.dsItemNameList.data.forEach((element) => {
