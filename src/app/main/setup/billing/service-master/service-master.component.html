@@ -28,11 +28,20 @@
                     </button>
                 </mat-form-field>
 
-                <mat-radio-group value="" [(ngModel)]="gridConfig.filters[1].fieldValue" fxLayoutAlign="center center">
-                    <mat-radio-button value="">All</mat-radio-button>
-                    <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
-                    <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
-                </mat-radio-group>
+                <airmid-autocomplete label="Tariff" formControlName="TariffId"
+                    [formGroup]="_serviceMasterService.myform"
+                    [mode]="autocompleteModetariff"
+                    [(ngModel)]="gridConfig.filters[1].fieldValue"
+                    (selectDdlObject)="selectChangetariff($event)">
+                </airmid-autocomplete> 
+
+                <airmid-autocomplete label="Group Name" formControlName="GroupId"
+                    [formGroup]="_serviceMasterService.myform"
+                    [(ngModel)]="gridConfig.filters[2].fieldValue"
+                    [mode]="autocompleteModegroupName">
+                </airmid-autocomplete>
+
+                
             </ng-container>
         </airmid-table>
     </div>

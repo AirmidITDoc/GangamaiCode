@@ -31,24 +31,32 @@ export class NewGnericMasterComponent implements OnInit {
     console.log("mdata:", m_data)
   }
   onSubmit() {
-    if(!this.genericForm.get("GenericId").value){
-      debugger
-      var mdata=
-      {
-        "genericId": 0,
-        "genericName": this.genericForm.get("GenericName").value || ""
+    if (this.genericForm.invalid) {
+      this.toastr.warning('please check from is invalid', 'Warning !', {
+        toastClass:'tostr-tost custom-toast-warning',
+    })
+    return;
+    }else{
+      if(!this.genericForm.get("GenericId").value){
+        debugger
+        var mdata=
+        {
+          "genericId": 0,
+          "genericName": this.genericForm.get("GenericName").value || ""
+        }
+        console.log("generic json:", mdata);
+  
+        this._GenericMasterService.genericMasterInsert(mdata).subscribe((response)=>{
+          this.toastr.success(response.message);
+          this.onClear(true);
+        }, (error)=>{
+          this.toastr.error(error.message);
+        });
+      } else{
+        //update
       }
-      console.log("generic json:", mdata);
-
-      this._GenericMasterService.genericMasterInsert(this.genericForm.value).subscribe((response)=>{
-        this.toastr.success(response.message);
-        this.onClear(true);
-      }, (error)=>{
-        this.toastr.error(error.message);
-      });
-    } else{
-      //update
     }
+    
 //     if (this._GenericService.myForm.valid) {
 //         if (!this._GenericService.myForm.get("GenericId").value) {
 //             var m_data = {

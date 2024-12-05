@@ -16,17 +16,22 @@
 
         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="b-service-master" style="padding-top: 10px;">
 
+
+            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
             <airmid-autocomplete label="Group Name" formControlName="GroupId"
                 [formGroup]="serviceForm"
                 [validations]="getValidationGroupMessages().GroupId"
                 [mode]="autocompleteModesubGroupName">
             </airmid-autocomplete>
+            </div>
 
+            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
             <airmid-autocomplete label="SubGroup Name" formControlName="SubGroupId"
                 [formGroup]="serviceForm"
                 [validations]="getValidationSubGroupNameMessages().SubGroupId"
                 [mode]="autocompleteModegroupName">
             </airmid-autocomplete>
+            </div>
 
         </div>
 
@@ -83,11 +88,13 @@
 
         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
             <!-- [value]="TariffId" -->
-            <airmid-autocomplete label="TariffId" formControlName="TariffId"
-                [formGroup]="serviceForm" 
-                [validations]="getValidationTariffMessages().TariffId"
-                [mode]="autocompleteModetariff">
-            </airmid-autocomplete>             
+            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                <airmid-autocomplete label="TariffId" formControlName="TariffId"
+                    [formGroup]="serviceForm" 
+                    [validations]="getValidationTariffMessages().TariffId"
+                    [mode]="autocompleteModetariff">
+                </airmid-autocomplete>            
+            </div> 
 
             <mat-form-field appearance="outline" fxFlex>
                 <input matInput [matDatepicker]="picker3" placeholder="Choose an Effective Date" name="EffectiveDate"

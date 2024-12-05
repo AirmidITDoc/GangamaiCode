@@ -29,25 +29,33 @@ export class NewInstructionMasterComponent implements OnInit {
     console.log("mdata:", m_data)
   }
   onSubmit() {
-    if(!this.instructionForm.get("InstructionId").value){
-      debugger
-      var mdata=
-      {
-        "InstructionId": 0,
-        "instructionDescription": this.instructionForm.get("InstructionName").value || "",
-        "instructioninMarathi": "ABC"
+    if (this.instructionForm.invalid) {
+      this.toastr.warning('please check from is invalid', 'Warning !', {
+        toastClass:'tostr-tost custom-toast-warning',
+    })
+    return;
+    }else{
+      if(!this.instructionForm.get("InstructionId").value){
+        debugger
+        var mdata=
+        {
+          "InstructionId": 0,
+          "instructionDescription": this.instructionForm.get("InstructionName").value || "",
+          "instructioninMarathi": "ABC"
+        }
+        console.log("Instruction json:", mdata);
+  
+        this._InstructionMasterService.instructionMasterInsert(mdata).subscribe((response)=>{
+          this.toastr.success(response.message);
+          this.onClear(true);
+        }, (error)=>{
+          this.toastr.error(error.message);
+        });
+      } else{
+        //update
       }
-      console.log("Instruction json:", mdata);
-
-      this._InstructionMasterService.instructionMasterInsert(mdata).subscribe((response)=>{
-        this.toastr.success(response.message);
-        this.onClear(true);
-      }, (error)=>{
-        this.toastr.error(error.message);
-      });
-    } else{
-      //update
-    }                
+    }
+                    
  }
  onClear(val: boolean) {
   this.instructionForm.reset();
