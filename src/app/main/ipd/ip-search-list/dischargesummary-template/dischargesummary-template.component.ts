@@ -61,8 +61,8 @@ export class DischargesummaryTemplateComponent implements OnInit {
   DischargeSummaryId: any = 0;
   vDischargeId: any = 0;
   isLoading: string = '';
-  DocName1: any;
-  DocName2: any;
+  DocName1: any=0;
+  DocName2: any=0;
   DocName3: any;
   IsNormalDeath: any;
 
@@ -139,13 +139,15 @@ export class DischargesummaryTemplateComponent implements OnInit {
     //   this.getDischargeSummaryData(this.registerObj)
     //   this.getPrescriptionList(this.registerObj)
     // }
-    // this.getTemplateList();
+    
     this.getDoseList();
     this.getDoctorList1();
     this.getDoctorList2();
     this.getDischargeSummaryData(this.registerObj)
     this.getdischargeIdbyadmission();
-
+    // this.getTemplateList();
+    
+    
     this.filteredOptionstemplate = this.discSummary.get('TemplateId').valueChanges.pipe(
       startWith(''),
       map(value => this._filtertemp(value)),
@@ -306,12 +308,12 @@ export class DischargesummaryTemplateComponent implements OnInit {
         startWith(''),
         map(value => value ? this._filterdoc1(value) : this.Doctor1List.slice()),
       );
-      if (this.registerObj) {
-        const ddValue = this.Doctor1List.filter(item => item.DoctorId == this.registerObj.DischargeDoctor1);
-        //console.log(ddValue)
-        this.discSummary.get('DischargeDoctor1').setValue(ddValue[0]);
-        this.discSummary.updateValueAndValidity();
-      }
+    //   if (this.registerObj) {
+    //     const ddValue = this.Doctor1List.filter(item => item.DoctorId == this.registerObj.DischargeDoctor1);
+    //     //console.log(ddValue)
+    //     this.discSummary.get('DischargeDoctor1').setValue(ddValue[0]);
+    //     this.discSummary.updateValueAndValidity();
+    //   }
     });
   }
   getDoctorList2() {
@@ -323,12 +325,12 @@ export class DischargesummaryTemplateComponent implements OnInit {
         startWith(''),
         map(value => value ? this._filterdoc2(value) : this.Doctor2List.slice()),
       );
-      if (this.registerObj) {
-        const ddValue = this.Doctor1List.filter(item => item.DoctorId == this.registerObj.DischargeDoctor2);
-        //console.log(ddValue)
-        this.discSummary.get('DischargeDoctor2').setValue(ddValue[0]);
-        this.discSummary.updateValueAndValidity();
-      }
+      // if (this.registerObj) {
+      //   const ddValue = this.Doctor1List.filter(item => item.DoctorId == this.registerObj.DischargeDoctor2);
+      //   //console.log(ddValue)
+      //   this.discSummary.get('DischargeDoctor2').setValue(ddValue[0]);
+      //   this.discSummary.updateValueAndValidity();
+      // }
     });
 
   }
@@ -528,7 +530,10 @@ export class DischargesummaryTemplateComponent implements OnInit {
         this.DocName2 = this.RetrDischargeSumryList[0].DischargeDoctor2
         // this.DocName3 = this.RetrDischargeSumryList[0].DischargeDoctor3
         this.IsNormalDeath = this.RetrDischargeSumryList[0].IsNormalOrDeath
-        // this.getRetevDropdownvalue();
+        this.getRetevDropdownvalue();
+
+        if(this.DischargeSummaryId !=0)
+          this.getTemplateDetails();
 
         if (this.IsNormalDeath == 1) {
           this.vIsNormalDeath = true;
@@ -538,13 +543,13 @@ export class DischargesummaryTemplateComponent implements OnInit {
           this.vIsNormalDeath = false;
           this.discSummary.get("IsNormalOrDeath").setValue('false');
         }
-        this.getRetevDropdownvalue();
+        
       }
 
       
     });
+    // this.getRetevDropdownvalue();
    
-    this.getTemplateDetails();
   }
 
   getTemplateDetails(){
@@ -559,16 +564,24 @@ export class DischargesummaryTemplateComponent implements OnInit {
   }
 
   getRetevDropdownvalue() {
-    
+    debugger
+    if (this.DischargeSummaryId == 0)
+      this.getTemplateList();
+    else if (this.DischargeSummaryId != 0) {
+      this.getDiscSummTemplateList(this.vAdmissionId);
 
+    }
+
+    // if(this.DocName1 !=0){
     const ddValue1 = this.Doctor1List.filter(item => item.DoctorID == this.DocName1);
     console.log(ddValue1)
     this.discSummary.get("DischargeDoctor1").setValue(ddValue1[0]);
-
+    // }
+    // if(this.DocName2 !=0){
     const ddValue2 = this.Doctor2List.filter(item => item.DoctorID == this.DocName2);
     console.log(ddValue2)
     this.discSummary.get("DischargeDoctor2").setValue(ddValue2[0]);
-   
+    // }
 
   }
 
