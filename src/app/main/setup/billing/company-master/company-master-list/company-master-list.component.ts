@@ -80,7 +80,7 @@ export class CompanyMasterListComponent implements OnInit {
         map(value => value ? this._filterTariff(value) : this.TariffcmbList.slice()),
       );
       if (this.data) {
-        const ddValue = this.TariffcmbList.filter(c => c.TraiffId == this.registerObj.TraiffId);
+        const ddValue = this.TariffcmbList.filter(c => c.TariffId == this.registerObj.TraiffId);
         this._companyService.myform.get('TariffId').setValue(ddValue[0]);
         return;
       }
@@ -95,7 +95,7 @@ export class CompanyMasterListComponent implements OnInit {
         map(value => value ? this._filterCompType(value) : this.CompanytypecmbList.slice()),
       );
       if (this.data) {
-        const ddValue = this.CompanytypecmbList.filter(c => c.CompTypeId == this.registerObj.CompTypeId);
+        const ddValue = this.CompanytypecmbList.filter(c => c.CompanyTypeId == this.registerObj.CompTypeId);
         this._companyService.myform.get('CompTypeId').setValue(ddValue[0]);
         return;
       }
@@ -196,9 +196,9 @@ export class CompanyMasterListComponent implements OnInit {
           phoneNo: this._companyService.myform.get("PhoneNo").value || 0,
           mobileNo: this._companyService.myform.get("MobileNo").value || 0,
           faxNo: this._companyService.myform.get("FaxNo").value || 0,
-          tariffId: this._companyService.myform.get("TariffId").value.TariffId || 0,
+          traiffId: this._companyService.myform.get("TariffId").value.TariffId || 0,
           isActive: Boolean(JSON.parse(this._companyService.myform.get("IsDeleted").value)),
-          addedBy: 10,
+          addedBy: this._loggedService.currentUserValue.user.id || 0,
           updatedBy: 0,
           isCancelled: false,
           isCancelledBy: 0,
@@ -236,10 +236,10 @@ export class CompanyMasterListComponent implements OnInit {
           phoneNo: this._companyService.myform.get("PhoneNo").value || 0,
           mobileNo: this._companyService.myform.get("MobileNo").value || 0,
           faxNo: this._companyService.myform.get("FaxNo").value || 0,
-          tariffId: this._companyService.myform.get("TariffId").value.TariffId || 0,
+          traiffId: this._companyService.myform.get("TariffId").value.TariffId || 0,
           isActive: Boolean(JSON.parse(this._companyService.myform.get("IsDeleted").value)),
-          addedBy: 10,
-          updatedBy: 1,
+          addedBy: 0,
+          updatedBy: this._loggedService.currentUserValue.user.id || 0,
           isCancelled: false,
           isCancelledBy: 0,
           isCancelledDate: "01/01/1900",

@@ -777,10 +777,10 @@ onTemplDetAdd(){
           if (result.isConfirmed) {
             debugger
             if(this.caseFormGroup.get("LetteHeadRadio").value=='LetterHead')
-            this.viewgetOpprescriptionReportwithheaderPdf();
+            this.viewgetOpprescriptionReportwithheaderPdf(response);
           else
           this.viewgetOpprescriptionReportwithoutheaderPdf();
-            this.getWhatsappshareSales(this.vOPIPId, this.vMobileNo)
+            this.getWhatsappshareSales()
             this.onClear();
           }
         });
@@ -826,13 +826,13 @@ onTemplDetAdd(){
     this.vDays = 10
   }
   SpinLoading: any = ""
-  viewgetOpprescriptionReportwithheaderPdf() {
+  viewgetOpprescriptionReportwithheaderPdf(VisitId) {
     debugger
     setTimeout(() => {
       this.SpinLoading = true;
       //  this.AdList=true;
       this._CasepaperService.getOpPrescriptionview(
-        this.VisitId
+        VisitId
       ).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,
           {
@@ -888,18 +888,18 @@ onTemplDetAdd(){
     }, 100);
   }
 
-  getWhatsappshareSales(el, vmono) {
+  getWhatsappshareSales() {
     debugger
-    if (vmono != '' && vmono != '0') {
+    if (this.vMobileNo != '' &&    this.vMobileNo != '0') {
       var m_data = {
         "insertWhatsappsmsInfo": {
-          "mobileNumber": vmono || 0,
+          "mobileNumber":this.vMobileNo || 0,
           "smsString": '',
           "isSent": 0,
           "smsType": 'OPPRESCRIPTIONT',
           "smsFlag": 0,
           "smsDate": this.currentDate,
-          "tranNo": el,
+          "tranNo": this.vOPIPId,
           "PatientType": 1,//el.PatientType,
           "templateId": 0,
           "smSurl": "info@gmail.com",
@@ -1080,6 +1080,7 @@ onTemplDetAdd(){
   //datewise visit info date
   getPatientsForDate(VisitId: string) {
     const patientsForDate = this.patients.filter(patient => patient.VisitId === VisitId);
+    console.log(patientsForDate.length > 0 ? [patientsForDate[0]] : [])
     return patientsForDate.length > 0 ? [patientsForDate[0]] : []; // 
   }
 

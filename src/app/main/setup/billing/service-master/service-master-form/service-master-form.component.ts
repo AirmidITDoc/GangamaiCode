@@ -421,6 +421,25 @@ export class ServiceMasterFormComponent implements OnInit {
     this.dialogRef.close();
   }
 
+
+  creditChk(event){
+    if(event.checked){
+      this.showDoctor = true 
+    }else{
+      this.showDoctor = false
+      this._serviceMasterService.myform.get('DoctorId').setValue('')
+    }
+  }
+  emergencyChk(event){
+    if(event.checked){
+      this.showEmg = true 
+    }else{
+      this.showEmg = false
+      this._serviceMasterService.myform.get('EmgAmt').setValue('')
+      this._serviceMasterService.myform.get('EmgPer').setValue('')
+    }
+  }
+
   @ViewChild('subGroupId') subGroupId: ElementRef;
   @ViewChild('ServiceName') ServiceName: ElementRef;
   @ViewChild('ServiceShortDesc') ServiceShortDesc: ElementRef;

@@ -351,10 +351,10 @@
                                                         </button>
                                                         <button mat-icon-button (click)="onVerify(row)"
                                                             matTooltip="Verify">
-                                                            <mat-icon *ngIf="row.IsVerified==1"
+                                                            <mat-icon *ngIf="isGRNVerify == 1"
                                                                 title="verify Menu">verified_user</mat-icon>
-                                                            <mat-icon title="verify Menu"
-                                                                *ngIf="row.IsVerified==0">verified_user</mat-icon>
+                                                            <!-- <mat-icon title="verify Menu"
+                                                                *ngIf="isGRNVerify==0">verified_user</mat-icon> -->
                                                         </button>
                                                         <button mat-icon-button (click)="GRNEmail(row)">
                                                             <mat-icon *ngIf="row.IsVerified==0"

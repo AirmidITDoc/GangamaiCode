@@ -30,6 +30,36 @@
 
                         <form [formGroup]="myFormGroup">
                             <div fxLayout="column" fxLayoutGap="8px">
+
+                                
+
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Company Name</mat-label>
+                                        <input name="CompanyName"   formControlName="CompanyName"  
+                                            matInput [(ngModel)]="registerObj.CompanyName" readonly>
+                                    </mat-form-field> 
+                                  
+                                  <mat-form-field appearance="outline">
+                                    <mat-label>Class Name</mat-label>
+                                    <input matAutocompletePosition="below" type="text" placeholder="Select " matInput
+                                        formControlName="ClassId" [matAutocomplete]="autoclass" required  
+                                       [(ngModel)]="vClassName">
+                                    <span matSuffix style="display: flex;">
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="myFormGroup.get('ClassId').setValue(''); isClasselected = false;">close</mat-icon>
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="myFormGroup.get('ClassId').setValue(''); isClasselected = false;">search</mat-icon>
+                                    </span>
+                                    <mat-autocomplete #autoclass="matAutocomplete" [displayWith]="getOptionTextclass"
+                                        (optionSelected)='getSelectedObjClass($event.option.value)'>
+                                        <mat-option *ngFor="let option of filteredOptionsBillingClassName | async"
+                                            [value]="option">
+                                            {{option.ClassName}}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+                           
+
                                 
                                     <mat-radio-group aria-label="Select an option" formControlName="IsPathRad" name="IsPathRad"
                                         (change)="getServiceListdata()">
@@ -42,6 +72,7 @@
                         
                                     
                                         <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Search Service Name</mat-label>
                                             <input type="text" name="ServiceId" formControlName="ServiceId" placeholder="Service Name"
                                                 (keyup)="getServiceListdata()" matInput>
                                             <span matSuffix style="display: flex;">
@@ -85,7 +116,7 @@
                                             <mat-header-cell *matHeaderCellDef style="color: white;" class="w-80">
                                                 Action</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" class="w-80">
-                                                <button mat-icon-button (click)="onSaveEntry(contact)" color="warn">
+                                                <button mat-icon-button (click)="onAssignServComp(contact)" color="warn">
                                                     <mat-icon>add</mat-icon>
                                                 </button>
                                             </mat-cell>

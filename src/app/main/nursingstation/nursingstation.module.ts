@@ -68,8 +68,11 @@ const approtes: Routes = [
   path:"feedback",
   loadChildren: () => import("../ipd/Feedback/opip-feedback/feedback.module").then((m)=>m.FeedbackModule), 
 },
-
- 
+{
+  path:"patientdischargeclearance",
+  loadChildren: () => import("./patient-discharge-clearance/patient-discharge-clearance.module")
+  .then((m)=>m.PatientDischargeClearanceModule), 
+},
 
 ];
 @NgModule({

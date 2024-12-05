@@ -111,8 +111,8 @@ onAddPackageService() {
     return;
   } 
   if (this.dsPackageDet.data.length > 0) {
-    if (!this.dsPackageDet.data.find(item => item.PackageServiceId == this.PackageForm.get('SrvcName').value.ServiceId)) {
-      this.toastr.warning('Please select valid Service Name', 'Warning !', {
+    if (this.dsPackageDet.data.find(item => item.PackageServiceId == this.PackageForm.get('SrvcName').value.ServiceId)) {
+      this.toastr.warning('selected  Service Name already added', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
@@ -133,6 +133,7 @@ onAddPackageService() {
   this.dsPackageDet.data = this.PacakgeList;  
   this.PackageForm.reset(); 
   this.PackageForm.get('MainServiceName').setValue(this.registerObj.ServiceName);
+  console.log(this.dsPackageDet.data)
 
 } 
   deleteTableRowPackage(element) {
