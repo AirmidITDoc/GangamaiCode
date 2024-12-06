@@ -131,6 +131,10 @@ export class ResultEntryService {
     return this._httpClient.get("Pathology/view-PathReportMultiple?OP_IP_Type=" + OP_IP_Type);
   }
 
+  public getPathTestwithheaderReport(OP_IP_Type){
+    return this._httpClient.get("Pathology/view-PathReportMultipleWithHeader?OP_IP_Type=" + OP_IP_Type);
+  }
+
   public getPathologyTempReport(PathReportId,OP_IP_Type){
     return this._httpClient.get("Pathology/view-PathTemplate?PathReportId=" + PathReportId + "&OP_IP_Type="+OP_IP_Type);
   }

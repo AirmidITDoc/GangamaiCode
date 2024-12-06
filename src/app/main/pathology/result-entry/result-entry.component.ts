@@ -472,6 +472,26 @@ export class ResultEntryComponent implements OnInit {
         }
         this.selection.clear();
     }
+
+    getPrint1(contact) {
+
+
+        if (contact.IsTemplateTest)
+            this.viewgetPathologyTemplateReportPdf(contact)
+        else {
+            // this.viewgetPathologyTestReportPdf(contact)
+            if (this.selection.selected.length == 0) {
+                this.toastr.warning('CheckBox Select !', 'Warning !', {
+                    toastClass: 'tostr-tost custom-toast-warning',
+                });
+                return;
+            } else {
+                this.Printresultentrywithheader();
+            }
+        }
+        this.selection.clear();
+    }
+
     AdList: boolean = false;
 
     viewgetPathologyTemplateReportPdf(contact) {
@@ -539,7 +559,27 @@ debugger
         });
         this.selection.clear();
     }
+    Printresultentrywithheader(){
+        console.log(this.selection.selected)
+        let pathologyDelete = [];
+        this.selection.selected.forEach((element) => {
+            this.SOPIPtype = element["OPD_IPD_Type"]
+            let pathologyDeleteObj = {};
+            pathologyDeleteObj['pathReportId'] = element["PathReportID"]
+            pathologyDelete.push(pathologyDeleteObj);
+        });
 
+        let submitData = {
+            "printInsert": pathologyDelete,
+        };
+        console.log(submitData);
+        this._SampleService.PathPrintResultentryInsert(submitData).subscribe(response => {
+            if (response) {
+                this.viewgetPathologyTestReportwithheaderPdf(this.SOPIPtype)
+            }
+        });
+        this.selection.clear();
+    }
 
 
     viewgetPathologyTestReportPdf(OPD_IPD_Type) {
@@ -569,6 +609,32 @@ debugger
         }, 100);
     }
 
+    viewgetPathologyTestReportwithheaderPdf(OPD_IPD_Type) {
+
+        setTimeout(() => {
+            this.SpinLoading = true;
+            this.AdList = true;
+            this._SampleService.getPathTestwithheaderReport(
+                OPD_IPD_Type
+            ).subscribe(res => {
+                const dialogRef = this._matDialog.open(PdfviewerComponent,
+                    {
+                        maxWidth: "85vw",
+                        height: '750px',
+                        width: '100%',
+                        data: {
+                            base64: res["base64"] as string,
+                            title: "pathology Test Report With Header Viewer"
+                        }
+                    });
+                dialogRef.afterClosed().subscribe(result => {
+                    this.AdList = false;
+                    this.SpinLoading = false;
+                });
+            });
+
+        }, 100);
+    }
 
 
     exportResultentryReportExcel() {
