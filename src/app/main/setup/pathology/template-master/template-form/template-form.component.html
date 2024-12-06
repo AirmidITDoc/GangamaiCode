@@ -25,18 +25,21 @@
                     <div fxFlex.gt-sm="100%" fxFlex>
                         <div fxlayout="row" style=" background-color: white;
                              padding: 5px 10px 5px 10px;">
-                            <form [formGroup]="_TemplateServieService.myform">
+                            <form [formGroup]="templateForm">
                                 <div class="dialog-content-wrapper">
                                     <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column">
 
-                                        <input type="hidden" name="TemplateId" formControlName="TemplateId"
+                                        <input type="hidden" name="templateId" formControlName="templateId"
                                             [(ngModel)]="TemplateId">
 
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Template Name</mat-label>
                                             <input matInput placeholder="Template Name" [(ngModel)]="vTemplateName"
-                                                name="TemplateName" formControlName="TemplateName" required>
-                                            <mat-error>Please enter TestName </mat-error>
+                                                name="templateName" formControlName="templateName" required>
+                                            <mat-error class="error"
+                                                *ngIf="templateForm.get('templateName').invalid && templateForm.get('templateName').touched">
+                                                TemplateName is required Enter only Alphabets
+                                            </mat-error>
                                         </mat-form-field>
 
                                         <div  fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
@@ -59,7 +62,7 @@
                                     <div class="modal-footer-buttons" fxLayoutGap="6px" style="padding: 8px;">
                                         <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
                                         <button class="btn btn-primary" (click)="onSubmit()"
-                                        [disabled]="_TemplateServieService.myform.invalid">Save</button>
+                                        [disabled]="templateForm.invalid">Save</button>
                                     </div>
                                 </div>
                             </form>

@@ -72,8 +72,7 @@ export class DrugmasterService {
     }
 
     public deactivateTheStatus(m_data) {
-        //return this._httpClient.delete("Gender?Id=" + m_data, {});
-        return this._httpClient.PostData("Drug", m_data);
+        return this._httpClient.DeleteData("Drug?Id=" + m_data.toString());
     }
     populateForm(param) {
         this.myform.patchValue(param);

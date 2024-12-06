@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { gridRequest } from 'app/core/models/gridRequest';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
@@ -21,10 +21,20 @@ export class RadiologyTestMasterService {
   createRadiologytestForm(): FormGroup {
     return this._formBuilder.group({
       TestId: [''],
-      TestName: [''],
-      PrintTestName: [''],
+      TestName: ['',
+        [
+            Validators.required,
+            Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+        ]
+      ],
+      PrintTestName: ['',
+        [
+            Validators.required,
+            Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+        ]
+      ],
       CategoryId: [''],
-      //TemplateName:[''],
+      TemplateName:[''],
       ServiceId: [''],
       IsDeleted: ['true'],
 
@@ -42,6 +52,19 @@ export class RadiologyTestMasterService {
       TemplateName: [""]
     });
   }
+  getValidationMessages(){
+    return{
+      CategoryId: [
+        { name: "required", Message: "CategoryName is required" }
+      ],
+      ServiceId: [
+        { name: "required", Message: "ServiceName is required" }
+      ],
+      TemplateName: [
+        { name: "required", Message: "TemplateName is required" }
+      ]
+    }
+  }
 
   initializeFormGroup() {
     this.createRadiologytestForm();
@@ -53,11 +76,10 @@ export class RadiologyTestMasterService {
     return this._httpClient.PostData("RadiologyTest/List", param, showLoader);
 }
 
-public testMasterSave(Param: any, id: string ,showLoader = true) {
-    if(id)
-        return this._httpClient.PutData("test/"+ id, Param, showLoader);
-    else
-        return this._httpClient.PostData("test", Param, showLoader);       
+public testMasterSave(Param: any, showLoader = true) {
+  if (Param.TestId) {
+      return this._httpClient.PutData("RadiologyTest/Insert" + Param.TestId, Param, showLoader);
+  } else return this._httpClient.PostData("RadiologyTest/Insert", Param, showLoader);
 }
 
 // public deactivateTheStatus(m_data) {

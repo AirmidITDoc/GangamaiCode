@@ -9,7 +9,7 @@
                 <mat-icon>account_box</mat-icon>
             </button>
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                {{_ParameterService.myform.controls.ParameterID.value?"Modify Parameter Master":"New
+                {{parameterForm.controls.ParameterID.value?"Modify Parameter Master":"New
                 Parameter Master"}}
             </span>
         </div>
@@ -159,11 +159,13 @@
                                                 [(ngModel)]="vUnitId">
                                                 
                                         </mat-form-field> -->
-                                        <airmid-autocomplete label="UnitId" formControlName="UnitId"
-                                            [formGroup]="parameterForm"
-                                            [validations]="getValidationUnitMessages().UnitId"
-                                            [mode]="autocompleteModeUnitId" (selectDdlObject)="selectChangeUnitId($event)">
-                                        </airmid-autocomplete>
+                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-autocomplete label="UnitId" formControlName="UnitId"
+                                                [formGroup]="parameterForm"
+                                                [validations]="getValidationUnitMessages().UnitId"
+                                                [mode]="autocompleteModeUnitId" (selectDdlObject)="selectChangeUnitId($event)">
+                                            </airmid-autocomplete>
+                                        </div>
 
                                         <!-- <mat-form-field appearance="outline" fxFlex="50%">
                                             <mat-label>UnitName</mat-label>
@@ -237,13 +239,13 @@
                                             style="margin-bottom:5px !important;">
                                             <mat-card-title>Numeric Info</mat-card-title>
                                         </mat-card-content>
-                                        <form [formGroup]="_ParameterService.myform">
+                                        <form [formGroup]="parameterForm">
                                             <mat-card-content>
                                                 <div>
                                                     <div fxLayoutAlign="space-between" style="padding:5px">
                                                        
                                                         <airmid-autocomplete label="SexID" formControlName="SexID"
-                                                    [formGroup]="_ParameterService.myform"
+                                                    [formGroup]="parameterForm"
                                                     [validations]="getValidationGenderMessages().SexID"
                                                     [mode]="autocompleteModeGender"
                                                     (selectDdlObject)="selectChangeGender($event)">
@@ -525,7 +527,7 @@
                     </div>
 
                 </div>
-                <!-- [disabled]="_ParameterService.myform.invalid" -->
+                <!-- [disabled]="parameterForm.invalid" -->
 
                 <!-- <div fxLayoutGap="5px">
 

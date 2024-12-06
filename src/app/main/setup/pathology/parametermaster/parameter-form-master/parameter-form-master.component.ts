@@ -286,7 +286,7 @@ export class ParameterFormMasterComponent implements OnInit {
         this.dialogRef.close();
     }
     checkFields(event) {
-
+debugger
         const formValues = this.parameterForm.value
         const fieldsTobeChecked = formValues.SexID
             && formValues.MinAge
@@ -331,7 +331,7 @@ export class ParameterFormMasterComponent implements OnInit {
         let isNewRowUnique = true;
 
         const newRow: any = {
-            GenderName: this.parameterForm.get('SexID').value.GenderName || "",
+            GenderName: this.parameterForm.get('SexID').value || "",
             MinAge: this.vMinAge || 0,
             MaxAge: this.vMaxAge || 0,
             MinValue: this.vMinValue || 0,
@@ -339,7 +339,7 @@ export class ParameterFormMasterComponent implements OnInit {
             IsDeleted:1,
             AgeType: this.parameterForm.value.AgeType,
         };
-
+debugger
         for (const row of this.dsParameterAgeList.data) {
             if (JSON.stringify(row) === JSON.stringify(newRow)) {
                 isNewRowUnique = false;

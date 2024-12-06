@@ -58,21 +58,41 @@ export class RadiologyTemplateFormComponent implements OnInit {
       this.templateForm.patchValue(m_data);
   }
   onSubmit() {
-      if (this.templateForm.valid) {
-        debugger
-          this._TemplateServieService.templateMasterSave(this.templateForm.value).subscribe((response) => {
-              this.toastr.success(response.message);
-              this.onClear(true);
-          }, (error) => {
-              this.toastr.error(error.message);
-          });
-      }
-  }
+
+    if(this.templateForm.invalid){
+        this.toastr.warning('please check from is invalid', 'Warning !', {
+            toastClass:'tostr-tost custom-toast-warning',
+        })
+        return;
+    }else{
+        if (!this.templateForm.get("templateId").value) {
+            debugger
+            var mdata={
+                  "templateId": 0,
+                  "templateName": this.templateForm.get("templateName").value,
+                  "templateDesc": this.templateForm.get("templateDesc").value        
+            }
+            console.log('json mdata:',mdata);
+
+              this._TemplateServieService.templateMasterSave(mdata).subscribe((response) => {
+                  this.toastr.success(response.message);
+                  this.onClear();
+              }, (error) => {
+                  this.toastr.error(error.message);
+              });
+          }
+    }
+    this.onClose();
+}
+onClose(){
+  this.templateForm.reset();
+  this.dialogRef.close();
+}
   onBlur(e: any) {
     this.vTemplateDesc = e.target.innerHTML;
   }
-  onClear(val: boolean) {
+  onClear() {
       this.templateForm.reset();
-      this.dialogRef.close(val);
+      this.dialogRef.close();
   }
 }

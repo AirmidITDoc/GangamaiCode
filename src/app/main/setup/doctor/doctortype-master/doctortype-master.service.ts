@@ -58,6 +58,6 @@ export class DoctortypeMasterService {
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.PostData("DoctorTypeMaster/", m_data);
+        return this._httpClient.DeleteData("DoctorTypeMaster?Id=" + m_data.toString());
     }
 }

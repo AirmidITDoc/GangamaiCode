@@ -87,8 +87,7 @@ export class DosemasterService {
     }
 
     public deactivateTheStatus(m_data) {
-        //return this._httpClient.delete("Gender?Id=" + m_data, {});
-        return this._httpClient.PostData("DoseMaster", m_data);
+        return this._httpClient.DeleteData("DoseMaster?Id=" + m_data.toString());
     }
     populateForm(param) {
         this.myForm.patchValue(param);
