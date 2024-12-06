@@ -66,7 +66,7 @@ export class CompanyMasterService {
             IsCancelledBy: ["", Validators.pattern("[0-9]+")],
             IsCancelledDate: [""],
             AddedByName: [""],
-            IsDeleted: ["false"],
+            IsDeleted: [true],
         });
     }
     createSearchForm(): FormGroup {
@@ -127,5 +127,16 @@ export class CompanyMasterService {
         return this._httpClient.post(
             "Generic/ExecByQueryStatement?query=" + param, {});
     }
-
+    public getclassNameCombo(Param, loader = true) {
+        if (loader) {
+            this._loaderService.show();
+        }
+        return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_BillingClassName", Param)
+    }
+    public getRtrvCompanyServList(Param, loader = true) {
+        if (loader) {
+            this._loaderService.show();
+        }
+        return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_CompanyServiceInfo", Param)
+    }
 }

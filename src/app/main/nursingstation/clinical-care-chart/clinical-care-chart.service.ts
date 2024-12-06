@@ -26,13 +26,22 @@ export class ClinicalCareChartService {
      this.SugarForm = this.createSugarForm(),
      this.OxygenForm = this.CreateOxygenForm(),
      this.ApacheScoreForm = this.CreateApachescoreForm(),
-     this.InPutOutputForm = this.CreateInputoutForm()
+     this.InPutOutputForm = this.CreateInputoutForm(),
+     this.PainAssessForm = this.createPainAssesForm()
    }
 
    createMyForm(){
       return this._formbuilder.group({ 
         WardName:[''],
         PatientNameSearch:['']
+       // FromDate:[new Date()],
+       // ToDate:[new Date()],
+      })
+    }
+    createPainAssesForm(){
+      return this._formbuilder.group({ 
+        DailyWeight:[''],
+        //PatientNameSearch:['']
        // FromDate:[new Date()],
        // ToDate:[new Date()],
       })
@@ -216,5 +225,12 @@ export class ClinicalCareChartService {
         this._loaderService.show();
     }
       return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_NursingWeight",Param)
+    }
+    // Save PainAssesment
+    public SavePainAssesment(Param,loader = true){
+      if (loader) {
+        this._loaderService.show();
+    }
+      return this._httpClient.post("Nursing/SaveNursingPainAssessment",Param)
     }
 }

@@ -161,6 +161,15 @@ export class ServiceMasterService {
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ServicesList", employee)
   }
 
+  public getRtevPackageDetList(param,loader = true) {
+    if (loader) {
+        this._loaderService.show();
+    }
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PackageServiceInfo",param
+    );
+}
+
+
     populateForm(param) {
        // debugger;
         this.myform.patchValue(param);

@@ -798,6 +798,12 @@
                             </ng-template>
                             <div class="center p-12">
                                 <div fxlayout="row" fxLayout="column" fxFlexFill fxLayoutGap="10px">
+
+                                    <div fxLayoutAlign="end">
+                                        <button mat-raised-button >
+                                            <mat-icon  matTooltip="Email Menu">mail</mat-icon>Email
+                                        </button>
+                                    </div> 
                         
                                     <div *ngFor="let visitId of uniqueVisitId">
                                         
@@ -807,15 +813,17 @@
                                                     <div class="visit-info-title" fxLayoutAlign="space-between">
                                                         <span style="font-weight: 900;color: blueviolet;">
                                                             <!-- Visit Date : {{ date | date: 'dd/MM/YYYY' }} -->
-                                                            Visit Date : {{ date | date: 'dd/MM/YYYY' }} - {{visitId}}
+                                                            Visit ID :- {{visitId}}
                                                             <!-- {{ date | date:' fullDate'}}  -->
                                                         </span>
                                                         <span style="font-weight: 900;color: blueviolet;">
                                                             Visit Information
                                                         </span>
                                                         <div class="gap-8">
-                                                            <mat-icon (click)="viewgetOpprescriptionReportPdf()" matTooltip="Print">print</mat-icon>
-                                                            <img width="25" height="8px" src="assets/images/logos/WhatsApp.png">
+                                                            <mat-icon (click)="viewgetOpprescriptionReportwithheaderPdf(visitId)" matTooltip="Print">print</mat-icon>
+                                                            <img width="25" height="8px" src="assets/images/logos/WhatsApp.png" (click)="getWhatsappshareSales()"
+                                                            matTooltip="Send Prescription Details On WhatsApp">  
+                                                            
                                                         </div>
                                                     </div>
                                                     <hr>

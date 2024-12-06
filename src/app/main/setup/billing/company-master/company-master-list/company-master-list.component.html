@@ -131,17 +131,14 @@
                                             #FaxNo (keypress)="keyPressAlphanumeric($event)" OnlyNumber [(ngModel)]="vFaxNo">
                                         <!-- <span class="error" *ngIf="f.FaxNo.invalid && f.FaxNo.touched">FaxNo is required Enter only Digits</span> -->
                                     </mat-form-field>
-                                </div>
-                    
-                    
-                    
-                            </div>
-                    
+                                </div> 
+                            </div> 
                         </mat-card>
-                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                            <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
-                                <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsActive</mat-radio-button>
-                            </mat-radio-group>
+                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" style="padding-top: 10px;"> 
+                            <mat-checkbox aria-label="Is Active" formControlName="IsDeleted"  value='true'
+                            style="font-weight: bold;">
+                            IsActive
+                             </mat-checkbox>
                         </div>
                     </form> 
                    

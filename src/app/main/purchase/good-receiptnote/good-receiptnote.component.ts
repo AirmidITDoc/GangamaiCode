@@ -23,6 +23,7 @@ import { QrcodegeneratorComponent } from 'app/main/purchase/good-receiptnote/qrc
 import { SelectionModel } from '@angular/cdk/collections';
 import { EmailSendComponent } from 'app/main/shared/componets/email-send/email-send.component';
 import * as XLSX from 'xlsx';
+import { ConfigService } from 'app/core/services/config.service';
 
 @Component({
     selector: 'app-good-receiptnote',
@@ -162,6 +163,7 @@ export class GoodReceiptnoteComponent implements OnInit {
     loadingarry: any = [];
     currentDate = new Date();
     IsLoading: boolean = false;
+    isGRNVerify:any;
 
     constructor(
         public _GRNService: GoodReceiptnoteService,
@@ -170,6 +172,7 @@ export class GoodReceiptnoteComponent implements OnInit {
         public datePipe: DatePipe,
         public toastr: ToastrService,
         private accountService: AuthenticationService,
+         public _ConfigService : ConfigService
 
     ) { }
 
@@ -177,6 +180,8 @@ export class GoodReceiptnoteComponent implements OnInit {
         this.getToStoreSearchList();
         this.getToStoreSearchCombo();
         this.getGRNList();
+        this.isGRNVerify = this.accountService.currentUserValue.user.isGRNVerify
+        console.log(this.isGRNVerify)
     }
     data: any[];
     FullData: GRNList = {} as GRNList;

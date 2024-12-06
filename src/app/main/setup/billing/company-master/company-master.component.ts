@@ -141,7 +141,7 @@ export class CompanyMasterComponent implements OnInit {
     AssignServCompany(row) {
         const dialogRef = this._matDialog.open(CompanyWiseServiceComponent, {
             width: "75%",
-            height: "70%",
+            height: "85%",
             data:{
                 Obj:row
             }

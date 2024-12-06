@@ -227,67 +227,72 @@
                 
                             <mat-checkbox name="IsPathology" formControlName="IsPathology" value='false'
                                 [(ngModel)]="registerObj.IsPathology">
-                                IsPathology</mat-checkbox>
-                
-                            <mat-checkbox name="IsEmergency" [(ngModel)]="showEmg" value="true" formControlName="IsEmergency"
-                            > IsEmergency</mat-checkbox>
-                
-                            <mat-checkbox name="CreditedtoDoctor" formControlName="CreditedtoDoctor" value='false'
-                                [(ngModel)]="showDoctor">
-                                CreditedtoDoctor</mat-checkbox>
+                                IsPathology</mat-checkbox>  
                 
                         </div>
                         <hr>
                 
                         <div fxFlexFill fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="6px"> 
 
-                            <mat-form-field appearance="outline"  fxFlex="30%" *ngIf="showDoctor">
-                                <mat-label>Doctor Name</mat-label>
-                                <input matAutocompletePosition="below" type="text" placeholder="Select Doctor" matInput
-                                  formControlName="DoctorId" [matAutocomplete]="autoDoctorId" #DoctorId
-                                   [(ngModel)]="vDoctorId">
-                                <span matSuffix style="display: flex;">
-                                  <mat-icon class="mat-icon-close"
-                                    (click)="_serviceMasterService.myform.get('DoctorId').setValue(''); isDoctorIdSelected = false;">close</mat-icon>
-                                  <mat-icon class="mat-icon-close"
-                                    (click)="_serviceMasterService.myform.get('DoctorId').setValue(''); isDoctorIdSelected = false;">search</mat-icon>
-                                </span>
-                                <mat-autocomplete #autoDoctorId="matAutocomplete" [displayWith]="getOptionTextDoctorId">
-                                  <mat-option *ngFor="let option of filteredDoctor | async" [value]="option">
-                                    {{option.DoctorName}}
-                                  </mat-option>
-                                </mat-autocomplete>
-                              </mat-form-field>
-                
-                
-                            <div fxLayout="row" fxLayoutGap="4px" *ngIf="showEmg">
-                                <mat-form-field appearance="outline" fxFlex="50%">
-                                    <mat-label>Emergency Amt</mat-label>
-                                    <input name="EmgAmt" placeholder="Select EmgAmt" [(ngModel)]="vemg_amt" formControlName="EmgAmt"
-                                        matInput     (keypress)="keyPressCharater($event)"  >
-                                    <span class="error" *ngIf="f.EmgAmt.invalid && f.EmgAmt.touched">EmgAmt required
-                                        only Digits</span>
-                                </mat-form-field>&nbsp;
-                
-                                <mat-form-field appearance="outline" fxFlex="50%">
-                                    <mat-label>Emergency %</mat-label>
-                                    <input name="EmgPer" placeholder="Select EmgPer" [(ngModel)]="vemg_per" formControlName="EmgPer"
-                                        matInput     (keypress)="keyPressCharater($event)"  >
-                                    <span class="error" *ngIf="f.EmgPer.invalid && f.EmgPer.touched">EmgPer required
-                                        only Digits</span>
-                                </mat-form-field>
+                            <div fxFlex="50%" fxLayout="row" fxLayoutGap="6px">
+                                <mat-checkbox name="CreditedtoDoctor" formControlName="CreditedtoDoctor" value='false'
+                                [(ngModel)]="showDoctor" (change)="creditChk($event)"  style="padding: 10px 10px 10px 0px;">
+                                CreditedtoDoctor</mat-checkbox> 
+    
+                                <mat-form-field appearance="outline"  fxFlex *ngIf="showDoctor">
+                                    <mat-label>Doctor Name</mat-label>
+                                    <input matAutocompletePosition="below" type="text" placeholder="Select Doctor" matInput
+                                      formControlName="DoctorId" [matAutocomplete]="autoDoctorId" #DoctorId
+                                       [(ngModel)]="vDoctorId">
+                                    <span matSuffix style="display: flex;">
+                                      <mat-icon class="mat-icon-close"
+                                        (click)="_serviceMasterService.myform.get('DoctorId').setValue(''); isDoctorIdSelected = false;">close</mat-icon>
+                                      <mat-icon class="mat-icon-close"
+                                        (click)="_serviceMasterService.myform.get('DoctorId').setValue(''); isDoctorIdSelected = false;">search</mat-icon>
+                                    </span>
+                                    <mat-autocomplete #autoDoctorId="matAutocomplete" [displayWith]="getOptionTextDoctorId">
+                                      <mat-option *ngFor="let option of filteredDoctor | async" [value]="option">
+                                        {{option.DoctorName}}
+                                      </mat-option>
+                                    </mat-autocomplete>
+                                  </mat-form-field>
                             </div>
-                
-                
-                            <mat-checkbox aria-label="Is Active" formControlName="IsActive" (checked)=true
-                                [(ngModel)]="registerObj.IsActive" style="font-weight: bold;margin-left: 30px;">
-                                IsActive
-                            </mat-checkbox>
-                
+
+                          
+                            <div fxFlex="50%" fxLayout="row" fxLayoutGap="6px">
+                                <mat-checkbox name="IsEmergency" [(ngModel)]="showEmg" value="true" formControlName="IsEmergency"
+                                style="padding: 10px 10px 10px 0px;"> IsEmergency</mat-checkbox>
+                            
+                            
+                                <div fxLayout="row" fxLayoutGap="4px" *ngIf="showEmg">
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Emergency Amt</mat-label>
+                                        <input name="EmgAmt" placeholder="Select EmgAmt" [(ngModel)]="vemg_amt" formControlName="EmgAmt" matInput
+                                            (keypress)="keyPressCharater($event)">
+                                        <span class="error" *ngIf="f.EmgAmt.invalid && f.EmgAmt.touched">EmgAmt required
+                                            only Digits</span>
+                                    </mat-form-field>
+                            
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Emergency %</mat-label>
+                                        <input name="EmgPer" placeholder="Select EmgPer" [(ngModel)]="vemg_per" formControlName="EmgPer" matInput
+                                            (keypress)="keyPressCharater($event)">
+                                        <span class="error" *ngIf="f.EmgPer.invalid && f.EmgPer.touched">EmgPer required
+                                            only Digits</span>
+                                    </mat-form-field>
+                                </div>
+                            </div>
                         </div>
                     </form> 
 
-                    <div>
+                    <div fxLayout="row" fxLayoutAlign="space-between">
+                        <form [formGroup]="_serviceMasterService.myform">
+                        <mat-checkbox aria-label="Is Active" formControlName="IsActive"  value='true'
+                        [(ngModel)]="registerObj.IsActive" style="font-weight: bold;">
+                        IsActive
+                         </mat-checkbox>
+                         </form>
+
                         <div class="sales-footer-buttons gap-8" fxLayout="row" fxLayoutAlign="end">
                             <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
                             <button class="btn btn-primary" color="accent" (click)="onSubmit()" #savebutton>

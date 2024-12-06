@@ -58,7 +58,7 @@ export class PurchaseOrderComponent implements OnInit {
   optionsMarital: any[] = [];
   optionsPayment: any[] = [];
   optionsItemName: any[] = [];
-
+  IsPOVerified:any;
   GSTAmt: any = 0.0;
   CGSTAmount: any;
   IGSTAmount: any;
@@ -187,6 +187,9 @@ export class PurchaseOrderComponent implements OnInit {
   ngOnInit(): void {
     this.getFromStoreSearch();
     this.getPurchaseOrderList();
+ 
+    this.IsPOVerified = this.accountService.currentUserValue.user.isPOVerify
+    console.log(this.IsPOVerified)
   }
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();

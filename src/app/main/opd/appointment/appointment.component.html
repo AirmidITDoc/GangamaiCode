@@ -9,7 +9,7 @@
             </mat-icon> 
         </div>  
         <div fxLayout="row" fxLayoutGap="5px">
-            <form [formGroup]="searchFormGroup">
+            <!-- <form [formGroup]="searchFormGroup">
             <mat-form-field class=searchRegId appearance="outline" fxflex="30" style="color: white;">
                 <mat-label>Registered Patient</mat-label>
                 <input type="text" name="RegId" formControlName="RegId"
@@ -32,7 +32,7 @@
                 </mat-autocomplete>
                
             </mat-form-field>
-        </form>
+        </form> -->
             <app-common-date [screenFrom]="screenFromString" style="float:right;margin-top: 5px;" 
                 (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
 

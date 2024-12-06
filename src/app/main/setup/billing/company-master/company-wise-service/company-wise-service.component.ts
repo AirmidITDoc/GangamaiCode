@@ -9,6 +9,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { fuseAnimations } from '@fuse/animations';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-company-wise-service',
@@ -29,8 +31,9 @@ export class CompanyWiseServiceComponent implements OnInit {
       'buttons'
     ]
 
-
-
+    
+  isClasselected:boolean=false;
+  vClassName:any;
   myFormGroup:FormGroup
   chargeslist:any=[]; 
   isLoading: String = '';
@@ -38,6 +41,9 @@ export class CompanyWiseServiceComponent implements OnInit {
   screenFromString = 'Company';
   registerObj:any;  
   isServiceIdSelected:boolean=false;
+  filteredOptionsBillingClassName:Observable<string[]>;
+  ClassList:any=[];
+  selectedObj:any;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -61,36 +67,86 @@ export class CompanyWiseServiceComponent implements OnInit {
     if(this.data){
       this.registerObj = this.data.Obj
       console.log(this.registerObj)
-    }
-    this.getServiceListdata();
+      this.getRtrvCompanyServList(this.registerObj)
+    } 
+    this.getclassNameCombo();
   }
   CreateServCompForm(){
     return this.formBuilder.group({
       IsPathRad: ['3'], 
       ServiceId: '',  
+      ClassId:'',
+      CompanyName:''
     });
   }
+  getclassNameCombo() {
+    var m_data = {
+      'ClassName': '%'  
+    }
+    this._companyService.getclassNameCombo(m_data).subscribe((data) => {
+      this.ClassList = data; 
+      this.filteredOptionsBillingClassName = this.myFormGroup.get('ClassId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterClassName(value) : this.ClassList.slice()),
+      ); 
+    });
+  } 
+  //filters
+  private _filterClassName(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.ClassName ? value.ClassName.toLowerCase() : value.toLowerCase();
+      return this.ClassList.filter(option => option.ClassName.toLowerCase().includes(filterValue));
+    }
+  } 
+  getOptionTextclass(option) {
+    return option && option.ClassName ? option.ClassName : '';
+  } 
+  getSelectedObjClass(obj){
+    this.getServiceListdata();
+  }
+  //get RtrvCompanyService
+  getRtrvCompanyServList(obj) {
+    this.isLoading = 'loading-data';
+    var vdata={
+      "CompanyId": obj.CompanyId || 0
+    }
+    console.log(vdata)
+    setTimeout(() => {
+      this._companyService.getRtrvCompanyServList(vdata).subscribe(data=>{
+        this.dscompanyserv.data =  data as ServCompList[];
+        this.chargeslist = data as ServCompList
+        console.log(this.dscompanyserv.data)  
+      }); 
+    },1000); 
+  }
+
   getServiceListdata() {
     // debugger  
-      this.sIsLoading = ''
-      var Param = {
-        "ServiceName":`${this.myFormGroup.get('ServiceId').value}%` ||'%',
-        "IsPathRad":parseInt(this.myFormGroup.get('IsPathRad').value) || 0,
-        "ClassId":   0,
-        "TariffId":  0 //this.registerObj.TraiffId  || 0
+    if (this.vClassName == '' || this.vClassName == null || this.vClassName == undefined) {
+      this.toastr.warning('Please Select class Name', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    } 
+    this.sIsLoading = ''
+    var Param = {
+      "ServiceName": `${this.myFormGroup.get('ServiceId').value}%` || '%',
+      "IsPathRad": parseInt(this.myFormGroup.get('IsPathRad').value) || 0,
+      "ClassId": this.myFormGroup.get('ClassId').value.ClassId || 0,
+      "TariffId": this.registerObj.TraiffId || 0
     }
-      console.log(Param);
-      this._companyService.getServiceListDetails(Param).subscribe(data => {
-        this.dsservicelist.data = data as ServCompList[]; 
-        this.dsservicelist.data = data as ServCompList[];
-       console.log(this.dsservicelist)
+    console.log(Param);
+    this._companyService.getServiceListDetails(Param).subscribe(data => {
+      this.dsservicelist.data = data as ServCompList[];
+      this.dsservicelist.data = data as ServCompList[];
+      console.log(this.dsservicelist)
+      this.sIsLoading = '';
+    },
+      error => {
         this.sIsLoading = '';
-      },
-        error => {
-          this.sIsLoading = '';
-        }); 
+      });
   }
-  onSaveEntry(row) {
+  onAssignServComp(row) {
     this.isLoading = 'save';
     this.dscompanyserv.data = [];
     if (this.chargeslist && this.chargeslist.length > 0) {
@@ -119,7 +175,9 @@ export class CompanyWiseServiceComponent implements OnInit {
       {
         ServiceId: row.ServiceId,
         ServiceName: row.ServiceName,
-        Price: row.Price || 0
+        ServicePrice: row.Price || 0,
+        ServiceQty:1
+
       });
     this.isLoading = '';
     console.log(this.chargeslist);
@@ -142,27 +200,27 @@ export class CompanyWiseServiceComponent implements OnInit {
   }
   gettablecalculation(element) {
     console.log(element)
-    if(element.Qty == 0 || element.Qty == ''){
-      element.Qty = 1 ;
+    if(element.ServiceQty == 0 || element.ServiceQty == ''){
+      element.ServiceQty = 1 ;
       this.toastr.warning('Qty is connot be Zero By default Qty is 1', 'error!', {
         toastClass: 'tostr-tost custom-toast-warning',
       });  
       return;
     }
     debugger 
-   if(element.Price > 0 && element.Qty > 0){ 
-    element.TotalAmt = element.Qty * element.Price || 0;
+   if(element.ServicePrice > 0 && element.ServiceQty > 0){ 
+    element.TotalAmt = element.ServiceQty * element.ServicePrice || 0;
     element.DiscAmt = (element.ConcessionPercentage * element.TotalAmt) / 100  || 0;
     element.NetAmount =  element.TotalAmt - element.DiscAmt
     }  
-    else if(element.Price == 0 || element.Price == '' || element.Qty == '' || element.Qty == 0){
+    else if(element.ServicePrice == 0 || element.ServicePrice == '' || element.ServiceQty == '' || element.ServiceQty == 0){
       element.TotalAmt = 0;  
       element.DiscAmt =  0 ;
       element.NetAmount =  0 ;
     }  
   }
   onSubmit(){  
-      if (this.dscompanyserv.data.length < 0) {
+      if (!this.dscompanyserv.data.length) {
         this.toastr.warning('Please assign service to company', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
@@ -173,8 +231,8 @@ export class CompanyWiseServiceComponent implements OnInit {
         let insert_CompanyServiceAssignMaster={
           "companyId":this.registerObj.CompanyId || 0,
           "serviceId": element.ServiceId || 0,
-          "servicePrice":element.Price || 0,
-          "serviceQty":element.Qty || 0,
+          "servicePrice":element.ServicePrice || 0,
+          "serviceQty":element.ServiceQty || 0,
           "isActive": String(this.registerObj.IsActive) == 'false' ? 0:1,
           "createdBy": 1,
         }
@@ -182,7 +240,7 @@ export class CompanyWiseServiceComponent implements OnInit {
       });
   
        let delete_CompantServiceDetails={
-        "companyId": this.registerObj.ServiceId || 0
+        "companyId": this.registerObj.CompanyId || 0
       }
   
       let submitData={
@@ -228,12 +286,12 @@ export class CompanyWiseServiceComponent implements OnInit {
 }
 export class ServCompList {
   ServiceName: any;
-  Price: number;
+  ServicePrice: number;
   ServiceId: any;
-  Qty:any;
+  ServiceQty:any;
   constructor(ServCompList) {
     this.ServiceName = ServCompList.ServiceName || '';
-    this.Price = ServCompList.Price || 0;
+    this.ServicePrice = ServCompList.ServicePrice || 0;
     this.ServiceId = ServCompList.ServiceId || 0;
   }
 }

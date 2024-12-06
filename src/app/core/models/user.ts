@@ -10,8 +10,7 @@ export class LoginUser {
     password: string;
     firstName: string;
     lastName: string;
-    role: string;
-
+    role: string; 
     UserId : number;
     FirstName: string; 
     LastName: string;
@@ -21,8 +20,8 @@ export class LoginUser {
     storeId : number;
     IsDoctorType :boolean;
     DoctorID : number;
-    IsPOVerify :boolean;
-    IsGRNVerify :boolean;
+    isPOVerify :boolean;
+    isGRNVerify :boolean;
     isCollection :boolean;
     isBedStatus :boolean;
     IsCurrentStk :boolean;
@@ -41,4 +40,6 @@ export class LoginUser {
     pharExtOpt :number;
     pharOPOpt :number;
     pharIPOpt :number;
+    isDiscApply :number;
+    discApplyPer :number;
 }

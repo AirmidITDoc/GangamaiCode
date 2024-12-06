@@ -57,6 +57,30 @@
         display: inline-flex;
         display: inline; 
     }
+    .mat-column-IsEditable {
+        text-align: center;
+        justify-content: center;
+    }
+    .mat-column-CreditedtoDoctor {
+        text-align: center;
+        justify-content: center;
+    }
+    .mat-column-IsPathology {
+        text-align: center;
+        justify-content: center;
+    }
+    .mat-column-IsRadiology {
+        text-align: center;
+        justify-content: center;
+    }
+    .mat-column-Ispackage {
+        text-align: center;
+        justify-content: center;
+    }
+        .mat-column-IsDeleted { 
+        text-align: center;
+        justify-content: center;
+    }
 //     .mat-column-DoctorId {
 //         width: 90px;
 //         max-width: 90px;
@@ -77,26 +101,7 @@
 //         max-width: 90px;
 //         min-width: 90px;
 //     }
-//     .mat-column-IsEditable {
-//         width: 90px;
-//         max-width: 90px;
-//         min-width: 90px;
-//     }
-//     .mat-column-CreditedtoDoctor {
-//         width: 140px;
-//         max-width: 140px;
-//         min-width: 140px;
-//     }
-//     .mat-column-IsPathology {
-//         width: 120px;
-//         max-width: 120px;
-//         min-width: 120px;
-//     }
-//     .mat-column-IsRadiology {
-//         width: 90px;
-//         max-width: 90px;
-//         min-width: 90px;
-//     }
+
 //     .mat-column-PrintOrder {
 //         width: 90px;
 //         max-width: 90px;
@@ -121,13 +126,7 @@
 //         min-width: 80px;
 //     }
 
-//     .mat-column-IsDeleted {
-//         width: 90px;
-//         max-width: 90px;
-//         min-width: 90px;
-//         text-align: center;
-//         justify-content: center;
-//     }
+
 
 //     .mat-column-action {
 //         // color: white !important;

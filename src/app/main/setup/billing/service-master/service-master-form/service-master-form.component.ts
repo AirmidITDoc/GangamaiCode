@@ -157,7 +157,12 @@ export class ServiceMasterFormComponent implements OnInit {
         startWith(''),
         map(value => value ? this._filterSubGroupName(value) : this.SubGroupcmbList.slice()),
       );
-      this._serviceMasterService.myform.get('SubGroupId').setValue(this._serviceMasterService.edit_data['SubGroupId']);
+      
+      if (this.data) {
+        const ddValue = this.SubGroupcmbList.filter(c => c.SubGroupId == this.data.registerObj.SubGroupid);
+        this._serviceMasterService.myform.get('SubGroupId').setValue(ddValue[0]);
+        return;
+      }  
     });
   }
   getClassList() {
@@ -419,6 +424,25 @@ export class ServiceMasterFormComponent implements OnInit {
     this._serviceMasterService.myform.get('EffectiveDate').setValue(new Date());
     this._serviceMasterService.myform.get('TariffId').setValue(this.TariffcmbList[0]);
     this.dialogRef.close();
+  }
+
+
+  creditChk(event){
+    if(event.checked){
+      this.showDoctor = true 
+    }else{
+      this.showDoctor = false
+      this._serviceMasterService.myform.get('DoctorId').setValue('')
+    }
+  }
+  emergencyChk(event){
+    if(event.checked){
+      this.showEmg = true 
+    }else{
+      this.showEmg = false
+      this._serviceMasterService.myform.get('EmgAmt').setValue('')
+      this._serviceMasterService.myform.get('EmgPer').setValue('')
+    }
   }
 
   @ViewChild('subGroupId') subGroupId: ElementRef;
